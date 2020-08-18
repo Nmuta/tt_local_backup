@@ -1,5 +1,9 @@
-# Custom
+# Asp.net
 .vs/
+bin/
+obj/
+
+# Node
 dist/
 *TESTS-HeadlessChrome*
 
