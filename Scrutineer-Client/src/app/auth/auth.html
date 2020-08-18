@@ -1,0 +1,21 @@
+<section style="padding: 50px;">
+    <div *ngIf="!loading && !inZendesk">
+        <div *ngIf="profile">
+            <h1>You are signed in.</h1>
+            <p>Email: {{profile.email}}</p>
+            <p>Role: {{profile.role}}</p>
+            <button (click)="logout()">Logout</button>
+        </div>
+        <div *ngIf="!profile">
+            <h1>Please signin.</h1>
+            <button (click)="login()">Login</button>
+        </div>
+    </div>
+    <div *ngIf="!loading && inZendesk">
+        <h1>Whoops, you should not be seeing this page within Zendesk.</h1>
+        <h2>Reload the browser window.</h2>
+    </div>
+    <div *ngIf="loading">
+        <h1>Loading...</h1>
+    </div>
+</section>

@@ -1,0 +1,19 @@
+{
+    "name": "ScrutineerInventoryManagementAngular",
+    "author": {
+        "name": "Turn 10",
+        "email": "ZAFTestRTC6@Outlook.com",
+        "url": ""
+    },
+    "defaultLocale": "en",
+    "private": true,
+    "location": {
+        "support": {
+            "nav_bar": "http://localhost:4200/sidebar",
+            "ticket_sidebar": "http://localhost:4200/ticket-sidebar",
+            "background": "assets/background.html"
+        }
+    },
+    "version": "1.0",
+    "frameworkVersion": "2.0"
+}

@@ -1,0 +1,17 @@
+<section *ngIf="!loading">
+    <h1>If this shows up, the release pipleine is working!</h1>
+    <div *ngIf="profile">
+        <profile [email]="profile.email" [role]="profile.role"></profile>
+        <h1>Sidebar app</h1>
+    </div>
+    <div *ngIf="!profile">
+        <h1>Go to login page to sign into your Microsoft account.</h1>
+        <button (click)="openAuthPageInNewTab()">Login Page</button>
+        <br />
+        <h1>Authorize the app once you have signed in.</h1>
+        <button (click)="recheckAuth()">Authorize App</button>
+    </div>
+</section>
+<section *ngIf="loading">
+    <h1>Loading...</h1>
+</section>
