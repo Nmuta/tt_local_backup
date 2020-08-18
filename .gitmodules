@@ -1,0 +1,4 @@
+[submodule "Data-BuildModule"]
+	path = Data-BuildModule
+	url = https://dev.azure.com/turn10/Services/_git/Data-BuildModule
+	branch = master
