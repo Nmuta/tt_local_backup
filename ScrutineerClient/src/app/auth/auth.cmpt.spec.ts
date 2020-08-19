@@ -26,9 +26,10 @@ import { of } from 'rxjs';
 // Models
 import { UserModel } from '@shared/models/user.model';
 import { delay } from 'rxjs/operators';
+import { createMockWindowService, WindowService } from '@shared/services/window';
 
 describe('AuthComponent', () => {
-    let mockZendeskService: ZendeskService;
+    let mockWindowService: WindowService;
     let mockMsalService: MsalService;
     let mockStore: Store;
 
@@ -45,13 +46,14 @@ describe('AuthComponent', () => {
             schemas: [NO_ERRORS_SCHEMA],
             providers: [
                 createMockZendeskService(),
-                createMockMsalService()
+                createMockMsalService(),
+                createMockWindowService()
             ]
         }).compileComponents();
 
         let injector = getTestBed();
         mockStore = injector.get(Store);
-        mockZendeskService = injector.get(ZendeskService);
+        mockWindowService = injector.get(WindowService);
         mockMsalService = injector.get(MsalService);
 
         fixture = TestBed.createComponent(AuthCmpt);
@@ -63,14 +65,24 @@ describe('AuthComponent', () => {
     });
 
     describe('Method: ngOnInit', () => {
-        var testProfile: UserModel = { email: 'test.email@microsoft.com' };
+        var testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
         beforeEach(() => {
-            component.checkIfAppIsOnZendesk = jasmine.createSpy('checkIfAppIsOnZendesk');
+            mockWindowService.zafClient = jasmine.createSpy('zafClient').and.returnValue({});
         });
-        it('should call checkIfAppIsOnZendesk', () => {
-            component.ngOnInit();
-
-            expect(component.checkIfAppIsOnZendesk).toHaveBeenCalled();
+        describe('When windowService.zafClient returns an object', () => {
+            it('Should set inZendesk to true', () => {
+                component.ngOnInit();
+                expect(component.inZendesk).toBeTruthy();
+            });
+        });
+        describe('When windowService.zafClient returns false', () => {
+            beforeEach(() => {
+                mockWindowService.zafClient = jasmine.createSpy('zafClient').and.returnValue(false);
+            });
+            it('Should set inZendesk to false', () => {
+                component.ngOnInit();
+                expect(component.inZendesk).toBeFalsy();
+            });
         });
         describe('If subscribing to profile returns a value', () => {
             beforeEach(() => {
