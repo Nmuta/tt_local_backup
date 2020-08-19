@@ -1,0 +1,4 @@
+[submodule "Data-BuildModule"]
+	path = Data-BuildModule
+	url = https://turn10.visualstudio.com/Services/_git/Data-BuildModule
+	branch = master
