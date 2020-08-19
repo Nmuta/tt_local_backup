@@ -1,4 +1,4 @@
-using ApiScrutineer.Infrastructure;
+using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,23 +6,33 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
-using System.IdentityModel.Tokens.Jwt;
+using static Turn10.LiveOps.ScrutineerApi.ApplicationSettings;
 
-namespace ApiScrutineer
+namespace Turn10.LiveOps.ScrutineerApi
 {
-    public class Startup
+    /// <summary>
+    ///     Entry point for the app.
+    /// </summary>
+    public sealed class Startup
     {
+        private readonly IConfiguration configuration;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Startup"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        ///     Configures the services.
+        /// </summary>
+        /// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMicrosoftWebApiAuthentication(Configuration, "AzureAd");
+            services.AddMicrosoftWebApiAuthentication(this.configuration);
             services.Configure<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
                 // Use the groups claim for populating roles
@@ -38,16 +48,18 @@ namespace ApiScrutineer
             services.AddSwaggerGen();
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
+                options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <summary>
+        ///     Configures the app.
+        /// </summary>
+        /// <param name="app">The app.</param>
+        /// <param name="webHostEnvironment">The web host environment.</param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
         {
-            if (env.IsDevelopment())
+            if (webHostEnvironment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

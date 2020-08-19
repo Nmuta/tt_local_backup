@@ -18,7 +18,7 @@
     <Optimize>false</Optimize>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Turn10.Data.Ingestion.xml</DocumentationFile>
+    <DocumentationFile>bin\Turn10.LiveOps.Scrutineer.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -27,7 +27,7 @@
     <Optimize>true</Optimize>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Turn10.Data.Ingestion.xml</DocumentationFile>
+    <DocumentationFile>bin\Turn10.LiveOps.Scrutineer.xml</DocumentationFile>
     <DefineConstants></DefineConstants>
   </PropertyGroup>
 
@@ -48,6 +48,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>	
     <PackageReference Include="Turn10.Data.Common" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\" />
   </ItemGroup>
 
   <Target Name="RealClean" AfterTargets="Clean">
