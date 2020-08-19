@@ -33,7 +33,6 @@ export class ZendeskService {
     }
 
     public currentUser(): Observable<any> {
-        var test = this.windowService.zafClient();
         return this.windowService.zafClient().get('currentUser');
     }
 
