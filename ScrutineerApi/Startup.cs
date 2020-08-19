@@ -41,8 +41,8 @@ namespace Turn10.LiveOps.ScrutineerApi
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(AuthorizationPolicies.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
-                options.AddPolicy(AuthorizationPolicies.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
+                options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
+                options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
             });
             services.AddControllers();
             services.AddSwaggerGen();
