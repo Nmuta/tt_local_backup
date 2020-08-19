@@ -1,4 +1,4 @@
 export interface UserModel {
-    email?: string;
+    emailAddress?: string;
     role?: string;
 }

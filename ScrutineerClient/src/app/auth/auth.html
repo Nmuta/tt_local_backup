@@ -2,7 +2,7 @@
     <div *ngIf="!loading && !inZendesk">
         <div *ngIf="profile">
             <h1>You are signed in.</h1>
-            <p>Email: {{profile.email}}</p>
+            <p>Email: {{profile.emailAddress}}</p>
             <p>Role: {{profile.role}}</p>
             <button (click)="logout()">Logout</button>
         </div>

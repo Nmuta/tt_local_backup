@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { UserState } from '@shared/state/user/user.state';
 import { ResetUserProfile, RequestAccessToken } from '@shared/state/user/user.actions';
 import { UserModel } from '@shared/models/user.model';
+import { WindowService } from '@shared/services/window';
 
 @Component({
     templateUrl: './auth.html',
@@ -22,12 +23,12 @@ export class AuthCmpt implements OnInit {
     constructor(
         private store: Store,
         private authService: MsalService,
-        private zendeskService: ZendeskService
+        private windowService: WindowService
     ) { }
 
     public ngOnInit() { 
         this.loading = true;
-        this.checkIfAppIsOnZendesk();
+        this.inZendesk = !!this.windowService.zafClient();
         UserState.latestValidProfile(this.profile$).subscribe(
             profile => {
                 this.profile = profile;
@@ -53,16 +54,6 @@ export class AuthCmpt implements OnInit {
     public logout() {
         this.authService.logout();
     }
-
-    public checkIfAppIsOnZendesk() {
-        this.zendeskService.currentUser().subscribe(
-            (user: any) => {
-                this.inZendesk = true;
-            },
-            (err) => {
-                this.inZendesk = false;
-            });
-    } 
 
     public recheckAuth() {
         this.store.dispatch(new ResetUserProfile());
