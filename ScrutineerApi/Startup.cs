@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.ScrutineerApi
         /// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMicrosoftWebApiAuthentication(this.configuration);
+            services.AddMicrosoftWebApiAuthentication(this.configuration, "AzureAd");
             services.Configure<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
                 // Use the groups claim for populating roles
@@ -41,8 +41,8 @@ namespace Turn10.LiveOps.ScrutineerApi
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(AuthorizationPolicies.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
-                options.AddPolicy(AuthorizationPolicies.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
+                options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
+                options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
             });
             services.AddControllers();
             services.AddSwaggerGen();
@@ -64,7 +64,6 @@ namespace Turn10.LiveOps.ScrutineerApi
                 applicationBuilder.UseDeveloperExceptionPage();
             }
 
-            applicationBuilder.UseAuthentication();
             applicationBuilder.UseCors("CorsPolicy");
             applicationBuilder.UseSwagger();
             applicationBuilder.UseSwaggerUI(c =>
@@ -73,8 +72,9 @@ namespace Turn10.LiveOps.ScrutineerApi
             });
 
             applicationBuilder.UseHttpsRedirection();
-
+            applicationBuilder.UseAuthentication();
             applicationBuilder.UseRouting();
+            applicationBuilder.UseAuthorization();
             applicationBuilder.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

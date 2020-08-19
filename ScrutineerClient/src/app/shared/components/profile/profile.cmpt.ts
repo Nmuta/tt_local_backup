@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { environment } from '@environments/environment';
+import { UserModel } from '@shared/models/user.model';
 
 @Component({
     selector: 'profile',
@@ -7,8 +8,7 @@ import { environment } from '@environments/environment';
     styleUrls: ['./profile.scss']
 })
 export class ProfileCmpt {
-    @Input() email: string;
-    @Input() role: string;
+    @Input() user: UserModel;
 
     profileTabVisible: boolean = false;
 

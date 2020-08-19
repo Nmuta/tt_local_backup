@@ -1,6 +1,6 @@
 <section *ngIf="!loading">
     <div *ngIf="profile">
-        <profile [email]="profile.email" [role]="profile.role"></profile>
+        <profile [user]="profile"></profile>
         <h1>{{title}} Info</h1>
         <div *ngIf="player">
             <table>
