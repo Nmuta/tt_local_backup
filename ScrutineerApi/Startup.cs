@@ -55,28 +55,27 @@ namespace Turn10.LiveOps.ScrutineerApi
         /// <summary>
         ///     Configures the app.
         /// </summary>
-        /// <param name="app">The app.</param>
+        /// <param name="applicationBuilder">The application builder.</param>
         /// <param name="webHostEnvironment">The web host environment.</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment webHostEnvironment)
+        public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment webHostEnvironment)
         {
             if (webHostEnvironment.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                applicationBuilder.UseDeveloperExceptionPage();
             }
 
-            app.UseAuthentication();
-            app.UseCors("CorsPolicy");
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            applicationBuilder.UseAuthentication();
+            applicationBuilder.UseCors("CorsPolicy");
+            applicationBuilder.UseSwagger();
+            applicationBuilder.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseHttpsRedirection();
+            applicationBuilder.UseHttpsRedirection();
 
-            app.UseRouting();
-            app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
+            applicationBuilder.UseRouting();
+            applicationBuilder.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
