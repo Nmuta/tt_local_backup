@@ -20,7 +20,7 @@ namespace Turn10.LiveOps.ScrutineerApi
         /// <summary>
         ///     Authorization policies.
         /// </summary>
-        public static class AuthorizationPolicies
+        public static class AuthorizationPolicy
         {
             public const string AssignmentToLiveOpsAdminRoleRequired = "AssignmentToLiveOpsAdminRoleRequired";
             public const string AssignmentToLiveOpsAgentRoleRequired = "AssignmentToLiveOpsAgentRoleRequired";
