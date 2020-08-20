@@ -1,17 +1,11 @@
-// -----------------------------------------------------------------------
-// <copyright company='Microsoft Corporation'>
-//   Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// -----------------------------------------------------------------------
-
 // General
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed, inject, getTestBed } from '@angular/core/testing';
 
 // Components
-import { ProfileCmpt } from './profile.cmpt';import { WindowService, createMockWindowService } from '@shared/services/window';
+import { ProfileCmpt } from './profile.cmpt';
+import { WindowService, createMockWindowService } from '@shared/services/window';
 import { environment } from '@environments/environment';
-;
 
 describe('ProfileComponent', () => {
     let mockWindowService: WindowService;

@@ -29,7 +29,6 @@ export class SidebarCmpt {
                 this.profile = profile;
                 if(!this.profile) {
                     this.router.navigate([`/auth`], { queryParams: { from: 'sidebar' }});
-                    
                 }
             },
             error => {
