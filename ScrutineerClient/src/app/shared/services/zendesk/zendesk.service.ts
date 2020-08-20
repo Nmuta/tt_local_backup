@@ -13,11 +13,11 @@ export class ZendeskService {
     ) {}
 
     public getTicketDetails(): Observable<any> {
-        return this.windowService.zafClient().get("ticket"); 
+        return this.windowService.zafClient().get('ticket');
     }
 
     public getTicketRequestor(): Observable<object> {
-        return this.windowService.zafClient().get("ticket.requester");
+        return this.windowService.zafClient().get('ticket.requester');
     }
 
     public getTicketFields(): Observable<object> {

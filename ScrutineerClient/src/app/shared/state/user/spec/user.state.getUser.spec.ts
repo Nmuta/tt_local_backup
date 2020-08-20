@@ -31,7 +31,7 @@ describe('State: User', () => {
         mockUserService.getUserProfile = jasmine.createSpy('getUserProfile').and.returnValue(of({}));
     }));
     describe('[GetUser] Action', () => {
-        let action
+        let action;
         beforeEach(() => {
             action = new GetUser();
         });

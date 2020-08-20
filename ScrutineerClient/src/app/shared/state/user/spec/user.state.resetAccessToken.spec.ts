@@ -30,7 +30,7 @@ describe('State: User', () => {
         mockAuthService.acquireTokenSilent = jasmine.createSpy('acquireTokenSilent').and.returnValue(of({}));
     }));
     describe('[ResetAccessToken] Action', () => {
-        let action
+        let action;
         beforeEach(() => {
             action = new ResetAccessToken();
             store.reset({
