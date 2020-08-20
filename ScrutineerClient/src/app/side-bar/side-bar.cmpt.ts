@@ -18,8 +18,7 @@ export class SidebarCmpt {
     profile: UserModel; 
 
     constructor(
-        private router: Router,
-        private store: Store
+        private router: Router
     ) {}
 
     public ngOnInit() {

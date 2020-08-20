@@ -25,7 +25,6 @@ export class TicketSidebarCmpt implements OnInit, AfterViewInit {
     
     constructor(
         private router: Router,
-        private store: Store,
         private zendeskService: ZendeskService,
         private scrutineerDataParser: ScrutineerDataParser,
         private clipboard: Clipboard

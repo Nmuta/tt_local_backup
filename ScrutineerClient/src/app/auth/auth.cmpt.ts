@@ -41,6 +41,7 @@ export class AuthCmpt implements OnInit {
             profile => {
                 this.loading = false;
                 this.profile = profile;
+
                 if(!!this.profile && this.inZendesk) {
                     this.router.navigate([`/${this.fromApp}`]);
                 }
