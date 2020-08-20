@@ -1,6 +1,6 @@
-import { Routes, RouterModule } from "@angular/router";
-import { TicketSidebarCmpt } from "./ticket-sidebar.cmpt";
-import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from '@angular/router';
+import { TicketSidebarCmpt } from './ticket-sidebar.cmpt';
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
     {
