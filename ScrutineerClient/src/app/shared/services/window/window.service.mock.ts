@@ -14,7 +14,6 @@ export class MockWindowService {
     public top = jasmine.createSpy('top');
     public location = jasmine.createSpy('location');
     public open = jasmine.createSpy('open');
-    public initZafClient = jasmine.createSpy('initZafClient');
     public zafClient = jasmine.createSpy('zafClient');
 }
 

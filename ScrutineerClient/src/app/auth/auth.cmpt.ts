@@ -8,6 +8,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { ResetUserProfile, RequestAccessToken } from '@shared/state/user/user.actions';
 import { UserModel } from '@shared/models/user.model';
 import { WindowService } from '@shared/services/window';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     templateUrl: './auth.html',
@@ -16,27 +17,37 @@ import { WindowService } from '@shared/services/window';
 export class AuthCmpt implements OnInit {  
     @Select(UserState.profile) profile$: Observable<UserModel>;
 
+    fromApp: string;
     loading: boolean;
     inZendesk: boolean;
     profile: UserModel; 
 
     constructor(
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
         private store: Store,
         private msalService: MsalService,
         private windowService: WindowService
-    ) { }
+    ) { 
+        this.activatedRoute.queryParams.subscribe(params => {
+            this.fromApp = params['from'];
+        });
+    }
 
     public ngOnInit() { 
         this.loading = true;
         this.inZendesk = !!this.windowService.zafClient();
         UserState.latestValidProfile(this.profile$).subscribe(
             profile => {
-                this.profile = profile;
                 this.loading = false;
+                this.profile = profile;
+                if(!!this.profile && this.inZendesk) {
+                    this.router.navigate([`/${this.fromApp}`]);
+                }
             },
             error => {
-                this.profile = null;
                 this.loading = false;
+                this.profile = null;
             }
         );
     }
