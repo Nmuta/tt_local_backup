@@ -18,30 +18,24 @@ export class SidebarCmpt {
     profile: UserModel; 
 
     constructor(
-        private router: Router,
-        private store: Store
+        private router: Router
     ) {}
 
     public ngOnInit() {
         this.loading = true;
         UserState.latestValidProfile(this.profile$).subscribe(
             profile => {
-                this.profile = profile;
                 this.loading = false;
+                this.profile = profile;
+                if(!this.profile) {
+                    this.router.navigate([`/auth`], { queryParams: { from: 'sidebar' }});
+                    
+                }
             },
             error => {
                 this.loading = false;
+                this.router.navigate([`/auth`], { queryParams: { from: 'sidebar' }});
             }
         );
-    }
-
-    public openAuthPageInNewTab() {
-        window.open(`${environment.clientUrl}/auth`, '_blank')
-    }
-
-    public recheckAuth() {
-        this.store.dispatch(new ResetUserProfile());
-        this.store.dispatch(new RequestAccessToken());
-        this.ngOnInit();
     }
 }

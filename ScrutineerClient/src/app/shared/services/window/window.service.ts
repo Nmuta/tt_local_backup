@@ -28,10 +28,6 @@ export class WindowService {
         return (<any>window).open(url, target);
     }
 
-    public initZafClient(): any {
-        (<any>window).zafClient = ZAFClient.init();
-    }
-
     public zafClient(): any {
         return (<any>window).zafClient;
     }

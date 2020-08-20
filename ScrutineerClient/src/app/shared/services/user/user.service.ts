@@ -14,9 +14,9 @@ import { UserModel } from '@shared/models/user.model';
     providedIn: 'root'
 })
 export class UserService {
-    constructor(private as: ApiService) {}
+    constructor(private apiService: ApiService) {}
 
     public getUserProfile(): Observable<UserModel> {
-        return this.as.getRequest<any>('me');
+        return this.apiService.getRequest<any>('me');
     }
 }

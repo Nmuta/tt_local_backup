@@ -4,6 +4,7 @@ import { ActivatedRoute, Data, Router } from '@angular/router';
 import { Store, NgxsModule } from '@ngxs/store';
 import { async, ComponentFixture, TestBed, inject, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 // Components
 import { SidebarCmpt } from './side-bar.cmpt';
@@ -22,6 +23,7 @@ describe('SidebarComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
+                RouterTestingModule.withRoutes([]),
                 HttpClientTestingModule,
                 NgxsModule.forRoot([UserState])
             ],

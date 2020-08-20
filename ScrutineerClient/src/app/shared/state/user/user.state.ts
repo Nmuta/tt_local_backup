@@ -77,7 +77,6 @@ export class UserState {
 
     @Action(SetNoUserProfile, { cancelUncompleted: true })
     setNoUserProfile(ctx: StateContext<UserStateModel>, action: SetNoUserProfile) {
-        console.log('SetNoUserProfile');
         ctx.patchState({ profile: null });
     }
 
