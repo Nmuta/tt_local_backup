@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatButtonModule } from '@angular/material/button';
 import { ProfileModule } from '@shared/components/profile/profile.module';
-import { SidebarCmpt } from './side-bar.cmpt';
+import { SidebarComponent } from './side-bar.cmpt';
 import { SidebarRouterModule } from './side-bar.routing.module';
 
 @NgModule({
@@ -15,6 +15,6 @@ import { SidebarRouterModule } from './side-bar.routing.module';
         ProfileModule
     ],
     providers: [],
-    declarations: [SidebarCmpt]
+    declarations: [SidebarComponent]
 })
 export class SidebarModule {}

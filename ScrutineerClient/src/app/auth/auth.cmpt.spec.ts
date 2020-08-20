@@ -13,7 +13,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Components
-import { AuthCmpt } from './auth.cmpt';
+import { AuthComponent } from './auth.cmpt';
 
 // Services
 import { createMockZendeskService, ZendeskService } from '@shared/services/zendesk';
@@ -38,8 +38,8 @@ describe('AuthComponent', () => {
     let mockRouter: Router;
 
 
-    let fixture: ComponentFixture<AuthCmpt>;
-    let component: AuthCmpt;
+    let fixture: ComponentFixture<AuthComponent>;
+    let component: AuthComponent;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -48,7 +48,7 @@ describe('AuthComponent', () => {
                 HttpClientTestingModule,
                 NgxsModule.forRoot([UserState])
             ],
-            declarations: [AuthCmpt],
+            declarations: [AuthComponent],
             schemas: [NO_ERRORS_SCHEMA],
             providers: [
                 createMockZendeskService(),
@@ -57,7 +57,7 @@ describe('AuthComponent', () => {
             ]
         }).compileComponents();
 
-        let injector = getTestBed();
+        const injector = getTestBed();
         mockStore = injector.get(Store);
         mockWindowService = injector.get(WindowService);
         mockMsalService = injector.get(MsalService);
@@ -66,7 +66,7 @@ describe('AuthComponent', () => {
         mockMsalService.loginRedirect = jasmine.createSpy('loginRedirect');
         mockMsalService.logout = jasmine.createSpy('logout');
 
-        fixture = TestBed.createComponent(AuthCmpt);
+        fixture = TestBed.createComponent(AuthComponent);
         component = fixture.debugElement.componentInstance;
     }));
 
@@ -75,7 +75,7 @@ describe('AuthComponent', () => {
     });
 
     describe('Method: ngOnInit', () => {
-        var testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
+        const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
         beforeEach(() => {
             mockWindowService.zafClient = jasmine.createSpy('zafClient').and.returnValue({});
         });
@@ -109,7 +109,7 @@ describe('AuthComponent', () => {
                 expect(component.loading).toBeFalsy();
             });
             describe('If profile is valid and app is running in zendesk', () => {
-                var fromApp = 'test-app';
+                const fromApp = 'test-app';
                 beforeEach(() => {
                     mockWindowService.zafClient = jasmine.createSpy('zafClient').and.returnValue({});
                     component.fromApp = fromApp;
@@ -140,19 +140,19 @@ describe('AuthComponent', () => {
             });
         });
         describe('If subscribing to profile times out', () => {
-            let delayTime = 20000;
+            const delayTime = 20000;
             beforeEach(() => {
                 Object.defineProperty(component, 'profile$', { writable: true });
                 component.profile$ = of(testProfile).pipe(delay(delayTime));
             });
-            it('Should set profile to null', fakeAsync(() => { 
-                component.ngOnInit();   
+            it('Should set profile to null', fakeAsync(() => {
+                component.ngOnInit();
                 tick(delayTime);
                 expect(component.profile).toEqual(null);
             }));
             it('Should set loading to false', fakeAsync(() => {
-                component.ngOnInit();  
-                tick(delayTime); 
+                component.ngOnInit();
+                tick(delayTime);
                 expect(component.loading).toBeFalsy();
             }));
         });
@@ -165,7 +165,7 @@ describe('AuthComponent', () => {
             component.openAuthPageInNewTab();
 
             expect(mockWindowService.open).toHaveBeenCalledWith(`${environment.clientUrl}/auth`, '_blank');
-        })
+        });
     });
     describe('Method: login', () => {
         beforeEach(() => {
@@ -177,7 +177,7 @@ describe('AuthComponent', () => {
             expect(mockMsalService.loginRedirect).toHaveBeenCalledWith({
                 extraScopesToConsent: ['api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access']
             });
-        })
+        });
     });
     describe('Method: login', () => {
         it('should call msalService.loginRedirect correctly', () => {
@@ -186,7 +186,7 @@ describe('AuthComponent', () => {
             expect(mockMsalService.loginRedirect).toHaveBeenCalledWith({
                 extraScopesToConsent: ['api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access']
             });
-        })
+        });
     });
     describe('Method: logout', () => {
         it('should call msalService.logout', () => {

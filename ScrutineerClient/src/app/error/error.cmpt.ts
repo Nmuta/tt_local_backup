@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
     templateUrl: './error.html',
     styleUrls: []
 })
-export class ErrorCmpt {  
+export class ErrorComponent {
     constructor() { }
 }

@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InventoryCmpt } from './inventory.cmpt';
-export { InventoryCmpt } from './inventory.cmpt';
+import { InventoryComponent } from './inventory.cmpt';
+export { InventoryComponent } from './inventory.cmpt';
+
 @NgModule({
     imports: [CommonModule],
-    exports: [InventoryCmpt],
-    declarations: [InventoryCmpt],
+    exports: [InventoryComponent],
+    declarations: [InventoryComponent],
 })
 export class InventoryModule {}

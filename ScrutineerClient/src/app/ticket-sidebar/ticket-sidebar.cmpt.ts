@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
     templateUrl: './ticket-sidebar.html',
     styleUrls: ['./ticket-sidebar.scss']
 })
-export class TicketSidebarCmpt implements OnInit, AfterViewInit {
+export class TicketSidebarComponent implements OnInit, AfterViewInit {
     @Select(UserState.profile) profile$: Observable<UserModel>;
 
     public loading: boolean;
@@ -22,7 +22,7 @@ export class TicketSidebarCmpt implements OnInit, AfterViewInit {
     public title: string;
     public player: any;
     public gamerTag: string;
-    
+
     constructor(
         private router: Router,
         private zendeskService: ZendeskService,

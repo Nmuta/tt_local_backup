@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GiftingPageCmpt } from './gifting-page.cmpt';
-export { GiftingPageCmpt } from './gifting-page.cmpt';
+import { GiftingPageComponent } from './gifting-page.cmpt';
+export { GiftingPageComponent } from './gifting-page.cmpt';
 
 import { InventoryModule } from '../inventory/inventory.module';
 import { InventoryOptionsModule } from '../inventory-options/inventory-options.module';
@@ -12,7 +12,7 @@ import { InventoryOptionsModule } from '../inventory-options/inventory-options.m
         InventoryModule,
         InventoryOptionsModule
     ],
-    exports: [GiftingPageCmpt],
-    declarations: [GiftingPageCmpt],
+    exports: [GiftingPageComponent],
+    declarations: [GiftingPageComponent],
 })
 export class GiftingPageModule {}

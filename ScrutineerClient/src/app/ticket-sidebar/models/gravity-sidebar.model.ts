@@ -13,4 +13,4 @@ export interface GravitySidebarModel {
     lastGameSettingsUsed: any;
     timeOffsetInSeconds: any;
     userInventoryId: any;
-};
+}

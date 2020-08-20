@@ -14,7 +14,7 @@ import { environment } from '../environments/environment';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
-import { ErrorCmpt } from './error/error.cmpt';
+import { ErrorComponent } from './error/error.cmpt';
 
 export const protectedResourceMap: [string, string[]][] = [
         ['https://graph.microsoft.com/v1.0/me', ['user.read']]
@@ -23,7 +23,7 @@ export const protectedResourceMap: [string, string[]][] = [
 @NgModule({
     declarations: [
         AppComponent,
-        ErrorCmpt
+        ErrorComponent
     ],
     imports: [
         AppRoutingModule,

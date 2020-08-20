@@ -15,7 +15,7 @@ export class AccessTokenInterceptor implements HttpInterceptor {
     ) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        var accessToken = this.store.selectSnapshot<any>(UserState.accessToken);
+        let accessToken = this.store.selectSnapshot<any>(UserState.accessToken);
         accessToken = !!accessToken ? accessToken : '';
         request = request.clone({
             setHeaders: {

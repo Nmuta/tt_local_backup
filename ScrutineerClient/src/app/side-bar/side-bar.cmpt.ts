@@ -11,11 +11,11 @@ import { ResetUserProfile, RequestAccessToken } from '@shared/state/user/user.ac
     templateUrl: './side-bar.html',
     styleUrls: ['./side-bar.scss']
 })
-export class SidebarCmpt {
+export class SidebarComponent implements OnInit {
     @Select(UserState.profile) profile$: Observable<UserModel>;
 
     loading: boolean;
-    profile: UserModel; 
+    profile: UserModel;
 
     constructor(
         private router: Router
@@ -27,9 +27,8 @@ export class SidebarCmpt {
             profile => {
                 this.loading = false;
                 this.profile = profile;
-                if(!this.profile) {
+                if (!this.profile) {
                     this.router.navigate([`/auth`], { queryParams: { from: 'sidebar' }});
-                    
                 }
             },
             error => {

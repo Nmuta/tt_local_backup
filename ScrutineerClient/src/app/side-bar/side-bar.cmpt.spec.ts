@@ -1,13 +1,12 @@
 // General
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ActivatedRoute, Data, Router } from '@angular/router';
 import { Store, NgxsModule } from '@ngxs/store';
 import { async, ComponentFixture, TestBed, inject, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Components
-import { SidebarCmpt } from './side-bar.cmpt';
+import { SidebarComponent } from './side-bar.cmpt';
 
 // States
 import { UserState } from '@shared/state/user/user.state';
@@ -17,8 +16,8 @@ import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 describe('SidebarComponent', () => {
     let mockStore: Store;
 
-    let fixture: ComponentFixture<SidebarCmpt>;
-    let component: SidebarCmpt;
+    let fixture: ComponentFixture<SidebarComponent>;
+    let component: SidebarComponent;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -27,7 +26,7 @@ describe('SidebarComponent', () => {
                 HttpClientTestingModule,
                 NgxsModule.forRoot([UserState])
             ],
-            declarations: [SidebarCmpt],
+            declarations: [SidebarComponent],
             schemas: [NO_ERRORS_SCHEMA],
             providers: [
                 createMockRouter(),
@@ -38,7 +37,7 @@ describe('SidebarComponent', () => {
         const injector = getTestBed();
         mockStore = injector.get(Store);
 
-        fixture = TestBed.createComponent(SidebarCmpt);
+        fixture = TestBed.createComponent(SidebarComponent);
         component = fixture.debugElement.componentInstance;
     }));
 

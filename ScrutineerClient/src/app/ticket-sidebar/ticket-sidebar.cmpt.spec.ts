@@ -11,17 +11,20 @@ import { Store, NgxsModule } from '@ngxs/store';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
+// Helpers
+import { createMockClipboard, createMockScrutineerDataParser } from '@shared/helpers';
+
 // Components
-import { TicketSidebarCmpt } from './ticket-sidebar.cmpt';import { createMockClipboard, createMockScrutineerDataParser } from '@shared/helpers';
+import { TicketSidebarComponent } from './ticket-sidebar.cmpt';
 import { createMockZendeskService } from '@shared/services/zendesk';
 
 // State
 import { UserState } from '@shared/state/user/user.state';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 
-describe('TicketSidebarCmpt', () => {
-    let fixture: ComponentFixture<TicketSidebarCmpt>;
-    let component: TicketSidebarCmpt;
+describe('TicketSidebarComponent', () => {
+    let fixture: ComponentFixture<TicketSidebarComponent>;
+    let component: TicketSidebarComponent;
     let mockStore: Store;
 
     beforeEach(async(() => {
@@ -31,7 +34,7 @@ describe('TicketSidebarCmpt', () => {
                 HttpClientTestingModule,
                 NgxsModule.forRoot([UserState])
             ],
-            declarations: [TicketSidebarCmpt],
+            declarations: [TicketSidebarComponent],
             schemas: [NO_ERRORS_SCHEMA],
             providers: [
                 createMockZendeskService(),
@@ -41,10 +44,10 @@ describe('TicketSidebarCmpt', () => {
             ]
         }).compileComponents();
 
-        let injector = getTestBed();
+        const injector = getTestBed();
         mockStore = injector.get(Store);
-        
-        fixture = TestBed.createComponent(TicketSidebarCmpt);
+
+        fixture = TestBed.createComponent(TicketSidebarComponent);
         component = fixture.debugElement.componentInstance;
     }));
 

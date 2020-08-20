@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthRouterModule } from './auth.routing.module';
-import { AuthCmpt } from './auth.cmpt';
+import { AuthComponent } from './auth.cmpt';
 
 
 @NgModule({
@@ -9,6 +9,6 @@ import { AuthCmpt } from './auth.cmpt';
         CommonModule,
         AuthRouterModule
     ],
-    declarations: [AuthCmpt],
+    declarations: [AuthComponent],
 })
 export class AuthModule {}

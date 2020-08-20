@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 export class Clipboard {
     constructor() { }
 
-    public copyMessage(val: string){
+    public copyMessage(val: string) {
         const selBox = document.createElement('textarea');
         selBox.style.position = 'fixed';
         selBox.style.left = '0';

@@ -13,7 +13,7 @@ export class ZendeskGuardService implements CanActivate {
         ) {}
 
     public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
-        let inZendesk = !!this.windowService.zafClient();
+        const inZendesk = !!this.windowService.zafClient();
         console.log(`guard: ${inZendesk}`);
         if (!inZendesk) {
             this.router.navigate(['/auth']);

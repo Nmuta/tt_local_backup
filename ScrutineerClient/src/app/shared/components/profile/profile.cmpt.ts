@@ -8,15 +8,15 @@ import { WindowService } from '@shared/services/window';
     templateUrl: './profile.html',
     styleUrls: ['./profile.scss']
 })
-export class ProfileCmpt {
+export class ProfileComponent {
     @Input() user: UserModel;
 
-    profileTabVisible: boolean = false;
+    public profileTabVisible = false;
 
     constructor(
         protected windowService: WindowService
     ) {}
-    
+
     public openAuthPageInNewTab() {
         this.windowService.open(`${environment.clientUrl}/auth`, '_blank')
     }
