@@ -22,7 +22,7 @@ export class AuthCmpt implements OnInit {
 
     constructor(
         private store: Store,
-        private authService: MsalService,
+        private msalService: MsalService,
         private windowService: WindowService
     ) { }
 
@@ -42,17 +42,17 @@ export class AuthCmpt implements OnInit {
     }
 
     public openAuthPageInNewTab() {
-        window.open(`${environment.clientUrl}/auth`, '_blank')
+        this.windowService.open(`${environment.clientUrl}/auth`, '_blank');
     }
 
     public login() {
-        this.authService.loginRedirect({
+        this.msalService.loginRedirect({
             extraScopesToConsent: ['api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access']
           });
     }
 
     public logout() {
-        this.authService.logout();
+        this.msalService.logout();
     }
 
     public recheckAuth() {

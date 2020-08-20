@@ -27,6 +27,8 @@ import { of } from 'rxjs';
 import { UserModel } from '@shared/models/user.model';
 import { delay } from 'rxjs/operators';
 import { createMockWindowService, WindowService } from '@shared/services/window';
+import { environment } from '@environments/environment';
+import { ResetUserProfile, RequestAccessToken } from '@shared/state/user/user.actions';
 
 describe('AuthComponent', () => {
     let mockWindowService: WindowService;
@@ -55,6 +57,9 @@ describe('AuthComponent', () => {
         mockStore = injector.get(Store);
         mockWindowService = injector.get(WindowService);
         mockMsalService = injector.get(MsalService);
+
+        mockMsalService.loginRedirect = jasmine.createSpy('loginRedirect');
+        mockMsalService.logout = jasmine.createSpy('logout');
 
         fixture = TestBed.createComponent(AuthCmpt);
         component = fixture.debugElement.componentInstance;
@@ -113,6 +118,65 @@ describe('AuthComponent', () => {
                 tick(delayTime); 
                 expect(component.loading).toBeFalsy();
             }));
+        });
+    });
+    describe('Method: openAuthPageInNewTab', () => {
+        beforeEach(() => {
+            mockWindowService.open = jasmine.createSpy('open');
+        });
+        it('should call windowService.open correctly', () => {
+            component.openAuthPageInNewTab();
+
+            expect(mockWindowService.open).toHaveBeenCalledWith(`${environment.clientUrl}/auth`, '_blank');
+        })
+    });
+    describe('Method: login', () => {
+        beforeEach(() => {
+            mockMsalService.loginRedirect = jasmine.createSpy('loginRedirect');
+        });
+        it('should call msalService.loginRedirect correctly', () => {
+            component.login();
+
+            expect(mockMsalService.loginRedirect).toHaveBeenCalledWith({
+                extraScopesToConsent: ['api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access']
+            });
+        })
+    });
+    describe('Method: login', () => {
+        it('should call msalService.loginRedirect correctly', () => {
+            component.login();
+
+            expect(mockMsalService.loginRedirect).toHaveBeenCalledWith({
+                extraScopesToConsent: ['api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access']
+            });
+        })
+    });
+    describe('Method: logout', () => {
+        it('should call msalService.logout', () => {
+            component.logout();
+
+            expect(mockMsalService.logout).toHaveBeenCalled();
+        });
+    });
+    describe('Method: recheckAuth', () => {
+        beforeEach(() => {
+            mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
+            component.ngOnInit = jasmine.createSpy('ngOnInit');
+        });
+        it('should dispatch store action ResetUserProfile', () => {
+            component.recheckAuth();
+
+            expect(mockStore.dispatch).toHaveBeenCalledWith(new ResetUserProfile());
+        });
+        it('should dispatch store action RequestAccessToken', () => {
+            component.recheckAuth();
+
+            expect(mockStore.dispatch).toHaveBeenCalledWith(new RequestAccessToken());
+        });
+        it('should call ngOnInit', () => {
+            component.recheckAuth();
+
+            expect(component.ngOnInit).toHaveBeenCalled();
         });
     });
 });
