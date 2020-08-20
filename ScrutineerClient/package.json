@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "lint": "lint",
+    "lint": "ng lint",
     "start": "ng serve",
     "configMoveToBuild": "cp web.config dist/",
     "local:test:chrome": "ng test --karma-config=src/karma.conf.js --source-map=true",

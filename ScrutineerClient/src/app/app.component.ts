@@ -12,7 +12,7 @@ import { WindowService } from '@shared/services/window';
     styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
     constructor(
         private store: Store,

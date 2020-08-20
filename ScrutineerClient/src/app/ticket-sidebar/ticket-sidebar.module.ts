@@ -24,4 +24,4 @@ import { ProfileModule } from '@shared/components/profile/profile.module';
     providers: [ScrutineerDataParser],
     declarations: [TicketSidebarCmpt]
 })
-export class TicketSidebarModule {}
+export class TicketSidebarModule { }

@@ -1,9 +1,3 @@
-// -----------------------------------------------------------------------
-// <copyright company='Microsoft Corporation'>
-//   Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// -----------------------------------------------------------------------
-
 // General
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Data, Router } from '@angular/router';
@@ -39,7 +33,7 @@ describe('SidebarComponent', () => {
             ]
         }).compileComponents();
 
-        let injector = getTestBed();
+        const injector = getTestBed();
         mockStore = injector.get(Store);
 
         fixture = TestBed.createComponent(SidebarCmpt);
