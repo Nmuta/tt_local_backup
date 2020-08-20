@@ -1,13 +1,12 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ZendeskService } from '@shared/services/zendesk';
 import { Clipboard, ScrutineerDataParser } from '@shared/helpers';
-import { GravitySidebarModel, SunriseSidebarModel, ApolloSidebarModel } from 'app/ticket-sidebar/models'
+import { GravitySidebarModel, SunriseSidebarModel, ApolloSidebarModel } from 'app/ticket-sidebar/models';
 import { UserState } from '@shared/state/user/user.state';
 import { UserModel } from '@shared/models/user.model';
-import { Store, Select } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { ResetUserProfile, RequestAccessToken } from '@shared/state/user/user.actions';
 import { Router } from '@angular/router';
 
 @Component({
@@ -36,7 +35,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
             profile => {
                 this.loading = false;
                 this.profile = profile;
-                if(!this.profile) {
+                if (!this.profile) {
                     this.router.navigate([`/auth`], { queryParams: {from: 'ticket-sidebar'}});
                 } else {
                     this.getTicketRequestor();
@@ -51,15 +50,15 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
     }
 
     public ngAfterViewInit() {
-        this.zendeskService.resize("100%", "500px");
+        this.zendeskService.resize('100%', '500px');
     }
 
     public getTicketRequestor() {
         this.zendeskService.getTicketRequestor().subscribe((response: any) => {
-            var requester = response['ticket.requester'];
-            var organizations =  requester.organizations;
-            var requesterName: string = requester.name;
-            var orgName: string = null;
+            const requester = response['ticket.requester'];
+            const organizations =  requester.organizations;
+            const requesterName: string = requester.name;
+            let orgName: string = null;
             if (organizations.length > 0) {
                 orgName = organizations[0].name;
             }
@@ -71,21 +70,21 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
 
     public getTicketFields() {
         this.zendeskService.getTicketFields().subscribe((response: any) => {
-            var ticketFields = response["ticketFields"];
-            let titleCustomField = "";
-            for (let field in ticketFields) {
-                if (ticketFields[field].label === "Forza Title") {
+            const ticketFields = response['ticketFields'];
+            let titleCustomField = '';
+            for (const field in ticketFields) {
+                if (ticketFields[field].label === 'Forza Title') {
                     titleCustomField = ticketFields[field].name;
                 }
             }
-            this.getTitleData(titleCustomField)
-        }); 
+            this.getTitleData(titleCustomField);
+        });
     }
 
     public getTitleData(titleCustomField) {
         this.zendeskService.getTicketCustomField(titleCustomField).subscribe((response) => {
-            var titleName = response[`ticket.customField:${titleCustomField}`];
-            var titleNameUppercase = titleName.toUpperCase();
+            const titleName = response[`ticket.customField:${titleCustomField}`];
+            const titleNameUppercase = titleName.toUpperCase();
             this.title = titleNameUppercase ===  'FORZA_STREET' ? 'Gravity'
                 : titleNameUppercase ===  'FORZA_HORIZON_4' ? 'Sunrise'
                 : titleNameUppercase ===  'FORZA_MOTORSPORT_7' ? 'Apollo'
@@ -95,17 +94,17 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
 
             // TODO: If title is NULL, break out of logic and show error
             this.getPlayerData();
-        }); 
+        });
     }
 
     public getPlayerData() {
-        var settings = {
+        const settings = {
             url: `${environment.oldScrutineerApiUrl}/Title/${this.title}/environment/Retail/player/gamertag(${this.gamerTag})`,
-            headers: { "Authorization": "ApiKeyAuth 3diJHuez5u2AysQmTuxc93" },
+            headers: { 'Authorization': 'ApiKeyAuth 3diJHuez5u2AysQmTuxc93' },
             secure: false,
-            type: "GET",
-            dataType: "json",
-            credentials: "include"
+            type: 'GET',
+            dataType: 'json',
+            credentials: 'include'
         };
         this.zendeskService.sendRequest(settings).then(
             (response) => {
@@ -123,18 +122,20 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
                 : this.title ===  'Opus' ? null
                 : null;
 
-        this.player.firstLogin = 'firstLogin' in this.player ? this.scrutineerDataParser.convertDateString(this.player.firstLogin) : undefined;
+        this.player.firstLogin = 'firstLogin' in this.player
+            ? this.scrutineerDataParser.convertDateString(this.player.firstLogin) : undefined;
         this.player.lastLogin = 'lastLogin' in this.player ? this.scrutineerDataParser.convertDateString(this.player.lastLogin) : undefined;
         this.player.region = 'region' in this.player
-            ? this.title ===  'Apollo' 
-                ? this.scrutineerDataParser.regionDictFM7(this.player.region) 
+            ? this.title ===  'Apollo'
+                ? this.scrutineerDataParser.regionDictFM7(this.player.region)
                 : this.scrutineerDataParser.regionDict(this.player.region)
             : undefined;
         this.player.country = 'country' in this.player ? this.scrutineerDataParser.countryDict(this.player.country) : undefined;
         this.player.ageGroup = 'ageGroup' in this.player ? this.scrutineerDataParser.ageGroupDict(this.player.ageGroup) : undefined;
         this.player.lcid = 'lcid' in this.player ? this.scrutineerDataParser.lcid(this.player.lcid) : undefined;
         this.player.flags = 'flags' in this.player ? this.scrutineerDataParser.parseFlags(this.player.flags) : undefined;
-        this.player.userAgeGroup = 'userAgeGroup' in this.player ? this.scrutineerDataParser.ageGroupDict(this.player.userAgeGroup) : undefined;
+        this.player.userAgeGroup = 'userAgeGroup' in this.player
+            ? this.scrutineerDataParser.ageGroupDict(this.player.userAgeGroup) : undefined;
     }
 
     public reduceToGravityProps(fullPlayerInfo): GravitySidebarModel {
@@ -213,7 +214,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
     }
 
     public goToInventory() {
-        var appSection = this.title + '/' + this.player.xuid;
+        const appSection = this.title + '/' + this.player.xuid;
         this.zendeskService.goToApp('nav_bar', 'forza-inventory-support', appSection);
     }
 

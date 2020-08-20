@@ -18,7 +18,7 @@ export class ProfileComponent {
     ) {}
 
     public openAuthPageInNewTab() {
-        this.windowService.open(`${environment.clientUrl}/auth`, '_blank')
+        this.windowService.open(`${environment.clientUrl}/auth`, '_blank');
     }
 
     public changeProfileTabVisibility() {

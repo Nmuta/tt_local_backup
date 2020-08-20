@@ -3,4 +3,4 @@ export const environment = {
     clientUrl: 'https://scrutineer-client-dev.azurewebsites.net',
     scrutineerApiUrl: 'https://dev-scrutineer.azurewebsites.net',
     oldScrutineerApiUrl: 'https://prod-scrutineer.azurewebsites.net'
-};
+}

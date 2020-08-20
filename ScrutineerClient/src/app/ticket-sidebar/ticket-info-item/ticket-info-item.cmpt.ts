@@ -25,6 +25,6 @@ export class TicketInfoItemComponent implements OnInit {
         this.copied = true;
         this.clipboard.copyMessage(val);
 
-        setTimeout(() => { this.copied = false; }, 1500)
+        setTimeout(() => { this.copied = false; }, 1500);
     }
 }
