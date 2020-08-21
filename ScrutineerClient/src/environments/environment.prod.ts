@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    clientUrl: 'http://prod-client-url',
-    scrutineerApiUrl: 'http://prod-scrutineer-url',
+    clientUrl: 'https://scrutineer-ui-prod.azurewebsites.net',
+    scrutineerApiUrl: 'https://scrutineer-api-prod.azurewebsites.net',
     oldScrutineerApiUrl: 'https://prod-scrutineer.azurewebsites.net'
 };
