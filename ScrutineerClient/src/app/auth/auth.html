@@ -1,21 +1,24 @@
 <section style="padding: 50px;">
     <div *ngIf="!loading && !inZendesk">
         <div *ngIf="profile">
-            <h1>You are signed in.</h1>
+            <h2>You are signed in.</h2>
             <p>Email: {{profile.emailAddress}}</p>
             <p>Role: {{profile.role}}</p>
             <button (click)="logout()">Logout</button>
         </div>
         <div *ngIf="!profile">
-            <h1>Please signin.</h1>
+            <h2>Please signin to your Microsoft account.</h2>
             <button (click)="login()">Login</button>
         </div>
     </div>
     <div *ngIf="!loading && inZendesk">
-        <h1>Whoops, you should not be seeing this page within Zendesk.</h1>
-        <h2>Reload the browser window.</h2>
+        <h2>Please signin to your Microsoft account.</h2>
+        <button (click)="openAuthPageInNewTab()">Login Page</button>
+        <br />
+        <h2>Authorize the app once you have signed in.</h2>
+        <button (click)="recheckAuth()">Authorize App</button>
     </div>
     <div *ngIf="loading">
-        <h1>Loading...</h1>
+        <h2>Loading...</h2>
     </div>
 </section>

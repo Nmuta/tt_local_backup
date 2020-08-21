@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright company='Microsoft Corporation'>
-//   Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// -----------------------------------------------------------------------
-
-import { TestBed, getTestBed, ComponentFixture, fakeAsync, async, inject } from '@angular/core/testing';
+﻿import { TestBed, getTestBed, ComponentFixture, fakeAsync, async, inject } from '@angular/core/testing';
 import { WindowService } from './window.service';
 
 describe('service: WindowService', () => {

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { environment } from '@environments/environment';
 import { UserModel } from '@shared/models/user.model';
+import { WindowService } from '@shared/services/window';
 
 @Component({
     selector: 'profile',
@@ -12,13 +13,15 @@ export class ProfileCmpt {
 
     profileTabVisible: boolean = false;
 
-    constructor() {}
+    constructor(
+        protected windowService: WindowService
+    ) {}
     
     public openAuthPageInNewTab() {
-        window.open(`${environment.clientUrl}/auth`, '_blank')
+        this.windowService.open(`${environment.clientUrl}/auth`, '_blank')
     }
 
-    public openProfile() {
+    public changeProfileTabVisibility() {
         this.profileTabVisible = !this.profileTabVisible;
     }
 }

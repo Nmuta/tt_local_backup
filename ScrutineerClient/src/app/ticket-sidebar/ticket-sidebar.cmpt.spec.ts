@@ -1,17 +1,13 @@
-// -----------------------------------------------------------------------
-// <copyright company='Microsoft Corporation'>
-//   Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// -----------------------------------------------------------------------
-
 // General
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed, inject, getTestBed } from '@angular/core/testing';
 import { Store, NgxsModule } from '@ngxs/store';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 // Components
-import { TicketSidebarCmpt } from './ticket-sidebar.cmpt';import { createMockClipboard, createMockScrutineerDataParser } from '@shared/helpers';
+import { TicketSidebarCmpt } from './ticket-sidebar.cmpt';
+import { createMockClipboard, createMockScrutineerDataParser } from '@shared/helpers';
 import { createMockZendeskService } from '@shared/services/zendesk';
 
 // State
@@ -26,6 +22,7 @@ describe('TicketSidebarCmpt', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
+                RouterTestingModule.withRoutes([]),
                 HttpClientTestingModule,
                 NgxsModule.forRoot([UserState])
             ],

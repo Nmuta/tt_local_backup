@@ -8,6 +8,7 @@ import { Store, Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ResetUserProfile, RequestAccessToken } from '@shared/state/user/user.actions';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './ticket-sidebar.html',
@@ -23,7 +24,7 @@ export class TicketSidebarCmpt implements OnInit, AfterViewInit {
     public gamerTag: string;
     
     constructor(
-        private store: Store,
+        private router: Router,
         private zendeskService: ZendeskService,
         private scrutineerDataParser: ScrutineerDataParser,
         private clipboard: Clipboard
@@ -33,28 +34,24 @@ export class TicketSidebarCmpt implements OnInit, AfterViewInit {
         this.loading = true;
         UserState.latestValidProfile(this.profile$).subscribe(
             profile => {
-                this.profile = profile;
                 this.loading = false;
-                this.getTicketRequestor();
+                this.profile = profile;
+                if(!this.profile) {
+                    this.router.navigate([`/auth`], { queryParams: {from: 'ticket-sidebar'}});
+                } else {
+                    this.getTicketRequestor();
+                }
             },
             error => {
                 this.loading = false;
+                this.router.navigate([`/auth`], { queryParams: {from: 'ticket-sidebar'}});
+
             }
         );
     }
 
     public ngAfterViewInit() {
         this.zendeskService.resize("100%", "500px");
-    }
-
-    public openAuthPageInNewTab() {
-        window.open(`${environment.clientUrl}/auth`, '_blank')
-    }
-
-    public recheckAuth() {
-        this.store.dispatch(new ResetUserProfile());
-        this.store.dispatch(new RequestAccessToken());
-        this.ngOnInit();
     }
 
     public getTicketRequestor() {
