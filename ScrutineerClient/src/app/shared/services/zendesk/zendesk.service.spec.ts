@@ -67,7 +67,7 @@ describe('service: UserService', () => {
         });
     });
     describe('Method: getTicketCustomField', () => {
-        var param = 'test';
+        const param = 'test';
         it('should use zafClient loaded into the window to get the custom ticket field', done => {
             service.getTicketCustomField(param).subscribe(res => {
                 expect(mockZafClientObject.get).toHaveBeenCalledWith(
@@ -78,7 +78,7 @@ describe('service: UserService', () => {
         });
     });
     describe('Method: sendRequest', () => {
-        var param = {foo: 'bar'};
+        const param = {foo: 'bar'};
         it('should use zafClient loaded into the window to send a request', done => {
             service.sendRequest(param).subscribe(res => {
                 expect(mockZafClientObject.request).toHaveBeenCalledWith(
@@ -107,8 +107,8 @@ describe('service: UserService', () => {
         });
     });
     describe('Method: resize', () => {
-        var height = '200px';
-        var width = '100px';
+        const height = '200px';
+        const width = '100px';
         it('should use zafClient loaded into the window to resize the current app', done => {
             service.resize(width, height);
             expect(mockZafClientObject.invoke).toHaveBeenCalledWith(
@@ -119,9 +119,9 @@ describe('service: UserService', () => {
         });
     });
     describe('Method: goToApp', () => {
-        var appLocation = 'test-appLocation';
-        var appName = 'test-appName';   
-        var paramPath = 'test-paramPath';
+        const appLocation = 'test-appLocation';
+        const appName = 'test-appName';
+        const paramPath = 'test-paramPath';
         it('should use zafClient loaded into the window to route to a new zendesk app', done => {
             service.goToApp(appLocation, appName, paramPath);
             expect(mockZafClientObject.invoke).toHaveBeenCalledWith(

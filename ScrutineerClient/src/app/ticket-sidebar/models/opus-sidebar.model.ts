@@ -13,4 +13,4 @@ export interface OpusSidebarModel {
     lastGameSettingsUsed: any;
     timeOffsetInSeconds: any;
     userInventoryId: any;
-};
+}

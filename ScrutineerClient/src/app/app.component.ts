@@ -9,7 +9,7 @@ import { RequestAccessToken } from '@shared/state/user/user.actions';
     styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
     constructor(
         private store: Store

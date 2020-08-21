@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { InventoryOptions } from '@shared/models/enums';
 
 @Component({
@@ -6,10 +6,10 @@ import { InventoryOptions } from '@shared/models/enums';
     templateUrl: './inventory-options.html',
     styleUrls: ['./inventory-options.scss']
 })
-export class InventoryOptionsCmpt {
+export class InventoryOptionsComponent implements OnInit {
     get InventoryOptions() { return InventoryOptions; }
 
-    @Input() groupGifting: boolean = true;
+    @Input() groupGifting = true;
     @Output() newOptionSelectedEvent = new EventEmitter();
 
     selectedOption: number;
@@ -23,7 +23,7 @@ export class InventoryOptionsCmpt {
 
     public ngOnInit() {
         this.selectedOption = 0;
-        if(!this.groupGifting) {
+        if (!this.groupGifting) {
             this.options = [ InventoryOptions.UserGift ];
         }
     }

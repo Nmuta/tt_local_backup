@@ -6,13 +6,13 @@ import { Clipboard } from '@shared/helpers';
     templateUrl: './ticket-info-item.html',
     styleUrls: ['./ticket-info-item.scss']
 })
-export class TicketInfoItemCmpt implements OnInit {
+export class TicketInfoItemComponent implements OnInit {
     @Input() name: string;
     @Input() value: string;
     public clipboard;
     public copied;
     public showItem;
-    
+
     constructor(clipboard: Clipboard) {
         this.clipboard = clipboard;
     }
@@ -25,6 +25,6 @@ export class TicketInfoItemCmpt implements OnInit {
         this.copied = true;
         this.clipboard.copyMessage(val);
 
-        setTimeout(() => { this.copied = false; }, 1500)
+        setTimeout(() => { this.copied = false; }, 1500);
     }
 }

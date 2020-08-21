@@ -1,8 +1,3 @@
-// -----------------------------------------------------------------------
-// <copyright company='Microsoft Corporation'>
-//   Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// -----------------------------------------------------------------------
 // General
 import { TestBed } from '@angular/core/testing';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
@@ -29,7 +24,7 @@ describe('service: UserService', () => {
     });
 
     describe('Method: getUserProfile', () => {
-        var headers;
+        let headers;
         beforeEach(() => {
             apiMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
             headers = new HttpHeaders().set('Content-Type', 'application/json');

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ErrorCmpt } from './error/error.cmpt';
+import { ErrorComponent } from './error/error.cmpt';
 import { ZendeskGuardService } from './route-guards/app.zendesk.guard.service';
 
 const routes: Routes = [
@@ -20,7 +20,7 @@ const routes: Routes = [
     },
     {
         path: 'error',
-        component: ErrorCmpt
+        component: ErrorComponent
     },
     { path: '**', redirectTo: 'error'  }
 ];
