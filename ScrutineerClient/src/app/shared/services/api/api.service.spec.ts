@@ -4,6 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpParams, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '@environments/environment';
+import { RouterTestingModule } from '@angular/router/testing';
 
 // Services
 import { ApiService } from '@shared/services/api/api.service';
@@ -17,13 +18,12 @@ describe('service: ApiService', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
+            imports: [
+                RouterTestingModule.withRoutes([]),
+                HttpClientTestingModule
+            ],
             providers: [
-                ApiService,
-                {
-                    provide: Router,
-                    useValue: mockRouter
-                }
+                ApiService
             ]
         });
         injector = getTestBed();

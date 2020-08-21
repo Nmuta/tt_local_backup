@@ -5,6 +5,8 @@ import { Store, NgxsModule } from '@ngxs/store';
 import { async, ComponentFixture, TestBed, inject, getTestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { environment } from '@environments/environment';
+import { delay } from 'rxjs/operators';
 
 // Components
 import { AuthComponent } from './auth.cmpt';
@@ -20,9 +22,7 @@ import { of, Subject } from 'rxjs';
 
 // Models
 import { UserModel } from '@shared/models/user.model';
-import { delay } from 'rxjs/operators';
 import { createMockWindowService, WindowService } from '@shared/services/window';
-import { environment } from '@environments/environment';
 import { ResetUserProfile, RequestAccessToken } from '@shared/state/user/user.actions';
 
 describe('AuthComponent', () => {
