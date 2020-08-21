@@ -31,6 +31,7 @@ export class AuthComponent implements OnInit {
     ) {
         this.activatedRoute.queryParams.subscribe(params => {
             this.fromApp = params['from'];
+            console.log(`At Constr: ${this.fromApp}`);
         });
     }
 
@@ -68,6 +69,7 @@ export class AuthComponent implements OnInit {
     }
 
     public recheckAuth() {
+        console.log('rechecking');
         this.store.dispatch(new ResetUserProfile());
         this.store.dispatch(new RequestAccessToken());
         this.ngOnInit();

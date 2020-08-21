@@ -111,7 +111,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
                 this.showUserData(response, null);
             },
             (err) =>  {
-                console.log(err);
+                console.error(err);
             });
     }
 
