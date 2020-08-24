@@ -169,7 +169,7 @@ describe('AuthComponent', () => {
             component.login();
 
             expect(mockMsalService.loginRedirect).toHaveBeenCalledWith({
-                extraScopesToConsent: ['api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access']
+                extraScopesToConsent: [environment.azureAppScope]
             });
         });
     });
@@ -178,7 +178,7 @@ describe('AuthComponent', () => {
             component.login();
 
             expect(mockMsalService.loginRedirect).toHaveBeenCalledWith({
-                extraScopesToConsent: ['api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access']
+                extraScopesToConsent: [environment.azureAppScope]
             });
         });
     });

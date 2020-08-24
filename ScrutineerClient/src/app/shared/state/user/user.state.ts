@@ -91,7 +91,7 @@ export class UserState {
         }
 
         this.authService.acquireTokenSilent({
-            scopes: ['api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access']
+            scopes: [environment.azureAppScope]
         }).then(
             (data) => {
                 if (!data.accessToken) {
