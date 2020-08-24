@@ -16,13 +16,13 @@ export class ApiService {
         params?: HttpParams,
         headers?: HttpHeaders
     ): Observable<T> {
-        let apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
-        let get = this.http
+        const apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
+        const get = this.http
             .get<T>(apiUrl, {
                 params: params,
                 headers: headers
             });
-        
+
         return get;
     }
 
@@ -33,8 +33,8 @@ export class ApiService {
         headers?: HttpHeaders,
         host?: string
     ): Observable<T> {
-        let apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
-        let post = this.http
+        const apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
+        const post = this.http
             .post<T>(apiUrl, object, {
                 headers: headers,
                 params: params
@@ -44,14 +44,14 @@ export class ApiService {
     }
 
     public putRequest<T>(
-        url: string, 
+        url: string,
         object: any,
         params?: HttpParams
     ): Observable<T> {
-        let apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
+        const apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
         const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        let put = this.http
+        const put = this.http
             .put<T>(apiUrl, object, {
                 headers: headers,
                 params: params
@@ -64,10 +64,10 @@ export class ApiService {
         url: string,
         params?: HttpParams
     ): Observable<T> {
-        let apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
+        const apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
         const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-        let del = this.http
+        const del = this.http
             .delete<T>(apiUrl, {
                 headers: headers,
                 params: params

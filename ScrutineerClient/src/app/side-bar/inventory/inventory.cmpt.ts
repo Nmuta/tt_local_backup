@@ -6,8 +6,8 @@ import { InventoryOptions } from '@shared/models/enums';
     templateUrl: './inventory.html',
     styleUrls: ['./inventory.scss']
 })
-export class InventoryCmpt {
+export class InventoryComponent {
     @Input() selectedGiftingOption: InventoryOptions;
-    
+
     constructor() {}
 }

@@ -14,13 +14,13 @@ import { ActivatedRoute, Router } from '@angular/router';
     templateUrl: './auth.html',
     styleUrls: ['./auth.scss']
 })
-export class AuthCmpt implements OnInit {  
+export class AuthComponent implements OnInit {
     @Select(UserState.profile) profile$: Observable<UserModel>;
 
     fromApp: string;
     loading: boolean;
     inZendesk: boolean;
-    profile: UserModel; 
+    profile: UserModel;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -28,13 +28,13 @@ export class AuthCmpt implements OnInit {
         private store: Store,
         private msalService: MsalService,
         private windowService: WindowService
-    ) { 
+    ) {
         this.activatedRoute.queryParams.subscribe(params => {
             this.fromApp = params['from'];
         });
     }
 
-    public ngOnInit() { 
+    public ngOnInit() {
         this.loading = true;
         this.inZendesk = !!this.windowService.zafClient();
         UserState.latestValidProfile(this.profile$).subscribe(
@@ -42,7 +42,7 @@ export class AuthCmpt implements OnInit {
                 this.loading = false;
                 this.profile = profile;
 
-                if(!!this.profile && this.inZendesk) {
+                if (!!this.profile && this.inZendesk) {
                     this.router.navigate([`/${this.fromApp}`]);
                 }
             },
@@ -59,7 +59,7 @@ export class AuthCmpt implements OnInit {
 
     public login() {
         this.msalService.loginRedirect({
-            extraScopesToConsent: ['api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access']
+            extraScopesToConsent: [environment.azureAppScope]
           });
     }
 

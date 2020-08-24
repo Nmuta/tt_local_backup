@@ -15,4 +15,4 @@ export interface SunriseSidebarModel {
     teamId: any;
     teamTag: any;
     roleInTeam: any;
-};
+}

@@ -29,4 +29,4 @@ export interface ApolloSidebarModel {
     isOnWhiteList: any;
     isTurn10Employee: any;
     isVip: any;
-};
+}

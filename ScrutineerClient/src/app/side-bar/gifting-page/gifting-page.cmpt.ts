@@ -6,10 +6,10 @@ import { InventoryOptions, GameTitleNames } from '@shared/models/enums';
     templateUrl: './gifting-page.html',
     styleUrls: ['./gifting-page.scss']
 })
-export class GiftingPageCmpt {
+export class GiftingPageComponent {
     @Input() gameTitle: GameTitleNames;
     public selectedGiftingOption: InventoryOptions = InventoryOptions.UserGift;
-    
+
     constructor() {}
 
     public newGiftingOptionSelected(event: InventoryOptions) {

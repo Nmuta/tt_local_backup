@@ -40,7 +40,7 @@ export class UserState {
     static latestValidProfile(
         profile$: Observable<UserModel>
     ): Observable<UserModel> {
-        let obs = profile$.pipe(
+        const obs = profile$.pipe(
             filter(x => x !== undefined),
             take(1)
         ).pipe(timeout(5000));
@@ -82,18 +82,18 @@ export class UserState {
 
     @Action(RequestAccessToken, { cancelUncompleted: true })
     requestAccessToken(ctx: StateContext<UserStateModel>, action: RequestAccessToken) {
-        var isLoggedIn = !!(this.authService.getAccount());
-        if(!isLoggedIn) {
+        const isLoggedIn = !!(this.authService.getAccount());
+        if (!isLoggedIn) {
             ctx.patchState({ accessToken: null });
             asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
             return;
         }
 
         this.authService.acquireTokenSilent({
-            scopes: ['api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access']
+            scopes: [environment.azureAppScope]
         }).then(
             (data) => {
-                if(!data.accessToken) {
+                if (!data.accessToken) {
                     ctx.patchState({ accessToken: null });
                     asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
                     return;
@@ -112,6 +112,4 @@ export class UserState {
     resetAccessToken(ctx: StateContext<UserStateModel>, action: ResetAccessToken) {
         ctx.patchState({ accessToken: undefined });
     }
-
-    
 }
