@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { ZendeskService } from './zendesk.service';
 
-/** Mock for the Zendesk Service */
+/** Defines the mock for the Zendesk Service. */
 @Injectable()
 export class MockZendeskService {
     public getTicketDetails = jasmine.createSpy('getTicketDetails');

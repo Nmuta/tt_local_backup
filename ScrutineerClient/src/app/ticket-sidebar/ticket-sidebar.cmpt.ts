@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 
-/** Ticket Sidebar component */
+/** Defines the ticket sidebar component. */
 @Component({
     templateUrl: './ticket-sidebar.html',
     styleUrls: ['./ticket-sidebar.scss']
@@ -31,7 +31,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         private clipboard: Clipboard
         ) { }
 
-    /** ngOnInit method */
+    /** Logic for the OnInit component lifecycle. */
     public ngOnInit() {
         this.loading = true;
         UserState.latestValidProfile(this.profile$).subscribe(
@@ -52,12 +52,12 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         );
     }
 
-    /** ngAfterViewInit method  */
+    /** Logic for the AfterViewInit component lifecycle. */
     public ngAfterViewInit() {
         this.zendeskService.resize('100%', '500px');
     }
 
-    /** Gets the ticket requestor information */
+    /** Gets the ticket requestor information. */
     public getTicketRequestor() {
         this.zendeskService.getTicketRequestor().subscribe((response: any) => {
             const requester = response['ticket.requester'];
@@ -73,7 +73,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
-    /** Gets all the ticket's custom fields */
+    /** Gets all the ticket's custom fields. */
     public getTicketFields() {
         this.zendeskService.getTicketFields().subscribe((response: any) => {
             const ticketFields = response.ticketFields;
@@ -87,7 +87,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
-    /** Gets title data from ticket */
+    /** Gets title data from ticket. */
     public getTitleData(titleCustomField) {
         this.zendeskService.getTicketCustomField(titleCustomField).subscribe(response => {
             const titleName = response[`ticket.customField:${titleCustomField}`];
@@ -99,12 +99,12 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
                 : null;
 
 
-            // TODO: If title is NULL, break out of logic and show error
+            // TODO: If title is NULL, break out of logic and show error.
             this.getPlayerData();
         });
     }
 
-    /** Requests player details from API */
+    /** Requests the player details from API. */
     public getPlayerData() {
         const settings = {
             url: `${environment.oldScrutineerApiUrl}/Title/${this.title}/environment/Retail/player/gamertag(${this.gamerTag})`,
@@ -117,11 +117,11 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         this.zendeskService.sendRequest(settings).then(response => {
                 this.showUserData(response, null);
             },err =>  {
-                // TODO: show error on ticket app
+                // TODO: show error on ticket app.
             });
     }
 
-    /** Parses user data to readible information */
+    /** Parses user data to more readible information. */
     public showUserData(player, customSlotTable) {
         this.player = this.title ===  'Gravity' ? this.reduceToGravityProps(player)
                 : this.title ===  'Sunrise' ? this.reduceToSunriseProps(player)
@@ -145,7 +145,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
             ? this.scrutineerDataParser.ageGroupDict(this.player.userAgeGroup) : undefined;
     }
 
-    /** Reduces user data to properties needed for a gravity ticket */
+    /** Reduces user data to properties needed for a gravity ticket. */
     public reduceToGravityProps(fullPlayerInfo): GravitySidebarModel {
         return {
             xuid: fullPlayerInfo.xuid,
@@ -165,7 +165,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         };
     }
 
-    /** Reduces user data to properties needed for a sunrise ticket */
+    /** Reduces user data to properties needed for a sunrise ticket. */
     public reduceToSunriseProps(fullPlayerInfo): SunriseSidebarModel {
         return {
             xuid: fullPlayerInfo.qwXuid,
@@ -187,7 +187,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         };
     }
 
-    /** Reduces user data to properties needed for an apollo ticket */
+    /** Reduces user data to properties needed for an apollo ticket. */
     public reduceToApolloProps(fullPlayerInfo): ApolloSidebarModel {
         return {
             xuid: fullPlayerInfo.qwXuid,
@@ -223,13 +223,13 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         };
     }
 
-    /** Opens up inventory app with predefined info filled out */
+    /** Opens up inventory app with predefined info filled out. */
     public goToInventory() {
         const appSection = this.title + '/' + this.player.xuid;
         this.zendeskService.goToApp('nav_bar', 'forza-inventory-support', appSection);
     }
 
-    /** Copies the value to the client clipboard */
+    /** Copies the value to the client clipboard. */
     public copyToClipboard(val: string) {
         this.clipboard.copyMessage(val);
     }

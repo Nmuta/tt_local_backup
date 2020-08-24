@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 
 import { ApiService } from './api.service';
 
-/** Mock for the API Service */
+/** Defines the mock for the API Service. */
 @Injectable()
 export class MockApiService {
     public getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));

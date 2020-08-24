@@ -10,7 +10,7 @@ import { TicketInfoItemModule } from './ticket-info-item/ticket-info-item.module
 import { TicketSidebarComponent } from './ticket-sidebar.cmpt';
 import { TicketSidebarRouterModule } from './ticket-sidebar.routing.module';
 
-/** Ticket Sidebar module */
+/** Defines the ticket sidebar module. */
 @NgModule({
     imports: [
         CommonModule,

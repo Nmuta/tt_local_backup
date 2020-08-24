@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { GameTitleNames, InventoryOptions } from '@shared/models/enums';
 
-/** Gifting Page component */
+/** Defines the gifting page component. */
 @Component({
     selector: 'gifting-page',
     templateUrl: './gifting-page.html',
@@ -15,7 +15,7 @@ export class GiftingPageComponent {
         // Empty
     }
 
-    /** Select a new gifting option */
+    /** Select a new gifting option. */
     public newGiftingOptionSelected(event: InventoryOptions) {
         this.selectedGiftingOption = event;
     }

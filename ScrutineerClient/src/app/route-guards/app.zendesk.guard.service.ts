@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from
 import { WindowService } from '@shared/services/window';
 import { Observable } from 'rxjs';
 
-/** ROute guard that guarentees app routes are accessible zendesk only */
+/** Route guard that guarentees app routes are accessible in zendesk only. */
 @Injectable({
     providedIn: 'root',
 })
@@ -13,7 +13,7 @@ export class ZendeskGuardService implements CanActivate {
         private windowService: WindowService
         ) {}
 
-    /** Activate route logic */
+    /** Logic to activate the route. */
     public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
         const inZendesk = !!this.windowService.zafClient();
         if (!inZendesk) {

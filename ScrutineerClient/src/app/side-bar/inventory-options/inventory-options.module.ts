@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { InventoryOptionsComponent } from './inventory-options.cmpt';
 export { InventoryOptionsComponent } from './inventory-options.cmpt';
 
-/** Inventory Options module */
+/** Defines the inventory options module. */
 @NgModule({
     imports: [CommonModule],
     exports: [InventoryOptionsComponent],

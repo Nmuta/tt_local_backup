@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 
-/** Auth Component */
+/** Defines the auth component. */
 @Component({
     templateUrl: './auth.html',
     styleUrls: ['./auth.scss']
@@ -35,7 +35,7 @@ export class AuthComponent implements OnInit {
         });
     }
 
-    /** ngOnInit method */
+    /** Logic for the OnInit componet lifecycle */
     public ngOnInit() {
         this.loading = true;
         this.inZendesk = !!this.windowService.zafClient();
@@ -55,24 +55,24 @@ export class AuthComponent implements OnInit {
         );
     }
 
-    /** Open the auth page in a new tab */
+    /** Open the auth page in a new tab. */
     public openAuthPageInNewTab() {
         this.windowService.open(`${environment.clientUrl}/auth`, '_blank');
     }
 
-    /** Sends login request to client app scope */
+    /** Sends login request to client app scope. */
     public login() {
         this.msalService.loginRedirect({
             extraScopesToConsent: [environment.azureAppScope]
           });
     }
 
-    /** Logs out of all signed in app scopes */
+    /** Logs out of all signed in app scopes. */
     public logout() {
         this.msalService.logout();
     }
 
-    /** Rechecks if user is authorized with the app */
+    /** Rechecks if user is authorized with the app. */
     public recheckAuth() {
         this.store.dispatch(new ResetUserProfile());
         this.store.dispatch(new RequestAccessToken());

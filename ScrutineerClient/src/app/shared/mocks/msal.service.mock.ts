@@ -1,6 +1,6 @@
 import { MsalService } from '@azure/msal-angular';
 
-/** MSAL Service mock */
+/** Defines the MSAL Service mock. */
 export class MockMsalService {
     public flush = jasmine.createSpy('flush');
     public trackPageView = jasmine.createSpy('trackPageView');

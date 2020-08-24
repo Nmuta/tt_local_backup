@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { InventoryOptions } from '@shared/models/enums';
 
-/** Inventory component */
+/** Defines the inventory component. */
 @Component({
     selector: 'inventory',
     templateUrl: './inventory.html',

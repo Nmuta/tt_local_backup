@@ -7,7 +7,7 @@ import { InventoryModule } from '../inventory/inventory.module';
 import { GiftingPageComponent } from './gifting-page.cmpt';
 export { GiftingPageComponent } from './gifting-page.cmpt';
 
-/** Gifting Page module */
+/** Defines the gifting page module. */
 @NgModule({
     imports: [
         CommonModule,

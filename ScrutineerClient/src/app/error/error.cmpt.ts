@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-/** Error Component */
+/** Defines the error component. */
 @Component({
     templateUrl: './error.html',
     styleUrls: []

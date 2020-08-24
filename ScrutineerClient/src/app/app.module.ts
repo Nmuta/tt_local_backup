@@ -21,7 +21,7 @@ export const protectedResourceMap: [string, string[]][] = [
         ['https://graph.microsoft.com/v1.0/me', ['user.read']]
     ];
 
-/** App Module */
+/** Defines the app module. */
 @NgModule({
     declarations: [
         AppComponent,

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 
-/** Sidebar app component */
+/** Defines the sidebar app component. */
 @Component({
     templateUrl: './side-bar.html',
     styleUrls: ['./side-bar.scss']
@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit {
         private router: Router
     ) {}
 
-    /** ngOnInit Method */
+    /** Logic for the OnInit component lifecycle. */
     public ngOnInit() {
         this.loading = true;
         UserState.latestValidProfile(this.profile$).subscribe(

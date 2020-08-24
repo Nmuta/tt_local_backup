@@ -10,7 +10,7 @@ const routes: Routes = [
     }
 ];
 
-/** Ticket Sidebar routing module */
+/** Defines the ticket sidebar routing module. */
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]

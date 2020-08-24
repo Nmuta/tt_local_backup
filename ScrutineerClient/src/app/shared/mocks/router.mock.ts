@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 
-/** Router mock */
+/** Defines the router mock. */
 export class MockRouter {
     navigate = jasmine.createSpy('navigate');
     get url() {

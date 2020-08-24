@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { InventoryOptions } from '@shared/models/enums';
 
-/** Inventory Options component */
+/** Defines the inventory options component. */
 @Component({
     selector: 'inventory-options',
     templateUrl: './inventory-options.html',
@@ -25,7 +25,7 @@ export class InventoryOptionsComponent implements OnInit {
 
     get InventoryOptions() { return InventoryOptions; }
 
-    /** ngOnInit method */
+    /** Logic for the OnInit component lifecycle. */
     public ngOnInit() {
         this.selectedOption = 0;
         if (!this.groupGifting) {
@@ -33,7 +33,7 @@ export class InventoryOptionsComponent implements OnInit {
         }
     }
 
-    /** Selects a new option */
+    /** Selects a new inventory option. */
     public selectOption(optionIndex) {
         this.selectedOption = optionIndex;
         this.newOptionSelectedEvent.emit(this.options[this.selectedOption]);

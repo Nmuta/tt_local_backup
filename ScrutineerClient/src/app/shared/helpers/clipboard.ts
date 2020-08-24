@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
-/** Clipboard  */
+/** Defines the clipboard helper */
 export class Clipboard {
     constructor() {
-        // EMpty
+        // Empty
     }
 
-    /** Copies the provided value to the client clipboard */
+    /** Copies the provided value to the client clipboard. */
     public copyMessage(val: string) {
         const selBox = document.createElement('textarea');
         selBox.style.position = 'fixed';
@@ -22,7 +22,7 @@ export class Clipboard {
       }
 }
 
-/** Mock Clipboard class */
+/** Mocks the clipboard helper. */
 @Injectable()
 export class MockClipboard {
     public copyMessage = jasmine.createSpy('copyMessage');

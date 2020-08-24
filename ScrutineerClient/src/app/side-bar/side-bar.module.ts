@@ -7,7 +7,7 @@ import { ProfileModule } from '@shared/components/profile/profile.module';
 import { SidebarComponent } from './side-bar.cmpt';
 import { SidebarRouterModule } from './side-bar.routing.module';
 
-/** Sidebar module */
+/** Defines the sidebar module. */
 @NgModule({
     imports: [
         CommonModule,

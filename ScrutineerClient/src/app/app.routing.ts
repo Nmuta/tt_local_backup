@@ -26,7 +26,7 @@ const routes: Routes = [
     { path: '**', redirectTo: 'error'  }
 ];
 
-/** App router */
+/** Defines the app router. */
 @NgModule({
     imports: [
         RouterModule.forRoot(routes, {
