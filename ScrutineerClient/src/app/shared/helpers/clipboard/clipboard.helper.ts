@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 
 /** Defines the clipboard helper */
+@Injectable({
+    providedIn: 'root'
+})
 export class Clipboard {
     constructor() {
         // Empty
@@ -20,17 +23,4 @@ export class Clipboard {
         document.execCommand('copy');
         document.body.removeChild(selBox);
       }
-}
-
-/** Mocks the clipboard helper. */
-@Injectable()
-export class MockClipboard {
-    public copyMessage = jasmine.createSpy('copyMessage');
-}
-
-export function createMockClipboard() {
-    return {
-        provide: Clipboard,
-        useValue: new MockClipboard()
-    };
 }

@@ -7,7 +7,7 @@ import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { NgxsModule } from '@ngxs/store';
-import { Clipboard } from '@shared/helpers';
+import { Clipboard } from '@shared/helpers/clipboard';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
 import { UserState } from '@shared/state/user/user.state';
 
