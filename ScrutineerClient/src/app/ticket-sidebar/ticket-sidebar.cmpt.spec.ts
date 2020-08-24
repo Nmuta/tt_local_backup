@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 // Helpers
 import { createMockClipboard } from '@shared/helpers/clipboard';
-import { createMockScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser';
+import { createMockScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser/scrutineer-data-parser.helper';
 
 // Components
 import { TicketSidebarComponent } from './ticket-sidebar.cmpt';

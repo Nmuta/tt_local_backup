@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Clipboard } from '@shared/helpers/clipboard';
-import { ScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser';
+import { ScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser/scrutineer-data-parser.helper';
 import { UserModel } from '@shared/models/user.model';
 import { ZendeskService } from '@shared/services/zendesk';
 import { UserState } from '@shared/state/user/user.state';

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { Clipboard } from './clipboard.helper';
+
 /** Mocks the clipboard helper. */
 @Injectable()
 export class MockClipboard {
