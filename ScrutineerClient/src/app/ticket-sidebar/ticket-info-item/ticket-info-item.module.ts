@@ -4,7 +4,6 @@ import { TicketInfoItemComponent } from './ticket-info-item.cmpt';
 export { TicketInfoItemComponent } from './ticket-info-item.cmpt';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-
 @NgModule({
     imports: [
         CommonModule,
