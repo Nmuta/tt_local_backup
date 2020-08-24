@@ -5,6 +5,7 @@ import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontaweso
 
 import { ProfileComponent } from './profile.cmpt';
 
+/** Profile module */
 @NgModule({
     declarations: [ProfileComponent],
     imports: [
