@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-/** Helper that parses scrutineer data into easier to understand data */
+/** Helper that parses scrutineer data into easier to understand text. */
 /* tslint:disable */
 @Injectable({
     providedIn: 'root'
