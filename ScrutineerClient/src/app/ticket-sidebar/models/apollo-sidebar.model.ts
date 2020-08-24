@@ -1,3 +1,4 @@
+/** Defines the apollo sidebar model. */
 export interface ApolloSidebarModel {
     xuid: any;
     gamertag: any;

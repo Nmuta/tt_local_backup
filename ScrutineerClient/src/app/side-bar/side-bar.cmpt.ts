@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Store, Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { UserState } from '@shared/state/user/user.state';
-import { UserModel } from '@shared/models/user.model';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment';
-import { ResetUserProfile, RequestAccessToken } from '@shared/state/user/user.actions';
+import { Select, Store } from '@ngxs/store';
+import { UserModel } from '@shared/models/user.model';
+import { RequestAccessToken, ResetUserProfile } from '@shared/state/user/user.actions';
+import { UserState } from '@shared/state/user/user.state';
+import { Observable } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
+/** Defines the sidebar app component. */
 @Component({
     templateUrl: './side-bar.html',
     styleUrls: ['./side-bar.scss']
@@ -21,6 +23,7 @@ export class SidebarComponent implements OnInit {
         private router: Router
     ) {}
 
+    /** Logic for the OnInit component lifecycle. */
     public ngOnInit() {
         this.loading = true;
         UserState.latestValidProfile(this.profile$).subscribe(

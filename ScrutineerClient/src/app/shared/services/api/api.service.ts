@@ -1,9 +1,10 @@
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { share, retryWhen } from 'rxjs/operators';
 import { environment } from '@environments/environment';
+import { Observable } from 'rxjs';
+import { retryWhen, share } from 'rxjs/operators';
 
+/** Defines the api service. */
 @Injectable({
     providedIn: 'root'
 })
@@ -11,6 +12,7 @@ export class ApiService {
 
     constructor(private http: HttpClient) {}
 
+    /** Sends a GET request. */
     public getRequest<T>(
         url: string,
         params?: HttpParams,
@@ -19,13 +21,14 @@ export class ApiService {
         const apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
         const get = this.http
             .get<T>(apiUrl, {
-                params: params,
-                headers: headers
+                params,
+                headers
             });
 
         return get;
     }
 
+    /** Sends a POST request. */
     public postRequest<T>(
         url: string,
         object: any,
@@ -36,13 +39,14 @@ export class ApiService {
         const apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
         const post = this.http
             .post<T>(apiUrl, object, {
-                headers: headers,
-                params: params
+                headers,
+                params
             });
 
         return post;
     }
 
+    /** Sends a PUT request. */
     public putRequest<T>(
         url: string,
         object: any,
@@ -53,13 +57,14 @@ export class ApiService {
 
         const put = this.http
             .put<T>(apiUrl, object, {
-                headers: headers,
-                params: params
+                headers,
+                params
             });
 
         return put;
     }
 
+    /** Sends a DELETE request. */
     public deleteRequest<T>(
         url: string,
         params?: HttpParams
@@ -69,8 +74,8 @@ export class ApiService {
 
         const del = this.http
             .delete<T>(apiUrl, {
-                headers: headers,
-                params: params
+                headers,
+                params
             });
 
         return del;

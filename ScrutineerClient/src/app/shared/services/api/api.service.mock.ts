@@ -1,13 +1,9 @@
-// -----------------------------------------------------------------------
-// <copyright company="Microsoft Corporation">
-//   Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// -----------------------------------------------------------------------
-
 import { Injectable } from '@angular/core';
-import { ApiService } from './api.service';
 import { of } from 'rxjs';
 
+import { ApiService } from './api.service';
+
+/** Defines the mock for the API Service. */
 @Injectable()
 export class MockApiService {
     public getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));

@@ -1,3 +1,4 @@
+/** Defines the opus sidebar model. */
 export interface OpusSidebarModel {
     xuid: any;
     gamertag: any;

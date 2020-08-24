@@ -1,6 +1,7 @@
-import { Routes, RouterModule } from '@angular/router';
-import { AuthComponent } from './auth.cmpt';
 import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { AuthComponent } from './auth.cmpt';
 
 const routes: Routes = [
     {
@@ -9,6 +10,7 @@ const routes: Routes = [
     }
 ];
 
+/** Defines the auth router module. */
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]

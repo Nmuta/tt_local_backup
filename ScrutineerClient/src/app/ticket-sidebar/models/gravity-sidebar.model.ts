@@ -1,3 +1,4 @@
+/** Defines the gravity sidebar model. */
 export interface GravitySidebarModel {
     xuid: any;
     gamertag: any;

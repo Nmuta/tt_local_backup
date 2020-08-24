@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 
-/* tslint:disable:no-bitwise */
+/**
+ * This file came from old app to parse incoming data.
+ * TODO: Move this logic up to API so data coming into client is correct at the start.
+ */
+/* tslint:disable */
 export class ScrutineerDataParser {
     public convertDateString(dateString) {
         return dateString.replace('T', ' ').replace('Z', '');

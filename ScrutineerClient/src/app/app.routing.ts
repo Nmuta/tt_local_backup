@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+
 import { ErrorComponent } from './error/error.cmpt';
 import { ZendeskGuardService } from './route-guards/app.zendesk.guard.service';
 
@@ -25,6 +26,7 @@ const routes: Routes = [
     { path: '**', redirectTo: 'error'  }
 ];
 
+/** Defines the app router. */
 @NgModule({
     imports: [
         RouterModule.forRoot(routes, {

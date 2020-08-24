@@ -1,12 +1,7 @@
-// -----------------------------------------------------------------------
-// <copyright company="Microsoft Corporation">
-//   Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// -----------------------------------------------------------------------
-
 import { Injectable } from '@angular/core';
 import { UserService } from '@shared/services/user/user.service';
 
+/** Defines the mock for the User Service. */
 @Injectable()
 export class MockUserService {
     public getUser = jasmine.createSpy('getUser');

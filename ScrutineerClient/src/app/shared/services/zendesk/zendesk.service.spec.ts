@@ -1,9 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright company='Microsoft Corporation'>
-//   Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-// -----------------------------------------------------------------------
-// General
+﻿// General
 import { TestBed } from '@angular/core/testing';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { throwError, of, Observable } from 'rxjs';

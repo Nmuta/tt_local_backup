@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthRouterModule } from './auth.routing.module';
+import { NgModule } from '@angular/core';
+
 import { AuthComponent } from './auth.cmpt';
+import { AuthRouterModule } from './auth.routing.module';
 
-
+/** Defines the auth module. */
 @NgModule({
     imports: [
         CommonModule,

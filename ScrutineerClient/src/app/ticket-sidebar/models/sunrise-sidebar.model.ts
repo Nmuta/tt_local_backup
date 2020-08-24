@@ -1,3 +1,4 @@
+/** Defines the sunrise sidebar model. */
 export interface SunriseSidebarModel {
     xuid: any;
     gamertag: any;
