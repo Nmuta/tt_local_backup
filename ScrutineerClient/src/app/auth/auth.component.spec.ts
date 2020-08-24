@@ -9,7 +9,7 @@ import { environment } from '@environments/environment';
 import { delay } from 'rxjs/operators';
 
 // Components
-import { AuthComponent } from './auth.cmpt';
+import { AuthComponent } from './auth.component';
 
 // Services
 import { createMockZendeskService, ZendeskService } from '@shared/services/zendesk';

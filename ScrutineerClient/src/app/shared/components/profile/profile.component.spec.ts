@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed, inject, getTestBed } from '@angular/c
 import { environment } from '@environments/environment';
 
 // Components
-import { ProfileComponent } from './profile.cmpt';
+import { ProfileComponent } from './profile.component';
 
 // Services
 import { WindowService, createMockWindowService } from '@shared/services/window';

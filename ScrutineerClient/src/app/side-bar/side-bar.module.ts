@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProfileModule } from '@shared/components/profile/profile.module';
 
-import { SidebarComponent } from './side-bar.cmpt';
+import { SidebarComponent } from './side-bar.component';
 import { SidebarRouterModule } from './side-bar.routing.module';
 
 /** Defines the sidebar module. */

@@ -6,7 +6,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Components
-import { SidebarComponent } from './side-bar.cmpt';
+import { SidebarComponent } from './side-bar.component';
 
 // States
 import { UserState } from '@shared/state/user/user.state';

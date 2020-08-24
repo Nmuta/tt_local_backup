@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ProfileComponent } from './profile.cmpt';
+import { ProfileComponent } from './profile.component';
 
 /** Defines the profile module. */
 @NgModule({
