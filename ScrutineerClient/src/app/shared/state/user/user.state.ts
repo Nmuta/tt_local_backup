@@ -83,7 +83,6 @@ export class UserState {
     @Action(RequestAccessToken, { cancelUncompleted: true })
     requestAccessToken(ctx: StateContext<UserStateModel>, action: RequestAccessToken) {
         const isLoggedIn = !!(this.authService.getAccount());
-        console.log(`requestToken: ${isLoggedIn}`);
         if (!isLoggedIn) {
             ctx.patchState({ accessToken: null });
             asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
