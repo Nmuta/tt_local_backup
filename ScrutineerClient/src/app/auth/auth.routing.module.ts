@@ -10,7 +10,7 @@ const routes: Routes = [
     }
 ];
 
-/** Auth Router Module */
+/** Defines the auth router module. */
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
