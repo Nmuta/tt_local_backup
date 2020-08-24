@@ -1,0 +1,8 @@
+{
+    "app": {
+        "name": "Turn10 LiveOps Angular App",
+        "description": "Turn10 LiveOps Angular App",
+        "long_description": "Turn10 LiveOps Angular App",
+        "installation_instructions": "None."
+    }
+}
