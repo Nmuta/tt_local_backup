@@ -5,28 +5,23 @@
       "exclude": [
         "**/node_modules/**/*",
         "**/*.spec.ts",
-        "**/*.stub.ts"
+        "**/*.stub.ts",
+        "src/main.ts",
+        "src/polyfills.ts",
+        "src/test.ts"
       ]
     },
     "rules": {
       "angular-whitespace": false,
-      "banana-in-box": true,
-      "use-input-property-decorator": true,
-      "use-output-property-decorator": true,
-      "use-host-property-decorator": true,
-      "no-attribute-parameter-decorator": true,
       "no-input-rename": true,
       "no-output-rename": true,
       "no-forward-ref": true,
       "use-life-cycle-interface": true,
       "use-pipe-transform-interface": true,
-      "templates-no-negated-async": true,
-      "use-view-encapsulation": true,
       "contextual-life-cycle": true,
       "component-class-suffix": true,
       "directive-class-suffix": true,
-      "pipe-impure": true,
-  
+        
       "directive-selector": [true, "attribute", ["app", "std", "sentry", ""], "camelCase"],
       "component-selector": false,
       "pipe-naming": [false, "camelCase", ["sentry", ""]],
@@ -40,7 +35,6 @@
       "no-object-literal-type-assertion": true,
       "no-sparse-arrays": true,
       "no-switch-case-fall-through": true,
-      "no-use-before-declare": true,
       "trailing-comma": [true, {"esSpecCompliant": true}],
   
       "import-blacklist": [true],

@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 
 import { WindowService } from './window.service';
 
+/** Mock for the Window Service */
 @Injectable()
 export class MockWindowService {
     public addEventListener = jasmine.createSpy('oaddEventListenerpen');

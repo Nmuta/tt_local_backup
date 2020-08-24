@@ -4,6 +4,7 @@ import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 import { retryWhen, share } from 'rxjs/operators';
 
+/** Api Service */
 @Injectable({
     providedIn: 'root'
 })
@@ -11,6 +12,7 @@ export class ApiService {
 
     constructor(private http: HttpClient) {}
 
+    /** Sends a GET request */
     public getRequest<T>(
         url: string,
         params?: HttpParams,
@@ -26,6 +28,7 @@ export class ApiService {
         return get;
     }
 
+    /** Sends a POST request */
     public postRequest<T>(
         url: string,
         object: any,
@@ -43,6 +46,7 @@ export class ApiService {
         return post;
     }
 
+    /** Sends a PUT request */
     public putRequest<T>(
         url: string,
         object: any,
@@ -60,6 +64,7 @@ export class ApiService {
         return put;
     }
 
+    /** Sends a DELETE request */
     public deleteRequest<T>(
         url: string,
         params?: HttpParams
