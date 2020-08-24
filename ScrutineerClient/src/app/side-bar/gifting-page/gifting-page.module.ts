@@ -1,11 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+
+import { InventoryOptionsModule } from '../inventory-options/inventory-options.module';
+import { InventoryModule } from '../inventory/inventory.module';
+
 import { GiftingPageComponent } from './gifting-page.cmpt';
 export { GiftingPageComponent } from './gifting-page.cmpt';
 
-import { InventoryModule } from '../inventory/inventory.module';
-import { InventoryOptionsModule } from '../inventory-options/inventory-options.module';
-
+/** Gifting Page module */
 @NgModule({
     imports: [
         CommonModule,

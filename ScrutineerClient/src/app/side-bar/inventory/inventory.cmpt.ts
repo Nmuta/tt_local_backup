@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { InventoryOptions } from '@shared/models/enums';
 
+/** Inventory component */
 @Component({
     selector: 'inventory',
     templateUrl: './inventory.html',
@@ -9,5 +10,7 @@ import { InventoryOptions } from '@shared/models/enums';
 export class InventoryComponent {
     @Input() selectedGiftingOption: InventoryOptions;
 
-    constructor() {}
+    constructor() {
+        // Empty
+    }
 }

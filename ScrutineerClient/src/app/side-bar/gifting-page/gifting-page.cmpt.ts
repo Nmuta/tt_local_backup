@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { InventoryOptions, GameTitleNames } from '@shared/models/enums';
+import { GameTitleNames, InventoryOptions } from '@shared/models/enums';
 
+/** Gifting Page component */
 @Component({
     selector: 'gifting-page',
     templateUrl: './gifting-page.html',
@@ -10,8 +11,11 @@ export class GiftingPageComponent {
     @Input() gameTitle: GameTitleNames;
     public selectedGiftingOption: InventoryOptions = InventoryOptions.UserGift;
 
-    constructor() {}
+    constructor() {
+        // Empty
+    }
 
+    /** Select a new gifting option */
     public newGiftingOptionSelected(event: InventoryOptions) {
         this.selectedGiftingOption = event;
     }

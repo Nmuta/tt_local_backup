@@ -1,13 +1,13 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { InventoryOptions } from '@shared/models/enums';
 
+/** Inventory Options component */
 @Component({
     selector: 'inventory-options',
     templateUrl: './inventory-options.html',
     styleUrls: ['./inventory-options.scss']
 })
 export class InventoryOptionsComponent implements OnInit {
-    get InventoryOptions() { return InventoryOptions; }
 
     @Input() groupGifting = true;
     @Output() newOptionSelectedEvent = new EventEmitter();
@@ -19,8 +19,13 @@ export class InventoryOptionsComponent implements OnInit {
         InventoryOptions.GroupGiftByGamertag
     ];
 
-    constructor() {}
+    constructor() {
+        // Empty
+    }
 
+    get InventoryOptions() { return InventoryOptions; }
+
+    /** ngOnInit method */
     public ngOnInit() {
         this.selectedOption = 0;
         if (!this.groupGifting) {
@@ -28,6 +33,7 @@ export class InventoryOptionsComponent implements OnInit {
         }
     }
 
+    /** Selects a new option */
     public selectOption(optionIndex) {
         this.selectedOption = optionIndex;
         this.newOptionSelectedEvent.emit(this.options[this.selectedOption]);

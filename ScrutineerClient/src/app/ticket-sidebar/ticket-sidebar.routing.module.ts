@@ -1,6 +1,7 @@
-import { Routes, RouterModule } from '@angular/router';
-import { TicketSidebarComponent } from './ticket-sidebar.cmpt';
 import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { TicketSidebarComponent } from './ticket-sidebar.cmpt';
 
 const routes: Routes = [
     {
@@ -9,6 +10,7 @@ const routes: Routes = [
     }
 ];
 
+/** Ticket Sidebar routing module */
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]

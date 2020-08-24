@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Store, Select } from '@ngxs/store';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
 import { RequestAccessToken } from '@shared/state/user/user.actions';
 
+/** App component */
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -14,6 +15,7 @@ export class AppComponent implements OnInit {
         private store: Store
     ) { }
 
+    /** ngOnInit method */
     public ngOnInit() {
         this.store.dispatch(new RequestAccessToken());
     }

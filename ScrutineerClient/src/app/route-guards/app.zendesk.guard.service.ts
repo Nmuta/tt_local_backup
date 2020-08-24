@@ -1,8 +1,9 @@
-import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { WindowService } from '@shared/services/window';
+import { Observable } from 'rxjs';
 
+/** ROute guard that guarentees app routes are accessible zendesk only */
 @Injectable({
     providedIn: 'root',
 })
@@ -12,6 +13,7 @@ export class ZendeskGuardService implements CanActivate {
         private windowService: WindowService
         ) {}
 
+    /** Activate route logic */
     public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
         const inZendesk = !!this.windowService.zafClient();
         if (!inZendesk) {

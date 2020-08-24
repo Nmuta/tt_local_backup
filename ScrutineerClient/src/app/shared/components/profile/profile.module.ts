@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ProfileComponent } from './profile.cmpt';
 import { FormsModule } from '@angular/forms';
-import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { ProfileComponent } from './profile.cmpt';
 
 @NgModule({
     declarations: [ProfileComponent],

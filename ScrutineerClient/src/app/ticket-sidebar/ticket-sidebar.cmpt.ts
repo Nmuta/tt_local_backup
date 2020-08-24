@@ -1,14 +1,16 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { ZendeskService } from '@shared/services/zendesk';
-import { Clipboard, ScrutineerDataParser } from '@shared/helpers';
-import { GravitySidebarModel, SunriseSidebarModel, ApolloSidebarModel } from 'app/ticket-sidebar/models';
-import { UserState } from '@shared/state/user/user.state';
-import { UserModel } from '@shared/models/user.model';
-import { Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { Clipboard, ScrutineerDataParser } from '@shared/helpers';
+import { UserModel } from '@shared/models/user.model';
+import { ZendeskService } from '@shared/services/zendesk';
+import { UserState } from '@shared/state/user/user.state';
+import { ApolloSidebarModel, GravitySidebarModel, SunriseSidebarModel } from 'app/ticket-sidebar/models';
+import { Observable } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
+/** Ticket Sidebar component */
 @Component({
     templateUrl: './ticket-sidebar.html',
     styleUrls: ['./ticket-sidebar.scss']
@@ -29,6 +31,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         private clipboard: Clipboard
         ) { }
 
+    /** ngOnInit method */
     public ngOnInit() {
         this.loading = true;
         UserState.latestValidProfile(this.profile$).subscribe(
@@ -49,10 +52,12 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         );
     }
 
+    /** ngAfterViewInit method  */
     public ngAfterViewInit() {
         this.zendeskService.resize('100%', '500px');
     }
 
+    /** Gets the ticket requestor information */
     public getTicketRequestor() {
         this.zendeskService.getTicketRequestor().subscribe((response: any) => {
             const requester = response['ticket.requester'];
@@ -68,9 +73,10 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
+    /** Gets all the ticket's custom fields */
     public getTicketFields() {
         this.zendeskService.getTicketFields().subscribe((response: any) => {
-            const ticketFields = response['ticketFields'];
+            const ticketFields = response.ticketFields;
             let titleCustomField = '';
             for (const field in ticketFields) {
                 if (ticketFields[field].label === 'Forza Title') {
@@ -81,8 +87,9 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
+    /** Gets title data from ticket */
     public getTitleData(titleCustomField) {
-        this.zendeskService.getTicketCustomField(titleCustomField).subscribe((response) => {
+        this.zendeskService.getTicketCustomField(titleCustomField).subscribe(response => {
             const titleName = response[`ticket.customField:${titleCustomField}`];
             const titleNameUppercase = titleName.toUpperCase();
             this.title = titleNameUppercase ===  'FORZA_STREET' ? 'Gravity'
@@ -97,6 +104,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
+    /** Requests player details from API */
     public getPlayerData() {
         const settings = {
             url: `${environment.oldScrutineerApiUrl}/Title/${this.title}/environment/Retail/player/gamertag(${this.gamerTag})`,
@@ -106,15 +114,14 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
             dataType: 'json',
             credentials: 'include'
         };
-        this.zendeskService.sendRequest(settings).then(
-            (response) => {
+        this.zendeskService.sendRequest(settings).then(response => {
                 this.showUserData(response, null);
-            },
-            (err) =>  {
-                console.error(err);
+            },err =>  {
+                // TODO: show error on ticket app
             });
     }
 
+    /** Parses user data to readible information */
     public showUserData(player, customSlotTable) {
         this.player = this.title ===  'Gravity' ? this.reduceToGravityProps(player)
                 : this.title ===  'Sunrise' ? this.reduceToSunriseProps(player)
@@ -138,6 +145,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
             ? this.scrutineerDataParser.ageGroupDict(this.player.userAgeGroup) : undefined;
     }
 
+    /** Reduces user data to properties needed for a gravity ticket */
     public reduceToGravityProps(fullPlayerInfo): GravitySidebarModel {
         return {
             xuid: fullPlayerInfo.xuid,
@@ -157,6 +165,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         };
     }
 
+    /** Reduces user data to properties needed for a sunrise ticket */
     public reduceToSunriseProps(fullPlayerInfo): SunriseSidebarModel {
         return {
             xuid: fullPlayerInfo.qwXuid,
@@ -178,6 +187,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         };
     }
 
+    /** Reduces user data to properties needed for an apollo ticket */
     public reduceToApolloProps(fullPlayerInfo): ApolloSidebarModel {
         return {
             xuid: fullPlayerInfo.qwXuid,
@@ -213,11 +223,13 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         };
     }
 
+    /** Opens up inventory app with predefined info filled out */
     public goToInventory() {
         const appSection = this.title + '/' + this.player.xuid;
         this.zendeskService.goToApp('nav_bar', 'forza-inventory-support', appSection);
     }
 
+    /** Copies the value to the client clipboard */
     public copyToClipboard(val: string) {
         this.clipboard.copyMessage(val);
     }

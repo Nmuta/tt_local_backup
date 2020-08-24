@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Store, Select, NgxsModule } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { BroadcastService, MsalService } from '@azure/msal-angular';
-import { ZendeskService } from '@shared/services/zendesk';
-import { environment } from '../../environments/environment';
-import { UserState } from '@shared/state/user/user.state';
-import { ResetUserProfile, RequestAccessToken } from '@shared/state/user/user.actions';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
+import { Select, Store } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { WindowService } from '@shared/services/window';
-import { ActivatedRoute, Router } from '@angular/router';
+import { RequestAccessToken, ResetUserProfile } from '@shared/state/user/user.actions';
+import { UserState } from '@shared/state/user/user.state';
+import { Observable } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
+/** Auth Component */
 @Component({
     templateUrl: './auth.html',
     styleUrls: ['./auth.scss']
@@ -30,10 +31,11 @@ export class AuthComponent implements OnInit {
         private windowService: WindowService
     ) {
         this.activatedRoute.queryParams.subscribe(params => {
-            this.fromApp = params['from'];
+            this.fromApp = params.from;
         });
     }
 
+    /** ngOnInit method */
     public ngOnInit() {
         this.loading = true;
         this.inZendesk = !!this.windowService.zafClient();
@@ -46,27 +48,31 @@ export class AuthComponent implements OnInit {
                     this.router.navigate([`/${this.fromApp}`]);
                 }
             },
-            error => {
+            () => {
                 this.loading = false;
                 this.profile = null;
             }
         );
     }
 
+    /** Open the auth page in a new tab */
     public openAuthPageInNewTab() {
         this.windowService.open(`${environment.clientUrl}/auth`, '_blank');
     }
 
+    /** Sends login request to client app scope */
     public login() {
         this.msalService.loginRedirect({
             extraScopesToConsent: [environment.azureAppScope]
           });
     }
 
+    /** Logs out of all signed in app scopes */
     public logout() {
         this.msalService.logout();
     }
 
+    /** Rechecks if user is authorized with the app */
     public recheckAuth() {
         this.store.dispatch(new ResetUserProfile());
         this.store.dispatch(new RequestAccessToken());

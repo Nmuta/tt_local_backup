@@ -9,11 +9,11 @@ export class WindowService {
     constructor() { }
 
     public addEventListener(eventName: string, func: EventListener) {
-        (<any>window).addEventListener(eventName, func);
+        (window as any).addEventListener(eventName, func);
     }
 
     public removeEventListener(eventName: string, func: EventListener) {
-        (<any>window).removeEventListener(eventName, func);
+        (window as any).removeEventListener(eventName, func);
     }
 
     public top(): any {
@@ -21,14 +21,14 @@ export class WindowService {
     }
 
     public location(): any {
-        return (<any>window).location;
+        return (window as any).location;
     }
 
     public open(url, target): any {
-        return (<any>window).open(url, target);
+        return (window as any).open(url, target);
     }
 
     public zafClient(): any {
-        return (<any>window).zafClient;
+        return (window as any).zafClient;
     }
 }

@@ -1,9 +1,9 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
 import { UserState, UserStateModel } from '@shared/state/user/user.state';
 import { access } from 'fs';
+import { Observable } from 'rxjs';
 
 
 @Injectable()

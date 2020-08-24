@@ -1,5 +1,5 @@
-import { WindowService } from '@shared/services/window';
 import { Injectable } from '@angular/core';
+import { WindowService } from '@shared/services/window';
 import { Observable, of, throwError } from 'rxjs';
 
 @Injectable({

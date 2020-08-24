@@ -1,9 +1,11 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TicketInfoItemComponent } from './ticket-info-item.cmpt';
-export { TicketInfoItemComponent } from './ticket-info-item.cmpt';
+import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { TicketInfoItemComponent } from './ticket-info-item.cmpt';
+export { TicketInfoItemComponent } from './ticket-info-item.cmpt';
+
+/** Ticket Information Item module */
 @NgModule({
     imports: [
         CommonModule,

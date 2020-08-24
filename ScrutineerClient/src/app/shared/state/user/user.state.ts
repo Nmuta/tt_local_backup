@@ -1,17 +1,18 @@
 // General
-import { from, Observable, of, throwError, asapScheduler } from 'rxjs';
-import { tap, catchError, timeout, map, filter, take, mergeMap, switchMap } from 'rxjs/operators';
-import { State, Action, StateContext, Selector, Store } from '@ngxs/store';
+import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { UserModel } from '@shared/models/user.model';
+import { UserService } from '@shared/services/user';
+import { asapScheduler, from, Observable, of, throwError } from 'rxjs';
+import { catchError, filter, map, mergeMap, switchMap, take, tap, timeout } from 'rxjs/operators';
+
+import { GetUser, RequestAccessToken, ResetAccessToken, ResetUserProfile, SetNoUserProfile } from './user.actions';
 
 // Models
 
 
 // State
-import { GetUser, ResetUserProfile, SetNoUserProfile, RequestAccessToken, ResetAccessToken } from './user.actions';
-import { UserService } from '@shared/services/user';
-import { UserModel } from '@shared/models/user.model';
-import { MsalService } from '@azure/msal-angular';
 
 
 // Services
@@ -37,34 +38,11 @@ export class UserState {
         private authService: MsalService
     ) {}
 
-    static latestValidProfile(
-        profile$: Observable<UserModel>
-    ): Observable<UserModel> {
-        const obs = profile$.pipe(
-            filter(x => x !== undefined),
-            take(1)
-        ).pipe(timeout(5000));
-
-        return obs;
-    }
-
-    @Selector()
-    static profile(state: UserStateModel) {
-        return state.profile;
-    }
-
-    @Selector()
-    static accessToken(state: UserStateModel) {
-        return state.accessToken;
-    }
-
     @Action(GetUser, { cancelUncompleted: true })
     getUser(ctx: StateContext<UserStateModel>, action: GetUser) {
-        this.userService.getUserProfile().subscribe(
-            (data) => {
+        this.userService.getUserProfile().subscribe(data => {
                 ctx.patchState({ profile: data });
-            },
-            (err) => {
+            },err => {
                 ctx.patchState({ profile: null });
             });
     }
@@ -91,8 +69,7 @@ export class UserState {
 
         this.authService.acquireTokenSilent({
             scopes: [environment.azureAppScope]
-        }).then(
-            (data) => {
+        }).then(data => {
                 if (!data.accessToken) {
                     ctx.patchState({ accessToken: null });
                     asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
@@ -101,8 +78,7 @@ export class UserState {
 
                 ctx.patchState({ accessToken: data.accessToken });
                 asapScheduler.schedule(() => ctx.dispatch(new GetUser()));
-            },
-            (err) => {
+            },err => {
                 ctx.patchState({ accessToken: null });
                 asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
             });
@@ -111,5 +87,26 @@ export class UserState {
     @Action(ResetAccessToken, { cancelUncompleted: true })
     resetAccessToken(ctx: StateContext<UserStateModel>, action: ResetAccessToken) {
         ctx.patchState({ accessToken: undefined });
+    }
+
+    static latestValidProfile(
+        profile$: Observable<UserModel>
+    ): Observable<UserModel> {
+        const obs = profile$.pipe(
+            filter(x => x !== undefined),
+            take(1)
+        ).pipe(timeout(5000));
+
+        return obs;
+    }
+
+    @Selector()
+    static profile(state: UserStateModel) {
+        return state.profile;
+    }
+
+    @Selector()
+    static accessToken(state: UserStateModel) {
+        return state.accessToken;
     }
 }

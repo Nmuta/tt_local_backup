@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 import { Injectable } from '@angular/core';
+
 import { WindowService } from './window.service';
 
 @Injectable()

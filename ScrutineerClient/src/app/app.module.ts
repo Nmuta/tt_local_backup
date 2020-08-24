@@ -1,25 +1,27 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { MatToolbarModule } from '@angular/material';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
+import { NgxsModule } from '@ngxs/store';
+import { Clipboard } from '@shared/helpers';
+import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
+import { UserState } from '@shared/state/user/user.state';
+
+import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Clipboard } from '@shared/helpers';
-import { MatToolbarModule } from '@angular/material';
-import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
-import { MsalModule, MsalInterceptor } from '@azure/msal-angular';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { environment } from '../environments/environment';
-import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
-import { NgxsModule } from '@ngxs/store';
-import { UserState } from '@shared/state/user/user.state';
 import { ErrorComponent } from './error/error.cmpt';
 
 export const protectedResourceMap: [string, string[]][] = [
         ['https://graph.microsoft.com/v1.0/me', ['user.read']]
     ];
 
+/** App Module */
 @NgModule({
     declarations: [
         AppComponent,

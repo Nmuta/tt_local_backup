@@ -5,8 +5,9 @@
 // -----------------------------------------------------------------------
 
 import { Injectable } from '@angular/core';
-import { ApiService } from './api.service';
 import { of } from 'rxjs';
+
+import { ApiService } from './api.service';
 
 @Injectable()
 export class MockApiService {
