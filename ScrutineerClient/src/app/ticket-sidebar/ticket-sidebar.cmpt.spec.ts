@@ -6,7 +6,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Helpers
-import { createMockClipboard, createMockScrutineerDataParser } from '@shared/helpers';
+import { createMockClipboard } from '@shared/helpers/clipboard';
+import { createMockScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser';
 
 // Components
 import { TicketSidebarComponent } from './ticket-sidebar.cmpt';

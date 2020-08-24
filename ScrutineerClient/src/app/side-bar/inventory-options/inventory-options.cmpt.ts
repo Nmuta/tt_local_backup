@@ -9,11 +9,11 @@ import { InventoryOptions } from '@shared/models/enums';
 })
 export class InventoryOptionsComponent implements OnInit {
 
-    @Input() groupGifting = true;
-    @Output() newOptionSelectedEvent = new EventEmitter();
+    @Input() public groupGifting = true;
+    @Output() public newOptionSelectedEvent = new EventEmitter();
 
-    selectedOption: number;
-    options: InventoryOptions[] = [
+    public selectedOption: number;
+    public options: InventoryOptions[] = [
         InventoryOptions.UserGift,
         InventoryOptions.GroupGiftByXUID,
         InventoryOptions.GroupGiftByGamertag

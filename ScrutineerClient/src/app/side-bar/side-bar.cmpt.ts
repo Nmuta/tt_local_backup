@@ -14,10 +14,10 @@ import { environment } from '../../environments/environment';
     styleUrls: ['./side-bar.scss']
 })
 export class SidebarComponent implements OnInit {
-    @Select(UserState.profile) profile$: Observable<UserModel>;
+    @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-    loading: boolean;
-    profile: UserModel;
+    public loading: boolean;
+    public profile: UserModel;
 
     constructor(
         private router: Router

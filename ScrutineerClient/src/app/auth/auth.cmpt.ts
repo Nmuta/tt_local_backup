@@ -16,12 +16,12 @@ import { environment } from '../../environments/environment';
     styleUrls: ['./auth.scss']
 })
 export class AuthComponent implements OnInit {
-    @Select(UserState.profile) profile$: Observable<UserModel>;
+    @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-    fromApp: string;
-    loading: boolean;
-    inZendesk: boolean;
-    profile: UserModel;
+    public fromApp: string;
+    public loading: boolean;
+    public inZendesk: boolean;
+    public profile: UserModel;
 
     constructor(
         private activatedRoute: ActivatedRoute,

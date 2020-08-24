@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Select } from '@ngxs/store';
-import { Clipboard, ScrutineerDataParser } from '@shared/helpers';
+import { Clipboard } from '@shared/helpers/clipboard';
+import { ScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser/scrutineer-data-parser.helper';
 import { UserModel } from '@shared/models/user.model';
 import { ZendeskService } from '@shared/services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
@@ -16,7 +17,7 @@ import { environment } from '../../environments/environment';
     styleUrls: ['./ticket-sidebar.scss']
 })
 export class TicketSidebarComponent implements OnInit, AfterViewInit {
-    @Select(UserState.profile) profile$: Observable<UserModel>;
+    @Select(UserState.profile) public profile$: Observable<UserModel>;
 
     public loading: boolean;
     public profile: UserModel;

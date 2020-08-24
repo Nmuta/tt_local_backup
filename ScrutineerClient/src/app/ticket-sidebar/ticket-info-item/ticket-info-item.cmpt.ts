@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { Clipboard } from '@shared/helpers';
+import { Clipboard } from '@shared/helpers/clipboard';
 
 /** Defines the ticket information item component. */
 @Component({
@@ -8,15 +8,14 @@ import { Clipboard } from '@shared/helpers';
     styleUrls: ['./ticket-info-item.scss']
 })
 export class TicketInfoItemComponent implements OnInit {
-    @Input() name: string;
-    @Input() value: string;
-    public clipboard;
+    @Input() public name: string;
+    @Input() public value: string;
     public copied;
     public showItem;
 
-    constructor(clipboard: Clipboard) {
-        this.clipboard = clipboard;
-    }
+    constructor(
+        private clipboard: Clipboard
+    ) {}
 
     /** Logic for the OnInit component lifecycle. */
     public ngOnInit() {

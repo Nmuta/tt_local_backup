@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProfileModule } from '@shared/components/profile/profile.module';
-import { ScrutineerDataParser } from '@shared/helpers';
 import { GiftingPageModule } from 'app/side-bar/gifting-page/gifting-page.module';
 
 import { TicketInfoItemModule } from './ticket-info-item/ticket-info-item.module';
@@ -21,7 +20,7 @@ import { TicketSidebarRouterModule } from './ticket-sidebar.routing.module';
         ProfileModule,
         TicketInfoItemModule
     ],
-    providers: [ScrutineerDataParser],
+    providers: [],
     declarations: [TicketSidebarComponent]
 })
 export class TicketSidebarModule {}

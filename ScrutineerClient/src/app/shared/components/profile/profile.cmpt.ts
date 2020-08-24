@@ -10,7 +10,7 @@ import { WindowService } from '@shared/services/window';
     styleUrls: ['./profile.scss']
 })
 export class ProfileComponent {
-    @Input() user: UserModel;
+    @Input() public user: UserModel;
 
     public profileTabVisible = false;
 

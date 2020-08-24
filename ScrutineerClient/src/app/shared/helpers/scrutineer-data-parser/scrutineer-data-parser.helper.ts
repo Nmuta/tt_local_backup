@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 
-/**
- * This file came from old app to parse incoming data.
- * TODO: Move this logic up to API so data coming into client is correct at the start.
- */
+/** Helper that parses scrutineer data into easier to understand text. */
 /* tslint:disable */
+@Injectable({
+    providedIn: 'root'
+})
 export class ScrutineerDataParser {
+    // TODO: Move all logic to API and delete this helper
     public convertDateString(dateString) {
         return dateString.replace('T', ' ').replace('Z', '');
     }
@@ -632,16 +633,4 @@ export class ScrutineerDataParser {
 
         return returnFlags.join(', ');
     }
-}
-
-@Injectable()
-export class MockScrutineerDataParser {
-    public copyMessage = jasmine.createSpy('copyMessage');
-}
-
-export function createMockScrutineerDataParser() {
-    return {
-        provide: ScrutineerDataParser,
-        useValue: new MockScrutineerDataParser()
-    };
 }
