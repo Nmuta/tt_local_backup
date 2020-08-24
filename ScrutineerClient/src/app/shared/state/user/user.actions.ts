@@ -1,6 +1,6 @@
 /** GetUser action declaration. */
 export class GetUser {
-    static readonly type = '[User] Get User';
+    public static readonly type = '[User] Get User';
     constructor() {
         // Empty
     }
@@ -8,7 +8,7 @@ export class GetUser {
 
 /** ResetUserProfile action declaration. */
 export class ResetUserProfile {
-    static readonly type = '[User] Reset User Profile';
+    public static readonly type = '[User] Reset User Profile';
     constructor() {
         // Empty
     }
@@ -16,7 +16,7 @@ export class ResetUserProfile {
 
 /** SetNoUserProfile action declaration. */
 export class SetNoUserProfile {
-    static readonly type = '[User] Set No User Profile';
+    public static readonly type = '[User] Set No User Profile';
     constructor() {
         // Empty
     }
@@ -24,7 +24,7 @@ export class SetNoUserProfile {
 
 /** RequestAccessToken action declaration. */
 export class RequestAccessToken {
-    static readonly type = '[User] Request Access Token';
+    public static readonly type = '[User] Request Access Token';
     constructor() {
         // Empty
     }
@@ -32,7 +32,7 @@ export class RequestAccessToken {
 
 /** ResetAccessToken action declaration. */
 export class ResetAccessToken {
-    static readonly type = '[User] Reset Access Token';
+    public static readonly type = '[User] Reset Access Token';
     constructor() {
         // Empty
     }

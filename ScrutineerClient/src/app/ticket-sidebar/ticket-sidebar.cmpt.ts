@@ -16,7 +16,7 @@ import { environment } from '../../environments/environment';
     styleUrls: ['./ticket-sidebar.scss']
 })
 export class TicketSidebarComponent implements OnInit, AfterViewInit {
-    @Select(UserState.profile) profile$: Observable<UserModel>;
+    @Select(UserState.profile) public profile$: Observable<UserModel>;
 
     public loading: boolean;
     public profile: UserModel;

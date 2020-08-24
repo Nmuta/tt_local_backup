@@ -8,8 +8,8 @@ import { Clipboard } from '@shared/helpers';
     styleUrls: ['./ticket-info-item.scss']
 })
 export class TicketInfoItemComponent implements OnInit {
-    @Input() name: string;
-    @Input() value: string;
+    @Input() public name: string;
+    @Input() public value: string;
     public clipboard;
     public copied;
     public showItem;

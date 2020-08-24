@@ -8,7 +8,7 @@ import { InventoryOptions } from '@shared/models/enums';
     styleUrls: ['./inventory.scss']
 })
 export class InventoryComponent {
-    @Input() selectedGiftingOption: InventoryOptions;
+    @Input() public selectedGiftingOption: InventoryOptions;
 
     constructor() {
         // Empty

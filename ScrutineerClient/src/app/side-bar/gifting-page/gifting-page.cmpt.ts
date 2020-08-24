@@ -8,7 +8,7 @@ import { GameTitleNames, InventoryOptions } from '@shared/models/enums';
     styleUrls: ['./gifting-page.scss']
 })
 export class GiftingPageComponent {
-    @Input() gameTitle: GameTitleNames;
+    @Input() public gameTitle: GameTitleNames;
     public selectedGiftingOption: InventoryOptions = InventoryOptions.UserGift;
 
     constructor() {
