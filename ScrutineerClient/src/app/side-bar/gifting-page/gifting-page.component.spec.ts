@@ -3,21 +3,21 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed, inject, getTestBed } from '@angular/core/testing';
 
 // Components
-import { InventoryOptionsComponent } from './inventory-options.cmpt';
+import { GiftingPageComponent } from './gifting-page.component';
 
-describe('InventoryOptionsComponent', () => {
-    let fixture: ComponentFixture<InventoryOptionsComponent>;
-    let component: InventoryOptionsComponent;
+describe('GiftingPageComponent', () => {
+    let fixture: ComponentFixture<GiftingPageComponent>;
+    let component: GiftingPageComponent;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [],
-            declarations: [InventoryOptionsComponent],
+            declarations: [GiftingPageComponent],
             schemas: [NO_ERRORS_SCHEMA],
             providers: []
         }).compileComponents();
 
-        fixture = TestBed.createComponent(InventoryOptionsComponent);
+        fixture = TestBed.createComponent(GiftingPageComponent);
         component = fixture.debugElement.componentInstance;
     }));
 

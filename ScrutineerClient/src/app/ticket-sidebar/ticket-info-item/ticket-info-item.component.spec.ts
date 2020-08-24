@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 // Components
-import { TicketInfoItemComponent } from './ticket-info-item.cmpt';
+import { TicketInfoItemComponent } from './ticket-info-item.component';
 import { createMockClipboard } from '@shared/helpers/clipboard';
 
 describe('TicketInfoItemComponent', () => {

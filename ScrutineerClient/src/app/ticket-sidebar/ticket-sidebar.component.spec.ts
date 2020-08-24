@@ -10,7 +10,7 @@ import { createMockClipboard } from '@shared/helpers/clipboard';
 import { createMockScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser';
 
 // Components
-import { TicketSidebarComponent } from './ticket-sidebar.cmpt';
+import { TicketSidebarComponent } from './ticket-sidebar.component';
 
 import { createMockZendeskService } from '@shared/services/zendesk';
 

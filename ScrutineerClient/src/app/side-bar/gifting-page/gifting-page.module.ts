@@ -4,8 +4,8 @@ import { NgModule } from '@angular/core';
 import { InventoryOptionsModule } from '../inventory-options/inventory-options.module';
 import { InventoryModule } from '../inventory/inventory.module';
 
-import { GiftingPageComponent } from './gifting-page.cmpt';
-export { GiftingPageComponent } from './gifting-page.cmpt';
+import { GiftingPageComponent } from './gifting-page.component';
+export { GiftingPageComponent } from './gifting-page.component';
 
 /** Defines the gifting page module. */
 @NgModule({
