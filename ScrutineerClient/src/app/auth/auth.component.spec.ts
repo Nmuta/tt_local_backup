@@ -173,16 +173,10 @@ describe('AuthComponent', () => {
             });
         });
     });
-    describe('Method: login', () => {
-        it('should call msalService.loginRedirect correctly', () => {
-            component.login();
-
-            expect(mockMsalService.loginRedirect).toHaveBeenCalledWith({
-                extraScopesToConsent: [environment.azureAppScope]
-            });
-        });
-    });
     describe('Method: logout', () => {
+        beforeEach(() => {
+            mockMsalService.logout = jasmine.createSpy('logout');
+        });
         it('should call msalService.logout', () => {
             component.logout();
 

@@ -97,6 +97,14 @@
             "scripts": [],
             "assets": [
               "src/assets"
+            ],
+            "codeCoverageExclude": [
+                "/**/polyfills.ts",
+                "/**/test.ts",
+                "/**/*.mock.ts",
+                "/**/index.ts",
+                "/**/window.service.ts",
+                "/**/scrutineer-data-parser.helper.ts"
             ]
           }
         },
