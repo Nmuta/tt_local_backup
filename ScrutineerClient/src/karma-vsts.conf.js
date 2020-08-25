@@ -21,10 +21,9 @@ module.exports = function(config) {
             reports: ['html', 'cobertura', 'text'],
             fixWebpackSourcePaths: true,
             thresholds: {
-                // statements: 80,
-                // lines: 75,
-                // branches: 55,
-                // functions: 70
+                statements: 60,
+                lines: 60,
+                functions: 60
             }
         },
         reporters: ['progress', 'junit', 'kjhtml'],

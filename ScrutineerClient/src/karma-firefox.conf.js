@@ -16,16 +16,10 @@ module.exports = function(config) {
         client: {
             clearContext: false // leave Jasmine Spec Runner output visible in browser
         },
-        // coverageIstanbulReporter: {
-        //     reports: ['html', 'cobertura', 'text'],
-        //     fixWebpackSourcePaths: true,
-        //     thresholds: {
-        //         statements: 80,
-        //         lines: 75,
-        //         branches: 55,
-        //         functions: 70
-        //     }
-        // },
+        coverageIstanbulReporter: {
+            reports: ['html', 'cobertura', 'text'],
+            fixWebpackSourcePaths: true
+        },
         reporters: ['progress', 'kjhtml'],
         port: 9876,
         colors: true,

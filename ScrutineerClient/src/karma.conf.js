@@ -18,13 +18,7 @@ module.exports = function (config) {
         },
         coverageIstanbulReporter: {
             reports: ['html', 'cobertura', 'text'],
-            fixWebpackSourcePaths: true,
-            thresholds: {
-                statements: 80,
-                lines: 75,
-                branches: 55,
-                functions: 70
-            }
+            fixWebpackSourcePaths: true
         },
         reporters: ['progress', 'kjhtml'],
         port: 9876,
