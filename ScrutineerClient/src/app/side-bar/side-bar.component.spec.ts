@@ -21,7 +21,7 @@ describe('SidebarComponent', () => {
     let fixture: ComponentFixture<SidebarComponent>;
     let component: SidebarComponent;
     let mockStore: Store;
-    let mockRouter: Router
+    let mockRouter: Router;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
