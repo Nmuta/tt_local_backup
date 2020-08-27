@@ -1,13 +1,14 @@
 <section>
-    <div class="profile-circle-div" 
-        (click)="changeProfileTabVisibility()"
-        [ngClass]="{ 'profile-circle-div-tab-opened' : profileTabVisible }"
-    >
-        <fa-icon icon="user" [styles]="{}" class="profile-icon"></fa-icon>
-        <div *ngIf="profileTabVisible" class="profile-tab-div">
-            <p>Email: {{user.emailAddress}}</p>
-            <p>Role: {{user.role}}</p>
-            <button (click)="openAuthPageInNewTab()">To auth page to logout</button>
-        </div>
+  <div
+    class="profile-circle-div"
+    (click)="changeProfileTabVisibility()"
+    [ngClass]="{ 'profile-circle-div-tab-opened' : profileTabVisible }"
+  >
+    <fa-icon icon="user" [styles]="{}" class="profile-icon"></fa-icon>
+    <div *ngIf="profileTabVisible" class="profile-tab-div">
+      <p>Email: {{user.emailAddress}}</p>
+      <p>Role: {{user.role}}</p>
+      <button (click)="openAuthPageInNewTab()">To auth page to logout</button>
     </div>
+  </div>
 </section>
