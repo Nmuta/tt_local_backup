@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "lint": "ng lint",
+    "format": "prettier --write .",
     "start": "ng serve",
     "configMoveToBuild": "cp web.config dist/",
     "local:test:chrome": "ng test --karma-config=src/karma.conf.js --source-map=true",
