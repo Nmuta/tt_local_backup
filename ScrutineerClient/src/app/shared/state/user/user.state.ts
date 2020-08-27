@@ -51,10 +51,10 @@ export class UserState {
   @Action(GetUser, { cancelUncompleted: true })
   public getUser(ctx: StateContext<UserStateModel>, action: GetUser) {
     this.userService.getUserProfile().subscribe(
-      (data) => {
+      data => {
         ctx.patchState({ profile: data });
       },
-      (err) => {
+      err => {
         ctx.patchState({ profile: null });
       }
     );
@@ -97,7 +97,7 @@ export class UserState {
         scopes: [environment.azureAppScope],
       })
       .then(
-        (data) => {
+        data => {
           if (!data.accessToken) {
             ctx.patchState({ accessToken: null });
             asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
@@ -107,7 +107,7 @@ export class UserState {
           ctx.patchState({ accessToken: data.accessToken });
           asapScheduler.schedule(() => ctx.dispatch(new GetUser()));
         },
-        (err) => {
+        err => {
           ctx.patchState({ accessToken: null });
           asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
         }
@@ -129,7 +129,7 @@ export class UserState {
   ): Observable<UserModel> {
     const obs = profile$
       .pipe(
-        filter((x) => x !== undefined),
+        filter(x => x !== undefined),
         take(1)
       )
       .pipe(timeout(5000));

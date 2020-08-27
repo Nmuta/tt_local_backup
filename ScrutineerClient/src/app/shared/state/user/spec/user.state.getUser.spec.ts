@@ -54,12 +54,12 @@ describe("State: User", () => {
 
         // Assert
         store
-          .selectOnce((state) => state.user.profile)
-          .subscribe((profile) => {
+          .selectOnce(state => state.user.profile)
+          .subscribe(profile => {
             expect(profile).toBe(expectedProfile);
           });
       });
-      it("should succeed the action", (done) => {
+      it("should succeed the action", done => {
         // Assert
         actions$.pipe(ofActionSuccessful(GetUser)).subscribe(() => {
           done();
@@ -85,12 +85,12 @@ describe("State: User", () => {
 
         // Assert
         store
-          .selectOnce((state) => state.user.profile)
-          .subscribe((profile) => {
+          .selectOnce(state => state.user.profile)
+          .subscribe(profile => {
             expect(profile).toBeNull();
           });
       });
-      it("should succeed the action", (done) => {
+      it("should succeed the action", done => {
         // Assert
         actions$.pipe(ofActionSuccessful(GetUser)).subscribe(() => {
           done();

@@ -9,19 +9,19 @@ const routes: Routes = [
     path: "sidebar",
     canActivate: [ZendeskGuardService],
     loadChildren: () =>
-      import("./side-bar/side-bar.module").then((m) => m.SidebarModule),
+      import("./side-bar/side-bar.module").then(m => m.SidebarModule),
   },
   {
     path: "ticket-sidebar",
     canActivate: [ZendeskGuardService],
     loadChildren: () =>
       import("./ticket-sidebar/ticket-sidebar.module").then(
-        (m) => m.TicketSidebarModule
+        m => m.TicketSidebarModule
       ),
   },
   {
     path: "auth",
-    loadChildren: () => import("./auth/auth.module").then((m) => m.AuthModule),
+    loadChildren: () => import("./auth/auth.module").then(m => m.AuthModule),
   },
   {
     path: "error",

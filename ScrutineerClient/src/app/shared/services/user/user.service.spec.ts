@@ -28,8 +28,8 @@ describe("service: UserService", () => {
         .and.returnValue(of({}));
       headers = new HttpHeaders().set("Content-Type", "application/json");
     });
-    it("should call API service getRequest with the expected params", (done) => {
-      service.getUserProfile().subscribe((res) => {
+    it("should call API service getRequest with the expected params", done => {
+      service.getUserProfile().subscribe(res => {
         expect(apiMock.getRequest).toHaveBeenCalledWith(`me`);
         done();
       });

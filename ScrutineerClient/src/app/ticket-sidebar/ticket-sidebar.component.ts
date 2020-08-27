@@ -40,7 +40,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
   public ngOnInit() {
     this.loading = true;
     UserState.latestValidProfile(this.profile$).subscribe(
-      (profile) => {
+      profile => {
         this.loading = false;
         this.profile = profile;
         if (!this.profile) {
@@ -51,7 +51,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
           this.getTicketRequestor();
         }
       },
-      (error) => {
+      error => {
         this.loading = false;
         this.router.navigate([`/auth`], {
           queryParams: { from: "ticket-sidebar" },
@@ -99,7 +99,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
   public getTitleData(titleCustomField) {
     this.zendeskService
       .getTicketCustomField(titleCustomField)
-      .subscribe((response) => {
+      .subscribe(response => {
         const titleName = response[`ticket.customField:${titleCustomField}`];
         const titleNameUppercase = titleName.toUpperCase();
         this.title =
@@ -129,10 +129,10 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
       credentials: "include",
     };
     this.zendeskService.sendRequest(settings).then(
-      (response) => {
+      response => {
         this.showUserData(response, null);
       },
-      (err) => {
+      err => {
         // TODO: show error on ticket app.
       }
     );

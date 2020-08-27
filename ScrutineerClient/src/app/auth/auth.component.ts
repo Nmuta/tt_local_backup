@@ -33,7 +33,7 @@ export class AuthComponent implements OnInit {
     private msalService: MsalService,
     private windowService: WindowService
   ) {
-    this.activatedRoute.queryParams.subscribe((params) => {
+    this.activatedRoute.queryParams.subscribe(params => {
       this.fromApp = params.from;
     });
   }
@@ -43,7 +43,7 @@ export class AuthComponent implements OnInit {
     this.loading = true;
     this.inZendesk = !!this.windowService.zafClient();
     UserState.latestValidProfile(this.profile$).subscribe(
-      (profile) => {
+      profile => {
         this.loading = false;
         this.profile = profile;
 

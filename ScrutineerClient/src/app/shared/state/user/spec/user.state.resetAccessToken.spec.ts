@@ -49,8 +49,8 @@ describe("State: User", () => {
 
       // Assert
       store
-        .selectOnce((state) => state.user.accessToken)
-        .subscribe((accessToken) => {
+        .selectOnce(state => state.user.accessToken)
+        .subscribe(accessToken => {
           expect(accessToken).toBeUndefined();
         });
     });

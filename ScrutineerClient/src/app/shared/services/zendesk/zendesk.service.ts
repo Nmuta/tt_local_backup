@@ -46,9 +46,7 @@ export class ZendeskService {
 
   /** Resizes the zendesk app. */
   public resize(width: string, height: string) {
-    this.windowService
-      .zafClient()
-      .invoke("resize", { width: width, height: height });
+    this.windowService.zafClient().invoke("resize", { width, height });
   }
 
   /** Opens up the sepcified zendesk app. */

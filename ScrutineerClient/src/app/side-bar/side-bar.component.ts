@@ -28,14 +28,14 @@ export class SidebarComponent implements OnInit {
   public ngOnInit() {
     this.loading = true;
     UserState.latestValidProfile(this.profile$).subscribe(
-      (profile) => {
+      profile => {
         this.loading = false;
         this.profile = profile;
         if (!this.profile) {
           this.router.navigate([`/auth`], { queryParams: { from: "sidebar" } });
         }
       },
-      (error) => {
+      error => {
         this.loading = false;
         this.router.navigate([`/auth`], { queryParams: { from: "sidebar" } });
       }
