@@ -7,8 +7,8 @@ trigger:
 - main
 
 variables:
-  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/ScrutineerClient/.yarn
-  WORKING_DIRECTORY: $(Pipeline.Workspace)/ScrutineerClient
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+  WORKING_DIRECTORY: $(Agent.BuildDirectory)/ScrutineerClient
 
 pool:
   vmImage: 'windows-latest'
