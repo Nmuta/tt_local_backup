@@ -48,6 +48,7 @@
     "max-classes-per-file": false,
     "max-line-length": false,
     "object-literal-sort-keys": false,
+    "object-literal-shorthand": false,
     "variable-name": {
       "options": [
         "ban-keywords",
