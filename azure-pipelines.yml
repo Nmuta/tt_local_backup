@@ -8,6 +8,7 @@ trigger:
 
 variables:
   YARN_CACHE_FOLDER: $(Pipeline.Workspace)/ScrutineerClient/.yarn
+  WORKING_DIRECTORY: $(Pipeline.Workspace)/ScrutineerClient
 
 pool:
   vmImage: 'windows-latest'
@@ -15,7 +16,7 @@ pool:
 steps:
 - task: Cache@2
   inputs:
-    key: 'yarn | "$(Agent.OS)" | yarn.lock'
+    key: 'yarn | "$(Agent.OS)" | $(WORKING_DIRECTORY)/yarn.lock'
     restoreKeys: |
        yarn | "$(Agent.OS)"
        yarn
@@ -23,5 +24,5 @@ steps:
   displayName: Cache Yarn packages
 
 - script: yarn --frozen-lockfile
-  workingDirectory: ScrutineerClient/
+  workingDirectory: $(WORKING_DIRECTORY)/
 
