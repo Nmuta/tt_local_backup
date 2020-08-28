@@ -28,7 +28,6 @@ steps:
     script: |
       yarn --frozen-lockfile
     workingDirectory: $(WORKING_DIRECTORY)/
-    failOnStderr: true
 
 - script: yarn --frozen-lockfile
   workingDirectory: $(WORKING_DIRECTORY)/
