@@ -63,7 +63,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         this.zendeskService.getTicketRequestor().subscribe((response: any) => {
             const requester = response['ticket.requester'];
             const organizations =  requester.organizations;
-            const requesterName: string = requester.name;
+            const requesterName = requester.name;
             let orgName: string = null;
             if (organizations.length > 0) {
                 orgName = organizations[0].name;
