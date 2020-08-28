@@ -17,10 +17,7 @@ pool:
 steps:
 - task: Cache@2
   inputs:
-    key: 'yarn | "$(Agent.OS)" | $(WORKING_DIRECTORY)/yarn.lock'
-    restoreKeys: |
-       yarn | "$(Agent.OS)"
-       yarn
+    key: 'yarn2 | "$(Agent.OS)" | $(WORKING_DIRECTORY)/yarn.lock'
     path: $(YARN_CACHE_FOLDER)
   displayName: Cache node_modules by yarn.lock
 
