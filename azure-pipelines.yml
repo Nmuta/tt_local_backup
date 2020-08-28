@@ -23,6 +23,13 @@ steps:
     path: $(YARN_CACHE_FOLDER)
   displayName: Cache Yarn packages
 
+- task: CmdLine@2
+  inputs:
+    script: |
+      yarn --frozen-lockfile
+    workingDirectory: $(WORKING_DIRECTORY)/
+    failOnStderr: true
+
 - script: yarn --frozen-lockfile
   workingDirectory: $(WORKING_DIRECTORY)/
 
