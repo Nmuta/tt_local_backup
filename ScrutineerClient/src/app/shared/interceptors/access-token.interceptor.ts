@@ -3,12 +3,12 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
-} from "@angular/common/http";
-import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
-import { Select, Store } from "@ngxs/store";
-import { UserState, UserStateModel } from "@shared/state/user/user.state";
-import { access } from "fs";
-import { Observable } from "rxjs";
+} from '@angular/common/http';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
+import { UserState, UserStateModel } from '@shared/state/user/user.state';
+import { access } from 'fs';
+import { Observable } from 'rxjs';
 
 /** Defines the access token interceptor. */
 @Injectable()
@@ -25,7 +25,7 @@ export class AccessTokenInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     let accessToken = this.store.selectSnapshot<any>(UserState.accessToken);
-    accessToken = !!accessToken ? accessToken : "";
+    accessToken = !!accessToken ? accessToken : '';
     request = request.clone({
       setHeaders: {
         Authorization: `Bearer ${accessToken}`,

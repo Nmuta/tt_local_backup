@@ -5,10 +5,10 @@
   fakeAsync,
   async,
   inject,
-} from "@angular/core/testing";
-import { WindowService } from "./window.service";
+} from '@angular/core/testing';
+import { WindowService } from './window.service';
 
-describe("service: WindowService", () => {
+describe('service: WindowService', () => {
   let injector: TestBed;
   let windowService: WindowService;
 
@@ -21,7 +21,7 @@ describe("service: WindowService", () => {
     windowService = injector.get(WindowService);
   });
 
-  it("should be created", inject([WindowService], (service: WindowService) => {
+  it('should be created', inject([WindowService], (service: WindowService) => {
     expect(service).toBeTruthy();
   }));
 });

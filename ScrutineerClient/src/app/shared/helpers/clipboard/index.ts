@@ -1,2 +1,2 @@
-export * from "./clipboard.helper";
-export * from "./clipboard.helper.mock";
+export * from './clipboard.helper';
+export * from './clipboard.helper.mock';

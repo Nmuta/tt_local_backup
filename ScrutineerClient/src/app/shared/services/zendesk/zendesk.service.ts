@@ -1,27 +1,27 @@
-import { Injectable } from "@angular/core";
-import { WindowService } from "@shared/services/window";
-import { Observable, of, throwError } from "rxjs";
+import { Injectable } from '@angular/core';
+import { WindowService } from '@shared/services/window';
+import { Observable, of, throwError } from 'rxjs';
 
 /** Defines the Zendesk Service. */
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ZendeskService {
   constructor(private windowService: WindowService) {}
 
   /** Gets the zendesk ticket details. */
   public getTicketDetails(): Observable<any> {
-    return this.windowService.zafClient().get("ticket");
+    return this.windowService.zafClient().get('ticket');
   }
 
   /** Gets the zendesk ticket requestor information. */
   public getTicketRequestor(): Observable<object> {
-    return this.windowService.zafClient().get("ticket.requester");
+    return this.windowService.zafClient().get('ticket.requester');
   }
 
   /** Gets the zendesk ticket fields. */
   public getTicketFields(): Observable<object> {
-    return this.windowService.zafClient().get("ticketFields");
+    return this.windowService.zafClient().get('ticketFields');
   }
 
   /** Gets a zendesk custom ticket field. */
@@ -36,7 +36,7 @@ export class ZendeskService {
 
   /** Gets the current zendesk user. */
   public currentUser(): Observable<any> {
-    return this.windowService.zafClient().get("currentUser");
+    return this.windowService.zafClient().get('currentUser');
   }
 
   /** Gets the zendesk context. */
@@ -48,13 +48,13 @@ export class ZendeskService {
   public resize(width: string, height: string) {
     this.windowService
       .zafClient()
-      .invoke("resize", { width: width, height: height });
+      .invoke('resize', { width: width, height: height });
   }
 
   /** Opens up the sepcified zendesk app. */
   public goToApp(appLocation, appName, paramPath) {
     this.windowService
       .zafClient()
-      .invoke("routeTo", appLocation, appName, paramPath);
+      .invoke('routeTo', appLocation, appName, paramPath);
   }
 }

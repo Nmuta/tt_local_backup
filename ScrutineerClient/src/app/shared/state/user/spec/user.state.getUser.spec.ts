@@ -1,4 +1,4 @@
-import { async, TestBed } from "@angular/core/testing";
+import { async, TestBed } from '@angular/core/testing';
 import {
   Store,
   NgxsModule,
@@ -6,15 +6,15 @@ import {
   ofActionSuccessful,
   ofActionErrored,
   ofActionDispatched,
-} from "@ngxs/store";
-import { UserState } from "../user.state";
-import { GetUser } from "../user.actions";
-import { of, throwError } from "rxjs";
-import { createMockUserService, UserService } from "@shared/services/user";
-import { createMockMsalService } from "@shared/mocks/msal.service.mock";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+} from '@ngxs/store';
+import { UserState } from '../user.state';
+import { GetUser } from '../user.actions';
+import { of, throwError } from 'rxjs';
+import { createMockUserService, UserService } from '@shared/services/user';
+import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe("State: User", () => {
+describe('State: User', () => {
   let store: Store;
   let actions$: Actions;
   let mockUserService: UserService;
@@ -30,25 +30,25 @@ describe("State: User", () => {
     mockUserService = TestBed.get(UserService);
 
     mockUserService.getUserProfile = jasmine
-      .createSpy("getUserProfile")
+      .createSpy('getUserProfile')
       .and.returnValue(of({}));
   }));
-  describe("[GetUser] Action", () => {
+  describe('[GetUser] Action', () => {
     let action;
     beforeEach(() => {
       action = new GetUser();
     });
-    describe("when UserService returns a valid profile", () => {
+    describe('when UserService returns a valid profile', () => {
       let expectedProfile: any;
       beforeEach(() => {
         expectedProfile = {
-          name: "Luke G",
+          name: 'Luke G',
         };
         mockUserService.getUserProfile = jasmine
-          .createSpy("getUserProfile")
+          .createSpy('getUserProfile')
           .and.returnValue(of(expectedProfile));
       });
-      it("should patch profile", () => {
+      it('should patch profile', () => {
         // Action
         store.dispatch(action);
 
@@ -59,7 +59,7 @@ describe("State: User", () => {
             expect(profile).toBe(expectedProfile);
           });
       });
-      it("should succeed the action", done => {
+      it('should succeed the action', done => {
         // Assert
         actions$.pipe(ofActionSuccessful(GetUser)).subscribe(() => {
           done();
@@ -69,17 +69,17 @@ describe("State: User", () => {
         store.dispatch(action);
       });
     });
-    describe("when UserService throws an error", () => {
+    describe('when UserService throws an error', () => {
       let expectedProfile: any;
       beforeEach(() => {
         expectedProfile = {
-          name: "Luke G",
+          name: 'Luke G',
         };
         mockUserService.getUserProfile = jasmine
-          .createSpy("getUserProfile")
-          .and.returnValue(throwError({ message: "401 Unauthorized" }));
+          .createSpy('getUserProfile')
+          .and.returnValue(throwError({ message: '401 Unauthorized' }));
       });
-      it("should patch profile with null", () => {
+      it('should patch profile with null', () => {
         // Action
         store.dispatch(action);
 
@@ -90,7 +90,7 @@ describe("State: User", () => {
             expect(profile).toBeNull();
           });
       });
-      it("should succeed the action", done => {
+      it('should succeed the action', done => {
         // Assert
         actions$.pipe(ofActionSuccessful(GetUser)).subscribe(() => {
           done();

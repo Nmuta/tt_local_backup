@@ -1,10 +1,10 @@
 ﻿// General
-import { Injectable } from "@angular/core";
-import * as ZAFClient from "zendesk_app_framework_sdk";
+import { Injectable } from '@angular/core';
+import * as ZAFClient from 'zendesk_app_framework_sdk';
 
 /** Defines the Window Service. */
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class WindowService {
   constructor() {

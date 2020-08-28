@@ -1,22 +1,22 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { MsalService } from "@azure/msal-angular";
-import { Select, Store } from "@ngxs/store";
-import { UserModel } from "@shared/models/user.model";
-import { WindowService } from "@shared/services/window";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
+import { Select, Store } from '@ngxs/store';
+import { UserModel } from '@shared/models/user.model';
+import { WindowService } from '@shared/services/window';
 import {
   RequestAccessToken,
   ResetUserProfile,
-} from "@shared/state/user/user.actions";
-import { UserState } from "@shared/state/user/user.state";
-import { Observable } from "rxjs";
+} from '@shared/state/user/user.actions';
+import { UserState } from '@shared/state/user/user.state';
+import { Observable } from 'rxjs';
 
-import { environment } from "../../environments/environment";
+import { environment } from '../../environments/environment';
 
 /** Defines the auth component. */
 @Component({
-  templateUrl: "./auth.html",
-  styleUrls: ["./auth.scss"],
+  templateUrl: './auth.html',
+  styleUrls: ['./auth.scss'],
 })
 export class AuthComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
@@ -60,7 +60,7 @@ export class AuthComponent implements OnInit {
 
   /** Open the auth page in a new tab. */
   public openAuthPageInNewTab() {
-    this.windowService.open(`${environment.clientUrl}/auth`, "_blank");
+    this.windowService.open(`${environment.clientUrl}/auth`, '_blank');
   }
 
   /** Sends login request to client app scope. */

@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, Input, OnInit } from "@angular/core";
-import { Clipboard } from "@shared/helpers/clipboard";
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Clipboard } from '@shared/helpers/clipboard';
 
 /** Defines the ticket information item component. */
 @Component({
-  selector: "ticket-info-item",
-  templateUrl: "./ticket-info-item.html",
-  styleUrls: ["./ticket-info-item.scss"],
+  selector: 'ticket-info-item',
+  templateUrl: './ticket-info-item.html',
+  styleUrls: ['./ticket-info-item.scss'],
 })
 export class TicketInfoItemComponent implements OnInit {
   @Input() public name: string;

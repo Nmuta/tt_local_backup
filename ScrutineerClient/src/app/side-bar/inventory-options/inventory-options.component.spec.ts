@@ -1,17 +1,17 @@
 // General
-import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   async,
   ComponentFixture,
   TestBed,
   inject,
   getTestBed,
-} from "@angular/core/testing";
+} from '@angular/core/testing';
 
 // Components
-import { InventoryOptionsComponent } from "./inventory-options.component";
+import { InventoryOptionsComponent } from './inventory-options.component';
 
-describe("InventoryOptionsComponent", () => {
+describe('InventoryOptionsComponent', () => {
   let fixture: ComponentFixture<InventoryOptionsComponent>;
   let component: InventoryOptionsComponent;
 
@@ -27,7 +27,7 @@ describe("InventoryOptionsComponent", () => {
     component = fixture.debugElement.componentInstance;
   }));
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

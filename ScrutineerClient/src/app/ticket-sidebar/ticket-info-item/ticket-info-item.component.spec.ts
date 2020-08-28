@@ -1,12 +1,12 @@
 // General
-import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 // Components
-import { TicketInfoItemComponent } from "./ticket-info-item.component";
-import { createMockClipboard } from "@shared/helpers/clipboard";
+import { TicketInfoItemComponent } from './ticket-info-item.component';
+import { createMockClipboard } from '@shared/helpers/clipboard';
 
-describe("TicketInfoItemComponent", () => {
+describe('TicketInfoItemComponent', () => {
   let fixture: ComponentFixture<TicketInfoItemComponent>;
   let component: TicketInfoItemComponent;
 
@@ -22,7 +22,7 @@ describe("TicketInfoItemComponent", () => {
     component = fixture.debugElement.componentInstance;
   }));
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

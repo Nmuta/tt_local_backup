@@ -1,16 +1,16 @@
-import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
   Router,
   RouterStateSnapshot,
-} from "@angular/router";
-import { WindowService } from "@shared/services/window";
-import { Observable } from "rxjs";
+} from '@angular/router';
+import { WindowService } from '@shared/services/window';
+import { Observable } from 'rxjs';
 
 /** Route guard that guarentees app routes are accessible in zendesk only. */
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ZendeskGuardService implements CanActivate {
   constructor(private router: Router, private windowService: WindowService) {}
@@ -22,7 +22,7 @@ export class ZendeskGuardService implements CanActivate {
   ): Observable<boolean> | boolean {
     const inZendesk = !!this.windowService.zafClient();
     if (!inZendesk) {
-      this.router.navigate(["/auth"]);
+      this.router.navigate(['/auth']);
     }
 
     return inZendesk;

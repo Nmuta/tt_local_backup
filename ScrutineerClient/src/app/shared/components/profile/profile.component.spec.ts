@@ -1,24 +1,24 @@
 // General
-import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   async,
   ComponentFixture,
   TestBed,
   inject,
   getTestBed,
-} from "@angular/core/testing";
-import { environment } from "@environments/environment";
+} from '@angular/core/testing';
+import { environment } from '@environments/environment';
 
 // Components
-import { ProfileComponent } from "./profile.component";
+import { ProfileComponent } from './profile.component';
 
 // Services
 import {
   WindowService,
   createMockWindowService,
-} from "@shared/services/window";
+} from '@shared/services/window';
 
-describe("ProfileComponent", () => {
+describe('ProfileComponent', () => {
   let mockWindowService: WindowService;
 
   let fixture: ComponentFixture<ProfileComponent>;
@@ -39,35 +39,35 @@ describe("ProfileComponent", () => {
     component = fixture.debugElement.componentInstance;
   }));
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe("Method: openAuthPageInNewTab", () => {
+  describe('Method: openAuthPageInNewTab', () => {
     beforeEach(() => {
-      mockWindowService.open = jasmine.createSpy("open");
+      mockWindowService.open = jasmine.createSpy('open');
     });
-    it("should call windowService.open correctly", () => {
+    it('should call windowService.open correctly', () => {
       component.openAuthPageInNewTab();
 
       expect(mockWindowService.open).toHaveBeenCalledWith(
         `${environment.clientUrl}/auth`,
-        "_blank"
+        '_blank'
       );
     });
   });
 
-  describe("Method: changeProfileTabVisibility", () => {
-    describe("When profileTabVisible is false", () => {
-      it("should call set profileTabVisible to true", () => {
+  describe('Method: changeProfileTabVisibility', () => {
+    describe('When profileTabVisible is false', () => {
+      it('should call set profileTabVisible to true', () => {
         component.profileTabVisible = false;
         component.changeProfileTabVisibility();
 
         expect(component.profileTabVisible).toBeTruthy();
       });
     });
-    describe("When profileTabVisible is true", () => {
-      it("should call set profileTabVisible to false", () => {
+    describe('When profileTabVisible is true', () => {
+      it('should call set profileTabVisible to false', () => {
         component.profileTabVisible = true;
         component.changeProfileTabVisibility();
 

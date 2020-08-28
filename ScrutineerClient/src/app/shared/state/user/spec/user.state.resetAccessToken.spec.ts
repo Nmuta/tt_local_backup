@@ -1,4 +1,4 @@
-import { async, TestBed } from "@angular/core/testing";
+import { async, TestBed } from '@angular/core/testing';
 import {
   Store,
   NgxsModule,
@@ -6,15 +6,15 @@ import {
   ofActionSuccessful,
   ofActionErrored,
   ofActionDispatched,
-} from "@ngxs/store";
-import { UserState } from "../user.state";
-import { ResetAccessToken } from "../user.actions";
-import { of, throwError } from "rxjs";
-import { createMockMsalService } from "@shared/mocks/msal.service.mock";
-import { MsalService } from "@azure/msal-angular";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+} from '@ngxs/store';
+import { UserState } from '../user.state';
+import { ResetAccessToken } from '../user.actions';
+import { of, throwError } from 'rxjs';
+import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { MsalService } from '@azure/msal-angular';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe("State: User", () => {
+describe('State: User', () => {
   let store: Store;
   let actions$: Actions;
   let mockAuthService: MsalService;
@@ -30,20 +30,20 @@ describe("State: User", () => {
     mockAuthService = TestBed.get(MsalService);
 
     mockAuthService.acquireTokenSilent = jasmine
-      .createSpy("acquireTokenSilent")
+      .createSpy('acquireTokenSilent')
       .and.returnValue(of({}));
   }));
-  describe("[ResetAccessToken] Action", () => {
+  describe('[ResetAccessToken] Action', () => {
     let action;
     beforeEach(() => {
       action = new ResetAccessToken();
       store.reset({
         user: {
-          accessToken: "testing-access-token",
+          accessToken: 'testing-access-token',
         },
       });
     });
-    it("should patch access token to undefined", () => {
+    it('should patch access token to undefined', () => {
       // Action
       store.dispatch(action);
 

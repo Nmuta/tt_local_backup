@@ -3,15 +3,15 @@ import {
   HttpErrorResponse,
   HttpHeaders,
   HttpParams,
-} from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { environment } from "@environments/environment";
-import { Observable } from "rxjs";
-import { retryWhen, share } from "rxjs/operators";
+} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
+import { Observable } from 'rxjs';
+import { retryWhen, share } from 'rxjs/operators';
 
 /** Defines the api service. */
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ApiService {
   constructor(private http: HttpClient) {}
@@ -55,7 +55,7 @@ export class ApiService {
     params?: HttpParams
   ): Observable<T> {
     const apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
-    const headers = new HttpHeaders().set("Content-Type", "application/json");
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     const put = this.http.put<T>(apiUrl, object, {
       headers,
@@ -68,7 +68,7 @@ export class ApiService {
   /** Sends a DELETE request. */
   public deleteRequest<T>(url: string, params?: HttpParams): Observable<T> {
     const apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
-    const headers = new HttpHeaders().set("Content-Type", "application/json");
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     const del = this.http.delete<T>(apiUrl, {
       headers,

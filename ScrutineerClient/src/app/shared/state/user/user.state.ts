@@ -1,10 +1,10 @@
 // General
-import { MsalService } from "@azure/msal-angular";
-import { environment } from "@environments/environment";
-import { Action, Selector, State, StateContext, Store } from "@ngxs/store";
-import { UserModel } from "@shared/models/user.model";
-import { UserService } from "@shared/services/user";
-import { asapScheduler, from, Observable, of, throwError } from "rxjs";
+import { MsalService } from '@azure/msal-angular';
+import { environment } from '@environments/environment';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { UserModel } from '@shared/models/user.model';
+import { UserService } from '@shared/services/user';
+import { asapScheduler, from, Observable, of, throwError } from 'rxjs';
 import {
   catchError,
   filter,
@@ -14,7 +14,7 @@ import {
   take,
   tap,
   timeout,
-} from "rxjs/operators";
+} from 'rxjs/operators';
 
 import {
   GetUser,
@@ -22,7 +22,7 @@ import {
   ResetAccessToken,
   ResetUserProfile,
   SetNoUserProfile,
-} from "./user.actions";
+} from './user.actions';
 
 /** Defines the user state model. */
 export class UserStateModel {
@@ -30,9 +30,9 @@ export class UserStateModel {
   public accessToken?: string;
 }
 
-/** Defines teh user state. */
+/** Defines the user state. */
 @State<Partial<UserStateModel>>({
-  name: "user",
+  name: 'user',
   defaults: {
     // undefined means profile hasn't been determined
     // null means user not signed in

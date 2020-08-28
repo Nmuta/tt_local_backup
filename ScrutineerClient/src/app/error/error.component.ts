@@ -1,8 +1,8 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 
 /** Defines the error component. */
 @Component({
-  templateUrl: "./error.html",
+  templateUrl: './error.html',
   styleUrls: [],
 })
 export class ErrorComponent {

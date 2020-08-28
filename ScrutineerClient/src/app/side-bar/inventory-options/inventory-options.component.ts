@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { InventoryOptions } from "@shared/models/enums";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { InventoryOptions } from '@shared/models/enums';
 
 /** Defines the inventory options component. */
 @Component({
-  selector: "inventory-options",
-  templateUrl: "./inventory-options.html",
-  styleUrls: ["./inventory-options.scss"],
+  selector: 'inventory-options',
+  templateUrl: './inventory-options.html',
+  styleUrls: ['./inventory-options.scss'],
 })
 export class InventoryOptionsComponent implements OnInit {
   @Input() public groupGifting = true;

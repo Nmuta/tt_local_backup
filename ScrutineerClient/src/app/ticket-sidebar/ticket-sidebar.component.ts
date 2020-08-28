@@ -1,24 +1,24 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { Select } from "@ngxs/store";
-import { Clipboard } from "@shared/helpers/clipboard";
-import { ScrutineerDataParser } from "@shared/helpers/scrutineer-data-parser/scrutineer-data-parser.helper";
-import { UserModel } from "@shared/models/user.model";
-import { ZendeskService } from "@shared/services/zendesk";
-import { UserState } from "@shared/state/user/user.state";
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { Clipboard } from '@shared/helpers/clipboard';
+import { ScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser/scrutineer-data-parser.helper';
+import { UserModel } from '@shared/models/user.model';
+import { ZendeskService } from '@shared/services/zendesk';
+import { UserState } from '@shared/state/user/user.state';
 import {
   ApolloSidebarModel,
   GravitySidebarModel,
   SunriseSidebarModel,
-} from "app/ticket-sidebar/models";
-import { Observable } from "rxjs";
+} from 'app/ticket-sidebar/models';
+import { Observable } from 'rxjs';
 
-import { environment } from "../../environments/environment";
+import { environment } from '../../environments/environment';
 
 /** Defines the ticket sidebar component. */
 @Component({
-  templateUrl: "./ticket-sidebar.html",
-  styleUrls: ["./ticket-sidebar.scss"],
+  templateUrl: './ticket-sidebar.html',
+  styleUrls: ['./ticket-sidebar.scss'],
 })
 export class TicketSidebarComponent implements OnInit, AfterViewInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
@@ -45,7 +45,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         this.profile = profile;
         if (!this.profile) {
           this.router.navigate([`/auth`], {
-            queryParams: { from: "ticket-sidebar" },
+            queryParams: { from: 'ticket-sidebar' },
           });
         } else {
           this.getTicketRequestor();
@@ -54,7 +54,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
       error => {
         this.loading = false;
         this.router.navigate([`/auth`], {
-          queryParams: { from: "ticket-sidebar" },
+          queryParams: { from: 'ticket-sidebar' },
         });
       }
     );
@@ -62,13 +62,13 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
 
   /** Logic for the AfterViewInit component lifecycle. */
   public ngAfterViewInit() {
-    this.zendeskService.resize("100%", "500px");
+    this.zendeskService.resize('100%', '500px');
   }
 
   /** Gets the ticket requestor information. */
   public getTicketRequestor() {
     this.zendeskService.getTicketRequestor().subscribe((response: any) => {
-      const requester = response["ticket.requester"];
+      const requester = response['ticket.requester'];
       const organizations = requester.organizations;
       const requesterName: string = requester.name;
       let orgName: string = null;
@@ -76,7 +76,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         orgName = organizations[0].name;
       }
 
-      this.gamerTag = orgName !== "Mods" ? requesterName : "";
+      this.gamerTag = orgName !== 'Mods' ? requesterName : '';
       this.getTicketFields();
     });
   }
@@ -85,9 +85,9 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
   public getTicketFields() {
     this.zendeskService.getTicketFields().subscribe((response: any) => {
       const ticketFields = response.ticketFields;
-      let titleCustomField = "";
+      let titleCustomField = '';
       for (const field in ticketFields) {
-        if (ticketFields[field].label === "Forza Title") {
+        if (ticketFields[field].label === 'Forza Title') {
           titleCustomField = ticketFields[field].name;
         }
       }
@@ -103,14 +103,14 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         const titleName = response[`ticket.customField:${titleCustomField}`];
         const titleNameUppercase = titleName.toUpperCase();
         this.title =
-          titleNameUppercase === "FORZA_STREET"
-            ? "Gravity"
-            : titleNameUppercase === "FORZA_HORIZON_4"
-            ? "Sunrise"
-            : titleNameUppercase === "FORZA_MOTORSPORT_7"
-            ? "Apollo"
-            : titleNameUppercase === "FORZA_HORIZON_3"
-            ? "Opus"
+          titleNameUppercase === 'FORZA_STREET'
+            ? 'Gravity'
+            : titleNameUppercase === 'FORZA_HORIZON_4'
+            ? 'Sunrise'
+            : titleNameUppercase === 'FORZA_MOTORSPORT_7'
+            ? 'Apollo'
+            : titleNameUppercase === 'FORZA_HORIZON_3'
+            ? 'Opus'
             : null;
 
         // TODO: If title is NULL, break out of logic and show error.
@@ -122,11 +122,11 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
   public getPlayerData() {
     const settings = {
       url: `${environment.oldScrutineerApiUrl}/Title/${this.title}/environment/Retail/player/gamertag(${this.gamerTag})`,
-      headers: { Authorization: "ApiKeyAuth 3diJHuez5u2AysQmTuxc93" },
+      headers: { Authorization: 'ApiKeyAuth 3diJHuez5u2AysQmTuxc93' },
       secure: false,
-      type: "GET",
-      dataType: "json",
-      credentials: "include",
+      type: 'GET',
+      dataType: 'json',
+      credentials: 'include',
     };
     this.zendeskService.sendRequest(settings).then(
       response => {
@@ -141,48 +141,48 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
   /** Parses user data to more readible information. */
   public showUserData(player, customSlotTable) {
     this.player =
-      this.title === "Gravity"
+      this.title === 'Gravity'
         ? this.reduceToGravityProps(player)
-        : this.title === "Sunrise"
+        : this.title === 'Sunrise'
         ? this.reduceToSunriseProps(player)
-        : this.title === "Apollo"
+        : this.title === 'Apollo'
         ? this.reduceToApolloProps(player)
-        : this.title === "Opus"
+        : this.title === 'Opus'
         ? null
         : null;
 
     this.player.firstLogin =
-      "firstLogin" in this.player
+      'firstLogin' in this.player
         ? this.scrutineerDataParser.convertDateString(this.player.firstLogin)
         : undefined;
     this.player.lastLogin =
-      "lastLogin" in this.player
+      'lastLogin' in this.player
         ? this.scrutineerDataParser.convertDateString(this.player.lastLogin)
         : undefined;
     this.player.region =
-      "region" in this.player
-        ? this.title === "Apollo"
+      'region' in this.player
+        ? this.title === 'Apollo'
           ? this.scrutineerDataParser.regionDictFM7(this.player.region)
           : this.scrutineerDataParser.regionDict(this.player.region)
         : undefined;
     this.player.country =
-      "country" in this.player
+      'country' in this.player
         ? this.scrutineerDataParser.countryDict(this.player.country)
         : undefined;
     this.player.ageGroup =
-      "ageGroup" in this.player
+      'ageGroup' in this.player
         ? this.scrutineerDataParser.ageGroupDict(this.player.ageGroup)
         : undefined;
     this.player.lcid =
-      "lcid" in this.player
+      'lcid' in this.player
         ? this.scrutineerDataParser.lcid(this.player.lcid)
         : undefined;
     this.player.flags =
-      "flags" in this.player
+      'flags' in this.player
         ? this.scrutineerDataParser.parseFlags(this.player.flags)
         : undefined;
     this.player.userAgeGroup =
-      "userAgeGroup" in this.player
+      'userAgeGroup' in this.player
         ? this.scrutineerDataParser.ageGroupDict(this.player.userAgeGroup)
         : undefined;
   }
@@ -267,10 +267,10 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
 
   /** Opens up inventory app with predefined info filled out. */
   public goToInventory() {
-    const appSection = this.title + "/" + this.player.xuid;
+    const appSection = this.title + '/' + this.player.xuid;
     this.zendeskService.goToApp(
-      "nav_bar",
-      "forza-inventory-support",
+      'nav_bar',
+      'forza-inventory-support',
       appSection
     );
   }

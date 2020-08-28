@@ -8,13 +8,13 @@
     <!-- This script preloads the nav_bar app pane into the DOM so we can listen to route changes right away -->
     <script>
       var client = ZAFClient.init();
-      client.on("app.registered", function () {
-        client.get("instances").then(function (instancesData) {
+      client.on('app.registered', function () {
+        client.get('instances').then(function (instancesData) {
           var instances = instancesData.instances;
           for (var instanceGuid in instances) {
-            if (instances[instanceGuid].location === "nav_bar") {
+            if (instances[instanceGuid].location === 'nav_bar') {
               const navBarClient = client.instance(instanceGuid);
-              navBarClient.invoke("preloadPane"); // Preload app
+              navBarClient.invoke('preloadPane'); // Preload app
             }
           }
         });
