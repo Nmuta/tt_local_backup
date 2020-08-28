@@ -8,6 +8,7 @@ trigger:
 
 variables:
   YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+  NODE_MODULES_CACHE_FOLDER:  $(Build.Repository.LocalPath)/ScrutineerClient/node_modules
   WORKING_DIRECTORY: $(Build.Repository.LocalPath)/ScrutineerClient
 
 pool:
@@ -21,7 +22,7 @@ steps:
        yarn | "$(Agent.OS)"
        yarn
     path: $(YARN_CACHE_FOLDER)
-  displayName: Cache Yarn packages
+  displayName: Cache node_modules by yarn.lock
 
 - task: CmdLine@2
   inputs:
