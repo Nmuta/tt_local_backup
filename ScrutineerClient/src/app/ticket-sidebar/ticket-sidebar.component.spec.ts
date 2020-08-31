@@ -123,4 +123,83 @@ describe('TicketSidebarComponent', () => {
             expect(mockZendeskService.resize).toHaveBeenCalledWith('100%', '500px');
         });
     });
+
+    describe('Method: getTicketRequestor', () => {
+        describe('When zendesk service returns valid ticket requestor data', () => {
+            var requestorGamertag = 'test-gamertag';
+            beforeEach(() => {
+                const requestorTestData = { 'ticket.requester' : { name: requestorGamertag }}
+                mockZendeskService.getTicketRequestor = jasmine.createSpy('getTicketRequestor')
+                    .and.returnValue(of(requestorTestData));
+                component.getTicketFields = jasmine.createSpy('getTicketFields');
+            });
+            it('should set component.gamertag to requestor name', () => {
+                component.getTicketRequestor();
+
+                expect(component.gamerTag).toEqual(requestorGamertag);
+            });
+            it('should call component.getTicketFields', () => {
+                component.getTicketRequestor();
+
+                expect(component.getTicketFields).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe('Method: getTicketFields', () => {
+        describe('When zendesk service returns valid ticket fields data', () => {
+            var ticketGameTitleField = 'test-game-title-field';
+            beforeEach(() => {
+                const ticketFieldsTestData = { ticketFields : [{ label: 'Forza Title', name: ticketGameTitleField}] }
+                mockZendeskService.getTicketFields = jasmine.createSpy('getTicketFields')
+                    .and.returnValue(of(ticketFieldsTestData));
+                component.getTitleData = jasmine.createSpy('getTicketFields');
+            });
+
+            it('should call component.getTitleData with correct field info', () => {
+                component.getTicketFields();
+
+                expect(component.getTitleData).toHaveBeenCalledWith(ticketGameTitleField);
+            });
+        });
+    });
+
+    fdescribe('Method: getTitleData', () => {
+        beforeEach(() => {
+            mockZendeskService.getTicketCustomField = jasmine.createSpy('getTicketCustomField')
+                .and.returnValue(of({}));
+            component.getPlayerData = jasmine.createSpy('getPlayerData');
+        });
+    
+        it('should call zendesk service getTicketCustomField() with input parameter', () => {
+            var param = 'test-custom-field';
+            component.getTitleData(param);
+
+            expect(mockZendeskService.getTicketCustomField).toHaveBeenCalledWith(param);
+        });
+
+        describe('When zendeskservice getTicketCustomField() returns forza_street as title', () => {
+            var getTitleDataParam = 'testCustomField';
+            beforeEach(() => {
+                const customFieldData = '{ "ticket.customField:' + getTitleDataParam + '": "forza_street" }';
+                console.log('------------------------------------------');
+                console.log(customFieldData);
+                var customFieldDataJSON = JSON.parse(customFieldData);
+                mockZendeskService.getTicketCustomField = jasmine.createSpy('getTicketCustomField')
+                    .and.returnValue(of(customFieldDataJSON));
+            });
+
+            it('should set component.title to Gravity', () => {
+                component.getTitleData(getTitleDataParam);
+
+                expect(component.title).toEqual('Gravity');
+            });
+
+            it('should call component.getPlayerData', () => {
+                component.getTitleData(getTitleDataParam);
+
+                expect(component.getPlayerData).toHaveBeenCalled();
+            });
+        });
+    });
 });

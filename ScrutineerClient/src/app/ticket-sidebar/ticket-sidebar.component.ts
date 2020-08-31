@@ -62,14 +62,10 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
     public getTicketRequestor() {
         this.zendeskService.getTicketRequestor().subscribe((response: any) => {
             const requester = response['ticket.requester'];
-            const organizations =  requester.organizations;
-            const requesterName = requester.name;
-            let orgName: string = null;
-            if (organizations.length > 0) {
-                orgName = organizations[0].name;
-            }
 
-            this.gamerTag = orgName !== 'Mods' ? requesterName : '';
+            // TODO: Check if gamertag was input into the custom ticket field.
+            // If it was, use that over the ticket requestor as gamertag lookup.
+            this.gamerTag = requester.name;
             this.getTicketFields();
         });
     }
