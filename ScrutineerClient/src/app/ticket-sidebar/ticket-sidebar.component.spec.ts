@@ -6,7 +6,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Helpers
-import { createMockClipboard } from '@shared/helpers/clipboard';
+import { createMockClipboard, Clipboard } from '@shared/helpers/clipboard';
 import { createMockScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser';
 
 // Components
@@ -28,6 +28,7 @@ describe('TicketSidebarComponent', () => {
     let mockStore: Store;
     let mockRouter: Router;
     let mockZendeskService: ZendeskService;
+    let mockClipboard: Clipboard;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -50,6 +51,7 @@ describe('TicketSidebarComponent', () => {
         mockStore = injector.get(Store);
         mockRouter = injector.get(Router);
         mockZendeskService = injector.get(ZendeskService);
+        mockClipboard = injector.get(Clipboard);
 
         fixture = TestBed.createComponent(TicketSidebarComponent);
         component = fixture.debugElement.componentInstance;
@@ -164,29 +166,26 @@ describe('TicketSidebarComponent', () => {
         });
     });
 
-    fdescribe('Method: getTitleData', () => {
+    describe('Method: getTitleData', () => {
+        var getTitleDataParam = 'testCustomField';
         beforeEach(() => {
+            var customFieldData = '{ "ticket.customField:' + getTitleDataParam + '": "fake-something" }';
             mockZendeskService.getTicketCustomField = jasmine.createSpy('getTicketCustomField')
-                .and.returnValue(of({}));
+                .and.returnValue(of(JSON.parse(customFieldData)));
             component.getPlayerData = jasmine.createSpy('getPlayerData');
         });
     
         it('should call zendesk service getTicketCustomField() with input parameter', () => {
-            var param = 'test-custom-field';
-            component.getTitleData(param);
+            component.getTitleData(getTitleDataParam);
 
-            expect(mockZendeskService.getTicketCustomField).toHaveBeenCalledWith(param);
+            expect(mockZendeskService.getTicketCustomField).toHaveBeenCalledWith(getTitleDataParam);
         });
 
         describe('When zendeskservice getTicketCustomField() returns forza_street as title', () => {
-            var getTitleDataParam = 'testCustomField';
             beforeEach(() => {
-                const customFieldData = '{ "ticket.customField:' + getTitleDataParam + '": "forza_street" }';
-                console.log('------------------------------------------');
-                console.log(customFieldData);
-                var customFieldDataJSON = JSON.parse(customFieldData);
+                var streetCustomFieldData = '{ "ticket.customField:' + getTitleDataParam + '": "forza_street" }';
                 mockZendeskService.getTicketCustomField = jasmine.createSpy('getTicketCustomField')
-                    .and.returnValue(of(customFieldDataJSON));
+                    .and.returnValue(of(JSON.parse(streetCustomFieldData)));
             });
 
             it('should set component.title to Gravity', () => {
@@ -200,6 +199,96 @@ describe('TicketSidebarComponent', () => {
 
                 expect(component.getPlayerData).toHaveBeenCalled();
             });
+        });
+
+        describe('When zendeskservice getTicketCustomField() returns forza_horizon_4 as title', () => {
+            beforeEach(() => {
+                var horzion4CustomFieldData = '{ "ticket.customField:' + getTitleDataParam + '": "forza_horizon_4" }';
+                mockZendeskService.getTicketCustomField = jasmine.createSpy('getTicketCustomField')
+                    .and.returnValue(of(JSON.parse(horzion4CustomFieldData)));
+            });
+
+            it('should set component.title to Sunrise', () => {
+                component.getTitleData(getTitleDataParam);
+
+                expect(component.title).toEqual('Sunrise');
+            });
+
+            it('should call component.getPlayerData', () => {
+                component.getTitleData(getTitleDataParam);
+
+                expect(component.getPlayerData).toHaveBeenCalled();
+            });
+        });
+
+        describe('When zendeskservice getTicketCustomField() returns forza_motorsport_7 as title', () => {
+            beforeEach(() => {
+                var horzion4CustomFieldData = '{ "ticket.customField:' + getTitleDataParam + '": "forza_motorsport_7" }';
+                mockZendeskService.getTicketCustomField = jasmine.createSpy('getTicketCustomField')
+                    .and.returnValue(of(JSON.parse(horzion4CustomFieldData)));
+            });
+
+            it('should set component.title to Apollo', () => {
+                component.getTitleData(getTitleDataParam);
+
+                expect(component.title).toEqual('Apollo');
+            });
+
+            it('should call component.getPlayerData', () => {
+                component.getTitleData(getTitleDataParam);
+
+                expect(component.getPlayerData).toHaveBeenCalled();
+            });
+        });
+
+        describe('When zendeskservice getTicketCustomField() returns forza_horizon_3 as title', () => {
+            beforeEach(() => {
+                var horzion4CustomFieldData = '{ "ticket.customField:' + getTitleDataParam + '": "forza_horizon_3" }';
+                mockZendeskService.getTicketCustomField = jasmine.createSpy('getTicketCustomField')
+                    .and.returnValue(of(JSON.parse(horzion4CustomFieldData)));
+            });
+
+            it('should set component.title to Opus', () => {
+                component.getTitleData(getTitleDataParam);
+
+                expect(component.title).toEqual('Opus');
+            });
+
+            it('should call component.getPlayerData', () => {
+                component.getTitleData(getTitleDataParam);
+
+                expect(component.getPlayerData).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe('Method: goToInventory', () => {
+        var title = 'test-title';
+        var xuid = 'test-xuid'
+        beforeEach(() => {
+            component.title = title;
+            component.player = { xuid: xuid };
+            mockZendeskService.goToApp = jasmine.createSpy('goToApp');
+        });
+
+        it('expect zendeskService.goToApp to be called', () => {
+            component.goToInventory();
+
+            let expectedAppsection = `${title}/${xuid}`;
+            expect(mockZendeskService.goToApp).toHaveBeenCalledWith('nav_bar', 'forza-inventory-support', expectedAppsection);
+        });
+    });
+
+    describe('Method: goToInventory', () => {
+        var testParam = 'test-param';
+        beforeEach(() => {
+            mockClipboard.copyMessage = jasmine.createSpy('copyMessage');
+        });
+
+        it('expect mockClipboard.copyMessage to be called', () => {
+            component.copyToClipboard(testParam);
+
+            expect(mockClipboard.copyMessage).toHaveBeenCalledWith(testParam);
         });
     });
 });

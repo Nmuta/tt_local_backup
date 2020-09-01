@@ -103,6 +103,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
 
     /** Requests the player details from API. */
     public getPlayerData() {
+        // TODO: Move this away from zendesk request and make it through our own service request
         const settings = {
             url: `${environment.oldScrutineerApiUrl}/Title/${this.title}/environment/Retail/player/gamertag(${this.gamerTag})`,
             headers: { 'Authorization': 'ApiKeyAuth 3diJHuez5u2AysQmTuxc93' },
