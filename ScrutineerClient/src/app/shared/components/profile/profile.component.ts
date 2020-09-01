@@ -5,26 +5,24 @@ import { WindowService } from '@shared/services/window';
 
 /** Defines the profile component. */
 @Component({
-    selector: 'profile',
-    templateUrl: './profile.html',
-    styleUrls: ['./profile.scss']
+  selector: 'profile',
+  templateUrl: './profile.html',
+  styleUrls: ['./profile.scss'],
 })
 export class ProfileComponent {
-    @Input() public user: UserModel;
+  @Input() public user: UserModel;
 
-    public profileTabVisible = false;
+  public profileTabVisible = false;
 
-    constructor(
-        protected windowService: WindowService
-    ) {}
+  constructor(protected windowService: WindowService) {}
 
-    /** Opens the auth page in a new tab. */
-    public openAuthPageInNewTab() {
-        this.windowService.open(`${environment.clientUrl}/auth`, '_blank');
-    }
+  /** Opens the auth page in a new tab. */
+  public openAuthPageInNewTab() {
+    this.windowService.open(`${environment.clientUrl}/auth`, '_blank');
+  }
 
-    /** Changes the profile tab visiblity. */
-    public changeProfileTabVisibility() {
-        this.profileTabVisible = !this.profileTabVisible;
-    }
+  /** Changes the profile tab visiblity. */
+  public changeProfileTabVisibility() {
+    this.profileTabVisible = !this.profileTabVisible;
+  }
 }

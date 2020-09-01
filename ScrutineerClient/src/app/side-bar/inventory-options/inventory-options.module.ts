@@ -6,8 +6,8 @@ export { InventoryOptionsComponent } from './inventory-options.component';
 
 /** Defines the inventory options module. */
 @NgModule({
-    imports: [CommonModule],
-    exports: [InventoryOptionsComponent],
-    declarations: [InventoryOptionsComponent],
+  imports: [CommonModule],
+  exports: [InventoryOptionsComponent],
+  declarations: [InventoryOptionsComponent],
 })
 export class InventoryOptionsModule {}

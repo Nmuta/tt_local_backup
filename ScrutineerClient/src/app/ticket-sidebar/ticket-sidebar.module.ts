@@ -11,16 +11,16 @@ import { TicketSidebarRouterModule } from './ticket-sidebar.routing.module';
 
 /** Defines the ticket sidebar module. */
 @NgModule({
-    imports: [
-        CommonModule,
-        TicketSidebarRouterModule,
-        GiftingPageModule,
-        FontAwesomeModule,
-        MatButtonModule,
-        ProfileModule,
-        TicketInfoItemModule
-    ],
-    providers: [],
-    declarations: [TicketSidebarComponent]
+  imports: [
+    CommonModule,
+    TicketSidebarRouterModule,
+    GiftingPageModule,
+    FontAwesomeModule,
+    MatButtonModule,
+    ProfileModule,
+    TicketInfoItemModule,
+  ],
+  providers: [],
+  declarations: [TicketSidebarComponent],
 })
 export class TicketSidebarModule {}

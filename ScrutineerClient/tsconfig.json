@@ -1,32 +1,22 @@
 {
-    "compileOnSave": false,
-    "compilerOptions": {
-        "downlevelIteration": true,
-        "baseUrl": "src",
-        "outDir": "./dist/out-tsc",
-        "sourceMap": true,
-        "declaration": false,
-        "moduleResolution": "node",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "target": "es2015",
-        "module": "esnext",
-        "typeRoots": [
-            "node_modules/@types"
-        ],
-        "lib": [
-            "es2017",
-            "dom",
-            "dom.iterable"
-        ],
-        "paths": {
-            "@environments/*": [
-                "environments/*"
-            ],
-            "@shared/*": [
-                "app/shared/*"
-            ]
-        },
-        "allowSyntheticDefaultImports": true
-    }
+  "compileOnSave": false,
+  "compilerOptions": {
+    "downlevelIteration": true,
+    "baseUrl": "src",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2015",
+    "module": "esnext",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom", "dom.iterable"],
+    "paths": {
+      "@environments/*": ["environments/*"],
+      "@shared/*": ["app/shared/*"]
+    },
+    "allowSyntheticDefaultImports": true
+  }
 }

@@ -1,22 +1,33 @@
 <section class="inventory-options-section">
-    <div class="option-button-div">
-        <button *ngFor="let option of options; let i = index"
-            class="option-button"
-            (click)="selectOption(i)"
-            [ngClass]="{'option-selected': selectedOption == i}">
-            {{option}}
-        </button>
-    </div>
-    <div *ngIf="options[selectedOption] == InventoryOptions.UserGift" class="option-action-div">
-        <input class="options-input" type="text" placeholder="XUID" />
-        <button class="option-action-button">Lookup</button>
-    </div>
-    <div  *ngIf="options[selectedOption] == InventoryOptions.GroupGiftByXUID" class="option-action-div">
-        <input class="options-input" type="text" placeholder="XUID" />
-        <button class="option-action-button">Add XUID</button>
-    </div>
-    <div  *ngIf="options[selectedOption] == InventoryOptions.GroupGiftByGamertag" class="option-action-div">
-        <input class="options-input" type="text" placeholder="XUID" />
-        <button class="option-action-button">Add Gamertag</button>
-    </div>
+  <div class="option-button-div">
+    <button
+      *ngFor="let option of options; let i = index"
+      class="option-button"
+      (click)="selectOption(i)"
+      [ngClass]="{'option-selected': selectedOption == i}"
+    >
+      {{option}}
+    </button>
+  </div>
+  <div
+    *ngIf="options[selectedOption] == InventoryOptions.UserGift"
+    class="option-action-div"
+  >
+    <input class="options-input" type="text" placeholder="XUID" />
+    <button class="option-action-button">Lookup</button>
+  </div>
+  <div
+    *ngIf="options[selectedOption] == InventoryOptions.GroupGiftByXUID"
+    class="option-action-div"
+  >
+    <input class="options-input" type="text" placeholder="XUID" />
+    <button class="option-action-button">Add XUID</button>
+  </div>
+  <div
+    *ngIf="options[selectedOption] == InventoryOptions.GroupGiftByGamertag"
+    class="option-action-div"
+  >
+    <input class="options-input" type="text" placeholder="XUID" />
+    <button class="option-action-button">Add Gamertag</button>
+  </div>
 </section>

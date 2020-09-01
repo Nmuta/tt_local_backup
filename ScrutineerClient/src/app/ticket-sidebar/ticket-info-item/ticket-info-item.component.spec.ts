@@ -7,24 +7,22 @@ import { TicketInfoItemComponent } from './ticket-info-item.component';
 import { createMockClipboard } from '@shared/helpers/clipboard';
 
 describe('TicketInfoItemComponent', () => {
-    let fixture: ComponentFixture<TicketInfoItemComponent>;
-    let component: TicketInfoItemComponent;
+  let fixture: ComponentFixture<TicketInfoItemComponent>;
+  let component: TicketInfoItemComponent;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [],
-            declarations: [TicketInfoItemComponent],
-            schemas: [NO_ERRORS_SCHEMA],
-            providers: [
-                createMockClipboard()
-            ]
-        }).compileComponents();
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [],
+      declarations: [TicketInfoItemComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [createMockClipboard()],
+    }).compileComponents();
 
-        fixture = TestBed.createComponent(TicketInfoItemComponent);
-        component = fixture.debugElement.componentInstance;
-    }));
+    fixture = TestBed.createComponent(TicketInfoItemComponent);
+    component = fixture.debugElement.componentInstance;
+  }));
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

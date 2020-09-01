@@ -1,10 +1,12 @@
 <tr *ngIf="showItem">
-    <td class="table-border-right table-bold width-70">{{name}}</td>
-    <td class="table-border-right width-150">{{value}}</td>
-    <td>
-        <button class="fa-icon-button" (click)="copyToClipboard(value)">
-            <fa-icon icon="copy" [styles]="{'stroke': 'white', 'color': 'white'}">></fa-icon>
-        </button>
-    </td>
-    <p *ngIf="copied" class="copied-data-message">Copied!</p>
+  <td class="table-border-right table-bold width-70">{{name}}</td>
+  <td class="table-border-right width-150">{{value}}</td>
+  <td>
+    <button class="fa-icon-button" (click)="copyToClipboard(value)">
+      <fa-icon icon="copy" [styles]="{'stroke': 'white', 'color': 'white'}"
+        >></fa-icon
+      >
+    </button>
+  </td>
+  <p *ngIf="copied" class="copied-data-message">Copied!</p>
 </tr>

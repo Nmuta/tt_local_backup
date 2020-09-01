@@ -9,12 +9,8 @@ export { GiftingPageComponent } from './gifting-page.component';
 
 /** Defines the gifting page module. */
 @NgModule({
-    imports: [
-        CommonModule,
-        InventoryModule,
-        InventoryOptionsModule
-    ],
-    exports: [GiftingPageComponent],
-    declarations: [GiftingPageComponent],
+  imports: [CommonModule, InventoryModule, InventoryOptionsModule],
+  exports: [GiftingPageComponent],
+  declarations: [GiftingPageComponent],
 })
 export class GiftingPageModule {}

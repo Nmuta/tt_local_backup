@@ -7,11 +7,8 @@ export { TicketInfoItemComponent } from './ticket-info-item.component';
 
 /** Defines the ticket information item module. */
 @NgModule({
-    imports: [
-        CommonModule,
-        FontAwesomeModule
-    ],
-    exports: [TicketInfoItemComponent],
-    declarations: [TicketInfoItemComponent],
+  imports: [CommonModule, FontAwesomeModule],
+  exports: [TicketInfoItemComponent],
+  declarations: [TicketInfoItemComponent],
 })
 export class TicketInfoItemModule {}
