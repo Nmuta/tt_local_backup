@@ -6,6 +6,7 @@
     "lint": "ng lint",
     "start": "ng serve",
     "zat": "C:\\Windows\\system32\\bash.exe -c \"cd app-local && zat serve\"",
+    "start:devapi": "ng serve --configuration=dev-api",
     "configMoveToBuild": "cp web.config dist/",
     "local:test:chrome": "ng test --karma-config=src/karma.conf.js --source-map=true",
     "local:test:ff": "ng test --karma-config=src/karma-firefox.conf.js --source-map=true",
