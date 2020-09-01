@@ -12,8 +12,8 @@
     "local:test:ff": "ng test --karma-config=src/karma-firefox.conf.js --source-map=true",
     "vsts:test": "ng test --code-coverage --karma-config=src/karma-vsts.conf.js",
     "vsts:test:ncc": "ng test --karma-config=src/karma-vsts.conf.js",
-    "dev:build": "(ng build --prod --configuration=dev --crossOrigin=anonymous) & npm run configMoveToBuild",
-    "prod:build": "(ng build --prod --configuration=production --crossOrigin=anonymous --subresource-integrity=true) & npm run configMoveToBuild"
+    "dev:build": "(ng build --prod --configuration=dev --crossOrigin=anonymous) && npm run configMoveToBuild",
+    "prod:build": "(ng build --prod --configuration=production --crossOrigin=anonymous --subresource-integrity=true) && npm run configMoveToBuild"
   },
   "private": true,
   "dependencies": {
