@@ -32,8 +32,8 @@ Function Invoke-Deploy {
         $Template_Site = (Resolve-Path  $DeployRoot/template-site.json)
         $Parameters_Plan = (Resolve-Path  $DeployRoot/parameters-plan-$($DevProd).json)
         $Parameters_Sites = (Resolve-Path  $DeployRoot/parameters-site-common-$($DevProd).json)
-        $Parameters_API = (Resolve-Path  $DeployRoot/parameters-site-api.json)
-        $Parameters_UI = (Resolve-Path  $DeployRoot/parameters-site-ui.json)
+        $Parameters_API = (Resolve-Path  $DeployRoot/parameters-site-override-api.json)
+        $Parameters_UI = (Resolve-Path  $DeployRoot/parameters-site-override-ui.json)
         
         Write-Output "Project Root = $ProjectRoot"
         Write-Output "Monitoring Root = $MonitoringRoot"

@@ -23,7 +23,7 @@
       "value": "dev-fmnet-www.azurewebsites.net.geneva.keyvault.dev-fmnet-www.azurewebsites.net"
     },
     "monitoringTenant": {
-      "value": "t10WebsiteDev"
+      "value": "t10ScrutineerDev"
     },
     "monitoringRole": {
       "value": "Website"
@@ -35,16 +35,22 @@
       "value": "Turn10"
     },
     "monitoringGcsNamespace": {
-      "value": "t10WebsiteDev"
+      "value": "t10ScrutineerDev"
     },
     "monitoringConfigVersion": {
-      "value": "5.0"
+      "value": "1.0"
     },
     "monitoringMdmAccount": {
       "value": "Turn10"
     },
     "monitoringMdmNamespace": {
-      "value": "WWW-Dev-Web-CentralUS"
+      "value": "SCR-Dev-Web-CentralUS"
+    },
+    "prefix": {
+      "value": "scrutineer"
+    },
+    "suffix": {
+      "value": "dev"
     }
   }
 }

@@ -111,15 +111,28 @@
       "metadata": {
         "description": "Allows user to target a region other than the resource group region."
       }
+    },
+    "prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "The prefix for all managed resources"
+      }
+    },
+    "suffix": {
+      "type": "string",
+      "metadata": {
+        "description": "The suffix for all managed resources"
+      }
     }
   },
   "variables": {
-    "prefix": "[resourceGroup().name]",
-    "planName": "[concat(variables('prefix'), '-plan')]",
+    "prefix": "[parameters('prefix')]",
+    "suffix": "[parameters('suffix')]",
+    "planName": "[concat(variables('prefix'), '-', variables('suffix'))]",
     "location": "[if(empty(parameters('locationOverride')), resourceGroup().location, parameters('locationOverride'))]",
     "sku": "[parameters('sku')]",
     "workerSize": "[parameters('workerSize')]",
-    "identityName": "[concat(variables('prefix'), '-identity')]",
+    "identityName": "[concat(variables('prefix'), '-identity-', variables('suffix'))]",
     
     "genevaCertContent": "[parameters('genevaCertContent')]",
     "monitoringTenant": "[parameters('monitoringTenant')]",

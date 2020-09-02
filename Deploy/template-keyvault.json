@@ -13,18 +13,32 @@
       "metadata": {
         "description": "Ignored for this template."
       }
+    },
+    "prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "The prefix for all managed resources"
+      }
+    },
+    "suffix": {
+      "type": "string",
+      "metadata": {
+        "description": "The suffix for all managed resources"
+      }
     }
   },
   "variables": {
-    "prefix": "[resourceGroup().name]",
-    "identityName": "[concat(variables('prefix'), '-identity')]",
+    "prefix": "[parameters('prefix')]",
+    "suffix": "[parameters('suffix')]",
+    "keyvaultName": "[concat(variables('prefix'), '-keyvault-', variables('suffix'))]",
+    "identityName": "[concat(variables('prefix'), '-identity-', variables('suffix'))]",
     "location": "[if(empty(parameters('locationOverride')), resourceGroup().location, parameters('locationOverride'))]",
     "identityApiVersion": "[providers('Microsoft.ManagedIdentity', 'userAssignedIdentities').apiVersions[0]]",
     "tenantId": "[subscription().tenantId]"
   },
   "resources": [
     {
-      "name": "[concat(variables('prefix'), '-keyvault')]",
+      "name": "[variables('keyvaultName')]",
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2018-02-14",
       "location": "[variables('location')]",
