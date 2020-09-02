@@ -1,0 +1,12 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subscriptionId": {
+      "value": "8498dfd6-e8c3-4add-a2f5-405f94e253d4"
+    },
+    "locationOverride": {
+      "value": ""
+    }
+  }
+}

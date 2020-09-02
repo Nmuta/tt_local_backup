@@ -1,0 +1,151 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subscriptionId": {
+      "type": "string",
+      "metadata": {
+        "description": "The ID of the subscription the Azure App Service Plan belongs to."
+      }
+    },
+    "site": {
+      "type": "string",
+      "metadata": {
+        "description": "The sub-site. Something like 'www' | 'forums' | 'rewards'"
+      }
+    },
+    "locationOverride": {
+      "type": "string",
+      "metadata": {
+        "description": "Allows user to target a region other than the resource group region."
+      }
+    }
+  },
+  "variables": {
+    "prefix": "[resourceGroup().name]",
+    "siteName": "[concat(variables('prefix'), '-', parameters('site'))]",
+    "planName": "[concat(variables('prefix'), '-plan')]",
+    "location": "[if(empty(parameters('locationOverride')), resourceGroup().location, parameters('locationOverride'))]",
+    "subscriptionId": "[parameters('subscriptionId')]",
+    "resourceGroup": "[variables('prefix')]",
+    "identityName": "[concat(variables('prefix'), '-identity')]",
+    "identityApiVersion": "[providers('Microsoft.ManagedIdentity', 'userAssignedIdentities').apiVersions[0]]",
+    "tenantId": "[subscription().tenantId]"
+  },
+  "resources": [
+    {
+      "comments": "Defines an Azure Web App integrated with Geneva.",
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('siteName')]",
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+            "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]": {}
+        }
+      },
+      "apiVersion": "2015-08-01",
+      "location": "[variables('location')]",
+      "dependsOn": [],
+      "tags": {
+        "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', variables('planName'))]": "empty"
+      },
+      "properties": {
+        "sourcePlatform": "Unknown",
+        "targetPlatform": "Unknown",
+        "serverFarmId": "[concat('/subscriptions/', variables('subscriptionId'),'/resourcegroups/', variables('resourceGroup'), '/providers/Microsoft.Web/serverfarms/', variables('planName'))]",
+        "siteConfig": {
+          "phpVersion": "off",
+          "scmType": null,
+          "netFrameworkVersion": "v4.0",
+          "use32BitWorkerProcess": true,
+          "webSocketsEnabled": false,
+          "alwaysOn": true,
+          "httpLoggingEnabled": true,
+          "logsDirectorySizeLimit": 50,
+          "appSettings": [
+            {
+              "name": "AzureServicesAuthConnectionString",
+              "value": "[concat('RunAs=App;AppId=', reference(concat('Microsoft.ManagedIdentity/userAssignedIdentities/', variables('identityName')), variables('identityApiVersion')).clientId)]"
+            },
+            {
+              "Name": "WEBSITE_FIRST_PARTY_ID",
+              "Value": "AntMDS"
+            },
+            {
+              "Name": "WEBSITE_NODE_DEFAULT_VERSION",
+              "Value": "6.7.0"
+            },
+            {
+              "name": "WEBSITE_LOAD_CERTIFICATES",
+              "value": "",
+              "slotSetting": false
+            },
+            {
+              "name": "WEBSITE_LOAD_USER_PROFILE",
+              "value": "1",
+              "slotSetting": false
+            }
+          ]
+        }
+      },
+      "resources": [
+        {
+          "comments": "Defines an Azure Web App slot.",
+          "type": "slots",
+          "name": "staging",
+          "identity": {
+            "type": "UserAssigned",
+            "userAssignedIdentities": {
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]": {}
+            }
+          },
+          "apiVersion": "2015-08-01",
+          "location": "[variables('location')]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('siteName'))]"
+          ],
+          "tags": {
+            "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', variables('planName'))]": "empty"
+          },
+          "properties": {
+            "serverFarmId": "[concat('/subscriptions/', variables('subscriptionId'),'/resourcegroups/', variables('resourceGroup'), '/providers/Microsoft.Web/serverfarms/', variables('planName'))]",
+            "siteConfig": {
+              "phpVersion": "off",
+              "scmType": "LocalGit",
+              "netFrameworkVersion": "v4.0",
+              "use32BitWorkerProcess": true,
+              "webSocketsEnabled": false,
+              "alwaysOn": true,
+              "httpLoggingEnabled": true,
+              "logsDirectorySizeLimit": 50,
+              "appSettings": [
+                {
+                  "name": "AzureServicesAuthConnectionString",
+                  "value": "[concat('RunAs=App;AppId=', reference(concat('Microsoft.ManagedIdentity/userAssignedIdentities/', variables('identityName')), variables('identityApiVersion')).clientId)]"
+                },
+                {
+                  "Name": "WEBSITE_FIRST_PARTY_ID",
+                  "Value": "AntMDS"
+                },
+                {
+                  "Name": "WEBSITE_NODE_DEFAULT_VERSION",
+                  "Value": "6.7.0"
+                },
+                {
+                  "name": "WEBSITE_LOAD_CERTIFICATES",
+                  "value": "",
+                  "slotSetting": false
+                },
+                {
+                  "name": "WEBSITE_LOAD_USER_PROFILE",
+                  "value": "1",
+                  "slotSetting": false
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

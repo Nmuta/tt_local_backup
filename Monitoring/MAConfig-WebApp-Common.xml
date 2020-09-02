@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitoringManagement version="1.0" eventVersion="2" timestamp="2016-11-18T00:00:00.000Z" namespace="">
+  <Management  eventVolume="Medium" onDemandRequestFlags="tablesearch,process" defaultRetentionInDays="29">
+    <Identity type="TenantRole" />
+    <!-- For 10,000 MB there should be 15,000 MB available on the disk -->
+    <AgentResourceUsage diskQuotaInMB="3580" cpuPercentUsage="20" />
+    <AgentMetrics mdmMonitoringAccount="Turn10" />
+  </Management>
+
+  <Events>
+
+    <!-- System Counters -->
+    <CounterSets mdmMonitoringAccount="%MONITORING_MDM_ACCOUNT%">
+      <CounterSet mdmNamespace="%MONITORING_MDM_NAMESPACE%"
+                  eventName="LocalEventCounters"
+                  sampleRateInSeconds="5"
+                  format="Factored">
+        <MdmDimensions>
+          <MdmDimension name="Role"><![CDATA[GetEnvironmentVariable("MONITORING_ROLE")]]></MdmDimension>
+          <MdmDimension name="RoleInstance"><![CDATA[GetEnvironmentVariable("MONITORING_ROLE_INSTANCE")]]></MdmDimension>
+          <MdmDimension name="Environment"><![CDATA[GetEnvironmentVariable("MONITORING_TENANT")]]></MdmDimension>
+        </MdmDimensions>
+        <Counter>\Processor(_Total)\% Processor Time</Counter>
+        <Counter>\Memory\Available MBytes</Counter>
+        <Counter>\Network Interface(*)\Bytes Total/sec</Counter>
+        <Counter>\LogicalDisk(*)\% Free Space</Counter>
+        <Counter>\.NET CLR Loading(*)\% Time Loading</Counter>
+        <Counter>\.NET CLR Memory(*)\% Time in GC</Counter>
+      </CounterSet>
+    </CounterSets>
+
+    <IfxEvents storeType="CentralBond">
+      <AdditionalHeaderFields>
+        <Field>RelatedActivityId</Field>
+      </AdditionalHeaderFields>
+      <Event id="Ifx.PartASchema/Ifx.BaseOperationSchema/Ifx.OperationSchema" eventName="OperationEvent" />
+      <Event id="Ifx.PartASchema/Ifx.BaseOperationSchema/Ifx.QoSSchema" eventName="QoSEvent" />
+      <Event id="Ifx.PartASchema/Ifx.ObjectTextPropertySchema" eventName="ObjectTextPropertyEvent" />
+      <Event id="Ifx.PartASchema/Ifx.ObjectPropertySchema&lt;bool&gt;" eventName="ObjectBoolPropertyEvent" />
+      <Event id="Ifx.PartASchema/Ifx.ObjectPropertySchema&lt;int32&gt;" eventName="ObjectInt32PropertyEvent" />
+      <Event id="Ifx.PartASchema/Ifx.ObjectPropertySchema&lt;int64&gt;" eventName="ObjectInt64PropertyEvent" />
+      <Event id="Ifx.PartASchema/Ifx.ObjectReferenceSchema" eventName="ObjectReferenceEvent" />
+      <Event id="Ifx.PartASchema/Ifx.BaseAvailabilityQoSSchema/Ifx.HeartbeatQoSSchema" eventName="HeartbeatQoSEvent"/>
+      <Event id="Ifx.TracePartASchema/Ifx.TraceSchema" eventName="TraceEvent" />
+    </IfxEvents>
+  </Events>
+</MonitoringManagement>

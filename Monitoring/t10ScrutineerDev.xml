@@ -1,0 +1,14 @@
+<MonitoringManagement eventVersion="5" version="1.0" timestamp="2015-12-07T00:00:00Z" namespace="t10ScrutineerDev">
+
+  <Imports>
+    <Import file="AgentStandardEvents.xml" />
+    <Import file="MAConfig-WebApp-Common.xml" />
+  </Imports>
+
+  <Accounts>
+    <Account moniker="t10ScrutineerDevDiag" isDefault="true">
+      <Mapping moniker="t10ScrutineerDevDiagUSW" isDefault="true" />
+    </Account>
+  </Accounts>
+
+</MonitoringManagement>

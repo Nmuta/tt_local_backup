@@ -1,0 +1,50 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sku": {
+      "value": "S1"
+    },
+    "workerSize": {
+      "value": "0"
+    },
+    "locationOverride": {
+      "value": ""
+    },
+    "genevaCertContent": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/8498dfd6-e8c3-4add-a2f5-405f94e253d4/resourceGroups/dev-fmnet/providers/Microsoft.KeyVault/vaults/dev-fmnet-keyvault"
+        },
+        "secretName": "GenevaDev"
+      }
+    },
+    "monitoringGcsAuthId": {
+      "value": "dev-fmnet-www.azurewebsites.net.geneva.keyvault.dev-fmnet-www.azurewebsites.net"
+    },
+    "monitoringTenant": {
+      "value": "t10WebsiteDev"
+    },
+    "monitoringRole": {
+      "value": "Website"
+    },
+    "monitoringGcsEnvironment": {
+      "value": "FirstPartyProd"
+    },
+    "monitoringGcsAccount": {
+      "value": "Turn10"
+    },
+    "monitoringGcsNamespace": {
+      "value": "t10WebsiteDev"
+    },
+    "monitoringConfigVersion": {
+      "value": "5.0"
+    },
+    "monitoringMdmAccount": {
+      "value": "Turn10"
+    },
+    "monitoringMdmNamespace": {
+      "value": "WWW-Dev-Web-CentralUS"
+    }
+  }
+}

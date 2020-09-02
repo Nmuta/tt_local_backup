@@ -1,0 +1,37 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subscriptionId": {
+      "type": "string",
+      "metadata": {
+        "description": "The ID of the subscription the Azure App Service Plan belongs to."
+      }
+    },
+    "locationOverride": {
+      "type": "string",
+      "metadata": {
+        "description": "Allows user to target a region other than the resource group region."
+      }
+    }
+  },
+  "variables": {
+    "prefix": "[resourceGroup().name]",
+    "location": "[if(empty(parameters('locationOverride')), resourceGroup().location, parameters('locationOverride'))]",
+    "identityName": "[concat(variables('prefix'), '-identity')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "name": "[variables('identityName')]",
+      "apiVersion": "2018-11-30",
+      "location": "[variables('location')]"
+    }
+  ],
+  "outputs": {
+    "identityName": {
+        "type": "string",
+        "value": "[variables('identityName')]"
+    }
+  }
+}

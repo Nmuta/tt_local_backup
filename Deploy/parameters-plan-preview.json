@@ -1,0 +1,50 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sku": {
+      "value": "S1"
+    },
+    "workerSize": {
+      "value": "0"
+    },
+    "locationOverride": {
+      "value": ""
+    },
+    "genevaCertContent": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/8498dfd6-e8c3-4add-a2f5-405f94e253d4/resourceGroups/preview-fmnet/providers/Microsoft.KeyVault/vaults/preview-fmnet-keyvault"
+        },
+        "secretName": "GenevaPreview"
+      }
+    },
+    "monitoringGcsAuthId": {
+      "value": "preview-fmnet-www.azurewebsites.net.geneva.keyvault.preview-fmnet-www.azurewebsites.net"
+    },
+    "monitoringTenant": {
+      "value": "t10WebsitePre"
+    },
+    "monitoringRole": {
+      "value": "Website"
+    },
+    "monitoringGcsEnvironment": {
+      "value": "FirstPartyProd"
+    },
+    "monitoringGcsAccount": {
+      "value": "Turn10"
+    },
+    "monitoringGcsNamespace": {
+      "value": "t10WebsitePre"
+    },
+    "monitoringConfigVersion": {
+      "value": "5.0"
+    },
+    "monitoringMdmAccount": {
+      "value": "Turn10"
+    },
+    "monitoringMdmNamespace": {
+      "value": "WWW-Pre-Web-EastUS2"
+    }
+  }
+}
