@@ -17,6 +17,8 @@ import { Store, NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { ResetUserProfile, ResetAccessToken } from '@shared/state/user/user.actions';
+import { of } from 'rxjs';
 
 describe('ProfileComponent', () => {
   let mockWindowService: WindowService;
@@ -54,9 +56,30 @@ describe('ProfileComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Method: openAuthPageInNewTab', () => {
+  describe('Method: logout', () => {
     beforeEach(() => {
       mockWindowService.open = jasmine.createSpy('open');
+      mockRouter.navigate = jasmine.createSpy('navigate');
+      mockStore.dispatch = jasmine
+        .createSpy('dispatch')
+        .and.returnValue(of({}));
+    });
+    it('should dispatch store action ResetUserProfile', () => {
+      component.logout();
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new ResetUserProfile());
+    });
+    it('should dispatch store action ResetAccessToken', () => {
+      component.logout();
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new ResetAccessToken());
+    });
+    it('Should redirect to auth page', () => {
+      component.parentApp = 'sidebar';
+      component.logout();
+      expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
+        queryParams: { from: component.parentApp },
+      });
     });
     it('should call windowService.open correctly', () => {
       component.logout();

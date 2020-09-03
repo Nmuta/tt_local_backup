@@ -10,6 +10,7 @@ import {
   getTestBed,
   fakeAsync,
   tick,
+  flush,
 } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
@@ -44,6 +45,7 @@ import {
   ResetUserProfile,
   RequestAccessToken,
 } from '@shared/state/user/user.actions';
+import { isRegExp } from 'util';
 
 describe('AuthComponent', () => {
   let mockWindowService: WindowService;
@@ -138,8 +140,32 @@ describe('AuthComponent', () => {
           expect(mockRouter.navigate).toHaveBeenCalledWith([`/${fromApp}`]);
         });
       });
+      describe('If profile is valid', () => {
+        const fromApp = 'test-app';
+        beforeEach(() => {
+          component.autoCloseWindow = jasmine.createSpy('autoCloseWindow');
+          mockWindowService.zafClient = jasmine
+            .createSpy('zafClient')
+            .and.returnValue({});
+        });
+        describe('aadLogin is true', () => {
+          it('Should call autoCloseWindow', () => {
+            component.aadLogin = true;
+            component.ngOnInit();
+            expect(component.autoCloseWindow).toHaveBeenCalledWith(10);
+          });
+        });
+        describe('aadLogin is false', () => {
+          it('Should not call autoCloseWindow', () => {
+            component.aadLogin = false;
+            component.ngOnInit();
+            expect(component.autoCloseWindow).not.toHaveBeenCalled();
+          });
+        });
+      });
       describe('If profile is null', () => {
         beforeEach(() => {
+          component.autoCloseWindow = jasmine.createSpy('autoCloseWindow');
           mockWindowService.zafClient = jasmine
             .createSpy('zafClient')
             .and.returnValue({});
@@ -148,6 +174,20 @@ describe('AuthComponent', () => {
         it('Should not call router.navigate', () => {
           component.ngOnInit();
           expect(mockRouter.navigate).not.toHaveBeenCalled();
+        });
+        describe('aadLogout is true', () => {
+          it('Should call autoCloseWindow', () => {
+            component.aadLogout = true;
+            component.ngOnInit();
+            expect(component.autoCloseWindow).toHaveBeenCalledWith(10);
+          });
+        });
+        describe('aadLogout is false', () => {
+          it('Should not call autoCloseWindow', () => {
+            component.aadLogout = false;
+            component.ngOnInit();
+            expect(component.autoCloseWindow).not.toHaveBeenCalled();
+          });
         });
       });
       describe('If app is not running in zendesk', () => {
@@ -161,6 +201,7 @@ describe('AuthComponent', () => {
           expect(mockRouter.navigate).not.toHaveBeenCalled();
         });
       });
+      
     });
     describe('If subscribing to profile times out', () => {
       const delayTime = 20000;
@@ -178,6 +219,30 @@ describe('AuthComponent', () => {
         tick(delayTime);
         expect(component.loading).toBeFalsy();
       }));
+      describe('If component.aadLogout is true', () => {
+        beforeEach(() => {
+          component.aadLogout = true;
+          component.autoCloseWindow = jasmine.createSpy('autoCloseWindow');
+        });
+        it('should call autoCloseWindow', fakeAsync(() => {
+          component.ngOnInit();
+
+          tick(delayTime);
+          expect(component.autoCloseWindow).toHaveBeenCalledWith(10);
+        }));
+      });
+      describe('If component.aadLogout is false', () => {
+        beforeEach(() => {
+          component.aadLogout = false;
+          component.autoCloseWindow = jasmine.createSpy('autoCloseWindow');
+        });
+        it('should call autoCloseWindow', fakeAsync(() => {
+          component.ngOnInit();
+
+          tick(delayTime);
+          expect(component.autoCloseWindow).not.toHaveBeenCalled();
+        }));
+      });
     });
   });
   describe('Method: loginWithNewTab', () => {
@@ -236,6 +301,32 @@ describe('AuthComponent', () => {
       component.recheckAuth();
 
       expect(component.ngOnInit).toHaveBeenCalled();
+    });
+  });
+  describe('Method: autoCloseWindow', () => {
+    beforeEach(() => {
+      mockWindowService.close = jasmine.createSpy('close');
+
+    });
+    it('should autoCloseTimeSecsLeft to the input param', () => {
+      component.autoCloseWindow(10);
+      expect(component.autoCloseTimeSecsLeft).toEqual(10);
+    });
+    describe('After waiting a second and the timer hits above 0', () => {
+      it('should not call window.close', fakeAsync(() => {
+        component.autoCloseWindow(10);
+        tick(1500);
+        expect(mockWindowService.close).not.toHaveBeenCalled();
+        flush();
+      }));
+    });
+    describe('After waiting a second and the timer hits 0', () => {
+      it('should call window.close', fakeAsync(() => {
+        component.autoCloseWindow(1);
+        tick(1500);
+        expect(mockWindowService.close).toHaveBeenCalled();
+        flush();
+      }));
     });
   });
 });

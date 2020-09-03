@@ -6,8 +6,8 @@
       <p>Role: {{profile.role}}</p>
     </div>
     <div *ngIf="!profile">
-      <h2 *ngIf="loggedOut">You have successfully been signed out.</h2>
-      <h2 *ngIf="aadRedirect" class="error-text">
+      <h2 *ngIf="aadLogout">You have successfully been signed out.</h2>
+      <h2 *ngIf="aadLogin" class="error-text">
         Error logging into the application. <br />Please verify you have correct
         permissions with an app admin.
       </h2>
