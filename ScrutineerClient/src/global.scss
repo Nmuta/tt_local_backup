@@ -84,8 +84,12 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
-.success-text { color: #378d43; }
-.error-text { color: #cf3d3d; }
+.success-text {
+  color: #378d43;
+}
+.error-text {
+  color: #cf3d3d;
+}
 
 .game-title-header {
   color: #337ab7;

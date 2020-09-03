@@ -39,13 +39,13 @@ export class AuthComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       this.fromApp = params.from;
 
-      if(params.action === 'login') this.login();
-      if(params.action === 'logout') this.logout();
+      if (params.action === 'login') this.login();
+      if (params.action === 'logout') this.logout();
     });
     this.activatedRoute.data.subscribe(data => {
-        this.aadRedirect = data.from === 'aad';
-        this.loggedOut = data.from === 'logout';
-    })
+      this.aadRedirect = data.from === 'aad';
+      this.loggedOut = data.from === 'logout';
+    });
   }
 
   /** Logic for the OnInit componet lifecycle */
@@ -59,30 +59,33 @@ export class AuthComponent implements OnInit {
 
         if (!!this.profile && this.inZendesk) {
           this.router.navigate([`/${this.fromApp}`]);
-        } else if(!!this.profile && this.aadRedirect) {
+        } else if (!!this.profile && this.aadRedirect) {
           this.autoCloseWindow(10);
-        } else if(!this.profile && this.loggedOut) {
+        } else if (!this.profile && this.loggedOut) {
           this.autoCloseWindow(10);
         }
       },
       () => {
         this.loading = false;
         this.profile = null;
-        if(this.loggedOut) this.autoCloseWindow(10);
+        if (this.loggedOut) this.autoCloseWindow(10);
       }
     );
   }
 
   /** Open the auth page in a new tab. */
   public loginWithNewTab() {
-    this.windowService.open(`${environment.clientUrl}/auth?action=login`, '_blank');
+    this.windowService.open(
+      `${environment.clientUrl}/auth?action=login`,
+      '_blank'
+    );
   }
 
   /** Sends login request to client app scope. */
   public login() {
     this.msalService.loginRedirect({
       extraScopesToConsent: [environment.azureAppScope],
-      redirectUri: `${environment.clientUrl}/auth/aad`
+      redirectUri: `${environment.clientUrl}/auth/aad`,
     });
   }
 
@@ -106,6 +109,6 @@ export class AuthComponent implements OnInit {
       secondsLeft === 0
         ? this.windowService.close()
         : this.autoCloseWindow(secondsLeft);
-    }, 1000)
+    }, 1000);
   }
 }

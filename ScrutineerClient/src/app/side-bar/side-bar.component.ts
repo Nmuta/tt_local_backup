@@ -33,12 +33,16 @@ export class SidebarComponent implements OnInit {
         this.loading = false;
         this.profile = profile;
         if (!this.profile) {
-          this.router.navigate([`/auth`], { queryParams: { from: this.appName } });
+          this.router.navigate([`/auth`], {
+            queryParams: { from: this.appName },
+          });
         }
       },
       error => {
         this.loading = false;
-        this.router.navigate([`/auth`], { queryParams: { from: this.appName } });
+        this.router.navigate([`/auth`], {
+          queryParams: { from: this.appName },
+        });
       }
     );
   }

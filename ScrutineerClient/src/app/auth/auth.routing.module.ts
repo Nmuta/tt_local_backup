@@ -11,13 +11,13 @@ const routes: Routes = [
   {
     path: 'aad',
     component: AuthComponent,
-    data: { from: 'aad' }
+    data: { from: 'aad' },
   },
   {
     path: 'logout',
     component: AuthComponent,
-    data: { from: 'logout' }
-  }
+    data: { from: 'logout' },
+  },
 ];
 
 /** Defines the auth router module. */

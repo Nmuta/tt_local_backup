@@ -7,7 +7,10 @@
     </div>
     <div *ngIf="!profile">
       <h2 *ngIf="loggedOut">You have successfully been signed out.</h2>
-      <h2 *ngIf="aadRedirect" class="error-text">Error logging into the application. <br />Please verify you have correct permissions with an app admin.</h2>
+      <h2 *ngIf="aadRedirect" class="error-text">
+        Error logging into the application. <br />Please verify you have correct
+        permissions with an app admin.
+      </h2>
     </div>
     <div *ngIf="!!autoCloseTimeSecsLeft">
       <p>This window will auto-close in {{autoCloseTimeSecsLeft}} seconds</p>
