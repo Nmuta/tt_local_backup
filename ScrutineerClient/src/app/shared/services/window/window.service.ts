@@ -36,6 +36,11 @@ export class WindowService {
     return (window as any).open(url, target);
   }
 
+  /** Runs the window.close function. */
+  public close(): any {
+    return (window as any).close();
+  }
+
   /** Gets the window's zafClient property. */
   public zafClient(): any {
     return (window as any).zafClient;

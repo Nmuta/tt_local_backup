@@ -19,6 +19,7 @@ import { environment } from '../../environments/environment';
 export class SidebarComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
+  public appName = 'sidebar';
   public loading: boolean;
   public profile: UserModel;
 
@@ -32,12 +33,12 @@ export class SidebarComponent implements OnInit {
         this.loading = false;
         this.profile = profile;
         if (!this.profile) {
-          this.router.navigate([`/auth`], { queryParams: { from: 'sidebar' } });
+          this.router.navigate([`/auth`], { queryParams: { from: this.appName } });
         }
       },
       error => {
         this.loading = false;
-        this.router.navigate([`/auth`], { queryParams: { from: 'sidebar' } });
+        this.router.navigate([`/auth`], { queryParams: { from: this.appName } });
       }
     );
   }
