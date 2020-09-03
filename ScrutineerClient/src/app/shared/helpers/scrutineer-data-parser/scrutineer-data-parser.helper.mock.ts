@@ -5,12 +5,12 @@ import { ScrutineerDataParser } from './scrutineer-data-parser.helper';
 /** Mock for the scrutineer data parser. */
 @Injectable()
 export class MockScrutineerDataParser {
-    public copyMessage = jasmine.createSpy('copyMessage');
+  public copyMessage = jasmine.createSpy('copyMessage');
 }
 
 export function createMockScrutineerDataParser() {
-    return {
-        provide: ScrutineerDataParser,
-        useValue: new MockScrutineerDataParser()
-    };
+  return {
+    provide: ScrutineerDataParser,
+    useValue: new MockScrutineerDataParser(),
+  };
 }

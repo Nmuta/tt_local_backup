@@ -1,24 +1,24 @@
-<section style="padding: 50px;">
-    <div *ngIf="!loading && !inZendesk">
-        <div *ngIf="profile">
-            <h2>You are signed in.</h2>
-            <p>Email: {{profile.emailAddress}}</p>
-            <p>Role: {{profile.role}}</p>
-            <button (click)="logout()">Logout</button>
-        </div>
-        <div *ngIf="!profile">
-            <h2>Please signin to your Microsoft account.</h2>
-            <button (click)="login()">Login</button>
-        </div>
+<section style="padding: 50px">
+  <div *ngIf="!loading && !inZendesk">
+    <div *ngIf="profile">
+      <h2>You are signed in.</h2>
+      <p>Email: {{profile.emailAddress}}</p>
+      <p>Role: {{profile.role}}</p>
+      <button (click)="logout()">Logout</button>
     </div>
-    <div *ngIf="!loading && inZendesk">
-        <h2>Please signin to your Microsoft account.</h2>
-        <button (click)="openAuthPageInNewTab()">Login Page</button>
-        <br />
-        <h2>Authorize the app once you have signed in.</h2>
-        <button (click)="recheckAuth()">Authorize App</button>
+    <div *ngIf="!profile">
+      <h2>Please signin to your Microsoft account.</h2>
+      <button (click)="login()">Login</button>
     </div>
-    <div *ngIf="loading">
-        <h2>Loading...</h2>
-    </div>
+  </div>
+  <div *ngIf="!loading && inZendesk">
+    <h2>Please signin to your Microsoft account.</h2>
+    <button (click)="openAuthPageInNewTab()">Login Page</button>
+    <br />
+    <h2>Authorize the app once you have signed in.</h2>
+    <button (click)="recheckAuth()">Authorize App</button>
+  </div>
+  <div *ngIf="loading">
+    <h2>Loading...</h2>
+  </div>
 </section>

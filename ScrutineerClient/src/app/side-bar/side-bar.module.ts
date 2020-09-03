@@ -9,14 +9,14 @@ import { SidebarRouterModule } from './side-bar.routing.module';
 
 /** Defines the sidebar module. */
 @NgModule({
-    imports: [
-        CommonModule,
-        SidebarRouterModule,
-        FontAwesomeModule,
-        MatButtonModule,
-        ProfileModule
-    ],
-    providers: [],
-    declarations: [SidebarComponent]
+  imports: [
+    CommonModule,
+    SidebarRouterModule,
+    FontAwesomeModule,
+    MatButtonModule,
+    ProfileModule,
+  ],
+  providers: [],
+  declarations: [SidebarComponent],
 })
 export class SidebarModule {}

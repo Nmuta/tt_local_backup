@@ -7,13 +7,13 @@ import { catchError } from 'rxjs/operators';
 
 /** Defines the User Service. */
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-    constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) {}
 
-    /** Sends request to get the user profile. */
-    public getUserProfile(): Observable<UserModel> {
-        return this.apiService.getRequest<any>('me');
-    }
+  /** Sends request to get the user profile. */
+  public getUserProfile(): Observable<UserModel> {
+    return this.apiService.getRequest<any>('me');
+  }
 }

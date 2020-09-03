@@ -6,10 +6,7 @@ import { AuthRouterModule } from './auth.routing.module';
 
 /** Defines the auth module. */
 @NgModule({
-    imports: [
-        CommonModule,
-        AuthRouterModule
-    ],
-    declarations: [AuthComponent],
+  imports: [CommonModule, AuthRouterModule],
+  declarations: [AuthComponent],
 })
 export class AuthModule {}

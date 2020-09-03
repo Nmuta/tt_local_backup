@@ -1,40 +1,45 @@
-
-
 td {
-    border-top: 1px solid #dddddd;
-    padding: 8px;
-    font-size: 14px;
-    text-align: center;
+  border-top: 1px solid #dddddd;
+  padding: 8px;
+  font-size: 14px;
+  text-align: center;
 }
 
 .table-border-right {
-    border-right : 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
 }
 
 .table-bold {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .fa-icon-button {
-    padding: 7px;
-    background: #337ab7;
-    border: 1px #337ab7;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 7px;
+  background: #337ab7;
+  border: 1px #337ab7;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.width-70 { width: 80px !important; min-width: 80px !important; max-width: 80px !important; }
-.width-150 { width: 150px !important; max-width: 150px !important; }
+.width-70 {
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+}
+.width-150 {
+  width: 150px !important;
+  max-width: 150px !important;
+}
 
 .copied-data-message {
-    color: #337ab7;
-    position: absolute;
-    left: 0;
-    font-size: 20px;
-    margin-top: 5px;
-    margin-left: 135px;
-    padding: 5px 15px;
-    border: 1px solid #337ab7;
-    background: #fff;
-    border-radius: 5px;
+  color: #337ab7;
+  position: absolute;
+  left: 0;
+  font-size: 20px;
+  margin-top: 5px;
+  margin-left: 135px;
+  padding: 5px 15px;
+  border: 1px solid #337ab7;
+  background: #fff;
+  border-radius: 5px;
 }
