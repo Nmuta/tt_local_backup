@@ -42,9 +42,9 @@ export class AuthComponent implements OnInit {
       if (params.action === 'login') this.login();
       if (params.action === 'logout') this.logout();
     });
-    this.activatedRoute.data.subscribe(data => {
-      this.aadRedirect = data.from === 'aad';
-      this.loggedOut = data.from === 'logout';
+    this.activatedRoute.params.subscribe(params => {
+      this.aadRedirect = params.value === 'aadLogin';
+      this.loggedOut = params.value === 'aadLogout';
     });
   }
 
@@ -84,8 +84,7 @@ export class AuthComponent implements OnInit {
   /** Sends login request to client app scope. */
   public login() {
     this.msalService.loginRedirect({
-      extraScopesToConsent: [environment.azureAppScope],
-      redirectUri: `${environment.clientUrl}/auth/aad`,
+      extraScopesToConsent: [environment.azureAppScope]
     });
   }
 

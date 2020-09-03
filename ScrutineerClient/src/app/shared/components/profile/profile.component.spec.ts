@@ -1,39 +1,50 @@
-// General
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   async,
   ComponentFixture,
   TestBed,
-  inject,
   getTestBed,
 } from '@angular/core/testing';
 import { environment } from '@environments/environment';
-
-// Components
 import { ProfileComponent } from './profile.component';
-
-// Services
 import {
   WindowService,
   createMockWindowService,
 } from '@shared/services/window';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Store, NgxsModule } from '@ngxs/store';
+import { UserState } from '@shared/state/user/user.state';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 
 describe('ProfileComponent', () => {
   let mockWindowService: WindowService;
+  let mockRouter: Router;
+  let mockStore: Store;
 
   let fixture: ComponentFixture<ProfileComponent>;
   let component: ProfileComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [],
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState])
+      ],
       declarations: [ProfileComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockWindowService()],
+      providers: [
+        createMockWindowService(),
+        createMockMsalService()
+      ],
     }).compileComponents();
 
     const injector = getTestBed();
     mockWindowService = injector.get(WindowService);
+    mockRouter = injector.get(Router);
+    mockStore = injector.get(Store);
 
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.debugElement.componentInstance;
@@ -48,10 +59,10 @@ describe('ProfileComponent', () => {
       mockWindowService.open = jasmine.createSpy('open');
     });
     it('should call windowService.open correctly', () => {
-      component.openAuthPageInNewTab();
+      component.logout();
 
       expect(mockWindowService.open).toHaveBeenCalledWith(
-        `${environment.clientUrl}/auth`,
+        `${environment.clientUrl}/auth?action=logout`,
         '_blank'
       );
     });

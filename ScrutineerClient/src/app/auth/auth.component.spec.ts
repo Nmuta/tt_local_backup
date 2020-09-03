@@ -180,15 +180,15 @@ describe('AuthComponent', () => {
       }));
     });
   });
-  describe('Method: openAuthPageInNewTab', () => {
+  describe('Method: loginWithNewTab', () => {
     beforeEach(() => {
       mockWindowService.open = jasmine.createSpy('open');
     });
     it('should call windowService.open correctly', () => {
-      component.openAuthPageInNewTab();
+      component.loginWithNewTab();
 
       expect(mockWindowService.open).toHaveBeenCalledWith(
-        `${environment.clientUrl}/auth`,
+        `${environment.clientUrl}/auth?action=login`,
         '_blank'
       );
     });
