@@ -148,16 +148,16 @@ describe('AuthComponent', () => {
             .createSpy('zafClient')
             .and.returnValue({});
         });
-        describe('aadLogin is true', () => {
+        describe('fromAadLogin is true', () => {
           it('Should call autoCloseWindow', () => {
-            component.aadLogin = true;
+            component.fromAadLogin = true;
             component.ngOnInit();
             expect(component.autoCloseWindow).toHaveBeenCalledWith(10);
           });
         });
-        describe('aadLogin is false', () => {
+        describe('fromAadLogin is false', () => {
           it('Should not call autoCloseWindow', () => {
-            component.aadLogin = false;
+            component.fromAadLogin = false;
             component.ngOnInit();
             expect(component.autoCloseWindow).not.toHaveBeenCalled();
           });
@@ -175,16 +175,16 @@ describe('AuthComponent', () => {
           component.ngOnInit();
           expect(mockRouter.navigate).not.toHaveBeenCalled();
         });
-        describe('aadLogout is true', () => {
+        describe('fromAadLogout is true', () => {
           it('Should call autoCloseWindow', () => {
-            component.aadLogout = true;
+            component.fromAadLogout = true;
             component.ngOnInit();
             expect(component.autoCloseWindow).toHaveBeenCalledWith(10);
           });
         });
-        describe('aadLogout is false', () => {
+        describe('fromAadLogout is false', () => {
           it('Should not call autoCloseWindow', () => {
-            component.aadLogout = false;
+            component.fromAadLogout = false;
             component.ngOnInit();
             expect(component.autoCloseWindow).not.toHaveBeenCalled();
           });
@@ -219,9 +219,9 @@ describe('AuthComponent', () => {
         tick(delayTime);
         expect(component.loading).toBeFalsy();
       }));
-      describe('If component.aadLogout is true', () => {
+      describe('If component.fromAadLogout is true', () => {
         beforeEach(() => {
-          component.aadLogout = true;
+          component.fromAadLogout = true;
           component.autoCloseWindow = jasmine.createSpy('autoCloseWindow');
         });
         it('should call autoCloseWindow', fakeAsync(() => {
@@ -231,9 +231,9 @@ describe('AuthComponent', () => {
           expect(component.autoCloseWindow).toHaveBeenCalledWith(10);
         }));
       });
-      describe('If component.aadLogout is false', () => {
+      describe('If component.fromAadLogout is false', () => {
         beforeEach(() => {
-          component.aadLogout = false;
+          component.fromAadLogout = false;
           component.autoCloseWindow = jasmine.createSpy('autoCloseWindow');
         });
         it('should call autoCloseWindow', fakeAsync(() => {
@@ -306,7 +306,6 @@ describe('AuthComponent', () => {
   describe('Method: autoCloseWindow', () => {
     beforeEach(() => {
       mockWindowService.close = jasmine.createSpy('close');
-
     });
     it('should autoCloseTimeSecsLeft to the input param', () => {
       component.autoCloseWindow(10);

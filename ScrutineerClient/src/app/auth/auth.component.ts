@@ -27,8 +27,8 @@ export class AuthComponent implements OnInit {
 
   public profile: UserModel;
 
-  public aadLogin: boolean;
-  public aadLogout: boolean;
+  public fromAadLogin: boolean;
+  public fromAadLogout: boolean;
 
   public autoCloseTimeSecsLeft: number;
 
@@ -46,8 +46,8 @@ export class AuthComponent implements OnInit {
       if (params.action === 'logout') this.logout();
     });
     this.activatedRoute.params.subscribe(params => {
-      this.aadLogin = params.value === 'aadLogin';
-      this.aadLogout = params.value === 'aadLogout';
+      this.fromAadLogin = params.value === 'fromAadLogin';
+      this.fromAadLogout = params.value === 'fromAadLogout';
     });
   }
 
@@ -64,15 +64,14 @@ export class AuthComponent implements OnInit {
           this.router.navigate([`/${this.fromApp}`]);
         }
 
-        // If we login or logout successfully, start auto-window close timer
-        if ((!!this.profile && this.aadLogin) || (!this.profile && this.aadLogout)) {
+        if ((!!this.profile && this.fromAadLogin) || (!this.profile && this.fromAadLogout)) {
           this.autoCloseWindow(10);
         }
       },
       () => {
         this.loading = false;
         this.profile = null;
-        if (this.aadLogout) this.autoCloseWindow(10);
+        if (this.fromAadLogout) this.autoCloseWindow(10);
       }
     );
   }

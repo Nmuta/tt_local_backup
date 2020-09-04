@@ -1,15 +1,15 @@
 <section style="padding: 50px">
   <div *ngIf="!loading && !inZendesk">
     <div *ngIf="profile">
-      <h2>You have successfully been signed in.</h2>
+      <h2>You have successfully signed in.</h2>
       <p>Email: {{profile.emailAddress}}</p>
       <p>Role: {{profile.role}}</p>
     </div>
     <div *ngIf="!profile">
-      <h2 *ngIf="aadLogout">You have successfully been signed out.</h2>
-      <h2 *ngIf="aadLogin" class="error-text">
-        Error logging into the application. <br />Please verify you have correct
-        permissions with an app admin.
+      <h2 *ngIf="fromAadLogout">You have successfully signed out.</h2>
+      <h2 *ngIf="fromAadLogin" class="error-text">
+        Error logging into the application. 
+        <br />Please verify you have correct permissions with an app admin.
       </h2>
     </div>
     <div *ngIf="!!autoCloseTimeSecsLeft">
