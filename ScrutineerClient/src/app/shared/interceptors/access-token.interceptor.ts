@@ -13,10 +13,6 @@ import { Observable } from 'rxjs';
 /** Defines the access token interceptor. */
 @Injectable()
 export class AccessTokenInterceptor implements HttpInterceptor {
-  @Select(UserState.accessToken) public accessToken$: Observable<
-    UserStateModel
-  >;
-
   constructor(protected store: Store) {}
 
   /** Intercept logic that adds bearer token to request header. */

@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProfileModule } from '@shared/components/profile/profile.module';
 
@@ -13,7 +12,6 @@ import { SidebarRouterModule } from './side-bar.routing.module';
     CommonModule,
     SidebarRouterModule,
     FontAwesomeModule,
-    MatButtonModule,
     ProfileModule,
   ],
   providers: [],

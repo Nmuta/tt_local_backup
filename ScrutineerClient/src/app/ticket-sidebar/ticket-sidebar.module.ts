@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProfileModule } from '@shared/components/profile/profile.module';
 import { GiftingPageModule } from 'app/side-bar/gifting-page/gifting-page.module';
@@ -16,7 +15,6 @@ import { TicketSidebarRouterModule } from './ticket-sidebar.routing.module';
     TicketSidebarRouterModule,
     GiftingPageModule,
     FontAwesomeModule,
-    MatButtonModule,
     ProfileModule,
     TicketInfoItemModule,
   ],
