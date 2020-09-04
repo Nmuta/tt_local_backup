@@ -46,8 +46,8 @@ export class AuthComponent implements OnInit {
       if (params.action === 'logout') this.logout();
     });
     this.activatedRoute.params.subscribe(params => {
-      this.fromAadLogin = params.value === 'fromAadLogin';
-      this.fromAadLogout = params.value === 'fromAadLogout';
+      this.fromAadLogin = params.value === 'aadLogin';
+      this.fromAadLogout = params.value === 'aadLogout';
     });
   }
 
