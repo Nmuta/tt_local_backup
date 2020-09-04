@@ -24,7 +24,13 @@ export class AuthComponent implements OnInit {
   public fromApp: string;
   public loading: boolean;
   public inZendesk: boolean;
+
   public profile: UserModel;
+
+  public fromAadLogin: boolean;
+  public fromAadLogout: boolean;
+
+  public autoCloseTimeSecsLeft: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -35,6 +41,13 @@ export class AuthComponent implements OnInit {
   ) {
     this.activatedRoute.queryParams.subscribe(params => {
       this.fromApp = params.from;
+
+      if (params.action === 'login') this.login();
+      if (params.action === 'logout') this.logout();
+    });
+    this.activatedRoute.params.subscribe(params => {
+      this.fromAadLogin = params.value === 'aadLogin';
+      this.fromAadLogout = params.value === 'aadLogout';
     });
   }
 
@@ -50,23 +63,31 @@ export class AuthComponent implements OnInit {
         if (!!this.profile && this.inZendesk) {
           this.router.navigate([`/${this.fromApp}`]);
         }
+
+        if ((!!this.profile && this.fromAadLogin) || (!this.profile && this.fromAadLogout)) {
+          this.autoCloseWindow(10);
+        }
       },
       () => {
         this.loading = false;
         this.profile = null;
+        if (this.fromAadLogout) this.autoCloseWindow(10);
       }
     );
   }
 
   /** Open the auth page in a new tab. */
-  public openAuthPageInNewTab() {
-    this.windowService.open(`${environment.clientUrl}/auth`, '_blank');
+  public loginWithNewTab() {
+    this.windowService.open(
+      `${environment.clientUrl}/auth?action=login`,
+      '_blank'
+    );
   }
 
   /** Sends login request to client app scope. */
   public login() {
     this.msalService.loginRedirect({
-      extraScopesToConsent: [environment.azureAppScope],
+      extraScopesToConsent: [environment.azureAppScope]
     });
   }
 
@@ -80,5 +101,16 @@ export class AuthComponent implements OnInit {
     this.store.dispatch(new ResetUserProfile());
     this.store.dispatch(new RequestAccessToken());
     this.ngOnInit();
+  }
+
+  /**  Starts a timer on UI that will autoclose the window */
+  public autoCloseWindow(timerSecsLeft: number) {
+    this.autoCloseTimeSecsLeft = timerSecsLeft;
+    setTimeout(() => {
+      const secondsLeft = this.autoCloseTimeSecsLeft - 1;
+      secondsLeft === 0
+        ? this.windowService.close()
+        : this.autoCloseWindow(secondsLeft);
+    }, 1000);
   }
 }

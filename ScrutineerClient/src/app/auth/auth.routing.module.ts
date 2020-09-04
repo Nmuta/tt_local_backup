@@ -8,6 +8,10 @@ const routes: Routes = [
     path: '',
     component: AuthComponent,
   },
+  {
+    path: ':value',
+    component: AuthComponent,
+  }
 ];
 
 /** Defines the auth router module. */

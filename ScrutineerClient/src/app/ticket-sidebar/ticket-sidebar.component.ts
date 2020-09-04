@@ -23,6 +23,7 @@ import { environment } from '../../environments/environment';
 export class TicketSidebarComponent implements OnInit, AfterViewInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
+  public appName = 'ticket-sidebar';
   public loading: boolean;
   public profile: UserModel;
   public title: string;
@@ -45,7 +46,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         this.profile = profile;
         if (!this.profile) {
           this.router.navigate([`/auth`], {
-            queryParams: { from: 'ticket-sidebar' },
+            queryParams: { from: this.appName },
           });
         } else {
           this.getTicketRequestor();
@@ -54,7 +55,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
       error => {
         this.loading = false;
         this.router.navigate([`/auth`], {
-          queryParams: { from: 'ticket-sidebar' },
+          queryParams: { from: this.appName },
         });
       }
     );

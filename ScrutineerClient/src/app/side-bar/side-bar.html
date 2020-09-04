@@ -1,5 +1,5 @@
 <section *ngIf="!loading">
-  <profile [user]="profile"></profile>
+  <profile [user]="profile" [parentApp]="appName"></profile>
   <h1>Sidebar app</h1>
 </section>
 <section *ngIf="loading">
