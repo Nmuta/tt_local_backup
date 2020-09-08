@@ -1,6 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { MatToolbarModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
@@ -31,7 +30,6 @@ export const protectedResourceMap: [string, string[]][] = [
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
     FontAwesomeModule,
     HttpClientModule,
     NgxsModule.forRoot([UserState]),

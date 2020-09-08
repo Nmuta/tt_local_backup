@@ -1,4 +1,5 @@
 // General
+import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
@@ -31,6 +32,7 @@ export class UserStateModel {
 }
 
 /** Defines the user state. */
+@Injectable()
 @State<Partial<UserStateModel>>({
   name: 'user',
   defaults: {
