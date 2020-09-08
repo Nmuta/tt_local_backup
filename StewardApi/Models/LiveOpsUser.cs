@@ -1,4 +1,4 @@
-﻿namespace Turn10.LiveOps.ScrutineerApi.Models
+﻿namespace Turn10.LiveOps.StewardApi.Models
 {
     /// <summary>
     ///     Represents a Live Ops user.
