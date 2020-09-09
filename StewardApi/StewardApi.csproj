@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>Turn10.LiveOps.ScrutineerApi</AssemblyName>
-    <RootNamespace>Turn10.LiveOps.ScrutineerApi</RootNamespace>
+    <AssemblyName>Turn10.LiveOps.StewardApi</AssemblyName>
+    <RootNamespace>Turn10.LiveOps.StewardApi</RootNamespace>
 	<WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -18,7 +18,7 @@
     <Optimize>false</Optimize>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Turn10.LiveOps.Scrutineer.xml</DocumentationFile>
+    <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -27,7 +27,7 @@
     <Optimize>true</Optimize>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Turn10.LiveOps.Scrutineer.xml</DocumentationFile>
+    <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
     <DefineConstants></DefineConstants>
   </PropertyGroup>
 

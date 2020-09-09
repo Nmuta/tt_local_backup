@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CA1034 // Nested types should not be visible
 #pragma warning disable SA1600 // Elements must be documented
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-namespace Turn10.LiveOps.ScrutineerApi
+namespace Turn10.LiveOps.StewardApi
 {
     /// <summary>
     ///     Central reference for application settings.

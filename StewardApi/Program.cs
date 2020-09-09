@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Turn10.LiveOps.ScrutineerApi
+namespace Turn10.LiveOps.StewardApi
 {
     /// <summary>
     ///     Primary entry point for application.

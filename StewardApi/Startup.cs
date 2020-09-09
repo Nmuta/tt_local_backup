@@ -1,4 +1,3 @@
-using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
-using static Turn10.LiveOps.ScrutineerApi.ApplicationSettings;
+using static Turn10.LiveOps.StewardApi.ApplicationSettings;
 
-namespace Turn10.LiveOps.ScrutineerApi
+namespace Turn10.LiveOps.StewardApi
 {
     /// <summary>
     ///     Entry point for the app.

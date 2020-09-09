@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Turn10.Data.Common;
-using Turn10.LiveOps.ScrutineerApi.Models;
+using Turn10.LiveOps.StewardApi.Models;
 
-namespace Turn10.LiveOps.ScrutineerApi.Controllers
+namespace Turn10.LiveOps.StewardApi.Controllers
 {
     /// <summary>
     ///     Handles auth requests.
