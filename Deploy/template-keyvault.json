@@ -30,17 +30,19 @@
   "variables": {
     "prefix": "[parameters('prefix')]",
     "suffix": "[parameters('suffix')]",
+    "kvApiVersion": "[providers('Microsoft.KeyVault', 'vaults').apiVersions[0]]",
+    "identityApiVersion": "[providers('Microsoft.ManagedIdentity', 'userAssignedIdentities').apiVersions[0]]",
     "keyvaultName": "[concat(variables('prefix'), '-keyvault-', variables('suffix'))]",
     "identityName": "[concat(variables('prefix'), '-identity-', variables('suffix'))]",
+    "identityScope": "[concat('Microsoft.ManagedIdentity/userAssignedIdentities/', variables('identityName'))]",
     "location": "[if(empty(parameters('locationOverride')), resourceGroup().location, parameters('locationOverride'))]",
-    "identityApiVersion": "[providers('Microsoft.ManagedIdentity', 'userAssignedIdentities').apiVersions[0]]",
     "tenantId": "[subscription().tenantId]"
   },
   "resources": [
     {
       "name": "[variables('keyvaultName')]",
       "type": "Microsoft.KeyVault/vaults",
-      "apiVersion": "2018-02-14",
+      "apiVersion": "[variables('kvApiVersion')]",
       "location": "[variables('location')]",
       "tags": {},
       "properties": {
@@ -52,22 +54,8 @@
         "accessPolicies": [
           {
             "tenantId": "[variables('tenantId')]",
-            "objectId": "[reference(concat('Microsoft.ManagedIdentity/userAssignedIdentities/', variables('identityName')), variables('identityApiVersion')).principalId]",
+            "objectId": "[reference(variables('identityScope'), variables('identityApiVersion')).principalId]",
             "permissions": {
-              "keys": [
-                "get",
-                "list"
-              ],
-              "secrets": [
-                "get",
-                "list"
-              ],
-              "certificates": [
-                "get",
-                "list",
-                "getissuers",
-                "listissuers"
-              ]
             }
           }
         ],

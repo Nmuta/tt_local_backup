@@ -3,10 +3,16 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "subscriptionId": {
-      "value": "c4dda634-84ec-483e-9ee5-c4c43511f8f3"
+      "value": "a6d4cc22-0b13-4871-b146-db7138d3e3cb"
     },
     "locationOverride": {
       "value": ""
+    },
+    "prefix": {
+      "value": "steward"
+    },
+    "suffix": {
+      "value": "prod"
     }
   }
 }

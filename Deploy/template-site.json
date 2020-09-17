@@ -40,8 +40,8 @@
     "siteName": "[concat(variables('prefix'), '-', parameters('site'), '-', variables('suffix'))]",
     "location": "[if(empty(parameters('locationOverride')), resourceGroup().location, parameters('locationOverride'))]",
     "subscriptionId": "[parameters('subscriptionId')]",
-    "resourceGroup": "[variables('prefix')]",
-    "identityName": "[concat(variables('prefix'), '-identity')]",
+    "resourceGroup": "[concat(variables('prefix'), '-', variables('suffix'))]",
+    "identityName": "[concat(variables('prefix'), '-identity-', variables('suffix'))]",
     "identityApiVersion": "[providers('Microsoft.ManagedIdentity', 'userAssignedIdentities').apiVersions[0]]",
     "tenantId": "[subscription().tenantId]"
   },

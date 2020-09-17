@@ -14,16 +14,16 @@
     "genevaCertContent": {
       "reference": {
         "keyVault": {
-          "id": "/subscriptions/8498dfd6-e8c3-4add-a2f5-405f94e253d4/resourceGroups/dev-fmnet/providers/Microsoft.KeyVault/vaults/dev-fmnet-keyvault"
+          "id": "/subscriptions/c4dda634-84ec-483e-9ee5-c4c43511f8f3/resourceGroups/steward-dev/providers/Microsoft.KeyVault/vaults/steward-keyvault-dev"
         },
         "secretName": "GenevaDev"
       }
     },
     "monitoringGcsAuthId": {
-      "value": "dev-fmnet-www.azurewebsites.net.geneva.keyvault.dev-fmnet-www.azurewebsites.net"
+      "value": "steward-dev.azurewebsites.net.geneva.keyvault.steward-dev.azurewebsites.net"
     },
     "monitoringTenant": {
-      "value": "t10ScrutineerDev"
+      "value": "t10StewardDev"
     },
     "monitoringRole": {
       "value": "Website"
@@ -35,7 +35,7 @@
       "value": "Turn10"
     },
     "monitoringGcsNamespace": {
-      "value": "t10ScrutineerDev"
+      "value": "t10StewardDev"
     },
     "monitoringConfigVersion": {
       "value": "1.0"
@@ -44,10 +44,10 @@
       "value": "Turn10"
     },
     "monitoringMdmNamespace": {
-      "value": "SCR-Dev-Web-CentralUS"
+      "value": "STE-Dev-Web-WestUS2"
     },
     "prefix": {
-      "value": "scrutineer"
+      "value": "steward"
     },
     "suffix": {
       "value": "dev"

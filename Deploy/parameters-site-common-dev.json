@@ -7,6 +7,12 @@
     },
     "locationOverride": {
       "value": ""
+    },
+    "prefix": {
+      "value": "steward"
+    },
+    "suffix": {
+      "value": "dev"
     }
   }
 }

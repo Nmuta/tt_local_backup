@@ -14,16 +14,16 @@
     "genevaCertContent": {
       "reference": {
         "keyVault": {
-          "id": "/subscriptions/8498dfd6-e8c3-4add-a2f5-405f94e253d4/resourceGroups/prod-fmnet/providers/Microsoft.KeyVault/vaults/prod-fmnet-keyvault"
+          "id": "/subscriptions/a6d4cc22-0b13-4871-b146-db7138d3e3cb/resourceGroups/steward-prod/providers/Microsoft.KeyVault/vaults/steward-keyvault-prod"
         },
         "secretName": "GenevaProd"
       }
     },
     "monitoringGcsAuthId": {
-      "value": "prod-fmnet-www.azurewebsites.net.geneva.keyvault.prod-fmnet-www.azurewebsites.net"
+      "value": "steward-prod.azurewebsites.net.geneva.keyvault.steward-prod.azurewebsites.net"
     },
     "monitoringTenant": {
-      "value": "t10ScrutineerProd"
+      "value": "t10StewardProd"
     },
     "monitoringRole": {
       "value": "Website"
@@ -35,7 +35,7 @@
       "value": "Turn10"
     },
     "monitoringGcsNamespace": {
-      "value": "t10ScrutineerProd"
+      "value": "t10StewardProd"
     },
     "monitoringConfigVersion": {
       "value": "1.0"
@@ -44,10 +44,10 @@
       "value": "Turn10"
     },
     "monitoringMdmNamespace": {
-      "value": "SCR-Prod-Web-EastUS2"
+      "value": "STE-Prod-Web-WestUS2"
     },
     "prefix": {
-      "value": "scrutineer"
+      "value": "steward"
     },
     "suffix": {
       "value": "prod"
