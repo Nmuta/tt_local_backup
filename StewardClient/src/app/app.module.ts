@@ -10,6 +10,7 @@ import {
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { NgxsModule } from '@ngxs/store';
 import { Clipboard } from '@shared/helpers/clipboard';
+import { allAngularMaterialModules } from '@shared/helpers/ng-material';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
 import { UserState } from '@shared/state/user/user.state';
 
@@ -29,7 +30,7 @@ export const protectedResourceMap: [string, string[]][] = [
   imports: [
     AppRoutingModule,
     BrowserModule,
-    BrowserAnimationsModule,
+    ...allAngularMaterialModules,
     FontAwesomeModule,
     HttpClientModule,
     NgxsModule.forRoot([UserState]),

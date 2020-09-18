@@ -64,7 +64,10 @@ export class AuthComponent implements OnInit {
           this.router.navigate([`/${this.fromApp}`]);
         }
 
-        if ((!!this.profile && this.fromAadLogin) || (!this.profile && this.fromAadLogout)) {
+        if (
+          (!!this.profile && this.fromAadLogin) ||
+          (!this.profile && this.fromAadLogout)
+        ) {
           this.autoCloseWindow(10);
         }
       },
@@ -87,7 +90,7 @@ export class AuthComponent implements OnInit {
   /** Sends login request to client app scope. */
   public login() {
     this.msalService.loginRedirect({
-      extraScopesToConsent: [environment.azureAppScope]
+      extraScopesToConsent: [environment.azureAppScope],
     });
   }
 

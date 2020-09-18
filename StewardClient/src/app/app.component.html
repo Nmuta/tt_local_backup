@@ -1,15 +1,21 @@
 <section>
   <!-- Header from POC. This can be reused when rebuilding inventory app -->
-  <!-- <mat-toolbar>
-        <button *ngFor="let title of titles; let i = index"
-            class="header-buttons"
-            (click)="selectHeader(i)"
-            [ngClass]="{'header-selected': selectedHeaderIndex == i}">
-            {{title}}
-        </button>
-    </mat-toolbar> -->
+  <mat-toolbar>
+    <button
+      *ngFor="let title of titles; let i = index"
+      class="header-buttons"
+      (click)="selectHeader(i)"
+      [ngClass]="{ 'header-selected': selectedHeaderIndex == i }"
+    >
+      {{ title }}
+    </button>
+  </mat-toolbar>
   <router-outlet></router-outlet>
   <section class="footer-section">
-    <a href="https://privacy.microsoft.com/en-US/data-privacy-notice" target="_blank">Data Protection Notice</a>
+    <a
+      href="https://privacy.microsoft.com/en-US/data-privacy-notice"
+      target="_blank"
+      >Data Protection Notice</a
+    >
   </section>
 </section>

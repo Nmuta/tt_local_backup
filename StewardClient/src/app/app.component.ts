@@ -9,6 +9,8 @@ import { RequestAccessToken } from '@shared/state/user/user.actions';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  public titles = ['one', 'Two', 3, 'fore'];
+
   constructor(private store: Store) {}
 
   /** Logic for the OnInit component lifecycle. */

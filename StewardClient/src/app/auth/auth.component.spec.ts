@@ -201,7 +201,6 @@ describe('AuthComponent', () => {
           expect(mockRouter.navigate).not.toHaveBeenCalled();
         });
       });
-      
     });
     describe('If subscribing to profile times out', () => {
       const delayTime = 20000;
