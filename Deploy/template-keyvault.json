@@ -42,7 +42,7 @@
     {
       "name": "[variables('keyvaultName')]",
       "type": "Microsoft.KeyVault/vaults",
-      "apiVersion": "[variables('kvApiVersion')]",
+      "apiVersion": "2018-02-14",
       "location": "[variables('location')]",
       "tags": {},
       "properties": {
@@ -56,6 +56,20 @@
             "tenantId": "[variables('tenantId')]",
             "objectId": "[reference(variables('identityScope'), variables('identityApiVersion')).principalId]",
             "permissions": {
+              "keys": [
+                "get",
+                "list"
+              ],
+              "secrets": [
+                "get",
+                "list"
+              ],
+              "certificates": [
+                "get",
+                "list",
+                "getissuers",
+                "listissuers"
+              ]
             }
           }
         ],

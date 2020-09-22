@@ -53,10 +53,10 @@ Function Invoke-Deploy {
         Write-Output "Resource Group = $ResourceGroup"
         Write-Output "-----------------------"
 
-        # Write-Output "Deploying Identity"
-        # Write-Output "-----------------------"
-        # az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_Identity --parameters @$Parameters_Sites --verbose
-        # if (-not $?) { exit }
+        Write-Output "Deploying Identity"
+        Write-Output "-----------------------"
+        az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_Identity --parameters @$Parameters_Sites --verbose
+        if (-not $?) { exit }
 
         # TODO: Running this will erase the access policies but not the secrets. Figure out how to only run this if it is missing?
         Write-Output "-----------------------"
@@ -65,23 +65,23 @@ Function Invoke-Deploy {
         az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_KeyVault --parameters @$Parameters_Sites --verbose
         if (-not $?) { exit }
 
-        # Write-Output "-----------------------"
-        # Write-Output "Deploying Plan"
-        # Write-Output "-----------------------"
-        # az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_AppServicePlan --parameters @$Parameters_Plan --verbose
-        # if (-not $?) { exit }
+        Write-Output "-----------------------"
+        Write-Output "Deploying Plan"
+        Write-Output "-----------------------"
+        az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_AppServicePlan --parameters @$Parameters_Plan --verbose
+        if (-not $?) { exit }
         
-        # Write-Output "-----------------------"
-        # Write-Output "Deploying Site API"
-        # Write-Output "-----------------------"
-        # az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_Site --parameters @$Parameters_Sites --parameters @$Parameters_API --verbose
-        # if (-not $?) { exit }
+        Write-Output "-----------------------"
+        Write-Output "Deploying Site API"
+        Write-Output "-----------------------"
+        az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_Site --parameters @$Parameters_Sites --parameters @$Parameters_API --verbose
+        if (-not $?) { exit }
 
-        # Write-Output "-----------------------"
-        # Write-Output "Deploying Site UI"
-        # Write-Output "-----------------------"
-        # az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_Site --parameters @$Parameters_Sites --parameters @$Parameters_UI --verbose
-        # if (-not $?) { exit }
+        Write-Output "-----------------------"
+        Write-Output "Deploying Site UI"
+        Write-Output "-----------------------"
+        az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_Site --parameters @$Parameters_Sites --parameters @$Parameters_UI --verbose
+        if (-not $?) { exit }
 
     }
     
