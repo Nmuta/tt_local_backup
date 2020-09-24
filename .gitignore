@@ -6,7 +6,6 @@ obj/
 # Node
 dist/
 *TESTS-HeadlessChrome*
-.npmrc
 
 # Zendesk Custom
 app-dev.zip
