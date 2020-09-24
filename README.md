@@ -1,3 +1,1 @@
 # Steward
-
-### Local .npmrc setup
