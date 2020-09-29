@@ -28,7 +28,7 @@ Write-Output "-----------------------"
 Write-Output "# 1. Installing Geneva"
 Write-Output "-----------------------"
 
-nuget install GenevaMonitoringAgent -OutputDirectory $PackagesPath
+nuget install GenevaMonitoringAgent -OutputDirectory$PackagesPath
 
 Write-Output "-----------------------"
 $GenevaScript = (Resolve-Path $PackagesPath/GenevaMonitoringAgent*/Monitoring/Agent/MonAgentLauncher.exe)

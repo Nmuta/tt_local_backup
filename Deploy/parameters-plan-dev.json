@@ -20,7 +20,7 @@
       }
     },
     "monitoringGcsAuthId": {
-      "value": "steward-dev.azurewebsites.net.geneva.keyvault.steward-dev.azurewebsites.net"
+      "value": "steward-api-dev.azurewebsites.net.geneva.keyvault.steward-api-dev.azurewebsites.net"
     },
     "monitoringTenant": {
       "value": "t10StewardDev"
