@@ -9,7 +9,8 @@ import {
   ResetUserProfile,
 } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
-import { Observable } from 'rxjs';
+import { interval, Observable } from 'rxjs';
+import { filter, first, skipUntil, tap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 
@@ -81,10 +82,20 @@ export class AuthComponent implements OnInit {
 
   /** Open the auth page in a new tab. */
   public loginWithNewTab() {
-    this.windowService.open(
+    const newWindow = this.windowService.open(
       `${environment.clientUrl}/auth?action=login`,
       '_blank'
     );
+
+    // This is an awful but I tried using the event system and the events for this sort of event just don't emit properly.
+    // (a single child window can have multipe "onunload" events)
+    interval (100 /*milliseconds*/)
+      .pipe(
+        tap(() => console.log(`polling; newWindow.closed == ${newWindow.closed}`)),
+        filter(() => newWindow.closed),
+        first(),
+        tap(() => console.log(`polling; newWindow.closed completed`)))
+      .subscribe(() => this.recheckAuth());
   }
 
   /** Sends login request to client app scope. */

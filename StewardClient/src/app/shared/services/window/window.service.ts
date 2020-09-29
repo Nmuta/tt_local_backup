@@ -13,32 +13,32 @@ export class WindowService {
 
   /** Adds event listener to the window. */
   public addEventListener(eventName: string, func: EventListener) {
-    (window as any).addEventListener(eventName, func);
+    window.addEventListener(eventName, func);
   }
 
   /** Removes event listener to the window. */
   public removeEventListener(eventName: string, func: EventListener) {
-    (window as any).removeEventListener(eventName, func);
+    window.removeEventListener(eventName, func);
   }
 
   /** Gets the window's top property. */
-  public top(): any {
+  public top() {
     return window.top;
   }
 
   /** Gets the window's location property. */
-  public location(): any {
-    return (window as any).location;
+  public location() {
+    return window.location;
   }
 
   /** Runs the window.open function. */
-  public open(url, target): any {
-    return (window as any).open(url, target);
+  public open(url, target): Window {
+    return window.open(url, target);
   }
 
   /** Runs the window.close function. */
-  public close(): any {
-    return (window as any).close();
+  public close() {
+    return window.close();
   }
 
   /** Gets the window's zafClient property. */
