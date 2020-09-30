@@ -1,7 +1,6 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
 import {
   FaIconLibrary,
@@ -19,7 +18,6 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { ErrorComponent } from './error/error.component';
-import { BaseComponentComponent } from './shared/components/base-component/base-component.component';
 
 export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -27,7 +25,10 @@ export const protectedResourceMap: [string, string[]][] = [
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent, BaseComponentComponent],
+  declarations: [
+    AppComponent,
+    ErrorComponent,
+  ],
   imports: [
     AppRoutingModule,
     BrowserModule,
