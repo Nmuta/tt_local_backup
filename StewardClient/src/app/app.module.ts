@@ -8,6 +8,7 @@ import {
 } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { NgxsModule } from '@ngxs/store';
+import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
 import { allAngularMaterialModules } from '@shared/helpers/ng-material';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
@@ -66,6 +67,7 @@ export const protectedResourceMap: [string, string[]][] = [
     ),
   ],
   providers: [
+    LoggerService,
     Clipboard,
     {
       provide: HTTP_INTERCEPTORS,

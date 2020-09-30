@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { Select, Store } from '@ngxs/store';
+import { LoggerService, LogTopic } from '@services/logger';
 import { BaseComponent } from '@shared/components/base-component/base-component.component';
 import { UserModel } from '@shared/models/user.model';
 import { WindowService } from '@shared/services/window';
@@ -35,11 +36,12 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
   public autoCloseTimeSecsLeft: number;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private store: Store,
-    private msalService: MsalService,
-    private windowService: WindowService
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly logger: LoggerService,
+    private readonly router: Router,
+    private readonly store: Store,
+    private readonly msalService: MsalService,
+    private readonly windowService: WindowService
   ) {
     super();
 
@@ -95,7 +97,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
     interval (100 /*milliseconds*/)
       .pipe(
         takeUntil(this.onDestroy$),
-        tap(() => console.log(`polling; newWindow.closed == ${newWindow.closed}`)),
+        tap(() => this.logger.log([LogTopic.Auth], `polling; newWindow.closed == ${newWindow.closed}`)),
         filter(() => newWindow.closed),
         first(),
         tap(() => console.log(`polling; newWindow.closed completed`)))
