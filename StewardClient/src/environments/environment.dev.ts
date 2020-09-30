@@ -1,4 +1,4 @@
-import { LogLevel } from "@services/logger";
+import { LogLevel } from "@services/logger/log-level";
 
 import { StewardEnvironment } from "./type";
 
