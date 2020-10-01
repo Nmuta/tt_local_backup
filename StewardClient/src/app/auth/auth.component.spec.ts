@@ -46,6 +46,7 @@ import {
   RequestAccessToken,
 } from '@shared/state/user/user.actions';
 import { isRegExp } from 'util';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('AuthComponent', () => {
   let mockWindowService: WindowService;
@@ -69,6 +70,7 @@ describe('AuthComponent', () => {
         createMockZendeskService(),
         createMockMsalService(),
         createMockWindowService(),
+        createMockLoggerService(),
       ],
     }).compileComponents();
 

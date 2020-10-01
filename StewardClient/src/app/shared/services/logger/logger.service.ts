@@ -14,17 +14,11 @@ export class LoggerService {
   public consoleLevel: LogLevel = LogLevel.Everything;
   public appInsightsLevel: LogLevel = LogLevel.Everything;
 
-  private readonly appInsights: ApplicationInsights;
-
-  constructor() {
-    this.appInsights = new ApplicationInsights({
-      config: environment.appInsightsConfig,
-    });
-
+  constructor(
+    private readonly appInsights: ApplicationInsights,
+  ) {
     this.consoleLevel = environment.loggerConfig.consoleLogLevel;
     this.appInsightsLevel = environment.loggerConfig.appInsightsLogLevel;
-
-    this.appInsights.loadAppInsights();
   }
 
   /** Proxy for console.log */

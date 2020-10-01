@@ -12,7 +12,7 @@ import {
 } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { interval, Observable } from 'rxjs';
-import { filter, first, skipUntil, takeUntil, tap } from 'rxjs/operators';
+import { filter, take, takeUntil, tap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 
@@ -104,8 +104,13 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
           )
         ),
         filter(() => newWindow.closed),
-        first(),
-        tap(() => this.logger.log([LogTopic.Auth], `polling; newWindow.closed completed`))
+        take(1),
+        tap(() =>
+          this.logger.log(
+            [LogTopic.Auth],
+            `polling; newWindow.closed completed`
+          )
+        )
       )
       .subscribe(() => this.recheckAuth());
   }

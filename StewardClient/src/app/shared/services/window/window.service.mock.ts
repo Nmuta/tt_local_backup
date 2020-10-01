@@ -5,6 +5,7 @@ import { WindowService } from './window.service';
 /** A mock child window object. */
 export class MockChildWindow {
   public onunload = jasmine.createSpy('onunload');
+  public closed = false;
 }
 
 /** Defines the mock for the Window Service. */

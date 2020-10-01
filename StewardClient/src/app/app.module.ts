@@ -7,6 +7,7 @@ import {
   FontAwesomeModule,
 } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { NgxsModule } from '@ngxs/store';
 import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
@@ -64,6 +65,17 @@ export const protectedResourceMap: [string, string[]][] = [
     ),
   ],
   providers: [
+    {
+      provide: ApplicationInsights,
+      useFactory: () => {
+        const appInsights = new ApplicationInsights({
+          config: environment.appInsightsConfig,
+        });
+        appInsights.loadAppInsights();
+        return appInsights;
+      },
+      multi: false,
+    },
     LoggerService,
     Clipboard,
     {
