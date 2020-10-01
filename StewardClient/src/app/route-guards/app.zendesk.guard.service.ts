@@ -22,7 +22,7 @@ export class ZendeskGuardService implements CanActivate {
   ): Observable<boolean> | boolean {
     const inZendesk = !!this.windowService.zafClient();
     if (!inZendesk) {
-      // this.router.navigate(['/auth']);
+      this.router.navigate(['/auth']);
     }
 
     return inZendesk;
