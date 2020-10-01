@@ -14,6 +14,8 @@ export class LoggerService {
   public consoleLevel: LogLevel = LogLevel.Everything;
   public appInsightsLevel: LogLevel = LogLevel.Everything;
 
+  private console = window.console;
+
   constructor(
     private readonly appInsights: ApplicationInsights,
   ) {
@@ -24,7 +26,7 @@ export class LoggerService {
   /** Proxy for console.log */
   public log(topics: LogTopic[], ...data: any[]): void {
     if (this.consoleLevel >= LogLevel.Log) {
-      console.log(...topics, ...data);
+      this.console.log(...topics, ...data);
     }
 
     if (this.appInsightsLevel >= LogLevel.Log) {
@@ -35,7 +37,7 @@ export class LoggerService {
   /** Proxy for console.warn */
   public warn(topics: LogTopic[], ...data: any[]): void {
     if (this.consoleLevel >= LogLevel.Warn) {
-      console.warn(...topics, ...data);
+      this.console.warn(...topics, ...data);
     }
 
     if (this.appInsightsLevel >= LogLevel.Warn) {
@@ -46,18 +48,11 @@ export class LoggerService {
   /** Proxy for console.debug */
   public debug(topics: LogTopic[], ...data: any[]): void {
     if (this.consoleLevel >= LogLevel.Debug) {
-      console.debug(...topics, ...data);
+      this.console.debug(...topics, ...data);
     }
 
     if (this.appInsightsLevel >= LogLevel.Debug) {
       this.trackTrace('debug', topics, ...data);
-    }
-  }
-
-  /** Proxy for console.log */
-  public debugger(topics: LogTopic[]): void {
-    if (this.consoleLevel >= LogLevel.Debugger) {
-      debugger;
     }
   }
 

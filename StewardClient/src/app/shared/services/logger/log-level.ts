@@ -4,6 +4,5 @@ export enum LogLevel {
   Warn,
   Log,
   Debug,
-  Debugger,
   Everything, // most verbose log level
 }
