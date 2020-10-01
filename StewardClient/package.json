@@ -1,7 +1,8 @@
 {
-  "name": "forza-support-inventory-angular",
+  "name": "turn10-steward-ui",
   "version": "0.0.1",
   "scripts": {
+    "refreshVSToken": "vsts-npm-auth -config .npmrc",
     "ng": "ng",
     "lint": "ng lint",
     "format": "prettier --write .",
