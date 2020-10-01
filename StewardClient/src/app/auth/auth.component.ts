@@ -105,7 +105,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
         ),
         filter(() => newWindow.closed),
         first(),
-        tap(() => console.log(`polling; newWindow.closed completed`))
+        tap(() => this.logger.log([LogTopic.Auth], `polling; newWindow.closed completed`))
       )
       .subscribe(() => this.recheckAuth());
   }
