@@ -26,10 +26,7 @@ export const protectedResourceMap: [string, string[]][] = [
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [
-    AppComponent,
-    ErrorComponent,
-  ],
+  declarations: [AppComponent, ErrorComponent],
   imports: [
     AppRoutingModule,
     BrowserModule,

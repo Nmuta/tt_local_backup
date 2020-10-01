@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 /** A base component class. */
-@Component({template: ''})
+@Component({ template: '' })
 export abstract class BaseComponent implements OnDestroy {
   protected readonly onDestroy$: Observable<void> = new Subject<void>();
 

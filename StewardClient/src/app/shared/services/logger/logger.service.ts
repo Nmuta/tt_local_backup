@@ -9,10 +9,11 @@ import { LogTopic } from './log-topic';
 // tslint:disable: no-debugger
 
 /** A logger service that acts as a configurable proxy for console.log and app insights. */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class LoggerService {
   public consoleLevel: LogLevel = LogLevel.Everything;
   public appInsightsLevel: LogLevel = LogLevel.Everything;
+
   private readonly appInsights: ApplicationInsights;
 
   constructor() {
@@ -33,7 +34,7 @@ export class LoggerService {
     }
 
     if (this.appInsightsLevel >= LogLevel.Log) {
-      this.trackTrace("log", topics, ...data);
+      this.trackTrace('log', topics, ...data);
     }
   }
 
@@ -44,7 +45,7 @@ export class LoggerService {
     }
 
     if (this.appInsightsLevel >= LogLevel.Warn) {
-      this.trackTrace("warn", topics, ...data);
+      this.trackTrace('warn', topics, ...data);
     }
   }
 
@@ -55,7 +56,7 @@ export class LoggerService {
     }
 
     if (this.appInsightsLevel >= LogLevel.Debug) {
-      this.trackTrace("debug", topics, ...data);
+      this.trackTrace('debug', topics, ...data);
     }
   }
 
@@ -67,7 +68,7 @@ export class LoggerService {
   }
 
   private trackTrace(severity: string, topics: LogTopic[], ...data: any[]) {
-    const message = `[${topics.join(" ")}]\n${data.join("\n")}`
-    this.appInsights.trackTrace({ message: message }, {severity: severity});
+    const message = `[${topics.join(' ')}]\n${data.join('\n')}`;
+    this.appInsights.trackTrace({ message: message }, { severity: severity });
   }
 }

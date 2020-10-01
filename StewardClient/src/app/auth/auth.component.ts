@@ -94,13 +94,19 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
 
     // This isn't a great way to detect it, but I tried using the event system and the events for this sort of event just don't emit properly.
     // (a single child window can have multipe "onunload" events)
-    interval (100 /*milliseconds*/)
+    interval(100 /*milliseconds*/)
       .pipe(
         takeUntil(this.onDestroy$),
-        tap(() => this.logger.log([LogTopic.Auth], `polling; newWindow.closed == ${newWindow.closed}`)),
+        tap(() =>
+          this.logger.log(
+            [LogTopic.Auth],
+            `polling; newWindow.closed == ${newWindow.closed}`
+          )
+        ),
         filter(() => newWindow.closed),
         first(),
-        tap(() => console.log(`polling; newWindow.closed completed`)))
+        tap(() => console.log(`polling; newWindow.closed completed`))
+      )
       .subscribe(() => this.recheckAuth());
   }
 

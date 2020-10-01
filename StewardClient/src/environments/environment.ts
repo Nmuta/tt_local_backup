@@ -1,6 +1,6 @@
-import { LogLevel } from "@services/logger/log-level";
+import { LogLevel } from '@services/logger/log-level';
 
-import { StewardEnvironment } from "./type";
+import { StewardEnvironment } from './type';
 
 // Local
 export const environment: StewardEnvironment = {
