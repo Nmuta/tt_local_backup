@@ -11,7 +11,7 @@ const routes: Routes = [
   {
     path: ':value',
     component: AuthComponent,
-  }
+  },
 ];
 
 /** Defines the auth router module. */

@@ -1,15 +1,17 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
 import {
   FaIconLibrary,
   FontAwesomeModule,
 } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { NgxsModule } from '@ngxs/store';
+import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
+import { allAngularMaterialModules } from '@shared/helpers/ng-material';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
 import { UserState } from '@shared/state/user/user.state';
 
@@ -29,7 +31,7 @@ export const protectedResourceMap: [string, string[]][] = [
   imports: [
     AppRoutingModule,
     BrowserModule,
-    BrowserAnimationsModule,
+    ...allAngularMaterialModules,
     FontAwesomeModule,
     HttpClientModule,
     NgxsModule.forRoot([UserState]),
@@ -63,6 +65,18 @@ export const protectedResourceMap: [string, string[]][] = [
     ),
   ],
   providers: [
+    {
+      provide: ApplicationInsights,
+      useFactory: () => {
+        const appInsights = new ApplicationInsights({
+          config: environment.appInsightsConfig,
+        });
+        appInsights.loadAppInsights();
+        return appInsights;
+      },
+      multi: false,
+    },
+    LoggerService,
     Clipboard,
     {
       provide: HTTP_INTERCEPTORS,
