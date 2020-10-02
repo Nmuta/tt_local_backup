@@ -94,7 +94,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
 
     // This isn't a great way to detect it, but I tried using the event system and the events for this sort of event just don't emit properly.
     // (a single child window can have multipe "onunload" events)
-    interval(100 /*milliseconds*/)
+    interval(100)
       .pipe(
         takeUntil(this.onDestroy$),
         tap(() =>
