@@ -30,13 +30,25 @@ ul {
   bottom: 0px;
   position: fixed;
   height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  div {
+    display: inline-block;
+    margin: auto;
+  }
 
   a {
     color: $primaryBlue;
     cursor: pointer;
     text-decoration: none;
     text-align: center;
-    display: block;
+    display: inline-block;
     font-size: 14px;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
