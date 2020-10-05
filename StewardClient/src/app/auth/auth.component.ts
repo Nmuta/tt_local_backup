@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { Select, Store } from '@ngxs/store';
+import { LoggerService, LogTopic } from '@services/logger';
+import { BaseComponent } from '@shared/components/base-component/base-component.component';
 import { UserModel } from '@shared/models/user.model';
 import { WindowService } from '@shared/services/window';
 import {
@@ -9,7 +11,8 @@ import {
   ResetUserProfile,
 } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
-import { Observable } from 'rxjs';
+import { interval, Observable } from 'rxjs';
+import { filter, take, takeUntil, tap } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 
@@ -18,7 +21,7 @@ import { environment } from '../../environments/environment';
   templateUrl: './auth.html',
   styleUrls: ['./auth.scss'],
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public fromApp: string;
@@ -33,12 +36,15 @@ export class AuthComponent implements OnInit {
   public autoCloseTimeSecsLeft: number;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private store: Store,
-    private msalService: MsalService,
-    private windowService: WindowService
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly logger: LoggerService,
+    private readonly router: Router,
+    private readonly store: Store,
+    private readonly msalService: MsalService,
+    private readonly windowService: WindowService
   ) {
+    super();
+
     this.activatedRoute.queryParams.subscribe(params => {
       this.fromApp = params.from;
 
@@ -64,7 +70,10 @@ export class AuthComponent implements OnInit {
           this.router.navigate([`/${this.fromApp}`]);
         }
 
-        if ((!!this.profile && this.fromAadLogin) || (!this.profile && this.fromAadLogout)) {
+        if (
+          (!!this.profile && this.fromAadLogin) ||
+          (!this.profile && this.fromAadLogout)
+        ) {
           this.autoCloseWindow(10);
         }
       },
@@ -78,16 +87,38 @@ export class AuthComponent implements OnInit {
 
   /** Open the auth page in a new tab. */
   public loginWithNewTab() {
-    this.windowService.open(
+    const newWindow = this.windowService.open(
       `${environment.clientUrl}/auth?action=login`,
       '_blank'
     );
+
+    // This isn't a great way to detect it, but I tried using the event system and the events for this sort of event just don't emit properly.
+    // (a single child window can have multipe "onunload" events)
+    interval(100)
+      .pipe(
+        takeUntil(this.onDestroy$),
+        tap(() =>
+          this.logger.log(
+            [LogTopic.Auth],
+            `polling; newWindow.closed == ${newWindow.closed}`
+          )
+        ),
+        filter(() => newWindow.closed),
+        take(1),
+        tap(() =>
+          this.logger.log(
+            [LogTopic.Auth],
+            `polling; newWindow.closed completed`
+          )
+        )
+      )
+      .subscribe(() => this.recheckAuth());
   }
 
   /** Sends login request to client app scope. */
   public login() {
     this.msalService.loginRedirect({
-      extraScopesToConsent: [environment.azureAppScope]
+      extraScopesToConsent: [environment.azureAppScope],
     });
   }
 

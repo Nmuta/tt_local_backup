@@ -1,4 +1,4 @@
-@import "../variables.scss";
+@import '../variables.scss';
 
 ul {
   list-style-type: none;
@@ -40,7 +40,7 @@ ul {
   }
 
   a {
-    color:  $primaryBlue;
+    color: $primaryBlue;
     cursor: pointer;
     text-decoration: none;
     text-align: center;
