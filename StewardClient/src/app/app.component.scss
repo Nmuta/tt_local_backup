@@ -46,8 +46,9 @@ ul {
     text-align: center;
     display: inline-block;
     font-size: 14px;
-  }
-  a:hover {
+
+    &:hover {
       text-decoration: underline;
+    }
   }
 }
