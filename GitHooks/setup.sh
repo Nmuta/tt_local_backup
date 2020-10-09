@@ -2,6 +2,6 @@
 #
 # GIT hooks setup script for new devs working on repo
 
-ln GitHooks/pre-commit .git/hooks 
+ln GitHooks/pre-commit.sh .git/hooks 
 
 echo 'Finished setting up GIT hooks.'
