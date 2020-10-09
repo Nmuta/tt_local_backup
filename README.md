@@ -31,11 +31,20 @@ Please reach out to anyone on the LiveOps dev team to give you permissions.
 
 ### API
 Steward's API is built with .NET Core.
-The only prerequisites for this app is to install Visual Studio.
+You will need to install Visual Studio to run the app.
+
+<br>
+Also you will need to be given a role within the [API Azure AAD App](https://ms.portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Overview/appId/cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/isMSAApp/). 
+Please reach out to anyone on the LiveOps dev team to give you correct Admin role.
 
 ## Running the app
 ### Zendesk
 
+### UI
+
+### API
+
+## Running the app
 ### UI
 
 ### API
