@@ -37,7 +37,7 @@ describe('service: ApiService', () => {
 
   describe('Method: getRequest', () => {
     const url = 'test';
-    const expectedApiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
+    const expectedApiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const params = new HttpParams().set('test-header', '1234');
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ describe('service: ApiService', () => {
     let object;
     beforeEach(() => {
       url = 'test';
-      apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
+      apiUrl = `${environment.stewardApiUrl}/api/${url}`;
       object = { foo: 'bar' };
     });
     describe('When the http request succeeds', () => {
@@ -123,7 +123,7 @@ describe('service: ApiService', () => {
     let object;
     beforeEach(() => {
       url = 'test';
-      apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
+      apiUrl = `${environment.stewardApiUrl}/api/${url}`;
       object = {};
       params = new HttpParams().set('id', '1234');
     });
@@ -171,7 +171,7 @@ describe('service: ApiService', () => {
     let object;
     beforeEach(() => {
       url = 'test';
-      apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
+      apiUrl = `${environment.stewardApiUrl}/api/${url}`;
       object = new Comment();
       params = new HttpParams().set('id', '1234');
     });

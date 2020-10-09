@@ -16,9 +16,7 @@ export class LoggerService {
 
   private console = window.console;
 
-  constructor(
-    private readonly appInsights: ApplicationInsights,
-  ) {
+  constructor(private readonly appInsights: ApplicationInsights) {
     this.consoleLevel = environment.loggerConfig.consoleLogLevel;
     this.appInsightsLevel = environment.loggerConfig.appInsightsLogLevel;
   }

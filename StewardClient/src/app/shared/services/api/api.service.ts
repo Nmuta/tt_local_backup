@@ -22,7 +22,7 @@ export class ApiService {
     params?: HttpParams,
     headers?: HttpHeaders
   ): Observable<T> {
-    const apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
+    const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const get = this.http.get<T>(apiUrl, {
       params,
       headers,
@@ -39,7 +39,7 @@ export class ApiService {
     headers?: HttpHeaders,
     host?: string
   ): Observable<T> {
-    const apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
+    const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const post = this.http.post<T>(apiUrl, object, {
       headers,
       params,
@@ -54,7 +54,7 @@ export class ApiService {
     object: any,
     params?: HttpParams
   ): Observable<T> {
-    const apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
+    const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     const put = this.http.put<T>(apiUrl, object, {
@@ -67,7 +67,7 @@ export class ApiService {
 
   /** Sends a DELETE request. */
   public deleteRequest<T>(url: string, params?: HttpParams): Observable<T> {
-    const apiUrl = `${environment.scrutineerApiUrl}/api/${url}`;
+    const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     const del = this.http.delete<T>(apiUrl, {

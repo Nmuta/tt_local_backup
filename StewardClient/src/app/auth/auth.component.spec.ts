@@ -262,7 +262,7 @@ describe('AuthComponent', () => {
       component.loginWithNewTab();
 
       expect(mockWindowService.open).toHaveBeenCalledWith(
-        `${environment.clientUrl}/auth?action=login`,
+        `${environment.stewardUiUrl}/auth?action=login`,
         '_blank'
       );
     });

@@ -33,7 +33,7 @@ export class ProfileComponent {
     this.store.dispatch(new ResetAccessToken());
     this.router.navigate([`/auth`], { queryParams: { from: this.parentApp } });
     this.windowService.open(
-      `${environment.clientUrl}/auth?action=logout`,
+      `${environment.stewardUiUrl}/auth?action=logout`,
       '_blank'
     );
   }

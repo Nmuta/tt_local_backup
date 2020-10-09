@@ -5,8 +5,8 @@ import { LogLevel } from '@services/logger';
 export interface StewardEnvironment {
   production: boolean;
   azureAppScope: string;
-  clientUrl: string;
-  scrutineerApiUrl: string;
+  stewardUiUrl: string;
+  stewardApiUrl: string;
   oldScrutineerApiUrl: string;
 
   /** Passed through when Application Insights is configured. */
