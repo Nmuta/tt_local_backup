@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Setup script for new devs working on repo
+
+ln GitHooks/pre-commit .git/hooks 
