@@ -42,8 +42,8 @@ export const protectedResourceMap: [string, string[]][] = [
           authority:
             'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/',
           navigateToLoginRequestUrl: false,
-          redirectUri: `${environment.clientUrl}/auth/aadLogin`,
-          postLogoutRedirectUri: `${environment.clientUrl}/auth/aadLogout`,
+          redirectUri: `${environment.stewardUiUrl}/auth/aadLogin`,
+          postLogoutRedirectUri: `${environment.stewardUiUrl}/auth/aadLogout`,
         },
         cache: {
           cacheLocation: 'localStorage',

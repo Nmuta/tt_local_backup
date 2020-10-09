@@ -85,7 +85,7 @@ describe('ProfileComponent', () => {
       component.logout();
 
       expect(mockWindowService.open).toHaveBeenCalledWith(
-        `${environment.clientUrl}/auth?action=logout`,
+        `${environment.stewardUiUrl}/auth?action=logout`,
         '_blank'
       );
     });

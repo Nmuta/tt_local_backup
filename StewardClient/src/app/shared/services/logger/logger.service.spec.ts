@@ -1,7 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
-import { createMockApplicationInsights, MockApplicationInsights } from '@mocks/application-insights.mock';
+import {
+  createMockApplicationInsights,
+  MockApplicationInsights,
+} from '@mocks/application-insights.mock';
 import { MockConsole } from '@mocks/console.mock';
 
 import { LoggerService } from './logger.service';
@@ -13,9 +16,8 @@ describe('LoggerService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        createMockApplicationInsights(),
-      ]});
+      providers: [createMockApplicationInsights()],
+    });
     service = TestBed.inject(LoggerService);
     mockAppInsights = TestBed.inject(ApplicationInsights);
     mockConsole = new MockConsole();
@@ -28,24 +30,26 @@ describe('LoggerService', () => {
 
   it('should use correct environment values', () => {
     expect(service).toBeTruthy();
-    expect(service.appInsightsLevel).toBe(environment.loggerConfig.appInsightsLogLevel);
+    expect(service.appInsightsLevel).toBe(
+      environment.loggerConfig.appInsightsLogLevel
+    );
     expect(service.consoleLevel).toBe(environment.loggerConfig.consoleLogLevel);
   });
 
   it('should log', () => {
-    service.log([], "test");
+    service.log([], 'test');
     expect(mockConsole.log).toHaveBeenCalled();
     expect(mockAppInsights.trackTrace).toHaveBeenCalled();
   });
 
   it('should warn', () => {
-    service.warn([], "test");
+    service.warn([], 'test');
     expect(mockConsole.warn).toHaveBeenCalled();
     expect(mockAppInsights.trackTrace).toHaveBeenCalled();
   });
 
   it('should debug', () => {
-    service.debug([], "test");
+    service.debug([], 'test');
     expect(mockConsole.debug).toHaveBeenCalled();
     expect(mockAppInsights.trackTrace).toHaveBeenCalled();
   });

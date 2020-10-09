@@ -88,7 +88,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
   /** Open the auth page in a new tab. */
   public loginWithNewTab() {
     const newWindow = this.windowService.open(
-      `${environment.clientUrl}/auth?action=login`,
+      `${environment.stewardUiUrl}/auth?action=login`,
       '_blank'
     );
 
