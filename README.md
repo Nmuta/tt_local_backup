@@ -39,13 +39,33 @@ Please reach out to anyone on the LiveOps dev team to give you correct Admin rol
 
 ## Running the app
 ### Zendesk
+You have two options to run Zendesk locally:
+
+1) Run bash.exe and change working directory to Web-Steward/StewardClient/app-local. Once inside, run `zat serve`.
+
+2) Run the npm command `npm run dev:zat`. This does everything in option 1 automatically for you
 
 ### UI
+There are two different types of local environments that can be used.
 
+1) All local - `npm run start` - this will run the Angular app locally and point all API requests to a local instance of Steward API.
+
+2) Local UI/ Dev API - `npm run dev:start`- this will run the Angular app locally and point all API requests to the DEV instance of Steward API.
+  
 ### API
+To run the Steward API locally, open up the solution in Visual Studio. Make sure the StewardApi project is set as the Startup Project and click the Visual Studio's run button (green arrow).
 
-## Running the app
+This should open up the API's local swagger page on: https://localhost:44321/swagger/index.html
+
+## Testing the app
 ### UI
+You have multiple options to run client unit tests.
+
+1) `npm run local:test:chrome` - Run using Chrome
+2) `npm run local:test:ff` - Run using Firefox
+3) `npm run vsts:test` - Run using headless browser
+3) `npm run vsts:test:ncc` - Run using headless browser without code coverage results:
 
 ### API
+API testing is simple and can all be done through Visual Studio's **Test Explorer**
 
