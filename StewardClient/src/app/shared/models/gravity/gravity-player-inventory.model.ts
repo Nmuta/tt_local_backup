@@ -1,4 +1,4 @@
-import { GravityCar, GravityInventoryItem } from './inventory-items';
+import { GravityCar, GravityInventoryItem, GravityKit } from './inventory-items';
 
 /** Interface for gravity player inventory. */
 export interface GravityPlayerInventory {
@@ -6,8 +6,8 @@ export interface GravityPlayerInventory {
   turn10Id?: string;
   cars?: GravityCar[];
   masteryKits?: GravityInventoryItem[];
-  upgradeKits?: GravityUpgradeKit[];
-  repairKits?: GravityRepairKit[];
+  upgradeKits?: GravityKit[];
+  repairKits?: GravityKit[];
   packs?: GravityInventoryItem[];
   currencies?: GravityInventoryItem[];
   energyRefills?: GravityInventoryItem[];
