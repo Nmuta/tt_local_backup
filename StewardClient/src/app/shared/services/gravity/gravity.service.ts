@@ -1,7 +1,8 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
+import { GravityGameSettings, GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
 import { ApiService } from '@services/api';
+import { GiftHistoryAntecedent } from '@shared/constants';
 import { Observable } from 'rxjs';
 
 /** Defines the gravity service. */
@@ -111,6 +112,27 @@ export class GravityService {
       `${this.basePath}/player/inventory/t10Id`,
       inventory,
       params
+    );
+  }
+
+  /** Gets gravity game settings. */
+  public getGameSettings(
+    gameSettingsId: string,
+  ): Observable<GravityGameSettings> {
+
+    return this.apiService.getRequest<GravityGameSettings>(
+      `${this.basePath}/data/gameSettingsId(${gameSettingsId})`
+    );
+  }
+
+  /** Gets gravity gift histories. */
+  public getGiftHistories(
+    giftHistoryAntecedent: GiftHistoryAntecedent,
+    giftRecipientId: string
+  ): Observable<GravityGiftHistory> {
+
+    return this.apiService.getRequest<GravityGiftHistory>(
+      `${this.basePath}/giftHistory/giftRecipientId/(${giftRecipientId})/giftHistoryAntecedent/(${giftHistoryAntecedent})`
     );
   }
 }
