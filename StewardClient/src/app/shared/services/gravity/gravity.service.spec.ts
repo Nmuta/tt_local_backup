@@ -10,11 +10,7 @@ describe('service: ApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        ApiService,
-        createMockApiService()
-      ],
-      
+      providers: [ApiService, createMockApiService()],
     });
     injector = getTestBed();
     gravityService = injector.inject(GravityService);
