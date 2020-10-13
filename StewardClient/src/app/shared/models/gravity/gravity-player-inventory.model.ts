@@ -1,4 +1,8 @@
-import { GravityCar, GravityInventoryItem, GravityKit } from './inventory-items';
+import {
+  GravityCar,
+  GravityInventoryItem,
+  GravityKit,
+} from './inventory-items';
 
 /** Interface for gravity player inventory. */
 export interface GravityPlayerInventory {
