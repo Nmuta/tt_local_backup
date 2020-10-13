@@ -16,7 +16,6 @@ export class GravityService {
   public getPlayerDetailsByGamertag(
     gamertag: string
   ): Observable<GravityPlayerDetails> {
-
     return this.apiService.getRequest<any>(
       `${this.basePath}/player/details/gamertag(${gamertag})`
     );
@@ -26,7 +25,6 @@ export class GravityService {
   public getPlayerDetailsByXuid(
     xuid: string
   ): Observable<GravityPlayerDetails> {
-
     return this.apiService.getRequest<any>(
       `${this.basePath}/player/details/xuid(${xuid})`
     );
@@ -36,7 +34,6 @@ export class GravityService {
   public getPlayerDetailsByT10Id(
     t10Id: string
   ): Observable<GravityPlayerDetails> {
-
     return this.apiService.getRequest<any>(
       `${this.basePath}/player/details/t10Id(${t10Id})`
     );
@@ -46,7 +43,6 @@ export class GravityService {
   public getPlayerInventoryByXuid(
     xuid: string
   ): Observable<GravityPlayerInventory> {
-
     return this.apiService.getRequest<any>(
       `${this.basePath}/player/inventory/xuid(${xuid})`
     );
@@ -56,7 +52,6 @@ export class GravityService {
   public getPlayerInventoryByT10Id(
     t10Id: string
   ): Observable<GravityPlayerInventory> {
-
     return this.apiService.getRequest<any>(
       `${this.basePath}/player/inventory/t10Id(${t10Id})`
     );
@@ -67,7 +62,6 @@ export class GravityService {
     xuid: string,
     profileId: string
   ): Observable<GravityPlayerInventory> {
-
     return this.apiService.getRequest<any>(
       `${this.basePath}/player/inventory/xuid(${xuid})/profileId(${profileId})`
     );
@@ -78,7 +72,6 @@ export class GravityService {
     t10Id: string,
     profileId: string
   ): Observable<GravityPlayerInventory> {
-
     return this.apiService.getRequest<any>(
       `${this.basePath}/player/inventory/t10Id(${t10Id})/profileId(${profileId})`
     );
@@ -89,7 +82,6 @@ export class GravityService {
     inventory: GravityPlayerInventory,
     useBackgroundProcessing: boolean = false
   ): Observable<GravityPlayerInventory> {
-
     // TODO: Check that xuid exists in inventory
     const params = new HttpParams().append(
       'useBackgroundProcessing',
@@ -108,13 +100,12 @@ export class GravityService {
     inventory: GravityPlayerInventory,
     useBackgroundProcessing: boolean = false
   ): Observable<GravityPlayerInventory> {
-
     // TODO: Check that t10Id exists in inventory
     const params = new HttpParams().append(
       'useBackgroundProcessing',
       useBackgroundProcessing.toString()
     );
-    
+
     return this.apiService.postRequest<any>(
       `${this.basePath}/player/inventory/t10Id`,
       inventory,
