@@ -1,3 +1,5 @@
+import { GravityInventoryItem, GravityCar } from "./inventory-items";
+
 /** Interface for gravity player inventory. */
 export interface GravityPlayerInventory {
   xuid?: any;
