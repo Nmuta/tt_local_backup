@@ -23,6 +23,7 @@ export class GravityService {
   public getPlayerDetailsByGamertag(
     gamertag: string
   ): Observable<GravityPlayerDetails> {
+    
     return this.apiService.getRequest<GravityPlayerDetails>(
       `${this.basePath}/player/details/gamertag(${gamertag})`
     );
@@ -32,6 +33,7 @@ export class GravityService {
   public getPlayerDetailsByXuid(
     xuid: string
   ): Observable<GravityPlayerDetails> {
+
     return this.apiService.getRequest<GravityPlayerDetails>(
       `${this.basePath}/player/details/xuid(${xuid})`
     );
@@ -41,6 +43,7 @@ export class GravityService {
   public getPlayerDetailsByT10Id(
     t10Id: string
   ): Observable<GravityPlayerDetails> {
+
     return this.apiService.getRequest<GravityPlayerDetails>(
       `${this.basePath}/player/details/t10Id(${t10Id})`
     );
@@ -50,6 +53,7 @@ export class GravityService {
   public getPlayerInventoryByXuid(
     xuid: string
   ): Observable<GravityPlayerInventory> {
+
     return this.apiService.getRequest<GravityPlayerInventory>(
       `${this.basePath}/player/inventory/xuid(${xuid})`
     );
@@ -59,6 +63,7 @@ export class GravityService {
   public getPlayerInventoryByT10Id(
     t10Id: string
   ): Observable<GravityPlayerInventory> {
+
     return this.apiService.getRequest<GravityPlayerInventory>(
       `${this.basePath}/player/inventory/t10Id(${t10Id})`
     );
@@ -69,6 +74,7 @@ export class GravityService {
     xuid: string,
     profileId: string
   ): Observable<GravityPlayerInventory> {
+
     return this.apiService.getRequest<GravityPlayerInventory>(
       `${this.basePath}/player/inventory/xuid(${xuid})/profileId(${profileId})`
     );
@@ -89,7 +95,7 @@ export class GravityService {
     inventory: GravityPlayerInventory,
     useBackgroundProcessing: boolean = false
   ): Observable<GravityPlayerInventory> {
-    if(!inventory.xuid || inventory.xuid === '') {
+    if (!inventory.xuid || inventory.xuid === '') {
       return throwError('No XUID provided.');
     }
 
@@ -110,7 +116,7 @@ export class GravityService {
     inventory: GravityPlayerInventory,
     useBackgroundProcessing: boolean = false
   ): Observable<GravityPlayerInventory> {
-    if(!inventory.turn10Id || inventory.turn10Id === '') {
+    if (!inventory.turn10Id || inventory.turn10Id === '') {
       return throwError('No T10 Id provided.');
     }
 
