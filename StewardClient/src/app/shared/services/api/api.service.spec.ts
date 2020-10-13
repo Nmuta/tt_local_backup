@@ -24,9 +24,9 @@ describe('service: ApiService', () => {
       providers: [ApiService],
     });
     injector = getTestBed();
-    apiService = injector.get(ApiService);
-    httpMock = injector.get(HttpTestingController);
-    mockRouter = injector.get(Router);
+    apiService = injector.inject(ApiService);
+    httpMock = injector.inject(HttpTestingController);
+    mockRouter = injector.inject(Router);
 
     mockRouter.navigate = jasmine.createSpy('navigate');
   });
