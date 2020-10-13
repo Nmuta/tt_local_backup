@@ -1,4 +1,4 @@
-import { GravityPlayerInventory } from "./gravity-player-inventory.model";
+import { GravityPlayerInventory } from './gravity-player-inventory.model';
 
 /** Interface for gravity player details. */
 export interface GravityGiftHistory {
