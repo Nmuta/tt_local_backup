@@ -1,5 +1,6 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
 import { ApiService } from '@services/api';
 import { Observable } from 'rxjs';
 
