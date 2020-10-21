@@ -1,0 +1,286 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sku": {
+      "type": "string",
+      "allowedValues": [
+        "F1",
+        "D1",
+        "B1",
+        "B2",
+        "B3",
+        "S1",
+        "S2",
+        "S3",
+        "P1",
+        "P2",
+        "P3",
+        "P4"
+      ],
+      "defaultValue": "S1",
+      "metadata": {
+        "description": "The pricing tier for the Azure App Service Plan."
+      }
+    },
+    "workerSize": {
+      "type": "string",
+      "allowedValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "defaultValue": "0",
+      "metadata": {
+        "description": "The instance size of the Azure App Service Plan (small, medium, or large)."
+      }
+    },
+    "genevaCertContent": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The PFX to be put in the AntMDS certificate store to be used to decrypt the encrypted storage account key and authenticate to MDM."
+      }
+    },
+    "monitoringTenant": {
+      "type": "string",
+      "metadata": {
+        "description": "Sets the MONITORING_TENANT environment variable "
+      }
+    },
+    "monitoringRole": {
+      "type": "string",
+      "metadata": {
+        "description": "Sets the MONITORING_ROLE environment variable"
+      }
+    },
+    "monitoringGcsEnvironment": {
+      "type": "string",
+      "allowedValues": [
+        "Diagnostics Prod",
+        "Test",
+        "Stage",
+        "FirstPartyProd",
+        "BillingProd",
+        "ExternalProd",
+        "CA BlackForest",
+        "CA Fairfax",
+        "CA Mooncake"
+      ],
+      "metadata": {
+        "description": "The endpoint for your Geneva Account.  Sets the MONITORING_GCS_ENVIRONMENT environment variable."
+      }
+    },
+    "monitoringGcsAuthId": {
+      "type": "string",
+      "metadata": {
+        "description": "Sets the MONITORING_GCS_AUTH_ID environment variable."
+      }
+    },
+    "monitoringGcsAccount": {
+      "type": "string",
+      "metadata": {
+        "description": "Sets the MONITORING_GCS_ACCOUNT environment variable."
+      }
+    },
+    "monitoringGcsNamespace": {
+      "type": "string",
+      "metadata": {
+        "description": "Sets the MONITORING_GCS_NAMESPACE environment variable"
+      }
+    },
+    "monitoringMdmAccount": {
+      "type": "string",
+      "metadata": {
+        "description": "Sets the MONITORING_MDM_ACCOUNT environment variable."
+      }
+    },
+    "monitoringMdmNamespace": {
+      "type": "string",
+      "metadata": {
+        "description": "Sets the MONITORING_MDM_NAMESPACE environment variable"
+      }
+    },
+    "monitoringConfigVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "Sets the MONITORING_CONFIG_VERSION environment variable."
+      }
+    },
+    "locationOverride": {
+      "type": "string",
+      "metadata": {
+        "description": "Allows user to target a region other than the resource group region."
+      }
+    },
+    "prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "The prefix for all managed resources"
+      }
+    },
+    "suffix": {
+      "type": "string",
+      "metadata": {
+        "description": "The suffix for all managed resources"
+      }
+    }
+  },
+  "variables": {
+    "prefix": "[parameters('prefix')]",
+    "suffix": "[parameters('suffix')]",
+    "planName": "[concat(variables('prefix'), '-', variables('suffix'))]",
+    "location": "[if(empty(parameters('locationOverride')), resourceGroup().location, parameters('locationOverride'))]",
+    "sku": "[parameters('sku')]",
+    "workerSize": "[parameters('workerSize')]",
+    "identityName": "[concat(variables('prefix'), '-identity-', variables('suffix'))]",
+    
+    "genevaCertContent": "[parameters('genevaCertContent')]",
+    "monitoringTenant": "[parameters('monitoringTenant')]",
+    "monitoringRole": "[parameters('monitoringRole')]",
+    "monitoringGcsEnvironment": "[parameters('monitoringGcsEnvironment')]",
+    "monitoringGcsAccount": "[parameters('monitoringGcsAccount')]",
+    "monitoringGcsNamespace": "[parameters('monitoringGcsNamespace')]",
+    "monitoringMdmAccount": "[parameters('monitoringMdmAccount')]",
+    "monitoringMdmNamespace": "[parameters('monitoringMdmNamespace')]",
+    "monitoringGcsAuthId": "[parameters('monitoringGcsAuthId')]",
+    "monitoringConfigVersion": "[parameters('monitoringConfigVersion')]",
+    "configXml": "<MonitoringManagement eventVersion=\"1\" version=\"1.0\" timestamp=\"2017-12-29T00:00:00Z\" namespace=\"PlaceHolder\"></MonitoringManagement>",
+    "configJson": {
+      "MONITORING_TENANT": "[parameters('monitoringTenant')]",
+      "MONITORING_ROLE": "[parameters('monitoringRole')]",
+      "MONITORING_XSTORE_ACCOUNTS": "GCSPlaceholder",
+      "AdditionalEnvironmentVariables": [
+        {
+          "Key": "DATACENTER",
+          "Value": "[variables('location')]"
+        },
+        {
+          "Key": "MONITORING_GCS_ENVIRONMENT",
+          "Value": "[variables('monitoringGcsEnvironment')]"
+        },
+        {
+          "Key": "MONITORING_GCS_ACCOUNT",
+          "Value": "[variables('monitoringGcsAccount')]"
+        },
+        {
+          "Key": "MONITORING_GCS_NAMESPACE",
+          "Value": "[variables('monitoringGcsNamespace')]"
+        },
+        {
+          "Key": "MONITORING_MDM_ACCOUNT",
+          "Value": "[variables('monitoringMdmAccount')]"
+        },
+        {
+          "Key": "MONITORING_MDM_NAMESPACE",
+          "Value": "[variables('monitoringMdmNamespace')]"
+        },
+        {
+          "Key": "MONITORING_GCS_REGION",
+          "Value": "[variables('location')]"
+        },
+        {
+          "Key": "MONITORING_GCS_AUTH_ID",
+          "Value": "[variables('monitoringGcsAuthId')]"
+        },
+        {
+          "Key": "MONITORING_GCS_AUTH_ID_TYPE",
+          "Value": "AuthKeyVault"
+        },
+        {
+          "Key": "MONITORING_CONFIG_VERSION",
+          "Value": "[variables('monitoringConfigVersion')]"
+        },
+        {
+          "Key": "MONITORING_USE_GENEVA_CONFIG_SERVICE",
+          "Value": "true"
+        }
+      ]
+    }
+  },
+  "resources": [
+    {
+      "comments": "Defines an Azure App Service Plan.",
+      "type": "Microsoft.Web/serverfarms",
+      "name": "[variables('planName')]",
+      "apiVersion": "2015-08-01",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "[variables('sku')]",
+        "capacity": "[variables('workerSize')]"
+      },
+      "properties": {
+        "name": "[variables('planName')]"
+      },
+      "resources": [
+        {
+          "comments": "Defines how the Geneva Monitoring Agent should be configured.",
+          "type": "Microsoft.Web/serverfarms/firstPartyApps/settings",
+          "name": "[concat(variables('planName'), '/AntMDS/ConfigJson')]",
+          "apiVersion": "2015-08-01",
+          "location": "[variables('location')]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/serverfarms', variables('planName'))]"
+          ],
+          "properties": {
+            "firstPartyId": "AntMDS",
+            "settingName": "ConfigJson",
+            "settingValue": "[string(variables('configJson'))]"
+          }
+        },
+        {
+          "comments": "Defines what events the Geneva Monitoring Agent should upload. This should be a placeholder configuration for services using GCS.",
+          "type": "Microsoft.Web/serverfarms/firstPartyApps/settings",
+          "name": "[concat(variables('planName'), '/AntMDS/MdsConfigXml')]",
+          "apiVersion": "2015-08-01",
+          "location": "[variables('location')]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/serverfarms', variables('planName'))]"
+          ],
+          "properties": {
+            "firstPartyId": "AntMDS",
+            "settingName": "MdsConfigXml",
+            "settingValue": "[variables('configXml')]"
+          }
+        },
+        {
+          "type": "Microsoft.Web/serverfarms/firstPartyApps/settings",
+          "name": "[concat(variables('planName'), '/AntMDS/CERTIFICATE_PFX_GENEVACERT')]",
+          "apiVersion": "2015-08-01",
+          "location": "[variables('location')]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/serverfarms', variables('planName'))]"
+          ],
+          "properties": {
+            "firstPartyId": "AntMDS",
+            "settingName": "CERTIFICATE_PFX_GENEVACERT",
+            "settingValue": "[parameters('genevaCertContent')]"
+          }
+        },
+        {
+          "type": "Microsoft.Web/serverfarms/firstPartyApps/settings",
+          "name": "[concat(variables('planName'), '/AntMDS/CERTIFICATE_PASSWORD_GENEVACERT')]",
+          "apiVersion": "2015-08-01",
+          "location": "[variables('location')]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/serverfarms', variables('planName'))]"
+          ],
+          "properties": {
+            "firstPartyId": "AntMDS",
+            "settingName": "CERTIFICATE_PASSWORD_GENEVACERT",
+            "settingValue": ""
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": {
+    "jsonconfig": {
+      "type": "object",
+      "value": "[variables('configJson')]"
+    },
+    "identityName": {
+        "type": "string",
+        "value": "[variables('identityName')]"
+    }
+  }
+}

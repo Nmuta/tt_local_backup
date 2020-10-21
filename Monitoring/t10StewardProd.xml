@@ -1,0 +1,15 @@
+<MonitoringManagement eventVersion="1" version="1.0" timestamp="2015-12-07T00:00:00Z" namespace="t10StewardProd">
+
+  <Imports>
+    <Import file="AgentStandardEvents.xml" />
+    <Import file="MAConfig-WebApp-Common.xml" />
+  </Imports>
+
+  <!-- Management documentation: https://jarvis.dc.ad.msft.net/?page=documents&section=9c95f4eb-8689-4c9f-81bf-82d688e860fd&id=8794f47e-d1b2-4538-8f31-839c41c1710a  -->
+  <!-- TODO: This is a deprecated way of specifying the singular accounts (for testing only), and is inconsistent with FMNET (though consistent with Services as of 2020-09-22).
+      https://jarvis-west.dc.ad.msft.net/?section=1363da01-b6ed-43d4-970e-f89b011d591f&page=documents&id=d6899eb4-08cb-40b9-ac00-f649bff44b56 -->
+  <Accounts>
+    <Account moniker="T10GenevaAzureServices" />
+  </Accounts>
+
+</MonitoringManagement>
