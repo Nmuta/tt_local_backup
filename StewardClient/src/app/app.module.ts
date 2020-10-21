@@ -15,14 +15,15 @@ import { UserState } from '@shared/state/user/user.state';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app.routing';
+import { AppRoutingModule } from './app.routing.module';
 import { ErrorComponent } from './error/error.component';
+import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
 
 export const protectedResourceMap: [string, string[]][] = [['https://graph.microsoft.com/v1.0/me', ['user.read']]];
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent],
+  declarations: [AppComponent, ErrorComponent, FourOhFourComponent],
   imports: [
     AppRoutingModule,
     BrowserModule,

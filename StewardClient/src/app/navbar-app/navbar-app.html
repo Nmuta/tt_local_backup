@@ -7,6 +7,7 @@
   >
     {{ title }}
   </button>
+  <a [routerLink]="['missing-no']">404</a>
 </mat-toolbar>
 <section *ngIf="!loading">
   <profile [user]="profile" [parentApp]="appName"></profile>

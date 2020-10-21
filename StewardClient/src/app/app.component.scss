@@ -1,5 +1,9 @@
 @import 'src/variables.scss';
 
+:host {
+  height: 100%;
+}
+
 .header-buttons {
   border: 0px;
   font-size: 16px;
