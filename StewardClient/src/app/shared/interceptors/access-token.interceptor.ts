@@ -1,4 +1,9 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { UserState, UserStateModel } from '@shared/state/user/user.state';
@@ -11,7 +16,10 @@ export class AccessTokenInterceptor implements HttpInterceptor {
   constructor(protected store: Store) {}
 
   /** Intercept logic that adds bearer token to request header. */
-  public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  public intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     let accessToken = this.store.selectSnapshot<any>(UserState.accessToken);
     accessToken = !!accessToken ? accessToken : '';
     request = request.clone({

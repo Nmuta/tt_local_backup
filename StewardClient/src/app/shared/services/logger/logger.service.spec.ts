@@ -1,7 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
-import { createMockApplicationInsights, MockApplicationInsights } from '@mocks/application-insights.mock';
+import {
+  createMockApplicationInsights,
+  MockApplicationInsights,
+} from '@mocks/application-insights.mock';
 import { MockConsole } from '@mocks/console.mock';
 
 import { LoggerService } from './logger.service';
@@ -27,7 +30,9 @@ describe('LoggerService', () => {
 
   it('should use correct environment values', () => {
     expect(service).toBeTruthy();
-    expect(service.appInsightsLevel).toBe(environment.loggerConfig.appInsightsLogLevel);
+    expect(service.appInsightsLevel).toBe(
+      environment.loggerConfig.appInsightsLogLevel
+    );
     expect(service.consoleLevel).toBe(environment.loggerConfig.consoleLogLevel);
   });
 

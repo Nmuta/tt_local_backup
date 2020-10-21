@@ -4,7 +4,10 @@ import { environment } from '@environments/environment';
 import { Store } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { WindowService } from '@shared/services/window';
-import { ResetAccessToken, ResetUserProfile } from '@shared/state/user/user.actions';
+import {
+  ResetAccessToken,
+  ResetUserProfile,
+} from '@shared/state/user/user.actions';
 
 /** Defines the profile component. */
 @Component({
@@ -18,14 +21,21 @@ export class ProfileComponent {
 
   public profileTabVisible = false;
 
-  constructor(protected router: Router, protected store: Store, protected windowService: WindowService) {}
+  constructor(
+    protected router: Router,
+    protected store: Store,
+    protected windowService: WindowService
+  ) {}
 
   /** Opens the auth page in a new tab. */
   public logout() {
     this.store.dispatch(new ResetUserProfile());
     this.store.dispatch(new ResetAccessToken());
     this.router.navigate([`/auth`], { queryParams: { from: this.parentApp } });
-    this.windowService.open(`${environment.stewardUiUrl}/auth?action=logout`, '_blank');
+    this.windowService.open(
+      `${environment.stewardUiUrl}/auth?action=logout`,
+      '_blank'
+    );
   }
 
   /** Changes the profile tab visiblity. */

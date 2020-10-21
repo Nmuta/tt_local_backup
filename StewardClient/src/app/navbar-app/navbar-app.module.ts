@@ -17,7 +17,7 @@ import { NavbarAppRouterModule } from './navbar-app.routing.module';
     FontAwesomeModule,
     ProfileModule,
     NavbarModule,
-    ...allAngularMaterialModules
+    ...allAngularMaterialModules,
   ],
   providers: [],
   declarations: [NavbarAppComponent],

@@ -3,7 +3,10 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
 import { NavbarModule } from '@components/navbar/navbar.module';
-import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  FaIconLibrary,
+  FontAwesomeModule,
+} from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { NgxsModule } from '@ngxs/store';
@@ -21,7 +24,9 @@ import { ErrorComponent } from './error/error.component';
 import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 
-export const protectedResourceMap: [string, string[]][] = [['https://graph.microsoft.com/v1.0/me', ['user.read']]];
+export const protectedResourceMap: [string, string[]][] = [
+  ['https://graph.microsoft.com/v1.0/me', ['user.read']],
+];
 
 /** Defines the app module. */
 @NgModule({
@@ -38,7 +43,8 @@ export const protectedResourceMap: [string, string[]][] = [['https://graph.micro
       {
         auth: {
           clientId: '48a8a430-0f6b-4469-940f-1c5c6af1fd88',
-          authority: 'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/',
+          authority:
+            'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/',
           navigateToLoginRequestUrl: false,
           redirectUri: `${environment.stewardUiUrl}/auth/aadLogin`,
           postLogoutRedirectUri: `${environment.stewardUiUrl}/auth/aadLogout`,
@@ -50,7 +56,12 @@ export const protectedResourceMap: [string, string[]][] = [['https://graph.micro
       },
       {
         popUp: false,
-        consentScopes: ['user.read', 'openid', 'profile', environment.azureAppScope],
+        consentScopes: [
+          'user.read',
+          'openid',
+          'profile',
+          environment.azureAppScope,
+        ],
         unprotectedResources: [],
         protectedResourceMap,
         extraQueryParameters: {},

@@ -6,7 +6,11 @@ import { ScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser/scr
 import { UserModel } from '@shared/models/user.model';
 import { ZendeskService } from '@shared/services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
-import { ApolloSidebarModel, GravitySidebarModel, SunriseSidebarModel } from 'app/ticket-sidebar/models';
+import {
+  ApolloSidebarModel,
+  GravitySidebarModel,
+  SunriseSidebarModel,
+} from 'app/ticket-sidebar/models';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
@@ -95,23 +99,25 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
 
   /** Gets title data from ticket. */
   public getTitleData(titleCustomField) {
-    this.zendeskService.getTicketCustomField(titleCustomField).subscribe(response => {
-      const titleName = response[`ticket.customField:${titleCustomField}`];
-      const titleNameUppercase = titleName.toUpperCase();
-      this.title =
-        titleNameUppercase === 'FORZA_STREET'
-          ? 'Gravity'
-          : titleNameUppercase === 'FORZA_HORIZON_4'
-          ? 'Sunrise'
-          : titleNameUppercase === 'FORZA_MOTORSPORT_7'
-          ? 'Apollo'
-          : titleNameUppercase === 'FORZA_HORIZON_3'
-          ? 'Opus'
-          : null;
+    this.zendeskService
+      .getTicketCustomField(titleCustomField)
+      .subscribe(response => {
+        const titleName = response[`ticket.customField:${titleCustomField}`];
+        const titleNameUppercase = titleName.toUpperCase();
+        this.title =
+          titleNameUppercase === 'FORZA_STREET'
+            ? 'Gravity'
+            : titleNameUppercase === 'FORZA_HORIZON_4'
+            ? 'Sunrise'
+            : titleNameUppercase === 'FORZA_MOTORSPORT_7'
+            ? 'Apollo'
+            : titleNameUppercase === 'FORZA_HORIZON_3'
+            ? 'Opus'
+            : null;
 
-      // TODO: If title is NULL, break out of logic and show error.
-      this.getPlayerData();
-    });
+        // TODO: If title is NULL, break out of logic and show error.
+        this.getPlayerData();
+      });
   }
 
   /** Requests the player details from API. */
@@ -148,9 +154,13 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         : null;
 
     this.player.firstLogin =
-      'firstLogin' in this.player ? this.scrutineerDataParser.convertDateString(this.player.firstLogin) : undefined;
+      'firstLogin' in this.player
+        ? this.scrutineerDataParser.convertDateString(this.player.firstLogin)
+        : undefined;
     this.player.lastLogin =
-      'lastLogin' in this.player ? this.scrutineerDataParser.convertDateString(this.player.lastLogin) : undefined;
+      'lastLogin' in this.player
+        ? this.scrutineerDataParser.convertDateString(this.player.lastLogin)
+        : undefined;
     this.player.region =
       'region' in this.player
         ? this.title === 'Apollo'
@@ -158,13 +168,25 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
           : this.scrutineerDataParser.regionDict(this.player.region)
         : undefined;
     this.player.country =
-      'country' in this.player ? this.scrutineerDataParser.countryDict(this.player.country) : undefined;
+      'country' in this.player
+        ? this.scrutineerDataParser.countryDict(this.player.country)
+        : undefined;
     this.player.ageGroup =
-      'ageGroup' in this.player ? this.scrutineerDataParser.ageGroupDict(this.player.ageGroup) : undefined;
-    this.player.lcid = 'lcid' in this.player ? this.scrutineerDataParser.lcid(this.player.lcid) : undefined;
-    this.player.flags = 'flags' in this.player ? this.scrutineerDataParser.parseFlags(this.player.flags) : undefined;
+      'ageGroup' in this.player
+        ? this.scrutineerDataParser.ageGroupDict(this.player.ageGroup)
+        : undefined;
+    this.player.lcid =
+      'lcid' in this.player
+        ? this.scrutineerDataParser.lcid(this.player.lcid)
+        : undefined;
+    this.player.flags =
+      'flags' in this.player
+        ? this.scrutineerDataParser.parseFlags(this.player.flags)
+        : undefined;
     this.player.userAgeGroup =
-      'userAgeGroup' in this.player ? this.scrutineerDataParser.ageGroupDict(this.player.userAgeGroup) : undefined;
+      'userAgeGroup' in this.player
+        ? this.scrutineerDataParser.ageGroupDict(this.player.userAgeGroup)
+        : undefined;
   }
 
   /** Reduces user data to properties needed for a gravity ticket. */
@@ -248,7 +270,11 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
   /** Opens up inventory app with predefined info filled out. */
   public goToInventory() {
     const appSection = this.title + '/' + this.player.xuid;
-    this.zendeskService.goToApp('nav_bar', 'forza-inventory-support', appSection);
+    this.zendeskService.goToApp(
+      'nav_bar',
+      'forza-inventory-support',
+      appSection
+    );
   }
 
   /** Copies the value to the client clipboard. */

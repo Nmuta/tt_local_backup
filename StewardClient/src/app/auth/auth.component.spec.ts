@@ -2,8 +2,20 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core'; // <- goal is to do shallow test, so not going to care about child components.
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Store, NgxsModule } from '@ngxs/store';
-import { async, ComponentFixture, TestBed, inject, getTestBed, fakeAsync, tick, flush } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  inject,
+  getTestBed,
+  fakeAsync,
+  tick,
+  flush,
+} from '@angular/core/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from '@environments/environment';
 import { delay } from 'rxjs/operators';
@@ -12,7 +24,10 @@ import { delay } from 'rxjs/operators';
 import { AuthComponent } from './auth.component';
 
 // Services
-import { createMockZendeskService, ZendeskService } from '@shared/services/zendesk';
+import {
+  createMockZendeskService,
+  ZendeskService,
+} from '@shared/services/zendesk';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 
 // States
@@ -22,8 +37,14 @@ import { of, Subject } from 'rxjs';
 
 // Models
 import { UserModel } from '@shared/models/user.model';
-import { createMockWindowService, WindowService } from '@shared/services/window';
-import { ResetUserProfile, RequestAccessToken } from '@shared/state/user/user.actions';
+import {
+  createMockWindowService,
+  WindowService,
+} from '@shared/services/window';
+import {
+  ResetUserProfile,
+  RequestAccessToken,
+} from '@shared/state/user/user.actions';
 import { isRegExp } from 'util';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
@@ -38,7 +59,11 @@ describe('AuthComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot([UserState])],
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
       declarations: [AuthComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
@@ -78,7 +103,9 @@ describe('AuthComponent', () => {
 
     describe('When windowService.zafClient returns false', () => {
       beforeEach(() => {
-        mockWindowService.zafClient = jasmine.createSpy('zafClient').and.returnValue(false);
+        mockWindowService.zafClient = jasmine
+          .createSpy('zafClient')
+          .and.returnValue(false);
       });
 
       it('Should set inZendesk to false', () => {
@@ -169,7 +196,9 @@ describe('AuthComponent', () => {
 
       describe('If app is not running in zendesk', () => {
         beforeEach(() => {
-          mockWindowService.zafClient = jasmine.createSpy('zafClient').and.returnValue(false);
+          mockWindowService.zafClient = jasmine
+            .createSpy('zafClient')
+            .and.returnValue(false);
         });
 
         it('Should not call router.navigate', () => {
@@ -232,7 +261,10 @@ describe('AuthComponent', () => {
     it('should call windowService.open correctly', () => {
       component.loginWithNewTab();
 
-      expect(mockWindowService.open).toHaveBeenCalledWith(`${environment.stewardUiUrl}/auth?action=login`, '_blank');
+      expect(mockWindowService.open).toHaveBeenCalledWith(
+        `${environment.stewardUiUrl}/auth?action=login`,
+        '_blank'
+      );
     });
   });
 
@@ -264,7 +296,9 @@ describe('AuthComponent', () => {
 
   describe('Method: recheckAuth', () => {
     beforeEach(() => {
-      mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
+      mockStore.dispatch = jasmine
+        .createSpy('dispatch')
+        .and.returnValue(of({}));
       component.ngOnInit = jasmine.createSpy('ngOnInit');
     });
 

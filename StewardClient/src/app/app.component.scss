@@ -29,19 +29,19 @@
   width: 100%;
   bottom: 0px;
   position: fixed; // this is currently causing overlap issues but the  to cause overlap issues later
-  
+
   ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    
+
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
 
     li {
-      padding: 0 .5em;
+      padding: 0 0.5em;
       line-height: 1em;
       text-align: center;
 

@@ -23,7 +23,9 @@ describe('service: UserService', () => {
   describe('Method: getUserProfile', () => {
     let headers;
     beforeEach(() => {
-      apiMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+      apiMock.getRequest = jasmine
+        .createSpy('getRequest')
+        .and.returnValue(of({}));
       headers = new HttpHeaders().set('Content-Type', 'application/json');
     });
     it('should call API service getRequest with the expected params', done => {

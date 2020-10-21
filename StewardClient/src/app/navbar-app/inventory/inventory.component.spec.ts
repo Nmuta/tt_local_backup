@@ -1,6 +1,12 @@
 // General
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed, inject, getTestBed } from '@angular/core/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  inject,
+  getTestBed,
+} from '@angular/core/testing';
 
 // Components
 import { InventoryComponent } from './inventory.component';

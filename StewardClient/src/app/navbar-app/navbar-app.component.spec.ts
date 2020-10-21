@@ -1,8 +1,19 @@
 // General
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Store, NgxsModule } from '@ngxs/store';
-import { async, ComponentFixture, TestBed, inject, getTestBed, fakeAsync, tick } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  async,
+  ComponentFixture,
+  TestBed,
+  inject,
+  getTestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Components
@@ -25,7 +36,11 @@ describe('NavbarAppComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot([UserState])],
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        HttpClientTestingModule,
+        NgxsModule.forRoot([UserState]),
+      ],
       declarations: [NavbarAppComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [createMockRouter(), createMockMsalService()],

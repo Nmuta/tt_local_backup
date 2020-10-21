@@ -1,21 +1,21 @@
 /** A tool path and name. */
 export interface NavbarPath {
-  title: string,
-  routerLink: string[],
+  title: string;
+  routerLink: string[];
 }
 
-export const navbarAppRootPath = "/navbar-app"
+export const navbarAppRootPath = '/navbar-app';
 export const navbarToolList: NavbarPath[] = [
   {
-    title: "🦆 duck",
+    title: '🦆 duck',
     routerLink: [navbarAppRootPath, 'duck'],
   },
   {
-    title: "🦆 duck",
+    title: '🦆 duck',
     routerLink: [navbarAppRootPath, 'duck'],
   },
   {
-    title: "🦢 goose",
+    title: '🦢 goose',
     routerLink: [navbarAppRootPath, 'goose'],
   },
-]
+];

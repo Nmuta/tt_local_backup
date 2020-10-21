@@ -1,6 +1,9 @@
 ﻿// General
 import { TestBed, getTestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { HttpParams, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '@environments/environment';
@@ -41,11 +44,15 @@ describe('service: ApiService', () => {
     });
     describe('When the http request succeeds', () => {
       it('should make a get request to the expected url & set headers & params', done => {
-        apiService.getRequest(url, params, headers).subscribe((response: any) => {
-          expect(response).toBeTruthy();
-          done();
-        });
-        const req = httpMock.expectOne(r => r.method === 'GET' && r.url === expectedApiUrl);
+        apiService
+          .getRequest(url, params, headers)
+          .subscribe((response: any) => {
+            expect(response).toBeTruthy();
+            done();
+          });
+        const req = httpMock.expectOne(
+          r => r.method === 'GET' && r.url === expectedApiUrl
+        );
         expect(req.request.params).toEqual(params);
         expect(req.request.headers).toEqual(headers);
         req.flush({});
@@ -61,7 +68,9 @@ describe('service: ApiService', () => {
             expect(true).toBeTruthy();
           }
         );
-        const req = httpMock.expectOne(r => r.method === 'GET' && r.url === expectedApiUrl);
+        const req = httpMock.expectOne(
+          r => r.method === 'GET' && r.url === expectedApiUrl
+        );
         req.error(new ErrorEvent('error'));
       });
     });
@@ -82,7 +91,9 @@ describe('service: ApiService', () => {
           done();
         });
 
-        const req = httpMock.expectOne(r => r.method === 'POST' && r.url === apiUrl);
+        const req = httpMock.expectOne(
+          r => r.method === 'POST' && r.url === apiUrl
+        );
         req.flush({});
       });
     });
@@ -97,7 +108,9 @@ describe('service: ApiService', () => {
           }
         );
 
-        const req = httpMock.expectOne(r => r.method === 'POST' && r.url === apiUrl);
+        const req = httpMock.expectOne(
+          r => r.method === 'POST' && r.url === apiUrl
+        );
         req.error(new ErrorEvent('error'));
       });
     });
@@ -116,13 +129,19 @@ describe('service: ApiService', () => {
     });
     describe('When the http request succeeds', () => {
       it('should make a get request to the expected url & set headers & params', done => {
-        apiService.putRequest(url, object, params).subscribe((response: any) => {
-          expect(response).toBeTruthy();
-          done();
-        });
+        apiService
+          .putRequest(url, object, params)
+          .subscribe((response: any) => {
+            expect(response).toBeTruthy();
+            done();
+          });
 
-        const req = httpMock.expectOne(r => r.method === 'PUT' && r.url === apiUrl);
-        expect(req.request.headers.get('Content-Type')).toEqual('application/json');
+        const req = httpMock.expectOne(
+          r => r.method === 'PUT' && r.url === apiUrl
+        );
+        expect(req.request.headers.get('Content-Type')).toEqual(
+          'application/json'
+        );
 
         req.flush({});
       });
@@ -137,7 +156,9 @@ describe('service: ApiService', () => {
             expect(true).toBeTruthy();
           }
         );
-        const req = httpMock.expectOne(r => r.method === 'PUT' && r.url === apiUrl);
+        const req = httpMock.expectOne(
+          r => r.method === 'PUT' && r.url === apiUrl
+        );
         req.error(new ErrorEvent('error'));
       });
     });
@@ -160,8 +181,12 @@ describe('service: ApiService', () => {
           expect(response).toBeTruthy();
           done();
         });
-        const req = httpMock.expectOne(r => r.method === 'DELETE' && r.url === apiUrl);
-        expect(req.request.headers.get('Content-Type')).toEqual('application/json');
+        const req = httpMock.expectOne(
+          r => r.method === 'DELETE' && r.url === apiUrl
+        );
+        expect(req.request.headers.get('Content-Type')).toEqual(
+          'application/json'
+        );
 
         req.flush({});
       });
@@ -176,7 +201,9 @@ describe('service: ApiService', () => {
             expect(true).toBeTruthy();
           }
         );
-        const req = httpMock.expectOne(r => r.method === 'DELETE' && r.url === apiUrl);
+        const req = httpMock.expectOne(
+          r => r.method === 'DELETE' && r.url === apiUrl
+        );
         req.error(new ErrorEvent('error'));
       });
     });

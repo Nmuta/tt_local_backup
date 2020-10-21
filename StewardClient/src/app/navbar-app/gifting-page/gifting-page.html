@@ -1,5 +1,7 @@
 <section class="gifting-page-section">
   <h1 class="game-title-header">{{gameTitle}}</h1>
-  <inventory-options (newOptionSelectedEvent)="newGiftingOptionSelected($event)"></inventory-options>
+  <inventory-options
+    (newOptionSelectedEvent)="newGiftingOptionSelected($event)"
+  ></inventory-options>
   <inventory [selectedGiftingOption]="selectedGiftingOption"></inventory>
 </section>

@@ -11,7 +11,14 @@ import { NavbarComponent } from './navbar.component';
 /** Defines the navbar module. */
 @NgModule({
   declarations: [NavbarComponent],
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatButtonModule, MatIconModule, ProfileModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    ProfileModule,
+  ],
   exports: [NavbarComponent],
 })
 export class NavbarModule {}

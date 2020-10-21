@@ -6,13 +6,17 @@ import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { navbarAppRootPath, NavbarPath, navbarToolList } from './navbar-tool-list';
+import {
+  navbarAppRootPath,
+  NavbarPath,
+  navbarToolList,
+} from './navbar-tool-list';
 
 /** The shared top-level navbar. */
 @Component({
   selector: 'navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent extends BaseComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
@@ -22,12 +26,14 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 
   public profile: UserModel;
 
-  public get location(): string { return window.location.pathname; }
+  public get location(): string {
+    return window.location.pathname;
+  }
 
   /** Initialization hook. */
   public ngOnInit() {
     UserState.latestValidProfile$(this.profile$)
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(profile => this.profile = profile);
+      .subscribe(profile => (this.profile = profile));
   }
 }
