@@ -6,9 +6,9 @@ import { ZendeskGuardService } from './route-guards/app.zendesk.guard.service';
 
 const routes: Routes = [
   {
-    path: 'sidebar',
+    path: 'navbar-app',
     canActivate: [ZendeskGuardService],
-    loadChildren: () => import('./side-bar/side-bar.module').then(m => m.SidebarModule),
+    loadChildren: () => import('./navbar-app/navbar-app.module').then(m => m.SidebarModule),
   },
   {
     path: 'ticket-sidebar',
