@@ -1,0 +1,8 @@
+<navbar></navbar>
+<div *ngIf="!loading">
+  <profile [user]="profile" [parentApp]="appName"></profile>
+  <h1>Navbar app</h1>
+</div>
+<div *ngIf="loading">
+  <h1>Loading...</h1>
+</div>

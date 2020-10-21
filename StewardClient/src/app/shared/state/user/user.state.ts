@@ -126,7 +126,7 @@ export class UserState {
   }
 
   /** Helper function that timeouts state checks for user profile. */
-  public static latestValidProfile(
+  public static latestValidProfile$(
     profile$: Observable<UserModel>
   ): Observable<UserModel> {
     const obs = profile$

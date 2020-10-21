@@ -2,14 +2,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ErrorComponent } from './error/error.component';
+import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
 import { ZendeskGuardService } from './route-guards/app.zendesk.guard.service';
 
 const routes: Routes = [
   {
-    path: 'sidebar',
+    path: 'navbar-app',
     canActivate: [ZendeskGuardService],
     loadChildren: () =>
-      import('./side-bar/side-bar.module').then(m => m.SidebarModule),
+      import('./navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
   },
   {
     path: 'ticket-sidebar',
@@ -27,7 +28,10 @@ const routes: Routes = [
     path: 'error',
     component: ErrorComponent,
   },
-  { path: '**', redirectTo: 'error' },
+  {
+    path: '**',
+    component: FourOhFourComponent,
+  },
 ];
 
 /** Defines the app router. */

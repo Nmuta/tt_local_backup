@@ -1,37 +1,26 @@
-<section>
-  <!-- Header from POC. This can be reused when rebuilding inventory app -->
-  <mat-toolbar>
-    <button
-      *ngFor="let title of titles; let i = index"
-      class="header-buttons"
-      (click)="selectHeader(i)"
-      [ngClass]="{ 'header-selected': selectedHeaderIndex == i }"
-    >
-      {{ title }}
-    </button>
-  </mat-toolbar>
-  <router-outlet></router-outlet>
-  <section class="footer-section">
-    <div>
-      <p>
-        <a
-          href="https://privacy.microsoft.com/en-US/data-privacy-notice"
-          target="_blank"
-          >Data Protection Notice</a
-        >
-        |
-        <a
-          href="https://www.microsoft.com/en-us/servicesagreement"
-          target="_blank"
-          >Code of Conduct</a
-        >
-        |
-        <a
-          href="https://www.xbox.com/en-US/legal/community-standards"
-          target="_blank"
-          >Community Standards for Xbox</a
-        >
-      </p>
-    </div>
-  </section>
+<router-outlet></router-outlet>
+<section class="footer-section">
+  <ul>
+    <li>
+      <a
+        href="https://privacy.microsoft.com/en-US/data-privacy-notice"
+        target="_blank"
+        >Data Protection Notice</a
+      >
+    </li>
+    <li>
+      <a
+        href="https://www.microsoft.com/en-us/servicesagreement"
+        target="_blank"
+        >Code of Conduct</a
+      >
+    </li>
+    <li>
+      <a
+        href="https://www.xbox.com/en-US/legal/community-standards"
+        target="_blank"
+        >Community Standards for Xbox</a
+      >
+    </li>
+  </ul>
 </section>

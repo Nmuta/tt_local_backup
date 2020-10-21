@@ -75,7 +75,7 @@ describe('ProfileComponent', () => {
       expect(mockStore.dispatch).toHaveBeenCalledWith(new ResetAccessToken());
     });
     it('Should redirect to auth page', () => {
-      component.parentApp = 'sidebar';
+      component.parentApp = 'navbar-app';
       component.logout();
       expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
         queryParams: { from: component.parentApp },

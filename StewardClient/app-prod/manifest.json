@@ -9,7 +9,7 @@
   "private": true,
   "location": {
     "support": {
-      "nav_bar": "https://steward-ui-prod.azurewebsites.net/sidebar",
+      "nav_bar": "https://steward-ui-prod.azurewebsites.net/navbar-app",
       "ticket_sidebar": "https://steward-ui-prod.azurewebsites.net/ticket-sidebar",
       "background": "assets/background.html"
     }

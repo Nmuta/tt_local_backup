@@ -2,24 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
-import {
-  RequestAccessToken,
-  ResetUserProfile,
-} from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../environments/environment';
-
-/** Defines the sidebar app component. */
+/** Root component for primary app, navigated to from navigation sidebar. */
 @Component({
-  templateUrl: './side-bar.html',
-  styleUrls: ['./side-bar.scss'],
+  templateUrl: './navbar-app.html',
+  styleUrls: ['./navbar-app.scss'],
 })
-export class SidebarComponent implements OnInit {
+export class NavbarAppComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  public appName = 'sidebar';
+  public appName = 'navbar-app';
   public loading: boolean;
   public profile: UserModel;
 
@@ -28,7 +22,7 @@ export class SidebarComponent implements OnInit {
   /** Logic for the OnInit component lifecycle. */
   public ngOnInit() {
     this.loading = true;
-    UserState.latestValidProfile(this.profile$).subscribe(
+    UserState.latestValidProfile$(this.profile$).subscribe(
       profile => {
         this.loading = false;
         this.profile = profile;
@@ -38,7 +32,7 @@ export class SidebarComponent implements OnInit {
           });
         }
       },
-      error => {
+      _error => {
         this.loading = false;
         this.router.navigate([`/auth`], {
           queryParams: { from: this.appName },

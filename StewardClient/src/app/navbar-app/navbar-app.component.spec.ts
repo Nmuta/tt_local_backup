@@ -17,7 +17,7 @@ import {
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Components
-import { SidebarComponent } from './side-bar.component';
+import { NavbarAppComponent } from './navbar-app.component';
 
 // States
 import { UserState } from '@shared/state/user/user.state';
@@ -28,9 +28,9 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-describe('SidebarComponent', () => {
-  let fixture: ComponentFixture<SidebarComponent>;
-  let component: SidebarComponent;
+describe('NavbarAppComponent', () => {
+  let fixture: ComponentFixture<NavbarAppComponent>;
+  let component: NavbarAppComponent;
   let mockStore: Store;
   let mockRouter: Router;
 
@@ -41,7 +41,7 @@ describe('SidebarComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
       ],
-      declarations: [SidebarComponent],
+      declarations: [NavbarAppComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [createMockRouter(), createMockMsalService()],
     }).compileComponents();
@@ -50,7 +50,7 @@ describe('SidebarComponent', () => {
     mockStore = injector.get(Store);
     mockRouter = injector.get(Router);
 
-    fixture = TestBed.createComponent(SidebarComponent);
+    fixture = TestBed.createComponent(NavbarAppComponent);
     component = fixture.debugElement.componentInstance;
   }));
 
@@ -80,7 +80,7 @@ describe('SidebarComponent', () => {
         it('Should call router.navigate correctly', () => {
           component.ngOnInit();
           expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
-            queryParams: { from: 'sidebar' },
+            queryParams: { from: 'navbar-app' },
           });
         });
       });
@@ -91,7 +91,7 @@ describe('SidebarComponent', () => {
         it('Should not redirect to auth page', () => {
           component.ngOnInit();
           expect(mockRouter.navigate).not.toHaveBeenCalledWith([`/auth`], {
-            queryParams: { from: 'sidebar' },
+            queryParams: { from: 'navbar-app' },
           });
         });
       });
@@ -112,7 +112,7 @@ describe('SidebarComponent', () => {
         component.ngOnInit();
         tick(delayTime);
         expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
-          queryParams: { from: 'sidebar' },
+          queryParams: { from: 'navbar-app' },
         });
       }));
     });

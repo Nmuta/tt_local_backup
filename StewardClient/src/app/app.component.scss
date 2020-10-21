@@ -1,7 +1,7 @@
-@import '../variables.scss';
+@import 'src/variables.scss';
 
-ul {
-  list-style-type: none;
+:host {
+  height: 100%;
 }
 
 .header-buttons {
@@ -28,24 +28,35 @@ ul {
 .footer-section {
   width: 100%;
   bottom: 0px;
-  position: fixed;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: fixed; // this is currently causing overlap issues but the  to cause overlap issues later
 
-  div {
-    display: inline-block;
-    margin: auto;
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+
+    li {
+      padding: 0 0.5em;
+      line-height: 1em;
+      text-align: center;
+
+      // tuned to avoid taking up a bunch of space in the ticket sidebar
+      font-size: 12px;
+      @media screen and (min-width: 400px) {
+        font-size: 14px;
+      }
+    }
   }
 
+  // TODO: This style should probably be global? Or a mixin.
   a {
     color: $primaryBlue;
-    cursor: pointer;
     text-decoration: none;
-    text-align: center;
-    display: inline-block;
-    font-size: 14px;
 
     &:hover {
       text-decoration: underline;

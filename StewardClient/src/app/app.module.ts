@@ -2,6 +2,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
+import { NavbarModule } from '@components/navbar/navbar.module';
 import {
   FaIconLibrary,
   FontAwesomeModule,
@@ -20,6 +21,8 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { ErrorComponent } from './error/error.component';
+import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
 
 export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -27,11 +30,12 @@ export const protectedResourceMap: [string, string[]][] = [
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent],
+  declarations: [AppComponent, ErrorComponent, FourOhFourComponent],
   imports: [
     AppRoutingModule,
     BrowserModule,
     ...allAngularMaterialModules,
+    NavbarModule,
     FontAwesomeModule,
     HttpClientModule,
     NgxsModule.forRoot([UserState]),
