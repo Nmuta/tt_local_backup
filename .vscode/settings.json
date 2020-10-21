@@ -1,3 +1,4 @@
 {
-    "terminal.integrated.cwd": "StewardClient"
+    "terminal.integrated.cwd": "StewardClient",
+    "editor.tabSize": 2
 }
