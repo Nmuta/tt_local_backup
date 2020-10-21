@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 export class NavbarAppComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  public titles = ['one', 'Two', 3, 'fore'];
+  public titles = ['🦆', '🦆', '🦢'];
 
   public appName = 'navbar-app';
   public loading: boolean;

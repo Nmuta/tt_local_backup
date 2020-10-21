@@ -1,15 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { allAngularMaterialModules } from '@helpers/ng-material';
 import { ProfileModule } from '@shared/components/profile/profile.module';
 
 import { NavbarAppComponent } from './navbar-app.component';
-import { SidebarRouterModule } from './navbar-app.routing.module';
+import { NavbarAppRouterModule } from './navbar-app.routing.module';
 
 /** Defines the sidebar module. */
 @NgModule({
-  imports: [CommonModule, SidebarRouterModule, FontAwesomeModule, ProfileModule],
+  imports: [
+    CommonModule,
+    NavbarAppRouterModule,
+    FontAwesomeModule,
+    ProfileModule,
+    ...allAngularMaterialModules
+  ],
   providers: [],
   declarations: [NavbarAppComponent],
 })
-export class SidebarModule {}
+export class NavbarAppModule {}

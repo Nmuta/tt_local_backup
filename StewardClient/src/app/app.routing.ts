@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: 'navbar-app',
     canActivate: [ZendeskGuardService],
-    loadChildren: () => import('./navbar-app/navbar-app.module').then(m => m.SidebarModule),
+    loadChildren: () => import('./navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
   },
   {
     path: 'ticket-sidebar',
