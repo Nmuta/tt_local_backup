@@ -58,7 +58,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.loading = true;
     this.inZendesk = !!this.windowService.zafClient();
-    UserState.latestValidProfile(this.profile$).subscribe(
+    UserState.latestValidProfile$(this.profile$).subscribe(
       profile => {
         this.loading = false;
         this.profile = profile;

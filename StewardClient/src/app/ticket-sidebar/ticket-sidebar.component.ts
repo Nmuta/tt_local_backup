@@ -20,6 +20,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public appName = 'ticket-sidebar';
+
   public loading: boolean;
   public profile: UserModel;
   public title: string;
@@ -36,7 +37,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
   /** Logic for the OnInit component lifecycle. */
   public ngOnInit() {
     this.loading = true;
-    UserState.latestValidProfile(this.profile$).subscribe(
+    UserState.latestValidProfile$(this.profile$).subscribe(
       profile => {
         this.loading = false;
         this.profile = profile;
@@ -48,7 +49,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
           this.getTicketRequestor();
         }
       },
-      error => {
+      _error => {
         this.loading = false;
         this.router.navigate([`/auth`], {
           queryParams: { from: this.appName },

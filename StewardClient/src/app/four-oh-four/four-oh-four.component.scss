@@ -1,13 +1,13 @@
 :host {
+  height: 100%;
+}
+
+.center-message {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  height: 100%;
-}
-
-* {
-  text-align: center;
+  &, * { text-align: center; }
 }
 
 img {

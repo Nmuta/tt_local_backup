@@ -1,18 +1,8 @@
-<mat-toolbar>
-  <button
-    *ngFor="let title of titles; let i = index"
-    class="header-buttons"
-    (click)="selectHeader(i)"
-    [ngClass]="{ 'header-selected': selectedHeaderIndex == i }"
-  >
-    {{ title }}
-  </button>
-  <a [routerLink]="['missing-no']">404</a>
-</mat-toolbar>
-<section *ngIf="!loading">
+<navbar></navbar>
+<div *ngIf="!loading">
   <profile [user]="profile" [parentApp]="appName"></profile>
   <h1>Navbar app</h1>
-</section>
-<section *ngIf="loading">
+</div>
+<div *ngIf="loading">
   <h1>Loading...</h1>
-</section>
+</div>

@@ -2,6 +2,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
+import { NavbarModule } from '@components/navbar/navbar.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
@@ -15,9 +16,10 @@ import { UserState } from '@shared/state/user/user.state';
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app.routing.module';
+import { AppRoutingModule } from './app.routing';
 import { ErrorComponent } from './error/error.component';
 import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
 
 export const protectedResourceMap: [string, string[]][] = [['https://graph.microsoft.com/v1.0/me', ['user.read']]];
 
@@ -28,6 +30,7 @@ export const protectedResourceMap: [string, string[]][] = [['https://graph.micro
     AppRoutingModule,
     BrowserModule,
     ...allAngularMaterialModules,
+    NavbarModule,
     FontAwesomeModule,
     HttpClientModule,
     NgxsModule.forRoot([UserState]),

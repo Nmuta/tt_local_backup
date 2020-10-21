@@ -13,8 +13,6 @@ import { Observable } from 'rxjs';
 export class NavbarAppComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  public titles = ['🦆', '🦆', '🦢'];
-
   public appName = 'navbar-app';
   public loading: boolean;
   public profile: UserModel;
@@ -24,7 +22,7 @@ export class NavbarAppComponent implements OnInit {
   /** Logic for the OnInit component lifecycle. */
   public ngOnInit() {
     this.loading = true;
-    UserState.latestValidProfile(this.profile$).subscribe(
+    UserState.latestValidProfile$(this.profile$).subscribe(
       profile => {
         this.loading = false;
         this.profile = profile;
@@ -34,7 +32,7 @@ export class NavbarAppComponent implements OnInit {
           });
         }
       },
-      error => {
+      _error => {
         this.loading = false;
         this.router.navigate([`/auth`], {
           queryParams: { from: this.appName },

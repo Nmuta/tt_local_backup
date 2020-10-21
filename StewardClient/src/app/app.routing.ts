@@ -24,7 +24,10 @@ const routes: Routes = [
     path: 'error',
     component: ErrorComponent,
   },
-  { path: '**', component: FourOhFourComponent },
+  {
+    path: '**',
+    component: FourOhFourComponent
+  },
 ];
 
 /** Defines the app router. */
