@@ -1,12 +1,5 @@
 import { async, TestBed } from '@angular/core/testing';
-import {
-  Store,
-  NgxsModule,
-  Actions,
-  ofActionSuccessful,
-  ofActionErrored,
-  ofActionDispatched,
-} from '@ngxs/store';
+import { Store, NgxsModule, Actions, ofActionSuccessful, ofActionErrored, ofActionDispatched } from '@ngxs/store';
 import { UserState } from '../user.state';
 import { GetUser } from '../user.actions';
 import { of, throwError } from 'rxjs';
@@ -29,9 +22,7 @@ describe('State: User', () => {
     actions$ = TestBed.get(Actions);
     mockUserService = TestBed.get(UserService);
 
-    mockUserService.getUserProfile = jasmine
-      .createSpy('getUserProfile')
-      .and.returnValue(of({}));
+    mockUserService.getUserProfile = jasmine.createSpy('getUserProfile').and.returnValue(of({}));
   }));
   describe('[GetUser] Action', () => {
     let action;
@@ -44,9 +35,7 @@ describe('State: User', () => {
         expectedProfile = {
           name: 'Luke G',
         };
-        mockUserService.getUserProfile = jasmine
-          .createSpy('getUserProfile')
-          .and.returnValue(of(expectedProfile));
+        mockUserService.getUserProfile = jasmine.createSpy('getUserProfile').and.returnValue(of(expectedProfile));
       });
       it('should patch profile', () => {
         // Action

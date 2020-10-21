@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
-import {
-  RequestAccessToken,
-  ResetUserProfile,
-} from '@shared/state/user/user.actions';
+import { RequestAccessToken, ResetUserProfile } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 

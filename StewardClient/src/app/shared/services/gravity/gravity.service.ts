@@ -1,11 +1,6 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  GravityGameSettings,
-  GravityGiftHistory,
-  GravityPlayerDetails,
-  GravityPlayerInventory,
-} from '@models/gravity';
+import { GravityGameSettings, GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
 import { ApiService } from '@services/api';
 import { GiftHistoryAntecedent } from '@shared/constants';
 import { Observable, throwError } from 'rxjs';
@@ -20,65 +15,39 @@ export class GravityService {
   constructor(private apiService: ApiService) {}
 
   /** Gets gravity player details with a gamertag. */
-  public getPlayerDetailsByGamertag(
-    gamertag: string
-  ): Observable<GravityPlayerDetails> {
-    return this.apiService.getRequest<GravityPlayerDetails>(
-      `${this.basePath}/player/details/gamertag(${gamertag})`
-    );
+  public getPlayerDetailsByGamertag(gamertag: string): Observable<GravityPlayerDetails> {
+    return this.apiService.getRequest<GravityPlayerDetails>(`${this.basePath}/player/details/gamertag(${gamertag})`);
   }
 
   /** Gets gravity player details with a XUID. */
-  public getPlayerDetailsByXuid(
-    xuid: string
-  ): Observable<GravityPlayerDetails> {
-    return this.apiService.getRequest<GravityPlayerDetails>(
-      `${this.basePath}/player/details/xuid(${xuid})`
-    );
+  public getPlayerDetailsByXuid(xuid: string): Observable<GravityPlayerDetails> {
+    return this.apiService.getRequest<GravityPlayerDetails>(`${this.basePath}/player/details/xuid(${xuid})`);
   }
 
   /** Gets gravity player details with a T10 ID. */
-  public getPlayerDetailsByT10Id(
-    t10Id: string
-  ): Observable<GravityPlayerDetails> {
-    return this.apiService.getRequest<GravityPlayerDetails>(
-      `${this.basePath}/player/details/t10Id(${t10Id})`
-    );
+  public getPlayerDetailsByT10Id(t10Id: string): Observable<GravityPlayerDetails> {
+    return this.apiService.getRequest<GravityPlayerDetails>(`${this.basePath}/player/details/t10Id(${t10Id})`);
   }
 
   /** Gets gravity player inventory with a XUID. */
-  public getPlayerInventoryByXuid(
-    xuid: string
-  ): Observable<GravityPlayerInventory> {
-    return this.apiService.getRequest<GravityPlayerInventory>(
-      `${this.basePath}/player/inventory/xuid(${xuid})`
-    );
+  public getPlayerInventoryByXuid(xuid: string): Observable<GravityPlayerInventory> {
+    return this.apiService.getRequest<GravityPlayerInventory>(`${this.basePath}/player/inventory/xuid(${xuid})`);
   }
 
   /** Gets gravity player inventory with a T10 ID. */
-  public getPlayerInventoryByT10Id(
-    t10Id: string
-  ): Observable<GravityPlayerInventory> {
-    return this.apiService.getRequest<GravityPlayerInventory>(
-      `${this.basePath}/player/inventory/t10Id(${t10Id})`
-    );
+  public getPlayerInventoryByT10Id(t10Id: string): Observable<GravityPlayerInventory> {
+    return this.apiService.getRequest<GravityPlayerInventory>(`${this.basePath}/player/inventory/t10Id(${t10Id})`);
   }
 
   /** Gets gravity player inventory with a profile ID. */
-  public getPlayerInventoryByProfileIdWithXuid(
-    xuid: string,
-    profileId: string
-  ): Observable<GravityPlayerInventory> {
+  public getPlayerInventoryByProfileIdWithXuid(xuid: string, profileId: string): Observable<GravityPlayerInventory> {
     return this.apiService.getRequest<GravityPlayerInventory>(
       `${this.basePath}/player/inventory/xuid(${xuid})/profileId(${profileId})`
     );
   }
 
   /** Gets gravity player inventory with a profile ID. */
-  public getPlayerInventoryByProfileIdWithT10Id(
-    t10Id: string,
-    profileId: string
-  ): Observable<GravityPlayerInventory> {
+  public getPlayerInventoryByProfileIdWithT10Id(t10Id: string, profileId: string): Observable<GravityPlayerInventory> {
     return this.apiService.getRequest<GravityPlayerInventory>(
       `${this.basePath}/player/inventory/t10Id(${t10Id})/profileId(${profileId})`
     );
@@ -93,10 +62,7 @@ export class GravityService {
       return throwError('No XUID provided.');
     }
 
-    const params = new HttpParams().append(
-      'useBackgroundProcessing',
-      useBackgroundProcessing.toString()
-    );
+    const params = new HttpParams().append('useBackgroundProcessing', useBackgroundProcessing.toString());
 
     return this.apiService.postRequest<GravityPlayerInventory>(
       `${this.basePath}/player/inventory/xuid`,
@@ -114,10 +80,7 @@ export class GravityService {
       return throwError('No T10 Id provided.');
     }
 
-    const params = new HttpParams().append(
-      'useBackgroundProcessing',
-      useBackgroundProcessing.toString()
-    );
+    const params = new HttpParams().append('useBackgroundProcessing', useBackgroundProcessing.toString());
 
     return this.apiService.postRequest<GravityPlayerInventory>(
       `${this.basePath}/player/inventory/t10Id`,
@@ -127,12 +90,8 @@ export class GravityService {
   }
 
   /** Gets gravity game settings. */
-  public getGameSettings(
-    gameSettingsId: string
-  ): Observable<GravityGameSettings> {
-    return this.apiService.getRequest<GravityGameSettings>(
-      `${this.basePath}/data/gameSettingsId(${gameSettingsId})`
-    );
+  public getGameSettings(gameSettingsId: string): Observable<GravityGameSettings> {
+    return this.apiService.getRequest<GravityGameSettings>(`${this.basePath}/data/gameSettingsId(${gameSettingsId})`);
   }
 
   /** Gets gravity gift histories. */

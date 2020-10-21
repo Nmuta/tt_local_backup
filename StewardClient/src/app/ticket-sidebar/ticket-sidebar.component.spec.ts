@@ -1,19 +1,8 @@
 // General
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  inject,
-  getTestBed,
-  tick,
-  fakeAsync,
-} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject, getTestBed, tick, fakeAsync } from '@angular/core/testing';
 import { Store, NgxsModule } from '@ngxs/store';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Helpers
@@ -23,10 +12,7 @@ import { createMockScrutineerDataParser } from '@shared/helpers/scrutineer-data-
 // Components
 import { TicketSidebarComponent } from './ticket-sidebar.component';
 
-import {
-  createMockZendeskService,
-  ZendeskService,
-} from '@shared/services/zendesk';
+import { createMockZendeskService, ZendeskService } from '@shared/services/zendesk';
 
 // State
 import { UserState } from '@shared/state/user/user.state';
@@ -45,11 +31,7 @@ describe('TicketSidebarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
+      imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule, NgxsModule.forRoot([UserState])],
       declarations: [TicketSidebarComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [

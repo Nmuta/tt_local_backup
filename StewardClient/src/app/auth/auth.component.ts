@@ -6,10 +6,7 @@ import { LoggerService, LogTopic } from '@services/logger';
 import { BaseComponent } from '@shared/components/base-component/base-component.component';
 import { UserModel } from '@shared/models/user.model';
 import { WindowService } from '@shared/services/window';
-import {
-  RequestAccessToken,
-  ResetUserProfile,
-} from '@shared/state/user/user.actions';
+import { RequestAccessToken, ResetUserProfile } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { interval, Observable } from 'rxjs';
 import { filter, take, takeUntil, tap } from 'rxjs/operators';
@@ -70,10 +67,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
           this.router.navigate([`/${this.fromApp}`]);
         }
 
-        if (
-          (!!this.profile && this.fromAadLogin) ||
-          (!this.profile && this.fromAadLogout)
-        ) {
+        if ((!!this.profile && this.fromAadLogin) || (!this.profile && this.fromAadLogout)) {
           this.autoCloseWindow(10);
         }
       },
@@ -87,30 +81,17 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
 
   /** Open the auth page in a new tab. */
   public loginWithNewTab() {
-    const newWindow = this.windowService.open(
-      `${environment.stewardUiUrl}/auth?action=login`,
-      '_blank'
-    );
+    const newWindow = this.windowService.open(`${environment.stewardUiUrl}/auth?action=login`, '_blank');
 
     // This isn't a great way to detect it, but I tried using the event system and the events for this sort of event just don't emit properly.
     // (a single child window can have multipe "onunload" events)
     interval(100)
       .pipe(
         takeUntil(this.onDestroy$),
-        tap(() =>
-          this.logger.log(
-            [LogTopic.Auth],
-            `polling; newWindow.closed == ${newWindow.closed}`
-          )
-        ),
+        tap(() => this.logger.log([LogTopic.Auth], `polling; newWindow.closed == ${newWindow.closed}`)),
         filter(() => newWindow.closed),
         take(1),
-        tap(() =>
-          this.logger.log(
-            [LogTopic.Auth],
-            `polling; newWindow.closed completed`
-          )
-        )
+        tap(() => this.logger.log([LogTopic.Auth], `polling; newWindow.closed completed`))
       )
       .subscribe(() => this.recheckAuth());
   }
@@ -139,9 +120,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
     this.autoCloseTimeSecsLeft = timerSecsLeft;
     setTimeout(() => {
       const secondsLeft = this.autoCloseTimeSecsLeft - 1;
-      secondsLeft === 0
-        ? this.windowService.close()
-        : this.autoCloseWindow(secondsLeft);
+      secondsLeft === 0 ? this.windowService.close() : this.autoCloseWindow(secondsLeft);
     }, 1000);
   }
 }

@@ -1,12 +1,5 @@
 import { async, TestBed } from '@angular/core/testing';
-import {
-  Store,
-  NgxsModule,
-  Actions,
-  ofActionSuccessful,
-  ofActionErrored,
-  ofActionDispatched,
-} from '@ngxs/store';
+import { Store, NgxsModule, Actions, ofActionSuccessful, ofActionErrored, ofActionDispatched } from '@ngxs/store';
 import { UserState } from '../user.state';
 import { ResetAccessToken } from '../user.actions';
 import { of, throwError } from 'rxjs';
@@ -29,9 +22,7 @@ describe('State: User', () => {
     actions$ = TestBed.get(Actions);
     mockAuthService = TestBed.get(MsalService);
 
-    mockAuthService.acquireTokenSilent = jasmine
-      .createSpy('acquireTokenSilent')
-      .and.returnValue(of({}));
+    mockAuthService.acquireTokenSilent = jasmine.createSpy('acquireTokenSilent').and.returnValue(of({}));
   }));
   describe('[ResetAccessToken] Action', () => {
     let action;

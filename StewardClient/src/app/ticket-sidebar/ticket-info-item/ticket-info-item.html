@@ -3,9 +3,7 @@
   <td class="table-border-right width-150">{{value}}</td>
   <td>
     <button class="fa-icon-button" (click)="copyToClipboard(value)">
-      <fa-icon icon="copy" [styles]="{'stroke': 'white', 'color': 'white'}"
-        >></fa-icon
-      >
+      <fa-icon icon="copy" [styles]="{'stroke': 'white', 'color': 'white'}">></fa-icon>
     </button>
   </td>
   <p *ngIf="copied" class="copied-data-message">Copied!</p>

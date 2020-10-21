@@ -6,24 +6,9 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
 import { asapScheduler, from, Observable, of, throwError } from 'rxjs';
-import {
-  catchError,
-  filter,
-  map,
-  mergeMap,
-  switchMap,
-  take,
-  tap,
-  timeout,
-} from 'rxjs/operators';
+import { catchError, filter, map, mergeMap, switchMap, take, tap, timeout } from 'rxjs/operators';
 
-import {
-  GetUser,
-  RequestAccessToken,
-  ResetAccessToken,
-  ResetUserProfile,
-  SetNoUserProfile,
-} from './user.actions';
+import { GetUser, RequestAccessToken, ResetAccessToken, ResetUserProfile, SetNoUserProfile } from './user.actions';
 
 /** Defines the user state model. */
 export class UserStateModel {
@@ -44,10 +29,7 @@ export class UserStateModel {
   },
 })
 export class UserState {
-  constructor(
-    private userService: UserService,
-    private authService: MsalService
-  ) {}
+  constructor(private userService: UserService, private authService: MsalService) {}
 
   /** Action that requests user profile and sets it to the state. */
   @Action(GetUser, { cancelUncompleted: true })
@@ -64,29 +46,20 @@ export class UserState {
 
   /** Action that resets state user profile. */
   @Action(ResetUserProfile, { cancelUncompleted: true })
-  public resetUserProfile(
-    ctx: StateContext<UserStateModel>,
-    action: ResetUserProfile
-  ) {
+  public resetUserProfile(ctx: StateContext<UserStateModel>, action: ResetUserProfile) {
     ctx.patchState({ profile: undefined });
     asapScheduler.schedule(() => ctx.dispatch(new ResetAccessToken()));
   }
 
   /** Action thats sets state user profile to null. */
   @Action(SetNoUserProfile, { cancelUncompleted: true })
-  public setNoUserProfile(
-    ctx: StateContext<UserStateModel>,
-    action: SetNoUserProfile
-  ) {
+  public setNoUserProfile(ctx: StateContext<UserStateModel>, action: SetNoUserProfile) {
     ctx.patchState({ profile: null });
   }
 
   /** Action that requests user access token from azure app. */
   @Action(RequestAccessToken, { cancelUncompleted: true })
-  public requestAccessToken(
-    ctx: StateContext<UserStateModel>,
-    action: RequestAccessToken
-  ) {
+  public requestAccessToken(ctx: StateContext<UserStateModel>, action: RequestAccessToken) {
     const isLoggedIn = !!this.authService.getAccount();
     if (!isLoggedIn) {
       ctx.patchState({ accessToken: null });
@@ -118,17 +91,12 @@ export class UserState {
 
   /** Action that resets state access token. */
   @Action(ResetAccessToken, { cancelUncompleted: true })
-  public resetAccessToken(
-    ctx: StateContext<UserStateModel>,
-    action: ResetAccessToken
-  ) {
+  public resetAccessToken(ctx: StateContext<UserStateModel>, action: ResetAccessToken) {
     ctx.patchState({ accessToken: undefined });
   }
 
   /** Helper function that timeouts state checks for user profile. */
-  public static latestValidProfile(
-    profile$: Observable<UserModel>
-  ): Observable<UserModel> {
+  public static latestValidProfile(profile$: Observable<UserModel>): Observable<UserModel> {
     const obs = profile$
       .pipe(
         filter(x => x !== undefined),

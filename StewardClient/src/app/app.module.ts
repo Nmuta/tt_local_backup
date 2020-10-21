@@ -2,10 +2,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
-import {
-  FaIconLibrary,
-  FontAwesomeModule,
-} from '@fortawesome/angular-fontawesome';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { NgxsModule } from '@ngxs/store';
@@ -21,9 +18,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { ErrorComponent } from './error/error.component';
 
-export const protectedResourceMap: [string, string[]][] = [
-  ['https://graph.microsoft.com/v1.0/me', ['user.read']],
-];
+export const protectedResourceMap: [string, string[]][] = [['https://graph.microsoft.com/v1.0/me', ['user.read']]];
 
 /** Defines the app module. */
 @NgModule({
@@ -39,8 +34,7 @@ export const protectedResourceMap: [string, string[]][] = [
       {
         auth: {
           clientId: '48a8a430-0f6b-4469-940f-1c5c6af1fd88',
-          authority:
-            'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/',
+          authority: 'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/',
           navigateToLoginRequestUrl: false,
           redirectUri: `${environment.stewardUiUrl}/auth/aadLogin`,
           postLogoutRedirectUri: `${environment.stewardUiUrl}/auth/aadLogout`,
@@ -52,12 +46,7 @@ export const protectedResourceMap: [string, string[]][] = [
       },
       {
         popUp: false,
-        consentScopes: [
-          'user.read',
-          'openid',
-          'profile',
-          environment.azureAppScope,
-        ],
+        consentScopes: ['user.read', 'openid', 'profile', environment.azureAppScope],
         unprotectedResources: [],
         protectedResourceMap,
         extraQueryParameters: {},

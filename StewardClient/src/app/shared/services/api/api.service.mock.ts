@@ -9,9 +9,7 @@ export class MockApiService {
   public getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
   public postRequest = jasmine.createSpy('postRequest').and.returnValue(of({}));
   public putRequest = jasmine.createSpy('putRequest').and.returnValue(of({}));
-  public deleteRequest = jasmine
-    .createSpy('deleteRequest')
-    .and.returnValue(of({}));
+  public deleteRequest = jasmine.createSpy('deleteRequest').and.returnValue(of({}));
 }
 
 export function createMockApiService() {

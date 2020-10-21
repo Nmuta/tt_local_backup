@@ -8,16 +8,12 @@ const routes: Routes = [
   {
     path: 'sidebar',
     canActivate: [ZendeskGuardService],
-    loadChildren: () =>
-      import('./side-bar/side-bar.module').then(m => m.SidebarModule),
+    loadChildren: () => import('./side-bar/side-bar.module').then(m => m.SidebarModule),
   },
   {
     path: 'ticket-sidebar',
     canActivate: [ZendeskGuardService],
-    loadChildren: () =>
-      import('./ticket-sidebar/ticket-sidebar.module').then(
-        m => m.TicketSidebarModule
-      ),
+    loadChildren: () => import('./ticket-sidebar/ticket-sidebar.module').then(m => m.TicketSidebarModule),
   },
   {
     path: 'auth',
