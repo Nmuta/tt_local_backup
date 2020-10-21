@@ -1,3 +1,26 @@
+@import 'src/variables.scss';
+
 section {
   padding: 10px;
+}
+
+.header-buttons {
+  border: 0px;
+  font-size: 16px;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 500;
+  margin-right: 10px;
+
+  &:hover {
+    color: $primaryBlue;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.header-selected {
+  color: $primaryBlue;
 }
