@@ -12,7 +12,6 @@ import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { NgxsModule } from '@ngxs/store';
 import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
-import { allAngularMaterialModules } from '@shared/helpers/ng-material';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
 import { UserState } from '@shared/state/user/user.state';
 
@@ -34,7 +33,6 @@ export const protectedResourceMap: [string, string[]][] = [
   imports: [
     AppRoutingModule,
     BrowserModule,
-    ...allAngularMaterialModules,
     NavbarModule,
     FontAwesomeModule,
     HttpClientModule,

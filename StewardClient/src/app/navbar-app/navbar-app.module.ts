@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { NavbarComponent } from '@components/navbar/navbar.component';
 import { NavbarModule } from '@components/navbar/navbar.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { allAngularMaterialModules } from '@helpers/ng-material';
 import { ProfileModule } from '@shared/components/profile/profile.module';
 
 import { NavbarAppComponent } from './navbar-app.component';
@@ -17,7 +16,6 @@ import { NavbarAppRouterModule } from './navbar-app.routing.module';
     FontAwesomeModule,
     ProfileModule,
     NavbarModule,
-    ...allAngularMaterialModules,
   ],
   providers: [],
   declarations: [NavbarAppComponent],
