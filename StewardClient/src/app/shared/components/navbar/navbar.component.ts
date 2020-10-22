@@ -23,7 +23,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public items: NavbarPath[] = navbarToolList;
-  public homeRouterLink = [navbarAppRootPath];
+  public homeRouterLink = navbarAppRootPath;
 
   public loading: boolean;
   public profile: UserModel;
@@ -46,6 +46,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
           this.loading = false;
           this.profile = profile;
           if (!this.profile) {
+            console.error("NO PROFILE, REDIRECTING TO /AUTH");
             this.router.navigate([`/auth`], {
               queryParams: { from: this.location },
             });
@@ -53,6 +54,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
         },
         _error => {
           this.loading = false;
+          console.error("PROFILE ERROR, REDIRECTING TO /AUTH");
           this.router.navigate([`/auth`], {
             queryParams: { from: this.location },
           });
