@@ -18,7 +18,10 @@ export function createNavbarPath(routeParams: RouteParams): RouterLinkPath {
 }
 
 /** Creates a RouterLinkPath for use in displaying navbars, from a RouteParams object. */
-export function createRouterLinkPath(parentPath: string[], routeParams: RouteParams): RouterLinkPath {
+export function createRouterLinkPath(
+  parentPath: string[],
+  routeParams: RouteParams
+): RouterLinkPath {
   // tslint:disable-next-line: no-object-literal-type-assertion
   return <RouterLinkPath>{
     title: routeParams.title,
@@ -41,7 +44,6 @@ export class NavbarTools {
     title: 'Gifting',
     path: 'gifting',
   };
-
 }
 
 /** The list of tools to display in the navbar. */

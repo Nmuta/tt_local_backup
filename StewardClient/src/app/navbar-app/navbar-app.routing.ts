@@ -15,7 +15,7 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: NavbarTools.HomePage.path,
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'home',
@@ -24,8 +24,8 @@ const routes: Routes = [
       {
         path: NavbarTools.GiftingPage.path,
         component: GiftingPageComponent,
-      }
-    ]
+      },
+    ],
   },
 ];
 

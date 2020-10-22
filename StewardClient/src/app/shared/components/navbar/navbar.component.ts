@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { faExclamationTriangle, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faExclamationTriangle,
+  faSyncAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from '@models/user.model';
 import { Select } from '@ngxs/store';
 import { WindowService } from '@services/window';
@@ -33,11 +36,16 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   public loading: boolean;
   public profile: UserModel;
 
-  constructor(private readonly router: Router, private readonly windowService: WindowService) {
+  constructor(
+    private readonly router: Router,
+    private readonly windowService: WindowService
+  ) {
     super();
   }
 
-  public get missingZendesk(): boolean { return !this.windowService.zafClient(); }
+  public get missingZendesk(): boolean {
+    return !this.windowService.zafClient();
+  }
 
   public get location(): string {
     return window.location.pathname;

@@ -17,8 +17,16 @@
   <a mat-button [routerLink]="['/missing-no']">404</a>
   <span class="spacer"></span>
   <span *ngIf="missingZendesk">
-    <fa-icon [icon]="warningIcon" [styles]="{'color': 'red'}" title="Zendesk API missing"></fa-icon>
-    <fa-icon [icon]="refreshIcon" [styles]="{'color': 'red'}" title="Refresh page"></fa-icon>
+    <fa-icon
+      [icon]="warningIcon"
+      [styles]="{ color: 'red' }"
+      title="Zendesk API missing"
+    ></fa-icon>
+    <fa-icon
+      [icon]="refreshIcon"
+      [styles]="{ color: 'red' }"
+      title="Refresh page"
+    ></fa-icon>
   </span>
   <span>{{ location }}</span>
   <span>
