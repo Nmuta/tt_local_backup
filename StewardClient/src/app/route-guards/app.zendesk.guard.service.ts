@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ZendeskGuardService implements CanActivate {
-  constructor(private router: Router, private windowService: WindowService) {}
+  constructor(private readonly router: Router, private readonly windowService: WindowService) {}
 
   /** Logic to activate the route. */
   public canActivate(
@@ -22,7 +22,12 @@ export class ZendeskGuardService implements CanActivate {
   ): Observable<boolean> | boolean {
     const inZendesk = !!this.windowService.zafClient();
     if (!inZendesk) {
-      this.router.navigate(['/auth']);
+      if (this.windowService.isInIframe) {
+        // TODO: The fix for this is to reload the parent page, but we can't do anything about that from here.
+        // For now, the navbar displays a warning and instruction to reload the page, which fixes the issue.
+      } else {
+        this.router.navigate(['/auth']);
+      }
     }
 
     return inZendesk;

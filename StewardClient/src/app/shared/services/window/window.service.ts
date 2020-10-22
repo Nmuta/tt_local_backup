@@ -11,6 +11,16 @@ export class WindowService {
     // Empty
   }
 
+  /** Checks if this window is in an iframe. */
+  public get isInIframe(): boolean {
+    // based on https://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
+    try {
+      return window.self !== window.top;
+    } catch {
+      return true;
+    }
+  }
+
   /** Adds event listener to the window. */
   public addEventListener(eventName: string, func: EventListener) {
     window.addEventListener(eventName, func);

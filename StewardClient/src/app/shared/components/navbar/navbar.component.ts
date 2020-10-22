@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
+import { faExclamationTriangle, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from '@models/user.model';
 import { Select } from '@ngxs/store';
+import { WindowService } from '@services/window';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
+  createNavbarPath,
   navbarAppRootPath,
-  NavbarPath,
+  RouterLinkPath,
   navbarToolList,
+  NavbarTools,
 } from './navbar-tool-list';
 
 /** The shared top-level navbar. */
@@ -21,16 +25,19 @@ import {
 })
 export class NavbarComponent extends BaseComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
-
-  public items: NavbarPath[] = navbarToolList;
-  public homeRouterLink = navbarAppRootPath;
+  public warningIcon = faExclamationTriangle;
+  public refreshIcon = faSyncAlt;
+  public items: RouterLinkPath[] = navbarToolList;
+  public homeRouterLink = createNavbarPath(NavbarTools.HomePage).routerLink;
 
   public loading: boolean;
   public profile: UserModel;
 
-  constructor(private readonly router: Router) {
+  constructor(private readonly router: Router, private readonly windowService: WindowService) {
     super();
   }
+
+  public get missingZendesk(): boolean { return !!this.windowService.zafClient; }
 
   public get location(): string {
     return window.location.pathname;
@@ -46,7 +53,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
           this.loading = false;
           this.profile = profile;
           if (!this.profile) {
-            console.error("NO PROFILE, REDIRECTING TO /AUTH");
             this.router.navigate([`/auth`], {
               queryParams: { from: this.location },
             });
@@ -54,7 +60,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
         },
         _error => {
           this.loading = false;
-          console.error("PROFILE ERROR, REDIRECTING TO /AUTH");
           this.router.navigate([`/auth`], {
             queryParams: { from: this.location },
           });
