@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { UserModel } from '@models/user.model';
 import { Select } from '@ngxs/store';
@@ -24,16 +25,38 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   public items: NavbarPath[] = navbarToolList;
   public homeRouterLink = [navbarAppRootPath];
 
+  public loading: boolean;
   public profile: UserModel;
+
+  constructor(private readonly router: Router) {
+    super();
+  }
 
   public get location(): string {
     return window.location.pathname;
   }
 
-  /** Initialization hook. */
+  /** Logic for the OnInit component lifecycle. */
   public ngOnInit() {
+    this.loading = true;
     UserState.latestValidProfile$(this.profile$)
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(profile => (this.profile = profile));
+      .subscribe(
+        profile => {
+          this.loading = false;
+          this.profile = profile;
+          if (!this.profile) {
+            this.router.navigate([`/auth`], {
+              queryParams: { from: this.location },
+            });
+          }
+        },
+        _error => {
+          this.loading = false;
+          this.router.navigate([`/auth`], {
+            queryParams: { from: this.location },
+          });
+        }
+      );
   }
 }
