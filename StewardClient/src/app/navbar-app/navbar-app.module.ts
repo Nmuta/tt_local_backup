@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NavbarComponent } from '@components/navbar/navbar.component';
 import { NavbarModule } from '@components/navbar/navbar.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProfileModule } from '@shared/components/profile/profile.module';

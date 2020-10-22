@@ -37,7 +37,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
     super();
   }
 
-  public get missingZendesk(): boolean { return !!this.windowService.zafClient; }
+  public get missingZendesk(): boolean { return !this.windowService.zafClient(); }
 
   public get location(): string {
     return window.location.pathname;
