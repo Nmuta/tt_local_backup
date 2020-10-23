@@ -41,7 +41,6 @@ describe('NavbarComponent', () => {
     const injector = getTestBed();
     mockStore = injector.get(Store);
     mockRouter = injector.get(Router);
-    // mockWindowService = injector.get(WindowService);
 
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.debugElement.componentInstance;
