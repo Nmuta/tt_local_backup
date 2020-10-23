@@ -1,12 +1,19 @@
 {
 	"folders": [
 		{
+<<<<<<< HEAD
 			"name": "Web-Steward",
 			"path": "."
 		},
 		{
 			"name": "StewardClient",
 			"path": "StewardClient"
+=======
+			"path": "StewardClient"
+		},
+		{
+			"path": "."
+>>>>>>> 0daf73d... Convert to Workspace and make SCSS Imports work in VSCode
 		}
 	],
 	"settings": {}
