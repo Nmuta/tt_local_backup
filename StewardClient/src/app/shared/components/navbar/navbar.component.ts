@@ -28,6 +28,7 @@ import {
 })
 export class NavbarComponent extends BaseComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
+
   public warningIcon = faExclamationTriangle;
   public refreshIcon = faSyncAlt;
   public items: RouterLinkPath[] = navbarToolList;
@@ -54,6 +55,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   /** Logic for the OnInit component lifecycle. */
   public ngOnInit() {
     this.loading = true;
+    debugger;
     UserState.latestValidProfile$(this.profile$)
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(
