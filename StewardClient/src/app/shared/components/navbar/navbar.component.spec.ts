@@ -8,9 +8,7 @@ import {
   fakeAsync,
   tick,
 } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { UserState } from '@shared/state/user/user.state';
@@ -37,10 +35,7 @@ describe('NavbarComponent', () => {
       ],
       declarations: [NavbarComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockWindowService(),
-        createMockMsalService(),
-      ],
+      providers: [createMockWindowService(), createMockMsalService()],
     }).compileComponents();
 
     const injector = getTestBed();
