@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { ProfileModule } from '@components/profile/profile.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { NavbarComponent } from './navbar.component';
 
@@ -18,6 +19,7 @@ import { NavbarComponent } from './navbar.component';
     MatButtonModule,
     MatIconModule,
     ProfileModule,
+    FontAwesomeModule,
   ],
   exports: [NavbarComponent],
 })

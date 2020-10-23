@@ -12,6 +12,7 @@
     ]
   },
   "rules": {
+    "no-angle-bracket-type-assertion": false,
     "member-access": true,
     "angular-whitespace": false,
     "no-input-rename": true,
