@@ -28,9 +28,6 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/global.scss"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [""]
-            },
             "scripts": []
           },
           "configurations": {
@@ -136,9 +133,6 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/global.scss"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [""]
-            },
             "scripts": [],
             "assets": ["src/assets"],
             "codeCoverageExclude": [

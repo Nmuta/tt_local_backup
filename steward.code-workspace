@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "Web-Steward",
+			"path": "."
+		},
+		{
+			"name": "StewardClient",
+			"path": "StewardClient"
+		}
+	],
+	"settings": {}
+}
