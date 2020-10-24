@@ -5,7 +5,7 @@ import { FakeApiInterceptor } from './fake-api.interceptor';
 describe('FakeApiInterceptor', () => {
   beforeEach(() => TestBed.configureTestingModule({
     providers: [
-      FakeApiInterceptor
+      FakeApiInterceptor,
       ]
   }));
 
