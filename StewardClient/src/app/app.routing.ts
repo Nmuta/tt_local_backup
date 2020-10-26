@@ -8,7 +8,7 @@ import { ZendeskGuardService } from './route-guards/app.zendesk.guard.service';
 const routes: Routes = [
   {
     path: 'navbar-app',
-    canActivate: [ZendeskGuardService],
+    // canActivate: [ZendeskGuardService],
     loadChildren: () =>
       import('./navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
   },

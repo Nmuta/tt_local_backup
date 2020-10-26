@@ -1,6 +1,7 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
 import { NavbarModule } from '@components/navbar/navbar.module';
 import {
@@ -33,7 +34,7 @@ export const protectedResourceMap: [string, string[]][] = [
   declarations: [AppComponent, ErrorComponent, FourOhFourComponent],
   imports: [
     AppRoutingModule,
-    BrowserModule,
+    BrowserAnimationsModule,
     NavbarModule,
     FontAwesomeModule,
     HttpClientModule,

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NavbarTools } from '@components/navbar/navbar-tool-list';
 import { ErrorComponent } from 'app/error/error.component';
+import { FourOhFourComponent } from 'app/four-oh-four/four-oh-four.component';
 
 import { GiftingPageComponent } from './gifting-page/gifting-page.module';
 import { HomeComponent } from './home/home.component';
@@ -31,6 +32,10 @@ const routes: Routes = [
         path: NavbarTools.UserDetailsPage.path,
         loadChildren: () =>
           import('./user-details/user-details.module').then(m => m.UserDetailsModule),
+      },
+      {
+        path: '**',
+        component: FourOhFourComponent,
       },
     ],
   },
