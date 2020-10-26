@@ -1,16 +1,15 @@
 import { environment } from "@environments/environment";
-
-import { FakeApiBase } from "./fake-api-base";
+import { FakeApiBase } from "@interceptors/fake-api/apis/fake-api-base";
 
 /** Fake API for finding User Flags. */
-export class PlayerXuidProfileSummaryFakeApi extends FakeApiBase {
+export class SunrisePlayerXuidProfileSummaryFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
     if (!targetingStewardApi) { return false };
 
     const url = new URL(this.request.url);
-    const regex = /sunrise\/player\/xuid\((\d+)\)\/profilesummary/i;
+    const regex = /v2\/title\/sunrise\/player\/xuid\((\d+)\)\/profilesummary/i;
     return regex.test(url.pathname);
   }
 

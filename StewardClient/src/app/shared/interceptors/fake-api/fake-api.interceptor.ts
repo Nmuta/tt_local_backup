@@ -9,11 +9,11 @@ import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 
 import { PlayerGamertagFakeApi } from './apis/player-gamertag';
-import { PlayerXuidConsoleSharedUsersFakeApi } from './apis/player-xuid-console-sharedUsers';
-import { PlayerXuidConsolesFakeApi } from './apis/player-xuid-consoles';
-import { PlayerXuidCreditUpdatesFakeApi } from './apis/player-xuid-creditUpdates';
-import { PlayerXuidFlagsFakeApi } from './apis/player-xuid-flags';
-import { PlayerXuidProfileSummaryFakeApi } from './apis/player-xuid-profileSummary';
+import { PlayerXuidConsolesFakeApi } from './apis/title/gravity/player/xuid/console/consoles';
+import { PlayerXuidConsoleSharedUsersFakeApi } from './apis/title/gravity/player/xuid/console/sharedUsers';
+import { PlayerXuidCreditUpdatesFakeApi } from './apis/title/gravity/player/xuid/creditUpdates';
+import { PlayerXuidFlagsFakeApi } from './apis/title/gravity/player/xuid/flags';
+import { PlayerXuidProfileSummaryFakeApi } from './apis/title/gravity/player/xuid/profileSummary';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
