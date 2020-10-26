@@ -9,5 +9,7 @@
 			"path": "StewardClient"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"editor.tabSize": 2
+	}
 }

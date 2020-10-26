@@ -17,7 +17,7 @@ import { Observable, throwError } from 'rxjs';
 export class GravityService {
   public basePath: string = 'v2/title/gravity';
 
-  constructor(private apiService: ApiService) {}
+  constructor(private readonly apiService: ApiService) {}
 
   /** Gets gravity player details with a gamertag. */
   public getPlayerDetailsByGamertag(

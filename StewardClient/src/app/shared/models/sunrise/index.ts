@@ -1,0 +1,1 @@
+export * from './sunrise-player-details.model';
