@@ -8,7 +8,7 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, of as ObservableOf } from 'rxjs';
 
-import { SunrisePlayerGamertagFakeApi } from './apis/title/sunrise/player/gamertag';
+import { SunrisePlayerGamertagDetailsFakeApi } from './apis/title/sunrise/player/gamertag/details';
 import { SunrisePlayerXuidConsolesFakeApi } from './apis/title/sunrise/player/xuid/console/consoles';
 import { SunrisePlayerXuidConsoleSharedUsersFakeApi } from './apis/title/sunrise/player/xuid/console/sharedUsers';
 import { SunrisePlayerXuidCreditUpdatesFakeApi } from './apis/title/sunrise/player/xuid/creditUpdates';
@@ -17,7 +17,7 @@ import { SunrisePlayerXuidProfileSummaryFakeApi } from './apis/title/sunrise/pla
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
-  SunrisePlayerGamertagFakeApi,
+  SunrisePlayerGamertagDetailsFakeApi,
   SunrisePlayerXuidConsoleSharedUsersFakeApi,
   SunrisePlayerXuidConsolesFakeApi,
   SunrisePlayerXuidCreditUpdatesFakeApi,
@@ -33,7 +33,6 @@ export class FakeApiInterceptor implements HttpInterceptor {
   /** Interception hook. */
   public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     for (const fakeApiConstructor of fakeApiConstructors) {
-      debugger;
       const fakeApi = new fakeApiConstructor(request);
       if (fakeApi.canHandle) {
         return ObservableOf(new HttpResponse({

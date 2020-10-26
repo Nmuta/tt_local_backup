@@ -17,9 +17,8 @@ export class SunriseService {
   public getPlayerDetailsByGamertag(
     gamertag: string
   ): Observable<SunrisePlayerDetails> {
-    debugger;
     return this.apiService.getRequest<SunrisePlayerDetails>(
-      `${this.basePath}/player/details/gamertag(${gamertag})`
-    ).pipe(tap(m => { debugger; }));
+      `${this.basePath}/player/gamertag(${gamertag})/details`
+    );
   }
 }
