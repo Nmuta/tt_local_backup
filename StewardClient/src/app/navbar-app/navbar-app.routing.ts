@@ -6,6 +6,7 @@ import { ErrorComponent } from 'app/error/error.component';
 import { GiftingPageComponent } from './gifting-page/gifting-page.module';
 import { HomeComponent } from './home/home.component';
 import { NavbarAppComponent } from './navbar-app.component';
+import { SunriseComponent } from './user-details/sunrise/sunrise.component';
 import { UserDetailsComponent } from './user-details/user-details.component';
 
 const routes: Routes = [
@@ -28,7 +29,8 @@ const routes: Routes = [
       },
       {
         path: NavbarTools.UserDetailsPage.path,
-        component: UserDetailsComponent,
+        loadChildren: () =>
+          import('./user-details/user-details.module').then(m => m.UserDetailsModule),
       },
     ],
   },

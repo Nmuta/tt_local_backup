@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { SunrisePlayerDetails } from '@models/sunrise';
 import { ApiService } from '@services/api';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
