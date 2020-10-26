@@ -1,1 +1,2 @@
-<p>waiting for gamertag</p>
+<p *ngIf="!gamertag">waiting for gamertag</p>
+<p *ngIf="!!gamertag">Gamertag: {{ gamertag }}</p>

@@ -8,6 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { SunriseModule } from './sunrise/sunrise.module';
 import { UserDetailsComponent } from './user-details.component';
 import { UserDetailsRouterModule } from './user-details.routing';
 
@@ -23,6 +24,7 @@ import { UserDetailsRouterModule } from './user-details.routing';
     MatInputModule,
     FontAwesomeModule,
     FormsModule,
+    SunriseModule,
   ],
 })
 export class UserDetailsModule { }
