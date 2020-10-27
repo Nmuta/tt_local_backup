@@ -1,0 +1,12 @@
+<mat-progress-spinner
+  *ngIf="isActive"
+  mode="indeterminate"
+  [matTooltip]="spinnerMessage"
+></mat-progress-spinner>
+<fa-icon
+  *ngIf="(!isActive && !!error)"
+  [icon]="warningIcon"
+  [matTooltip]="errorMessage"
+  [cdkCopyToClipboard]="error | json"
+  class="warning"
+></fa-icon>

@@ -24,6 +24,7 @@ import { AppRoutingModule } from './app.routing';
 import { ErrorComponent } from './error/error.component';
 import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { ErrorSpinnerComponent } from './shared/components/error-spinner/error-spinner.component';
 
 export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],

@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { SunriseModule } from './sunrise/sunrise.module';
@@ -17,6 +18,7 @@ import { UserDetailsRouterModule } from './user-details.routing';
   declarations: [UserDetailsComponent],
   imports: [
     CommonModule,
+    ErrorSpinnerModule,
     UserDetailsRouterModule,
     MatToolbarModule,
     MatButtonModule,

@@ -1,0 +1,20 @@
+@import "/src/variables.scss";
+
+.spinner {
+  color: $primaryBlue;
+}
+
+.warning {
+  color: $developerRed;
+}
+
+$progress-spinner-diameter: 1em;
+:host ::ng-deep {
+  mat-progress-spinner {
+    display: inline-block;
+    &, svg {
+      width: $progress-spinner-diameter !important;
+      height: $progress-spinner-diameter !important;
+    }
+  }
+}

@@ -8,6 +8,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { BanHistoryComponent } from './ban-history/ban-history.component';
@@ -31,6 +32,7 @@ import { UserFlagsComponent } from './user-flags/user-flags.component';
   ],
   imports: [
     CommonModule,
+    ErrorSpinnerModule,
     MatChipsModule,
     MatTabsModule,
     MatTableModule,

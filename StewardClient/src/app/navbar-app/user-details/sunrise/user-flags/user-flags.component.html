@@ -10,11 +10,9 @@
         <button mat-stroked-button [disabled]="!verified" (click)="apply()">Apply</button>
         <mat-checkbox [(ngModel)]="verified">I have verified flags.</mat-checkbox>
         <mat-progress-spinner *ngIf="isSubmitting" mode="indeterminate" diameter="20"></mat-progress-spinner>
-        <fa-icon
-          *ngIf="submitError"
-          [icon]="warningIcon"
-          title="Failed to submit. Try again."
-        ></fa-icon>
+        <error-spinner [isActive]="isSubmitting" [error]="submitError" spinnerMessage="Submitting" errorMessage="Failed to submit. Try again.">
+          Hello World
+        </error-spinner>
       </span>
     </h2>
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
