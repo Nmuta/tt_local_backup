@@ -8,6 +8,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 

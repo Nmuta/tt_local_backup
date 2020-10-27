@@ -1,11 +1,11 @@
 /** The /v2/title/Sunrise/player/???/banHistory model */
 export interface SunriseBanHistory {
-  servicesBanHistory: SunriseBanDescription[];
+  servicesBanHistory: ServicesBanDescription[];
   liveOpsBanHistory: LiveOpsBanDescription[];
 }
 
-/** Sunrise model for bans. */
-export interface SunriseBanDescription {
+/** Services model for bans. */
+export interface ServicesBanDescription {
   xuid: number;
   startTimeUtc: Date;
   expireTimeUtc: Date;

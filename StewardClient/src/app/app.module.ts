@@ -34,8 +34,8 @@ export const protectedResourceMap: [string, string[]][] = [
 @NgModule({
   declarations: [AppComponent, ErrorComponent, FourOhFourComponent],
   imports: [
-    AppRoutingModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
     NavbarModule,
     FontAwesomeModule,
     HttpClientModule,

@@ -1,4 +1,4 @@
-/** The /v2/title/Sunrise/player/???/details model */
+/** The /v2/title/Sunrise/player/???/userFlags model */
 export interface SunriseUserFlags {
   isVip: boolean;
   isUltimateVip: boolean;
