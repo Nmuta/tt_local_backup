@@ -1,0 +1,37 @@
+<mat-card>
+  <mat-card-content>
+    <h2>Sunrise Flags 
+      <fa-icon
+        *ngIf="loadError"
+        [icon]="warningIcon"
+        title="Failed to load"
+      ></fa-icon>
+      <span *ngIf="hasChanges" class="apply">
+        <button mat-stroked-button [disabled]="!verified" (click)="apply()">Apply</button>
+        <mat-checkbox [(ngModel)]="verified">I have verified flags.</mat-checkbox>
+        <mat-progress-spinner *ngIf="isSubmitting" mode="indeterminate" diameter="20"></mat-progress-spinner>
+        <fa-icon
+          *ngIf="submitError"
+          [icon]="warningIcon"
+          title="Failed to submit. Try again."
+        ></fa-icon>
+      </span>
+    </h2>
+    <ng-container *ngIf="!isLoading && !loadError; else failstate">
+      <section class="checkboxes">
+        <mat-checkbox [(ngModel)]="flags.isVip" [disabled]="isSubmitting" (ngModelChange)="verified=false">VIP</mat-checkbox>
+        <mat-checkbox [(ngModel)]="flags.isUltimateVip" [disabled]="isSubmitting" (ngModelChange)="verified=false">Ultimate VIP</mat-checkbox>
+        <mat-checkbox [(ngModel)]="flags.isTurn10Employee" [disabled]="isSubmitting" (ngModelChange)="verified=false">Turn10 Employee</mat-checkbox>
+        <mat-checkbox [(ngModel)]="flags.isCommunityManager" [disabled]="isSubmitting" (ngModelChange)="verified=false">Community Manager (see Jeffspr, dangerous!)</mat-checkbox>
+        <mat-checkbox [(ngModel)]="flags.isEarlyAccess" [disabled]="isSubmitting" (ngModelChange)="verified=false">Early Access</mat-checkbox>
+        <mat-checkbox [(ngModel)]="flags.isUnderReview" [disabled]="isSubmitting" (ngModelChange)="verified=false">Under Review</mat-checkbox>
+      </section>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <p *ngIf="loadError">Failed to load.</p>
+  <pre *ngIf="loadError">{{ loadError | json }}</pre>
+</ng-template>

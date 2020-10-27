@@ -9,7 +9,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
     if (!targetingStewardApi) { return false };
 
     const url = new URL(this.request.url);
-    const regex = /v2\/title\/sunrise\/player\/xuid\((\d+)\)\/creditUpdates/i;
+    const regex = /\/?api\/v2\/title\/sunrise\/player\/xuid\((\d+)\)\/creditUpdates/i;
     return regex.test(url.pathname);
   }
 

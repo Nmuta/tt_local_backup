@@ -1,0 +1,30 @@
+@import "/src/variables.scss";
+
+fa-icon {
+  color: $developerRed;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+section.checkboxes {
+  > mat-checkbox {
+    display: block;
+  }
+}
+
+h2 {
+  height: 36px;
+  .apply {
+    font-size: 12px;
+
+    > * {
+      margin: 0 10px;
+    }
+
+    mat-progress-spinner {
+      display: inline;
+    }
+  }
+}

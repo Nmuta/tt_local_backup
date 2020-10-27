@@ -6,14 +6,16 @@ import {
   HttpResponse
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import _ from 'lodash';
 import { Observable, of as ObservableOf } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 import { SunrisePlayerGamertagDetailsFakeApi } from './apis/title/sunrise/player/gamertag/details';
 import { SunrisePlayerXuidConsolesFakeApi } from './apis/title/sunrise/player/xuid/console/consoles';
 import { SunrisePlayerXuidConsoleSharedUsersFakeApi } from './apis/title/sunrise/player/xuid/console/sharedUsers';
 import { SunrisePlayerXuidCreditUpdatesFakeApi } from './apis/title/sunrise/player/xuid/creditUpdates';
-import { SunrisePlayerXuidFlagsFakeApi } from './apis/title/sunrise/player/xuid/flags';
 import { SunrisePlayerXuidProfileSummaryFakeApi } from './apis/title/sunrise/player/xuid/profileSummary';
+import { SunrisePlayerXuidUserFlagsFakeApi } from './apis/title/sunrise/player/xuid/userFlags';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -21,7 +23,7 @@ const fakeApiConstructors = [
   SunrisePlayerXuidConsoleSharedUsersFakeApi,
   SunrisePlayerXuidConsolesFakeApi,
   SunrisePlayerXuidCreditUpdatesFakeApi,
-  SunrisePlayerXuidFlagsFakeApi,
+  SunrisePlayerXuidUserFlagsFakeApi,
   SunrisePlayerXuidProfileSummaryFakeApi,
 ]
 
@@ -37,7 +39,7 @@ export class FakeApiInterceptor implements HttpInterceptor {
       if (fakeApi.canHandle) {
         return ObservableOf(new HttpResponse({
           body: fakeApi.handle(),
-        }));
+        })).pipe(delay(_.random(1500)+500));
       }
     }
 

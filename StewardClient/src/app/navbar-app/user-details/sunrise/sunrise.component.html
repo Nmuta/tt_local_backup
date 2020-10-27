@@ -1,2 +1,9 @@
-<p *ngIf="!gamertag">waiting for gamertag</p>
-<p *ngIf="!!gamertag">Gamertag: {{ gamertag }}</p>
+<div *ngIf="!gamertag">waiting for gamertag</div>
+<!-- <div *ngIf="!!gamertag">
+  <p>Gamertag: {{ gamertag }}</p>
+  <pre>{{ userDetails | json}}</pre>
+</div> -->
+
+<section *ngIf="!!gamertag">
+  <sunrise-user-flags [xuid]="xuid"></sunrise-user-flags>
+</section>

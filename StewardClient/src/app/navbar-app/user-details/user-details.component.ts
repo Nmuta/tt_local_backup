@@ -24,7 +24,6 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    this.sunrise.getPlayerDetailsByGamertag("temporary1021").subscribe();
     this.route.queryParamMap.pipe(takeUntil(this.onDestroy$))
       .subscribe(params => {
         this.gamertag = params.get('gamertag');

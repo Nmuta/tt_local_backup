@@ -13,7 +13,7 @@ export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /v2\/title\/sunrise\/player\/xuid\((\d+)\)\/banHistory/i;
+    const regex = /\/?api\/v2\/title\/sunrise\/player\/xuid\((\d+)\)\/banHistory/i;
     return regex.test(url.pathname);
   }
 

@@ -49,7 +49,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   }
 
   public get location(): string {
-    return window.location.pathname;
+    return `${window.location.pathname}${window.location.search}`;
   }
 
   /** Logic for the OnInit component lifecycle. */
