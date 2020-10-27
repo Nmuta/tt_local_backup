@@ -11,6 +11,7 @@ import { Observable, of as ObservableOf } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { SunrisePlayerGamertagDetailsFakeApi } from './apis/title/sunrise/player/gamertag/details';
+import { SunrisePlayerXuidBanHistoryFakeApi } from './apis/title/sunrise/player/xuid/banHistory';
 import { SunrisePlayerXuidConsolesFakeApi } from './apis/title/sunrise/player/xuid/console/consoles';
 import { SunrisePlayerXuidConsoleSharedUsersFakeApi } from './apis/title/sunrise/player/xuid/console/sharedUsers';
 import { SunrisePlayerXuidCreditUpdatesFakeApi } from './apis/title/sunrise/player/xuid/creditUpdates';
@@ -25,6 +26,7 @@ const fakeApiConstructors = [
   SunrisePlayerXuidCreditUpdatesFakeApi,
   SunrisePlayerXuidUserFlagsFakeApi,
   SunrisePlayerXuidProfileSummaryFakeApi,
+  SunrisePlayerXuidBanHistoryFakeApi,
 ]
 
 /** Intercepts every request and returns a sample response if it matches the conditions. */

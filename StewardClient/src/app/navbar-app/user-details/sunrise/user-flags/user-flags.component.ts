@@ -1,10 +1,8 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { SunriseUserFlags } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import _ from 'lodash';
-import { takeUntil } from 'rxjs/operators';
 
 /** Retreives and displays Sunrise User Flags by XUID. */
 @Component({
@@ -15,9 +13,6 @@ import { takeUntil } from 'rxjs/operators';
 export class UserFlagsComponent extends BaseComponent implements OnChanges {
   /** The XUID to look up. */
   @Input() public xuid: number;
-
-  /** Icon to show on error. */
-  public warningIcon = faExclamationTriangle;
 
   /** True while waiting on a request. */
   public isLoading = true;

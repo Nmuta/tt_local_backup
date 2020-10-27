@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
+import { SunriseBanHistory } from '@models/sunrise/sunrise-ban-history.model';
 import { ApiService } from '@services/api';
+import _ from 'lodash';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -39,5 +42,28 @@ export class SunriseService {
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
       flags,
     );
+  }
+
+  /** Gets user flags by a XUID. */
+  public getBanHistoryByXuid(
+    xuid: number,
+  ): Observable<SunriseBanHistory> {
+    return this.apiService.getRequest<SunriseBanHistory>(
+      `${this.basePath}/player/xuid(${xuid})/banHistory`
+    ).pipe(map(banHistory => {
+      // these come in stringly-typed and must be converted
+
+      for (const entry of banHistory.liveOpsBanHistory) {
+        entry.startTimeUtc = new Date(entry.startTimeUtc);
+        entry.expireTimeUtc = new Date(entry.expireTimeUtc);
+      }
+
+      for (const entry of banHistory.servicesBanHistory) {
+        entry.startTimeUtc = new Date(entry.startTimeUtc);
+        entry.expireTimeUtc = new Date(entry.expireTimeUtc);
+      }
+
+      return banHistory;
+    }));
   }
 }
