@@ -37,7 +37,7 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
   public isActiveIcon = faCheck;
 
   /** The columns + order to display. */
-  public columnsToDisplay = ['isActive', 'reason', 'startTimeUtc', 'expireTimeUtc'];
+  public columnsToDisplay = ['isActive', 'reason', 'featureArea', 'startTimeUtc', 'expireTimeUtc'];
 
   /** The current expanded element. */
   public expandedEntry: ServicesBanDescription;

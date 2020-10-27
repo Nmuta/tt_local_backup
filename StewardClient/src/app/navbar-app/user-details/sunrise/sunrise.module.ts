@@ -11,6 +11,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { BanHistoryComponent } from './ban-history/ban-history.component';
 import { ConsolesComponent } from './consoles/consoles.component';
@@ -33,6 +34,7 @@ import { UserFlagsComponent } from './user-flags/user-flags.component';
   ],
   imports: [
     CommonModule,
+    PipesModule,
     ErrorSpinnerModule,
     MatChipsModule,
     MatTabsModule,
