@@ -16,7 +16,7 @@ export class SunrisePlayerGamertagDetailsFakeApi extends FakeApiBase {
   /** Produces a sample API response. */
   public handle(): object {
     return {
-      xuid: 0,
+      xuid: 189456456,
       gamertag: null,
       turn10Id: null,
       firstLogin: '0001-01-01T00:00:00',
