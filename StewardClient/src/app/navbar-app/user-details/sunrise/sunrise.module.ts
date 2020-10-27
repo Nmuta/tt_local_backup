@@ -12,11 +12,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { BanHistoryComponent } from './ban-history/ban-history.component';
 import { ConsolesComponent } from './consoles/consoles.component';
+import { CreditHistoryComponent } from './credit-history/credit-history.component';
 import { GamertagsComponent } from './gamertags/gamertags.component';
 import { OverviewComponent } from './overview/overview.component';
 import { SunriseComponent } from './sunrise.component';
 import { UserFlagsComponent } from './user-flags/user-flags.component';
-import { CreditHistoryComponent } from './credit-history/credit-history.component';
 
 /** Module for Sunrise UI */
 @NgModule({

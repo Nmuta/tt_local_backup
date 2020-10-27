@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-credit-history',
+  selector: 'sunrise-credit-history',
   templateUrl: './credit-history.component.html',
   styleUrls: ['./credit-history.component.scss']
 })
