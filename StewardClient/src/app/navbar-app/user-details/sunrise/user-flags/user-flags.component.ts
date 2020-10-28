@@ -66,9 +66,7 @@ export class UserFlagsComponent extends BaseComponent implements OnChanges {
           value => {
             this.currentFlags = value;
             this.flags = _.clone(this.currentFlags);
-          },
-          _error => { /* nothing */ },
-          () => { /* completed */ })
+          })
       )
   }
 }
