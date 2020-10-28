@@ -1,3 +1,4 @@
+import { CdkColumnDef, CdkTableModule } from '@angular/cdk/table';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -46,6 +47,7 @@ import { UserFlagsComponent } from './user-flags/user-flags.component';
     MatCardModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
+    CdkTableModule,
     FormsModule,
     FontAwesomeModule,
     MatButtonModule,

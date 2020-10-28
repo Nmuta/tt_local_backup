@@ -15,7 +15,8 @@ export class HumanizePipe implements PipeTransform {
       return value;
     }
 
-    value = value.split(/(?=[A-Z])/).join(' ');
+    value = value.split(/(?=[A-Z_\-])/).join(' ');
+    value = value.replace("_", "-");
     value = value[0].toUpperCase() + value.slice(1);
 
     return value;

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
 import { SunriseBanHistory } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
+import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import _ from 'lodash';
@@ -82,10 +83,18 @@ export class SunriseService {
     )
   }
 
+  /** Updates a console's ban status by the Console's ID. */
   public putBanStatusByConsoleId(consoleId: string, isBanned: boolean) {
     return this.apiService.putRequest(
       `${this.basePath}/console/consoleId(${consoleId})/isBanned(${isBanned})`,
       null,
+    )
+  }
+
+  /** Gets a player's Profile Summary by XUID. */
+  public getProfileSummaryByXuid(xuid: number) {
+    return this.apiService.getRequest<SunriseProfileSummary>(
+      `${this.basePath}/player/xuid(${xuid})/profileSummary`
     )
   }
 }

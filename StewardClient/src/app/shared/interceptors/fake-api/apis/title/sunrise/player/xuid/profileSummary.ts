@@ -22,7 +22,7 @@ export class SunrisePlayerXuidProfileSummaryFakeApi extends FakeApiBase {
       maxCredits: 511830,
       housesPurchased: 0,
       unaccountedForCredits: -359026,
-      totalXP: 325702,
+      totalXp: 325702,
       hackFlags: [
         'FileDecryptionAuthFailure',
         'Checksum_ObfuscatedDataAccessors',
