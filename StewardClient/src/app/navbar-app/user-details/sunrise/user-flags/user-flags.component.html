@@ -8,57 +8,49 @@
         spinnerMessage="Loading"
         errorMessage="Failed to load"
       ></error-spinner>
-      <error-spinner
-        [isActive]="isSubmitting"
-        [error]="submitError"
-        spinnerMessage="Submitting"
-        errorMessage="Failed to submit. Try again."
-      ></error-spinner>
-      <span *ngIf="hasChanges && !isSubmitting" class="apply">
-        <button mat-stroked-button [disabled]="!verified" (click)="apply()">
-          Apply
-        </button>
-        <mat-checkbox [(ngModel)]="verified"
-          >I have verified flags.</mat-checkbox
-        >
-      </span>
+      <verify-action-button
+        #submit
+        buttonText="Apply"
+        [canSubmit]="hasChanges"
+        [action]="makeAction.bind(this)">
+      </verify-action-button>
     </h2>
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
       <section class="checkboxes">
         <mat-checkbox
           [(ngModel)]="flags.isVip"
-          [disabled]="isSubmitting"
-          (ngModelChange)="verified = false"
+          [disabled]="submit.isSubmitting"
+          (ngModelChange)="submit.reset()"
           >VIP</mat-checkbox
         >
         <mat-checkbox
           [(ngModel)]="flags.isUltimateVip"
-          [disabled]="isSubmitting"
-          (ngModelChange)="verified = false"
+          [disabled]="submit.isSubmitting"
+          (ngModelChange)="submit.reset()"
           >Ultimate VIP</mat-checkbox
         >
         <mat-checkbox
           [(ngModel)]="flags.isTurn10Employee"
-          [disabled]="isSubmitting"
-          (ngModelChange)="verified = false"
+          [disabled]="submit.isSubmitting"
+          (ngModelChange)="submit.reset()"
           >Turn10 Employee</mat-checkbox
         >
         <mat-checkbox
           [(ngModel)]="flags.isCommunityManager"
-          [disabled]="isSubmitting"
-          (ngModelChange)="verified = false"
+          [disabled]="submit.isSubmitting"
+          (ngModelChange)="submit.reset()"
           >Community Manager (see Jeffspr, dangerous!)</mat-checkbox
         >
         <mat-checkbox
           [(ngModel)]="flags.isEarlyAccess"
-          [disabled]="isSubmitting"
-          (ngModelChange)="verified = false"
+          [disabled]="submit.isSubmitting"
+          (ngModelChange)="submit.reset()"
           >Early Access</mat-checkbox
         >
         <mat-checkbox
           [(ngModel)]="flags.isUnderReview"
-          [disabled]="isSubmitting"
-          (ngModelChange)="verified = false"
+          [disabled]="submit.isSubmitting"
+          (ngModelChange)="submit.reset()"
           >Under Review</mat-checkbox
         >
       </section>

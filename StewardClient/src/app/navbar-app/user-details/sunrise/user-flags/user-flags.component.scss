@@ -16,15 +16,7 @@ section.checkboxes {
 
 h2 {
   height: 36px;
-  .apply {
+  verify-action-button {
     font-size: 12px;
-
-    > * {
-      margin: 0 10px;
-    }
-
-    mat-progress-spinner {
-      display: inline;
-    }
   }
 }

@@ -3,6 +3,8 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { SunriseUserFlags } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import _ from 'lodash';
+import { Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 /** Retreives and displays Sunrise User Flags by XUID. */
 @Component({
@@ -57,19 +59,16 @@ export class UserFlagsComponent extends BaseComponent implements OnChanges {
   }
 
   /** Submits the changes. */
-  public apply(): void {
-    this.isSubmitting = true;
-    this.submitError = false;
-
-    this.sunrise.putFlagsByXuid(this.xuid, this.flags)
-      .subscribe(flags => {
-        this.isSubmitting = false;
-        this.currentFlags = flags
-        this.flags = _.clone(this.currentFlags);
-      },
-      _error => {
-        this.isSubmitting = false;
-        this.submitError = true;
-      });
+  public makeAction(): Observable<any> {
+    return this.sunrise.putFlagsByXuid(this.xuid, this.flags)
+      .pipe(
+        tap(
+          value => {
+            this.currentFlags = value;
+            this.flags = _.clone(this.currentFlags);
+          },
+          _error => { /* nothing */ },
+          () => { /* completed */ })
+      )
   }
 }
