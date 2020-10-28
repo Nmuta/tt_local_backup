@@ -18,8 +18,11 @@ export class VerifyActionButtonComponent extends BaseComponent {
   /** Text to display inside the button. */
   @Input() public buttonText = "Apply";
 
-  /** Tooltip to display below checkbox & disabled button. */
+  /** Tooltip to display below disabled button. */
   @Input() public verifyText = "Action must be verified";
+
+  /** Tooltip to display below checkbox. */
+  @Input() public checkboxText = "Verify";
 
   public verified = false;
   public isSubmitting = false;
@@ -37,12 +40,17 @@ export class VerifyActionButtonComponent extends BaseComponent {
     this.isSubmitting = true;
     this.submitError = false;
 
-    this.action().subscribe(_ => {
-      this.isSubmitting = false;
-    },
-    error => {
+    try {
+      this.action().subscribe(_ => {
+        this.isSubmitting = false;
+      },
+      error => {
+        this.isSubmitting = false;
+        this.submitError = error;
+      });
+    } catch (error) {
       this.isSubmitting = false;
       this.submitError = error;
-    })
+    }
   }
 }

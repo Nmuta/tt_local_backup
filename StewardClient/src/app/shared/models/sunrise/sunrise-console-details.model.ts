@@ -1,6 +1,6 @@
 /** A single console details entry. */
 export interface SunriseConsoleDetailsEntry {
-  consoleId: number;
+  consoleId: string;
   isBanned: boolean;
   isBannable: boolean;
   deviceType: string;

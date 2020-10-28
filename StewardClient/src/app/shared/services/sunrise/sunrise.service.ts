@@ -81,4 +81,11 @@ export class SunriseService {
       `${this.basePath}/player/xuid(${xuid})/consoleDetails`
     )
   }
+
+  public putBanStatusByConsoleId(consoleId: string, isBanned: boolean) {
+    return this.apiService.putRequest(
+      `${this.basePath}/console/consoleId(${consoleId})/isBanned(${isBanned})`,
+      null,
+    )
+  }
 }
