@@ -1,4 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { faGavel } from '@fortawesome/free-solid-svg-icons';
+import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
+import { SunriseService } from '@services/sunrise/sunrise.service';
 
 /** Retreives and displays related Sunrise accounts by XUID. */
 @Component({
@@ -9,14 +12,17 @@ import { Component, Input, OnChanges } from '@angular/core';
 export class GamertagsComponent implements OnChanges {
   @Input() public xuid?: number;
 
+  public everBannedIcon = faGavel;
+
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */
   public loadError: any;
+  /** The retrieved list of shared users. */
+  public sharedConsoleUsers: SunriseSharedConsoleUsers;
+  public columnsToDisplay = ['everBanned', 'gamertag', 'sharedConsoleId', 'xuid']
 
-  public data: object[];
-
-  constructor() { }
+  constructor(private readonly sunrise: SunriseService) { }
 
   /** Initialization hook. */
   public ngOnChanges(): void {
@@ -24,15 +30,10 @@ export class GamertagsComponent implements OnChanges {
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.sunrise.getBanHistoryByXuid(this.xuid)
-      .subscribe(history => {
+    this.sunrise.getSharedConsoleUsersByXuid(this.xuid)
+      .subscribe(sharedConsoleUsers => {
         this.isLoading = false;
-        this.history = history;
-        this.banList = this.history.servicesBanHistory.map(servicesBan => {
-          const output: ServicesBanDescription & {correlatedBan: LiveOpsBanDescription} = _.clone(servicesBan) as any;
-          output.correlatedBan = this.correlateLiveOps(servicesBan);
-          return output;
-        })
+        this.sharedConsoleUsers = sharedConsoleUsers;
       },
       _error => {
         this.isLoading = false;

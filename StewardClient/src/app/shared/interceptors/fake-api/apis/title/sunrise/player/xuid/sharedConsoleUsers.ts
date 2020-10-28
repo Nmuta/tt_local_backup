@@ -9,7 +9,7 @@ export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBa
     if (!targetingStewardApi) { return false };
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v2\/title\/sunrise\/player\/xuid\((\d+)\)\/console\/sharedConsoleUsers\//i;
+    const regex = /\/?api\/v2\/title\/sunrise\/player\/xuid\((\d+)\)\/sharedConsoleUsers/i;
     return regex.test(url.pathname);
   }
 

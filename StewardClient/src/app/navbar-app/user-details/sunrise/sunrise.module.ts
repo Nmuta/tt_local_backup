@@ -9,6 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PipesModule } from '@shared/pipes/pipes.module';
@@ -34,6 +35,7 @@ import { UserFlagsComponent } from './user-flags/user-flags.component';
   ],
   imports: [
     CommonModule,
+    RouterModule,
     PipesModule,
     ErrorSpinnerModule,
     MatChipsModule,

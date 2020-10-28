@@ -12,16 +12,16 @@ import { delay } from 'rxjs/operators';
 
 import { SunrisePlayerGamertagDetailsFakeApi } from './apis/title/sunrise/player/gamertag/details';
 import { SunrisePlayerXuidBanHistoryFakeApi } from './apis/title/sunrise/player/xuid/banHistory';
-import { SunrisePlayerXuidConsolesFakeApi } from './apis/title/sunrise/player/xuid/console/consoles';
-import { SunrisePlayerXuidConsoleSharedUsersFakeApi } from './apis/title/sunrise/player/xuid/console/sharedUsers';
+import { SunrisePlayerXuidConsolesFakeApi } from './apis/title/sunrise/player/xuid/consoleDetails';
 import { SunrisePlayerXuidCreditUpdatesFakeApi } from './apis/title/sunrise/player/xuid/creditUpdates';
 import { SunrisePlayerXuidProfileSummaryFakeApi } from './apis/title/sunrise/player/xuid/profileSummary';
+import { SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/sunrise/player/xuid/sharedConsoleUsers';
 import { SunrisePlayerXuidUserFlagsFakeApi } from './apis/title/sunrise/player/xuid/userFlags';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
   SunrisePlayerGamertagDetailsFakeApi,
-  SunrisePlayerXuidConsoleSharedUsersFakeApi,
+  SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi,
   SunrisePlayerXuidConsolesFakeApi,
   SunrisePlayerXuidCreditUpdatesFakeApi,
   SunrisePlayerXuidUserFlagsFakeApi,
