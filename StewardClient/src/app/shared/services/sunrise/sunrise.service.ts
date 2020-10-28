@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
 import { SunriseBanHistory } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
+import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
 import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
@@ -95,6 +96,13 @@ export class SunriseService {
   public getProfileSummaryByXuid(xuid: number) {
     return this.apiService.getRequest<SunriseProfileSummary>(
       `${this.basePath}/player/xuid(${xuid})/profileSummary`
+    )
+  }
+
+  /** Gets a player's Profile Summary by XUID. */
+  public getCreditHistoryByXuid(xuid: number) {
+    return this.apiService.getRequest<SunriseCreditHistory>(
+      `${this.basePath}/player/xuid(${xuid})/creditUpdates`
     )
   }
 }
