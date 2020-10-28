@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
 import { SunriseBanHistory } from '@models/sunrise/sunrise-ban-history.model';
+import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import _ from 'lodash';
@@ -67,10 +68,17 @@ export class SunriseService {
       return banHistory;
     }));
   }
+
   /** Gets shared console users by XUID. */
   public getSharedConsoleUsersByXuid(xuid: number) {
     return this.apiService.getRequest<SunriseSharedConsoleUsers>(
       `${this.basePath}/player/xuid(${xuid})/sharedConsoleUsers`
+    )
+  }
+  /** Gets console details by XUID. */
+  public getConsoleDetailsByXuid(xuid: number) {
+    return this.apiService.getRequest<SunriseConsoleDetails>(
+      `${this.basePath}/player/xuid(${xuid})/consoleDetails`
     )
   }
 }

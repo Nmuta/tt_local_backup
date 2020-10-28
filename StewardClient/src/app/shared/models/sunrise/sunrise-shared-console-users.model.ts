@@ -2,8 +2,8 @@
 export interface SunriseSharedConsoleUser {
   sharedConsoleId: number;
   xuid: number;
-  gamertag: string
-  everBanned: boolean
+  gamertag: string;
+  everBanned: boolean;
 }
 
 /** The /v2/title/Sunrise/player/???/sharedConsoleUser model */
