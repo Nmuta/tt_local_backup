@@ -33,6 +33,7 @@ export class CreditHistoryComponent implements OnChanges {
       return;
     }
 
+    // TODO: This only grabs the first page of results. Something more complete should probably be its own PR after discussion.
     this.isLoading = true;
     this.loadError = undefined;
     this.sunrise.getCreditHistoryByXuid(this.xuid).subscribe(
