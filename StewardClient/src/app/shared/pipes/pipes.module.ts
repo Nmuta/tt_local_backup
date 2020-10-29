@@ -3,13 +3,10 @@ import { NgModule } from '@angular/core';
 
 import { HumanizePipe } from './humanize.pipe';
 
-
 /** Module for various shared pipes. */
 @NgModule({
   declarations: [HumanizePipe],
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   exports: [HumanizePipe],
 })
-export class PipesModule { }
+export class PipesModule {}

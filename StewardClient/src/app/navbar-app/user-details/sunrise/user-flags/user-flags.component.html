@@ -11,7 +11,9 @@
       <verify-action-button
         #submit
         [canSubmit]="hasChanges"
-        [action]="makeAction.bind(this)">Apply</verify-action-button>
+        [action]="makeAction.bind(this)"
+        >Apply</verify-action-button
+      >
     </h2>
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
       <section class="checkboxes">

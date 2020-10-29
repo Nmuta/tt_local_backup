@@ -4,7 +4,7 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
-  HttpResponse
+  HttpResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
@@ -31,12 +31,10 @@ const fakeApiConstructors = [
   SunrisePlayerXuidProfileSummaryFakeApi,
   SunrisePlayerXuidBanHistoryFakeApi,
   SunriseConsoleIsBannedFakeApi,
-]
+];
 
 /** The URLs this interceptor will not block. */
-const urlAllowList = [
-  `${environment.stewardApiUrl}/api/me`
-];
+const urlAllowList = [`${environment.stewardApiUrl}/api/me`];
 
 /** Intercepts every request and returns a sample response if it matches the conditions. */
 @Injectable()
@@ -44,23 +42,31 @@ export class FakeApiInterceptor implements HttpInterceptor {
   // TODO: it should be possible to module-ize this and only load it when on local
 
   /** Interception hook. */
-  public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  public intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
     for (const fakeApiConstructor of fakeApiConstructors) {
       const fakeApi = new fakeApiConstructor(request);
       if (fakeApi.canHandle) {
-        return ObservableOf(new HttpResponse({
-          body: fakeApi.handle(),
-        })).pipe(delay(_.random(1500)+500));
+        return ObservableOf(
+          new HttpResponse({
+            body: fakeApi.handle(),
+          })
+        ).pipe(delay(_.random(1500) + 500));
       }
     }
 
     const isAllowed = urlAllowList.includes(request.url);
     if (!isAllowed) {
-      return throwError(new HttpErrorResponse({
-        url: request.url,
-        status: 9000,
-        statusText: "URL not on the allowed list of URLs in FakeApiInterceptor."
-      }));
+      return throwError(
+        new HttpErrorResponse({
+          url: request.url,
+          status: 9000,
+          statusText:
+            'URL not on the allowed list of URLs in FakeApiInterceptor.',
+        })
+      );
     }
 
     return next.handle(request);

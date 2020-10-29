@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 
+/** Retreives and displays Sunrise credit history by XUID. */
 @Component({
   selector: 'sunrise-credit-history',
   templateUrl: './credit-history.component.html',

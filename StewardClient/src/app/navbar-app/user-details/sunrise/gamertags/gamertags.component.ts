@@ -7,7 +7,7 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
 @Component({
   selector: 'sunrise-gamertags',
   templateUrl: './gamertags.component.html',
-  styleUrls: ['./gamertags.component.scss']
+  styleUrls: ['./gamertags.component.scss'],
 })
 export class GamertagsComponent implements OnChanges {
   @Input() public xuid?: number;
@@ -20,24 +20,32 @@ export class GamertagsComponent implements OnChanges {
   public loadError: any;
   /** The retrieved list of shared users. */
   public sharedConsoleUsers: SunriseSharedConsoleUsers;
-  public columnsToDisplay = ['everBanned', 'gamertag', 'sharedConsoleId', 'xuid'];
+  public columnsToDisplay = [
+    'everBanned',
+    'gamertag',
+    'sharedConsoleId',
+    'xuid',
+  ];
 
-  constructor(private readonly sunrise: SunriseService) { }
+  constructor(private readonly sunrise: SunriseService) {}
 
   /** Initialization hook. */
   public ngOnChanges(): void {
-    if (this.xuid === undefined) { return; }
+    if (this.xuid === undefined) {
+      return;
+    }
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.sunrise.getSharedConsoleUsersByXuid(this.xuid)
-      .subscribe(sharedConsoleUsers => {
+    this.sunrise.getSharedConsoleUsersByXuid(this.xuid).subscribe(
+      sharedConsoleUsers => {
         this.isLoading = false;
         this.sharedConsoleUsers = sharedConsoleUsers;
       },
       _error => {
         this.isLoading = false;
         this.loadError = _error; // TODO: Display something useful to the user
-      });
+      }
+    );
   }
 }

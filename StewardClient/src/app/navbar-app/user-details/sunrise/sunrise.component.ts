@@ -32,9 +32,7 @@ export class SunriseComponent extends BaseComponent implements OnInit {
         tap(gamertag => {
           this.gamertag = gamertag;
         }),
-        switchMap(gamertag =>
-          this.sunrise.getPlayerDetailsByGamertag(gamertag)
-        )
+        switchMap(gamertag => this.sunrise.getPlayerDetailsByGamertag(gamertag))
       )
       .subscribe(userDetailsResponse => {
         this.userDetails = userDetailsResponse; // TODO: Delete this. Testing only.

@@ -5,7 +5,7 @@ import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'error-spinner',
   templateUrl: './error-spinner.component.html',
-  styleUrls: ['./error-spinner.component.scss']
+  styleUrls: ['./error-spinner.component.scss'],
 })
 export class ErrorSpinnerComponent {
   /** True while loading / submitting / active. */
@@ -15,7 +15,7 @@ export class ErrorSpinnerComponent {
   @Input() public error: any = undefined;
 
   /** The tooltip to display after an error. */
-  @Input() public errorMessage: string = "Failed";
+  @Input() public errorMessage: string = 'Failed';
 
   /** The tooltip to display while spinning. */
   @Input() public spinnerMessage: string = undefined;

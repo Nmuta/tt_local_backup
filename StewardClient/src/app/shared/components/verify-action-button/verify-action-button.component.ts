@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'verify-action-button',
   templateUrl: './verify-action-button.component.html',
-  styleUrls: ['./verify-action-button.component.scss']
+  styleUrls: ['./verify-action-button.component.scss'],
 })
 export class VerifyActionButtonComponent extends BaseComponent {
   /** What to do when the action is confirmed. */
@@ -16,19 +16,21 @@ export class VerifyActionButtonComponent extends BaseComponent {
   @Input() public canSubmit = false;
 
   /** Text to display inside the button. */
-  @Input() public buttonText = "Apply";
+  @Input() public buttonText = 'Apply';
 
   /** Tooltip to display below disabled button. */
-  @Input() public verifyText = "Action must be verified";
+  @Input() public verifyText = 'Action must be verified';
 
   /** Tooltip to display below checkbox. */
-  @Input() public checkboxText = "Verify";
+  @Input() public checkboxText = 'Verify';
 
   public verified = false;
   public isSubmitting = false;
   public submitError: any = undefined;
 
-  constructor() { super(); }
+  constructor() {
+    super();
+  }
 
   /** Resets the state of the verification button. */
   public reset() {
@@ -41,13 +43,15 @@ export class VerifyActionButtonComponent extends BaseComponent {
     this.submitError = false;
 
     try {
-      this.action().subscribe(_ => {
-        this.isSubmitting = false;
-      },
-      error => {
-        this.isSubmitting = false;
-        this.submitError = error;
-      });
+      this.action().subscribe(
+        _ => {
+          this.isSubmitting = false;
+        },
+        error => {
+          this.isSubmitting = false;
+          this.submitError = error;
+        }
+      );
     } catch (error) {
       this.isSubmitting = false;
       this.submitError = error;

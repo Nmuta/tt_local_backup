@@ -15,7 +15,7 @@ describe('BanHistoryComponent', () => {
       declarations: [BanHistoryComponent],
       providers: [createMockSunriseService()],
     }).compileComponents();
-    
+
     injector = getTestBed();
     service = injector.inject(SunriseService);
   });

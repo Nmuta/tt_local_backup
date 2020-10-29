@@ -3,13 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { takeUntil } from 'rxjs/operators';
+
 import { SunriseComponent } from './sunrise/sunrise.component';
 
 /** User Details page. */
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.scss']
+  styleUrls: ['./user-details.component.scss'],
 })
 export class UserDetailsComponent extends BaseComponent implements OnInit {
   public gamertag: string;
@@ -24,7 +25,8 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    this.route.queryParamMap.pipe(takeUntil(this.onDestroy$))
+    this.route.queryParamMap
+      .pipe(takeUntil(this.onDestroy$))
       .subscribe(params => {
         this.gamertag = params.get('gamertag');
       });

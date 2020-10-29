@@ -31,7 +31,9 @@ const routes: Routes = [
       {
         path: NavbarTools.UserDetailsPage.path,
         loadChildren: () =>
-          import('./user-details/user-details.module').then(m => m.UserDetailsModule),
+          import('./user-details/user-details.module').then(
+            m => m.UserDetailsModule
+          ),
       },
       {
         path: '**',

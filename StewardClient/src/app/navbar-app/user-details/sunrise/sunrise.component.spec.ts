@@ -1,4 +1,9 @@
-import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  getTestBed,
+  TestBed,
+  waitForAsync,
+} from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SunriseService } from '@services/sunrise/sunrise.service';
@@ -17,9 +22,7 @@ describe('SunriseComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([])],
       declarations: [SunriseComponent],
-      providers: [
-        createMockSunriseService(),
-      ],
+      providers: [createMockSunriseService()],
     }).compileComponents();
 
     injector = getTestBed();
@@ -32,7 +35,10 @@ describe('SunriseComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', waitForAsync(() => {
-    expect(component).toBeTruthy();
-  }));
+  it(
+    'should create',
+    waitForAsync(() => {
+      expect(component).toBeTruthy();
+    })
+  );
 });

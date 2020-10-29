@@ -10,7 +10,7 @@ import { catchError, tap } from 'rxjs/operators';
 @Component({
   selector: 'sunrise-user-flags',
   templateUrl: './user-flags.component.html',
-  styleUrls: ['./user-flags.component.scss']
+  styleUrls: ['./user-flags.component.scss'],
 })
 export class UserFlagsComponent extends BaseComponent implements OnChanges {
   /** The XUID to look up. */
@@ -42,31 +42,32 @@ export class UserFlagsComponent extends BaseComponent implements OnChanges {
 
   /** Initialization hook. */
   public ngOnChanges(): void {
-    if (this.xuid === undefined) { return; }
+    if (this.xuid === undefined) {
+      return;
+    }
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.sunrise.getFlagsByXuid(this.xuid)
-      .subscribe(flags => {
+    this.sunrise.getFlagsByXuid(this.xuid).subscribe(
+      flags => {
         this.isLoading = false;
-        this.currentFlags = flags
+        this.currentFlags = flags;
         this.flags = _.clone(this.currentFlags);
       },
       _error => {
         this.isLoading = false;
         this.loadError = _error; // TODO: Display something useful to the user
-      });
+      }
+    );
   }
 
   /** Submits the changes. */
   public makeAction(): Observable<any> {
-    return this.sunrise.putFlagsByXuid(this.xuid, this.flags)
-      .pipe(
-        tap(
-          value => {
-            this.currentFlags = value;
-            this.flags = _.clone(this.currentFlags);
-          })
-      )
+    return this.sunrise.putFlagsByXuid(this.xuid, this.flags).pipe(
+      tap(value => {
+        this.currentFlags = value;
+        this.flags = _.clone(this.currentFlags);
+      })
+    );
   }
 }

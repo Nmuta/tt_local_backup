@@ -1,4 +1,4 @@
-@import "/src/variables.scss";
+@import '/src/variables.scss';
 
 .spinner {
   color: $primaryBlue;
@@ -13,7 +13,8 @@ $progress-spinner-diameter: 1em;
 :host ::ng-deep {
   mat-progress-spinner {
     display: inline-block;
-    &, svg {
+    &,
+    svg {
       width: $progress-spinner-diameter !important;
       height: $progress-spinner-diameter !important;
     }

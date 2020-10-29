@@ -1,4 +1,9 @@
-import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  getTestBed,
+  TestBed,
+  waitForAsync,
+} from '@angular/core/testing';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 
@@ -15,7 +20,7 @@ describe('OverviewComponent', () => {
       declarations: [OverviewComponent],
       providers: [createMockSunriseService()],
     }).compileComponents();
-    
+
     injector = getTestBed();
     service = injector.inject(SunriseService);
   });
@@ -26,7 +31,10 @@ describe('OverviewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', waitForAsync(() => {
-    expect(component).toBeTruthy();
-  }));
+  it(
+    'should create',
+    waitForAsync(() => {
+      expect(component).toBeTruthy();
+    })
+  );
 });

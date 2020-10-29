@@ -19,6 +19,6 @@ import { VerifyActionButtonComponent } from './verify-action-button.component';
     MatButtonModule,
     MatTooltipModule,
   ],
-  exports: [VerifyActionButtonComponent]
+  exports: [VerifyActionButtonComponent],
 })
-export class VerifyActionButtonModule { }
+export class VerifyActionButtonModule {}

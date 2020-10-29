@@ -8,9 +8,8 @@ describe('ErrorSpinnerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ErrorSpinnerComponent ]
-    })
-    .compileComponents();
+      declarations: [ErrorSpinnerComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

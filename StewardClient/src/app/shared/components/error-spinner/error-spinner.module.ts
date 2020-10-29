@@ -9,9 +9,7 @@ import { ErrorSpinnerComponent } from './error-spinner.component';
 
 /** Module for error spinner. */
 @NgModule({
-  declarations: [
-    ErrorSpinnerComponent,
-  ],
+  declarations: [ErrorSpinnerComponent],
   imports: [
     CommonModule,
     FontAwesomeModule,
@@ -19,8 +17,6 @@ import { ErrorSpinnerComponent } from './error-spinner.component';
     MatProgressSpinnerModule,
     MatTooltipModule,
   ],
-  exports: [
-    ErrorSpinnerComponent,
-  ]
+  exports: [ErrorSpinnerComponent],
 })
-export class ErrorSpinnerModule { }
+export class ErrorSpinnerModule {}

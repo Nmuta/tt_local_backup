@@ -29,4 +29,4 @@ import { UserDetailsRouterModule } from './user-details.routing';
     SunriseModule,
   ],
 })
-export class UserDetailsModule { }
+export class UserDetailsModule {}

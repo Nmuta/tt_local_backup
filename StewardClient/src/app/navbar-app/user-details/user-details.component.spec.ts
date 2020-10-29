@@ -17,9 +17,7 @@ describe('UserDetailsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([])],
       declarations: [UserDetailsComponent],
-      providers: [
-        createMockSunriseService(),
-      ],
+      providers: [createMockSunriseService()],
     }).compileComponents();
 
     injector = getTestBed();
