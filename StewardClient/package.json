@@ -8,6 +8,7 @@
     "format": "prettier --write .",
     "start": "ng serve",
     "configMoveToBuild": "cp web.config dist/",
+    "local:test:cc": "ng test --karma-config=src/karma-coverage.conf.js --source-map=true --code-coverage",
     "local:test:chrome": "ng test --karma-config=src/karma.conf.js --source-map=true",
     "local:test:ff": "ng test --karma-config=src/karma-firefox.conf.js --source-map=true",
     "vsts:test": "ng test --code-coverage --karma-config=src/karma-vsts.conf.js",
