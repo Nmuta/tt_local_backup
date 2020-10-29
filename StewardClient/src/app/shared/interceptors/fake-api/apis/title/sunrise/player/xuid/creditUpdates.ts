@@ -26,7 +26,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 26708,
         creditAmount: 6708,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 600,
+        totalXp: 600,
       },
       {
         eventTimestampUtc: '2020-06-19T00:43:57.752Z',
@@ -34,7 +34,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 31918,
         creditAmount: 5210,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 3374,
+        totalXp: 3374,
       },
       {
         eventTimestampUtc: '2020-06-19T00:43:57.752Z',
@@ -42,7 +42,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 41918,
         creditAmount: 10000,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 5528,
+        totalXp: 5528,
       },
       {
         eventTimestampUtc: '2020-06-19T00:50:46.878Z',
@@ -50,7 +50,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 46717,
         creditAmount: 4799,
         sceneName: 'BucketListFinishResult',
-        totalXP: 5528,
+        totalXp: 5528,
       },
       {
         eventTimestampUtc: '2020-06-19T00:50:46.879Z',
@@ -58,7 +58,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 56717,
         creditAmount: 10000,
         sceneName: 'BucketListFinishResult',
-        totalXP: 13028,
+        totalXp: 13028,
       },
       {
         eventTimestampUtc: '2020-06-19T00:54:49.09Z',
@@ -66,7 +66,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 66717,
         creditAmount: 10000,
         sceneName: 'Hud',
-        totalXP: 13628,
+        totalXp: 13628,
       },
       {
         eventTimestampUtc: '2020-06-19T00:59:11.69Z',
@@ -74,7 +74,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 74669,
         creditAmount: 7952,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 13628,
+        totalXp: 13628,
       },
       {
         eventTimestampUtc: '2020-06-19T00:59:32.294Z',
@@ -82,7 +82,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 89669,
         creditAmount: 15000,
         sceneName: 'PostRaceTombola',
-        totalXP: 17155,
+        totalXp: 17155,
       },
       {
         eventTimestampUtc: '2020-06-19T01:19:46.23Z',
@@ -90,7 +90,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 97767,
         creditAmount: 8098,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 17155,
+        totalXp: 17155,
       },
       {
         eventTimestampUtc: '2020-06-19T01:19:46.231Z',
@@ -98,7 +98,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 107767,
         creditAmount: 10000,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 20532,
+        totalXp: 20532,
       },
       {
         eventTimestampUtc: '2020-06-25T00:17:39.476Z',
@@ -106,7 +106,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 112985,
         creditAmount: 5218,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 20532,
+        totalXp: 20532,
       },
       {
         eventTimestampUtc: '2020-06-25T00:17:39.476Z',
@@ -114,7 +114,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 112985,
         creditAmount: 5218,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 20532,
+        totalXp: 20532,
       },
       {
         eventTimestampUtc: '2020-06-25T00:17:39.476Z',
@@ -122,7 +122,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 112985,
         creditAmount: 5218,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 20532,
+        totalXp: 20532,
       },
       {
         eventTimestampUtc: '2020-06-25T00:34:51.496Z',
@@ -130,7 +130,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 131286,
         creditAmount: 10000,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 27886,
+        totalXp: 27886,
       },
       {
         eventTimestampUtc: '2020-06-25T00:34:51.496Z',
@@ -138,7 +138,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 121286,
         creditAmount: 8301,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 24500,
+        totalXp: 24500,
       },
       {
         eventTimestampUtc: '2020-06-25T00:34:51.496Z',
@@ -146,7 +146,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 121286,
         creditAmount: 8301,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 24500,
+        totalXp: 24500,
       },
       {
         eventTimestampUtc: '2020-06-25T00:34:51.496Z',
@@ -154,7 +154,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 131286,
         creditAmount: 10000,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 27886,
+        totalXp: 27886,
       },
       {
         eventTimestampUtc: '2020-06-25T00:34:51.496Z',
@@ -162,7 +162,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 131286,
         creditAmount: 10000,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 27886,
+        totalXp: 27886,
       },
       {
         eventTimestampUtc: '2020-06-25T00:34:51.496Z',
@@ -170,7 +170,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 121286,
         creditAmount: 8301,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 24500,
+        totalXp: 24500,
       },
       {
         eventTimestampUtc: '2020-06-25T00:35:07.814Z',
@@ -178,7 +178,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 141286,
         creditAmount: 10000,
         sceneName: 'EmptySceneWithSpinner',
-        totalXP: 33586,
+        totalXp: 33586,
       },
       {
         eventTimestampUtc: '2020-06-25T00:35:07.814Z',
@@ -186,7 +186,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 141286,
         creditAmount: 10000,
         sceneName: 'EmptySceneWithSpinner',
-        totalXP: 33586,
+        totalXp: 33586,
       },
       {
         eventTimestampUtc: '2020-06-25T00:35:07.814Z',
@@ -194,7 +194,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 141286,
         creditAmount: 10000,
         sceneName: 'EmptySceneWithSpinner',
-        totalXP: 33586,
+        totalXp: 33586,
       },
       {
         eventTimestampUtc: '2020-06-25T00:44:21.987Z',
@@ -202,7 +202,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 147551,
         creditAmount: 6265,
         sceneName: 'BucketListFinishResult',
-        totalXP: 35664,
+        totalXp: 35664,
       },
       {
         eventTimestampUtc: '2020-06-25T00:44:21.987Z',
@@ -210,7 +210,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 147551,
         creditAmount: 6265,
         sceneName: 'BucketListFinishResult',
-        totalXP: 35664,
+        totalXp: 35664,
       },
       {
         eventTimestampUtc: '2020-06-25T00:44:21.987Z',
@@ -218,7 +218,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 147551,
         creditAmount: 6265,
         sceneName: 'BucketListFinishResult',
-        totalXP: 35664,
+        totalXp: 35664,
       },
       {
         eventTimestampUtc: '2020-06-25T01:00:22.402Z',
@@ -226,7 +226,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 155493,
         creditAmount: 7942,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 45568,
+        totalXp: 45568,
       },
       {
         eventTimestampUtc: '2020-06-25T01:00:22.402Z',
@@ -234,7 +234,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 155493,
         creditAmount: 7942,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 45568,
+        totalXp: 45568,
       },
       {
         eventTimestampUtc: '2020-06-25T01:00:22.402Z',
@@ -242,7 +242,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 155493,
         creditAmount: 7942,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 45568,
+        totalXp: 45568,
       },
       {
         eventTimestampUtc: '2020-06-25T01:10:58.799Z',
@@ -250,7 +250,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 162971,
         creditAmount: 7478,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 53603,
+        totalXp: 53603,
       },
       {
         eventTimestampUtc: '2020-06-25T01:10:58.799Z',
@@ -258,7 +258,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 162971,
         creditAmount: 7478,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 53603,
+        totalXp: 53603,
       },
       {
         eventTimestampUtc: '2020-06-25T01:10:58.799Z',
@@ -266,7 +266,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 162971,
         creditAmount: 7478,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 53603,
+        totalXp: 53603,
       },
       {
         eventTimestampUtc: '2020-06-25T01:20:33.834Z',
@@ -274,7 +274,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 168215,
         creditAmount: 5244,
         sceneName: 'EmptySceneWithVignette',
-        totalXP: 59536,
+        totalXp: 59536,
       },
       {
         eventTimestampUtc: '2020-06-25T01:20:33.834Z',
@@ -282,7 +282,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 168215,
         creditAmount: 5244,
         sceneName: 'EmptySceneWithVignette',
-        totalXP: 59536,
+        totalXp: 59536,
       },
       {
         eventTimestampUtc: '2020-06-25T01:20:33.834Z',
@@ -290,7 +290,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 168215,
         creditAmount: 5244,
         sceneName: 'EmptySceneWithVignette',
-        totalXP: 59536,
+        totalXp: 59536,
       },
       {
         eventTimestampUtc: '2020-06-25T01:20:49.086Z',
@@ -298,7 +298,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 168215,
         creditAmount: 0,
         sceneName: 'PostRaceTombola',
-        totalXP: 62680,
+        totalXp: 62680,
       },
       {
         eventTimestampUtc: '2020-06-25T01:20:49.086Z',
@@ -306,7 +306,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 168215,
         creditAmount: 0,
         sceneName: 'PostRaceTombola',
-        totalXP: 62680,
+        totalXp: 62680,
       },
       {
         eventTimestampUtc: '2020-06-25T01:20:49.086Z',
@@ -314,7 +314,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 168215,
         creditAmount: 0,
         sceneName: 'PostRaceTombola',
-        totalXP: 62680,
+        totalXp: 62680,
       },
       {
         eventTimestampUtc: '2020-06-25T01:28:53.096Z',
@@ -322,7 +322,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 178205,
         creditAmount: 9990,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 66072,
+        totalXp: 66072,
       },
       {
         eventTimestampUtc: '2020-06-25T01:28:53.096Z',
@@ -330,7 +330,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 178205,
         creditAmount: 9990,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 66072,
+        totalXp: 66072,
       },
       {
         eventTimestampUtc: '2020-06-25T01:28:53.096Z',
@@ -338,7 +338,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 178205,
         creditAmount: 9990,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 66072,
+        totalXp: 66072,
       },
       {
         eventTimestampUtc: '2020-06-25T01:52:50.411Z',
@@ -346,7 +346,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 184659,
         creditAmount: 6454,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 80808,
+        totalXp: 80808,
       },
       {
         eventTimestampUtc: '2020-06-25T01:52:50.411Z',
@@ -354,7 +354,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 184659,
         creditAmount: 6454,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 80808,
+        totalXp: 80808,
       },
       {
         eventTimestampUtc: '2020-06-25T01:52:50.411Z',
@@ -362,7 +362,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 184659,
         creditAmount: 6454,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 80808,
+        totalXp: 80808,
       },
       {
         eventTimestampUtc: '2020-06-25T01:58:47.511Z',
@@ -370,7 +370,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 191495,
         creditAmount: 6836,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 86429,
+        totalXp: 86429,
       },
       {
         eventTimestampUtc: '2020-06-25T01:58:47.511Z',
@@ -378,7 +378,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 191495,
         creditAmount: 6836,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 86429,
+        totalXp: 86429,
       },
       {
         eventTimestampUtc: '2020-06-25T01:58:47.511Z',
@@ -386,7 +386,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 191495,
         creditAmount: 6836,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 86429,
+        totalXp: 86429,
       },
       {
         eventTimestampUtc: '2020-06-25T01:58:47.512Z',
@@ -394,7 +394,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 201495,
         creditAmount: 10000,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 89989,
+        totalXp: 89989,
       },
       {
         eventTimestampUtc: '2020-06-25T01:58:47.512Z',
@@ -402,7 +402,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 201495,
         creditAmount: 10000,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 89989,
+        totalXp: 89989,
       },
       {
         eventTimestampUtc: '2020-06-25T01:58:47.512Z',
@@ -410,7 +410,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 201495,
         creditAmount: 10000,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 89989,
+        totalXp: 89989,
       },
       {
         eventTimestampUtc: '2020-06-25T02:10:49.444Z',
@@ -418,7 +418,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 216495,
         creditAmount: 15000,
         sceneName: 'Hud',
-        totalXP: 93889,
+        totalXp: 93889,
       },
       {
         eventTimestampUtc: '2020-06-25T02:10:49.444Z',
@@ -426,7 +426,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 216495,
         creditAmount: 15000,
         sceneName: 'Hud',
-        totalXP: 93889,
+        totalXp: 93889,
       },
       {
         eventTimestampUtc: '2020-06-25T02:10:49.444Z',
@@ -434,7 +434,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 216495,
         creditAmount: 15000,
         sceneName: 'Hud',
-        totalXP: 93889,
+        totalXp: 93889,
       },
       {
         eventTimestampUtc: '2020-06-25T02:25:51.538Z',
@@ -442,7 +442,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 226095,
         creditAmount: 9600,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 96125,
+        totalXp: 96125,
       },
       {
         eventTimestampUtc: '2020-06-25T02:25:51.538Z',
@@ -450,7 +450,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 226095,
         creditAmount: 9600,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 96125,
+        totalXp: 96125,
       },
       {
         eventTimestampUtc: '2020-06-25T02:25:51.538Z',
@@ -458,7 +458,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 226095,
         creditAmount: 9600,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 96125,
+        totalXp: 96125,
       },
       {
         eventTimestampUtc: '2020-06-25T02:37:46.305Z',
@@ -466,7 +466,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 233230,
         creditAmount: 7135,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 105743,
+        totalXp: 105743,
       },
       {
         eventTimestampUtc: '2020-06-25T02:37:46.305Z',
@@ -474,7 +474,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 233230,
         creditAmount: 7135,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 105743,
+        totalXp: 105743,
       },
       {
         eventTimestampUtc: '2020-06-25T02:37:46.305Z',
@@ -482,7 +482,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 233230,
         creditAmount: 7135,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 105743,
+        totalXp: 105743,
       },
       {
         eventTimestampUtc: '2020-06-25T02:59:33.939Z',
@@ -490,7 +490,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 242280,
         creditAmount: 9050,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 119473,
+        totalXp: 119473,
       },
       {
         eventTimestampUtc: '2020-06-25T02:59:33.939Z',
@@ -498,7 +498,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 242280,
         creditAmount: 9050,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 119473,
+        totalXp: 119473,
       },
       {
         eventTimestampUtc: '2020-06-25T02:59:33.939Z',
@@ -506,7 +506,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 242280,
         creditAmount: 9050,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 119473,
+        totalXp: 119473,
       },
       {
         eventTimestampUtc: '2020-06-25T02:59:47.678Z',
@@ -514,7 +514,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 287280,
         creditAmount: 45000,
         sceneName: 'PostRaceTombola',
-        totalXP: 124529,
+        totalXp: 124529,
       },
       {
         eventTimestampUtc: '2020-06-25T02:59:47.678Z',
@@ -522,7 +522,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 287280,
         creditAmount: 45000,
         sceneName: 'PostRaceTombola',
-        totalXP: 124529,
+        totalXp: 124529,
       },
       {
         eventTimestampUtc: '2020-06-25T02:59:47.678Z',
@@ -530,7 +530,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 287280,
         creditAmount: 45000,
         sceneName: 'PostRaceTombola',
-        totalXP: 124529,
+        totalXp: 124529,
       },
       {
         eventTimestampUtc: '2020-06-26T00:07:18.965Z',
@@ -538,7 +538,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 296477,
         creditAmount: 9197,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 125215,
+        totalXp: 125215,
       },
       {
         eventTimestampUtc: '2020-06-26T00:13:53.675Z',
@@ -546,7 +546,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 306476,
         creditAmount: 9999,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 131086,
+        totalXp: 131086,
       },
       {
         eventTimestampUtc: '2020-06-26T00:19:15.41Z',
@@ -554,7 +554,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 313566,
         creditAmount: 7090,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 138366,
+        totalXp: 138366,
       },
       {
         eventTimestampUtc: '2020-06-26T00:27:37.621Z',
@@ -562,7 +562,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 323488,
         creditAmount: 9922,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 146559,
+        totalXp: 146559,
       },
       {
         eventTimestampUtc: '2020-06-26T00:27:49.4Z',
@@ -570,7 +570,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 323488,
         creditAmount: 0,
         sceneName: 'PostRaceTombola',
-        totalXP: 150962,
+        totalXp: 150962,
       },
       {
         eventTimestampUtc: '2020-06-26T00:38:50.144Z',
@@ -578,7 +578,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 331794,
         creditAmount: 8306,
         sceneName: 'EmptySceneWithVignette',
-        totalXP: 154624,
+        totalXp: 154624,
       },
       {
         eventTimestampUtc: '2020-06-26T00:51:55.209Z',
@@ -586,7 +586,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 346222,
         creditAmount: 14428,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 163475,
+        totalXp: 163475,
       },
       {
         eventTimestampUtc: '2020-06-26T01:00:14.7Z',
@@ -594,7 +594,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 354649,
         creditAmount: 8427,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 173399,
+        totalXp: 173399,
       },
       {
         eventTimestampUtc: '2020-06-27T01:23:29.552Z',
@@ -602,7 +602,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 362782,
         creditAmount: 8133,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 179393,
+        totalXp: 179393,
       },
       {
         eventTimestampUtc: '2020-06-27T01:23:38.196Z',
@@ -610,7 +610,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 366782,
         creditAmount: 4000,
         sceneName: 'PostRaceTombola',
-        totalXP: 183738,
+        totalXp: 183738,
       },
       {
         eventTimestampUtc: '2020-06-27T01:33:26.156Z',
@@ -618,7 +618,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 376529,
         creditAmount: 9747,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 186060,
+        totalXp: 186060,
       },
       {
         eventTimestampUtc: '2020-06-27T01:42:21.177Z',
@@ -626,7 +626,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 390753,
         creditAmount: 14224,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 192056,
+        totalXp: 192056,
       },
       {
         eventTimestampUtc: '2020-06-27T01:42:28.802Z',
@@ -634,7 +634,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 390753,
         creditAmount: 0,
         sceneName: 'PostRaceTombola',
-        totalXP: 198067,
+        totalXp: 198067,
       },
       {
         eventTimestampUtc: '2020-06-27T01:49:09.976Z',
@@ -642,7 +642,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 401071,
         creditAmount: 10318,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 198991,
+        totalXp: 198991,
       },
       {
         eventTimestampUtc: '2020-06-27T01:52:02.109Z',
@@ -650,7 +650,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 411071,
         creditAmount: 10000,
         sceneName: 'Hud',
-        totalXP: 207646,
+        totalXp: 207646,
       },
       {
         eventTimestampUtc: '2020-06-27T01:56:39.615Z',
@@ -658,7 +658,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 417500,
         creditAmount: 6429,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 208204,
+        totalXp: 208204,
       },
       {
         eventTimestampUtc: '2020-06-27T02:02:45.01Z',
@@ -666,7 +666,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 425113,
         creditAmount: 7613,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 212915,
+        totalXp: 212915,
       },
       {
         eventTimestampUtc: '2020-06-27T02:09:30.074Z',
@@ -674,7 +674,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 434839,
         creditAmount: 9726,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 218953,
+        totalXp: 218953,
       },
       {
         eventTimestampUtc: '2020-07-03T06:23:40.336Z',
@@ -682,7 +682,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 442678,
         creditAmount: 7839,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 225066,
+        totalXp: 225066,
       },
       {
         eventTimestampUtc: '2020-07-03T06:29:47.227Z',
@@ -690,7 +690,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 453267,
         creditAmount: 10589,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 230270,
+        totalXp: 230270,
       },
       {
         eventTimestampUtc: '2020-07-03T06:33:03.424Z',
@@ -698,7 +698,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 223267,
         creditAmount: -230000,
         sceneName: 'CarColorSelect',
-        totalXP: 235567,
+        totalXp: 235567,
       },
       {
         eventTimestampUtc: '2020-07-03T06:36:28.486Z',
@@ -706,7 +706,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 229495,
         creditAmount: 6228,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 236723,
+        totalXp: 236723,
       },
       {
         eventTimestampUtc: '2020-07-03T06:40:38.229Z',
@@ -714,7 +714,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 234015,
         creditAmount: 4520,
         sceneName: 'EmptySceneWithVignette',
-        totalXP: 241231,
+        totalXp: 241231,
       },
       {
         eventTimestampUtc: '2020-07-03T06:46:34.195Z',
@@ -722,7 +722,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 241043,
         creditAmount: 7028,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 244608,
+        totalXp: 244608,
       },
       {
         eventTimestampUtc: '2020-07-03T06:57:40.602Z',
@@ -730,7 +730,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 257988,
         creditAmount: 16945,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 250033,
+        totalXp: 250033,
       },
       {
         eventTimestampUtc: '2020-07-03T06:57:54.271Z',
@@ -738,7 +738,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 387988,
         creditAmount: 130000,
         sceneName: 'PostRaceTombola',
-        totalXP: 257623,
+        totalXp: 257623,
       },
       {
         eventTimestampUtc: '2020-07-03T07:04:13.149Z',
@@ -746,7 +746,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 398371,
         creditAmount: 10383,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 257899,
+        totalXp: 257899,
       },
       {
         eventTimestampUtc: '2020-07-03T07:17:38.063Z',
@@ -754,7 +754,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 407967,
         creditAmount: 9596,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 263243,
+        totalXp: 263243,
       },
       {
         eventTimestampUtc: '2020-07-03T07:23:43.149Z',
@@ -762,7 +762,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 415884,
         creditAmount: 7917,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 268062,
+        totalXp: 268062,
       },
       {
         eventTimestampUtc: '2020-07-03T07:23:57.436Z',
@@ -770,7 +770,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 415884,
         creditAmount: 0,
         sceneName: 'PostRaceTombola',
-        totalXP: 272129,
+        totalXp: 272129,
       },
       {
         eventTimestampUtc: '2020-07-03T07:31:16.125Z',
@@ -778,7 +778,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 425841,
         creditAmount: 9957,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 273129,
+        totalXp: 273129,
       },
       {
         eventTimestampUtc: '2020-07-03T07:42:49.751Z',
@@ -786,7 +786,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 435137,
         creditAmount: 9296,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 279076,
+        totalXp: 279076,
       },
       {
         eventTimestampUtc: '2020-07-03T07:50:00.769Z',
@@ -794,7 +794,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 444644,
         creditAmount: 9507,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 283474,
+        totalXp: 283474,
       },
       {
         eventTimestampUtc: '2020-07-03T07:50:20.288Z',
@@ -802,7 +802,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 444644,
         creditAmount: 0,
         sceneName: 'PostRaceTombola',
-        totalXP: 288024,
+        totalXp: 288024,
       },
       {
         eventTimestampUtc: '2020-09-09T23:51:13.171Z',
@@ -810,7 +810,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 459644,
         creditAmount: 15000,
         sceneName: 'Hud',
-        totalXP: 290924,
+        totalXp: 290924,
       },
       {
         eventTimestampUtc: '2020-09-10T00:15:07.033Z',
@@ -818,7 +818,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 467357,
         creditAmount: 7713,
         sceneName: 'EmptySceneWithVignette',
-        totalXP: 311420,
+        totalXp: 311420,
       },
       {
         eventTimestampUtc: '2020-09-10T00:24:09.267Z',
@@ -826,7 +826,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 477583,
         creditAmount: 10226,
         sceneName: 'EmptySceneWithContinue',
-        totalXP: 319046,
+        totalXp: 319046,
       },
       {
         eventTimestampUtc: '2020-09-10T00:40:22.398Z',
@@ -834,7 +834,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         creditsAfter: 511830,
         creditAmount: 34247,
         sceneName: 'EmptySceneWithVignette',
-        totalXP: 325702,
+        totalXp: 325702,
       },
     ];
   }
