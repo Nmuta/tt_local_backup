@@ -11,17 +11,29 @@
     </h2>
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
       <table mat-table [dataSource]="creditHistory">
-        <ng-container matColumnDef="isBanned">
-          <th mat-header-cell *matHeaderCellDef>Is Banned</th>
-          <td mat-cell *matCellDef="let entry"><fa-icon *ngIf="entry.isBanned" [icon]="bannedIcon"></fa-icon></td>
-        </ng-container>
-        <ng-container matColumnDef="consoleId">
-          <th mat-header-cell *matHeaderCellDef>Console ID</th>
-          <td mat-cell *matCellDef="let entry">{{entry.consoleId}}</td>
+        <ng-container matColumnDef="eventTimestampUtc">
+          <th mat-header-cell *matHeaderCellDef>Timestamp</th>
+          <td mat-cell *matCellDef="let entry">{{ entry.eventTimestampUtc | date:'short' }}</td>
         </ng-container>
         <ng-container matColumnDef="deviceType">
           <th mat-header-cell *matHeaderCellDef>Device Type</th>
           <td mat-cell *matCellDef="let entry">{{entry.deviceType | humanize}}</td>
+        </ng-container>
+        <ng-container matColumnDef="creditsAfter">
+          <th mat-header-cell *matHeaderCellDef>Credit Total</th>
+          <td mat-cell *matCellDef="let entry">{{entry.creditsAfter | number}}</td>
+        </ng-container>
+        <ng-container matColumnDef="creditAmount">
+          <th mat-header-cell *matHeaderCellDef>Credit Change</th>
+          <td mat-cell *matCellDef="let entry">{{entry.creditAmount | number}}</td>
+        </ng-container>
+        <ng-container matColumnDef="sceneName">
+          <th mat-header-cell *matHeaderCellDef>Scene Name</th>
+          <td mat-cell *matCellDef="let entry">{{entry.sceneName | humanize}}</td>
+        </ng-container>
+        <ng-container matColumnDef="totalXp">
+          <th mat-header-cell *matHeaderCellDef>Total XP</th>
+          <td mat-cell *matCellDef="let entry">{{entry.totalXp | number}}</td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"></tr>

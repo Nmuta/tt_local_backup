@@ -15,7 +15,9 @@ export class HumanizePipe implements PipeTransform {
       return value;
     }
 
-    value = value.split(/(?=[A-Z_\-])/).join(' ');
+    // https://regexr.com/5f43f
+    const split = value.split(/(?=_)|(?=[A-Z_\-](?!(?:[A-Z_\-]|\s|$)))/);
+    value = split.join(' ');
     value = value.replace("_", "-");
     value = value[0].toUpperCase() + value.slice(1);
 
