@@ -1,16 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
+import { SunriseService } from '@services/sunrise/sunrise.service';
+import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 
 import { CreditHistoryComponent } from './credit-history.component';
 
 describe('CreditHistoryComponent', () => {
+  let injector: TestBed;
+  let service: SunriseService;
   let component: CreditHistoryComponent;
   let fixture: ComponentFixture<CreditHistoryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreditHistoryComponent ]
-    })
-    .compileComponents();
+      declarations: [CreditHistoryComponent],
+      providers: [createMockSunriseService()],
+    }).compileComponents();
+    
+    injector = getTestBed();
+    service = injector.inject(SunriseService);
   });
 
   beforeEach(() => {
@@ -19,7 +26,7 @@ describe('CreditHistoryComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', waitForAsync(() => {
     expect(component).toBeTruthy();
-  });
+  }));
 });

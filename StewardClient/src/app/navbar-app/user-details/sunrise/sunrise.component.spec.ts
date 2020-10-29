@@ -1,16 +1,29 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SunriseService } from '@services/sunrise/sunrise.service';
+import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
+import { of } from 'rxjs';
 
 import { SunriseComponent } from './sunrise.component';
 
 describe('SunriseComponent', () => {
+  let injector: TestBed;
+  let service: SunriseService;
   let component: SunriseComponent;
   let fixture: ComponentFixture<SunriseComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SunriseComponent ]
-    })
-    .compileComponents();
+      imports: [RouterTestingModule.withRoutes([])],
+      declarations: [SunriseComponent],
+      providers: [
+        createMockSunriseService(),
+      ],
+    }).compileComponents();
+
+    injector = getTestBed();
+    service = injector.inject(SunriseService);
   });
 
   beforeEach(() => {
@@ -19,7 +32,7 @@ describe('SunriseComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', waitForAsync(() => {
     expect(component).toBeTruthy();
-  });
+  }));
 });
