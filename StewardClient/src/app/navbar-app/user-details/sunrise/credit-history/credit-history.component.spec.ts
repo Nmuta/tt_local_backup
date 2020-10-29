@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   getTestBed,
@@ -19,6 +20,7 @@ describe('CreditHistoryComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [CreditHistoryComponent],
       providers: [createMockSunriseService()],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     injector = getTestBed();

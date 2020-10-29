@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   getTestBed,
@@ -21,6 +22,7 @@ describe('UserFlagsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [UserFlagsComponent],
       providers: [createMockSunriseService()],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     injector = getTestBed();

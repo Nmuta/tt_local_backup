@@ -136,6 +136,7 @@
             "scripts": [],
             "assets": ["src/assets"],
             "codeCoverageExclude": [
+              "/**/fake-api/**/*.ts",
               "/**/polyfills.ts",
               "/**/test.ts",
               "/**/*.mock.ts",
