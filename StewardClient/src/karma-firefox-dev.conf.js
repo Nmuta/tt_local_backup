@@ -16,7 +16,7 @@ module.exports = function (config) {
       clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-      reports: ['html', 'cobertura', 'text'],
+      reports: ['html', 'cobertura', 'text', 'lcov'],
       fixWebpackSourcePaths: true,
       thresholds: {
         statements: 60,
@@ -29,7 +29,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Firefox'],
+    browsers: ['FirefoxDeveloper'],
     singleRun: false,
   });
 };

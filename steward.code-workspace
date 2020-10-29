@@ -1,13 +1,31 @@
 {
-	"folders": [
-		{
-			"path": "StewardClient"
-		}
-	],
-	"settings": {
-		"editor.tabSize": 2,
-		"files.exclude": {
-			"**/node_modules/**": true
-		}
-	}
+  "folders": [
+    {
+      "path": "StewardClient"
+    }
+  ],
+  "settings": {
+    "editor.tabSize": 2,
+    "files.exclude": {
+      "**/node_modules/**": true
+    },
+    
+    "coverage-gutters.showLineCoverage": false,
+  },
+  "extensions": {
+    // See https://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
+    // Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
+
+    // List of extensions which should be recommended for users of this workspace.
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "ms-vscode.vscode-typescript-tslint-plugin",
+      "eamodio.gitlens",
+      "ms-vscode.vscode-node-azure-pack",
+      "raagh.angular-karma-test-explorer"
+    ],
+    // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
+    "unwantedRecommendations": []
+  }
+  
 }

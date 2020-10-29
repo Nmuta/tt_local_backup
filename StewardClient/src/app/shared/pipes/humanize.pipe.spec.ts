@@ -27,4 +27,9 @@ describe('HumanizePipe', () => {
     const pipe = new HumanizePipe();
     expect(pipe.transform('UWP')).toBe('UWP');
   });
+
+  it('passes through non-strings', () => {
+    const pipe = new HumanizePipe();
+    expect(pipe.transform(8675309 as any)).toBe(8675309 as any);
+  });
 });
