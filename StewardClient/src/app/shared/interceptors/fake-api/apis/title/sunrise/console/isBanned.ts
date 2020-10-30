@@ -26,11 +26,11 @@ export class SunriseConsoleIsBannedFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): object {
-    return SunriseConsoleIsBannedFakeApi.makeMany();
+    return SunriseConsoleIsBannedFakeApi.make();
   }
 
   /** Creates a sample response object. */
-  public static makeMany(): Unprocessed<SunriseConsoleDetails> {
+  public static make(): Unprocessed<SunriseConsoleDetails> {
     return null;
   }
 }

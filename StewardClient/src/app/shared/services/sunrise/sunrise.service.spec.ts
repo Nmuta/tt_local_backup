@@ -139,12 +139,12 @@ describe('SunriseService', () => {
   });
 
   it('handles putBanStatusByConsoleId', done => {
-    const typedReturnValue = SunriseConsoleIsBannedFakeApi.makeMany();
-    nextReturnValue = typedReturnValue;
+    const sampleGet = SunrisePlayerXuidConsolesFakeApi.makeMany()
+    nextReturnValue = SunriseConsoleIsBannedFakeApi.make();
     service
       .putBanStatusByConsoleId(
-        typedReturnValue[0].consoleId,
-        !typedReturnValue[0].isBanned
+        sampleGet[0].consoleId,
+        !sampleGet[0].isBanned
       )
       .subscribe(output => {
         expect(output).toEqual(
