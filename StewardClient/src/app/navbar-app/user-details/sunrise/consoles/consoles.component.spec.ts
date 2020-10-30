@@ -7,7 +7,10 @@ import {
   waitForAsync,
 } from '@angular/core/testing';
 import { SunrisePlayerXuidConsolesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/consoleDetails';
-import { SunriseConsoleDetails, SunriseConsoleDetailsEntry } from '@models/sunrise/sunrise-console-details.model';
+import {
+  SunriseConsoleDetails,
+  SunriseConsoleDetailsEntry,
+} from '@models/sunrise/sunrise-console-details.model';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 import _ from 'lodash';
@@ -22,22 +25,26 @@ describe('ConsolesComponent', () => {
   let component: ConsolesComponent;
   let fixture: ComponentFixture<ConsolesComponent>;
 
-  beforeEach(waitForAsync(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ConsolesComponent],
-      providers: [createMockSunriseService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(async () => {
+      await TestBed.configureTestingModule({
+        declarations: [ConsolesComponent],
+        providers: [createMockSunriseService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
 
-    injector = getTestBed();
-    service = injector.inject(SunriseService);
-  }));
+      injector = getTestBed();
+      service = injector.inject(SunriseService);
+    })
+  );
 
-  beforeEach(waitForAsync(() => {
-    fixture = TestBed.createComponent(ConsolesComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      fixture = TestBed.createComponent(ConsolesComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    })
+  );
 
   it(
     'should create',
@@ -51,23 +58,25 @@ describe('ConsolesComponent', () => {
     let consoleDetailsValue: SunriseConsoleDetails = undefined;
     let banStatus$: Subject<void> = undefined;
 
-    beforeEach(waitForAsync(() => {
-      // console details prep
-      consoleDetails$ = new Subject<SunriseConsoleDetails>();
-      consoleDetailsValue = SunrisePlayerXuidConsolesFakeApi.makeMany();
-      service.getConsoleDetailsByXuid = jasmine
-        .createSpy('getConsoleDetailsByXuid')
-        .and.returnValue(consoleDetails$);
+    beforeEach(
+      waitForAsync(() => {
+        // console details prep
+        consoleDetails$ = new Subject<SunriseConsoleDetails>();
+        consoleDetailsValue = SunrisePlayerXuidConsolesFakeApi.makeMany();
+        service.getConsoleDetailsByXuid = jasmine
+          .createSpy('getConsoleDetailsByXuid')
+          .and.returnValue(consoleDetails$);
 
-      // ban status prep
-      banStatus$ = new Subject<void>();
-      service.putBanStatusByConsoleId = jasmine
-        .createSpy('putBanStatusByConsoleId')
-        .and.returnValue(banStatus$);
+        // ban status prep
+        banStatus$ = new Subject<void>();
+        service.putBanStatusByConsoleId = jasmine
+          .createSpy('putBanStatusByConsoleId')
+          .and.returnValue(banStatus$);
 
-      // emulate initialization event
-      component.ngOnChanges();
-    }));
+        // emulate initialization event
+        component.ngOnChanges();
+      })
+    );
 
     describe('ngOnChanges', () => {
       it(
@@ -82,7 +91,7 @@ describe('ConsolesComponent', () => {
         'should update when xuid set',
         waitForAsync(async () => {
           // emulate xuid update event
-          component.xuid = faker.random.number({min: 10_000, max: 500_000})
+          component.xuid = faker.random.number({ min: 10_000, max: 500_000 });
           component.ngOnChanges();
 
           // waiting on value
@@ -103,7 +112,7 @@ describe('ConsolesComponent', () => {
         'should update when request errored',
         waitForAsync(async () => {
           // emulate xuid update event
-          component.xuid = faker.random.number({min: 10_000, max: 500_000})
+          component.xuid = faker.random.number({ min: 10_000, max: 500_000 });
           component.ngOnChanges();
 
           // waiting on value
@@ -112,7 +121,7 @@ describe('ConsolesComponent', () => {
 
           // error received
           debugger;
-          consoleDetails$.error(new HttpErrorResponse({error: "hello"}));
+          consoleDetails$.error(new HttpErrorResponse({ error: 'hello' }));
           await fixture.whenStable();
           fixture.detectChanges();
           expect(component.isLoading).toBe(false);
@@ -125,65 +134,77 @@ describe('ConsolesComponent', () => {
       let firstBanned: SunriseConsoleDetailsEntry = undefined;
       let firstUnbanned: SunriseConsoleDetailsEntry = undefined;
 
-      beforeEach(waitForAsync(() => {
-        // select a couple sample entries
-        firstBanned = _(consoleDetailsValue).filter(v => v.isBanned).first();
-        firstUnbanned = _(consoleDetailsValue).filter(v => !v.isBanned).first();
+      beforeEach(
+        waitForAsync(() => {
+          // select a couple sample entries
+          firstBanned = _(consoleDetailsValue)
+            .filter(v => v.isBanned)
+            .first();
+          firstUnbanned = _(consoleDetailsValue)
+            .filter(v => !v.isBanned)
+            .first();
 
-        // emulate xuid update event
-        component.xuid = faker.random.number({min: 10_000, max: 500_000})
-        component.ngOnChanges();
+          // emulate xuid update event
+          component.xuid = faker.random.number({ min: 10_000, max: 500_000 });
+          component.ngOnChanges();
 
-        // waiting on value
-        fixture.detectChanges();
-        expect(component.isLoading).toBe(true);
+          // waiting on value
+          fixture.detectChanges();
+          expect(component.isLoading).toBe(true);
 
-        // value received
-        consoleDetails$.next(consoleDetailsValue);
-        consoleDetails$.complete();
-        fixture.detectChanges();
-      }));
+          // value received
+          consoleDetails$.next(consoleDetailsValue);
+          consoleDetails$.complete();
+          fixture.detectChanges();
+        })
+      );
 
       describe('makeBanAction', () => {
-        it('should ban', waitForAsync(async () => {
-          // create the ban action
-          const banAction = component.makeBanAction(firstUnbanned.consoleId);
-          expect(banAction).toBeTruthy();
-          await fixture.whenStable();
-          
-          // execute the ban action
-          let isDone = false;
-          const observable = banAction();
-          observable.subscribe(() => isDone = true);
+        it(
+          'should ban',
+          waitForAsync(async () => {
+            // create the ban action
+            const banAction = component.makeBanAction(firstUnbanned.consoleId);
+            expect(banAction).toBeTruthy();
+            await fixture.whenStable();
 
-          // emulate completion
-          banStatus$.next();
-          banStatus$.complete();
-          await fixture.whenStable();
-          expect(isDone).toBe(true);
-          expect(firstUnbanned.isBanned).toBe(true);
-        }));
+            // execute the ban action
+            let isDone = false;
+            const observable = banAction();
+            observable.subscribe(() => (isDone = true));
+
+            // emulate completion
+            banStatus$.next();
+            banStatus$.complete();
+            await fixture.whenStable();
+            expect(isDone).toBe(true);
+            expect(firstUnbanned.isBanned).toBe(true);
+          })
+        );
       });
 
       describe('makeUnbanAction', () => {
-        it('should unban', waitForAsync(async () => {
-          // create the ban action
-          const banAction = component.makeUnbanAction(firstBanned.consoleId);
-          expect(banAction).toBeTruthy();
-          await fixture.whenStable();
-          
-          // execute the ban action
-          let isDone = false;
-          const observable = banAction();
-          observable.subscribe(() => isDone = true);
+        it(
+          'should unban',
+          waitForAsync(async () => {
+            // create the ban action
+            const banAction = component.makeUnbanAction(firstBanned.consoleId);
+            expect(banAction).toBeTruthy();
+            await fixture.whenStable();
 
-          // emulate completion
-          banStatus$.next();
-          banStatus$.complete();
-          await fixture.whenStable();
-          expect(isDone).toBe(true);
-          expect(firstUnbanned.isBanned).toBe(false);
-        }));
+            // execute the ban action
+            let isDone = false;
+            const observable = banAction();
+            observable.subscribe(() => (isDone = true));
+
+            // emulate completion
+            banStatus$.next();
+            banStatus$.complete();
+            await fixture.whenStable();
+            expect(isDone).toBe(true);
+            expect(firstUnbanned.isBanned).toBe(false);
+          })
+        );
       });
     });
   });

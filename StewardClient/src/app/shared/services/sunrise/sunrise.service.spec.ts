@@ -23,7 +23,12 @@ describe('SunriseService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [createMockApiService(() => { debugger; return nextReturnValue; })],
+      providers: [
+        createMockApiService(() => {
+          debugger;
+          return nextReturnValue;
+        }),
+      ],
     });
     injector = getTestBed();
     service = injector.inject(SunriseService);
@@ -34,91 +39,131 @@ describe('SunriseService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('handles getPlayerDetailsByGamertag', (done) => {
-    const typedReturnValue = nextReturnValue = SunrisePlayerGamertagDetailsFakeApi.make()
-    service.getPlayerDetailsByGamertag(typedReturnValue.gamertag)
+  it('handles getPlayerDetailsByGamertag', done => {
+    const typedReturnValue = (nextReturnValue = SunrisePlayerGamertagDetailsFakeApi.make());
+    service
+      .getPlayerDetailsByGamertag(typedReturnValue.gamertag)
       .subscribe(output => {
-        expect(output).toEqual(nextReturnValue as any, 'fields should not be modified');
+        expect(output).toEqual(
+          nextReturnValue as any,
+          'fields should not be modified'
+        );
         done();
       });
   });
 
-  it('handles getFlagsByXuid', (done) => {
-    const typedReturnValue = nextReturnValue = SunrisePlayerXuidUserFlagsFakeApi.make();
-    service.getFlagsByXuid(fakeXuid())
+  it('handles getFlagsByXuid', done => {
+    const typedReturnValue = (nextReturnValue = SunrisePlayerXuidUserFlagsFakeApi.make());
+    service.getFlagsByXuid(fakeXuid()).subscribe(output => {
+      expect(output).toEqual(
+        nextReturnValue as any,
+        'fields should not be modified'
+      );
+      done();
+    });
+  });
+
+  it('handles putFlagsByXuid', done => {
+    const typedReturnValue = (nextReturnValue = SunrisePlayerXuidUserFlagsFakeApi.make());
+    service
+      .putFlagsByXuid(fakeXuid(), typedReturnValue as SunriseUserFlags)
       .subscribe(output => {
-        expect(output).toEqual(nextReturnValue as any, 'fields should not be modified');
+        expect(output).toEqual(
+          nextReturnValue as any,
+          'fields should not be modified'
+        );
         done();
       });
   });
 
-  it('handles putFlagsByXuid', (done) => {
-    const typedReturnValue = nextReturnValue = SunrisePlayerXuidUserFlagsFakeApi.make();
-    service.putFlagsByXuid(fakeXuid(), typedReturnValue as SunriseUserFlags)
-      .subscribe(output => {
-        expect(output).toEqual(nextReturnValue as any, 'fields should not be modified');
-        done();
-      });
-  });
+  it('handles getBanHistoryByXuid', done => {
+    const typedReturnValue = (nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make());
+    service.getBanHistoryByXuid(fakeXuid()).subscribe(output => {
+      expect(output.liveOpsBanHistory[0].startTimeUtc instanceof Date).toBe(
+        true,
+        'liveOps.startTimeUtc is Date'
+      );
+      expect(output.liveOpsBanHistory[0].expireTimeUtc instanceof Date).toBe(
+        true,
+        'liveOps.expireTimeUtc is Date'
+      );
+      expect(output.servicesBanHistory[0].startTimeUtc instanceof Date).toBe(
+        true,
+        'services.startTimeUtc is Date'
+      );
+      expect(output.servicesBanHistory[0].expireTimeUtc instanceof Date).toBe(
+        true,
+        'services.expireTimeUtc is Date'
+      );
 
-  it('handles getBanHistoryByXuid', (done) => {
-    const typedReturnValue = nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make();
-    service.getBanHistoryByXuid(fakeXuid())
-      .subscribe(output => {
-        expect(output.liveOpsBanHistory[0].startTimeUtc instanceof Date).toBe(true, 'liveOps.startTimeUtc is Date');
-        expect(output.liveOpsBanHistory[0].expireTimeUtc instanceof Date).toBe(true, 'liveOps.expireTimeUtc is Date');
-        expect(output.servicesBanHistory[0].startTimeUtc instanceof Date).toBe(true, 'services.startTimeUtc is Date');
-        expect(output.servicesBanHistory[0].expireTimeUtc instanceof Date).toBe(true, 'services.expireTimeUtc is Date');
-
-        // clear the validated fields
-        for (let value of [output, typedReturnValue]) {
-          for (let history of [value.liveOpsBanHistory, value.servicesBanHistory]) {
-            history.forEach(v => v.startTimeUtc = null);
-            history.forEach(v => v.expireTimeUtc = null);
-          }
+      // clear the validated fields
+      for (let value of [output, typedReturnValue]) {
+        for (let history of [
+          value.liveOpsBanHistory,
+          value.servicesBanHistory,
+        ]) {
+          history.forEach(v => (v.startTimeUtc = null));
+          history.forEach(v => (v.expireTimeUtc = null));
         }
+      }
 
-        expect(output).toEqual(nextReturnValue as any, 'other fields should not be modified');
+      expect(output).toEqual(
+        nextReturnValue as any,
+        'other fields should not be modified'
+      );
 
-        done();
-      });
+      done();
+    });
   });
 
-  it('handles getSharedConsoleUsersByXuid', (done) => {
-    const typedReturnValue = nextReturnValue = SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany();
-    service.getSharedConsoleUsersByXuid(fakeXuid())
-      .subscribe(output => {
-        expect(output).toEqual(typedReturnValue as any, 'fields should not be modified');
-        done();
-      });
+  it('handles getSharedConsoleUsersByXuid', done => {
+    const typedReturnValue = (nextReturnValue = SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
+    service.getSharedConsoleUsersByXuid(fakeXuid()).subscribe(output => {
+      expect(output).toEqual(
+        typedReturnValue as any,
+        'fields should not be modified'
+      );
+      done();
+    });
   });
 
-  it('handles getConsoleDetailsByXuid', (done) => {
+  it('handles getConsoleDetailsByXuid', done => {
     nextReturnValue = SunrisePlayerXuidConsolesFakeApi.makeMany();
-    service.getConsoleDetailsByXuid(fakeXuid())
-      .subscribe(output => {
-        expect(output).toEqual(nextReturnValue as any, 'fields should not be modified');
-        done();
-      });
+    service.getConsoleDetailsByXuid(fakeXuid()).subscribe(output => {
+      expect(output).toEqual(
+        nextReturnValue as any,
+        'fields should not be modified'
+      );
+      done();
+    });
   });
 
-  it('handles putBanStatusByConsoleId', (done) => {
+  it('handles putBanStatusByConsoleId', done => {
     const typedReturnValue = SunriseConsoleIsBannedFakeApi.makeMany();
     nextReturnValue = typedReturnValue;
-    service.putBanStatusByConsoleId(typedReturnValue[0].consoleId, !typedReturnValue[0].isBanned)
+    service
+      .putBanStatusByConsoleId(
+        typedReturnValue[0].consoleId,
+        !typedReturnValue[0].isBanned
+      )
       .subscribe(output => {
-        expect(output).toEqual(nextReturnValue as any, 'fields should not be modified');
+        expect(output).toEqual(
+          nextReturnValue as any,
+          'fields should not be modified'
+        );
         done();
       });
   });
 
-  it('handles getProfileSummaryByXuid', (done) => {
+  it('handles getProfileSummaryByXuid', done => {
     const typedReturnValue = SunrisePlayerXuidProfileSummaryFakeApi.make();
     nextReturnValue = typedReturnValue;
-    service.getProfileSummaryByXuid(fakeXuid())
-      .subscribe(output => {
-        expect(output).toEqual(nextReturnValue as any, 'fields should not be modified');
-        done();
-      });
+    service.getProfileSummaryByXuid(fakeXuid()).subscribe(output => {
+      expect(output).toEqual(
+        nextReturnValue as any,
+        'fields should not be modified'
+      );
+      done();
+    });
   });
 });
