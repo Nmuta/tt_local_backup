@@ -1,5 +1,6 @@
 // https://stackoverflow.com/questions/41980195/recursive-partialt-in-typescript
 
+// prettier-ignore
 /** Recursive partial. */
 export type RecursivePartial<T> = {
   [P in keyof T]?: // only allow keys from the parent type
@@ -9,7 +10,7 @@ export type RecursivePartial<T> = {
         ? RecursivePartial<T[P]> // if this is an object, return the object recursion
         : T[P]; // otherwise the final type (the ? at the start is what makes this "partial")
 };
-
+// prettier-ignore
 /** Recursive type-or-string. */
 export type RecursiveTypeOrString<T> = {
   [P in keyof T]: // only allow keys from the parent type
