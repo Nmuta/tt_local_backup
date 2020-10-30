@@ -1,5 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { SunriseUserFlags } from '@models/sunrise';
+import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */
 export class SunrisePlayerXuidUserFlagsFakeApi extends FakeApiBase {
@@ -19,13 +21,18 @@ export class SunrisePlayerXuidUserFlagsFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): object {
+    return SunrisePlayerXuidUserFlagsFakeApi.make();
+  }
+
+  /** Generate an example. */
+  public static make(): Unprocessed<SunriseUserFlags> {
     return {
       isVip: false,
       isUltimateVip: false,
       isTurn10Employee: false,
       isCommunityManager: false,
-      isWhiteListed: false,
       isUnderReview: false,
+      isEarlyAccess: false,
     };
   }
 }

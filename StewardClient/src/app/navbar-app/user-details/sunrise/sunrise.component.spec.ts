@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   getTestBed,
@@ -23,6 +24,7 @@ describe('SunriseComponent', () => {
       imports: [RouterTestingModule.withRoutes([])],
       declarations: [SunriseComponent],
       providers: [createMockSunriseService()],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     injector = getTestBed();

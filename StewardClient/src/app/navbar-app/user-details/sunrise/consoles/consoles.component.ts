@@ -29,7 +29,7 @@ export class ConsolesComponent implements OnChanges {
 
   /** Initialization hook. */
   public ngOnChanges(): void {
-    if (this.xuid === undefined) {
+    if (!this.xuid) {
       return;
     }
 

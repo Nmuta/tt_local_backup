@@ -1,5 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { SunriseBanHistory } from '@models/sunrise/sunrise-ban-history.model';
+import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */
 export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
@@ -19,6 +21,11 @@ export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): object {
+    return SunrisePlayerXuidBanHistoryFakeApi.make();
+  }
+
+  /** Creates a sample object. */
+  public static make(): Unprocessed<SunriseBanHistory> {
     return {
       servicesBanHistory: [
         {

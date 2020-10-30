@@ -1,5 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
+import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */
 export class SunriseConsoleIsBannedFakeApi extends FakeApiBase {
@@ -24,6 +26,11 @@ export class SunriseConsoleIsBannedFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): object {
+    return SunriseConsoleIsBannedFakeApi.makeMany();
+  }
+
+  /** Creates a sample response object. */
+  public static makeMany(): Unprocessed<SunriseConsoleDetails> {
     return [
       {
         consoleId: '17942385017267761210',

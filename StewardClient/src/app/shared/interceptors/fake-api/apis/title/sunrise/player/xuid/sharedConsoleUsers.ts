@@ -1,5 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
+import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */
 export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBase {
@@ -19,6 +21,11 @@ export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBa
 
   /** Produces a sample API response. */
   public handle(): object {
+    return SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany();
+  }
+
+  /** Creates a sample response. */
+  public static makeMany(): Unprocessed<SunriseSharedConsoleUsers> {
     return [
       {
         sharedConsoleId: 17942385017267761210,
