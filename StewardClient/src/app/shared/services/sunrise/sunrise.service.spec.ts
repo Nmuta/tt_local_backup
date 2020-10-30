@@ -3,9 +3,14 @@ import { SunriseConsoleIsBannedFakeApi } from '@interceptors/fake-api/apis/title
 import { SunrisePlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/gamertag/details';
 import { SunrisePlayerXuidBanHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/banHistory';
 import { SunrisePlayerXuidConsolesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/consoleDetails';
+import { SunrisePlayerXuidProfileSummaryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/profileSummary';
 import { SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/sharedConsoleUsers';
 import { SunrisePlayerXuidUserFlagsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/userFlags';
+import { fakeXuid } from '@interceptors/fake-api/utility';
+import { SunriseUserFlags } from '@models/sunrise';
 import { ApiService, createMockApiService } from '@services/api';
+
+import * as faker from 'faker';
 
 import { SunriseService } from './sunrise.service';
 
@@ -13,7 +18,7 @@ describe('SunriseService', () => {
   let injector: TestBed;
   let service: SunriseService;
   let apiServiceMock: ApiService;
-  let nextReturnValue: any = {};
+  let nextReturnValue: object | [] = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -30,35 +35,35 @@ describe('SunriseService', () => {
   });
 
   it('handles getPlayerDetailsByGamertag', (done) => {
-    nextReturnValue = SunrisePlayerGamertagDetailsFakeApi.make();
-    service.getPlayerDetailsByGamertag(nextReturnValue.gamertag)
+    const typedReturnValue = nextReturnValue = SunrisePlayerGamertagDetailsFakeApi.make()
+    service.getPlayerDetailsByGamertag(typedReturnValue.gamertag)
       .subscribe(output => {
-        expect(output).toEqual(nextReturnValue, 'fields should not be modified');
+        expect(output).toEqual(nextReturnValue as any, 'fields should not be modified');
         done();
       });
   });
 
   it('handles getFlagsByXuid', (done) => {
-    nextReturnValue = SunrisePlayerXuidUserFlagsFakeApi.make();
-    service.getFlagsByXuid(nextReturnValue.gamertag)
+    const typedReturnValue = nextReturnValue = SunrisePlayerXuidUserFlagsFakeApi.make();
+    service.getFlagsByXuid(fakeXuid())
       .subscribe(output => {
-        expect(output).toEqual(nextReturnValue, 'fields should not be modified');
+        expect(output).toEqual(nextReturnValue as any, 'fields should not be modified');
         done();
       });
   });
 
   it('handles putFlagsByXuid', (done) => {
-    nextReturnValue = SunrisePlayerXuidUserFlagsFakeApi.make();
-    service.putFlagsByXuid(nextReturnValue.gamertag, nextReturnValue as any)
+    const typedReturnValue = nextReturnValue = SunrisePlayerXuidUserFlagsFakeApi.make();
+    service.putFlagsByXuid(fakeXuid(), typedReturnValue as SunriseUserFlags)
       .subscribe(output => {
-        expect(output).toEqual(nextReturnValue, 'fields should not be modified');
+        expect(output).toEqual(nextReturnValue as any, 'fields should not be modified');
         done();
       });
   });
 
   it('handles getBanHistoryByXuid', (done) => {
-    nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make();
-    service.getBanHistoryByXuid(nextReturnValue.gamertag)
+    const typedReturnValue = nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make();
+    service.getBanHistoryByXuid(fakeXuid())
       .subscribe(output => {
         expect(output.liveOpsBanHistory[0].startTimeUtc instanceof Date).toBe(true, 'liveOps.startTimeUtc is Date');
         expect(output.liveOpsBanHistory[0].expireTimeUtc instanceof Date).toBe(true, 'liveOps.expireTimeUtc is Date');
@@ -66,42 +71,53 @@ describe('SunriseService', () => {
         expect(output.servicesBanHistory[0].expireTimeUtc instanceof Date).toBe(true, 'services.expireTimeUtc is Date');
 
         // clear the validated fields
-        for (let value of [output, nextReturnValue]) {
+        for (let value of [output, typedReturnValue]) {
           for (let history of [value.liveOpsBanHistory, value.servicesBanHistory]) {
             history.forEach(v => v.startTimeUtc = null);
             history.forEach(v => v.expireTimeUtc = null);
           }
         }
 
-        expect(output).toEqual(nextReturnValue, 'other fields should not be modified');
+        expect(output).toEqual(nextReturnValue as any, 'other fields should not be modified');
 
         done();
       });
   });
 
   it('handles getSharedConsoleUsersByXuid', (done) => {
-    nextReturnValue = SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany();
-    service.getSharedConsoleUsersByXuid(nextReturnValue.gamertag)
+    const typedReturnValue = nextReturnValue = SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany();
+    service.getSharedConsoleUsersByXuid(fakeXuid())
       .subscribe(output => {
-        expect(output).toEqual(nextReturnValue, 'fields should not be modified');
+        expect(output).toEqual(typedReturnValue as any, 'fields should not be modified');
         done();
       });
   });
 
   it('handles getConsoleDetailsByXuid', (done) => {
     nextReturnValue = SunrisePlayerXuidConsolesFakeApi.makeMany();
-    service.getConsoleDetailsByXuid(nextReturnValue.gamertag)
+    service.getConsoleDetailsByXuid(fakeXuid())
       .subscribe(output => {
-        expect(output).toEqual(nextReturnValue, 'fields should not be modified');
+        expect(output).toEqual(nextReturnValue as any, 'fields should not be modified');
         done();
       });
   });
 
   it('handles putBanStatusByConsoleId', (done) => {
-    nextReturnValue = SunriseConsoleIsBannedFakeApi.makeMany();
-    service.putBanStatusByConsoleId(nextReturnValue.gamertag, nextReturnValue)
+    const typedReturnValue = SunriseConsoleIsBannedFakeApi.makeMany();
+    nextReturnValue = typedReturnValue;
+    service.putBanStatusByConsoleId(typedReturnValue[0].consoleId, !typedReturnValue[0].isBanned)
       .subscribe(output => {
-        expect(output).toEqual(nextReturnValue, 'fields should not be modified');
+        expect(output).toEqual(nextReturnValue as any, 'fields should not be modified');
+        done();
+      });
+  });
+
+  it('handles getProfileSummaryByXuid', (done) => {
+    const typedReturnValue = SunrisePlayerXuidProfileSummaryFakeApi.make();
+    nextReturnValue = typedReturnValue;
+    service.getProfileSummaryByXuid(fakeXuid())
+      .subscribe(output => {
+        expect(output).toEqual(nextReturnValue as any, 'fields should not be modified');
         done();
       });
   });

@@ -1,5 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
+import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */
 export class SunrisePlayerXuidProfileSummaryFakeApi extends FakeApiBase {
@@ -19,6 +21,11 @@ export class SunrisePlayerXuidProfileSummaryFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): object {
+    return SunrisePlayerXuidProfileSummaryFakeApi.make();
+  }
+
+  /** Creates a sample object. */
+  public static make(): Unprocessed<SunriseProfileSummary> {
     return {
       totalTombolaSpins: 13,
       totalSuperTombolaSpins: 0,

@@ -31,35 +31,6 @@ export class SunriseConsoleIsBannedFakeApi extends FakeApiBase {
 
   /** Creates a sample response object. */
   public static makeMany(): Unprocessed<SunriseConsoleDetails> {
-    return [
-      {
-        consoleId: '17942385017267761210',
-        isBanned: false,
-        isBannable: true,
-        deviceType: 'WindowsOneCore',
-        clientVersion: '432815',
-      },
-      {
-        consoleId: '17942385017267761211',
-        isBanned: true,
-        isBannable: true,
-        deviceType: 'WindowsOneCore',
-        clientVersion: '432815',
-      },
-      {
-        consoleId: '17942385017267761212',
-        isBanned: false,
-        isBannable: false,
-        deviceType: 'WindowsOneCore',
-        clientVersion: '432815',
-      },
-      {
-        consoleId: '17942385017267761213',
-        isBanned: true,
-        isBannable: false,
-        deviceType: 'WindowsOneCore',
-        clientVersion: '432815',
-      },
-    ];
+    return null;
   }
 }

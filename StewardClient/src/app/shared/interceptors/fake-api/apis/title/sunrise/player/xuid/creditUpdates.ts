@@ -1,5 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
+import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */
 export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
@@ -19,6 +21,11 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): object {
+    return SunrisePlayerXuidCreditUpdatesFakeApi.makeMany();
+  }
+
+  /** Creates a sample response. */
+  public static makeMany(): Unprocessed<SunriseCreditHistory> {
     return [
       {
         eventTimestampUtc: '2020-06-19T00:33:10.117Z',
