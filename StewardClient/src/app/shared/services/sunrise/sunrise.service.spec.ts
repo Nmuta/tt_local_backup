@@ -137,7 +137,7 @@ describe('SunriseService', () => {
 
   it('handles putBanStatusByConsoleId', done => {
     const sampleGet = SunrisePlayerXuidConsolesFakeApi.makeMany();
-    nextReturnValue = SunriseConsoleIsBannedFakeApi.makeMany();
+    nextReturnValue = SunriseConsoleIsBannedFakeApi.make();
     service
       .putBanStatusByConsoleId(sampleGet[0].consoleId, !sampleGet[0].isBanned)
       .subscribe(output => {
