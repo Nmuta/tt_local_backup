@@ -57,11 +57,11 @@
                   context: { $implicit: entry }
                 "
               ></ng-container>
-              <ng-container *ngIf="entry.correlatedBan">
+              <ng-container *ngIf="entry.correlatedLiveOpsBan">
                 <ng-container
                   *ngTemplateOutlet="
                     liveOpsBanCard;
-                    context: { $implicit: entry.correlatedBan }
+                    context: { $implicit: entry.correlatedLiveOpsBan }
                   "
                 ></ng-container>
               </ng-container>

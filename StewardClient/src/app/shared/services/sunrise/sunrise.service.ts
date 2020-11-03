@@ -86,7 +86,7 @@ export class SunriseService {
 
   /** Updates a console's ban status by the Console's ID. */
   public putBanStatusByConsoleId(consoleId: string, isBanned: boolean) {
-    return this.apiService.putRequest(
+    return this.apiService.putRequest<void>(
       `${this.basePath}/console/consoleId(${consoleId})/isBanned(${isBanned})`,
       null
     );

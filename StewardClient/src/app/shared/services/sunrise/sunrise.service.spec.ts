@@ -24,10 +24,7 @@ describe('SunriseService', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [
-        createMockApiService(() => {
-          debugger;
-          return nextReturnValue;
-        }),
+        createMockApiService(() => nextReturnValue),
       ],
     });
     injector = getTestBed();

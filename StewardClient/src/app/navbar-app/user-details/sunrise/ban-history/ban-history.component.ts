@@ -16,6 +16,11 @@ import {
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import _ from 'lodash';
 
+/** Mixin type for adding correlatedLiveOpsBan to another type. */
+type CorrelatedLiveOpsBanPartial = {
+  correlatedLiveOpsBan: LiveOpsBanDescription;
+};
+
 /** Retreives and displays Sunrise Ban history by XUID. */
 @Component({
   selector: 'sunrise-ban-history',
@@ -45,9 +50,7 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
   public history: SunriseBanHistory;
 
   /** The ban list to display. */
-  public banList: (ServicesBanDescription & {
-    correlatedBan: LiveOpsBanDescription;
-  })[];
+  public banList: (ServicesBanDescription & CorrelatedLiveOpsBanPartial)[];
 
   public isActiveIcon = faCheck;
 
@@ -80,10 +83,8 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
         this.isLoading = false;
         this.history = history;
         this.banList = this.history.servicesBanHistory.map(servicesBan => {
-          const output: ServicesBanDescription & {
-            correlatedBan: LiveOpsBanDescription;
-          } = _.clone(servicesBan) as any;
-          output.correlatedBan = this.correlateLiveOps(servicesBan);
+          const output: ServicesBanDescription & CorrelatedLiveOpsBanPartial = _.clone(servicesBan) as any;
+          output.correlatedLiveOpsBan = this.correlateLiveOps(servicesBan);
           return output;
         });
       },
