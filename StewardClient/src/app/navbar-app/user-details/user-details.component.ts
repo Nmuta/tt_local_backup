@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { SunriseService } from '@services/sunrise/sunrise.service';
 import { takeUntil } from 'rxjs/operators';
 
 import { SunriseComponent } from './sunrise/sunrise.component';
@@ -18,7 +17,6 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly sunrise: SunriseService
   ) {
     super();
   }
