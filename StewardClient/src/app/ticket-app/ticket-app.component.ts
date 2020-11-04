@@ -10,17 +10,17 @@ import {
   ApolloSidebarModel,
   GravitySidebarModel,
   SunriseSidebarModel,
-} from 'app/ticket-sidebar/models';
+} from 'app/ticket-app/models';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 
 /** Defines the ticket sidebar component. */
 @Component({
-  templateUrl: './ticket-sidebar.html',
-  styleUrls: ['./ticket-sidebar.scss'],
+  templateUrl: './ticket-app.html',
+  styleUrls: ['./ticket-app.scss'],
 })
-export class TicketSidebarComponent implements OnInit, AfterViewInit {
+export class TicketAppComponent implements OnInit, AfterViewInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public appName = 'ticket-sidebar';

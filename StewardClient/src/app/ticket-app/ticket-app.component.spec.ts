@@ -21,7 +21,7 @@ import { createMockClipboard, Clipboard } from '@shared/helpers/clipboard';
 import { createMockScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser';
 
 // Components
-import { TicketSidebarComponent } from './ticket-sidebar.component';
+import { TicketAppComponent } from './ticket-app.component';
 
 import {
   createMockZendeskService,
@@ -36,9 +36,9 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-describe('TicketSidebarComponent', () => {
-  let fixture: ComponentFixture<TicketSidebarComponent>;
-  let component: TicketSidebarComponent;
+describe('TicketAppComponent', () => {
+  let fixture: ComponentFixture<TicketAppComponent>;
+  let component: TicketAppComponent;
   let mockStore: Store;
   let mockRouter: Router;
   let mockZendeskService: ZendeskService;
@@ -51,7 +51,7 @@ describe('TicketSidebarComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([UserState]),
       ],
-      declarations: [TicketSidebarComponent],
+      declarations: [TicketAppComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         createMockZendeskService(),
@@ -67,7 +67,7 @@ describe('TicketSidebarComponent', () => {
     mockZendeskService = injector.get(ZendeskService);
     mockClipboard = injector.get(Clipboard);
 
-    fixture = TestBed.createComponent(TicketSidebarComponent);
+    fixture = TestBed.createComponent(TicketAppComponent);
     component = fixture.debugElement.componentInstance;
   }));
 

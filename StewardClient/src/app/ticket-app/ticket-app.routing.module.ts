@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { TicketSidebarComponent } from './ticket-sidebar.component';
+import { TicketAppComponent } from './ticket-app.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: TicketSidebarComponent,
+    component: TicketAppComponent,
   },
 ];
 
@@ -15,4 +15,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TicketSidebarRouterModule {}
+export class TicketAppRouterModule {}

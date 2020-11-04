@@ -16,8 +16,8 @@ const routes: Routes = [
     path: 'ticket-sidebar',
     canActivate: [ZendeskGuardService],
     loadChildren: () =>
-      import('./ticket-sidebar/ticket-sidebar.module').then(
-        m => m.TicketSidebarModule
+      import('./ticket-app/ticket-app.module').then(
+        m => m.TicketAppModule
       ),
   },
   {
