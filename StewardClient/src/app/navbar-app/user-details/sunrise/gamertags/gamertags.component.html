@@ -1,0 +1,53 @@
+<mat-card>
+  <mat-card-content>
+    <h2>
+      Related Gamertags (Sunrise)
+      <error-spinner
+        [isActive]="false"
+        [error]="loadError"
+        spinnerMessage="Loading"
+        errorMessage="Failed to load"
+      ></error-spinner>
+    </h2>
+    <ng-container *ngIf="!isLoading && !loadError; else failstate">
+      <table mat-table [dataSource]="sharedConsoleUsers">
+        <ng-container matColumnDef="everBanned">
+          <th mat-header-cell *matHeaderCellDef>Ever Banned</th>
+          <td mat-cell *matCellDef="let entry">
+            <fa-icon *ngIf="entry.everBanned" [icon]="everBannedIcon"></fa-icon>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="gamertag">
+          <th mat-header-cell *matHeaderCellDef>Gamertag</th>
+          <td mat-cell *matCellDef="let entry">
+            <a
+              [routerLink]="['/navbar-app', 'user-details', 'sunrise']"
+              [queryParams]="{ gamertag: entry.gamertag }"
+            >
+              {{ entry.gamertag }}
+            </a>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="sharedConsoleId">
+          <th mat-header-cell *matHeaderCellDef>Console Id</th>
+          <td mat-cell *matCellDef="let entry">{{ entry.sharedConsoleId }}</td>
+        </ng-container>
+        <ng-container matColumnDef="xuid">
+          <th mat-header-cell *matHeaderCellDef>XUID</th>
+          <td mat-cell *matCellDef="let entry">{{ entry.xuid }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
+      </table>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #failstate>
+  <mat-progress-spinner
+    *ngIf="isLoading"
+    mode="indeterminate"
+  ></mat-progress-spinner>
+  <p *ngIf="loadError">Failed to load.</p>
+  <pre *ngIf="loadError">{{ loadError | json }}</pre>
+</ng-template>

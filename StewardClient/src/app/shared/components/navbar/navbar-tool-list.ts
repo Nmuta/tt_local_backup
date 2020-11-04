@@ -44,21 +44,16 @@ export class NavbarTools {
     title: 'Gifting',
     path: 'gifting',
   };
+
+  /** The user details tool page. */
+  public static readonly UserDetailsPage: RouteParams = {
+    title: 'User Details',
+    path: 'user-details',
+  };
 }
 
 /** The list of tools to display in the navbar. */
 export const navbarToolList: RouterLinkPath[] = [
   createNavbarPath(NavbarTools.GiftingPage),
-  {
-    title: '🦆 duck',
-    routerLink: [...navbarAppRootPath, 'duck'],
-  },
-  {
-    title: '🦆 duck',
-    routerLink: [...navbarAppRootPath, 'duck'],
-  },
-  {
-    title: '🦢 goose',
-    routerLink: [...navbarAppRootPath, 'goose'],
-  },
+  createNavbarPath(NavbarTools.UserDetailsPage),
 ];

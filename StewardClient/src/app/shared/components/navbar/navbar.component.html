@@ -1,5 +1,5 @@
 <!-- Useful example https://stackblitz.com/edit/angular-v6xwte?file=src%2Fapp%2Fapp.component.html -->
-<mat-toolbar>
+<mat-toolbar color="primary">
   <a
     [routerLink]="homeRouterLink"
     mat-icon-button
@@ -17,14 +17,8 @@
   <a mat-button [routerLink]="['/missing-no']">404</a>
   <span class="spacer"></span>
   <span *ngIf="missingZendesk">
-    <fa-icon
-      [icon]="warningIcon"
-      title="Zendesk API missing"
-    ></fa-icon>
-    <fa-icon
-      [icon]="refreshIcon"
-      title="Refresh page"
-    ></fa-icon>
+    <fa-icon [icon]="warningIcon" title="Zendesk API missing"></fa-icon>
+    <fa-icon [icon]="refreshIcon" title="Refresh page"></fa-icon>
   </span>
   <span>{{ location }}</span>
   <span>

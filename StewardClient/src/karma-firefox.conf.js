@@ -1,6 +1,5 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
-
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -19,6 +18,11 @@ module.exports = function (config) {
     coverageIstanbulReporter: {
       reports: ['html', 'cobertura', 'text'],
       fixWebpackSourcePaths: true,
+      thresholds: {
+        statements: 60,
+        lines: 60,
+        functions: 60,
+      },
     },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
