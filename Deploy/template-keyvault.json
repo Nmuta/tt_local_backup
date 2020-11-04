@@ -1,0 +1,83 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subscriptionId": {
+      "type": "string",
+      "metadata": {
+        "description": "The ID of the subscription the Azure App Service Plan belongs to."
+      }
+    },
+    "locationOverride": {
+      "type": "string",
+      "metadata": {
+        "description": "Ignored for this template."
+      }
+    },
+    "prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "The prefix for all managed resources"
+      }
+    },
+    "suffix": {
+      "type": "string",
+      "metadata": {
+        "description": "The suffix for all managed resources"
+      }
+    }
+  },
+  "variables": {
+    "prefix": "[parameters('prefix')]",
+    "suffix": "[parameters('suffix')]",
+    "kvApiVersion": "[providers('Microsoft.KeyVault', 'vaults').apiVersions[0]]",
+    "identityApiVersion": "[providers('Microsoft.ManagedIdentity', 'userAssignedIdentities').apiVersions[0]]",
+    "keyvaultName": "[concat(variables('prefix'), '-keyvault-', variables('suffix'))]",
+    "identityName": "[concat(variables('prefix'), '-identity-', variables('suffix'))]",
+    "identityScope": "[concat('Microsoft.ManagedIdentity/userAssignedIdentities/', variables('identityName'))]",
+    "location": "[if(empty(parameters('locationOverride')), resourceGroup().location, parameters('locationOverride'))]",
+    "tenantId": "[subscription().tenantId]"
+  },
+  "resources": [
+    {
+      "name": "[variables('keyvaultName')]",
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2018-02-14",
+      "location": "[variables('location')]",
+      "tags": {},
+      "properties": {
+        "tenantId": "[variables('tenantId')]",
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "accessPolicies": [
+          {
+            "tenantId": "[variables('tenantId')]",
+            "objectId": "[reference(variables('identityScope'), variables('identityApiVersion')).principalId]",
+            "permissions": {
+              "keys": [
+                "get",
+                "list"
+              ],
+              "secrets": [
+                "get",
+                "list"
+              ],
+              "certificates": [
+                "get",
+                "list",
+                "getissuers",
+                "listissuers"
+              ]
+            }
+          }
+        ],
+        "enabledForDeployment": true,
+        "enabledForDiskEncryption": false,
+        "enabledForTemplateDeployment": true,
+        "enableSoftDelete": true
+      }
+    }
+  ]
+}

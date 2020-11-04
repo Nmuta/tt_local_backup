@@ -1,0 +1,56 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sku": {
+      "value": "S1"
+    },
+    "workerSize": {
+      "value": "0"
+    },
+    "locationOverride": {
+      "value": ""
+    },
+    "genevaCertContent": {
+      "reference": {
+        "keyVault": {
+          "id": "/subscriptions/a6d4cc22-0b13-4871-b146-db7138d3e3cb/resourceGroups/steward-prod/providers/Microsoft.KeyVault/vaults/steward-keyvault-prod"
+        },
+        "secretName": "GenevaProd"
+      }
+    },
+    "monitoringGcsAuthId": {
+      "value": "steward-api-prod.azurewebsites.net.geneva.keyvault.steward-api-prod.azurewebsites.net"
+    },
+    "monitoringTenant": {
+      "value": "t10StewardProd"
+    },
+    "monitoringRole": {
+      "value": "Website"
+    },
+    "monitoringGcsEnvironment": {
+      "value": "FirstPartyProd"
+    },
+    "monitoringGcsAccount": {
+      "value": "Turn10"
+    },
+    "monitoringGcsNamespace": {
+      "value": "t10StewardProd"
+    },
+    "monitoringConfigVersion": {
+      "value": "1.0"
+    },
+    "monitoringMdmAccount": {
+      "value": "Turn10"
+    },
+    "monitoringMdmNamespace": {
+      "value": "STE-Prod-Web-WestUS2"
+    },
+    "prefix": {
+      "value": "steward"
+    },
+    "suffix": {
+      "value": "prod"
+    }
+  }
+}

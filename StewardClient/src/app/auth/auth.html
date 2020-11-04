@@ -1,0 +1,30 @@
+<navbar></navbar>
+<section style="padding: 50px">
+  <div *ngIf="!loading && !inZendesk">
+    <div *ngIf="profile">
+      <h2>You have successfully signed in.</h2>
+      <p>Email: {{profile.emailAddress}}</p>
+      <p>Role: {{profile.role}}</p>
+    </div>
+    <div *ngIf="!profile">
+      <h2 *ngIf="fromAadLogout">You have successfully signed out.</h2>
+      <h2 *ngIf="fromAadLogin" class="error-text">
+        Error logging into the application.
+        <br />Please verify you have correct permissions with an app admin.
+      </h2>
+    </div>
+    <div *ngIf="!!autoCloseTimeSecsLeft">
+      <p>This window will auto-close in {{autoCloseTimeSecsLeft}} seconds</p>
+    </div>
+  </div>
+  <div *ngIf="!loading && inZendesk">
+    <h2>Please signin to your Microsoft account.</h2>
+    <button (click)="loginWithNewTab()">Login Page</button>
+    <br />
+    <h2>Authorize the app once you have signed in.</h2>
+    <button (click)="recheckAuth()">Authorize App</button>
+  </div>
+  <div *ngIf="loading">
+    <h2>Loading...</h2>
+  </div>
+</section>
