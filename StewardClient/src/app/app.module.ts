@@ -1,6 +1,6 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
 import { NavbarModule } from '@components/navbar/navbar.module';
 import {
@@ -8,6 +8,7 @@ import {
   FontAwesomeModule,
 } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FakeApiInterceptor } from '@interceptors/fake-api/fake-api.interceptor';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { NgxsModule } from '@ngxs/store';
 import { LoggerService } from '@services/logger/logger.service';
@@ -21,7 +22,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { ErrorComponent } from './error/error.component';
 import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
-import { NavbarComponent } from './shared/components/navbar/navbar.component';
 
 export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -31,8 +31,8 @@ export const protectedResourceMap: [string, string[]][] = [
 @NgModule({
   declarations: [AppComponent, ErrorComponent, FourOhFourComponent],
   imports: [
+    BrowserAnimationsModule,
     AppRoutingModule,
-    BrowserModule,
     NavbarModule,
     FontAwesomeModule,
     HttpClientModule,
@@ -88,6 +88,12 @@ export const protectedResourceMap: [string, string[]][] = [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AccessTokenInterceptor,
+      multi: true,
+    },
+    {
+      // TODO: Conditionally include this via module
+      provide: HTTP_INTERCEPTORS,
+      useClass: FakeApiInterceptor,
       multi: true,
     },
   ],

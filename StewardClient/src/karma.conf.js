@@ -17,7 +17,7 @@ module.exports = function (config) {
       captureConsole: false,
     },
     coverageIstanbulReporter: {
-      reports: ['html', 'cobertura', 'text'],
+      reports: ['lcov', 'html', 'cobertura', 'text'],
       fixWebpackSourcePaths: true,
     },
     reporters: ['progress', 'kjhtml'],

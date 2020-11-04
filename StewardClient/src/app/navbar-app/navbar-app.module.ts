@@ -7,6 +7,7 @@ import { ProfileModule } from '@shared/components/profile/profile.module';
 import { HomeComponent } from './home/home.component';
 import { NavbarAppComponent } from './navbar-app.component';
 import { NavbarAppRouterModule } from './navbar-app.routing';
+import { UserDetailsModule } from './user-details/user-details.module';
 
 /** Defines the sidebar module. */
 @NgModule({
@@ -16,6 +17,7 @@ import { NavbarAppRouterModule } from './navbar-app.routing';
     FontAwesomeModule,
     ProfileModule,
     NavbarModule,
+    UserDetailsModule,
   ],
   providers: [],
   declarations: [NavbarAppComponent, HomeComponent],
