@@ -15,5 +15,4 @@ import {
   templateUrl: './player-details.html',
   styleUrls: ['./player-details.scss'],
 })
-export class PlayerDetailsComponent {
-}
+export class PlayerDetailsComponent {}

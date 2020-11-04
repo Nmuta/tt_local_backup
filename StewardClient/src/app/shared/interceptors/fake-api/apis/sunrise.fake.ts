@@ -1,18 +1,25 @@
 import { HttpRequest } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { FakeApiBase, FakeApiBaseV2, RequestMethodFilters } from '@interceptors/fake-api/apis/fake-api-base';
+import {
+  FakeApiBase,
+  FakeApiBaseV2,
+  RequestMethodFilters,
+} from '@interceptors/fake-api/apis/fake-api-base';
 import { SunriseUserFlags } from '@models/sunrise';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for getting console details. */
-export class SunriseFakeApiConsoleDetails extends FakeApiBaseV2<SunriseConsoleDetails> {
+export class SunriseFakeApiConsoleDetails extends FakeApiBaseV2<
+  SunriseConsoleDetails
+> {
   constructor(protected readonly request: HttpRequest<unknown>) {
     super(
       request,
       RequestMethodFilters.GET,
       /\/?api\/v2\/title\/sunrise\/console\/consoleId\((\d+)\)\/isBanned\((true|false)\)/i,
-      null);
+      null
+    );
   }
 }
 
@@ -30,7 +37,8 @@ export class SunriseFakeApiUserFlags extends FakeApiBaseV2<SunriseUserFlags> {
         isCommunityManager: false,
         isUnderReview: false,
         isEarlyAccess: false,
-      });
+      }
+    );
   }
 }
 
