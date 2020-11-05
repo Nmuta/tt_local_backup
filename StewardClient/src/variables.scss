@@ -1,4 +1,4 @@
-@import '~@angular/material/theming'; // TODO: this builds but auto-complete doesn't seem to work with it
+@import '../autocomplete-patch.scss';
 
 $primaryBlue: #337ab7;
 
