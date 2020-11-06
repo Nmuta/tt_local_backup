@@ -57,7 +57,7 @@ export class UserFlagsComponent extends BaseComponent implements OnChanges {
       _error => {
         this.isLoading = false;
         this.loadError = _error; // TODO: Display something useful to the user
-      }
+      },
     );
   }
 
@@ -67,7 +67,7 @@ export class UserFlagsComponent extends BaseComponent implements OnChanges {
       tap(value => {
         this.currentFlags = value;
         this.flags = _.clone(this.currentFlags);
-      })
+      }),
     );
   }
 }

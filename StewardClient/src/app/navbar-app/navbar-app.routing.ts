@@ -32,7 +32,7 @@ const routes: Routes = [
         path: NavbarTools.UserDetailsPage.path,
         loadChildren: () =>
           import('./user-details/user-details.module').then(
-            m => m.UserDetailsModule
+            m => m.UserDetailsModule,
           ),
       },
       {

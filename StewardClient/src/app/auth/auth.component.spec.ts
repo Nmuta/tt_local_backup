@@ -263,7 +263,7 @@ describe('AuthComponent', () => {
 
       expect(mockWindowService.open).toHaveBeenCalledWith(
         `${environment.stewardUiUrl}/auth?action=login`,
-        '_blank'
+        '_blank',
       );
     });
   });

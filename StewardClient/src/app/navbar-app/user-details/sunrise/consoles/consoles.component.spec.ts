@@ -35,7 +35,7 @@ describe('ConsolesComponent', () => {
 
       injector = getTestBed();
       service = injector.inject(SunriseService);
-    })
+    }),
   );
 
   beforeEach(
@@ -43,14 +43,14 @@ describe('ConsolesComponent', () => {
       fixture = TestBed.createComponent(ConsolesComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
-    })
+    }),
   );
 
   it(
     'should create',
     waitForAsync(() => {
       expect(component).toBeTruthy();
-    })
+    }),
   );
 
   describe('valid initialization', () => {
@@ -75,7 +75,7 @@ describe('ConsolesComponent', () => {
 
         // emulate initialization event
         component.ngOnChanges();
-      })
+      }),
     );
 
     describe('ngOnChanges', () => {
@@ -84,7 +84,7 @@ describe('ConsolesComponent', () => {
         waitForAsync(() => {
           expect(component.isLoading).toBe(true);
           expect(component.loadError).toBeFalsy();
-        })
+        }),
       );
 
       it(
@@ -105,7 +105,7 @@ describe('ConsolesComponent', () => {
           fixture.detectChanges();
           expect(component.isLoading).toBe(false);
           expect(component.loadError).toBeFalsy();
-        })
+        }),
       );
 
       it(
@@ -126,7 +126,7 @@ describe('ConsolesComponent', () => {
           fixture.detectChanges();
           expect(component.isLoading).toBe(false);
           expect(component.loadError).toBeTruthy();
-        })
+        }),
       );
     });
 
@@ -156,7 +156,7 @@ describe('ConsolesComponent', () => {
           consoleDetails$.next(consoleDetailsValue);
           consoleDetails$.complete();
           fixture.detectChanges();
-        })
+        }),
       );
 
       describe('makeBanAction', () => {
@@ -179,7 +179,7 @@ describe('ConsolesComponent', () => {
             await fixture.whenStable();
             expect(isDone).toBe(true);
             expect(firstUnbanned.isBanned).toBe(true);
-          })
+          }),
         );
       });
 
@@ -203,7 +203,7 @@ describe('ConsolesComponent', () => {
             await fixture.whenStable();
             expect(isDone).toBe(true);
             expect(firstUnbanned.isBanned).toBe(false);
-          })
+          }),
         );
       });
     });

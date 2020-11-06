@@ -19,7 +19,7 @@ export class BigintInterceptor implements HttpInterceptor {
   /** The interceptor hook. */
   public intercept(
     request: HttpRequest<unknown>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     const shouldHandle = request.responseType === 'json';
     if (!shouldHandle) {
@@ -38,7 +38,7 @@ export class BigintInterceptor implements HttpInterceptor {
         return event.clone({
           body: newBody,
         });
-      })
+      }),
     );
   }
 }

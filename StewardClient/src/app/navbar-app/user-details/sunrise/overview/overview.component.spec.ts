@@ -37,6 +37,6 @@ describe('OverviewComponent', () => {
     'should create',
     waitForAsync(() => {
       expect(component).toBeTruthy();
-    })
+    }),
   );
 });

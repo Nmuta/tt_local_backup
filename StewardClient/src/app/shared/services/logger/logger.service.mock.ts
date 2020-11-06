@@ -10,10 +10,10 @@ export class MockLoggerService {
   public consoleLevel: LogLevel = LogLevel.Everything;
   public appInsightsLevel: LogLevel = LogLevel.Everything;
   public log: (topics: LogTopic[], ...data: any[]) => void = jasmine.createSpy(
-    'log'
+    'log',
   );
   public warn: (topics: LogTopic[], ...data: any[]) => void = jasmine.createSpy(
-    'warn'
+    'warn',
   );
   public debug: (
     topics: LogTopic[],

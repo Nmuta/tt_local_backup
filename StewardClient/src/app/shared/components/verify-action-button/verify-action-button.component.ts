@@ -50,7 +50,7 @@ export class VerifyActionButtonComponent extends BaseComponent {
         error => {
           this.isSubmitting = false;
           this.submitError = error;
-        }
+        },
       );
     } catch (error) {
       this.isSubmitting = false;

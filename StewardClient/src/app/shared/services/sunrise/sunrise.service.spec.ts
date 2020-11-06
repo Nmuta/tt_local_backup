@@ -41,7 +41,7 @@ describe('SunriseService', () => {
       .subscribe(output => {
         expect(output).toEqual(
           nextReturnValue as any,
-          'fields should not be modified'
+          'fields should not be modified',
         );
         done();
       });
@@ -52,7 +52,7 @@ describe('SunriseService', () => {
     service.getFlagsByXuid(fakeXuid()).subscribe(output => {
       expect(output).toEqual(
         nextReturnValue as any,
-        'fields should not be modified'
+        'fields should not be modified',
       );
       done();
     });
@@ -65,7 +65,7 @@ describe('SunriseService', () => {
       .subscribe(output => {
         expect(output).toEqual(
           nextReturnValue as any,
-          'fields should not be modified'
+          'fields should not be modified',
         );
         done();
       });
@@ -76,19 +76,19 @@ describe('SunriseService', () => {
     service.getBanHistoryByXuid(fakeXuid()).subscribe(output => {
       expect(output.liveOpsBanHistory[0].startTimeUtc instanceof Date).toBe(
         true,
-        'liveOps.startTimeUtc is Date'
+        'liveOps.startTimeUtc is Date',
       );
       expect(output.liveOpsBanHistory[0].expireTimeUtc instanceof Date).toBe(
         true,
-        'liveOps.expireTimeUtc is Date'
+        'liveOps.expireTimeUtc is Date',
       );
       expect(output.servicesBanHistory[0].startTimeUtc instanceof Date).toBe(
         true,
-        'services.startTimeUtc is Date'
+        'services.startTimeUtc is Date',
       );
       expect(output.servicesBanHistory[0].expireTimeUtc instanceof Date).toBe(
         true,
-        'services.expireTimeUtc is Date'
+        'services.expireTimeUtc is Date',
       );
 
       // clear the validated fields
@@ -104,7 +104,7 @@ describe('SunriseService', () => {
 
       expect(output).toEqual(
         nextReturnValue as any,
-        'other fields should not be modified'
+        'other fields should not be modified',
       );
 
       done();
@@ -116,7 +116,7 @@ describe('SunriseService', () => {
     service.getSharedConsoleUsersByXuid(fakeXuid()).subscribe(output => {
       expect(output).toEqual(
         typedReturnValue as any,
-        'fields should not be modified'
+        'fields should not be modified',
       );
       done();
     });
@@ -127,7 +127,7 @@ describe('SunriseService', () => {
     service.getConsoleDetailsByXuid(fakeXuid()).subscribe(output => {
       expect(output).toEqual(
         nextReturnValue as any,
-        'fields should not be modified'
+        'fields should not be modified',
       );
       done();
     });
@@ -141,7 +141,7 @@ describe('SunriseService', () => {
       .subscribe(output => {
         expect(output).toEqual(
           nextReturnValue as any,
-          'fields should not be modified'
+          'fields should not be modified',
         );
         done();
       });
@@ -153,7 +153,7 @@ describe('SunriseService', () => {
     service.getProfileSummaryByXuid(fakeXuid()).subscribe(output => {
       expect(output).toEqual(
         nextReturnValue as any,
-        'fields should not be modified'
+        'fields should not be modified',
       );
       done();
     });

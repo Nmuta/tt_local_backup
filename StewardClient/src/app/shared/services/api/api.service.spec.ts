@@ -51,7 +51,7 @@ describe('service: ApiService', () => {
             done();
           });
         const req = httpMock.expectOne(
-          r => r.method === 'GET' && r.url === expectedApiUrl
+          r => r.method === 'GET' && r.url === expectedApiUrl,
         );
         expect(req.request.params).toEqual(params);
         expect(req.request.headers).toEqual(headers);
@@ -66,10 +66,10 @@ describe('service: ApiService', () => {
           },
           error => {
             expect(true).toBeTruthy();
-          }
+          },
         );
         const req = httpMock.expectOne(
-          r => r.method === 'GET' && r.url === expectedApiUrl
+          r => r.method === 'GET' && r.url === expectedApiUrl,
         );
         req.error(new ErrorEvent('error'));
       });
@@ -92,7 +92,7 @@ describe('service: ApiService', () => {
         });
 
         const req = httpMock.expectOne(
-          r => r.method === 'POST' && r.url === apiUrl
+          r => r.method === 'POST' && r.url === apiUrl,
         );
         req.flush({});
       });
@@ -105,11 +105,11 @@ describe('service: ApiService', () => {
           },
           error => {
             expect(true).toBeTruthy();
-          }
+          },
         );
 
         const req = httpMock.expectOne(
-          r => r.method === 'POST' && r.url === apiUrl
+          r => r.method === 'POST' && r.url === apiUrl,
         );
         req.error(new ErrorEvent('error'));
       });
@@ -137,10 +137,10 @@ describe('service: ApiService', () => {
           });
 
         const req = httpMock.expectOne(
-          r => r.method === 'PUT' && r.url === apiUrl
+          r => r.method === 'PUT' && r.url === apiUrl,
         );
         expect(req.request.headers.get('Content-Type')).toEqual(
-          'application/json'
+          'application/json',
         );
 
         req.flush({});
@@ -154,10 +154,10 @@ describe('service: ApiService', () => {
           },
           error => {
             expect(true).toBeTruthy();
-          }
+          },
         );
         const req = httpMock.expectOne(
-          r => r.method === 'PUT' && r.url === apiUrl
+          r => r.method === 'PUT' && r.url === apiUrl,
         );
         req.error(new ErrorEvent('error'));
       });
@@ -182,10 +182,10 @@ describe('service: ApiService', () => {
           done();
         });
         const req = httpMock.expectOne(
-          r => r.method === 'DELETE' && r.url === apiUrl
+          r => r.method === 'DELETE' && r.url === apiUrl,
         );
         expect(req.request.headers.get('Content-Type')).toEqual(
-          'application/json'
+          'application/json',
         );
 
         req.flush({});
@@ -199,10 +199,10 @@ describe('service: ApiService', () => {
           },
           error => {
             expect(true).toBeTruthy();
-          }
+          },
         );
         const req = httpMock.expectOne(
-          r => r.method === 'DELETE' && r.url === apiUrl
+          r => r.method === 'DELETE' && r.url === apiUrl,
         );
         req.error(new ErrorEvent('error'));
       });

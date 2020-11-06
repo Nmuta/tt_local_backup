@@ -6,7 +6,7 @@ describe('BigintInterceptor', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       providers: [BigintInterceptor],
-    })
+    }),
   );
 
   it('should be created', () => {

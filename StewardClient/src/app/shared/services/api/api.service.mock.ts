@@ -24,7 +24,7 @@ export class MockApiService {
 }
 
 export function createMockApiService(
-  returnValueGenerator: () => any = () => new Object()
+  returnValueGenerator: () => any = () => new Object(),
 ) {
   return {
     provide: ApiService,

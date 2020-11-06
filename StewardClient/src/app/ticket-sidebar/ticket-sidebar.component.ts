@@ -35,7 +35,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
     private router: Router,
     private zendeskService: ZendeskService,
     private scrutineerDataParser: ScrutineerDataParser,
-    private clipboard: Clipboard
+    private clipboard: Clipboard,
   ) {}
 
   /** Logic for the OnInit component lifecycle. */
@@ -58,7 +58,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
         this.router.navigate([`/auth`], {
           queryParams: { from: this.appName },
         });
-      }
+      },
     );
   }
 
@@ -136,7 +136,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
       },
       err => {
         // TODO: show error on ticket app.
-      }
+      },
     );
   }
 
@@ -273,7 +273,7 @@ export class TicketSidebarComponent implements OnInit, AfterViewInit {
     this.zendeskService.goToApp(
       'nav_bar',
       'forza-inventory-support',
-      appSection
+      appSection,
     );
   }
 

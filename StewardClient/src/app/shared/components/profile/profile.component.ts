@@ -24,7 +24,7 @@ export class ProfileComponent {
   constructor(
     protected router: Router,
     protected store: Store,
-    protected windowService: WindowService
+    protected windowService: WindowService,
   ) {}
 
   /** Opens the auth page in a new tab. */
@@ -34,7 +34,7 @@ export class ProfileComponent {
     this.router.navigate([`/auth`], { queryParams: { from: this.parentApp } });
     this.windowService.open(
       `${environment.stewardUiUrl}/auth?action=logout`,
-      '_blank'
+      '_blank',
     );
   }
 

@@ -8,7 +8,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(
-      environment.stewardApiUrl
+      environment.stewardApiUrl,
     );
     if (!targetingStewardApi) {
       return false;

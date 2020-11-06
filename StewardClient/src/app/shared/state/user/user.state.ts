@@ -46,7 +46,7 @@ export class UserStateModel {
 export class UserState {
   constructor(
     private userService: UserService,
-    private authService: MsalService
+    private authService: MsalService,
   ) {}
 
   /** Action that requests user profile and sets it to the state. */
@@ -58,7 +58,7 @@ export class UserState {
       },
       err => {
         ctx.patchState({ profile: null });
-      }
+      },
     );
   }
 
@@ -66,7 +66,7 @@ export class UserState {
   @Action(ResetUserProfile, { cancelUncompleted: true })
   public resetUserProfile(
     ctx: StateContext<UserStateModel>,
-    action: ResetUserProfile
+    action: ResetUserProfile,
   ) {
     ctx.patchState({ profile: undefined });
     asapScheduler.schedule(() => ctx.dispatch(new ResetAccessToken()));
@@ -76,7 +76,7 @@ export class UserState {
   @Action(SetNoUserProfile, { cancelUncompleted: true })
   public setNoUserProfile(
     ctx: StateContext<UserStateModel>,
-    action: SetNoUserProfile
+    action: SetNoUserProfile,
   ) {
     ctx.patchState({ profile: null });
   }
@@ -85,7 +85,7 @@ export class UserState {
   @Action(RequestAccessToken, { cancelUncompleted: true })
   public requestAccessToken(
     ctx: StateContext<UserStateModel>,
-    action: RequestAccessToken
+    action: RequestAccessToken,
   ) {
     const isLoggedIn = !!this.authService.getAccount();
     if (!isLoggedIn) {
@@ -112,7 +112,7 @@ export class UserState {
         err => {
           ctx.patchState({ accessToken: null });
           asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
-        }
+        },
       );
   }
 
@@ -120,19 +120,19 @@ export class UserState {
   @Action(ResetAccessToken, { cancelUncompleted: true })
   public resetAccessToken(
     ctx: StateContext<UserStateModel>,
-    action: ResetAccessToken
+    action: ResetAccessToken,
   ) {
     ctx.patchState({ accessToken: undefined });
   }
 
   /** Helper function that timeouts state checks for user profile. */
   public static latestValidProfile$(
-    profile$: Observable<UserModel>
+    profile$: Observable<UserModel>,
   ): Observable<UserModel> {
     const obs = profile$
       .pipe(
         filter(x => x !== undefined),
-        take(1)
+        take(1),
       )
       .pipe(timeout(5000));
 

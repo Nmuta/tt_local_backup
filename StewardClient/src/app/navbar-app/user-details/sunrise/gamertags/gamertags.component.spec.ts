@@ -37,6 +37,6 @@ describe('GamertagsComponent', () => {
     'should create',
     waitForAsync(() => {
       expect(component).toBeTruthy();
-    })
+    }),
   );
 });
