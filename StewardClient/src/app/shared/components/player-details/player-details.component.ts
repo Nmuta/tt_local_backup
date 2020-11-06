@@ -30,8 +30,6 @@ export class PlayerDetailsComponent implements OnChanges {
   public loadError: any;
   /** The player details */
   public playerDetails: any;
-  /** Card content is collapsed */
-  public cardConentCollapsed: boolean = false;
 
   public messages: any = [
     { from: 'from-1', subject: 'subject-1', content: 'content-1' },

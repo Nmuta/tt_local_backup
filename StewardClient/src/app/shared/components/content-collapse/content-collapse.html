@@ -1,9 +1,11 @@
 <button
   mat-mini-fab
   color="primary"
-  [aria-label]="contentCollapsedBool ? 'Expand Content' : 'Collapse Content'"
+  [aria-label]="contentCollapsed ? 'Expand Content' : 'Collapse Content'"
   class="content-collapse-button"
-  (click)="changeCollapsedState()"
+  (click)="contentCollapsed = !contentCollapsed;"
 >
-  <fa-icon [icon]="contentCollapsedBool ? plusIcon : minusIcon"></fa-icon>
+  <fa-icon [icon]="contentCollapsed ? plusIcon : minusIcon"></fa-icon>
 </button>
+<ng-content class="content-collapse-title" select="[content-title]"></ng-content>
+<ng-content *ngIf="!contentCollapsed" select="[content-body]"></ng-content>

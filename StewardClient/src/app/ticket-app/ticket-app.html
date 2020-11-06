@@ -9,21 +9,16 @@
   <section class="quick-actions-section">
     <mat-card>
       <mat-card-content>
-        <h2>
-          <content-collapse
-            [contentCollapsedBool]="cardConentCollapsed"
-            (onCollapsedStateChange)="cardConentCollapsed = $event"
-          >
-          </content-collapse>
-          Quick Actions
-        </h2>
-        <section *ngIf="!cardConentCollapsed">
-          <div class="actions-div">
-            <button mat-raised-button color="primary" (click)="goToInventory()">
-              Go To Inventory
-            </button>
-          </div>
-        </section>
+        <content-collapse>
+          <h2 content-title>Quick Actions</h2>
+          <section content-body>
+            <div class="actions-div">
+              <button mat-raised-button color="primary" (click)="goToInventory()">
+                Go To Inventory
+              </button>
+            </div>
+          </section>
+        </content-collapse>
       </mat-card-content>
     </mat-card>
   </section>

@@ -16,18 +16,12 @@ import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./content-collapse.scss'],
 })
 export class ContentCollapseComponent extends BaseComponent {
-  @Input() public contentCollapsedBool: boolean;
-  @Output() public onCollapsedStateChange = new EventEmitter<boolean>();
+  @Input() public contentCollapsed: boolean = false;
 
   public minusIcon = faMinus;
   public plusIcon = faPlus;
 
   constructor() {
     super();
-  }
-
-  /** Emits a inverted change to the collapsed state. */
-  public changeCollapsedState() {
-    this.onCollapsedStateChange.emit(!this.contentCollapsedBool);
   }
 }

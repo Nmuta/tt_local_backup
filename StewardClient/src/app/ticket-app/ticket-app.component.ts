@@ -18,9 +18,6 @@ import { environment } from '../../environments/environment';
 export class TicketAppComponent implements OnInit, AfterViewInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  /** Card content is collapsed */
-  public cardConentCollapsed: boolean = false;
-
   public appName = 'ticket-sidebar';
 
   public loading: boolean;
