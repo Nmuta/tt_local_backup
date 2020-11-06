@@ -7,18 +7,14 @@
     "lint": "ng lint",
     "prettier:fix": "prettier --write .",
     "prettier:check": "prettier --check .",
-    
     "zat": "C:\\Windows\\system32\\bash.exe -c \"cd app-local && zat serve\"",
     "debug-open:ff": "\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" -start-debugger-server",
-
     "start:local-api": "ng serve",
     "start": "ng serve --configuration=dev-api",
     "start:open": "start https://forzasupport1570048282.zendesk.com/agent/apps/scrutineer-inventory-management-angular?zat=true && ng serve --configuration=dev-api",
-
     "test:cc": "ng test --karma-config=src/karma-coverage.conf.js --source-map=true --code-coverage",
     "test:chrome": "ng test --karma-config=src/karma.conf.js --source-map=true",
     "test:ff": "ng test --karma-config=src/karma-firefox.conf.js --source-map=true",
-
     "test:ado": "ng test --code-coverage --karma-config=src/karma-vsts.conf.js",
     "test:ado:ncc": "ng test --karma-config=src/karma-vsts.conf.js",
     "build:dev": "(ng build --prod --configuration=dev --crossOrigin=anonymous) && npm run build:dev:configMoveToBuild",

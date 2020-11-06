@@ -1,9 +1,3 @@
-# output directories should not be scanned
 dist/
 coverage/
-
-# external packages should not be scanned
-node_modules
-
-# prettier thinks json should not have whitespace
-*.json
+package-lock.json

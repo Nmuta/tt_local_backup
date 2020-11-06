@@ -17,7 +17,12 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["hammerjs", "minimatch", "lodash", "json-bigint"],
+            "allowedCommonJsDependencies": [
+              "hammerjs",
+              "minimatch",
+              "lodash",
+              "json-bigint"
+            ],
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
