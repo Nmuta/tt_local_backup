@@ -24,7 +24,7 @@ import { TicketInfoItemModule } from './ticket-info-item/ticket-info-item.module
     PlayerDetailsModule,
     MatButtonModule,
     MatCardModule,
-    ContentCollapseModule
+    ContentCollapseModule,
   ],
   providers: [],
   declarations: [TicketAppComponent],

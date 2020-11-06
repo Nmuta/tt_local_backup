@@ -30,7 +30,7 @@ import { PlayerDetailsComponent } from './player-details.component';
     MatListModule,
     ErrorSpinnerModule,
     PlayerDetailsItemModule,
-    ContentCollapseModule
+    ContentCollapseModule,
   ],
   exports: [PlayerDetailsComponent],
   declarations: [PlayerDetailsComponent],

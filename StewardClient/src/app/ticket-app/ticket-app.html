@@ -1,18 +1,19 @@
 <section *ngIf="!loading">
   <profile [user]="profile" [parentApp]="appName"></profile>
 
-  <player-details 
+  <player-details
     [gameTitle]="gameTitle"
     [gamertag]="gamertag"
   ></player-details>
-  
+
   <section class="quick-actions-section">
     <mat-card>
       <mat-card-content>
         <h2>
-          <content-collapse 
+          <content-collapse
             [contentCollapsedBool]="cardConentCollapsed"
-            (onCollapsedStateChange)="cardConentCollapsed = $event">
+            (onCollapsedStateChange)="cardConentCollapsed = $event"
+          >
           </content-collapse>
           Quick Actions
         </h2>

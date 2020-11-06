@@ -36,7 +36,7 @@ export class PlayerDetailsComponent implements OnChanges {
   public messages: any = [
     { from: 'from-1', subject: 'subject-1', content: 'content-1' },
     { from: 'from-2', subject: 'subject-2', content: 'content-2' },
-    { from: 'from-3', subject: 'subject-3', content: 'content-3' }
+    { from: 'from-3', subject: 'subject-3', content: 'content-3' },
   ];
 
   constructor(
@@ -53,21 +53,25 @@ export class PlayerDetailsComponent implements OnChanges {
     this.isLoading = true;
     this.loadError = undefined;
     let detailsObs: Observable<any>;
-    switch(this.gameTitle) {
+    switch (this.gameTitle) {
       case GameTitleCodeNames.Street:
-        detailsObs = this.gravityService.getPlayerDetailsByGamertag(this.gamertag);
+        detailsObs = this.gravityService.getPlayerDetailsByGamertag(
+          this.gamertag
+        );
         break;
       case GameTitleCodeNames.FH4:
-        detailsObs = this.sunriseService.getPlayerDetailsByGamertag(this.gamertag);
+        detailsObs = this.sunriseService.getPlayerDetailsByGamertag(
+          this.gamertag
+        );
         break;
       case GameTitleCodeNames.FM7:
         break;
       case GameTitleCodeNames.FH3:
         break;
       default:
-          this.isLoading = false;
-          this.loadError = 'Invalid game title.';
-          return;
+        this.isLoading = false;
+        this.loadError = 'Invalid game title.';
+        return;
     }
 
     detailsObs.subscribe(

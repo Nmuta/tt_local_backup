@@ -31,7 +31,7 @@ export class SunrisePlayerGamertagDetailsFakeApi extends FakeApiBase {
       gamertag: 'test-gamertag',
       licensePlate: 'HORIZON',
       region: 'United States',
-      currentCareerLevel: '13'
+      currentCareerLevel: '13',
       // these are all responses from the old API and aren't actually used by the new UI
       // firstLogin: '0001-01-01T00:00:00',
       // lastLogin: '0001-01-01T00:00:00',

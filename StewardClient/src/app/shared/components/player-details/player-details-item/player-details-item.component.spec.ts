@@ -17,20 +17,22 @@ describe('PlayerDetailsItemComponent', () => {
 
   let mockClipboard: Clipboard;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [PlayerDetailsItemComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockClipboard()],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [],
+        declarations: [PlayerDetailsItemComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockClipboard()],
+      }).compileComponents();
 
-    const injector = getTestBed();
-    mockClipboard = injector.get(Clipboard);
+      const injector = getTestBed();
+      mockClipboard = injector.get(Clipboard);
 
-    fixture = TestBed.createComponent(PlayerDetailsItemComponent);
-    component = fixture.debugElement.componentInstance;
-  }));
+      fixture = TestBed.createComponent(PlayerDetailsItemComponent);
+      component = fixture.debugElement.componentInstance;
+    })
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();

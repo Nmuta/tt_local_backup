@@ -2,9 +2,10 @@
   <mat-card>
     <mat-card-content>
       <h2>
-        <content-collapse 
+        <content-collapse
           [contentCollapsedBool]="cardConentCollapsed"
-          (onCollapsedStateChange)="cardConentCollapsed = $event">
+          (onCollapsedStateChange)="cardConentCollapsed = $event"
+        >
         </content-collapse>
         Player Details ({{gameTitle}})
         <error-spinner
