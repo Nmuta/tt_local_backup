@@ -51,7 +51,7 @@ export class FakeApiInterceptor implements HttpInterceptor {
       if (fakeApi.canHandle) {
         return ObservableOf(
           new HttpResponse({
-            body: fakeApi.handle(),
+            body: fakeApi.handleString(),
           })
         ).pipe(delay(_.random(1500) + 500));
       }

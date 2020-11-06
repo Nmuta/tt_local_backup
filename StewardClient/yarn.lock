@@ -1542,6 +1542,11 @@
   dependencies:
     "@types/jasmine" "*"
 
+"@types/json-bigint@^1.0.0":
+  version "1.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@types/json-bigint/-/json-bigint-1.0.0.tgz#7a4726540cc6fe47cfa54b9b3022b89cf7fe1517"
+  integrity sha1-ekcmVAzG/kfPpUubMCK4nPf+FRc=
+
 "@types/json-schema@^7.0.5":
   version "7.0.6"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@types/json-schema/-/json-schema-7.0.6.tgz#f4c7ec43e81b319a9815115031709f26987891f0"

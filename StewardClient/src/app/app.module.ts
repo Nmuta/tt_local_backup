@@ -8,6 +8,7 @@ import {
   FontAwesomeModule,
 } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
+import { BigintInterceptor } from '@interceptors/bigint.interceptor';
 import { FakeApiInterceptor } from '@interceptors/fake-api/fake-api.interceptor';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { NgxsModule } from '@ngxs/store';
@@ -88,6 +89,11 @@ export const protectedResourceMap: [string, string[]][] = [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AccessTokenInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: BigintInterceptor,
       multi: true,
     },
     {
