@@ -7,8 +7,6 @@
     "lint": "ng lint",
     "prettier:fix": "prettier --write .",
     "prettier:check": "prettier --check .",
-
-    "configMoveToBuild": "cp web.config dist/",
     
     "zat": "C:\\Windows\\system32\\bash.exe -c \"cd app-local && zat serve\"",
     "debug-open:ff": "\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\" -start-debugger-server",
@@ -21,10 +19,11 @@
     "test:chrome": "ng test --karma-config=src/karma.conf.js --source-map=true",
     "test:ff": "ng test --karma-config=src/karma-firefox.conf.js --source-map=true",
 
-    "ado-test": "ng test --code-coverage --karma-config=src/karma-vsts.conf.js",
-    "ado-test:ncc": "ng test --karma-config=src/karma-vsts.conf.js",
-    "ado-build:dev": "(ng build --prod --configuration=dev --crossOrigin=anonymous) && npm run configMoveToBuild",
-    "ado-build:prod": "(ng build --prod --configuration=production --crossOrigin=anonymous --subresource-integrity=true) && npm run configMoveToBuild"
+    "test:ado": "ng test --code-coverage --karma-config=src/karma-vsts.conf.js",
+    "test:ado:ncc": "ng test --karma-config=src/karma-vsts.conf.js",
+    "build:dev": "(ng build --prod --configuration=dev --crossOrigin=anonymous) && npm run build:dev:configMoveToBuild",
+    "build:dev:configMoveToBuild": "cp web.config dist/",
+    "build:prod": "(ng build --prod --configuration=production --crossOrigin=anonymous --subresource-integrity=true) && npm run configMoveToBuild"
   },
   "private": true,
   "dependencies": {
