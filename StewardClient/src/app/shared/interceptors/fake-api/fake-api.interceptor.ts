@@ -12,6 +12,7 @@ import _ from 'lodash';
 import { Observable, of as ObservableOf, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
+import { GravityPlayerGamertagDetailsFakeApi } from './apis/title/gravity/player/gamertag/details';
 import { SunriseConsoleIsBannedFakeApi } from './apis/title/sunrise/console/isBanned';
 import { SunrisePlayerGamertagDetailsFakeApi } from './apis/title/sunrise/player/gamertag/details';
 import { SunrisePlayerXuidBanHistoryFakeApi } from './apis/title/sunrise/player/xuid/banHistory';
@@ -23,6 +24,7 @@ import { SunrisePlayerXuidUserFlagsFakeApi } from './apis/title/sunrise/player/x
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
+  GravityPlayerGamertagDetailsFakeApi,
   SunrisePlayerGamertagDetailsFakeApi,
   SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi,
   SunrisePlayerXuidConsolesFakeApi,

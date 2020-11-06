@@ -23,13 +23,16 @@ import { environment } from '../../environments/environment';
 export class TicketAppComponent implements OnInit, AfterViewInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
+  /** Card content is collapsed */
+  public cardConentCollapsed: boolean = false;
+
   public appName = 'ticket-sidebar';
 
   public loading: boolean;
   public profile: UserModel;
-  public title: string;
+  public gameTitle: string;
   public player: any;
-  public gamerTag: string;
+  public gamertag: string;
 
   constructor(
     private router: Router,
@@ -74,7 +77,7 @@ export class TicketAppComponent implements OnInit, AfterViewInit {
 
       // TODO: Check if gamertag was input into the custom ticket field.
       // If it was, use that over the ticket requestor as gamertag lookup.
-      this.gamerTag = requester.name;
+      this.gamertag = requester.name;
       this.getTicketFields();
     });
   }
@@ -100,7 +103,7 @@ export class TicketAppComponent implements OnInit, AfterViewInit {
       .subscribe(response => {
         const titleName = response[`ticket.customField:${titleCustomField}`];
         const titleNameUppercase = titleName.toUpperCase();
-        this.title =
+        this.gameTitle =
           titleNameUppercase === 'FORZA_STREET'
             ? 'Gravity'
             : titleNameUppercase === 'FORZA_HORIZON_4'
@@ -112,7 +115,7 @@ export class TicketAppComponent implements OnInit, AfterViewInit {
             : null;
 
         // TODO: If title is NULL, break out of logic and show error.
-        this.getPlayerData();
+        // this.getPlayerData();
       });
   }
 
@@ -120,7 +123,7 @@ export class TicketAppComponent implements OnInit, AfterViewInit {
   public getPlayerData() {
     // TODO: Move this away from zendesk request and make it through our own service request
     const settings = {
-      url: `${environment.oldScrutineerApiUrl}/Title/${this.title}/environment/Retail/player/gamertag(${this.gamerTag})`,
+      url: `${environment.oldScrutineerApiUrl}/Title/${this.gameTitle}/environment/Retail/player/gamertag(${this.gamertag})`,
       headers: { Authorization: 'ApiKeyAuth 3diJHuez5u2AysQmTuxc93' },
       secure: false,
       type: 'GET',
@@ -140,13 +143,13 @@ export class TicketAppComponent implements OnInit, AfterViewInit {
   /** Parses user data to more readible information. */
   public showUserData(player, customSlotTable) {
     this.player =
-      this.title === 'Gravity'
+      this.gameTitle === 'Gravity'
         ? this.reduceToGravityProps(player)
-        : this.title === 'Sunrise'
+        : this.gameTitle === 'Sunrise'
         ? this.reduceToSunriseProps(player)
-        : this.title === 'Apollo'
+        : this.gameTitle === 'Apollo'
         ? this.reduceToApolloProps(player)
-        : this.title === 'Opus'
+        : this.gameTitle === 'Opus'
         ? null
         : null;
 
@@ -160,7 +163,7 @@ export class TicketAppComponent implements OnInit, AfterViewInit {
         : undefined;
     this.player.region =
       'region' in this.player
-        ? this.title === 'Apollo'
+        ? this.gameTitle === 'Apollo'
           ? this.scrutineerDataParser.regionDictFM7(this.player.region)
           : this.scrutineerDataParser.regionDict(this.player.region)
         : undefined;
@@ -266,7 +269,7 @@ export class TicketAppComponent implements OnInit, AfterViewInit {
 
   /** Opens up inventory app with predefined info filled out. */
   public goToInventory() {
-    const appSection = this.title + '/' + this.player.xuid;
+    const appSection = this.gameTitle + '/' + this.player.xuid;
     this.zendeskService.goToApp(
       'nav_bar',
       'forza-inventory-support',

@@ -1,0 +1,37 @@
+@import '/src/variables.scss';
+ 
+.player-details-item-section {
+  border-top: 1px solid rgba(0,0,0,.12);
+  overflow: hidden;
+
+  &:hover {
+    cursor: pointer;
+    background-color:  #f5f5f5;
+  }
+
+  p {
+    font-size: 16px;
+    padding: 15px 5px;
+    margin: 0;
+  }
+}
+
+.player-details-item-title {
+  font-weight: 600;
+  float: left;
+}
+
+.player-details-item-value {
+  float: right;
+}
+
+.copied-data-message {
+  position: absolute;
+  background-color: $primaryBlue;
+  padding: 10px 15px !important;
+  margin-top: 5px !important;
+  border-radius: 5px;
+  color: #fff;
+  right: 0;
+  margin-right: 25px !important;
+}
