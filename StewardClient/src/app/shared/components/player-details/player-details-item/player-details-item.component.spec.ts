@@ -68,28 +68,27 @@ describe('PlayerDetailsItemComponent', () => {
   });
 
   describe('Method: copyToClipboard', () => {
+    var testCopyData = 'value data to copy';
     beforeEach(() => {
+      component.value = testCopyData;
       mockClipboard.copyMessage = jasmine.createSpy('copyMessage');
     });
 
     it('should set component.copied to true', () => {
-      var testData = 'test-data';
-      component.copyToClipboard(testData);
+      component.copyToClipboard();
 
       expect(component.copied).toBeTruthy();
     });
 
     it('should call clipboard.copyMessage with input value', () => {
-      var testData = 'test-data';
-      component.copyToClipboard(testData);
+      component.copyToClipboard();
 
-      expect(mockClipboard.copyMessage).toHaveBeenCalledWith(testData);
+      expect(mockClipboard.copyMessage).toHaveBeenCalledWith(testCopyData);
     });
 
     describe('After waiting for 2 seconds', () => {
       it('should set component.copied to false', fakeAsync(() => {
-        var testData = 'test-data';
-        component.copyToClipboard(testData);
+        component.copyToClipboard();
 
         tick(2000);
         expect(component.copied).toBeFalsy();

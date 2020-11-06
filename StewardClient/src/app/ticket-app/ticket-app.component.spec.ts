@@ -163,7 +163,7 @@ describe('TicketAppComponent', () => {
       it('should set component.gamertag to requestor name', () => {
         component.getTicketRequestor();
 
-        expect(component.gamerTag).toEqual(requestorGamertag);
+        expect(component.gamertag).toEqual(requestorGamertag);
       });
       it('should call component.getTicketFields', () => {
         component.getTicketRequestor();
@@ -204,7 +204,6 @@ describe('TicketAppComponent', () => {
       mockZendeskService.getTicketCustomField = jasmine
         .createSpy('getTicketCustomField')
         .and.returnValue(of(JSON.parse(customFieldData)));
-      component.getPlayerData = jasmine.createSpy('getPlayerData');
     });
 
     it('should call zendesk service getTicketCustomField() with input parameter', () => {
@@ -224,16 +223,10 @@ describe('TicketAppComponent', () => {
           .and.returnValue(of(JSON.parse(streetCustomFieldData)));
       });
 
-      it('should set component.title to Gravity', () => {
+      it('should set component.gameTitle to Gravity', () => {
         component.getTitleData(getTitleDataParam);
 
-        expect(component.title).toEqual('Gravity');
-      });
-
-      it('should call component.getPlayerData', () => {
-        component.getTitleData(getTitleDataParam);
-
-        expect(component.getPlayerData).toHaveBeenCalled();
+        expect(component.gameTitle).toEqual('Gravity');
       });
     });
 
@@ -248,16 +241,10 @@ describe('TicketAppComponent', () => {
           .and.returnValue(of(JSON.parse(horzion4CustomFieldData)));
       });
 
-      it('should set component.title to Sunrise', () => {
+      it('should set component.gameTitle to Sunrise', () => {
         component.getTitleData(getTitleDataParam);
 
-        expect(component.title).toEqual('Sunrise');
-      });
-
-      it('should call component.getPlayerData', () => {
-        component.getTitleData(getTitleDataParam);
-
-        expect(component.getPlayerData).toHaveBeenCalled();
+        expect(component.gameTitle).toEqual('Sunrise');
       });
     });
 
@@ -272,16 +259,10 @@ describe('TicketAppComponent', () => {
           .and.returnValue(of(JSON.parse(horzion4CustomFieldData)));
       });
 
-      it('should set component.title to Apollo', () => {
+      it('should set component.gameTitle to Apollo', () => {
         component.getTitleData(getTitleDataParam);
 
-        expect(component.title).toEqual('Apollo');
-      });
-
-      it('should call component.getPlayerData', () => {
-        component.getTitleData(getTitleDataParam);
-
-        expect(component.getPlayerData).toHaveBeenCalled();
+        expect(component.gameTitle).toEqual('Apollo');
       });
     });
 
@@ -296,25 +277,19 @@ describe('TicketAppComponent', () => {
           .and.returnValue(of(JSON.parse(horzion4CustomFieldData)));
       });
 
-      it('should set component.title to Opus', () => {
+      it('should set component.gameTitle to Opus', () => {
         component.getTitleData(getTitleDataParam);
 
-        expect(component.title).toEqual('Opus');
-      });
-
-      it('should call component.getPlayerData', () => {
-        component.getTitleData(getTitleDataParam);
-
-        expect(component.getPlayerData).toHaveBeenCalled();
+        expect(component.gameTitle).toEqual('Opus');
       });
     });
   });
 
   describe('Method: goToInventory', () => {
-    var title = 'test-title';
+    var gameTitle = 'test-title';
     var xuid = 'test-xuid';
     beforeEach(() => {
-      component.title = title;
+      component.gameTitle = gameTitle;
       component.player = { xuid: xuid };
       mockZendeskService.goToApp = jasmine.createSpy('goToApp');
     });
@@ -322,25 +297,12 @@ describe('TicketAppComponent', () => {
     it('expect zendeskService.goToApp to be called', () => {
       component.goToInventory();
 
-      let expectedAppsection = `${title}/${xuid}`;
+      let expectedAppsection = `${gameTitle}/${xuid}`;
       expect(mockZendeskService.goToApp).toHaveBeenCalledWith(
         'nav_bar',
         'forza-inventory-support',
         expectedAppsection
       );
-    });
-  });
-
-  describe('Method: goToInventory', () => {
-    var testParam = 'test-param';
-    beforeEach(() => {
-      mockClipboard.copyMessage = jasmine.createSpy('copyMessage');
-    });
-
-    it('expect mockClipboard.copyMessage to be called', () => {
-      component.copyToClipboard(testParam);
-
-      expect(mockClipboard.copyMessage).toHaveBeenCalledWith(testParam);
     });
   });
 });
