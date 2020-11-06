@@ -11,15 +11,12 @@ table {
 h1,
 h2 {
   display: inline-block;
-  margin-top: 0px;
-}
-
-h2 {
-  margin-top: 30px;
+  margin: 0px;
 }
 
 .actions-div {
   width: 100%;
+  margin-top: 20px;
 
   button {
     min-width: 200px;
