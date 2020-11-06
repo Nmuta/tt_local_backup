@@ -83,7 +83,8 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
         this.isLoading = false;
         this.history = history;
         this.banList = this.history.servicesBanHistory.map(servicesBan => {
-          const output: ServicesBanDescription & CorrelatedLiveOpsBanPartial = _.clone(servicesBan) as any;
+          const output: ServicesBanDescription &
+            CorrelatedLiveOpsBanPartial = _.clone(servicesBan) as any;
           output.correlatedLiveOpsBan = this.correlateLiveOps(servicesBan);
           return output;
         });
