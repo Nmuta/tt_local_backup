@@ -64,7 +64,7 @@ export const protectedResourceMap: [string, string[]][] = [
         unprotectedResources: [],
         protectedResourceMap,
         extraQueryParameters: {},
-      },
+      }
     ),
   ],
   providers: [

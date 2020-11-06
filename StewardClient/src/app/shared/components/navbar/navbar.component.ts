@@ -39,7 +39,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly windowService: WindowService,
+    private readonly windowService: WindowService
   ) {
     super();
   }
@@ -72,7 +72,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
           this.router.navigate([`/auth`], {
             queryParams: { from: this.location },
           });
-        },
+        }
       );
   }
 }

@@ -6,7 +6,7 @@ describe('FakeApiInterceptor', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       providers: [FakeApiInterceptor],
-    }),
+    })
   );
 
   it('should be created', () => {

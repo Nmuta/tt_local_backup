@@ -19,7 +19,7 @@ describe('HumanizePipe', () => {
   it('handles Checksum_ObfuscatedDataAccessors', () => {
     const pipe = new HumanizePipe();
     expect(pipe.transform('Checksum_ObfuscatedDataAccessors')).toBe(
-      'Checksum - Obfuscated Data Accessors',
+      'Checksum - Obfuscated Data Accessors'
     );
   });
 

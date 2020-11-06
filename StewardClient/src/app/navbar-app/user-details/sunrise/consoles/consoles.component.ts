@@ -43,7 +43,7 @@ export class ConsolesComponent implements OnChanges {
       _error => {
         this.isLoading = false;
         this.loadError = _error; // TODO: Display something useful to the user
-      },
+      }
     );
   }
 
@@ -55,7 +55,7 @@ export class ConsolesComponent implements OnChanges {
           _(this.consoleDetails)
             .filter(d => d.consoleId === consoleId)
             .first().isBanned = true;
-        }),
+        })
       );
   }
 
@@ -67,7 +67,7 @@ export class ConsolesComponent implements OnChanges {
           _(this.consoleDetails)
             .filter(d => d.consoleId === consoleId)
             .first().isBanned = false;
-        }),
+        })
       );
   }
 }

@@ -41,7 +41,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly store: Store,
     private readonly msalService: MsalService,
-    private readonly windowService: WindowService,
+    private readonly windowService: WindowService
   ) {
     super();
 
@@ -81,7 +81,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.profile = null;
         if (this.fromAadLogout) this.autoCloseWindow(10);
-      },
+      }
     );
   }
 
@@ -89,7 +89,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
   public loginWithNewTab() {
     const newWindow = this.windowService.open(
       `${environment.stewardUiUrl}/auth?action=login`,
-      '_blank',
+      '_blank'
     );
 
     // This isn't a great way to detect it, but I tried using the event system and the events for this sort of event just don't emit properly.
@@ -100,17 +100,17 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
         tap(() =>
           this.logger.log(
             [LogTopic.Auth],
-            `polling; newWindow.closed == ${newWindow.closed}`,
-          ),
+            `polling; newWindow.closed == ${newWindow.closed}`
+          )
         ),
         filter(() => newWindow.closed),
         take(1),
         tap(() =>
           this.logger.log(
             [LogTopic.Auth],
-            `polling; newWindow.closed completed`,
-          ),
-        ),
+            `polling; newWindow.closed completed`
+          )
+        )
       )
       .subscribe(() => this.recheckAuth());
   }

@@ -41,6 +41,6 @@ describe('SunriseComponent', () => {
     'should create',
     waitForAsync(() => {
       expect(component).toBeTruthy();
-    }),
+    })
   );
 });

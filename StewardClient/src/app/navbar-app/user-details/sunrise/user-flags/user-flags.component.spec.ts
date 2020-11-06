@@ -39,6 +39,6 @@ describe('UserFlagsComponent', () => {
     'should create',
     waitForAsync(() => {
       expect(component).toBeTruthy();
-    }),
+    })
   );
 });

@@ -20,7 +20,7 @@ export class ApiService {
   public getRequest<T>(
     url: string,
     params?: HttpParams,
-    headers?: HttpHeaders,
+    headers?: HttpHeaders
   ): Observable<T> {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const get = this.http.get<T>(apiUrl, {
@@ -37,7 +37,7 @@ export class ApiService {
     object: any,
     params?: HttpParams,
     headers?: HttpHeaders,
-    host?: string,
+    host?: string
   ): Observable<T> {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const post = this.http.post<T>(apiUrl, object, {
@@ -52,7 +52,7 @@ export class ApiService {
   public putRequest<T>(
     url: string,
     object: any,
-    params?: HttpParams,
+    params?: HttpParams
   ): Observable<T> {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');

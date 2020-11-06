@@ -32,7 +32,7 @@ type CorrelatedLiveOpsBanPartial = {
       state('expanded', style({ height: '*' })),
       transition(
         'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
       ),
     ]),
   ],
@@ -92,7 +92,7 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
       _error => {
         this.isLoading = false;
         this.loadError = _error; // TODO: Display something useful to the user
-      },
+      }
     );
   }
 

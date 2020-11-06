@@ -45,7 +45,7 @@ export class CreditHistoryComponent implements OnChanges {
       _error => {
         this.isLoading = false;
         this.loadError = _error; // TODO: Display something useful to the user
-      },
+      }
     );
   }
 }

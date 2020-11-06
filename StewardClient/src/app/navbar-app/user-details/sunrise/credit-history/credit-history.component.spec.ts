@@ -37,6 +37,6 @@ describe('CreditHistoryComponent', () => {
     'should create',
     waitForAsync(() => {
       expect(component).toBeTruthy();
-    }),
+    })
   );
 });

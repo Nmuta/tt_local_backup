@@ -16,7 +16,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly router: Router,
+    private readonly router: Router
   ) {
     super();
   }
