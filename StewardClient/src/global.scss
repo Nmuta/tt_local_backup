@@ -1,5 +1,8 @@
 @import '/src/variables.scss';
 
+@include mat-core();
+@include angular-material-theme($app-theme);
+
 html,
 body {
   height: 100%;
