@@ -31,12 +31,6 @@ export class PlayerDetailsComponent implements OnChanges {
   /** The player details */
   public playerDetails: any;
 
-  public messages: any = [
-    { from: 'from-1', subject: 'subject-1', content: 'content-1' },
-    { from: 'from-2', subject: 'subject-2', content: 'content-2' },
-    { from: 'from-3', subject: 'subject-3', content: 'content-3' },
-  ];
-
   constructor(
     public readonly gravityService: GravityService,
     public readonly sunriseService: SunriseService
@@ -50,15 +44,15 @@ export class PlayerDetailsComponent implements OnChanges {
 
     this.isLoading = true;
     this.loadError = undefined;
-    let detailsObs: Observable<any>;
+    let details$: Observable<any>;
     switch (this.gameTitle) {
       case GameTitleCodeNames.Street:
-        detailsObs = this.gravityService.getPlayerDetailsByGamertag(
+        details$ = this.gravityService.getPlayerDetailsByGamertag(
           this.gamertag
         );
         break;
       case GameTitleCodeNames.FH4:
-        detailsObs = this.sunriseService.getPlayerDetailsByGamertag(
+        details$ = this.sunriseService.getPlayerDetailsByGamertag(
           this.gamertag
         );
         break;
@@ -72,8 +66,9 @@ export class PlayerDetailsComponent implements OnChanges {
         return;
     }
 
-    detailsObs.subscribe(
+    details$.subscribe(
       details => {
+        console.log('here');
         this.isLoading = false;
         this.playerDetails = details;
       },
