@@ -1,15 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as JSONBig from 'json-bigint';
-
-const JSONAlwaysBig = JSONBig({ alwaysParseAsBig: true, useNativeBigInt: true });
+import { JSONBigInt } from '@helpers/json-bigint';
 
 /** Like angular's native `json` pipe, but now with support for big ints. */
 @Pipe({
-  name: 'bigjson'
+  name: 'bigjson',
 })
 export class BigJsonPipe implements PipeTransform {
   /** Transform hook. */
   public transform(value: any): unknown {
-    return JSONAlwaysBig.stringify(value, null, '  ');
+    return JSONBigInt.stringify(value, null, '  ');
   }
 }

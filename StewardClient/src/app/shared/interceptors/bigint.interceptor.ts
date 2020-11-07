@@ -6,12 +6,10 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as JSONBig from 'json-bigint';
+import { JSONBigInt } from '@helpers/json-bigint';
 import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-
-const JSONAlwaysBig = JSONBig({ alwaysParseAsBig: true, useNativeBigInt: true });
 
 /** Uses JSONBig(alwaysParseAsBig) to handle parse+stringify rather than the defualt JSON, which does not handle BigInts. */
 @Injectable()
@@ -27,14 +25,14 @@ export class BigintInterceptor implements HttpInterceptor {
     }
 
     const newRequest = request.clone({
-      body: JSONAlwaysBig.stringify(request.body),
+      body: JSONBigInt.stringify(request.body),
       responseType: 'text',
     });
 
     return next.handle(newRequest).pipe(
       filter(event => event instanceof HttpResponse),
       map((event: HttpResponse<any>) => {
-        const newBody = JSONAlwaysBig.parse(event.body);
+        const newBody = JSONBigInt.parse(event.body);
         return event.clone({
           body: newBody,
         });

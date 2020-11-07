@@ -9,6 +9,6 @@ describe('BigJsonPipe', () => {
   it('handles null', () => {
     const pipe = new BigJsonPipe();
     const formatted = pipe.transform(null);
-    expect(formatted).toBe("null");
+    expect(formatted).toBe('null');
   });
 });
