@@ -24,11 +24,9 @@ import { inRange } from 'lodash';
 import { dateInputsHaveChanged } from '@angular/material/datepicker/datepicker-input-base';
 import { of, throwError } from 'rxjs';
 
-
 describe('PlayerDetailsComponent', () => {
   let mockGravityService: GravityService;
   let mockSunriseService: SunriseService;
-
 
   let fixture: ComponentFixture<PlayerDetailsComponent>;
   let component: PlayerDetailsComponent;
@@ -47,7 +45,7 @@ describe('PlayerDetailsComponent', () => {
           createMockWindowService(),
           createMockMsalService(),
           createMockGravityService(),
-          createMockSunriseService()
+          createMockSunriseService(),
         ],
       }).compileComponents();
 
@@ -72,8 +70,12 @@ describe('PlayerDetailsComponent', () => {
       it('Should not call any services for player details', () => {
         component.ngOnChanges();
 
-        expect(mockGravityService.getPlayerDetailsByGamertag).not.toHaveBeenCalled();
-        expect(mockSunriseService.getPlayerDetailsByGamertag).not.toHaveBeenCalled();
+        expect(
+          mockGravityService.getPlayerDetailsByGamertag
+        ).not.toHaveBeenCalled();
+        expect(
+          mockSunriseService.getPlayerDetailsByGamertag
+        ).not.toHaveBeenCalled();
       });
     });
     describe('When gameTitle is "Gravity"', () => {
@@ -83,34 +85,45 @@ describe('PlayerDetailsComponent', () => {
 
       describe('And gamertag is null', () => {
         beforeEach(() => {
-          component.gamertag = null; 
+          component.gamertag = null;
         });
         it('Should not call gravity services for player details', () => {
           component.ngOnChanges();
-  
-          expect(mockGravityService.getPlayerDetailsByGamertag).not.toHaveBeenCalled();
+
+          expect(
+            mockGravityService.getPlayerDetailsByGamertag
+          ).not.toHaveBeenCalled();
         });
       });
 
       describe('And gamertag is valid', () => {
         let expectedGamertag = 'test-gamertag';
         beforeEach(() => {
-          component.gamertag = expectedGamertag; 
+          component.gamertag = expectedGamertag;
         });
         it('Should call gravity service for player details', () => {
           component.ngOnChanges();
-  
-          expect(mockGravityService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
+
+          expect(
+            mockGravityService.getPlayerDetailsByGamertag
+          ).toHaveBeenCalledWith(expectedGamertag);
         });
-        it('Should set isLoading to false', waitForAsync(() => {
-          component.ngOnChanges();
-          expect(component.isLoading).toBeFalsy();
-        }));
+        it(
+          'Should set isLoading to false',
+          waitForAsync(() => {
+            component.ngOnChanges();
+            expect(component.isLoading).toBeFalsy();
+          })
+        );
         describe('And api returns player details', () => {
-          let expectedPlayerDetails = { xuid: '123456789', gamertag: 'test-gamertag'};
+          let expectedPlayerDetails = {
+            xuid: '123456789',
+            gamertag: 'test-gamertag',
+          };
           beforeEach(() => {
-            mockGravityService.getPlayerDetailsByGamertag = jasmine.createSpy('getPlayerDetailsByGamertag')
-              .and.returnValue(of(expectedPlayerDetails));; 
+            mockGravityService.getPlayerDetailsByGamertag = jasmine
+              .createSpy('getPlayerDetailsByGamertag')
+              .and.returnValue(of(expectedPlayerDetails));
           });
           it('Should set playerDetails expected response', () => {
             component.ngOnChanges();
@@ -120,8 +133,9 @@ describe('PlayerDetailsComponent', () => {
         describe('And api returns error', () => {
           let expectedError = { message: 'test-error' };
           beforeEach(() => {
-            mockGravityService.getPlayerDetailsByGamertag = jasmine.createSpy('getPlayerDetailsByGamertag')
-              .and.returnValue(throwError(expectedError));; 
+            mockGravityService.getPlayerDetailsByGamertag = jasmine
+              .createSpy('getPlayerDetailsByGamertag')
+              .and.returnValue(throwError(expectedError));
           });
           it('Should set playerDetails expected response', () => {
             component.ngOnChanges();
@@ -142,19 +156,23 @@ describe('PlayerDetailsComponent', () => {
         });
         it('Should not call sunrise services for player details', () => {
           component.ngOnChanges();
-  
-          expect(mockSunriseService.getPlayerDetailsByGamertag).not.toHaveBeenCalled();
+
+          expect(
+            mockSunriseService.getPlayerDetailsByGamertag
+          ).not.toHaveBeenCalled();
         });
       });
 
       describe('And gamertag is valid', () => {
         let expectedGamertag = 'test-gamertag';
         beforeEach(() => {
-          component.gamertag = expectedGamertag; 
+          component.gamertag = expectedGamertag;
         });
         it('Should call sunrise service for player details', () => {
           component.ngOnChanges();
-          expect(mockSunriseService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
+          expect(
+            mockSunriseService.getPlayerDetailsByGamertag
+          ).toHaveBeenCalledWith(expectedGamertag);
         });
         it('Should set isLoading to false', () => {
           component.ngOnChanges();
@@ -162,10 +180,14 @@ describe('PlayerDetailsComponent', () => {
         });
 
         describe('And api returns player details', () => {
-          let expectedPlayerDetails = { xuid: '123456789', gamertag: 'test-gamertag'};
+          let expectedPlayerDetails = {
+            xuid: '123456789',
+            gamertag: 'test-gamertag',
+          };
           beforeEach(() => {
-            mockSunriseService.getPlayerDetailsByGamertag = jasmine.createSpy('getPlayerDetailsByGamertag')
-              .and.returnValue(of(expectedPlayerDetails));; 
+            mockSunriseService.getPlayerDetailsByGamertag = jasmine
+              .createSpy('getPlayerDetailsByGamertag')
+              .and.returnValue(of(expectedPlayerDetails));
           });
           it('Should set playerDetails expected response', () => {
             component.ngOnChanges();
@@ -175,8 +197,9 @@ describe('PlayerDetailsComponent', () => {
         describe('And api returns error', () => {
           let expectedError = { message: 'test-error' };
           beforeEach(() => {
-            mockSunriseService.getPlayerDetailsByGamertag = jasmine.createSpy('getPlayerDetailsByGamertag')
-              .and.returnValue(throwError(expectedError));; 
+            mockSunriseService.getPlayerDetailsByGamertag = jasmine
+              .createSpy('getPlayerDetailsByGamertag')
+              .and.returnValue(throwError(expectedError));
           });
           it('Should set playerDetails expected response', () => {
             component.ngOnChanges();
