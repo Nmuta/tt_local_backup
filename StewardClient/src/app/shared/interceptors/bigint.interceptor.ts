@@ -11,7 +11,7 @@ import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-const JSONAlwaysBig = JSONBig({ alwaysParseAsBig: true });
+const JSONAlwaysBig = JSONBig({ alwaysParseAsBig: true, useNativeBigInt: true });
 
 /** Uses JSONBig(alwaysParseAsBig) to handle parse+stringify rather than the defualt JSON, which does not handle BigInts. */
 @Injectable()

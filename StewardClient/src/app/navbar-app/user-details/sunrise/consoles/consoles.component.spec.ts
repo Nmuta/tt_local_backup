@@ -18,6 +18,7 @@ import * as faker from 'faker';
 import { Subject } from 'rxjs';
 
 import { ConsolesComponent } from './consoles.component';
+import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 
 describe('ConsolesComponent', () => {
   let injector: TestBed;
@@ -28,7 +29,7 @@ describe('ConsolesComponent', () => {
   beforeEach(
     waitForAsync(async () => {
       await TestBed.configureTestingModule({
-        declarations: [ConsolesComponent],
+        declarations: [ConsolesComponent, BigJsonPipe],
         providers: [createMockSunriseService()],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();

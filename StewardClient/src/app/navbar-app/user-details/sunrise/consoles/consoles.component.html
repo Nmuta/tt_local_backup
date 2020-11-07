@@ -58,5 +58,5 @@
   <mat-progress-spinner *ngIf="isLoading" mode="indeterminate">
   </mat-progress-spinner>
   <p *ngIf="loadError">Failed to load.</p>
-  <pre *ngIf="loadError">{{ loadError | json }}</pre>
+  <pre *ngIf="loadError">{{ loadError | bigjson }}</pre>
 </ng-template>
