@@ -23,10 +23,14 @@ import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { inRange } from 'lodash';
 import { dateInputsHaveChanged } from '@angular/material/datepicker/datepicker-input-base';
 import { of, throwError } from 'rxjs';
+import { createMockMockOpusService, OpusService } from '@services/opus';
+import { ApolloService, createMockMockApolloService } from '@services/apollo';
 
 describe('PlayerDetailsComponent', () => {
   let mockGravityService: GravityService;
   let mockSunriseService: SunriseService;
+  let mockApolloService: ApolloService;
+  let mockOpusService: OpusService;
 
   let fixture: ComponentFixture<PlayerDetailsComponent>;
   let component: PlayerDetailsComponent;
@@ -46,12 +50,16 @@ describe('PlayerDetailsComponent', () => {
           createMockMsalService(),
           createMockGravityService(),
           createMockSunriseService(),
+          createMockMockApolloService(),
+          createMockMockOpusService(),
         ],
       }).compileComponents();
 
       const injector = getTestBed();
       mockGravityService = injector.inject(GravityService);
       mockSunriseService = injector.inject(SunriseService);
+      mockApolloService = injector.inject(ApolloService);
+      mockOpusService = injector.inject(OpusService);
 
       fixture = TestBed.createComponent(PlayerDetailsComponent);
       component = fixture.debugElement.componentInstance;
@@ -209,27 +217,133 @@ describe('PlayerDetailsComponent', () => {
         });
       });
     });
-    // describe('When gameTitle is "Apollo"', () => {
-    //   beforeEach(() => {
-    //     component.gameTitle = 'Apollo';
-    //   });
+    describe('When gameTitle is "Apollo"', () => {
+      beforeEach(() => {
+        component.gameTitle = 'Apollo';
+      });
 
-    //   describe('When gamertag is null', () => {
-    //     beforeEach(() => {
-    //       component.gamertag = null;
-    //     });
-    //   });
-    // });
-    // describe('When gameTitle is "Opus"', () => {
-    //   beforeEach(() => {
-    //     component.gameTitle = 'Opus';
-    //   });
+      describe('And gamertag is null', () => {
+        beforeEach(() => {
+          component.gamertag = null;
+        });
+        it('Should not call apollo services for player details', () => {
+          component.ngOnChanges();
 
-    //   describe('When gamertag is null', () => {
-    //     beforeEach(() => {
-    //       component.gamertag = null;
-    //     });
-    //   });
-    // });
+          expect(
+            mockApolloService.getPlayerDetailsByGamertag
+          ).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('And gamertag is valid', () => {
+        let expectedGamertag = 'test-gamertag';
+        beforeEach(() => {
+          component.gamertag = expectedGamertag;
+        });
+        it('Should call apollo service for player details', () => {
+          component.ngOnChanges();
+          expect(
+            mockApolloService.getPlayerDetailsByGamertag
+          ).toHaveBeenCalledWith(expectedGamertag);
+        });
+        it('Should set isLoading to false', () => {
+          component.ngOnChanges();
+          expect(component.isLoading).toBeFalsy();
+        });
+
+        describe('And api returns player details', () => {
+          let expectedPlayerDetails = {
+            xuid: '123456789',
+            gamertag: 'test-gamertag',
+          };
+          beforeEach(() => {
+            mockApolloService.getPlayerDetailsByGamertag = jasmine
+              .createSpy('getPlayerDetailsByGamertag')
+              .and.returnValue(of(expectedPlayerDetails));
+          });
+          it('Should set playerDetails expected response', () => {
+            component.ngOnChanges();
+            expect(component.playerDetails).toEqual(expectedPlayerDetails);
+          });
+        });
+        describe('And api returns error', () => {
+          let expectedError = { message: 'test-error' };
+          beforeEach(() => {
+            mockApolloService.getPlayerDetailsByGamertag = jasmine
+              .createSpy('getPlayerDetailsByGamertag')
+              .and.returnValue(throwError(expectedError));
+          });
+          it('Should set playerDetails expected response', () => {
+            component.ngOnChanges();
+            expect(component.playerDetails).toBeUndefined();
+            expect(component.loadError).toEqual(expectedError);
+          });
+        });
+      });
+    });
+    describe('When gameTitle is "Opus"', () => {
+      beforeEach(() => {
+        component.gameTitle = 'Opus';
+      });
+
+      describe('And gamertag is null', () => {
+        beforeEach(() => {
+          component.gamertag = null;
+        });
+        it('Should not call opus services for player details', () => {
+          component.ngOnChanges();
+
+          expect(
+            mockOpusService.getPlayerDetailsByGamertag
+          ).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('And gamertag is valid', () => {
+        let expectedGamertag = 'test-gamertag';
+        beforeEach(() => {
+          component.gamertag = expectedGamertag;
+        });
+        it('Should call apollo service for player details', () => {
+          component.ngOnChanges();
+          expect(
+            mockOpusService.getPlayerDetailsByGamertag
+          ).toHaveBeenCalledWith(expectedGamertag);
+        });
+        it('Should set isLoading to false', () => {
+          component.ngOnChanges();
+          expect(component.isLoading).toBeFalsy();
+        });
+
+        describe('And api returns player details', () => {
+          let expectedPlayerDetails = {
+            xuid: '123456789',
+            gamertag: 'test-gamertag',
+          };
+          beforeEach(() => {
+            mockOpusService.getPlayerDetailsByGamertag = jasmine
+              .createSpy('getPlayerDetailsByGamertag')
+              .and.returnValue(of(expectedPlayerDetails));
+          });
+          it('Should set playerDetails expected response', () => {
+            component.ngOnChanges();
+            expect(component.playerDetails).toEqual(expectedPlayerDetails);
+          });
+        });
+        describe('And api returns error', () => {
+          let expectedError = { message: 'test-error' };
+          beforeEach(() => {
+            mockOpusService.getPlayerDetailsByGamertag = jasmine
+              .createSpy('getPlayerDetailsByGamertag')
+              .and.returnValue(throwError(expectedError));
+          });
+          it('Should set playerDetails expected response', () => {
+            component.ngOnChanges();
+            expect(component.playerDetails).toBeUndefined();
+            expect(component.loadError).toEqual(expectedError);
+          });
+        });
+      });
+    });
   });
 });

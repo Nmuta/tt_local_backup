@@ -1,10 +1,6 @@
-<section
-  *ngIf="showItem"
-  class="player-details-item-section"
-  (click)="copyToClipboard()"
->
+<div *ngIf="showItem" class="player-details-item" (click)="copyToClipboard()">
   <p class="player-details-item-title">{{name}}:</p>
   <p class="player-details-item-value">{{value}}</p>
 
   <p *ngIf="copied" class="copied-data-message">Copied!</p>
-</section>
+</div>

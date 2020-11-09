@@ -1,4 +1,4 @@
-<section class="player-details-section">
+<section class="player-details">
   <mat-card>
     <mat-card-content>
       <content-collapse>
@@ -11,7 +11,7 @@
             errorMessage="Failed to load"
           ></error-spinner>
         </h2>
-        <section content-body>
+        <div content-body>
           <p>* click on row to copy value</p>
           <ng-container *ngIf="!isLoading && !loadError; else failstate">
             <player-details-item
@@ -151,7 +151,7 @@
               [value]="playerDetails.userAgeGroup"
             ></player-details-item>
           </ng-container>
-        </section>
+        </div>
       </content-collapse>
     </mat-card-content>
   </mat-card>
