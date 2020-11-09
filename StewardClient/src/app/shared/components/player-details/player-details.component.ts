@@ -55,7 +55,6 @@ export abstract class PlayerDetailsComponentBase<T>
     const details$ = this.makeRequest$();
     details$
       .pipe(takeUntil(this.onDestroy$))
-      .pipe(takeUntil(this.onDestroy$))
       .subscribe(
         details => {
           this.isLoading = false;
