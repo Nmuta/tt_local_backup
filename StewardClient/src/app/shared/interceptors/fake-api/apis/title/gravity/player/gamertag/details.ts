@@ -28,7 +28,7 @@ export class GravityPlayerGamertagDetailsFakeApi extends FakeApiBase {
   public static make(): Partial<Unprocessed<GravityPlayerDetails>> {
     return {
       xuid: 189456456,
-      gamertag: 'test-gamertag',
+      gamertag: 'gravity-gamertag',
       country: 'United States',
       region: 'Washington',
       // these are all responses from the old API and aren't actually used by the new UI

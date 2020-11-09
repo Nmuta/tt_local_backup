@@ -28,7 +28,7 @@ export class SunrisePlayerGamertagDetailsFakeApi extends FakeApiBase {
   public static make(): Partial<Unprocessed<SunrisePlayerDetails>> {
     return {
       xuid: 189456456,
-      gamertag: 'test-gamertag',
+      gamertag: 'sunrise-gamertag',
       licensePlate: 'HORIZON',
       region: 'United States',
       currentCareerLevel: '13',

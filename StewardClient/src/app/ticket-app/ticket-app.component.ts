@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
+import { GameTitleCodeNames } from '@models/enums';
 import { Select } from '@ngxs/store';
 import { Clipboard } from '@shared/helpers/clipboard';
 import { ScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser/scrutineer-data-parser.helper';
@@ -26,17 +27,22 @@ export class TicketAppComponent
 
   public loading: boolean;
   public profile: UserModel;
-  public gameTitle: string;
-  public player: any;
+  public xuid: string;
+  public gameTitle: GameTitleCodeNames;
   public gamertag: string;
 
-  constructor(
-    private router: Router,
-    private zendeskService: ZendeskService,
-    private scrutineerDataParser: ScrutineerDataParser,
-    private clipboard: Clipboard
-  ) {
+  public isStreet: boolean;
+  public isFH4: boolean;
+  public isFM7: boolean;
+  public isFH3: boolean;
+
+  constructor(private router: Router, private zendeskService: ZendeskService) {
     super();
+  }
+
+  /** Access layer for html to check again code name enum. */
+  public get gameTitleCodeNames(): typeof GameTitleCodeNames {
+    return GameTitleCodeNames;
   }
 
   /** Logic for the OnInit component lifecycle. */
@@ -103,22 +109,23 @@ export class TicketAppComponent
       .subscribe(response => {
         const titleName = response[`ticket.customField:${titleCustomField}`];
         const titleNameUppercase = titleName.toUpperCase();
+
         this.gameTitle =
           titleNameUppercase === 'FORZA_STREET'
-            ? 'Gravity'
+            ? GameTitleCodeNames.Street
             : titleNameUppercase === 'FORZA_HORIZON_4'
-            ? 'Sunrise'
+            ? GameTitleCodeNames.FH4
             : titleNameUppercase === 'FORZA_MOTORSPORT_7'
-            ? 'Apollo'
+            ? GameTitleCodeNames.FM7
             : titleNameUppercase === 'FORZA_HORIZON_3'
-            ? 'Opus'
+            ? GameTitleCodeNames.FH3
             : null;
       });
   }
 
   /** Opens up inventory app with predefined info filled out. */
   public goToInventory() {
-    const appSection = this.gameTitle + '/' + this.player.xuid;
+    const appSection = this.gameTitle + '/' + this.xuid;
     this.zendeskService.goToApp(
       'nav_bar',
       'forza-inventory-support',

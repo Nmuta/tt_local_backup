@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { environment } from '@environments/environment';
@@ -19,64 +25,47 @@ import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/operators';
 
 /** Defines the player details component. */
-@Component({
-  selector: 'player-details',
-  templateUrl: './player-details.html',
-  styleUrls: ['./player-details.scss'],
-})
-export class PlayerDetailsComponent extends BaseComponent implements OnChanges {
-  @Input() public gameTitle: string;
+export abstract class PlayerDetailsComponentBase<T>
+  extends BaseComponent
+  implements OnChanges {
+  /** Gamertag to lookup for player details. */
   @Input() public gamertag: string;
+  /** Emits xuid when it is found. */
+  @Output() public xuidFoundEvent = new EventEmitter<string>();
 
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */
   public loadError: any;
   /** The player details */
-  public playerDetails: any;
+  public playerDetails: T;
 
-  constructor(
-    public readonly gravityService: GravityService,
-    public readonly sunriseService: SunriseService,
-    public readonly apolloService: ApolloService,
-    public readonly opusService: OpusService
-  ) {
+  constructor() {
     super();
   }
 
+  /** Child class should implement. */
+  public abstract makeRequest$(): Observable<T>;
+
   /** Initialization hook. */
   public ngOnChanges(): void {
-    if (!this.gamertag || !this.gameTitle) {
-      return;
-    }
-
     this.isLoading = true;
     this.loadError = undefined;
-    let details$: Observable<any>;
 
-    if (this.gameTitle === GameTitleCodeNames.Street) {
-      details$ = this.gravityService.getPlayerDetailsByGamertag(this.gamertag);
-    } else if (this.gameTitle === GameTitleCodeNames.FH4) {
-      details$ = this.sunriseService.getPlayerDetailsByGamertag(this.gamertag);
-    } else if (this.gameTitle === GameTitleCodeNames.FM7) {
-      details$ = this.apolloService.getPlayerDetailsByGamertag(this.gamertag);
-    } else if (this.gameTitle === GameTitleCodeNames.FH3) {
-      details$ = this.opusService.getPlayerDetailsByGamertag(this.gamertag);
-    } else {
-      this.isLoading = false;
-      this.loadError = 'Invalid game title.';
-      return;
-    }
-
-    details$.pipe(takeUntil(this.onDestroy$)).subscribe(
-      details => {
-        this.isLoading = false;
-        this.playerDetails = details;
-      },
-      error => {
-        this.isLoading = false;
-        this.loadError = error;
-      }
-    );
+    const details$ = this.makeRequest$();
+    details$
+      .pipe(takeUntil(this.onDestroy$))
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(
+        details => {
+          this.isLoading = false;
+          this.playerDetails = details;
+          this.xuidFoundEvent.emit((this.playerDetails as any).xuid);
+        },
+        error => {
+          this.isLoading = false;
+          this.loadError = error;
+        }
+      );
   }
 }

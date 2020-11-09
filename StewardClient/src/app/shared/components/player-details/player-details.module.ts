@@ -17,7 +17,11 @@ import {
 } from '@fortawesome/angular-fontawesome';
 
 import { PlayerDetailsItemModule } from './player-details-item/player-details-item.module';
-import { PlayerDetailsComponent } from './player-details.component';
+import { PlayerDetailsComponentBase } from './player-details.component';
+import { ApolloPlayerDetailsComponent } from './titles/apollo/apollo-player-details.component';
+import { GravityPlayerDetailsComponent } from './titles/gravity/gravity-player-details.component';
+import { OpusPlayerDetailsComponent } from './titles/opus/opus-player-details.component';
+import { SunrisePlayerDetailsComponent } from './titles/sunrise/sunrise-player-details.component';
 
 /** Defines the player details module. */
 @NgModule({
@@ -32,7 +36,17 @@ import { PlayerDetailsComponent } from './player-details.component';
     PlayerDetailsItemModule,
     ContentCollapseModule,
   ],
-  exports: [PlayerDetailsComponent],
-  declarations: [PlayerDetailsComponent],
+  exports: [
+    GravityPlayerDetailsComponent,
+    SunrisePlayerDetailsComponent,
+    ApolloPlayerDetailsComponent,
+    OpusPlayerDetailsComponent,
+  ],
+  declarations: [
+    GravityPlayerDetailsComponent,
+    SunrisePlayerDetailsComponent,
+    ApolloPlayerDetailsComponent,
+    OpusPlayerDetailsComponent,
+  ],
 })
 export class PlayerDetailsModule {}
