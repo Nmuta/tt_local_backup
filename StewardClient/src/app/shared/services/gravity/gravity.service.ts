@@ -24,7 +24,7 @@ export class GravityService {
     gamertag: string
   ): Observable<GravityPlayerDetails> {
     return this.apiService.getRequest<GravityPlayerDetails>(
-      `${this.basePath}/player/details/gamertag(${gamertag})`
+      `${this.basePath}/player/gamertag(${gamertag})/details`
     );
   }
 
@@ -33,7 +33,7 @@ export class GravityService {
     xuid: string
   ): Observable<GravityPlayerDetails> {
     return this.apiService.getRequest<GravityPlayerDetails>(
-      `${this.basePath}/player/details/xuid(${xuid})`
+      `${this.basePath}/player/xuid(${xuid})/details`
     );
   }
 
@@ -42,7 +42,7 @@ export class GravityService {
     t10Id: string
   ): Observable<GravityPlayerDetails> {
     return this.apiService.getRequest<GravityPlayerDetails>(
-      `${this.basePath}/player/details/t10Id(${t10Id})`
+      `${this.basePath}/player/t10Id(${t10Id})/details`
     );
   }
 
