@@ -28,6 +28,21 @@ export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
 ];
 
+function fakeApiOrNothing(): Provider[] {
+  if (!environment.enableFakeApi) {
+    return [/* nothing */];
+  }
+
+  return [
+    {
+      // TODO: Conditionally include this via module
+      provide: HTTP_INTERCEPTORS,
+      useFactory: () => new (require('./shared/interceptors/fake-api/fake-api.interceptor').FakeApiInterceptor)(),
+      multi: true,
+    }
+  ];
+}
+
 /** Defines the app module. */
 @NgModule({
   declarations: [AppComponent, ErrorComponent, FourOhFourComponent],
@@ -96,12 +111,7 @@ export const protectedResourceMap: [string, string[]][] = [
       useClass: BigintInterceptor,
       multi: true,
     },
-    {
-      // TODO: Conditionally include this via module
-      provide: HTTP_INTERCEPTORS,
-      useClass: FakeApiInterceptor,
-      multi: true,
-    },
+    ...fakeApiOrNothing(),
   ],
   bootstrap: [AppComponent],
 })

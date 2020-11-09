@@ -8,6 +8,7 @@ export const environment: StewardEnvironment = {
   stewardUiUrl: 'https://steward-ui-prod.azurewebsites.net',
   stewardApiUrl: 'https://steward-api-prod.azurewebsites.net',
   oldScrutineerApiUrl: 'https://prod-scrutineer.azurewebsites.net',
+  enableFakeApi: true,
   appInsightsConfig: {
     instrumentationKey: '-- unable to create except for classic --',
     enableAutoRouteTracking: true, // option to log all route changes (do we want this?)
