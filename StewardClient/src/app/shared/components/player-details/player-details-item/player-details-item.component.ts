@@ -8,10 +8,17 @@ import { Clipboard } from '@shared/helpers/clipboard';
   styleUrls: ['./player-details-item.scss'],
 })
 export class PlayerDetailsItemComponent implements OnInit {
+  /** Name of the player detail item. */
   @Input() public name: string;
+  /** Value of the player details item */
   @Input() public value: string;
-  public copied;
-  public showItem;
+
+  /** Determines when to show the 'Copied!' UI notification.  */
+  public copied: boolean;
+  /** Determines if the item should be displayed on the UI */
+  public showItem: boolean;
+  /** The existing timeout object */
+  public timeoutObj: any;
 
   constructor(private clipboard: Clipboard) {}
 
@@ -25,7 +32,9 @@ export class PlayerDetailsItemComponent implements OnInit {
     this.copied = true;
     this.clipboard.copyMessage(this.value);
 
-    setTimeout(() => {
+    if (!!this.timeoutObj) clearTimeout(this.timeoutObj);
+
+    this.timeoutObj = setTimeout(() => {
       this.copied = false;
     }, 1500);
   }
