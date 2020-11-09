@@ -9,8 +9,8 @@ export interface ApolloPlayerDetails {
   region: number;
   lcid: number;
   ipAddress: string;
-  lastLoginUtc: string;
-  firstLoginUtc: string;
+  lastLoginUtc: Date;
+  firstLoginUtc: Date;
   currentDriverModelId: number;
   currentPlayerTitleId: string;
   currentBadgeId: string;

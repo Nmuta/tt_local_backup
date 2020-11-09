@@ -53,18 +53,16 @@ export abstract class PlayerDetailsComponentBase<T>
     this.loadError = undefined;
 
     const details$ = this.makeRequest$();
-    details$
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(
-        details => {
-          this.isLoading = false;
-          this.playerDetails = details;
-          this.xuidFoundEvent.emit((this.playerDetails as any).xuid);
-        },
-        error => {
-          this.isLoading = false;
-          this.loadError = error;
-        }
-      );
+    details$.pipe(takeUntil(this.onDestroy$)).subscribe(
+      details => {
+        this.isLoading = false;
+        this.playerDetails = details;
+        this.xuidFoundEvent.emit((this.playerDetails as any).xuid);
+      },
+      error => {
+        this.isLoading = false;
+        this.loadError = error;
+      }
+    );
   }
 }
