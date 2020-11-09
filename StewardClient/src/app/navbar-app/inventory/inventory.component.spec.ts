@@ -16,17 +16,19 @@ describe('InventoryComponent', () => {
   let fixture: ComponentFixture<InventoryComponent>;
   let component: InventoryComponent;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [InventoryComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [],
+        declarations: [InventoryComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }).compileComponents();
 
-    fixture = TestBed.createComponent(InventoryComponent);
-    component = fixture.debugElement.componentInstance;
-  }));
+      fixture = TestBed.createComponent(InventoryComponent);
+      component = fixture.debugElement.componentInstance;
+    })
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();

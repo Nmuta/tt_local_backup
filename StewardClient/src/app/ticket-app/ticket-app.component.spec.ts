@@ -45,32 +45,34 @@ describe('TicketAppComponent', () => {
   let mockZendeskService: ZendeskService;
   let mockClipboard: Clipboard;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [TicketAppComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockZendeskService(),
-        createMockScrutineerDataParser(),
-        createMockClipboard(),
-        createMockMsalService(),
-      ],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [TicketAppComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockZendeskService(),
+          createMockScrutineerDataParser(),
+          createMockClipboard(),
+          createMockMsalService(),
+        ],
+      }).compileComponents();
 
-    const injector = getTestBed();
-    mockStore = injector.get(Store);
-    mockRouter = injector.get(Router);
-    mockZendeskService = injector.get(ZendeskService);
-    mockClipboard = injector.get(Clipboard);
+      const injector = getTestBed();
+      mockStore = injector.get(Store);
+      mockRouter = injector.get(Router);
+      mockZendeskService = injector.get(ZendeskService);
+      mockClipboard = injector.get(Clipboard);
 
-    fixture = TestBed.createComponent(TicketAppComponent);
-    component = fixture.debugElement.componentInstance;
-  }));
+      fixture = TestBed.createComponent(TicketAppComponent);
+      component = fixture.debugElement.componentInstance;
+    })
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();

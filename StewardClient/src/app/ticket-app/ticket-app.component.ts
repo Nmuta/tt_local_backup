@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BaseComponent } from '@components/base-component/base-component.component';
 import { Select } from '@ngxs/store';
 import { Clipboard } from '@shared/helpers/clipboard';
 import { ScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser/scrutineer-data-parser.helper';
@@ -7,6 +8,7 @@ import { UserModel } from '@shared/models/user.model';
 import { ZendeskService } from '@shared/services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 
@@ -15,7 +17,9 @@ import { environment } from '../../environments/environment';
   templateUrl: './ticket-app.html',
   styleUrls: ['./ticket-app.scss'],
 })
-export class TicketAppComponent implements OnInit, AfterViewInit {
+export class TicketAppComponent
+  extends BaseComponent
+  implements OnInit, AfterViewInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public appName = 'ticket-sidebar';
@@ -31,30 +35,34 @@ export class TicketAppComponent implements OnInit, AfterViewInit {
     private zendeskService: ZendeskService,
     private scrutineerDataParser: ScrutineerDataParser,
     private clipboard: Clipboard
-  ) {}
+  ) {
+    super();
+  }
 
   /** Logic for the OnInit component lifecycle. */
   public ngOnInit() {
     this.loading = true;
-    UserState.latestValidProfile$(this.profile$).subscribe(
-      profile => {
-        this.loading = false;
-        this.profile = profile;
-        if (!this.profile) {
+    UserState.latestValidProfile$(this.profile$)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(
+        profile => {
+          this.loading = false;
+          this.profile = profile;
+          if (!this.profile) {
+            this.router.navigate([`/auth`], {
+              queryParams: { from: this.appName },
+            });
+          } else {
+            this.getTicketRequestor();
+          }
+        },
+        _error => {
+          this.loading = false;
           this.router.navigate([`/auth`], {
             queryParams: { from: this.appName },
           });
-        } else {
-          this.getTicketRequestor();
         }
-      },
-      _error => {
-        this.loading = false;
-        this.router.navigate([`/auth`], {
-          queryParams: { from: this.appName },
-        });
-      }
-    );
+      );
   }
 
   /** Logic for the AfterViewInit component lifecycle. */

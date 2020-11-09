@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
+import { BaseComponent } from '@components/base-component/base-component.component';
 import { environment } from '@environments/environment';
 import { GameTitleCodeNames } from '@models/enums';
 import { Store } from '@ngxs/store';
@@ -15,6 +16,7 @@ import {
 } from '@shared/state/user/user.actions';
 import { Observable } from 'rxjs';
 import { AnonymousSubject } from 'rxjs/internal/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 /** Defines the player details component. */
 @Component({
@@ -22,7 +24,7 @@ import { AnonymousSubject } from 'rxjs/internal/Subject';
   templateUrl: './player-details.html',
   styleUrls: ['./player-details.scss'],
 })
-export class PlayerDetailsComponent implements OnChanges {
+export class PlayerDetailsComponent extends BaseComponent implements OnChanges {
   @Input() public gameTitle: string;
   @Input() public gamertag: string;
 
@@ -38,7 +40,9 @@ export class PlayerDetailsComponent implements OnChanges {
     public readonly sunriseService: SunriseService,
     public readonly apolloService: ApolloService,
     public readonly opusService: OpusService
-  ) {}
+  ) {
+    super();
+  }
 
   /** Initialization hook. */
   public ngOnChanges(): void {
@@ -64,7 +68,7 @@ export class PlayerDetailsComponent implements OnChanges {
       return;
     }
 
-    details$.subscribe(
+    details$.pipe(takeUntil(this.onDestroy$)).subscribe(
       details => {
         this.isLoading = false;
         this.playerDetails = details;
