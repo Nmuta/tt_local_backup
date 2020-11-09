@@ -1,15 +1,14 @@
 .content-collapse-button {
   display: inline-block;
   cursor: pointer;
-  margin-right: 5px;
+  margin-right: 0.5em;
   position: relative;
-  top: -2px;
   width: 25px;
   height: 25px;
-  top: 6px;
+  top: 0.4em;
 
   fa-icon {
     position: relative;
-    top: -8px;
+    top: -0.6em;
   }
 }

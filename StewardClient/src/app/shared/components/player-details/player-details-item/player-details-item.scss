@@ -9,29 +9,28 @@ div.player-details-item {
     background-color: #f5f5f5;
   }
 
-  p {
+  .player-details-item-title, .player-details-item-value {
     font-size: 16px;
     padding: 15px 5px;
     margin: 0;
   }
-}
 
-.player-details-item-title {
-  font-weight: 600;
-  float: left;
-}
-
-.player-details-item-value {
-  float: right;
+  .player-details-item-title {
+    font-weight: 600;
+    float: left;
+  }
+  
+  .player-details-item-value {
+    float: right;
+  }
 }
 
 .copied-data-message {
   position: absolute;
   background-color: $primaryBlue;
-  padding: 10px 15px !important;
-  margin-top: 5px !important;
+  padding: 10px 15px;
   border-radius: 5px;
   color: #fff;
-  right: 0;
-  margin-right: 25px !important;
+  right: 30px;
+  margin-top: 5px;
 }
