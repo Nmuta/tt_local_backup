@@ -4,6 +4,7 @@ import {
   ComponentFixture,
   TestBed,
   getTestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import { ProfileComponent } from './profile.component';
@@ -31,7 +32,7 @@ describe('ProfileComponent', () => {
   let fixture: ComponentFixture<ProfileComponent>;
   let component: ProfileComponent;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([]),

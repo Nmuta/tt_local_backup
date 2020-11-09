@@ -8,6 +8,7 @@ import {
   getTestBed,
   tick,
   fakeAsync,
+  waitForAsync,
 } from '@angular/core/testing';
 import { Store, NgxsModule } from '@ngxs/store';
 import {
@@ -44,7 +45,7 @@ describe('TicketAppComponent', () => {
   let mockZendeskService: ZendeskService;
   let mockClipboard: Clipboard;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([]),

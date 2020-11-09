@@ -56,6 +56,7 @@ export class FakeApiInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
+    request.clone()
     for (const fakeApiConstructor of fakeApiConstructors) {
       const fakeApi = new fakeApiConstructor(request);
       if (fakeApi.canHandle) {

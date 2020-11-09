@@ -6,6 +6,7 @@ import {
   TestBed,
   inject,
   getTestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 
 // Components
@@ -15,7 +16,7 @@ describe('GiftingPageComponent', () => {
   let fixture: ComponentFixture<GiftingPageComponent>;
   let component: GiftingPageComponent;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [],
       declarations: [GiftingPageComponent],

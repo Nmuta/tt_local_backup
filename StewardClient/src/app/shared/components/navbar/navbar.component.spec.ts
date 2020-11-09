@@ -7,6 +7,7 @@ import {
   getTestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -26,7 +27,7 @@ describe('NavbarComponent', () => {
   let mockStore: Store;
   let mockRouter: Router;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([]),

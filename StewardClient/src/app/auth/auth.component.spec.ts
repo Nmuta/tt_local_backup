@@ -11,6 +11,7 @@ import {
   fakeAsync,
   tick,
   flush,
+  waitForAsync,
 } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
@@ -57,7 +58,7 @@ describe('AuthComponent', () => {
   let fixture: ComponentFixture<AuthComponent>;
   let component: AuthComponent;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([]),
