@@ -36,6 +36,7 @@ import { UserModel } from '@shared/models/user.model';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { GameTitleCodeNames } from '@models/enums';
 
 describe('TicketAppComponent', () => {
   let fixture: ComponentFixture<TicketAppComponent>;
@@ -289,11 +290,11 @@ describe('TicketAppComponent', () => {
   });
 
   describe('Method: goToInventory', () => {
-    var gameTitle = 'test-title';
+    var gameTitle = GameTitleCodeNames.Street;
     var xuid = 'test-xuid';
     beforeEach(() => {
       component.gameTitle = gameTitle;
-      component.player = { xuid: xuid };
+      component.xuid = xuid;
       mockZendeskService.goToApp = jasmine.createSpy('goToApp');
     });
 
