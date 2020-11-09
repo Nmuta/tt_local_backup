@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ApolloService {
+export class OpusService {
   public basePath: string = 'v2/title/opus';
 
   constructor(private readonly apiService: ApiService) {}

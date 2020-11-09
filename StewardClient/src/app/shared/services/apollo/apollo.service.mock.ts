@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SunrisePlayerDetails } from '@models/apollo';
+import { ApolloPlayerDetails } from '@models/apollo';
 import { Observable, of } from 'rxjs';
 
 import { ApolloService } from './apollo.service';

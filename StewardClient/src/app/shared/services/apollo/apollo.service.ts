@@ -13,7 +13,7 @@ export class ApolloService {
 
   constructor(private readonly apiService: ApiService) {}
 
-  /** Gets gravity player details with a gamertag. This can be used to retrieve a XUID. */
+  /** Gets apollo player details with a gamertag. This can be used to retrieve a XUID. */
   public getPlayerDetailsByGamertag(
     gamertag: string
   ): Observable<ApolloPlayerDetails> {
