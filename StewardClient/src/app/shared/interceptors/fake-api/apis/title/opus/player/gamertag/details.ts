@@ -28,7 +28,9 @@ export class OpusPlayerGamertagDetailsFakeApi extends FakeApiBase {
   public static make(): Partial<Unprocessed<OpusPlayerDetails>> {
     return {
       xuid: 189456456,
-      gamertag: null,
+      gamertag: 'test-gamertag',
+      region: 'Washington',
+      country: 'United states',
       // these are all responses from the old API and aren't actually used by the new UI
       // firstLogin: '0001-01-01T00:00:00',
       // lastLogin: '0001-01-01T00:00:00',

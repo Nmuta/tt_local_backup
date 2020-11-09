@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { environment } from '@environments/environment';
 import { GameTitleCodeNames } from '@models/enums';
 import { Store } from '@ngxs/store';
+import { ApolloService } from '@services/apollo';
 import { GravityService } from '@services/gravity/gravity.service';
+import { OpusService } from '@services/opus';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { UserModel } from '@shared/models/user.model';
 import { WindowService } from '@shared/services/window';
@@ -33,7 +35,9 @@ export class PlayerDetailsComponent implements OnChanges {
 
   constructor(
     public readonly gravityService: GravityService,
-    public readonly sunriseService: SunriseService
+    public readonly sunriseService: SunriseService,
+    public readonly apolloService: ApolloService,
+    public readonly opusService: OpusService
   ) {}
 
   /** Initialization hook. */
@@ -45,30 +49,23 @@ export class PlayerDetailsComponent implements OnChanges {
     this.isLoading = true;
     this.loadError = undefined;
     let details$: Observable<any>;
-    switch (this.gameTitle) {
-      case GameTitleCodeNames.Street:
-        details$ = this.gravityService.getPlayerDetailsByGamertag(
-          this.gamertag
-        );
-        break;
-      case GameTitleCodeNames.FH4:
-        details$ = this.sunriseService.getPlayerDetailsByGamertag(
-          this.gamertag
-        );
-        break;
-      case GameTitleCodeNames.FM7:
-        break;
-      case GameTitleCodeNames.FH3:
-        break;
-      default:
-        this.isLoading = false;
-        this.loadError = 'Invalid game title.';
-        return;
+
+    if (this.gameTitle === GameTitleCodeNames.Street) {
+      details$ = this.gravityService.getPlayerDetailsByGamertag(this.gamertag);
+    } else if (this.gameTitle === GameTitleCodeNames.FH4) {
+      details$ = this.sunriseService.getPlayerDetailsByGamertag(this.gamertag);
+    } else if (this.gameTitle === GameTitleCodeNames.FM7) {
+      details$ = this.apolloService.getPlayerDetailsByGamertag(this.gamertag);
+    } else if (this.gameTitle === GameTitleCodeNames.FH3) {
+      details$ = this.opusService.getPlayerDetailsByGamertag(this.gamertag);
+    } else {
+      this.isLoading = false;
+      this.loadError = 'Invalid game title.';
+      return;
     }
 
     details$.subscribe(
       details => {
-        console.log('here');
         this.isLoading = false;
         this.playerDetails = details;
       },

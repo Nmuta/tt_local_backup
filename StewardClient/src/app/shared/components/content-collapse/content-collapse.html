@@ -1,7 +1,7 @@
 <button
   mat-mini-fab
   color="primary"
-  [aria-label]="contentCollapsed ? 'Expand Content' : 'Collapse Content'"
+  [attr.aria-label]="contentCollapsed ? 'Expand Content' : 'Collapse Content'"
   class="content-collapse-button"
   (click)="contentCollapsed = !contentCollapsed;"
 >
