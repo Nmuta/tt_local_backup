@@ -9,6 +9,7 @@ import {
 import { ApiService } from '@services/api';
 import { GiftHistoryAntecedent } from '@shared/constants';
 import { Observable, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /** Defines the gravity service. */
 @Injectable({
@@ -25,6 +26,13 @@ export class GravityService {
   ): Observable<GravityPlayerDetails> {
     return this.apiService.getRequest<GravityPlayerDetails>(
       `${this.basePath}/player/gamertag(${gamertag})/details`
+    )
+    .pipe(
+      map(details => {
+        details.firstLoginUtc = new Date(details.firstLoginUtc);
+        details.lastLoginUtc = new Date(details.lastLoginUtc);
+        return details;
+      })
     );
   }
 
@@ -34,6 +42,13 @@ export class GravityService {
   ): Observable<GravityPlayerDetails> {
     return this.apiService.getRequest<GravityPlayerDetails>(
       `${this.basePath}/player/xuid(${xuid})/details`
+    )
+    .pipe(
+      map(details => {
+        details.firstLoginUtc = new Date(details.firstLoginUtc);
+        details.lastLoginUtc = new Date(details.lastLoginUtc);
+        return details;
+      })
     );
   }
 
@@ -43,6 +58,13 @@ export class GravityService {
   ): Observable<GravityPlayerDetails> {
     return this.apiService.getRequest<GravityPlayerDetails>(
       `${this.basePath}/player/t10Id(${t10Id})/details`
+    )
+    .pipe(
+      map(details => {
+        details.firstLoginUtc = new Date(details.firstLoginUtc);
+        details.lastLoginUtc = new Date(details.lastLoginUtc);
+        return details;
+      })
     );
   }
 
