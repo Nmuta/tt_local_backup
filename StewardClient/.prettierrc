@@ -2,5 +2,6 @@
   "arrowParens": "avoid",
   "singleQuote": true,
   "printWidth": 80,
-  "trailingComma": "es5"
+  "trailingComma": "es5",
+  "end-of-line": "auto"
 }
