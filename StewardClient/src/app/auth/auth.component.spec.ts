@@ -11,6 +11,7 @@ import {
   fakeAsync,
   tick,
   flush,
+  waitForAsync,
 } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
@@ -57,35 +58,37 @@ describe('AuthComponent', () => {
   let fixture: ComponentFixture<AuthComponent>;
   let component: AuthComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [AuthComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockZendeskService(),
-        createMockMsalService(),
-        createMockWindowService(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [AuthComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockZendeskService(),
+          createMockMsalService(),
+          createMockWindowService(),
+          createMockLoggerService(),
+        ],
+      }).compileComponents();
 
-    const injector = getTestBed();
-    mockStore = injector.inject(Store);
-    mockWindowService = injector.inject(WindowService);
-    mockMsalService = injector.inject(MsalService);
-    mockRouter = injector.inject(Router);
+      const injector = getTestBed();
+      mockStore = injector.inject(Store);
+      mockWindowService = injector.inject(WindowService);
+      mockMsalService = injector.inject(MsalService);
+      mockRouter = injector.inject(Router);
 
-    mockMsalService.loginRedirect = jasmine.createSpy('loginRedirect');
-    mockMsalService.logout = jasmine.createSpy('logout');
+      mockMsalService.loginRedirect = jasmine.createSpy('loginRedirect');
+      mockMsalService.logout = jasmine.createSpy('logout');
 
-    fixture = TestBed.createComponent(AuthComponent);
-    component = fixture.debugElement.componentInstance;
-  }));
+      fixture = TestBed.createComponent(AuthComponent);
+      component = fixture.debugElement.componentInstance;
+    })
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();

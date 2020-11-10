@@ -1,0 +1,167 @@
+<section class="player-details">
+  <mat-card>
+    <mat-card-content>
+      <content-collapse>
+        <h2 content-title>
+          Player Details
+          <error-spinner
+            [isActive]="false"
+            [error]="loadError"
+            spinnerMessage="Loading"
+            errorMessage="Failed to load"
+          ></error-spinner>
+        </h2>
+        <div content-body>
+          <p>* click on row to copy value</p>
+          <ng-container *ngIf="!isLoading && !loadError; else failstate">
+            <player-details-item
+              [name]="'XUID'"
+              [value]="playerDetails.xuid"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Gamertag'"
+              [value]="playerDetails.gamertag"
+            ></player-details-item>
+            <player-details-item
+              [name]="'First Login'"
+              [value]="playerDetails.firstLogin"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Last Login'"
+              [value]="playerDetails.lastLogin"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Region'"
+              [value]="playerDetails.region"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Country'"
+              [value]="playerDetails.country"
+            ></player-details-item>
+            <player-details-item
+              [name]="'IP Address'"
+              [value]="playerDetails.ipAddress"
+            ></player-details-item>
+            <player-details-item
+              [name]="'LCID'"
+              [value]="playerDetails.lcid"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Environment'"
+              [value]="playerDetails.environment"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Age Group'"
+              [value]="playerDetails.ageGroup"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Subscription Tier'"
+              [value]="playerDetails.subscriptionTier"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Last Game Settings Used'"
+              [value]="playerDetails.lastGameSettingsUsed"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Time Offset (sec)'"
+              [value]="playerDetails.timeOffsetInSeconds"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Inventory Id'"
+              [value]="playerDetails.userInventoryId"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Career Level'"
+              [value]="playerDetails.currentCareerLevel"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Flags'"
+              [value]="playerDetails.flags"
+            ></player-details-item>
+            <player-details-item
+              [name]="'License Plate'"
+              [value]="playerDetails.licensePlate"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Painter Thread Level'"
+              [value]="playerDetails.painterThreadLevel"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Photo Thread Level'"
+              [value]="playerDetails.photoThreadLevel"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Tuner Thread Level'"
+              [value]="playerDetails.tunerThreadLevel"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Blueprint Thread Level'"
+              [value]="playerDetails.blueprintThreadLevel"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Club Id'"
+              [value]="playerDetails.clubId"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Club Tag'"
+              [value]="playerDetails.clubTag"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Role In Club'"
+              [value]="playerDetails.roleInClub"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Team Id'"
+              [value]="playerDetails.teamId"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Team Tag'"
+              [value]="playerDetails.teamTag"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Role In Team'"
+              [value]="playerDetails.roleInTeam"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Current Badge Id'"
+              [value]="playerDetails.currentBadgeId"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Current Driver Model Id'"
+              [value]="playerDetails.currentDriverModelId"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Current Player Title Id'"
+              [value]="playerDetails.currentPlayerTitleId"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Equipped Vanity Item Id'"
+              [value]="playerDetails.equippedVanityItemId"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Accepts Club Invites'"
+              [value]="playerDetails.acceptsClubInvites"
+            ></player-details-item>
+            <player-details-item
+              [name]="'Club Top Tier Count'"
+              [value]="playerDetails.clubTopTierCount"
+            ></player-details-item>
+            <player-details-item
+              [name]="'User Age Group'"
+              [value]="playerDetails.userAgeGroup"
+            ></player-details-item>
+          </ng-container>
+        </div>
+      </content-collapse>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<ng-template #failstate>
+  <mat-progress-spinner
+    *ngIf="isLoading"
+    mode="indeterminate"
+  ></mat-progress-spinner>
+  <p *ngIf="loadError">Failed to load.</p>
+  <pre *ngIf="loadError">{{ loadError | json }}</pre>
+</ng-template>

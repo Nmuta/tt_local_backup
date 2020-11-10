@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { async, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   Store,
   NgxsModule,
@@ -19,20 +19,22 @@ describe('State: User', () => {
   let actions$: Actions;
   let mockAuthService: MsalService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
-      providers: [createMockMsalService()],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
+        providers: [createMockMsalService()],
+      }).compileComponents();
 
-    store = TestBed.get(Store);
-    actions$ = TestBed.get(Actions);
-    mockAuthService = TestBed.get(MsalService);
+      store = TestBed.get(Store);
+      actions$ = TestBed.get(Actions);
+      mockAuthService = TestBed.get(MsalService);
 
-    mockAuthService.acquireTokenSilent = jasmine
-      .createSpy('acquireTokenSilent')
-      .and.returnValue(of({}));
-  }));
+      mockAuthService.acquireTokenSilent = jasmine
+        .createSpy('acquireTokenSilent')
+        .and.returnValue(of({}));
+    })
+  );
   describe('[ResetAccessToken] Action', () => {
     let action;
     beforeEach(() => {

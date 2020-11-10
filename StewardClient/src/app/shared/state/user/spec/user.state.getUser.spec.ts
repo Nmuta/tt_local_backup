@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { async, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   Store,
   NgxsModule,
@@ -19,20 +19,22 @@ describe('State: User', () => {
   let actions$: Actions;
   let mockUserService: UserService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
-      providers: [createMockUserService(), createMockMsalService()],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
+        providers: [createMockUserService(), createMockMsalService()],
+      }).compileComponents();
 
-    store = TestBed.get(Store);
-    actions$ = TestBed.get(Actions);
-    mockUserService = TestBed.get(UserService);
+      store = TestBed.get(Store);
+      actions$ = TestBed.get(Actions);
+      mockUserService = TestBed.get(UserService);
 
-    mockUserService.getUserProfile = jasmine
-      .createSpy('getUserProfile')
-      .and.returnValue(of({}));
-  }));
+      mockUserService.getUserProfile = jasmine
+        .createSpy('getUserProfile')
+        .and.returnValue(of({}));
+    })
+  );
   describe('[GetUser] Action', () => {
     let action;
     beforeEach(() => {

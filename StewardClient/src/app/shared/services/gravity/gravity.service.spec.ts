@@ -34,7 +34,7 @@ describe('service: GravityService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(res => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/details/gamertag(${expectedGamertag})`
+          `${service.basePath}/player/gamertag(${expectedGamertag})/details`
         );
         done();
       });
@@ -54,7 +54,7 @@ describe('service: GravityService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getPlayerDetailsByXuid(expectedXuid).subscribe(res => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/details/xuid(${expectedXuid})`
+          `${service.basePath}/player/xuid(${expectedXuid})/details`
         );
         done();
       });
@@ -74,7 +74,7 @@ describe('service: GravityService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getPlayerDetailsByT10Id(expectedT10Id).subscribe(res => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/details/t10Id(${expectedT10Id})`
+          `${service.basePath}/player/t10Id(${expectedT10Id})/details`
         );
         done();
       });

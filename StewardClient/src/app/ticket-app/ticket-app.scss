@@ -1,0 +1,28 @@
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.ticket-info-item {
+  width: 100%;
+}
+
+h1,
+h2 {
+  display: inline-block;
+  margin: 0px;
+}
+
+.actions-div {
+  width: 100%;
+  margin-top: 20px;
+
+  button {
+    min-width: 200px;
+  }
+}
+
+.quick-actions-section {
+  margin-top: 20px;
+}

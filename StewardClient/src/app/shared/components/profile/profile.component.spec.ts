@@ -4,6 +4,7 @@ import {
   ComponentFixture,
   TestBed,
   getTestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import { ProfileComponent } from './profile.component';
@@ -31,26 +32,28 @@ describe('ProfileComponent', () => {
   let fixture: ComponentFixture<ProfileComponent>;
   let component: ProfileComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [ProfileComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockWindowService(), createMockMsalService()],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [ProfileComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockWindowService(), createMockMsalService()],
+      }).compileComponents();
 
-    const injector = getTestBed();
-    mockWindowService = injector.get(WindowService);
-    mockRouter = injector.get(Router);
-    mockStore = injector.get(Store);
+      const injector = getTestBed();
+      mockWindowService = injector.get(WindowService);
+      mockRouter = injector.get(Router);
+      mockStore = injector.get(Store);
 
-    fixture = TestBed.createComponent(ProfileComponent);
-    component = fixture.debugElement.componentInstance;
-  }));
+      fixture = TestBed.createComponent(ProfileComponent);
+      component = fixture.debugElement.componentInstance;
+    })
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();

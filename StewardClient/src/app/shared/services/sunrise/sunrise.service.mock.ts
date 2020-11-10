@@ -13,7 +13,7 @@ import { SunriseService } from './sunrise.service';
 export class MockSunriseService {
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
-    .and.returnValue(of());
+    .and.returnValue(of({}));
   public getFlagsByXuid = jasmine
     .createSpy('getFlagsByXuid')
     .and.returnValue(of());
