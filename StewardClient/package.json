@@ -15,11 +15,11 @@
     "test:cc": "ng test --karma-config=src/karma-coverage.conf.js --source-map=true --code-coverage",
     "test:chrome": "ng test --karma-config=src/karma.conf.js --source-map=true",
     "test:ff": "ng test --karma-config=src/karma-firefox.conf.js --source-map=true",
-    "test:ado": "ng test --code-coverage --karma-config=src/karma-vsts.conf.js",
-    "test:ado:ncc": "ng test --karma-config=src/karma-vsts.conf.js",
-    "build:dev": "(ng build --prod --configuration=dev --crossOrigin=anonymous) && npm run build:dev:configMoveToBuild",
+    "test:ado": "ng test --code-coverage --karma-config=src/karma-ado.conf.js",
+    "test:ado:ncc": "ng test --karma-config=src/karma-ado.conf.js",
+    "build:dev": "(ng build --prod --configuration=dev --crossOrigin=anonymous) && yarn run build:dev:configMoveToBuild",
     "build:dev:configMoveToBuild": "cp web.config dist/",
-    "build:prod": "(ng build --prod --configuration=production --crossOrigin=anonymous --subresource-integrity=true) && npm run configMoveToBuild"
+    "build:prod": "(ng build --prod --configuration=production --crossOrigin=anonymous --subresource-integrity=true) && yarn run build:dev:configMoveToBuild"
   },
   "private": true,
   "dependencies": {
