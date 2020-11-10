@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
 import { NavbarModule } from '@components/navbar/navbar.module';
@@ -9,7 +9,6 @@ import {
 } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { BigintInterceptor } from '@interceptors/bigint.interceptor';
-import { FakeApiInterceptor } from '@interceptors/fake-api/fake-api.interceptor';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { NgxsModule } from '@ngxs/store';
 import { LoggerService } from '@services/logger/logger.service';
