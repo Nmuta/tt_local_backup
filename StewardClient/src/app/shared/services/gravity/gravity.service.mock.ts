@@ -3,9 +3,13 @@ import { of } from 'rxjs';
 
 import { GravityService } from './gravity.service';
 
-/** Defines the mock for the API Service. */
+/** Defines the mock for the Gravity Service. */
 @Injectable()
-export class MockGravityService {}
+export class MockGravityService {
+  public getPlayerDetailsByGamertag = jasmine
+    .createSpy('getPlayerDetailsByGamertag')
+    .and.returnValue(of({}));
+}
 
 export function createMockGravityService() {
   return {

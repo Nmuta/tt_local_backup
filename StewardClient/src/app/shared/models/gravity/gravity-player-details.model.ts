@@ -10,8 +10,8 @@ export interface GravityPlayerDetails {
   region?: number;
   ipAddress?: string;
   subscriptionTier?: string;
-  lastLoginUtc?: any;
-  firstLoginUtc?: any;
+  lastLoginUtc?: Date;
+  firstLoginUtc?: Date;
   ageGroup?: any;
   timeOffsetInSeconds?: number;
   lastGameSettingsUsed?: any;

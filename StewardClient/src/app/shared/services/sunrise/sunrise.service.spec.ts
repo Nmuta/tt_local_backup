@@ -11,6 +11,7 @@ import { SunriseUserFlags } from '@models/sunrise';
 import { ApiService, createMockApiService } from '@services/api';
 
 import * as faker from 'faker';
+import { of } from 'rxjs';
 
 import { SunriseService } from './sunrise.service';
 
@@ -23,9 +24,7 @@ describe('SunriseService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [
-        createMockApiService(() => nextReturnValue),
-      ],
+      providers: [createMockApiService(() => nextReturnValue)],
     });
     injector = getTestBed();
     service = injector.inject(SunriseService);
@@ -36,17 +35,24 @@ describe('SunriseService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('handles getPlayerDetailsByGamertag', done => {
-    const typedReturnValue = (nextReturnValue = SunrisePlayerGamertagDetailsFakeApi.make());
-    service
-      .getPlayerDetailsByGamertag(typedReturnValue.gamertag)
-      .subscribe(output => {
-        expect(output).toEqual(
-          nextReturnValue as any,
-          'fields should not be modified'
+  describe('Method: getPlayerDetailsByGamertag', () => {
+    var expectedGamertag;
+
+    beforeEach(() => {
+      expectedGamertag = 'test-gamertag';
+      apiServiceMock.getRequest = jasmine
+        .createSpy('getRequest')
+        .and.returnValue(of({}));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(res => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/gamertag(${expectedGamertag})/details`
         );
         done();
       });
+    });
   });
 
   it('handles getFlagsByXuid', done => {

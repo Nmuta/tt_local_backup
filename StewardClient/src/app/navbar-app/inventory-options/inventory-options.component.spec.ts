@@ -6,6 +6,7 @@ import {
   TestBed,
   inject,
   getTestBed,
+  waitForAsync,
 } from '@angular/core/testing';
 
 // Components
@@ -15,17 +16,19 @@ describe('InventoryOptionsComponent', () => {
   let fixture: ComponentFixture<InventoryOptionsComponent>;
   let component: InventoryOptionsComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [InventoryOptionsComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [],
+        declarations: [InventoryOptionsComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }).compileComponents();
 
-    fixture = TestBed.createComponent(InventoryOptionsComponent);
-    component = fixture.debugElement.componentInstance;
-  }));
+      fixture = TestBed.createComponent(InventoryOptionsComponent);
+      component = fixture.debugElement.componentInstance;
+    })
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();
