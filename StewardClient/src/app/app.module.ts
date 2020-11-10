@@ -30,16 +30,19 @@ export const protectedResourceMap: [string, string[]][] = [
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
-    return [/* nothing */];
+    return [
+      /* nothing */
+    ];
   }
 
   return [
     {
       // TODO: Conditionally include this via module
       provide: HTTP_INTERCEPTORS,
-      useFactory: () => new (require('./shared/interceptors/fake-api/fake-api.interceptor').FakeApiInterceptor)(),
+      useFactory: () =>
+        new (require('./shared/interceptors/fake-api/fake-api.interceptor').FakeApiInterceptor)(),
       multi: true,
-    }
+    },
   ];
 }
 
