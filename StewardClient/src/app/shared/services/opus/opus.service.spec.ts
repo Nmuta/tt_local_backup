@@ -3,6 +3,7 @@ import { OpusPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/ti
 import { ApiService, createMockApiService } from '@services/api';
 
 import * as faker from 'faker';
+import { of } from 'rxjs';
 
 import { OpusService } from './opus.service';
 
@@ -26,16 +27,23 @@ describe('OpusService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('handles getPlayerDetailsByGamertag', done => {
-    const typedReturnValue = (nextReturnValue = OpusPlayerGamertagDetailsFakeApi.make());
-    service
-      .getPlayerDetailsByGamertag(typedReturnValue.gamertag)
-      .subscribe(output => {
-        expect(output).toEqual(
-          nextReturnValue as any,
-          'fields should not be modified'
+  describe('Method: getPlayerDetailsByGamertag', () => {
+    var expectedGamertag;
+
+    beforeEach(() => {
+      expectedGamertag = 'test-gamertag';
+      apiServiceMock.getRequest = jasmine
+        .createSpy('getRequest')
+        .and.returnValue(of({}));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(res => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/gamertag(${expectedGamertag})/details`
         );
         done();
       });
+    });
   });
 });

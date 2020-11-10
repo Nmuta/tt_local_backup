@@ -3,6 +3,7 @@ import { ApolloPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/
 import { ApiService, createMockApiService } from '@services/api';
 
 import * as faker from 'faker';
+import { of } from 'rxjs';
 
 import { ApolloService } from './apollo.service';
 
@@ -26,16 +27,23 @@ describe('ApolloService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('handles getPlayerDetailsByGamertag', done => {
-    const typedReturnValue = (nextReturnValue = ApolloPlayerGamertagDetailsFakeApi.make());
-    service
-      .getPlayerDetailsByGamertag(typedReturnValue.gamertag)
-      .subscribe(output => {
-        expect(output).toEqual(
-          nextReturnValue as any,
-          'fields should not be modified'
+  describe('Method: getPlayerDetailsByGamertag', () => {
+    var expectedGamertag;
+
+    beforeEach(() => {
+      expectedGamertag = 'test-gamertag';
+      apiServiceMock.getRequest = jasmine
+        .createSpy('getRequest')
+        .and.returnValue(of({}));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(res => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/gamertag(${expectedGamertag})/details`
         );
         done();
       });
+    });
   });
 });

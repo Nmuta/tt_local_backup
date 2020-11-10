@@ -29,8 +29,8 @@ export class GravityService {
     )
     .pipe(
       map(details => {
-        details.firstLoginUtc = new Date(details.firstLoginUtc);
-        details.lastLoginUtc = new Date(details.lastLoginUtc);
+        details.firstLoginUtc = !!details.firstLoginUtc ? new Date(details.firstLoginUtc) : null;
+        details.lastLoginUtc = !!details.lastLoginUtc ? new Date(details.lastLoginUtc) : null;
         return details;
       })
     );
@@ -45,8 +45,8 @@ export class GravityService {
     )
     .pipe(
       map(details => {
-        details.firstLoginUtc = new Date(details.firstLoginUtc);
-        details.lastLoginUtc = new Date(details.lastLoginUtc);
+        details.firstLoginUtc = !!details.firstLoginUtc ? new Date(details.firstLoginUtc) : null;
+        details.lastLoginUtc = !!details.lastLoginUtc ? new Date(details.lastLoginUtc) : null;
         return details;
       })
     );
@@ -61,8 +61,8 @@ export class GravityService {
     )
     .pipe(
       map(details => {
-        details.firstLoginUtc = new Date(details.firstLoginUtc);
-        details.lastLoginUtc = new Date(details.lastLoginUtc);
+        details.firstLoginUtc = !!details.firstLoginUtc ? new Date(details.firstLoginUtc) : null;
+        details.lastLoginUtc = !!details.lastLoginUtc ? new Date(details.lastLoginUtc) : null;
         return details;
       })
     );
