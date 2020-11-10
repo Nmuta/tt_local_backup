@@ -25,6 +25,10 @@ import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/operators';
 
 /** Defines the player details component. */
+@Component({
+  template: '',
+})
+// tslint:disable-next-line: component-class-suffix
 export abstract class PlayerDetailsComponentBase<T>
   extends BaseComponent
   implements OnChanges {

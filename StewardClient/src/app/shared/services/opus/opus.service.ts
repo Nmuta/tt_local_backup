@@ -6,7 +6,6 @@ import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-
 /** Handles calls to Sunrise API routes. */
 @Injectable({
   providedIn: 'root',
@@ -26,8 +25,12 @@ export class OpusService {
       )
       .pipe(
         map(details => {
-          details.firstLoginUtc = !!details.firstLoginUtc ? new Date(details.firstLoginUtc) : null;
-          details.lastLoginUtc = !!details.lastLoginUtc ? new Date(details.lastLoginUtc) : null;
+          details.firstLoginUtc = !!details.firstLoginUtc
+            ? new Date(details.firstLoginUtc)
+            : null;
+          details.lastLoginUtc = !!details.lastLoginUtc
+            ? new Date(details.lastLoginUtc)
+            : null;
           return details;
         })
       );
