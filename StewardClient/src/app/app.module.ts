@@ -37,7 +37,6 @@ function fakeApiOrNothing(): Provider[] {
 
   return [
     {
-      // TODO: Conditionally include this via module
       provide: HTTP_INTERCEPTORS,
       useFactory: () =>
         new (require('./shared/interceptors/fake-api/fake-api.interceptor').FakeApiInterceptor)(),
