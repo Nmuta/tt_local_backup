@@ -22,6 +22,7 @@ module.exports = {
      */
     {
       files: ['*.ts'],
+      parser: "@typescript-eslint/parser",
       parserOptions: {
         project: [
           'tsconfig.*?.json',
@@ -35,7 +36,7 @@ module.exports = {
         'prettier',
         'prettier/@typescript-eslint',
       ],
-      plugins: ['@typescript-eslint'],
+      plugins: [],
       rules: {
         /**
          * Any TypeScript related rules you wish to use/reconfigure over and above the
@@ -106,7 +107,7 @@ module.exports = {
             ],
           },
         ],
-        "@typescript-eslint/no-unused-vars": "error",
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
       },
     },
 

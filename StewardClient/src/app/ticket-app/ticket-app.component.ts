@@ -3,15 +3,12 @@ import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GameTitleCodeNames } from '@models/enums';
 import { Select } from '@ngxs/store';
-import { Clipboard } from '@shared/helpers/clipboard';
-import { ScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser/scrutineer-data-parser.helper';
 import { UserModel } from '@shared/models/user.model';
 import { ZendeskService } from '@shared/services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { environment } from '../../environments/environment';
 
 /** Defines the ticket sidebar component. */
 @Component({
@@ -46,7 +43,7 @@ export class TicketAppComponent
   }
 
   /** Logic for the OnInit component lifecycle. */
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.loading = true;
     UserState.latestValidProfile$(this.profile$)
       .pipe(takeUntil(this.onDestroy$))
@@ -72,13 +69,13 @@ export class TicketAppComponent
   }
 
   /** Logic for the AfterViewInit component lifecycle. */
-  public ngAfterViewInit() {
+  public ngAfterViewInit(): void {
     this.zendeskService.resize('100%', '500px');
   }
 
   /** Gets the ticket requestor information. */
-  public getTicketRequestor() {
-    this.zendeskService.getTicketRequestor().subscribe((response: any) => {
+  public getTicketRequestor(): void {
+    this.zendeskService.getTicketRequestor().subscribe(response => {
       const requester = response['ticket.requester'];
 
       // TODO: Check if gamertag was input into the custom ticket field.
@@ -89,8 +86,8 @@ export class TicketAppComponent
   }
 
   /** Gets all the ticket's custom fields. */
-  public getTicketFields() {
-    this.zendeskService.getTicketFields().subscribe((response: any) => {
+  public getTicketFields(): void {
+    this.zendeskService.getTicketFields().subscribe(response => {
       const ticketFields = response.ticketFields;
       let titleCustomField = '';
       for (const field in ticketFields) {
@@ -103,7 +100,7 @@ export class TicketAppComponent
   }
 
   /** Gets title data from ticket. */
-  public getTitleData(titleCustomField) {
+  public getTitleData(titleCustomField: string): void {
     this.zendeskService
       .getTicketCustomField(titleCustomField)
       .subscribe(response => {
@@ -124,7 +121,7 @@ export class TicketAppComponent
   }
 
   /** Opens up inventory app with predefined info filled out. */
-  public goToInventory() {
+  public goToInventory(): void {
     const appSection = this.gameTitle + '/' + this.xuid;
     this.zendeskService.goToApp(
       'nav_bar',

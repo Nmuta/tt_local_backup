@@ -169,8 +169,10 @@
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
-          "eslintConfig": ".eslintrc.js",
           "options": {
+            "eslintConfig": ".eslintrc.js",
+            "fix": true,
+            "cache": true,
             "lintFilePatterns": [
               "src/**/*.ts",
               "src/**/*.component.html"

@@ -1,24 +1,21 @@
 // General
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
-  async,
   ComponentFixture,
   TestBed,
-  inject,
   getTestBed,
   tick,
   fakeAsync,
   waitForAsync,
 } from '@angular/core/testing';
-import { Store, NgxsModule } from '@ngxs/store';
+import { NgxsModule } from '@ngxs/store';
 import {
   HttpClientTestingModule,
-  HttpTestingController,
 } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Helpers
-import { createMockClipboard, Clipboard } from '@shared/helpers/clipboard';
+import { createMockClipboard } from '@shared/helpers/clipboard';
 import { createMockScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser';
 
 // Components
@@ -41,10 +38,8 @@ import { GameTitleCodeNames } from '@models/enums';
 describe('TicketAppComponent', () => {
   let fixture: ComponentFixture<TicketAppComponent>;
   let component: TicketAppComponent;
-  let mockStore: Store;
   let mockRouter: Router;
   let mockZendeskService: ZendeskService;
-  let mockClipboard: Clipboard;
 
   beforeEach(
     waitForAsync(() => {
@@ -65,10 +60,8 @@ describe('TicketAppComponent', () => {
       }).compileComponents();
 
       const injector = getTestBed();
-      mockStore = injector.get(Store);
       mockRouter = injector.get(Router);
       mockZendeskService = injector.get(ZendeskService);
-      mockClipboard = injector.get(Clipboard);
 
       fixture = TestBed.createComponent(TicketAppComponent);
       component = fixture.debugElement.componentInstance;
