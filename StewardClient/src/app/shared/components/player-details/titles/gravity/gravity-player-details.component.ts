@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { PlayerDetailsComponentBase } from '@components/player-details/player-details.component';
+import { PlayerDetailsBaseComponent } from '@components/player-details/player-details.base.component';
 import { GravityPlayerDetails } from '@models/gravity';
 import { GravityService } from '@services/gravity';
 import { Observable } from 'rxjs';
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
   inputs: ['gamertag'],
   outputs: ['xuidFoundEvent'],
 })
-export class GravityPlayerDetailsComponent extends PlayerDetailsComponentBase<
+export class GravityPlayerDetailsComponent extends PlayerDetailsBaseComponent<
   GravityPlayerDetails
 > {
   constructor(public readonly gravityService: GravityService) {

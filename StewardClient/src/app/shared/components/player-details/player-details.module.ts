@@ -17,7 +17,7 @@ import {
 } from '@fortawesome/angular-fontawesome';
 
 import { PlayerDetailsItemModule } from './player-details-item/player-details-item.module';
-import { PlayerDetailsComponentBase } from './player-details.component';
+import { PlayerDetailsBaseComponent } from './player-details.base.component';
 import { ApolloPlayerDetailsComponent } from './titles/apollo/apollo-player-details.component';
 import { GravityPlayerDetailsComponent } from './titles/gravity/gravity-player-details.component';
 import { OpusPlayerDetailsComponent } from './titles/opus/opus-player-details.component';

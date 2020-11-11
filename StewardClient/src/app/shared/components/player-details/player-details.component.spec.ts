@@ -7,7 +7,7 @@ import {
   waitForAsync,
 } from '@angular/core/testing';
 import { environment } from '@environments/environment';
-import { PlayerDetailsComponentBase } from './player-details.component';
+import { PlayerDetailsBaseComponent } from './player-details.base.component';
 import {
   WindowService,
   createMockWindowService,
@@ -32,8 +32,8 @@ describe('PlayerDetailsComponent', () => {
   let mockApolloService: ApolloService;
   let mockOpusService: OpusService;
 
-  let fixture: ComponentFixture<PlayerDetailsComponentBase<any>>;
-  let component: PlayerDetailsComponentBase<any>;
+  let fixture: ComponentFixture<PlayerDetailsBaseComponent<any>>;
+  let component: PlayerDetailsBaseComponent<any>;
 
   beforeEach(
     waitForAsync(() => {
@@ -43,7 +43,7 @@ describe('PlayerDetailsComponent', () => {
           HttpClientTestingModule,
           NgxsModule.forRoot([UserState]),
         ],
-        declarations: [PlayerDetailsComponentBase],
+        declarations: [PlayerDetailsBaseComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           createMockWindowService(),
@@ -61,7 +61,7 @@ describe('PlayerDetailsComponent', () => {
       mockApolloService = injector.inject(ApolloService);
       mockOpusService = injector.inject(OpusService);
 
-      fixture = TestBed.createComponent(PlayerDetailsComponentBase as any);
+      fixture = TestBed.createComponent(PlayerDetailsBaseComponent as any);
       component = fixture.debugElement.componentInstance;
 
       component.makeRequest$ = jasmine

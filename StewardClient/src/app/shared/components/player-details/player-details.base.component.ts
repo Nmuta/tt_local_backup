@@ -28,8 +28,8 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   template: '',
 })
-// tslint:disable-next-line: component-class-suffix
-export abstract class PlayerDetailsComponentBase<T>
+// eslint-disable-next-line @angular-eslint/component-class-suffix
+export abstract class PlayerDetailsBaseComponent<T>
   extends BaseComponent
   implements OnChanges {
   /** Gamertag to lookup for player details. */

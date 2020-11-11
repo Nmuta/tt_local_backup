@@ -5,8 +5,8 @@ import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { LogLevel } from './log-level';
 import { LogTopic } from './log-topic';
 
-// tslint:disable: no-console
-// tslint:disable: no-debugger
+/* eslint-disable no-console */
+/* eslint-disable no-debugger */
 
 /** A logger service that acts as a configurable proxy for console.log and app insights. */
 @Injectable({ providedIn: 'root' })
