@@ -32,6 +32,8 @@ module.exports = {
       extends: [
         'plugin:@angular-eslint/recommended',
         'plugin:@typescript-eslint/recommended',
+        'prettier',
+        'prettier/@typescript-eslint',
       ],
       plugins: ['@typescript-eslint'],
       rules: {
@@ -52,7 +54,6 @@ module.exports = {
           { type: 'element', prefix: 'app', style: 'kebab-case' },
         ],
         quotes: ['error', 'single', { allowTemplateLiterals: true }],
-        // '@typescript-eslint/ban-types': 'warn',
         '@angular-eslint/component-selector': 'off', // why? naming convention feels repetitive (may want to flip this if we run into conflicts)
         '@typescript-eslint/member-ordering': [
           'error',
@@ -105,6 +106,7 @@ module.exports = {
             ],
           },
         ],
+        "@typescript-eslint/no-unused-vars": "error",
       },
     },
 
