@@ -9,8 +9,6 @@ import { Observable } from 'rxjs';
   selector: 'opus-player-details',
   templateUrl: '../../player-details.html',
   styleUrls: ['../../player-details.scss'],
-  inputs: ['gamertag'],
-  outputs: ['xuidFoundEvent'],
 })
 export class OpusPlayerDetailsComponent extends PlayerDetailsBaseComponent<
   OpusPlayerDetails

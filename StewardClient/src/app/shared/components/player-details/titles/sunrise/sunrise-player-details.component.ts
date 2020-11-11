@@ -10,8 +10,6 @@ import { Observable } from 'rxjs';
   selector: 'sunrise-player-details',
   templateUrl: '../../player-details.html',
   styleUrls: ['../../player-details.scss'],
-  inputs: ['gamertag'],
-  outputs: ['xuidFoundEvent'],
 })
 export class SunrisePlayerDetailsComponent extends PlayerDetailsBaseComponent<
   SunrisePlayerDetails
