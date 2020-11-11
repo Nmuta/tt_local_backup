@@ -28,13 +28,11 @@ describe('ApolloService', () => {
   });
 
   describe('Method: getPlayerDetailsByGamertag', () => {
-    var expectedGamertag;
+    let expectedGamertag: string;
 
     beforeEach(() => {
       expectedGamertag = 'test-gamertag';
-      apiServiceMock.getRequest = jasmine
-        .createSpy('getRequest')
-        .and.returnValue(of({}));
+      nextReturnValue = {};
     });
 
     it('should call API service getRequest with the expected params', done => {

@@ -88,7 +88,7 @@ describe('PlayerDetailsComponent', () => {
       })
     );
     describe('And api returns player details', () => {
-      let expectedPlayerDetails = {
+      const expectedPlayerDetails = {
         xuid: '123456789',
         gamertag: 'test-gamertag',
       };
@@ -103,7 +103,7 @@ describe('PlayerDetailsComponent', () => {
       });
     });
     describe('And api returns error', () => {
-      let expectedError = { message: 'test-error' };
+      const expectedError = { message: 'test-error' };
       beforeEach(() => {
         component.makeRequest$ = jasmine
           .createSpy('getPlayerDetailsByGamertag')

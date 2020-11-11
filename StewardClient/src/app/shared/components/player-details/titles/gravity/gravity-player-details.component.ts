@@ -9,8 +9,6 @@ import { Observable } from 'rxjs';
   selector: 'gravity-player-details',
   templateUrl: '../../player-details.html',
   styleUrls: ['../../player-details.scss'],
-  inputs: ['gamertag'],
-  outputs: ['xuidFoundEvent'],
 })
 export class GravityPlayerDetailsComponent extends PlayerDetailsBaseComponent<
   GravityPlayerDetails

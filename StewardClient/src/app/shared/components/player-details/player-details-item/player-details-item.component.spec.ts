@@ -68,7 +68,7 @@ describe('PlayerDetailsItemComponent', () => {
   });
 
   describe('Method: copyToClipboard', () => {
-    var testCopyData = 'value data to copy';
+    const testCopyData = 'value data to copy';
     beforeEach(() => {
       component.value = testCopyData;
       mockClipboard.copyMessage = jasmine.createSpy('copyMessage');

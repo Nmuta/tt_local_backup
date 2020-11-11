@@ -9,6 +9,7 @@ import {
 } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { BigintInterceptor } from '@interceptors/bigint.interceptor';
+import { FakeApiInterceptor } from '@interceptors/fake-api/fake-api.interceptor';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { NgxsModule } from '@ngxs/store';
 import { LoggerService } from '@services/logger/logger.service';
@@ -37,8 +38,7 @@ function fakeApiOrNothing(): Provider[] {
   return [
     {
       provide: HTTP_INTERCEPTORS,
-      useFactory: () =>
-        new (require('./shared/interceptors/fake-api/fake-api.interceptor').FakeApiInterceptor)(),
+      useClass: FakeApiInterceptor,
       multi: true,
     },
   ];

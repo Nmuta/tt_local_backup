@@ -40,6 +40,8 @@ module.exports = {
            *
            * There are some examples below from the @angular-eslint plugin and ESLint core:
            */
+          "@typescript-eslint/no-inferrable-types": "off", // why? over-specification of inferrable types is a style choice
+          "max-len": "off", // why? prettier may go above or below the target max length. just let it do its thing
           "@angular-eslint/directive-selector": [
             "error",
             { "type": "attribute", "prefix": "app", "style": "camelCase" }
@@ -48,7 +50,10 @@ module.exports = {
             "error",
             { "type": "element", "prefix": "app", "style": "kebab-case" }
           ],
-          "quotes": ["error", "single", { "allowTemplateLiterals": true }]
+          "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+          "@typescript-eslint/ban-types": "warn",
+          "@angular-eslint/component-selector": "off", // TODO: discuss
+          "@typescript-eslint/member-ordering": "off", // TODO: this should be turned on and configured
         }
       },
   

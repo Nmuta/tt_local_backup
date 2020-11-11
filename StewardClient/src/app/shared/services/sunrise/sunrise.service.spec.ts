@@ -36,7 +36,7 @@ describe('SunriseService', () => {
   });
 
   describe('Method: getPlayerDetailsByGamertag', () => {
-    var expectedGamertag;
+    let expectedGamertag;
 
     beforeEach(() => {
       expectedGamertag = 'test-gamertag';
@@ -100,8 +100,8 @@ describe('SunriseService', () => {
       );
 
       // clear the validated fields
-      for (let value of [output, typedReturnValue]) {
-        for (let history of [
+      for (const value of [output, typedReturnValue]) {
+        for (const history of [
           value.liveOpsBanHistory,
           value.servicesBanHistory,
         ]) {
@@ -111,7 +111,7 @@ describe('SunriseService', () => {
       }
 
       expect(output).toEqual(
-        nextReturnValue as any,
+        nextReturnValue as unknown,
         'other fields should not be modified'
       );
 

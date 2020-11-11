@@ -61,7 +61,7 @@ describe('GravityPlayerDetailsComponent', () => {
     });
     it('should return apollo player details request observable', () => {
       const apolloPlayerDetailsObs = component.makeRequest$();
-      apolloPlayerDetailsObs.subscribe(data => {});
+      apolloPlayerDetailsObs.subscribe(data => { /* nothing */});
 
       expect(
         mockGravityService.getPlayerDetailsByGamertag

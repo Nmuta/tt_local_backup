@@ -84,7 +84,7 @@ import 'zone.js/dist/zone'; // Included with Angular CLI.
 if (!('toJSON' in Error.prototype)) {
   Object.defineProperty(Error.prototype, 'toJSON', {
     value: function () {
-      var alt = {};
+      const alt = {};
 
       Object.getOwnPropertyNames(this).forEach(function (key) {
         alt[key] = this[key];

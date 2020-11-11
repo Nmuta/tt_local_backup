@@ -22,7 +22,7 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: getPlayerDetailsByGamertag', () => {
-    var expectedGamertag;
+    let expectedGamertag;
 
     beforeEach(() => {
       expectedGamertag = 'test-gamertag';
@@ -42,7 +42,7 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: getPlayerDetailsByXuid', () => {
-    var expectedXuid;
+    let expectedXuid;
 
     beforeEach(() => {
       expectedXuid = 'test-xuid';
@@ -62,7 +62,7 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: getPlayerDetailsByT10Id', () => {
-    var expectedT10Id;
+    let expectedT10Id;
 
     beforeEach(() => {
       expectedT10Id = 'test-t10-id';
@@ -82,7 +82,7 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: getPlayerInventoryByXuid', () => {
-    var expectedXuid;
+    let expectedXuid;
 
     beforeEach(() => {
       expectedXuid = 'test-xuid';
@@ -102,7 +102,7 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: getPlayerInventoryByT10Id', () => {
-    var expectedT10Id;
+    let expectedT10Id;
 
     beforeEach(() => {
       expectedT10Id = 'test-t10-id';
@@ -122,8 +122,8 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: getPlayerInventoryByProfileIdWithXuid', () => {
-    var expectedXuid;
-    var expectedProfileId;
+    let expectedXuid;
+    let expectedProfileId;
 
     beforeEach(() => {
       expectedXuid = 'test-xuid';
@@ -146,8 +146,8 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: getPlayerInventoryByProfileIdWithT10Id', () => {
-    var expectedt10Id;
-    var expectedProfileId;
+    let expectedt10Id;
+    let expectedProfileId;
 
     beforeEach(() => {
       expectedt10Id = 'test-t10-id';
@@ -173,8 +173,8 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: updatePlayerInventoryByXuid', () => {
-    var expectedInventory: GravityPlayerInventory;
-    var expectedParams: HttpParams;
+    let expectedInventory: GravityPlayerInventory;
+    let expectedParams: HttpParams;
 
     beforeEach(() => {
       expectedInventory = { xuid: 'test-xuid' };
@@ -248,8 +248,8 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: updatePlayerInventoryByT10Id', () => {
-    var expectedInventory: GravityPlayerInventory;
-    var expectedParams: HttpParams;
+    let expectedInventory: GravityPlayerInventory;
+    let expectedParams: HttpParams;
 
     beforeEach(() => {
       expectedInventory = { turn10Id: 't10Id' };
@@ -323,7 +323,7 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: getGameSettings', () => {
-    var expectedGameSettingsId;
+    let expectedGameSettingsId;
 
     beforeEach(() => {
       expectedGameSettingsId = 'test-game-sttings-id';
@@ -343,8 +343,8 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: getGiftHistories', () => {
-    var expectedGiftHistoryAntecedent;
-    var expectedGiftRecipientId;
+    let expectedGiftHistoryAntecedent;
+    let expectedGiftRecipientId;
 
     beforeEach(() => {
       expectedGiftHistoryAntecedent = GiftHistoryAntecedent.Xuid;

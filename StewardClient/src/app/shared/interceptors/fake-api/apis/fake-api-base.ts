@@ -11,7 +11,7 @@ export abstract class FakeApiBase {
   public abstract get canHandle(): boolean;
 
   /** The object that should be returned for this request. */
-  public abstract handle(): object;
+  public abstract handle(): unknown;
 
   /** The stringified object that should be returned for this request. */
   public handleString(): string {
