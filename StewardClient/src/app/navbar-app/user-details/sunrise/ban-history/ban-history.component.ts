@@ -40,8 +40,6 @@ type CorrelatedLiveOpsBanPartial = {
 export class BanHistoryComponent extends BaseComponent implements OnChanges {
   @Input() public xuid?: number;
 
-  public data: object[];
-
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */

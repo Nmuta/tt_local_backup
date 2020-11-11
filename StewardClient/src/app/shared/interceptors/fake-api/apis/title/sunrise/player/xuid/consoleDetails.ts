@@ -4,6 +4,7 @@ import {
   SunriseConsoleDetails,
   SunriseConsoleDetailsEntry,
 } from '@models/sunrise/sunrise-console-details.model';
+import { Unprocessed } from '@models/unprocessed';
 import * as faker from 'faker';
 
 /** Fake API for finding User Flags. */
@@ -23,12 +24,12 @@ export class SunrisePlayerXuidConsolesFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): object {
+  public handle(): Unprocessed<SunriseConsoleDetails> {
     return SunrisePlayerXuidConsolesFakeApi.makeMany();
   }
 
   /** Create many example models. */
-  public static makeMany(): SunriseConsoleDetails {
+  public static makeMany(): Unprocessed<SunriseConsoleDetails> {
     return [
       {
         clientVersion: faker.random

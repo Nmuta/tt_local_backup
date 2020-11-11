@@ -52,9 +52,8 @@ module.exports = {
           { type: 'element', prefix: 'app', style: 'kebab-case' },
         ],
         quotes: ['error', 'single', { allowTemplateLiterals: true }],
-        '@typescript-eslint/ban-types': 'warn',
-        '@angular-eslint/component-selector': 'off', // TODO: discuss
-        // "@typescript-eslint/member-ordering": "off", // TODO: this should be turned on and configured
+        // '@typescript-eslint/ban-types': 'warn',
+        '@angular-eslint/component-selector': 'off', // why? naming convention feels repetitive (may want to flip this if we run into conflicts)
         '@typescript-eslint/member-ordering': [
           'error',
           {

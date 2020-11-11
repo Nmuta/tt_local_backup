@@ -20,7 +20,7 @@ export class SunrisePlayerXuidUserFlagsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): object {
+  public handle(): Unprocessed<SunriseUserFlags> {
     return SunrisePlayerXuidUserFlagsFakeApi.make();
   }
 

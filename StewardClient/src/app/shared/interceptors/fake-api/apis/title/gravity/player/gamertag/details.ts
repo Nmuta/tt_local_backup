@@ -20,7 +20,7 @@ export class GravityPlayerGamertagDetailsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): object {
+  public handle(): Partial<Unprocessed<GravityPlayerDetails>> {
     return GravityPlayerGamertagDetailsFakeApi.make();
   }
 

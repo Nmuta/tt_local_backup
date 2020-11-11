@@ -20,7 +20,7 @@ export class ApolloPlayerGamertagDetailsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): object {
+  public handle(): Partial<Unprocessed<ApolloPlayerDetails>> {
     return ApolloPlayerGamertagDetailsFakeApi.make();
   }
 

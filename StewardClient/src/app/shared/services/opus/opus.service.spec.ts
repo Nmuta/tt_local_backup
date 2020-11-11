@@ -1,5 +1,6 @@
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { OpusPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/opus/player/gamertag/details';
+import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
 
 import * as faker from 'faker';
@@ -11,7 +12,7 @@ describe('OpusService', () => {
   let injector: TestBed;
   let service: OpusService;
   let apiServiceMock: ApiService;
-  let nextReturnValue: object | [] = {};
+  let nextReturnValue: Unprocessed<unknown> = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({

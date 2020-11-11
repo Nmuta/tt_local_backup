@@ -8,6 +8,7 @@ import { SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi } from '@interceptors
 import { SunrisePlayerXuidUserFlagsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/userFlags';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { SunriseUserFlags } from '@models/sunrise';
+import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
 
 import * as faker from 'faker';
@@ -19,7 +20,7 @@ describe('SunriseService', () => {
   let injector: TestBed;
   let service: SunriseService;
   let apiServiceMock: ApiService;
-  let nextReturnValue: object | [] = {};
+  let nextReturnValue: Unprocessed<unknown> = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({

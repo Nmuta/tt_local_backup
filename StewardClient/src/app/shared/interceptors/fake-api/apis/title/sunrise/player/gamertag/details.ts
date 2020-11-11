@@ -20,7 +20,7 @@ export class SunrisePlayerGamertagDetailsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): object {
+  public handle(): Partial<Unprocessed<SunrisePlayerDetails>> {
     return SunrisePlayerGamertagDetailsFakeApi.make();
   }
 

@@ -20,7 +20,7 @@ export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBa
   }
 
   /** Produces a sample API response. */
-  public handle(): object {
+  public handle(): Unprocessed<SunriseSharedConsoleUsers> {
     return SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany();
   }
 

@@ -20,7 +20,7 @@ export class OpusPlayerGamertagDetailsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): object {
+  public handle(): Partial<Unprocessed<OpusPlayerDetails>> {
     return OpusPlayerGamertagDetailsFakeApi.make();
   }
 

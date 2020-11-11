@@ -20,7 +20,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): object {
+  public handle(): Unprocessed<SunriseCreditHistory> {
     return SunrisePlayerXuidCreditUpdatesFakeApi.makeMany();
   }
 
