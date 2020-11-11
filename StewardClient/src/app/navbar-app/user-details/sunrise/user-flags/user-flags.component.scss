@@ -1,7 +1,7 @@
 @import '/src/variables.scss';
 
 fa-icon {
-  color: $developerRed;
+  color: mat-color($app-warn);
 }
 
 pre {

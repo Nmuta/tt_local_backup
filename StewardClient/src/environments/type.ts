@@ -9,6 +9,9 @@ export interface StewardEnvironment {
   stewardApiUrl: string;
   oldScrutineerApiUrl: string;
 
+  /** When true, FakeAPI will be lazy-loaded at launch time. */
+  enableFakeApi: boolean;
+
   /** Passed through when Application Insights is configured. */
   appInsightsConfig: IConfiguration & IConfig;
 

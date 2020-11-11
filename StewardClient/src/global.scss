@@ -1,27 +1,17 @@
 @import '/src/variables.scss';
+@import '/src/variables-introspection.scss';
+
+@include mat-core();
+@include angular-material-theme($app-theme);
 
 html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
-}
-
-.success-text {
-  color: #378d43;
-}
-.error-text {
-  color: #cf3d3d;
-}
-
-.game-title-header {
-  color: $primaryBlue;
-  font-size: 24px;
-  float: right;
-  margin-right: 50px;
-  margin-top: 20px;
 }
 
 ::-webkit-scrollbar {
@@ -29,9 +19,9 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: mat-color($app-theme, 50);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #337ab7;
+  background: mat-color($app-theme, 800);
 }

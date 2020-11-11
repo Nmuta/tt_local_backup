@@ -1,11 +1,11 @@
 @import '/src/variables.scss';
 
 .spinner {
-  color: $primaryBlue;
+  color: mat-color($app-primary);
 }
 
 .warning {
-  color: $developerRed;
+  color: mat-color($app-warn);
   cursor: pointer;
 }
 

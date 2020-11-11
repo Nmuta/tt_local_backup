@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, Provider } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
 import { NavbarModule } from '@components/navbar/navbar.module';
@@ -8,7 +8,7 @@ import {
   FontAwesomeModule,
 } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
-import { FakeApiInterceptor } from '@interceptors/fake-api/fake-api.interceptor';
+import { BigintInterceptor } from '@interceptors/bigint.interceptor';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { NgxsModule } from '@ngxs/store';
 import { LoggerService } from '@services/logger/logger.service';
@@ -26,6 +26,23 @@ import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
 export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
 ];
+
+function fakeApiOrNothing(): Provider[] {
+  if (!environment.enableFakeApi) {
+    return [
+      /* nothing */
+    ];
+  }
+
+  return [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useFactory: () =>
+        new (require('./shared/interceptors/fake-api/fake-api.interceptor').FakeApiInterceptor)(),
+      multi: true,
+    },
+  ];
+}
 
 /** Defines the app module. */
 @NgModule({
@@ -91,11 +108,11 @@ export const protectedResourceMap: [string, string[]][] = [
       multi: true,
     },
     {
-      // TODO: Conditionally include this via module
       provide: HTTP_INTERCEPTORS,
-      useClass: FakeApiInterceptor,
+      useClass: BigintInterceptor,
       multi: true,
     },
+    ...fakeApiOrNothing(),
   ],
   bootstrap: [AppComponent],
 })

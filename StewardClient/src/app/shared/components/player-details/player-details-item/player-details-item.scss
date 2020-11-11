@@ -28,7 +28,7 @@ div.player-details-item {
 
 .copied-data-message {
   position: absolute;
-  background-color: $primaryBlue;
+  background-color: mat-color($app-primary);
   padding: 10px 15px;
   border-radius: 5px;
   color: #fff;

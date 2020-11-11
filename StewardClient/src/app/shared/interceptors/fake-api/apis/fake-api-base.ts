@@ -1,4 +1,7 @@
 import { HttpRequest } from '@angular/common/http';
+import * as JSONBig from 'json-bigint';
+
+const JSONAlwaysBig = JSONBig({ alwaysParseAsBig: true });
 
 /** Base for implementation of fake API methods. */
 export abstract class FakeApiBase {
@@ -9,4 +12,9 @@ export abstract class FakeApiBase {
 
   /** The object that should be returned for this request. */
   public abstract handle(): object;
+
+  /** The stringified object that should be returned for this request. */
+  public handleString(): string {
+    return JSONAlwaysBig.stringify(this.handle());
+  }
 }
