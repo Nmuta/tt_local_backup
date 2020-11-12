@@ -16,9 +16,9 @@ import {
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import _ from 'lodash';
 
-/** Mixin type for adding correlatedLiveOpsBan to another type. */
-type CorrelatedLiveOpsBanPartial = {
-  correlatedLiveOpsBan: LiveOpsBanDescription;
+/** Augmented type that also includes the correlated ban. */
+interface ServicesBanWithCorrelation extends ServicesBanDescription {
+  correlatedLiveOpsBan?: LiveOpsBanDescription;
 };
 
 /** Retreives and displays Sunrise Ban history by XUID. */
@@ -43,12 +43,12 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */
-  public loadError: any;
+  public loadError: unknown;
   /** This player's ban history. */
   public history: SunriseBanHistory;
 
   /** The ban list to display. */
-  public banList: (ServicesBanDescription & CorrelatedLiveOpsBanPartial)[];
+  public banList: ServicesBanWithCorrelation[];
 
   public isActiveIcon = faCheck;
 
@@ -81,10 +81,9 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
         this.isLoading = false;
         this.history = history;
         this.banList = this.history.servicesBanHistory.map(servicesBan => {
-          const output: ServicesBanDescription &
-            CorrelatedLiveOpsBanPartial = _.clone(servicesBan) as any;
+          const output: ServicesBanWithCorrelation = _.clone(servicesBan);
           output.correlatedLiveOpsBan = this.correlateLiveOps(servicesBan);
-          return output;
+          return output as ServicesBanWithCorrelation;
         });
       },
       _error => {
@@ -95,7 +94,7 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
   }
 
   /** Attempts to correlate a Services ban to a Live Ops ban. */
-  public correlateLiveOps(servicesBan: ServicesBanDescription) {
+  public correlateLiveOps(servicesBan: ServicesBanDescription): LiveOpsBanDescription {
     const value = _.chain(this.history.liveOpsBanHistory)
       .filter(liveOpsBan => {
         const xuidMatch = liveOpsBan.xuid === servicesBan.xuid;

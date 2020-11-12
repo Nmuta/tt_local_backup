@@ -12,7 +12,7 @@ export class ErrorSpinnerComponent {
   @Input() public isActive = false;
 
   /** The error received. */
-  @Input() public error: any = undefined;
+  @Input() public error: unknown = undefined;
 
   /** The tooltip to display after an error. */
   @Input() public errorMessage: string = 'Failed';

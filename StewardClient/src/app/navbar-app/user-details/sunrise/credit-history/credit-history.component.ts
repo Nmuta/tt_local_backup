@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 
@@ -14,7 +14,7 @@ export class CreditHistoryComponent implements OnChanges {
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */
-  public loadError: any;
+  public loadError: unknown;
   /** The credit history data. */
   public creditHistory: SunriseCreditHistory;
   public columnsToDisplay = [

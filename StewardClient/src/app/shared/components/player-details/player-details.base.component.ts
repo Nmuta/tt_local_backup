@@ -5,23 +5,8 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { environment } from '@environments/environment';
-import { GameTitleCodeNames } from '@models/enums';
-import { Store } from '@ngxs/store';
-import { ApolloService } from '@services/apollo';
-import { GravityService } from '@services/gravity/gravity.service';
-import { OpusService } from '@services/opus';
-import { SunriseService } from '@services/sunrise/sunrise.service';
-import { UserModel } from '@shared/models/user.model';
-import { WindowService } from '@shared/services/window';
-import {
-  ResetAccessToken,
-  ResetUserProfile,
-} from '@shared/state/user/user.actions';
 import { Observable } from 'rxjs';
-import { AnonymousSubject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/operators';
 
 /** Defines the player details component. */
@@ -29,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
   template: '',
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
-export abstract class PlayerDetailsBaseComponent<T>
+export abstract class PlayerDetailsBaseComponent<T extends {xuid: string}>
   extends BaseComponent
   implements OnChanges {
   /** Gamertag to lookup for player details. */
@@ -40,7 +25,7 @@ export abstract class PlayerDetailsBaseComponent<T>
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */
-  public loadError: any;
+  public loadError: unknown;
   /** The player details */
   public playerDetails: T;
 
@@ -61,7 +46,7 @@ export abstract class PlayerDetailsBaseComponent<T>
       details => {
         this.isLoading = false;
         this.playerDetails = details;
-        this.xuidFoundEvent.emit((this.playerDetails as any).xuid);
+        this.xuidFoundEvent.emit(this.playerDetails.xuid);
       },
       error => {
         this.isLoading = false;

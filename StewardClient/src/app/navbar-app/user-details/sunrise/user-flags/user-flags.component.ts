@@ -1,10 +1,10 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { SunriseUserFlags } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import _ from 'lodash';
 import { Observable } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 /** Retreives and displays Sunrise User Flags by XUID. */
 @Component({
@@ -19,7 +19,7 @@ export class UserFlagsComponent extends BaseComponent implements OnChanges {
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */
-  public loadError: any;
+  public loadError: unknown;
   /** The flags currently applied to the user. */
   public currentFlags: SunriseUserFlags;
   /** The modified flags. */
@@ -29,7 +29,7 @@ export class UserFlagsComponent extends BaseComponent implements OnChanges {
   /** True while waiting to submit. */
   public isSubmitting: boolean;
   /** The error received when submitting. */
-  public submitError: any;
+  public submitError: unknown;
 
   constructor(public readonly sunrise: SunriseService) {
     super();
@@ -62,7 +62,7 @@ export class UserFlagsComponent extends BaseComponent implements OnChanges {
   }
 
   /** Submits the changes. */
-  public makeAction(): Observable<any> {
+  public makeAction(): Observable<SunriseUserFlags> {
     return this.sunrise.putFlagsByXuid(this.xuid, this.flags).pipe(
       tap(value => {
         this.currentFlags = value;

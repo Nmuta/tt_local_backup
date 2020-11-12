@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
 
@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class VerifyActionButtonComponent extends BaseComponent {
   /** What to do when the action is confirmed. */
-  @Input() public action: () => Observable<any>;
+  @Input() public action: () => Observable<unknown>;
 
   /** Set to true when this action is possible. */
   @Input() public canSubmit = false;
@@ -26,19 +26,19 @@ export class VerifyActionButtonComponent extends BaseComponent {
 
   public verified = false;
   public isSubmitting = false;
-  public submitError: any = undefined;
+  public submitError: unknown = undefined;
 
   constructor() {
     super();
   }
 
   /** Resets the state of the verification button. */
-  public reset() {
+  public reset(): void {
     this.verified = false;
   }
 
   /** Called by the button to initiate the action. */
-  public doAction() {
+  public doAction(): void {
     this.isSubmitting = true;
     this.submitError = false;
 

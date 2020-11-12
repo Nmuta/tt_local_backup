@@ -58,7 +58,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
   }
 
   /** Logic for the OnInit componet lifecycle */
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.loading = true;
     this.inZendesk = !!this.windowService.zafClient();
     UserState.latestValidProfile$(this.profile$).subscribe(
@@ -86,7 +86,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
   }
 
   /** Open the auth page in a new tab. */
-  public loginWithNewTab() {
+  public loginWithNewTab(): void {
     const newWindow = this.windowService.open(
       `${environment.stewardUiUrl}/auth?action=login`,
       '_blank'
@@ -116,26 +116,26 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
   }
 
   /** Sends login request to client app scope. */
-  public login() {
+  public login(): void {
     this.msalService.loginRedirect({
       extraScopesToConsent: [environment.azureAppScope],
     });
   }
 
   /** Logs out of all signed in app scopes. */
-  public logout() {
+  public logout(): void {
     this.msalService.logout();
   }
 
   /** Rechecks if user is authorized with the app. */
-  public recheckAuth() {
+  public recheckAuth(): void {
     this.store.dispatch(new ResetUserProfile());
     this.store.dispatch(new RequestAccessToken());
     this.ngOnInit();
   }
 
   /**  Starts a timer on UI that will autoclose the window */
-  public autoCloseWindow(timerSecsLeft: number) {
+  public autoCloseWindow(timerSecsLeft: number): void {
     this.autoCloseTimeSecsLeft = timerSecsLeft;
     setTimeout(() => {
       const secondsLeft = this.autoCloseTimeSecsLeft - 1;

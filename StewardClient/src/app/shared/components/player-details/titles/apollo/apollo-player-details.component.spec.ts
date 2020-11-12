@@ -61,7 +61,7 @@ describe('ApolloPlayerDetailsComponent', () => {
     });
     it('should return apollo player details request observable', () => {
       const apolloPlayerDetailsObs = component.makeRequest$();
-      apolloPlayerDetailsObs.subscribe(data => { /* nothing */ });
+      apolloPlayerDetailsObs.subscribe(_data => { /* nothing */ });
 
       expect(mockApolloService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(
         expectedGamertag

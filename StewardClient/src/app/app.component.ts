@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { RequestAccessToken } from '@shared/state/user/user.actions';
 
 /** Defines the app component. */

@@ -1,11 +1,8 @@
 // General
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
-  async,
   ComponentFixture,
   TestBed,
-  inject,
-  getTestBed,
   waitForAsync,
 } from '@angular/core/testing';
 

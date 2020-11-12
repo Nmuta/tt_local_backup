@@ -1,18 +1,14 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
-  getTestBed,
   TestBed,
   waitForAsync,
 } from '@angular/core/testing';
-import { SunriseService } from '@services/sunrise/sunrise.service';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 
 import { OverviewComponent } from './overview.component';
 
 describe('OverviewComponent', () => {
-  let injector: TestBed;
-  let service: SunriseService;
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
 
@@ -22,9 +18,6 @@ describe('OverviewComponent', () => {
       providers: [createMockSunriseService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-
-    injector = getTestBed();
-    service = injector.inject(SunriseService);
   });
 
   beforeEach(() => {

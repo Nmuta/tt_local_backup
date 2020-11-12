@@ -1,12 +1,10 @@
 // General
 import { NO_ERRORS_SCHEMA } from '@angular/core'; // <- goal is to do shallow test, so not going to care about child components.
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { Router } from '@angular/router';
 import { Store, NgxsModule } from '@ngxs/store';
 import {
-  async,
   ComponentFixture,
   TestBed,
-  inject,
   getTestBed,
   fakeAsync,
   tick,
@@ -15,7 +13,6 @@ import {
 } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
-  HttpTestingController,
 } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from '@environments/environment';
@@ -27,14 +24,13 @@ import { AuthComponent } from './auth.component';
 // Services
 import {
   createMockZendeskService,
-  ZendeskService,
 } from '@shared/services/zendesk';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 
 // States
 import { UserState } from '@shared/state/user/user.state';
 import { MsalService } from '@azure/msal-angular';
-import { of, Subject } from 'rxjs';
+import { of } from 'rxjs';
 
 // Models
 import { UserModel } from '@shared/models/user.model';
@@ -46,7 +42,6 @@ import {
   ResetUserProfile,
   RequestAccessToken,
 } from '@shared/state/user/user.actions';
-import { isRegExp } from 'util';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('AuthComponent', () => {
@@ -147,7 +142,6 @@ describe('AuthComponent', () => {
       });
 
       describe('If profile is valid', () => {
-        const fromApp = 'test-app';
         beforeEach(() => {
           component.autoCloseWindow = jasmine.createSpy('autoCloseWindow');
         });

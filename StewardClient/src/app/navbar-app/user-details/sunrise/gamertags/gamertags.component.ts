@@ -17,7 +17,7 @@ export class GamertagsComponent implements OnChanges {
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */
-  public loadError: any;
+  public loadError: unknown;
   /** The retrieved list of shared users. */
   public sharedConsoleUsers: SunriseSharedConsoleUsers;
   public columnsToDisplay = [

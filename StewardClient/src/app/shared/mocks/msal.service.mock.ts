@@ -1,3 +1,4 @@
+import { Provider } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 
 /** Defines the MSAL Service mock. */
@@ -9,6 +10,6 @@ export class MockMsalService {
   public trackEvent = jasmine.createSpy('trackEvent');
 }
 
-export function createMockMsalService() {
+export function createMockMsalService(): Provider {
   return { provide: MsalService, useValue: new MockMsalService() };
 }

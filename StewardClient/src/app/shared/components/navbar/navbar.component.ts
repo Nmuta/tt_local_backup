@@ -14,7 +14,6 @@ import { takeUntil } from 'rxjs/operators';
 
 import {
   createNavbarPath,
-  navbarAppRootPath,
   navbarToolList,
   NavbarTools,
   RouterLinkPath,
@@ -53,7 +52,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   }
 
   /** Logic for the OnInit component lifecycle. */
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.loading = true;
     UserState.latestValidProfile$(this.profile$)
       .pipe(takeUntil(this.onDestroy$))

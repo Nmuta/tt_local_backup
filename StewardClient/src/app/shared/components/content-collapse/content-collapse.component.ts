@@ -1,10 +1,6 @@
 import {
-  AfterViewInit,
   Component,
-  EventEmitter,
   Input,
-  OnInit,
-  Output,
 } from '@angular/core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 

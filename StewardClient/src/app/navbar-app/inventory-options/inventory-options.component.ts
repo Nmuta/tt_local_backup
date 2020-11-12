@@ -22,12 +22,12 @@ export class InventoryOptionsComponent implements OnInit {
     // Empty
   }
 
-  get InventoryOptions() {
+  get InventoryOptions(): typeof InventoryOptions {
     return InventoryOptions;
   }
 
   /** Logic for the OnInit component lifecycle. */
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.selectedOption = 0;
     if (!this.groupGifting) {
       this.options = [InventoryOptions.UserGift];
@@ -35,7 +35,7 @@ export class InventoryOptionsComponent implements OnInit {
   }
 
   /** Selects a new inventory option. */
-  public selectOption(optionIndex) {
+  public selectOption(optionIndex: number): void {
     this.selectedOption = optionIndex;
     this.newOptionSelectedEvent.emit(this.options[this.selectedOption]);
   }

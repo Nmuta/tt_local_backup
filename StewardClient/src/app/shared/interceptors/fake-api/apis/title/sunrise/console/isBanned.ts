@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SunriseConsoleDetails, SunriseConsoleDetailsEntry } from '@models/sunrise/sunrise-console-details.model';
+import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */

@@ -1,39 +1,27 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
-  async,
   ComponentFixture,
   TestBed,
-  getTestBed,
   waitForAsync,
 } from '@angular/core/testing';
-import { environment } from '@environments/environment';
 import { PlayerDetailsBaseComponent } from './player-details.base.component';
 import {
-  WindowService,
   createMockWindowService,
 } from '@shared/services/window';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store, NgxsModule } from '@ngxs/store';
+import { NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
-import { createMockGravityService, GravityService } from '@services/gravity';
-import { createMockSunriseService, SunriseService } from '@services/sunrise';
-import { inRange } from 'lodash';
-import { dateInputsHaveChanged } from '@angular/material/datepicker/datepicker-input-base';
-import { Observable, of, throwError } from 'rxjs';
-import { createMockMockOpusService, OpusService } from '@services/opus';
-import { ApolloService, createMockMockApolloService } from '@services/apollo';
+import { createMockGravityService } from '@services/gravity';
+import { createMockSunriseService } from '@services/sunrise';
+import { of, throwError } from 'rxjs';
+import { createMockMockOpusService } from '@services/opus';
+import { createMockMockApolloService } from '@services/apollo';
 
 describe('PlayerDetailsComponent', () => {
-  let mockGravityService: GravityService;
-  let mockSunriseService: SunriseService;
-  let mockApolloService: ApolloService;
-  let mockOpusService: OpusService;
-
-  let fixture: ComponentFixture<PlayerDetailsBaseComponent<any>>;
-  let component: PlayerDetailsBaseComponent<any>;
+  let fixture: ComponentFixture<PlayerDetailsBaseComponent<unknown>>;
+  let component: PlayerDetailsBaseComponent<unknown>;
 
   beforeEach(
     waitForAsync(() => {
@@ -55,12 +43,8 @@ describe('PlayerDetailsComponent', () => {
         ],
       }).compileComponents();
 
-      const injector = getTestBed();
-      mockGravityService = injector.inject(GravityService);
-      mockSunriseService = injector.inject(SunriseService);
-      mockApolloService = injector.inject(ApolloService);
-      mockOpusService = injector.inject(OpusService);
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       fixture = TestBed.createComponent(PlayerDetailsBaseComponent as any);
       component = fixture.debugElement.componentInstance;
 

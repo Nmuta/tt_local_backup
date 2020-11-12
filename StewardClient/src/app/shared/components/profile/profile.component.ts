@@ -28,7 +28,7 @@ export class ProfileComponent {
   ) {}
 
   /** Opens the auth page in a new tab. */
-  public logout() {
+  public logout(): void {
     this.store.dispatch(new ResetUserProfile());
     this.store.dispatch(new ResetAccessToken());
     this.router.navigate([`/auth`], { queryParams: { from: this.parentApp } });
@@ -39,7 +39,7 @@ export class ProfileComponent {
   }
 
   /** Changes the profile tab visiblity. */
-  public changeProfileTabVisibility() {
+  public changeProfileTabVisibility(): void {
     this.profileTabVisible = !this.profileTabVisible;
   }
 }

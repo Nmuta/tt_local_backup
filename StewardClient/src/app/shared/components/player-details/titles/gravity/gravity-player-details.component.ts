@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { PlayerDetailsBaseComponent } from '@components/player-details/player-details.base.component';
 import { GravityPlayerDetails } from '@models/gravity';
 import { GravityService } from '@services/gravity';

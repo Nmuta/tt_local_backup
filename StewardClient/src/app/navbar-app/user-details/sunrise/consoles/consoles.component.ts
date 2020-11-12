@@ -1,9 +1,9 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import _ from 'lodash';
-import { EMPTY, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 /** Retreives and displays related Sunrise consoles by XUID. */
@@ -20,7 +20,7 @@ export class ConsolesComponent implements OnChanges {
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */
-  public loadError: any;
+  public loadError: unknown;
 
   public consoleDetails: SunriseConsoleDetails;
   public columnsToDisplay = ['isBanned', 'consoleId', 'deviceType', 'actions'];
@@ -48,7 +48,7 @@ export class ConsolesComponent implements OnChanges {
   }
 
   /** Generates a function that will *ban* the user and update the data when complete. */
-  public makeBanAction(consoleId: string): () => Observable<any> {
+  public makeBanAction(consoleId: string): () => Observable<void> {
     return () =>
       this.sunrise.putBanStatusByConsoleId(consoleId, true).pipe(
         tap(() => {
@@ -60,7 +60,7 @@ export class ConsolesComponent implements OnChanges {
   }
 
   /** Generates a function that will *unban* the user and update data when complete. */
-  public makeUnbanAction(consoleId: string): () => Observable<any> {
+  public makeUnbanAction(consoleId: string): () => Observable<void> {
     return () =>
       this.sunrise.putBanStatusByConsoleId(consoleId, false).pipe(
         tap(() => {

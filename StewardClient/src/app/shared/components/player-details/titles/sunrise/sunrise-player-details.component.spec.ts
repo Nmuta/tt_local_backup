@@ -13,8 +13,6 @@ import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { of } from 'rxjs';
-import { createMockMockOpusService, OpusService } from '@services/opus';
-import { OpusPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/opus/player/gamertag/details';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { SunrisePlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/gamertag/details';
 
@@ -63,7 +61,7 @@ describe('SunrisePlayerDetailsComponent', () => {
     });
     it('should return apollo player details request observable', () => {
       const apolloPlayerDetailsObs = component.makeRequest$();
-      apolloPlayerDetailsObs.subscribe(data => { /* nothing */ });
+      apolloPlayerDetailsObs.subscribe(() => { /* nothing */ });
 
       expect(
         mockSunriseService.getPlayerDetailsByGamertag

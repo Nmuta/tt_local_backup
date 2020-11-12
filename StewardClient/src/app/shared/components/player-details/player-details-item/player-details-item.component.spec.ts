@@ -1,6 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
-  async,
   ComponentFixture,
   TestBed,
   getTestBed,
@@ -27,7 +26,7 @@ describe('PlayerDetailsItemComponent', () => {
       }).compileComponents();
 
       const injector = getTestBed();
-      mockClipboard = injector.get(Clipboard);
+      mockClipboard = injector.inject(Clipboard);
 
       fixture = TestBed.createComponent(PlayerDetailsItemComponent);
       component = fixture.debugElement.componentInstance;

@@ -8,7 +8,7 @@ export class MockScrutineerDataParser {
   public copyMessage = jasmine.createSpy('copyMessage');
 }
 
-export function createMockScrutineerDataParser() {
+export function createMockScrutineerDataParser(): Provider {
   return {
     provide: ScrutineerDataParser,
     useValue: new MockScrutineerDataParser(),

@@ -1,14 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NavbarTools } from '@components/navbar/navbar-tool-list';
-import { ErrorComponent } from 'app/error/error.component';
 import { FourOhFourComponent } from 'app/four-oh-four/four-oh-four.component';
 
 import { GiftingPageComponent } from './gifting-page/gifting-page.module';
 import { HomeComponent } from './home/home.component';
 import { NavbarAppComponent } from './navbar-app.component';
-import { SunriseComponent } from './user-details/sunrise/sunrise.component';
-import { UserDetailsComponent } from './user-details/user-details.component';
 
 const routes: Routes = [
   {
