@@ -9,14 +9,12 @@ const routes: Routes = [
   {
     path: 'navbar-app',
     // canActivate: [ZendeskGuardService],
-    loadChildren: () =>
-      import('./navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
+    loadChildren: () => import('./navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
   },
   {
     path: 'ticket-sidebar',
     canActivate: [ZendeskGuardService],
-    loadChildren: () =>
-      import('./ticket-app/ticket-app.module').then(m => m.TicketAppModule),
+    loadChildren: () => import('./ticket-app/ticket-app.module').then(m => m.TicketAppModule),
   },
   {
     path: 'auth',

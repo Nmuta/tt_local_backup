@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Clipboard } from '@shared/helpers/clipboard';
 
 /** Defines a player details information item. */
@@ -18,17 +18,17 @@ export class PlayerDetailsItemComponent implements OnInit {
   /** Determines if the item should be displayed on the UI */
   public showItem: boolean;
   /** The existing timeout object */
-  public timeoutObj: any;
+  public timeoutObj: NodeJS.Timeout;
 
   constructor(private clipboard: Clipboard) {}
 
   /** Logic for the OnInit component lifecycle. */
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.showItem = this.value !== undefined;
   }
 
   /** Copies the value to client clipboard. */
-  public copyToClipboard() {
+  public copyToClipboard(): void {
     this.copied = true;
     this.clipboard.copyMessage(this.value);
 

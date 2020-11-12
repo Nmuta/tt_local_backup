@@ -14,20 +14,15 @@ import { SunriseComponent } from './sunrise/sunrise.component';
 export class UserDetailsComponent extends BaseComponent implements OnInit {
   public gamertag: string;
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router
-  ) {
+  constructor(private readonly route: ActivatedRoute, private readonly router: Router) {
     super();
   }
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    this.route.queryParamMap
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(params => {
-        this.gamertag = params.get('gamertag');
-      });
+    this.route.queryParamMap.pipe(takeUntil(this.onDestroy$)).subscribe(params => {
+      this.gamertag = params.get('gamertag');
+    });
   }
 
   /** Update the routed component. */

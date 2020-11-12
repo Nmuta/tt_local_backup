@@ -1,10 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
 import { GravityPlayerDetailsComponent } from './gravity-player-details.component';
 import { createMockWindowService } from '@shared/services/window';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -32,11 +27,7 @@ describe('GravityPlayerDetailsComponent', () => {
         ],
         declarations: [GravityPlayerDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          createMockMsalService(),
-          createMockGravityService(),
-        ],
+        providers: [createMockWindowService(), createMockMsalService(), createMockGravityService()],
       }).compileComponents();
 
       const injector = getTestBed();
@@ -44,7 +35,7 @@ describe('GravityPlayerDetailsComponent', () => {
 
       fixture = TestBed.createComponent(GravityPlayerDetailsComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {
@@ -61,11 +52,11 @@ describe('GravityPlayerDetailsComponent', () => {
     });
     it('should return apollo player details request observable', () => {
       const apolloPlayerDetailsObs = component.makeRequest$();
-      apolloPlayerDetailsObs.subscribe(data => {});
+      apolloPlayerDetailsObs.subscribe(_data => {
+        /* nothing */
+      });
 
-      expect(
-        mockGravityService.getPlayerDetailsByGamertag
-      ).toHaveBeenCalledWith(expectedGamertag);
+      expect(mockGravityService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
     });
   });
 });

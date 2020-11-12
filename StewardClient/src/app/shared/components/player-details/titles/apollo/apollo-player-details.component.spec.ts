@@ -1,10 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
 import { ApolloPlayerDetailsComponent } from './apollo-player-details.component';
 import { createMockWindowService } from '@shared/services/window';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -44,7 +39,7 @@ describe('ApolloPlayerDetailsComponent', () => {
 
       fixture = TestBed.createComponent(ApolloPlayerDetailsComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {
@@ -61,11 +56,11 @@ describe('ApolloPlayerDetailsComponent', () => {
     });
     it('should return apollo player details request observable', () => {
       const apolloPlayerDetailsObs = component.makeRequest$();
-      apolloPlayerDetailsObs.subscribe(data => {});
+      apolloPlayerDetailsObs.subscribe(_data => {
+        /* nothing */
+      });
 
-      expect(mockApolloService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(
-        expectedGamertag
-      );
+      expect(mockApolloService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
     });
   });
 });

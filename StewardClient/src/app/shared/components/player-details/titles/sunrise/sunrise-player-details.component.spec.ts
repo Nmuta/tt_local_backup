@@ -1,10 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
 import { SunrisePlayerDetailsComponent } from './sunrise-player-details.component';
 import { createMockWindowService } from '@shared/services/window';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -13,8 +8,6 @@ import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { of } from 'rxjs';
-import { createMockMockOpusService, OpusService } from '@services/opus';
-import { OpusPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/opus/player/gamertag/details';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { SunrisePlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/gamertag/details';
 
@@ -34,11 +27,7 @@ describe('SunrisePlayerDetailsComponent', () => {
         ],
         declarations: [SunrisePlayerDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          createMockMsalService(),
-          createMockSunriseService(),
-        ],
+        providers: [createMockWindowService(), createMockMsalService(), createMockSunriseService()],
       }).compileComponents();
 
       const injector = getTestBed();
@@ -46,7 +35,7 @@ describe('SunrisePlayerDetailsComponent', () => {
 
       fixture = TestBed.createComponent(SunrisePlayerDetailsComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {
@@ -63,11 +52,11 @@ describe('SunrisePlayerDetailsComponent', () => {
     });
     it('should return apollo player details request observable', () => {
       const apolloPlayerDetailsObs = component.makeRequest$();
-      apolloPlayerDetailsObs.subscribe(data => {});
+      apolloPlayerDetailsObs.subscribe(() => {
+        /* nothing */
+      });
 
-      expect(
-        mockSunriseService.getPlayerDetailsByGamertag
-      ).toHaveBeenCalledWith(expectedGamertag);
+      expect(mockSunriseService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
     });
   });
 });

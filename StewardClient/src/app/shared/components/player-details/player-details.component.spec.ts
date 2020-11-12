@@ -1,39 +1,21 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-  waitForAsync,
-} from '@angular/core/testing';
-import { environment } from '@environments/environment';
-import { PlayerDetailsComponentBase } from './player-details.component';
-import {
-  WindowService,
-  createMockWindowService,
-} from '@shared/services/window';
-import { Router } from '@angular/router';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { PlayerDetailsBaseComponent } from './player-details.base.component';
+import { createMockWindowService } from '@shared/services/window';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Store, NgxsModule } from '@ngxs/store';
+import { NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
-import { createMockGravityService, GravityService } from '@services/gravity';
-import { createMockSunriseService, SunriseService } from '@services/sunrise';
-import { inRange } from 'lodash';
-import { dateInputsHaveChanged } from '@angular/material/datepicker/datepicker-input-base';
-import { Observable, of, throwError } from 'rxjs';
-import { createMockMockOpusService, OpusService } from '@services/opus';
-import { ApolloService, createMockMockApolloService } from '@services/apollo';
+import { createMockGravityService } from '@services/gravity';
+import { createMockSunriseService } from '@services/sunrise';
+import { of, throwError } from 'rxjs';
+import { createMockMockOpusService } from '@services/opus';
+import { createMockMockApolloService } from '@services/apollo';
 
 describe('PlayerDetailsComponent', () => {
-  let mockGravityService: GravityService;
-  let mockSunriseService: SunriseService;
-  let mockApolloService: ApolloService;
-  let mockOpusService: OpusService;
-
-  let fixture: ComponentFixture<PlayerDetailsComponentBase<any>>;
-  let component: PlayerDetailsComponentBase<any>;
+  let fixture: ComponentFixture<PlayerDetailsBaseComponent<unknown>>;
+  let component: PlayerDetailsBaseComponent<unknown>;
 
   beforeEach(
     waitForAsync(() => {
@@ -43,7 +25,7 @@ describe('PlayerDetailsComponent', () => {
           HttpClientTestingModule,
           NgxsModule.forRoot([UserState]),
         ],
-        declarations: [PlayerDetailsComponentBase],
+        declarations: [PlayerDetailsBaseComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           createMockWindowService(),
@@ -55,19 +37,12 @@ describe('PlayerDetailsComponent', () => {
         ],
       }).compileComponents();
 
-      const injector = getTestBed();
-      mockGravityService = injector.inject(GravityService);
-      mockSunriseService = injector.inject(SunriseService);
-      mockApolloService = injector.inject(ApolloService);
-      mockOpusService = injector.inject(OpusService);
-
-      fixture = TestBed.createComponent(PlayerDetailsComponentBase as any);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      fixture = TestBed.createComponent(PlayerDetailsBaseComponent as any);
       component = fixture.debugElement.componentInstance;
 
-      component.makeRequest$ = jasmine
-        .createSpy('makeRequest$')
-        .and.returnValue(of({}));
-    })
+      component.makeRequest$ = jasmine.createSpy('makeRequest$').and.returnValue(of({}));
+    }),
   );
 
   it('should create', () => {
@@ -85,10 +60,10 @@ describe('PlayerDetailsComponent', () => {
       waitForAsync(() => {
         component.ngOnChanges();
         expect(component.isLoading).toBeFalsy();
-      })
+      }),
     );
     describe('And api returns player details', () => {
-      let expectedPlayerDetails = {
+      const expectedPlayerDetails = {
         xuid: '123456789',
         gamertag: 'test-gamertag',
       };
@@ -103,7 +78,7 @@ describe('PlayerDetailsComponent', () => {
       });
     });
     describe('And api returns error', () => {
-      let expectedError = { message: 'test-error' };
+      const expectedError = { message: 'test-error' };
       beforeEach(() => {
         component.makeRequest$ = jasmine
           .createSpy('getPlayerDetailsByGamertag')

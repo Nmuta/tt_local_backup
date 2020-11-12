@@ -1,20 +1,11 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-  fakeAsync,
-  tick,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ContentCollapseComponent } from './content-collapse.component';
-import { createMockClipboard, Clipboard } from '@shared/helpers/clipboard';
+import { createMockClipboard } from '@shared/helpers/clipboard';
 
 describe('ContentCollapseComponent', () => {
   let fixture: ComponentFixture<ContentCollapseComponent>;
   let component: ContentCollapseComponent;
-
-  let mockClipboard: Clipboard;
 
   beforeEach(
     waitForAsync(() => {
@@ -25,12 +16,9 @@ describe('ContentCollapseComponent', () => {
         providers: [createMockClipboard()],
       }).compileComponents();
 
-      const injector = getTestBed();
-      mockClipboard = injector.get(Clipboard);
-
       fixture = TestBed.createComponent(ContentCollapseComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {

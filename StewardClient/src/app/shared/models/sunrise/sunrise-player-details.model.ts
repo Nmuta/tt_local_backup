@@ -1,19 +1,19 @@
 /** The /v2/title/Sunrise/player/???/details model */
 export interface SunrisePlayerDetails {
-  xuid: number;
+  xuid: BigInt;
   gamertag: string;
-  region: number;
+  region: BigInt;
   licensePlate: string;
-  customizationSlots: number[];
-  currentDriverModelId: number;
-  currentPlayerTitleId: number;
-  currentPlayerBadgeId: number;
-  currentCareerLevel: number;
-  flags: number;
-  blueprintThreadLevel: number;
-  photoThreadLevel: number;
-  tunerThreadLevel: number;
-  painterThreadLevel: number;
+  customizationSlots: BigInt[];
+  currentDriverModelId: BigInt;
+  currentPlayerTitleId: BigInt;
+  currentPlayerBadgeId: BigInt;
+  currentCareerLevel: BigInt;
+  flags: BigInt;
+  blueprintThreadLevel: BigInt;
+  photoThreadLevel: BigInt;
+  tunerThreadLevel: BigInt;
+  painterThreadLevel: BigInt;
   teamId: string;
   teamTag: string;
   roleInTeam: string;

@@ -1,27 +1,15 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import { ProfileComponent } from './profile.component';
-import {
-  WindowService,
-  createMockWindowService,
-} from '@shared/services/window';
+import { WindowService, createMockWindowService } from '@shared/services/window';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
-import {
-  ResetUserProfile,
-  ResetAccessToken,
-} from '@shared/state/user/user.actions';
+import { ResetUserProfile, ResetAccessToken } from '@shared/state/user/user.actions';
 import { of } from 'rxjs';
 
 describe('ProfileComponent', () => {
@@ -52,7 +40,7 @@ describe('ProfileComponent', () => {
 
       fixture = TestBed.createComponent(ProfileComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {
@@ -63,9 +51,7 @@ describe('ProfileComponent', () => {
     beforeEach(() => {
       mockWindowService.open = jasmine.createSpy('open');
       mockRouter.navigate = jasmine.createSpy('navigate');
-      mockStore.dispatch = jasmine
-        .createSpy('dispatch')
-        .and.returnValue(of({}));
+      mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
     });
     it('should dispatch store action ResetUserProfile', () => {
       component.logout();
@@ -89,7 +75,7 @@ describe('ProfileComponent', () => {
 
       expect(mockWindowService.open).toHaveBeenCalledWith(
         `${environment.stewardUiUrl}/auth?action=logout`,
-        '_blank'
+        '_blank',
       );
     });
   });

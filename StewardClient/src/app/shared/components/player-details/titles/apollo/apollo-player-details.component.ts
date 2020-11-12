@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { PlayerDetailsComponentBase } from '@components/player-details/player-details.component';
+import { Component } from '@angular/core';
+import { PlayerDetailsBaseComponent } from '@components/player-details/player-details.base.component';
 import { ApolloPlayerDetails } from '@models/apollo';
 import { ApolloService } from '@services/apollo';
 import { Observable } from 'rxjs';
@@ -9,12 +9,8 @@ import { Observable } from 'rxjs';
   selector: 'apollo-player-details',
   templateUrl: '../../player-details.html',
   styleUrls: ['../../player-details.scss'],
-  inputs: ['gamertag'],
-  outputs: ['xuidFoundEvent'],
 })
-export class ApolloPlayerDetailsComponent extends PlayerDetailsComponentBase<
-  ApolloPlayerDetails
-> {
+export class ApolloPlayerDetailsComponent extends PlayerDetailsBaseComponent<ApolloPlayerDetails> {
   constructor(public readonly apolloService: ApolloService) {
     super();
   }

@@ -1,22 +1,22 @@
 /** The /v2/title/opus/player/???/details model */
 export interface OpusPlayerDetails {
-  xuid: number;
+  xuid: BigInt;
   gamertag: string;
   licensePlate: string;
   ageGroup: string;
   subscriptionTier: string;
-  country: number;
-  region: number;
-  lcid: number;
+  country: BigInt;
+  region: BigInt;
+  lcid: BigInt;
   ipAddress: string;
   lastLoginUtc: Date;
   firstLoginUtc: Date;
-  currentDriverModelId: number;
+  currentDriverModelId: BigInt;
   currentPlayerTitleId: string;
   currentBadgeId: string;
-  currentCareerLevel: number;
+  currentCareerLevel: BigInt;
   acceptsClubInvites: boolean;
-  clubTopTierCount: number;
+  clubTopTierCount: BigInt;
   clubTag: string;
   roleInClub: string;
 }

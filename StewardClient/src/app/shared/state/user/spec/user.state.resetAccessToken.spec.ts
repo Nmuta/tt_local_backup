@@ -1,15 +1,8 @@
-import { async, TestBed, waitForAsync } from '@angular/core/testing';
-import {
-  Store,
-  NgxsModule,
-  Actions,
-  ofActionSuccessful,
-  ofActionErrored,
-  ofActionDispatched,
-} from '@ngxs/store';
+import { TestBed, waitForAsync } from '@angular/core/testing';
+import { Store, NgxsModule, Actions } from '@ngxs/store';
 import { UserState } from '../user.state';
 import { ResetAccessToken } from '../user.actions';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { MsalService } from '@azure/msal-angular';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -26,14 +19,15 @@ describe('State: User', () => {
         providers: [createMockMsalService()],
       }).compileComponents();
 
-      store = TestBed.get(Store);
-      actions$ = TestBed.get(Actions);
-      mockAuthService = TestBed.get(MsalService);
+      store = TestBed.inject(Store);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      actions$ = TestBed.inject(Actions);
+      mockAuthService = TestBed.inject(MsalService);
 
       mockAuthService.acquireTokenSilent = jasmine
         .createSpy('acquireTokenSilent')
         .and.returnValue(of({}));
-    })
+    }),
   );
   describe('[ResetAccessToken] Action', () => {
     let action;

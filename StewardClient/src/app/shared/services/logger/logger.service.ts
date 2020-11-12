@@ -5,8 +5,8 @@ import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { LogLevel } from './log-level';
 import { LogTopic } from './log-topic';
 
-// tslint:disable: no-console
-// tslint:disable: no-debugger
+/* eslint-disable no-console */
+/* eslint-disable no-debugger */
 
 /** A logger service that acts as a configurable proxy for console.log and app insights. */
 @Injectable({ providedIn: 'root' })
@@ -22,7 +22,7 @@ export class LoggerService {
   }
 
   /** Proxy for console.log */
-  public log(topics: LogTopic[], ...data: any[]): void {
+  public log(topics: LogTopic[], ...data: unknown[]): void {
     if (this.consoleLevel >= LogLevel.Log) {
       this.console.log(...topics, ...data);
     }
@@ -33,7 +33,7 @@ export class LoggerService {
   }
 
   /** Proxy for console.warn */
-  public warn(topics: LogTopic[], ...data: any[]): void {
+  public warn(topics: LogTopic[], ...data: unknown[]): void {
     if (this.consoleLevel >= LogLevel.Warn) {
       this.console.warn(...topics, ...data);
     }
@@ -44,7 +44,7 @@ export class LoggerService {
   }
 
   /** Proxy for console.debug */
-  public debug(topics: LogTopic[], ...data: any[]): void {
+  public debug(topics: LogTopic[], ...data: unknown[]): void {
     if (this.consoleLevel >= LogLevel.Debug) {
       this.console.debug(...topics, ...data);
     }
@@ -54,7 +54,7 @@ export class LoggerService {
     }
   }
 
-  private trackTrace(severity: string, topics: LogTopic[], ...data: any[]) {
+  private trackTrace(severity: string, topics: LogTopic[], ...data: unknown[]) {
     const message = `[${topics.join(' ')}]\n${data.join('\n')}`;
     this.appInsights.trackTrace({ message: message }, { severity: severity });
   }

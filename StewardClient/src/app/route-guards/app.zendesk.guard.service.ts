@@ -1,10 +1,5 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { WindowService } from '@shared/services/window';
 import { Observable } from 'rxjs';
 
@@ -13,15 +8,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ZendeskGuardService implements CanActivate {
-  constructor(
-    private readonly router: Router,
-    private readonly windowService: WindowService
-  ) {}
+  constructor(private readonly router: Router, private readonly windowService: WindowService) {}
 
   /** Logic to activate the route. */
   public canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    _route: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot,
   ): Observable<boolean> | boolean {
     const inZendesk = !!this.windowService.zafClient();
     if (!inZendesk) {

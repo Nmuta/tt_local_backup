@@ -14,10 +14,7 @@
         <div content-body>
           <p>* click on row to copy value</p>
           <ng-container *ngIf="!isLoading && !loadError; else failstate">
-            <player-details-item
-              [name]="'XUID'"
-              [value]="playerDetails.xuid"
-            ></player-details-item>
+            <player-details-item [name]="'XUID'" [value]="playerDetails.xuid"></player-details-item>
             <player-details-item
               [name]="'Gamertag'"
               [value]="playerDetails.gamertag"
@@ -42,10 +39,7 @@
               [name]="'IP Address'"
               [value]="playerDetails.ipAddress"
             ></player-details-item>
-            <player-details-item
-              [name]="'LCID'"
-              [value]="playerDetails.lcid"
-            ></player-details-item>
+            <player-details-item [name]="'LCID'" [value]="playerDetails.lcid"></player-details-item>
             <player-details-item
               [name]="'Environment'"
               [value]="playerDetails.environment"
@@ -158,10 +152,7 @@
 </section>
 
 <ng-template #failstate>
-  <mat-progress-spinner
-    *ngIf="isLoading"
-    mode="indeterminate"
-  ></mat-progress-spinner>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
   <p *ngIf="loadError">Failed to load.</p>
   <pre *ngIf="loadError">{{ loadError | json }}</pre>
 </ng-template>

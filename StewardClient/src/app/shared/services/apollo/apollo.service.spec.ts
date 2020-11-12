@@ -1,9 +1,6 @@
 import { getTestBed, TestBed } from '@angular/core/testing';
-import { ApolloPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/gamertag/details';
+import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
-
-import * as faker from 'faker';
-import { of } from 'rxjs';
 
 import { ApolloService } from './apollo.service';
 
@@ -11,7 +8,7 @@ describe('ApolloService', () => {
   let injector: TestBed;
   let service: ApolloService;
   let apiServiceMock: ApiService;
-  let nextReturnValue: object | [] = {};
+  let nextReturnValue: Unprocessed<unknown> = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -28,19 +25,17 @@ describe('ApolloService', () => {
   });
 
   describe('Method: getPlayerDetailsByGamertag', () => {
-    var expectedGamertag;
+    let expectedGamertag: string;
 
     beforeEach(() => {
       expectedGamertag = 'test-gamertag';
-      apiServiceMock.getRequest = jasmine
-        .createSpy('getRequest')
-        .and.returnValue(of({}));
+      nextReturnValue = {};
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(res => {
+      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/gamertag(${expectedGamertag})/details`
+          `${service.basePath}/player/gamertag(${expectedGamertag})/details`,
         );
         done();
       });

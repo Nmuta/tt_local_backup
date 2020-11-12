@@ -7,9 +7,7 @@ import { Unprocessed } from '@models/unprocessed';
 export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
-    const targetingStewardApi = this.request.url.startsWith(
-      environment.stewardApiUrl
-    );
+    const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
     if (!targetingStewardApi) {
       return false;
     }
@@ -20,7 +18,7 @@ export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBa
   }
 
   /** Produces a sample API response. */
-  public handle(): object {
+  public handle(): Unprocessed<SunriseSharedConsoleUsers> {
     return SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany();
   }
 

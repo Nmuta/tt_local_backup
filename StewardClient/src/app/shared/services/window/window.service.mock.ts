@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Provider } from '@angular/core';
 
 import { WindowService } from './window.service';
 
@@ -15,13 +15,11 @@ export class MockWindowService {
   public removeEventListener = jasmine.createSpy('removeEventListener');
   public top = jasmine.createSpy('top');
   public location = jasmine.createSpy('location');
-  public open = jasmine
-    .createSpy('open')
-    .and.returnValue(new MockChildWindow());
+  public open = jasmine.createSpy('open').and.returnValue(new MockChildWindow());
   public close = jasmine.createSpy('close');
   public zafClient = jasmine.createSpy('zafClient').and.returnValue({});
 }
 
-export function createMockWindowService() {
+export function createMockWindowService(): Provider {
   return { provide: WindowService, useValue: new MockWindowService() };
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Provider } from '@angular/core';
 import _ from 'lodash';
 import { defer, of } from 'rxjs';
 
@@ -20,12 +20,12 @@ export class MockApiService {
     .createSpy('deleteRequest')
     .and.returnValue(defer(() => of(_.clone(this.generator()))));
 
-  constructor(private readonly generator: () => any) {}
+  constructor(private readonly generator: () => unknown) {}
 }
 
 export function createMockApiService(
-  returnValueGenerator: () => any = () => new Object()
-) {
+  returnValueGenerator: () => unknown = () => new Object(),
+): Provider {
   return {
     provide: ApiService,
     useValue: new MockApiService(returnValueGenerator),

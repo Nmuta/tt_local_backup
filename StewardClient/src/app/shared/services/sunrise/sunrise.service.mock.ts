@@ -1,10 +1,5 @@
-import { Injectable } from '@angular/core';
-import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
-import { SunriseBanHistory } from '@models/sunrise/sunrise-ban-history.model';
-import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
-import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
-import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
-import { Observable, of } from 'rxjs';
+import { Injectable, Provider } from '@angular/core';
+import { of } from 'rxjs';
 
 import { SunriseService } from './sunrise.service';
 
@@ -14,15 +9,9 @@ export class MockSunriseService {
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
     .and.returnValue(of({}));
-  public getFlagsByXuid = jasmine
-    .createSpy('getFlagsByXuid')
-    .and.returnValue(of());
-  public putFlagsByXuid = jasmine
-    .createSpy('putFlagsByXuid')
-    .and.returnValue(of());
-  public getBanHistoryByXuid = jasmine
-    .createSpy('getBanHistoryByXuid')
-    .and.returnValue(of());
+  public getFlagsByXuid = jasmine.createSpy('getFlagsByXuid').and.returnValue(of());
+  public putFlagsByXuid = jasmine.createSpy('putFlagsByXuid').and.returnValue(of());
+  public getBanHistoryByXuid = jasmine.createSpy('getBanHistoryByXuid').and.returnValue(of());
   public getSharedConsoleUsersByXuid = jasmine
     .createSpy('getSharedConsoleUsersByXuid')
     .and.returnValue(of());
@@ -35,12 +24,10 @@ export class MockSunriseService {
   public getProfileSummaryByXuid = jasmine
     .createSpy('getProfileSummaryByXuid')
     .and.returnValue(of());
-  public getCreditHistoryByXuid = jasmine
-    .createSpy('getCreditHistoryByXuid')
-    .and.returnValue(of());
+  public getCreditHistoryByXuid = jasmine.createSpy('getCreditHistoryByXuid').and.returnValue(of());
 }
 
-export function createMockSunriseService() {
+export function createMockSunriseService(): Provider {
   return {
     provide: SunriseService,
     useValue: new MockSunriseService(),

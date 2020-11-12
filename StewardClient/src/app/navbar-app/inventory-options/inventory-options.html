@@ -9,10 +9,7 @@
       {{option}}
     </button>
   </div>
-  <div
-    *ngIf="options[selectedOption] == InventoryOptions.UserGift"
-    class="option-action-div"
-  >
+  <div *ngIf="options[selectedOption] == InventoryOptions.UserGift" class="option-action-div">
     <input class="options-input" type="text" placeholder="XUID" />
     <button class="option-action-button">Lookup</button>
   </div>

@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NavbarTools } from '@components/navbar/navbar-tool-list';
-import { FourOhFourComponent } from 'app/four-oh-four/four-oh-four.component';
 
 import { SunriseComponent } from './sunrise/sunrise.component';
 import { UserDetailsComponent } from './user-details.component';

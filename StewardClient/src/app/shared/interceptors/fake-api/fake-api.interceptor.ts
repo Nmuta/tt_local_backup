@@ -54,7 +54,7 @@ export class FakeApiInterceptor implements HttpInterceptor {
   /** Interception hook. */
   public intercept(
     request: HttpRequest<unknown>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     request.clone();
     for (const fakeApiConstructor of fakeApiConstructors) {
@@ -63,7 +63,7 @@ export class FakeApiInterceptor implements HttpInterceptor {
         return ObservableOf(
           new HttpResponse({
             body: fakeApi.handleString(),
-          })
+          }),
         ).pipe(delay(_.random(1500) + 500));
       }
     }
@@ -74,9 +74,8 @@ export class FakeApiInterceptor implements HttpInterceptor {
         new HttpErrorResponse({
           url: request.url,
           status: 9000,
-          statusText:
-            'URL not on the allowed list of URLs in FakeApiInterceptor.',
-        })
+          statusText: 'URL not on the allowed list of URLs in FakeApiInterceptor.',
+        }),
       );
     }
 

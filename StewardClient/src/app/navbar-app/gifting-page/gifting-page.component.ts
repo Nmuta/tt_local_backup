@@ -16,7 +16,7 @@ export class GiftingPageComponent {
   }
 
   /** Select a new gifting option. */
-  public newGiftingOptionSelected(event: InventoryOptions) {
+  public newGiftingOptionSelected(event: InventoryOptions): void {
     this.selectedGiftingOption = event;
   }
 }

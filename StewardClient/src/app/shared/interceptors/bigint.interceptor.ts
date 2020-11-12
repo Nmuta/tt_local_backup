@@ -7,7 +7,6 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JSONBigInt } from '@helpers/json-bigint';
-import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -17,7 +16,7 @@ export class BigintInterceptor implements HttpInterceptor {
   /** The interceptor hook. */
   public intercept(
     request: HttpRequest<unknown>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     const shouldHandle = request.responseType === 'json';
     if (!shouldHandle) {
@@ -31,12 +30,12 @@ export class BigintInterceptor implements HttpInterceptor {
 
     return next.handle(newRequest).pipe(
       filter(event => event instanceof HttpResponse),
-      map((event: HttpResponse<any>) => {
+      map((event: HttpResponse<string>) => {
         const newBody = JSONBigInt.parse(event.body);
         return event.clone({
           body: newBody,
         });
-      })
+      }),
     );
   }
 }

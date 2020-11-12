@@ -17,15 +17,10 @@ export class GamertagsComponent implements OnChanges {
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */
-  public loadError: any;
+  public loadError: unknown;
   /** The retrieved list of shared users. */
   public sharedConsoleUsers: SunriseSharedConsoleUsers;
-  public columnsToDisplay = [
-    'everBanned',
-    'gamertag',
-    'sharedConsoleId',
-    'xuid',
-  ];
+  public columnsToDisplay = ['everBanned', 'gamertag', 'sharedConsoleId', 'xuid'];
 
   constructor(private readonly sunrise: SunriseService) {}
 
@@ -45,7 +40,7 @@ export class GamertagsComponent implements OnChanges {
       _error => {
         this.isLoading = false;
         this.loadError = _error; // TODO: Display something useful to the user
-      }
+      },
     );
   }
 }

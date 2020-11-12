@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { RequestAccessToken } from '@shared/state/user/user.actions';
 
 /** Defines the app component. */
@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   constructor(private store: Store) {}
 
   /** Logic for the OnInit component lifecycle. */
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.store.dispatch(new RequestAccessToken());
   }
 }

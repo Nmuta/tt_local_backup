@@ -3,24 +3,18 @@ import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GameTitleCodeNames } from '@models/enums';
 import { Select } from '@ngxs/store';
-import { Clipboard } from '@shared/helpers/clipboard';
-import { ScrutineerDataParser } from '@shared/helpers/scrutineer-data-parser/scrutineer-data-parser.helper';
 import { UserModel } from '@shared/models/user.model';
 import { ZendeskService } from '@shared/services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { environment } from '../../environments/environment';
-
 /** Defines the ticket sidebar component. */
 @Component({
   templateUrl: './ticket-app.html',
   styleUrls: ['./ticket-app.scss'],
 })
-export class TicketAppComponent
-  extends BaseComponent
-  implements OnInit, AfterViewInit {
+export class TicketAppComponent extends BaseComponent implements OnInit, AfterViewInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public appName = 'ticket-sidebar';
@@ -46,7 +40,7 @@ export class TicketAppComponent
   }
 
   /** Logic for the OnInit component lifecycle. */
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.loading = true;
     UserState.latestValidProfile$(this.profile$)
       .pipe(takeUntil(this.onDestroy$))
@@ -67,18 +61,18 @@ export class TicketAppComponent
           this.router.navigate([`/auth`], {
             queryParams: { from: this.appName },
           });
-        }
+        },
       );
   }
 
   /** Logic for the AfterViewInit component lifecycle. */
-  public ngAfterViewInit() {
+  public ngAfterViewInit(): void {
     this.zendeskService.resize('100%', '500px');
   }
 
   /** Gets the ticket requestor information. */
-  public getTicketRequestor() {
-    this.zendeskService.getTicketRequestor().subscribe((response: any) => {
+  public getTicketRequestor(): void {
+    this.zendeskService.getTicketRequestor().subscribe(response => {
       const requester = response['ticket.requester'];
 
       // TODO: Check if gamertag was input into the custom ticket field.
@@ -89,8 +83,8 @@ export class TicketAppComponent
   }
 
   /** Gets all the ticket's custom fields. */
-  public getTicketFields() {
-    this.zendeskService.getTicketFields().subscribe((response: any) => {
+  public getTicketFields(): void {
+    this.zendeskService.getTicketFields().subscribe(response => {
       const ticketFields = response.ticketFields;
       let titleCustomField = '';
       for (const field in ticketFields) {
@@ -103,33 +97,27 @@ export class TicketAppComponent
   }
 
   /** Gets title data from ticket. */
-  public getTitleData(titleCustomField) {
-    this.zendeskService
-      .getTicketCustomField(titleCustomField)
-      .subscribe(response => {
-        const titleName = response[`ticket.customField:${titleCustomField}`];
-        const titleNameUppercase = titleName.toUpperCase();
+  public getTitleData(titleCustomField: string): void {
+    this.zendeskService.getTicketCustomField(titleCustomField).subscribe(response => {
+      const titleName = response[`ticket.customField:${titleCustomField}`];
+      const titleNameUppercase = titleName.toUpperCase();
 
-        this.gameTitle =
-          titleNameUppercase === 'FORZA_STREET'
-            ? GameTitleCodeNames.Street
-            : titleNameUppercase === 'FORZA_HORIZON_4'
-            ? GameTitleCodeNames.FH4
-            : titleNameUppercase === 'FORZA_MOTORSPORT_7'
-            ? GameTitleCodeNames.FM7
-            : titleNameUppercase === 'FORZA_HORIZON_3'
-            ? GameTitleCodeNames.FH3
-            : null;
-      });
+      this.gameTitle =
+        titleNameUppercase === 'FORZA_STREET'
+          ? GameTitleCodeNames.Street
+          : titleNameUppercase === 'FORZA_HORIZON_4'
+          ? GameTitleCodeNames.FH4
+          : titleNameUppercase === 'FORZA_MOTORSPORT_7'
+          ? GameTitleCodeNames.FM7
+          : titleNameUppercase === 'FORZA_HORIZON_3'
+          ? GameTitleCodeNames.FH3
+          : null;
+    });
   }
 
   /** Opens up inventory app with predefined info filled out. */
-  public goToInventory() {
+  public goToInventory(): void {
     const appSection = this.gameTitle + '/' + this.xuid;
-    this.zendeskService.goToApp(
-      'nav_bar',
-      'forza-inventory-support',
-      appSection
-    );
+    this.zendeskService.goToApp('nav_bar', 'forza-inventory-support', appSection);
   }
 }

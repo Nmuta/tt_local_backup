@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ApolloPlayerDetails } from '@models/apollo';
-import { Observable, of } from 'rxjs';
+import { Injectable, Provider } from '@angular/core';
+import { of } from 'rxjs';
 
 import { ApolloService } from './apollo.service';
 
@@ -12,7 +11,7 @@ export class MockApolloService {
     .and.returnValue(of({}));
 }
 
-export function createMockMockApolloService() {
+export function createMockMockApolloService(): Provider {
   return {
     provide: ApolloService,
     useValue: new MockApolloService(),

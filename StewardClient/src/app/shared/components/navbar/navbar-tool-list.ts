@@ -20,7 +20,7 @@ export function createNavbarPath(routeParams: RouteParams): RouterLinkPath {
 /** Creates a RouterLinkPath for use in displaying navbars, from a RouteParams object. */
 export function createRouterLinkPath(
   parentPath: string[],
-  routeParams: RouteParams
+  routeParams: RouteParams,
 ): RouterLinkPath {
   // tslint:disable-next-line: no-object-literal-type-assertion
   return <RouterLinkPath>{

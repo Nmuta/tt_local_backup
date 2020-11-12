@@ -1,7 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Store, NgxsModule } from '@ngxs/store';
+import { NgxsModule } from '@ngxs/store';
 import {
-  async,
   ComponentFixture,
   TestBed,
   getTestBed,
@@ -19,12 +18,11 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { NavbarComponent } from './navbar.component';
-import { createMockWindowService, WindowService } from '@services/window';
+import { createMockWindowService } from '@services/window';
 
 describe('NavbarComponent', () => {
   let fixture: ComponentFixture<NavbarComponent>;
   let component: NavbarComponent;
-  let mockStore: Store;
   let mockRouter: Router;
 
   beforeEach(
@@ -41,12 +39,11 @@ describe('NavbarComponent', () => {
       }).compileComponents();
 
       const injector = getTestBed();
-      mockStore = injector.get(Store);
-      mockRouter = injector.get(Router);
+      mockRouter = injector.inject(Router);
 
       fixture = TestBed.createComponent(NavbarComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {

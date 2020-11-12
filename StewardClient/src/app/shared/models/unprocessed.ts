@@ -1,5 +1,8 @@
 // https://stackoverflow.com/questions/41980195/recursive-partialt-in-typescript
 
+// disabling because this rule uses `object` type to save us from using it elsewhere
+/* eslint-disable @typescript-eslint/ban-types */
+
 // prettier-ignore
 /** Recursive partial. */
 export type RecursivePartial<T> = {

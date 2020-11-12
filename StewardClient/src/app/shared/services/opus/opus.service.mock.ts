@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import { OpusPlayerDetails } from '@models/opus';
-import { Observable, of } from 'rxjs';
+import { Injectable, Provider } from '@angular/core';
+import { of } from 'rxjs';
 
 import { OpusService } from './opus.service';
 
@@ -12,7 +11,7 @@ export class MockOpusService {
     .and.returnValue(of({}));
 }
 
-export function createMockMockOpusService() {
+export function createMockMockOpusService(): Provider {
   return {
     provide: OpusService,
     useValue: new MockOpusService(),

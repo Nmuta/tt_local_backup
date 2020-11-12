@@ -1,6 +1,6 @@
 /** Interface for gravity player details. */
 export interface GravityPlayerDetails {
-  xuid?: any;
+  xuid?: BigInt;
   gamertag?: string;
   turn10Id?: string;
   playFabId?: string;
@@ -12,8 +12,8 @@ export interface GravityPlayerDetails {
   subscriptionTier?: string;
   lastLoginUtc?: Date;
   firstLoginUtc?: Date;
-  ageGroup?: any;
+  ageGroup?: unknown;
   timeOffsetInSeconds?: number;
-  lastGameSettingsUsed?: any;
-  saveStates?: any[];
+  lastGameSettingsUsed?: unknown;
+  saveStates?: unknown[];
 }

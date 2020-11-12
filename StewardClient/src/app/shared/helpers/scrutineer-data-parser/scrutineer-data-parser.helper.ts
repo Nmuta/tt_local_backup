@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 
+/* eslint-disable */
+
 /** Helper that parses scrutineer data into easier to understand text. */
-/* tslint:disable */
 @Injectable({
   providedIn: 'root',
 })

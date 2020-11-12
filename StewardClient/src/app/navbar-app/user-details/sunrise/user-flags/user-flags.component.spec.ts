@@ -1,20 +1,10 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  getTestBed,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { SunriseService } from '@services/sunrise/sunrise.service';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
-import { of } from 'rxjs';
 
 import { UserFlagsComponent } from './user-flags.component';
 
 describe('UserFlagsComponent', () => {
-  let injector: TestBed;
-  let service: SunriseService;
   let component: UserFlagsComponent;
   let fixture: ComponentFixture<UserFlagsComponent>;
 
@@ -24,9 +14,6 @@ describe('UserFlagsComponent', () => {
       providers: [createMockSunriseService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-
-    injector = getTestBed();
-    service = injector.inject(SunriseService);
   });
 
   beforeEach(() => {
@@ -39,6 +26,6 @@ describe('UserFlagsComponent', () => {
     'should create',
     waitForAsync(() => {
       expect(component).toBeTruthy();
-    })
+    }),
   );
 });

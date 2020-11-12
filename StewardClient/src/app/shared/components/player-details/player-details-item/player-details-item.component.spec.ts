@@ -1,6 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
-  async,
   ComponentFixture,
   TestBed,
   getTestBed,
@@ -27,11 +26,11 @@ describe('PlayerDetailsItemComponent', () => {
       }).compileComponents();
 
       const injector = getTestBed();
-      mockClipboard = injector.get(Clipboard);
+      mockClipboard = injector.inject(Clipboard);
 
       fixture = TestBed.createComponent(PlayerDetailsItemComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {
@@ -68,7 +67,7 @@ describe('PlayerDetailsItemComponent', () => {
   });
 
   describe('Method: copyToClipboard', () => {
-    var testCopyData = 'value data to copy';
+    const testCopyData = 'value data to copy';
     beforeEach(() => {
       component.value = testCopyData;
       mockClipboard.copyMessage = jasmine.createSpy('copyMessage');

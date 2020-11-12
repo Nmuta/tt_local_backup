@@ -7,9 +7,7 @@ import { Unprocessed } from '@models/unprocessed';
 export class GravityPlayerGamertagDetailsFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
-    const targetingStewardApi = this.request.url.startsWith(
-      environment.stewardApiUrl
-    );
+    const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
     if (!targetingStewardApi) {
       return false;
     }
@@ -20,7 +18,7 @@ export class GravityPlayerGamertagDetailsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): object {
+  public handle(): Partial<Unprocessed<GravityPlayerDetails>> {
     return GravityPlayerGamertagDetailsFakeApi.make();
   }
 

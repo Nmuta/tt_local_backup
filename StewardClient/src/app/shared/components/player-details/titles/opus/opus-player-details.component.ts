@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { PlayerDetailsComponentBase } from '@components/player-details/player-details.component';
+import { Component } from '@angular/core';
+import { PlayerDetailsBaseComponent } from '@components/player-details/player-details.base.component';
 import { OpusPlayerDetails } from '@models/opus';
 import { OpusService } from '@services/opus';
 import { Observable } from 'rxjs';
@@ -9,12 +9,8 @@ import { Observable } from 'rxjs';
   selector: 'opus-player-details',
   templateUrl: '../../player-details.html',
   styleUrls: ['../../player-details.scss'],
-  inputs: ['gamertag'],
-  outputs: ['xuidFoundEvent'],
 })
-export class OpusPlayerDetailsComponent extends PlayerDetailsComponentBase<
-  OpusPlayerDetails
-> {
+export class OpusPlayerDetailsComponent extends PlayerDetailsBaseComponent<OpusPlayerDetails> {
   constructor(public readonly opusService: OpusService) {
     super();
   }

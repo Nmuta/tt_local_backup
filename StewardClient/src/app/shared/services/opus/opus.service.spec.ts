@@ -1,9 +1,6 @@
 import { getTestBed, TestBed } from '@angular/core/testing';
-import { OpusPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/opus/player/gamertag/details';
+import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
-
-import * as faker from 'faker';
-import { of } from 'rxjs';
 
 import { OpusService } from './opus.service';
 
@@ -11,7 +8,7 @@ describe('OpusService', () => {
   let injector: TestBed;
   let service: OpusService;
   let apiServiceMock: ApiService;
-  let nextReturnValue: object | [] = {};
+  let nextReturnValue: Unprocessed<unknown> = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -28,19 +25,17 @@ describe('OpusService', () => {
   });
 
   describe('Method: getPlayerDetailsByGamertag', () => {
-    var expectedGamertag;
+    let expectedGamertag;
 
     beforeEach(() => {
       expectedGamertag = 'test-gamertag';
-      apiServiceMock.getRequest = jasmine
-        .createSpy('getRequest')
-        .and.returnValue(of({}));
+      nextReturnValue = {};
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(res => {
+      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/gamertag(${expectedGamertag})/details`
+          `${service.basePath}/player/gamertag(${expectedGamertag})/details`,
         );
         done();
       });

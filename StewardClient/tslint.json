@@ -24,12 +24,7 @@
     "component-class-suffix": true,
     "directive-class-suffix": true,
 
-    "directive-selector": [
-      true,
-      "attribute",
-      ["app", "std", "sentry", ""],
-      "camelCase"
-    ],
+    "directive-selector": [true, "attribute", ["app", "std", "sentry", ""], "camelCase"],
     "component-selector": false,
     "pipe-naming": [false, "camelCase", ["sentry", ""]],
 
@@ -51,12 +46,7 @@
     "object-literal-sort-keys": false,
     "object-literal-shorthand": false,
     "variable-name": {
-      "options": [
-        "ban-keywords",
-        "check-format",
-        "allow-pascal-case",
-        "allow-leading-underscore"
-      ]
+      "options": ["ban-keywords", "check-format", "allow-pascal-case", "allow-leading-underscore"]
     },
 
     "arrow-parens": [true, "ban-single-arg-parens"],

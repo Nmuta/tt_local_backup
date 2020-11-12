@@ -1,7 +1,6 @@
 // General
 import { TestBed } from '@angular/core/testing';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { throwError, of } from 'rxjs';
+import { of } from 'rxjs';
 
 // Services
 import { ApiService, createMockApiService } from '@shared/services/api';
@@ -21,15 +20,12 @@ describe('service: UserService', () => {
   });
 
   describe('Method: getUserProfile', () => {
-    let headers;
     beforeEach(() => {
-      apiMock.getRequest = jasmine
-        .createSpy('getRequest')
-        .and.returnValue(of({}));
-      headers = new HttpHeaders().set('Content-Type', 'application/json');
+      apiMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
+
     it('should call API service getRequest with the expected params', done => {
-      service.getUserProfile().subscribe(res => {
+      service.getUserProfile().subscribe(() => {
         expect(apiMock.getRequest).toHaveBeenCalledWith(`me`);
         done();
       });
