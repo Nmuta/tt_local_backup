@@ -56,7 +56,7 @@ describe('service: UserService', () => {
     it('should use zafClient loaded into the window to get the ticket requestor info', done => {
       service.getTicketRequestor().subscribe(() => {
         expect(mockZafClientObject.get).toHaveBeenCalledWith(
-          `ticket.requester`
+          `ticket.requester`,
         );
         done();
       });
@@ -75,7 +75,7 @@ describe('service: UserService', () => {
     it('should use zafClient loaded into the window to get the custom ticket field', done => {
       service.getTicketCustomField(param).subscribe(() => {
         expect(mockZafClientObject.get).toHaveBeenCalledWith(
-          `ticket.customField:${param}`
+          `ticket.customField:${param}`,
         );
         done();
       });
@@ -128,7 +128,7 @@ describe('service: UserService', () => {
         'routeTo',
         appLocation,
         appName,
-        paramPath
+        paramPath,
       );
       done();
     });

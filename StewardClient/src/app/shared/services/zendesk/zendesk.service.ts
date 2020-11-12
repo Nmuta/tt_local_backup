@@ -3,14 +3,16 @@ import { ZAFRequestOptions } from '@shared/definitions/zaf-client';
 import { WindowService } from '@shared/services/window';
 import { from, Observable } from 'rxjs';
 
-export interface TicketRequesterResponse { 'ticket.requester': { name: string } }
+export interface TicketRequesterResponse {
+  'ticket.requester': { name: string };
+}
 export interface TicketFieldsResponse {
   ticketFields: {
     [key: string]: {
-      label: 'Forza Title',
-      name: string,
-    }
-  }
+      label: 'Forza Title';
+      name: string;
+    };
+  };
 }
 /** Defines the Zendesk Service. */
 @Injectable({
@@ -26,7 +28,11 @@ export class ZendeskService {
 
   /** Gets the zendesk ticket requestor information. */
   public getTicketRequestor(): Observable<TicketRequesterResponse> {
-    return from(this.windowService.zafClient().get<TicketRequesterResponse>('ticket.requester'));
+    return from(
+      this.windowService
+        .zafClient()
+        .get<TicketRequesterResponse>('ticket.requester'),
+    );
   }
 
   /** Gets the zendesk ticket fields. */
@@ -37,7 +43,7 @@ export class ZendeskService {
   /** Gets a zendesk custom ticket field. */
   public getTicketCustomField(field: string): Observable<unknown> {
     return from(
-      this.windowService.zafClient().get(`ticket.customField:${field}`)
+      this.windowService.zafClient().get(`ticket.customField:${field}`),
     );
   }
 
@@ -64,7 +70,11 @@ export class ZendeskService {
   }
 
   /** Opens up the sepcified zendesk app. */
-  public goToApp(appLocation: string, appName: string, paramPath: string): void {
+  public goToApp(
+    appLocation: string,
+    appName: string,
+    paramPath: string,
+  ): void {
     this.windowService
       .zafClient()
       .invoke('routeTo', appLocation, appName, paramPath);

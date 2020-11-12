@@ -19,7 +19,7 @@ import _ from 'lodash';
 /** Augmented type that also includes the correlated ban. */
 interface ServicesBanWithCorrelation extends ServicesBanDescription {
   correlatedLiveOpsBan?: LiveOpsBanDescription;
-};
+}
 
 /** Retreives and displays Sunrise Ban history by XUID. */
 @Component({
@@ -32,7 +32,7 @@ interface ServicesBanWithCorrelation extends ServicesBanDescription {
       state('expanded', style({ height: '*' })),
       transition(
         'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
       ),
     ]),
   ],
@@ -89,12 +89,14 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
       _error => {
         this.isLoading = false;
         this.loadError = _error; // TODO: Display something useful to the user
-      }
+      },
     );
   }
 
   /** Attempts to correlate a Services ban to a Live Ops ban. */
-  public correlateLiveOps(servicesBan: ServicesBanDescription): LiveOpsBanDescription {
+  public correlateLiveOps(
+    servicesBan: ServicesBanDescription,
+  ): LiveOpsBanDescription {
     const value = _.chain(this.history.liveOpsBanHistory)
       .filter(liveOpsBan => {
         const xuidMatch = liveOpsBan.xuid === servicesBan.xuid;

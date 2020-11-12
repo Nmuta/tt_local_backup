@@ -15,11 +15,11 @@ export class ApolloService {
 
   /** Gets apollo player details with a gamertag. This can be used to retrieve a XUID. */
   public getPlayerDetailsByGamertag(
-    gamertag: string
+    gamertag: string,
   ): Observable<ApolloPlayerDetails> {
     return this.apiService
       .getRequest<ApolloPlayerDetails>(
-        `${this.basePath}/player/gamertag(${gamertag})/details`
+        `${this.basePath}/player/gamertag(${gamertag})/details`,
       )
       .pipe(
         map(details => {
@@ -30,7 +30,7 @@ export class ApolloService {
             ? new Date(details.lastLoginUtc)
             : null;
           return details;
-        })
+        }),
       );
   }
 }

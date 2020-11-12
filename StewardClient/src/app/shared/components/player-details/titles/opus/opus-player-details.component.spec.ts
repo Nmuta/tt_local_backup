@@ -44,7 +44,7 @@ describe('OpusPlayerDetailsComponent', () => {
 
       fixture = TestBed.createComponent(OpusPlayerDetailsComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {
@@ -61,10 +61,12 @@ describe('OpusPlayerDetailsComponent', () => {
     });
     it('should return apollo player details request observable', () => {
       const apolloPlayerDetailsObs = component.makeRequest$();
-      apolloPlayerDetailsObs.subscribe(_data => { /* nothing */ });
+      apolloPlayerDetailsObs.subscribe(_data => {
+        /* nothing */
+      });
 
       expect(mockOpusService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(
-        expectedGamertag
+        expectedGamertag,
       );
     });
   });

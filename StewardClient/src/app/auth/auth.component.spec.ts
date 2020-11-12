@@ -11,9 +11,7 @@ import {
   flush,
   waitForAsync,
 } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from '@environments/environment';
 import { delay } from 'rxjs/operators';
@@ -22,9 +20,7 @@ import { delay } from 'rxjs/operators';
 import { AuthComponent } from './auth.component';
 
 // Services
-import {
-  createMockZendeskService,
-} from '@shared/services/zendesk';
+import { createMockZendeskService } from '@shared/services/zendesk';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 
 // States
@@ -82,7 +78,7 @@ describe('AuthComponent', () => {
 
       fixture = TestBed.createComponent(AuthComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {
@@ -260,7 +256,7 @@ describe('AuthComponent', () => {
 
       expect(mockWindowService.open).toHaveBeenCalledWith(
         `${environment.stewardUiUrl}/auth?action=login`,
-        '_blank'
+        '_blank',
       );
     });
   });

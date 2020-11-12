@@ -51,7 +51,7 @@ describe('ProfileComponent', () => {
 
       fixture = TestBed.createComponent(ProfileComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {
@@ -88,7 +88,7 @@ describe('ProfileComponent', () => {
 
       expect(mockWindowService.open).toHaveBeenCalledWith(
         `${environment.stewardUiUrl}/auth?action=logout`,
-        '_blank'
+        '_blank',
       );
     });
   });

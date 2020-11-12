@@ -1,10 +1,6 @@
 // General
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 // Components
 import { InventoryOptionsComponent } from './inventory-options.component';
@@ -24,7 +20,7 @@ describe('InventoryOptionsComponent', () => {
 
       fixture = TestBed.createComponent(InventoryOptionsComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {

@@ -9,7 +9,6 @@ import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-
 /** Defines the ticket sidebar component. */
 @Component({
   templateUrl: './ticket-app.html',
@@ -64,7 +63,7 @@ export class TicketAppComponent
           this.router.navigate([`/auth`], {
             queryParams: { from: this.appName },
           });
-        }
+        },
       );
   }
 
@@ -126,7 +125,7 @@ export class TicketAppComponent
     this.zendeskService.goToApp(
       'nav_bar',
       'forza-inventory-support',
-      appSection
+      appSection,
     );
   }
 }

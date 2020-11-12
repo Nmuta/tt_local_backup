@@ -1,10 +1,5 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import {
-  Store,
-  NgxsModule,
-  Actions,
-  ofActionSuccessful,
-} from '@ngxs/store';
+import { Store, NgxsModule, Actions, ofActionSuccessful } from '@ngxs/store';
 import { UserState } from '../user.state';
 import { GetUser } from '../user.actions';
 import { of, throwError } from 'rxjs';
@@ -31,7 +26,7 @@ describe('State: User', () => {
       mockUserService.getUserProfile = jasmine
         .createSpy('getUserProfile')
         .and.returnValue(of({}));
-    })
+    }),
   );
   describe('[GetUser] Action', () => {
     let action;

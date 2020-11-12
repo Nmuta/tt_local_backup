@@ -1,13 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PlayerDetailsBaseComponent } from './player-details.base.component';
-import {
-  createMockWindowService,
-} from '@shared/services/window';
+import { createMockWindowService } from '@shared/services/window';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
@@ -43,7 +37,6 @@ describe('PlayerDetailsComponent', () => {
         ],
       }).compileComponents();
 
-
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       fixture = TestBed.createComponent(PlayerDetailsBaseComponent as any);
       component = fixture.debugElement.componentInstance;
@@ -51,7 +44,7 @@ describe('PlayerDetailsComponent', () => {
       component.makeRequest$ = jasmine
         .createSpy('makeRequest$')
         .and.returnValue(of({}));
-    })
+    }),
   );
 
   it('should create', () => {
@@ -69,7 +62,7 @@ describe('PlayerDetailsComponent', () => {
       waitForAsync(() => {
         component.ngOnChanges();
         expect(component.isLoading).toBeFalsy();
-      })
+      }),
     );
     describe('And api returns player details', () => {
       const expectedPlayerDetails = {

@@ -2,23 +2,23 @@
 export {};
 
 export interface ZAFMetadata {
-  appId: number,
-  name: string,
-  installationId: number,
-  version: string,
+  appId: number;
+  name: string;
+  installationId: number;
+  version: string;
   settings: {
-    title: string
-  }
+    title: string;
+  };
 }
 
 export interface ZAFContext {
-  instanceGuid: string,
-  product: string
+  instanceGuid: string;
+  product: string;
   account: {
-    subdomain: string
-  },
-  location: 'ticket_sidebar',
-  ticketId: number
+    subdomain: string;
+  };
+  location: 'ticket_sidebar';
+  ticketId: number;
 }
 
 export type ZAFHandler = (e: unknown) => void;
@@ -63,7 +63,7 @@ export interface ZAFClient {
   has(eventName: string, handler: ZAFHandler): boolean;
   instance(instanceGuid: string): ZAFClient;
   invoke(name: string, ...args: unknown[]): Promise<unknown>;
-  invoke(pathToArgsObject: { [name: string]: unknown[]}): Promise<unknown[]>;
+  invoke(pathToArgsObject: { [name: string]: unknown[] }): Promise<unknown[]>;
   metadata(): Promise<ZAFMetadata>;
   off(name: string, handler: ZAFHandler): void;
   on(name: string, handler: ZAFHandler): void;

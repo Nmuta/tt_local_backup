@@ -43,7 +43,7 @@ describe('NavbarComponent', () => {
 
       fixture = TestBed.createComponent(NavbarComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {

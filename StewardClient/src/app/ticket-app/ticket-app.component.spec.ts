@@ -9,9 +9,7 @@ import {
   waitForAsync,
 } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
-import {
-  HttpClientTestingModule,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Helpers
@@ -65,7 +63,7 @@ describe('TicketAppComponent', () => {
 
       fixture = TestBed.createComponent(TicketAppComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {
@@ -187,7 +185,7 @@ describe('TicketAppComponent', () => {
         component.getTicketFields();
 
         expect(component.getTitleData).toHaveBeenCalledWith(
-          ticketGameTitleField
+          ticketGameTitleField,
         );
       });
     });
@@ -207,7 +205,7 @@ describe('TicketAppComponent', () => {
       component.getTitleData(getTitleDataParam);
 
       expect(mockZendeskService.getTicketCustomField).toHaveBeenCalledWith(
-        getTitleDataParam
+        getTitleDataParam,
       );
     });
 
@@ -298,7 +296,7 @@ describe('TicketAppComponent', () => {
       expect(mockZendeskService.goToApp).toHaveBeenCalledWith(
         'nav_bar',
         'forza-inventory-support',
-        expectedAppsection
+        expectedAppsection,
       );
     });
   });

@@ -2,8 +2,6 @@
 import { Injectable } from '@angular/core';
 import { ZAFClient } from '@shared/definitions/zaf-client';
 
-
-
 /** Defines the Window Service. */
 @Injectable({
   providedIn: 'root',

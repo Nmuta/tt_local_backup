@@ -44,7 +44,7 @@ describe('ApolloPlayerDetailsComponent', () => {
 
       fixture = TestBed.createComponent(ApolloPlayerDetailsComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {
@@ -61,10 +61,12 @@ describe('ApolloPlayerDetailsComponent', () => {
     });
     it('should return apollo player details request observable', () => {
       const apolloPlayerDetailsObs = component.makeRequest$();
-      apolloPlayerDetailsObs.subscribe(_data => { /* nothing */ });
+      apolloPlayerDetailsObs.subscribe(_data => {
+        /* nothing */
+      });
 
       expect(mockApolloService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(
-        expectedGamertag
+        expectedGamertag,
       );
     });
   });

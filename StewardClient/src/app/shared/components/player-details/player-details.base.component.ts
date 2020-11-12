@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
   template: '',
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
-export abstract class PlayerDetailsBaseComponent<T extends {xuid?: BigInt}>
+export abstract class PlayerDetailsBaseComponent<T extends { xuid?: BigInt }>
   extends BaseComponent
   implements OnChanges {
   /** Gamertag to lookup for player details. */
@@ -51,7 +51,7 @@ export abstract class PlayerDetailsBaseComponent<T extends {xuid?: BigInt}>
       error => {
         this.isLoading = false;
         this.loadError = error;
-      }
+      },
     );
   }
 }

@@ -2,7 +2,6 @@ import { getTestBed, TestBed } from '@angular/core/testing';
 import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
 
-
 import { OpusService } from './opus.service';
 
 describe('OpusService', () => {
@@ -36,7 +35,7 @@ describe('OpusService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/gamertag(${expectedGamertag})/details`
+          `${service.basePath}/player/gamertag(${expectedGamertag})/details`,
         );
         done();
       });

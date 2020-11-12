@@ -9,12 +9,14 @@ import { LoggerService } from './logger.service';
 export class MockLoggerService {
   public consoleLevel: LogLevel = LogLevel.Everything;
   public appInsightsLevel: LogLevel = LogLevel.Everything;
-  public log: (topics: LogTopic[], ...data: unknown[]) => void = jasmine.createSpy(
-    'log'
-  );
-  public warn: (topics: LogTopic[], ...data: unknown[]) => void = jasmine.createSpy(
-    'warn'
-  );
+  public log: (
+    topics: LogTopic[],
+    ...data: unknown[]
+  ) => void = jasmine.createSpy('log');
+  public warn: (
+    topics: LogTopic[],
+    ...data: unknown[]
+  ) => void = jasmine.createSpy('warn');
   public debug: (
     topics: LogTopic[],
     ...data: unknown[]

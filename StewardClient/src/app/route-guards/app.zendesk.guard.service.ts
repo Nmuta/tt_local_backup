@@ -15,13 +15,13 @@ import { Observable } from 'rxjs';
 export class ZendeskGuardService implements CanActivate {
   constructor(
     private readonly router: Router,
-    private readonly windowService: WindowService
+    private readonly windowService: WindowService,
   ) {}
 
   /** Logic to activate the route. */
   public canActivate(
     _route: ActivatedRouteSnapshot,
-    _state: RouterStateSnapshot
+    _state: RouterStateSnapshot,
   ): Observable<boolean> | boolean {
     const inZendesk = !!this.windowService.zafClient();
     if (!inZendesk) {

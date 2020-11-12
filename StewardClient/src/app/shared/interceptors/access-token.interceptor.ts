@@ -17,9 +17,11 @@ export class AccessTokenInterceptor implements HttpInterceptor {
   /** Intercept logic that adds bearer token to request header. */
   public intercept(
     request: HttpRequest<unknown>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    let accessToken = this.store.selectSnapshot<string | null | undefined>(UserState.accessToken);
+    let accessToken = this.store.selectSnapshot<string | null | undefined>(
+      UserState.accessToken,
+    );
     accessToken = !!accessToken ? accessToken : '';
     request = request.clone({
       setHeaders: {

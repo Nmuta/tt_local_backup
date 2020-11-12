@@ -80,7 +80,7 @@ function fakeApiOrNothing(): Provider[] {
         unprotectedResources: [],
         protectedResourceMap,
         extraQueryParameters: {},
-      }
+      },
     ),
   ],
   providers: [

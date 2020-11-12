@@ -44,7 +44,7 @@ describe('GravityPlayerDetailsComponent', () => {
 
       fixture = TestBed.createComponent(GravityPlayerDetailsComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {
@@ -61,10 +61,12 @@ describe('GravityPlayerDetailsComponent', () => {
     });
     it('should return apollo player details request observable', () => {
       const apolloPlayerDetailsObs = component.makeRequest$();
-      apolloPlayerDetailsObs.subscribe(_data => { /* nothing */});
+      apolloPlayerDetailsObs.subscribe(_data => {
+        /* nothing */
+      });
 
       expect(
-        mockGravityService.getPlayerDetailsByGamertag
+        mockGravityService.getPlayerDetailsByGamertag,
       ).toHaveBeenCalledWith(expectedGamertag);
     });
   });

@@ -6,9 +6,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ContentCollapseModule } from '@components/content-collapse/content-collapse.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
-import {
-  FontAwesomeModule,
-} from '@fortawesome/angular-fontawesome';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { PlayerDetailsItemModule } from './player-details-item/player-details-item.module';
 import { ApolloPlayerDetailsComponent } from './titles/apollo/apollo-player-details.component';

@@ -1,8 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import {
-  SunriseConsoleDetails,
-} from '@models/sunrise/sunrise-console-details.model';
+import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { Unprocessed } from '@models/unprocessed';
 import * as faker from 'faker';
 
@@ -11,7 +9,7 @@ export class SunrisePlayerXuidConsolesFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(
-      environment.stewardApiUrl
+      environment.stewardApiUrl,
     );
     if (!targetingStewardApi) {
       return false;

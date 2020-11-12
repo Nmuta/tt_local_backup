@@ -1,7 +1,4 @@
-import {
-  Component,
-  Input,
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 /** Defines a player details information item. */

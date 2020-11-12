@@ -22,7 +22,7 @@ module.exports = {
      */
     {
       files: ['*.ts'],
-      parser: "@typescript-eslint/parser",
+      parser: '@typescript-eslint/parser',
       parserOptions: {
         project: [
           'tsconfig.*?.json',
@@ -59,7 +59,7 @@ module.exports = {
         '@typescript-eslint/member-ordering': [
           'error',
           {
-            'default': [
+            default: [
               // manuallly implementing Instance Sandwich
               // instance-sandwich puts, in order of precedence:
               //  * fields before constructors before methods
@@ -107,7 +107,10 @@ module.exports = {
             ],
           },
         ],
-        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        '@typescript-eslint/no-unused-vars': [
+          'error',
+          { argsIgnorePattern: '^_' },
+        ],
       },
     },
 

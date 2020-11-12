@@ -1,9 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 
@@ -32,6 +28,6 @@ describe('SunriseComponent', () => {
     'should create',
     waitForAsync(() => {
       expect(component).toBeTruthy();
-    })
+    }),
   );
 });

@@ -1,9 +1,5 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import {
-  Store,
-  NgxsModule,
-  Actions,
-} from '@ngxs/store';
+import { Store, NgxsModule, Actions } from '@ngxs/store';
 import { UserState } from '../user.state';
 import { ResetAccessToken } from '../user.actions';
 import { of } from 'rxjs';
@@ -31,7 +27,7 @@ describe('State: User', () => {
       mockAuthService.acquireTokenSilent = jasmine
         .createSpy('acquireTokenSilent')
         .and.returnValue(of({}));
-    })
+    }),
   );
   describe('[ResetAccessToken] Action', () => {
     let action;

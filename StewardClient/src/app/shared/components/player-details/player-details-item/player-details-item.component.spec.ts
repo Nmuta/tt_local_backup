@@ -30,7 +30,7 @@ describe('PlayerDetailsItemComponent', () => {
 
       fixture = TestBed.createComponent(PlayerDetailsItemComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {

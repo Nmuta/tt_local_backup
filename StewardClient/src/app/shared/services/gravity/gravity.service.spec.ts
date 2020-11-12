@@ -35,7 +35,7 @@ describe('service: GravityService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/gamertag(${expectedGamertag})/details`
+          `${service.basePath}/player/gamertag(${expectedGamertag})/details`,
         );
         done();
       });
@@ -55,7 +55,7 @@ describe('service: GravityService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getPlayerDetailsByXuid(expectedXuid).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/xuid(${expectedXuid})/details`
+          `${service.basePath}/player/xuid(${expectedXuid})/details`,
         );
         done();
       });
@@ -75,7 +75,7 @@ describe('service: GravityService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getPlayerDetailsByT10Id(expectedT10Id).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/t10Id(${expectedT10Id})/details`
+          `${service.basePath}/player/t10Id(${expectedT10Id})/details`,
         );
         done();
       });
@@ -95,7 +95,7 @@ describe('service: GravityService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getPlayerInventoryByXuid(expectedXuid).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/inventory/xuid(${expectedXuid})`
+          `${service.basePath}/player/inventory/xuid(${expectedXuid})`,
         );
         done();
       });
@@ -115,7 +115,7 @@ describe('service: GravityService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getPlayerInventoryByT10Id(expectedT10Id).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/inventory/t10Id(${expectedT10Id})`
+          `${service.basePath}/player/inventory/t10Id(${expectedT10Id})`,
         );
         done();
       });
@@ -139,7 +139,7 @@ describe('service: GravityService', () => {
         .getPlayerInventoryByProfileIdWithXuid(expectedXuid, expectedProfileId)
         .subscribe(() => {
           expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-            `${service.basePath}/player/inventory/xuid(${expectedXuid})/profileId(${expectedProfileId})`
+            `${service.basePath}/player/inventory/xuid(${expectedXuid})/profileId(${expectedProfileId})`,
           );
           done();
         });
@@ -162,11 +162,11 @@ describe('service: GravityService', () => {
       service
         .getPlayerInventoryByProfileIdWithT10Id(
           expectedt10Id,
-          expectedProfileId
+          expectedProfileId,
         )
         .subscribe(() => {
           expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-            `${service.basePath}/player/inventory/t10Id(${expectedt10Id})/profileId(${expectedProfileId})`
+            `${service.basePath}/player/inventory/t10Id(${expectedt10Id})/profileId(${expectedProfileId})`,
           );
           done();
         });
@@ -178,10 +178,14 @@ describe('service: GravityService', () => {
     let expectedParams: HttpParams;
 
     beforeEach(() => {
-      expectedInventory = { xuid: (BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))) };
+      expectedInventory = {
+        xuid:
+          BigInt(Number.MAX_SAFE_INTEGER) +
+          BigInt(faker.random.number(Number.MAX_SAFE_INTEGER)),
+      };
       expectedParams = new HttpParams().append(
         'useBackgroundProcessing',
-        false.toString()
+        false.toString(),
       );
       apiServiceMock.postRequest = jasmine
         .createSpy('postRequest')
@@ -193,7 +197,7 @@ describe('service: GravityService', () => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/inventory/xuid`,
           expectedInventory,
-          expectedParams
+          expectedParams,
         );
         done();
       });
@@ -204,7 +208,7 @@ describe('service: GravityService', () => {
         expectedInventory = {};
         expectedParams = new HttpParams().append(
           'useBackgroundProcessing',
-          false.toString()
+          false.toString(),
         );
         apiServiceMock.postRequest = jasmine
           .createSpy('postRequest')
@@ -220,7 +224,7 @@ describe('service: GravityService', () => {
           () => {
             expect(true).toBeTruthy();
             done();
-          }
+          },
         );
       });
     });
@@ -229,7 +233,7 @@ describe('service: GravityService', () => {
       beforeEach(() => {
         expectedParams = new HttpParams().append(
           'useBackgroundProcessing',
-          true.toString()
+          true.toString(),
         );
       });
 
@@ -240,7 +244,7 @@ describe('service: GravityService', () => {
             expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
               `${service.basePath}/player/inventory/xuid`,
               expectedInventory,
-              expectedParams
+              expectedParams,
             );
             done();
           });
@@ -256,7 +260,7 @@ describe('service: GravityService', () => {
       expectedInventory = { turn10Id: 't10Id' };
       expectedParams = new HttpParams().append(
         'useBackgroundProcessing',
-        false.toString()
+        false.toString(),
       );
       apiServiceMock.postRequest = jasmine
         .createSpy('postRequest')
@@ -268,7 +272,7 @@ describe('service: GravityService', () => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/inventory/t10Id`,
           expectedInventory,
-          expectedParams
+          expectedParams,
         );
         done();
       });
@@ -279,7 +283,7 @@ describe('service: GravityService', () => {
         expectedInventory = {};
         expectedParams = new HttpParams().append(
           'useBackgroundProcessing',
-          false.toString()
+          false.toString(),
         );
         apiServiceMock.postRequest = jasmine
           .createSpy('postRequest')
@@ -295,7 +299,7 @@ describe('service: GravityService', () => {
           () => {
             expect(true).toBeTruthy();
             done();
-          }
+          },
         );
       });
     });
@@ -304,7 +308,7 @@ describe('service: GravityService', () => {
       beforeEach(() => {
         expectedParams = new HttpParams().append(
           'useBackgroundProcessing',
-          true.toString()
+          true.toString(),
         );
       });
 
@@ -315,7 +319,7 @@ describe('service: GravityService', () => {
             expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
               `${service.basePath}/player/inventory/t10Id`,
               expectedInventory,
-              expectedParams
+              expectedParams,
             );
             done();
           });
@@ -336,7 +340,7 @@ describe('service: GravityService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getGameSettings(expectedGameSettingsId).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/data/gameSettingsId(${expectedGameSettingsId})`
+          `${service.basePath}/data/gameSettingsId(${expectedGameSettingsId})`,
         );
         done();
       });
@@ -359,11 +363,11 @@ describe('service: GravityService', () => {
       service
         .getGiftHistories(
           expectedGiftHistoryAntecedent,
-          expectedGiftRecipientId
+          expectedGiftRecipientId,
         )
         .subscribe(() => {
           expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-            `${service.basePath}/giftHistory/giftRecipientId/(${expectedGiftRecipientId})/giftHistoryAntecedent/(${expectedGiftHistoryAntecedent})`
+            `${service.basePath}/giftHistory/giftRecipientId/(${expectedGiftRecipientId})/giftHistoryAntecedent/(${expectedGiftHistoryAntecedent})`,
           );
           done();
         });

@@ -44,7 +44,7 @@ describe('SunrisePlayerDetailsComponent', () => {
 
       fixture = TestBed.createComponent(SunrisePlayerDetailsComponent);
       component = fixture.debugElement.componentInstance;
-    })
+    }),
   );
 
   it('should create', () => {
@@ -61,10 +61,12 @@ describe('SunrisePlayerDetailsComponent', () => {
     });
     it('should return apollo player details request observable', () => {
       const apolloPlayerDetailsObs = component.makeRequest$();
-      apolloPlayerDetailsObs.subscribe(() => { /* nothing */ });
+      apolloPlayerDetailsObs.subscribe(() => {
+        /* nothing */
+      });
 
       expect(
-        mockSunriseService.getPlayerDetailsByGamertag
+        mockSunriseService.getPlayerDetailsByGamertag,
       ).toHaveBeenCalledWith(expectedGamertag);
     });
   });

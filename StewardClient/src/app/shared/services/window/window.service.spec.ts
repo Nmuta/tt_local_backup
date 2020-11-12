@@ -1,7 +1,4 @@
-﻿import {
-  TestBed,
-  inject,
-} from '@angular/core/testing';
+﻿import { TestBed, inject } from '@angular/core/testing';
 import { WindowService } from './window.service';
 
 describe('service: WindowService', () => {
