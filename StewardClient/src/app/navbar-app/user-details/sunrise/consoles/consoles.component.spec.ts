@@ -19,6 +19,7 @@ import { Subject } from 'rxjs';
 
 import { ConsolesComponent } from './consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
+import { Unprocessed } from '@models/unprocessed';
 
 describe('ConsolesComponent', () => {
   let injector: TestBed;
@@ -63,7 +64,7 @@ describe('ConsolesComponent', () => {
       waitForAsync(() => {
         // console details prep
         consoleDetails$ = new Subject<SunriseConsoleDetails>();
-        consoleDetailsValue = SunrisePlayerXuidConsolesFakeApi.makeMany();
+        consoleDetailsValue = SunrisePlayerXuidConsolesFakeApi.makeMany() as SunriseConsoleDetails;
         service.getConsoleDetailsByXuid = jasmine
           .createSpy('getConsoleDetailsByXuid')
           .and.returnValue(consoleDetails$);

@@ -56,8 +56,8 @@ describe('SunriseService', () => {
 
   it('handles getFlagsByXuid', done => {
     service.getFlagsByXuid(fakeXuid()).subscribe(output => {
-      expect(output).toEqual(
-        nextReturnValue,
+      expect(output as unknown).toEqual(
+        nextReturnValue as unknown,
         'fields should not be modified'
       );
       done();
@@ -69,8 +69,8 @@ describe('SunriseService', () => {
     service
       .putFlagsByXuid(fakeXuid(), typedReturnValue as SunriseUserFlags)
       .subscribe(output => {
-        expect(output).toEqual(
-          nextReturnValue,
+        expect(output as unknown).toEqual(
+          nextReturnValue as unknown,
           'fields should not be modified'
         );
         done();
@@ -108,7 +108,7 @@ describe('SunriseService', () => {
         }
       }
 
-      expect(output).toEqual(
+      expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'other fields should not be modified'
       );

@@ -1,3 +1,4 @@
+import { Provider } from '@angular/core';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 
 /** A mock for Application Insights. */

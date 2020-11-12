@@ -5,6 +5,7 @@ import { GravityService } from './gravity.service';
 import { GravityPlayerInventory } from '@models/gravity';
 import { HttpParams } from '@angular/common/http';
 import { GiftHistoryAntecedent } from '@shared/constants';
+import { faker } from '@interceptors/fake-api/utility';
 
 describe('service: GravityService', () => {
   let injector: TestBed;
@@ -177,7 +178,7 @@ describe('service: GravityService', () => {
     let expectedParams: HttpParams;
 
     beforeEach(() => {
-      expectedInventory = { xuid: 'test-xuid' };
+      expectedInventory = { xuid: (BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))) };
       expectedParams = new HttpParams().append(
         'useBackgroundProcessing',
         false.toString()

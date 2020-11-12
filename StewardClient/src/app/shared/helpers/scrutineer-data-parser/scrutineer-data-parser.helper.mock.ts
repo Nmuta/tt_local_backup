@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Provider } from '@angular/core';
 
 import { ScrutineerDataParser } from './scrutineer-data-parser.helper';
 
