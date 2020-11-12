@@ -1,10 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
 import { OpusPlayerDetailsComponent } from './opus-player-details.component';
 import { createMockWindowService } from '@shared/services/window';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -65,9 +60,7 @@ describe('OpusPlayerDetailsComponent', () => {
         /* nothing */
       });
 
-      expect(mockOpusService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(
-        expectedGamertag,
-      );
+      expect(mockOpusService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
     });
   });
 });

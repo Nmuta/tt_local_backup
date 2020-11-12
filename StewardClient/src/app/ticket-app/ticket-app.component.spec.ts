@@ -19,10 +19,7 @@ import { createMockScrutineerDataParser } from '@shared/helpers/scrutineer-data-
 // Components
 import { TicketAppComponent } from './ticket-app.component';
 
-import {
-  createMockZendeskService,
-  ZendeskService,
-} from '@shared/services/zendesk';
+import { createMockZendeskService, ZendeskService } from '@shared/services/zendesk';
 
 // State
 import { UserState } from '@shared/state/user/user.state';
@@ -184,9 +181,7 @@ describe('TicketAppComponent', () => {
       it('should call component.getTitleData with correct field info', () => {
         component.getTicketFields();
 
-        expect(component.getTitleData).toHaveBeenCalledWith(
-          ticketGameTitleField,
-        );
+        expect(component.getTitleData).toHaveBeenCalledWith(ticketGameTitleField);
       });
     });
   });
@@ -204,9 +199,7 @@ describe('TicketAppComponent', () => {
     it('should call zendesk service getTicketCustomField() with input parameter', () => {
       component.getTitleData(getTitleDataParam);
 
-      expect(mockZendeskService.getTicketCustomField).toHaveBeenCalledWith(
-        getTitleDataParam,
-      );
+      expect(mockZendeskService.getTicketCustomField).toHaveBeenCalledWith(getTitleDataParam);
     });
 
     describe('When zendeskservice getTicketCustomField() returns forza_street as title', () => {
@@ -228,9 +221,7 @@ describe('TicketAppComponent', () => {
     describe('When zendeskservice getTicketCustomField() returns forza_horizon_4 as title', () => {
       beforeEach(() => {
         const horzion4CustomFieldData =
-          '{ "ticket.customField:' +
-          getTitleDataParam +
-          '": "forza_horizon_4" }';
+          '{ "ticket.customField:' + getTitleDataParam + '": "forza_horizon_4" }';
         mockZendeskService.getTicketCustomField = jasmine
           .createSpy('getTicketCustomField')
           .and.returnValue(of(JSON.parse(horzion4CustomFieldData)));
@@ -246,9 +237,7 @@ describe('TicketAppComponent', () => {
     describe('When zendeskservice getTicketCustomField() returns forza_motorsport_7 as title', () => {
       beforeEach(() => {
         const horzion4CustomFieldData =
-          '{ "ticket.customField:' +
-          getTitleDataParam +
-          '": "forza_motorsport_7" }';
+          '{ "ticket.customField:' + getTitleDataParam + '": "forza_motorsport_7" }';
         mockZendeskService.getTicketCustomField = jasmine
           .createSpy('getTicketCustomField')
           .and.returnValue(of(JSON.parse(horzion4CustomFieldData)));
@@ -264,9 +253,7 @@ describe('TicketAppComponent', () => {
     describe('When zendeskservice getTicketCustomField() returns forza_horizon_3 as title', () => {
       beforeEach(() => {
         const horzion4CustomFieldData =
-          '{ "ticket.customField:' +
-          getTitleDataParam +
-          '": "forza_horizon_3" }';
+          '{ "ticket.customField:' + getTitleDataParam + '": "forza_horizon_3" }';
         mockZendeskService.getTicketCustomField = jasmine
           .createSpy('getTicketCustomField')
           .and.returnValue(of(JSON.parse(horzion4CustomFieldData)));

@@ -28,11 +28,7 @@ export class ZendeskService {
 
   /** Gets the zendesk ticket requestor information. */
   public getTicketRequestor(): Observable<TicketRequesterResponse> {
-    return from(
-      this.windowService
-        .zafClient()
-        .get<TicketRequesterResponse>('ticket.requester'),
-    );
+    return from(this.windowService.zafClient().get<TicketRequesterResponse>('ticket.requester'));
   }
 
   /** Gets the zendesk ticket fields. */
@@ -42,9 +38,7 @@ export class ZendeskService {
 
   /** Gets a zendesk custom ticket field. */
   public getTicketCustomField(field: string): Observable<unknown> {
-    return from(
-      this.windowService.zafClient().get(`ticket.customField:${field}`),
-    );
+    return from(this.windowService.zafClient().get(`ticket.customField:${field}`));
   }
 
   /** Sends https request through zaf client. */
@@ -64,19 +58,11 @@ export class ZendeskService {
 
   /** Resizes the zendesk app. */
   public resize(width: string, height: string): void {
-    this.windowService
-      .zafClient()
-      .invoke('resize', { width: width, height: height });
+    this.windowService.zafClient().invoke('resize', { width: width, height: height });
   }
 
   /** Opens up the sepcified zendesk app. */
-  public goToApp(
-    appLocation: string,
-    appName: string,
-    paramPath: string,
-  ): void {
-    this.windowService
-      .zafClient()
-      .invoke('routeTo', appLocation, appName, paramPath);
+  public goToApp(appLocation: string, appName: string, paramPath: string): void {
+    this.windowService.zafClient().invoke('routeTo', appLocation, appName, paramPath);
   }
 }

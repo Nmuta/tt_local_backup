@@ -3,10 +3,7 @@ import { NgModule, Provider } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
 import { NavbarModule } from '@components/navbar/navbar.module';
-import {
-  FaIconLibrary,
-  FontAwesomeModule,
-} from '@fortawesome/angular-fontawesome';
+import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { BigintInterceptor } from '@interceptors/bigint.interceptor';
 import { FakeApiInterceptor } from '@interceptors/fake-api/fake-api.interceptor';
@@ -58,8 +55,7 @@ function fakeApiOrNothing(): Provider[] {
       {
         auth: {
           clientId: '48a8a430-0f6b-4469-940f-1c5c6af1fd88',
-          authority:
-            'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/',
+          authority: 'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/',
           navigateToLoginRequestUrl: false,
           redirectUri: `${environment.stewardUiUrl}/auth/aadLogin`,
           postLogoutRedirectUri: `${environment.stewardUiUrl}/auth/aadLogout`,
@@ -71,12 +67,7 @@ function fakeApiOrNothing(): Provider[] {
       },
       {
         popUp: false,
-        consentScopes: [
-          'user.read',
-          'openid',
-          'profile',
-          environment.azureAppScope,
-        ],
+        consentScopes: ['user.read', 'openid', 'profile', environment.azureAppScope],
         unprotectedResources: [],
         protectedResourceMap,
         extraQueryParameters: {},

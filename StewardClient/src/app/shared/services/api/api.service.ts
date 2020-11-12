@@ -15,11 +15,7 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   /** Sends a GET request. */
-  public getRequest<T>(
-    url: string,
-    params?: HttpParams,
-    headers?: HttpHeaders,
-  ): Observable<T> {
+  public getRequest<T>(url: string, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const get = this.http.get<T>(apiUrl, {
       params,
@@ -46,11 +42,7 @@ export class ApiService {
   }
 
   /** Sends a PUT request. */
-  public putRequest<T>(
-    url: string,
-    object: any,
-    params?: HttpParams,
-  ): Observable<T> {
+  public putRequest<T>(url: string, object: any, params?: HttpParams): Observable<T> {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 

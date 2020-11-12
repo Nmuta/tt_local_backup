@@ -1,9 +1,4 @@
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
@@ -19,9 +14,7 @@ export class AccessTokenInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    let accessToken = this.store.selectSnapshot<string | null | undefined>(
-      UserState.accessToken,
-    );
+    let accessToken = this.store.selectSnapshot<string | null | undefined>(UserState.accessToken);
     accessToken = !!accessToken ? accessToken : '';
     request = request.clone({
       setHeaders: {

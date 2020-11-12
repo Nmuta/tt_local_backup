@@ -8,10 +8,7 @@
         spinnerMessage="Loading"
         errorMessage="Failed to load"
       ></error-spinner>
-      <verify-action-button
-        #submit
-        [canSubmit]="hasChanges"
-        [action]="makeAction.bind(this)"
+      <verify-action-button #submit [canSubmit]="hasChanges" [action]="makeAction.bind(this)"
         >Apply</verify-action-button
       >
     </h2>
@@ -59,10 +56,7 @@
 </mat-card>
 
 <ng-template #failstate>
-  <mat-progress-spinner
-    *ngIf="isLoading"
-    mode="indeterminate"
-  ></mat-progress-spinner>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
   <p *ngIf="loadError">Failed to load.</p>
   <pre *ngIf="loadError">{{ loadError | bigjson }}</pre>
 </ng-template>

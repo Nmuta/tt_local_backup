@@ -21,81 +21,53 @@ export class GravityService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets gravity player details with a gamertag. */
-  public getPlayerDetailsByGamertag(
-    gamertag: string,
-  ): Observable<GravityPlayerDetails> {
+  public getPlayerDetailsByGamertag(gamertag: string): Observable<GravityPlayerDetails> {
     return this.apiService
-      .getRequest<GravityPlayerDetails>(
-        `${this.basePath}/player/gamertag(${gamertag})/details`,
-      )
+      .getRequest<GravityPlayerDetails>(`${this.basePath}/player/gamertag(${gamertag})/details`)
       .pipe(
         map(details => {
-          details.firstLoginUtc = !!details.firstLoginUtc
-            ? new Date(details.firstLoginUtc)
-            : null;
-          details.lastLoginUtc = !!details.lastLoginUtc
-            ? new Date(details.lastLoginUtc)
-            : null;
+          details.firstLoginUtc = !!details.firstLoginUtc ? new Date(details.firstLoginUtc) : null;
+          details.lastLoginUtc = !!details.lastLoginUtc ? new Date(details.lastLoginUtc) : null;
           return details;
         }),
       );
   }
 
   /** Gets gravity player details with a XUID. */
-  public getPlayerDetailsByXuid(
-    xuid: string,
-  ): Observable<GravityPlayerDetails> {
+  public getPlayerDetailsByXuid(xuid: string): Observable<GravityPlayerDetails> {
     return this.apiService
-      .getRequest<GravityPlayerDetails>(
-        `${this.basePath}/player/xuid(${xuid})/details`,
-      )
+      .getRequest<GravityPlayerDetails>(`${this.basePath}/player/xuid(${xuid})/details`)
       .pipe(
         map(details => {
-          details.firstLoginUtc = !!details.firstLoginUtc
-            ? new Date(details.firstLoginUtc)
-            : null;
-          details.lastLoginUtc = !!details.lastLoginUtc
-            ? new Date(details.lastLoginUtc)
-            : null;
+          details.firstLoginUtc = !!details.firstLoginUtc ? new Date(details.firstLoginUtc) : null;
+          details.lastLoginUtc = !!details.lastLoginUtc ? new Date(details.lastLoginUtc) : null;
           return details;
         }),
       );
   }
 
   /** Gets gravity player details with a T10 ID. */
-  public getPlayerDetailsByT10Id(
-    t10Id: string,
-  ): Observable<GravityPlayerDetails> {
+  public getPlayerDetailsByT10Id(t10Id: string): Observable<GravityPlayerDetails> {
     return this.apiService
-      .getRequest<GravityPlayerDetails>(
-        `${this.basePath}/player/t10Id(${t10Id})/details`,
-      )
+      .getRequest<GravityPlayerDetails>(`${this.basePath}/player/t10Id(${t10Id})/details`)
       .pipe(
         map(details => {
-          details.firstLoginUtc = !!details.firstLoginUtc
-            ? new Date(details.firstLoginUtc)
-            : null;
-          details.lastLoginUtc = !!details.lastLoginUtc
-            ? new Date(details.lastLoginUtc)
-            : null;
+          details.firstLoginUtc = !!details.firstLoginUtc ? new Date(details.firstLoginUtc) : null;
+          details.lastLoginUtc = !!details.lastLoginUtc ? new Date(details.lastLoginUtc) : null;
           return details;
         }),
       );
   }
 
   /** Gets gravity player inventory with a XUID. */
-  public getPlayerInventoryByXuid(
-    xuid: string,
-  ): Observable<GravityPlayerInventory> {
+  public getPlayerInventoryByXuid(xuid: string): Observable<GravityPlayerInventory> {
     return this.apiService.getRequest<GravityPlayerInventory>(
       `${this.basePath}/player/inventory/xuid(${xuid})`,
     );
   }
 
   /** Gets gravity player inventory with a T10 ID. */
-  public getPlayerInventoryByT10Id(
-    t10Id: string,
-  ): Observable<GravityPlayerInventory> {
+  public getPlayerInventoryByT10Id(t10Id: string): Observable<GravityPlayerInventory> {
     return this.apiService.getRequest<GravityPlayerInventory>(
       `${this.basePath}/player/inventory/t10Id(${t10Id})`,
     );
@@ -164,9 +136,7 @@ export class GravityService {
   }
 
   /** Gets gravity game settings. */
-  public getGameSettings(
-    gameSettingsId: string,
-  ): Observable<GravityGameSettings> {
+  public getGameSettings(gameSettingsId: string): Observable<GravityGameSettings> {
     return this.apiService.getRequest<GravityGameSettings>(
       `${this.basePath}/data/gameSettingsId(${gameSettingsId})`,
     );

@@ -35,10 +35,7 @@ export class UserStateModel {
   },
 })
 export class UserState {
-  constructor(
-    private userService: UserService,
-    private authService: MsalService,
-  ) {}
+  constructor(private userService: UserService, private authService: MsalService) {}
 
   /** Action that requests user profile and sets it to the state. */
   @Action(GetUser, { cancelUncompleted: true })
@@ -68,9 +65,7 @@ export class UserState {
 
   /** Action that requests user access token from azure app. */
   @Action(RequestAccessToken, { cancelUncompleted: true })
-  public async requestAccessToken(
-    ctx: StateContext<UserStateModel>,
-  ): Promise<void> {
+  public async requestAccessToken(ctx: StateContext<UserStateModel>): Promise<void> {
     const isLoggedIn = !!this.authService.getAccount();
     if (!isLoggedIn) {
       ctx.patchState({ accessToken: null });
@@ -104,9 +99,7 @@ export class UserState {
   }
 
   /** Helper function that timeouts state checks for user profile. */
-  public static latestValidProfile$(
-    profile$: Observable<UserModel>,
-  ): Observable<UserModel> {
+  public static latestValidProfile$(profile$: Observable<UserModel>): Observable<UserModel> {
     const obs = profile$
       .pipe(
         filter(x => x !== undefined),

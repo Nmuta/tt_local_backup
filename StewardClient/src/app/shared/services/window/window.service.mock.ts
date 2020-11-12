@@ -15,9 +15,7 @@ export class MockWindowService {
   public removeEventListener = jasmine.createSpy('removeEventListener');
   public top = jasmine.createSpy('top');
   public location = jasmine.createSpy('location');
-  public open = jasmine
-    .createSpy('open')
-    .and.returnValue(new MockChildWindow());
+  public open = jasmine.createSpy('open').and.returnValue(new MockChildWindow());
   public close = jasmine.createSpy('close');
   public zafClient = jasmine.createSpy('zafClient').and.returnValue({});
 }

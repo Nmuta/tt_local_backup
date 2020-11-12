@@ -74,8 +74,7 @@ export class FakeApiInterceptor implements HttpInterceptor {
         new HttpErrorResponse({
           url: request.url,
           status: 9000,
-          statusText:
-            'URL not on the allowed list of URLs in FakeApiInterceptor.',
+          statusText: 'URL not on the allowed list of URLs in FakeApiInterceptor.',
         }),
       );
     }

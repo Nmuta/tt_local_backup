@@ -39,9 +39,7 @@ describe('SunriseService', () => {
 
     beforeEach(() => {
       expectedGamertag = 'test-gamertag';
-      apiServiceMock.getRequest = jasmine
-        .createSpy('getRequest')
-        .and.returnValue(of({}));
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call API service getRequest with the expected params', done => {
@@ -66,15 +64,13 @@ describe('SunriseService', () => {
 
   it('handles putFlagsByXuid', done => {
     const typedReturnValue = (nextReturnValue = SunrisePlayerXuidUserFlagsFakeApi.make());
-    service
-      .putFlagsByXuid(fakeXuid(), typedReturnValue as SunriseUserFlags)
-      .subscribe(output => {
-        expect(output as unknown).toEqual(
-          nextReturnValue as unknown,
-          'fields should not be modified',
-        );
-        done();
-      });
+    service.putFlagsByXuid(fakeXuid(), typedReturnValue as SunriseUserFlags).subscribe(output => {
+      expect(output as unknown).toEqual(
+        nextReturnValue as unknown,
+        'fields should not be modified',
+      );
+      done();
+    });
   });
 
   it('handles getBanHistoryByXuid', done => {
@@ -99,10 +95,7 @@ describe('SunriseService', () => {
 
       // clear the validated fields
       for (const value of [output, typedReturnValue]) {
-        for (const history of [
-          value.liveOpsBanHistory,
-          value.servicesBanHistory,
-        ]) {
+        for (const history of [value.liveOpsBanHistory, value.servicesBanHistory]) {
           history.forEach(v => (v.startTimeUtc = null));
           history.forEach(v => (v.expireTimeUtc = null));
         }

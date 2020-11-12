@@ -41,9 +41,7 @@ describe('PlayerDetailsComponent', () => {
       fixture = TestBed.createComponent(PlayerDetailsBaseComponent as any);
       component = fixture.debugElement.componentInstance;
 
-      component.makeRequest$ = jasmine
-        .createSpy('makeRequest$')
-        .and.returnValue(of({}));
+      component.makeRequest$ = jasmine.createSpy('makeRequest$').and.returnValue(of({}));
     }),
   );
 

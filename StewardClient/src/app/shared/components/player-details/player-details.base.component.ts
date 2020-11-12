@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

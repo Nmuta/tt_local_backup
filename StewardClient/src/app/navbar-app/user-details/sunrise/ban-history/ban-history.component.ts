@@ -1,10 +1,4 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -30,10 +24,7 @@ interface ServicesBanWithCorrelation extends ServicesBanDescription {
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
       state('expanded', style({ height: '*' })),
-      transition(
-        'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
-      ),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
 })
@@ -53,13 +44,7 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
   public isActiveIcon = faCheck;
 
   /** The columns + order to display. */
-  public columnsToDisplay = [
-    'isActive',
-    'reason',
-    'featureArea',
-    'startTimeUtc',
-    'expireTimeUtc',
-  ];
+  public columnsToDisplay = ['isActive', 'reason', 'featureArea', 'startTimeUtc', 'expireTimeUtc'];
 
   /** The current expanded element. */
   public expandedEntry: ServicesBanDescription;
@@ -94,18 +79,13 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
   }
 
   /** Attempts to correlate a Services ban to a Live Ops ban. */
-  public correlateLiveOps(
-    servicesBan: ServicesBanDescription,
-  ): LiveOpsBanDescription {
+  public correlateLiveOps(servicesBan: ServicesBanDescription): LiveOpsBanDescription {
     const value = _.chain(this.history.liveOpsBanHistory)
       .filter(liveOpsBan => {
         const xuidMatch = liveOpsBan.xuid === servicesBan.xuid;
-        const startMatch =
-          liveOpsBan.startTimeUtc.getDate() ===
-          servicesBan.startTimeUtc.getDate();
+        const startMatch = liveOpsBan.startTimeUtc.getDate() === servicesBan.startTimeUtc.getDate();
         const expireMatch =
-          liveOpsBan.expireTimeUtc.getDate() ===
-          servicesBan.expireTimeUtc.getDate();
+          liveOpsBan.expireTimeUtc.getDate() === servicesBan.expireTimeUtc.getDate();
 
         return xuidMatch && startMatch && expireMatch;
       })

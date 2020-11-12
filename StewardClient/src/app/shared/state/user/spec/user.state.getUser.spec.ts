@@ -23,9 +23,7 @@ describe('State: User', () => {
       actions$ = TestBed.inject(Actions);
       mockUserService = TestBed.inject(UserService);
 
-      mockUserService.getUserProfile = jasmine
-        .createSpy('getUserProfile')
-        .and.returnValue(of({}));
+      mockUserService.getUserProfile = jasmine.createSpy('getUserProfile').and.returnValue(of({}));
     }),
   );
   describe('[GetUser] Action', () => {

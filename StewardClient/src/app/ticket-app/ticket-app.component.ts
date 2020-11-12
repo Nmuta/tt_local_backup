@@ -14,9 +14,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './ticket-app.html',
   styleUrls: ['./ticket-app.scss'],
 })
-export class TicketAppComponent
-  extends BaseComponent
-  implements OnInit, AfterViewInit {
+export class TicketAppComponent extends BaseComponent implements OnInit, AfterViewInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public appName = 'ticket-sidebar';
@@ -100,32 +98,26 @@ export class TicketAppComponent
 
   /** Gets title data from ticket. */
   public getTitleData(titleCustomField: string): void {
-    this.zendeskService
-      .getTicketCustomField(titleCustomField)
-      .subscribe(response => {
-        const titleName = response[`ticket.customField:${titleCustomField}`];
-        const titleNameUppercase = titleName.toUpperCase();
+    this.zendeskService.getTicketCustomField(titleCustomField).subscribe(response => {
+      const titleName = response[`ticket.customField:${titleCustomField}`];
+      const titleNameUppercase = titleName.toUpperCase();
 
-        this.gameTitle =
-          titleNameUppercase === 'FORZA_STREET'
-            ? GameTitleCodeNames.Street
-            : titleNameUppercase === 'FORZA_HORIZON_4'
-            ? GameTitleCodeNames.FH4
-            : titleNameUppercase === 'FORZA_MOTORSPORT_7'
-            ? GameTitleCodeNames.FM7
-            : titleNameUppercase === 'FORZA_HORIZON_3'
-            ? GameTitleCodeNames.FH3
-            : null;
-      });
+      this.gameTitle =
+        titleNameUppercase === 'FORZA_STREET'
+          ? GameTitleCodeNames.Street
+          : titleNameUppercase === 'FORZA_HORIZON_4'
+          ? GameTitleCodeNames.FH4
+          : titleNameUppercase === 'FORZA_MOTORSPORT_7'
+          ? GameTitleCodeNames.FM7
+          : titleNameUppercase === 'FORZA_HORIZON_3'
+          ? GameTitleCodeNames.FH3
+          : null;
+    });
   }
 
   /** Opens up inventory app with predefined info filled out. */
   public goToInventory(): void {
     const appSection = this.gameTitle + '/' + this.xuid;
-    this.zendeskService.goToApp(
-      'nav_bar',
-      'forza-inventory-support',
-      appSection,
-    );
+    this.zendeskService.goToApp('nav_bar', 'forza-inventory-support', appSection);
   }
 }

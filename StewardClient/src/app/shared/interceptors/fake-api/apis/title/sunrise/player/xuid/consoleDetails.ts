@@ -8,9 +8,7 @@ import * as faker from 'faker';
 export class SunrisePlayerXuidConsolesFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
-    const targetingStewardApi = this.request.url.startsWith(
-      environment.stewardApiUrl,
-    );
+    const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
     if (!targetingStewardApi) {
       return false;
     }
@@ -29,48 +27,36 @@ export class SunrisePlayerXuidConsolesFakeApi extends FakeApiBase {
   public static makeMany(): Unprocessed<SunriseConsoleDetails> {
     return [
       {
-        clientVersion: faker.random
-          .number({ min: 432815, max: 500000 })
-          .toString(),
+        clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
         consoleId: (
-          BigInt(Number.MAX_SAFE_INTEGER) +
-          BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
+          BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
         ).toString(),
         isBanned: false,
         isBannable: true,
         deviceType: 'WindowsOneCore',
       },
       {
-        clientVersion: faker.random
-          .number({ min: 432815, max: 500000 })
-          .toString(),
+        clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
         consoleId: (
-          BigInt(Number.MAX_SAFE_INTEGER) +
-          BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
+          BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
         ).toString(),
         isBanned: true,
         isBannable: true,
         deviceType: 'WindowsOneCore',
       },
       {
-        clientVersion: faker.random
-          .number({ min: 432815, max: 500000 })
-          .toString(),
+        clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
         consoleId: (
-          BigInt(Number.MAX_SAFE_INTEGER) +
-          BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
+          BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
         ).toString(),
         isBanned: false,
         isBannable: false,
         deviceType: 'WindowsOneCore',
       },
       {
-        clientVersion: faker.random
-          .number({ min: 432815, max: 500000 })
-          .toString(),
+        clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
         consoleId: (
-          BigInt(Number.MAX_SAFE_INTEGER) +
-          BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
+          BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
         ).toString(),
         isBanned: true,
         isBannable: false,

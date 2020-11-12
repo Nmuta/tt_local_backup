@@ -10,9 +10,7 @@ import { Observable } from 'rxjs';
   templateUrl: '../../player-details.html',
   styleUrls: ['../../player-details.scss'],
 })
-export class OpusPlayerDetailsComponent extends PlayerDetailsBaseComponent<
-  OpusPlayerDetails
-> {
+export class OpusPlayerDetailsComponent extends PlayerDetailsBaseComponent<OpusPlayerDetails> {
   constructor(public readonly opusService: OpusService) {
     super();
   }

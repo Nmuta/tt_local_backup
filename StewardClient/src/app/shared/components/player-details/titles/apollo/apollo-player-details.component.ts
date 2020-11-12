@@ -10,9 +10,7 @@ import { Observable } from 'rxjs';
   templateUrl: '../../player-details.html',
   styleUrls: ['../../player-details.scss'],
 })
-export class ApolloPlayerDetailsComponent extends PlayerDetailsBaseComponent<
-  ApolloPlayerDetails
-> {
+export class ApolloPlayerDetailsComponent extends PlayerDetailsBaseComponent<ApolloPlayerDetails> {
   constructor(public readonly apolloService: ApolloService) {
     super();
   }

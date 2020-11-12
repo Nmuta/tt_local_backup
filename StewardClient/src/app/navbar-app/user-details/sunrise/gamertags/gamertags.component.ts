@@ -20,12 +20,7 @@ export class GamertagsComponent implements OnChanges {
   public loadError: unknown;
   /** The retrieved list of shared users. */
   public sharedConsoleUsers: SunriseSharedConsoleUsers;
-  public columnsToDisplay = [
-    'everBanned',
-    'gamertag',
-    'sharedConsoleId',
-    'xuid',
-  ];
+  public columnsToDisplay = ['everBanned', 'gamertag', 'sharedConsoleId', 'xuid'];
 
   constructor(private readonly sunrise: SunriseService) {}
 

@@ -28,9 +28,7 @@ describe('LoggerService', () => {
 
   it('should use correct environment values', () => {
     expect(service).toBeTruthy();
-    expect(service.appInsightsLevel).toBe(
-      environment.loggerConfig.appInsightsLogLevel,
-    );
+    expect(service.appInsightsLevel).toBe(environment.loggerConfig.appInsightsLogLevel);
     expect(service.consoleLevel).toBe(environment.loggerConfig.consoleLogLevel);
   });
 

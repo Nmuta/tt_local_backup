@@ -21,9 +21,7 @@ describe('service: UserService', () => {
 
   describe('Method: getUserProfile', () => {
     beforeEach(() => {
-      apiMock.getRequest = jasmine
-        .createSpy('getRequest')
-        .and.returnValue(of({}));
+      apiMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call API service getRequest with the expected params', done => {

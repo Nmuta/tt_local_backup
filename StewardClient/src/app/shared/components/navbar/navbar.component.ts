@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import {
-  faExclamationTriangle,
-  faSyncAlt,
-} from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from '@models/user.model';
 import { Select } from '@ngxs/store';
 import { WindowService } from '@services/window';
@@ -12,12 +9,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import {
-  createNavbarPath,
-  navbarToolList,
-  NavbarTools,
-  RouterLinkPath,
-} from './navbar-tool-list';
+import { createNavbarPath, navbarToolList, NavbarTools, RouterLinkPath } from './navbar-tool-list';
 
 /** The shared top-level navbar. */
 @Component({
@@ -36,10 +28,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
   public loading: boolean;
   public profile: UserModel;
 
-  constructor(
-    private readonly router: Router,
-    private readonly windowService: WindowService,
-  ) {
+  constructor(private readonly router: Router, private readonly windowService: WindowService) {
     super();
   }
 

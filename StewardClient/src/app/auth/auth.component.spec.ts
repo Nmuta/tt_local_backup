@@ -30,14 +30,8 @@ import { of } from 'rxjs';
 
 // Models
 import { UserModel } from '@shared/models/user.model';
-import {
-  createMockWindowService,
-  WindowService,
-} from '@shared/services/window';
-import {
-  ResetUserProfile,
-  RequestAccessToken,
-} from '@shared/state/user/user.actions';
+import { createMockWindowService, WindowService } from '@shared/services/window';
+import { ResetUserProfile, RequestAccessToken } from '@shared/state/user/user.actions';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('AuthComponent', () => {
@@ -97,9 +91,7 @@ describe('AuthComponent', () => {
 
     describe('When windowService.zafClient returns false', () => {
       beforeEach(() => {
-        mockWindowService.zafClient = jasmine
-          .createSpy('zafClient')
-          .and.returnValue(false);
+        mockWindowService.zafClient = jasmine.createSpy('zafClient').and.returnValue(false);
       });
 
       it('Should set inZendesk to false', () => {
@@ -189,9 +181,7 @@ describe('AuthComponent', () => {
 
       describe('If app is not running in zendesk', () => {
         beforeEach(() => {
-          mockWindowService.zafClient = jasmine
-            .createSpy('zafClient')
-            .and.returnValue(false);
+          mockWindowService.zafClient = jasmine.createSpy('zafClient').and.returnValue(false);
         });
 
         it('Should not call router.navigate', () => {
@@ -289,9 +279,7 @@ describe('AuthComponent', () => {
 
   describe('Method: recheckAuth', () => {
     beforeEach(() => {
-      mockStore.dispatch = jasmine
-        .createSpy('dispatch')
-        .and.returnValue(of({}));
+      mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
       component.ngOnInit = jasmine.createSpy('ngOnInit');
     });
 

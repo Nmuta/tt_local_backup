@@ -1,10 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
 import { SunrisePlayerDetailsComponent } from './sunrise-player-details.component';
 import { createMockWindowService } from '@shared/services/window';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -32,11 +27,7 @@ describe('SunrisePlayerDetailsComponent', () => {
         ],
         declarations: [SunrisePlayerDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          createMockMsalService(),
-          createMockSunriseService(),
-        ],
+        providers: [createMockWindowService(), createMockMsalService(), createMockSunriseService()],
       }).compileComponents();
 
       const injector = getTestBed();
@@ -65,9 +56,7 @@ describe('SunrisePlayerDetailsComponent', () => {
         /* nothing */
       });
 
-      expect(
-        mockSunriseService.getPlayerDetailsByGamertag,
-      ).toHaveBeenCalledWith(expectedGamertag);
+      expect(mockSunriseService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
     });
   });
 });
