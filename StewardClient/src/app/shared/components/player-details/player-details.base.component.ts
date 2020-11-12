@@ -14,13 +14,13 @@ import { takeUntil } from 'rxjs/operators';
   template: '',
 })
 // eslint-disable-next-line @angular-eslint/component-class-suffix
-export abstract class PlayerDetailsBaseComponent<T extends {xuid: string}>
+export abstract class PlayerDetailsBaseComponent<T extends {xuid?: BigInt}>
   extends BaseComponent
   implements OnChanges {
   /** Gamertag to lookup for player details. */
   @Input() public gamertag: string;
-  /** Emits xuid when it is found. */
-  @Output() public xuidFoundEvent = new EventEmitter<string>();
+  /** Emits xuid when it is found. May emit null/undefined for Gravity. */
+  @Output() public xuidFoundEvent = new EventEmitter<BigInt>();
 
   /** True while waiting on a request. */
   public isLoading = true;

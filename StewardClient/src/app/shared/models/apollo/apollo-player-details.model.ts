@@ -1,24 +1,24 @@
 /** The /v2/title/apollo/player/???/details model */
 export interface ApolloPlayerDetails {
-  xuid: number;
+  xuid: BigInt;
   gamertag: string;
-  currentProfileId: number;
+  currentProfileId: BigInt;
   subscriptionTier: string;
   ageGroup: string;
-  country: number;
-  region: number;
-  lcid: number;
+  country: BigInt;
+  region: BigInt;
+  lcid: BigInt;
   ipAddress: string;
   lastLoginUtc: Date;
   firstLoginUtc: Date;
-  currentDriverModelId: number;
+  currentDriverModelId: BigInt;
   currentPlayerTitleId: string;
   currentBadgeId: string;
   clubTag: string;
   clubId: string;
   roleInClub: string;
-  currentCareerLevel: number;
-  equippedVanityItemId: number;
+  currentCareerLevel: BigInt;
+  equippedVanityItemId: BigInt;
   currentCarCollectionTier: string;
-  currentCarCollectionScore: number;
+  currentCarCollectionScore: BigInt;
 }

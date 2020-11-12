@@ -126,7 +126,7 @@ export class GravityService {
     inventory: GravityPlayerInventory,
     useBackgroundProcessing: boolean = false
   ): Observable<GravityPlayerInventory> {
-    if (!inventory.xuid || inventory.xuid === '') {
+    if (!inventory.xuid) {
       return throwError('No XUID provided.');
     }
 

@@ -55,6 +55,7 @@ export interface ZAFRequestOptions {
 export interface ZAFClient {
   init(): void;
   context(): Promise<ZAFContext>;
+  get<T>(key: keyof T): Promise<T>;
   get<K extends string>(key: K): Promise<Record<K, unknown>>;
   get<K extends string>(keys: K[]): Promise<Record<K, unknown>>;
   set<K extends string, V>(key: K, value: V): Promise<Record<K, V>>;

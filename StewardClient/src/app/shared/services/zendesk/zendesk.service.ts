@@ -3,6 +3,15 @@ import { ZAFRequestOptions } from '@shared/definitions/zaf-client';
 import { WindowService } from '@shared/services/window';
 import { from, Observable } from 'rxjs';
 
+export interface TicketRequesterResponse { 'ticket.requester': { name: string } }
+export interface TicketFieldsResponse {
+  ticketFields: {
+    [key: string]: {
+      label: 'Forza Title',
+      name: string,
+    }
+  }
+}
 /** Defines the Zendesk Service. */
 @Injectable({
   providedIn: 'root',
@@ -16,12 +25,12 @@ export class ZendeskService {
   }
 
   /** Gets the zendesk ticket requestor information. */
-  public getTicketRequestor(): Observable<{ 'ticket.requester': unknown }> {
-    return from(this.windowService.zafClient().get('ticket.requester'));
+  public getTicketRequestor(): Observable<TicketRequesterResponse> {
+    return from(this.windowService.zafClient().get<TicketRequesterResponse>('ticket.requester'));
   }
 
   /** Gets the zendesk ticket fields. */
-  public getTicketFields(): Observable<{ ticketFields: unknown }> {
+  public getTicketFields(): Observable<TicketFieldsResponse> {
     return from(this.windowService.zafClient().get('ticketFields'));
   }
 
