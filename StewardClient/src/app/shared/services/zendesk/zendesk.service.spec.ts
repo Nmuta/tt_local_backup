@@ -1,7 +1,6 @@
 ﻿// General
 import { TestBed } from '@angular/core/testing';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { throwError, of, Observable } from 'rxjs';
+import { of } from 'rxjs';
 
 // Services
 import {
@@ -9,19 +8,20 @@ import {
   createMockWindowService,
 } from '@shared/services/window';
 import { ZendeskService } from './zendesk.service';
+import { ZAFClient } from '@shared/definitions/zaf-client';
 
 describe('service: UserService', () => {
   let service: ZendeskService;
   let mockWindowService: WindowService;
-  let mockZafClientObject: any;
+  let mockZafClientObject: ZAFClient;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [ZendeskService, createMockWindowService()],
     });
-    service = TestBed.get(ZendeskService);
-    mockWindowService = TestBed.get(WindowService);
+    service = TestBed.inject(ZendeskService);
+    mockWindowService = TestBed.inject(WindowService);
 
     mockZafClientObject = jasmine.createSpyObj('zafClient', [
       'get',
@@ -46,7 +46,7 @@ describe('service: UserService', () => {
 
   describe('Method: getTicketDetails', () => {
     it('should use zafClient loaded into the window to get the ticket info', done => {
-      service.getTicketDetails().subscribe(res => {
+      service.getTicketDetails().subscribe(() => {
         expect(mockZafClientObject.get).toHaveBeenCalledWith(`ticket`);
         done();
       });
@@ -54,7 +54,7 @@ describe('service: UserService', () => {
   });
   describe('Method: getTicketRequestor', () => {
     it('should use zafClient loaded into the window to get the ticket requestor info', done => {
-      service.getTicketRequestor().subscribe(res => {
+      service.getTicketRequestor().subscribe(() => {
         expect(mockZafClientObject.get).toHaveBeenCalledWith(
           `ticket.requester`
         );
@@ -64,7 +64,7 @@ describe('service: UserService', () => {
   });
   describe('Method: getTicketFields', () => {
     it('should use zafClient loaded into the window to get the ticket fields', done => {
-      service.getTicketFields().subscribe(res => {
+      service.getTicketFields().subscribe(() => {
         expect(mockZafClientObject.get).toHaveBeenCalledWith(`ticketFields`);
         done();
       });
@@ -73,7 +73,7 @@ describe('service: UserService', () => {
   describe('Method: getTicketCustomField', () => {
     const param = 'test';
     it('should use zafClient loaded into the window to get the custom ticket field', done => {
-      service.getTicketCustomField(param).subscribe(res => {
+      service.getTicketCustomField(param).subscribe(() => {
         expect(mockZafClientObject.get).toHaveBeenCalledWith(
           `ticket.customField:${param}`
         );
@@ -82,9 +82,9 @@ describe('service: UserService', () => {
     });
   });
   describe('Method: sendRequest', () => {
-    const param = { foo: 'bar' };
+    const param = { headers: { foo: 'bar' } };
     it('should use zafClient loaded into the window to send a request', done => {
-      service.sendRequest(param).subscribe(res => {
+      service.sendRequest(param).subscribe(() => {
         expect(mockZafClientObject.request).toHaveBeenCalledWith(param);
         done();
       });
@@ -92,7 +92,7 @@ describe('service: UserService', () => {
   });
   describe('Method: currentUser', () => {
     it('should use zafClient loaded into the window to get the ticket fields', done => {
-      service.currentUser().subscribe(res => {
+      service.currentUser().subscribe(() => {
         expect(mockZafClientObject.get).toHaveBeenCalledWith(`currentUser`);
         done();
       });
@@ -100,7 +100,7 @@ describe('service: UserService', () => {
   });
   describe('Method: context', () => {
     it('should use zafClient loaded into the window to get the client context', done => {
-      service.context().subscribe(res => {
+      service.context().subscribe(() => {
         expect(mockZafClientObject.context).toHaveBeenCalledWith();
         done();
       });

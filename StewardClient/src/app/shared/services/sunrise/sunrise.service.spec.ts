@@ -1,6 +1,5 @@
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { SunriseConsoleIsBannedFakeApi } from '@interceptors/fake-api/apis/title/sunrise/console/isBanned';
-import { SunrisePlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/gamertag/details';
 import { SunrisePlayerXuidBanHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/banHistory';
 import { SunrisePlayerXuidConsolesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/consoleDetails';
 import { SunrisePlayerXuidProfileSummaryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/profileSummary';
@@ -11,7 +10,6 @@ import { SunriseUserFlags } from '@models/sunrise';
 import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
 
-import * as faker from 'faker';
 import { of } from 'rxjs';
 
 import { SunriseService } from './sunrise.service';
@@ -47,7 +45,7 @@ describe('SunriseService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(res => {
+      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/gamertag(${expectedGamertag})/details`
         );
@@ -57,10 +55,9 @@ describe('SunriseService', () => {
   });
 
   it('handles getFlagsByXuid', done => {
-    const typedReturnValue = (nextReturnValue = SunrisePlayerXuidUserFlagsFakeApi.make());
     service.getFlagsByXuid(fakeXuid()).subscribe(output => {
       expect(output).toEqual(
-        nextReturnValue as any,
+        nextReturnValue,
         'fields should not be modified'
       );
       done();
@@ -73,7 +70,7 @@ describe('SunriseService', () => {
       .putFlagsByXuid(fakeXuid(), typedReturnValue as SunriseUserFlags)
       .subscribe(output => {
         expect(output).toEqual(
-          nextReturnValue as any,
+          nextReturnValue,
           'fields should not be modified'
         );
         done();
@@ -123,8 +120,8 @@ describe('SunriseService', () => {
   it('handles getSharedConsoleUsersByXuid', done => {
     const typedReturnValue = (nextReturnValue = SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
     service.getSharedConsoleUsersByXuid(fakeXuid()).subscribe(output => {
-      expect(output).toEqual(
-        typedReturnValue as any,
+      expect(output as unknown).toEqual(
+        typedReturnValue as unknown,
         'fields should not be modified'
       );
       done();
@@ -134,8 +131,8 @@ describe('SunriseService', () => {
   it('handles getConsoleDetailsByXuid', done => {
     nextReturnValue = SunrisePlayerXuidConsolesFakeApi.makeMany();
     service.getConsoleDetailsByXuid(fakeXuid()).subscribe(output => {
-      expect(output).toEqual(
-        nextReturnValue as any,
+      expect(output as unknown).toEqual(
+        nextReturnValue as unknown,
         'fields should not be modified'
       );
       done();
@@ -148,8 +145,8 @@ describe('SunriseService', () => {
     service
       .putBanStatusByConsoleId(sampleGet[0].consoleId, !sampleGet[0].isBanned)
       .subscribe(output => {
-        expect(output).toEqual(
-          nextReturnValue as any,
+        expect(output as unknown).toEqual(
+          nextReturnValue as unknown,
           'fields should not be modified'
         );
         done();
@@ -160,8 +157,8 @@ describe('SunriseService', () => {
     const typedReturnValue = SunrisePlayerXuidProfileSummaryFakeApi.make();
     nextReturnValue = typedReturnValue;
     service.getProfileSummaryByXuid(fakeXuid()).subscribe(output => {
-      expect(output).toEqual(
-        nextReturnValue as any,
+      expect(output as unknown).toEqual(
+        nextReturnValue as unknown,
         'fields should not be modified'
       );
       done();

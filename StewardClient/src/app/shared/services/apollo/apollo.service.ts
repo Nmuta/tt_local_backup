@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApolloPlayerDetails } from '@models/apollo';
 import { ApiService } from '@services/api';
-import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

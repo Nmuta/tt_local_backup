@@ -1,13 +1,15 @@
+// TODO: disabling these since it's a passthru to API Service but I think there's a test harness for HTTP requests in general?
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
 import {
   HttpClient,
-  HttpErrorResponse,
   HttpHeaders,
   HttpParams,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
-import { retryWhen, share } from 'rxjs/operators';
 
 /** Defines the api service. */
 @Injectable({
@@ -36,9 +38,7 @@ export class ApiService {
     url: string,
     object: any,
     params?: HttpParams,
-    headers?: HttpHeaders,
-    host?: string
-  ): Observable<T> {
+    headers?: HttpHeaders  ): Observable<T> {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const post = this.http.post<T>(apiUrl, object, {
       headers,

@@ -1,11 +1,9 @@
-import { async, TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import {
   Store,
   NgxsModule,
   Actions,
   ofActionSuccessful,
-  ofActionErrored,
-  ofActionDispatched,
 } from '@ngxs/store';
 import { UserState } from '../user.state';
 import { GetUser } from '../user.actions';
@@ -26,9 +24,9 @@ describe('State: User', () => {
         providers: [createMockUserService(), createMockMsalService()],
       }).compileComponents();
 
-      store = TestBed.get(Store);
-      actions$ = TestBed.get(Actions);
-      mockUserService = TestBed.get(UserService);
+      store = TestBed.inject(Store);
+      actions$ = TestBed.inject(Actions);
+      mockUserService = TestBed.inject(UserService);
 
       mockUserService.getUserProfile = jasmine
         .createSpy('getUserProfile')
@@ -41,7 +39,7 @@ describe('State: User', () => {
       action = new GetUser();
     });
     describe('when UserService returns a valid profile', () => {
-      let expectedProfile: any;
+      let expectedProfile: unknown;
       beforeEach(() => {
         expectedProfile = {
           name: 'Luke G',
@@ -72,11 +70,7 @@ describe('State: User', () => {
       });
     });
     describe('when UserService throws an error', () => {
-      let expectedProfile: any;
       beforeEach(() => {
-        expectedProfile = {
-          name: 'Luke G',
-        };
         mockUserService.getUserProfile = jasmine
           .createSpy('getUserProfile')
           .and.returnValue(throwError({ message: '401 Unauthorized' }));

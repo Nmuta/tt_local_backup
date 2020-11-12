@@ -30,6 +30,7 @@ describe('HumanizePipe', () => {
 
   it('passes through non-strings', () => {
     const pipe = new HumanizePipe();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(pipe.transform(8675309 as any)).toBe(8675309 as any);
   });
 });

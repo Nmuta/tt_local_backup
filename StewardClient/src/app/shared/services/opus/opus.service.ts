@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { OpusPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/opus/player/gamertag/details';
 import { OpusPlayerDetails } from '@models/opus';
 import { ApiService } from '@services/api';
-import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

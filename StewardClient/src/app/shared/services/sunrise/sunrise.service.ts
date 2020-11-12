@@ -6,7 +6,6 @@ import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.mod
 import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
-import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -72,20 +71,20 @@ export class SunriseService {
   }
 
   /** Gets shared console users by XUID. */
-  public getSharedConsoleUsersByXuid(xuid: number) {
+  public getSharedConsoleUsersByXuid(xuid: number): Observable<SunriseSharedConsoleUsers> {
     return this.apiService.getRequest<SunriseSharedConsoleUsers>(
       `${this.basePath}/player/xuid(${xuid})/sharedConsoleUsers`
     );
   }
   /** Gets console details by XUID. */
-  public getConsoleDetailsByXuid(xuid: number) {
+  public getConsoleDetailsByXuid(xuid: number): Observable<SunriseConsoleDetails> {
     return this.apiService.getRequest<SunriseConsoleDetails>(
       `${this.basePath}/player/xuid(${xuid})/consoleDetails`
     );
   }
 
   /** Updates a console's ban status by the Console's ID. */
-  public putBanStatusByConsoleId(consoleId: string, isBanned: boolean) {
+  public putBanStatusByConsoleId(consoleId: string, isBanned: boolean): Observable<void> {
     return this.apiService.putRequest<void>(
       `${this.basePath}/console/consoleId(${consoleId})/isBanned(${isBanned})`,
       null
@@ -93,14 +92,14 @@ export class SunriseService {
   }
 
   /** Gets a player's Profile Summary by XUID. */
-  public getProfileSummaryByXuid(xuid: number) {
+  public getProfileSummaryByXuid(xuid: number): Observable<SunriseProfileSummary> {
     return this.apiService.getRequest<SunriseProfileSummary>(
       `${this.basePath}/player/xuid(${xuid})/profileSummary`
     );
   }
 
   /** Gets a player's Profile Summary by XUID. */
-  public getCreditHistoryByXuid(xuid: number) {
+  public getCreditHistoryByXuid(xuid: number): Observable<SunriseCreditHistory> {
     return this.apiService.getRequest<SunriseCreditHistory>(
       `${this.basePath}/player/xuid(${xuid})/creditUpdates`
     );

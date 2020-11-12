@@ -6,7 +6,7 @@ import {
 
 /** Interface for gravity player inventory. */
 export interface GravityPlayerInventory {
-  xuid?: any;
+  xuid?: BigInt;
   turn10Id?: string;
   cars?: GravityCar[];
   masteryKits?: GravityInventoryItem[];
@@ -15,6 +15,6 @@ export interface GravityPlayerInventory {
   packs?: GravityInventoryItem[];
   currencies?: GravityInventoryItem[];
   energyRefills?: GravityInventoryItem[];
-  previousGameSettingsId?: any;
-  currentExternalProfileId?: any;
+  previousGameSettingsId?: unknown;
+  currentExternalProfileId?: unknown;
 }

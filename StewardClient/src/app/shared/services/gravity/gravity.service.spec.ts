@@ -1,4 +1,4 @@
-﻿import { TestBed, getTestBed, inject } from '@angular/core/testing';
+﻿import { TestBed, getTestBed } from '@angular/core/testing';
 import { ApiService, createMockApiService } from '@shared/services/api';
 import { of } from 'rxjs';
 import { GravityService } from './gravity.service';
@@ -32,7 +32,7 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(res => {
+      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/gamertag(${expectedGamertag})/details`
         );
@@ -52,7 +52,7 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByXuid(expectedXuid).subscribe(res => {
+      service.getPlayerDetailsByXuid(expectedXuid).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/details`
         );
@@ -72,7 +72,7 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByT10Id(expectedT10Id).subscribe(res => {
+      service.getPlayerDetailsByT10Id(expectedT10Id).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/t10Id(${expectedT10Id})/details`
         );
@@ -92,7 +92,7 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerInventoryByXuid(expectedXuid).subscribe(res => {
+      service.getPlayerInventoryByXuid(expectedXuid).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/inventory/xuid(${expectedXuid})`
         );
@@ -112,7 +112,7 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerInventoryByT10Id(expectedT10Id).subscribe(res => {
+      service.getPlayerInventoryByT10Id(expectedT10Id).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/inventory/t10Id(${expectedT10Id})`
         );
@@ -136,7 +136,7 @@ describe('service: GravityService', () => {
     it('should call API service getRequest with the expected params', done => {
       service
         .getPlayerInventoryByProfileIdWithXuid(expectedXuid, expectedProfileId)
-        .subscribe(res => {
+        .subscribe(() => {
           expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
             `${service.basePath}/player/inventory/xuid(${expectedXuid})/profileId(${expectedProfileId})`
           );
@@ -163,7 +163,7 @@ describe('service: GravityService', () => {
           expectedt10Id,
           expectedProfileId
         )
-        .subscribe(res => {
+        .subscribe(() => {
           expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
             `${service.basePath}/player/inventory/t10Id(${expectedt10Id})/profileId(${expectedProfileId})`
           );
@@ -188,7 +188,7 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.updatePlayerInventoryByXuid(expectedInventory).subscribe(res => {
+      service.updatePlayerInventoryByXuid(expectedInventory).subscribe(() => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/inventory/xuid`,
           expectedInventory,
@@ -212,11 +212,11 @@ describe('service: GravityService', () => {
 
       it('should throw error from observable', done => {
         service.updatePlayerInventoryByXuid(expectedInventory, true).subscribe(
-          res => {
+          () => {
             expect(false).toBeTruthy();
             done();
           },
-          err => {
+          () => {
             expect(true).toBeTruthy();
             done();
           }
@@ -235,7 +235,7 @@ describe('service: GravityService', () => {
       it('should call API service postRequest with the expected param', done => {
         service
           .updatePlayerInventoryByXuid(expectedInventory, true)
-          .subscribe(res => {
+          .subscribe(() => {
             expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
               `${service.basePath}/player/inventory/xuid`,
               expectedInventory,
@@ -263,7 +263,7 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.updatePlayerInventoryByT10Id(expectedInventory).subscribe(res => {
+      service.updatePlayerInventoryByT10Id(expectedInventory).subscribe(() => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/inventory/t10Id`,
           expectedInventory,
@@ -287,11 +287,11 @@ describe('service: GravityService', () => {
 
       it('should throw error from observable', done => {
         service.updatePlayerInventoryByT10Id(expectedInventory, true).subscribe(
-          res => {
+          () => {
             expect(false).toBeTruthy();
             done();
           },
-          err => {
+          () => {
             expect(true).toBeTruthy();
             done();
           }
@@ -310,7 +310,7 @@ describe('service: GravityService', () => {
       it('should call API service postRequest with the expected param', done => {
         service
           .updatePlayerInventoryByT10Id(expectedInventory, true)
-          .subscribe(res => {
+          .subscribe(() => {
             expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
               `${service.basePath}/player/inventory/t10Id`,
               expectedInventory,
@@ -333,7 +333,7 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getGameSettings(expectedGameSettingsId).subscribe(res => {
+      service.getGameSettings(expectedGameSettingsId).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
           `${service.basePath}/data/gameSettingsId(${expectedGameSettingsId})`
         );
@@ -360,7 +360,7 @@ describe('service: GravityService', () => {
           expectedGiftHistoryAntecedent,
           expectedGiftRecipientId
         )
-        .subscribe(res => {
+        .subscribe(() => {
           expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
             `${service.basePath}/giftHistory/giftRecipientId/(${expectedGiftRecipientId})/giftHistoryAntecedent/(${expectedGiftHistoryAntecedent})`
           );

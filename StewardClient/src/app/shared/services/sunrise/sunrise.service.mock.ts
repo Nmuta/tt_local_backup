@@ -1,10 +1,5 @@
-import { Injectable } from '@angular/core';
-import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
-import { SunriseBanHistory } from '@models/sunrise/sunrise-ban-history.model';
-import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
-import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
-import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
-import { Observable, of } from 'rxjs';
+import { Injectable, Provider } from '@angular/core';
+import { of } from 'rxjs';
 
 import { SunriseService } from './sunrise.service';
 
@@ -40,7 +35,7 @@ export class MockSunriseService {
     .and.returnValue(of());
 }
 
-export function createMockSunriseService() {
+export function createMockSunriseService(): Provider {
   return {
     provide: SunriseService,
     useValue: new MockSunriseService(),

@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   constructor(private store: Store) {}
 
   /** Logic for the OnInit component lifecycle. */
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.store.dispatch(new RequestAccessToken());
   }
 }

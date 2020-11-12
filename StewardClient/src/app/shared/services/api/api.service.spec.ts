@@ -1,5 +1,5 @@
 ﻿// General
-import { TestBed, getTestBed, inject } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -46,7 +46,7 @@ describe('service: ApiService', () => {
       it('should make a get request to the expected url & set headers & params', done => {
         apiService
           .getRequest(url, params, headers)
-          .subscribe((response: any) => {
+          .subscribe(response => {
             expect(response).toBeTruthy();
             done();
           });
@@ -61,10 +61,10 @@ describe('service: ApiService', () => {
     describe('When the http request errors out', () => {
       it('should throw error', () => {
         apiService.getRequest(url, params, headers).subscribe(
-          (response: any) => {
+          () => {
             expect(false).toBeTruthy();
           },
-          error => {
+          () => {
             expect(true).toBeTruthy();
           }
         );
@@ -86,7 +86,7 @@ describe('service: ApiService', () => {
     });
     describe('When the http request succeeds', () => {
       it('should make a get request to the expected url & set headers & params', done => {
-        apiService.postRequest(url, object).subscribe((response: any) => {
+        apiService.postRequest(url, object).subscribe(response => {
           expect(response).toBeTruthy();
           done();
         });
@@ -100,10 +100,10 @@ describe('service: ApiService', () => {
     describe('When the http request errors out', () => {
       it('should throw error', () => {
         apiService.postRequest(url, object).subscribe(
-          (response: any) => {
+          () => {
             expect(false).toBeTruthy();
           },
-          error => {
+          () => {
             expect(true).toBeTruthy();
           }
         );
@@ -131,7 +131,7 @@ describe('service: ApiService', () => {
       it('should make a get request to the expected url & set headers & params', done => {
         apiService
           .putRequest(url, object, params)
-          .subscribe((response: any) => {
+          .subscribe(response => {
             expect(response).toBeTruthy();
             done();
           });
@@ -149,10 +149,10 @@ describe('service: ApiService', () => {
     describe('When the http request errors out', () => {
       it('should throw error', () => {
         apiService.putRequest(url, object, params).subscribe(
-          (response: any) => {
+          () => {
             expect(false).toBeTruthy();
           },
-          error => {
+          () => {
             expect(true).toBeTruthy();
           }
         );
@@ -168,16 +168,14 @@ describe('service: ApiService', () => {
     let url;
     let apiUrl;
     let params;
-    let object;
     beforeEach(() => {
       url = 'test';
       apiUrl = `${environment.stewardApiUrl}/api/${url}`;
-      object = new Comment();
       params = new HttpParams().set('id', '1234');
     });
     describe('When the http request succeeds', () => {
       it('should make a get request to the expected url & set headers & params', done => {
-        apiService.deleteRequest(url, params).subscribe((response: any) => {
+        apiService.deleteRequest(url, params).subscribe(response => {
           expect(response).toBeTruthy();
           done();
         });
@@ -194,10 +192,10 @@ describe('service: ApiService', () => {
     describe('When the http request errors out', () => {
       it('should throw error', () => {
         apiService.deleteRequest(url, params).subscribe(
-          (response: any) => {
+          () => {
             expect(false).toBeTruthy();
           },
-          error => {
+          () => {
             expect(true).toBeTruthy();
           }
         );

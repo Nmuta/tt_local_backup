@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Provider } from '@angular/core';
 import { of } from 'rxjs';
 
 import { GravityService } from './gravity.service';
@@ -11,7 +11,7 @@ export class MockGravityService {
     .and.returnValue(of({}));
 }
 
-export function createMockGravityService() {
+export function createMockGravityService(): Provider {
   return {
     provide: GravityService,
     useValue: new MockGravityService(),

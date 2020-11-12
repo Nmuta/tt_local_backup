@@ -3,7 +3,6 @@ import { environment } from '@environments/environment';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import {
   createMockApplicationInsights,
-  MockApplicationInsights,
 } from '@mocks/application-insights.mock';
 import { MockConsole } from '@mocks/console.mock';
 
@@ -21,6 +20,7 @@ describe('LoggerService', () => {
     service = TestBed.inject(LoggerService);
     mockAppInsights = TestBed.inject(ApplicationInsights);
     mockConsole = new MockConsole();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (service as any).console = mockConsole;
   });
 

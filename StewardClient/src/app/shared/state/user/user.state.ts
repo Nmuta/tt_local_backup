@@ -6,11 +6,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
 import { asapScheduler, Observable } from 'rxjs';
-import {
-  filter,
-  take,
-  timeout,
-} from 'rxjs/operators';
+import { filter, take, timeout } from 'rxjs/operators';
 
 import {
   GetUser,
@@ -59,20 +55,20 @@ export class UserState {
 
   /** Action that resets state user profile. */
   @Action(ResetUserProfile, { cancelUncompleted: true })
-  public resetUserProfile(ctx: StateContext<UserStateModel> ): void {
+  public resetUserProfile(ctx: StateContext<UserStateModel>): void {
     ctx.patchState({ profile: undefined });
     asapScheduler.schedule(() => ctx.dispatch(new ResetAccessToken()));
   }
 
   /** Action thats sets state user profile to null. */
   @Action(SetNoUserProfile, { cancelUncompleted: true })
-  public setNoUserProfile(ctx: StateContext<UserStateModel> ): void {
+  public setNoUserProfile(ctx: StateContext<UserStateModel>): void {
     ctx.patchState({ profile: null });
   }
 
   /** Action that requests user access token from azure app. */
   @Action(RequestAccessToken, { cancelUncompleted: true })
-  public requestAccessToken(ctx: StateContext<UserStateModel>): void {
+  public async requestAccessToken(ctx: StateContext<UserStateModel>): Promise<void> {
     const isLoggedIn = !!this.authService.getAccount();
     if (!isLoggedIn) {
       ctx.patchState({ accessToken: null });
@@ -80,31 +76,28 @@ export class UserState {
       return;
     }
 
-    this.authService
-      .acquireTokenSilent({
+    try {
+      const data = await this.authService.acquireTokenSilent({
         scopes: [environment.azureAppScope],
-      })
-      .then(
-        data => {
-          if (!data.accessToken) {
-            ctx.patchState({ accessToken: null });
-            asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
-            return;
-          }
+      });
 
-          ctx.patchState({ accessToken: data.accessToken });
-          asapScheduler.schedule(() => ctx.dispatch(new GetUser()));
-        },
-        () => {
-          ctx.patchState({ accessToken: null });
-          asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
-        }
-      );
+      if (!data.accessToken) {
+        ctx.patchState({ accessToken: null });
+        asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
+        return;
+      }
+
+      ctx.patchState({ accessToken: data.accessToken });
+      asapScheduler.schedule(() => ctx.dispatch(new GetUser()));
+    } catch (e) {
+      ctx.patchState({ accessToken: null });
+      asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
+    }
   }
 
   /** Action that resets state access token. */
   @Action(ResetAccessToken, { cancelUncompleted: true })
-  public resetAccessToken(ctx: StateContext<UserStateModel> ): void {
+  public resetAccessToken(ctx: StateContext<UserStateModel>): void {
     ctx.patchState({ accessToken: undefined });
   }
 

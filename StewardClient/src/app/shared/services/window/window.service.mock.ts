@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Provider } from '@angular/core';
 
 import { WindowService } from './window.service';
 
@@ -22,6 +22,6 @@ export class MockWindowService {
   public zafClient = jasmine.createSpy('zafClient').and.returnValue({});
 }
 
-export function createMockWindowService() {
+export function createMockWindowService(): Provider {
   return { provide: WindowService, useValue: new MockWindowService() };
 }
