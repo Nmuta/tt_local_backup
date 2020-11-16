@@ -15,8 +15,8 @@ import { environment } from '../../environments/environment';
 
 /** Defines the auth component. */
 @Component({
-  templateUrl: './auth.html',
-  styleUrls: ['./auth.scss'],
+  templateUrl: './auth.component.html',
+  styleUrls: ['./auth.component.scss'],
 })
 export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
   @Select(UserState.profile) public profile$: Observable<UserModel>;

@@ -1,2 +1,28 @@
 <navbar></navbar>
-<router-outlet></router-outlet>
+<mat-drawer-container autosize>
+  <mat-drawer #drawer mode="over" position="end" (closed)="clearSidebar()">
+    <router-outlet name="sidebar" (activate)="drawer.open()" (deactivate)="drawer.close()"></router-outlet>
+  </mat-drawer>
+
+  <router-outlet></router-outlet>
+
+  <div class="footer">
+    <ul>
+      <li>
+        <a href="https://privacy.microsoft.com/en-US/data-privacy-notice" target="_blank"
+          >Data Protection Notice</a
+        >
+      </li>
+      <li>
+        <a href="https://www.microsoft.com/en-us/servicesagreement" target="_blank"
+          >Code of Conduct</a
+        >
+      </li>
+      <li>
+        <a href="https://www.xbox.com/en-US/legal/community-standards" target="_blank"
+          >Community Standards for Xbox</a
+        >
+      </li>
+    </ul>
+  </div>
+</mat-drawer-container>

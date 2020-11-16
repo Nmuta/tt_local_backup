@@ -17,8 +17,9 @@
     <fa-icon [icon]="warningIcon" title="Zendesk API missing"></fa-icon>
     <fa-icon [icon]="refreshIcon" title="Refresh page"></fa-icon>
   </span>
-  <span>{{ location }}</span>
+  <span class="location">{{ location }}</span>
   <span>
+    <a [routerLink]="[{outlets: { sidebar: 'profile'}}]">PPPPP</a>
     <profile [user]="profile" [parentApp]="'navbar'"></profile>
   </span>
 </mat-toolbar>

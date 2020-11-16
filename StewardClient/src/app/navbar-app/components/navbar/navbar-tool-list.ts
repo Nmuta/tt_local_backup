@@ -29,7 +29,7 @@ export function createRouterLinkPath(
   };
 }
 
-export const navbarAppRootPath = ['/navbar-app'];
+export const navbarAppRootPath = ['/navbar-app', 'navbar-app'];
 
 /** Constants for tools in the navbar. */
 export class NavbarTools {

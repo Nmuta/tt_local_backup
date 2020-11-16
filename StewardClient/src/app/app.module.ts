@@ -2,7 +2,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, Provider } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
-import { NavbarModule } from '@components/navbar/navbar.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { BigintInterceptor } from '@interceptors/bigint.interceptor';
@@ -21,6 +20,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { ErrorComponent } from './error/error.component';
 import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -44,11 +44,10 @@ function fakeApiOrNothing(): Provider[] {
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent, FourOhFourComponent],
+  declarations: [AppComponent, ErrorComponent, FourOhFourComponent, ProfileComponent],
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
-    NavbarModule,
     FontAwesomeModule,
     HttpClientModule,
     NgxsModule.forRoot([UserState]),

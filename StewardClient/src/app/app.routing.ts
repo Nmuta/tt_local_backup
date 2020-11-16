@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ErrorComponent } from './error/error.component';
 import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
+import { ProfileComponent } from './profile/profile.component';
 import { ZendeskGuardService } from './route-guards/app.zendesk.guard.service';
 
 const routes: Routes = [
