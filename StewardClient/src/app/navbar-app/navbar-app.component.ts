@@ -9,8 +9,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class NavbarAppComponent {
   constructor (private readonly router: Router, private readonly route: ActivatedRoute,) { }
 
-  public clearSidebar() {
+  /** Clears the current sidebar outlet path. */
+  public clearSidebar(): void {
     // https://github.com/angular/angular/issues/5122
-    this.router.navigate([{outlets: { sidebar: null}}], { relativeTo: this.route});
+    this.router.navigate([{outlets: { sidebar: null }}], { relativeTo: this.route});
   }
 }
