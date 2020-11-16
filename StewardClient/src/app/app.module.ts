@@ -8,6 +8,7 @@ import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { BigintInterceptor } from '@interceptors/bigint.interceptor';
 import { FakeApiInterceptor } from '@interceptors/fake-api/fake-api.interceptor';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
@@ -51,6 +52,7 @@ function fakeApiOrNothing(): Provider[] {
     FontAwesomeModule,
     HttpClientModule,
     NgxsModule.forRoot([UserState]),
+    NgxsRouterPluginModule.forRoot(),
     MsalModule.forRoot(
       {
         auth: {

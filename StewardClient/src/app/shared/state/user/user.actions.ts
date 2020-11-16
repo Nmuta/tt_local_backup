@@ -37,3 +37,12 @@ export class ResetAccessToken {
     // Empty
   }
 }
+
+
+/** Common logout action declaration. */
+export class LogoutUser {
+  public static readonly type = '[User] Logout';
+  constructor(public readonly parentApp: string) {
+    // Empty
+  }
+}

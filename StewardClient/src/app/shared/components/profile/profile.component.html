@@ -1,0 +1,11 @@
+<button mat-icon-button [matMenuTriggerFor]="menu" #menuStatus="matMenuTrigger" [class.mat-stroked-button]="menuStatus.menuOpen" aria-label="Profile">
+  <fa-icon icon="user" class="profile-icon"></fa-icon>
+</button>
+
+<mat-menu #menu="matMenu">
+  <pre>
+Email: {{user?.emailAddress}}
+Role: {{user?.role}}
+  </pre>
+  <button (click)="logout()">Logout</button>
+</mat-menu>
