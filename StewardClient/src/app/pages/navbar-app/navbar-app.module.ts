@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FourOhFourComponent } from './pages/four-oh-four/four-oh-four.component';
-import { FourOhFourModule } from '@components/four-oh-four/four-oh-four.module';
+import { FourOhFourModule } from '@components/views/four-oh-four/four-oh-four.module';
 import { SidebarsModule } from 'app/sidebars/sidebars.module';
 
 /** Defines the sidebar module. */

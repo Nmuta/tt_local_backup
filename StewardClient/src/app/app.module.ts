@@ -20,7 +20,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { ErrorComponent } from './pages/error/error.component';
 import { SidebarsModule } from './sidebars/sidebars.module';
-import { FourOhFourModule } from '@components/four-oh-four/four-oh-four.module';
+import { FourOhFourModule } from '@components/views/four-oh-four/four-oh-four.module';
 
 export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
