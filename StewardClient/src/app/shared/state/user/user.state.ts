@@ -8,7 +8,7 @@ import { WindowOpen } from '@services/window';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
 import { asapScheduler, Observable } from 'rxjs';
-import { filter, switchMap, take, timeout } from 'rxjs/operators';
+import { filter, take, timeout } from 'rxjs/operators';
 
 import {
   GetUser,
