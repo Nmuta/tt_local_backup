@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { PlayerDetailsBaseComponent } from '@components/player-details/player-details.base.component';
 import { ApolloPlayerDetails } from '@models/apollo';
 import { ApolloService } from '@services/apollo';
 import { Observable } from 'rxjs';
+import { PlayerDetailsBaseComponent } from '../../player-details.base.component';
 
 /** Gravity Player Details */
 @Component({

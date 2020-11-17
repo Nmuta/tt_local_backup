@@ -13,6 +13,7 @@ import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
 import { UserState } from '@shared/state/user/user.state';
+import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
 
 import { environment } from '../environments/environment';
 
@@ -20,7 +21,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { ErrorComponent } from './pages/error/error.component';
 import { SidebarsModule } from './sidebars/sidebars.module';
-import { FourOhFourModule } from '@components/views/four-oh-four/four-oh-four.module';
 
 export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
