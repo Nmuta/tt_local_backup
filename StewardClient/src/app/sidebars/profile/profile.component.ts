@@ -41,18 +41,18 @@ export class ProfileComponent extends BaseComponent implements OnInit {
           this.loading = false;
           this.user = profile;
           if (!this.user) {
-            // TODO: NO REDIRECT
-            // this.router.navigate([`/auth`], {
-            //   queryParams: { from: this.location },
-            // });
+            // TODO: Do this somewhere else (auth guard)
+            this.router.navigate([`/auth`], {
+              queryParams: { from: 'navbar-app' },
+            });
           }
         },
         _error => {
           this.loading = false;
-          // TODO: NO REDIRECT
-          // this.router.navigate([`/auth`], {
-          //   queryParams: { from: this.location },
-          // });
+          // TODO: Do this somewhere else (auth guard)
+          this.router.navigate([`/auth`], {
+            queryParams: { from: 'navbar-app' },
+          });
         },
       );
   }

@@ -11,8 +11,8 @@ import { takeUntil } from 'rxjs/operators';
 
 /** Defines the ticket sidebar component. */
 @Component({
-  templateUrl: './ticket-app.html',
-  styleUrls: ['./ticket-app.scss'],
+  templateUrl: './ticket-app.component.html',
+  styleUrls: ['./ticket-app.component.scss'],
 })
 export class TicketAppComponent extends BaseComponent implements OnInit, AfterViewInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
@@ -49,10 +49,10 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
           this.loading = false;
           this.profile = profile;
           if (!this.profile) {
-            // TODO: NO REDIRECT
-            // this.router.navigate([`/auth`], {
-            //   queryParams: { from: this.appName },
-            // });
+            // TODO: Redirect goes elsewhere
+            this.router.navigate([`/auth`], {
+              queryParams: { from: this.appName },
+            });
           } else {
             this.getTicketRequestor();
           }
@@ -60,10 +60,10 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
         _error => {
           this.loading = false;
 
-          // TODO: NO REDIRECT
-          // this.router.navigate([`/auth`], {
-          //   queryParams: { from: this.appName },
-          // });
+          // TODO: Redirect goes elsewhere
+          this.router.navigate([`/auth`], {
+            queryParams: { from: this.appName },
+          });
         },
       );
   }

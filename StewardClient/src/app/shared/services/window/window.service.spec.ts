@@ -1,10 +1,11 @@
 ﻿import { TestBed, inject } from '@angular/core/testing';
+import { NgxsModule } from '@ngxs/store';
 import { WindowService } from './window.service';
 
 describe('service: WindowService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [],
+      imports: [NgxsModule.forRoot([])],
       providers: [WindowService],
     });
   });
