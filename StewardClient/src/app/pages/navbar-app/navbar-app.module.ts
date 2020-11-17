@@ -4,10 +4,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProfileModule } from '@shared/components/profile/profile.module';
 
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './pages/home/home.component';
 import { NavbarAppComponent } from './navbar-app.component';
 import { NavbarAppRouterModule } from './navbar-app.routing';
-import { UserDetailsModule } from './user-details/user-details.module';
+import { UserDetailsModule } from './pages/user-details/user-details.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';

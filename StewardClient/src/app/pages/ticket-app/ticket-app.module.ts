@@ -6,7 +6,6 @@ import { ContentCollapseModule } from '@components/content-collapse/content-coll
 import { PlayerDetailsModule } from '@components/player-details/player-details.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProfileModule } from '@shared/components/profile/profile.module';
-import { GiftingPageModule } from 'app/navbar-app/gifting-page/gifting-page.module';
 
 import { TicketAppComponent } from './ticket-app.component';
 import { TicketAppRouterModule } from './ticket-app.routing.module';
@@ -16,7 +15,6 @@ import { TicketAppRouterModule } from './ticket-app.routing.module';
   imports: [
     CommonModule,
     TicketAppRouterModule,
-    GiftingPageModule,
     FontAwesomeModule,
     ProfileModule,
     PlayerDetailsModule,

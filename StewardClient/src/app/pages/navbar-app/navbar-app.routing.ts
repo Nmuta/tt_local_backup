@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NavbarTools } from 'app/navbar-app/components/navbar/navbar-tool-list';
+import { NavbarTools } from 'app/pages/navbar-app/components/navbar/navbar-tool-list';
 import { FourOhFourComponent } from 'app/four-oh-four/four-oh-four.component';
 
-import { GiftingPageComponent } from './gifting-page/gifting-page.module';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './pages/home/home.component';
 import { NavbarAppComponent } from './navbar-app.component';
 import { ErrorComponent } from 'app/error/error.component';
 import { ProfileComponent } from 'app/profile/profile.component';
@@ -29,13 +28,9 @@ const routes: Routes = [
         component: HomeComponent,
       },
       {
-        path: NavbarTools.GiftingPage.path,
-        component: GiftingPageComponent,
-      },
-      {
         path: NavbarTools.UserDetailsPage.path,
         loadChildren: () =>
-          import('./user-details/user-details.module').then(m => m.UserDetailsModule),
+          import('./pages/user-details/user-details.module').then(m => m.UserDetailsModule),
       },
       {
         path: '**',

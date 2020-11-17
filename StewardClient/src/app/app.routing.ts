@@ -10,16 +10,16 @@ const routes: Routes = [
   {
     path: 'navbar-app',
     // canActivate: [ZendeskGuardService],
-    loadChildren: () => import('./navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
+    loadChildren: () => import('./pages/navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
   },
   {
     path: 'ticket-sidebar',
     canActivate: [ZendeskGuardService],
-    loadChildren: () => import('./ticket-app/ticket-app.module').then(m => m.TicketAppModule),
+    loadChildren: () => import('./pages/ticket-app/ticket-app.module').then(m => m.TicketAppModule),
   },
   {
     path: 'auth',
-    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
+    loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
   },
   {
     path: 'error',

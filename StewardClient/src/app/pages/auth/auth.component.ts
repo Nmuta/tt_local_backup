@@ -11,7 +11,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { interval, Observable } from 'rxjs';
 import { filter, take, takeUntil, tap } from 'rxjs/operators';
 
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 /** Defines the auth component. */
 @Component({
