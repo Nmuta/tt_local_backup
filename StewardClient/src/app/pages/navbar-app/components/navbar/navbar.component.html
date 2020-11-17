@@ -17,7 +17,7 @@
   </span>
   <span class="short-spacer"></span>
   <span>
-    <a [routerLink]="[{outlets: { sidebar: 'profile'}}]" mat-icon-button
+    <a [routerLink]="[{outlets: { sidebar: 'profile'}}]" queryParamsHandling="preserve" mat-icon-button
       routerLinkActive="mat-stroked-button" aria-label="Profile">
       <fa-icon icon="user" class="profile-icon"></fa-icon>
   </a>

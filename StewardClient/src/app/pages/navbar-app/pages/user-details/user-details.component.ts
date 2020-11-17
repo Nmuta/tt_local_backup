@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { takeUntil } from 'rxjs/operators';
+import { createNavbarPath, NavbarTools } from '../../components/navbar/navbar-tool-list';
 
 import { SunriseComponent } from './sunrise/sunrise.component';
 
@@ -13,6 +14,8 @@ import { SunriseComponent } from './sunrise/sunrise.component';
 })
 export class UserDetailsComponent extends BaseComponent implements OnInit {
   public gamertag: string;
+
+  public sunriseRouterLink = [...createNavbarPath(NavbarTools.UserDetailsPage).routerLink, 'sunrise'];
 
   constructor(private readonly route: ActivatedRoute, private readonly router: Router) {
     super();
@@ -29,7 +32,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   public navigate(): void {
     const childComponent = this.route.snapshot.firstChild.component;
     if (childComponent === SunriseComponent) {
-      this.router.navigate(['/navbar-app', 'user-details', 'sunrise'], {
+      this.router.navigate(this.sunriseRouterLink, {
         queryParams: { gamertag: this.gamertag },
       });
     }

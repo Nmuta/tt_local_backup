@@ -29,6 +29,7 @@ export function createRouterLinkPath(
   };
 }
 
+/** The root path for all these tools. */
 export const navbarAppRootPath = ['/navbar-app', 'navbar-app'];
 
 /** Constants for tools in the navbar. */

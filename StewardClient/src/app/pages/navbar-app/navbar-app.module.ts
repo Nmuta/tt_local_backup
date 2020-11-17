@@ -14,11 +14,13 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FourOhFourComponent } from './pages/four-oh-four/four-oh-four.component';
 import { SidebarsModule } from 'app/sidebars/sidebars.module';
 import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
+import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-privacy-notice.module';
 
 /** Defines the sidebar module. */
 @NgModule({
   imports: [
     CommonModule,
+    DataPrivacyNoticeModule,
     SidebarsModule,
     NavbarAppRouterModule,
     FontAwesomeModule,
