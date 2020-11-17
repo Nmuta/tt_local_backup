@@ -5,7 +5,6 @@ import { MatCardModule } from '@angular/material/card';
 import { ContentCollapseModule } from '@components/content-collapse/content-collapse.module';
 import { PlayerDetailsModule } from '@components/player-details/player-details.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ProfileModule } from '@shared/components/profile/profile.module';
 
 import { TicketAppComponent } from './ticket-app.component';
 import { TicketAppRouterModule } from './ticket-app.routing.module';
@@ -16,7 +15,6 @@ import { TicketAppRouterModule } from './ticket-app.routing.module';
     CommonModule,
     TicketAppRouterModule,
     FontAwesomeModule,
-    ProfileModule,
     PlayerDetailsModule,
     MatButtonModule,
     MatCardModule,

@@ -18,9 +18,9 @@ import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
-import { ErrorComponent } from './error/error.component';
-import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
-import { ProfileComponent } from './profile/profile.component';
+import { ErrorComponent } from './pages/error/error.component';
+import { SidebarsModule } from './sidebars/sidebars.module';
+import { FourOhFourModule } from '@components/four-oh-four/four-oh-four.module';
 
 export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -44,12 +44,14 @@ function fakeApiOrNothing(): Provider[] {
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent, FourOhFourComponent, ProfileComponent],
+  declarations: [AppComponent, ErrorComponent],
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
+    SidebarsModule,
     FontAwesomeModule,
     HttpClientModule,
+    FourOhFourModule,
     NgxsModule.forRoot([UserState]),
     NgxsRouterPluginModule.forRoot(),
     MsalModule.forRoot(

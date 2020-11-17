@@ -1,7 +1,7 @@
 <navbar></navbar>
 <mat-drawer-container autosize>
-  <mat-drawer #drawer mode="over" position="end" (closed)="clearSidebar()">
-    <router-outlet name="sidebar" (activate)="drawer.open()" (deactivate)="drawer.close()"></router-outlet>
+  <mat-drawer #drawer mode="over" [opened]="true" position="end" (closed)="clearSidebar()">
+    SIDEBAR <router-outlet name="sidebar" (activate)="drawer.open()" (deactivate)="drawer.close()"></router-outlet> SIDEBAR
   </mat-drawer>
 
   <router-outlet></router-outlet>

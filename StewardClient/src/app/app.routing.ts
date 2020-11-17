@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ErrorComponent } from './error/error.component';
-import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
-import { ProfileComponent } from './profile/profile.component';
+import { ErrorComponent } from './pages/error/error.component';
 import { ZendeskGuardService } from './route-guards/app.zendesk.guard.service';
 
 const routes: Routes = [
@@ -22,12 +20,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
   },
   {
-    path: 'error',
-    component: ErrorComponent,
-  },
-  {
     path: '**',
-    component: FourOhFourComponent,
+    component: ErrorComponent,
   },
 ];
 

@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NavbarTools } from 'app/pages/navbar-app/components/navbar/navbar-tool-list';
-import { FourOhFourComponent } from 'app/four-oh-four/four-oh-four.component';
+import { FourOhFourComponent } from './pages/four-oh-four/four-oh-four.component';
 
 import { HomeComponent } from './pages/home/home.component';
 import { NavbarAppComponent } from './navbar-app.component';
-import { ErrorComponent } from 'app/error/error.component';
-import { ProfileComponent } from 'app/profile/profile.component';
+import { sidebarRoutes } from 'app/sidebars/sidebars.module';
 
 const routes: Routes = [
   {
@@ -19,11 +18,6 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'profile',
-        component: ProfileComponent,
-        outlet: 'sidebar',
-      },
-      {
         path: 'home',
         component: HomeComponent,
       },
@@ -32,6 +26,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/user-details/user-details.module').then(m => m.UserDetailsModule),
       },
+      ...sidebarRoutes,
       {
         path: '**',
         component: FourOhFourComponent,
