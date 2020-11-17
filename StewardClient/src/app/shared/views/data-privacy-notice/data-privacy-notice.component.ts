@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'data-privacy-notice',
   templateUrl: './data-privacy-notice.component.html',
-  styleUrls: ['./data-privacy-notice.component.scss']
+  styleUrls: ['./data-privacy-notice.component.scss'],
 })
-export class DataPrivacyNoticeComponent { }
+export class DataPrivacyNoticeComponent {}

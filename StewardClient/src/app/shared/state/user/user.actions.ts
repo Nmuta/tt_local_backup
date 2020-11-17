@@ -38,7 +38,6 @@ export class ResetAccessToken {
   }
 }
 
-
 /** Common logout action declaration. */
 export class LogoutUser {
   public static readonly type = '[User] Logout';

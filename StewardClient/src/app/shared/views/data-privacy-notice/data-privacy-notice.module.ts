@@ -8,4 +8,4 @@ import { DataPrivacyNoticeComponent } from './data-privacy-notice.component';
   imports: [CommonModule],
   exports: [DataPrivacyNoticeComponent],
 })
-export class DataPrivacyNoticeModule { }
+export class DataPrivacyNoticeModule {}

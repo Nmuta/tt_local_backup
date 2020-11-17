@@ -25,7 +25,9 @@ mat-drawer-container {
 }
 
 // grow only the transcluded content
-:host ::ng-deep .content > router-outlet + * { flex-grow: 1; }
+:host ::ng-deep .content > router-outlet + * {
+  flex-grow: 1;
+}
 
 div {
   padding: 10px;

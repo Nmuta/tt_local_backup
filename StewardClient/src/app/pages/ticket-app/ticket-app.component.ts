@@ -59,7 +59,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
         },
         _error => {
           this.loading = false;
-          
+
           // TODO: NO REDIRECT
           // this.router.navigate([`/auth`], {
           //   queryParams: { from: this.appName },

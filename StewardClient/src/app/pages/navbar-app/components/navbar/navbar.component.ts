@@ -23,9 +23,7 @@ export class NavbarComponent {
   public items: RouterLinkPath[] = navbarToolList;
   public homeRouterLink = createNavbarPath(NavbarTools.HomePage).routerLink;
 
-  constructor(
-    private readonly windowService: WindowService,
-  ) {}
+  constructor(private readonly windowService: WindowService) {}
 
   public get missingZendesk(): boolean {
     return !this.windowService.zafClient();

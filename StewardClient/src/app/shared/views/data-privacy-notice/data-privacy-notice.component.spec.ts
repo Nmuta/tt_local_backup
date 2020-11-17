@@ -8,9 +8,8 @@ describe('DataPrivacyNoticeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DataPrivacyNoticeComponent ]
-    })
-    .compileComponents();
+      declarations: [DataPrivacyNoticeComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

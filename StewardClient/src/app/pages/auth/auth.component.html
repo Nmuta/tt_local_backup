@@ -2,8 +2,8 @@
   <div *ngIf="!loading && !inZendesk">
     <div *ngIf="profile">
       <h2>You have successfully signed in.</h2>
-      <p>Email: {{profile.emailAddress}}</p>
-      <p>Role: {{profile.role}}</p>
+      <p>Email: {{ profile.emailAddress }}</p>
+      <p>Role: {{ profile.role }}</p>
     </div>
     <div *ngIf="!profile">
       <h2 *ngIf="fromAadLogout">You have successfully signed out.</h2>
@@ -13,7 +13,7 @@
       </h2>
     </div>
     <div *ngIf="!!autoCloseTimeSecsLeft">
-      <p>This window will auto-close in {{autoCloseTimeSecsLeft}} seconds</p>
+      <p>This window will auto-close in {{ autoCloseTimeSecsLeft }} seconds</p>
     </div>
   </div>
   <div *ngIf="!loading && inZendesk">

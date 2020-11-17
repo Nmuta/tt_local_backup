@@ -15,7 +15,10 @@ import { SunriseComponent } from './sunrise/sunrise.component';
 export class UserDetailsComponent extends BaseComponent implements OnInit {
   public gamertag: string;
 
-  public sunriseRouterLink = [...createNavbarPath(NavbarTools.UserDetailsPage).routerLink, 'sunrise'];
+  public sunriseRouterLink = [
+    ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
+    'sunrise',
+  ];
 
   constructor(private readonly route: ActivatedRoute, private readonly router: Router) {
     super();

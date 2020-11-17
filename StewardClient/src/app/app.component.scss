@@ -1,6 +1,7 @@
 @import '/src/variables.scss';
 
-:host, mat-drawer-container {
+:host,
+mat-drawer-container {
   min-height: 100%;
   display: flex;
   flex-flow: column nowrap;

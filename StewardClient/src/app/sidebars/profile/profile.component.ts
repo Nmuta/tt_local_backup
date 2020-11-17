@@ -27,7 +27,9 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     protected router: Router,
     protected store: Store,
     protected windowService: WindowService,
-  ) { super(); }
+  ) {
+    super();
+  }
 
   /** Logic for the OnInit component lifecycle. */
   public ngOnInit(): void {
