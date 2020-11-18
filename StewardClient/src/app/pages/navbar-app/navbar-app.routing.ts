@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NavbarTools } from 'app/pages/navbar-app/components/navbar/navbar-tool-list';
+import { NavbarTools } from 'app/pages/navbar-app/navbar-tool-list';
 import { FourOhFourComponent } from './pages/four-oh-four/four-oh-four.component';
 
 import { HomeComponent } from './pages/home/home.component';
@@ -9,7 +9,7 @@ import { sidebarRoutes } from 'app/sidebars/sidebars.module';
 
 const routes: Routes = [
   {
-    path: 'navbar-app',
+    path: 'tools',
     component: NavbarAppComponent,
     children: [
       {

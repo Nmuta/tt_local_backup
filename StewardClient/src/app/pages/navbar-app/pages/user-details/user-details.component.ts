@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { takeUntil } from 'rxjs/operators';
-import { createNavbarPath, NavbarTools } from '../../components/navbar/navbar-tool-list';
+import { createNavbarPath, NavbarTools } from '../../navbar-tool-list';
 
 import { SunriseComponent } from './sunrise/sunrise.component';
 

@@ -6,7 +6,7 @@ import { WindowService } from '@services/window';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 
-import { createNavbarPath, navbarToolList, NavbarTools, RouterLinkPath } from './navbar-tool-list';
+import { createNavbarPath, navbarToolList, NavbarTools, RouterLinkPath } from '../../navbar-tool-list';
 
 /** The shared top-level navbar. */
 @Component({
