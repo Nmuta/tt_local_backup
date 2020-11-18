@@ -9,7 +9,7 @@
   "private": true,
   "location": {
     "support": {
-      "nav_bar": "http://localhost:4200/navbar-app/navbar-app/tools",
+      "nav_bar": "http://localhost:4200/navbar-app/tools",
       "ticket_sidebar": "http://localhost:4200/ticket-sidebar",
       "background": "assets/background.html"
     }
