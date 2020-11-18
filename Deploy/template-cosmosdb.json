@@ -1,0 +1,103 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subscriptionId": {
+      "type": "string",
+      "metadata": {
+        "description": "The ID of the subscription the Azure App Service Plan belongs to."
+      }
+    },
+    "locationOverride": {
+      "type": "string",
+      "metadata": {
+        "description": "Ignored for this template."
+      }
+    },
+    "prefix": {
+      "type": "string",
+      "metadata": {
+        "description": "The prefix for all managed resources"
+      }
+    },
+    "suffix": {
+      "type": "string",
+      "metadata": {
+        "description": "The suffix for all managed resources"
+      }
+    }
+  },
+  "variables": {
+    "prefix": "[parameters('prefix')]",
+    "suffix": "[parameters('suffix')]",
+    "documentDBApiVersion": "2020-06-01-preview",
+    "identityApiVersion": "[providers('Microsoft.ManagedIdentity', 'userAssignedIdentities').apiVersions[0]]",
+    "cosmosDBName": "[concat(variables('prefix'), '-cosmosdb-', variables('suffix'))]",
+    "identityName": "[concat(variables('prefix'), '-identity-', variables('suffix'))]",
+    "identityScope": "[concat('Microsoft.ManagedIdentity/userAssignedIdentities/', variables('identityName'))]",
+    "location": "[if(empty(parameters('locationOverride')), resourceGroup().location, parameters('locationOverride'))]",
+    "tenantId": "[subscription().tenantId]"
+  },
+  "resources": [
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "[variables('documentDBApiVersion')]",
+            "name": "[variables('cosmosDBName')]",
+            "location": "[variables('location')]",
+            "tags": {
+                "defaultExperience": "Azure Table",
+                "hidden-cosmos-mmspecial": "",
+                "CosmosAccountType": "Non-Production"
+            },
+            "kind": "GlobalDocumentDB",
+            "identity": {
+                "type": "None"
+            },
+            "properties": {
+                "publicNetworkAccess": "Enabled",
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "disableKeyBasedMetadataWriteAccess": false,
+                "enableFreeTier": false,
+                "enableAnalyticalStorage": false,
+                "createMode": "Default",
+                "databaseAccountOfferType": "Standard",
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "BoundedStaleness",
+                    "maxIntervalInSeconds": 86400,
+                    "maxStalenessPrefix": 1000000
+                },
+                "locations": [
+                    {
+                        "locationName": "[variables('location')]",
+                        "provisioningState": "Succeeded",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "cors": [],
+                "capabilities": [
+                    {
+                        "name": "EnableTable"
+                    }
+                ],
+                "ipRules": [],
+                "backupPolicy": {
+                    "type": "Periodic",
+                    "periodicModeProperties": {
+                        "backupIntervalInMinutes": 240,
+                        "backupRetentionIntervalInHours": 8
+                    }
+                },
+                "accessPolicies": [
+                  {
+                    "tenantId": "[variables('tenantId')]",
+                    "objectId": "[reference(variables('identityScope'), variables('identityApiVersion')).principalId]"
+                  }
+                ]
+            }
+        }
+  ]
+}
