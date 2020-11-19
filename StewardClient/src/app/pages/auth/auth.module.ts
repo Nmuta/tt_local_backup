@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { AuthComponent } from './auth.component';
 import { AuthRouterModule } from './auth.routing';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
@@ -16,7 +15,6 @@ import { CenterContentsModule } from '@components/center-contents/center-content
 @NgModule({
   imports: [CommonModule, AuthRouterModule, MatCardModule, StuckModule, CenterContentsModule],
   declarations: [
-    AuthComponent,
     LoginComponent,
     LogoutComponent,
     AadLoginComponent,
