@@ -1,0 +1,6 @@
+@import "/src/variables.scss";
+
+:host {
+  padding: $gap-vertical-layout $gap-side-gutter;
+  text-align: center;
+}
