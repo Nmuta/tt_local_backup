@@ -51,7 +51,7 @@ export class UserState {
       new ResetUserProfile(),
       new ResetAccessToken(),
       new Navigate([`/auth`], { queryParams: { from: action.returnRoute } }),
-      new WindowOpen(`${environment.stewardUiUrl}/auth?action=logout`, '_blank'),
+      new WindowOpen(`${environment.stewardUiUrl}/auth/logout`, '_blank'),
     ]);
   }
 
