@@ -4,7 +4,8 @@ import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
 import { Navigate } from '@ngxs/router-plugin';
 import { Action, Actions, ofActionDispatched, Selector, State, StateContext, Store } from '@ngxs/store';
-import { WindowOpen } from '@services/window';
+import { WindowOpen, WindowService } from '@services/window';
+import { ZendeskService } from '@services/zendesk';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
 import { asapScheduler, Observable } from 'rxjs';
@@ -40,8 +41,6 @@ export class UserStateModel {
 })
 export class UserState {
   constructor(
-    private readonly actions$: Actions,
-    private readonly store: Store,
     private readonly userService: UserService,
     private readonly authService: MsalService,
   ) {
@@ -49,12 +48,12 @@ export class UserState {
 
   /** Logs out the current user and directs them to the auth page. */
   @Action(LogoutUser, { cancelUncompleted: true })
-  public logoutUser(ctx: StateContext<UserStateModel>, action: LogoutUser): Observable<void> {
+  public logoutUser(ctx: StateContext<UserStateModel>, _action: LogoutUser): Observable<void> {
+    // const logoutAction = this.windowService.isInIframe ? new WindowOpen(`${environment.stewardUiUrl}/auth/logout`, '_blank') : new Navigate([`/auth/logout`])
     return ctx.dispatch([
       new ResetUserProfile(),
       new ResetAccessToken(),
-      new Navigate([`/auth`], { queryParams: { from: action.returnRoute } }),
-      new WindowOpen(`${environment.stewardUiUrl}/auth/logout`, '_blank'),
+      new Navigate([`/auth/logout`]),
     ]);
   }
 

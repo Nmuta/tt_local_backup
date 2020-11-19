@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
-import { RecheckAuth, RequestAccessToken, ResetUserProfile } from '@shared/state/user/user.actions';
+import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
-import { Logger } from 'msal';
 import { Observable } from 'rxjs';
 
-/** Handles the login auth action. */
+/** This component redirects to AAD logout, if possible. Otherwise it opens itself in a new tab (where it is possible). */
 @Component({
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -32,7 +31,7 @@ export class LoginComponent implements OnInit {
 
   /** OnInit hook. */
   public ngOnInit(): void {
-    this.redirectToRoute = this.route.snapshot.queryParamMap.get('from');
+    this.redirectToRoute = this.route.snapshot.queryParamMap.get('from') ?? "/";
     this.logger.debug([LogTopic.Auth], `Redirect to Route: ${this.redirectToRoute}`);
     this.login$();
   }
@@ -59,7 +58,7 @@ export class LoginComponent implements OnInit {
         return;
       }
 
-      // this.router.navigate([this.redirectToRoute]);
+      this.router.navigate([this.redirectToRoute]);
     }
     catch (error) {
       this.logger.debug([LogTopic.Auth], `Login: Error`, error);

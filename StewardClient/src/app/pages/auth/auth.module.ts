@@ -9,10 +9,19 @@ import { AadLoginComponent } from './aad-login/aad-login.component';
 import { AadLogoutComponent } from './aad-logout/aad-logout.component';
 import { StuckModule } from '@shared/views/stuck/stuck.module';
 import { MatCardModule } from '@angular/material/card';
+import { LogoutIframeComponent } from './logout-iframe/logout-iframe.component';
+import { CenterContentsModule } from '@components/center-contents/center-contents.module';
 
 /** Defines the auth module. */
 @NgModule({
-  imports: [CommonModule, AuthRouterModule, MatCardModule, StuckModule],
-  declarations: [AuthComponent, LoginComponent, LogoutComponent, AadLoginComponent, AadLogoutComponent],
+  imports: [CommonModule, AuthRouterModule, MatCardModule, StuckModule, CenterContentsModule],
+  declarations: [
+    AuthComponent,
+    LoginComponent,
+    LogoutComponent,
+    AadLoginComponent,
+    AadLogoutComponent,
+    LogoutIframeComponent,
+  ],
 })
 export class AuthModule {}

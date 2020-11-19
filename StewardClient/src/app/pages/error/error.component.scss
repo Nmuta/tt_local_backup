@@ -13,3 +13,10 @@ mat-card {
     white-space: pre-wrap;
   }
 }
+
+.center-message {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}

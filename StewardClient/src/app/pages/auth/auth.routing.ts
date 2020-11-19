@@ -4,6 +4,7 @@ import { AadLoginComponent } from './aad-login/aad-login.component';
 import { AadLogoutComponent } from './aad-logout/aad-logout.component';
 
 import { LoginComponent } from './login/login.component';
+import { LogoutIframeComponent } from './logout-iframe/logout-iframe.component';
 import { LogoutComponent } from './logout/logout.component';
 
 const routes: Routes = [
@@ -25,6 +26,10 @@ const routes: Routes = [
       {
         path: 'logout',
         component: LogoutComponent,
+      },
+      {
+        path: 'logout-iframe',
+        component: LogoutIframeComponent,
       },
     ],
   },
