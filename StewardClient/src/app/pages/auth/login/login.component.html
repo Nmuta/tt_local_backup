@@ -1,5 +1,10 @@
 <h1>Login</h1>
 <p>
-  If you do not see the login popup, <a href="" (click)="login()">click here to try again</a>
+  If you do not see the login popup, <a [routerLink]="" (click)="login$()">click here to try again</a>
 </p>
+<div class="center-message" *ngIf="error">
+  <mat-card>
+    <pre>{{ error | json }}</pre>
+  </mat-card>
+</div>
 <stuck></stuck>

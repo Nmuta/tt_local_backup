@@ -36,6 +36,7 @@ const routes: Routes = [
       initialNavigation: 'enabled',
       scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled',
+      enableTracing: true,
     }),
   ],
   exports: [RouterModule],

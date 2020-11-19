@@ -10,7 +10,12 @@ export class LogoutComponent implements OnInit {
   constructor(public readonly msalService: MsalService) { }
 
   /** OnInit hook. */
-  ngOnInit(): void {
+  public ngOnInit(): void {
+    this.logout();
+  }
+
+  /** Immediately logs out the user. */
+  public logout(): void {
     this.msalService.logout();
   }
 }

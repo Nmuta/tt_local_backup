@@ -3,16 +3,17 @@ import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
 import { Navigate } from '@ngxs/router-plugin';
-import { Action, Actions, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Actions, ofActionDispatched, Selector, State, StateContext, Store } from '@ngxs/store';
 import { WindowOpen } from '@services/window';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
 import { asapScheduler, Observable } from 'rxjs';
-import { filter, take, timeout } from 'rxjs/operators';
+import { filter, map, take, tap, timeout } from 'rxjs/operators';
 
 import {
   GetUser,
   LogoutUser,
+  RecheckAuth,
   RequestAccessToken,
   ResetAccessToken,
   ResetUserProfile,
@@ -39,10 +40,12 @@ export class UserStateModel {
 })
 export class UserState {
   constructor(
-    public actions$: Actions,
-    private userService: UserService,
-    private authService: MsalService,
-  ) {}
+    private readonly actions$: Actions,
+    private readonly store: Store,
+    private readonly userService: UserService,
+    private readonly authService: MsalService,
+  ) {
+  }
 
   /** Logs out the current user and directs them to the auth page. */
   @Action(LogoutUser, { cancelUncompleted: true })
@@ -55,24 +58,33 @@ export class UserState {
     ]);
   }
 
+  /** Logs out the current user and directs them to the auth page. */
+  @Action(RecheckAuth, { cancelUncompleted: true })
+  public recheckAuth(ctx: StateContext<UserStateModel>, _action: RecheckAuth): Observable<void> {
+    return ctx.dispatch([
+      new ResetUserProfile(),
+      new RequestAccessToken(),
+    ]);
+  }
+
   /** Action that requests user profile and sets it to the state. */
   @Action(GetUser, { cancelUncompleted: true })
-  public getUser(ctx: StateContext<UserStateModel>): void {
-    this.userService.getUserProfile().subscribe(
+  public getUser(ctx: StateContext<UserStateModel>): Observable<UserModel> {
+    return this.userService.getUserProfile().pipe(tap(
       data => {
         ctx.patchState({ profile: data });
       },
       () => {
         ctx.patchState({ profile: null });
       },
-    );
+    ));
   }
 
   /** Action that resets state user profile. */
   @Action(ResetUserProfile, { cancelUncompleted: true })
-  public resetUserProfile(ctx: StateContext<UserStateModel>): void {
+  public resetUserProfile(ctx: StateContext<UserStateModel>): Observable<void> {
     ctx.patchState({ profile: undefined });
-    asapScheduler.schedule(() => ctx.dispatch(new ResetAccessToken()));
+    return ctx.dispatch(new ResetAccessToken());
   }
 
   /** Action thats sets state user profile to null. */
@@ -87,7 +99,7 @@ export class UserState {
     const isLoggedIn = !!this.authService.getAccount();
     if (!isLoggedIn) {
       ctx.patchState({ accessToken: null });
-      asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
+      await ctx.dispatch(new SetNoUserProfile()).toPromise();
       return;
     }
 
@@ -98,15 +110,16 @@ export class UserState {
 
       if (!data.accessToken) {
         ctx.patchState({ accessToken: null });
-        asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
+        await ctx.dispatch(new SetNoUserProfile()).toPromise();
         return;
       }
 
       ctx.patchState({ accessToken: data.accessToken });
-      asapScheduler.schedule(() => ctx.dispatch(new GetUser()));
+      await ctx.dispatch(new GetUser()).toPromise();
     } catch (e) {
       ctx.patchState({ accessToken: null });
-      asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
+      await ctx.dispatch(new SetNoUserProfile()).toPromise();
+      throw e;
     }
   }
 
@@ -122,8 +135,8 @@ export class UserState {
       .pipe(
         filter(x => x !== undefined),
         take(1),
-      )
-      .pipe(timeout(5000));
+        timeout(5_000),
+      );
 
     return obs;
   }
