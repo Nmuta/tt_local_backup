@@ -12,7 +12,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     /// </summary>
     [Route("api/v1")]
     [ApiController]
-    [Authorize]
+    //// [Authorize]
     public sealed class PipelinesController : ControllerBase
     {
         private readonly IObligationProvider obligationProvider;

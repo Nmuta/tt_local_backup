@@ -40,6 +40,7 @@ namespace Turn10.LiveOps.StewardApi
     /// <summary>
     ///     Entry point for the app.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This can't be avoided.")]
     public sealed class Startup
     {
         private readonly IConfiguration configuration;
@@ -145,7 +146,7 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
 
-            services.AddSingleton<IConfiguration>(this.configuration);
+            services.AddSingleton(this.configuration);
 
             services.AddSingleton<IStsClient, StsClientWrapper>();
 
