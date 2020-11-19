@@ -663,3 +663,11 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Added by OneITVSO 
+*.dll
+*.exe
