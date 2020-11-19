@@ -134,7 +134,7 @@ export class UserState {
       .pipe(
         filter(x => x !== undefined),
         take(1),
-        timeout(5_000),
+        timeout(10_000),
       );
 
     return obs;
