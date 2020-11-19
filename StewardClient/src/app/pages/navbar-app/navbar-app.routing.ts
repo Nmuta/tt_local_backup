@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NavbarTools } from 'app/pages/navbar-app/navbar-tool-list';
-import { FourOhFourComponent } from './pages/four-oh-four/four-oh-four.component';
 
 import { HomeComponent } from './pages/home/home.component';
 import { NavbarAppComponent } from './navbar-app.component';
 import { sidebarRoutes } from 'app/sidebars/sidebars.module';
+import { FourOhFourComponent } from '@shared/views/four-oh-four/four-oh-four.component';
 import { AuthGuard } from 'app/route-guards/auth.guard';
 
 const routes: Routes = [

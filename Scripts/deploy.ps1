@@ -29,6 +29,8 @@ Function Invoke-Deploy {
         $Template_AppServicePlan = (Resolve-Path  $DeployRoot/template-plan.json)
         $Template_Identity = (Resolve-Path  $DeployRoot/template-identity.json)
         $Template_KeyVault = (Resolve-Path  $DeployRoot/template-keyvault.json)
+        $Template_CosmosDB = (Resolve-Path  $DeployRoot/template-cosmosdb.json)
+        $Template_Blob = (Resolve-Path  $DeployRoot/template-blob.json)
         $Template_Site = (Resolve-Path  $DeployRoot/template-site.json)
         $Parameters_Plan = (Resolve-Path  $DeployRoot/parameters-plan-$($DevProd).json)
         $Parameters_Sites = (Resolve-Path  $DeployRoot/parameters-site-common-$($DevProd).json)
@@ -64,6 +66,18 @@ Function Invoke-Deploy {
         # Write-Output "-----------------------"
         # az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_KeyVault --parameters @$Parameters_Sites --verbose
         # if (-not $?) { exit }
+        
+        Write-Output "-----------------------"
+        Write-Output "Deploying Cosmos DB"
+        Write-Output "-----------------------"
+        az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_CosmosDB --parameters @$Parameters_Sites --verbose
+        if (-not $?) { exit }
+
+        Write-Output "-----------------------"
+        Write-Output "Deploying Blob"
+        Write-Output "-----------------------"
+        az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_Blob --parameters @$Parameters_Sites --verbose
+        if (-not $?) { exit }
 
         Write-Output "-----------------------"
         Write-Output "Deploying Plan"

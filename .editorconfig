@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# CA1506: 'ConfigureServices' is coupled with '54' different types from '27' different namespaces. Rewrite or refactor the code to decrease its class coupling below '41'.
+dotnet_diagnostic.CA1506.severity = warning
+
+# CA2000: Dispose objects before losing scope
+dotnet_diagnostic.CA2000.severity = warning

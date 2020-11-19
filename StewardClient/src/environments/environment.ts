@@ -5,7 +5,8 @@ import { StewardEnvironment } from './type';
 // Local
 export const environment: StewardEnvironment = {
   production: false,
-  azureAppScope: 'api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access',
+  azureAppId: '48a8a430-0f6b-4469-940f-1c5c6af1fd88',
+  azureAppScope: 'api://48a8a430-0f6b-4469-940f-1c5c6af1fd88/api_access',
   stewardUiUrl: 'http://localhost:4200',
   stewardApiUrl: 'https://localhost:44321',
   oldScrutineerApiUrl: 'https://prod-scrutineer.azurewebsites.net',

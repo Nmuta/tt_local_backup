@@ -20,10 +20,7 @@
         <ng-container matColumnDef="gamertag">
           <th mat-header-cell *matHeaderCellDef>Gamertag</th>
           <td mat-cell *matCellDef="let entry">
-            <a
-              [routerLink]="['/navbar-app', 'user-details', 'sunrise']"
-              [queryParams]="{ gamertag: entry.gamertag }"
-            >
+            <a [routerLink]="sunriseRouterLink" [queryParams]="{ gamertag: entry.gamertag }">
               {{ entry.gamertag }}
             </a>
           </td>

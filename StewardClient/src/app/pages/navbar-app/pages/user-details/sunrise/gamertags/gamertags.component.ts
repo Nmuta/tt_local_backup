@@ -2,6 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { SunriseService } from '@services/sunrise/sunrise.service';
+import { createNavbarPath, NavbarTools } from 'app/pages/navbar-app/navbar-tool-list';
 
 /** Retreives and displays related Sunrise accounts by XUID. */
 @Component({
@@ -21,6 +22,11 @@ export class GamertagsComponent implements OnChanges {
   /** The retrieved list of shared users. */
   public sharedConsoleUsers: SunriseSharedConsoleUsers;
   public columnsToDisplay = ['everBanned', 'gamertag', 'sharedConsoleId', 'xuid'];
+
+  public sunriseRouterLink = [
+    ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
+    'sunrise',
+  ];
 
   constructor(private readonly sunrise: SunriseService) {}
 

@@ -4,15 +4,16 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Turn10.LiveOps.StewardApi</AssemblyName>
     <RootNamespace>Turn10.LiveOps.StewardApi</RootNamespace>
-	<WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <CodeAnalysisRuleSet>$(SolutionDir)\Data-BuildModule\CodeAnalysis\Level3.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisAdditionalOptions>/assemblyCompareMode:StrongNameIgnoringVersion</CodeAnalysisAdditionalOptions>
+    <StartupObject>Turn10.LiveOps.StewardApi.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -21,7 +22,7 @@
     <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -30,14 +31,30 @@
     <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
     <DefineConstants></DefineConstants>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="Providers\Gravity\Settings\Client\Settings.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="4.14.0" />
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="0.2.0-preview" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
+    <PackageReference Include="Microsoft.NETCore.App" Version="2.2.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NSubstitute" Version="4.2.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
 	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
@@ -47,7 +64,19 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Turn10.Data.Common" Version="2.0.0" />
+	<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.0.0-beta" />
+	<PackageReference Include="Turn10.Data.Azure" Version="2.5.0" />
+    <PackageReference Include="Turn10.Data.Common" Version="2.1.0" />
+    <PackageReference Include="Turn10.Data.KustoLogger" Version="4.0.0" />
+    <PackageReference Include="Turn10.Services.ForzaClient" Version="1.4.0" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FH3" Version="1.1.0" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FH4.master" Version="2.5.0" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.3.0" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FMG" Version="1.0.2" />
+    <PackageReference Include="Turn10.Services.Serialization" Version="1.2.0" />
+    <PackageReference Include="Turn10.Services.ServiceClient" Version="1.2.5" />
+    <PackageReference Include="Turn10.Services.STS.Contracts" Version="1.2.0" />
+    <PackageReference Include="Turn10.Services.WebApi-Core" Version="1.2.0" />
   </ItemGroup>
 
   <Target Name="RealClean" AfterTargets="Clean">
