@@ -11,6 +11,10 @@ mat-drawer-container {
   flex-grow: 1;
 }
 
+mat-drawer {
+  max-width: 75%;
+}
+
 // this is an implicit element, so we have to use ::ng-deep
 :host ::ng-deep mat-drawer-content {
   display: flex;
