@@ -4,6 +4,7 @@ import { StewardEnvironment } from './type';
 
 export const environment: StewardEnvironment = {
   production: true,
+  azureAppId: 'cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4',
   azureAppScope: 'api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access',
   stewardUiUrl: 'https://steward-ui-prod.azurewebsites.net',
   stewardApiUrl: 'https://steward-api-prod.azurewebsites.net',
