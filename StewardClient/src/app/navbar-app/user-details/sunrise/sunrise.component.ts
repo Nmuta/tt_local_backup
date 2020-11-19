@@ -14,12 +14,9 @@ import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 export class SunriseComponent extends BaseComponent implements OnInit {
   public gamertag: string;
   public userDetails: SunrisePlayerDetails;
-  public xuid: number;
+  public xuid: BigInt;
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly sunrise: SunriseService
-  ) {
+  constructor(private readonly route: ActivatedRoute, private readonly sunrise: SunriseService) {
     super();
   }
 
@@ -32,7 +29,7 @@ export class SunriseComponent extends BaseComponent implements OnInit {
         tap(gamertag => {
           this.gamertag = gamertag;
         }),
-        switchMap(gamertag => this.sunrise.getPlayerDetailsByGamertag(gamertag))
+        switchMap(gamertag => this.sunrise.getPlayerDetailsByGamertag(gamertag)),
       )
       .subscribe(userDetailsResponse => {
         this.userDetails = userDetailsResponse; // TODO: Delete this. Testing only.

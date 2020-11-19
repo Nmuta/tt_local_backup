@@ -1,26 +1,15 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import { ProfileComponent } from './profile.component';
-import {
-  WindowService,
-  createMockWindowService,
-} from '@shared/services/window';
+import { WindowService, createMockWindowService } from '@shared/services/window';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
-import {
-  ResetUserProfile,
-  ResetAccessToken,
-} from '@shared/state/user/user.actions';
+import { ResetUserProfile, ResetAccessToken } from '@shared/state/user/user.actions';
 import { of } from 'rxjs';
 
 describe('ProfileComponent', () => {
@@ -31,26 +20,28 @@ describe('ProfileComponent', () => {
   let fixture: ComponentFixture<ProfileComponent>;
   let component: ProfileComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [ProfileComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockWindowService(), createMockMsalService()],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [ProfileComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockWindowService(), createMockMsalService()],
+      }).compileComponents();
 
-    const injector = getTestBed();
-    mockWindowService = injector.get(WindowService);
-    mockRouter = injector.get(Router);
-    mockStore = injector.get(Store);
+      const injector = getTestBed();
+      mockWindowService = injector.get(WindowService);
+      mockRouter = injector.get(Router);
+      mockStore = injector.get(Store);
 
-    fixture = TestBed.createComponent(ProfileComponent);
-    component = fixture.debugElement.componentInstance;
-  }));
+      fixture = TestBed.createComponent(ProfileComponent);
+      component = fixture.debugElement.componentInstance;
+    }),
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -60,9 +51,7 @@ describe('ProfileComponent', () => {
     beforeEach(() => {
       mockWindowService.open = jasmine.createSpy('open');
       mockRouter.navigate = jasmine.createSpy('navigate');
-      mockStore.dispatch = jasmine
-        .createSpy('dispatch')
-        .and.returnValue(of({}));
+      mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
     });
     it('should dispatch store action ResetUserProfile', () => {
       component.logout();
@@ -86,7 +75,7 @@ describe('ProfileComponent', () => {
 
       expect(mockWindowService.open).toHaveBeenCalledWith(
         `${environment.stewardUiUrl}/auth?action=logout`,
-        '_blank'
+        '_blank',
       );
     });
   });

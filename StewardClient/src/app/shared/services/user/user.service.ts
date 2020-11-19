@@ -1,9 +1,7 @@
-import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserModel } from '@shared/models/user.model';
 import { ApiService } from '@shared/services/api';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 /** Defines the User Service. */
 @Injectable({
@@ -14,6 +12,6 @@ export class UserService {
 
   /** Sends request to get the user profile. */
   public getUserProfile(): Observable<UserModel> {
-    return this.apiService.getRequest<any>('me');
+    return this.apiService.getRequest<UserModel>('me');
   }
 }

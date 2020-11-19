@@ -40,22 +40,13 @@
           </td>
         </ng-container>
         <ng-container matColumnDef="expandedDetail">
-          <td
-            mat-cell
-            *matCellDef="let entry"
-            [attr.colspan]="columnsToDisplay.length"
-          >
+          <td mat-cell *matCellDef="let entry" [attr.colspan]="columnsToDisplay.length">
             <div
               class="element-detail"
-              [@detailExpand]="
-                entry == expandedEntry ? 'expanded' : 'collapsed'
-              "
+              [@detailExpand]="entry == expandedEntry ? 'expanded' : 'collapsed'"
             >
               <ng-container
-                *ngTemplateOutlet="
-                  servicesBanCard;
-                  context: { $implicit: entry }
-                "
+                *ngTemplateOutlet="servicesBanCard; context: { $implicit: entry }"
               ></ng-container>
               <ng-container *ngIf="entry.correlatedLiveOpsBan">
                 <ng-container
@@ -76,11 +67,7 @@
           [class.expanded-row]="expandedEntry === element"
           (click)="expandedEntry = expandedEntry === element ? null : element"
         ></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: ['expandedDetail']"
-          class="detail-row"
-        >
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row">
           <
         </tr>
       </table>
@@ -89,12 +76,9 @@
 </mat-card>
 
 <ng-template #failstate>
-  <mat-progress-spinner
-    *ngIf="isLoading"
-    mode="indeterminate"
-  ></mat-progress-spinner>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
   <p *ngIf="loadError">Failed to load.</p>
-  <pre *ngIf="loadError">{{ loadError | json }}</pre>
+  <pre *ngIf="loadError">{{ loadError | bigjson }}</pre>
 </ng-template>
 
 <ng-template #servicesBanCard let-entry>

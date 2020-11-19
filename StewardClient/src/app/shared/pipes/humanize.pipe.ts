@@ -10,7 +10,7 @@ import _ from 'lodash';
 })
 export class HumanizePipe implements PipeTransform {
   /** The transform hook. */
-  public transform(value: string) {
+  public transform(value: string): string {
     if (!_.isString(value)) {
       return value;
     }

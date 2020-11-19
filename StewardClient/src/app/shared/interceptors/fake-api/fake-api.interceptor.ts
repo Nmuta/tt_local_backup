@@ -12,6 +12,9 @@ import _ from 'lodash';
 import { Observable, of as ObservableOf, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
+import { ApolloPlayerGamertagDetailsFakeApi } from './apis/title/apollo/player/gamertag/details';
+import { GravityPlayerGamertagDetailsFakeApi } from './apis/title/gravity/player/gamertag/details';
+import { OpusPlayerGamertagDetailsFakeApi } from './apis/title/opus/player/gamertag/details';
 import { SunriseConsoleIsBannedFakeApi } from './apis/title/sunrise/console/isBanned';
 import { SunrisePlayerGamertagDetailsFakeApi } from './apis/title/sunrise/player/gamertag/details';
 import { SunrisePlayerXuidBanHistoryFakeApi } from './apis/title/sunrise/player/xuid/banHistory';
@@ -23,6 +26,9 @@ import { SunrisePlayerXuidUserFlagsFakeApi } from './apis/title/sunrise/player/x
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
+  // Gravity
+  GravityPlayerGamertagDetailsFakeApi,
+  // Sunrise
   SunrisePlayerGamertagDetailsFakeApi,
   SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi,
   SunrisePlayerXuidConsolesFakeApi,
@@ -31,6 +37,10 @@ const fakeApiConstructors = [
   SunrisePlayerXuidProfileSummaryFakeApi,
   SunrisePlayerXuidBanHistoryFakeApi,
   SunriseConsoleIsBannedFakeApi,
+  // Apollo
+  ApolloPlayerGamertagDetailsFakeApi,
+  // Opus
+  OpusPlayerGamertagDetailsFakeApi,
 ];
 
 /** The URLs this interceptor will not block. */
@@ -44,15 +54,16 @@ export class FakeApiInterceptor implements HttpInterceptor {
   /** Interception hook. */
   public intercept(
     request: HttpRequest<unknown>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
+    request.clone();
     for (const fakeApiConstructor of fakeApiConstructors) {
       const fakeApi = new fakeApiConstructor(request);
       if (fakeApi.canHandle) {
         return ObservableOf(
           new HttpResponse({
-            body: fakeApi.handle(),
-          })
+            body: fakeApi.handleString(),
+          }),
         ).pipe(delay(_.random(1500) + 500));
       }
     }
@@ -63,9 +74,8 @@ export class FakeApiInterceptor implements HttpInterceptor {
         new HttpErrorResponse({
           url: request.url,
           status: 9000,
-          statusText:
-            'URL not on the allowed list of URLs in FakeApiInterceptor.',
-        })
+          statusText: 'URL not on the allowed list of URLs in FakeApiInterceptor.',
+        }),
       );
     }
 

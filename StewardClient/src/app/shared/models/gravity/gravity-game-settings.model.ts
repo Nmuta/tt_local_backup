@@ -1,13 +1,13 @@
 /** Interface for gravity game settings. */
 export interface GravityGameSettings {
-  currencies?: any[];
-  repairKits?: any[];
-  masteryKits?: any[];
-  upgradeKits?: any[];
-  packDefinitions?: any[];
-  cars?: any[];
-  energyRefills?: any[];
-  heatDetails?: any[];
+  currencies?: unknown[];
+  repairKits?: unknown[];
+  masteryKits?: unknown[];
+  upgradeKits?: unknown[];
+  packDefinitions?: unknown[];
+  cars?: unknown[];
+  energyRefills?: unknown[];
+  heatDetails?: unknown[];
   ftueStates?: string[];
   carClasses?: string[];
   carEras?: string[];

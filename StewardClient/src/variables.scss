@@ -1,12 +1,39 @@
-@import '~@angular/material/theming'; // TODO: this builds but auto-complete doesn't seem to work with it
+// TODO: These seem to still work implicitly despite not being explicitly imported?
+// TODO: Importing this causes any scss file including it to be horribly large (despite the files only containing variables and mixins)
+// TODO: Verify that compilation works when we standardize the colors to be based on the theme.
+// @import '../autocomplete-patch.scss';
+@import '~@angular/material/theming';
 
-$primaryBlue: #337ab7;
+$app-primary: mat-palette($mat-indigo);
+$app-accent: mat-palette($mat-pink, A200, A100, A400);
+$app-warn: mat-palette($mat-red);
 
-$developerRed: #ff0000;
+$app-theme: mat-light-theme(
+  (
+    color: (
+      primary: $app-primary,
+      accent: $app-accent,
+      warn: $app-warn,
+    ),
+  )
+);
 
+//// This is a sample of how angular-material does $app-background internally.
+//// It didn't map well to things like table hover, so I did not use it.
+// $app-config: mat-get-color-config($app-theme);
+// $app-background: map-get($app-config, 'background');
+// $app-foreground: map-get($app-config, 'foreground');
+// $app-sample-hover: map-get($app-background, 'hover')
+// $app-sample-active: map-get($app-background, 'selected-button')
+$app-background: mat-palette($mat-grey);
 
-$table-tr-hover: #f5f5f5;
-$table-tr-active: #efefef;
+// see the end of [0] for notes on using palette colors
+// [0]: https://material.angular.io/guide/theming-your-components#note-using-the-mat-color-function-to-extract-colors-from-a-palette
+// $primaryBlue: mat-color($app-primary);
+// $developerRed: mat-color($app-warn);
+
+$table-tr-hover: mat-color($app-background, 100);
+$table-tr-active: mat-color($app-background, 200);
 
 $gap-side-gutter: 16px;
 $gap-vertical-layout: 8px;

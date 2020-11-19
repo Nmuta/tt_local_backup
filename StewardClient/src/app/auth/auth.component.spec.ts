@@ -1,21 +1,17 @@
 // General
 import { NO_ERRORS_SCHEMA } from '@angular/core'; // <- goal is to do shallow test, so not going to care about child components.
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { Router } from '@angular/router';
 import { Store, NgxsModule } from '@ngxs/store';
 import {
-  async,
   ComponentFixture,
   TestBed,
-  inject,
   getTestBed,
   fakeAsync,
   tick,
   flush,
+  waitForAsync,
 } from '@angular/core/testing';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from '@environments/environment';
 import { delay } from 'rxjs/operators';
@@ -24,28 +20,18 @@ import { delay } from 'rxjs/operators';
 import { AuthComponent } from './auth.component';
 
 // Services
-import {
-  createMockZendeskService,
-  ZendeskService,
-} from '@shared/services/zendesk';
+import { createMockZendeskService } from '@shared/services/zendesk';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 
 // States
 import { UserState } from '@shared/state/user/user.state';
 import { MsalService } from '@azure/msal-angular';
-import { of, Subject } from 'rxjs';
+import { of } from 'rxjs';
 
 // Models
 import { UserModel } from '@shared/models/user.model';
-import {
-  createMockWindowService,
-  WindowService,
-} from '@shared/services/window';
-import {
-  ResetUserProfile,
-  RequestAccessToken,
-} from '@shared/state/user/user.actions';
-import { isRegExp } from 'util';
+import { createMockWindowService, WindowService } from '@shared/services/window';
+import { ResetUserProfile, RequestAccessToken } from '@shared/state/user/user.actions';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('AuthComponent', () => {
@@ -57,35 +43,37 @@ describe('AuthComponent', () => {
   let fixture: ComponentFixture<AuthComponent>;
   let component: AuthComponent;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [AuthComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        createMockZendeskService(),
-        createMockMsalService(),
-        createMockWindowService(),
-        createMockLoggerService(),
-      ],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [AuthComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [
+          createMockZendeskService(),
+          createMockMsalService(),
+          createMockWindowService(),
+          createMockLoggerService(),
+        ],
+      }).compileComponents();
 
-    const injector = getTestBed();
-    mockStore = injector.inject(Store);
-    mockWindowService = injector.inject(WindowService);
-    mockMsalService = injector.inject(MsalService);
-    mockRouter = injector.inject(Router);
+      const injector = getTestBed();
+      mockStore = injector.inject(Store);
+      mockWindowService = injector.inject(WindowService);
+      mockMsalService = injector.inject(MsalService);
+      mockRouter = injector.inject(Router);
 
-    mockMsalService.loginRedirect = jasmine.createSpy('loginRedirect');
-    mockMsalService.logout = jasmine.createSpy('logout');
+      mockMsalService.loginRedirect = jasmine.createSpy('loginRedirect');
+      mockMsalService.logout = jasmine.createSpy('logout');
 
-    fixture = TestBed.createComponent(AuthComponent);
-    component = fixture.debugElement.componentInstance;
-  }));
+      fixture = TestBed.createComponent(AuthComponent);
+      component = fixture.debugElement.componentInstance;
+    }),
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -103,9 +91,7 @@ describe('AuthComponent', () => {
 
     describe('When windowService.zafClient returns false', () => {
       beforeEach(() => {
-        mockWindowService.zafClient = jasmine
-          .createSpy('zafClient')
-          .and.returnValue(false);
+        mockWindowService.zafClient = jasmine.createSpy('zafClient').and.returnValue(false);
       });
 
       it('Should set inZendesk to false', () => {
@@ -144,7 +130,6 @@ describe('AuthComponent', () => {
       });
 
       describe('If profile is valid', () => {
-        const fromApp = 'test-app';
         beforeEach(() => {
           component.autoCloseWindow = jasmine.createSpy('autoCloseWindow');
         });
@@ -196,9 +181,7 @@ describe('AuthComponent', () => {
 
       describe('If app is not running in zendesk', () => {
         beforeEach(() => {
-          mockWindowService.zafClient = jasmine
-            .createSpy('zafClient')
-            .and.returnValue(false);
+          mockWindowService.zafClient = jasmine.createSpy('zafClient').and.returnValue(false);
         });
 
         it('Should not call router.navigate', () => {
@@ -263,7 +246,7 @@ describe('AuthComponent', () => {
 
       expect(mockWindowService.open).toHaveBeenCalledWith(
         `${environment.stewardUiUrl}/auth?action=login`,
-        '_blank'
+        '_blank',
       );
     });
   });
@@ -296,9 +279,7 @@ describe('AuthComponent', () => {
 
   describe('Method: recheckAuth', () => {
     beforeEach(() => {
-      mockStore.dispatch = jasmine
-        .createSpy('dispatch')
-        .and.returnValue(of({}));
+      mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
       component.ngOnInit = jasmine.createSpy('ngOnInit');
     });
 

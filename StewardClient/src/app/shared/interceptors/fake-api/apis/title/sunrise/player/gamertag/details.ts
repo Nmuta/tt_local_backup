@@ -7,9 +7,7 @@ import { Unprocessed } from '@models/unprocessed';
 export class SunrisePlayerGamertagDetailsFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
-    const targetingStewardApi = this.request.url.startsWith(
-      environment.stewardApiUrl
-    );
+    const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
     if (!targetingStewardApi) {
       return false;
     }
@@ -20,7 +18,7 @@ export class SunrisePlayerGamertagDetailsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): object {
+  public handle(): Partial<Unprocessed<SunrisePlayerDetails>> {
     return SunrisePlayerGamertagDetailsFakeApi.make();
   }
 
@@ -28,7 +26,10 @@ export class SunrisePlayerGamertagDetailsFakeApi extends FakeApiBase {
   public static make(): Partial<Unprocessed<SunrisePlayerDetails>> {
     return {
       xuid: 189456456,
-      gamertag: null,
+      gamertag: 'sunrise-gamertag',
+      licensePlate: 'HORIZON',
+      region: 'United States',
+      currentCareerLevel: '13',
       // these are all responses from the old API and aren't actually used by the new UI
       // firstLogin: '0001-01-01T00:00:00',
       // lastLogin: '0001-01-01T00:00:00',

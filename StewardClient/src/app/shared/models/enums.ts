@@ -12,3 +12,11 @@ export enum GameTitleNames {
   FM7 = 'Forza Motorsport 7',
   FH3 = 'Forza Horizon 3',
 }
+
+/** Enum for game title names. */
+export enum GameTitleCodeNames {
+  Street = 'Gravity',
+  FH4 = 'Sunrise',
+  FM7 = 'Apollo',
+  FH3 = 'Opus',
+}

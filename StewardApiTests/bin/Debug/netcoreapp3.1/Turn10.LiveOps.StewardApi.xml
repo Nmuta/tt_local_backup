@@ -1,0 +1,917 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Turn10.LiveOps.StewardApi</name>
+    </assembly>
+    <members>
+        <member name="T:Turn10.LiveOps.StewardApi.ApplicationSettings">
+            <summary>
+                Central reference for application settings.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.ApplicationSettings.AppRole">
+            <summary>
+                App roles.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.ApplicationSettings.AuthorizationPolicy">
+            <summary>
+                Authorization policies.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Controllers.AuthController">
+            <summary>
+                Handles auth requests.
+            </summary>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Controllers.AuthController.#ctor(Microsoft.Extensions.Logging.ILogger{Turn10.LiveOps.StewardApi.Controllers.AuthController})">
+            <summary>
+                Initializes a new instance of the <see cref="T:Turn10.LiveOps.StewardApi.Controllers.AuthController"/> class.
+            </summary>
+            <param name="logger">The logger.</param>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Controllers.AuthController.GetLiveOpsUser">
+            <summary>
+                Gets the user.
+            </summary>
+            <returns>
+                200 OK
+                The <see cref="T:Turn10.LiveOps.StewardApi.Models.LiveOpsUser"/>.
+            </returns>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Controllers.PipelinesController">
+            <summary>
+                Handles pipeline requests.
+            </summary>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Controllers.PipelinesController.#ctor(Turn10.LiveOps.StewardApi.Obligation.IObligationProvider)">
+            <summary>
+                Initializes a new instance of the <see cref="T:Turn10.LiveOps.StewardApi.Controllers.PipelinesController"/> class.
+            </summary>
+            <param name="obligationProvider">The obligation authoring client.</param>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Controllers.PipelinesController.DeletePipeline(System.String)">
+            <summary>
+                Delete a pipeline.
+            </summary>
+            <param name="pipelineName">The pipeline name.</param>
+            <returns>
+                2OO OK.
+                An ID that can be used to track the request.
+            </returns>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Controllers.PipelinesController.GetPipeline(System.String)">
+            <summary>
+                Get a pipeline.
+            </summary>
+            <param name="pipelineName">The pipeline name.</param>
+            <returns>
+                200 OK.
+                An instance of <see cref="T:Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline"/>.
+            </returns>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Controllers.PipelinesController.UpdatePipeline(Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline)">
+            <summary>
+                Updates a pipeline.
+            </summary>
+            <param name="obligationPipeline">The obligation pipeline.</param>
+            <returns>
+                201 Created.
+                An instance of <see cref="T:Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline"/>.
+            </returns>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Controllers.PipelinesController.CreatePipeline(Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline)">
+            <summary>
+                Create a pipeline.
+            </summary>
+            <param name="obligationPipeline">The obligation pipeline.</param>
+            <returns>
+                201 Created.
+                An instance of <see cref="T:Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline"/>.
+            </returns>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Controllers.PipelinesController.RenamePipeline(Turn10.LiveOps.StewardApi.Obligation.PatchOperation)">
+            <summary>
+                Renames a pipeline.
+            </summary>
+            <param name="patchOperation">The patch operation.</param>
+            <returns>
+                202 Accepted.
+                An ID that can be used to track the request.
+            </returns>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Models.LiveOpsUser">
+            <summary>
+                Represents a Live Ops user.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Models.LiveOpsUser.EmailAddress">
+            <summary>
+                Gets or sets the email address.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Models.LiveOpsUser.Role">
+            <summary>
+                Gets or sets the role.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Models.TestResponse">
+            <summary>
+                A test response.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Models.TestResponse.Result">
+            <summary>
+                Gets or sets a value indicating whether the request was successful.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.Clusters">
+            <summary>
+                The clusters.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.ConfigQualifier">
+            <summary>
+            This class contains information about the tenant and cluster of a pipeline.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ConfigQualifier.Tenant">
+            <summary>
+                Gets or sets the tenant.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ConfigQualifier.Cluster">
+            <summary>
+                Gets or sets the cluster.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ConfigQualifier.Attitude">
+            <summary>
+                Gets or sets the attitude.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.Dependency">
+            <summary>
+                A dependency represents a relationship between two data activities.
+            </summary>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.Dependency.#ctor(System.String,System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:Turn10.LiveOps.StewardApi.Obligation.Dependency"/> class.
+            </summary>
+            <param name="type">The type.</param>
+            <param name="name">The name.</param>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.Dependency.Type">
+            <summary>
+                Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.Dependency.DataActivityDependencyName">
+            <summary>
+                Gets or sets the data activity dependency name.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.IObligationAuthoringClient">
+            <summary>
+                Represents a client capable of interacting with the Obligation authoring APIs.
+            </summary>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.IObligationAuthoringClient.SafeUpdatePipelineAsync(Turn10.LiveOps.StewardApi.Obligation.Pipeline)">
+            <summary>
+                Given a pipeline, check that the pipeline exists and that all existing data activities are
+                represented in the given pipeline. If those checks are passed, then update the pipeline.
+            </summary>
+            <param name="pipeline">The pipeline.</param>
+            <returns>A GUID to track the operation.</returns>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.IObligationAuthoringClient.UpsertPipelineAsync(Turn10.LiveOps.StewardApi.Obligation.Pipeline)">
+            <summary>
+                Given a pipeline, upserts the pipeline regardless of safety checks.
+                This needs to be used to create a pipeline or remove a data activity from a pipeline.
+            </summary>
+            <param name="pipeline">The pipeline.</param>
+            <returns>A GUID to track the operation.</returns>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.IObligationAuthoringClient.DeletePipelineAsync(System.String)">
+            <summary>
+                Deletes a pipeline.
+            </summary>
+            <param name="pipelineName">The pipeline name.</param>
+            <returns>A GUID to track the operation.</returns>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.IObligationAuthoringClient.GetPipelineAsync(System.String)">
+            <summary>
+                Gets a pipeline.
+            </summary>
+            <param name="pipelineName">The pipeline name.</param>
+            <returns>A GUID to track the operation.</returns>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.IObligationAuthoringClient.RenamePipelineAsync(Turn10.LiveOps.StewardApi.Obligation.PatchOperation)">
+            <summary>
+                Renames a pipeline.
+            </summary>
+            <param name="patchOperation">The patch operation.</param>
+            <returns>A GUID to track the operation.</returns>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.IObligationProvider">
+            <summary>
+                Provides methods for interacting with Obligation.
+            </summary>
+            <remarks>
+                In theory, this code could be rolled up into the client however, I am intentionally trying not to have the client
+                code deviate from what is in the 343 repository at this time. Were it not for the Framework v CORE issues, I would
+                prefer to just consume their library. There is a plan to eventually get their build to output a CORE lib but that
+                is not near the top of their priorities at this point. (emersonf 2020-11-09).
+            </remarks>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.IObligationProvider.SafeUpdatePipelineAsync(Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline)">
+            <summary>
+                Given a pipeline, check that the pipeline exists and that all existing data activities are
+                represented in the given pipeline. If those checks are passed, then update the pipeline.
+            </summary>
+            <param name="obligationPipeline">The obligation pipeline.</param>
+            <returns>A GUID to track the operation.</returns>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.IObligationProvider.UpsertPipelineAsync(Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline)">
+            <summary>
+                Given a pipeline, upserts the pipeline regardless of safety checks.
+                This needs to be used to create a pipeline or remove a data activity from a pipeline.
+            </summary>
+            <param name="obligationPipeline">The obligation pipeline.</param>
+            <returns>A GUID to track the operation.</returns>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.IObligationProvider.DeletePipelineAsync(System.String)">
+            <summary>
+                Deletes a pipeline.
+            </summary>
+            <param name="pipelineName">The pipeline name.</param>
+            <returns>A GUID to track the operation.</returns>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.IObligationProvider.GetPipelineAsync(System.String)">
+            <summary>
+                Gets a pipeline.
+            </summary>
+            <param name="pipelineName">The pipeline name.</param>
+            <returns>A GUID to track the operation.</returns>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.IObligationProvider.RenamePipelineAsync(Turn10.LiveOps.StewardApi.Obligation.PatchOperation)">
+            <summary>
+                Renames a pipeline.
+            </summary>
+            <param name="patchOperation">The patch operation.</param>
+            <returns>A GUID to track the operation.</returns>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity">
+            <summary>
+                Represents a Kusto data activity.
+            </summary>
+        </member>
+        <member name="F:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.type">
+            <remarks>
+                Not sure what this is for but it's on the model that this code is c/p from.
+            </remarks>
+        </member>
+        <member name="F:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.attemptMidPartitionSyncSwap">
+            <remarks>
+                Not sure what this is for but it's on the model that this code is c/p from.
+            </remarks>
+        </member>
+        <member name="F:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.restatementSpan">
+            <remarks>
+                Not sure what this is for but it's on the model that this code is c/p from.
+            </remarks>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity"/> class.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.Name">
+            <summary>
+                Gets or sets the name.
+            </summary>
+            <remarks>
+                The name must be unique per pipeline.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.MinExecutionSpan">
+             <summary>
+                 Gets or sets the min execution span.
+             </summary>
+             <remarks>
+                 The shortest timespan the system should execute of this activity.
+            
+                 Note that this is a suggestion, not a guarantee. Obligation allows some pretty arbitrary manipulation
+                 of DataActivities, and this is the parameter that gets sacrificed to allow that.
+             </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.MaxExecutionSpan">
+            <summary>
+                Gets or sets the max execution span.
+            </summary>
+            <remarks>
+                The longest timespan the system should execute of this activity.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.ExecutionInterval">
+            <summary>
+                Gets or sets the execution interval.
+            </summary>
+            <remarks>
+                Forces all execution to be a multiple of this. Typically, this is left as null (or TimeSpan.Zero). If this
+                parameter is used, the minimum execution time is actually enforced, and all other time parameters must be a
+                multiple of this. When this is used, it is typically for DataActivities that require hourly or daily execution.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.Delay">
+            <summary>
+                Gets or sets the delay.
+            </summary>
+            <remarks>
+                No chunk of time will execute until the end time of that chunk is at least this distant from now. Typically,
+                this is set to an hour to allow slow raw events to trickle into the system.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.TimeRange">
+            <summary>
+                Gets or sets the time range.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.NumBucketsPreSplitHint">
+            <summary>
+                Gets or sets the num buckets pre-split hint.
+            </summary>
+            <remarks>
+                Upon creating a slice by splitting on time (ie normal execution) that the slice is also additionally
+                split into this many buckets. This is a hint, as it does not always apply, particularly in mid
+                partition sync swap scenarios or scale exception splits.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.OffHoursOnly">
+            <summary>
+                Gets or sets a value indicating whether to run in off hours only.
+            </summary>
+            <remarks>
+                This flag can be optionally set to indicate that the DataActivity should only be run on off hours.
+                This is intended to be combined with the cluster config to determine what the off hours actually are.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.KustoDatabase">
+            <summary>
+                Gets or sets the Kusto database.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.KustoTable">
+            <summary>
+                Gets or sets the Kusto table.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.KustoQuery">
+             <summary>
+                 Gets or sets the Kusto query.
+             </summary>
+             <remarks>
+                 The kusto query whose results are to be appended to the given table. Typically this is a
+                 relatively simply function call with the start and end parameters. For example:
+                 FactPlayerMatch_Materialize('{StartDate:o}', '{EndDate:o}')
+            
+                 StartDate, EndDate, NumBuckets, Bucket and TargetTable are interpolated here (when surrounded by {}) based
+                 on dataActivity start, end, and kusto table.
+             </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.InitializationQuery">
+             <summary>
+                 Gets or sets the initialization query.
+             </summary>
+             <remarks>
+                 Runs once when the dataActivity is created. An opportunity for initialization queries/commands.
+                 Typically this might be to create the dataActivity table, like this:
+                 .set-or-append FactPlayerMatch_Materialized &lt;| FactPlayerMatch_Calculate(now(), now())
+            
+                 StartDate, EndDate, NumBuckets, Bucket, and TargetTable are interpolated here (when surrounded by {}) based
+                 on dataActivity start, end, and kusto table.
+             </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.RefuseToAlter">
+            <summary>
+                Gets or sets a value indicating whether to refuse to alter.
+            </summary>
+            <remarks>
+                Gives DataActivities the ability to opt out of the automatic table alterations.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.Dependencies">
+            <summary>
+                Gets or sets the dependencies.
+            </summary>
+            <remarks>
+                What DataActivities does this depend on (keyed by name, and must be in the same Pipeline).
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity.ParallelismLimitTags">
+            <summary>
+                Gets or sets the parallelism limit tags.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivityExtensions">
+            <summary>
+                Provides common Kusto data activity usages.
+            </summary>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivityExtensions.AddParallelismLimit(Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity,System.Int32,System.String,System.String)">
+            <summary>
+                Adds a parallelism limit.
+            </summary>
+            <param name="activity">The activity.</param>
+            <param name="count">The count.</param>
+            <param name="tenant">The tenant.</param>
+            <param name="pipelineName">The pipeline name.</param>
+            <returns>The <see cref="T:Turn10.LiveOps.StewardApi.Obligation.KustoDataActivity"/>.</returns>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.KustoFunction">
+            <summary>
+                Represents a Kusto function.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoFunction.Name">
+            <summary>
+                Gets or sets name.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoFunction.UseSplitting">
+            <summary>
+                Gets or sets a value indicating whether to use splitting.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoFunction.UseEndDate">
+            <summary>
+                Gets or sets a value indicating whether to use an end date on the function.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.KustoFunction.NumberOfBuckets">
+            <summary>
+                Gets or sets the number of buckets to suggest to Obligation.
+            </summary>
+            <remarks>
+                Not required, leaving it null will allow Obligation to figure it out for
+                itself. Even if a value is supplied, this Obligation may choose to ignore it.
+            </remarks>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.ObligationAuthoringClient">
+            <inheritdoc />
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationAuthoringClient.#ctor(Turn10.Data.SecretProvider.IKeyVaultProvider)">
+            <summary>
+                Initializes a new instance of the <see cref="T:Turn10.LiveOps.StewardApi.Obligation.ObligationAuthoringClient"/> class.
+            </summary>
+            <param name="keyVaultProvider">The key vault provider.</param>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationAuthoringClient.SafeUpdatePipelineAsync(Turn10.LiveOps.StewardApi.Obligation.Pipeline)">
+            <inheritdoc />
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationAuthoringClient.RenamePipelineAsync(Turn10.LiveOps.StewardApi.Obligation.PatchOperation)">
+            <inheritdoc />
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationAuthoringClient.UpsertPipelineAsync(Turn10.LiveOps.StewardApi.Obligation.Pipeline)">
+            <inheritdoc />
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationAuthoringClient.DeletePipelineAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationAuthoringClient.GetPipelineAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.ObligationDataActivity">
+            <summary>
+                Represents an obligation data activity.
+            </summary>
+            <remarks>
+                For now, this is very specific to Kusto. Will adjust if/when we decide to leverage Obligation
+                for activities that do not involve Kusto.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationDataActivity.ActivityName">
+            <summary>
+                Gets or sets the name.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationDataActivity.KustoTableName">
+            <summary>
+                Gets or sets the Kusto table name.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationDataActivity.KustoFunctionName">
+            <summary>
+                Gets or sets the Kusto function name.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationDataActivity.DestinationDatabase">
+            <summary>
+                Gets or sets the destination database.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationDataActivity.StartDateUtc">
+            <summary>
+                Gets or sets the start date.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationDataActivity.EndDateUtc">
+            <summary>
+                Gets or sets the end date.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationDataActivity.MaxExecutionSpan">
+            <summary>
+                Gets or sets the maximum slice interval that can used.
+            </summary>
+            <remarks>
+                This is useful when restating data to allow Obligation to grab larger than normal slices
+                which will reduce the amount of time required to restate the data.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationDataActivity.ExecutionInterval">
+            <summary>
+                Gets or sets the execution interval.
+            </summary>
+            <remarks>
+                This is how often the activity should be run. As an example, an activity that is meant to
+                output something at a daily grain should have this set to 1 day.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationDataActivity.ExecutionDelay">
+            <summary>
+                Gets or sets the processing delay.
+            </summary>
+            <remarks>
+                This value will control how delayed the data is. If there is an expectation that data may be
+                delayed at the source, this value should be used to ensure that the activity doesn't execute
+                until that expected time has elapsed.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationDataActivity.DataActivityDependencyNames">
+            <summary>
+                Gets or sets the data activity dependency names.
+            </summary>
+            <remarks>
+                This should be a list of pipeline names that are known by Obligation. Adding an activity that is
+                not created as part of the request or does not exist will cause the request to fail.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationDataActivity.ParallelismLimit">
+            <summary>
+                Gets or sets the parallelism limit.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline">
+            <summary>
+                Represents the information required to create an Obligation pipeline.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline.PipelineName">
+            <summary>
+                Gets or sets the pipeline name.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline.PipelineDescription">
+            <summary>
+                Gets or sets pipeline description.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline.ObligationPipelines">
+            <summary>
+                Gets or sets the obligation pipelines.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline.Principals">
+            <summary>
+                Gets or sets principals.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.ObligationProvider">
+            <inheritdoc />
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationProvider.#ctor(Turn10.LiveOps.StewardApi.Obligation.IObligationAuthoringClient)">
+            <summary>
+                Initializes a new instance of the <see cref="T:Turn10.LiveOps.StewardApi.Obligation.ObligationProvider"/> class.
+            </summary>
+            <param name="obligationAuthoringClient">The obligation authoring client.</param>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationProvider.SafeUpdatePipelineAsync(Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationProvider.UpsertPipelineAsync(Turn10.LiveOps.StewardApi.Obligation.ObligationPipeline)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationProvider.DeletePipelineAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationProvider.GetPipelineAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationProvider.RenamePipelineAsync(Turn10.LiveOps.StewardApi.Obligation.PatchOperation)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.ObligationTimeSpan">
+            <summary>
+                Simplifies the JSON object used to create a time span.
+            </summary>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationTimeSpan.#ctor(System.TimeSpan)">
+            <summary>
+                Initializes a new instance of the <see cref="T:Turn10.LiveOps.StewardApi.Obligation.ObligationTimeSpan"/> class.
+            </summary>
+            <param name="timeSpan">The time span.</param>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationTimeSpan.Days">
+            <summary>
+                Gets or sets the days.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationTimeSpan.Hours">
+            <summary>
+                Gets or sets the hours.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ObligationTimeSpan.Minutes">
+            <summary>
+                Gets or sets the minutes.
+            </summary>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.ObligationTimeSpan.ToTimeSpan">
+            <summary>
+                Outputs a time span.
+            </summary>
+            <returns>A <see cref="T:System.TimeSpan"/>.</returns>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.Operation">
+            <summary>
+                Represents operations that can be submitted as part of a PATCH request.
+            </summary>
+        </member>
+        <member name="F:Turn10.LiveOps.StewardApi.Obligation.Operation.Rename">
+            <summary>
+                Specifies a rename operation.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.ParallelismLimit">
+             <summary>
+                 Allows user defined parallelism limits.
+            
+                 Any other units of work sharing that tag that are in progress will count against the given limit.
+            
+                 Parallelism limits are calculated based on your limit.
+                 So, you could have two data activities that you wanted to limit like this:
+                     data activity a -> { tag: 'hello', limit: 1 }
+                     data activity b -> { tag: 'hello', limit: 2 }
+                 This is fine, and means that only one 'a' will run, but b might have two running, xor one 'a' and one 'b'.
+            
+                 Parallelism limits are calculated by tenant.
+             </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ParallelismLimit.Tag">
+            <summary>
+                Gets or sets the tag.
+            </summary>
+            <remarks>
+                A tag representing a group of data activities with a shared parallelism limit.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.ParallelismLimit.Limit">
+            <summary>
+                Gets or sets the tag.
+            </summary>
+            <remarks>
+                The maximum number of slices that can be run at a time for a given tag.
+            </remarks>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.PatchOperation">
+            <summary>
+                Represents information required for a PATCH operation.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.PatchOperation.Operation">
+            <summary>
+                Gets or sets the operation.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.PatchOperation.Path">
+            <summary>
+                Gets or sets the path.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.PatchOperation.Value">
+            <summary>
+                Gets or sets the value.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.Pipeline">
+            <summary>
+                A pipeline is a collection of data activities with some descriptive metadata.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.Pipeline.Name">
+            <summary>
+                Gets or sets the name.
+            </summary>
+            <remarks>
+                This is the ID/PrimaryKey of the pipeline. It must be unique per system deployment.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.Pipeline.ConfigContext">
+            <summary>
+                Gets or sets the config context.
+            </summary>
+            <remarks>
+                Information about the tenant and cluster of the pipeline.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.Pipeline.Description">
+            <summary>
+                Gets or sets the description.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.Pipeline.Principals">
+            <summary>
+                Gets or sets the principals.
+            </summary>
+            <remarks>
+                A list of principals representing permissions to view or edit this pipeline.
+            </remarks>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.Pipeline.DataActivities">
+            <summary>
+                Gets or sets the data activities.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.Pipeline.Etag">
+            <summary>
+                Gets or sets the etag.
+            </summary>
+            <remarks>
+                Row version of the entity. Used to manage concurrency.
+            </remarks>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.PipelineAuthoringModel">
+            <summary>
+                Represents a pipeline authoring model.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.PipelineAuthoringModel.Etag">
+            <summary>
+                Gets or sets the etag.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.PipelineAuthoringModel.Pipeline">
+            <summary>
+                Gets or sets the pipeline.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.Principal">
+            <summary>
+                An obligation principal represents an individual or a group associated with a type of permission.
+            </summary>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.Principal.#ctor(System.String,System.String,System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:Turn10.LiveOps.StewardApi.Obligation.Principal"/> class.
+            </summary>
+            <param name="value">The value.</param>
+            <param name="type">The type.</param>
+            <param name="role">The role.</param>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.Principal.Type">
+            <summary>
+                Gets or sets the type.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.Principal.Role">
+            <summary>
+                Gets or sets the role.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.Principal.Value">
+            <summary>
+                Gets or sets the value.
+            </summary>
+            <remarks>
+                For user roles, use the user's email address.
+                For group roles, use the AAD object ID of the group.
+            </remarks>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.PrincipalTypes">
+            <summary>
+                Valid principal types.
+            </summary>
+        </member>
+        <member name="F:Turn10.LiveOps.StewardApi.Obligation.PrincipalTypes.User">
+            <summary>
+                A user principle is a single AAD user.
+            </summary>
+        </member>
+        <member name="F:Turn10.LiveOps.StewardApi.Obligation.PrincipalTypes.Group">
+            <summary>
+                A group principal includes all transitive members of an AAD group.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.RenamePipelineRequest">
+            <summary>
+                A request body to completely rename a pipeline.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.RenamePipelineRequest.OldPipelineName">
+            <summary>
+                Gets or sets the old pipeline name.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.RenamePipelineRequest.NewPipelineName">
+            <summary>
+                Gets or sets the new pipeline name.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.Roles">
+            <summary>
+                Pipeline roles.
+            </summary>
+        </member>
+        <member name="F:Turn10.LiveOps.StewardApi.Obligation.Roles.Reader">
+            <summary>
+                Principals with the reader role may view resources but not edit them.
+            </summary>
+        </member>
+        <member name="F:Turn10.LiveOps.StewardApi.Obligation.Roles.Admin">
+            <summary>
+                Principals with the admin role may view and edit resources.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.Tenants">
+            <summary>
+                The known tenants.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Obligation.TimeRange">
+            <summary>
+                Represents the space between a start and end date.
+            </summary>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Obligation.TimeRange.#ctor(System.DateTimeOffset,System.DateTimeOffset)">
+            <summary>
+                Initializes a new instance of the <see cref="T:Turn10.LiveOps.StewardApi.Obligation.TimeRange"/> struct.
+            </summary>
+            <param name="start">The start.</param>
+            <param name="end">The end.</param>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.TimeRange.Start">
+            <summary>
+                Gets or sets the start.
+            </summary>
+        </member>
+        <member name="P:Turn10.LiveOps.StewardApi.Obligation.TimeRange.End">
+            <summary>
+                Gets or sets the end.
+            </summary>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Program">
+            <summary>
+                Primary entry point for application.
+            </summary>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Program.Main(System.String[])">
+            <summary>
+                The required main method.
+            </summary>
+            <param name="arguments">The arguments.</param>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Program.CreateHostBuilder(System.String[])">
+            <summary>
+                Creates an instance of <see cref="T:Microsoft.Extensions.Hosting.IHostBuilder"/>.
+            </summary>
+            <param name="arguments">The arguments.</param>
+            <returns>A new instance of <see cref="T:Microsoft.Extensions.Hosting.IHostBuilder"/>.</returns>
+        </member>
+        <member name="T:Turn10.LiveOps.StewardApi.Startup">
+            <summary>
+                Entry point for the app.
+            </summary>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+                Initializes a new instance of the <see cref="T:Turn10.LiveOps.StewardApi.Startup"/> class.
+            </summary>
+            <param name="configuration">The configuration.</param>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+                Configures the services.
+            </summary>
+            <param name="services">The services.</param>
+        </member>
+        <member name="M:Turn10.LiveOps.StewardApi.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+                Configures the app.
+            </summary>
+            <param name="applicationBuilder">The application builder.</param>
+            <param name="webHostEnvironment">The web host environment.</param>
+        </member>
+    </members>
+</doc>

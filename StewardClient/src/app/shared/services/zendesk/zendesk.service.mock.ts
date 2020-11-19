@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Provider } from '@angular/core';
 
 import { ZendeskService } from './zendesk.service';
 
@@ -15,6 +15,6 @@ export class MockZendeskService {
   public goToApp = jasmine.createSpy('goToApp');
 }
 
-export function createMockZendeskService() {
+export function createMockZendeskService(): Provider {
   return { provide: ZendeskService, useValue: new MockZendeskService() };
 }

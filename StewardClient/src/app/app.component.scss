@@ -13,7 +13,7 @@
   margin-right: 10px;
 
   &:hover {
-    color: $primaryBlue;
+    color: mat-color($app-primary);
   }
 
   &:focus {
@@ -22,13 +22,15 @@
 }
 
 .header-selected {
-  color: $primaryBlue;
+  color: mat-color($app-primary);
 }
 
-.footer-section {
+div.footer {
   width: 100%;
+  margin-top: 30px;
   bottom: 0px;
-  position: fixed; // this is currently causing overlap issues but the  to cause overlap issues later
+  left: 0px;
+  position: relative;
 
   ul {
     list-style-type: none;
@@ -55,7 +57,7 @@
 
   // TODO: This style should probably be global? Or a mixin.
   a {
-    color: $primaryBlue;
+    color: mat-color($app-primary);
     text-decoration: none;
 
     &:hover {

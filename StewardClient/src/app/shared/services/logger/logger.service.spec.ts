@@ -1,10 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
-import {
-  createMockApplicationInsights,
-  MockApplicationInsights,
-} from '@mocks/application-insights.mock';
+import { createMockApplicationInsights } from '@mocks/application-insights.mock';
 import { MockConsole } from '@mocks/console.mock';
 
 import { LoggerService } from './logger.service';
@@ -21,6 +18,7 @@ describe('LoggerService', () => {
     service = TestBed.inject(LoggerService);
     mockAppInsights = TestBed.inject(ApplicationInsights);
     mockConsole = new MockConsole();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (service as any).console = mockConsole;
   });
 
@@ -30,9 +28,7 @@ describe('LoggerService', () => {
 
   it('should use correct environment values', () => {
     expect(service).toBeTruthy();
-    expect(service.appInsightsLevel).toBe(
-      environment.loggerConfig.appInsightsLogLevel
-    );
+    expect(service.appInsightsLevel).toBe(environment.loggerConfig.appInsightsLogLevel);
     expect(service.consoleLevel).toBe(environment.loggerConfig.consoleLogLevel);
   });
 

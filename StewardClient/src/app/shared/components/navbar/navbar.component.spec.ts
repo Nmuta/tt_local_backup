@@ -1,12 +1,12 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Store, NgxsModule } from '@ngxs/store';
+import { NgxsModule } from '@ngxs/store';
 import {
-  async,
   ComponentFixture,
   TestBed,
   getTestBed,
   fakeAsync,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -18,33 +18,33 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { NavbarComponent } from './navbar.component';
-import { createMockWindowService, WindowService } from '@services/window';
+import { createMockWindowService } from '@services/window';
 
 describe('NavbarComponent', () => {
   let fixture: ComponentFixture<NavbarComponent>;
   let component: NavbarComponent;
-  let mockStore: Store;
   let mockRouter: Router;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule,
-        NgxsModule.forRoot([UserState]),
-      ],
-      declarations: [NavbarComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [createMockWindowService(), createMockMsalService()],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [NavbarComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockWindowService(), createMockMsalService()],
+      }).compileComponents();
 
-    const injector = getTestBed();
-    mockStore = injector.get(Store);
-    mockRouter = injector.get(Router);
+      const injector = getTestBed();
+      mockRouter = injector.inject(Router);
 
-    fixture = TestBed.createComponent(NavbarComponent);
-    component = fixture.debugElement.componentInstance;
-  }));
+      fixture = TestBed.createComponent(NavbarComponent);
+      component = fixture.debugElement.componentInstance;
+    }),
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();

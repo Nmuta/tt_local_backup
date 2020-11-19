@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 
@@ -14,7 +14,7 @@ export class OverviewComponent implements OnChanges {
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */
-  public loadError: any;
+  public loadError: unknown;
   /** The overview data. */
   public profileSummary: SunriseProfileSummary;
 
@@ -36,7 +36,7 @@ export class OverviewComponent implements OnChanges {
       _error => {
         this.isLoading = false;
         this.loadError = _error; // TODO: Display something useful to the user
-      }
+      },
     );
   }
 }

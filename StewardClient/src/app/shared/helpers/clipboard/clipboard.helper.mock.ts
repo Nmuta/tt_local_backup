@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Provider } from '@angular/core';
 
 import { Clipboard } from './clipboard.helper';
 
@@ -8,7 +8,7 @@ export class MockClipboard {
   public copyMessage = jasmine.createSpy('copyMessage');
 }
 
-export function createMockClipboard() {
+export function createMockClipboard(): Provider {
   return {
     provide: Clipboard,
     useValue: new MockClipboard(),

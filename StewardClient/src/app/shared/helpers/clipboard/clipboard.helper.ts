@@ -10,7 +10,7 @@ export class Clipboard {
   }
 
   /** Copies the provided value to the client clipboard. */
-  public copyMessage(val: string) {
+  public copyMessage(val: string): void {
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';

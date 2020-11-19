@@ -1,11 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  ComponentFixture,
-  getTestBed,
-  TestBed,
-  waitForAsync,
-} from '@angular/core/testing';
+import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
 import { SunrisePlayerXuidConsolesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/consoleDetails';
 import {
   SunriseConsoleDetails,
@@ -18,6 +13,7 @@ import * as faker from 'faker';
 import { Subject } from 'rxjs';
 
 import { ConsolesComponent } from './consoles.component';
+import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 
 describe('ConsolesComponent', () => {
   let injector: TestBed;
@@ -28,14 +24,14 @@ describe('ConsolesComponent', () => {
   beforeEach(
     waitForAsync(async () => {
       await TestBed.configureTestingModule({
-        declarations: [ConsolesComponent],
+        declarations: [ConsolesComponent, BigJsonPipe],
         providers: [createMockSunriseService()],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
 
       injector = getTestBed();
       service = injector.inject(SunriseService);
-    })
+    }),
   );
 
   beforeEach(
@@ -43,14 +39,14 @@ describe('ConsolesComponent', () => {
       fixture = TestBed.createComponent(ConsolesComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
-    })
+    }),
   );
 
   it(
     'should create',
     waitForAsync(() => {
       expect(component).toBeTruthy();
-    })
+    }),
   );
 
   describe('valid initialization', () => {
@@ -62,7 +58,7 @@ describe('ConsolesComponent', () => {
       waitForAsync(() => {
         // console details prep
         consoleDetails$ = new Subject<SunriseConsoleDetails>();
-        consoleDetailsValue = SunrisePlayerXuidConsolesFakeApi.makeMany();
+        consoleDetailsValue = SunrisePlayerXuidConsolesFakeApi.makeMany() as SunriseConsoleDetails;
         service.getConsoleDetailsByXuid = jasmine
           .createSpy('getConsoleDetailsByXuid')
           .and.returnValue(consoleDetails$);
@@ -75,7 +71,7 @@ describe('ConsolesComponent', () => {
 
         // emulate initialization event
         component.ngOnChanges();
-      })
+      }),
     );
 
     describe('ngOnChanges', () => {
@@ -84,7 +80,7 @@ describe('ConsolesComponent', () => {
         waitForAsync(() => {
           expect(component.isLoading).toBe(true);
           expect(component.loadError).toBeFalsy();
-        })
+        }),
       );
 
       it(
@@ -105,7 +101,7 @@ describe('ConsolesComponent', () => {
           fixture.detectChanges();
           expect(component.isLoading).toBe(false);
           expect(component.loadError).toBeFalsy();
-        })
+        }),
       );
 
       it(
@@ -126,7 +122,7 @@ describe('ConsolesComponent', () => {
           fixture.detectChanges();
           expect(component.isLoading).toBe(false);
           expect(component.loadError).toBeTruthy();
-        })
+        }),
       );
     });
 
@@ -156,7 +152,7 @@ describe('ConsolesComponent', () => {
           consoleDetails$.next(consoleDetailsValue);
           consoleDetails$.complete();
           fixture.detectChanges();
-        })
+        }),
       );
 
       describe('makeBanAction', () => {
@@ -179,7 +175,7 @@ describe('ConsolesComponent', () => {
             await fixture.whenStable();
             expect(isDone).toBe(true);
             expect(firstUnbanned.isBanned).toBe(true);
-          })
+          }),
         );
       });
 
@@ -203,7 +199,7 @@ describe('ConsolesComponent', () => {
             await fixture.whenStable();
             expect(isDone).toBe(true);
             expect(firstUnbanned.isBanned).toBe(false);
-          })
+          }),
         );
       });
     });
