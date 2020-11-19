@@ -46,7 +46,6 @@ export class LogoutUser {
   }
 }
 
-
 /** Meta action: Clear auth and grab it again. */
 export class RecheckAuth {
   public static readonly type = '[User] Recheck Auth';

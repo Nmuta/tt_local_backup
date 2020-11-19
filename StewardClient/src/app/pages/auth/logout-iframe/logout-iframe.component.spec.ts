@@ -8,9 +8,8 @@ describe('LogoutIframeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LogoutIframeComponent ]
-    })
-    .compileComponents();
+      declarations: [LogoutIframeComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
 import { Navigate } from '@ngxs/router-plugin';

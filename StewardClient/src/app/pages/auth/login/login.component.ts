@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 /** This component redirects to AAD logout, if possible. Otherwise it opens itself in a new tab (where it is possible). */
 @Component({
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
@@ -27,11 +27,11 @@ export class LoginComponent implements OnInit {
     private readonly router: Router,
     private readonly store: Store,
     private readonly logger: LoggerService,
-  ) { }
+  ) {}
 
   /** OnInit hook. */
   public ngOnInit(): void {
-    this.redirectToRoute = this.route.snapshot.queryParamMap.get('from') ?? "/";
+    this.redirectToRoute = this.route.snapshot.queryParamMap.get('from') ?? '/';
     this.logger.debug([LogTopic.Auth], `Redirect to Route: ${this.redirectToRoute}`);
     this.login$();
   }
@@ -59,8 +59,7 @@ export class LoginComponent implements OnInit {
       }
 
       this.router.navigate([this.redirectToRoute]);
-    }
-    catch (error) {
+    } catch (error) {
       this.logger.debug([LogTopic.Auth], `Login: Error`, error);
       this.error = error;
     }

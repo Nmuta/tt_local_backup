@@ -8,9 +8,8 @@ describe('AadLogoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AadLogoutComponent ]
-    })
-    .compileComponents();
+      declarations: [AadLogoutComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

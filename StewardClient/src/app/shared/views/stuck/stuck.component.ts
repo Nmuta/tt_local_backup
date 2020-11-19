@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { of } from 'rxjs';
 import { delay, startWith } from 'rxjs/operators';
 
@@ -6,7 +6,7 @@ import { delay, startWith } from 'rxjs/operators';
 @Component({
   selector: 'stuck',
   templateUrl: './stuck.component.html',
-  styleUrls: ['./stuck.component.scss']
+  styleUrls: ['./stuck.component.scss'],
 })
 export class StuckComponent {
   /** Emits true when the interval has passed. */

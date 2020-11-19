@@ -3,13 +3,11 @@ import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
 import { Navigate } from '@ngxs/router-plugin';
-import { Action, Actions, ofActionDispatched, Selector, State, StateContext, Store } from '@ngxs/store';
-import { WindowOpen, WindowService } from '@services/window';
-import { ZendeskService } from '@services/zendesk';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
-import { asapScheduler, Observable } from 'rxjs';
-import { filter, map, take, tap, timeout } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, take, tap, timeout } from 'rxjs/operators';
 
 import {
   GetUser,
@@ -43,8 +41,7 @@ export class UserState {
   constructor(
     private readonly userService: UserService,
     private readonly authService: MsalService,
-  ) {
-  }
+  ) {}
 
   /** Logs out the current user and directs them to the auth page. */
   @Action(LogoutUser, { cancelUncompleted: true })
@@ -60,23 +57,22 @@ export class UserState {
   /** Logs out the current user and directs them to the auth page. */
   @Action(RecheckAuth, { cancelUncompleted: true })
   public recheckAuth(ctx: StateContext<UserStateModel>, _action: RecheckAuth): Observable<void> {
-    return ctx.dispatch([
-      new ResetUserProfile(),
-      new RequestAccessToken(),
-    ]);
+    return ctx.dispatch([new ResetUserProfile(), new RequestAccessToken()]);
   }
 
   /** Action that requests user profile and sets it to the state. */
   @Action(GetUser, { cancelUncompleted: true })
   public getUser(ctx: StateContext<UserStateModel>): Observable<UserModel> {
-    return this.userService.getUserProfile().pipe(tap(
-      data => {
-        ctx.patchState({ profile: data });
-      },
-      () => {
-        ctx.patchState({ profile: null });
-      },
-    ));
+    return this.userService.getUserProfile().pipe(
+      tap(
+        data => {
+          ctx.patchState({ profile: data });
+        },
+        () => {
+          ctx.patchState({ profile: null });
+        },
+      ),
+    );
   }
 
   /** Action that resets state user profile. */
@@ -130,12 +126,11 @@ export class UserState {
 
   /** Helper function that timeouts state checks for user profile. */
   public static latestValidProfile$(profile$: Observable<UserModel>): Observable<UserModel> {
-    const obs = profile$
-      .pipe(
-        filter(x => x !== undefined),
-        take(1),
-        timeout(10_000),
-      );
+    const obs = profile$.pipe(
+      filter(x => x !== undefined),
+      take(1),
+      timeout(10_000),
+    );
 
     return obs;
   }

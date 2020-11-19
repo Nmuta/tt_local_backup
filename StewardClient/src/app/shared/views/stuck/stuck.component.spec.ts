@@ -8,9 +8,8 @@ describe('StuckComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StuckComponent ]
-    })
-    .compileComponents();
+      declarations: [StuckComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

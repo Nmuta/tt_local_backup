@@ -8,6 +8,6 @@ import { CenterContentsModule } from '@components/center-contents/center-content
 @NgModule({
   declarations: [StuckComponent],
   imports: [CommonModule, MatCardModule, CenterContentsModule],
-  exports: [StuckComponent]
+  exports: [StuckComponent],
 })
-export class StuckModule { }
+export class StuckModule {}

@@ -10,16 +10,21 @@ import { filter, takeUntil } from 'rxjs/operators';
 /** This component appears in the iframe while AAD logout is in progress in another window, then redirects to AAD-logout */
 @Component({
   templateUrl: './logout-iframe.component.html',
-  styleUrls: ['./logout-iframe.component.scss']
+  styleUrls: ['./logout-iframe.component.scss'],
 })
 export class LogoutIframeComponent extends BaseComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  constructor(private readonly store: Store) { super(); }
+  constructor(private readonly store: Store) {
+    super();
+  }
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    const whenLoggedOut$ = this.profile$.pipe(takeUntil(this.onDestroy$), filter(v => !v));
+    const whenLoggedOut$ = this.profile$.pipe(
+      takeUntil(this.onDestroy$),
+      filter(v => !v),
+    );
     whenLoggedOut$.subscribe(() => this.store.dispatch(new Navigate(['/auth/aad-logout'])));
   }
 }
