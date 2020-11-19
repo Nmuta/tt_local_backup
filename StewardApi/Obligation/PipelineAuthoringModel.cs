@@ -17,6 +17,6 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         ///     Gets or sets the pipeline.
         /// </summary>
         [JsonProperty("pipeline")]
-        public Pipeline Pipeline { get; set; }
+        public ObligationPipeline Pipeline { get; set; }
     }
 }

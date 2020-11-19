@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         }
 
         /// <inheritdoc />
-        public async Task<Guid> SafeUpdatePipelineAsync(Pipeline pipeline)
+        public async Task<Guid> SafeUpdatePipelineAsync(ObligationPipeline pipeline)
         {
             var existing = await this.GetPipelineAsync(pipeline.Name).ConfigureAwait(false);
             if (existing == null)
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         }
 
         /// <inheritdoc />
-        public async Task<Guid> UpsertPipelineAsync(Pipeline pipeline)
+        public async Task<Guid> UpsertPipelineAsync(ObligationPipeline pipeline)
         {
             if (string.IsNullOrWhiteSpace(pipeline.Etag))
             {
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         }
 
         /// <inheritdoc />
-        public async Task<Pipeline> GetPipelineAsync(string pipelineName)
+        public async Task<ObligationPipeline> GetPipelineAsync(string pipelineName)
         {
             using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri($"{WebHost}obligation/authoring/pipelines?name={pipelineName}"));
 

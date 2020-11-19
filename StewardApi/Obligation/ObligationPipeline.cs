@@ -1,30 +1,64 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
+#pragma warning disable CA1724
 namespace Turn10.LiveOps.StewardApi.Obligation
 {
     /// <summary>
-    ///     Represents the information required to create an Obligation pipeline.
+    ///     A pipeline is a collection of data activities with some descriptive metadata.
     /// </summary>
+    [JsonObject(MemberSerialization.OptIn)]
     public sealed class ObligationPipeline
     {
         /// <summary>
-        ///     Gets or sets the pipeline name.
+        ///     Gets or sets the name.
         /// </summary>
-        public string PipelineName { get; set; }
+        /// <remarks>
+        ///     This is the ID/PrimaryKey of the pipeline. It must be unique per system deployment.
+        /// </remarks>
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
         /// <summary>
-        ///     Gets or sets pipeline description.
+        ///     Gets or sets the config context.
         /// </summary>
-        public string PipelineDescription { get; set; }
+        /// <remarks>
+        ///     Information about the tenant and cluster of the pipeline.
+        /// </remarks>
+        [JsonProperty("config_context")]
+        public ConfigQualifier ConfigContext { get; set; }
 
         /// <summary>
-        ///     Gets or sets the obligation pipelines.
+        ///     Gets or sets the description.
         /// </summary>
-        public IList<ObligationDataActivity> ObligationPipelines { get; set; }
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         /// <summary>
-        ///     Gets or sets principals.
+        ///     Gets or sets the principals.
         /// </summary>
-        public IList<Principal> Principals { get; set; }
+        /// <remarks>
+        ///     A list of principals representing permissions to view or edit this pipeline.
+        /// </remarks>
+        [JsonProperty("principals")]
+        public IList<ObligationPrincipal> Principals { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the data activities.
+        /// </summary>
+        [JsonProperty("data_activities")]
+        public IList<KustoDataActivity> DataActivities { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the etag.
+        /// </summary>
+        /// <remarks>
+        ///     Row version of the entity. Used to manage concurrency.
+        /// </remarks>
+        [JsonIgnore]
+        internal string Etag { get; set; }
+
+        [JsonProperty("status")]
+        private string Status => "active";
     }
 }

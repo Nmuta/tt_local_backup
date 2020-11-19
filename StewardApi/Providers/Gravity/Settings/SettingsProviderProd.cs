@@ -21,32 +21,32 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity.Settings
         public async Task<GameSettings> GetGameSettingAsync(Guid id)
         {
             var gsClient = new GameSettingsClient(HttpClient);
-            var gameSettings = await gsClient.GetAsync(id);
+            var gameSettings = await gsClient.GetAsync(id).ConfigureAwait(false);
 
             var carClient = new CarClient(HttpClient);
-            var cars = (await carClient.GetListAsync(gameSettings.Cars)).Select(this.Convert);
+            var cars = (await carClient.GetListAsync(gameSettings.Cars).ConfigureAwait(false)).Select(this.Convert);
 
             var currencyClient = new CurrencyClient(HttpClient);
-            var currencies = (await currencyClient.GetListAsync(gameSettings.Currencies)).Select(this.Convert);
+            var currencies = (await currencyClient.GetListAsync(gameSettings.Currencies).ConfigureAwait(false)).Select(this.Convert);
 
             var masteryKitClient = new MasteryKitClient(HttpClient);
-            var masteryKits = (await masteryKitClient.GetListAsync(gameSettings.MasteryKits)).Select(this.Convert);
+            var masteryKits = (await masteryKitClient.GetListAsync(gameSettings.MasteryKits).ConfigureAwait(false)).Select(this.Convert);
 
             var repairKitClient = new RepairKitClient(HttpClient);
-            var repairKits = (await repairKitClient.GetListAsync(gameSettings.RepairKits)).Select(this.Convert);
+            var repairKits = (await repairKitClient.GetListAsync(gameSettings.RepairKits).ConfigureAwait(false)).Select(this.Convert);
 
             var upgradeKitClient = new UpgradeKitClient(HttpClient);
-            var upgradeKits = (await upgradeKitClient.GetListAsync(gameSettings.UpgradeKits)).Select(this.Convert);
+            var upgradeKits = (await upgradeKitClient.GetListAsync(gameSettings.UpgradeKits).ConfigureAwait(false)).Select(this.Convert);
 
             var energyRefillClient = new EnergyRefillClient(HttpClient);
-            var energyRefills = (await energyRefillClient.GetListAsync(gameSettings.EnergyRefills)).Select(this.Convert);
+            var energyRefills = (await energyRefillClient.GetListAsync(gameSettings.EnergyRefills).ConfigureAwait(false)).Select(this.Convert);
 
             IList<string> ftueStates;
 
             try
             {
                 var ftueStateListClient = new FTUEStateListClient(HttpClient);
-                var ftueStateList = await ftueStateListClient.GetAsync(gameSettings.FTUEStateList.Value);
+                var ftueStateList = await ftueStateListClient.GetAsync(gameSettings.FTUEStateList.Value).ConfigureAwait(false);
                 ftueStates = ftueStateList.Values.ToList();
             }
             catch
@@ -55,10 +55,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity.Settings
             }
 
             var packDefinitionClient = new PackDefinitionClient(HttpClient);
-            var packDefinitions = (await packDefinitionClient.GetListAsync(gameSettings.PackDefinitions)).Select(this.Convert);
+            var packDefinitions = (await packDefinitionClient.GetListAsync(gameSettings.PackDefinitions).ConfigureAwait(false)).Select(this.Convert);
 
             var heatClient = new HeatClient(HttpClient);
-            var heats = (await heatClient.GetListAsync(gameSettings.Heats)).Select(this.Convert);
+            var heats = (await heatClient.GetListAsync(gameSettings.Heats).ConfigureAwait(false)).Select(this.Convert);
 
             return new GameSettings
             {

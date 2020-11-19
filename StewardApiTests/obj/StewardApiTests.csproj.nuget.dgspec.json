@@ -25,6 +25,7 @@
           "netcoreapp3.1"
         ],
         "sources": {
+          "https://api.nuget.org/v3/index.json": {},
           "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/nuget/v3/index.json": {}
         },
         "frameworks": {
@@ -81,9 +82,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
@@ -113,6 +111,7 @@
           "netcoreapp3.1"
         ],
         "sources": {
+          "https://api.nuget.org/v3/index.json": {},
           "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/nuget/v3/index.json": {}
         },
         "frameworks": {
@@ -121,7 +120,6 @@
           }
         },
         "warningProperties": {
-          "allWarningsAsErrors": true,
           "warnAsError": [
             "NU1605"
           ]
@@ -130,6 +128,30 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "AutoFixture": {
+              "target": "Package",
+              "version": "[4.14.0, )"
+            },
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[5.10.3, )"
+            },
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[2.1.2, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[2.1.2, )"
+            },
             "Microsoft.AspNetCore.Authentication": {
               "target": "Package",
               "version": "[2.2.0, )"
@@ -154,6 +176,14 @@
               "target": "Package",
               "version": "[3.1.9, )"
             },
+            "Microsoft.AspNetCore.TestHost": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.Azure.Services.AppAuthentication": {
+              "target": "Package",
+              "version": "[1.6.0, )"
+            },
             "Microsoft.CodeAnalysis.FxCopAnalyzers": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers",
               "suppressParent": "All",
@@ -163,6 +193,22 @@
             "Microsoft.Identity.Web": {
               "target": "Package",
               "version": "[1.2.0, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.8.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "NSubstitute": {
+              "target": "Package",
+              "version": "[4.2.2, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
             },
             "StyleCop.Analyzers": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers",
@@ -174,13 +220,61 @@
               "target": "Package",
               "version": "[5.6.3, )"
             },
+            "Swashbuckle.AspNetCore.Annotations": {
+              "target": "Package",
+              "version": "[5.0.0-beta, )"
+            },
+            "Turn10.Data.Azure": {
+              "target": "Package",
+              "version": "[2.5.0, )"
+            },
             "Turn10.Data.Common": {
               "target": "Package",
               "version": "[2.1.0, )"
             },
+            "Turn10.Data.KustoLogger": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
             "Turn10.Data.SecretProvider": {
               "target": "Package",
               "version": "[2.0.0, )"
+            },
+            "Turn10.Services.ForzaClient": {
+              "target": "Package",
+              "version": "[1.4.0, )"
+            },
+            "Turn10.Services.ForzaClient.FH3": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
+            "Turn10.Services.ForzaClient.FH4.master": {
+              "target": "Package",
+              "version": "[2.5.0, )"
+            },
+            "Turn10.Services.ForzaClient.FM7": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
+            "Turn10.Services.ForzaClient.FMG": {
+              "target": "Package",
+              "version": "[1.0.2, )"
+            },
+            "Turn10.Services.STS.Contracts": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            },
+            "Turn10.Services.Serialization": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            },
+            "Turn10.Services.ServiceClient": {
+              "target": "Package",
+              "version": "[1.2.5, )"
+            },
+            "Turn10.Services.WebApi-Core": {
+              "target": "Package",
+              "version": "[1.2.0, )"
             }
           },
           "imports": [

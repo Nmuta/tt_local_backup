@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="pipelineName">The pipeline name.</param>
         /// <returns>
         ///     200 OK.
-        ///     An instance of <see cref="ObligationPipeline"/>.
+        ///     An instance of <see cref="SimplifiedObligationPipeline"/>.
         /// </returns>
         [HttpGet("pipeline/{pipelineName}")]
         public async Task<IActionResult> GetPipeline([FromRoute] string pipelineName)
@@ -75,10 +75,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="obligationPipeline">The obligation pipeline.</param>
         /// <returns>
         ///     201 Created.
-        ///     An instance of <see cref="ObligationPipeline"/>.
+        ///     An instance of <see cref="SimplifiedObligationPipeline"/>.
         /// </returns>
         [HttpPut("pipeline")]
-        public async Task<IActionResult> UpdatePipeline([FromBody] ObligationPipeline obligationPipeline)
+        public async Task<IActionResult> UpdatePipeline([FromBody] SimplifiedObligationPipeline obligationPipeline)
         {
             var response = await this.obligationProvider.SafeUpdatePipelineAsync(obligationPipeline).ConfigureAwait(true);
 
@@ -91,10 +91,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="obligationPipeline">The obligation pipeline.</param>
         /// <returns>
         ///     201 Created.
-        ///     An instance of <see cref="ObligationPipeline"/>.
+        ///     An instance of <see cref="SimplifiedObligationPipeline"/>.
         /// </returns>
         [HttpPost("pipeline")]
-        public async Task<IActionResult> CreatePipeline([FromBody] ObligationPipeline obligationPipeline)
+        public async Task<IActionResult> CreatePipeline([FromBody] SimplifiedObligationPipeline obligationPipeline)
         {
             var response = await this.obligationProvider.UpsertPipelineAsync(obligationPipeline).ConfigureAwait(true);
 

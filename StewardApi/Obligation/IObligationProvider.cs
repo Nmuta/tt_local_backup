@@ -20,7 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         /// </summary>
         /// <param name="obligationPipeline">The obligation pipeline.</param>
         /// <returns>A GUID to track the operation.</returns>
-        Task<Guid> SafeUpdatePipelineAsync(ObligationPipeline obligationPipeline);
+        Task<Guid> SafeUpdatePipelineAsync(SimplifiedObligationPipeline obligationPipeline);
 
         /// <summary>
         ///     Given a pipeline, upserts the pipeline regardless of safety checks.
@@ -28,7 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         /// </summary>
         /// <param name="obligationPipeline">The obligation pipeline.</param>
         /// <returns>A GUID to track the operation.</returns>
-        Task<Guid> UpsertPipelineAsync(ObligationPipeline obligationPipeline);
+        Task<Guid> UpsertPipelineAsync(SimplifiedObligationPipeline obligationPipeline);
 
         /// <summary>
         ///     Deletes a pipeline.
@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         /// </summary>
         /// <param name="pipelineName">The pipeline name.</param>
         /// <returns>A GUID to track the operation.</returns>
-        Task<ObligationPipeline> GetPipelineAsync(string pipelineName);
+        Task<SimplifiedObligationPipeline> GetPipelineAsync(string pipelineName);
 
         /// <summary>
         ///     Renames a pipeline.

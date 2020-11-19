@@ -10,20 +10,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
-<<<<<<< HEAD
-using Turn10.Data.SecretProvider;
-using Turn10.LiveOps.StewardApi.Obligation;
-=======
 using Microsoft.OpenApi.Models;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
+using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Middleware;
+using Turn10.LiveOps.StewardApi.Obligation;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
@@ -35,7 +33,6 @@ using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.Diagnostics;
 using Turn10.Services.Diagnostics.Geneva;
 using Turn10.Services.WebApi.Core;
->>>>>>> main
 using static Turn10.LiveOps.StewardApi.ApplicationSettings;
 
 namespace Turn10.LiveOps.StewardApi
@@ -79,13 +76,9 @@ namespace Turn10.LiveOps.StewardApi
                 options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
                 options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
             });
-<<<<<<< HEAD
-            services.AddControllers().AddNewtonsoftJson();
-            services.AddSwaggerGen();
-=======
-
-            services.AddControllers().AddJsonOptions(
+            services.AddControllers().AddNewtonsoftJson().AddJsonOptions(
                 options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            services.AddSwaggerGen();
 
             services.AddSwaggerGen(options =>
             {
@@ -113,18 +106,15 @@ namespace Turn10.LiveOps.StewardApi
                 options.OperationFilter<SessionIdHeaderParameterOperationFilter>();
             });
 
->>>>>>> main
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
-<<<<<<< HEAD
             services.AddSingleton<IKeyVaultClientFactory, KeyVaultClientFactory>();
             services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
             services.AddSingleton<IObligationAuthoringClient, ObligationAuthoringClient>();
             services.AddSingleton<IObligationProvider, ObligationProvider>();
-=======
             // Prepare LogSink
             var ifxLogSink = new IfxLogSink(
                 this.configuration[ConfigurationKeyConstants.GenevaTenantId],
@@ -234,7 +224,6 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IBlobRepository>(blobRepo);
 
             services.AddSingleton<IJobTracker, JobTracker>();
->>>>>>> main
         }
 
         /// <summary>

@@ -19,12 +19,12 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             Attitude = "developer"
         };
 
-        private readonly IList<Principal> standardPrincipals = new List<Principal>
+        private readonly IList<ObligationPrincipal> standardPrincipals = new List<ObligationPrincipal>
         {
-            new Principal("emersonf@microsoft.com", PrincipalTypes.User, Roles.Admin),
-            new Principal("mharri@microsoft.com", PrincipalTypes.User, Roles.Reader),
-            new Principal("miahern@microsoft.com", PrincipalTypes.User, Roles.Reader),
-            new Principal("t10data@microsoft.com", PrincipalTypes.Group, Roles.Reader)
+            new ObligationPrincipal("emersonf@microsoft.com", PrincipalTypes.User, Roles.Admin),
+            new ObligationPrincipal("mharri@microsoft.com", PrincipalTypes.User, Roles.Reader),
+            new ObligationPrincipal("miahern@microsoft.com", PrincipalTypes.User, Roles.Reader),
+            new ObligationPrincipal("t10data@microsoft.com", PrincipalTypes.Group, Roles.Reader)
         };
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         }
 
         /// <inheritdoc/>
-        public async Task<Guid> SafeUpdatePipelineAsync(ObligationPipeline obligationPipeline)
+        public async Task<Guid> SafeUpdatePipelineAsync(SimplifiedObligationPipeline obligationPipeline)
         {
             var pipeline = this.BuildPipeline(obligationPipeline);
 
@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         }
 
         /// <inheritdoc/>
-        public async Task<Guid> UpsertPipelineAsync(ObligationPipeline obligationPipeline)
+        public async Task<Guid> UpsertPipelineAsync(SimplifiedObligationPipeline obligationPipeline)
         {
             var pipeline = this.BuildPipeline(obligationPipeline);
 
@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         }
 
         /// <inheritdoc/>
-        public async Task<ObligationPipeline> GetPipelineAsync(string pipelineName)
+        public async Task<SimplifiedObligationPipeline> GetPipelineAsync(string pipelineName)
         {
             var result = await this.obligationAuthoringClient.GetPipelineAsync(pipelineName).ConfigureAwait(false);
 
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
                 ParallelismLimit = resultDataActivity.ParallelismLimitTags.Select(p => p.Limit).FirstOrDefault()
             }).ToList();
 
-            var obligationRequest = new ObligationPipeline
+            var obligationRequest = new SimplifiedObligationPipeline
             {
                 PipelineName = result.Name,
                 PipelineDescription = result.Description,
@@ -165,13 +165,13 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             return dependencyNames?.Select(d => new Dependency("striped_on_sealed", d)).ToList();
         }
 
-        private Pipeline BuildPipeline(ObligationPipeline obligationRequest)
+        private ObligationPipeline BuildPipeline(SimplifiedObligationPipeline obligationRequest)
         {
-            var principals = obligationRequest.Principals?.ToList() ?? new List<Principal>();
+            var principals = obligationRequest.Principals?.ToList() ?? new List<ObligationPrincipal>();
 
             principals.AddRange(this.standardPrincipals);
 
-            var pipeline = new Pipeline
+            var pipeline = new ObligationPipeline
             {
                 ConfigContext = this.configQualifier,
                 Name = obligationRequest.PipelineName,

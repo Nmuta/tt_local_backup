@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Forza.WebServices.FH3.Generated;
 using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
+using Turn10.Data.SecretProvider;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using static Forza.WebServices.FH3.Generated.UserService;
