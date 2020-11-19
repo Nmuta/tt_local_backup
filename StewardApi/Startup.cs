@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
+using Turn10.Data.SecretProvider;
+using Turn10.LiveOps.StewardApi.Obligation;
 using static Turn10.LiveOps.StewardApi.ApplicationSettings;
 
 namespace Turn10.LiveOps.StewardApi
@@ -31,7 +33,7 @@ namespace Turn10.LiveOps.StewardApi
         /// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMicrosoftWebApiAuthentication(this.configuration);
+            services.AddMicrosoftIdentityWebApiAuthentication(this.configuration);
             services.Configure<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
                 // Use the groups claim for populating roles
@@ -43,12 +45,17 @@ namespace Turn10.LiveOps.StewardApi
                 options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAdminRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAdmin));
                 options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
             });
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen();
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
+
+            services.AddSingleton<IKeyVaultClientFactory, KeyVaultClientFactory>();
+            services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
+            services.AddSingleton<IObligationAuthoringClient, ObligationAuthoringClient>();
+            services.AddSingleton<IObligationProvider, ObligationProvider>();
         }
 
         /// <summary>
