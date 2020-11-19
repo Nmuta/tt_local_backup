@@ -21,7 +21,7 @@ import { environment } from '../../../environments/environment';
 export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  public fromApp: string;
+  public fromRoute: string;
   public loading: boolean;
   public inZendesk: boolean;
 
@@ -43,11 +43,12 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
     super();
 
     this.activatedRoute.queryParams.subscribe(params => {
-      this.fromApp = params.from;
+      this.fromRoute = params.from;
 
       if (params.action === 'login') this.login();
       if (params.action === 'logout') this.logout();
     });
+    
     this.activatedRoute.params.subscribe(params => {
       this.fromAadLogin = params.value === 'aadLogin';
       this.fromAadLogout = params.value === 'aadLogout';
@@ -64,7 +65,7 @@ export class AuthComponent extends BaseComponent implements OnInit, OnDestroy {
         this.profile = profile;
 
         if (!!this.profile && this.inZendesk) {
-          this.router.navigate([`/${this.fromApp}`]);
+          this.router.navigate([this.fromRoute]);
         }
 
         if ((!!this.profile && this.fromAadLogin) || (!this.profile && this.fromAadLogout)) {

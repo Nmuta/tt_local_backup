@@ -120,7 +120,7 @@ describe('AuthComponent', () => {
       describe('If profile is valid and app is running in zendesk', () => {
         const fromApp = 'test-app';
         beforeEach(() => {
-          component.fromApp = fromApp;
+          component.fromRoute = fromApp;
         });
 
         it('Should call router.navigate correctly', () => {

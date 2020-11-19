@@ -2,17 +2,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ErrorComponent } from './pages/error/error.component';
-import { ZendeskGuardService } from './route-guards/app.zendesk.guard.service';
+import { AuthGuard } from './route-guards/auth.guard';
+import { ZendeskGuard } from './route-guards/zendesk.guard';
 
 const routes: Routes = [
   {
     path: 'navbar-app',
-    // canActivate: [ZendeskGuardService],
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     loadChildren: () => import('./pages/navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
   },
   {
     path: 'ticket-sidebar',
-    canActivate: [ZendeskGuardService],
+    canActivate: [ZendeskGuard],
     loadChildren: () => import('./pages/ticket-app/ticket-app.module').then(m => m.TicketAppModule),
   },
   {

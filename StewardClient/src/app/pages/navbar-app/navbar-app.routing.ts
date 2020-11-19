@@ -6,10 +6,13 @@ import { FourOhFourComponent } from './pages/four-oh-four/four-oh-four.component
 import { HomeComponent } from './pages/home/home.component';
 import { NavbarAppComponent } from './navbar-app.component';
 import { sidebarRoutes } from 'app/sidebars/sidebars.module';
+import { AuthGuard } from 'app/route-guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'tools',
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     component: NavbarAppComponent,
     children: [
       {

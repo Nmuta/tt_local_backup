@@ -50,7 +50,7 @@ export class UserState {
     return ctx.dispatch([
       new ResetUserProfile(),
       new ResetAccessToken(),
-      new Navigate([`/auth`], { queryParams: { from: action.parentApp } }),
+      new Navigate([`/auth`], { queryParams: { from: action.returnRoute } }),
       new WindowOpen(`${environment.stewardUiUrl}/auth?action=logout`, '_blank'),
     ]);
   }

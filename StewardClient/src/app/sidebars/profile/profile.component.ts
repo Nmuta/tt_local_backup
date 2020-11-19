@@ -40,26 +40,16 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         profile => {
           this.loading = false;
           this.user = profile;
-          if (!this.user) {
-            // TODO: Do this somewhere else (auth guard)
-            this.router.navigate([`/auth`], {
-              queryParams: { from: 'navbar-app' },
-            });
-          }
         },
         _error => {
           this.loading = false;
-          // TODO: Do this somewhere else (auth guard)
-          this.router.navigate([`/auth`], {
-            queryParams: { from: 'navbar-app' },
-          });
         },
       );
   }
 
   /** Opens the auth page in a new tab. */
   public logout(): void {
-    this.store.dispatch(new LogoutUser('navbar-app'));
+    this.store.dispatch(new LogoutUser(this.router.routerState.snapshot.url));
   }
 
   /** Changes the profile tab visiblity. */
