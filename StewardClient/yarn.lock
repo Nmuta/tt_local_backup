@@ -1482,7 +1482,7 @@
   dependencies:
     tslib "^1.9.0"
 
-"@ngxs/router-plugin@^3.6.2":
+"@ngxs/router-plugin@^3.7.0":
   version "3.7.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@ngxs/router-plugin/-/router-plugin-3.7.0.tgz#9d0595d8ec12e6143eb9f2f726fcc7cdec8cd635"
   integrity sha1-nQWV2OwS5hQ+ufL3JvzHzeyM1jU=

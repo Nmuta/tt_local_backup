@@ -21,7 +21,8 @@ export class ZendeskGuardService implements CanActivate {
         // TODO: The fix for this is to reload the parent page, but we can't do anything about that from here.
         // For now, the navbar displays a warning and instruction to reload the page, which fixes the issue.
       } else {
-        this.router.navigate(['/auth']);
+        // TODO: NO REDIRECT
+        // this.router.navigate(['/auth']);
       }
     }
 

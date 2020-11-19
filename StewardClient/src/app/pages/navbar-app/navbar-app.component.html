@@ -1,0 +1,15 @@
+<navbar></navbar>
+<mat-drawer-container autosize>
+  <mat-drawer #drawer mode="over" position="end" (closed)="clearSidebar()">
+    <pre>{{ location }}</pre>
+    <router-outlet
+      name="sidebar"
+      (activate)="drawer.open()"
+      (deactivate)="drawer.close()"
+    ></router-outlet>
+  </mat-drawer>
+  <div class="content">
+    <router-outlet></router-outlet>
+    <data-privacy-notice></data-privacy-notice>
+  </div>
+</mat-drawer-container>

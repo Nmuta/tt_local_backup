@@ -2,7 +2,9 @@
 import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Navigate } from '@ngxs/router-plugin';
+import { Action, Actions, Selector, State, StateContext } from '@ngxs/store';
+import { WindowOpen } from '@services/window';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
 import { asapScheduler, Observable } from 'rxjs';
@@ -10,6 +12,7 @@ import { filter, take, timeout } from 'rxjs/operators';
 
 import {
   GetUser,
+  LogoutUser,
   RequestAccessToken,
   ResetAccessToken,
   ResetUserProfile,
@@ -35,7 +38,22 @@ export class UserStateModel {
   },
 })
 export class UserState {
-  constructor(private userService: UserService, private authService: MsalService) {}
+  constructor(
+    public actions$: Actions,
+    private userService: UserService,
+    private authService: MsalService,
+  ) {}
+
+  /** Logs out the current user and directs them to the auth page. */
+  @Action(LogoutUser, { cancelUncompleted: true })
+  public logoutUser(ctx: StateContext<UserStateModel>, action: LogoutUser): Observable<void> {
+    return ctx.dispatch([
+      new ResetUserProfile(),
+      new ResetAccessToken(),
+      new Navigate([`/auth`], { queryParams: { from: action.parentApp } }),
+      new WindowOpen(`${environment.stewardUiUrl}/auth?action=logout`, '_blank'),
+    ]);
+  }
 
   /** Action that requests user profile and sets it to the state. */
   @Action(GetUser, { cancelUncompleted: true })

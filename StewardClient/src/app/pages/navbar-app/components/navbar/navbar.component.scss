@@ -1,0 +1,25 @@
+@import '/src/variables.scss';
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.short-spacer {
+  flex: 0 1 2em;
+}
+
+fa-icon {
+  margin: 0 0.5em;
+}
+
+.warnings fa-icon {
+  color: mat-color($app-warn);
+}
+
+.info fa-icon {
+  color: mat-color($app-primary, lighter);
+}
+
+.location {
+  overflow: hidden;
+}

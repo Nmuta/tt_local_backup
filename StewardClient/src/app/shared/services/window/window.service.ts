@@ -1,14 +1,18 @@
 ﻿// General
 import { Injectable } from '@angular/core';
+import { Actions, ofActionDispatched } from '@ngxs/store';
 import { ZAFClient } from '@shared/definitions/zaf-client';
+import { WindowOpen } from './window.actions';
 
 /** Defines the Window Service. */
 @Injectable({
   providedIn: 'root',
 })
 export class WindowService {
-  constructor() {
-    // Empty
+  constructor(private actions$: Actions) {
+    this.actions$
+      .pipe(ofActionDispatched(WindowOpen))
+      .subscribe(action => this.open(action.url, action.target));
   }
 
   /** Checks if this window is in an iframe. */

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-types */
-export {};
 
 export interface ZAFMetadata {
   appId: number;

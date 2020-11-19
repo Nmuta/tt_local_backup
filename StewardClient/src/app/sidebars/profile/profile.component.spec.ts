@@ -1,0 +1,156 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  ComponentFixture,
+  TestBed,
+  getTestBed,
+  waitForAsync,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
+import { ProfileComponent } from './profile.component';
+import { createMockWindowService } from '@shared/services/window';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Store, NgxsModule } from '@ngxs/store';
+import { UserState } from '@shared/state/user/user.state';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { LogoutUser } from '@shared/state/user/user.actions';
+import { of } from 'rxjs';
+import { UserModel } from '@models/user.model';
+import { delay } from 'rxjs/operators';
+
+describe('ProfileComponent', () => {
+  let mockRouter: Router;
+  let mockStore: Store;
+
+  let fixture: ComponentFixture<ProfileComponent>;
+  let component: ProfileComponent;
+
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [ProfileComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockWindowService(), createMockMsalService()],
+      }).compileComponents();
+
+      const injector = getTestBed();
+      mockRouter = injector.inject(Router);
+      mockStore = injector.inject(Store);
+
+      fixture = TestBed.createComponent(ProfileComponent);
+      component = fixture.debugElement.componentInstance;
+    }),
+  );
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  describe('Method: logout', () => {
+    beforeEach(() => {
+      mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
+    });
+    it('should dispatch store action ResetUserProfile', () => {
+      component.logout();
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new LogoutUser('navbar-app'));
+    });
+  });
+
+  describe('Method: changeProfileTabVisibility', () => {
+    describe('When profileTabVisible is false', () => {
+      it('should call set profileTabVisible to true', () => {
+        component.profileTabVisible = false;
+        component.changeProfileTabVisibility();
+
+        expect(component.profileTabVisible).toBeTruthy();
+      });
+    });
+    describe('When profileTabVisible is true', () => {
+      it('should call set profileTabVisible to false', () => {
+        component.profileTabVisible = true;
+        component.changeProfileTabVisibility();
+
+        expect(component.profileTabVisible).toBeFalsy();
+      });
+    });
+  });
+
+  describe('Method: ngOnInit', () => {
+    const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
+
+    describe('When subscribing to profile returns a value', () => {
+      beforeEach(() => {
+        mockRouter.navigate = jasmine.createSpy('navigate');
+        Object.defineProperty(component, 'profile$', { writable: true });
+        component.profile$ = of(testProfile);
+      });
+
+      it('Should set profile', () => {
+        component.ngOnInit();
+        expect(component.user).toEqual(testProfile);
+      });
+
+      it('Should set loading to false', () => {
+        component.ngOnInit();
+        expect(component.loading).toBeFalsy();
+      });
+
+      describe('If profile is invalid', () => {
+        beforeEach(() => {
+          component.profile$ = of(null);
+        });
+
+        it('Should call router.navigate correctly', () => {
+          component.ngOnInit();
+          expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
+            queryParams: { from: 'navbar-app' },
+          });
+        });
+      });
+
+      describe('If profile is valid', () => {
+        beforeEach(() => {
+          component.profile$ = of(testProfile);
+        });
+
+        it('Should not redirect to auth page', () => {
+          component.ngOnInit();
+          expect(mockRouter.navigate).not.toHaveBeenCalledWith([`/auth`], {
+            queryParams: { from: 'navbar-app' },
+          });
+        });
+      });
+    });
+
+    describe('If subscribing to profile times out', () => {
+      const delayTime = 20000;
+      beforeEach(() => {
+        mockRouter.navigate = jasmine.createSpy('navigate');
+        Object.defineProperty(component, 'profile$', { writable: true });
+        component.profile$ = of(testProfile).pipe(delay(delayTime));
+      });
+
+      it('Should set loading to false', fakeAsync(() => {
+        component.ngOnInit();
+        tick(delayTime);
+        expect(component.loading).toBeFalsy();
+      }));
+
+      it('Should call router.navigate correctly', fakeAsync(() => {
+        component.ngOnInit();
+        tick(delayTime);
+        expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
+          queryParams: { from: 'navbar-app' },
+        });
+      }));
+    });
+  });
+});

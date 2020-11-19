@@ -1,32 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ErrorComponent } from './error/error.component';
-import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
+import { ErrorComponent } from './pages/error/error.component';
 import { ZendeskGuardService } from './route-guards/app.zendesk.guard.service';
 
 const routes: Routes = [
   {
     path: 'navbar-app',
     // canActivate: [ZendeskGuardService],
-    loadChildren: () => import('./navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
+    loadChildren: () => import('./pages/navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
   },
   {
     path: 'ticket-sidebar',
     canActivate: [ZendeskGuardService],
-    loadChildren: () => import('./ticket-app/ticket-app.module').then(m => m.TicketAppModule),
+    loadChildren: () => import('./pages/ticket-app/ticket-app.module').then(m => m.TicketAppModule),
   },
   {
     path: 'auth',
-    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
-  },
-  {
-    path: 'error',
-    component: ErrorComponent,
+    loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
   },
   {
     path: '**',
-    component: FourOhFourComponent,
+    component: ErrorComponent,
   },
 ];
 

@@ -2,24 +2,25 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, Provider } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
-import { NavbarModule } from '@components/navbar/navbar.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { BigintInterceptor } from '@interceptors/bigint.interceptor';
 import { FakeApiInterceptor } from '@interceptors/fake-api/fake-api.interceptor';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
 import { UserState } from '@shared/state/user/user.state';
+import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
 
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
-import { ErrorComponent } from './error/error.component';
-import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
+import { ErrorComponent } from './pages/error/error.component';
+import { SidebarsModule } from './sidebars/sidebars.module';
 
 export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -43,14 +44,16 @@ function fakeApiOrNothing(): Provider[] {
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent, FourOhFourComponent],
+  declarations: [AppComponent, ErrorComponent],
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
-    NavbarModule,
+    SidebarsModule,
     FontAwesomeModule,
     HttpClientModule,
+    FourOhFourModule,
     NgxsModule.forRoot([UserState]),
+    NgxsRouterPluginModule.forRoot(),
     MsalModule.forRoot(
       {
         auth: {
