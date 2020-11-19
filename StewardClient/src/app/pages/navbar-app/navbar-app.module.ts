@@ -11,7 +11,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { FourOhFourComponent } from './pages/four-oh-four/four-oh-four.component';
 import { SidebarsModule } from 'app/sidebars/sidebars.module';
 import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
 import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-privacy-notice.module';
@@ -33,6 +32,6 @@ import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-
     FourOhFourModule,
   ],
   providers: [],
-  declarations: [NavbarAppComponent, HomeComponent, NavbarComponent, FourOhFourComponent],
+  declarations: [NavbarAppComponent, HomeComponent, NavbarComponent],
 })
 export class NavbarAppModule {}
