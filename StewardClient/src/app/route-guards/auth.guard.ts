@@ -25,10 +25,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   public canActivate(
     _route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
-  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+  ): Observable<boolean> {
     // The query portion of the URL doesn't cleanly pass through the redirect process, resulting in 404s. We don't need it, anyway.
     const urlNoQuery = state.url.split('?')[0];
-    const redirectAction = new Navigate(['/auth/login'], { queryParams: { from: urlNoQuery } });
+    const redirectAction = new Navigate(['/auth/login'], { from: urlNoQuery });
 
     return UserState.latestValidProfile$(this.profile$).pipe(
       catchError(_e => {

@@ -1,67 +1,70 @@
-import { TestBed } from '@angular/core/testing';
-import { NgxsModule } from '@ngxs/store';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { UserModel } from '@models/user.model';
+import { Navigate } from '@ngxs/router-plugin';
+import { NgxsModule, Store } from '@ngxs/store';
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 import { AuthGuard } from './auth.guard';
 
-describe('AuthGuard', () => {
+fdescribe('AuthGuard:', () => {
   let guard: AuthGuard;
+  let store: Store;
+  const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
+  const testRoute: Partial<ActivatedRouteSnapshot> = { };
+  const testSnapshot: Partial<RouterStateSnapshot> = { url: '/i/am/a/route?with=query' };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([])],
     });
     guard = TestBed.inject(AuthGuard);
+    store = TestBed.inject(Store);
+
+    store.dispatch = jasmine.createSpy('dispatch');
+    Object.defineProperty(guard, 'profile$', { writable: true });
+
+    guard.profile$ = of(testProfile);
   });
 
   it('should be created', () => {
     expect(guard).toBeTruthy();
   });
 
-  // describe('If profile is invalid', () => {
-  //   beforeEach(() => {
-  //     guard.profile$ = of(null);
-  //   });
+  it('should allow passage', () => {
+    const action = guard.canActivate(testRoute as never, testSnapshot as never);
+    action.subscribe(result => expect(result).toBeTruthy());
+  })
 
-  //   it('Should call router.navigate correctly', () => {
-  //     expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
-  //       queryParams: { from: 'ticket-sidebar' },
-  //     });
-  //   });
-  // });
+  describe('when profile is invalid:', () => {
+    beforeEach(() => {
+      guard.profile$ = of(null);
+    });
 
-  // describe('If subscribing to profile times out', () => {
-  //   const delayTime = 20000;
-  //   beforeEach(() => {
-  //     mockRouter.navigate = jasmine.createSpy('navigate');
-  //     Object.defineProperty(component, 'profile$', { writable: true });
-  //     component.profile$ = of(testProfile).pipe(delay(delayTime));
-  //   });
+    it('should call router.navigate correctly', fakeAsync(() => {
+      const action = guard.canActivate(testRoute as never, testSnapshot as never);
+      action.subscribe(result => expect(result).toBeFalsy());
 
-  //   it('Should set loading to false', fakeAsync(() => {
-  //     component.ngOnInit();
-  //     tick(delayTime);
-  //     expect(component.loading).toBeFalsy();
-  //   }));
+      expect(store.dispatch).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/auth/login'], { from: '/i/am/a/route' }));
+    }));
+  });
 
-  //   it('Should call router.navigate correctly', fakeAsync(() => {
-  //     component.ngOnInit();
-  //     tick(delayTime);
-  //     expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
-  //       queryParams: { from: 'ticket-sidebar' },
-  //     });
-  //   }));
-  // });
+  describe('when profile times out:', () => {
+    const delayTime = 20_000;
 
-  // describe('If profile is invalid', () => {
-  //   beforeEach(() => {
-  //     component.profile$ = of(null);
-  //   });
+    beforeEach(() => {
+      guard.profile$ = of(testProfile).pipe(delay(delayTime));
+    });
 
-  //   it('Should call router.navigate correctly', () => {
-  //     component.ngOnInit();
-  //     expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
-  //       queryParams: { from: 'navbar-app' },
-  //     });
-  //   });
-  // });
+    it('Should call router.navigate correctly', fakeAsync(() => {
+      const action = guard.canActivate(testRoute as never, testSnapshot as never);
+      action.subscribe(result => expect(result).toBeFalsy());
+      tick(delayTime);
+
+      expect(store.dispatch).toHaveBeenCalled();
+      expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/auth/login'], { from: '/i/am/a/route' }));
+    }));
+  });
 });

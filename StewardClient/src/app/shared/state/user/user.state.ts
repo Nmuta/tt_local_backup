@@ -129,7 +129,7 @@ export class UserState {
     const obs = profile$.pipe(
       filter(x => x !== undefined),
       take(1),
-      timeout(10_000),
+      timeout(5_000),
     );
 
     return obs;

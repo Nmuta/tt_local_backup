@@ -43,7 +43,6 @@ export class LoginComponent implements OnInit {
       const response = await this.msalService.loginPopup({
         extraScopesToConsent: [environment.azureAppScope],
       });
-
       this.logger.debug([LogTopic.Auth], `After login: Success`, response);
 
       this.logger.debug([LogTopic.Auth], `Rechecking Auth`);
@@ -53,6 +52,7 @@ export class LoginComponent implements OnInit {
       this.logger.debug([LogTopic.Auth], `Getting latest profile`);
       const profile = await UserState.latestValidProfile$(this.profile$).toPromise();
       this.logger.debug([LogTopic.Auth], `Latest Profile`, profile);
+
       if (!profile) {
         this.error = 'Profile not found. Please try again.';
         return;
