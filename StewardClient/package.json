@@ -43,7 +43,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.29",
     "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@microsoft/applicationinsights-web": "^2.5.8",
-    "@nguniversal/express-engine": "~10.1.0",
+    "@nguniversal/express-engine": "~11.0.0",
     "@ngxs/router-plugin": "^3.7.0",
     "@ngxs/store": "^3.6.2",
     "@types/faker": "^5.1.3",
