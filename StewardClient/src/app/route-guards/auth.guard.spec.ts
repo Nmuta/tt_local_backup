@@ -8,7 +8,7 @@ import { delay } from 'rxjs/operators';
 
 import { AuthGuard } from './auth.guard';
 
-fdescribe('AuthGuard:', () => {
+describe('AuthGuard:', () => {
   let guard: AuthGuard;
   let store: Store;
   const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
