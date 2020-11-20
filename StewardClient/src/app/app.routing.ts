@@ -20,7 +20,8 @@ const routes: Routes = [
   },
   {
     path: 'ticket-sidebar',
-    canActivate: [ZendeskGuard],
+    canActivate: [AuthGuard, ZendeskGuard],
+    canActivateChild: [AuthGuard],
     loadChildren: () => import('./pages/ticket-app/ticket-app.module').then(m => m.TicketAppModule),
   },
   {
