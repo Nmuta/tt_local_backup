@@ -34,6 +34,7 @@ const routes: Routes = [
       initialNavigation: 'enabled',
       scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled',
+      relativeLinkResolution: 'legacy',
     }),
   ],
   exports: [RouterModule],
