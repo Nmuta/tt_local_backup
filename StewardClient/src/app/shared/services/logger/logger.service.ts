@@ -63,7 +63,7 @@ export class LoggerService {
       try {
         // fallback to logging the error here and suppress the failure.
         console.error(e);
-        this.appInsights.trackException({error: e});
+        this.appInsights.trackException({ error: e });
       } catch (e2) {
         // fallback to console-only log, or suppress
         try {

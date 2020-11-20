@@ -12,7 +12,7 @@ fdescribe('AuthGuard:', () => {
   let guard: AuthGuard;
   let store: Store;
   const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
-  const testRoute: Partial<ActivatedRouteSnapshot> = { };
+  const testRoute: Partial<ActivatedRouteSnapshot> = {};
   const testSnapshot: Partial<RouterStateSnapshot> = { url: '/i/am/a/route?with=query' };
 
   beforeEach(() => {
@@ -35,7 +35,7 @@ fdescribe('AuthGuard:', () => {
   it('should allow passage', () => {
     const action = guard.canActivate(testRoute as never, testSnapshot as never);
     action.subscribe(result => expect(result).toBeTruthy());
-  })
+  });
 
   describe('when profile is invalid:', () => {
     beforeEach(() => {
@@ -47,7 +47,9 @@ fdescribe('AuthGuard:', () => {
       action.subscribe(result => expect(result).toBeFalsy());
 
       expect(store.dispatch).toHaveBeenCalled();
-      expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/auth/login'], { from: '/i/am/a/route' }));
+      expect(store.dispatch).toHaveBeenCalledWith(
+        new Navigate(['/auth/login'], { from: '/i/am/a/route' }),
+      );
     }));
   });
 
@@ -64,7 +66,9 @@ fdescribe('AuthGuard:', () => {
       tick(delayTime);
 
       expect(store.dispatch).toHaveBeenCalled();
-      expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/auth/login'], { from: '/i/am/a/route' }));
+      expect(store.dispatch).toHaveBeenCalledWith(
+        new Navigate(['/auth/login'], { from: '/i/am/a/route' }),
+      );
     }));
   });
 });
