@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<testsuite name="Chrome Headless 86.0.4240.198 (Windows 10)" package="" timestamp="2020-11-20T22:55:55" id="0" hostname="TT-LUGEIKEN-WS" tests="165" errors="0" failures="0" time="0.713">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/86.0.4240.198 Safari/537.36"/>
+  </properties>
+  <testcase name="AuthComponent should create" time="0.042" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit When windowService.zafClient returns an object Should set inZendesk to true" time="0.006" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit When windowService.zafClient returns false Should set inZendesk to false" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile returns a value Should set profile" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile returns a value Should set loading to false" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile returns a value If profile is valid and app is running in zendesk Should call router.navigate correctly" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile returns a value If profile is valid fromAadLogin is true Should call autoCloseWindow" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile returns a value If profile is valid fromAadLogin is false Should not call autoCloseWindow" time="0.005" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile returns a value If profile is null Should not call router.navigate" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile returns a value If profile is null fromAadLogout is true Should call autoCloseWindow" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile returns a value If profile is null fromAadLogout is false Should not call autoCloseWindow" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile returns a value If app is not running in zendesk Should not call router.navigate" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile times out Should set profile to null" time="0.005" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile times out Should set loading to false" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile times out If component.fromAadLogout is true should call autoCloseWindow" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: ngOnInit If subscribing to profile times out If component.fromAadLogout is false should call autoCloseWindow" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: loginWithNewTab should call windowService.open correctly" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: login should call msalService.loginRedirect correctly" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: logout should call msalService.logout" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: recheckAuth should dispatch store action ResetUserProfile" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: recheckAuth should dispatch store action RequestAccessToken" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: recheckAuth should call ngOnInit" time="0.005" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: autoCloseWindow should autoCloseTimeSecsLeft to the input param" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: autoCloseWindow After waiting a second and the timer hits above 0 should not call window.close" time="0.005" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="AuthComponent Method: autoCloseWindow After waiting a second and the timer hits 0 should call window.close" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).AuthComponent"/>
+  <testcase name="NavbarComponent should create" time="0.015" classname="Chrome_Headless_86_0_4240_198_(Windows_10).NavbarComponent"/>
+  <testcase name="NavbarAppComponent should create" time="0.014" classname="Chrome_Headless_86_0_4240_198_(Windows_10).NavbarAppComponent"/>
+  <testcase name="HomeComponent should create" time="0.005" classname="Chrome_Headless_86_0_4240_198_(Windows_10).HomeComponent"/>
+  <testcase name="BanHistoryComponent should create" time="0.027" classname="Chrome_Headless_86_0_4240_198_(Windows_10).BanHistoryComponent"/>
+  <testcase name="ConsolesComponent should create" time="0.015" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ConsolesComponent"/>
+  <testcase name="ConsolesComponent valid initialization ngOnChanges should skip undefined xuids" time="0.01" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ConsolesComponent"/>
+  <testcase name="ConsolesComponent valid initialization ngOnChanges should update when xuid set" time="0.009" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ConsolesComponent"/>
+  <testcase name="ConsolesComponent valid initialization ngOnChanges should update when request errored" time="0.015" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ConsolesComponent"/>
+  <testcase name="ConsolesComponent valid initialization after xuid set makeBanAction should ban" time="0.015" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ConsolesComponent"/>
+  <testcase name="ConsolesComponent valid initialization after xuid set makeUnbanAction should unban" time="0.014" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ConsolesComponent"/>
+  <testcase name="CreditHistoryComponent should create" time="0.012" classname="Chrome_Headless_86_0_4240_198_(Windows_10).CreditHistoryComponent"/>
+  <testcase name="GamertagsComponent should create" time="0.01" classname="Chrome_Headless_86_0_4240_198_(Windows_10).GamertagsComponent"/>
+  <testcase name="OverviewComponent should create" time="0.009" classname="Chrome_Headless_86_0_4240_198_(Windows_10).OverviewComponent"/>
+  <testcase name="SunriseComponent should create" time="0.007" classname="Chrome_Headless_86_0_4240_198_(Windows_10).SunriseComponent"/>
+  <testcase name="UserFlagsComponent should create" time="0.011" classname="Chrome_Headless_86_0_4240_198_(Windows_10).UserFlagsComponent"/>
+  <testcase name="UserDetailsComponent should create" time="0.006" classname="Chrome_Headless_86_0_4240_198_(Windows_10).UserDetailsComponent"/>
+  <testcase name="TicketAppComponent should create" time="0.006" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: ngOnInit When subscribing to profile returns a value Should set profile" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: ngOnInit When subscribing to profile returns a value Should set loading to false" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: ngOnInit When subscribing to profile returns a value If profile is invalid Should call router.navigate correctly" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: ngOnInit When subscribing to profile returns a value If profile is valid Should call getTicketRequestor" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: ngOnInit If subscribing to profile times out Should set loading to false" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: ngOnInit If subscribing to profile times out Should call router.navigate correctly" time="0.006" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: ngAfterViewInit Should call zendeskService.resize correctly" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: getTicketRequestor When zendesk service returns valid ticket requestor data should set component.gamertag to requestor name" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: getTicketRequestor When zendesk service returns valid ticket requestor data should call component.getTicketFields" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: getTicketFields When zendesk service returns valid ticket fields data should call component.getTitleData with correct field info" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: getTitleData should call zendesk service getTicketCustomField() with input parameter" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: getTitleData When zendeskservice getTicketCustomField() returns forza_street as title should set component.gameTitle to Gravity" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: getTitleData When zendeskservice getTicketCustomField() returns forza_horizon_4 as title should set component.gameTitle to Sunrise" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: getTitleData When zendeskservice getTicketCustomField() returns forza_motorsport_7 as title should set component.gameTitle to Apollo" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: getTitleData When zendeskservice getTicketCustomField() returns forza_horizon_3 as title should set component.gameTitle to Opus" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="TicketAppComponent Method: goToInventory expect zendeskService.goToApp to be called" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).TicketAppComponent"/>
+  <testcase name="ContentCollapseComponent should create" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ContentCollapseComponent"/>
+  <testcase name="ErrorSpinnerComponent should create" time="0.006" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ErrorSpinnerComponent"/>
+  <testcase name="VerifyActionButtonComponent should create" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).VerifyActionButtonComponent"/>
+  <testcase name="BigintInterceptor should be created" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).BigintInterceptor"/>
+  <testcase name="FakeApiInterceptor should be created" time="0" classname="Chrome_Headless_86_0_4240_198_(Windows_10).FakeApiInterceptor"/>
+  <testcase name="BigJsonPipe create an instance" time="0" classname="Chrome_Headless_86_0_4240_198_(Windows_10).BigJsonPipe"/>
+  <testcase name="BigJsonPipe handles null" time="0" classname="Chrome_Headless_86_0_4240_198_(Windows_10).BigJsonPipe"/>
+  <testcase name="BigNumbersPipe create an instance" time="0" classname="Chrome_Headless_86_0_4240_198_(Windows_10).BigNumbersPipe"/>
+  <testcase name="BigNumbersPipe formats BigInts" time="0.009" classname="Chrome_Headless_86_0_4240_198_(Windows_10).BigNumbersPipe"/>
+  <testcase name="BigNumbersPipe formats numbers" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).BigNumbersPipe"/>
+  <testcase name="BigNumbersPipe handles numbers above MAX_SAFE_INTEGER" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).BigNumbersPipe"/>
+  <testcase name="BigNumbersPipe handles decimals" time="0" classname="Chrome_Headless_86_0_4240_198_(Windows_10).BigNumbersPipe"/>
+  <testcase name="HumanizePipe create an instance" time="0" classname="Chrome_Headless_86_0_4240_198_(Windows_10).HumanizePipe"/>
+  <testcase name="HumanizePipe handles CamelCase" time="0" classname="Chrome_Headless_86_0_4240_198_(Windows_10).HumanizePipe"/>
+  <testcase name="HumanizePipe handles camelCase" time="0" classname="Chrome_Headless_86_0_4240_198_(Windows_10).HumanizePipe"/>
+  <testcase name="HumanizePipe handles Checksum_ObfuscatedDataAccessors" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).HumanizePipe"/>
+  <testcase name="HumanizePipe handles UWP" time="0" classname="Chrome_Headless_86_0_4240_198_(Windows_10).HumanizePipe"/>
+  <testcase name="HumanizePipe passes through non-strings" time="0" classname="Chrome_Headless_86_0_4240_198_(Windows_10).HumanizePipe"/>
+  <testcase name="service: ApiService Method: getRequest When the http request succeeds should make a get request to the expected url &amp; set headers &amp; params" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: ApiService"/>
+  <testcase name="service: ApiService Method: getRequest When the http request errors out should throw error" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: ApiService"/>
+  <testcase name="service: ApiService Method: postRequest When the http request succeeds should make a get request to the expected url &amp; set headers &amp; params" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: ApiService"/>
+  <testcase name="service: ApiService Method: postRequest When the http request errors out should throw error" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: ApiService"/>
+  <testcase name="service: ApiService Method: putRequest When the http request succeeds should make a get request to the expected url &amp; set headers &amp; params" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: ApiService"/>
+  <testcase name="service: ApiService Method: putRequest When the http request errors out should throw error" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: ApiService"/>
+  <testcase name="service: ApiService Method: deleteObject When the http request succeeds should make a get request to the expected url &amp; set headers &amp; params" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: ApiService"/>
+  <testcase name="service: ApiService Method: deleteObject When the http request errors out should throw error" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: ApiService"/>
+  <testcase name="ApolloService should be created" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ApolloService"/>
+  <testcase name="ApolloService Method: getPlayerDetailsByGamertag should call API service getRequest with the expected params" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ApolloService"/>
+  <testcase name="service: GravityService Method: getPlayerDetailsByGamertag should call API service getRequest with the expected params" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: getPlayerDetailsByXuid should call API service getRequest with the expected params" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: getPlayerDetailsByT10Id should call API service getRequest with the expected params" time="0.005" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: getPlayerInventoryByXuid should call API service getRequest with the expected params" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: getPlayerInventoryByT10Id should call API service getRequest with the expected params" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: getPlayerInventoryByProfileIdWithXuid should call API service getRequest with the expected params" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: getPlayerInventoryByProfileIdWithT10Id should call API service getRequest with the expected params" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: updatePlayerInventoryByXuid should call API service postRequest with the expected params" time="0.005" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: updatePlayerInventoryByXuid When xuid is not provided should throw error from observable" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: updatePlayerInventoryByXuid When background processing is set to true should call API service postRequest with the expected param" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: updatePlayerInventoryByT10Id should call API service postRequest with the expected params" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: updatePlayerInventoryByT10Id When xuid is not provided should throw error from observable" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: updatePlayerInventoryByT10Id When background processing is set to true should call API service postRequest with the expected param" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: getGameSettings should call API service getRequest with the expected params" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="service: GravityService Method: getGiftHistories should call API service getRequest with the expected params" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: GravityService"/>
+  <testcase name="LoggerService should be created" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).LoggerService"/>
+  <testcase name="LoggerService should use correct environment values" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).LoggerService"/>
+  <testcase name="LoggerService should log" time="0" classname="Chrome_Headless_86_0_4240_198_(Windows_10).LoggerService"/>
+  <testcase name="LoggerService should warn" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).LoggerService"/>
+  <testcase name="LoggerService should debug" time="0" classname="Chrome_Headless_86_0_4240_198_(Windows_10).LoggerService"/>
+  <testcase name="OpusService should be created" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).OpusService"/>
+  <testcase name="OpusService Method: getPlayerDetailsByGamertag should call API service getRequest with the expected params" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).OpusService"/>
+  <testcase name="SunriseService should be created" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).SunriseService"/>
+  <testcase name="SunriseService Method: getPlayerDetailsByGamertag should call API service getRequest with the expected params" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).SunriseService"/>
+  <testcase name="SunriseService handles getFlagsByXuid" time="0.005" classname="Chrome_Headless_86_0_4240_198_(Windows_10).SunriseService"/>
+  <testcase name="SunriseService handles putFlagsByXuid" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).SunriseService"/>
+  <testcase name="SunriseService handles getBanHistoryByXuid" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).SunriseService"/>
+  <testcase name="SunriseService handles getSharedConsoleUsersByXuid" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).SunriseService"/>
+  <testcase name="SunriseService handles getConsoleDetailsByXuid" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).SunriseService"/>
+  <testcase name="SunriseService handles putBanStatusByConsoleId" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).SunriseService"/>
+  <testcase name="SunriseService handles getProfileSummaryByXuid" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).SunriseService"/>
+  <testcase name="service: UserService Method: getUserProfile should call API service getRequest with the expected params" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: UserService"/>
+  <testcase name="service: WindowService should be created" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: WindowService"/>
+  <testcase name="service: WindowService Actions: OpenWindow should work" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: WindowService"/>
+  <testcase name="service: UserService Method: getTicketDetails should use zafClient loaded into the window to get the ticket info" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: UserService"/>
+  <testcase name="service: UserService Method: getTicketRequestor should use zafClient loaded into the window to get the ticket requestor info" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: UserService"/>
+  <testcase name="service: UserService Method: getTicketFields should use zafClient loaded into the window to get the ticket fields" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: UserService"/>
+  <testcase name="service: UserService Method: getTicketCustomField should use zafClient loaded into the window to get the custom ticket field" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: UserService"/>
+  <testcase name="service: UserService Method: sendRequest should use zafClient loaded into the window to send a request" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: UserService"/>
+  <testcase name="service: UserService Method: currentUser should use zafClient loaded into the window to get the ticket fields" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: UserService"/>
+  <testcase name="service: UserService Method: context should use zafClient loaded into the window to get the client context" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: UserService"/>
+  <testcase name="service: UserService Method: resize should use zafClient loaded into the window to resize the current app" time="0.001" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: UserService"/>
+  <testcase name="service: UserService Method: goToApp should use zafClient loaded into the window to route to a new zendesk app" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).service: UserService"/>
+  <testcase name="State: User [GetUser] Action when UserService returns a valid profile should patch profile" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).State: User"/>
+  <testcase name="State: User [GetUser] Action when UserService returns a valid profile should succeed the action" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).State: User"/>
+  <testcase name="State: User [GetUser] Action when UserService throws an error should patch profile with null" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).State: User"/>
+  <testcase name="State: User [GetUser] Action when UserService throws an error should succeed the action" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).State: User"/>
+  <testcase name="State: User [ResetAccessToken] Action should patch access token to undefined" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).State: User"/>
+  <testcase name="DataPrivacyNoticeComponent should create" time="0.01" classname="Chrome_Headless_86_0_4240_198_(Windows_10).DataPrivacyNoticeComponent"/>
+  <testcase name="PlayerDetailsItemComponent should create" time="0.009" classname="Chrome_Headless_86_0_4240_198_(Windows_10).PlayerDetailsItemComponent"/>
+  <testcase name="PlayerDetailsItemComponent Method: ngOnInit If the input variable value is undefined should set component.showItem to false" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).PlayerDetailsItemComponent"/>
+  <testcase name="PlayerDetailsItemComponent Method: ngOnInit If the input variable value is null should set component.showItem to true" time="0.007" classname="Chrome_Headless_86_0_4240_198_(Windows_10).PlayerDetailsItemComponent"/>
+  <testcase name="PlayerDetailsItemComponent Method: ngOnInit If the input variable value is valid string should set component.showItem to true" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).PlayerDetailsItemComponent"/>
+  <testcase name="PlayerDetailsItemComponent Method: copyToClipboard should set component.copied to true" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).PlayerDetailsItemComponent"/>
+  <testcase name="PlayerDetailsItemComponent Method: copyToClipboard should call clipboard.copyMessage with input value" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).PlayerDetailsItemComponent"/>
+  <testcase name="PlayerDetailsItemComponent Method: copyToClipboard After waiting for 2 seconds should set component.copied to false" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).PlayerDetailsItemComponent"/>
+  <testcase name="PlayerDetailsComponent should create" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).PlayerDetailsComponent"/>
+  <testcase name="PlayerDetailsComponent Method ngOnChanges: Should call service for player details" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).PlayerDetailsComponent"/>
+  <testcase name="PlayerDetailsComponent Method ngOnChanges: Should set isLoading to false" time="0.005" classname="Chrome_Headless_86_0_4240_198_(Windows_10).PlayerDetailsComponent"/>
+  <testcase name="PlayerDetailsComponent Method ngOnChanges: And api returns player details Should set playerDetails expected response" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).PlayerDetailsComponent"/>
+  <testcase name="PlayerDetailsComponent Method ngOnChanges: And api returns error Should set playerDetails expected response" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).PlayerDetailsComponent"/>
+  <testcase name="ApolloPlayerDetailsComponent should create" time="0.014" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ApolloPlayerDetailsComponent"/>
+  <testcase name="ApolloPlayerDetailsComponent Method makeRequest$: should return apollo player details request observable" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ApolloPlayerDetailsComponent"/>
+  <testcase name="GravityPlayerDetailsComponent should create" time="0.011" classname="Chrome_Headless_86_0_4240_198_(Windows_10).GravityPlayerDetailsComponent"/>
+  <testcase name="GravityPlayerDetailsComponent Method makeRequest$: should return apollo player details request observable" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).GravityPlayerDetailsComponent"/>
+  <testcase name="OpusPlayerDetailsComponent should create" time="0.01" classname="Chrome_Headless_86_0_4240_198_(Windows_10).OpusPlayerDetailsComponent"/>
+  <testcase name="OpusPlayerDetailsComponent Method makeRequest$: should return apollo player details request observable" time="0.002" classname="Chrome_Headless_86_0_4240_198_(Windows_10).OpusPlayerDetailsComponent"/>
+  <testcase name="SunrisePlayerDetailsComponent should create" time="0.011" classname="Chrome_Headless_86_0_4240_198_(Windows_10).SunrisePlayerDetailsComponent"/>
+  <testcase name="SunrisePlayerDetailsComponent Method makeRequest$: should return apollo player details request observable" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).SunrisePlayerDetailsComponent"/>
+  <testcase name="ProfileComponent should create" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ProfileComponent"/>
+  <testcase name="ProfileComponent Method: logout should dispatch store action ResetUserProfile" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ProfileComponent"/>
+  <testcase name="ProfileComponent Method: changeProfileTabVisibility When profileTabVisible is false should call set profileTabVisible to true" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ProfileComponent"/>
+  <testcase name="ProfileComponent Method: changeProfileTabVisibility When profileTabVisible is true should call set profileTabVisible to false" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ProfileComponent"/>
+  <testcase name="ProfileComponent Method: ngOnInit When subscribing to profile returns a value Should set profile" time="0.005" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ProfileComponent"/>
+  <testcase name="ProfileComponent Method: ngOnInit When subscribing to profile returns a value Should set loading to false" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ProfileComponent"/>
+  <testcase name="ProfileComponent Method: ngOnInit When subscribing to profile returns a value If profile is invalid Should call router.navigate correctly" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ProfileComponent"/>
+  <testcase name="ProfileComponent Method: ngOnInit When subscribing to profile returns a value If profile is valid Should not redirect to auth page" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ProfileComponent"/>
+  <testcase name="ProfileComponent Method: ngOnInit If subscribing to profile times out Should set loading to false" time="0.003" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ProfileComponent"/>
+  <testcase name="ProfileComponent Method: ngOnInit If subscribing to profile times out Should call router.navigate correctly" time="0.004" classname="Chrome_Headless_86_0_4240_198_(Windows_10).ProfileComponent"/>
+  <system-out>
+    <![CDATA[
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>
