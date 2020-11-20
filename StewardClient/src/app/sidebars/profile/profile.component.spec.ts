@@ -122,7 +122,7 @@ describe('ProfileComponent', () => {
 
     describe('If subscribing to profile times out', () => {
       const delayTime = 20000;
-      
+
       beforeEach(() => {
         mockRouter.navigate = jasmine.createSpy('navigate');
         Object.defineProperty(component, 'profile$', { writable: true });

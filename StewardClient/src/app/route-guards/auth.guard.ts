@@ -20,9 +20,7 @@ import { catchError, map } from 'rxjs/operators';
 export class AuthGuard implements CanActivate, CanActivateChild {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  constructor(
-    private readonly store: Store,
-  ) {}
+  constructor(private readonly store: Store) {}
 
   /** Checks when the component is first loaded. */
   public canActivate(
@@ -31,7 +29,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     // The query portion of the URL doesn't cleanly pass through the redirect process, resulting in 404s. We don't need it, anyway.
     const urlNoQuery = state.url.split('?')[0];
-    const redirectAction = new Navigate(['/auth/login'], {queryParams: { from: urlNoQuery }});
+    const redirectAction = new Navigate(['/auth/login'], { queryParams: { from: urlNoQuery } });
 
     return UserState.latestValidProfile$(this.profile$).pipe(
       catchError(_e => {
@@ -42,7 +40,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if (profile) {
           return true;
         }
-        
+
         this.store.dispatch(redirectAction);
         return false;
       }),

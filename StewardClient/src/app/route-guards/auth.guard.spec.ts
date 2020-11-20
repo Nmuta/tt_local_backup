@@ -52,16 +52,16 @@ describe('AuthGuard', () => {
   //   }));
   // });
 
-      // describe('If profile is invalid', () => {
-      //   beforeEach(() => {
-      //     component.profile$ = of(null);
-      //   });
+  // describe('If profile is invalid', () => {
+  //   beforeEach(() => {
+  //     component.profile$ = of(null);
+  //   });
 
-      //   it('Should call router.navigate correctly', () => {
-      //     component.ngOnInit();
-      //     expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
-      //       queryParams: { from: 'navbar-app' },
-      //     });
-      //   });
-      // });
+  //   it('Should call router.navigate correctly', () => {
+  //     component.ngOnInit();
+  //     expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
+  //       queryParams: { from: 'navbar-app' },
+  //     });
+  //   });
+  // });
 });
