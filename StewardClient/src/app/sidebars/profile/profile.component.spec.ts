@@ -19,7 +19,6 @@ import { LogoutUser } from '@shared/state/user/user.actions';
 import { of } from 'rxjs';
 import { UserModel } from '@models/user.model';
 import { delay } from 'rxjs/operators';
-import { Navigate } from '@ngxs/router-plugin';
 
 describe('ProfileComponent', () => {
   let mockRouter: Router;

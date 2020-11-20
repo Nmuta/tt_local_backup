@@ -5,7 +5,6 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
-  Router,
 } from '@angular/router';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';

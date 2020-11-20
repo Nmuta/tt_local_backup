@@ -25,7 +25,6 @@ import { createMockZendeskService, ZendeskService } from '@shared/services/zende
 import { UserState } from '@shared/state/user/user.state';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { UserModel } from '@shared/models/user.model';
-import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { GameTitleCodeNames } from '@models/enums';
@@ -33,7 +32,6 @@ import { GameTitleCodeNames } from '@models/enums';
 describe('TicketAppComponent', () => {
   let fixture: ComponentFixture<TicketAppComponent>;
   let component: TicketAppComponent;
-  let mockRouter: Router;
   let mockZendeskService: ZendeskService;
 
   beforeEach(
@@ -55,8 +53,7 @@ describe('TicketAppComponent', () => {
       }).compileComponents();
 
       const injector = getTestBed();
-      mockRouter = injector.get(Router);
-      mockZendeskService = injector.get(ZendeskService);
+      mockZendeskService = injector.inject(ZendeskService);
 
       fixture = TestBed.createComponent(TicketAppComponent);
       component = fixture.debugElement.componentInstance;
