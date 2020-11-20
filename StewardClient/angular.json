@@ -138,7 +138,6 @@
           }
         },
         "tslint": {
-          // this can be deleted after commit
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
