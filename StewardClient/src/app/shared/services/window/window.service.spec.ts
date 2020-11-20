@@ -10,7 +10,7 @@ describe('service: WindowService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([])],
+      imports: [NgxsModule.forRoot([WindowService])],
       providers: [WindowService],
     });
 
