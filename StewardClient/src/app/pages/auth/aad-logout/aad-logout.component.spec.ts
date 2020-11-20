@@ -1,4 +1,6 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgxsModule } from '@ngxs/store';
 
 import { AadLogoutComponent } from './aad-logout.component';
 
@@ -8,7 +10,9 @@ describe('AadLogoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [NgxsModule.forRoot([])],
       declarations: [AadLogoutComponent],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

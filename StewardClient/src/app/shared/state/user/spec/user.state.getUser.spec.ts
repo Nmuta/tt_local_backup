@@ -1,5 +1,5 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { Store, NgxsModule, Actions, ofActionSuccessful } from '@ngxs/store';
+import { Store, NgxsModule, Actions, ofActionSuccessful, ofActionErrored } from '@ngxs/store';
 import { UserState } from '../user.state';
 import { GetUser } from '../user.actions';
 import { of, throwError } from 'rxjs';
@@ -26,13 +26,17 @@ describe('State: User', () => {
       mockUserService.getUserProfile = jasmine.createSpy('getUserProfile').and.returnValue(of({}));
     }),
   );
+
   describe('[GetUser] Action', () => {
     let action;
+
     beforeEach(() => {
       action = new GetUser();
     });
+
     describe('when UserService returns a valid profile', () => {
       let expectedProfile: unknown;
+
       beforeEach(() => {
         expectedProfile = {
           name: 'Luke G',
@@ -41,6 +45,7 @@ describe('State: User', () => {
           .createSpy('getUserProfile')
           .and.returnValue(of(expectedProfile));
       });
+
       it('should patch profile', () => {
         // Action
         store.dispatch(action);
@@ -52,6 +57,7 @@ describe('State: User', () => {
             expect(profile).toBe(expectedProfile);
           });
       });
+
       it('should succeed the action', done => {
         // Assert
         actions$.pipe(ofActionSuccessful(GetUser)).subscribe(() => {
@@ -62,12 +68,14 @@ describe('State: User', () => {
         store.dispatch(action);
       });
     });
+
     describe('when UserService throws an error', () => {
       beforeEach(() => {
         mockUserService.getUserProfile = jasmine
           .createSpy('getUserProfile')
           .and.returnValue(throwError({ message: '401 Unauthorized' }));
       });
+
       it('should patch profile with null', () => {
         // Action
         store.dispatch(action);
@@ -79,9 +87,10 @@ describe('State: User', () => {
             expect(profile).toBeNull();
           });
       });
-      it('should succeed the action', done => {
+
+      it('should error the action', done => {
         // Assert
-        actions$.pipe(ofActionSuccessful(GetUser)).subscribe(() => {
+        actions$.pipe(ofActionErrored(GetUser)).subscribe(() => {
           done();
         });
 

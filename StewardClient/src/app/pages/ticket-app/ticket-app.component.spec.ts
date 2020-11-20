@@ -69,10 +69,10 @@ describe('TicketAppComponent', () => {
 
   describe('Method: ngOnInit', () => {
     const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
+
     describe('When subscribing to profile returns a value', () => {
       beforeEach(() => {
         component.getTicketRequestor = jasmine.createSpy('getTicketRequestor');
-        mockRouter.navigate = jasmine.createSpy('navigate');
         Object.defineProperty(component, 'profile$', { writable: true });
         component.profile$ = of(testProfile);
       });
@@ -87,17 +87,6 @@ describe('TicketAppComponent', () => {
         expect(component.loading).toBeFalsy();
       });
 
-      describe('If profile is invalid', () => {
-        beforeEach(() => {
-          component.profile$ = of(null);
-        });
-        it('Should call router.navigate correctly', () => {
-          component.ngOnInit();
-          expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
-            queryParams: { from: 'ticket-sidebar' },
-          });
-        });
-      });
       describe('If profile is valid', () => {
         beforeEach(() => {
           component.profile$ = of(testProfile);
@@ -108,27 +97,22 @@ describe('TicketAppComponent', () => {
         });
       });
     });
+
     describe('If subscribing to profile times out', () => {
       const delayTime = 20000;
       beforeEach(() => {
-        mockRouter.navigate = jasmine.createSpy('navigate');
         Object.defineProperty(component, 'profile$', { writable: true });
         component.profile$ = of(testProfile).pipe(delay(delayTime));
       });
+
       it('Should set loading to false', fakeAsync(() => {
         component.ngOnInit();
         tick(delayTime);
         expect(component.loading).toBeFalsy();
       }));
-      it('Should call router.navigate correctly', fakeAsync(() => {
-        component.ngOnInit();
-        tick(delayTime);
-        expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
-          queryParams: { from: 'ticket-sidebar' },
-        });
-      }));
     });
   });
+
   describe('Method: ngAfterViewInit', () => {
     beforeEach(() => {
       mockZendeskService.resize = jasmine.createSpy('resize');

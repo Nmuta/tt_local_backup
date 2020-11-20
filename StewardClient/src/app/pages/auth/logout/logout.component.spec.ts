@@ -1,4 +1,7 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { createMockMsalService } from '@mocks/msal.service.mock';
+import { NgxsModule } from '@ngxs/store';
 
 import { LogoutComponent } from './logout.component';
 
@@ -8,7 +11,10 @@ describe('LogoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [NgxsModule.forRoot([])],
       declarations: [LogoutComponent],
+      providers: [createMockMsalService()],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
