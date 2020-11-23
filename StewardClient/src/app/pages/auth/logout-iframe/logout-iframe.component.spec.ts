@@ -29,6 +29,7 @@ describe('LogoutIframeComponent:', () => {
     fixture = TestBed.createComponent(LogoutIframeComponent);
     component = fixture.componentInstance;
     Object.defineProperty(component, 'profile$', { writable: true });
+    component.profile$ = of();
 
     fixture.detectChanges();
   });

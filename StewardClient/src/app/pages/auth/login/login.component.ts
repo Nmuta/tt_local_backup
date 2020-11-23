@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
 import { UserModel } from '@models/user.model';
+import { Navigate } from '@ngxs/router-plugin';
 import { Select, Store } from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
 import { RecheckAuth } from '@shared/state/user/user.actions';
@@ -24,7 +25,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private readonly msalService: MsalService,
     private readonly route: ActivatedRoute,
-    private readonly router: Router,
     private readonly store: Store,
     private readonly logger: LoggerService,
   ) {}
@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
         return;
       }
 
-      this.router.navigate([this.redirectToRoute]);
+      this.store.dispatch(new Navigate([this.redirectToRoute]));
     } catch (error) {
       this.logger.debug([LogTopic.Auth], `Login: Error`, error);
       this.error = error;

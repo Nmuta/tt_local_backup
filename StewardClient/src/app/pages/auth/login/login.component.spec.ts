@@ -1,15 +1,25 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ActivatedRoute, ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalService } from '@mocks/msal.service.mock';
-import { NgxsModule } from '@ngxs/store';
+import { UserModel } from '@models/user.model';
+import { Navigate } from '@ngxs/router-plugin';
+import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { RecheckAuth } from '@shared/state/user/user.actions';
+import { of } from 'rxjs';
+import { delay, startWith } from 'rxjs/operators';
 
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
+  let activatedRoute: ActivatedRoute;
+  let store: Store;
+  const sampleRoute = '/i/am/a/route';
+  const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -18,15 +28,73 @@ describe('LoginComponent', () => {
       providers: [createMockMsalService(), createMockLoggerService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
+
+    store = TestBed.inject(Store);
+    store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
+    activatedRoute = TestBed.inject(ActivatedRoute);
+
+    activatedRoute.snapshot = {
+      queryParamMap: convertToParamMap({ from: sampleRoute }),
+    } as ActivatedRouteSnapshot;
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
+    Object.defineProperty(component, 'profile$', { writable: true });
+
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('has profile:', () => {
+    beforeEach(() => {
+      component.profile$ = of(testProfile);
+    });
+
+    it(
+      'should redirect',
+      waitForAsync(async () => {
+        await fixture.whenStable();
+        expect(store.dispatch).toHaveBeenCalledWith(new RecheckAuth());
+        expect(store.dispatch).toHaveBeenCalledWith(new Navigate([sampleRoute]));
+      }),
+    );
+  });
+
+  describe('null profile:', () => {
+    beforeEach(() => {
+      component.profile$ = of(null);
+    });
+
+    it(
+      'should error',
+      waitForAsync(async () => {
+        await fixture.whenStable();
+        expect(store.dispatch).toHaveBeenCalledWith(new RecheckAuth());
+        expect(store.dispatch).toHaveBeenCalledTimes(1);
+        expect(component.error).toBeTruthy();
+      }),
+    );
+  });
+
+  describe('delayed null profile:', () => {
+    const delayToProfile = 3_000;
+    beforeEach(() => {
+      component.profile$ = of(null).pipe(delay(delayToProfile), startWith(testProfile));
+    });
+
+    it(
+      'should redirect',
+      waitForAsync(async () => {
+        expect(store.dispatch).toHaveBeenCalledTimes(0);
+        await fixture.whenStable();
+        expect(store.dispatch).toHaveBeenCalledWith(new RecheckAuth());
+        expect(store.dispatch).toHaveBeenCalledWith(new Navigate([sampleRoute]));
+      }),
+    );
   });
 });

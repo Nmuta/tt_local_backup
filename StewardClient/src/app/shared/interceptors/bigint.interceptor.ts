@@ -23,6 +23,11 @@ export class BigintInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
 
+    return this.handle(request, next);
+  }
+
+  /** Called when we attempt to handle the request. */
+  public handle(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const newRequest = request.clone({
       body: JSONBigInt.stringify(request.body),
       responseType: 'text',
