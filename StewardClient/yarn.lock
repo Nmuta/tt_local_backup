@@ -1481,7 +1481,7 @@
     "@nguniversal/common" "11.0.0"
     tslib "^2.0.0"
 
-"@ngxs/devtools-plugin@^3.4.3":
+"@ngxs/devtools-plugin@^3.7.0":
   version "3.7.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@ngxs/devtools-plugin/-/devtools-plugin-3.7.0.tgz#5b6b3e63411da527fcee1e8280714e1b95a838c7"
   integrity sha1-W2s+Y0EdpSf87h6CgHFOG5WoOMc=
@@ -1495,7 +1495,7 @@
   dependencies:
     tslib "^1.9.0"
 
-"@ngxs/store@^3.6.2":
+"@ngxs/store@^3.7.0":
   version "3.7.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@ngxs/store/-/store-3.7.0.tgz#e46387219dae610c685accc119ae42e351afcaa4"
   integrity sha1-5GOHIZ2uYQxoWszBGa5C41GvyqQ=

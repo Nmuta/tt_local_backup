@@ -18,6 +18,8 @@ export class MockWindowService {
   public open = jasmine.createSpy('open').and.returnValue(new MockChildWindow());
   public close = jasmine.createSpy('close');
   public zafClient = jasmine.createSpy('zafClient').and.returnValue({});
+
+  public isInIframe = false;
 }
 
 export function createMockWindowService(): Provider {
