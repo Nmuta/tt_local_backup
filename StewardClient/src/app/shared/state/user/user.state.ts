@@ -6,8 +6,17 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
-import { Observable } from 'rxjs';
-import { filter, take, tap, timeout } from 'rxjs/operators';
+import { concat, from, Observable, throwError } from 'rxjs';
+import {
+  catchError,
+  concatAll,
+  filter,
+  mergeMap,
+  switchMap,
+  take,
+  tap,
+  timeout,
+} from 'rxjs/operators';
 
 import {
   GetUser,
@@ -90,32 +99,35 @@ export class UserState {
 
   /** Action that requests user access token from azure app. */
   @Action(RequestAccessToken, { cancelUncompleted: true })
-  public async requestAccessToken(ctx: StateContext<UserStateModel>): Promise<void> {
+  public requestAccessToken(ctx: StateContext<UserStateModel>): Observable<void> {
     const isLoggedIn = !!this.authService.getAccount();
     if (!isLoggedIn) {
       ctx.patchState({ accessToken: null });
-      await ctx.dispatch(new SetNoUserProfile()).toPromise();
-      return;
+      return ctx.dispatch(new SetNoUserProfile());
     }
 
-    try {
-      const data = await this.authService.acquireTokenSilent({
+    return from(
+      this.authService.acquireTokenSilent({
         scopes: [environment.azureAppScope],
-      });
-
-      if (!data.accessToken) {
+      }),
+    ).pipe(
+      switchMap(data => {
+        if (!data.accessToken) {
+          ctx.patchState({ accessToken: null });
+          return ctx.dispatch(new SetNoUserProfile());
+        } else {
+          ctx.patchState({ accessToken: data.accessToken });
+          return ctx.dispatch(new GetUser());
+        }
+      }),
+      catchError(e => {
         ctx.patchState({ accessToken: null });
-        await ctx.dispatch(new SetNoUserProfile()).toPromise();
-        return;
-      }
-
-      ctx.patchState({ accessToken: data.accessToken });
-      await ctx.dispatch(new GetUser()).toPromise();
-    } catch (e) {
-      ctx.patchState({ accessToken: null });
-      await ctx.dispatch(new SetNoUserProfile()).toPromise();
-      throw e;
-    }
+        return concat(
+          ctx.dispatch(new SetNoUserProfile()),
+          throwError(e)
+        );
+      }),
+    );
   }
 
   /** Action that resets state access token. */
@@ -129,7 +141,7 @@ export class UserState {
     const obs = profile$.pipe(
       filter(x => x !== undefined),
       take(1),
-      timeout(5_000),
+      timeout(10_000),
     );
 
     return obs;
