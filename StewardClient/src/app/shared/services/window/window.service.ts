@@ -1,22 +1,13 @@
 ﻿// General
-import { Injectable} from '@angular/core';
-import { Actions, ofActionDispatched } from '@ngxs/store';
+import { Injectable } from '@angular/core';
+import { Action, State, StateContext } from '@ngxs/store';
 import { ZAFClient } from '@shared/definitions/zaf-client';
-import { Subject } from 'rxjs';
 import { WindowOpen } from './window.actions';
 
 /** Defines the Window Service. */
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
+@State<void>({ name: 'window' })
 export class WindowService {
-  public onDestroy$ = new Subject();
-  constructor(private actions$: Actions) {
-    this.actions$
-      .pipe(ofActionDispatched(WindowOpen))
-      .subscribe(action => this.open(action.url, action.target));
-  }
-
   /** Checks if this window is in an iframe. */
   public get isInIframe(): boolean {
     // based on https://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
@@ -60,5 +51,11 @@ export class WindowService {
   /** Gets the window's zafClient property. */
   public zafClient(): ZAFClient {
     return window.zafClient;
+  }
+
+  /** Action alias for opening a new window. */
+  @Action(WindowOpen)
+  private openAction(_: StateContext<void>, action: WindowOpen) {
+    this.open(action.url, action.target);
   }
 }
