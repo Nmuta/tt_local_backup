@@ -43,7 +43,7 @@ const routes: Routes = [
       initialNavigation: 'enabled',
       scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled',
-      enableTracing: true,
+      relativeLinkResolution: 'legacy',
     }),
   ],
   exports: [RouterModule],
