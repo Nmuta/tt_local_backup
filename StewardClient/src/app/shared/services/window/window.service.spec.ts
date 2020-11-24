@@ -6,7 +6,6 @@ import { WindowService } from './window.service';
 
 describe('service: WindowService', () => {
   let store: Store;
-  let service: WindowService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,7 +14,6 @@ describe('service: WindowService', () => {
     });
 
     store = TestBed.inject(Store);
-    service = TestBed.inject(WindowService);
   });
 
   it('should be created', inject([WindowService], (service: WindowService) => {

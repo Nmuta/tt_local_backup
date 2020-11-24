@@ -39,20 +39,13 @@ export class LoginComponent implements OnInit {
   /** Launches the login popup. */
   public async login$(): Promise<void> {
     try {
-      this.logger.debug([LogTopic.Auth], `Attempting login`);
-      const response = await this.msalService.loginPopup({
+      await this.msalService.loginPopup({
         extraScopesToConsent: [environment.azureAppScope],
       });
-      this.logger.debug([LogTopic.Auth], `After login: Success`, response);
 
-      this.logger.debug([LogTopic.Auth], `Rechecking Auth`);
-      const response2 = await this.store.dispatch(new RecheckAuth()).toPromise();
-      this.logger.debug([LogTopic.Auth], `Rechecked Auth: Success`, response2);
+      await this.store.dispatch(new RecheckAuth()).toPromise();
 
-      this.logger.debug([LogTopic.Auth], `Getting latest profile`);
       const profile = await UserState.latestValidProfile$(this.profile$).toPromise();
-      this.logger.debug([LogTopic.Auth], `Latest Profile`, profile);
-
       if (!profile) {
         this.error = 'Profile not found. Please try again.';
         return;
