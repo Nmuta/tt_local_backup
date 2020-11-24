@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
+import { SettingsComponent } from './settings/settings.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 export const sidebarRoutes = [
   {
@@ -14,16 +16,22 @@ export const sidebarRoutes = [
     component: ProfileComponent,
     outlet: 'sidebar',
   },
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    outlet: 'sidebar',
+  },
 ];
 
 @NgModule({
-  declarations: [ProfileComponent],
+  declarations: [ProfileComponent, SettingsComponent],
   imports: [
     CommonModule,
     FormsModule,
     FontAwesomeModule,
     MatMenuModule,
     MatButtonModule,
+    MatSlideToggleModule,
     MatIconModule,
     RouterModule.forChild(sidebarRoutes),
   ],

@@ -58,6 +58,7 @@ div {
   color: mat-color($app-primary);
 }
 
-mat-drawer {
+:host ::ng-deep mat-drawer > * {
+  box-sizing: border-box;
   padding: 1rem 2rem;
 }

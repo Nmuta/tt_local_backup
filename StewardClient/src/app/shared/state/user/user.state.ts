@@ -45,12 +45,11 @@ export class UserState {
 
   /** Logs out the current user and directs them to the auth page. */
   @Action(LogoutUser, { cancelUncompleted: true })
-  public logoutUser(ctx: StateContext<UserStateModel>, _action: LogoutUser): Observable<void> {
-    // const logoutAction = this.windowService.isInIframe ? new WindowOpen(`${environment.stewardUiUrl}/auth/logout`, '_blank') : new Navigate([`/auth/logout`])
+  public logoutUser(ctx: StateContext<UserStateModel>, action: LogoutUser): Observable<void> {
     return ctx.dispatch([
       new ResetUserProfile(),
       new ResetAccessToken(),
-      new Navigate([`/auth/logout`]),
+      new Navigate([`/auth/logout`], { from: action.returnRoute }),
     ]);
   }
 

@@ -24,6 +24,7 @@ import { ErrorComponent } from './pages/error/error.component';
 import { SidebarsModule } from './sidebars/sidebars.module';
 import { HomeComponent } from './pages/home/home.component';
 import { CenterContentsModule } from '@components/center-contents/center-contents.module';
+import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 
 export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -57,7 +58,7 @@ function fakeApiOrNothing(): Provider[] {
     FourOhFourModule,
     MatCardModule,
     CenterContentsModule,
-    NgxsModule.forRoot([UserState]),
+    NgxsModule.forRoot([UserState, UserSettingsState]),
     NgxsRouterPluginModule.forRoot(),
     MsalModule.forRoot(
       {

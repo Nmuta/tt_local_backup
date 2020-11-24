@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { faExclamationTriangle, faInfoCircle, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faExclamationTriangle, faInfoCircle, faSyncAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from '@models/user.model';
 import { Select } from '@ngxs/store';
 import { WindowService } from '@services/window';
@@ -27,6 +27,9 @@ export class NavbarComponent {
   public infoIcon = faInfoCircle;
   public items: RouterLinkPath[] = navbarToolList;
   public homeRouterLink = createNavbarPath(NavbarTools.HomePage).routerLink;
+
+  public profileIcon = faUser;
+  public settingsIcon = faCog;
 
   constructor(private readonly windowService: WindowService) {}
 
