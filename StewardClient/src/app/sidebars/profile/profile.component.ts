@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
+import { environment } from '@environments/environment';
+import { Clipboard } from '@helpers/clipboard';
 import { Select, Store } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { WindowService } from '@shared/services/window';
@@ -20,6 +22,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
   public user: UserModel;
   public loading: boolean;
+  public isDevEnvironment: boolean;
+  public accessToken: string;
 
   public profileTabVisible = false;
 
@@ -27,13 +31,18 @@ export class ProfileComponent extends BaseComponent implements OnInit {
     protected router: Router,
     protected store: Store,
     protected windowService: WindowService,
+    protected clipboard: Clipboard,
   ) {
     super();
   }
 
   /** Logic for the OnInit component lifecycle. */
   public ngOnInit(): void {
+    this.isDevEnvironment = !environment.production;
+    console.log(environment.production);
+    this.accessToken = this.store.selectSnapshot<string | null | undefined>(UserState.accessToken);
     this.loading = true;
+
     UserState.latestValidProfile$(this.profile$)
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(
@@ -45,6 +54,11 @@ export class ProfileComponent extends BaseComponent implements OnInit {
           this.loading = false;
         },
       );
+  }
+
+  /** Copys the state access token to clipboard */
+  public copyAccessToken(): void {
+    this.clipboard.copyMessage(this.accessToken);
   }
 
   /** Opens the auth page in a new tab. */
