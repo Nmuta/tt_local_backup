@@ -48,22 +48,10 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
         profile => {
           this.loading = false;
           this.profile = profile;
-          if (!this.profile) {
-            // TODO: Redirect goes elsewhere
-            this.router.navigate([`/auth`], {
-              queryParams: { from: this.appName },
-            });
-          } else {
-            this.getTicketRequestor();
-          }
+          this.getTicketRequestor();
         },
         _error => {
           this.loading = false;
-
-          // TODO: Redirect goes elsewhere
-          this.router.navigate([`/auth`], {
-            queryParams: { from: this.appName },
-          });
         },
       );
   }

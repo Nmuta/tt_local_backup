@@ -1,5 +1,6 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, Provider } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -21,6 +22,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { ErrorComponent } from './pages/error/error.component';
 import { SidebarsModule } from './sidebars/sidebars.module';
+import { HomeComponent } from './pages/home/home.component';
+import { CenterContentsModule } from '@components/center-contents/center-contents.module';
 
 export const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -44,7 +47,7 @@ function fakeApiOrNothing(): Provider[] {
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent],
+  declarations: [AppComponent, ErrorComponent, HomeComponent],
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -52,6 +55,8 @@ function fakeApiOrNothing(): Provider[] {
     FontAwesomeModule,
     HttpClientModule,
     FourOhFourModule,
+    MatCardModule,
+    CenterContentsModule,
     NgxsModule.forRoot([UserState]),
     NgxsRouterPluginModule.forRoot(),
     MsalModule.forRoot(
@@ -60,8 +65,8 @@ function fakeApiOrNothing(): Provider[] {
           clientId: environment.azureAppId,
           authority: 'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/',
           navigateToLoginRequestUrl: false,
-          redirectUri: `${environment.stewardUiUrl}/auth/aadLogin`,
-          postLogoutRedirectUri: `${environment.stewardUiUrl}/auth/aadLogout`,
+          redirectUri: `${environment.stewardUiUrl}/auth/aad-login`,
+          postLogoutRedirectUri: `${environment.stewardUiUrl}/auth/aad-logout`,
         },
         cache: {
           cacheLocation: 'localStorage',

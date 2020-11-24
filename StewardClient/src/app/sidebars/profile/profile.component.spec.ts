@@ -57,10 +57,11 @@ describe('ProfileComponent', () => {
     beforeEach(() => {
       mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
     });
-    it('should dispatch store action ResetUserProfile', () => {
+
+    it('should dispatch LogoutUser', () => {
       component.logout();
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new LogoutUser('navbar-app'));
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new LogoutUser(''));
     });
   });
 
@@ -73,6 +74,7 @@ describe('ProfileComponent', () => {
         expect(component.profileTabVisible).toBeTruthy();
       });
     });
+
     describe('When profileTabVisible is true', () => {
       it('should call set profileTabVisible to false', () => {
         component.profileTabVisible = true;
@@ -103,19 +105,6 @@ describe('ProfileComponent', () => {
         expect(component.loading).toBeFalsy();
       });
 
-      describe('If profile is invalid', () => {
-        beforeEach(() => {
-          component.profile$ = of(null);
-        });
-
-        it('Should call router.navigate correctly', () => {
-          component.ngOnInit();
-          expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
-            queryParams: { from: 'navbar-app' },
-          });
-        });
-      });
-
       describe('If profile is valid', () => {
         beforeEach(() => {
           component.profile$ = of(testProfile);
@@ -132,6 +121,7 @@ describe('ProfileComponent', () => {
 
     describe('If subscribing to profile times out', () => {
       const delayTime = 20000;
+
       beforeEach(() => {
         mockRouter.navigate = jasmine.createSpy('navigate');
         Object.defineProperty(component, 'profile$', { writable: true });
@@ -142,14 +132,6 @@ describe('ProfileComponent', () => {
         component.ngOnInit();
         tick(delayTime);
         expect(component.loading).toBeFalsy();
-      }));
-
-      it('Should call router.navigate correctly', fakeAsync(() => {
-        component.ngOnInit();
-        tick(delayTime);
-        expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
-          queryParams: { from: 'navbar-app' },
-        });
       }));
     });
   });

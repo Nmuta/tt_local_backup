@@ -55,7 +55,23 @@ export class LoggerService {
   }
 
   private trackTrace(severity: string, topics: LogTopic[], ...data: unknown[]) {
-    const message = `[${topics.join(' ')}]\n${data.join('\n')}`;
-    this.appInsights.trackTrace({ message: message }, { severity: severity });
+    try {
+      const stringifiedData = data.map(d => d.toString());
+      const message = `[${topics.join(' ')}]\n${stringifiedData.join('\n')}`;
+      this.appInsights.trackTrace({ message: message }, { severity: severity });
+    } catch (e) {
+      try {
+        // fallback to logging the error here and suppress the failure.
+        console.error(e);
+        this.appInsights.trackException({ error: e });
+      } catch (e2) {
+        // fallback to console-only log, or suppress
+        try {
+          console.error(e2);
+        } catch {
+          // suppress
+        }
+      }
+    }
   }
 }

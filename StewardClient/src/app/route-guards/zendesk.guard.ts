@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ZendeskGuardService implements CanActivate {
+export class ZendeskGuard implements CanActivate {
   constructor(private readonly router: Router, private readonly windowService: WindowService) {}
 
   /** Logic to activate the route. */
@@ -20,9 +20,6 @@ export class ZendeskGuardService implements CanActivate {
       if (this.windowService.isInIframe) {
         // TODO: The fix for this is to reload the parent page, but we can't do anything about that from here.
         // For now, the navbar displays a warning and instruction to reload the page, which fixes the issue.
-      } else {
-        // TODO: NO REDIRECT
-        // this.router.navigate(['/auth']);
       }
     }
 
