@@ -39,7 +39,6 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   /** Logic for the OnInit component lifecycle. */
   public ngOnInit(): void {
     this.isDevEnvironment = !environment.production;
-    console.log(environment.production);
     this.accessToken = this.store.selectSnapshot<string | null | undefined>(UserState.accessToken);
     this.loading = true;
 
