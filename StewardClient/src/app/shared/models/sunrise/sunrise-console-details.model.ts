@@ -7,5 +7,5 @@ export interface SunriseConsoleDetailsEntry {
   clientVersion: string;
 }
 
-/** The /v2/title/Sunrise/player/???/consoleDetails model */
+/** The /title/Sunrise/player/???/consoleDetails model */
 export type SunriseConsoleDetails = SunriseConsoleDetailsEntry[];

@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class OpusService {
-  public basePath: string = 'v2/title/opus';
+  public basePath: string = 'title/opus';
 
   constructor(private readonly apiService: ApiService) {}
 

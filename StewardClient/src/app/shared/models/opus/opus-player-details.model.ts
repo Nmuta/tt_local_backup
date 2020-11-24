@@ -1,4 +1,4 @@
-/** The /v2/title/opus/player/???/details model */
+/** The /title/opus/player/???/details model */
 export interface OpusPlayerDetails {
   xuid: BigInt;
   gamertag: string;

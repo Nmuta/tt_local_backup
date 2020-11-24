@@ -6,5 +6,5 @@ export interface SunriseSharedConsoleUser {
   everBanned: boolean;
 }
 
-/** The /v2/title/Sunrise/player/???/sharedConsoleUser model */
+/** The /title/Sunrise/player/???/sharedConsoleUser model */
 export type SunriseSharedConsoleUsers = SunriseSharedConsoleUser[];

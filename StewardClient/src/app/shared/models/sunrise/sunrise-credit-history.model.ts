@@ -8,5 +8,5 @@ export interface SunriseCreditDetailsEntry {
   totalXp: number;
 }
 
-/** The /v2/title/Sunrise/player/???/creditHistory model */
+/** The /title/Sunrise/player/???/creditHistory model */
 export type SunriseCreditHistory = SunriseCreditDetailsEntry[];

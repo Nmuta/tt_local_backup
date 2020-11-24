@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ApolloService {
-  public basePath: string = 'v2/title/apollo';
+  public basePath: string = 'title/apollo';
 
   constructor(private readonly apiService: ApiService) {}
 

@@ -1,4 +1,4 @@
-/** The /v2/title/apollo/player/???/details model */
+/** The /title/apollo/player/???/details model */
 export interface ApolloPlayerDetails {
   xuid: BigInt;
   gamertag: string;

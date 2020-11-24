@@ -1,4 +1,4 @@
-/** The /v2/title/Sunrise/player/???/profileSummary model */
+/** The /title/Sunrise/player/???/profileSummary model */
 export interface SunriseProfileSummary {
   totalTombolaSpins: number;
   totalSuperTombolaSpins: number;

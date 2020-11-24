@@ -1,4 +1,4 @@
-/** The /v2/title/Sunrise/player/???/details model */
+/** The /title/Sunrise/player/???/details model */
 export interface SunrisePlayerDetails {
   xuid: BigInt;
   gamertag: string;
