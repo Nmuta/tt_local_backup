@@ -9,5 +9,5 @@ export interface ApolloPlayerInventory {
   mods?: ApolloInventoryItem[];
   vanityItems?: ApolloInventoryItem[];
   packs?: ApolloInventoryItem[];
-  badges?: ApolloInventoryItem[]; 
+  badges?: ApolloInventoryItem[];
 }
