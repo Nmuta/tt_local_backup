@@ -1,4 +1,6 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgxsModule } from '@ngxs/store';
 
 import { SettingsComponent } from './settings.component';
 
@@ -8,7 +10,9 @@ describe('SettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SettingsComponent ]
+      imports: [NgxsModule.forRoot([])],
+      declarations: [ SettingsComponent ], 
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   });
