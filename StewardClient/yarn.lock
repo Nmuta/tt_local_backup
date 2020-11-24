@@ -1495,6 +1495,13 @@
   dependencies:
     tslib "^1.9.0"
 
+"@ngxs/storage-plugin@^3.7.1":
+  version "3.7.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@ngxs/storage-plugin/-/storage-plugin-3.7.1.tgz#39fbce9cf6585cc094d74e5efd54daae3fcd334d"
+  integrity sha1-OfvOnPZYXMCU105e/VTarj/NM00=
+  dependencies:
+    tslib "^1.9.0"
+
 "@ngxs/store@^3.7.0":
   version "3.7.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@ngxs/store/-/store-3.7.0.tgz#e46387219dae610c685accc119ae42e351afcaa4"
