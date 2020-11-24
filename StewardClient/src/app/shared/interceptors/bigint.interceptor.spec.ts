@@ -1,6 +1,6 @@
-import { HttpClient, HttpHandler, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { BigintInterceptor } from './bigint.interceptor';
 
@@ -10,7 +10,8 @@ describe('BigintInterceptor:', () => {
   let httpMock: HttpTestingController;
   let http: HttpClient;
   const testUrl = 'http://localhost/test';
-  const testResponse = '{ "bigInt": 1859489456156489156456498156189189489156178917561756715647534176, "nested": { "bigInt": 1859489456156489156456498156189189489156178917561756715647534176 }, "smallInt": 2, "string": "hello" }';
+  const testResponse =
+    '{ "bigInt": 1859489456156489156456498156189189489156178917561756715647534176, "nested": { "bigInt": 1859489456156489156456498156189189489156178917561756715647534176 }, "smallInt": 2, "string": "hello" }';
 
   beforeEach(() => {
     interceptor = new BigintInterceptor();
@@ -33,7 +34,7 @@ describe('BigintInterceptor:', () => {
 
   afterEach(() => {
     httpMock.verify();
-  })
+  });
 
   it('should be created', () => {
     expect(interceptor).toBeTruthy();
@@ -43,11 +44,10 @@ describe('BigintInterceptor:', () => {
     http.get(testUrl, { responseType: 'text' }).subscribe(response => {
       expect(response).toBeTruthy();
     });
-    
+
     const req = httpMock.expectOne(testUrl);
     expect(req.request.method).toEqual('GET');
     expect(req.request.responseType).toEqual('text');
-
 
     req.flush(testResponse);
 
@@ -60,7 +60,7 @@ describe('BigintInterceptor:', () => {
       expect(interceptor.handle).toHaveBeenCalledTimes(1);
       done();
     });
-    
+
     const req = httpMock.expectOne(testUrl);
     expect(req.request.method).toEqual('GET');
     expect(req.request.responseType).toEqual('text');
@@ -70,11 +70,11 @@ describe('BigintInterceptor:', () => {
 
   it('converts large numbers', done => {
     http.get(testUrl, { responseType: 'json' }).subscribe(response => {
-      expect(typeof(response['bigInt']) === 'bigint').toBeTruthy();
-      expect(typeof(response['nested']['bigInt']) === 'bigint').toBeTruthy();
+      expect(typeof response['bigInt'] === 'bigint').toBeTruthy();
+      expect(typeof response['nested']['bigInt'] === 'bigint').toBeTruthy();
       done();
     });
-    
+
     const req = httpMock.expectOne(testUrl);
     expect(req.request.method).toEqual('GET');
     expect(req.request.responseType).toEqual('text');
@@ -83,10 +83,10 @@ describe('BigintInterceptor:', () => {
 
   it('converts small numbers', done => {
     http.get(testUrl, { responseType: 'json' }).subscribe(response => {
-      expect(typeof(response['smallInt']) === 'bigint').toBeTruthy();
+      expect(typeof response['smallInt'] === 'bigint').toBeTruthy();
       done();
     });
-    
+
     const req = httpMock.expectOne(testUrl);
     expect(req.request.method).toEqual('GET');
     expect(req.request.responseType).toEqual('text');
@@ -95,10 +95,10 @@ describe('BigintInterceptor:', () => {
 
   it('ignores strings', done => {
     http.get(testUrl, { responseType: 'json' }).subscribe(response => {
-      expect(typeof(response['string']) === 'string').toBeTruthy();
+      expect(typeof response['string'] === 'string').toBeTruthy();
       done();
     });
-    
+
     const req = httpMock.expectOne(testUrl);
     expect(req.request.method).toEqual('GET');
     expect(req.request.responseType).toEqual('text');

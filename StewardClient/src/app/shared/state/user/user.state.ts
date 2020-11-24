@@ -7,16 +7,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
 import { concat, from, Observable, throwError } from 'rxjs';
-import {
-  catchError,
-  concatAll,
-  filter,
-  mergeMap,
-  switchMap,
-  take,
-  tap,
-  timeout,
-} from 'rxjs/operators';
+import { catchError, filter, switchMap, take, tap, timeout } from 'rxjs/operators';
 
 import {
   GetUser,
@@ -122,10 +113,7 @@ export class UserState {
       }),
       catchError(e => {
         ctx.patchState({ accessToken: null });
-        return concat(
-          ctx.dispatch(new SetNoUserProfile()),
-          throwError(e)
-        );
+        return concat(ctx.dispatch(new SetNoUserProfile()), throwError(e));
       }),
     );
   }

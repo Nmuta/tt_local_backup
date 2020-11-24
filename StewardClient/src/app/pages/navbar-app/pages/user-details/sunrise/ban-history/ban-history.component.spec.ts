@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 
 import { BanHistoryComponent } from './ban-history.component';
@@ -23,9 +23,12 @@ describe('BanHistoryComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', waitForAsync(() => {
-    expect(component).toBeTruthy();
-  }));
+  it(
+    'should create',
+    waitForAsync(() => {
+      expect(component).toBeTruthy();
+    }),
+  );
 
   it('should load history', () => {
     component.ngOnChanges();

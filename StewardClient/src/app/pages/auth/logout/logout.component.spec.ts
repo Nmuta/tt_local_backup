@@ -5,7 +5,12 @@ import { environment } from '@environments/environment';
 import { createMockMsalService } from '@mocks/msal.service.mock';
 import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
-import { createMockWindowService, MockWindowService, WindowOpen, WindowService } from '@services/window';
+import {
+  createMockWindowService,
+  MockWindowService,
+  WindowOpen,
+  WindowService,
+} from '@services/window';
 
 import { LogoutComponent } from './logout.component';
 
@@ -27,7 +32,7 @@ describe('LogoutComponent:', () => {
     store = TestBed.inject(Store);
     store.dispatch = jasmine.createSpy('store.dispatch');
     msal = TestBed.inject(MsalService);
-    windowService = TestBed.inject(WindowService) as unknown as MockWindowService;
+    windowService = (TestBed.inject(WindowService) as unknown) as MockWindowService;
   });
 
   beforeEach(() => {
@@ -39,7 +44,6 @@ describe('LogoutComponent:', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
-  
 
   describe('when inside iframe:', () => {
     beforeEach(() => {

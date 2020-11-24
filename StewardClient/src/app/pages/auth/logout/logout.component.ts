@@ -16,7 +16,7 @@ export class LogoutComponent implements OnInit {
     public readonly msalService: MsalService,
     public readonly windowService: WindowService,
     public readonly store: Store,
-  ) { }
+  ) {}
 
   /** OnInit hook. */
   public ngOnInit(): void {

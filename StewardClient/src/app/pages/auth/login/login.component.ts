@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly store: Store,
     private readonly logger: LoggerService,
-  ) { }
+  ) {}
 
   /** OnInit hook. */
   public ngOnInit(): void {
