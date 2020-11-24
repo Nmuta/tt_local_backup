@@ -24,11 +24,13 @@ describe('service: WindowService', () => {
 
   describe('Actions:', () => {
     it('OpenWindow should work', () => {
-      service.open = jasmine.createSpy('open');
+      const oldOpen = window.open;
+      window.open = jasmine.createSpy('open');
       const fake = new WindowOpen(faker.internet.url(), faker.random.uuid());
       store.dispatch(fake);
 
-      expect(service.open).toHaveBeenCalledWith(fake.url, fake.target);
+      expect(window.open).toHaveBeenCalledWith(fake.url, fake.target);
+      window.open = oldOpen;
     });
   });
 });

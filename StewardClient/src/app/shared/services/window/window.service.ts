@@ -38,11 +38,6 @@ export class WindowService {
     return window.location;
   }
 
-  /** Runs the window.open function. */
-  public open(url: string, target: string): Window {
-    return window.open(url, target);
-  }
-
   /** Runs the window.close function. */
   public close(): void {
     return window.close();
@@ -53,9 +48,9 @@ export class WindowService {
     return window.zafClient;
   }
 
-  /** Action alias for opening a new window. */
+  /** Runs the window.open function. */
   @Action(WindowOpen)
   private openAction(_: StateContext<void>, action: WindowOpen) {
-    this.open(action.url, action.target);
+    return window.open(action.url, action.target);
   }
 }
