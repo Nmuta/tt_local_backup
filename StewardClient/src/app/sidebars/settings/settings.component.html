@@ -1,4 +1,7 @@
 <section>
   <h1>Settings</h1>
-  <mat-slide-toggle [(ngModel)]="enableFakeApi" (ngModelChange)="syncSettings()">Fake API</mat-slide-toggle>
+  <mat-slide-toggle [(ngModel)]="enableFakeApi" (ngModelChange)="syncSettings()"
+    matTooltip="The Fake API overrides calls to the backing service with fake data. User Authentication is not overridden."
+    matTooltipPosition="after">
+    Fake API</mat-slide-toggle>
 </section>

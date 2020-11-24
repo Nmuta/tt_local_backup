@@ -9,6 +9,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { SettingsComponent } from './settings/settings.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export const sidebarRoutes = [
   {
@@ -32,6 +34,8 @@ export const sidebarRoutes = [
     MatMenuModule,
     MatButtonModule,
     MatSlideToggleModule,
+    MatExpansionModule,
+    MatTooltipModule,
     MatIconModule,
     RouterModule.forChild(sidebarRoutes),
   ],

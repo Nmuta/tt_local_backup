@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
 import { Action, State, StateContext } from '@ngxs/store';
 import { Observable, of } from 'rxjs';
 import { SetFakeApi } from './user-settings.actions';
@@ -14,7 +15,7 @@ export class UserSettingsStateModel {
 @State<Partial<UserSettingsStateModel>>({
   name: 'userSettings',
   defaults: {
-    enableFakeApi: true,
+    enableFakeApi: !environment.production,
   },
 })
 export class UserSettingsState {
