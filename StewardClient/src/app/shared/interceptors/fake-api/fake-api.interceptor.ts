@@ -47,7 +47,7 @@ const fakeApiConstructors = [
 ];
 
 /** The URLs this interceptor will not block. */
-const urlAllowList = [`${environment.stewardApiUrl}/api/me`];
+const urlAllowList = [`${environment.stewardApiUrl}/api/v1/me`];
 
 /** Intercepts every request and returns a sample response if it matches the conditions. */
 @Injectable()

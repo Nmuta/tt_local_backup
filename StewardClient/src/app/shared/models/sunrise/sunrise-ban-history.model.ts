@@ -1,4 +1,4 @@
-/** The /title/Sunrise/player/???/banHistory model */
+/** The /v1/title/Sunrise/player/???/banHistory model */
 export interface SunriseBanHistory {
   servicesBanHistory: ServicesBanDescription[];
   liveOpsBanHistory: LiveOpsBanDescription[];

@@ -12,6 +12,7 @@ import { Select, Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { RequestAccessToken } from '@shared/state/user/user.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     // The query portion of the URL doesn't cleanly pass through the redirect process, resulting in 404s. We don't need it, anyway.
     const urlNoQuery = state.url.split('?')[0];
     const redirectAction = new Navigate(['/auth/login'], { from: urlNoQuery });
+
+    this.store.dispatch(new RequestAccessToken());
 
     return UserState.latestValidProfile$(this.profile$).pipe(
       catchError(_e => {

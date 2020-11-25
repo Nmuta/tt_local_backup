@@ -6,7 +6,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
-import { concat, from, Observable, throwError } from 'rxjs';
+import { concat, from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, switchMap, take, tap, timeout } from 'rxjs/operators';
 
 import {
@@ -90,6 +90,12 @@ export class UserState {
   /** Action that requests user access token from azure app. */
   @Action(RequestAccessToken, { cancelUncompleted: true })
   public requestAccessToken(ctx: StateContext<UserStateModel>): Observable<void> {
+    // If access token exists, exit logic
+    const currentState = ctx.getState();
+    if (currentState.accessToken) {
+      return of();
+    }
+
     const isLoggedIn = !!this.authService.getAccount();
     if (!isLoggedIn) {
       ctx.patchState({ accessToken: null });

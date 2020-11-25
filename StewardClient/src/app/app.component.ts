@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngxs/store';
-import { RequestAccessToken } from '@shared/state/user/user.actions';
+import { Component } from '@angular/core';
 
 /** Defines the app component. */
 @Component({
@@ -8,11 +6,8 @@ import { RequestAccessToken } from '@shared/state/user/user.actions';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
-  constructor(private store: Store) {}
-
-  /** Logic for the OnInit component lifecycle. */
-  public ngOnInit(): void {
-    this.store.dispatch(new RequestAccessToken());
+export class AppComponent {
+  constructor() {
+    // Empty
   }
 }

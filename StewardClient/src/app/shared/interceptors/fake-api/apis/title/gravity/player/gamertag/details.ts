@@ -13,7 +13,7 @@ export class GravityPlayerGamertagDetailsFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v2\/title\/gravity\/player\/gamertag\((.+)\)\/details/i;
+    const regex = /\/?api\/v1\/title\/gravity\/player\/gamertag\((.+)\)\/details/i;
     return regex.test(url.pathname);
   }
 
