@@ -16,7 +16,7 @@ export class ApiService {
 
   /** Sends a GET request. */
   public getRequest<T>(url: string, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
-    const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
+    const apiUrl = `${environment.stewardApiUrl}/api/v1/${url}`;
     const get = this.http.get<T>(apiUrl, {
       params,
       headers,
