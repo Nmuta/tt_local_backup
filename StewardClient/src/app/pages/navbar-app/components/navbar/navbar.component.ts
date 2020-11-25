@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { faCog, faExclamationTriangle, faInfoCircle, faSyncAlt, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCog,
+  faExclamationTriangle,
+  faInfoCircle,
+  faSyncAlt,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from '@models/user.model';
 import { Select } from '@ngxs/store';
 import { WindowService } from '@services/window';

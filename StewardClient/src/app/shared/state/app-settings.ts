@@ -3,6 +3,6 @@ import { UserStateModel } from './user/user.state';
 
 /** Typings for state snapshot queries. */
 export interface AppSettings {
-  user: UserStateModel,
-  userSettings: UserSettingsStateModel,
+  user: UserStateModel;
+  userSettings: UserSettingsStateModel;
 }

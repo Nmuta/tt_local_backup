@@ -26,7 +26,9 @@ export class SunriseComponent extends BaseComponent implements OnInit {
   public ngOnInit(): void {
     this.route.queryParamMap
       .pipe(
-        tap(_params => { debugger; }),
+        tap(_params => {
+          debugger;
+        }),
         takeUntil(this.onDestroy$),
         map(params => params.get('gamertag')),
         tap(gamertag => {
@@ -36,14 +38,13 @@ export class SunriseComponent extends BaseComponent implements OnInit {
           this.userDetails = undefined;
         }),
         switchMap(gamertag => {
-          return this.sunrise.getPlayerDetailsByGamertag(gamertag)
-            .pipe(
-              catchError(error => {
-                this.error = error;
-                return NEVER;
-              })
-            );
-          }),
+          return this.sunrise.getPlayerDetailsByGamertag(gamertag).pipe(
+            catchError(error => {
+              this.error = error;
+              return NEVER;
+            }),
+          );
+        }),
       )
       .subscribe(userDetailsResponse => {
         this.userDetails = userDetailsResponse; // TODO: Delete this. Testing only.
