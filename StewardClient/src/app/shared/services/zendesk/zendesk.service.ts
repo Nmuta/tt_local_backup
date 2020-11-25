@@ -14,6 +14,7 @@ export interface TicketFieldsResponse {
     };
   };
 }
+
 /** Defines the Zendesk Service. */
 @Injectable({
   providedIn: 'root',
