@@ -16,7 +16,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class GravityService {
-  public basePath: string = 'v2/title/gravity';
+  public basePath: string = 'v1/title/gravity';
 
   constructor(private readonly apiService: ApiService) {}
 
