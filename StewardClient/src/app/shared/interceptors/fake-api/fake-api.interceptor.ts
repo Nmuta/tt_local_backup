@@ -9,7 +9,7 @@ import {
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Store } from '@ngxs/store';
-import { AppState } from '@shared/state/app-settings';
+import { AppState } from '@shared/state/app-state';
 import _ from 'lodash';
 import { Observable, of as ObservableOf, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';

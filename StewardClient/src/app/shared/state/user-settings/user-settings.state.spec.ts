@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Actions, NgxsModule, Store } from '@ngxs/store';
-import { AppState } from '../app-settings';
+import { AppState } from '../app-state';
 import { SetFakeApi } from './user-settings.actions';
 
 import { UserSettingsState } from './user-settings.state';

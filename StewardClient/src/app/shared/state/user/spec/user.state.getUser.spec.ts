@@ -6,7 +6,7 @@ import { of, throwError } from 'rxjs';
 import { createMockUserService, UserService } from '@shared/services/user';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AppState } from '@shared/state/app-settings';
+import { AppState } from '@shared/state/app-state';
 
 describe('State: User', () => {
   let store: Store;
