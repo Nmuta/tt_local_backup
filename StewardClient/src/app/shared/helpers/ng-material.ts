@@ -30,6 +30,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 // TODO: For some reason, the lazy-loaded modules also need to import this. Not sure why. I thought import at the top level was enough for the whole app to have access?
+/** Every Angular Material module.  */
 export const allAngularMaterialModules = [
   // BrowserAnimationsModule, // this one can't be used from lazy-loaded modules so it is excluded
   MatPseudoCheckboxModule,

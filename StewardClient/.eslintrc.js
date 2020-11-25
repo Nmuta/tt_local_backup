@@ -129,6 +129,21 @@ module.exports = {
               MethodDefinition: true,
             },
             checkConstructors: false,
+            contexts: [
+              "ArrowFunctionExpression",
+              "ClassDeclaration",
+              "ClassExpression",
+              "ClassProperty",
+              "FunctionDeclaration", // function
+              "FunctionExpression",
+              "MethodDefinition",
+              "TSDeclareFunction", // function without body
+              "TSEnumDeclaration",
+              "TSInterfaceDeclaration",
+              "TSModuleDeclaration", // namespace
+              "TSTypeAliasDeclaration",
+              "VariableDeclaration",
+            ]
           },
         ],
       },

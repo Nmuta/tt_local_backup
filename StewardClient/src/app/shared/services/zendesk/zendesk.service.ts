@@ -3,9 +3,12 @@ import { ZAFRequestOptions } from '@shared/definitions/zaf-client';
 import { WindowService } from '@shared/services/window';
 import { from, Observable } from 'rxjs';
 
+/** A typings shell for a zendesk response. */
 export interface TicketRequesterResponse {
   'ticket.requester': { name: string };
 }
+
+/** A typings shell for a zendesk response. */
 export interface TicketFieldsResponse {
   ticketFields: {
     [key: string]: {
