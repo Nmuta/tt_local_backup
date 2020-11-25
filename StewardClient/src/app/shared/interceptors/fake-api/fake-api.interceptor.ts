@@ -9,7 +9,7 @@ import {
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Store } from '@ngxs/store';
-import { AppSettings } from '@shared/state/app-settings';
+import { AppState } from '@shared/state/app-settings';
 import _ from 'lodash';
 import { Observable, of as ObservableOf, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -59,7 +59,7 @@ export class FakeApiInterceptor implements HttpInterceptor {
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     const isEnabled = this.store.selectSnapshot<boolean>(
-      (state: AppSettings) => state.userSettings.enableFakeApi,
+      (state: AppState) => state.userSettings.enableFakeApi,
     );
     if (!isEnabled) {
       return next.handle(request);

@@ -4,9 +4,7 @@ import { NgxsModule } from '@ngxs/store';
 import { of } from 'rxjs';
 
 import { SettingsComponent } from './settings.component';
-import {
-  UserSettingsStateModel,
-} from '@shared/state/user-settings/user-settings.state';
+import { UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
