@@ -25,9 +25,9 @@ export class UserStateModel {
   public accessToken?: string;
 }
 
-/** Defines the user state. */
 @Injectable()
-@State<Partial<UserStateModel>>({
+@State<Partial<UserStateModel>>
+({
   name: 'user',
   defaults: {
     // undefined means profile hasn't been determined
@@ -37,6 +37,7 @@ export class UserStateModel {
     accessToken: undefined,
   },
 })
+/** Defines the user state. */
 export class UserState {
   constructor(
     private readonly userService: UserService,

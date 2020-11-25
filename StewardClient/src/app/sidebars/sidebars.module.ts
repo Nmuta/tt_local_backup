@@ -25,6 +25,7 @@ export const sidebarRoutes = [
   },
 ];
 
+/** Module containing all routable sidebar components. */
 @NgModule({
   declarations: [ProfileComponent, SettingsComponent],
   imports: [

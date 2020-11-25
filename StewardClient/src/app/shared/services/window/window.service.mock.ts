@@ -22,6 +22,7 @@ export class MockWindowService {
   public isInIframe = false;
 }
 
+/** Creates an injectable mock for Window Service. */
 export function createMockWindowService(): Provider {
   return { provide: WindowService, useValue: new MockWindowService() };
 }

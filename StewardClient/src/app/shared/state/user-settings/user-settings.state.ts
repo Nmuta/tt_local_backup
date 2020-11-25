@@ -12,12 +12,14 @@ export class UserSettingsStateModel {
 @Injectable({
   providedIn: 'root',
 })
-@State<Partial<UserSettingsStateModel>>({
+@State<Partial<UserSettingsStateModel>>
+({
   name: 'userSettings',
   defaults: {
     enableFakeApi: !environment.production,
   },
 })
+/** Defines the current users' settings. */
 export class UserSettingsState {
   /** Sets the state of the current API. */
   @Action(SetFakeApi, { cancelUncompleted: true })

@@ -8,6 +8,7 @@ export class MockScrutineerDataParser {
   public copyMessage = jasmine.createSpy('copyMessage');
 }
 
+/** Creates an injectable mock for the Scrutineer Data Parser. */
 export function createMockScrutineerDataParser(): Provider {
   return {
     provide: ScrutineerDataParser,

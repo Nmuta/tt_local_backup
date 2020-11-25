@@ -14,6 +14,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { RequestAccessToken } from '@shared/state/user/user.actions';
 
+/** A guard for preventing unauthenticated access and directing users to the auth flow. */
 @Injectable({
   providedIn: 'root',
 })
