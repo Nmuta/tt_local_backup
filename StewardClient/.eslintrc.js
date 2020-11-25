@@ -35,8 +35,11 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'prettier',
         'prettier/@typescript-eslint',
+        'plugin:jsdoc/recommended',
       ],
-      plugins: [],
+      plugins: [
+        'jsdoc',
+      ],
       rules: {
         /**
          * Any TypeScript related rules you wish to use/reconfigure over and above the
@@ -108,6 +111,14 @@ module.exports = {
           },
         ],
         '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+
+        'jsdoc/check-alignment': 'error', // why? automatically configured by tslint port tool
+        'jsdoc/newline-after-description': 'error', // why? automatically configured by tslint port tool
+        'jsdoc/require-returns': 'off', // why? these are rarely useful, frequently inferred in TS, bulk up the code, and get out of sync with reality
+        'jsdoc/require-param-description': 'off', // why? these are rarely useful, frequently inferred in TS, bulk up the code, and get out of sync with reality
+        'jsdoc/require-param-type': 'off', // why? these are rarely useful, frequently inferred in TS, bulk up the code, and get out of sync with reality
+        'jsdoc/require-param': 'off', // why? these are rarely useful, frequently inferred in TS, bulk up the code, and get out of sync with reality
+        'jsdoc/require-description': ['error'],
       },
     },
 
