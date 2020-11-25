@@ -26,7 +26,7 @@ describe('service: UserService', () => {
 
     it('should call API service getRequest with the expected params', done => {
       service.getUserProfile().subscribe(() => {
-        expect(apiMock.getRequest).toHaveBeenCalledWith(`v1/me`);
+        expect(apiMock.getRequest).toHaveBeenCalledWith(`me`);
         done();
       });
     });
