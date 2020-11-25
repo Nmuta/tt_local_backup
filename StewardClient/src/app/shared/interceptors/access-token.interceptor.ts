@@ -1,5 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
 import { Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
@@ -14,13 +15,16 @@ export class AccessTokenInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    let accessToken = this.store.selectSnapshot<string | null | undefined>(UserState.accessToken);
-    accessToken = !!accessToken ? accessToken : '';
-    request = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const shouldHandle = request.url.startsWith(environment.stewardApiUrl);
+    if (shouldHandle) {
+      let accessToken = this.store.selectSnapshot<string | null | undefined>(UserState.accessToken);
+      accessToken = !!accessToken ? accessToken : '';
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    }
 
     return next.handle(request);
   }

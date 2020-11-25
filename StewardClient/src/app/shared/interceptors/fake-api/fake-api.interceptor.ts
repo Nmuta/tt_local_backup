@@ -8,6 +8,8 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
+import { Store } from '@ngxs/store';
+import { AppSettings } from '@shared/state/app-settings';
 import _ from 'lodash';
 import { Observable, of as ObservableOf, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -49,14 +51,20 @@ const urlAllowList = [`${environment.stewardApiUrl}/api/v1/me`];
 /** Intercepts every request and returns a sample response if it matches the conditions. */
 @Injectable()
 export class FakeApiInterceptor implements HttpInterceptor {
-  // TODO: it should be possible to module-ize this and only load it when on local
+  constructor(private readonly store: Store) {}
 
   /** Interception hook. */
   public intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    request.clone();
+    const isEnabled = this.store.selectSnapshot<boolean>(
+      (state: AppSettings) => state.userSettings.enableFakeApi,
+    );
+    if (!isEnabled) {
+      return next.handle(request);
+    }
+
     for (const fakeApiConstructor of fakeApiConstructors) {
       const fakeApi = new fakeApiConstructor(request);
       if (fakeApi.canHandle) {
