@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Actions, NgxsModule, Store } from '@ngxs/store';
+import { NgxsModule, Store } from '@ngxs/store';
 import { AppState } from '../app-state';
 import { SetFakeApi } from './user-settings.actions';
 
