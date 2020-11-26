@@ -26,8 +26,7 @@ export class UserStateModel {
 }
 
 @Injectable()
-@State<Partial<UserStateModel>>
-({
+@State<Partial<UserStateModel>>({
   name: 'user',
   defaults: {
     // undefined means profile hasn't been determined

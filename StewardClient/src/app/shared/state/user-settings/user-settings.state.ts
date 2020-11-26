@@ -12,8 +12,7 @@ export class UserSettingsStateModel {
 @Injectable({
   providedIn: 'root',
 })
-@State<Partial<UserSettingsStateModel>>
-({
+@State<Partial<UserSettingsStateModel>>({
   name: 'userSettings',
   defaults: {
     enableFakeApi: !environment.production,

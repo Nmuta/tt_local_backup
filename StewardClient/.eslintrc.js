@@ -116,7 +116,8 @@ module.exports = {
         'jsdoc/require-param': 'off', // why? these are rarely useful, frequently inferred in TS, bulk up the code, and get out of sync with reality
         'jsdoc/require-description': ['error'],
         'jsdoc/newline-after-description': ['error', 'never'], // why?
-        'jsdoc/require-jsdoc': [ // why? all public/protected exported members should have documentation
+        'jsdoc/require-jsdoc': [
+          // why? all public/protected exported members should have documentation
           'error',
           {
             publicOnly: true,
