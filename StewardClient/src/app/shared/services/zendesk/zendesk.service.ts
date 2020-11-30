@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import ZAFClient, { ZafClientActual, ZafRequestOptions } from '@shared/definitions/zaf-client';
 import { from, Observable } from 'rxjs';
 
 /** A typings shell for a zendesk response. */
@@ -21,7 +22,7 @@ export interface TicketFieldsResponse {
   providedIn: 'root',
 })
 export class ZendeskService {
-  private readonly zafClient: ZafClient;
+  private readonly zafClient: ZafClientActual;
 
   constructor() {
     this.zafClient = ZAFClient.init();
