@@ -116,7 +116,6 @@ describe('ConsolesComponent', () => {
           expect(component.isLoading).toBe(true);
 
           // error received
-          debugger;
           consoleDetails$.error(new HttpErrorResponse({ error: 'hello' }));
           await fixture.whenStable();
           fixture.detectChanges();

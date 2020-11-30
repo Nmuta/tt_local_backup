@@ -10,7 +10,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     ///     Handles auth requests.
     /// </summary>
     [ApiController]
-    [Route("api")]
+    [Route("api/v1")]
     [Authorize]
     public sealed class AuthController : ControllerBase
     {

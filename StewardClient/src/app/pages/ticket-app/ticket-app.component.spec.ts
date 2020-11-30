@@ -25,7 +25,6 @@ import { createMockZendeskService, ZendeskService } from '@shared/services/zende
 import { UserState } from '@shared/state/user/user.state';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { UserModel } from '@shared/models/user.model';
-import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { GameTitleCodeNames } from '@models/enums';
@@ -33,7 +32,6 @@ import { GameTitleCodeNames } from '@models/enums';
 describe('TicketAppComponent', () => {
   let fixture: ComponentFixture<TicketAppComponent>;
   let component: TicketAppComponent;
-  let mockRouter: Router;
   let mockZendeskService: ZendeskService;
 
   beforeEach(
@@ -55,8 +53,7 @@ describe('TicketAppComponent', () => {
       }).compileComponents();
 
       const injector = getTestBed();
-      mockRouter = injector.get(Router);
-      mockZendeskService = injector.get(ZendeskService);
+      mockZendeskService = injector.inject(ZendeskService);
 
       fixture = TestBed.createComponent(TicketAppComponent);
       component = fixture.debugElement.componentInstance;
@@ -69,10 +66,10 @@ describe('TicketAppComponent', () => {
 
   describe('Method: ngOnInit', () => {
     const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
+
     describe('When subscribing to profile returns a value', () => {
       beforeEach(() => {
         component.getTicketRequestor = jasmine.createSpy('getTicketRequestor');
-        mockRouter.navigate = jasmine.createSpy('navigate');
         Object.defineProperty(component, 'profile$', { writable: true });
         component.profile$ = of(testProfile);
       });
@@ -87,17 +84,6 @@ describe('TicketAppComponent', () => {
         expect(component.loading).toBeFalsy();
       });
 
-      describe('If profile is invalid', () => {
-        beforeEach(() => {
-          component.profile$ = of(null);
-        });
-        it('Should call router.navigate correctly', () => {
-          component.ngOnInit();
-          expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
-            queryParams: { from: 'ticket-sidebar' },
-          });
-        });
-      });
       describe('If profile is valid', () => {
         beforeEach(() => {
           component.profile$ = of(testProfile);
@@ -108,27 +94,22 @@ describe('TicketAppComponent', () => {
         });
       });
     });
+
     describe('If subscribing to profile times out', () => {
       const delayTime = 20000;
       beforeEach(() => {
-        mockRouter.navigate = jasmine.createSpy('navigate');
         Object.defineProperty(component, 'profile$', { writable: true });
         component.profile$ = of(testProfile).pipe(delay(delayTime));
       });
+
       it('Should set loading to false', fakeAsync(() => {
         component.ngOnInit();
         tick(delayTime);
         expect(component.loading).toBeFalsy();
       }));
-      it('Should call router.navigate correctly', fakeAsync(() => {
-        component.ngOnInit();
-        tick(delayTime);
-        expect(mockRouter.navigate).toHaveBeenCalledWith([`/auth`], {
-          queryParams: { from: 'ticket-sidebar' },
-        });
-      }));
     });
   });
+
   describe('Method: ngAfterViewInit', () => {
     beforeEach(() => {
       mockZendeskService.resize = jasmine.createSpy('resize');

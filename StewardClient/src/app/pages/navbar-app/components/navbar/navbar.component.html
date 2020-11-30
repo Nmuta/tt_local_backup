@@ -23,13 +23,24 @@
   <span class="short-spacer"></span>
   <span>
     <a
+      [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
+      queryParamsHandling="preserve"
+      mat-icon-button
+      routerLinkActive="mat-stroked-button"
+      aria-label="Settings"
+    >
+      <fa-icon [icon]="settingsIcon"></fa-icon>
+    </a>
+  </span>
+  <span>
+    <a
       [routerLink]="[{ outlets: { sidebar: 'profile' } }]"
       queryParamsHandling="preserve"
       mat-icon-button
       routerLinkActive="mat-stroked-button"
       aria-label="Profile"
     >
-      <fa-icon icon="user" class="profile-icon"></fa-icon>
+      <fa-icon [icon]="profileIcon"></fa-icon>
     </a>
   </span>
 </mat-toolbar>

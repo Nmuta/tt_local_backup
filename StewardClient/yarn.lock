@@ -296,9 +296,9 @@
     yargs "^16.1.1"
 
 "@angular/material@^11.0.0":
-  version "11.0.0"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/material/-/material-11.0.0.tgz#6ef7048763e7415dabda54d32847b2821bf6413d"
-  integrity sha1-bvcEh2PnQV2r2lTTKEeyghv2QT0=
+  version "11.0.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/material/-/material-11.0.1.tgz#add0e87d3e01d7d20484ea5a90d15439ec31a1d6"
+  integrity sha1-rdDofT4B19IEhOpakNFUOewxodY=
   dependencies:
     tslib "^2.0.0"
 
@@ -1481,7 +1481,7 @@
     "@nguniversal/common" "11.0.0"
     tslib "^2.0.0"
 
-"@ngxs/devtools-plugin@^3.4.3":
+"@ngxs/devtools-plugin@^3.7.0":
   version "3.7.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@ngxs/devtools-plugin/-/devtools-plugin-3.7.0.tgz#5b6b3e63411da527fcee1e8280714e1b95a838c7"
   integrity sha1-W2s+Y0EdpSf87h6CgHFOG5WoOMc=
@@ -1495,7 +1495,14 @@
   dependencies:
     tslib "^1.9.0"
 
-"@ngxs/store@^3.6.2":
+"@ngxs/storage-plugin@^3.7.1":
+  version "3.7.1"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@ngxs/storage-plugin/-/storage-plugin-3.7.1.tgz#39fbce9cf6585cc094d74e5efd54daae3fcd334d"
+  integrity sha1-OfvOnPZYXMCU105e/VTarj/NM00=
+  dependencies:
+    tslib "^1.9.0"
+
+"@ngxs/store@^3.7.0":
   version "3.7.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@ngxs/store/-/store-3.7.0.tgz#e46387219dae610c685accc119ae42e351afcaa4"
   integrity sha1-5GOHIZ2uYQxoWszBGa5C41GvyqQ=

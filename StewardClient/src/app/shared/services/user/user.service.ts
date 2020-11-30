@@ -8,10 +8,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UserService {
+  public basePath: string = 'v1';
+
   constructor(private apiService: ApiService) {}
 
   /** Sends request to get the user profile. */
   public getUserProfile(): Observable<UserModel> {
-    return this.apiService.getRequest<UserModel>('me');
+    return this.apiService.getRequest<UserModel>(`${this.basePath}/me`);
   }
 }

@@ -47,6 +47,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
+            // Gamertag must be set to null for NGP. v-joyate 20201123
+            banParameters.Gamertag = null;
+
             var banHistory = new LiveOpsBanHistory(
                                             (long)xuid,
                                             title,

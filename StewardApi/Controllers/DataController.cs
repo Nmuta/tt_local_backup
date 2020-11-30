@@ -12,7 +12,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     /// <summary>
     ///     Handles requests for data.
     /// </summary>
-    [Route("title/")]
+    [Route("api/v1/title/")]
     [ApiController]
     [Authorize(Roles = "Agent")]
     public sealed class DataController : ControllerBase
