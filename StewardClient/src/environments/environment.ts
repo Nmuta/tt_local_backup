@@ -2,7 +2,7 @@ import { LogLevel } from '@services/logger/log-level';
 
 import { StewardEnvironment } from './type';
 
-// Local
+/** Local with Local API */
 export const environment: StewardEnvironment = {
   production: false,
   azureAppId: '48a8a430-0f6b-4469-940f-1c5c6af1fd88',

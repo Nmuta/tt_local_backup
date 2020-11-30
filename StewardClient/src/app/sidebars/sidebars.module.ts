@@ -12,6 +12,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+/** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
 export const sidebarRoutes = [
   {
     path: 'profile',
@@ -25,6 +26,7 @@ export const sidebarRoutes = [
   },
 ];
 
+/** Module containing all routable sidebar components. */
 @NgModule({
   declarations: [ProfileComponent, SettingsComponent],
   imports: [

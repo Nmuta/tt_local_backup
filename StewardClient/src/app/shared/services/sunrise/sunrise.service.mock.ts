@@ -54,6 +54,7 @@ export class MockSunriseService {
   constructor(private readonly generator: () => unknown) {}
 }
 
+/** Creates an injectable mock for Sunrise Service. */
 export function createMockSunriseService(
   returnValueGenerator: () => unknown = () => new Object(),
 ): Provider {

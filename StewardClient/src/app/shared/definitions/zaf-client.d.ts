@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-types */
 
+/**
+ * Hacked together typings for ZAFClient. May be incorrect!
+ * @see https://developer.zendesk.com/apps/docs/core-api/client_api
+ */
 export interface ZAFMetadata {
   appId: number;
   name: string;
@@ -10,6 +14,10 @@ export interface ZAFMetadata {
   };
 }
 
+/**
+ * Hacked together typings for ZAFClient. May be incorrect!
+ * @see https://developer.zendesk.com/apps/docs/core-api/client_api
+ */
 export interface ZAFContext {
   instanceGuid: string;
   product: string;
@@ -20,8 +28,16 @@ export interface ZAFContext {
   ticketId: number;
 }
 
+/**
+ * Hacked together typings for ZAFClient. May be incorrect!
+ * @see https://developer.zendesk.com/apps/docs/core-api/client_api
+ */
 export type ZAFHandler = (e: unknown) => void;
 
+/**
+ * Hacked together typings for ZAFClient. May be incorrect!
+ * @see https://developer.zendesk.com/apps/docs/core-api/client_api
+ */
 export interface ZAFRequestOptions {
   accepts?: object;
   autoRetry?: boolean;

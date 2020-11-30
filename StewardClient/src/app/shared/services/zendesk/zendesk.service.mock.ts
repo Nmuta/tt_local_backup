@@ -15,6 +15,7 @@ export class MockZendeskService {
   public goToApp = jasmine.createSpy('goToApp');
 }
 
+/** Creates an injectable mock for Zendesk Service. */
 export function createMockZendeskService(): Provider {
   return { provide: ZendeskService, useValue: new MockZendeskService() };
 }

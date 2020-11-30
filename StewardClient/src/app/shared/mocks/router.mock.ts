@@ -6,10 +6,10 @@ import { Router } from '@angular/router';
 /** Defines the router mock. */
 export class MockRouter {
   public navigate = jasmine.createSpy('navigate');
-  get url(): string {
-    return jasmine.createSpy('url') as any;
-  }
 }
+/** Creates an injectable mock for Zendesk Service.
+ * @deprecated Use RouterTestingModule and store.dispatch(Navigate)
+ */
 export function createMockRouter(): Provider {
   return { provide: Router, useValue: new MockRouter() };
 }

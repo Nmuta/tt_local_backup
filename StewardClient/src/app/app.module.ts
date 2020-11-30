@@ -27,7 +27,7 @@ import { CenterContentsModule } from '@components/center-contents/center-content
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
-export const protectedResourceMap: [string, string[]][] = [
+const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
 ];
 

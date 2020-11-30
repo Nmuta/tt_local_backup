@@ -39,10 +39,12 @@ export class NavbarComponent {
 
   constructor(private readonly windowService: WindowService) {}
 
+  /** True when the Zendesk Client is not available */
   public get missingZendesk(): boolean {
     return !this.windowService.zafClient();
   }
 
+  /** A string representing the current location */
   public get location(): string {
     return `${window.location.pathname}${window.location.search}`;
   }

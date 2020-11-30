@@ -23,6 +23,7 @@ export class MockApiService {
   constructor(private readonly generator: () => unknown) {}
 }
 
+/** Creates an injectable mock for API Service. */
 export function createMockApiService(
   returnValueGenerator: () => unknown = () => new Object(),
 ): Provider {

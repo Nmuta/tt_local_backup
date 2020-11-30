@@ -6,6 +6,7 @@ export class MockApplicationInsights {
   public trackTrace = jasmine.createSpy('trackTrace');
 }
 
+/** Creates an injectable mock for Application Insights. */
 export function createMockApplicationInsights(): Provider {
   return {
     provide: ApplicationInsights,

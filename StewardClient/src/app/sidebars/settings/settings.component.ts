@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent extends BaseComponent implements OnInit {
-  @Select(UserSettingsState) private settings$: Observable<UserSettingsStateModel>;
+  @Select(UserSettingsState) public settings$: Observable<UserSettingsStateModel>;
 
   public enableFakeApi: boolean;
 

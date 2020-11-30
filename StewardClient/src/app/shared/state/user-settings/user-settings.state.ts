@@ -18,6 +18,7 @@ export class UserSettingsStateModel {
     enableFakeApi: !environment.production,
   },
 })
+/** Defines the current users' settings. */
 export class UserSettingsState {
   /** Sets the state of the current API. */
   @Action(SetFakeApi, { cancelUncompleted: true })

@@ -6,6 +6,7 @@ import { of, throwError } from 'rxjs';
 import { createMockUserService, UserService } from '@shared/services/user';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AppState } from '@shared/state/app-state';
 
 describe('State: User', () => {
   let store: Store;
@@ -52,7 +53,7 @@ describe('State: User', () => {
 
         // Assert
         store
-          .selectOnce(state => state.user.profile)
+          .selectOnce((state: AppState) => state.user.profile)
           .subscribe(profile => {
             expect(profile).toBe(expectedProfile);
           });
