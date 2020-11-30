@@ -9,6 +9,7 @@ import {
 import { UserModel } from '@models/user.model';
 import { Select } from '@ngxs/store';
 import { WindowService } from '@services/window';
+import { ZendeskService } from '@services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 
@@ -37,15 +38,18 @@ export class NavbarComponent {
   public profileIcon = faUser;
   public settingsIcon = faCog;
 
-  constructor(private readonly windowService: WindowService) {}
+  constructor(
+    private readonly windowService: WindowService,
+    public readonly zendeskService: ZendeskService,
+  ) {}
 
   /** True when the Zendesk Client is not available */
   public get missingZendesk(): boolean {
-    return !this.windowService.zafClient();
+    return !this.zendeskService.inZendesk;
   }
 
   /** A string representing the current location */
   public get location(): string {
-    return `${window.location.pathname}${window.location.search}`;
+    return `${this.windowService.location().pathname}${this.windowService.location().search}`;
   }
 }

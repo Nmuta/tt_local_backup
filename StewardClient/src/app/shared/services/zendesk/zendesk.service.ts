@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ZAFRequestOptions } from '@shared/definitions/zaf-client';
-import { WindowService } from '@shared/services/window';
 import { from, Observable } from 'rxjs';
 
 /** A typings shell for a zendesk response. */
@@ -23,50 +21,59 @@ export interface TicketFieldsResponse {
   providedIn: 'root',
 })
 export class ZendeskService {
-  constructor(private windowService: WindowService) {}
+  private readonly zafClient: ZafClient;
+
+  constructor() {
+    this.zafClient = ZAFClient.init();
+  }
+
+  /** True when this app is operating within zendesk. */
+  public get inZendesk(): boolean {
+    return !!this.zafClient;
+  }
 
   /** Gets the zendesk ticket details. */
   public getTicketDetails(): Observable<{ ticket: unknown }> {
-    return from(this.windowService.zafClient().get('ticket'));
+    return from(this.zafClient.get('ticket'));
   }
 
   /** Gets the zendesk ticket requestor information. */
   public getTicketRequestor(): Observable<TicketRequesterResponse> {
-    return from(this.windowService.zafClient().get<TicketRequesterResponse>('ticket.requester'));
+    return from(this.zafClient.get<TicketRequesterResponse>('ticket.requester'));
   }
 
   /** Gets the zendesk ticket fields. */
   public getTicketFields(): Observable<TicketFieldsResponse> {
-    return from(this.windowService.zafClient().get('ticketFields'));
+    return from(this.zafClient.get('ticketFields'));
   }
 
   /** Gets a zendesk custom ticket field. */
   public getTicketCustomField(field: string): Observable<unknown> {
-    return from(this.windowService.zafClient().get(`ticket.customField:${field}`));
+    return from(this.zafClient.get(`ticket.customField:${field}`));
   }
 
   /** Sends https request through zaf client. */
-  public sendRequest(reqSettings: ZAFRequestOptions): Observable<unknown> {
-    return from(this.windowService.zafClient().request(reqSettings));
+  public sendRequest(reqSettings: ZafRequestOptions): Observable<unknown> {
+    return from(this.zafClient.request(reqSettings));
   }
 
   /** Gets the current zendesk user. */
   public currentUser(): Observable<unknown> {
-    return from(this.windowService.zafClient().get('currentUser'));
+    return from(this.zafClient.get('currentUser'));
   }
 
   /** Gets the zendesk context. */
   public context(): Observable<unknown> {
-    return from(this.windowService.zafClient().context());
+    return from(this.zafClient.context());
   }
 
   /** Resizes the zendesk app. */
   public resize(width: string, height: string): void {
-    this.windowService.zafClient().invoke('resize', { width: width, height: height });
+    this.zafClient.invoke('resize', { width: width, height: height });
   }
 
   /** Opens up the sepcified zendesk app. */
   public goToApp(appLocation: string, appName: string, paramPath: string): void {
-    this.windowService.zafClient().invoke('routeTo', appLocation, appName, paramPath);
+    this.zafClient.invoke('routeTo', appLocation, appName, paramPath);
   }
 }
