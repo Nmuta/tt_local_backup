@@ -26,9 +26,6 @@ export class SunriseComponent extends BaseComponent implements OnInit {
   public ngOnInit(): void {
     this.route.queryParamMap
       .pipe(
-        tap(_params => {
-          debugger;
-        }),
         takeUntil(this.onDestroy$),
         map(params => params.get('gamertag')),
         tap(gamertag => {
