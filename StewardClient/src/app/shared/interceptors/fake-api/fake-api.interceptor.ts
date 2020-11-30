@@ -15,8 +15,27 @@ import { Observable, of as ObservableOf, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { ApolloPlayerGamertagDetailsFakeApi } from './apis/title/apollo/player/gamertag/details';
+import { ApolloPlayerProfileIdInventoryFakeApi } from './apis/title/apollo/player/profileId/getInventory';
+import { ApolloPlayerXuidInventoryFakeApi } from './apis/title/apollo/player/xuid/getInventory';
+import { ApolloPlayerXuidInventoryProfilesFakeApi } from './apis/title/apollo/player/xuid/getInventoryProfiles';
+import { POSTApolloPlayerXuidInventoryFakeApi } from './apis/title/apollo/player/xuid/postInventory';
+import { POSTApolloGroupGamertagsInventoryFakeApi } from './apis/title/apollo/group/gamertags/postInventory';
+import { POSTApolloGroupGroupIdInventoryFakeApi } from './apis/title/apollo/group/groupId/postInventory';
+import { POSTApolloGroupXuidsInventoryFakeApi } from './apis/title/apollo/group/xuids/postInventory';
+
 import { GravityPlayerGamertagDetailsFakeApi } from './apis/title/gravity/player/gamertag/details';
+import { GravityPlayerXuidInventoryFakeApi } from './apis/title/gravity/player/xuid/getInventory';
+import { GravityPlayerXuidProfileIdInventoryFakeApi } from './apis/title/gravity/player/xuid/profileId/getInventory';
+import { GravityPlayerT10IdInventoryFakeApi } from './apis/title/gravity/player/t10Id/getInventory';
+import { GravityPlayerT10IdProfileIdInventoryFakeApi } from './apis/title/gravity/player/t10Id/profileId/getInventory';
+import { POSTGravityPlayerT10IdInventoryFakeApi } from './apis/title/gravity/player/t10Id/postInventory';
+import { POSTGravityPlayerXuidInventoryFakeApi } from './apis/title/gravity/player/xuid/postInventory';
+
 import { OpusPlayerGamertagDetailsFakeApi } from './apis/title/opus/player/gamertag/details';
+import { OpusPlayerProfileIdInventoryFakeApi } from './apis/title/opus/player/profileId/getInventory';
+import { OpusPlayerXuidInventoryFakeApi } from './apis/title/opus/player/xuid/getInventory';
+import { OpusPlayerXuidInventoryProfilesFakeApi } from './apis/title/opus/player/xuid/getInventoryProfiles';
+
 import { SunriseConsoleIsBannedFakeApi } from './apis/title/sunrise/console/isBanned';
 import { SunrisePlayerGamertagDetailsFakeApi } from './apis/title/sunrise/player/gamertag/details';
 import { SunrisePlayerXuidBanHistoryFakeApi } from './apis/title/sunrise/player/xuid/banHistory';
@@ -25,11 +44,25 @@ import { SunrisePlayerXuidCreditUpdatesFakeApi } from './apis/title/sunrise/play
 import { SunrisePlayerXuidProfileSummaryFakeApi } from './apis/title/sunrise/player/xuid/profileSummary';
 import { SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/sunrise/player/xuid/sharedConsoleUsers';
 import { SunrisePlayerXuidUserFlagsFakeApi } from './apis/title/sunrise/player/xuid/userFlags';
+import { SunriseGroupsFakeApi } from './apis/title/sunrise/getGroups';
+import { SunrisePlayerXuidInventoryFakeApi } from './apis/title/sunrise/player/xuid/getInventory';
+import { SunrisePlayerXuidInventoryProfilesFakeApi } from './apis/title/sunrise/player/xuid/getInventoryProfiles';
+import { SunrisePlayerProfileIdInventoryFakeApi } from './apis/title/sunrise/player/profileId/getInventory';
+import { POSTSunrisePlayerXuidInventoryFakeApi } from './apis/title/sunrise/player/xuid/postInventory';
+import { POSTSunriseGroupGamertagsInventoryFakeApi } from './apis/title/sunrise/group/gamertags/postInventory';
+import { POSTSunriseGroupGroupIdInventoryFakeApi } from './apis/title/sunrise/group/groupId/postInventory';
+import { POSTSunriseGroupXuidsInventoryFakeApi } from './apis/title/sunrise/group/xuids/postInventory';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
   // Gravity
   GravityPlayerGamertagDetailsFakeApi,
+  GravityPlayerXuidInventoryFakeApi,
+  GravityPlayerXuidProfileIdInventoryFakeApi,
+  GravityPlayerT10IdInventoryFakeApi,
+  GravityPlayerT10IdProfileIdInventoryFakeApi,
+  POSTGravityPlayerT10IdInventoryFakeApi,
+  POSTGravityPlayerXuidInventoryFakeApi,
   // Sunrise
   SunrisePlayerGamertagDetailsFakeApi,
   SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi,
@@ -39,10 +72,28 @@ const fakeApiConstructors = [
   SunrisePlayerXuidProfileSummaryFakeApi,
   SunrisePlayerXuidBanHistoryFakeApi,
   SunriseConsoleIsBannedFakeApi,
+  SunriseGroupsFakeApi,
+  SunrisePlayerXuidInventoryFakeApi,
+  SunrisePlayerXuidInventoryProfilesFakeApi,
+  SunrisePlayerProfileIdInventoryFakeApi,
+  POSTSunrisePlayerXuidInventoryFakeApi,
+  POSTSunriseGroupGamertagsInventoryFakeApi,
+  POSTSunriseGroupGroupIdInventoryFakeApi,
+  POSTSunriseGroupXuidsInventoryFakeApi,
   // Apollo
   ApolloPlayerGamertagDetailsFakeApi,
+  ApolloPlayerProfileIdInventoryFakeApi,
+  ApolloPlayerXuidInventoryFakeApi,
+  ApolloPlayerXuidInventoryProfilesFakeApi,
+  POSTApolloPlayerXuidInventoryFakeApi,
+  POSTApolloGroupGamertagsInventoryFakeApi,
+  POSTApolloGroupGroupIdInventoryFakeApi,
+  POSTApolloGroupXuidsInventoryFakeApi,
   // Opus
   OpusPlayerGamertagDetailsFakeApi,
+  OpusPlayerProfileIdInventoryFakeApi,
+  OpusPlayerXuidInventoryFakeApi,
+  OpusPlayerXuidInventoryProfilesFakeApi,
 ];
 
 /** The URLs this interceptor will not block. */
