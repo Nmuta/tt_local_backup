@@ -12,6 +12,7 @@ export class MockMsalService {
   public trackEvent = jasmine.createSpy('trackEvent');
 }
 
+/** Creates an injectable mock for MSAL Service. */
 export function createMockMsalService(): Provider {
   return { provide: MsalService, useValue: new MockMsalService() };
 }

@@ -2,6 +2,7 @@ import { LogLevel } from '@services/logger/log-level';
 
 import { StewardEnvironment } from './type';
 
+/** Deployed to Prod */
 export const environment: StewardEnvironment = {
   production: true,
   azureAppId: 'cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4',

@@ -4,9 +4,9 @@ import { Action, State, StateContext } from '@ngxs/store';
 import { ZAFClient } from '@shared/definitions/zaf-client';
 import { WindowOpen } from './window.actions';
 
-/** Defines the Window Service. */
 @Injectable({ providedIn: 'root' })
 @State<void>({ name: 'window' })
+/** Defines the Window Service. */
 export class WindowService {
   /** Checks if this window is in an iframe. */
   public get isInIframe(): boolean {
