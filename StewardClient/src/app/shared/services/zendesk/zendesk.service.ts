@@ -1,7 +1,10 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { from, Observable } from 'rxjs';
 
-export const ZAFCLIENT_TOKEN = new InjectionToken<ZAFClient.ZafClientActual>('ZAFClient')
+export const ZAFCLIENT_TOKEN = new InjectionToken<ZAFClient.ZafClientActual>('ZAFClient', {
+  providedIn: 'root',
+  factory: () => ZAFClient.init(),
+});
 
 /** A typings shell for a zendesk response. */
 export interface TicketRequesterResponse {
@@ -20,10 +23,10 @@ export interface TicketFieldsResponse {
 
 /** Defines the Zendesk Service. */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root' ,
 })
 export class ZendeskService {
-  constructor(@Inject(ZAFCLIENT_TOKEN) private readonly zafClient: ZAFClient.ZafClientActual) { }
+  constructor(@Inject(ZAFCLIENT_TOKEN) private readonly zafClient: ZAFClient.ZafClientActual) {}
 
   /** True when this app is operating within zendesk. */
   public get inZendesk(): boolean {

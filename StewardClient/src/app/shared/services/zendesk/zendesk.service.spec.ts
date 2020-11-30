@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 // Services
-import { WindowService, createMockWindowService } from '@shared/services/window';
 import { ZAFCLIENT_TOKEN, ZendeskService } from './zendesk.service';
 import { createMockZafClient } from '@shared/definitions/zaf-client.mock';
 

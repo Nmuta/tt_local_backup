@@ -3,7 +3,6 @@ import { ZAFCLIENT_TOKEN } from '@services/zendesk';
 
 /** A Mock ZAF client. */
 export class MockZafClient {
-
   public get = jasmine.createSpy('get');
   public request = jasmine.createSpy('request');
   public context = jasmine.createSpy('context');
