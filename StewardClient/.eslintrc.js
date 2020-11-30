@@ -108,7 +108,10 @@ module.exports = {
             ],
           },
         ],
-        '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+        '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }], // why? underscore-prefixed _variables are required-but-not-used.
+
+        'no-debugger': ['error'], // why? debugger statements should not be left in committed code
+        'no-console': ['error'], // why? console statements should not be left in committed code
 
         'jsdoc/check-alignment': 'error', // why? automatically configured by tslint port tool
         'jsdoc/newline-after-description': 'error', // why? automatically configured by tslint port tool
