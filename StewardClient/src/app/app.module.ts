@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule, Provider } from '@angular/core';
+import { InjectionToken, NgModule, Provider } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
@@ -26,6 +26,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { CenterContentsModule } from '@components/center-contents/center-contents.module';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { ZAFCLIENT_TOKEN } from '@services/zendesk';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -86,6 +87,10 @@ function fakeApiOrNothing(): Provider[] {
     ),
   ],
   providers: [
+    {
+      provide: ZAFCLIENT_TOKEN,
+      useFactory: () => ZAFClient.init(),
+    },
     {
       provide: ApplicationInsights,
       useFactory: () => {

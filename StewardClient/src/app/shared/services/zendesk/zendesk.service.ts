@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import ZAFClient, { ZafClientActual, ZafRequestOptions } from '@shared/definitions/zaf-client';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { from, Observable } from 'rxjs';
+
+export const ZAFCLIENT_TOKEN = new InjectionToken<ZAFClient.ZafClientActual>('ZAFClient')
 
 /** A typings shell for a zendesk response. */
 export interface TicketRequesterResponse {
@@ -22,11 +23,7 @@ export interface TicketFieldsResponse {
   providedIn: 'root',
 })
 export class ZendeskService {
-  private readonly zafClient: ZafClientActual;
-
-  constructor() {
-    this.zafClient = ZAFClient.init();
-  }
+  constructor(@Inject(ZAFCLIENT_TOKEN) private readonly zafClient: ZAFClient.ZafClientActual) { }
 
   /** True when this app is operating within zendesk. */
   public get inZendesk(): boolean {

@@ -4,34 +4,25 @@ import { of } from 'rxjs';
 
 // Services
 import { WindowService, createMockWindowService } from '@shared/services/window';
-import { ZendeskService } from './zendesk.service';
+import { ZAFCLIENT_TOKEN, ZendeskService } from './zendesk.service';
+import { createMockZafClient } from '@shared/definitions/zaf-client.mock';
 
 describe('service: UserService', () => {
   let service: ZendeskService;
-  let mockWindowService: WindowService;
   let mockZafClientObject: ZAFClient.ZafClientActual;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [ZendeskService, createMockWindowService()],
+      providers: [ZendeskService, createMockZafClient()],
     });
     service = TestBed.inject(ZendeskService);
-    mockWindowService = TestBed.inject(WindowService);
 
-    mockZafClientObject = jasmine.createSpyObj('zafClient', [
-      'get',
-      'request',
-      'context',
-      'invoke',
-    ]);
+    mockZafClientObject = TestBed.inject(ZAFCLIENT_TOKEN);
     mockZafClientObject.get = jasmine.createSpy('get').and.returnValue(of({}));
     mockZafClientObject.request = jasmine.createSpy('request').and.returnValue(of({}));
     mockZafClientObject.context = jasmine.createSpy('context').and.returnValue(of({}));
     mockZafClientObject.invoke = jasmine.createSpy('invoke').and.returnValue({});
-    mockWindowService.zafClient = jasmine
-      .createSpy('zafClient')
-      .and.returnValue(mockZafClientObject);
   });
 
   describe('Method: getTicketDetails', () => {

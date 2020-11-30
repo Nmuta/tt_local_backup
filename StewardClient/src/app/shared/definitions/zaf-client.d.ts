@@ -1,34 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-types */
 
-export as namespace ZAFClient;
-
 /**
  * Hacked together typings for ZAFClient. May be incorrect!
  * @see https://developer.zendesk.com/apps/docs/core-api/client_api
  */
-export interface ZafClientActual {
-  context(): Promise<ZafContext>;
-  get<T>(key: keyof T): Promise<T>;
-  get<K extends string>(key: K): Promise<Record<K, unknown>>;
-  get<K extends string>(keys: K[]): Promise<Record<K, unknown>>;
-  set<K extends string, V>(key: K, value: V): Promise<Record<K, V>>;
-  set<K extends string, V>(object: Record<K, V>): Promise<Record<K, V>>;
-  has(eventName: string, handler: ZafHandler): boolean;
-  instance(instanceGuid: string): ZafClientActual;
-  invoke(name: string, ...args: unknown[]): Promise<unknown>;
-  invoke(pathToArgsObject: { [name: string]: unknown[] }): Promise<unknown[]>;
-  metadata(): Promise<ZafMetadata>;
-  off(name: string, handler: ZafHandler): void;
-  on(name: string, handler: ZafHandler): void;
-  request(options: ZafRequestOptions): Promise<unknown>;
-  trigger(name: string, data: unknown): void;
-}
-
-/**
- * Hacked together typings for ZAFClient. May be incorrect!
- * @see https://developer.zendesk.com/apps/docs/core-api/client_api
- */
-export interface ZafMetadata {
+interface ZafMetadata {
   appId: number;
   name: string;
   installationId: number;
@@ -42,7 +18,7 @@ export interface ZafMetadata {
  * Hacked together typings for ZAFClient. May be incorrect!
  * @see https://developer.zendesk.com/apps/docs/core-api/client_api
  */
-export interface ZafContext {
+interface ZafContext {
   instanceGuid: string;
   product: string;
   account: {
@@ -56,13 +32,13 @@ export interface ZafContext {
  * Hacked together typings for ZAFClient. May be incorrect!
  * @see https://developer.zendesk.com/apps/docs/core-api/client_api
  */
-export type ZafHandler = (e: unknown) => void;
+type ZafHandler = (e: unknown) => void;
 
 /**
  * Hacked together typings for ZAFClient. May be incorrect!
  * @see https://developer.zendesk.com/apps/docs/core-api/client_api
  */
-export interface ZafRequestOptions {
+interface ZafRequestOptions {
   accepts?: object;
   autoRetry?: boolean;
   cache?: boolean;
@@ -87,4 +63,28 @@ export interface ZafRequestOptions {
   xhrFields?: object;
 }
 
-export function init(): ZafClientActual;
+declare namespace ZAFClient {
+  function init(): ZafClientActual;
+
+  /**
+   * Hacked together typings for ZAFClient. May be incorrect!
+   * @see https://developer.zendesk.com/apps/docs/core-api/client_api
+   */
+  interface ZafClientActual {
+    context(): Promise<ZafContext>;
+    get<T>(key: keyof T): Promise<T>;
+    get<K extends string>(key: K): Promise<Record<K, unknown>>;
+    get<K extends string>(keys: K[]): Promise<Record<K, unknown>>;
+    set<K extends string, V>(key: K, value: V): Promise<Record<K, V>>;
+    set<K extends string, V>(object: Record<K, V>): Promise<Record<K, V>>;
+    has(eventName: string, handler: ZafHandler): boolean;
+    instance(instanceGuid: string): ZafClientActual;
+    invoke(name: string, ...args: unknown[]): Promise<unknown>;
+    invoke(pathToArgsObject: { [name: string]: unknown[] }): Promise<unknown[]>;
+    metadata(): Promise<ZafMetadata>;
+    off(name: string, handler: ZafHandler): void;
+    on(name: string, handler: ZafHandler): void;
+    request(options: ZafRequestOptions): Promise<unknown>;
+    trigger(name: string, data: unknown): void;
+  }
+}
