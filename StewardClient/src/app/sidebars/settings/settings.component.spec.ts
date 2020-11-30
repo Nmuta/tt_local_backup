@@ -7,7 +7,7 @@ import { UserSettingsState } from '@shared/state/user-settings/user-settings.sta
 import { SettingsComponent } from './settings.component';
 import { UserSettingsStateModel } from '@shared/state/user-settings/user-settings.state';
 
-fdescribe('SettingsComponent', () => {
+describe('SettingsComponent', () => {
   let component: SettingsComponent;
   let fixture: ComponentFixture<SettingsComponent>;
 
