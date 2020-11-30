@@ -1,10 +1,10 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { ApolloPlayerInventory } from '@models/apollo';
+import { GravityPlayerInventory } from '@models/gravity';
 import { Unprocessed } from '@models/unprocessed';
 
-/** Fake API for apollo player inventory. */
-export class POSTApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
+/** Fake API for gravity player inventory. */
+export class GravityPlayerT10IdProfileIdInventoryFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -12,22 +12,18 @@ export class POSTApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
       return false;
     }
 
-    if(this.request.method.toUpperCase() !== 'POST') {
-      return false;
-    }
-
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/apollo\/player\/xuid\((.+)\)\/inventory/i;
+    const regex = /\/?api\/v1\/title\/gravity\/player\/t10Id\((.+)\)\/profileId\((.+)\)\/inventory/i;
     return regex.test(url.pathname);
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<ApolloPlayerInventory>> {
-    return POSTApolloPlayerXuidInventoryFakeApi.make();
+  public handle(): Partial<Unprocessed<GravityPlayerInventory>> {
+    return GravityPlayerT10IdProfileIdInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<ApolloPlayerInventory>> {
+  public static make(): Partial<Unprocessed<GravityPlayerInventory>> {
     return {
       xuid: 189456456,
     };

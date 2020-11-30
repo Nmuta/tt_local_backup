@@ -4,7 +4,7 @@ import { ApolloPlayerInventory } from '@models/apollo';
 import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for apollo player inventory. */
-export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
+export class ApolloGroupXuidsInventoryFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -12,18 +12,14 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
       return false;
     }
 
-    if(this.request.method.toUpperCase() !== 'GET') {
-      return false;
-    }
-
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/apollo\/player\/xuid\((.+)\)\/inventory/i;
+    const regex = /\/?api\/v1\/title\/apollo\/group\/xuids\/inventory/i;
     return regex.test(url.pathname);
   }
 
   /** Produces a sample API response. */
   public handle(): Partial<Unprocessed<ApolloPlayerInventory>> {
-    return ApolloPlayerXuidInventoryFakeApi.make();
+    return ApolloGroupXuidsInventoryFakeApi.make();
   }
 
   /** Generates a sample object */

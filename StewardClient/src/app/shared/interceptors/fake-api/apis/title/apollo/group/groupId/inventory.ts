@@ -3,8 +3,8 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloPlayerInventory } from '@models/apollo';
 import { Unprocessed } from '@models/unprocessed';
 
-/** Fake API for apollo player inventory profiles. */
-export class ApolloPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
+/** Fake API for sunrise player inventory. */
+export class ApolloGroupGroupIdInventoryFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -12,18 +12,14 @@ export class ApolloPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
       return false;
     }
 
-    if(this.request.method.toUpperCase() !== 'GET') {
-      return false;
-    }
-
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/apollo\/player\/xuid\((.+)\)\/inventoryProfiles/i;
+    const regex = /\/?api\/v1\/title\/apollo\/group\/groupId\((.+)\)\/inventory/i;
     return regex.test(url.pathname);
   }
 
   /** Produces a sample API response. */
   public handle(): Partial<Unprocessed<ApolloPlayerInventory>> {
-    return ApolloPlayerXuidInventoryProfilesFakeApi.make();
+    return ApolloGroupGroupIdInventoryFakeApi.make();
   }
 
   /** Generates a sample object */

@@ -4,7 +4,7 @@ import { GravityPlayerInventory } from '@models/gravity';
 import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for gravity player inventory. */
-export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
+export class GravityPlayerXuidProfileIdInventoryFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -12,18 +12,14 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
       return false;
     }
 
-    if(this.request.method.toUpperCase() !== 'GET') {
-      return false;
-    }
-
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/gravity\/player\/t10Id\((.+)\)\/inventory/i;
+    const regex = /\/?api\/v1\/title\/gravity\/player\/xuid\((.+)\)\/profileId\((.+)\)\/inventory/i;
     return regex.test(url.pathname);
   }
 
   /** Produces a sample API response. */
   public handle(): Partial<Unprocessed<GravityPlayerInventory>> {
-    return GravityPlayerT10IdInventoryFakeApi.make();
+    return GravityPlayerXuidProfileIdInventoryFakeApi.make();
   }
 
   /** Generates a sample object */

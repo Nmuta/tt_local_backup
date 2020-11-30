@@ -4,15 +4,11 @@ import { SunrisePlayerInventory } from '@models/sunrise';
 import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for sunrise player inventory. */
-export class POSTSunriseGroupGroupIdInventoryFakeApi extends FakeApiBase {
+export class SunriseGroupGroupIdInventoryFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
     if (!targetingStewardApi) {
-      return false;
-    }
-
-    if(this.request.method.toUpperCase() !== 'POST') {
       return false;
     }
 
@@ -23,7 +19,7 @@ export class POSTSunriseGroupGroupIdInventoryFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): Partial<Unprocessed<SunrisePlayerInventory>> {
-    return POSTSunriseGroupGroupIdInventoryFakeApi.make();
+    return SunriseGroupGroupIdInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
