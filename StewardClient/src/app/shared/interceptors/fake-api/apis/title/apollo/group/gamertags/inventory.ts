@@ -12,6 +12,10 @@ export class ApolloGroupGamertagsInventoryFakeApi extends FakeApiBase {
       return false;
     }
 
+    if(this.request.method.toUpperCase() !== 'POST') {
+      return false;
+    }
+
     const url = new URL(this.request.url);
     const regex = /\/?api\/v1\/title\/apollo\/group\/gamertags\/inventory/i;
     return regex.test(url.pathname);

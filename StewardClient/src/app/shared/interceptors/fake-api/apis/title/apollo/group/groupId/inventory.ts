@@ -12,6 +12,10 @@ export class ApolloGroupGroupIdInventoryFakeApi extends FakeApiBase {
       return false;
     }
 
+    if(this.request.method.toUpperCase() !== 'POST') {
+      return false;
+    }
+
     const url = new URL(this.request.url);
     const regex = /\/?api\/v1\/title\/apollo\/group\/groupId\((.+)\)\/inventory/i;
     return regex.test(url.pathname);
