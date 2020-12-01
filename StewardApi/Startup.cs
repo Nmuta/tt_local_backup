@@ -88,7 +88,7 @@ namespace Turn10.LiveOps.StewardApi
                     Title = "Turn 10 Steward API",
                     Version = "v1",
                     Description = "Turn 10 Steward",
-                    Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                    Contact = new OpenApiContact
                     {
                         Email = "t10liveopstools@microsoft.com",
                         Name = "Turn 10 LiveOps Tools"
