@@ -27,7 +27,7 @@ export class ZafClientService {
   }
 
   /** Runs a given command with the client, when it shows up. */
-  public runWithClient<T>(switchMapper: SwitchMapper<T>): Observable<T> {
+  public runWithClient$<T>(switchMapper: SwitchMapper<T>): Observable<T> {
     return this.client$.pipe(switchMap(client => {
       const result = switchMapper(client);
       if (result instanceof Promise) {

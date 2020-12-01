@@ -26,7 +26,7 @@ describe('service: UserService', () => {
 
   describe('Method: getTicketDetails', () => {
     it('should use zafClient loaded into the window to get the ticket info', done => {
-      service.getTicketDetails().subscribe(() => {
+      service.getTicketDetails$().subscribe(() => {
         expect(mockZafClient.get).toHaveBeenCalledWith(`ticket`);
         done();
       });
@@ -35,7 +35,7 @@ describe('service: UserService', () => {
 
   describe('Method: getTicketRequestor', () => {
     it('should use zafClient loaded into the window to get the ticket requestor info', done => {
-      service.getTicketRequestor().subscribe(() => {
+      service.getTicketRequestor$().subscribe(() => {
         expect(mockZafClient.get).toHaveBeenCalledWith(`ticket.requester`);
         done();
       });
@@ -44,7 +44,7 @@ describe('service: UserService', () => {
 
   describe('Method: getTicketFields', () => {
     it('should use zafClient loaded into the window to get the ticket fields', done => {
-      service.getTicketFields().subscribe(() => {
+      service.getTicketFields$().subscribe(() => {
         expect(mockZafClient.get).toHaveBeenCalledWith(`ticketFields`);
         done();
       });
@@ -55,7 +55,7 @@ describe('service: UserService', () => {
     const param = 'test';
     
     it('should use zafClient loaded into the window to get the custom ticket field', done => {
-      service.getTicketCustomField(param).subscribe(() => {
+      service.getTicketCustomField$(param).subscribe(() => {
         expect(mockZafClient.get).toHaveBeenCalledWith(`ticket.customField:${param}`);
         done();
       });
@@ -65,7 +65,7 @@ describe('service: UserService', () => {
   describe('Method: sendRequest', () => {
     const param = { headers: { foo: 'bar' } };
     it('should use zafClient loaded into the window to send a request', done => {
-      service.sendRequest(param).subscribe(() => {
+      service.sendRequest$(param).subscribe(() => {
         expect(mockZafClient.request).toHaveBeenCalledWith(param);
         done();
       });
@@ -74,7 +74,7 @@ describe('service: UserService', () => {
 
   describe('Method: currentUser', () => {
     it('should use zafClient loaded into the window to get the ticket fields', done => {
-      service.currentUser().subscribe(() => {
+      service.currentUser$().subscribe(() => {
         expect(mockZafClient.get).toHaveBeenCalledWith(`currentUser`);
         done();
       });
@@ -83,7 +83,7 @@ describe('service: UserService', () => {
 
   describe('Method: context', () => {
     it('should use zafClient loaded into the window to get the client context', done => {
-      service.context().subscribe(() => {
+      service.context$().subscribe(() => {
         expect(mockZafClient.context).toHaveBeenCalledWith();
         done();
       });
@@ -95,7 +95,7 @@ describe('service: UserService', () => {
     const width = '100px';
 
     it('should use zafClient loaded into the window to resize the current app', done => {
-      service.resize(width, height).subscribe(_ => {
+      service.resize$(width, height).subscribe(_ => {
         expect(mockZafClient.invoke).toHaveBeenCalledWith('resize', {
           width: width,
           height: height,
@@ -111,7 +111,7 @@ describe('service: UserService', () => {
     const paramPath = 'test-paramPath';
 
     it('should use zafClient loaded into the window to route to a new zendesk app', done => {
-      service.goToApp(appLocation, appName, paramPath).subscribe(_ => {
+      service.goToApp$(appLocation, appName, paramPath).subscribe(_ => {
         expect(mockZafClient.invoke).toHaveBeenCalledWith(
           'routeTo',
           appLocation,

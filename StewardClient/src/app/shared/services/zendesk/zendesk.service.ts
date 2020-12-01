@@ -42,47 +42,47 @@ export class ZendeskService {
   }
 
   /** Gets the zendesk ticket details. */
-  public getTicketDetails(): Observable<{ ticket: unknown }> {
-    return this.zafClientService.runWithClient(c => c.get('ticket'));
+  public getTicketDetails$(): Observable<{ ticket: unknown }> {
+    return this.zafClientService.runWithClient$(c => c.get('ticket'));
   }
 
   /** Gets the zendesk ticket requestor information. */
-  public getTicketRequestor(): Observable<TicketRequesterResponse> {
-    return this.zafClientService.runWithClient(c => c.get<TicketRequesterResponse>('ticket.requester'));
+  public getTicketRequestor$(): Observable<TicketRequesterResponse> {
+    return this.zafClientService.runWithClient$(c => c.get<TicketRequesterResponse>('ticket.requester'));
   }
 
   /** Gets the zendesk ticket fields. */
-  public getTicketFields(): Observable<TicketFieldsResponse> {
-    return this.zafClientService.runWithClient(c => c.get('ticketFields'));
+  public getTicketFields$(): Observable<TicketFieldsResponse> {
+    return this.zafClientService.runWithClient$(c => c.get('ticketFields'));
   }
 
   /** Gets a zendesk custom ticket field. */
-  public getTicketCustomField(field: string): Observable<unknown> {
-    return this.zafClientService.runWithClient(c => c.get(`ticket.customField:${field}`));
+  public getTicketCustomField$(field: string): Observable<unknown> {
+    return this.zafClientService.runWithClient$(c => c.get(`ticket.customField:${field}`));
   }
 
   /** Sends https request through zaf client. */
-  public sendRequest(reqSettings: ZafRequestOptions): Observable<unknown> {
-    return this.zafClientService.runWithClient(c => c.request(reqSettings));
+  public sendRequest$(reqSettings: ZafRequestOptions): Observable<unknown> {
+    return this.zafClientService.runWithClient$(c => c.request(reqSettings));
   }
 
   /** Gets the current zendesk user. */
-  public currentUser(): Observable<unknown> {
-    return this.zafClientService.runWithClient(c => c.get('currentUser'));
+  public currentUser$(): Observable<unknown> {
+    return this.zafClientService.runWithClient$(c => c.get('currentUser'));
   }
 
   /** Gets the zendesk context. */
-  public context(): Observable<unknown> {
-    return this.zafClientService.runWithClient(c => c.context());
+  public context$(): Observable<unknown> {
+    return this.zafClientService.runWithClient$(c => c.context());
   }
 
   /** Resizes the zendesk app. */
-  public resize(width: string, height: string): Observable<unknown> {
-    return this.zafClientService.runWithClient(c => c.invoke('resize', { width: width, height: height }));
+  public resize$(width: string, height: string): Observable<unknown> {
+    return this.zafClientService.runWithClient$(c => c.invoke('resize', { width: width, height: height }));
   }
 
   /** Opens up the sepcified zendesk app. */
-  public goToApp(appLocation: string, appName: string, paramPath: string): Observable<unknown> {
-    return this.zafClientService.runWithClient(c => c.invoke('routeTo', appLocation, appName, paramPath));
+  public goToApp$(appLocation: string, appName: string, paramPath: string): Observable<unknown> {
+    return this.zafClientService.runWithClient$(c => c.invoke('routeTo', appLocation, appName, paramPath));
   }
 }
