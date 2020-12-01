@@ -64,7 +64,7 @@ interface ZafRequestOptions {
 }
 
 declare namespace ZAFClient {
-  function init(): ZafClientActual;
+  function init(): ZafClientActual | false;
 
   /**
    * Hacked together typings for ZAFClient. May be incorrect!
@@ -79,12 +79,15 @@ declare namespace ZAFClient {
     set<K extends string, V>(object: Record<K, V>): Promise<Record<K, V>>;
     has(eventName: string, handler: ZafHandler): boolean;
     instance(instanceGuid: string): ZafClientActual;
-    invoke(name: string, ...args: unknown[]): Promise<unknown>;
-    invoke(pathToArgsObject: { [name: string]: unknown[] }): Promise<unknown[]>;
     metadata(): Promise<ZafMetadata>;
     off(name: string, handler: ZafHandler): void;
     on(name: string, handler: ZafHandler): void;
     request(options: ZafRequestOptions): Promise<unknown>;
     trigger(name: string, data: unknown): void;
+
+    invoke(operation: 'resize', o: { width: string, height: string }): Promise<unknown>;
+    invoke(operation: 'routeTo', appLocation: string, appName: string, paramPath: string): Promise<unknown>;
+    invoke(name: string, ...args: unknown[]): Promise<unknown>;
+    invoke(pathToArgsObject: { [name: string]: unknown[] }): Promise<unknown[]>;
   }
 }

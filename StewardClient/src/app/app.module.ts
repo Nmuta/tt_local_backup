@@ -27,6 +27,7 @@ import { CenterContentsModule } from '@components/center-contents/center-content
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { ZAFCLIENT_TOKEN } from '@services/zendesk';
+import { ZafClientService } from '@services/zendesk/zaf-client';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -87,10 +88,7 @@ function fakeApiOrNothing(): Provider[] {
     ),
   ],
   providers: [
-    {
-      provide: ZAFCLIENT_TOKEN,
-      useFactory: () => ZAFClient.init(),
-    },
+    ZafClientService,
     {
       provide: ApplicationInsights,
       useFactory: () => {
