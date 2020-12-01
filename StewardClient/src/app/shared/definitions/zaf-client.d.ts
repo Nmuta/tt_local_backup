@@ -62,6 +62,7 @@ export interface ZafRequestOptions {
   username?: string;
   xhrFields?: object;
 }
+
 export interface ExportedZafClient {
   init(): ZafClient | false;
 }
