@@ -23,6 +23,6 @@
       "@services/*": ["app/shared/services/*"],
       "@shared/*": ["app/shared/*"]
     },
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true
   }
 }

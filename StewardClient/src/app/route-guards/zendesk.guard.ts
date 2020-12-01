@@ -9,7 +9,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ZendeskGuard implements CanActivate {
-  constructor(private readonly router: Router, private readonly zendeskService: ZendeskService, private readonly windowService: WindowService) {}
+  constructor(
+    private readonly router: Router,
+    private readonly zendeskService: ZendeskService,
+    private readonly windowService: WindowService,
+  ) {}
 
   /** Logic to activate the route. */
   public canActivate(

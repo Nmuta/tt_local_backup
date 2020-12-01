@@ -7,7 +7,7 @@ import { createMockZafClientService } from './zaf-client.service.mock';
 describe('service: UserService', () => {
   let service: ZendeskService;
   let mockZafClientService: ZafClientService;
-  let mockZafClient: ZAFClient.ZafClientActual;
+  let mockZafClient: ZafClientActual;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -53,7 +53,7 @@ describe('service: UserService', () => {
 
   describe('Method: getTicketCustomField', () => {
     const param = 'test';
-    
+
     it('should use zafClient loaded into the window to get the custom ticket field', done => {
       service.getTicketCustomField$(param).subscribe(() => {
         expect(mockZafClient.get).toHaveBeenCalledWith(`ticket.customField:${param}`);

@@ -9,12 +9,18 @@ export class MockZafClientService extends ZafClientService {
   public client = new MockZafClient();
 
   /** Returns this.client */
-  public get client$(): Observable<ZAFClient.ZafClientActual> { return of(this.client); }
+  public get client$(): Observable<ZafClientActual> {
+    return of(this.client);
+  }
 
-  constructor() { super(null); }
+  constructor() {
+    super(null);
+  }
 
   /** Nuking the init function so we don't get the actual object; otherwise we are using this class as-is */
-  protected async init(): Promise<void> { /* empty */ }
+  protected async init(): Promise<void> {
+    /* empty */
+  }
 }
 
 /** Creates an injectable mock for Zendesk Service. */

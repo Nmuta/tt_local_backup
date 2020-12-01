@@ -4,7 +4,7 @@
  * Hacked together typings for ZAFClient. May be incorrect!
  * @see https://developer.zendesk.com/apps/docs/core-api/client_api
  */
-interface ZafMetadata {
+export interface ZafMetadata {
   appId: number;
   name: string;
   installationId: number;
@@ -18,7 +18,7 @@ interface ZafMetadata {
  * Hacked together typings for ZAFClient. May be incorrect!
  * @see https://developer.zendesk.com/apps/docs/core-api/client_api
  */
-interface ZafContext {
+export interface ZafContext {
   instanceGuid: string;
   product: string;
   account: {
@@ -32,13 +32,13 @@ interface ZafContext {
  * Hacked together typings for ZAFClient. May be incorrect!
  * @see https://developer.zendesk.com/apps/docs/core-api/client_api
  */
-type ZafHandler = (e: unknown) => void;
+export type ZafHandler = (e: unknown) => void;
 
 /**
  * Hacked together typings for ZAFClient. May be incorrect!
  * @see https://developer.zendesk.com/apps/docs/core-api/client_api
  */
-interface ZafRequestOptions {
+export interface ZafRequestOptions {
   accepts?: object;
   autoRetry?: boolean;
   cache?: boolean;
@@ -62,36 +62,36 @@ interface ZafRequestOptions {
   username?: string;
   xhrFields?: object;
 }
+export interface ExportedZafClient {
+  init(): ZafClient | false;
+}
 
-declare namespace ZAFClient {
-  function init(): ZafClientActual | false;
+/**
+ * Hacked together typings for ZAFClient. May be incorrect!
+ * @see https://developer.zendesk.com/apps/docs/core-api/client_api
+ */
+export interface ZafClient {
+  context(): Promise<ZafContext>;
+  get<T>(key: keyof T): Promise<T>;
+  get<K extends string>(key: K): Promise<Record<K, unknown>>;
+  get<K extends string>(keys: K[]): Promise<Record<K, unknown>>;
+  set<K extends string, V>(key: K, value: V): Promise<Record<K, V>>;
+  set<K extends string, V>(object: Record<K, V>): Promise<Record<K, V>>;
+  has(eventName: string, handler: ZafHandler): boolean;
+  instance(instanceGuid: string): ZafClient;
+  metadata(): Promise<ZafMetadata>;
+  off(name: string, handler: ZafHandler): void;
+  on(name: string, handler: ZafHandler): void;
+  request(options: ZafRequestOptions): Promise<unknown>;
+  trigger(name: string, data: unknown): void;
 
-  interface ZAFClient {
-    init(): ZafClientActual | false;
-  }
-
-  /**
-   * Hacked together typings for ZAFClient. May be incorrect!
-   * @see https://developer.zendesk.com/apps/docs/core-api/client_api
-   */
-  interface ZafClientActual {
-    context(): Promise<ZafContext>;
-    get<T>(key: keyof T): Promise<T>;
-    get<K extends string>(key: K): Promise<Record<K, unknown>>;
-    get<K extends string>(keys: K[]): Promise<Record<K, unknown>>;
-    set<K extends string, V>(key: K, value: V): Promise<Record<K, V>>;
-    set<K extends string, V>(object: Record<K, V>): Promise<Record<K, V>>;
-    has(eventName: string, handler: ZafHandler): boolean;
-    instance(instanceGuid: string): ZafClientActual;
-    metadata(): Promise<ZafMetadata>;
-    off(name: string, handler: ZafHandler): void;
-    on(name: string, handler: ZafHandler): void;
-    request(options: ZafRequestOptions): Promise<unknown>;
-    trigger(name: string, data: unknown): void;
-
-    invoke(operation: 'resize', o: { width: string, height: string }): Promise<unknown>;
-    invoke(operation: 'routeTo', appLocation: string, appName: string, paramPath: string): Promise<unknown>;
-    invoke(name: string, ...args: unknown[]): Promise<unknown>;
-    invoke(pathToArgsObject: { [name: string]: unknown[] }): Promise<unknown[]>;
-  }
+  invoke(operation: 'resize', o: { width: string; height: string }): Promise<unknown>;
+  invoke(
+    operation: 'routeTo',
+    appLocation: string,
+    appName: string,
+    paramPath: string,
+  ): Promise<unknown>;
+  invoke(name: string, ...args: unknown[]): Promise<unknown>;
+  invoke(pathToArgsObject: { [name: string]: unknown[] }): Promise<unknown[]>;
 }

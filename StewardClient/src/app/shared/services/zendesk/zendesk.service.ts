@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { ZafRequestOptions } from '@shared/definitions/zaf-client';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ZafClientService } from './zaf-client.service';
-
 
 /** A typings shell for a zendesk response. */
 export interface TicketRequesterResponse {
@@ -21,7 +21,7 @@ export interface TicketFieldsResponse {
 
 /** Defines the Zendesk Service. */
 @Injectable({
-  providedIn: 'root' ,
+  providedIn: 'root',
 })
 export class ZendeskService {
   constructor(private readonly zafClientService: ZafClientService) {}
@@ -48,7 +48,9 @@ export class ZendeskService {
 
   /** Gets the zendesk ticket requestor information. */
   public getTicketRequestor$(): Observable<TicketRequesterResponse> {
-    return this.zafClientService.runWithClient$(c => c.get<TicketRequesterResponse>('ticket.requester'));
+    return this.zafClientService.runWithClient$(c =>
+      c.get<TicketRequesterResponse>('ticket.requester'),
+    );
   }
 
   /** Gets the zendesk ticket fields. */
@@ -61,7 +63,7 @@ export class ZendeskService {
     return this.zafClientService.runWithClient$(c => c.get(`ticket.customField:${field}`));
   }
 
-  /** Sends https request through zaf client. */
+  /** Sends https request through ZAF client. */
   public sendRequest$(reqSettings: ZafRequestOptions): Observable<unknown> {
     return this.zafClientService.runWithClient$(c => c.request(reqSettings));
   }
@@ -78,11 +80,15 @@ export class ZendeskService {
 
   /** Resizes the zendesk app. */
   public resize$(width: string, height: string): Observable<unknown> {
-    return this.zafClientService.runWithClient$(c => c.invoke('resize', { width: width, height: height }));
+    return this.zafClientService.runWithClient$(c =>
+      c.invoke('resize', { width: width, height: height }),
+    );
   }
 
   /** Opens up the sepcified zendesk app. */
   public goToApp$(appLocation: string, appName: string, paramPath: string): Observable<unknown> {
-    return this.zafClientService.runWithClient$(c => c.invoke('routeTo', appLocation, appName, paramPath));
+    return this.zafClientService.runWithClient$(c =>
+      c.invoke('routeTo', appLocation, appName, paramPath),
+    );
   }
 }
