@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Forza.WebServices.FH4.master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
