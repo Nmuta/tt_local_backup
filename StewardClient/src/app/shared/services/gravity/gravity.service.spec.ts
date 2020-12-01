@@ -6,6 +6,7 @@ import { GravityPlayerInventory } from '@models/gravity';
 import { HttpParams } from '@angular/common/http';
 import { GiftHistoryAntecedent } from '@shared/constants';
 import { faker } from '@interceptors/fake-api/utility';
+import { GravityPlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/xuid/inventory';
 
 describe('service: GravityService', () => {
   let injector: TestBed;
@@ -157,7 +158,7 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: updatePlayerInventoryByXuid', () => {
-    let expectedInventory: GravityPlayerInventory;
+    let expectedInventory: Partial<GravityPlayerInventory>;
     let expectedParams: HttpParams;
 
     beforeEach(() => {
@@ -170,7 +171,7 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.updatePlayerInventoryByXuid(expectedInventory).subscribe(() => {
+      service.updatePlayerInventoryByXuid(expectedInventory as GravityPlayerInventory).subscribe(() => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/inventory/xuid`,
           expectedInventory,
@@ -188,7 +189,7 @@ describe('service: GravityService', () => {
       });
 
       it('should throw error from observable', done => {
-        service.updatePlayerInventoryByXuid(expectedInventory, true).subscribe(
+        service.updatePlayerInventoryByXuid(expectedInventory as GravityPlayerInventory, true).subscribe(
           () => {
             expect(false).toBeTruthy();
             done();
@@ -207,7 +208,7 @@ describe('service: GravityService', () => {
       });
 
       it('should call API service postRequest with the expected param', done => {
-        service.updatePlayerInventoryByXuid(expectedInventory, true).subscribe(() => {
+        service.updatePlayerInventoryByXuid(expectedInventory as GravityPlayerInventory, true).subscribe(() => {
           expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
             `${service.basePath}/player/inventory/xuid`,
             expectedInventory,
@@ -220,7 +221,7 @@ describe('service: GravityService', () => {
   });
 
   describe('Method: updatePlayerInventoryByT10Id', () => {
-    let expectedInventory: GravityPlayerInventory;
+    let expectedInventory: Partial<GravityPlayerInventory>;
     let expectedParams: HttpParams;
 
     beforeEach(() => {
@@ -230,7 +231,7 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.updatePlayerInventoryByT10Id(expectedInventory).subscribe(() => {
+      service.updatePlayerInventoryByT10Id(expectedInventory as GravityPlayerInventory).subscribe(() => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/inventory/t10Id`,
           expectedInventory,
@@ -248,7 +249,7 @@ describe('service: GravityService', () => {
       });
 
       it('should throw error from observable', done => {
-        service.updatePlayerInventoryByT10Id(expectedInventory, true).subscribe(
+        service.updatePlayerInventoryByT10Id(expectedInventory as GravityPlayerInventory, true).subscribe(
           () => {
             expect(false).toBeTruthy();
             done();
@@ -267,7 +268,7 @@ describe('service: GravityService', () => {
       });
 
       it('should call API service postRequest with the expected param', done => {
-        service.updatePlayerInventoryByT10Id(expectedInventory, true).subscribe(() => {
+        service.updatePlayerInventoryByT10Id(expectedInventory as GravityPlayerInventory, true).subscribe(() => {
           expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
             `${service.basePath}/player/inventory/t10Id`,
             expectedInventory,
