@@ -2,14 +2,17 @@
 import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
+import { Navigate } from '@ngxs/router-plugin';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
-import { asapScheduler, Observable } from 'rxjs';
-import { filter, take, timeout } from 'rxjs/operators';
+import { concat, from, Observable, of, throwError } from 'rxjs';
+import { catchError, filter, switchMap, take, tap, timeout } from 'rxjs/operators';
 
 import {
   GetUser,
+  LogoutUser,
+  RecheckAuth,
   RequestAccessToken,
   ResetAccessToken,
   ResetUserProfile,
@@ -22,7 +25,6 @@ export class UserStateModel {
   public accessToken?: string;
 }
 
-/** Defines the user state. */
 @Injectable()
 @State<Partial<UserStateModel>>({
   name: 'user',
@@ -34,27 +36,49 @@ export class UserStateModel {
     accessToken: undefined,
   },
 })
+/** Defines the user state. */
 export class UserState {
-  constructor(private userService: UserService, private authService: MsalService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly authService: MsalService,
+  ) {}
+
+  /** Logs out the current user and directs them to the auth page. */
+  @Action(LogoutUser, { cancelUncompleted: true })
+  public logoutUser(ctx: StateContext<UserStateModel>, action: LogoutUser): Observable<void> {
+    return ctx.dispatch([
+      new ResetUserProfile(),
+      new ResetAccessToken(),
+      new Navigate([`/auth/logout`], { from: action.returnRoute }),
+    ]);
+  }
+
+  /** Logs out the current user and directs them to the auth page. */
+  @Action(RecheckAuth, { cancelUncompleted: true })
+  public recheckAuth(ctx: StateContext<UserStateModel>, _action: RecheckAuth): Observable<void> {
+    return ctx.dispatch([new ResetUserProfile(), new RequestAccessToken()]);
+  }
 
   /** Action that requests user profile and sets it to the state. */
   @Action(GetUser, { cancelUncompleted: true })
-  public getUser(ctx: StateContext<UserStateModel>): void {
-    this.userService.getUserProfile().subscribe(
-      data => {
-        ctx.patchState({ profile: data });
-      },
-      () => {
-        ctx.patchState({ profile: null });
-      },
+  public getUser(ctx: StateContext<UserStateModel>): Observable<UserModel> {
+    return this.userService.getUserProfile().pipe(
+      tap(
+        data => {
+          ctx.patchState({ profile: data });
+        },
+        () => {
+          ctx.patchState({ profile: null });
+        },
+      ),
     );
   }
 
   /** Action that resets state user profile. */
   @Action(ResetUserProfile, { cancelUncompleted: true })
-  public resetUserProfile(ctx: StateContext<UserStateModel>): void {
+  public resetUserProfile(ctx: StateContext<UserStateModel>): Observable<void> {
     ctx.patchState({ profile: undefined });
-    asapScheduler.schedule(() => ctx.dispatch(new ResetAccessToken()));
+    return ctx.dispatch(new ResetAccessToken());
   }
 
   /** Action thats sets state user profile to null. */
@@ -65,31 +89,38 @@ export class UserState {
 
   /** Action that requests user access token from azure app. */
   @Action(RequestAccessToken, { cancelUncompleted: true })
-  public async requestAccessToken(ctx: StateContext<UserStateModel>): Promise<void> {
+  public requestAccessToken(ctx: StateContext<UserStateModel>): Observable<void> {
+    // If access token exists, exit logic
+    const currentState = ctx.getState();
+    if (currentState.accessToken) {
+      return of();
+    }
+
     const isLoggedIn = !!this.authService.getAccount();
     if (!isLoggedIn) {
       ctx.patchState({ accessToken: null });
-      asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
-      return;
+      return ctx.dispatch(new SetNoUserProfile());
     }
 
-    try {
-      const data = await this.authService.acquireTokenSilent({
+    return from(
+      this.authService.acquireTokenSilent({
         scopes: [environment.azureAppScope],
-      });
-
-      if (!data.accessToken) {
+      }),
+    ).pipe(
+      switchMap(data => {
+        if (!data.accessToken) {
+          ctx.patchState({ accessToken: null });
+          return ctx.dispatch(new SetNoUserProfile());
+        } else {
+          ctx.patchState({ accessToken: data.accessToken });
+          return ctx.dispatch(new GetUser());
+        }
+      }),
+      catchError(e => {
         ctx.patchState({ accessToken: null });
-        asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
-        return;
-      }
-
-      ctx.patchState({ accessToken: data.accessToken });
-      asapScheduler.schedule(() => ctx.dispatch(new GetUser()));
-    } catch (e) {
-      ctx.patchState({ accessToken: null });
-      asapScheduler.schedule(() => ctx.dispatch(new SetNoUserProfile()));
-    }
+        return concat(ctx.dispatch(new SetNoUserProfile()), throwError(e));
+      }),
+    );
   }
 
   /** Action that resets state access token. */
@@ -100,12 +131,11 @@ export class UserState {
 
   /** Helper function that timeouts state checks for user profile. */
   public static latestValidProfile$(profile$: Observable<UserModel>): Observable<UserModel> {
-    const obs = profile$
-      .pipe(
-        filter(x => x !== undefined),
-        take(1),
-      )
-      .pipe(timeout(5000));
+    const obs = profile$.pipe(
+      filter(x => x !== undefined),
+      take(1),
+      timeout(10_000),
+    );
 
     return obs;
   }

@@ -2,9 +2,11 @@ import { LogLevel } from '@services/logger/log-level';
 
 import { StewardEnvironment } from './type';
 
+/** Deployed to Dev */
 export const environment: StewardEnvironment = {
-  production: true,
-  azureAppScope: 'api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access',
+  production: false,
+  azureAppId: '48a8a430-0f6b-4469-940f-1c5c6af1fd88',
+  azureAppScope: 'api://48a8a430-0f6b-4469-940f-1c5c6af1fd88/api_access',
   stewardUiUrl: 'https://steward-ui-dev.azurewebsites.net',
   stewardApiUrl: 'https://steward-api-dev.azurewebsites.net',
   oldScrutineerApiUrl: 'https://prod-scrutineer.azurewebsites.net',

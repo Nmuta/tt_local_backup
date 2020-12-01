@@ -4,6 +4,7 @@ import { LogLevel } from '@services/logger';
 /** Type verification for Environment. */
 export interface StewardEnvironment {
   production: boolean;
+  azureAppId: string;
   azureAppScope: string;
   stewardUiUrl: string;
   stewardApiUrl: string;

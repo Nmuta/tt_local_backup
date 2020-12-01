@@ -15,6 +15,7 @@ export class MockLoggerService {
   public debugger: (topics: LogTopic[], ...data: unknown[]) => void = jasmine.createSpy('debugger');
 }
 
+/** Creates an injectable mock for Logger Service. */
 export function createMockLoggerService(): Provider {
   return { provide: LoggerService, useValue: new MockLoggerService() };
 }

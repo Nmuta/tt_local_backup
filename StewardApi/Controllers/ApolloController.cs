@@ -20,7 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     /// <summary>
     ///     Handles requests for Apollo.
     /// </summary>
-    [Route("title/Apollo")]
+    [Route("api/v1/title/Apollo")]
     [ApiController]
     [Authorize]
     public sealed class ApolloController : ControllerBase

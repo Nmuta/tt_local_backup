@@ -1,0 +1,49 @@
+<ng-container *ngIf="gamertag; else noGamertag">
+  <ng-container *ngIf="xuid; else noXuid">
+    <h1>{{ gamertag }} (xuid: {{ xuid !== undefined ? xuid : '?' }})</h1>
+    <section *ngIf="!!gamertag">
+      <mat-tab-group animationDuration="0ms">
+        <mat-tab label="User Details">
+          <div class="tab-container">
+            <sunrise-user-flags [xuid]="xuid"></sunrise-user-flags>
+            <sunrise-ban-history [xuid]="xuid"></sunrise-ban-history>
+            <sunrise-gamertags [xuid]="xuid"></sunrise-gamertags>
+            <sunrise-consoles [xuid]="xuid"></sunrise-consoles>
+          </div>
+        </mat-tab>
+        <mat-tab label="Deep Dive">
+          <div class="tab-container">
+            <sunrise-overview [xuid]="xuid"></sunrise-overview>
+            <sunrise-credit-history [xuid]="xuid"></sunrise-credit-history>
+          </div>
+        </mat-tab>
+        <mat-tab label="JSON">
+          <div class="tab-container">
+            <p>Gamertag: {{ gamertag }}</p>
+            <pre>{{ userDetails | bigjson }}</pre>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </section>
+  </ng-container>
+</ng-container>
+
+<ng-template #noGamertag>
+  <h1>waiting for gamertag (xuid: ?)</h1>
+  <ng-container *ngIf="error">
+    <hr />
+    <h2>Request failed</h2>
+    <p>If this keeps happening, contact support.</p>
+    <pre>{{ error | bigjson }}</pre>
+  </ng-container>
+</ng-template>
+
+<ng-template #noXuid>
+  <h1>{{ gamertag }} (xuid: ?)</h1>
+  <ng-container *ngIf="error">
+    <hr />
+    <h2>Request failed</h2>
+    <p>If this keeps happening, contact support.</p>
+    <pre>{{ error | bigjson }}</pre>
+  </ng-container>
+</ng-template>

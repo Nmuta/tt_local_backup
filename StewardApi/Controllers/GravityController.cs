@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     /// <summary>
     ///     Handles requests for Gravity.
     /// </summary>
-    [Route("title/Gravity")]
+    [Route("api/v1/title/Gravity")]
     [ApiController]
     [Authorize]
     public sealed class GravityController : ControllerBase

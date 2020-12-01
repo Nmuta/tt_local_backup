@@ -47,6 +47,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
+            // Gamertags must be set to null for NGP. v-joyate 20201123
+            var sanitizedBanParameters = new SunriseBanParameters
+            {
+                Xuids = banParameters.Xuids,
+                Gamertags = null,
+                BanAllConsoles = banParameters.BanAllConsoles,
+                BanAllPcs = banParameters.BanAllPcs,
+                DeleteLeaderboardEntries = banParameters.DeleteLeaderboardEntries,
+                SendReasonNotification = banParameters.SendReasonNotification,
+                Reason = banParameters.Reason,
+                FeatureArea = banParameters.FeatureArea,
+                StartTimeUtc = banParameters.StartTimeUtc,
+                ExpireTimeUtc = banParameters.ExpireTimeUtc
+            };
+
             var banHistory = new LiveOpsBanHistory(
                                             (long)xuid,
                                             title,
@@ -55,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                                             banParameters.ExpireTimeUtc,
                                             banParameters.FeatureArea,
                                             banParameters.Reason,
-                                            banParameters.ToJson());
+                                            sanitizedBanParameters.ToJson());
 
             var kustoColumnMappings = banHistory.ToJsonColumnMappings();
             var tableName = "BanHistory";

@@ -1,0 +1,6 @@
+<button *ngIf="isDevEnvironment" (click)="copyAccessToken()">Copy Access Token</button>
+<pre>
+Email: {{ user?.emailAddress }}
+Role: {{ user?.role }}
+</pre>
+<button (click)="logout()">Logout</button>

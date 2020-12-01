@@ -1,27 +1,33 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, Provider } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
-import { NavbarModule } from '@components/navbar/navbar.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { BigintInterceptor } from '@interceptors/bigint.interceptor';
 import { FakeApiInterceptor } from '@interceptors/fake-api/fake-api.interceptor';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
 import { UserState } from '@shared/state/user/user.state';
+import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
 
 import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
-import { ErrorComponent } from './error/error.component';
-import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
+import { ErrorComponent } from './pages/error/error.component';
+import { SidebarsModule } from './sidebars/sidebars.module';
+import { HomeComponent } from './pages/home/home.component';
+import { CenterContentsModule } from '@components/center-contents/center-contents.module';
+import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
-export const protectedResourceMap: [string, string[]][] = [
+const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
 ];
 
@@ -43,22 +49,27 @@ function fakeApiOrNothing(): Provider[] {
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent, FourOhFourComponent],
+  declarations: [AppComponent, ErrorComponent, HomeComponent],
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
-    NavbarModule,
+    SidebarsModule,
     FontAwesomeModule,
     HttpClientModule,
-    NgxsModule.forRoot([UserState]),
+    FourOhFourModule,
+    MatCardModule,
+    CenterContentsModule,
+    NgxsModule.forRoot([UserState, UserSettingsState]),
+    NgxsStoragePluginModule.forRoot({ key: [UserSettingsState] }),
+    NgxsRouterPluginModule.forRoot(),
     MsalModule.forRoot(
       {
         auth: {
-          clientId: '48a8a430-0f6b-4469-940f-1c5c6af1fd88',
+          clientId: environment.azureAppId,
           authority: 'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/',
           navigateToLoginRequestUrl: false,
-          redirectUri: `${environment.stewardUiUrl}/auth/aadLogin`,
-          postLogoutRedirectUri: `${environment.stewardUiUrl}/auth/aadLogout`,
+          redirectUri: `${environment.stewardUiUrl}/auth/aad-login`,
+          postLogoutRedirectUri: `${environment.stewardUiUrl}/auth/aad-logout`,
         },
         cache: {
           cacheLocation: 'localStorage',

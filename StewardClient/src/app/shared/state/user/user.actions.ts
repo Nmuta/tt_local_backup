@@ -37,3 +37,19 @@ export class ResetAccessToken {
     // Empty
   }
 }
+
+/** Meta action: Logout and redirect as appropriate. */
+export class LogoutUser {
+  public static readonly type = '[User] Logout';
+  constructor(public readonly returnRoute: string) {
+    // Empty
+  }
+}
+
+/** Meta action: Clear auth and grab it again. */
+export class RecheckAuth {
+  public static readonly type = '[User] Recheck Auth';
+  constructor() {
+    // Empty
+  }
+}

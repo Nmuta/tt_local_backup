@@ -11,6 +11,7 @@ export class MockOpusService {
     .and.returnValue(of({}));
 }
 
+/** Creates an injectable mock for Opus Service. */
 export function createMockMockOpusService(): Provider {
   return {
     provide: OpusService,

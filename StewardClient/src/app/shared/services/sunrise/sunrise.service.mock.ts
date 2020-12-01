@@ -1,5 +1,8 @@
 import { Injectable, Provider } from '@angular/core';
-import { of } from 'rxjs';
+import { SunrisePlayerXuidBanHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/banHistory';
+import { SunriseBanHistory } from '@models/sunrise';
+import _ from 'lodash';
+import { defer, of } from 'rxjs';
 
 import { SunriseService } from './sunrise.service';
 
@@ -8,28 +11,55 @@ import { SunriseService } from './sunrise.service';
 export class MockSunriseService {
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
-    .and.returnValue(of({}));
-  public getFlagsByXuid = jasmine.createSpy('getFlagsByXuid').and.returnValue(of());
-  public putFlagsByXuid = jasmine.createSpy('putFlagsByXuid').and.returnValue(of());
-  public getBanHistoryByXuid = jasmine.createSpy('getBanHistoryByXuid').and.returnValue(of());
+    .and.returnValue(defer(() => of(_.clone(this.generator()))));
+  public getFlagsByXuid = jasmine
+    .createSpy('getFlagsByXuid')
+    .and.returnValue(defer(() => of(_.clone(this.generator()))));
+  public putFlagsByXuid = jasmine
+    .createSpy('putFlagsByXuid')
+    .and.returnValue(defer(() => of(_.clone(this.generator()))));
+  public getBanHistoryByXuid = jasmine.createSpy('getBanHistoryByXuid').and.returnValue(
+    defer(() => {
+      const unprocessed = (SunrisePlayerXuidBanHistoryFakeApi.make() as unknown) as SunriseBanHistory;
+
+      for (const entry of unprocessed.liveOpsBanHistory) {
+        entry.startTimeUtc = new Date(entry.startTimeUtc);
+        entry.expireTimeUtc = new Date(entry.expireTimeUtc);
+      }
+
+      for (const entry of unprocessed.servicesBanHistory) {
+        entry.startTimeUtc = new Date(entry.startTimeUtc);
+        entry.expireTimeUtc = new Date(entry.expireTimeUtc);
+      }
+
+      return of(unprocessed);
+    }),
+  );
   public getSharedConsoleUsersByXuid = jasmine
     .createSpy('getSharedConsoleUsersByXuid')
-    .and.returnValue(of());
+    .and.returnValue(defer(() => of(_.clone(this.generator()))));
   public getConsoleDetailsByXuid = jasmine
     .createSpy('getConsoleDetailsByXuid')
-    .and.returnValue(of());
+    .and.returnValue(defer(() => of(_.clone(this.generator()))));
   public putBanStatusByConsoleId = jasmine
     .createSpy('putBanStatusByConsoleId')
-    .and.returnValue(of());
+    .and.returnValue(defer(() => of(_.clone(this.generator()))));
   public getProfileSummaryByXuid = jasmine
     .createSpy('getProfileSummaryByXuid')
-    .and.returnValue(of());
-  public getCreditHistoryByXuid = jasmine.createSpy('getCreditHistoryByXuid').and.returnValue(of());
+    .and.returnValue(defer(() => of(_.clone(this.generator()))));
+  public getCreditHistoryByXuid = jasmine
+    .createSpy('getCreditHistoryByXuid')
+    .and.returnValue(defer(() => of(_.clone(this.generator()))));
+
+  constructor(private readonly generator: () => unknown) {}
 }
 
-export function createMockSunriseService(): Provider {
+/** Creates an injectable mock for Sunrise Service. */
+export function createMockSunriseService(
+  returnValueGenerator: () => unknown = () => new Object(),
+): Provider {
   return {
     provide: SunriseService,
-    useValue: new MockSunriseService(),
+    useValue: new MockSunriseService(returnValueGenerator),
   };
 }

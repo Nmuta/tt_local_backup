@@ -35,8 +35,9 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'prettier',
         'prettier/@typescript-eslint',
+        'plugin:jsdoc/recommended',
       ],
-      plugins: [],
+      plugins: ['jsdoc'],
       rules: {
         /**
          * Any TypeScript related rules you wish to use/reconfigure over and above the
@@ -107,7 +108,54 @@ module.exports = {
             ],
           },
         ],
-        '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+        '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }], // why? underscore-prefixed _variables are required-but-not-used.
+
+        'no-debugger': ['error'], // why? debugger statements should not be left in committed code
+        'no-console': ['error'], // why? console statements should not be left in committed code
+
+        'jsdoc/check-alignment': 'error', // why? automatically configured by tslint port tool
+        'jsdoc/newline-after-description': 'error', // why? automatically configured by tslint port tool
+        'jsdoc/require-returns': 'off', // why? these are rarely useful, frequently inferred in TS, bulk up the code, and get out of sync with reality
+        'jsdoc/require-param': 'off', // why? these are rarely useful, frequently inferred in TS, bulk up the code, and get out of sync with reality
+        'jsdoc/require-description': ['error'], // why? requires summaries to actually be filled out
+        'jsdoc/newline-after-description': ['error', 'never'], // why? vertical space is precious
+        'jsdoc/require-jsdoc': [
+          // why? all public/protected exported members should have documentation
+          'error',
+          {
+            publicOnly: true,
+            checkConstructors: false,
+            contexts: [
+              // See for more info: https://github.com/gajus/eslint-plugin-jsdoc/issues/519#issuecomment-616007752
+              'MethodDefinition:not([accessibility="private"]) > ArrowFunctionExpression',
+              'MethodDefinition:not([accessibility="private"]) > ClassDeclaration',
+              'MethodDefinition:not([accessibility="private"]) > ClassExpression',
+              'MethodDefinition:not([accessibility="private"]) > ClassProperty',
+              'MethodDefinition:not([accessibility="private"]) > FunctionDeclaration', // function
+              'MethodDefinition:not([accessibility="private"]) > FunctionExpression',
+              'MethodDefinition:not([accessibility="private"]) > MethodDefinition',
+              'MethodDefinition:not([accessibility="private"]) > TSDeclareFunction', // function without body
+              'MethodDefinition:not([accessibility="private"]) > TSEnumDeclaration',
+              'MethodDefinition:not([accessibility="private"]) > TSInterfaceDeclaration',
+              'MethodDefinition:not([accessibility="private"]) > TSModuleDeclaration', // namespace
+              'MethodDefinition:not([accessibility="private"]) > TSTypeAliasDeclaration',
+              'MethodDefinition:not([accessibility="private"]) > VariableDeclaration',
+            ],
+            require: {
+              ArrowFunctionExpression: false,
+              ClassDeclaration: true,
+              ClassExpression: false,
+              FunctionDeclaration: false,
+              FunctionExpression: false,
+              MethodDefinition: false,
+            },
+          },
+        ],
+      },
+      settings: {
+        jsdoc: {
+          ignorePrivate: true, // why? allows use of @private to suppress doc rules
+        },
       },
     },
 

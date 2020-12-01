@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     /// <summary>
     ///     Handles requests for Opus.
     /// </summary>
-    [Route("title/Opus")]
+    [Route("api/v1/title/Opus")]
     [ApiController]
     [Authorize]
     public sealed class OpusController : ControllerBase

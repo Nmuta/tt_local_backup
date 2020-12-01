@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class SunriseService {
-  public basePath: string = 'v2/title/sunrise';
+  public basePath: string = 'v1/title/sunrise';
 
   constructor(private readonly apiService: ApiService) {}
 

@@ -11,6 +11,7 @@ export class MockGravityService {
     .and.returnValue(of({}));
 }
 
+/** Creates an injectable mock for Gravity Service. */
 export function createMockGravityService(): Provider {
   return {
     provide: GravityService,

@@ -11,6 +11,7 @@ export class MockApolloService {
     .and.returnValue(of({}));
 }
 
+/** Creates an injectable mock for Apollo Service. */
 export function createMockMockApolloService(): Provider {
   return {
     provide: ApolloService,

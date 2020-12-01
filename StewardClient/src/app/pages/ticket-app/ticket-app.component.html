@@ -1,0 +1,51 @@
+<div *ngIf="!loading">
+  <profile [user]="profile" [parentApp]="appName"></profile>
+  <h2 *ngIf="!!gameTitle">{{ gameTitle }}</h2>
+  <h4 *ngIf="!!gamertag">{{ gamertag }}</h4>
+
+  <gravity-player-details
+    *ngIf="gameTitle === gameTitleCodeNames.Street"
+    [gamertag]="gamertag"
+    (xuidFoundEvent)="xuid = $event"
+  ></gravity-player-details>
+  <sunrise-player-details
+    *ngIf="gameTitle === gameTitleCodeNames.FH4"
+    [gamertag]="gamertag"
+    (xuidFoundEvent)="xuid = $event"
+  ></sunrise-player-details>
+  <apollo-player-details
+    *ngIf="gameTitle === gameTitleCodeNames.FM7"
+    [gamertag]="gamertag"
+    (xuidFoundEvent)="xuid = $event"
+  ></apollo-player-details>
+  <opus-player-details
+    *ngIf="gameTitle === gameTitleCodeNames.FH3"
+    [gamertag]="gamertag"
+    (xuidFoundEvent)="xuid = $event"
+  ></opus-player-details>
+
+  <section class="quick-actions-section">
+    <mat-card>
+      <mat-card-content>
+        <content-collapse>
+          <h2 content-title>Quick Actions</h2>
+          <section content-body>
+            <div class="actions-div">
+              <button
+                *ngIf="!!gamertag && !!xuid"
+                mat-raised-button
+                color="primary"
+                (click)="goToInventory()"
+              >
+                Go To Inventory
+              </button>
+            </div>
+          </section>
+        </content-collapse>
+      </mat-card-content>
+    </mat-card>
+  </section>
+</div>
+<section *ngIf="loading">
+  <h1>Loading...</h1>
+</section>
