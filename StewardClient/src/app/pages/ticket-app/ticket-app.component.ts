@@ -58,7 +58,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
 
   /** Logic for the AfterViewInit component lifecycle. */
   public ngAfterViewInit(): void {
-    this.zendeskService.resize('100%', '500px');
+    this.zendeskService.resize('100%', '500px').subscribe();
   }
 
   /** Gets the ticket requestor information. */
@@ -109,6 +109,6 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
   /** Opens up inventory app with predefined info filled out. */
   public goToInventory(): void {
     const appSection = this.gameTitle + '/' + this.xuid;
-    this.zendeskService.goToApp('nav_bar', 'forza-inventory-support', appSection);
+    this.zendeskService.goToApp('nav_bar', 'forza-inventory-support', appSection).subscribe();
   }
 }
