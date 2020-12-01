@@ -8,38 +8,22 @@ type SwitchMapperObervable<T> = (client: ZAFClient.ZafClientActual) => Observabl
 type SwitchMapperPromise<T> = (client: ZAFClient.ZafClientActual) => Promise<T>;
 export type SwitchMapper<T> = SwitchMapperObervable<T> | SwitchMapperPromise<T> | SwitchMapperImmediate<T>;
 
-/** Acquires a ZAF Client. */
+function evaluateAndExport<T>(code: string, exportedValue: string): T {
+  return Function(`${code};\n\n;return ${exportedValue};`)();
+}
+
+/** Acquires a ZAF Client using dependency injection rather than ambient globals. */
 @Injectable({providedIn: 'root'})
 export class ZafClientService {
-  public readonly client$ = new Subject<ZAFClient.ZafClientActual>();
   public client: ZAFClient.ZafClientActual = undefined;
 
-  /** True when we have acquired a client. */
-  public get hasClient(): boolean { return !!this.client; }
+  private readonly clientInternal$ = new Subject<ZAFClient.ZafClientActual>();
+
+  /** The latest client, as an observable. */
+  public get client$(): Observable<ZAFClient.ZafClientActual> { return this.clientInternal$; };
 
   constructor(private readonly http: HttpClient) {
     this.init()
-  }
-
-  /** Initializes the object. */
-  public async init(): Promise<void> {
-    const zafUrl = 'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.js'
-    debugger;
-    try {
-      const zafText = await this.http.get<string>(zafUrl).toPromise();
-      const result = eval(zafText);
-      debugger;
-      const maybeClient = ZAFClient.init();
-      if (!maybeClient) {
-        this.client$.error(new Error(`ZAFClient.init() returned ${maybeClient}`));
-        return;
-      }
-
-      this.client = maybeClient;
-      this.client$.next(this.client);
-    } catch (e) {
-      debugger;
-    }
   }
 
   /** Runs a given command with the client, when it shows up. */
@@ -55,5 +39,21 @@ export class ZafClientService {
         return of(result);
       }
     }));
+  }
+
+  /** Initializes the object. */
+  protected async init(): Promise<void> {
+    const zafUrl = 'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.js'
+    const zafText = await this.http.get(zafUrl, { responseType: 'text' }).toPromise();
+    const zafObject = evaluateAndExport<ZAFClient.ZAFClient>(zafText, 'ZAFClient');
+    window.ZAFClient = zafObject;
+    const maybeClient = zafObject.init();
+    if (!maybeClient) {
+      this.clientInternal$.error(new Error(`ZAFClient.init() returned ${maybeClient}`));
+      return;
+    }
+
+    this.client = maybeClient;
+    this.clientInternal$.next(this.client);
   }
 }

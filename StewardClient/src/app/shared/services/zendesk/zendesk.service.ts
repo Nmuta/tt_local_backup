@@ -1,12 +1,8 @@
-import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { from, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { ZafClientService } from './zaf-client';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ZafClientService } from './zaf-client.service';
 
-export const ZAFCLIENT_TOKEN = new InjectionToken<ZAFClient.ZafClientActual>('ZAFClient', {
-  providedIn: 'root',
-  factory: () => ZAFClient.init(),
-});
 
 /** A typings shell for a zendesk response. */
 export interface TicketRequesterResponse {
@@ -32,10 +28,17 @@ export class ZendeskService {
 
   /**
    * True when this app is operating within zendesk.
-   * May erroneously return false for the first few ms of operation.
+   * @deprecated May erroneously return false for the first few ms of operation. Use @see inZendesk$ instead
    */
   public get inZendesk(): boolean {
     return !!this.zafClientService.client;
+  }
+
+  /**
+   * True when this app is operating within zendesk.
+   */
+  public get inZendesk$(): Observable<boolean> {
+    return this.zafClientService.client$.pipe(map(v => !!v));
   }
 
   /** Gets the zendesk ticket details. */

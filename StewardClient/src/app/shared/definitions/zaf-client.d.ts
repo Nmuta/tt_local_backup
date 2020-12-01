@@ -66,6 +66,10 @@ interface ZafRequestOptions {
 declare namespace ZAFClient {
   function init(): ZafClientActual | false;
 
+  interface ZAFClient {
+    init(): ZafClientActual | false;
+  }
+
   /**
    * Hacked together typings for ZAFClient. May be incorrect!
    * @see https://developer.zendesk.com/apps/docs/core-api/client_api

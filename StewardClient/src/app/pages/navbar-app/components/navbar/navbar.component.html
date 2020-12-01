@@ -13,7 +13,7 @@
   </a>
   <a mat-button [routerLink]="['/missing-no']">404</a>
   <span class="spacer"></span>
-  <span *ngIf="missingZendesk" class="warnings">
+  <span *ngIf="missingZendesk$ | async" class="warnings">
     <fa-icon [icon]="warningIcon" title="Zendesk API missing"></fa-icon>
     <fa-icon [icon]="refreshIcon" title="Refresh page"></fa-icon>
   </span>
