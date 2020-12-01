@@ -11,11 +11,8 @@ export class MockChildWindow {
 /** Defines the mock for the Window Service. */
 @Injectable()
 export class MockWindowService {
-  public top = jasmine.createSpy('top');
   public location = jasmine.createSpy('location');
   public open = jasmine.createSpy('open').and.returnValue(new MockChildWindow());
-  public close = jasmine.createSpy('close');
-  public zafClient = jasmine.createSpy('zafClient').and.returnValue({});
 
   public isInIframe = false;
 }

@@ -1,5 +1,4 @@
 ﻿import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
 import { ZendeskService } from './zendesk.service';
 import { ZafClientService } from './zaf-client.service';
 import { createMockZafClientService } from './zaf-client.service.mock';
@@ -19,10 +18,6 @@ describe('service: UserService', () => {
 
     mockZafClientService = TestBed.inject(ZafClientService);
     mockZafClient = mockZafClientService.client;
-    mockZafClient.get = jasmine.createSpy('get').and.returnValue(of({}));
-    mockZafClient.request = jasmine.createSpy('request').and.returnValue(of({}));
-    mockZafClient.context = jasmine.createSpy('context').and.returnValue(of({}));
-    mockZafClient.invoke = jasmine.createSpy('invoke').and.returnValue({});
   });
 
   describe('Method: getTicketDetails', () => {
