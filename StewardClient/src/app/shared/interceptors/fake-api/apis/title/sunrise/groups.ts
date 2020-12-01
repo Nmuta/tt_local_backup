@@ -29,7 +29,7 @@ export class SunriseGroupsFakeApi extends FakeApiBase {
   public static make(): Partial<Unprocessed<unknown[]>> {
     return [
       {
-        xuid: '123456789',
+        xuid: 2533275026603041,
         name: 'Test Group'
       }
     ];

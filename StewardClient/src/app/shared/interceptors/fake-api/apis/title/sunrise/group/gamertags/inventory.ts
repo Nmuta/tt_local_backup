@@ -29,7 +29,7 @@ export class SunriseGroupGamertagsInventoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<SunrisePlayerInventory>> {
     return {
-      xuid: 189456456,
+      xuid: 2533275026603041,
     };
   }
 }
