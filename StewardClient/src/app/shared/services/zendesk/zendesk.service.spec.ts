@@ -3,11 +3,12 @@ import { of } from 'rxjs';
 import { ZendeskService } from './zendesk.service';
 import { ZafClientService } from './zaf-client.service';
 import { createMockZafClientService } from './zaf-client.service.mock';
+import { ZafClient } from '@shared/definitions/zaf-client';
 
 describe('service: UserService', () => {
   let service: ZendeskService;
   let mockZafClientService: ZafClientService;
-  let mockZafClient: ZafClientActual;
+  let mockZafClient: ZafClient;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

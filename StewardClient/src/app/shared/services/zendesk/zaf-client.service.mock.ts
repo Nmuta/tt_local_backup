@@ -1,4 +1,5 @@
 import { Injectable, Provider } from '@angular/core';
+import { ZafClient } from '@shared/definitions/zaf-client';
 import { MockZafClient } from '@shared/definitions/zaf-client.mock';
 import { Observable, of } from 'rxjs';
 import { ZafClientService } from './zaf-client.service';
@@ -9,7 +10,7 @@ export class MockZafClientService extends ZafClientService {
   public client = new MockZafClient();
 
   /** Returns this.client */
-  public get client$(): Observable<ZafClientActual> {
+  public get client$(): Observable<ZafClient> {
     return of(this.client);
   }
 

@@ -1,5 +1,7 @@
+import { ZafClient } from './zaf-client';
+
 /** A Mock ZAF client. */
-export class MockZafClient implements ZafClientActual {
+export class MockZafClient implements ZafClient {
   public set = jasmine.createSpy('set');
   public has = jasmine.createSpy('has');
   public instance = jasmine.createSpy('instance');

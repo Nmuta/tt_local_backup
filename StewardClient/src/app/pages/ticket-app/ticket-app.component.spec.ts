@@ -111,10 +111,6 @@ describe('TicketAppComponent', () => {
   });
 
   describe('Method: ngAfterViewInit', () => {
-    beforeEach(() => {
-      mockZendeskService.resize$ = jasmine.createSpy('resize');
-    });
-
     it('Should call zendeskService.resize correctly', () => {
       component.ngAfterViewInit();
       expect(mockZendeskService.resize$).toHaveBeenCalledWith('100%', '500px');
@@ -254,7 +250,6 @@ describe('TicketAppComponent', () => {
     beforeEach(() => {
       component.gameTitle = gameTitle;
       component.xuid = xuid;
-      mockZendeskService.goToApp$ = jasmine.createSpy('goToApp');
     });
 
     it('expect zendeskService.goToApp to be called', () => {
