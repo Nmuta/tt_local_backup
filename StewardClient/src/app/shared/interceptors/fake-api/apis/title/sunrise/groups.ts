@@ -12,7 +12,7 @@ export class SunriseGroupsFakeApi extends FakeApiBase {
       return false;
     }
 
-    if(this.request.method.toUpperCase() !== 'GET') {
+    if (this.request.method.toUpperCase() !== 'GET') {
       return false;
     }
 
@@ -31,8 +31,8 @@ export class SunriseGroupsFakeApi extends FakeApiBase {
     return [
       {
         id: 123456,
-        name: 'Test Group'
-      }
+        name: 'Test Group',
+      },
     ];
   }
 }

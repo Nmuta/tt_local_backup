@@ -6,7 +6,6 @@ import { GravityPlayerInventory } from '@models/gravity';
 import { HttpParams } from '@angular/common/http';
 import { GiftHistoryAntecedent } from '@shared/constants';
 import { faker } from '@interceptors/fake-api/utility';
-import { GravityPlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/xuid/inventory';
 
 describe('service: GravityService', () => {
   let injector: TestBed;
@@ -171,14 +170,16 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.updatePlayerInventoryByXuid(expectedInventory as GravityPlayerInventory).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/inventory/xuid`,
-          expectedInventory,
-          expectedParams,
-        );
-        done();
-      });
+      service
+        .updatePlayerInventoryByXuid(expectedInventory as GravityPlayerInventory)
+        .subscribe(() => {
+          expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+            `${service.basePath}/player/inventory/xuid`,
+            expectedInventory,
+            expectedParams,
+          );
+          done();
+        });
     });
 
     describe('When xuid is not provided', () => {
@@ -189,16 +190,18 @@ describe('service: GravityService', () => {
       });
 
       it('should throw error from observable', done => {
-        service.updatePlayerInventoryByXuid(expectedInventory as GravityPlayerInventory, true).subscribe(
-          () => {
-            expect(false).toBeTruthy();
-            done();
-          },
-          () => {
-            expect(true).toBeTruthy();
-            done();
-          },
-        );
+        service
+          .updatePlayerInventoryByXuid(expectedInventory as GravityPlayerInventory, true)
+          .subscribe(
+            () => {
+              expect(false).toBeTruthy();
+              done();
+            },
+            () => {
+              expect(true).toBeTruthy();
+              done();
+            },
+          );
       });
     });
 
@@ -208,14 +211,16 @@ describe('service: GravityService', () => {
       });
 
       it('should call API service postRequest with the expected param', done => {
-        service.updatePlayerInventoryByXuid(expectedInventory as GravityPlayerInventory, true).subscribe(() => {
-          expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
-            `${service.basePath}/player/inventory/xuid`,
-            expectedInventory,
-            expectedParams,
-          );
-          done();
-        });
+        service
+          .updatePlayerInventoryByXuid(expectedInventory as GravityPlayerInventory, true)
+          .subscribe(() => {
+            expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+              `${service.basePath}/player/inventory/xuid`,
+              expectedInventory,
+              expectedParams,
+            );
+            done();
+          });
       });
     });
   });
@@ -231,14 +236,16 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.updatePlayerInventoryByT10Id(expectedInventory as GravityPlayerInventory).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/inventory/t10Id`,
-          expectedInventory,
-          expectedParams,
-        );
-        done();
-      });
+      service
+        .updatePlayerInventoryByT10Id(expectedInventory as GravityPlayerInventory)
+        .subscribe(() => {
+          expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+            `${service.basePath}/player/inventory/t10Id`,
+            expectedInventory,
+            expectedParams,
+          );
+          done();
+        });
     });
 
     describe('When xuid is not provided', () => {
@@ -249,16 +256,18 @@ describe('service: GravityService', () => {
       });
 
       it('should throw error from observable', done => {
-        service.updatePlayerInventoryByT10Id(expectedInventory as GravityPlayerInventory, true).subscribe(
-          () => {
-            expect(false).toBeTruthy();
-            done();
-          },
-          () => {
-            expect(true).toBeTruthy();
-            done();
-          },
-        );
+        service
+          .updatePlayerInventoryByT10Id(expectedInventory as GravityPlayerInventory, true)
+          .subscribe(
+            () => {
+              expect(false).toBeTruthy();
+              done();
+            },
+            () => {
+              expect(true).toBeTruthy();
+              done();
+            },
+          );
       });
     });
 
@@ -268,14 +277,16 @@ describe('service: GravityService', () => {
       });
 
       it('should call API service postRequest with the expected param', done => {
-        service.updatePlayerInventoryByT10Id(expectedInventory as GravityPlayerInventory, true).subscribe(() => {
-          expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
-            `${service.basePath}/player/inventory/t10Id`,
-            expectedInventory,
-            expectedParams,
-          );
-          done();
-        });
+        service
+          .updatePlayerInventoryByT10Id(expectedInventory as GravityPlayerInventory, true)
+          .subscribe(() => {
+            expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+              `${service.basePath}/player/inventory/t10Id`,
+              expectedInventory,
+              expectedParams,
+            );
+            done();
+          });
       });
     });
   });

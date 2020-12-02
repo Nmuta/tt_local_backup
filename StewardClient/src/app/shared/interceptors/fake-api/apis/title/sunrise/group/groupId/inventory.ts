@@ -12,7 +12,7 @@ export class SunriseGroupGroupIdInventoryFakeApi extends FakeApiBase {
       return false;
     }
 
-    if(this.request.method.toUpperCase() !== 'POST') {
+    if (this.request.method.toUpperCase() !== 'POST') {
       return false;
     }
 

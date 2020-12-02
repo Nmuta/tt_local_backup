@@ -12,7 +12,7 @@ export class OpusPlayerProfileIdInventoryFakeApi extends FakeApiBase {
       return false;
     }
 
-    if(this.request.method.toUpperCase() !== 'GET') {
+    if (this.request.method.toUpperCase() !== 'GET') {
       return false;
     }
 
