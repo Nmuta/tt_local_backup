@@ -5,8 +5,8 @@ import { StewardEnvironment } from './type';
 /** Deployed to Prod */
 export const environment: StewardEnvironment = {
   production: true,
-  azureAppId: 'cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4',
-  azureAppScope: 'api://cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4/api_access',
+  azureAppId: '796faca8-01de-436e-b75e-fb981756d5ed',
+  azureAppScope: 'api://796faca8-01de-436e-b75e-fb981756d5ed/api_access',
   stewardUiUrl: 'https://steward-ui-prod.azurewebsites.net',
   stewardApiUrl: 'https://steward-api-prod.azurewebsites.net',
   oldScrutineerApiUrl: 'https://prod-scrutineer.azurewebsites.net',
