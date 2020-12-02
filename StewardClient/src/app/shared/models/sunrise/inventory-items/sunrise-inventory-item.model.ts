@@ -1,5 +1,5 @@
-/** Interface for gravity player inventory item. */
-export interface GravityInventoryItem {
+/** Interface for sunrise player inventory item. */
+export interface SunriseInventoryItem {
   itemId: number;
   quantity: unknown;
   acquisitionUtc: unknown;

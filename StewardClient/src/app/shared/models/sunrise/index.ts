@@ -5,3 +5,5 @@ export * from './sunrise-player-details.model';
 export * from './sunrise-profile-summary.model';
 export * from './sunrise-shared-console-users.model';
 export * from './sunrise-user-flags.model';
+export * from './sunrise-player-inventory.model';
+export * from './sunrise-lsp-group.model';

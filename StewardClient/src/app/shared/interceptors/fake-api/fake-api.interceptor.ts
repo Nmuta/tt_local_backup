@@ -15,8 +15,24 @@ import { Observable, of as ObservableOf, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { ApolloPlayerGamertagDetailsFakeApi } from './apis/title/apollo/player/gamertag/details';
+import { ApolloPlayerProfileIdInventoryFakeApi } from './apis/title/apollo/player/profileId/inventory';
+import { ApolloPlayerXuidInventoryFakeApi } from './apis/title/apollo/player/xuid/inventory';
+import { ApolloPlayerXuidInventoryProfilesFakeApi } from './apis/title/apollo/player/xuid/inventoryProfiles';
+import { ApolloGroupGamertagsInventoryFakeApi } from './apis/title/apollo/group/gamertags/inventory';
+import { ApolloGroupGroupIdInventoryFakeApi } from './apis/title/apollo/group/groupId/inventory';
+import { ApolloGroupXuidsInventoryFakeApi } from './apis/title/apollo/group/xuids/inventory';
+
 import { GravityPlayerGamertagDetailsFakeApi } from './apis/title/gravity/player/gamertag/details';
+import { GravityPlayerXuidInventoryFakeApi } from './apis/title/gravity/player/xuid/inventory';
+import { GravityPlayerXuidProfileIdInventoryFakeApi } from './apis/title/gravity/player/xuid/profileId/inventory';
+import { GravityPlayerT10IdInventoryFakeApi } from './apis/title/gravity/player/t10Id/inventory';
+import { GravityPlayerT10IdProfileIdInventoryFakeApi } from './apis/title/gravity/player/t10Id/profileId/inventory';
+
 import { OpusPlayerGamertagDetailsFakeApi } from './apis/title/opus/player/gamertag/details';
+import { OpusPlayerProfileIdInventoryFakeApi } from './apis/title/opus/player/profileId/inventory';
+import { OpusPlayerXuidInventoryFakeApi } from './apis/title/opus/player/xuid/inventory';
+import { OpusPlayerXuidInventoryProfilesFakeApi } from './apis/title/opus/player/xuid/inventoryProfiles';
+
 import { SunriseConsoleIsBannedFakeApi } from './apis/title/sunrise/console/isBanned';
 import { SunrisePlayerGamertagDetailsFakeApi } from './apis/title/sunrise/player/gamertag/details';
 import { SunrisePlayerXuidBanHistoryFakeApi } from './apis/title/sunrise/player/xuid/banHistory';
@@ -25,11 +41,24 @@ import { SunrisePlayerXuidCreditUpdatesFakeApi } from './apis/title/sunrise/play
 import { SunrisePlayerXuidProfileSummaryFakeApi } from './apis/title/sunrise/player/xuid/profileSummary';
 import { SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/sunrise/player/xuid/sharedConsoleUsers';
 import { SunrisePlayerXuidUserFlagsFakeApi } from './apis/title/sunrise/player/xuid/userFlags';
+import { SunriseGroupsFakeApi } from './apis/title/sunrise/groups';
+import { SunrisePlayerXuidInventoryFakeApi } from './apis/title/sunrise/player/xuid/inventory';
+import { SunrisePlayerXuidInventoryProfilesFakeApi } from './apis/title/sunrise/player/xuid/inventoryProfiles';
+import { SunrisePlayerProfileIdInventoryFakeApi } from './apis/title/sunrise/player/profileId/inventory';
+import { SunriseGroupGamertagsInventoryFakeApi } from './apis/title/sunrise/group/gamertags/inventory';
+import { SunriseGroupGroupIdInventoryFakeApi } from './apis/title/sunrise/group/groupId/inventory';
+import { SunriseGroupXuidsInventoryFakeApi } from './apis/title/sunrise/group/xuids/inventory';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
   // Gravity
   GravityPlayerGamertagDetailsFakeApi,
+  GravityPlayerXuidInventoryFakeApi,
+  GravityPlayerXuidProfileIdInventoryFakeApi,
+  GravityPlayerT10IdInventoryFakeApi,
+  GravityPlayerT10IdProfileIdInventoryFakeApi,
+  GravityPlayerT10IdInventoryFakeApi,
+  GravityPlayerXuidInventoryFakeApi,
   // Sunrise
   SunrisePlayerGamertagDetailsFakeApi,
   SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi,
@@ -39,10 +68,27 @@ const fakeApiConstructors = [
   SunrisePlayerXuidProfileSummaryFakeApi,
   SunrisePlayerXuidBanHistoryFakeApi,
   SunriseConsoleIsBannedFakeApi,
+  SunriseGroupsFakeApi,
+  SunrisePlayerXuidInventoryFakeApi,
+  SunrisePlayerXuidInventoryProfilesFakeApi,
+  SunrisePlayerProfileIdInventoryFakeApi,
+  SunriseGroupGamertagsInventoryFakeApi,
+  SunriseGroupGroupIdInventoryFakeApi,
+  SunriseGroupXuidsInventoryFakeApi,
   // Apollo
   ApolloPlayerGamertagDetailsFakeApi,
+  ApolloPlayerProfileIdInventoryFakeApi,
+  ApolloPlayerXuidInventoryFakeApi,
+  ApolloPlayerXuidInventoryProfilesFakeApi,
+  ApolloPlayerXuidInventoryFakeApi,
+  ApolloGroupGamertagsInventoryFakeApi,
+  ApolloGroupGroupIdInventoryFakeApi,
+  ApolloGroupXuidsInventoryFakeApi,
   // Opus
   OpusPlayerGamertagDetailsFakeApi,
+  OpusPlayerProfileIdInventoryFakeApi,
+  OpusPlayerXuidInventoryFakeApi,
+  OpusPlayerXuidInventoryProfilesFakeApi,
 ];
 
 /** The URLs this interceptor will not block. */
