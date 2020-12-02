@@ -2,7 +2,7 @@ import { SunriseInventoryItem } from './sunrise-inventory-item.model';
 
 /** Interface for sunrise car item. */
 export interface SunriseCar extends SunriseInventoryItem {
-  vin: unknown;
+  vin: string;
   baseCost: number;
   collectorScore: number;
   isOnlineOnly: boolean;
