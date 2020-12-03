@@ -4,6 +4,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
 import { ConsolesModule } from '@shared/views/consoles/consoles.module';
+import { CreditHistoryModule } from '@shared/views/credit-history/credit-history.module';
 import { GamertagsModule } from '@shared/views/gamertags/gamertags.module';
 import { OverviewModule } from '@shared/views/overview/overview.module';
 import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
@@ -22,6 +23,7 @@ import { SunriseComponent } from './sunrise.component';
     GamertagsModule,
     ConsolesModule,
     OverviewModule,
+    CreditHistoryModule,
   ],
 })
 export class SunriseModule {}
