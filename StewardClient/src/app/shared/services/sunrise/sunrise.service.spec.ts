@@ -74,31 +74,29 @@ describe('SunriseService', () => {
   });
 
   it('handles getBanHistoryByXuid', done => {
-    const typedReturnValue = (nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make());
+    const typedReturnValue = (nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make().liveOpsBanHistory);
     service.getBanHistoryByXuid(fakeXuid()).subscribe(output => {
-      expect(output.liveOpsBanHistory[0].startTimeUtc instanceof Date).toBe(
+      expect(output[0].startTimeUtc instanceof Date).toBe(
         true,
         'liveOps.startTimeUtc is Date',
       );
-      expect(output.liveOpsBanHistory[0].expireTimeUtc instanceof Date).toBe(
+      expect(output[0].expireTimeUtc instanceof Date).toBe(
         true,
         'liveOps.expireTimeUtc is Date',
       );
-      expect(output.servicesBanHistory[0].startTimeUtc instanceof Date).toBe(
+      expect(output[0].startTimeUtc instanceof Date).toBe(
         true,
         'services.startTimeUtc is Date',
       );
-      expect(output.servicesBanHistory[0].expireTimeUtc instanceof Date).toBe(
+      expect(output[0].expireTimeUtc instanceof Date).toBe(
         true,
         'services.expireTimeUtc is Date',
       );
 
       // clear the validated fields
       for (const value of [output, typedReturnValue]) {
-        for (const history of [value.liveOpsBanHistory, value.servicesBanHistory]) {
-          history.forEach(v => (v.startTimeUtc = null));
-          history.forEach(v => (v.expireTimeUtc = null));
-        }
+        value.forEach(v => (v.startTimeUtc = null));
+        value.forEach(v => (v.expireTimeUtc = null));
       }
 
       expect(output as unknown).toEqual(

@@ -1,3 +1,5 @@
+// TODO: This model can be simplied since we are only using LiveOpsBanDescription now
+
 /** The /v1/title/Sunrise/player/???/banHistory model */
 export interface SunriseBanHistory {
   servicesBanHistory: ServicesBanDescription[];

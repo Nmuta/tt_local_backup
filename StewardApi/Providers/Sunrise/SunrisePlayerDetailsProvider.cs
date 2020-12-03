@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FH4.master.Generated;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
@@ -353,7 +354,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseBanDescription>> GetUserBanHistoryAsync(ulong xuid)
+        public async Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid)
         {
             try
             {
@@ -364,7 +365,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     result = await this.sunriseEnforcementService.GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
                 }
 
-                var banResults = this.mapper.Map<List<SunriseBanDescription>>(result.bans);
+                var banResults = this.mapper.Map<List<LiveOpsBanHistory>>(result.bans);
                 banResults.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
 
                 return banResults;
@@ -381,7 +382,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseBanDescription>> GetUserBanHistoryAsync(string gamertag)
+        public async Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 

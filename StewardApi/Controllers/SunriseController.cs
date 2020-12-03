@@ -439,10 +439,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="SunriseBanHistory"/>.
+        ///     The <see cref="LiveOpsBanHistory"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/banHistory")]
-        [SwaggerResponse(200, type: typeof(SunriseBanHistory))]
+        [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
         public async Task<IActionResult> GetBanHistory(ulong xuid)
         {
             try
@@ -465,7 +465,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     The <see cref="SunriseBanHistory"/>.
         /// </returns>
         [HttpGet("player/gamertag({gamertag})/banHistory")]
-        [SwaggerResponse(200, type: typeof(SunriseBanHistory))]
+        [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
         public async Task<IActionResult> GetBanHistory(string gamertag)
         {
             try
@@ -941,7 +941,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return jobId;
         }
 
-        private async Task<SunriseBanHistory> GetBanHistoryAsync(ulong xuid)
+        private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid)
         {
             var getServicesBanHistory = this.sunrisePlayerDetailsProvider.GetUserBanHistoryAsync(xuid);
             var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(xuid, Title.ToString());
@@ -949,10 +949,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             await Task.WhenAll(getServicesBanHistory, getLiveOpsBanHistory).ConfigureAwait(true);
 
             var servicesBanHistory = await getServicesBanHistory.ConfigureAwait(true);
-
             var liveOpsBanHistory = await getLiveOpsBanHistory.ConfigureAwait(true);
 
-            return new SunriseBanHistory(servicesBanHistory, liveOpsBanHistory);
+            var banHistoryUnion = liveOpsBanHistory.Union(servicesBanHistory, new LiveOpsBanHistoryComparer()).ToList();
+            banHistoryUnion.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+
+            return banHistoryUnion;
         }
     }
 }
