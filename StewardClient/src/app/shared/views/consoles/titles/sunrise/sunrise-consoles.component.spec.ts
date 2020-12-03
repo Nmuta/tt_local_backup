@@ -12,19 +12,19 @@ import _ from 'lodash';
 import * as faker from 'faker';
 import { Subject } from 'rxjs';
 
-import { ConsolesComponent } from './consoles.component';
+import { SunriseConsolesComponent } from './sunrise-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 
-describe('ConsolesComponent', () => {
+describe('SunriseConsolesComponent', () => {
   let injector: TestBed;
   let service: SunriseService;
-  let component: ConsolesComponent;
-  let fixture: ComponentFixture<ConsolesComponent>;
+  let component: SunriseConsolesComponent;
+  let fixture: ComponentFixture<SunriseConsolesComponent>;
 
   beforeEach(
     waitForAsync(async () => {
       await TestBed.configureTestingModule({
-        declarations: [ConsolesComponent, BigJsonPipe],
+        declarations: [SunriseConsolesComponent, BigJsonPipe],
         providers: [createMockSunriseService()],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -36,7 +36,7 @@ describe('ConsolesComponent', () => {
 
   beforeEach(
     waitForAsync(() => {
-      fixture = TestBed.createComponent(ConsolesComponent);
+      fixture = TestBed.createComponent(SunriseConsolesComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     }),

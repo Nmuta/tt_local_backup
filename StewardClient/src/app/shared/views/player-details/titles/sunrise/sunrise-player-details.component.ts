@@ -7,8 +7,8 @@ import { PlayerDetailsBaseComponent } from '../../player-details.base.component'
 /** Gravity Player Details */
 @Component({
   selector: 'sunrise-player-details',
-  templateUrl: '../../player-details.html',
-  styleUrls: ['../../player-details.scss'],
+  templateUrl: '../../player-details.component.html',
+  styleUrls: ['../../player-details.component.scss'],
 })
 export class SunrisePlayerDetailsComponent extends PlayerDetailsBaseComponent<
   SunrisePlayerDetails
