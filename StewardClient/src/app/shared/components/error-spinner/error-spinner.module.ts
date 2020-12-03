@@ -17,7 +17,7 @@ import { ErrorSpinnerComponent } from './error-spinner.component';
     ClipboardModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
-    PipesModule
+    PipesModule,
   ],
   exports: [ErrorSpinnerComponent],
 })

@@ -55,8 +55,7 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
     this.sunrise.getBanHistoryByXuid(this.xuid).subscribe(
       banHistory => {
         this.isLoading = false;
-        this.banList  = banHistory;
-        console.log(this.banList);
+        this.banList = banHistory;
       },
       _error => {
         this.isLoading = false;
