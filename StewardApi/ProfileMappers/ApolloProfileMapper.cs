@@ -4,6 +4,8 @@ using System.Linq;
 using AutoMapper;
 using Forza.WebServices.FM7.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Providers;
 using Xls.Security.FM7.Generated;
 using Xls.WebServices.FM7.Generated;
 
@@ -43,6 +45,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))
                 .ForMember(dest => dest.ExpireTime, opt => opt.MapFrom(src => src.ExpireTimeUtc));
             this.CreateMap<ForzaUserBanDescription, ApolloBanDescription>()
+                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.GetName(typeof(FeatureAreas), source.FeatureAreas)))
+                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
+                .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
+                .ForMember(dest => dest.LastExtendedTimeUtc, opt => opt.MapFrom(src => src.LastExtendTime))
+                .ForMember(dest => dest.CountOfTimesExtended, opt => opt.MapFrom(src => src.ExtendTimes));
+            this.CreateMap<ForzaUserBanDescription, LiveOpsBanHistory>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => TitleConstants.ApolloCodeName))
+                .ForMember(dest => dest.RequestingAgent, opt => opt.MapFrom(src => "From Services"))
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.GetName(typeof(FeatureAreas), source.FeatureAreas)))
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
