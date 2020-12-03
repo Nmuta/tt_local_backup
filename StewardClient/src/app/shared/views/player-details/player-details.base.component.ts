@@ -1,14 +1,25 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
+import { ApolloPlayerDetails } from '@models/apollo';
+import { GravityPlayerDetails } from '@models/gravity';
+import { OpusPlayerDetails } from '@models/opus';
+import { SunrisePlayerDetails } from '@models/sunrise';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+type PlayerDetailsTitleIntersection = OpusPlayerDetails | GravityPlayerDetails | ApolloPlayerDetails | SunrisePlayerDetails;
+type RequiredPlayerDetailsFields = { xuid: BigInt };
+type PlayerDetailsIntersection = RequiredPlayerDetailsFields & PlayerDetailsTitleIntersection
+
+type PlayerDetailsTitleUnion = OpusPlayerDetails & GravityPlayerDetails & ApolloPlayerDetails & SunrisePlayerDetails;
+type PlayerDetailsUnion = PlayerDetailsIntersection & Partial<PlayerDetailsTitleUnion>;
+
 /** Defines the player details component. */
 @Component({
-  template: '',
+  templateUrl: './player-details.component.html',
+  styleUrls: ['./player-details.component.scss'],
 })
-// eslint-disable-next-line @angular-eslint/component-class-suffix
-export abstract class PlayerDetailsBaseComponent<T extends { xuid?: BigInt }>
+export abstract class PlayerDetailsBaseComponent<T extends PlayerDetailsIntersection>
   extends BaseComponent
   implements OnChanges {
   /** Gamertag to lookup for player details. */
@@ -22,6 +33,8 @@ export abstract class PlayerDetailsBaseComponent<T extends { xuid?: BigInt }>
   public loadError: unknown;
   /** The player details */
   public playerDetails: T;
+  /** A loosely typed version of @see playerDetails */
+  public get playerDetailsUnion(): PlayerDetailsUnion { return <PlayerDetailsUnion><unknown>this.playerDetails; };
 
   constructor() {
     super();
