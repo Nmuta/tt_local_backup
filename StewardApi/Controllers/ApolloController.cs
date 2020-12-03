@@ -891,7 +891,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var servicesBanHistory = await getServicesBanHistory.ConfigureAwait(true);
             var liveOpsBanHistory = await getLiveOpsBanHistory.ConfigureAwait(true);
 
-            var banHistoryUnion = liveOpsBanHistory.Union(servicesBanHistory, new LiveOpsBanHistoryComparer()).ToList();
+            var currentTimeUtc = DateTime.UtcNow;
+            var banHistoryUnion = liveOpsBanHistory
+                .Union(servicesBanHistory, new LiveOpsBanHistoryComparer())
+                .Select(x =>
+                {
+                    x.IsActive = currentTimeUtc.CompareTo(x.ExpireTimeUtc) < 0;
+                    return x;
+                }).ToList();
+
             banHistoryUnion.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
 
             return banHistoryUnion;

@@ -74,7 +74,7 @@ describe('SunriseService', () => {
   });
 
   it('handles getBanHistoryByXuid', done => {
-    const typedReturnValue = (nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make().liveOpsBanHistory);
+    const typedReturnValue = (nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make());
     service.getBanHistoryByXuid(fakeXuid()).subscribe(output => {
       expect(output[0].startTimeUtc instanceof Date).toBe(
         true,

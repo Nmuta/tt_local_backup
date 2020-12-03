@@ -39,6 +39,17 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         }
 
         /// <summary>
+        ///     Initializes a new instance of the <see cref="LiveOpsBanHistory"/> class.
+        ///     Empty constructor required for use with auto-mapper.
+        /// </summary>
+        public LiveOpsBanHistory() { }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the ban is still active.
+        /// </summary>
+        public bool IsActive { get; set; }
+
+        /// <summary>
         ///     Gets or sets the start time in UTC.
         /// </summary>
         public DateTime StartTimeUtc { get; set; }

@@ -21,6 +21,7 @@ export interface ServicesBanDescription {
 
 /** LiveOps model for bans. */
 export interface LiveOpsBanDescription {
+  isActive: boolean,
   xuid: number;
   startTimeUtc: Date;
   expireTimeUtc: Date;

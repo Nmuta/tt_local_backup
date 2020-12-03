@@ -56,6 +56,7 @@ export class BanHistoryComponent extends BaseComponent implements OnChanges {
       banHistory => {
         this.isLoading = false;
         this.banList  = banHistory;
+        console.log(this.banList);
       },
       _error => {
         this.isLoading = false;
