@@ -1,15 +1,17 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MSError } from '@models/error.model';
 import {
   GravityGameSettings,
   GravityGiftHistory,
   GravityPlayerDetails,
   GravityPlayerInventory,
 } from '@models/gravity';
+import { IdentityQueryBeta, IdentityQueryBetaBatch, IdentityResultBeta, IdentityResultBetaBatch, isGamertagQuery, isT10IdQuery, isXuidQuery } from '@models/identity-query.model';
 import { ApiService } from '@services/api';
 import { GiftHistoryAntecedent } from '@shared/constants';
-import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { forkJoin, Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 /** Defines the gravity service. */
 @Injectable({
@@ -19,6 +21,14 @@ export class GravityService {
   public basePath: string = 'v1/title/gravity';
 
   constructor(private readonly apiService: ApiService) {}
+
+  /** Gets identities within this service. */
+  public getIdentities(
+    identityQueries: IdentityQueryBetaBatch,
+  ): Observable<IdentityResultBetaBatch> {
+    return forkJoin([...identityQueries.map(q => this.getIdentity(q))]);
+  }
+
 
   /** Gets gravity player details with a gamertag. */
   public getPlayerDetailsByGamertag(gamertag: string): Observable<GravityPlayerDetails> {
@@ -150,5 +160,40 @@ export class GravityService {
     return this.apiService.getRequest<GravityGiftHistory>(
       `${this.basePath}/giftHistory/giftRecipientId/(${giftRecipientId})/giftHistoryAntecedent/(${giftHistoryAntecedent})`,
     );
+  }
+
+  private getIdentity(query: IdentityQueryBeta): Observable<IdentityResultBeta> {
+    return this.getIdentityHelper(query).pipe(
+      map(
+        v =>
+          <IdentityResultBeta>{
+            query: query,
+            gamertag: v.gamertag,
+            xuid: v.xuid,
+            t10id: v.turn10Id,
+          },
+        catchError((e: string) =>
+          of(<IdentityResultBeta>{ query: query, error: ({ details: e } as unknown) as MSError }),
+        ),
+      ),
+    );
+  }
+
+  private getIdentityHelper(query: IdentityQueryBeta): Observable<GravityPlayerDetails> {
+    if (isGamertagQuery(query)) {
+      return this.apiService.getRequest<GravityPlayerDetails>(
+        `${this.basePath}/player/gamertag(${query.gamertag})/details`,
+      );
+    } else if (isXuidQuery(query)) {
+      return this.apiService.getRequest<GravityPlayerDetails>(
+        `${this.basePath}/player/xuid(${query.xuid})/details`,
+      );
+    } else if (isT10IdQuery(query)) {
+      return this.apiService.getRequest<GravityPlayerDetails>(
+        `${this.basePath}/player/t10id(${query.t10id})/details`,
+      );
+    } else {
+      return throwError(`query not recognized ${JSON.stringify(query)}`);
+    }
   }
 }
