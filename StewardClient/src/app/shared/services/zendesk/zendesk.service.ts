@@ -59,7 +59,7 @@ export class ZendeskService {
   }
 
   /** Gets a zendesk custom ticket field. */
-  public getTicketCustomField$(field: string): Observable<unknown> {
+  public getTicketCustomField$(field: string): Observable<Record<string, unknown>> {
     return this.zafClientService.runWithClient$(c => c.get(`ticket.customField:${field}`));
   }
 

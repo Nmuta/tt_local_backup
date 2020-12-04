@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { GameTitleCodeNames } from '@models/enums';
+import { GameTitleCodeName } from '@models/enums';
 import { Select } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
-import { ZendeskService } from '@shared/services/zendesk';
+import { TicketFieldsResponse, ZendeskService } from '@shared/services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
+import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -22,7 +23,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
   public loading: boolean;
   public profile: UserModel;
   public xuid: string;
-  public gameTitle: GameTitleCodeNames;
+  public gameTitle: GameTitleCodeName;
   public gamertag: string;
 
   constructor(
@@ -33,8 +34,8 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
   }
 
   /** Access layer for html to check again code name enum. */
-  public get gameTitleCodeNames(): typeof GameTitleCodeNames {
-    return GameTitleCodeNames;
+  public get gameTitleCodeNames(): typeof GameTitleCodeName {
+    return GameTitleCodeName;
   }
 
   /** Logic for the OnInit component lifecycle. */
@@ -46,7 +47,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
         profile => {
           this.loading = false;
           this.profile = profile;
-          this.getTicketRequestor();
+          this.extractData();
         },
         _error => {
           this.loading = false;
@@ -59,58 +60,59 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
     this.zendeskService.resize$('100%', '500px').subscribe();
   }
 
-  /** Gets the ticket requestor information. */
-  public getTicketRequestor(): void {
-    this.zendeskService.getTicketRequestor$().subscribe(response => {
-      const requester = response['ticket.requester'];
-
-      // TODO: Check if gamertag was input into the custom ticket field.
-      // If it was, use that over the ticket requestor as gamertag lookup.
-      this.gamertag = requester.name;
-      this.getTicketFields();
-    });
-  }
-
-  /** Gets all the ticket's custom fields. */
-  public getTicketFields(): void {
-    this.zendeskService.getTicketFields$().subscribe(response => {
-      const ticketFields = response.ticketFields;
-      let titleCustomField = '';
-      for (const field in ticketFields) {
-        if (ticketFields[field].label === 'Forza Title') {
-          titleCustomField = ticketFields[field].name;
-        }
-      }
-
-      this.getTitleData(titleCustomField);
-    });
-  }
-
-  /** Gets title data from ticket. */
-  public getTitleData(titleCustomField: string): void {
-    this.zendeskService.getTicketCustomField$(titleCustomField).subscribe(response => {
-      const titleName = response[`ticket.customField:${titleCustomField}`];
-      this.gameTitle = this.mapTitleName(titleName);
-    });
-  }
-
   /** Opens up inventory app with predefined info filled out. */
   public goToInventory(): void {
     const appSection = this.gameTitle + '/' + this.xuid;
     this.zendeskService.goToApp$('nav_bar', 'forza-inventory-support', appSection).subscribe();
   }
 
-  private mapTitleName(titleName: string): GameTitleCodeNames {
+  /** Coordinates the extraction of data from the ticket. */
+  private async extractData(): Promise<void> {
+    this.gamertag = await this.getTicketRequestorGamertag();
+
+    const ticketFields = await this.zendeskService.getTicketFields$().toPromise();
+    const titleCustomField = this.extractForzaTitle(ticketFields);
+
+    this.gameTitle = await this.getTitle(titleCustomField);
+  }
+
+  /** Gets the ticket requestor information. */
+  private async getTicketRequestorGamertag(): Promise<string> {
+    const response = await this.zendeskService.getTicketRequestor$().toPromise();
+    const requester = response['ticket.requester'];
+
+    // TODO: Check if gamertag was input into the custom ticket field.
+    // If it was, use that over the ticket requestor as gamertag lookup.
+    return requester.name;
+  }
+
+  private extractForzaTitle(ticketFields: TicketFieldsResponse): string {
+    return _(ticketFields)
+      .toPairs()
+      .map(([_key, value]) => value as { label: string, name: string })
+      .filter(entry => entry.label === 'Forza Title')
+      .map(entry => entry.name)
+      .last();
+  }
+
+  /** Gets title data from ticket. */
+  private async getTitle(titleCustomField: string): Promise<GameTitleCodeName> {
+    const response = await this.zendeskService.getTicketCustomField$(titleCustomField).toPromise()
+    const titleName = response[`ticket.customField:${titleCustomField}`] as string;
+    return this.mapTitleName(titleName);
+  }
+
+  private mapTitleName(titleName: string): GameTitleCodeName {
     const titleNameUppercase = titleName.toUpperCase();
     switch(titleNameUppercase) {
       case 'FORZA_STREET':
-        return GameTitleCodeNames.Street;
+        return GameTitleCodeName.Street;
       case 'FORZA_HORIZON_4':
-        return GameTitleCodeNames.FH4;
+        return GameTitleCodeName.FH4;
       case 'FORZA_MOTORSPORT_7':
-        return GameTitleCodeNames.FM7;
+        return GameTitleCodeName.FM7;
       case 'FORZA_HORIZON_3':
-        return GameTitleCodeNames.FH3;
+        return GameTitleCodeName.FH3;
       default:
         return null;
     }

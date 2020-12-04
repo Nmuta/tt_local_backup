@@ -27,7 +27,7 @@ import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { UserModel } from '@shared/models/user.model';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { GameTitleCodeNames } from '@models/enums';
+import { GameTitleCodeName } from '@models/enums';
 
 describe('TicketAppComponent', () => {
   let fixture: ComponentFixture<TicketAppComponent>;
@@ -69,7 +69,7 @@ describe('TicketAppComponent', () => {
 
     describe('When subscribing to profile returns a value', () => {
       beforeEach(() => {
-        component.getTicketRequestor = jasmine.createSpy('getTicketRequestor');
+        component.getTicketRequestorGamertag = jasmine.createSpy('getTicketRequestor');
         Object.defineProperty(component, 'profile$', { writable: true });
         component.profile$ = of(testProfile);
       });
@@ -90,7 +90,7 @@ describe('TicketAppComponent', () => {
         });
         it('Should call getTicketRequestor', () => {
           component.ngOnInit();
-          expect(component.getTicketRequestor).toHaveBeenCalled();
+          expect(component.getTicketRequestorGamertag).toHaveBeenCalled();
         });
       });
     });
@@ -130,12 +130,12 @@ describe('TicketAppComponent', () => {
         component.getTicketFields = jasmine.createSpy('getTicketFields');
       });
       it('should set component.gamertag to requestor name', () => {
-        component.getTicketRequestor();
+        component.getTicketRequestorGamertag();
 
         expect(component.gamertag).toEqual(requestorGamertag);
       });
       it('should call component.getTicketFields', () => {
-        component.getTicketRequestor();
+        component.getTicketRequestorGamertag();
 
         expect(component.getTicketFields).toHaveBeenCalled();
       });
@@ -245,7 +245,7 @@ describe('TicketAppComponent', () => {
   });
 
   describe('Method: goToInventory', () => {
-    const gameTitle = GameTitleCodeNames.Street;
+    const gameTitle = GameTitleCodeName.Street;
     const xuid = 'test-xuid';
     beforeEach(() => {
       component.gameTitle = gameTitle;
