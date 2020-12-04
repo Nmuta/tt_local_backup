@@ -1,16 +1,47 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { BaseComponent } from '@components/base-component/base-component.component';
+import { GameTitleCodeName } from '@models/enums';
+import { Navigate } from '@ngxs/router-plugin';
+import { Store } from '@ngxs/store';
+import { OpusService } from '@services/opus';
+import { TicketService } from '@services/zendesk/ticket.service';
+import { takeUntil, switchMap } from 'rxjs/operators';
 
+/** Routed component for displaying Opus Ticket information. */
 @Component({
-  selector: 'ticket-app-opus',
   templateUrl: './opus.component.html',
   styleUrls: ['./opus.component.scss']
 })
-export class OpusComponent implements OnInit {
-  @Input() public gamertag: string;
+export class OpusComponent extends BaseComponent implements OnInit {
+  public gamertag: string;
+  public xuid: BigInt;
 
-  constructor() { }
+  constructor(
+    private readonly opus: OpusService,
+    private readonly store: Store,
+    private readonly ticket: TicketService,
+  ) { super(); }
 
-  ngOnInit(): void {
+  /** Init hook. */
+  public ngOnInit(): void {
+    this.ticket
+      .getForzaTitle$()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(title => {
+        if (title !== GameTitleCodeName.FM7) {
+          this.store.dispatch(new Navigate(['/ticket-app/title/']));
+        }
+      });
+
+    this.ticket
+      .getTicketRequestorGamertag$()
+      .pipe(
+        takeUntil(this.onDestroy$),
+        switchMap(gamertag => this.opus.getIdentity({ gamertag })))
+      .subscribe(identity => {
+        this.gamertag = identity.gamertag;
+        this.xuid = identity.xuid;
+        // TODO: Handle identity.error
+      });
   }
-
 }

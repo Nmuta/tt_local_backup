@@ -20,11 +20,19 @@ export class SunriseService {
 
   constructor(private readonly apiService: ApiService) {}
 
+  /** Gets a single identity within this service. */
+  public getIdentity(
+    identityQuery: IdentityQueryAlpha,
+  ): Observable<IdentityResultAlpha> {
+    return this.getIdentitySingle(identityQuery)
+  }
+
+
   /** Gets identities within this service. */
   public getIdentities(
     identityQueries: IdentityQueryAlphaBatch,
   ): Observable<IdentityResultAlphaBatch> {
-    return forkJoin([...identityQueries.map(q => this.getIdentity(q))]);
+    return forkJoin([...identityQueries.map(q => this.getIdentitySingle(q))]);
   }
 
   /** Gets gravity player details with a gamertag. This can be used to retrieve a XUID. */
@@ -107,7 +115,7 @@ export class SunriseService {
     );
   }
 
-  private getIdentity(query: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
+  private getIdentitySingle(query: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
     return this.getIdentityHelper(query).pipe(
       map(
         v =>

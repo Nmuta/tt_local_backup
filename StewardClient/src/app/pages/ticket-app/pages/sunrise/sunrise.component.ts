@@ -1,16 +1,47 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { BaseComponent } from '@components/base-component/base-component.component';
+import { GameTitleCodeName } from '@models/enums';
+import { Navigate } from '@ngxs/router-plugin';
+import { Store } from '@ngxs/store';
+import { SunriseService } from '@services/sunrise';
+import { TicketService } from '@services/zendesk/ticket.service';
+import { takeUntil, switchMap } from 'rxjs/operators';
 
+/** Routed component for displaying Sunrise Ticket information. */
 @Component({
-  selector: 'ticket-app-sunrise',
   templateUrl: './sunrise.component.html',
   styleUrls: ['./sunrise.component.scss']
 })
-export class SunriseComponent implements OnInit {
-  @Input() public gamertag: string;
+export class SunriseComponent extends BaseComponent implements OnInit {
+  public gamertag: string;
+  public xuid: BigInt;
 
-  constructor() { }
+  constructor(
+    private readonly sunrise: SunriseService,
+    private readonly store: Store,
+    private readonly ticket: TicketService,
+  ) { super(); }
 
-  ngOnInit(): void {
+  /** Init hook. */
+  public ngOnInit(): void {
+    this.ticket
+      .getForzaTitle$()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(title => {
+        if (title !== GameTitleCodeName.FM7) {
+          this.store.dispatch(new Navigate(['/ticket-app/title/']));
+        }
+      });
+
+    this.ticket
+      .getTicketRequestorGamertag$()
+      .pipe(
+        takeUntil(this.onDestroy$),
+        switchMap(gamertag => this.sunrise.getIdentity({ gamertag })))
+      .subscribe(identity => {
+        this.gamertag = identity.gamertag;
+        this.xuid = identity.xuid;
+        // TODO: Handle identity.error
+      });
   }
-
 }

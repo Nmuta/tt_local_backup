@@ -22,11 +22,18 @@ export class GravityService {
 
   constructor(private readonly apiService: ApiService) {}
 
+  /** Gets a single identity within this service. */
+  public getIdentity(
+    identityQuery: IdentityQueryBeta,
+  ): Observable<IdentityResultBeta> {
+    return this.getIdentitySingle(identityQuery);
+  }
+
   /** Gets identities within this service. */
   public getIdentities(
     identityQueries: IdentityQueryBetaBatch,
   ): Observable<IdentityResultBetaBatch> {
-    return forkJoin([...identityQueries.map(q => this.getIdentity(q))]);
+    return forkJoin([...identityQueries.map(q => this.getIdentitySingle(q))]);
   }
 
 
@@ -162,7 +169,7 @@ export class GravityService {
     );
   }
 
-  private getIdentity(query: IdentityQueryBeta): Observable<IdentityResultBeta> {
+  private getIdentitySingle(query: IdentityQueryBeta): Observable<IdentityResultBeta> {
     return this.getIdentityHelper(query).pipe(
       map(
         v =>

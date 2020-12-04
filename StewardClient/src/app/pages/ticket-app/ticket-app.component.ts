@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GameTitleCodeName } from '@models/enums';
-import { Select } from '@ngxs/store';
+import { Navigate } from '@ngxs/router-plugin';
+import { Select, Store } from '@ngxs/store';
+import { TicketService } from '@services/zendesk/ticket.service';
 import { UserModel } from '@shared/models/user.model';
-import { TicketFieldsResponse, ZendeskService } from '@shared/services/zendesk';
+import { ZendeskService } from '@shared/services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import _ from 'lodash';
 import { Observable } from 'rxjs';
@@ -18,17 +19,13 @@ import { takeUntil } from 'rxjs/operators';
 export class TicketAppComponent extends BaseComponent implements OnInit, AfterViewInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  public appName = 'ticket-sidebar';
-
   public loading: boolean;
   public profile: UserModel;
-  public xuid: string;
-  public gameTitle: GameTitleCodeName;
-  public gamertag: string;
 
   constructor(
-    private readonly router: Router,
-    private readonly zendeskService: ZendeskService,
+    private readonly store: Store,
+    private readonly zendesk: ZendeskService,
+    private readonly ticket: TicketService,
   ) {
     super();
   }
@@ -47,7 +44,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
         profile => {
           this.loading = false;
           this.profile = profile;
-          this.extractAndSetData();
+          this.handleRouting();
         },
         _error => {
           this.loading = false;
@@ -57,63 +54,32 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
 
   /** Logic for the AfterViewInit component lifecycle. */
   public ngAfterViewInit(): void {
-    this.zendeskService.resize$('100%', '500px').subscribe();
+    this.zendesk.resize$('100%', '500px').subscribe();
   }
 
   /** Opens up inventory app with predefined info filled out. */
   public goToInventory(): void {
     const appSection = this.gameTitle + '/' + this.xuid;
-    this.zendeskService.goToApp$('nav_bar', 'forza-inventory-support', appSection).subscribe();
+    this.zendesk.goToApp$('nav_bar', 'forza-inventory-support', appSection).subscribe();
   }
 
-  /** Coordinates the extraction of data from the ticket. */
-  private async extractAndSetData(): Promise<void> {
-    this.gamertag = await this.getTicketRequestorGamertag();
+  private async handleRouting(): Promise<void> {
+    const title = await this.ticket.getForzaTitle$().toPromise();
 
-    const ticketFields = await this.zendeskService.getTicketFields$().toPromise();
-    const titleCustomField = this.extractForzaTitle(ticketFields);
-
-    this.gameTitle = await this.getTitle(titleCustomField);
+    this.routeByTitle(title);
   }
 
-  private async getTicketRequestorGamertag(): Promise<string> {
-    const response = await this.zendeskService.getTicketRequestor$().toPromise();
-    const requester = response['ticket.requester'];
-
-    // TODO: Check if gamertag was input into the custom ticket field.
-    // If it was, use that over the ticket requestor as gamertag lookup.
-    return requester.name;
-  }
-
-  private extractForzaTitle(ticketFields: TicketFieldsResponse): string {
-    return _(ticketFields)
-      .toPairs()
-      .map(([_key, value]) => value as { label: string, name: string })
-      .filter(entry => entry.label === 'Forza Title')
-      .map(entry => entry.name)
-      .last();
-  }
-
-  /** Gets title data from ticket. */
-  private async getTitle(titleCustomField: string): Promise<GameTitleCodeName> {
-    const response = await this.zendeskService.getTicketCustomField$(titleCustomField).toPromise()
-    const titleName = response[`ticket.customField:${titleCustomField}`] as string;
-    return this.mapTitleName(titleName);
-  }
-
-  private mapTitleName(titleName: string): GameTitleCodeName {
-    const titleNameUppercase = titleName.toUpperCase();
-    switch(titleNameUppercase) {
-      case 'FORZA_STREET':
-        return GameTitleCodeName.Street;
-      case 'FORZA_HORIZON_4':
-        return GameTitleCodeName.FH4;
-      case 'FORZA_MOTORSPORT_7':
-        return GameTitleCodeName.FM7;
-      case 'FORZA_HORIZON_3':
-        return GameTitleCodeName.FH3;
-      default:
-        return null;
+  /** Routes to the appropriate title page. */
+  private routeByTitle(title: GameTitleCodeName): Observable<void> {
+    switch(title) {
+      case GameTitleCodeName.Street:
+        return this.store.dispatch(new Navigate(['/ticket-app/title/gravity']))
+      case GameTitleCodeName.FH4:
+        return this.store.dispatch(new Navigate(['/ticket-app/title/sunrise']))
+      case GameTitleCodeName.FM7:
+        return this.store.dispatch(new Navigate(['/ticket-app/title/apollo']))
+      case GameTitleCodeName.FH3:
+        return this.store.dispatch(new Navigate(['/ticket-app/title/opus']))
     }
   }
 }

@@ -22,11 +22,18 @@ export class ApolloService {
 
   constructor(private readonly apiService: ApiService) {}
 
+  /** Gets a single identity within this service. */
+  public getIdentity(
+    identityQuery: IdentityQueryAlpha,
+  ): Observable<IdentityResultAlpha> {
+    return this.getIdentitySingle(identityQuery)
+  }
+
   /** Gets identities within this service. */
   public getIdentities(
     identityQueries: IdentityQueryAlphaBatch,
   ): Observable<IdentityResultAlphaBatch> {
-    return forkJoin([...identityQueries.map(q => this.getIdentity(q))]);
+    return forkJoin([...identityQueries.map(q => this.getIdentitySingle(q))]);
   }
 
   /** Gets apollo player details with a gamertag. This can be used to retrieve a XUID. */
@@ -42,8 +49,8 @@ export class ApolloService {
       );
   }
 
-  private getIdentity(query: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
-    return this.getIdentityHelper(query).pipe(
+  private getIdentitySingle(query: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
+    return this.getIdentitySingleHelper(query).pipe(
       map(
         v =>
           <IdentityResultAlpha>{
@@ -58,7 +65,7 @@ export class ApolloService {
     );
   }
 
-  private getIdentityHelper(query: IdentityQueryAlpha): Observable<ApolloPlayerDetails> {
+  private getIdentitySingleHelper(query: IdentityQueryAlpha): Observable<ApolloPlayerDetails> {
     if (isGamertagQuery(query)) {
       return this.apiService.getRequest<ApolloPlayerDetails>(
         `${this.basePath}/player/gamertag(${query.gamertag})/details`,
