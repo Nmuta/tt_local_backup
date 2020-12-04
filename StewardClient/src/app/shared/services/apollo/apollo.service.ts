@@ -13,6 +13,10 @@ export class ApolloService {
 
   constructor(private readonly apiService: ApiService) {}
 
+  public getIdentities(identityQuery: ApolloIdentitiesQuery): Observable<ApolloIdentitiesResult> {
+
+  }
+
   /** Gets apollo player details with a gamertag. This can be used to retrieve a XUID. */
   public getPlayerDetailsByGamertag(gamertag: string): Observable<ApolloPlayerDetails> {
     return this.apiService
