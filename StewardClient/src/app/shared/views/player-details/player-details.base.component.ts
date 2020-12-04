@@ -7,11 +7,18 @@ import { SunrisePlayerDetails } from '@models/sunrise';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-type PlayerDetailsTitleIntersection = OpusPlayerDetails | GravityPlayerDetails | ApolloPlayerDetails | SunrisePlayerDetails;
+type PlayerDetailsTitleIntersection =
+  | OpusPlayerDetails
+  | GravityPlayerDetails
+  | ApolloPlayerDetails
+  | SunrisePlayerDetails;
 type RequiredPlayerDetailsFields = { xuid: BigInt };
-type PlayerDetailsIntersection = RequiredPlayerDetailsFields & PlayerDetailsTitleIntersection
+type PlayerDetailsIntersection = RequiredPlayerDetailsFields & PlayerDetailsTitleIntersection;
 
-type PlayerDetailsTitleUnion = OpusPlayerDetails & GravityPlayerDetails & ApolloPlayerDetails & SunrisePlayerDetails;
+type PlayerDetailsTitleUnion = OpusPlayerDetails &
+  GravityPlayerDetails &
+  ApolloPlayerDetails &
+  SunrisePlayerDetails;
 type PlayerDetailsUnion = PlayerDetailsIntersection & Partial<PlayerDetailsTitleUnion>;
 
 /** Defines the player details component. */
@@ -34,7 +41,9 @@ export abstract class PlayerDetailsBaseComponent<T extends PlayerDetailsIntersec
   /** The player details */
   public playerDetails: T;
   /** A loosely typed version of @see playerDetails */
-  public get playerDetailsUnion(): PlayerDetailsUnion { return <PlayerDetailsUnion><unknown>this.playerDetails; };
+  public get playerDetailsUnion(): PlayerDetailsUnion {
+    return <PlayerDetailsUnion>(<unknown>this.playerDetails);
+  }
 
   constructor() {
     super();

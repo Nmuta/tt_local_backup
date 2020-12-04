@@ -14,7 +14,10 @@
         <div content-body>
           <p>* click on row to copy value</p>
           <ng-container *ngIf="!isLoading && !loadError; else failstate">
-            <player-details-item [name]="'XUID'" [value]="playerDetailsUnion.xuid"></player-details-item>
+            <player-details-item
+              [name]="'XUID'"
+              [value]="playerDetailsUnion.xuid"
+            ></player-details-item>
             <player-details-item
               [name]="'Gamertag'"
               [value]="playerDetailsUnion.gamertag"
@@ -39,7 +42,10 @@
               [name]="'IP Address'"
               [value]="playerDetailsUnion.ipAddress"
             ></player-details-item>
-            <player-details-item [name]="'LCID'" [value]="playerDetailsUnion.lcid"></player-details-item>
+            <player-details-item
+              [name]="'LCID'"
+              [value]="playerDetailsUnion.lcid"
+            ></player-details-item>
             <player-details-item
               [name]="'Age Group'"
               [value]="playerDetailsUnion.ageGroup"

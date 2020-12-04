@@ -30,10 +30,7 @@ export class ZafClientService {
     return this.clientInternal$;
   }
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly logger: LoggerService,
-  ) {
+  constructor(private readonly http: HttpClient, private readonly logger: LoggerService) {
     this.init();
   }
 
@@ -67,8 +64,7 @@ export class ZafClientService {
 
       this.client = maybeClient;
       this.clientInternal$.next(this.client);
-    }
-    catch (e) {
+    } catch (e) {
       this.logger.error([LogTopic.ZAF], e);
       this.clientInternal$.error(e);
     }

@@ -67,10 +67,13 @@ export class LoggerService {
 
   private trackError(severity: string, topics: LogTopic[], error: unknown, ...data: unknown[]) {
     try {
-      const appInsightsError = error instanceof Error ? error : new Error(JSON.stringify(error))
+      const appInsightsError = error instanceof Error ? error : new Error(JSON.stringify(error));
       const stringifiedData = data.map(d => d.toString());
       const message = `[${topics.join(' ')}]\n${stringifiedData.join('\n')}`;
-      this.appInsights.trackException({ exception: appInsightsError, properties: { severity: severity, message: message }});
+      this.appInsights.trackException({
+        exception: appInsightsError,
+        properties: { severity: severity, message: message },
+      });
     } catch (e) {
       try {
         // fallback to logging the error here and suppress the failure.
