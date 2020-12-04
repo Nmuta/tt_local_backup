@@ -16,135 +16,135 @@
           <ng-container *ngIf="!isLoading && !loadError; else failstate">
             <player-details-item
               [name]="'XUID'"
-              [value]="playerDetailsUnion.xuid"
+              [value]="playerDetailsIntersection.xuid"
             ></player-details-item>
             <player-details-item
               [name]="'Gamertag'"
-              [value]="playerDetailsUnion.gamertag"
+              [value]="playerDetailsIntersection.gamertag"
             ></player-details-item>
             <player-details-item
               [name]="'First Login'"
-              [value]="playerDetailsUnion.firstLoginUtc"
+              [value]="playerDetailsIntersection.firstLoginUtc"
             ></player-details-item>
             <player-details-item
               [name]="'Last Login'"
-              [value]="playerDetailsUnion.lastLoginUtc"
+              [value]="playerDetailsIntersection.lastLoginUtc"
             ></player-details-item>
             <player-details-item
               [name]="'Region'"
-              [value]="playerDetailsUnion.region"
+              [value]="playerDetailsIntersection.region"
             ></player-details-item>
             <player-details-item
               [name]="'Country'"
-              [value]="playerDetailsUnion.country"
+              [value]="playerDetailsIntersection.country"
             ></player-details-item>
             <player-details-item
               [name]="'IP Address'"
-              [value]="playerDetailsUnion.ipAddress"
+              [value]="playerDetailsIntersection.ipAddress"
             ></player-details-item>
             <player-details-item
               [name]="'LCID'"
-              [value]="playerDetailsUnion.lcid"
+              [value]="playerDetailsIntersection.lcid"
             ></player-details-item>
             <player-details-item
               [name]="'Age Group'"
-              [value]="playerDetailsUnion.ageGroup"
+              [value]="playerDetailsIntersection.ageGroup"
             ></player-details-item>
             <player-details-item
               [name]="'Subscription Tier'"
-              [value]="playerDetailsUnion.subscriptionTier"
+              [value]="playerDetailsIntersection.subscriptionTier"
             ></player-details-item>
             <player-details-item
               [name]="'Last Game Settings Used'"
-              [value]="playerDetailsUnion.lastGameSettingsUsed"
+              [value]="playerDetailsIntersection.lastGameSettingsUsed"
             ></player-details-item>
             <player-details-item
               [name]="'Time Offset (sec)'"
-              [value]="playerDetailsUnion.timeOffsetInSeconds"
+              [value]="playerDetailsIntersection.timeOffsetInSeconds"
             ></player-details-item>
             <player-details-item
               [name]="'Inventory Id'"
-              [value]="playerDetailsUnion.userInventoryId"
+              [value]="playerDetailsIntersection.userInventoryId"
             ></player-details-item>
             <player-details-item
               [name]="'Career Level'"
-              [value]="playerDetailsUnion.currentCareerLevel"
+              [value]="playerDetailsIntersection.currentCareerLevel"
             ></player-details-item>
             <player-details-item
               [name]="'Flags'"
-              [value]="playerDetailsUnion.flags"
+              [value]="playerDetailsIntersection.flags"
             ></player-details-item>
             <player-details-item
               [name]="'License Plate'"
-              [value]="playerDetailsUnion.licensePlate"
+              [value]="playerDetailsIntersection.licensePlate"
             ></player-details-item>
             <player-details-item
               [name]="'Painter Thread Level'"
-              [value]="playerDetailsUnion.painterThreadLevel"
+              [value]="playerDetailsIntersection.painterThreadLevel"
             ></player-details-item>
             <player-details-item
               [name]="'Photo Thread Level'"
-              [value]="playerDetailsUnion.photoThreadLevel"
+              [value]="playerDetailsIntersection.photoThreadLevel"
             ></player-details-item>
             <player-details-item
               [name]="'Tuner Thread Level'"
-              [value]="playerDetailsUnion.tunerThreadLevel"
+              [value]="playerDetailsIntersection.tunerThreadLevel"
             ></player-details-item>
             <player-details-item
               [name]="'Blueprint Thread Level'"
-              [value]="playerDetailsUnion.blueprintThreadLevel"
+              [value]="playerDetailsIntersection.blueprintThreadLevel"
             ></player-details-item>
             <player-details-item
               [name]="'Club Id'"
-              [value]="playerDetailsUnion.clubId"
+              [value]="playerDetailsIntersection.clubId"
             ></player-details-item>
             <player-details-item
               [name]="'Club Tag'"
-              [value]="playerDetailsUnion.clubTag"
+              [value]="playerDetailsIntersection.clubTag"
             ></player-details-item>
             <player-details-item
               [name]="'Role In Club'"
-              [value]="playerDetailsUnion.roleInClub"
+              [value]="playerDetailsIntersection.roleInClub"
             ></player-details-item>
             <player-details-item
               [name]="'Team Id'"
-              [value]="playerDetailsUnion.teamId"
+              [value]="playerDetailsIntersection.teamId"
             ></player-details-item>
             <player-details-item
               [name]="'Team Tag'"
-              [value]="playerDetailsUnion.teamTag"
+              [value]="playerDetailsIntersection.teamTag"
             ></player-details-item>
             <player-details-item
               [name]="'Role In Team'"
-              [value]="playerDetailsUnion.roleInTeam"
+              [value]="playerDetailsIntersection.roleInTeam"
             ></player-details-item>
             <player-details-item
               [name]="'Current Badge Id'"
-              [value]="playerDetailsUnion.currentBadgeId"
+              [value]="playerDetailsIntersection.currentBadgeId"
             ></player-details-item>
             <player-details-item
               [name]="'Current Driver Model Id'"
-              [value]="playerDetailsUnion.currentDriverModelId"
+              [value]="playerDetailsIntersection.currentDriverModelId"
             ></player-details-item>
             <player-details-item
               [name]="'Current Player Title Id'"
-              [value]="playerDetailsUnion.currentPlayerTitleId"
+              [value]="playerDetailsIntersection.currentPlayerTitleId"
             ></player-details-item>
             <player-details-item
               [name]="'Equipped Vanity Item Id'"
-              [value]="playerDetailsUnion.equippedVanityItemId"
+              [value]="playerDetailsIntersection.equippedVanityItemId"
             ></player-details-item>
             <player-details-item
               [name]="'Accepts Club Invites'"
-              [value]="playerDetailsUnion.acceptsClubInvites"
+              [value]="playerDetailsIntersection.acceptsClubInvites"
             ></player-details-item>
             <player-details-item
               [name]="'Club Top Tier Count'"
-              [value]="playerDetailsUnion.clubTopTierCount"
+              [value]="playerDetailsIntersection.clubTopTierCount"
             ></player-details-item>
             <player-details-item
               [name]="'User Age Group'"
-              [value]="playerDetailsUnion.ageGroup"
+              [value]="playerDetailsIntersection.ageGroup"
             ></player-details-item>
           </ng-container>
         </div>
