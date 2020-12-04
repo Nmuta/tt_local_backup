@@ -956,23 +956,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var banHistoriesMerged = new List<LiveOpsBanHistory>();
 
-            for (var i = 0; i < banHistories.Count - 1; i++)
+            for (var i = 0; i < banHistories.Count - 2; i++)
             {
                 var banHistoryOne = banHistories[i];
                 var banHistroyTwo = banHistories[i + 1];
 
-                var banHistoriesAreEqual = banHistoryOne.Compare(banHistroyTwo);
-
-                if (!banHistoriesAreEqual)
-                {
-                    banHistoriesMerged.Add(banHistoryOne);
-                    continue;
-                }
+                var banHistoriesAreDifferent = !banHistoryOne.Compare(banHistroyTwo);
 
                 // If ban histories are equal, we want to take the one from Live Ops Kusto
-                banHistoriesMerged.Add(
-                    banHistoryOne.RequestingAgent != "From Services" ? banHistoryOne : banHistroyTwo);
-                i++;
+                var banHistoryToKeep = banHistoriesAreDifferent ? banHistoryOne
+                    : banHistoryOne.RequestingAgent != "From Services"
+                        ? banHistoryOne
+                        : banHistroyTwo;
+
+                i += !banHistoriesAreDifferent ? 1 : 0;
+
+                banHistoryToKeep.IsActive = DateTime.UtcNow.CompareTo(banHistoryToKeep.ExpireTimeUtc) < 0;
+                banHistoriesMerged.Add(banHistoryToKeep);
             }
 
             return banHistoriesMerged;
