@@ -152,13 +152,13 @@ describe('TicketAppComponent', () => {
         mockZendeskService.getTicketFields$ = jasmine
           .createSpy('getTicketFields')
           .and.returnValue(of(ticketFieldsTestData));
-        component.getTitleData = jasmine.createSpy('getTicketFields');
+        component.getTitle = jasmine.createSpy('getTicketFields');
       });
 
       it('should call component.getTitleData with correct field info', () => {
         component.getTicketFields();
 
-        expect(component.getTitleData).toHaveBeenCalledWith(ticketGameTitleField);
+        expect(component.getTitle).toHaveBeenCalledWith(ticketGameTitleField);
       });
     });
   });
@@ -174,7 +174,7 @@ describe('TicketAppComponent', () => {
     });
 
     it('should call zendesk service getTicketCustomField() with input parameter', () => {
-      component.getTitleData(getTitleDataParam);
+      component.getTitle(getTitleDataParam);
 
       expect(mockZendeskService.getTicketCustomField$).toHaveBeenCalledWith(getTitleDataParam);
     });
@@ -189,7 +189,7 @@ describe('TicketAppComponent', () => {
       });
 
       it('should set component.gameTitle to Gravity', () => {
-        component.getTitleData(getTitleDataParam);
+        component.getTitle(getTitleDataParam);
 
         expect(component.gameTitle).toEqual('Gravity');
       });
@@ -205,7 +205,7 @@ describe('TicketAppComponent', () => {
       });
 
       it('should set component.gameTitle to Sunrise', () => {
-        component.getTitleData(getTitleDataParam);
+        component.getTitle(getTitleDataParam);
 
         expect(component.gameTitle).toEqual('Sunrise');
       });
@@ -221,7 +221,7 @@ describe('TicketAppComponent', () => {
       });
 
       it('should set component.gameTitle to Apollo', () => {
-        component.getTitleData(getTitleDataParam);
+        component.getTitle(getTitleDataParam);
 
         expect(component.gameTitle).toEqual('Apollo');
       });
@@ -237,7 +237,7 @@ describe('TicketAppComponent', () => {
       });
 
       it('should set component.gameTitle to Opus', () => {
-        component.getTitleData(getTitleDataParam);
+        component.getTitle(getTitleDataParam);
 
         expect(component.gameTitle).toEqual('Opus');
       });

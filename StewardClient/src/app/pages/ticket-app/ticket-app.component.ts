@@ -47,7 +47,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
         profile => {
           this.loading = false;
           this.profile = profile;
-          this.extractData();
+          this.extractAndSetData();
         },
         _error => {
           this.loading = false;
@@ -67,7 +67,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
   }
 
   /** Coordinates the extraction of data from the ticket. */
-  private async extractData(): Promise<void> {
+  private async extractAndSetData(): Promise<void> {
     this.gamertag = await this.getTicketRequestorGamertag();
 
     const ticketFields = await this.zendeskService.getTicketFields$().toPromise();
@@ -76,7 +76,6 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
     this.gameTitle = await this.getTitle(titleCustomField);
   }
 
-  /** Gets the ticket requestor information. */
   private async getTicketRequestorGamertag(): Promise<string> {
     const response = await this.zendeskService.getTicketRequestor$().toPromise();
     const requester = response['ticket.requester'];
