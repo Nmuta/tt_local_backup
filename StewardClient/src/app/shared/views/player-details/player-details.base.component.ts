@@ -37,8 +37,7 @@ type PlayerDetailsIntersection = PlayerDetailsUnion & Partial<PlayerDetailsTitle
 
 /** Defines the player details component. */
 @Component({
-  templateUrl: './player-details.component.html',
-  styleUrls: ['./player-details.component.scss'],
+  template: '',
 })
 export abstract class PlayerDetailsBaseComponent<T extends PlayerDetailsUnion>
   extends BaseComponent
