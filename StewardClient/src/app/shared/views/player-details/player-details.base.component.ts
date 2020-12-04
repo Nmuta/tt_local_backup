@@ -13,21 +13,35 @@ type PlayerDetailsTitleUnion =
   | ApolloPlayerDetails
   | SunrisePlayerDetails;
 type RequiredPlayerDetailsFields = { xuid: BigInt };
-type PlayerDetailsUnionWithRequired = RequiredPlayerDetailsFields & PlayerDetailsTitleUnion;
+
+/**
+ * **Any** (read: exactly one) of the valid *PlayerDetails model types;
+ * 
+ * Any implementing type must have some additional required fields @see RequiredPlayerDetailsFields
+ */
+type PlayerDetailsUnion = RequiredPlayerDetailsFields & PlayerDetailsTitleUnion;
 
 type PlayerDetailsTitleIntersection = 
   & OpusPlayerDetails
   & GravityPlayerDetails
   & ApolloPlayerDetails
   & SunrisePlayerDetails;
-type PlayerDetailsIntersection = PlayerDetailsUnionWithRequired & Partial<PlayerDetailsTitleIntersection>;
+
+/**
+ * **All** of the valid *PlayerDetails model types, merged together.
+ * 
+ * Fields common to all model types will be Required;
+ * Fields *not* common to all model types will be Nullable;
+ * Some fields are Required regardless.
+ */
+type PlayerDetailsIntersection = PlayerDetailsUnion & Partial<PlayerDetailsTitleIntersection>;
 
 /** Defines the player details component. */
 @Component({
   templateUrl: './player-details.component.html',
   styleUrls: ['./player-details.component.scss'],
 })
-export abstract class PlayerDetailsBaseComponent<T extends PlayerDetailsUnionWithRequired>
+export abstract class PlayerDetailsBaseComponent<T extends PlayerDetailsUnion>
   extends BaseComponent
   implements OnChanges {
   /** Gamertag to lookup for player details. */
