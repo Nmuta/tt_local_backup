@@ -1,5 +1,5 @@
 /**
- * An error response.
+ * Top level model for an error response.
  * @see https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#errorresponse--object
  */
 export interface MSErrorResponse {
@@ -9,6 +9,7 @@ export interface MSErrorResponse {
 
 /**
  * An error response object.
+ * 
  * May contain other fields.
  * @see https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#errorresponse--object
  */
