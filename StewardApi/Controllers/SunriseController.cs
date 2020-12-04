@@ -951,18 +951,31 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var servicesBanHistory = await getServicesBanHistory.ConfigureAwait(true);
             var liveOpsBanHistory = await getLiveOpsBanHistory.ConfigureAwait(true);
 
-            var currentTimeUtc = DateTime.UtcNow;
-            var banHistoryUnion = liveOpsBanHistory
-                .Union(servicesBanHistory, new LiveOpsBanHistoryComparer())
-                .Select(x =>
+            var banHistories = liveOpsBanHistory.Concat(servicesBanHistory).ToList();
+            banHistories.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+
+            var banHistoriesMerged = new List<LiveOpsBanHistory>();
+
+            for (var i = 0; i < banHistories.Count - 1; i++)
+            {
+                var banHistoryOne = banHistories[i];
+                var banHistroyTwo = banHistories[i + 1];
+
+                var banHistoriesAreEqual = banHistoryOne.Compare(banHistroyTwo);
+
+                if (!banHistoriesAreEqual)
                 {
-                    x.IsActive = currentTimeUtc.CompareTo(x.ExpireTimeUtc) < 0;
-                    return x;
-                }).ToList();
+                    banHistoriesMerged.Add(banHistoryOne);
+                    continue;
+                }
 
-            banHistoryUnion.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+                // If ban histories are equal, we want to take the one from Live Ops Kusto
+                banHistoriesMerged.Add(
+                    banHistoryOne.RequestingAgent != "From Services" ? banHistoryOne : banHistroyTwo);
+                i++;
+            }
 
-            return banHistoryUnion;
+            return banHistoriesMerged;
         }
     }
 }
