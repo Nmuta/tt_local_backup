@@ -1,36 +1,33 @@
-<div *ngIf="!loading">
-  <profile [user]="profile" [parentApp]="appName"></profile>
+<div *ngIf="!loading; else loading">
   <h2 *ngIf="!!gameTitle">{{ gameTitle }}</h2>
   <h4 *ngIf="!!gamertag">{{ gamertag }}</h4>
 
-  <gravity-player-details
-    *ngIf="gameTitle === gameTitleCodeNames.Street"
-    [gamertag]="gamertag"
-    (xuidFoundEvent)="xuid = $event"
-  ></gravity-player-details>
-  <sunrise-player-details
-    *ngIf="gameTitle === gameTitleCodeNames.FH4"
-    [gamertag]="gamertag"
-    (xuidFoundEvent)="xuid = $event"
-  ></sunrise-player-details>
-  <apollo-player-details
-    *ngIf="gameTitle === gameTitleCodeNames.FM7"
-    [gamertag]="gamertag"
-    (xuidFoundEvent)="xuid = $event"
-  ></apollo-player-details>
-  <opus-player-details
-    *ngIf="gameTitle === gameTitleCodeNames.FH3"
-    [gamertag]="gamertag"
-    (xuidFoundEvent)="xuid = $event"
-  ></opus-player-details>
+  <!-- TODO: Should probably just route to these from `ticket-app` based on detected game. -->
+  <ng-container [ngSwitch]="gameTitle">
+    <ng-container *ngSwitchCase="gameTitleCodeNames.Street">
+      <ticket-app-gravity [gamertag]="gamertag"></ticket-app-gravity>
+    </ng-container>
 
-  <section class="quick-actions-section">
+    <ng-container *ngSwitchCase="gameTitleCodeNames.FH4">
+      <ticket-app-sunrise [gamertag]="gamertag"></ticket-app-sunrise>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="gameTitleCodeNames.FM7">
+      <ticket-app-apollo [gamertag]="gamertag"></ticket-app-apollo>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="gameTitleCodeNames.FH3">
+      <ticket-app-apollo [gamertag]="gamertag"></ticket-app-apollo>
+    </ng-container>
+  </ng-container>
+
+  <section class="quick-actions">
     <mat-card>
       <mat-card-content>
         <content-collapse>
           <h2 content-title>Quick Actions</h2>
           <section content-body>
-            <div class="actions-div">
+            <div class="actions">
               <button
                 *ngIf="!!gamertag && !!xuid"
                 mat-raised-button
@@ -46,6 +43,9 @@
     </mat-card>
   </section>
 </div>
-<section *ngIf="loading">
-  <h1>Loading...</h1>
-</section>
+
+<ng-container #loading>
+  <section>
+    <h1>Loading...</h1>
+  </section>
+</ng-container>

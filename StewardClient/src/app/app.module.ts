@@ -27,6 +27,7 @@ import { CenterContentsModule } from '@components/center-contents/center-content
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { ZafClientService } from '@services/zendesk/zaf-client.service';
+import { SunriseComponent } from './app/pages/ticket-app/pages/sunrise/sunrise.component';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -50,7 +51,7 @@ function fakeApiOrNothing(): Provider[] {
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent, HomeComponent],
+  declarations: [AppComponent, ErrorComponent, HomeComponent, SunriseComponent],
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,

@@ -9,7 +9,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-/** Defines the ticket sidebar component. */
+/** Coordination component for for ticket-app. */
 @Component({
   templateUrl: './ticket-app.component.html',
   styleUrls: ['./ticket-app.component.scss'],
@@ -25,12 +25,10 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
   public gameTitle: GameTitleCodeNames;
   public gamertag: string;
 
-  public isStreet: boolean;
-  public isFH4: boolean;
-  public isFM7: boolean;
-  public isFH3: boolean;
-
-  constructor(private router: Router, private zendeskService: ZendeskService) {
+  constructor(
+    private readonly router: Router,
+    private readonly zendeskService: ZendeskService,
+  ) {
     super();
   }
 
@@ -83,6 +81,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
           titleCustomField = ticketFields[field].name;
         }
       }
+
       this.getTitleData(titleCustomField);
     });
   }
@@ -91,18 +90,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
   public getTitleData(titleCustomField: string): void {
     this.zendeskService.getTicketCustomField$(titleCustomField).subscribe(response => {
       const titleName = response[`ticket.customField:${titleCustomField}`];
-      const titleNameUppercase = titleName.toUpperCase();
-
-      this.gameTitle =
-        titleNameUppercase === 'FORZA_STREET'
-          ? GameTitleCodeNames.Street
-          : titleNameUppercase === 'FORZA_HORIZON_4'
-          ? GameTitleCodeNames.FH4
-          : titleNameUppercase === 'FORZA_MOTORSPORT_7'
-          ? GameTitleCodeNames.FM7
-          : titleNameUppercase === 'FORZA_HORIZON_3'
-          ? GameTitleCodeNames.FH3
-          : null;
+      this.gameTitle = this.mapTitleName(titleName);
     });
   }
 
@@ -110,5 +98,21 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
   public goToInventory(): void {
     const appSection = this.gameTitle + '/' + this.xuid;
     this.zendeskService.goToApp$('nav_bar', 'forza-inventory-support', appSection).subscribe();
+  }
+
+  private mapTitleName(titleName: string): GameTitleCodeNames {
+    const titleNameUppercase = titleName.toUpperCase();
+    switch(titleNameUppercase) {
+      case 'FORZA_STREET':
+        return GameTitleCodeNames.Street;
+      case 'FORZA_HORIZON_4':
+        return GameTitleCodeNames.FH4;
+      case 'FORZA_MOTORSPORT_7':
+        return GameTitleCodeNames.FM7;
+      case 'FORZA_HORIZON_3':
+        return GameTitleCodeNames.FH3;
+      default:
+        return null;
+    }
   }
 }

@@ -7,7 +7,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PlayerDetailsModule } from '@shared/views/player-details/player-details.module';
 
 import { TicketAppComponent } from './ticket-app.component';
-import { TicketAppRouterModule } from './ticket-app.routing.module';
+import { TicketAppRouterModule } from './ticket-app.routing';
+import { SunriseComponent } from './pages/sunrise/sunrise.component';
+import { GravityComponent } from './pages/gravity/gravity.component';
+import { ApolloComponent } from './pages/apollo/apollo.component';
+import { OpusComponent } from './pages/opus/opus.component';
 
 /** Defines the ticket sidebar module. */
 @NgModule({
@@ -21,6 +25,6 @@ import { TicketAppRouterModule } from './ticket-app.routing.module';
     ContentCollapseModule,
   ],
   providers: [],
-  declarations: [TicketAppComponent],
+  declarations: [TicketAppComponent, SunriseComponent, GravityComponent, ApolloComponent, OpusComponent],
 })
 export class TicketAppModule {}
