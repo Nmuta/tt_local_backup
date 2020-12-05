@@ -229,7 +229,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="LiveOpsBanHistory"/>.
+        ///     The list of <see cref="LiveOpsBanHistory"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
@@ -252,7 +252,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="gamertag">The gamertag.</param>
         /// <returns>
-        ///     The <see cref="LiveOpsBanHistory"/>.
+        ///     A list of <see cref="LiveOpsBanHistory"/>.
         /// </returns>
         [HttpGet("player/gamertag({gamertag})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
