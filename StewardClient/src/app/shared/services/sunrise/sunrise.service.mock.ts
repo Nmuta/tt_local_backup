@@ -20,7 +20,6 @@ export class MockSunriseService {
     .and.returnValue(defer(() => of(_.clone(this.generator()))));
   public getBanHistoryByXuid = jasmine.createSpy('getBanHistoryByXuid').and.returnValue(
     defer(() => {
-      // TODO: This fakeapi can be simplified now that its only a single list
       const unprocessed = (SunrisePlayerXuidBanHistoryFakeApi.make() as unknown) as SunriseBanHistory;
 
       for (const entry of unprocessed.liveOpsBanHistory) {
