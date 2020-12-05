@@ -92,26 +92,5 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         ///     Gets or sets the ban parameters.
         /// </summary>
         public string BanParameters { get; set; }
-
-        /// <summary>
-        ///     Determines if provided ban history is the same.
-        /// </summary>
-        /// <param name="obj">LiveOpsBanHistory to compare against.</param>
-        /// <returns>Boolean stating if ban histories are the same.</returns>
-        public bool Compare(LiveOpsBanHistory obj)
-        {
-            if (obj is null || this.FeatureArea != obj.FeatureArea)
-            {
-                return false;
-            }
-
-            var banHistoryOneStartTime = this.StartTimeUtc.AddTicks(-this.StartTimeUtc.Ticks % TimeSpan.TicksPerSecond);
-            var banHistoryTwoStartTime = obj.StartTimeUtc.AddTicks(-obj.StartTimeUtc.Ticks % TimeSpan.TicksPerSecond);
-            var banHistoryOneExpireTime = this.ExpireTimeUtc.AddTicks(-this.ExpireTimeUtc.Ticks % TimeSpan.TicksPerSecond);
-            var banHistoryTwoEpireTime = obj.ExpireTimeUtc.AddTicks(-obj.ExpireTimeUtc.Ticks % TimeSpan.TicksPerSecond);
-
-            return banHistoryOneStartTime.CompareTo(banHistoryTwoStartTime) == 0
-                && banHistoryOneExpireTime.CompareTo(banHistoryTwoEpireTime) == 0;
-        }
     }
 }
