@@ -166,7 +166,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="xuid">The xuid.</param>
         /// <param name="maxResults">A value that specifies how many consoles to return.</param>
         /// <returns>
-        ///     The list of <see cref="SunriseConsoleDetails"/>.
+        ///     A <see cref="List{SunriseConsoleDetails}"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/consoleDetails")]
         [SwaggerResponse(200, type: typeof(List<SunriseConsoleDetails>))]

@@ -45,11 +45,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <returns>A hash code of the live ops ban history.</returns>
         public int GetHashCode(LiveOpsBanHistory obj)
         {
-            if (obj is null)
-            {
-                return 0;
-            }
-
             return (obj.Xuid, obj.Title, obj.FeatureArea).GetHashCode();
         }
     }
