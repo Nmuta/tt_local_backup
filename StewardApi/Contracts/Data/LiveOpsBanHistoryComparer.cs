@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
 {
