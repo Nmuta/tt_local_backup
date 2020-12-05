@@ -39,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         }
 
         /// <summary>
-        /// Creates a hash code for <see cref="LiveOpsBanHistory"/> object.
+        ///     Creates a hash code for <see cref="LiveOpsBanHistory"/> object.
         /// </summary>
         /// <param name="obj">The live ops ban history.</param>
         /// <returns>A hash code of the live ops ban history.</returns>
