@@ -59,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public DateTime LastExtendedTimeUtc { get; set; }
 
         /// <summary>
-        ///     Gets or sets the numbber of times extended.
+        ///     Gets or sets the count of times the ban has been extended.
         /// </summary>
         public int CountOfTimesExtended { get; set; }
 

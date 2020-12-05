@@ -891,31 +891,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var servicesBanHistory = await getServicesBanHistory.ConfigureAwait(true);
             var liveOpsBanHistory = await getLiveOpsBanHistory.ConfigureAwait(true);
 
-            var banHistories = liveOpsBanHistory.Concat(servicesBanHistory).ToList();
-            banHistories.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+            var banHistories = liveOpsBanHistory.Union(servicesBanHistory, new LiveOpsBanHistoryComparer()).ToList();
 
-            var banHistoriesMerged = new List<LiveOpsBanHistory>();
-
-            for (var i = 0; i < banHistories.Count - 2; i++)
+            foreach (var banHistory in banHistories)
             {
-                var banHistoryOne = banHistories[i];
-                var banHistroyTwo = banHistories[i + 1];
-
-                var banHistoriesAreDifferent = !banHistoryOne.Compare(banHistroyTwo);
-
-                // If ban histories are equal, we want to take the one from Live Ops Kusto
-                var banHistoryToKeep = banHistoriesAreDifferent ? banHistoryOne
-                    : banHistoryOne.RequestingAgent != "From Services"
-                        ? banHistoryOne
-                        : banHistroyTwo;
-
-                i += !banHistoriesAreDifferent ? 1 : 0;
-
-                banHistoryToKeep.IsActive = DateTime.UtcNow.CompareTo(banHistoryToKeep.ExpireTimeUtc) < 0;
-                banHistoriesMerged.Add(banHistoryToKeep);
+                banHistory.IsActive = DateTime.UtcNow.CompareTo(banHistory.ExpireTimeUtc) < 0;
             }
 
-            return banHistoriesMerged;
+            banHistories.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+
+            return banHistories;
         }
     }
 }
