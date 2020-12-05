@@ -47,9 +47,9 @@ export class SunriseService {
       .pipe(
         map(banHistory => {
           // these come in stringly-typed and must be converted
-          for (let i = 0; i < banHistory.length; i++) {
-            banHistory[i].startTimeUtc = new Date(banHistory[i].startTimeUtc);
-            banHistory[i].expireTimeUtc = new Date(banHistory[i].expireTimeUtc);
+          for (const ban of banHistory) {
+            ban.startTimeUtc = new Date(ban.startTimeUtc);
+            ban.expireTimeUtc = new Date(ban.expireTimeUtc);
           }
 
           return banHistory;
