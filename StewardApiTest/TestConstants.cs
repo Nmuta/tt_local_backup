@@ -1,8 +1,5 @@
 ﻿namespace Turn10.LiveOps.StewardTest
 {
-    /// <summary>
-    ///     Provides common constants for testing.
-    /// </summary>
     public static class TestConstants
     {
         public const string ArgumentOutOfRangeExceptionMessagePartial = "Specified argument was out of the range of valid values. (Parameter '{0} must be > {1}. {0} was {2}.')";

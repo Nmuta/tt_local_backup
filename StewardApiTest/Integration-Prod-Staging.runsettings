@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <!-- Parameters used by tests at runtime -->
+  <TestRunParameters>
+    <Parameter name="EndPoint" value="https://steward-api-prod-staging.azurewebsites.net/"/>
+    <Parameter name="ClientId" value="796faca8-01de-436e-b75e-fb981756d5ed"/>
+    <Parameter name="KeyVaultName" value="steward-keyvault-prod"/>
+    <Parameter name="ClientSecretName" value="aad-auth-client-secret"/>
+    <Parameter name="ClientSecret" value=""/>
+    <Parameter name="LspGiftingPasswordName" value="lsp-group-gifting-password"/>
+    <Parameter name="LspGiftingPassword" value=""/>
+  </TestRunParameters>
+</RunSettings>
