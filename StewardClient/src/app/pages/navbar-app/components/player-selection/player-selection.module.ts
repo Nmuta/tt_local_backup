@@ -8,11 +8,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { PlayerSelectionComponent } from './player-selection.component';
+import { T10BasedPlayerSelectionComponent } from './t10-based-player-selection/t10-based-player-selection.component';
+import { XuidBasedPlayerSelectionComponent } from './xuid-based-player-selection/xuid-based-player-selection.component';
 
 /** The feature module for the User Details route. */
 @NgModule({
-  declarations: [PlayerSelectionComponent],
+  declarations: [
+    T10BasedPlayerSelectionComponent,
+    XuidBasedPlayerSelectionComponent
+  ],
   imports: [
     CommonModule,
     ErrorSpinnerModule,
@@ -23,6 +27,9 @@ import { PlayerSelectionComponent } from './player-selection.component';
     FontAwesomeModule,
     FormsModule,
   ],
-  exports: [PlayerSelectionComponent],
+  exports:  [
+    T10BasedPlayerSelectionComponent,
+    XuidBasedPlayerSelectionComponent
+  ],
 })
 export class PlayerSelectionModule {}

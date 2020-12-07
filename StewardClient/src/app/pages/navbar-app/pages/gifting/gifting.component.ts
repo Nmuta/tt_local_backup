@@ -15,8 +15,10 @@ export class GiftingComponent {
     GameTitleCodeNames.FH3
   ];
 
+  selectedGameTitle: GameTitleCodeNames;
+
   /** Logic when a new game title is selected */
   public newGameTitleSelected(title: GameTitleCodeNames): void {
-    console.log(title);
+    this.selectedGameTitle = title;
   }
 }
