@@ -15,6 +15,7 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 export class ApolloComponent extends BaseComponent implements OnInit {
   public gamertag: string;
   public xuid: BigInt;
+  public gameTitle: GameTitleCodeName;
 
   constructor(
     private readonly apollo: ApolloService,
@@ -28,6 +29,7 @@ export class ApolloComponent extends BaseComponent implements OnInit {
       .getForzaTitle$()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(title => {
+        this.gameTitle = title;
         if (title !== GameTitleCodeName.FM7) {
           this.store.dispatch(new Navigate(['/ticket-app/title/']));
         }

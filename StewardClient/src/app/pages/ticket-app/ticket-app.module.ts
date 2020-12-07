@@ -12,6 +12,9 @@ import { SunriseComponent } from './pages/sunrise/sunrise.component';
 import { GravityComponent } from './pages/gravity/gravity.component';
 import { ApolloComponent } from './pages/apollo/apollo.component';
 import { OpusComponent } from './pages/opus/opus.component';
+import { GoToInventoryButtonComponent } from './components/go-to-inventory-button/go-to-inventory-button.component';
+import { QuickActionsComponent } from './components/quick-actions/quick-actions.component';
+import { UnknownComponent } from './pages/unknown/unknown.component';
 
 /** Defines the ticket sidebar module. */
 @NgModule({
@@ -25,6 +28,15 @@ import { OpusComponent } from './pages/opus/opus.component';
     ContentCollapseModule,
   ],
   providers: [],
-  declarations: [TicketAppComponent, SunriseComponent, GravityComponent, ApolloComponent, OpusComponent],
+  declarations: [
+    TicketAppComponent,
+    SunriseComponent,
+    GravityComponent,
+    ApolloComponent,
+    OpusComponent,
+    GoToInventoryButtonComponent,
+    QuickActionsComponent,
+    UnknownComponent,
+  ],
 })
 export class TicketAppModule {}

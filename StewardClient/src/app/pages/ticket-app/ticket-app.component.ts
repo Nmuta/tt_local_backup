@@ -7,7 +7,6 @@ import { TicketService } from '@services/zendesk/ticket.service';
 import { UserModel } from '@shared/models/user.model';
 import { ZendeskService } from '@shared/services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
-import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -30,11 +29,6 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
     super();
   }
 
-  /** Access layer for html to check again code name enum. */
-  public get gameTitleCodeNames(): typeof GameTitleCodeName {
-    return GameTitleCodeName;
-  }
-
   /** Logic for the OnInit component lifecycle. */
   public ngOnInit(): void {
     this.loading = true;
@@ -44,7 +38,6 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
         profile => {
           this.loading = false;
           this.profile = profile;
-          this.handleRouting();
         },
         _error => {
           this.loading = false;
@@ -55,31 +48,5 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
   /** Logic for the AfterViewInit component lifecycle. */
   public ngAfterViewInit(): void {
     this.zendesk.resize$('100%', '500px').subscribe();
-  }
-
-  /** Opens up inventory app with predefined info filled out. */
-  public goToInventory(): void {
-    const appSection = this.gameTitle + '/' + this.xuid;
-    this.zendesk.goToApp$('nav_bar', 'forza-inventory-support', appSection).subscribe();
-  }
-
-  private async handleRouting(): Promise<void> {
-    const title = await this.ticket.getForzaTitle$().toPromise();
-
-    this.routeByTitle(title);
-  }
-
-  /** Routes to the appropriate title page. */
-  private routeByTitle(title: GameTitleCodeName): Observable<void> {
-    switch(title) {
-      case GameTitleCodeName.Street:
-        return this.store.dispatch(new Navigate(['/ticket-app/title/gravity']))
-      case GameTitleCodeName.FH4:
-        return this.store.dispatch(new Navigate(['/ticket-app/title/sunrise']))
-      case GameTitleCodeName.FM7:
-        return this.store.dispatch(new Navigate(['/ticket-app/title/apollo']))
-      case GameTitleCodeName.FH3:
-        return this.store.dispatch(new Navigate(['/ticket-app/title/opus']))
-    }
   }
 }

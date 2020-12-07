@@ -15,6 +15,7 @@ import { takeUntil, switchMap } from 'rxjs/operators';
 export class OpusComponent extends BaseComponent implements OnInit {
   public gamertag: string;
   public xuid: BigInt;
+  public gameTitle: GameTitleCodeName;
 
   constructor(
     private readonly opus: OpusService,
@@ -28,7 +29,8 @@ export class OpusComponent extends BaseComponent implements OnInit {
       .getForzaTitle$()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(title => {
-        if (title !== GameTitleCodeName.FM7) {
+        this.gameTitle = title;
+        if (title !== GameTitleCodeName.FH3) {
           this.store.dispatch(new Navigate(['/ticket-app/title/']));
         }
       });

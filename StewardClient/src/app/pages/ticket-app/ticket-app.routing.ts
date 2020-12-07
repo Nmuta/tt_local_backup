@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FourOhFourComponent } from '@shared/views/four-oh-four/four-oh-four.component';
 import { AuthGuard } from 'app/route-guards/auth.guard';
-import { SunriseComponent } from '../navbar-app/pages/user-details/sunrise/sunrise.component';
 import { ApolloComponent } from './pages/apollo/apollo.component';
 import { GravityComponent } from './pages/gravity/gravity.component';
 import { OpusComponent } from './pages/opus/opus.component';
+import { SunriseComponent } from './pages/sunrise/sunrise.component';
+import { UnknownComponent } from './pages/unknown/unknown.component';
 
 import { TicketAppComponent } from './ticket-app.component';
 
@@ -16,6 +17,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
     children: [
+      {
+        path: '',
+        component: UnknownComponent,
+        pathMatch: 'full',
+      },
       {
         path: 'gravity',
         component: GravityComponent,

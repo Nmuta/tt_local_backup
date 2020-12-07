@@ -18,6 +18,7 @@ export class GravityComponent extends BaseComponent implements OnInit {
   public xuid: BigInt;
   public t10id: string;
   public t10ids: T10IdInfo[];
+  public gameTitle: GameTitleCodeName;
 
   constructor(
     private readonly gravity: GravityService,
@@ -31,6 +32,7 @@ export class GravityComponent extends BaseComponent implements OnInit {
       .getForzaTitle$()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(title => {
+        this.gameTitle = title;
         if (title !== GameTitleCodeName.Street) {
           this.store.dispatch(new Navigate(['/ticket-app/title/']));
         }

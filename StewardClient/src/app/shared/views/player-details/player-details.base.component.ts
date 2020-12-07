@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { ApolloPlayerDetails } from '@models/apollo';
 import { GravityPlayerDetails } from '@models/gravity';
@@ -44,8 +44,6 @@ export abstract class PlayerDetailsBaseComponent<T extends PlayerDetailsUnion>
   implements OnChanges {
   /** Gamertag to lookup for player details. */
   @Input() public gamertag: string;
-  /** Emits xuid when it is found. May emit null/undefined for Gravity. */
-  @Output() public xuidFoundEvent = new EventEmitter<BigInt>();
 
   /** True while waiting on a request. */
   public isLoading = true;
@@ -75,7 +73,6 @@ export abstract class PlayerDetailsBaseComponent<T extends PlayerDetailsUnion>
       details => {
         this.isLoading = false;
         this.playerDetails = details;
-        this.xuidFoundEvent.emit(this.playerDetails.xuid);
       },
       error => {
         this.isLoading = false;

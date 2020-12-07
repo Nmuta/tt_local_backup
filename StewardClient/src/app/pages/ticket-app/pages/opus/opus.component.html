@@ -1,4 +1,4 @@
-<opus-player-details
-  [gamertag]="gamertag"
-  (xuidFoundEvent)="xuid = $event"
-></opus-player-details>
+<opus-player-details [gamertag]="gamertag"></opus-player-details>
+<quick-actions>
+  <go-to-inventory-button [gameTitle]="gameTitle" [xuid]="xuid"></go-to-inventory-button>
+</quick-actions>

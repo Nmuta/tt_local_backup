@@ -28,7 +28,7 @@ export class ZendeskService {
 
   /**
    * True when this app is operating within zendesk.
-   * @deprecated May erroneously return false for the first few ms of operation. Use @see inZendesk$ instead
+   * @deprecated May erroneously return false for the first few ms of operation. Use `inZendesk$` instead
    */
   public get inZendesk(): boolean {
     return !!this.zafClientService.client;
