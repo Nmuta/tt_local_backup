@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Forza.WebServices.FH4.master.Generated;
-using NSubstitute.Routing.Handlers;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers;
 using Xls.Security.FH4.master.Generated;
@@ -48,19 +47,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
                 .ForMember(dest => dest.LastExtendedTimeUtc, opt => opt.MapFrom(src => src.LastExtendTime))
                 .ForMember(dest => dest.CountOfTimesExtended, opt => opt.MapFrom(src => src.ExtendTimes));
-            this.CreateMap<ForzaUserBanDescription, LiveOpsBanHistory>()
-                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => TitleConstants.SunriseCodeName))
-                .ForMember(dest => dest.RequestingAgent, opt => opt.MapFrom(src => "From Services"))
-                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.GetName(typeof(FeatureAreas), source.FeatureAreas)))
-                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
-                .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
-                .ForMember(dest => dest.LastExtendedTimeUtc, opt => opt.MapFrom(src => src.LastExtendTime))
-                .ForMember(dest => dest.CountOfTimesExtended, opt => opt.MapFrom(src => src.ExtendTimes));
             this.CreateMap<ForzaProfileSummary, SunriseProfileSummary>()
                 .ForMember(dest => dest.HackFlags, opt => opt.MapFrom(src => src.HackFlags.Select(t => t.Name)));
             this.CreateMap<ForzaCredityUpdateEntry, SunriseCreditUpdate>().ReverseMap();
             this.CreateMap<AdminForzaProfile, SunriseInventoryProfile>().ReverseMap();
             this.CreateMap<ForzaUserGroup, SunriseLspGroup>();
+            this.CreateMap<InventoryItem, SunriseInventoryItem>();
+            this.CreateMap<Car, SunriseCar>();
+            this.CreateMap<PlayerInventory, SunrisePlayerInventory>();
         }
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text.Json.Serialization;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
+using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
@@ -31,7 +31,7 @@ using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.Diagnostics;
 using Turn10.Services.Diagnostics.Geneva;
 using Turn10.Services.WebApi.Core;
-using static Turn10.LiveOps.StewardApi.ApplicationSettings;
+using static Turn10.LiveOps.StewardApi.Common.ApplicationSettings;
 
 namespace Turn10.LiveOps.StewardApi
 {
@@ -62,6 +62,7 @@ namespace Turn10.LiveOps.StewardApi
             {
                 // Use the groups claim for populating roles
                 options.TokenValidationParameters.RoleClaimType = "roles";
+                options.TokenValidationParameters.NameClaimType = "name";
             });
 
             services.Configure<IISServerOptions>(options =>
@@ -75,8 +76,7 @@ namespace Turn10.LiveOps.StewardApi
                 options.AddPolicy(AuthorizationPolicy.AssignmentToLiveOpsAgentRoleRequired, policy => policy.RequireRole(AppRole.LiveOpsAgent));
             });
 
-            services.AddControllers().AddNewtonsoftJson(
-                options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddControllers().AddNewtonsoftJson();
 
             services.AddSwaggerGen(options =>
             {
