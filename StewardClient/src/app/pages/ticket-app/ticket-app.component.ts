@@ -1,9 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { GameTitleCodeName } from '@models/enums';
-import { Navigate } from '@ngxs/router-plugin';
-import { Select, Store } from '@ngxs/store';
-import { TicketService } from '@services/zendesk/ticket.service';
+import { Select } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { ZendeskService } from '@shared/services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
@@ -22,9 +19,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
   public profile: UserModel;
 
   constructor(
-    private readonly store: Store,
     private readonly zendesk: ZendeskService,
-    private readonly ticket: TicketService,
   ) {
     super();
   }

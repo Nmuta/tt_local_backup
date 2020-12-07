@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoggerService, LogTopic } from '@services/logger';
 import { ExportedZafClient, ZafClient } from '@shared/definitions/zaf-client';
-import { from, Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { from, Observable, of, ReplaySubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 type SwitchMapperImmediate<T> = (client: ZafClient) => T;
@@ -17,6 +17,9 @@ export type SwitchMapper<T> =
 function evaluateAndExport<T>(code: string, exportedValue: string): T {
   return Function(`${code};\n\n;return ${exportedValue};`)();
 }
+
+/** Set to true when the ZAF client fails once, to prevent constantly trying to re-init it. */
+let failedAlready = false;
 
 /** Acquires a ZAF Client using dependency injection rather than ambient globals. */
 @Injectable({ providedIn: 'root' })
@@ -54,20 +57,19 @@ export class ZafClientService {
   /** Initializes the object. */
   protected async init(): Promise<void> {
     try {
+      if (failedAlready) { return; }
       const zafUrl = 'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js';
       const zafText = await this.http.get(zafUrl, { responseType: 'text' }).toPromise();
       const zafObject = evaluateAndExport<ExportedZafClient>(zafText, 'ZAFClient');
       const maybeClient = zafObject.init();
       if (!maybeClient) {
-        debugger;
         throw new Error(`ZAFClient.init() returned ${maybeClient}`);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).zafClient = maybeClient;
       this.client = maybeClient;
       this.clientInternal$.next(this.client);
     } catch (e) {
+      failedAlready = true;
       this.logger.error([LogTopic.ZAF], e);
       this.clientInternal$.error(e);
     }

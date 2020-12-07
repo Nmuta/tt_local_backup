@@ -7,6 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 
 /** A domain module for displaying player ban histories. */
 @NgModule({
@@ -19,6 +20,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTableModule,
     FontAwesomeModule,
     PipesModule,
+    JsonDumpModule,
   ],
   exports: [SunriseBanHistoryComponent],
 })

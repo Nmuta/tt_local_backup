@@ -15,6 +15,8 @@ import { OpusComponent } from './pages/opus/opus.component';
 import { GoToInventoryButtonComponent } from './components/go-to-inventory-button/go-to-inventory-button.component';
 import { QuickActionsComponent } from './components/quick-actions/quick-actions.component';
 import { UnknownComponent } from './pages/unknown/unknown.component';
+import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
+import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
 
 /** Defines the ticket sidebar module. */
 @NgModule({
@@ -23,6 +25,8 @@ import { UnknownComponent } from './pages/unknown/unknown.component';
     TicketAppRouterModule,
     FontAwesomeModule,
     PlayerDetailsModule,
+    UserFlagsModule,
+    BanHistoryModule,
     MatButtonModule,
     MatCardModule,
     ContentCollapseModule,
@@ -34,9 +38,9 @@ import { UnknownComponent } from './pages/unknown/unknown.component';
     GravityComponent,
     ApolloComponent,
     OpusComponent,
+    UnknownComponent,
     GoToInventoryButtonComponent,
     QuickActionsComponent,
-    UnknownComponent,
   ],
 })
 export class TicketAppModule {}

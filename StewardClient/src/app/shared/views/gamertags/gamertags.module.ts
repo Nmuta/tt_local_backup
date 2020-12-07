@@ -8,6 +8,7 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
 import { MatTableModule } from '@angular/material/table';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterModule } from '@angular/router';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 
 /** A domain module for displaying related gamertags. */
 @NgModule({
@@ -21,6 +22,7 @@ import { RouterModule } from '@angular/router';
     RouterModule,
     PipesModule,
     ErrorSpinnerModule,
+    JsonDumpModule,
   ],
   exports: [SunriseGamertagsComponent],
 })

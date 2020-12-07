@@ -8,6 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 
 /** A domain module for displaying user flags. */
 @NgModule({
@@ -21,6 +22,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
     PipesModule,
     MatCheckboxModule,
     FormsModule,
+    JsonDumpModule,
   ],
   exports: [SunriseUserFlagsComponent],
 })

@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 
 /** A domain module for displaying related console lists. */
 @NgModule({
@@ -21,6 +22,7 @@ import { VerifyActionButtonModule } from '@components/verify-action-button/verif
     PipesModule,
     VerifyActionButtonModule,
     ErrorSpinnerModule,
+    JsonDumpModule,
   ],
   exports: [SunriseConsolesComponent],
 })

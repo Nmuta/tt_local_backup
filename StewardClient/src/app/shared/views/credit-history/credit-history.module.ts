@@ -6,6 +6,7 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
 import { MatTableModule } from '@angular/material/table';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 
 /** A domain module for displaying credit histories. */
 @NgModule({
@@ -17,6 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatProgressSpinnerModule,
     PipesModule,
     ErrorSpinnerModule,
+    JsonDumpModule,
   ],
   exports: [SunriseCreditHistoryComponent],
 })

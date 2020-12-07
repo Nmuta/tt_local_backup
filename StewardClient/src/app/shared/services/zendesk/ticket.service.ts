@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import _ from 'lodash';
 import { Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { TicketFieldsResponse, ZendeskService } from './zendesk.service';
 
 /** Utility service for handling Zendesk Tickets. */

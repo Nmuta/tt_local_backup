@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   faCog,
   faExclamationTriangle,
@@ -12,7 +12,7 @@ import { WindowService } from '@services/window';
 import { ZendeskService } from '@services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 
 import {
   createNavbarPath,
@@ -27,7 +27,7 @@ import {
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public warningIcon = faExclamationTriangle;
@@ -38,6 +38,7 @@ export class NavbarComponent {
 
   public profileIcon = faUser;
   public settingsIcon = faCog;
+  public missingZendesk = false;
 
   constructor(
     private readonly windowService: WindowService,
@@ -45,8 +46,11 @@ export class NavbarComponent {
   ) {}
 
   /** True when the Zendesk Client is not available */
-  public get missingZendesk$(): Observable<boolean> {
-    return this.zendeskService.inZendesk$.pipe(map(v => !v));
+  public ngOnInit(): void {
+    this.zendeskService.inZendesk$.subscribe(
+      client => (this.missingZendesk = !client),
+      _error => (this.missingZendesk = true),
+    );
   }
 
   /** A string representing the current location */
