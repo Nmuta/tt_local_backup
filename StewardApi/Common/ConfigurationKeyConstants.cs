@@ -1,4 +1,4 @@
-﻿namespace Turn10.LiveOps.StewardApi
+﻿namespace Turn10.LiveOps.StewardApi.Common
 {
     /// <summary>
     ///     Represents configuration keys.

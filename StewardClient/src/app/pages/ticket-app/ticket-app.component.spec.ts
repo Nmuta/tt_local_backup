@@ -111,13 +111,9 @@ describe('TicketAppComponent', () => {
   });
 
   describe('Method: ngAfterViewInit', () => {
-    beforeEach(() => {
-      mockZendeskService.resize = jasmine.createSpy('resize');
-    });
-
     it('Should call zendeskService.resize correctly', () => {
       component.ngAfterViewInit();
-      expect(mockZendeskService.resize).toHaveBeenCalledWith('100%', '500px');
+      expect(mockZendeskService.resize$).toHaveBeenCalledWith('100%', '500px');
     });
   });
 
@@ -128,7 +124,7 @@ describe('TicketAppComponent', () => {
         const requestorTestData = {
           'ticket.requester': { name: requestorGamertag },
         };
-        mockZendeskService.getTicketRequestor = jasmine
+        mockZendeskService.getTicketRequestor$ = jasmine
           .createSpy('getTicketRequestor')
           .and.returnValue(of(requestorTestData));
         component.getTicketFields = jasmine.createSpy('getTicketFields');
@@ -153,7 +149,7 @@ describe('TicketAppComponent', () => {
         const ticketFieldsTestData = {
           ticketFields: [{ label: 'Forza Title', name: ticketGameTitleField }],
         };
-        mockZendeskService.getTicketFields = jasmine
+        mockZendeskService.getTicketFields$ = jasmine
           .createSpy('getTicketFields')
           .and.returnValue(of(ticketFieldsTestData));
         component.getTitleData = jasmine.createSpy('getTicketFields');
@@ -172,7 +168,7 @@ describe('TicketAppComponent', () => {
     beforeEach(() => {
       const customFieldData =
         '{ "ticket.customField:' + getTitleDataParam + '": "fake-something" }';
-      mockZendeskService.getTicketCustomField = jasmine
+      mockZendeskService.getTicketCustomField$ = jasmine
         .createSpy('getTicketCustomField')
         .and.returnValue(of(JSON.parse(customFieldData)));
     });
@@ -180,14 +176,14 @@ describe('TicketAppComponent', () => {
     it('should call zendesk service getTicketCustomField() with input parameter', () => {
       component.getTitleData(getTitleDataParam);
 
-      expect(mockZendeskService.getTicketCustomField).toHaveBeenCalledWith(getTitleDataParam);
+      expect(mockZendeskService.getTicketCustomField$).toHaveBeenCalledWith(getTitleDataParam);
     });
 
     describe('When zendeskservice getTicketCustomField() returns forza_street as title', () => {
       beforeEach(() => {
         const streetCustomFieldData =
           '{ "ticket.customField:' + getTitleDataParam + '": "forza_street" }';
-        mockZendeskService.getTicketCustomField = jasmine
+        mockZendeskService.getTicketCustomField$ = jasmine
           .createSpy('getTicketCustomField')
           .and.returnValue(of(JSON.parse(streetCustomFieldData)));
       });
@@ -203,7 +199,7 @@ describe('TicketAppComponent', () => {
       beforeEach(() => {
         const horzion4CustomFieldData =
           '{ "ticket.customField:' + getTitleDataParam + '": "forza_horizon_4" }';
-        mockZendeskService.getTicketCustomField = jasmine
+        mockZendeskService.getTicketCustomField$ = jasmine
           .createSpy('getTicketCustomField')
           .and.returnValue(of(JSON.parse(horzion4CustomFieldData)));
       });
@@ -219,7 +215,7 @@ describe('TicketAppComponent', () => {
       beforeEach(() => {
         const horzion4CustomFieldData =
           '{ "ticket.customField:' + getTitleDataParam + '": "forza_motorsport_7" }';
-        mockZendeskService.getTicketCustomField = jasmine
+        mockZendeskService.getTicketCustomField$ = jasmine
           .createSpy('getTicketCustomField')
           .and.returnValue(of(JSON.parse(horzion4CustomFieldData)));
       });
@@ -235,7 +231,7 @@ describe('TicketAppComponent', () => {
       beforeEach(() => {
         const horzion4CustomFieldData =
           '{ "ticket.customField:' + getTitleDataParam + '": "forza_horizon_3" }';
-        mockZendeskService.getTicketCustomField = jasmine
+        mockZendeskService.getTicketCustomField$ = jasmine
           .createSpy('getTicketCustomField')
           .and.returnValue(of(JSON.parse(horzion4CustomFieldData)));
       });
@@ -254,14 +250,13 @@ describe('TicketAppComponent', () => {
     beforeEach(() => {
       component.gameTitle = gameTitle;
       component.xuid = xuid;
-      mockZendeskService.goToApp = jasmine.createSpy('goToApp');
     });
 
     it('expect zendeskService.goToApp to be called', () => {
       component.goToInventory();
 
       const expectedAppsection = `${gameTitle}/${xuid}`;
-      expect(mockZendeskService.goToApp).toHaveBeenCalledWith(
+      expect(mockZendeskService.goToApp$).toHaveBeenCalledWith(
         'nav_bar',
         'forza-inventory-support',
         expectedAppsection,

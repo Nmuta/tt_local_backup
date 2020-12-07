@@ -58,12 +58,12 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
 
   /** Logic for the AfterViewInit component lifecycle. */
   public ngAfterViewInit(): void {
-    this.zendeskService.resize('100%', '500px');
+    this.zendeskService.resize$('100%', '500px').subscribe();
   }
 
   /** Gets the ticket requestor information. */
   public getTicketRequestor(): void {
-    this.zendeskService.getTicketRequestor().subscribe(response => {
+    this.zendeskService.getTicketRequestor$().subscribe(response => {
       const requester = response['ticket.requester'];
 
       // TODO: Check if gamertag was input into the custom ticket field.
@@ -75,7 +75,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
 
   /** Gets all the ticket's custom fields. */
   public getTicketFields(): void {
-    this.zendeskService.getTicketFields().subscribe(response => {
+    this.zendeskService.getTicketFields$().subscribe(response => {
       const ticketFields = response.ticketFields;
       let titleCustomField = '';
       for (const field in ticketFields) {
@@ -89,7 +89,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
 
   /** Gets title data from ticket. */
   public getTitleData(titleCustomField: string): void {
-    this.zendeskService.getTicketCustomField(titleCustomField).subscribe(response => {
+    this.zendeskService.getTicketCustomField$(titleCustomField).subscribe(response => {
       const titleName = response[`ticket.customField:${titleCustomField}`];
       const titleNameUppercase = titleName.toUpperCase();
 
@@ -109,6 +109,6 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
   /** Opens up inventory app with predefined info filled out. */
   public goToInventory(): void {
     const appSection = this.gameTitle + '/' + this.xuid;
-    this.zendeskService.goToApp('nav_bar', 'forza-inventory-support', appSection);
+    this.zendeskService.goToApp$('nav_bar', 'forza-inventory-support', appSection).subscribe();
   }
 }
