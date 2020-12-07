@@ -33,7 +33,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 banDescription.ExpireTime,
                 Enum.GetName(typeof(FH4Security.FeatureAreas), banDescription.FeatureAreas),
                 banDescription.Reason,
-                string.Empty);
+                "{}");
 
             liveOpsBanHistory.LastExtendedTimeUtc = banDescription.LastExtendTime;
             liveOpsBanHistory.CountOfTimesExtended = banDescription.ExtendTimes;
@@ -56,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 banDescription.ExpireTime,
                 Enum.GetName(typeof(FM7Security.FeatureAreas), banDescription.FeatureAreas),
                 banDescription.Reason,
-                string.Empty);
+                "{}");
 
             liveOpsBanHistory.LastExtendedTimeUtc = banDescription.LastExtendTime;
             liveOpsBanHistory.CountOfTimesExtended = banDescription.ExtendTimes;
