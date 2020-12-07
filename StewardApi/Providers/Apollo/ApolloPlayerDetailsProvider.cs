@@ -7,6 +7,7 @@ using Forza.WebServices.FM7.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.ProfileMappers;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 {
@@ -187,7 +188,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     result = await this.apolloUserService.GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
                 }
 
-                var banResults = this.mapper.Map<List<LiveOpsBanHistory>>(result.bans);
+                var banResults = result.bans.Select(ban => { return LiveOpsBanHistoryMapper.Map(ban); }).ToList();
                 banResults.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
 
                 return banResults;
