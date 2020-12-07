@@ -230,7 +230,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<List<ApolloBanDescription>>();
+                var result = action().Result;
+                result.Should().BeOfType<List<LiveOpsBanHistory>>();
             }
         }
 
@@ -383,11 +384,21 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             public Dependencies()
             {
+                // Cannot use random uint value for feature area, we must build our own valid fake data
+                Random rnd = new Random();
+                var fakeBanHistories = new List<ForzaUserBanDescription>();
+                var numberOfFakeBanHistories = rnd.Next(1, 10);
+                for (var i = 0; i < numberOfFakeBanHistories; i++)
+                {
+                    fakeBanHistories.Add(Fixture.Build<ForzaUserBanDescription>().With(x => x.FeatureAreas, (uint)2).Create());
+                }
+
+
                 this.ApolloUserService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDataByGamertagOutput>());
                 this.ApolloUserService.LiveOpsGetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<LiveOpsGetUserDataByXuidOutput>());
                 this.ApolloUserService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>()).Returns(Fixture.Create<BanUsersOutput>());
                 this.ApolloUserService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
-                this.ApolloUserService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanHistoryOutput>());
+                this.ApolloUserService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Build<GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create());
                 this.ApolloUserService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
                 this.ApolloUserService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
                 this.ApolloUserService.GetIsUnderReviewAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());

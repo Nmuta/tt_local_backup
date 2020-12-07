@@ -384,9 +384,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as LiveOpsBanHistory;
+                var details = result.Value as IList<LiveOpsBanHistory>;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<LiveOpsBanHistory>();
+                details.Should().BeOfType<List<LiveOpsBanHistory>>();
             }
         }
 
