@@ -376,7 +376,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<List<SunriseBanDescription>>();
+                action().Result.Should().BeOfType<List<LiveOpsBanHistory>>();
             }
         }
 
