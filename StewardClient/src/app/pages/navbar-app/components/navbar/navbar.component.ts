@@ -12,7 +12,6 @@ import { WindowService } from '@services/window';
 import { ZendeskService } from '@services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
 
 import {
   createNavbarPath,
