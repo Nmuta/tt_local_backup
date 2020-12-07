@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <!-- Parameters used by tests at runtime -->
+  <TestRunParameters>
+    <Parameter name="EndPoint" value="https://localhost:44321/"/>
+    <Parameter name="ClientId" value="cfe0ac3f-d0a7-4566-99f7-0c56b7a9f7d4"/>
+    <Parameter name="KeyVaultName" value="steward-keyvault-dev"/>
+    <Parameter name="ClientSecretName" value="aad-auth-client-secret"/>
+    <Parameter name="ClientSecret" value=""/>
+    <Parameter name="LspGiftingPasswordName" value="lsp-group-gifting-password"/>
+    <Parameter name="LspGiftingPassword" value=""/>
+  </TestRunParameters>
+</RunSettings>

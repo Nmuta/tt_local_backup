@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -193,7 +194,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.Created(this.Request.Path, results);
                 }
 
-                var username = this.User.Identity.Name;
+                var username = this.User.GetNameIdentifier();
                 var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), username).ConfigureAwait(true);
 
                 async Task BackgroundProcessing(CancellationToken cancellationToken)
@@ -603,7 +604,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.Created(this.Request.Path, playerInventory);
                 }
 
-                var username = this.User.Identity.Name;
+                var username = this.User.GetNameIdentifier();
                 var jobId = await this.AddJobIdToHeaderAsync(playerInventory.ToJson(), username).ConfigureAwait(true);
 
                 async Task BackgroundProcessing(CancellationToken cancellationToken)
@@ -683,7 +684,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.Created(this.Request.Path, groupGift.GiftInventory);
                 }
 
-                var username = this.User.Identity.Name;
+                var username = this.User.GetNameIdentifier();
                 var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), username).ConfigureAwait(true);
 
                 async Task BackgroundProcessing(CancellationToken cancellationToken)
@@ -766,7 +767,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.Created(this.Request.Path, groupGift.GiftInventory);
                 }
 
-                var username = this.User.Identity.Name;
+                var username = this.User.GetNameIdentifier();
                 var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), username).ConfigureAwait(true);
 
                 async Task BackgroundProcessing(CancellationToken cancellationToken)
