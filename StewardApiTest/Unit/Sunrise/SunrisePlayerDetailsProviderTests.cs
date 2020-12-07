@@ -8,6 +8,7 @@ using Forza.WebServices.FH4.master.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Xls.WebServices.FH4.master.Generated;
@@ -366,7 +367,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            var actions = new List<Func<Task<IList<SunriseBanDescription>>>>
+            var actions = new List<Func<Task<IList<LiveOpsBanHistory>>>>
             {
                 async () => await provider.GetUserBanHistoryAsync(xuid).ConfigureAwait(false),
                 async () => await provider.GetUserBanHistoryAsync(gamertag).ConfigureAwait(false)

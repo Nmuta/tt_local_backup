@@ -8,6 +8,7 @@ using Forza.WebServices.FM7.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Xls.WebServices.FM7.Generated;
 using static Forza.WebServices.FM7.Generated.UserService;
@@ -221,7 +222,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            var actions = new List<Func<Task<IList<ApolloBanDescription>>>>
+            var actions = new List<Func<Task<IList<LiveOpsBanHistory>>>>
             {
                 async () => await provider.GetUserBanHistoryAsync(xuid).ConfigureAwait(false)
             };
