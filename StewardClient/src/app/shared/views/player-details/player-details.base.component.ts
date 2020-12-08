@@ -54,7 +54,7 @@ export abstract class PlayerDetailsBaseComponent<T extends PlayerDetailsUnion>
   /** The player details */
   public playerDetails: T;
   /** A loosely typed version of @see playerDetails */
-  public get playerDetailsIntersection(): PlayerDetailsIntersection {
+  public get playerDetailsComposite(): PlayerDetailsIntersection {
     return <PlayerDetailsIntersection>(<unknown>this.playerDetails);
   }
 
