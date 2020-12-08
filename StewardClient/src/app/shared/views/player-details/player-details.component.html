@@ -14,135 +14,137 @@
         <div content-body>
           <p>* click on row to copy value</p>
           <ng-container *ngIf="!isLoading && !loadError; else failstate">
-            <player-details-item [name]="'XUID'" [value]="playerDetails.xuid"></player-details-item>
+            <player-details-item
+              [name]="'XUID'"
+              [value]="playerDetailsComposite.xuid"
+            ></player-details-item>
             <player-details-item
               [name]="'Gamertag'"
-              [value]="playerDetails.gamertag"
+              [value]="playerDetailsComposite.gamertag"
             ></player-details-item>
             <player-details-item
               [name]="'First Login'"
-              [value]="playerDetails.firstLogin"
+              [value]="playerDetailsComposite.firstLoginUtc"
             ></player-details-item>
             <player-details-item
               [name]="'Last Login'"
-              [value]="playerDetails.lastLogin"
+              [value]="playerDetailsComposite.lastLoginUtc"
             ></player-details-item>
             <player-details-item
               [name]="'Region'"
-              [value]="playerDetails.region"
+              [value]="playerDetailsComposite.region"
             ></player-details-item>
             <player-details-item
               [name]="'Country'"
-              [value]="playerDetails.country"
+              [value]="playerDetailsComposite.country"
             ></player-details-item>
             <player-details-item
               [name]="'IP Address'"
-              [value]="playerDetails.ipAddress"
+              [value]="playerDetailsComposite.ipAddress"
             ></player-details-item>
-            <player-details-item [name]="'LCID'" [value]="playerDetails.lcid"></player-details-item>
             <player-details-item
-              [name]="'Environment'"
-              [value]="playerDetails.environment"
+              [name]="'LCID'"
+              [value]="playerDetailsComposite.lcid"
             ></player-details-item>
             <player-details-item
               [name]="'Age Group'"
-              [value]="playerDetails.ageGroup"
+              [value]="playerDetailsComposite.ageGroup"
             ></player-details-item>
             <player-details-item
               [name]="'Subscription Tier'"
-              [value]="playerDetails.subscriptionTier"
+              [value]="playerDetailsComposite.subscriptionTier"
             ></player-details-item>
             <player-details-item
               [name]="'Last Game Settings Used'"
-              [value]="playerDetails.lastGameSettingsUsed"
+              [value]="playerDetailsComposite.lastGameSettingsUsed"
             ></player-details-item>
             <player-details-item
               [name]="'Time Offset (sec)'"
-              [value]="playerDetails.timeOffsetInSeconds"
+              [value]="playerDetailsComposite.timeOffsetInSeconds"
             ></player-details-item>
             <player-details-item
               [name]="'Inventory Id'"
-              [value]="playerDetails.userInventoryId"
+              [value]="playerDetailsComposite.userInventoryId"
             ></player-details-item>
             <player-details-item
               [name]="'Career Level'"
-              [value]="playerDetails.currentCareerLevel"
+              [value]="playerDetailsComposite.currentCareerLevel"
             ></player-details-item>
             <player-details-item
               [name]="'Flags'"
-              [value]="playerDetails.flags"
+              [value]="playerDetailsComposite.flags"
             ></player-details-item>
             <player-details-item
               [name]="'License Plate'"
-              [value]="playerDetails.licensePlate"
+              [value]="playerDetailsComposite.licensePlate"
             ></player-details-item>
             <player-details-item
               [name]="'Painter Thread Level'"
-              [value]="playerDetails.painterThreadLevel"
+              [value]="playerDetailsComposite.painterThreadLevel"
             ></player-details-item>
             <player-details-item
               [name]="'Photo Thread Level'"
-              [value]="playerDetails.photoThreadLevel"
+              [value]="playerDetailsComposite.photoThreadLevel"
             ></player-details-item>
             <player-details-item
               [name]="'Tuner Thread Level'"
-              [value]="playerDetails.tunerThreadLevel"
+              [value]="playerDetailsComposite.tunerThreadLevel"
             ></player-details-item>
             <player-details-item
               [name]="'Blueprint Thread Level'"
-              [value]="playerDetails.blueprintThreadLevel"
+              [value]="playerDetailsComposite.blueprintThreadLevel"
             ></player-details-item>
             <player-details-item
               [name]="'Club Id'"
-              [value]="playerDetails.clubId"
+              [value]="playerDetailsComposite.clubId"
             ></player-details-item>
             <player-details-item
               [name]="'Club Tag'"
-              [value]="playerDetails.clubTag"
+              [value]="playerDetailsComposite.clubTag"
             ></player-details-item>
             <player-details-item
               [name]="'Role In Club'"
-              [value]="playerDetails.roleInClub"
+              [value]="playerDetailsComposite.roleInClub"
             ></player-details-item>
             <player-details-item
               [name]="'Team Id'"
-              [value]="playerDetails.teamId"
+              [value]="playerDetailsComposite.teamId"
             ></player-details-item>
             <player-details-item
               [name]="'Team Tag'"
-              [value]="playerDetails.teamTag"
+              [value]="playerDetailsComposite.teamTag"
             ></player-details-item>
             <player-details-item
               [name]="'Role In Team'"
-              [value]="playerDetails.roleInTeam"
+              [value]="playerDetailsComposite.roleInTeam"
             ></player-details-item>
             <player-details-item
               [name]="'Current Badge Id'"
-              [value]="playerDetails.currentBadgeId"
+              [value]="playerDetailsComposite.currentBadgeId"
             ></player-details-item>
             <player-details-item
               [name]="'Current Driver Model Id'"
-              [value]="playerDetails.currentDriverModelId"
+              [value]="playerDetailsComposite.currentDriverModelId"
             ></player-details-item>
             <player-details-item
               [name]="'Current Player Title Id'"
-              [value]="playerDetails.currentPlayerTitleId"
+              [value]="playerDetailsComposite.currentPlayerTitleId"
             ></player-details-item>
             <player-details-item
               [name]="'Equipped Vanity Item Id'"
-              [value]="playerDetails.equippedVanityItemId"
+              [value]="playerDetailsComposite.equippedVanityItemId"
             ></player-details-item>
             <player-details-item
               [name]="'Accepts Club Invites'"
-              [value]="playerDetails.acceptsClubInvites"
+              [value]="playerDetailsComposite.acceptsClubInvites"
             ></player-details-item>
             <player-details-item
               [name]="'Club Top Tier Count'"
-              [value]="playerDetails.clubTopTierCount"
+              [value]="playerDetailsComposite.clubTopTierCount"
             ></player-details-item>
             <player-details-item
               [name]="'User Age Group'"
-              [value]="playerDetails.userAgeGroup"
+              [value]="playerDetailsComposite.ageGroup"
             ></player-details-item>
           </ng-container>
         </div>

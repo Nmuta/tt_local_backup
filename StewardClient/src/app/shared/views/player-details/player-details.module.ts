@@ -14,7 +14,7 @@ import { GravityPlayerDetailsComponent } from './titles/gravity/gravity-player-d
 import { OpusPlayerDetailsComponent } from './titles/opus/opus-player-details.component';
 import { SunrisePlayerDetailsComponent } from './titles/sunrise/sunrise-player-details.component';
 
-/** Defines the player details module. */
+/** A domain module for displaying player details (designed for ticket-app). */
 @NgModule({
   imports: [
     CommonModule,

@@ -7,10 +7,10 @@ import { createNavbarPath, NavbarTools } from 'app/pages/navbar-app/navbar-tool-
 /** Retreives and displays related Sunrise accounts by XUID. */
 @Component({
   selector: 'sunrise-gamertags',
-  templateUrl: './gamertags.component.html',
-  styleUrls: ['./gamertags.component.scss'],
+  templateUrl: './sunrise-gamertags.component.html',
+  styleUrls: ['./sunrise-gamertags.component.scss'],
 })
-export class GamertagsComponent implements OnChanges {
+export class SunriseGamertagsComponent implements OnChanges {
   @Input() public xuid?: number;
 
   public everBannedIcon = faGavel;

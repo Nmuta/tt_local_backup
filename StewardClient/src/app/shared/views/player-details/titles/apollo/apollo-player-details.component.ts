@@ -7,8 +7,8 @@ import { PlayerDetailsBaseComponent } from '../../player-details.base.component'
 /** Gravity Player Details */
 @Component({
   selector: 'apollo-player-details',
-  templateUrl: '../../player-details.html',
-  styleUrls: ['../../player-details.scss'],
+  templateUrl: '../../player-details.component.html',
+  styleUrls: ['../../player-details.component.scss'],
 })
 export class ApolloPlayerDetailsComponent extends PlayerDetailsBaseComponent<ApolloPlayerDetails> {
   constructor(public readonly apolloService: ApolloService) {

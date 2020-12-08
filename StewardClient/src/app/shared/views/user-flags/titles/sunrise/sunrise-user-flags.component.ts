@@ -9,10 +9,10 @@ import { tap } from 'rxjs/operators';
 /** Retreives and displays Sunrise User Flags by XUID. */
 @Component({
   selector: 'sunrise-user-flags',
-  templateUrl: './user-flags.component.html',
-  styleUrls: ['./user-flags.component.scss'],
+  templateUrl: './sunrise-user-flags.component.html',
+  styleUrls: ['./sunrise-user-flags.component.scss'],
 })
-export class UserFlagsComponent extends BaseComponent implements OnChanges {
+export class SunriseUserFlagsComponent extends BaseComponent implements OnChanges {
   /** The XUID to look up. */
   @Input() public xuid: number;
 
