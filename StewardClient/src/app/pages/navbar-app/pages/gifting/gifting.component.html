@@ -2,11 +2,11 @@
   <mat-toolbar color="default">
     <title-dropdown 
       [titleOptions]="gameTitleOptions"
+      [selectedOption]="selectedGameTitle"
       (newTitleSelectedEvent)="newGameTitleSelected($event)"
     ></title-dropdown>
     <span class="spacer"></span>
   </mat-toolbar>
 
-  <app-player-selection></app-player-selection>
   <router-outlet></router-outlet>
 </main>

@@ -12,10 +12,20 @@ import { GiftingComponent } from './gifting.component';
 import { GiftingRouterModule } from './gifting.routing';
 import { PlayerSelectionModule } from '../../components/player-selection/player-selection.module';
 import { TitleDropdownModule } from '@components/title-dropdown/title-dropdown.module';
+import { GravityGiftingComponent } from './gravity/gravity-gifting.component';
+import { SunriseGiftingComponent } from './sunrise/sunrise-gifting.component';
+import { ApolloGiftingComponent } from './apollo/apollo-gifting.component';
+import { OpusGiftingComponent } from './opus/opus-gifting.component';
 
 /** The feature module for the User Details route. */
 @NgModule({
-  declarations: [GiftingComponent],
+  declarations: [
+    GiftingComponent,
+    GravityGiftingComponent,
+    SunriseGiftingComponent,
+    ApolloGiftingComponent,
+    OpusGiftingComponent
+  ],
   imports: [
     CommonModule,
     ErrorSpinnerModule,

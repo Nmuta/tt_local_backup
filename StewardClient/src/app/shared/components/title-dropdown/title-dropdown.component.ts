@@ -9,9 +9,8 @@ import { GameTitleCodeNames } from '@models/enums';
 })
 export class TitleDropdownComponent implements OnInit {
   @Input() titleOptions: GameTitleCodeNames[];
+  @Input() selectedOption: GameTitleCodeNames;
   @Output() newTitleSelectedEvent = new EventEmitter<GameTitleCodeNames>();
-
-  selectedOption: GameTitleCodeNames;
   
   constructor() {
     // Empty
@@ -22,9 +21,6 @@ export class TitleDropdownComponent implements OnInit {
     if(!this.titleOptions || this.titleOptions.length <= 0) {
       throw new Error('Invalid title options were given to the TitleDropdownComponent.');
     }
-
-    this.selectedOption = this.titleOptions[0];
-    this.newTitleSelection(this.selectedOption);
   }
 
   /** Outputs new title selected event */
