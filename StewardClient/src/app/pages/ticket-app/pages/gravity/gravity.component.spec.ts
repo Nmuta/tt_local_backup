@@ -8,9 +8,8 @@ describe('GravityComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GravityComponent ]
-    })
-    .compileComponents();
+      declarations: [GravityComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

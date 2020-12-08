@@ -10,14 +10,10 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-unknown',
   templateUrl: './unknown.component.html',
-  styleUrls: ['./unknown.component.scss']
+  styleUrls: ['./unknown.component.scss'],
 })
 export class UnknownComponent extends BaseComponent implements OnInit {
-
-  constructor(
-    private readonly store: Store,
-    private readonly ticket: TicketService,
-  ) {
+  constructor(private readonly store: Store, private readonly ticket: TicketService) {
     super();
   }
 
@@ -25,7 +21,6 @@ export class UnknownComponent extends BaseComponent implements OnInit {
   public ngOnInit(): void {
     this.handleRouting();
   }
-
 
   private handleRouting(): void {
     this.ticket.getForzaTitle$().subscribe(title => {
@@ -35,15 +30,15 @@ export class UnknownComponent extends BaseComponent implements OnInit {
 
   /** Routes to the appropriate title page. */
   private routeByTitle(title: GameTitleCodeName): Observable<void> {
-    switch(title) {
+    switch (title) {
       case GameTitleCodeName.Street:
-        return this.store.dispatch(new Navigate(['/ticket-app/title/gravity']))
+        return this.store.dispatch(new Navigate(['/ticket-app/title/gravity']));
       case GameTitleCodeName.FH4:
-        return this.store.dispatch(new Navigate(['/ticket-app/title/sunrise']))
+        return this.store.dispatch(new Navigate(['/ticket-app/title/sunrise']));
       case GameTitleCodeName.FM7:
-        return this.store.dispatch(new Navigate(['/ticket-app/title/apollo']))
+        return this.store.dispatch(new Navigate(['/ticket-app/title/apollo']));
       case GameTitleCodeName.FH3:
-        return this.store.dispatch(new Navigate(['/ticket-app/title/opus']))
+        return this.store.dispatch(new Navigate(['/ticket-app/title/opus']));
     }
   }
 }

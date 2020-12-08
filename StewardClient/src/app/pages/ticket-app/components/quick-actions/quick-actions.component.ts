@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'quick-actions',
   templateUrl: './quick-actions.component.html',
-  styleUrls: ['./quick-actions.component.scss']
+  styleUrls: ['./quick-actions.component.scss'],
 })
-export class QuickActionsComponent { }
+export class QuickActionsComponent {}

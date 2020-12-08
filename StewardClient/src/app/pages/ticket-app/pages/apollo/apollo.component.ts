@@ -10,7 +10,7 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 /** Routed component for displaying Apollo Ticket information. */
 @Component({
   templateUrl: './apollo.component.html',
-  styleUrls: ['./apollo.component.scss']
+  styleUrls: ['./apollo.component.scss'],
 })
 export class ApolloComponent extends BaseComponent implements OnInit {
   public gamertag: string;
@@ -21,7 +21,9 @@ export class ApolloComponent extends BaseComponent implements OnInit {
     private readonly apollo: ApolloService,
     private readonly store: Store,
     private readonly ticket: TicketService,
-  ) { super(); }
+  ) {
+    super();
+  }
 
   /** Init hook. */
   public ngOnInit(): void {
@@ -39,7 +41,8 @@ export class ApolloComponent extends BaseComponent implements OnInit {
       .getTicketRequestorGamertag$()
       .pipe(
         takeUntil(this.onDestroy$),
-        switchMap(gamertag => this.apollo.getIdentity({ gamertag })))
+        switchMap(gamertag => this.apollo.getIdentity({ gamertag })),
+      )
       .subscribe(identity => {
         this.gamertag = identity.gamertag;
         this.xuid = identity.xuid;

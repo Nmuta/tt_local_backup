@@ -24,7 +24,15 @@ export interface TicketFieldsResponse {
   providedIn: 'root',
 })
 export class ZendeskService {
-  constructor(private readonly zafClientService: ZafClientService) {}
+  /** Emits true when we're inside zendesk. */
+  public readonly inZendesk$: Observable<boolean>;
+  /** Emits true when we're missing zendesk. */
+  public readonly missingZendesk$: Observable<boolean>;
+
+  constructor(private readonly zafClientService: ZafClientService) {
+    this.inZendesk$ = this.zafClientService.client$.pipe(map(v => !!v));
+    this.missingZendesk$ = this.zafClientService.client$.pipe(map(v => !v));
+  }
 
   /**
    * True when this app is operating within zendesk.
@@ -32,13 +40,6 @@ export class ZendeskService {
    */
   public get inZendesk(): boolean {
     return !!this.zafClientService.client;
-  }
-
-  /**
-   * True when this app is operating within zendesk.
-   */
-  public get inZendesk$(): Observable<boolean> {
-    return this.zafClientService.client$.pipe(map(v => !!v));
   }
 
   /** Gets the zendesk ticket details. */

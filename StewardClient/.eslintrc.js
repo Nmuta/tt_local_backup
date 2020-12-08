@@ -56,8 +56,14 @@ module.exports = {
           { type: 'element', prefix: 'app', style: 'kebab-case' },
         ],
         quotes: ['error', 'single', { allowTemplateLiterals: true }],
-        '@angular-eslint/component-selector': ['error', { type: 'element', prefix: [], style: 'kebab-case' }], // why? naming convention feels repetitive (may want to flip this if we run into conflicts)
-        '@angular-eslint/directive-selector': ['error',  { type: 'attribute', prefix: [], style: 'camelCase' }], // why? naming convention feels repetitive (may want to flip this if we run into conflicts)
+        '@angular-eslint/component-selector': [
+          'error',
+          { type: 'element', prefix: [], style: 'kebab-case' },
+        ], // why? naming convention feels repetitive (may want to flip this if we run into conflicts)
+        '@angular-eslint/directive-selector': [
+          'error',
+          { type: 'attribute', prefix: [], style: 'camelCase' },
+        ], // why? naming convention feels repetitive (may want to flip this if we run into conflicts)
         '@typescript-eslint/member-ordering': [
           'error',
           {

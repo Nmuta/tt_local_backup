@@ -10,7 +10,7 @@ import { takeUntil, switchMap } from 'rxjs/operators';
 /** Routed component for displaying Opus Ticket information. */
 @Component({
   templateUrl: './opus.component.html',
-  styleUrls: ['./opus.component.scss']
+  styleUrls: ['./opus.component.scss'],
 })
 export class OpusComponent extends BaseComponent implements OnInit {
   public gamertag: string;
@@ -21,7 +21,9 @@ export class OpusComponent extends BaseComponent implements OnInit {
     private readonly opus: OpusService,
     private readonly store: Store,
     private readonly ticket: TicketService,
-  ) { super(); }
+  ) {
+    super();
+  }
 
   /** Init hook. */
   public ngOnInit(): void {
@@ -39,7 +41,8 @@ export class OpusComponent extends BaseComponent implements OnInit {
       .getTicketRequestorGamertag$()
       .pipe(
         takeUntil(this.onDestroy$),
-        switchMap(gamertag => this.opus.getIdentity({ gamertag })))
+        switchMap(gamertag => this.opus.getIdentity({ gamertag })),
+      )
       .subscribe(identity => {
         this.gamertag = identity.gamertag;
         this.xuid = identity.xuid;

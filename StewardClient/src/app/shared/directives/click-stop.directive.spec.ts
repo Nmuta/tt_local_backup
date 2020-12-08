@@ -9,7 +9,7 @@ describe('ClickStopDirective', () => {
   it('should stop clicks', () => {
     const directive = new ClickStopDirective();
     const event = new Event('click');
-    event.stopPropagation = jasmine.createSpy('stopPropagation')
+    event.stopPropagation = jasmine.createSpy('stopPropagation');
     directive.onClick(event);
     expect(event.stopPropagation).toHaveBeenCalled();
   });

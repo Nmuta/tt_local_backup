@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   faCog,
   faExclamationTriangle,
@@ -12,6 +12,7 @@ import { WindowService } from '@services/window';
 import { ZendeskService } from '@services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import {
   createNavbarPath,
@@ -26,7 +27,7 @@ import {
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public warningIcon = faExclamationTriangle;
@@ -35,25 +36,19 @@ export class NavbarComponent implements OnInit {
   public items: RouterLinkPath[] = navbarToolList;
   public homeRouterLink = createNavbarPath(NavbarTools.HomePage).routerLink;
 
-  public profileIcon = faUser;
-  public settingsIcon = faCog;
-  public missingZendesk = false;
+  public readonly profileIcon = faUser;
+  public readonly settingsIcon = faCog;
 
   constructor(
     private readonly windowService: WindowService,
     public readonly zendeskService: ZendeskService,
-  ) {}
-
-  /** True when the Zendesk Client is not available */
-  public ngOnInit(): void {
-    this.zendeskService.inZendesk$.subscribe(
-      client => (this.missingZendesk = !client),
-      _error => (this.missingZendesk = true),
-    );
-  }
+  ) { }
 
   /** A string representing the current location */
   public get location(): string {
     return `${this.windowService.location().pathname}${this.windowService.location().search}`;
   }
+
+  /** Emits true when we are missing zendesk. */
+  public get missingZendesk$(): Observable<boolean> { return this.zendeskService.missingZendesk$; }
 }

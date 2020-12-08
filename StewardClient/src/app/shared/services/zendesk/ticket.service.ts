@@ -29,7 +29,8 @@ export class TicketService {
     return this.zendesk.getTicketFields$().pipe(
       map(ticketFields => this.extractForzaTitleFromTicketFields(ticketFields)),
       switchMap(titleCustomField => this.getTitleName$(titleCustomField)),
-      map(titleName => this.mapTitleName(titleName)));
+      map(titleName => this.mapTitleName(titleName)),
+    );
   }
 
   /** Extracts the Title from the Ticket Fields response. */
@@ -47,9 +48,7 @@ export class TicketService {
   private getTitleName$(titleCustomField: string): Observable<string> {
     return this.zendesk
       .getTicketCustomField$(titleCustomField)
-      .pipe(
-        map(response => response[`ticket.customField:${titleCustomField}`] as string),
-      );
+      .pipe(map(response => response[`ticket.customField:${titleCustomField}`] as string));
   }
 
   /** Maps a title name from a ticket to an enum value. */

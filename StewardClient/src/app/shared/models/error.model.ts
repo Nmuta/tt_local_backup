@@ -9,7 +9,7 @@ export interface MSErrorResponse {
 
 /**
  * An error response object.
- * 
+ *
  * May contain other fields.
  * @see https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#errorresponse--object
  */
@@ -28,7 +28,7 @@ export interface MSError {
 
 /**
  * An inner error response object.
- * 
+ *
  * May contain other fields.
  * @see https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#errorresponse--object
  */

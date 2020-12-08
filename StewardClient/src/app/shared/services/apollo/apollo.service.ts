@@ -23,10 +23,8 @@ export class ApolloService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets a single identity within this service. */
-  public getIdentity(
-    identityQuery: IdentityQueryAlpha,
-  ): Observable<IdentityResultAlpha> {
-    return this.getIdentitySingle(identityQuery)
+  public getIdentity(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
+    return this.getIdentitySingle(identityQuery);
   }
 
   /** Gets identities within this service. */

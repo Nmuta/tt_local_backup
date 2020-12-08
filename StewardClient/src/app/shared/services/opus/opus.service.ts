@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { MSError } from '@models/error.model';
-import { IdentityQueryAlpha, IdentityQueryAlphaBatch, IdentityResultAlpha, IdentityResultAlphaBatch, isGamertagQuery, isXuidQuery } from '@models/identity-query.model';
+import {
+  IdentityQueryAlpha,
+  IdentityQueryAlphaBatch,
+  IdentityResultAlpha,
+  IdentityResultAlphaBatch,
+  isGamertagQuery,
+  isXuidQuery,
+} from '@models/identity-query.model';
 import { OpusPlayerDetails } from '@models/opus';
 import { ApiService } from '@services/api';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
@@ -16,10 +23,8 @@ export class OpusService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets a single identity within this service. */
-  public getIdentity(
-    identityQuery: IdentityQueryAlpha,
-  ): Observable<IdentityResultAlpha> {
-    return this.getIdentitySingle(identityQuery)
+  public getIdentity(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
+    return this.getIdentitySingle(identityQuery);
   }
 
   /** Gets identities within this service. */

@@ -11,7 +11,7 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 /** Routed component for displaying Gravity Ticket information. */
 @Component({
   templateUrl: './gravity.component.html',
-  styleUrls: ['./gravity.component.scss']
+  styleUrls: ['./gravity.component.scss'],
 })
 export class GravityComponent extends BaseComponent implements OnInit {
   public gamertag: string;
@@ -24,7 +24,9 @@ export class GravityComponent extends BaseComponent implements OnInit {
     private readonly gravity: GravityService,
     private readonly store: Store,
     private readonly ticket: TicketService,
-  ) { super(); }
+  ) {
+    super();
+  }
 
   /** Init hook. */
   public ngOnInit(): void {
@@ -42,7 +44,8 @@ export class GravityComponent extends BaseComponent implements OnInit {
       .getTicketRequestorGamertag$()
       .pipe(
         takeUntil(this.onDestroy$),
-        switchMap(gamertag => this.gravity.getIdentity({ gamertag })))
+        switchMap(gamertag => this.gravity.getIdentity({ gamertag })),
+      )
       .subscribe(identity => {
         this.gamertag = identity.gamertag;
         this.xuid = identity.xuid;

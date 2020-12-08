@@ -7,7 +7,15 @@ import {
   GravityPlayerDetails,
   GravityPlayerInventory,
 } from '@models/gravity';
-import { IdentityQueryBeta, IdentityQueryBetaBatch, IdentityResultBeta, IdentityResultBetaBatch, isGamertagQuery, isT10IdQuery, isXuidQuery } from '@models/identity-query.model';
+import {
+  IdentityQueryBeta,
+  IdentityQueryBetaBatch,
+  IdentityResultBeta,
+  IdentityResultBetaBatch,
+  isGamertagQuery,
+  isT10IdQuery,
+  isXuidQuery,
+} from '@models/identity-query.model';
 import { ApiService } from '@services/api';
 import { GiftHistoryAntecedent } from '@shared/constants';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
@@ -23,9 +31,7 @@ export class GravityService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets a single identity within this service. */
-  public getIdentity(
-    identityQuery: IdentityQueryBeta,
-  ): Observable<IdentityResultBeta> {
+  public getIdentity(identityQuery: IdentityQueryBeta): Observable<IdentityResultBeta> {
     return this.getIdentitySingle(identityQuery);
   }
 
@@ -35,7 +41,6 @@ export class GravityService {
   ): Observable<IdentityResultBetaBatch> {
     return forkJoin([...identityQueries.map(q => this.getIdentitySingle(q))]);
   }
-
 
   /** Gets gravity player details with a gamertag. */
   public getPlayerDetailsByGamertag(gamertag: string): Observable<GravityPlayerDetails> {

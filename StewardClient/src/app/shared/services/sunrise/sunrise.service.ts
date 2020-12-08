@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { MSError } from '@models/error.model';
-import { IdentityQueryAlphaBatch, IdentityResultAlphaBatch, IdentityQueryAlpha, IdentityResultAlpha, isGamertagQuery, isXuidQuery } from '@models/identity-query.model';
+import {
+  IdentityQueryAlphaBatch,
+  IdentityResultAlphaBatch,
+  IdentityQueryAlpha,
+  IdentityResultAlpha,
+  isGamertagQuery,
+  isXuidQuery,
+} from '@models/identity-query.model';
 import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
 import { SunriseBanHistory } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
@@ -21,12 +28,9 @@ export class SunriseService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets a single identity within this service. */
-  public getIdentity(
-    identityQuery: IdentityQueryAlpha,
-  ): Observable<IdentityResultAlpha> {
-    return this.getIdentitySingle(identityQuery)
+  public getIdentity(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
+    return this.getIdentitySingle(identityQuery);
   }
-
 
   /** Gets identities within this service. */
   public getIdentities(

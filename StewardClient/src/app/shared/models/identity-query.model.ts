@@ -42,7 +42,7 @@ export interface T10IdInfo {
 
 /**
  * A single identity query. Alpha type.
- * 
+ *
  * Designed to work on games which use XUID as a primary identifier such as:
  * - FH4
  * - FM7
@@ -52,7 +52,7 @@ export type IdentityQueryAlpha = IdentityQueryByGamertag | IdentityQueryByXuid;
 
 /**
  * A single identity query result. Alpha type.
- * 
+ *
  * Designed to work on games which use XUID as a primary identifier such as:
  * - FH4
  * - FM7
@@ -60,7 +60,7 @@ export type IdentityQueryAlpha = IdentityQueryByGamertag | IdentityQueryByXuid;
  */
 export interface IdentityResultAlpha {
   /** The initial query. */
-  query: IdentityQueryAlpha,
+  query: IdentityQueryAlpha;
   /** The gamertag, if found. */
   gamertag?: string;
   /** The XUID, if found. */
@@ -71,23 +71,26 @@ export interface IdentityResultAlpha {
 
 /**
  * A single identity query. Beta type.
- * 
+ *
  * Designed to work on games which use T10ID as a primary identifier such as:
  * - Street
  * - Future Titles?
  */
-export type IdentityQueryBeta = IdentityQueryByGamertag | IdentityQueryByXuid | IdentityQueryByT10Id;
+export type IdentityQueryBeta =
+  | IdentityQueryByGamertag
+  | IdentityQueryByXuid
+  | IdentityQueryByT10Id;
 
 /**
  * A single identity query result. Beta type.
- * 
+ *
  * Designed to work on games which use T10ID as a primary identifier such as:
  * - Street
  * - Future Titles?
  */
 export interface IdentityResultBeta {
   /** The initial query. */
-  query: IdentityQueryBeta,
+  query: IdentityQueryBeta;
   /** The gamertag, if found. */
   gamertag?: string;
   /** The XUID, if found. */
@@ -102,7 +105,7 @@ export interface IdentityResultBeta {
 
 /**
  * A batch of identity queries. Alpha type.
- * 
+ *
  * Designed to work on games which use XUID as a primary identifier such as:
  * - FH4
  * - FM7
@@ -113,17 +116,17 @@ export type IdentityQueryAlphaBatch = IdentityQueryAlpha[];
 
 /**
  * A batch of identity query. Beta type.
- * 
+ *
  * Designed to work on games which use T10ID as a primary identifier such as:
  * - Street
  * - Future Titles?
  * @see IdentityQueryBeta
  */
-export type IdentityQueryBetaBatch = IdentityQueryBeta[]
+export type IdentityQueryBetaBatch = IdentityQueryBeta[];
 
 /**
  * A batch of identity query results. Alpha type.
- * 
+ *
  * Designed to work on games which use XUID as a primary identifier such as:
  * - FH4
  * - FM7
@@ -134,7 +137,7 @@ export type IdentityResultAlphaBatch = IdentityResultAlpha[];
 
 /**
  * A batch of identity query results. Beta type.
- * 
+ *
  * Designed to work on games which use T10ID as a primary identifier such as:
  * - Street
  * - Future Titles?

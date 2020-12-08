@@ -7,11 +7,7 @@ import { ClickStopDirective } from './click-stop.directive';
  */
 @NgModule({
   declarations: [ClickStopDirective],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    ClickStopDirective,
-  ]
+  imports: [CommonModule],
+  exports: [ClickStopDirective],
 })
-export class DirectivesModule { }
+export class DirectivesModule {}

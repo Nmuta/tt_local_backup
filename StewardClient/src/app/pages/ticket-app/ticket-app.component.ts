@@ -18,9 +18,7 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
   public loading: boolean;
   public profile: UserModel;
 
-  constructor(
-    private readonly zendesk: ZendeskService,
-  ) {
+  constructor(private readonly zendesk: ZendeskService) {
     super();
   }
 

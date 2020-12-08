@@ -10,7 +10,7 @@ import { takeUntil, switchMap } from 'rxjs/operators';
 /** Routed component for displaying Sunrise Ticket information. */
 @Component({
   templateUrl: './sunrise.component.html',
-  styleUrls: ['./sunrise.component.scss']
+  styleUrls: ['./sunrise.component.scss'],
 })
 export class SunriseComponent extends BaseComponent implements OnInit {
   public gamertag: string;
@@ -21,7 +21,9 @@ export class SunriseComponent extends BaseComponent implements OnInit {
     private readonly sunrise: SunriseService,
     private readonly store: Store,
     private readonly ticket: TicketService,
-  ) { super(); }
+  ) {
+    super();
+  }
 
   /** Init hook. */
   public ngOnInit(): void {
@@ -39,7 +41,8 @@ export class SunriseComponent extends BaseComponent implements OnInit {
       .getTicketRequestorGamertag$()
       .pipe(
         takeUntil(this.onDestroy$),
-        switchMap(gamertag => this.sunrise.getIdentity({ gamertag })))
+        switchMap(gamertag => this.sunrise.getIdentity({ gamertag })),
+      )
       .subscribe(identity => {
         this.gamertag = identity.gamertag;
         this.xuid = identity.xuid;

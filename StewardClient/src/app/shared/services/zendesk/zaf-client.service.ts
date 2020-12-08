@@ -57,7 +57,9 @@ export class ZafClientService {
   /** Initializes the object. */
   protected async init(): Promise<void> {
     try {
-      if (failedAlready) { return; }
+      if (failedAlready) {
+        return;
+      }
       const zafUrl = 'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js';
       const zafText = await this.http.get(zafUrl, { responseType: 'text' }).toPromise();
       const zafObject = evaluateAndExport<ExportedZafClient>(zafText, 'ZAFClient');

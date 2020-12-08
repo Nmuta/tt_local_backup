@@ -6,15 +6,13 @@ import { ZendeskService } from '@services/zendesk';
 @Component({
   selector: 'go-to-inventory-button',
   templateUrl: './go-to-inventory-button.component.html',
-  styleUrls: ['./go-to-inventory-button.component.scss']
+  styleUrls: ['./go-to-inventory-button.component.scss'],
 })
 export class GoToInventoryButtonComponent {
   @Input() public gameTitle: GameTitleCodeName = null;
   @Input() public xuid: BigInt = null;
 
-  constructor(
-    private readonly zendesk: ZendeskService,
-  ) { }
+  constructor(private readonly zendesk: ZendeskService) {}
 
   /** Routes to the inventory app. */
   public goToInventory(): void {

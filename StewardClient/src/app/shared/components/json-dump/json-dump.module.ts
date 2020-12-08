@@ -22,8 +22,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     DirectivesModule,
     MatTooltipModule,
   ],
-  exports: [
-    JsonDumpComponent,
-  ]
+  exports: [JsonDumpComponent],
 })
-export class JsonDumpModule { }
+export class JsonDumpModule {}
