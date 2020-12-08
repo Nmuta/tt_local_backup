@@ -6,8 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sunrise-gifting.component.scss'],
 })
 export class SunriseGiftingComponent implements OnInit { 
-  /** tlskj */
-  public ngOnInit() {
-    console.log('sunrise oninit');
+  /** Initialization hook */
+  public ngOnInit(): void {
+    // Empty
   }
 }

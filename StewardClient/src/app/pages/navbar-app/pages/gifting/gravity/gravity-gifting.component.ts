@@ -6,8 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./gravity-gifting.component.scss'],
 })
 export class GravityGiftingComponent implements OnInit {
-  /** tlskj */
-  public ngOnInit() {
-    console.log('gravity oninit');
+  /** Initialization hook */
+  public ngOnInit(): void {
+    // Empty
   }
  }
