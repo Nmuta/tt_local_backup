@@ -1,0 +1,33 @@
+@import '/src/variables.scss';
+
+div {
+  padding: 20px;
+
+  #groupDisabledError {
+    color: mat-color($app-warn);
+  }
+
+  .mat-button-toggle-checked {
+    background-color: mat-color($app-primary);
+    color: #fff;
+  }
+
+  mat-form-field {
+    display: block;
+    width: 250px;
+    
+  
+    textarea {
+      height: 30px;
+      font-size: 17px;
+    }
+
+    .expanded-text-area {
+      height: 200px !important;
+    }
+  }
+
+  .validateBtn {
+    width: 140px;
+  }
+}

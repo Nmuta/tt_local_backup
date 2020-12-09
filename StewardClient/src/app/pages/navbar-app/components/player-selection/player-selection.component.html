@@ -1,0 +1,16 @@
+<div>
+  <mat-button-toggle-group name="playerIdType" aria-label="Player id type">
+    <mat-button-toggle *ngIf="allowT10Id" (change)="playerIdTypeChange($event.value)" value="t10id">T10Id</mat-button-toggle>
+    <mat-button-toggle value="xuid" (change)="playerIdTypeChange($event.value)">Xuid</mat-button-toggle>
+    <mat-button-toggle value="gamertag" (change)="playerIdTypeChange($event.value)">Gamertag</mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-form-field appearance="fill">
+    <mat-label>Player Id{{allowGroup ? '(s)' : '' }}:</mat-label>
+    <textarea matInput #playerInfo
+      [ngClass]="{ 'expanded-text-area': showExpandedTextArea}"
+      [(ngModel)]="data" (ngModelChange)="playerInfoChanged()"></textarea>
+  </mat-form-field>
+  <button (click)="clearInput()" mat-stroked-button color="accent">Clear</button>
+  <button (click)="validatePlayerIds()" [disabled]="disableValidateButton" class="validateBtn" mat-raised-button color="accent">Validate</button>
+  <p id="groupDisabledError" *ngIf="showGroupDisabledError">Group selection is disabled for this tool.</p>
+</div>
