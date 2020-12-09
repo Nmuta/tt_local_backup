@@ -112,14 +112,24 @@ export class ZafClientService {
     const zafLoc = pick(window.location, 'hash', 'search');
     const zafLocSerialized = JSON.stringify(zafLoc);
     sessionStorage.setItem(this.clientSessionKey, zafLocSerialized);
-    this.logger.debug([LogTopic.ZAF], 'ZAFClient.init() succeeded with key =', this.clientSessionKey, zafLoc);
+    this.logger.debug(
+      [LogTopic.ZAF],
+      'ZAFClient.init() succeeded with key =',
+      this.clientSessionKey,
+      zafLoc,
+    );
 
     this.setClient(zafClient);
   }
 
   private initReconstitutedClient(zafClient: ZafClient, zafLoc: ZafLoc): void {
-    this.logger.warn([LogTopic.ZAF], 'ZAFClient.init() reconstituted with with key =', this.clientSessionKey, zafLoc);
-    
+    this.logger.warn(
+      [LogTopic.ZAF],
+      'ZAFClient.init() reconstituted with with key =',
+      this.clientSessionKey,
+      zafLoc,
+    );
+
     this.setClient(zafClient);
   }
 
