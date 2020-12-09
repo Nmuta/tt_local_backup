@@ -4,7 +4,7 @@
       ><button
         mat-icon-button
         color="warn"
-        matTooltip="Click to Copy"
+        matTooltip="Click to copy JSON"
         [cdkCopyToClipboard]="input | bigjson"
         clickStop
       >
@@ -12,7 +12,7 @@
       </button>
       <ng-content></ng-content>
     </mat-panel-title>
-    <mat-panel-description> Click to expand JSON </mat-panel-description>
+    <mat-panel-description>Click to expand JSON</mat-panel-description>
   </mat-expansion-panel-header>
   <pre>{{ input | bigjson }}</pre>
 </mat-expansion-panel>

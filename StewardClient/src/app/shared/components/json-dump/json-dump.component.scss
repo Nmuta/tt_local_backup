@@ -7,3 +7,9 @@ pre {
   white-space: pre-wrap;
   overflow: hidden;
 }
+
+@media (max-width: 500px) {
+  mat-panel-description { 
+    display: none;
+  }
+}

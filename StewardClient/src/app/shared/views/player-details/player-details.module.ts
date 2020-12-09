@@ -6,6 +6,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ContentCollapseModule } from '@components/content-collapse/content-collapse.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { PlayerDetailsItemModule } from './player-details-item/player-details-item.module';
@@ -26,6 +27,7 @@ import { SunrisePlayerDetailsComponent } from './titles/sunrise/sunrise-player-d
     ErrorSpinnerModule,
     PlayerDetailsItemModule,
     ContentCollapseModule,
+    JsonDumpModule,
   ],
   exports: [
     GravityPlayerDetailsComponent,
