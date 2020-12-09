@@ -29,6 +29,11 @@ export class ZafClientService {
   public client: ZafClient = undefined;
 
   private readonly clientInternal$ = new ReplaySubject<ZafClient>(1);
+  private get clientSessionKey(): string {
+    // gets /ticket-app/ from /ticket-app/title/sunrise
+    const appLevelRoute = window.location.pathname.match(/\/.*?\//);
+    return `${ZafClientService.ZAF_SESSION_KEY}${appLevelRoute}`;
+  }
 
   /** The latest client, as an observable. */
   public get client$(): Observable<ZafClient> {
@@ -71,11 +76,11 @@ export class ZafClientService {
 
       this.logger.warn(
         [LogTopic.Auth],
-        'ZAFClient.init() failed, so attempting to restore from session storage.',
+        'ZAFClient.init() failed, so attempting to restore from session storage =',
+        this.clientSessionKey,
       );
 
-      const maybePriorZafLocRaw = sessionStorage.getItem(ZafClientService.ZAF_SESSION_KEY);
-      this.logger.debug([LogTopic.ZAF], 'Prior ZAF Loc', maybePriorZafLocRaw);
+      const maybePriorZafLocRaw = sessionStorage.getItem(this.clientSessionKey);
       if (!maybePriorZafLocRaw) {
         throw new Error(
           `ZAFClient.init() returned ${maybeClient}, and there was no prior session to restore.`,
@@ -83,7 +88,6 @@ export class ZafClientService {
       }
 
       const priorZafLoc: ZafLoc = JSON.parse(maybePriorZafLocRaw);
-      this.logger.debug([LogTopic.ZAF], 'Prior ZAF Loc, parsed', priorZafLoc);
       if (!priorZafLoc) {
         throw new Error(
           `ZAFClient.init() returned ${maybeClient}, and reconstitution of the prior session failed with '${maybePriorZafLocRaw}'.`,
@@ -92,8 +96,7 @@ export class ZafClientService {
 
       const maybeReconstitutedClient = zafObject.init(null, priorZafLoc);
       if (maybeReconstitutedClient) {
-        this.logger.debug([LogTopic.ZAF], 'ZAFClient.init() succeeded with reconstituted values');
-        return this.initFoundClient(maybeReconstitutedClient);
+        return this.initReconstitutedClient(maybeReconstitutedClient, priorZafLoc);
       }
 
       throw new Error(
@@ -108,9 +111,19 @@ export class ZafClientService {
   private initFoundClient(zafClient: ZafClient): void {
     const zafLoc = pick(window.location, 'hash', 'search');
     const zafLocSerialized = JSON.stringify(zafLoc);
-    sessionStorage.setItem(ZafClientService.ZAF_SESSION_KEY, zafLocSerialized);
-    this.logger.debug([LogTopic.ZAF], 'ZAFClient.init() succeeded with location', zafLoc);
+    sessionStorage.setItem(this.clientSessionKey, zafLocSerialized);
+    this.logger.debug([LogTopic.ZAF], 'ZAFClient.init() succeeded with key =', this.clientSessionKey, zafLoc);
 
+    this.setClient(zafClient);
+  }
+
+  private initReconstitutedClient(zafClient: ZafClient, zafLoc: ZafLoc): void {
+    this.logger.warn([LogTopic.ZAF], 'ZAFClient.init() reconstituted with with key =', this.clientSessionKey, zafLoc);
+    
+    this.setClient(zafClient);
+  }
+
+  private setClient(zafClient: ZafClient): void {
     this.client = zafClient;
     this.clientInternal$.next(this.client);
   }

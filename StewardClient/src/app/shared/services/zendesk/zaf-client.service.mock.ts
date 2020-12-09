@@ -19,7 +19,7 @@ export class MockZafClientService extends ZafClientService {
   }
 
   /** Nuking the init function so we don't get the actual object; otherwise we are using this class as-is */
-  protected async init(): Promise<void> {
+  protected async initSimple(): Promise<void> {
     /* empty */
   }
 }

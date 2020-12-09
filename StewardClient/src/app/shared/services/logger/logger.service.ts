@@ -24,7 +24,7 @@ export class LoggerService {
   /** Proxy for console.log */
   public log(topics: LogTopic[], ...data: unknown[]): void {
     if (this.consoleLevel >= LogLevel.Log) {
-      this.console.log(...topics, ...data);
+      this.console.log(`[${topics.join(',')}]`, ...data);
     }
 
     if (this.appInsightsLevel >= LogLevel.Log) {
@@ -35,7 +35,7 @@ export class LoggerService {
   /** Proxy for console.warn */
   public warn(topics: LogTopic[], ...data: unknown[]): void {
     if (this.consoleLevel >= LogLevel.Warn) {
-      this.console.warn(...topics, ...data);
+      this.console.warn(`[${topics.join(',')}]`, ...data);
     }
 
     if (this.appInsightsLevel >= LogLevel.Warn) {
@@ -46,7 +46,7 @@ export class LoggerService {
   /** Proxy for console.error */
   public error(topics: LogTopic[], error: Error, ...data: unknown[]): void {
     if (this.consoleLevel >= LogLevel.Error) {
-      this.console.error(...topics, error, ...data);
+      this.console.error(`[${topics.join(',')}]`, error, ...data);
     }
 
     if (this.appInsightsLevel >= LogLevel.Error) {
@@ -57,7 +57,7 @@ export class LoggerService {
   /** Proxy for console.debug */
   public debug(topics: LogTopic[], ...data: unknown[]): void {
     if (this.consoleLevel >= LogLevel.Debug) {
-      this.console.debug(...topics, ...data);
+      this.console.debug(`[${topics.join(',')}]`, ...data);
     }
 
     if (this.appInsightsLevel >= LogLevel.Debug) {
