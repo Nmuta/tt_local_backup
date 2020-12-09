@@ -1,4 +1,8 @@
 <ng-container>
-  <opus-player-selection [allowT10Id]="false"
+  <opus-player-selection [allowT10Id]="false" [initPlayerSelectionState]="selectedPlayerIdentities"
     (selectedPlayerIdentitiesEvent)="selectedPlayerIndentities($event)"></opus-player-selection>
+
+  <br /><br />
+  <h2>Opus gifting page state</h2>
+  <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
 </ng-container>

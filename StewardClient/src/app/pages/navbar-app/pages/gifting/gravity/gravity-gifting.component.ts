@@ -4,7 +4,7 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GravityGiftingState } from './state/gravity-gifting.state';
-import { SetSelectedPlayerIdentities } from './state/gravity-gifting.state.actions';
+import { SetGravitySelectedPlayerIdentities } from './state/gravity-gifting.state.actions';
 
 /** The gravity gifting page for the Navbar app. */
 @Component({
@@ -12,7 +12,6 @@ import { SetSelectedPlayerIdentities } from './state/gravity-gifting.state.actio
   styleUrls: ['./gravity-gifting.component.scss'],
 })
 export class GravityGiftingComponent extends BaseComponent implements OnInit {
-  // selectedPlayerIdentities$: Observable<unknown[]> = this.store.select(GravityGiftingState.selectedPlayerIdentities);
   @Select(GravityGiftingState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<unknown[]>;
 
   selectedPlayerIdentities: unknown[];
@@ -33,8 +32,6 @@ export class GravityGiftingComponent extends BaseComponent implements OnInit {
 
   /** Logic when player selection outputs identities. */
   public selectedPlayerIndentities(event: unknown[]): void {
-    this.store.dispatch(new SetSelectedPlayerIdentities(event));
+    this.store.dispatch(new SetGravitySelectedPlayerIdentities(event));
   }
-
-
 }

@@ -1,4 +1,8 @@
 <ng-container>
-  <apollo-player-selection [allowT10Id]="false"
-   (selectedPlayerIdentitiesEvent)="selectedPlayerIndentities($event)"></apollo-player-selection>
+  <apollo-player-selection [allowT10Id]="false" [initPlayerSelectionState]="selectedPlayerIdentities"
+    (selectedPlayerIdentitiesEvent)="selectedPlayerIndentities($event)"></apollo-player-selection>
+
+  <br /><br />
+  <h2>Apollo gifting page state</h2>
+  <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
 </ng-container>

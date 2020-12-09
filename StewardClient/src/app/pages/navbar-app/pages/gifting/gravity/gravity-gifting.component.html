@@ -1,6 +1,7 @@
 <ng-container>
   <gravity-player-selection [initPlayerSelectionState]="selectedPlayerIdentities" 
     (selectedPlayerIdentitiesEvent)="selectedPlayerIndentities($event)"></gravity-player-selection>
+  
   <br /><br />
   <h2>Gravity gifting page state</h2>
   <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>

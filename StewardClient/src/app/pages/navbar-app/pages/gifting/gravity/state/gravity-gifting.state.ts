@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Observable, of } from 'rxjs';
-import { SetSelectedPlayerIdentities } from './gravity-gifting.state.actions';
+import { SetGravitySelectedPlayerIdentities } from './gravity-gifting.state.actions';
 
 /** Defines the user state model. */
 export class GravityGiftingStateModel {
@@ -21,10 +21,10 @@ export class GravityGiftingStateModel {
 export class GravityGiftingState {
 
   /** Sets the gifting page's selected player identities. */
-  @Action(SetSelectedPlayerIdentities, { cancelUncompleted: true })
+  @Action(SetGravitySelectedPlayerIdentities, { cancelUncompleted: true })
   public setFakeApi(
     ctx: StateContext<GravityGiftingStateModel>,
-    action: SetSelectedPlayerIdentities,
+    action: SetGravitySelectedPlayerIdentities,
   ): Observable<GravityGiftingStateModel> {
 
     return of(ctx.patchState({ selectedPlayerIdentities: action.selectedPlayerIdentities }));
