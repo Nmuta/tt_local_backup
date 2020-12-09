@@ -12,7 +12,6 @@ import { WindowService } from '@services/window';
 import { ZendeskService } from '@services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import {
   createNavbarPath,
@@ -42,7 +41,7 @@ export class NavbarComponent {
   constructor(
     private readonly windowService: WindowService,
     public readonly zendeskService: ZendeskService,
-  ) { }
+  ) {}
 
   /** A string representing the current location */
   public get location(): string {
@@ -50,5 +49,7 @@ export class NavbarComponent {
   }
 
   /** Emits true when we are missing zendesk. */
-  public get missingZendesk$(): Observable<boolean> { return this.zendeskService.missingZendesk$; }
+  public get missingZendesk$(): Observable<boolean> {
+    return this.zendeskService.missingZendesk$;
+  }
 }

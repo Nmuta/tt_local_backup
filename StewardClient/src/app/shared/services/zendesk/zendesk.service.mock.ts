@@ -18,7 +18,9 @@ export class MockZendeskService {
     }),
   );
 
-  public getTicketCustomField$ = jasmine.createSpy('getTicketCustomField$').and.returnValue(of({['ticket.customField:ITS_A_MYSTERY']: 'FORZA_STREET'}));
+  public getTicketCustomField$ = jasmine
+    .createSpy('getTicketCustomField$')
+    .and.returnValue(of({ ['ticket.customField:ITS_A_MYSTERY']: 'FORZA_STREET' }));
 
   public sendRequest$ = jasmine.createSpy('sendRequest$').and.returnValue(of({}));
   public context$ = jasmine.createSpy('context$').and.returnValue(of({}));

@@ -19,16 +19,16 @@ describe('GravityComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [GravityComponent],
       imports: [NgxsModule.forRoot([])],
-      providers: [createMockGravityService(), createMockTicketService()]
+      providers: [createMockGravityService(), createMockTicketService()],
     }).compileComponents();
 
-    ticketService = TestBed.inject(TicketService) as unknown as MockTicketService;
+    ticketService = (TestBed.inject(TicketService) as unknown) as MockTicketService;
 
     store = TestBed.inject(Store);
-    store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of())
+    store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of());
 
     service = TestBed.inject(GravityService);
-    
+
     fixture = TestBed.createComponent(GravityComponent);
     component = fixture.componentInstance;
 
@@ -64,10 +64,10 @@ describe('GravityComponent', () => {
     beforeEach(() => {
       ticketService.activeTitle = GameTitleCodeName.FM7;
     });
-    
+
     it('it should navigate to the routing page', () => {
       fixture.detectChanges();
       expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/ticket-app/title/']));
     });
-  })
+  });
 });

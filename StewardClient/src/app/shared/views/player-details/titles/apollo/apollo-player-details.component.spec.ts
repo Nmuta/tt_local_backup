@@ -27,11 +27,7 @@ describe('ApolloPlayerDetailsComponent', () => {
         ],
         declarations: [ApolloPlayerDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          createMockMsalService(),
-          createMockApolloService(),
-        ],
+        providers: [createMockWindowService(), createMockMsalService(), createMockApolloService()],
       }).compileComponents();
 
       const injector = getTestBed();

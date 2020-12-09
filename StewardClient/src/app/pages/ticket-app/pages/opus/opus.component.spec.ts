@@ -19,16 +19,16 @@ describe('OpusComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [OpusComponent],
       imports: [NgxsModule.forRoot([])],
-      providers: [createMockOpusService(), createMockTicketService()]
+      providers: [createMockOpusService(), createMockTicketService()],
     }).compileComponents();
 
-    ticketService = TestBed.inject(TicketService) as unknown as MockTicketService;
+    ticketService = (TestBed.inject(TicketService) as unknown) as MockTicketService;
 
     store = TestBed.inject(Store);
-    store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of())
+    store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of());
 
     service = TestBed.inject(OpusService);
-    
+
     fixture = TestBed.createComponent(OpusComponent);
     component = fixture.componentInstance;
 
@@ -63,10 +63,10 @@ describe('OpusComponent', () => {
     beforeEach(() => {
       ticketService.activeTitle = GameTitleCodeName.FM7;
     });
-    
+
     it('it should navigate to the routing page', () => {
       fixture.detectChanges();
       expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/ticket-app/title/']));
     });
-  })
+  });
 });

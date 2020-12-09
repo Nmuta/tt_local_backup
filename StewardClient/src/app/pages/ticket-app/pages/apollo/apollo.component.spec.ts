@@ -19,16 +19,16 @@ describe('ApolloComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloComponent],
       imports: [NgxsModule.forRoot([])],
-      providers: [createMockApolloService(), createMockTicketService()]
+      providers: [createMockApolloService(), createMockTicketService()],
     }).compileComponents();
 
-    ticketService = TestBed.inject(TicketService) as unknown as MockTicketService;
+    ticketService = (TestBed.inject(TicketService) as unknown) as MockTicketService;
 
     store = TestBed.inject(Store);
-    store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of())
+    store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of());
 
     service = TestBed.inject(ApolloService);
-    
+
     fixture = TestBed.createComponent(ApolloComponent);
     component = fixture.componentInstance;
 
@@ -63,10 +63,10 @@ describe('ApolloComponent', () => {
     beforeEach(() => {
       ticketService.activeTitle = GameTitleCodeName.Street;
     });
-    
+
     it('it should navigate to the routing page', () => {
       fixture.detectChanges();
       expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/ticket-app/title/']));
     });
-  })
+  });
 });

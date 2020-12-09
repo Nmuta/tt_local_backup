@@ -11,7 +11,7 @@ import { SunriseService } from './sunrise.service';
 export class MockSunriseService {
   public getIdentity = jasmine
     .createSpy('getIdentity')
-    .and.returnValue(of({xuid: BigInt(12345), gamertag: 'gamertag'}));
+    .and.returnValue(of({ xuid: BigInt(12345), gamertag: 'gamertag' }));
 
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')

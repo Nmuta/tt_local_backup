@@ -8,11 +8,11 @@ import { ApolloService } from './apollo.service';
 export class MockApolloService {
   public getIdentity = jasmine
     .createSpy('getIdentity')
-    .and.returnValue(of({xuid: BigInt(12345), gamertag: 'gamertag'}));
+    .and.returnValue(of({ xuid: BigInt(12345), gamertag: 'gamertag' }));
 
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
-    .and.returnValue(of({xuid: BigInt(12345), }));
+    .and.returnValue(of({ xuid: BigInt(12345) }));
 }
 
 /** Creates an injectable mock for Apollo Service. */

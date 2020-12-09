@@ -8,7 +8,7 @@ import { OpusService } from './opus.service';
 export class MockOpusService {
   public getIdentity = jasmine
     .createSpy('getIdentity')
-    .and.returnValue(of({xuid: BigInt(12345), gamertag: 'gamertag'}));
+    .and.returnValue(of({ xuid: BigInt(12345), gamertag: 'gamertag' }));
 
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')

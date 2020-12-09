@@ -19,16 +19,16 @@ describe('SunriseComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseComponent],
       imports: [NgxsModule.forRoot([])],
-      providers: [createMockSunriseService(), createMockTicketService()]
+      providers: [createMockSunriseService(), createMockTicketService()],
     }).compileComponents();
 
-    ticketService = TestBed.inject(TicketService) as unknown as MockTicketService;
+    ticketService = (TestBed.inject(TicketService) as unknown) as MockTicketService;
 
     store = TestBed.inject(Store);
-    store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of())
+    store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of());
 
     service = TestBed.inject(SunriseService);
-    
+
     fixture = TestBed.createComponent(SunriseComponent);
     component = fixture.componentInstance;
 
@@ -63,10 +63,10 @@ describe('SunriseComponent', () => {
     beforeEach(() => {
       ticketService.activeTitle = GameTitleCodeName.FM7;
     });
-    
+
     it('it should navigate to the routing page', () => {
       fixture.detectChanges();
       expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/ticket-app/title/']));
     });
-  })
+  });
 });

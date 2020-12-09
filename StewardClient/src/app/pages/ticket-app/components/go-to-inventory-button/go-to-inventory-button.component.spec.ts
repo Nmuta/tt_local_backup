@@ -33,6 +33,10 @@ describe('GoToInventoryButtonComponent', () => {
     component.xuid = BigInt(123456);
     component.gameTitle = GameTitleCodeName.Street;
     component.goToInventory();
-    expect(zendesk.goToApp$).toHaveBeenCalledWith('nav_bar', 'forza-inventory-support', `${component.gameTitle}/${component.xuid}`)
+    expect(zendesk.goToApp$).toHaveBeenCalledWith(
+      'nav_bar',
+      'forza-inventory-support',
+      `${component.gameTitle}/${component.xuid}`,
+    );
   });
 });
