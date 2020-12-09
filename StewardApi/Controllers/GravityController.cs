@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -673,28 +672,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the gift histories.
         /// </summary>
-        /// <param name="giftHistoryAntecedent">The gift history antecedent.</param>
-        /// <param name="giftRecipientId">The gift recipient ID.</param>
+        /// <param name="t10Id">The Turn 10 ID.</param>
         /// <returns>
         ///     The list of <see cref="GravityGiftHistory"/>.
         /// </returns>
-        [HttpGet("giftHistory/giftRecipientId({giftRecipientId})/giftHistoryAntecedent({giftHistoryAntecedent})")]
+        [HttpGet("player/t10Id({t10Id})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<GravityGiftHistory>))]
-        public async Task<IActionResult> GetGiftHistoriesAsync(GiftHistoryAntecedent giftHistoryAntecedent, string giftRecipientId)
+        public async Task<IActionResult> GetGiftHistoriesAsync(string t10Id)
         {
             try
             {
-                giftRecipientId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(giftRecipientId));
+                t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
-                if (giftHistoryAntecedent == GiftHistoryAntecedent.Xuid)
-                {
-                    var playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsAsync(Convert.ToUInt64(giftRecipientId, CultureInfo.InvariantCulture)).ConfigureAwait(true);
-
-                    giftRecipientId = playerDetails.Turn10Id;
-                    giftHistoryAntecedent = GiftHistoryAntecedent.T10Id;
-                }
-
-                var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(giftRecipientId, TitleConstants.GravityCodeName, giftHistoryAntecedent).ConfigureAwait(true);
+                var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(t10Id, TitleConstants.GravityCodeName, GiftHistoryAntecedent.T10Id).ConfigureAwait(true);
 
                 return this.Ok(giftHistory);
             }

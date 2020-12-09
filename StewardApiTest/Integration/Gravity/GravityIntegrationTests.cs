@@ -843,20 +843,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 
             await stewardClient.UpdatePlayerInventoryByT10IdAsync(playerInventory, headers).ConfigureAwait(false);
 
-            var result = await stewardClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.T10Id, t10Id).ConfigureAwait(false);
-            Assert.IsTrue(result.Any());
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task GetGiftHistoryByXuid()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
-
-            await stewardClient.UpdatePlayerInventoryByT10IdAsync(playerInventory, headers).ConfigureAwait(false);
-
-            var result = await stewardClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.Xuid, xuid.ToString()).ConfigureAwait(false);
+            var result = await stewardClient.GetGiftHistoriesAsync(t10Id).ConfigureAwait(false);
             Assert.IsTrue(result.Any());
         }
 
@@ -866,7 +853,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         {
             try
             {
-                await unauthorizedClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.T10Id, t10Id).ConfigureAwait(false);
+                await unauthorizedClient.GetGiftHistoriesAsync(t10Id).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -879,7 +866,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         [TestCategory("Integration")]
         public async Task GetGiftHistory_InvalidGiftRecipientId()
         {
-            var result = await stewardClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.T10Id, TestConstants.InvalidT10Id).ConfigureAwait(false);
+            var result = await stewardClient.GetGiftHistoriesAsync(TestConstants.InvalidT10Id).ConfigureAwait(false);
 
             Assert.IsFalse(result.Any());
         }

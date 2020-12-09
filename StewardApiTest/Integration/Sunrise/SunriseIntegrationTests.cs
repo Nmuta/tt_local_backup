@@ -1484,7 +1484,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var playerInventory = this.CreatePlayerInventory();
             await stewardClient.UpdatePlayerInventoryAsync(playerInventory, headersToSend).ConfigureAwait(false);
 
-            var result = await stewardClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.Xuid, xuid.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+            var result = await stewardClient.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
             Assert.IsTrue(result.Any());
         }
 
@@ -1497,7 +1497,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
             await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift, headersToSend).ConfigureAwait(false);
 
-            var result = await stewardClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.Xuid, xuid.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+            var result = await stewardClient.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
 
             Assert.IsTrue(result.Any());
         }
@@ -1511,7 +1511,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
             await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, playerInventory, headersToSend).ConfigureAwait(false);
 
-            var result = await stewardClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.LspGroupId, lspGroupId.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+            var result = await stewardClient.GetGiftHistoriesAsync(lspGroupId).ConfigureAwait(false);
 
             Assert.IsTrue(result.Any());
         }
@@ -1522,7 +1522,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             try
             {
-                await unauthorizedClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.Xuid, xuid.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+                await unauthorizedClient.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1535,7 +1535,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task GetGiftHistory_InvalidGiftRecipientId()
         {
-            var result = await stewardClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.Xuid, TestConstants.InvalidXuid.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+            var result = await stewardClient.GetGiftHistoriesAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
 
             Assert.IsFalse(result.Any());
         }

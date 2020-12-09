@@ -649,11 +649,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var antecedent = Fixture.Create<GiftHistoryAntecedent>();
-            var giftRecipientId = TestConstants.InvalidXuid.ToString();
+            var t10Id = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGiftHistoriesAsync(antecedent, giftRecipientId).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.GetGiftHistoriesAsync(t10Id).ConfigureAwait(false);
 
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -666,18 +665,17 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetGiftHistory_WithNullEmptyWhitespaceGiftRecipientId_Throws()
+        public async Task GetGiftHistory_WithNullEmptyWhitespaceT10Id_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var antecedent = Fixture.Create<GiftHistoryAntecedent>();
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.GetGiftHistoriesAsync(antecedent, null).ConfigureAwait(false),
-                async () => await controller.GetGiftHistoriesAsync(antecedent, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.GetGiftHistoriesAsync(antecedent, TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await controller.GetGiftHistoriesAsync(null).ConfigureAwait(false),
+                async () => await controller.GetGiftHistoriesAsync(TestConstants.Empty).ConfigureAwait(false),
+                async () => await controller.GetGiftHistoriesAsync(TestConstants.WhiteSpace).ConfigureAwait(false)
             };
 
             // Assert.
@@ -686,7 +684,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
                 result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftRecipientId"));
+                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "t10Id"));
             }
         }
 
