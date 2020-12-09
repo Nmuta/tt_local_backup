@@ -22,7 +22,8 @@ function evaluateAndExport<T>(code: string, exportedValue: string): T {
 /** Acquires a ZAF Client using dependency injection rather than ambient globals. */
 @Injectable({ providedIn: 'root' })
 export class ZafClientService {
-  private static readonly ZAF_SCRIPT_LOCATION = 'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js';
+  private static readonly ZAF_SCRIPT_LOCATION =
+    'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js';
   private static readonly ZAF_SESSION_KEY = 'zafClientLoc';
 
   public client: ZafClient = undefined;
@@ -58,7 +59,9 @@ export class ZafClientService {
   /** Initializes the object. */
   protected async init(): Promise<void> {
     try {
-      const zafText = await this.http.get(ZafClientService.ZAF_SCRIPT_LOCATION, { responseType: 'text' }).toPromise();
+      const zafText = await this.http
+        .get(ZafClientService.ZAF_SCRIPT_LOCATION, { responseType: 'text' })
+        .toPromise();
       const zafObject = evaluateAndExport<ExportedZafClient>(zafText, 'ZAFClient');
       const maybeClient = zafObject.init();
 
@@ -66,27 +69,36 @@ export class ZafClientService {
         return this.initFoundClient(maybeClient);
       }
 
-      this.logger.warn([LogTopic.Auth], 'ZAFClient.init() failed, so attempting to restore from session storage.');
+      this.logger.warn(
+        [LogTopic.Auth],
+        'ZAFClient.init() failed, so attempting to restore from session storage.',
+      );
 
       const maybePriorZafLocRaw = sessionStorage.getItem(ZafClientService.ZAF_SESSION_KEY);
       this.logger.debug([LogTopic.ZAF], 'Prior ZAF Loc', maybePriorZafLocRaw);
       if (!maybePriorZafLocRaw) {
-        throw new Error(`ZAFClient.init() returned ${maybeClient}, and there was no prior session to restore.`)
+        throw new Error(
+          `ZAFClient.init() returned ${maybeClient}, and there was no prior session to restore.`,
+        );
       }
 
-      const priorZafLoc: ZafLoc =  JSON.parse(maybePriorZafLocRaw);
+      const priorZafLoc: ZafLoc = JSON.parse(maybePriorZafLocRaw);
       this.logger.debug([LogTopic.ZAF], 'Prior ZAF Loc, parsed', priorZafLoc);
       if (!priorZafLoc) {
-        throw new Error(`ZAFClient.init() returned ${maybeClient}, and reconstitution of the prior session failed with '${maybePriorZafLocRaw}'.`);
+        throw new Error(
+          `ZAFClient.init() returned ${maybeClient}, and reconstitution of the prior session failed with '${maybePriorZafLocRaw}'.`,
+        );
       }
-  
+
       const maybeReconstitutedClient = zafObject.init(null, priorZafLoc);
       if (maybeReconstitutedClient) {
         this.logger.debug([LogTopic.ZAF], 'ZAFClient.init() succeeded with reconstituted values');
         return this.initFoundClient(maybeReconstitutedClient);
       }
 
-      throw new Error(`ZAFClient.init() returned ${maybeClient}, and the reconstituted ZAFClient.init() returned ${maybeReconstitutedClient}, when restored with ${maybePriorZafLocRaw}.`);
+      throw new Error(
+        `ZAFClient.init() returned ${maybeClient}, and the reconstituted ZAFClient.init() returned ${maybeReconstitutedClient}, when restored with ${maybePriorZafLocRaw}.`,
+      );
     } catch (e) {
       this.logger.error([LogTopic.ZAF], e);
       this.clientInternal$.error(e);
