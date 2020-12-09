@@ -6,6 +6,10 @@ import { GravityService } from './gravity.service';
 /** Defines the mock for the Gravity Service. */
 @Injectable()
 export class MockGravityService {
+  public getIdentity = jasmine
+    .createSpy('getIdentity')
+    .and.returnValue(of({xuid: BigInt(12345), gamertag: 'gamertag', t10id: '1234567489'}));
+
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
     .and.returnValue(of({}));

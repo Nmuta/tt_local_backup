@@ -8,7 +8,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { of } from 'rxjs';
-import { createMockMockOpusService, OpusService } from '@services/opus';
+import { createMockOpusService, OpusService } from '@services/opus';
 import { OpusPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/opus/player/gamertag/details';
 
 describe('OpusPlayerDetailsComponent', () => {
@@ -30,7 +30,7 @@ describe('OpusPlayerDetailsComponent', () => {
         providers: [
           createMockWindowService(),
           createMockMsalService(),
-          createMockMockOpusService(),
+          createMockOpusService(),
         ],
       }).compileComponents();
 

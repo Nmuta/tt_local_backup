@@ -5,7 +5,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { ApolloService } from '@services/apollo';
 import { TicketService } from '@services/zendesk/ticket.service';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil, tap } from 'rxjs/operators';
 
 /** Routed component for displaying Apollo Ticket information. */
 @Component({
