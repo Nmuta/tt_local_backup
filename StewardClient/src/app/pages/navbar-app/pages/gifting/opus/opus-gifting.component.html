@@ -1,3 +1,4 @@
 <ng-container>
-  <opus-player-selection [allowT10Id]="false"></opus-player-selection>
+  <opus-player-selection [allowT10Id]="false"
+    (selectedPlayerIdentitiesEvent)="selectedPlayerIndentities($event)"></opus-player-selection>
 </ng-container>

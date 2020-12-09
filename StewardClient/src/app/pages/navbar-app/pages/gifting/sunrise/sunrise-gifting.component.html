@@ -1,3 +1,4 @@
 <ng-container>
-  <sunrise-player-selection [allowT10Id]="false" [allowGroup]="false"></sunrise-player-selection>
+  <sunrise-player-selection [allowT10Id]="false" [allowGroup]="false"
+    (selectedPlayerIdentitiesEvent)="selectedPlayerIndentities($event)"></sunrise-player-selection>
 </ng-container>

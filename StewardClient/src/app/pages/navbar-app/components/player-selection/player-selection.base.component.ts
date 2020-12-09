@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
@@ -10,9 +10,11 @@ import { delay, takeUntil } from 'rxjs/operators';
   templateUrl: './player-selection.component.html',
   styleUrls: ['./player-selection.component.scss'],
 })
-export abstract class PlayerSelectionBaseComponent<T> extends BaseComponent {
+export abstract class PlayerSelectionBaseComponent<T> extends BaseComponent implements OnInit {
+  @Input() initPlayerSelectionState: T[] = [];
   @Input() allowT10Id: boolean = true;
   @Input() allowGroup: boolean = true;
+  @Output() selectedPlayerIdentitiesEvent = new EventEmitter<T[]>();
 
   data: string = '';
   playerIds: string[] = [];
@@ -35,6 +37,11 @@ export abstract class PlayerSelectionBaseComponent<T> extends BaseComponent {
   /** Child(title) class should implement. */
   public abstract makeRequestToValidateIds$(playerIds: string[], playerIdType: string): Observable<T[]>;
 
+  /** Initialization hook */
+  public ngOnInit(): void {
+    this.playerIdentityResults = this.initPlayerSelectionState;
+  }
+  
   /** Logic when textarea input changes */
   public playerInfoChanged(): void {
     this.playerIds = this.data.split('\n').map(x => x.trim()).filter(x => !!x && x !== '');
@@ -52,7 +59,6 @@ export abstract class PlayerSelectionBaseComponent<T> extends BaseComponent {
   /** Clears the current player id input. */
   public clearInput(): void {
     this.data = '';
-    this.playerIdType = undefined;
     this.showGroupDisabledError = false;
     this.playerInfoChanged();
   }
@@ -75,7 +81,7 @@ export abstract class PlayerSelectionBaseComponent<T> extends BaseComponent {
         response => {
           this.isLoading = false;
           this.playerIdentityResults = response;
-          // TODO: Output this list so the page can pickup the results
+          this.selectedPlayerIdentitiesEvent.emit(this.playerIdentityResults);
         },
         error => {
           this.isLoading = false;
@@ -87,6 +93,8 @@ export abstract class PlayerSelectionBaseComponent<T> extends BaseComponent {
     /** Clears the player identity results. */
     public clearResults(): void {
       this.playerIdentityResults = [];
+      this.playerIdType = undefined;
       this.clearInput();
+      this.selectedPlayerIdentitiesEvent.emit(this.playerIdentityResults);
     } 
 }

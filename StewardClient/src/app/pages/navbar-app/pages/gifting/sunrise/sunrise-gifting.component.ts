@@ -10,4 +10,9 @@ export class SunriseGiftingComponent implements OnInit {
   public ngOnInit(): void {
     // Empty
   }
+
+  /** Logic when player selection outputs identities. */
+  public selectedPlayerIndentities(event: unknown[]): void {
+    console.log(event);
+  }
 }

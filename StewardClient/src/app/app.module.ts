@@ -13,7 +13,6 @@ import { NgxsModule } from '@ngxs/store';
 import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
-import { UserState } from '@shared/state/user/user.state';
 import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
 
 import { environment } from '../environments/environment';
@@ -24,9 +23,13 @@ import { ErrorComponent } from './pages/error/error.component';
 import { SidebarsModule } from './sidebars/sidebars.module';
 import { HomeComponent } from './pages/home/home.component';
 import { CenterContentsModule } from '@components/center-contents/center-contents.module';
-import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { ZafClientService } from '@services/zendesk/zaf-client.service';
+
+// States
+import { UserState } from '@shared/state/user/user.state';
+import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
+import { GravityGiftingState } from './pages/navbar-app/pages/gifting/gravity/state/gravity-gifting.state';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -60,7 +63,12 @@ function fakeApiOrNothing(): Provider[] {
     FourOhFourModule,
     MatCardModule,
     CenterContentsModule,
-    NgxsModule.forRoot([UserState, UserSettingsState]),
+    NgxsModule.forRoot([
+      UserState,
+      UserSettingsState,
+      // Gifting page states
+      GravityGiftingState,
+    ]),
     NgxsStoragePluginModule.forRoot({ key: [UserSettingsState] }),
     NgxsRouterPluginModule.forRoot(),
     MsalModule.forRoot(

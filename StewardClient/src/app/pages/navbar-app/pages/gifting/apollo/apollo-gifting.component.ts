@@ -5,4 +5,10 @@ import { Component } from '@angular/core';
   templateUrl: './apollo-gifting.component.html',
   styleUrls: ['./apollo-gifting.component.scss'],
 })
-export class ApolloGiftingComponent { }
+export class ApolloGiftingComponent {
+
+  /** Logic when player selection outputs identities. */
+  public selectedPlayerIndentities(event: unknown[]): void {
+    console.log(event);
+  }
+}
