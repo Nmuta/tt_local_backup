@@ -31,4 +31,9 @@ mat-card {
   .validateBtn {
     width: 140px;
   }
+
+  .identity-results {
+    max-height: 400px;
+    overflow: auto;
+  }
 }

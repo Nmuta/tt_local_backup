@@ -1,17 +1,34 @@
 <mat-card>
   <h2 content-title> Player{{allowGroup ? '(s)' : '' }} Selection </h2>
-    <mat-button-toggle-group name="playerIdType" aria-label="Player id type">
-      <mat-button-toggle *ngIf="allowT10Id" (change)="playerIdTypeChange($event.value)" value="t10id">T10Id</mat-button-toggle>
-      <mat-button-toggle value="xuid" (change)="playerIdTypeChange($event.value)">Xuid</mat-button-toggle>
-      <mat-button-toggle value="gamertag" (change)="playerIdTypeChange($event.value)">Gamertag</mat-button-toggle>
-    </mat-button-toggle-group>
-    <mat-form-field appearance="fill">
-      <mat-label>Player Id{{allowGroup ? '(s)' : '' }}:</mat-label>
-      <textarea matInput #playerInfo
-        [ngClass]="{ 'expanded-text-area': showExpandedTextArea}"
-        [(ngModel)]="data" (ngModelChange)="playerInfoChanged()"></textarea>
-    </mat-form-field>
-    <button (click)="clearInput()" mat-stroked-button color="accent">Clear</button>
-    <button (click)="validatePlayerIds()" [disabled]="disableValidateButton" class="validateBtn" mat-raised-button color="primary">Validate</button>
-    <p id="groupDisabledError" *ngIf="showGroupDisabledError">Group selection is disabled for this tool.</p>
+  <ng-container *ngIf="!isLoading && !loadError; else failstate">
+    <ng-container *ngIf="playerIdentityResults?.length <= 0; else resultsView">
+      <mat-button-toggle-group name="playerIdType" aria-label="Player id type">
+        <mat-button-toggle *ngIf="allowT10Id" (change)="playerIdTypeChange($event.value)" value="t10id">T10Id</mat-button-toggle>
+        <mat-button-toggle value="xuid" (change)="playerIdTypeChange($event.value)">Xuid</mat-button-toggle>
+        <mat-button-toggle value="gamertag" (change)="playerIdTypeChange($event.value)">Gamertag</mat-button-toggle>
+      </mat-button-toggle-group>
+      <mat-form-field appearance="fill">
+        <mat-label>Player Id{{allowGroup ? '(s)' : '' }}:</mat-label>
+        <textarea matInput #playerInfo
+          [ngClass]="{ 'expanded-text-area': showExpandedTextArea}"
+          [(ngModel)]="data" (ngModelChange)="playerInfoChanged()"></textarea>
+      </mat-form-field>
+      <button (click)="clearInput()" mat-stroked-button color="accent">Clear</button>
+      <button (click)="validatePlayerIds()" [disabled]="disableValidateButton" class="validateBtn" mat-raised-button color="primary">Validate</button>
+      <p id="groupDisabledError" *ngIf="showGroupDisabledError">Group selection is disabled for this tool.</p>
+    </ng-container>
+  </ng-container>
 </mat-card>
+
+<ng-template #resultsView>
+  <div class="identity-results">
+    <p *ngFor="let identity of playerIdentityResults">{{ identity | json }}</p>
+  </div>
+  <button (click)="clearResults()" mat-stroked-button color="accent">Clear Results</button>
+</ng-template>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <p *ngIf="loadError">Failed to load.</p>
+  <pre *ngIf="loadError">{{ loadError | json }}</pre>
+</ng-template>
