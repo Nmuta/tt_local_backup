@@ -9,10 +9,10 @@ import { tap } from 'rxjs/operators';
 /** Retreives and displays related Sunrise consoles by XUID. */
 @Component({
   selector: 'sunrise-consoles',
-  templateUrl: './consoles.component.html',
-  styleUrls: ['./consoles.component.scss'],
+  templateUrl: './sunrise-consoles.component.html',
+  styleUrls: ['./sunrise-consoles.component.scss'],
 })
-export class ConsolesComponent implements OnChanges {
+export class SunriseConsolesComponent implements OnChanges {
   @Input() public xuid?: number;
 
   public bannedIcon = faGavel;

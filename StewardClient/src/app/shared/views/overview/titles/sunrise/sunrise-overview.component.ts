@@ -5,10 +5,10 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
 /** Retrieves and displays Sunrise Overview by XUID. */
 @Component({
   selector: 'sunrise-overview',
-  templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.scss'],
+  templateUrl: './sunrise-overview.component.html',
+  styleUrls: ['./sunrise-overview.component.scss'],
 })
-export class OverviewComponent implements OnChanges {
+export class SunriseOverviewComponent implements OnChanges {
   @Input() public xuid?: number;
 
   /** True while waiting on a request. */

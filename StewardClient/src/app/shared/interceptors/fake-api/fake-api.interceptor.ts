@@ -92,7 +92,10 @@ const fakeApiConstructors = [
 ];
 
 /** The URLs this interceptor will not block. */
-const urlAllowList = [`${environment.stewardApiUrl}/api/v1/me`];
+const urlAllowList = [
+  `${environment.stewardApiUrl}/api/v1/me`,
+  'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.js',
+];
 
 /** Intercepts every request and returns a sample response if it matches the conditions. */
 @Injectable()
@@ -128,7 +131,8 @@ export class FakeApiInterceptor implements HttpInterceptor {
         new HttpErrorResponse({
           url: request.url,
           status: 9000,
-          statusText: 'URL not on the allowed list of URLs in FakeApiInterceptor.',
+          statusText:
+            'Request blocked because Fake API enabled. URL was not handled by Fake API, and was not on the allowed real-API list.',
         }),
       );
     }

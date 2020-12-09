@@ -11,8 +11,8 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
 /** Retreives and displays Sunrise Ban history by XUID. */
 @Component({
   selector: 'sunrise-ban-history',
-  templateUrl: './ban-history.component.html',
-  styleUrls: ['./ban-history.component.scss'],
+  templateUrl: './sunrise-ban-history.component.html',
+  styleUrls: ['./sunrise-ban-history.component.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -21,7 +21,7 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
     ]),
   ],
 })
-export class BanHistoryComponent extends BaseComponent implements OnChanges {
+export class SunriseBanHistoryComponent extends BaseComponent implements OnChanges {
   @Input() public xuid?: number;
 
   /** True while waiting on a request. */

@@ -14,8 +14,8 @@ import { createMockMockOpusService } from '@services/opus';
 import { createMockMockApolloService } from '@services/apollo';
 
 describe('PlayerDetailsComponent', () => {
-  let fixture: ComponentFixture<PlayerDetailsBaseComponent<unknown>>;
-  let component: PlayerDetailsBaseComponent<unknown>;
+  let fixture: ComponentFixture<PlayerDetailsBaseComponent<never>>;
+  let component: PlayerDetailsBaseComponent<never>;
 
   beforeEach(
     waitForAsync(() => {

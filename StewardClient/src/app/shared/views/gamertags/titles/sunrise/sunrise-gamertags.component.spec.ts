@@ -2,22 +2,22 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 
-import { OverviewComponent } from './overview.component';
+import { SunriseGamertagsComponent } from './sunrise-gamertags.component';
 
-describe('OverviewComponent', () => {
-  let component: OverviewComponent;
-  let fixture: ComponentFixture<OverviewComponent>;
+describe('GamertagsComponent', () => {
+  let component: SunriseGamertagsComponent;
+  let fixture: ComponentFixture<SunriseGamertagsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [OverviewComponent],
+      declarations: [SunriseGamertagsComponent],
       providers: [createMockSunriseService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OverviewComponent);
+    fixture = TestBed.createComponent(SunriseGamertagsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

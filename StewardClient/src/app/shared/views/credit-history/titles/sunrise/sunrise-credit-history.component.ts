@@ -5,10 +5,10 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
 /** Retreives and displays Sunrise credit history by XUID. */
 @Component({
   selector: 'sunrise-credit-history',
-  templateUrl: './credit-history.component.html',
-  styleUrls: ['./credit-history.component.scss'],
+  templateUrl: './sunrise-credit-history.component.html',
+  styleUrls: ['./sunrise-credit-history.component.scss'],
 })
-export class CreditHistoryComponent implements OnChanges {
+export class SunriseCreditHistoryComponent implements OnChanges {
   @Input() public xuid?: number;
 
   /** True while waiting on a request. */

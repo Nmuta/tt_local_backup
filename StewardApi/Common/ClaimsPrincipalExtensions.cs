@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Common
         public static string GetNameIdentifier(this ClaimsPrincipal claimsPrincipal)
         {
             return claimsPrincipal.Identity.Name
-                   ?? claimsPrincipal.Claims?.FirstOrDefault(x => x.Type.Equals("appId", StringComparison.OrdinalIgnoreCase))?.Value;
+                   ?? claimsPrincipal.Claims?.FirstOrDefault(x => x.Type.Equals("aud", StringComparison.OrdinalIgnoreCase))?.Value;
         }
     }
 }
