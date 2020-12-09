@@ -67,7 +67,9 @@ describe('GravityComponent', () => {
 
     it('it should navigate to the routing page', () => {
       fixture.detectChanges();
-      expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/ticket-app/title/'], null, { skipLocationChange: true }));
+      expect(store.dispatch).toHaveBeenCalledWith(
+        new Navigate(['/ticket-app/title/'], null, { skipLocationChange: true }),
+      );
     });
   });
 });

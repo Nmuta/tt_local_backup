@@ -18,9 +18,6 @@ function evaluateAndExport<T>(code: string, exportedValue: string): T {
   return Function(`${code};\n\n;return ${exportedValue};`)();
 }
 
-/** Set to true when the ZAF client fails once, to prevent constantly trying to re-init it. */
-let failedAlready = false;
-
 /** Acquires a ZAF Client using dependency injection rather than ambient globals. */
 @Injectable({ providedIn: 'root' })
 export class ZafClientService {
@@ -57,9 +54,6 @@ export class ZafClientService {
   /** Initializes the object. */
   protected async init(): Promise<void> {
     try {
-      if (failedAlready) {
-        return;
-      }
       const zafUrl = 'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js';
       const zafText = await this.http.get(zafUrl, { responseType: 'text' }).toPromise();
       const zafObject = evaluateAndExport<ExportedZafClient>(zafText, 'ZAFClient');
@@ -71,7 +65,6 @@ export class ZafClientService {
       this.client = maybeClient;
       this.clientInternal$.next(this.client);
     } catch (e) {
-      failedAlready = true;
       this.logger.error([LogTopic.ZAF], e);
       this.clientInternal$.error(e);
     }

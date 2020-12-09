@@ -32,13 +32,21 @@ export class UnknownComponent extends BaseComponent implements OnInit {
   private routeByTitle(title: GameTitleCodeName): Observable<void> {
     switch (title) {
       case GameTitleCodeName.Street:
-        return this.store.dispatch(new Navigate(['/ticket-app/title/gravity'], null, { skipLocationChange: true }));
+        return this.store.dispatch(
+          new Navigate(['/ticket-app/title/gravity'], null, { skipLocationChange: true }),
+        );
       case GameTitleCodeName.FH4:
-        return this.store.dispatch(new Navigate(['/ticket-app/title/sunrise'], null, { skipLocationChange: true }));
+        return this.store.dispatch(
+          new Navigate(['/ticket-app/title/sunrise'], null, { skipLocationChange: true }),
+        );
       case GameTitleCodeName.FM7:
-        return this.store.dispatch(new Navigate(['/ticket-app/title/apollo'], null, { skipLocationChange: true }));
+        return this.store.dispatch(
+          new Navigate(['/ticket-app/title/apollo'], null, { skipLocationChange: true }),
+        );
       case GameTitleCodeName.FH3:
-        return this.store.dispatch(new Navigate(['/ticket-app/title/opus'], null, { skipLocationChange: true }));
+        return this.store.dispatch(
+          new Navigate(['/ticket-app/title/opus'], null, { skipLocationChange: true }),
+        );
     }
   }
 }

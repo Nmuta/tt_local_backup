@@ -37,24 +37,32 @@ describe('UnknownComponent', () => {
   it('should route to street', () => {
     ticketService.activeTitle = GameTitleCodeName.Street;
     fixture.detectChanges();
-    expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/ticket-app/title/gravity'], null, { skipLocationChange: true }));
+    expect(store.dispatch).toHaveBeenCalledWith(
+      new Navigate(['/ticket-app/title/gravity'], null, { skipLocationChange: true }),
+    );
   });
 
   it('should route to fm7', () => {
     ticketService.activeTitle = GameTitleCodeName.FM7;
     fixture.detectChanges();
-    expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/ticket-app/title/apollo'], null, { skipLocationChange: true }));
+    expect(store.dispatch).toHaveBeenCalledWith(
+      new Navigate(['/ticket-app/title/apollo'], null, { skipLocationChange: true }),
+    );
   });
 
   it('should route to opus', () => {
     ticketService.activeTitle = GameTitleCodeName.FH3;
     fixture.detectChanges();
-    expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/ticket-app/title/opus'], null, { skipLocationChange: true }));
+    expect(store.dispatch).toHaveBeenCalledWith(
+      new Navigate(['/ticket-app/title/opus'], null, { skipLocationChange: true }),
+    );
   });
 
   it('should route to sunrise', () => {
     ticketService.activeTitle = GameTitleCodeName.FH4;
     fixture.detectChanges();
-    expect(store.dispatch).toHaveBeenCalledWith(new Navigate(['/ticket-app/title/sunrise'], null, { skipLocationChange: true }));
+    expect(store.dispatch).toHaveBeenCalledWith(
+      new Navigate(['/ticket-app/title/sunrise'], null, { skipLocationChange: true }),
+    );
   });
 });

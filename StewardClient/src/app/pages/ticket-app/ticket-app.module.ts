@@ -17,6 +17,7 @@ import { QuickActionsComponent } from './components/quick-actions/quick-actions.
 import { UnknownComponent } from './pages/unknown/unknown.component';
 import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
 import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 /** Defines the ticket sidebar module. */
 @NgModule({
@@ -30,6 +31,7 @@ import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
     MatButtonModule,
     MatCardModule,
     ContentCollapseModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   declarations: [
