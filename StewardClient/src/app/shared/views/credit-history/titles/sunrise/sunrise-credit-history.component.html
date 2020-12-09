@@ -56,6 +56,5 @@
 
 <ng-template #failstate>
   <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-  <p *ngIf="loadError">Failed to load.</p>
-  <json-dump *ngIf="loadError" [input]="loadError"></json-dump>
+  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
 </ng-template>

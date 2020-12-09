@@ -19,8 +19,7 @@
         </mat-tab>
         <mat-tab label="JSON">
           <div class="tab-container">
-            <p>Gamertag: {{ gamertag }}</p>
-            <json-dump [input]="userDetails"></json-dump>
+            <json-dump [input]="userDetails">Gamertag: {{ gamertag }}</json-dump>
           </div>
         </mat-tab>
       </mat-tab-group>
@@ -34,7 +33,7 @@
     <hr />
     <h2>Request failed</h2>
     <p>If this keeps happening, contact support.</p>
-    <json-dump [input]="error"></json-dump>
+    <json-dump [input]="error">View error</json-dump>
   </ng-container>
 </ng-template>
 
@@ -44,6 +43,6 @@
     <hr />
     <h2>Request failed</h2>
     <p>If this keeps happening, contact support.</p>
-    <json-dump [input]="error"></json-dump>
+    <json-dump [input]="error">View error</json-dump>
   </ng-container>
 </ng-template>
