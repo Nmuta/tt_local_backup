@@ -19,7 +19,7 @@ export interface ServicesBanDescription {
   featureArea: string;
 }
 
-/** LiveOps model for bans. */
+/** LiveOps model for a single ban description. */
 export interface LiveOpsBanDescription {
   isActive: boolean;
   xuid: number;
@@ -31,3 +31,6 @@ export interface LiveOpsBanDescription {
   reason: string;
   banParameters: string;
 }
+
+/** LiveOps model for multiple ban descriptions. */
+export type LiveOpsBanDescriptions = LiveOpsBanDescription[];

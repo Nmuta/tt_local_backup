@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { LiveOpsBanDescription } from '@models/sunrise/sunrise-ban-history.model';
+import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.model';
 import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */
@@ -18,12 +18,12 @@ export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Unprocessed<LiveOpsBanDescription[]> {
+  public handle(): Unprocessed<LiveOpsBanDescriptions> {
     return SunrisePlayerXuidBanHistoryFakeApi.make();
   }
 
   /** Creates a sample object. */
-  public static make(): Unprocessed<LiveOpsBanDescription[]> {
+  public static make(): Unprocessed<LiveOpsBanDescriptions> {
     return [
       {
         startTimeUtc: '2020-10-22T14:53:08.869Z',

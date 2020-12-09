@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
-import { LiveOpsBanDescription } from '@models/sunrise/sunrise-ban-history.model';
+import {
+  LiveOpsBanDescription,
+  LiveOpsBanDescriptions,
+} from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
 import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
@@ -41,9 +44,9 @@ export class SunriseService {
   }
 
   /** Gets user flags by a XUID. */
-  public getBanHistoryByXuid(xuid: number): Observable<LiveOpsBanDescription[]> {
+  public getBanHistoryByXuid(xuid: number): Observable<LiveOpsBanDescriptions> {
     return this.apiService
-      .getRequest<LiveOpsBanDescription[]>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
+      .getRequest<LiveOpsBanDescriptions>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
       .pipe(
         map(banHistory => {
           // these come in stringly-typed and must be converted
