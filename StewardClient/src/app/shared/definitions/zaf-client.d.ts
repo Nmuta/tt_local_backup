@@ -63,8 +63,10 @@ export interface ZafRequestOptions {
   xhrFields?: object;
 }
 
+export type ZafLoc = Pick<Location, 'search' | 'hash'>;
+
 export interface ExportedZafClient {
-  init(): ZafClient | false;
+  init(callback?: Function, loc?: ZafLoc): ZafClient | false;
 }
 
 /**
