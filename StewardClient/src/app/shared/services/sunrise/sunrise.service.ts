@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
-import {
-  LiveOpsBanDescription,
-  LiveOpsBanDescriptions,
-} from '@models/sunrise/sunrise-ban-history.model';
+import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
 import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
