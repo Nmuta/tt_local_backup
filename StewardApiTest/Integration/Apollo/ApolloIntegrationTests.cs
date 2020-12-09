@@ -473,8 +473,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var result = await stewardClient.GetBanHistoryAsync(xuid).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.ServicesBanHistory.Any());
-            Assert.IsTrue(result.LiveOpsBanHistory.Any());
+            Assert.IsTrue(result.Any());
         }
 
         [TestMethod]
@@ -484,8 +483,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var result = await stewardClient.GetBanHistoryAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsFalse(result.ServicesBanHistory.Any());
-            Assert.IsTrue(result.LiveOpsBanHistory.Any());
+            Assert.IsFalse(result.Any());
         }
 
         [TestMethod]
@@ -510,8 +508,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var result = await stewardClient.GetBanHistoryAsync(gamertag).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.ServicesBanHistory.Any());
-            Assert.IsTrue(result.LiveOpsBanHistory.Any());
+            Assert.IsTrue(result.Any());
         }
 
         [TestMethod]

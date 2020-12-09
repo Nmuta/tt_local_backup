@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
-import { SunriseBanHistory } from '@models/sunrise/sunrise-ban-history.model';
+import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
 import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
@@ -41,21 +41,15 @@ export class SunriseService {
   }
 
   /** Gets user flags by a XUID. */
-  public getBanHistoryByXuid(xuid: number): Observable<SunriseBanHistory> {
+  public getBanHistoryByXuid(xuid: number): Observable<LiveOpsBanDescriptions> {
     return this.apiService
-      .getRequest<SunriseBanHistory>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
+      .getRequest<LiveOpsBanDescriptions>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
       .pipe(
         map(banHistory => {
           // these come in stringly-typed and must be converted
-
-          for (const entry of banHistory.liveOpsBanHistory) {
-            entry.startTimeUtc = new Date(entry.startTimeUtc);
-            entry.expireTimeUtc = new Date(entry.expireTimeUtc);
-          }
-
-          for (const entry of banHistory.servicesBanHistory) {
-            entry.startTimeUtc = new Date(entry.startTimeUtc);
-            entry.expireTimeUtc = new Date(entry.expireTimeUtc);
+          for (const ban of banHistory) {
+            ban.startTimeUtc = new Date(ban.startTimeUtc);
+            ban.expireTimeUtc = new Date(ban.expireTimeUtc);
           }
 
           return banHistory;

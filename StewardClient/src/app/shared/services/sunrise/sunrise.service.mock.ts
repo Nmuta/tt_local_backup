@@ -27,12 +27,7 @@ export class MockSunriseService {
         entry.expireTimeUtc = new Date(entry.expireTimeUtc);
       }
 
-      for (const entry of unprocessed.servicesBanHistory) {
-        entry.startTimeUtc = new Date(entry.startTimeUtc);
-        entry.expireTimeUtc = new Date(entry.expireTimeUtc);
-      }
-
-      return of(unprocessed);
+      return of(unprocessed.liveOpsBanHistory);
     }),
   );
   public getSharedConsoleUsersByXuid = jasmine

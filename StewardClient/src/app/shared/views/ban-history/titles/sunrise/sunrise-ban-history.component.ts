@@ -5,15 +5,8 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import {
   LiveOpsBanDescription,
   ServicesBanDescription,
-  SunriseBanHistory,
 } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseService } from '@services/sunrise/sunrise.service';
-import _ from 'lodash';
-
-/** Augmented type that also includes the correlated ban. */
-interface ServicesBanWithCorrelation extends ServicesBanDescription {
-  correlatedLiveOpsBan?: LiveOpsBanDescription;
-}
 
 /** Retreives and displays Sunrise Ban history by XUID. */
 @Component({
@@ -35,11 +28,9 @@ export class SunriseBanHistoryComponent extends BaseComponent implements OnChang
   public isLoading = true;
   /** The error received while loading. */
   public loadError: unknown;
-  /** This player's ban history. */
-  public history: SunriseBanHistory;
 
   /** The ban list to display. */
-  public banList: ServicesBanWithCorrelation[];
+  public banList: LiveOpsBanDescription[];
 
   public isActiveIcon = faCheck;
 
@@ -62,35 +53,14 @@ export class SunriseBanHistoryComponent extends BaseComponent implements OnChang
     this.isLoading = true;
     this.loadError = undefined;
     this.sunrise.getBanHistoryByXuid(this.xuid).subscribe(
-      history => {
+      banHistory => {
         this.isLoading = false;
-        this.history = history;
-        this.banList = this.history.servicesBanHistory.map(servicesBan => {
-          const output: ServicesBanWithCorrelation = _.clone(servicesBan);
-          output.correlatedLiveOpsBan = this.correlateLiveOps(servicesBan);
-          return output as ServicesBanWithCorrelation;
-        });
+        this.banList = banHistory;
       },
       _error => {
         this.isLoading = false;
         this.loadError = _error; // TODO: Display something useful to the user
       },
     );
-  }
-
-  /** Attempts to correlate a Services ban to a Live Ops ban. */
-  public correlateLiveOps(servicesBan: ServicesBanDescription): LiveOpsBanDescription {
-    const value = _.chain(this.history.liveOpsBanHistory)
-      .filter(liveOpsBan => {
-        const xuidMatch = liveOpsBan.xuid === servicesBan.xuid;
-        const startMatch = liveOpsBan.startTimeUtc.getDate() === servicesBan.startTimeUtc.getDate();
-        const expireMatch =
-          liveOpsBan.expireTimeUtc.getDate() === servicesBan.expireTimeUtc.getDate();
-
-        return xuidMatch && startMatch && expireMatch;
-      })
-      .first()
-      .value();
-    return value;
   }
 }

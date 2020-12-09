@@ -8,6 +8,7 @@ using Forza.WebServices.FM7.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Xls.WebServices.FM7.Generated;
 using static Forza.WebServices.FM7.Generated.UserService;
@@ -221,7 +222,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            var actions = new List<Func<Task<IList<ApolloBanDescription>>>>
+            var actions = new List<Func<Task<IList<LiveOpsBanHistory>>>>
             {
                 async () => await provider.GetUserBanHistoryAsync(xuid).ConfigureAwait(false)
             };
@@ -229,7 +230,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<List<ApolloBanDescription>>();
+                var result = action().Result;
+                result.Should().BeOfType<List<LiveOpsBanHistory>>();
             }
         }
 
@@ -386,7 +388,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloUserService.LiveOpsGetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<LiveOpsGetUserDataByXuidOutput>());
                 this.ApolloUserService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>()).Returns(Fixture.Create<BanUsersOutput>());
                 this.ApolloUserService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
-                this.ApolloUserService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanHistoryOutput>());
+                this.ApolloUserService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(this.GenerateGetUserBanHistoryOutput());
                 this.ApolloUserService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
                 this.ApolloUserService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
                 this.ApolloUserService.GetIsUnderReviewAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
@@ -410,6 +412,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             public IApolloBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<IApolloBanHistoryProvider>();
 
             public ApolloPlayerDetailsProvider Build() => new ApolloPlayerDetailsProvider(this.ApolloUserService, this.ApolloGroupingService, this.Mapper, this.BanHistoryProvider);
+
+            private GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
+            {
+                // Cannot use random uint value for feature area, we must build our own valid fake data
+                Random rnd = new Random();
+                var fakeBanHistories = new List<ForzaUserBanDescription>();
+                var numberOfFakeBanHistories = rnd.Next(1, 10);
+                for (var i = 0; i < numberOfFakeBanHistories; i++)
+                {
+                    fakeBanHistories.Add(Fixture.Build<ForzaUserBanDescription>().With(x => x.FeatureAreas, (uint)2).Create());
+                }
+
+                return Fixture.Build<GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
+            }
         }
     }
 }

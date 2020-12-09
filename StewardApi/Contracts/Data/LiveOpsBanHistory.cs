@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
@@ -38,6 +39,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         }
 
         /// <summary>
+        ///     Gets or sets a value indicating whether the ban is still active.
+        /// </summary>
+        public bool IsActive { get; set; }
+
+        /// <summary>
         ///     Gets or sets the start time in UTC.
         /// </summary>
         public DateTime StartTimeUtc { get; set; }
@@ -46,6 +52,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         ///     Gets or sets the expire time in UTC.
         /// </summary>
         public DateTime ExpireTimeUtc { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the last extended time in UTC.
+        /// </summary>
+        public DateTime LastExtendedTimeUtc { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the count of times the ban has been extended.
+        /// </summary>
+        public int CountOfTimesExtended { get; set; }
 
         /// <summary>
         ///     Gets or sets the xuid.

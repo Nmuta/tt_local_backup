@@ -39,7 +39,7 @@
             {{ entry.expireTimeUtc | date: 'short' }}
           </td>
         </ng-container>
-        <ng-container matColumnDef="expandedDetail">
+        <!-- <ng-container matColumnDef="expandedDetail">
           <td mat-cell *matCellDef="let entry" [attr.colspan]="columnsToDisplay.length">
             <div
               class="element-detail"
@@ -58,18 +58,9 @@
               </ng-container>
             </div>
           </td>
-        </ng-container>
+        </ng-container> -->
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr
-          mat-row
-          *matRowDef="let element; columns: columnsToDisplay"
-          class="element-row"
-          [class.expanded-row]="expandedEntry === element"
-          (click)="expandedEntry = expandedEntry === element ? null : element"
-        ></tr>
-        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row">
-          <
-        </tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay" class="element-row"></tr>
       </table>
     </ng-container>
   </mat-card-content>
@@ -81,7 +72,7 @@
   <pre *ngIf="loadError">{{ loadError | bigjson }}</pre>
 </ng-template>
 
-<ng-template #servicesBanCard let-entry>
+<!-- <ng-template #servicesBanCard let-entry>
   <mat-card>
     <mat-card-title> Services </mat-card-title>
     <table>
@@ -119,9 +110,9 @@
       </tr>
     </table>
   </mat-card>
-</ng-template>
+</ng-template> -->
 
-<ng-template #liveOpsBanCard let-entry>
+<!-- <ng-template #liveOpsBanCard let-entry>
   <mat-card>
     <mat-card-title> Live Ops </mat-card-title>
     <table>
@@ -155,4 +146,4 @@
       </tr>
     </table>
   </mat-card>
-</ng-template>
+</ng-template> -->
