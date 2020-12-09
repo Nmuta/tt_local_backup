@@ -13,7 +13,7 @@ export class GravityGiftHistoryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/gravity\/giftHistory\/giftRecipientId\((.+)\)\/giftHistoryAntecedent\((.+)\)/i;
+    const regex = /\/?api\/v1\/title\/gravity\/player\/t10Id\((.+)\)\/giftHistory/i;
     return regex.test(url.pathname);
   }
 
