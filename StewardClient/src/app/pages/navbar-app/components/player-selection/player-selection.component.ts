@@ -25,7 +25,7 @@ export class PlayerSelectionComponent {
 
   /** Logic when textarea input changes */
   public playerInfoChanged(): void {
-    this.playerIds = this.data.split('\n').map(x => x.trim());
+    this.playerIds = this.data.split('\n').map(x => x.trim()).filter(x => !!x && x !== '');
     this.showExpandedTextArea = this.allowGroup && this.playerIds.length > 1;
     this.showGroupDisabledError = !this.allowGroup && this.playerIds.length > 1;
     this.checkValidateButtonState();
@@ -48,7 +48,7 @@ export class PlayerSelectionComponent {
    * to activate the validate button. */
   public checkValidateButtonState(): void {
     this.disableValidateButton = this.playerIds.length <= 0 || !this.playerIdType 
-      || this.playerIdType === '';
+      || this.playerIdType === '' || (!this.allowGroup && this.playerIds.length > 1);
   }
 
   /** Validates the provided player ids by getting each player id profile. */

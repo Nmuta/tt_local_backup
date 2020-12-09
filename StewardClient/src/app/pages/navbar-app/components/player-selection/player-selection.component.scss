@@ -1,7 +1,8 @@
 @import '/src/variables.scss';
 
-div {
+mat-card {
   padding: 20px;
+  display: inline-block;
 
   #groupDisabledError {
     color: mat-color($app-warn);
