@@ -116,13 +116,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<SunriseBanSummary>>(HttpMethod.Post, path, this.authKey, Version, xuids).ConfigureAwait(false);
         }
 
-        /// <summary>
-        ///     Gets ban history.
-        /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The <see cref="SunriseBanHistory"/>.
-        /// </returns>
         public async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/banHistory");
@@ -130,13 +123,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<LiveOpsBanHistory>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        /// <summary>
-        ///     Gets ban history.
-        /// </summary>
-        /// <param name="gamertag">The gamertag.</param>
-        /// <returns>
-        ///     The <see cref="SunriseBanHistory"/>.
-        /// </returns>
         public async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(string gamertag)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/gamertag({gamertag})/banHistory");
