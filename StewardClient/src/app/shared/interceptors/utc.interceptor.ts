@@ -12,7 +12,11 @@ import { chain, isArray, isPlainObject, map } from 'lodash';
 import { filter, map as rxMap } from 'rxjs/operators';
 
 type DeepMapPairsFn = ([key, value]) => [string, unknown];
-function deepMapPairs(input: unknown, transform: DeepMapPairsFn, seen = new Map<unknown, unknown>()) {
+function deepMapPairs(
+  input: unknown,
+  transform: DeepMapPairsFn,
+  seen = new Map<unknown, unknown>(),
+) {
   if (seen.has(input)) {
     return seen.get(input);
   }

@@ -19,7 +19,8 @@ export class BigintInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    const shouldHandle = request.responseType === 'json' && request.url.startsWith(environment.stewardApiUrl);
+    const shouldHandle =
+      request.responseType === 'json' && request.url.startsWith(environment.stewardApiUrl);
     if (!shouldHandle) {
       return next.handle(request);
     }
