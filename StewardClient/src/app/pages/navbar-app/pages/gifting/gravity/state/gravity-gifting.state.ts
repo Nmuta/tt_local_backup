@@ -26,7 +26,6 @@ export class GravityGiftingState {
     ctx: StateContext<GravityGiftingStateModel>,
     action: SetGravitySelectedPlayerIdentities,
   ): Observable<GravityGiftingStateModel> {
-
     return of(ctx.patchState({ selectedPlayerIdentities: action.selectedPlayerIdentities }));
   }
 

@@ -8,6 +8,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTableModule } from '@angular/material/table';
 
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -35,6 +36,7 @@ import { OpusPlayerSelectionComponent } from './opus/opus-player-selection.compo
     MatCardModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
+    MatTableModule,
     FontAwesomeModule,
     FormsModule,
   ],

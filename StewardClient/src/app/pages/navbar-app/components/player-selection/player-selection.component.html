@@ -22,7 +22,13 @@
 
 <ng-template #resultsView>
   <div class="identity-results">
-    <p *ngFor="let identity of playerIdentityResults">{{ identity | json }}</p>
+    <div style="position: relative; display: inline-block; width: 100%" 
+      *ngFor="let identity of playerIdentityResults; let i = index">
+      <button style="float: left;" mat-icon-button (click)="removePlayerFromList(i)">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <p style="float: left;">{{ identity | json }}</p>
+    </div>
   </div>
   <button (click)="clearResults()" mat-stroked-button color="accent">Clear Results</button>
 </ng-template>

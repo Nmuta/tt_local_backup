@@ -41,7 +41,7 @@ export abstract class PlayerSelectionBaseComponent<T> extends BaseComponent impl
   public ngOnInit(): void {
     this.playerIdentityResults = this.initPlayerSelectionState;
   }
-  
+
   /** Logic when textarea input changes */
   public playerInfoChanged(): void {
     this.playerIds = this.data.split('\n').map(x => x.trim()).filter(x => !!x && x !== '');
@@ -90,11 +90,17 @@ export abstract class PlayerSelectionBaseComponent<T> extends BaseComponent impl
     );
   }
 
-    /** Clears the player identity results. */
-    public clearResults(): void {
-      this.playerIdentityResults = [];
-      this.playerIdType = undefined;
-      this.clearInput();
-      this.selectedPlayerIdentitiesEvent.emit(this.playerIdentityResults);
-    } 
+  /** Removed player at given index from the results list. */
+  public removePlayerFromList(index: number): void {
+    this.playerIdentityResults.splice(index, 1);
+    this.selectedPlayerIdentitiesEvent.emit(this.playerIdentityResults);
+  }
+
+  /** Clears the player identity results. */
+  public clearResults(): void {
+    this.playerIdentityResults = [];
+    this.playerIdType = undefined;
+    this.clearInput();
+    this.selectedPlayerIdentitiesEvent.emit(this.playerIdentityResults);
+  } 
 }
