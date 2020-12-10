@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Models;
+using Turn10.LiveOps.StewardApi.Authorization;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -39,13 +39,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var userIdentity = this.User;
             var role = "None";
-            if (this.User.IsInRole("LiveOpsAdmin"))
+            if (this.User.IsInRole(UserRole.LiveOpsAdmin))
             {
-                role = "Admin";
+                role = UserRole.LiveOpsAdmin;
             }
-            else if (this.User.IsInRole("LiveOpsAgent"))
+            else if (this.User.IsInRole(UserRole.SupportAgentAdmin))
             {
-                role = "Agent";
+                role = UserRole.SupportAgentAdmin;
+            }
+            else if (this.User.IsInRole(UserRole.SupportAgent))
+            {
+                role = UserRole.SupportAgent;
+            }
+            else if (this.User.IsInRole(UserRole.SupportAgentNew))
+            {
+                role = UserRole.SupportAgentNew;
             }
 
             var user = new LiveOpsUser

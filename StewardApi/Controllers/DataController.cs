@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     /// </summary>
     [Route("api/v1/title/")]
     [ApiController]
-    [Authorize(Roles = "Agent")]
+    [Authorize]
     public sealed class DataController : ControllerBase
     {
         private readonly IKustoProvider kustoProvider;
