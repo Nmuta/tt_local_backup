@@ -16,6 +16,7 @@ import { ApolloPlayerSelectionComponent } from './apollo/apollo-player-selection
 import { GravityPlayerSelectionComponent } from './gravity/gravity-player-selection.component';
 import { SunrisePlayerSelectionComponent } from './sunrise/sunrise-player-selection.component';
 import { OpusPlayerSelectionComponent } from './opus/opus-player-selection.component';
+import { ContentCollapseModule } from '@components/content-collapse/content-collapse.module';
 
 
 /** The feature module for the User Details route. */
@@ -39,6 +40,7 @@ import { OpusPlayerSelectionComponent } from './opus/opus-player-selection.compo
     MatTableModule,
     FontAwesomeModule,
     FormsModule,
+    ContentCollapseModule,
   ],
   exports:  [
     GravityPlayerSelectionComponent,

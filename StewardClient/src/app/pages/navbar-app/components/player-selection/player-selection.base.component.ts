@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 
 /** The shared top-level navbar. */
@@ -16,6 +17,10 @@ export abstract class PlayerSelectionBaseComponent<T> extends BaseComponent impl
   @Input() allowGroup: boolean = true;
   @Output() selectedPlayerIdentitiesEvent = new EventEmitter<T[]>();
 
+  // Icons
+  public closeIcon = faTimesCircle;
+
+  // UI data
   data: string = '';
   playerIds: string[] = [];
   playerIdType: string;

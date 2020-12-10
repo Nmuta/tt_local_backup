@@ -3,6 +3,18 @@
 mat-card {
   padding: 20px;
   display: inline-block;
+  min-width: 300px;
+  margin-top: 20px;
+
+  h2 {
+    display: inline-block;
+    margin: 0px;
+  }
+
+  .content-container, #results-view, #fail-state {
+    display: block;
+    margin-top: 15px;
+  }
 
   #groupDisabledError {
     color: mat-color($app-warn);
@@ -34,8 +46,34 @@ mat-card {
 
   .identity-results {
     max-height: 400px;
+    height: 100%;
     min-width: 500px;
     max-width: 500px;
     overflow: auto;
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+
+      th {
+        padding: 10px 0px;
+        min-width: 100px;
+      }
+
+      tr {
+        border-top: 1px solid  rgba(0, 0, 0, 0.12);
+        min-width: 30px;
+        text-align: center;
+        margin: auto;
+
+        button {
+          color: red;
+        }
+      }
+    }
+  }
+
+  .clear-identity-results-btn {
+    margin-top: 15px;
   }
 }
