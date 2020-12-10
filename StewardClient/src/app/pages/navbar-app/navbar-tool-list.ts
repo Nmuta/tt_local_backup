@@ -15,15 +15,22 @@ export interface RouterLinkPath {
 }
 
 /** Creates a NavbarPath for use in displaying the navbar, from a RouteParams object. */
-export function createNavbarPath(routeParams: RouteParams, navigationExtras?: NavigationExtras): RouterLinkPath {
-  return createRouterLinkPath(navbarAppRootPath, routeParams, !!navigationExtras ? navigationExtras : {} );
+export function createNavbarPath(
+  routeParams: RouteParams,
+  navigationExtras?: NavigationExtras,
+): RouterLinkPath {
+  return createRouterLinkPath(
+    navbarAppRootPath,
+    routeParams,
+    !!navigationExtras ? navigationExtras : {},
+  );
 }
 
 /** Creates a RouterLinkPath for use in displaying navbars, from a RouteParams object. */
 export function createRouterLinkPath(
   parentPath: string[],
   routeParams: RouteParams,
-  navigationExtras: NavigationExtras
+  navigationExtras: NavigationExtras,
 ): RouterLinkPath {
   // tslint:disable-next-line: no-object-literal-type-assertion
   return <RouterLinkPath>{

@@ -37,7 +37,7 @@ export class UserStateModel {
     // defined, means user is signed in
     profile: undefined,
     accessToken: undefined,
-    currentGiftingPageTitle: GameTitleCodeNames.Street
+    currentGiftingPageTitle: GameTitleCodeNames.Street,
   },
 })
 /** Defines the user state. */
@@ -135,12 +135,15 @@ export class UserState {
 
   /** Updates the last gifting page title. */
   @Action(UpdatecurrentGiftingPageTitle, { cancelUncompleted: true })
-  public updatecurrentGiftingPageTitle(ctx: StateContext<UserStateModel>, _action: UpdatecurrentGiftingPageTitle): Observable<void> {
+  public updatecurrentGiftingPageTitle(
+    ctx: StateContext<UserStateModel>,
+    _action: UpdatecurrentGiftingPageTitle,
+  ): Observable<void> {
     const state = ctx.getState();
     const newTitle = _action.title;
 
-    if(state.currentGiftingPageTitle !== newTitle) {
-      ctx.patchState({ currentGiftingPageTitle:  newTitle});
+    if (state.currentGiftingPageTitle !== newTitle) {
+      ctx.patchState({ currentGiftingPageTitle: newTitle });
     }
     return of();
   }

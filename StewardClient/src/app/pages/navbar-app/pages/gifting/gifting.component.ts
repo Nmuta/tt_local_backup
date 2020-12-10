@@ -26,10 +26,7 @@ export class GiftingComponent extends BaseComponent implements OnInit {
   selectedGameTitle: GameTitleCodeNames;
   pageRoute: string = 'gifting';
 
-  constructor(
-    protected store: Store,
-    protected router: Router,
-    protected route: ActivatedRoute) {
+  constructor(protected store: Store, protected router: Router, protected route: ActivatedRoute) {
     super();
   }
 
@@ -40,27 +37,29 @@ export class GiftingComponent extends BaseComponent implements OnInit {
 
     // Watch for gifting title changes and route when found
     this.currentGiftingPageTitle$
-      .pipe(
-        takeUntil(this.onDestroy$),
-        delay(0)
-      ).subscribe((currentGiftingPageTitle: GameTitleCodeNames) => {
+      .pipe(takeUntil(this.onDestroy$), delay(0))
+      .subscribe((currentGiftingPageTitle: GameTitleCodeNames) => {
         this.routeToTitlePage(currentGiftingPageTitle);
       });
 
-    // Navbar gifting route does not point to a game title 
+    // Navbar gifting route does not point to a game title
     // so we need to handle those button clicks
-    this.router.events.pipe(
-      takeUntil(this.onDestroy$),
-      filter(event => event instanceof NavigationEnd),
-      filter((event: NavigationEnd) => {
-        // Checks if route ends with 'gifting'
-        const routePaths = event.url.split('/').filter(x => !!x && x !== '');
-        return routePaths[routePaths.length-1] === this.pageRoute;
-      })
-    ).subscribe(() => {
-      const lastVisitedGameTitle = this.store.selectSnapshot<GameTitleCodeNames>(UserState.currentGiftingPageTitle);
-      this.routeToTitlePage(lastVisitedGameTitle);
-    });
+    this.router.events
+      .pipe(
+        takeUntil(this.onDestroy$),
+        filter(event => event instanceof NavigationEnd),
+        filter((event: NavigationEnd) => {
+          // Checks if route ends with 'gifting'
+          const routePaths = event.url.split('/').filter(x => !!x && x !== '');
+          return routePaths[routePaths.length - 1] === this.pageRoute;
+        }),
+      )
+      .subscribe(() => {
+        const lastVisitedGameTitle = this.store.selectSnapshot<GameTitleCodeNames>(
+          UserState.currentGiftingPageTitle,
+        );
+        this.routeToTitlePage(lastVisitedGameTitle);
+      });
   }
 
   /** Routes to the gifting title page */
@@ -77,8 +76,8 @@ export class GiftingComponent extends BaseComponent implements OnInit {
     this.store.dispatch(new UpdatecurrentGiftingPageTitle(title));
   }
 
-  /** 
-   *  Handles if init gifting page route has a game title in it. 
+  /**
+   *  Handles if init gifting page route has a game title in it.
    */
   public handleInitalGiftingRoute(url: string): void {
     const routePaths = url.split('/').filter(x => !!x && x !== '');

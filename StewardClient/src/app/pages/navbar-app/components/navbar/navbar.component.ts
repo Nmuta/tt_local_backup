@@ -57,7 +57,7 @@ export class NavbarComponent {
 
   /** Routes based on the provided router link path. */
   public routeTo(routerLinkPath: RouterLinkPath): void {
-    // Required here so that navigation extas can be used
+    // Required here so that navigation extas can be used correctly
     this.router.navigate(routerLinkPath.routerLink, routerLinkPath.navigationExtras);
   }
 }
