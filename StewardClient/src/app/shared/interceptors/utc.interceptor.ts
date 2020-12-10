@@ -12,25 +12,27 @@ import { chain, isArray, isPlainObject, map } from 'lodash';
 import { filter, map as rxMap } from 'rxjs/operators';
 
 type DeepMapPairsFn = ([key, value]) => [string, unknown];
-function deepMapPairs(input: unknown, transform: DeepMapPairsFn, seen = new Set<unknown>()): unknown {
+function deepMapPairs(input: unknown, transform: DeepMapPairsFn, seen = new Map<unknown, unknown>()) {
   if (seen.has(input)) {
-    return input;
+    return seen.get(input);
   }
 
   if (isArray(input)) {
-    seen.add(input);
-    return map(input, (inner, _index) => deepMapPairs(inner, transform, seen));
+    const result = map(input, (inner, _index) => deepMapPairs(inner, transform, seen));
+    seen.set(input, result);
+    return result;
   }
 
   if (isPlainObject(input)) {
-    seen.add(input);
-    return chain(input)
+    const result = chain(input)
       .toPairs()
       .map(transform)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .map(([key, inner]) => [key, deepMapPairs(inner, transform, seen)])
       .fromPairs()
       .value();
+    seen.set(input, result);
+    return result;
   }
 
   return input;
@@ -51,7 +53,7 @@ export class UtcInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
 
-    return next.handle(request);
+    return this.handle(request, next);
   }
 
   /** Called when we attempt to handle the request. */
