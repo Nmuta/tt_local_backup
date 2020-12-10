@@ -1,6 +1,7 @@
 import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { environment } from '@environments/environment';
 
 import { BigintInterceptor } from './bigint.interceptor';
 
@@ -9,7 +10,7 @@ describe('BigintInterceptor:', () => {
   let interceptor: BigintInterceptor;
   let httpMock: HttpTestingController;
   let http: HttpClient;
-  const testUrl = 'http://localhost/test';
+  const testUrl = `${environment.stewardApiUrl}/test`;
   const testResponse =
     '{ "bigInt": 1859489456156489156456498156189189489156178917561756715647534176, "nested": { "bigInt": 1859489456156489156456498156189189489156178917561756715647534176 }, "smallInt": 2, "string": "hello" }';
 
@@ -27,7 +28,6 @@ describe('BigintInterceptor:', () => {
       ],
     });
 
-    // interceptor = TestBed.inject(BigintInterceptor);
     http = TestBed.inject(HttpClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
@@ -48,6 +48,21 @@ describe('BigintInterceptor:', () => {
     const req = httpMock.expectOne(testUrl);
     expect(req.request.method).toEqual('GET');
     expect(req.request.responseType).toEqual('text');
+
+    req.flush(testResponse);
+
+    expect(interceptor.handle).toHaveBeenCalledTimes(0);
+  });
+
+  it('skips non-steward urls', () => {
+    const badUrl = 'http://💩/test';
+    http.get(badUrl, { responseType: 'json' }).subscribe(response => {
+      expect(response).toBeTruthy();
+    });
+
+    const req = httpMock.expectOne(badUrl);
+    expect(req.request.method).toEqual('GET');
+    expect(req.request.responseType).toEqual('json');
 
     req.flush(testResponse);
 

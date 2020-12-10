@@ -27,6 +27,7 @@ import { CenterContentsModule } from '@components/center-contents/center-content
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { ZafClientService } from '@services/zendesk/zaf-client.service';
+import { UtcInterceptor } from '@interceptors/utc.interceptor';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -112,6 +113,12 @@ function fakeApiOrNothing(): Provider[] {
       multi: true,
     },
     {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UtcInterceptor,
+      multi: true,
+    },
+    {
+      // this has to be the last interceptor, since it changes the type of the request to 'text'
       provide: HTTP_INTERCEPTORS,
       useClass: BigintInterceptor,
       multi: true,
