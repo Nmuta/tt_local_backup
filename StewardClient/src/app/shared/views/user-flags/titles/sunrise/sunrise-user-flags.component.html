@@ -1,0 +1,61 @@
+<mat-card>
+  <mat-card-content>
+    <h2>
+      Sunrise Flags
+      <error-spinner
+        [isActive]="false"
+        [error]="loadError"
+        spinnerMessage="Loading"
+        errorMessage="Failed to load"
+      ></error-spinner>
+      <verify-action-button #submit [canSubmit]="hasChanges" [action]="makeAction.bind(this)"
+        >Apply</verify-action-button
+      >
+    </h2>
+    <ng-container *ngIf="!isLoading && !loadError; else failstate">
+      <section class="checkboxes">
+        <mat-checkbox
+          [(ngModel)]="flags.isVip"
+          [disabled]="submit.isSubmitting"
+          (ngModelChange)="submit.reset()"
+          >VIP</mat-checkbox
+        >
+        <mat-checkbox
+          [(ngModel)]="flags.isUltimateVip"
+          [disabled]="submit.isSubmitting"
+          (ngModelChange)="submit.reset()"
+          >Ultimate VIP</mat-checkbox
+        >
+        <mat-checkbox
+          [(ngModel)]="flags.isTurn10Employee"
+          [disabled]="submit.isSubmitting"
+          (ngModelChange)="submit.reset()"
+          >Turn10 Employee</mat-checkbox
+        >
+        <mat-checkbox
+          [(ngModel)]="flags.isCommunityManager"
+          [disabled]="submit.isSubmitting"
+          (ngModelChange)="submit.reset()"
+          >Community Manager (see Jeffspr, dangerous!)</mat-checkbox
+        >
+        <mat-checkbox
+          [(ngModel)]="flags.isEarlyAccess"
+          [disabled]="submit.isSubmitting"
+          (ngModelChange)="submit.reset()"
+          >Early Access</mat-checkbox
+        >
+        <mat-checkbox
+          [(ngModel)]="flags.isUnderReview"
+          [disabled]="submit.isSubmitting"
+          (ngModelChange)="submit.reset()"
+          >Under Review</mat-checkbox
+        >
+      </section>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+</ng-template>

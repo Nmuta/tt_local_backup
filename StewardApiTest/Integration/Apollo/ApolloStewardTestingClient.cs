@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
 namespace Turn10.LiveOps.StewardTest.Integration.Apollo
@@ -71,18 +72,32 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<IList<ApolloBanSummary>>(HttpMethod.Post, path, this.authKey, Version, xuids).ConfigureAwait(false);
         }
 
-        public async Task<ApolloBanHistory> GetBanHistoryAsync(ulong xuid)
+        /// <summary>
+        ///     Gets ban history.
+        /// </summary>
+        /// <param name="xuid">The xuid.</param>
+        /// <returns>
+        ///     The <see cref="ApolloBanHistory"/>.
+        /// </returns>
+        public async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/banHistory");
 
-            return await ServiceClient.SendRequestAsync<ApolloBanHistory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<LiveOpsBanHistory>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<ApolloBanHistory> GetBanHistoryAsync(string gamertag)
+        /// <summary>
+        ///     Gets ban history.
+        /// </summary>
+        /// <param name="gamertag">The gamertag.</param>
+        /// <returns>
+        ///     The <see cref="ApolloBanHistory"/>.
+        /// </returns>
+        public async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(string gamertag)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/gamertag({gamertag})/banHistory");
 
-            return await ServiceClient.SendRequestAsync<ApolloBanHistory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<LiveOpsBanHistory>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task<IList<ApolloConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)

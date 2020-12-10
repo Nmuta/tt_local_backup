@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
@@ -115,18 +116,32 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<SunriseBanSummary>>(HttpMethod.Post, path, this.authKey, Version, xuids).ConfigureAwait(false);
         }
 
-        public async Task<SunriseBanHistory> GetBanHistoryAsync(ulong xuid)
+        /// <summary>
+        ///     Gets ban history.
+        /// </summary>
+        /// <param name="xuid">The xuid.</param>
+        /// <returns>
+        ///     The <see cref="SunriseBanHistory"/>.
+        /// </returns>
+        public async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/banHistory");
 
-            return await ServiceClient.SendRequestAsync<SunriseBanHistory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<LiveOpsBanHistory>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<SunriseBanHistory> GetBanHistoryAsync(string gamertag)
+        /// <summary>
+        ///     Gets ban history.
+        /// </summary>
+        /// <param name="gamertag">The gamertag.</param>
+        /// <returns>
+        ///     The <see cref="SunriseBanHistory"/>.
+        /// </returns>
+        public async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(string gamertag)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/gamertag({gamertag})/banHistory");
 
-            return await ServiceClient.SendRequestAsync<SunriseBanHistory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<LiveOpsBanHistory>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned)

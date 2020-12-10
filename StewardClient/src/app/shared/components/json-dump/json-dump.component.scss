@@ -1,0 +1,21 @@
+mat-panel-title,
+mat-panel-description {
+  align-items: center;
+}
+
+pre {
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+
+@media (max-width: 500px) {
+  mat-panel-description {
+    display: none;
+  }
+
+  :host {
+    margin: 0 -14px;
+    margin-bottom: -8px;
+    display: block;
+  }
+}

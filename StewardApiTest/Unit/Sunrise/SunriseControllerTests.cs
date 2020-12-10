@@ -12,6 +12,7 @@ using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -649,9 +650,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as SunriseBanHistory;
+                var details = result.Value as IList<LiveOpsBanHistory>;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<SunriseBanHistory>();
+                details.Should().BeOfType<List<LiveOpsBanHistory>>();
             }
         }
 
@@ -1311,8 +1312,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerDetailsProvider.GetCreditUpdatesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseCreditUpdate>>());
                 this.SunrisePlayerDetailsProvider.BanUsersAsync(Arg.Any<SunriseBanParameters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SunriseBanResult>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<SunriseBanSummary>>());
-                this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseBanDescription>>());
-                this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<string>()).Returns(Fixture.Create<IList<SunriseBanDescription>>());
+                this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
+                this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<string>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());

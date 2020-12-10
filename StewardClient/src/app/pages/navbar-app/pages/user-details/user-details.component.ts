@@ -8,7 +8,6 @@ import { SunriseComponent } from './sunrise/sunrise.component';
 
 /** User Details page. */
 @Component({
-  selector: 'app-user-details',
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.scss'],
 })
