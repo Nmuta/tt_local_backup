@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "<Pending>", Scope = "member", Target = "~F:Turn10.LiveOps.StewardApi.Authorization.UserRole.SupportAgentNew")]
+[assembly: SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "SupportAgentNew defines a new support agent at T10.", Scope = "member", Target = "~F:Turn10.LiveOps.StewardApi.Authorization.UserRole.SupportAgentNew")]
