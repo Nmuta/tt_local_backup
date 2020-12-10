@@ -28,8 +28,6 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         /// <summary>
         ///     The new support agent role.
         /// </summary>
-#pragma warning disable CA1711 // Identifiers should not have incorrect suffix
         public const string SupportAgentNew = "SupportAgentNew";
-#pragma warning restore CA1711 // Identifiers should not have incorrect suffix
     }
 }
