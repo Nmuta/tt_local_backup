@@ -13,6 +13,7 @@ using NSubstitute.ReturnsExtensions;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
@@ -383,9 +384,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as ApolloBanHistory;
+                var details = result.Value as IList<LiveOpsBanHistory>;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<ApolloBanHistory>();
+                details.Should().BeOfType<List<LiveOpsBanHistory>>();
             }
         }
 
@@ -1207,7 +1208,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<ApolloPlayerDetails>());
                 this.ApolloPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloPlayerDetails>());
                 this.ApolloPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
-                this.ApolloPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<ApolloBanDescription>>());
+                this.ApolloPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
                 this.ApolloPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<ApolloBanSummary>>());
                 this.ApolloPlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ApolloConsoleDetails>>());
                 this.ApolloPlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ApolloSharedConsoleUser>>());

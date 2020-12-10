@@ -20,7 +20,14 @@
     "test:ado:ncc": "ng test --karma-config=src/karma-ado.conf.js",
     "build:dev": "(ng build --prod --configuration=dev --crossOrigin=anonymous) && yarn run build:dev:configMoveToBuild",
     "build:dev:configMoveToBuild": "cp web.config dist/",
-    "build:prod": "(ng build --prod --configuration=production --crossOrigin=anonymous --subresource-integrity=true) && yarn run build:dev:configMoveToBuild"
+    "build:prod": "(ng build --prod --configuration=production --crossOrigin=anonymous --subresource-integrity=true) && yarn run build:dev:configMoveToBuild",
+    "open:navbar": "start https://forzasupport1570048282.zendesk.com/agent/apps/scrutineer-inventory-management-angular?zat=true",
+    "open:ticket:fm7": "start https://forzasupport1570048282.zendesk.com/agent/tickets/60?zat=true",
+    "open:ticket:fh3": "start https://forzasupport1570048282.zendesk.com/agent/tickets/61?zat=true",
+    "open:ticket:fh4": "start https://forzasupport1570048282.zendesk.com/agent/tickets/58?zat=true",
+    "open:ticket:fh4:bad": "start https://forzasupport1570048282.zendesk.com/agent/tickets/62?zat=true",
+    "open:ticket:street": "start https://forzasupport1570048282.zendesk.com/agent/tickets/59?zat=true",
+    "open:ticket:street:bad": "start https://forzasupport1570048282.zendesk.com/agent/tickets/57?zat=true"
   },
   "private": true,
   "dependencies": {

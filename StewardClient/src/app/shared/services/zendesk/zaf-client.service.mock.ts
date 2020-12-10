@@ -15,7 +15,7 @@ export class MockZafClientService extends ZafClientService {
   }
 
   constructor() {
-    super(null);
+    super(null, null);
   }
 
   /** Nuking the init function so we don't get the actual object; otherwise we are using this class as-is */

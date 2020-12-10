@@ -11,7 +11,7 @@ export class PlayerDetailsItemComponent implements OnInit {
   /** Name of the player detail item. */
   @Input() public name: string;
   /** Value of the player details item */
-  @Input() public value: string;
+  @Input() public value: string | undefined;
 
   /** Determines when to show the 'Copied!' UI notification.  */
   public copied: boolean;

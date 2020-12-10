@@ -10,12 +10,12 @@ import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { createMockGravityService } from '@services/gravity';
 import { createMockSunriseService } from '@services/sunrise';
 import { of, throwError } from 'rxjs';
-import { createMockMockOpusService } from '@services/opus';
-import { createMockMockApolloService } from '@services/apollo';
+import { createMockOpusService } from '@services/opus';
+import { createMockApolloService } from '@services/apollo';
 
 describe('PlayerDetailsComponent', () => {
-  let fixture: ComponentFixture<PlayerDetailsBaseComponent<unknown>>;
-  let component: PlayerDetailsBaseComponent<unknown>;
+  let fixture: ComponentFixture<PlayerDetailsBaseComponent<never>>;
+  let component: PlayerDetailsBaseComponent<never>;
 
   beforeEach(
     waitForAsync(() => {
@@ -32,8 +32,8 @@ describe('PlayerDetailsComponent', () => {
           createMockMsalService(),
           createMockGravityService(),
           createMockSunriseService(),
-          createMockMockApolloService(),
-          createMockMockOpusService(),
+          createMockApolloService(),
+          createMockOpusService(),
         ],
       }).compileComponents();
 

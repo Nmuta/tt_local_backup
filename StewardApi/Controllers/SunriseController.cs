@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -166,7 +167,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="xuid">The xuid.</param>
         /// <param name="maxResults">A value that specifies how many consoles to return.</param>
         /// <returns>
-        ///     The list of <see cref="SunriseConsoleDetails"/>.
+        ///     A <see cref="List{SunriseConsoleDetails}"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/consoleDetails")]
         [SwaggerResponse(200, type: typeof(List<SunriseConsoleDetails>))]
@@ -439,10 +440,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="SunriseBanHistory"/>.
+        ///     A list of <see cref="LiveOpsBanHistory"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/banHistory")]
-        [SwaggerResponse(200, type: typeof(SunriseBanHistory))]
+        [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
         public async Task<IActionResult> GetBanHistory(ulong xuid)
         {
             try
@@ -462,10 +463,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="gamertag">The gamertag.</param>
         /// <returns>
-        ///     The <see cref="SunriseBanHistory"/>.
+        ///     A list of <see cref="LiveOpsBanHistory"/>.
         /// </returns>
         [HttpGet("player/gamertag({gamertag})/banHistory")]
-        [SwaggerResponse(200, type: typeof(SunriseBanHistory))]
+        [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
         public async Task<IActionResult> GetBanHistory(string gamertag)
         {
             try
@@ -941,7 +942,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return jobId;
         }
 
-        private async Task<SunriseBanHistory> GetBanHistoryAsync(ulong xuid)
+        private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid)
         {
             var getServicesBanHistory = this.sunrisePlayerDetailsProvider.GetUserBanHistoryAsync(xuid);
             var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(xuid, Title.ToString());
@@ -949,10 +950,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             await Task.WhenAll(getServicesBanHistory, getLiveOpsBanHistory).ConfigureAwait(true);
 
             var servicesBanHistory = await getServicesBanHistory.ConfigureAwait(true);
-
             var liveOpsBanHistory = await getLiveOpsBanHistory.ConfigureAwait(true);
 
-            return new SunriseBanHistory(servicesBanHistory, liveOpsBanHistory);
+            var banHistories = liveOpsBanHistory.Union(servicesBanHistory, new LiveOpsBanHistoryComparer()).ToList();
+
+            foreach (var banHistory in banHistories)
+            {
+                banHistory.IsActive = DateTime.UtcNow.CompareTo(banHistory.ExpireTimeUtc) < 0;
+            }
+
+            banHistories.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+
+            return banHistories;
         }
     }
 }

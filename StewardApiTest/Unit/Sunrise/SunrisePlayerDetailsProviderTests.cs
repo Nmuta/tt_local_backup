@@ -8,6 +8,7 @@ using Forza.WebServices.FH4.master.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Xls.WebServices.FH4.master.Generated;
@@ -366,7 +367,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            var actions = new List<Func<Task<IList<SunriseBanDescription>>>>
+            var actions = new List<Func<Task<IList<LiveOpsBanHistory>>>>
             {
                 async () => await provider.GetUserBanHistoryAsync(xuid).ConfigureAwait(false),
                 async () => await provider.GetUserBanHistoryAsync(gamertag).ConfigureAwait(false)
@@ -375,7 +376,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<List<SunriseBanDescription>>();
+                action().Result.Should().BeOfType<List<LiveOpsBanHistory>>();
             }
         }
 
@@ -411,7 +412,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.RefreshableCacheStore.GetItem<IList<SunriseCreditUpdate>>(Arg.Any<string>()).Returns((IList<SunriseCreditUpdate>)null);
                 this.SunriseEnforcementService.BanUsersAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<ForzaUserBanParameters>()).Returns(Fixture.Create<BanUsersOutput>());
                 this.SunriseEnforcementService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
-                this.SunriseEnforcementService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanHistoryOutput>());
+                this.SunriseEnforcementService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(this.GenerateGetUserBanHistoryOutput());
                 this.Mapper.Map<SunrisePlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.Mapper.Map<IList<SunriseConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<SunriseConsoleDetails>>());
                 this.Mapper.Map<IList<SunriseSharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SunriseSharedConsoleUser>>());
@@ -438,6 +439,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                                                                                             this.GiftHistoryProvider,
                                                                                             this.Mapper,
                                                                                             this.RefreshableCacheStore);
+
+            private GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
+            {
+                // Cannot use random uint value for feature area, we must build our own valid fake data
+                Random rnd = new Random();
+                var fakeBanHistories = new List<ForzaUserBanDescription>();
+                var numberOfFakeBanHistories = rnd.Next(1, 10);
+                for (var i = 0; i < numberOfFakeBanHistories; i++)
+                {
+                    fakeBanHistories.Add(Fixture.Build<ForzaUserBanDescription>().With(x => x.FeatureAreas, (uint)2).Create());
+                }
+
+                return Fixture.Build<GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
+            }
         }
     }
 }
