@@ -8,3 +8,4 @@ export * from './sunrise-user-flags.model';
 export * from './sunrise-player-inventory.model';
 export * from './sunrise-lsp-group.model';
 export * from './sunrise-gift-history.model';
+export * from './sunrise-ban-result.model';
