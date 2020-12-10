@@ -80,17 +80,17 @@ export class ZafClientService {
         this.clientSessionKey,
       );
 
-      const maybePriorZafLocRaw = sessionStorage.getItem(this.clientSessionKey);
-      if (!maybePriorZafLocRaw) {
+      const priorZafLocRaw: string | null = sessionStorage.getItem(this.clientSessionKey);
+      if (!priorZafLocRaw) {
         throw new Error(
           `ZAFClient.init() returned ${maybeClient}, and there was no prior session to restore.`,
         );
       }
 
-      const priorZafLoc: ZafLoc = JSON.parse(maybePriorZafLocRaw);
+      const priorZafLoc: ZafLoc | null = JSON.parse(priorZafLocRaw);
       if (!priorZafLoc) {
         throw new Error(
-          `ZAFClient.init() returned ${maybeClient}, and reconstitution of the prior session failed with '${maybePriorZafLocRaw}'.`,
+          `ZAFClient.init() returned ${maybeClient}, and reconstitution of the prior session failed with '${priorZafLocRaw}'.`,
         );
       }
 
@@ -100,7 +100,7 @@ export class ZafClientService {
       }
 
       throw new Error(
-        `ZAFClient.init() returned ${maybeClient}, and the reconstituted ZAFClient.init() returned ${maybeReconstitutedClient}, when restored with ${maybePriorZafLocRaw}.`,
+        `ZAFClient.init() returned ${maybeClient}, and the reconstituted ZAFClient.init() returned ${maybeReconstitutedClient}, when restored with ${priorZafLocRaw}.`,
       );
     } catch (e) {
       this.logger.error([LogTopic.ZAF], e);
