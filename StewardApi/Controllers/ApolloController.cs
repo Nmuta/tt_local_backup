@@ -876,7 +876,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <returns>
         ///     The list of <see cref="ApolloGiftHistory"/>.
         /// </returns>
-        [HttpGet("group/id({groupId})/giftHistory")]
+        [HttpGet("group/groupId({groupId})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<ApolloGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(int groupId)
         {

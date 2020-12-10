@@ -18,16 +18,18 @@ import { ApolloPlayerGamertagDetailsFakeApi } from './apis/title/apollo/player/g
 import { ApolloPlayerProfileIdInventoryFakeApi } from './apis/title/apollo/player/profileId/inventory';
 import { ApolloPlayerXuidInventoryFakeApi } from './apis/title/apollo/player/xuid/inventory';
 import { ApolloPlayerXuidInventoryProfilesFakeApi } from './apis/title/apollo/player/xuid/inventoryProfiles';
+import { ApolloPlayerXuidGiftHistoryFakeApi } from './apis/title/apollo/player/xuid/giftHistory';
 import { ApolloGroupGamertagsInventoryFakeApi } from './apis/title/apollo/group/gamertags/inventory';
 import { ApolloGroupGroupIdInventoryFakeApi } from './apis/title/apollo/group/groupId/inventory';
 import { ApolloGroupXuidsInventoryFakeApi } from './apis/title/apollo/group/xuids/inventory';
+import { ApolloGroupGroupIdGiftHistoryFakeApi } from './apis/title/apollo/group/groupId/giftHistory';
 
 import { GravityPlayerGamertagDetailsFakeApi } from './apis/title/gravity/player/gamertag/details';
 import { GravityPlayerXuidInventoryFakeApi } from './apis/title/gravity/player/xuid/inventory';
 import { GravityPlayerXuidProfileIdInventoryFakeApi } from './apis/title/gravity/player/xuid/profileId/inventory';
 import { GravityPlayerT10IdInventoryFakeApi } from './apis/title/gravity/player/t10Id/inventory';
 import { GravityPlayerT10IdProfileIdInventoryFakeApi } from './apis/title/gravity/player/t10Id/profileId/inventory';
-import { GravityGiftHistoryFakeApi } from './apis/title/gravity/player/t10Id/giftHistory'
+import { GravityPlayerT10IdGiftHistoryFakeApi } from './apis/title/gravity/player/t10Id/giftHistory'
 
 import { OpusPlayerGamertagDetailsFakeApi } from './apis/title/opus/player/gamertag/details';
 import { OpusPlayerProfileIdInventoryFakeApi } from './apis/title/opus/player/profileId/inventory';
@@ -42,6 +44,7 @@ import { SunrisePlayerXuidCreditUpdatesFakeApi } from './apis/title/sunrise/play
 import { SunrisePlayerXuidProfileSummaryFakeApi } from './apis/title/sunrise/player/xuid/profileSummary';
 import { SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/sunrise/player/xuid/sharedConsoleUsers';
 import { SunrisePlayerXuidUserFlagsFakeApi } from './apis/title/sunrise/player/xuid/userFlags';
+import { SunrisePlayerXuidGiftHistoryFakeApi } from './apis/title/sunrise/player/xuid/giftHistory';
 import { SunriseGroupsFakeApi } from './apis/title/sunrise/groups';
 import { SunrisePlayerXuidInventoryFakeApi } from './apis/title/sunrise/player/xuid/inventory';
 import { SunrisePlayerXuidInventoryProfilesFakeApi } from './apis/title/sunrise/player/xuid/inventoryProfiles';
@@ -49,6 +52,7 @@ import { SunrisePlayerProfileIdInventoryFakeApi } from './apis/title/sunrise/pla
 import { SunriseGroupGamertagsInventoryFakeApi } from './apis/title/sunrise/group/gamertags/inventory';
 import { SunriseGroupGroupIdInventoryFakeApi } from './apis/title/sunrise/group/groupId/inventory';
 import { SunriseGroupXuidsInventoryFakeApi } from './apis/title/sunrise/group/xuids/inventory';
+import { SunriseGroupGroupIdGiftHistoryFakeApi } from './apis/title/sunrise/group/groupId/giftHistory';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -60,7 +64,7 @@ const fakeApiConstructors = [
   GravityPlayerT10IdProfileIdInventoryFakeApi,
   GravityPlayerT10IdInventoryFakeApi,
   GravityPlayerXuidInventoryFakeApi,
-  GravityGiftHistoryFakeApi,
+  GravityPlayerT10IdGiftHistoryFakeApi,
 
   // Sunrise
   SunrisePlayerGamertagDetailsFakeApi,
@@ -70,6 +74,7 @@ const fakeApiConstructors = [
   SunrisePlayerXuidUserFlagsFakeApi,
   SunrisePlayerXuidProfileSummaryFakeApi,
   SunrisePlayerXuidBanHistoryFakeApi,
+  SunrisePlayerXuidGiftHistoryFakeApi,
   SunriseConsoleIsBannedFakeApi,
   SunriseGroupsFakeApi,
   SunrisePlayerXuidInventoryFakeApi,
@@ -78,15 +83,20 @@ const fakeApiConstructors = [
   SunriseGroupGamertagsInventoryFakeApi,
   SunriseGroupGroupIdInventoryFakeApi,
   SunriseGroupXuidsInventoryFakeApi,
+  SunriseGroupGroupIdGiftHistoryFakeApi,
+
   // Apollo
   ApolloPlayerGamertagDetailsFakeApi,
   ApolloPlayerProfileIdInventoryFakeApi,
   ApolloPlayerXuidInventoryFakeApi,
   ApolloPlayerXuidInventoryProfilesFakeApi,
   ApolloPlayerXuidInventoryFakeApi,
+  ApolloPlayerXuidGiftHistoryFakeApi,
   ApolloGroupGamertagsInventoryFakeApi,
   ApolloGroupGroupIdInventoryFakeApi,
   ApolloGroupXuidsInventoryFakeApi,
+  ApolloGroupGroupIdGiftHistoryFakeApi,
+  
   // Opus
   OpusPlayerGamertagDetailsFakeApi,
   OpusPlayerProfileIdInventoryFakeApi,

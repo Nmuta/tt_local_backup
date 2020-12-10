@@ -210,7 +210,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         public async Task<IList<SunriseGiftHistory>> GetGiftHistoriesAsync(int groupId)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}group/id({groupId})/giftHistory");
+            var path = new Uri(this.baseUri, $"{TitlePath}group/groupId({groupId})/giftHistory");
 
             return await ServiceClient.SendRequestAsync<IList<SunriseGiftHistory>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
