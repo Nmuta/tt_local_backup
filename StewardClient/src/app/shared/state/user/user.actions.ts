@@ -1,3 +1,5 @@
+import { GameTitleCodeNames } from '@models/enums';
+
 /** GetUser action declaration. */
 export class GetUser {
   public static readonly type = '[User] Get User';
@@ -52,4 +54,10 @@ export class RecheckAuth {
   constructor() {
     // Empty
   }
+}
+
+/** Meta action: Updates the last gifting page title. */
+export class UpdatecurrentGiftingPageTitle {
+  public static readonly type = '[User] Update Last Gifting Page Title';
+  constructor(public readonly title: GameTitleCodeNames) {}
 }

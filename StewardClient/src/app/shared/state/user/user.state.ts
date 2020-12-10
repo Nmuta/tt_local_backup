@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
+import { GameTitleCodeNames } from '@models/enums';
 import { Navigate } from '@ngxs/router-plugin';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
@@ -17,12 +18,14 @@ import {
   ResetAccessToken,
   ResetUserProfile,
   SetNoUserProfile,
+  UpdatecurrentGiftingPageTitle,
 } from './user.actions';
 
 /** Defines the user state model. */
 export class UserStateModel {
   public profile?: UserModel;
   public accessToken?: string;
+  public currentGiftingPageTitle?: GameTitleCodeNames;
 }
 
 @Injectable()
@@ -34,6 +37,7 @@ export class UserStateModel {
     // defined, means user is signed in
     profile: undefined,
     accessToken: undefined,
+    currentGiftingPageTitle: GameTitleCodeNames.Street
   },
 })
 /** Defines the user state. */
@@ -129,6 +133,18 @@ export class UserState {
     ctx.patchState({ accessToken: undefined });
   }
 
+  /** Updates the last gifting page title. */
+  @Action(UpdatecurrentGiftingPageTitle, { cancelUncompleted: true })
+  public updatecurrentGiftingPageTitle(ctx: StateContext<UserStateModel>, _action: UpdatecurrentGiftingPageTitle): Observable<void> {
+    const state = ctx.getState();
+    const newTitle = _action.title;
+
+    if(state.currentGiftingPageTitle !== newTitle) {
+      ctx.patchState({ currentGiftingPageTitle:  newTitle});
+    }
+    return of();
+  }
+
   /** Helper function that timeouts state checks for user profile. */
   public static latestValidProfile$(profile$: Observable<UserModel>): Observable<UserModel> {
     const obs = profile$.pipe(
@@ -150,5 +166,11 @@ export class UserState {
   @Selector()
   public static accessToken(state: UserStateModel): string {
     return state.accessToken;
+  }
+
+  /** Selector for state last gifting page title. */
+  @Selector()
+  public static currentGiftingPageTitle(state: UserStateModel): GameTitleCodeNames {
+    return state.currentGiftingPageTitle;
   }
 }

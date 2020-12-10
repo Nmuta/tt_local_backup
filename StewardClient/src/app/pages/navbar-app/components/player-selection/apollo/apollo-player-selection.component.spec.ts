@@ -22,9 +22,7 @@ describe('ApolloPlayerSelectionComponent', () => {
         ],
         declarations: [ApolloPlayerSelectionComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockMockApolloService()
-        ],
+        providers: [createMockMockApolloService()],
       }).compileComponents();
 
       const injector = getTestBed();

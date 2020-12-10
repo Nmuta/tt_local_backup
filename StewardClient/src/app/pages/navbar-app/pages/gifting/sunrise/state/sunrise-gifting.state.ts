@@ -19,14 +19,12 @@ export class SunriseGiftingStateModel {
 })
 /** Defines the sunrise gifting page stte. */
 export class SunriseGiftingState {
-
   /** Sets the gifting page's selected player identities. */
   @Action(SetSunriseSelectedPlayerIdentities, { cancelUncompleted: true })
   public setFakeApi(
     ctx: StateContext<SunriseGiftingStateModel>,
     action: SetSunriseSelectedPlayerIdentities,
   ): Observable<SunriseGiftingStateModel> {
-
     return of(ctx.patchState({ selectedPlayerIdentities: action.selectedPlayerIdentities }));
   }
 

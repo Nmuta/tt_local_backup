@@ -18,14 +18,13 @@ import { SunrisePlayerSelectionComponent } from './sunrise/sunrise-player-select
 import { OpusPlayerSelectionComponent } from './opus/opus-player-selection.component';
 import { ContentCollapseModule } from '@components/content-collapse/content-collapse.module';
 
-
 /** The feature module for the User Details route. */
 @NgModule({
   declarations: [
     GravityPlayerSelectionComponent,
     SunrisePlayerSelectionComponent,
     ApolloPlayerSelectionComponent,
-    OpusPlayerSelectionComponent
+    OpusPlayerSelectionComponent,
   ],
   imports: [
     CommonModule,
@@ -42,11 +41,11 @@ import { ContentCollapseModule } from '@components/content-collapse/content-coll
     FormsModule,
     ContentCollapseModule,
   ],
-  exports:  [
+  exports: [
     GravityPlayerSelectionComponent,
     SunrisePlayerSelectionComponent,
     ApolloPlayerSelectionComponent,
-    OpusPlayerSelectionComponent
+    OpusPlayerSelectionComponent,
   ],
 })
 export class PlayerSelectionModule {}

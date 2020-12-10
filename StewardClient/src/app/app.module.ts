@@ -73,7 +73,7 @@ function fakeApiOrNothing(): Provider[] {
       GravityGiftingState,
       SunriseGiftingState,
       ApolloGiftingState,
-      OpusGiftingState
+      OpusGiftingState,
     ]),
     NgxsStoragePluginModule.forRoot({ key: [UserSettingsState] }),
     NgxsRouterPluginModule.forRoot(),

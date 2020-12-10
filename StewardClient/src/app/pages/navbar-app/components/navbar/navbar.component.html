@@ -6,7 +6,7 @@
   <a
     *ngFor="let item of items"
     mat-button
-    [routerLink]="item.routerLink"
+    (click)="routeTo(item)"
     routerLinkActive="mat-stroked-button"
   >
     {{ item.title }}

@@ -15,11 +15,15 @@ export class OpusPlayerSelectionComponent extends PlayerSelectionBaseComponent<u
   }
 
   /** Creates Opus's player selection request. */
-  public makeRequestToValidateIds$(playerIds: string[], playerIdType: string): Observable<unknown[]> {
+  public makeRequestToValidateIds$(
+    playerIds: string[],
+    playerIdType: string,
+  ): Observable<unknown[]> {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const response: unknown[] = playerIds.map((x) => {
+    const response: unknown[] = playerIds.map(x => {
       const tmp = {};
       tmp[playerIdType] = x;
+      tmp['error'] = Math.random() < 0.5;
       return tmp;
     });
     return of(response);

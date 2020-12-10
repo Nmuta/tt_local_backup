@@ -3,15 +3,28 @@
 mat-card {
   padding: 20px;
   display: inline-block;
-  min-width: 300px;
+  min-width: 450px;
   margin-top: 20px;
 
   h2 {
     display: inline-block;
     margin: 0px;
+    width: 100%;
+
+    .num-errors-text {
+      color: rgb(207, 26, 26);
+    }
   }
 
-  .content-container, #results-view, #fail-state {
+  .clear-identity-results-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
+  .content-container,
+  #results-view,
+  #fail-state {
     display: block;
     margin-top: 15px;
   }
@@ -25,23 +38,26 @@ mat-card {
     color: #fff;
   }
 
-  mat-form-field {
-    display: block;
-    width: 250px;
-    
-  
-    textarea {
-      height: 30px;
-      font-size: 17px;
+  .player-id-input {
+    width: 300px;
+
+    mat-form-field {
+      display: block;
+      width: 100%;
+
+      textarea {
+        height: 30px;
+        font-size: 17px;
+      }
+
+      .expanded-text-area {
+        height: 200px !important;
+      }
     }
 
-    .expanded-text-area {
-      height: 200px !important;
+    .validate-btn {
+      width: 100%;
     }
-  }
-
-  .validateBtn {
-    width: 140px;
   }
 
   .identity-results {
@@ -61,19 +77,19 @@ mat-card {
       }
 
       tr {
-        border-top: 1px solid  rgba(0, 0, 0, 0.12);
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
         min-width: 30px;
         text-align: center;
         margin: auto;
 
         button {
-          color: red;
+          color: rgb(207, 26, 26);
         }
       }
-    }
-  }
 
-  .clear-identity-results-btn {
-    margin-top: 15px;
+      .player-lookup-error {
+        background-color: rgb(228, 154, 154);
+      }
+    }
   }
 }

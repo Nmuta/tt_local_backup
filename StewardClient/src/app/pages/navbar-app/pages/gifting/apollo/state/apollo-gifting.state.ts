@@ -19,14 +19,12 @@ export class ApolloGiftingStateModel {
 })
 /** Defines the apollo gifting page stte. */
 export class ApolloGiftingState {
-
   /** Sets the gifting page's selected player identities. */
   @Action(SetApolloSelectedPlayerIdentities, { cancelUncompleted: true })
   public setFakeApi(
     ctx: StateContext<ApolloGiftingStateModel>,
     action: SetApolloSelectedPlayerIdentities,
   ): Observable<ApolloGiftingStateModel> {
-
     return of(ctx.patchState({ selectedPlayerIdentities: action.selectedPlayerIdentities }));
   }
 

@@ -19,14 +19,12 @@ export class OpusGiftingStateModel {
 })
 /** Defines the opus gifting page stte. */
 export class OpusGiftingState {
-
   /** Sets the gifting page's selected player identities. */
   @Action(SetOpusSelectedPlayerIdentities, { cancelUncompleted: true })
   public setFakeApi(
     ctx: StateContext<OpusGiftingStateModel>,
     action: SetOpusSelectedPlayerIdentities,
   ): Observable<OpusGiftingStateModel> {
-
     return of(ctx.patchState({ selectedPlayerIdentities: action.selectedPlayerIdentities }));
   }
 

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   faCog,
   faExclamationTriangle,
@@ -40,6 +41,7 @@ export class NavbarComponent {
   public settingsIcon = faCog;
 
   constructor(
+    protected readonly router: Router,
     private readonly windowService: WindowService,
     public readonly zendeskService: ZendeskService,
   ) {}
@@ -52,5 +54,11 @@ export class NavbarComponent {
   /** A string representing the current location */
   public get location(): string {
     return `${this.windowService.location().pathname}${this.windowService.location().search}`;
+  }
+
+  /** Routes based on the provided router link path. */
+  public routeTo(routerLinkPath: RouterLinkPath): void {
+    // Required here so that navigation extas can be used
+    this.router.navigate(routerLinkPath.routerLink, routerLinkPath.navigationExtras);
   }
 }

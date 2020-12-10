@@ -1,5 +1,6 @@
-/** A tool path and name. */
+import { NavigationExtras } from '@angular/router';
 
+/** A tool path and name. */
 /** Parameters for generating a path displayed in the navbar. */
 export interface RouteParams {
   readonly title: string;
@@ -10,22 +11,25 @@ export interface RouteParams {
 export interface RouterLinkPath {
   readonly title: string;
   readonly routerLink: string[];
+  readonly navigationExtras: NavigationExtras;
 }
 
 /** Creates a NavbarPath for use in displaying the navbar, from a RouteParams object. */
-export function createNavbarPath(routeParams: RouteParams): RouterLinkPath {
-  return createRouterLinkPath(navbarAppRootPath, routeParams);
+export function createNavbarPath(routeParams: RouteParams, navigationExtras?: NavigationExtras): RouterLinkPath {
+  return createRouterLinkPath(navbarAppRootPath, routeParams, !!navigationExtras ? navigationExtras : {} );
 }
 
 /** Creates a RouterLinkPath for use in displaying navbars, from a RouteParams object. */
 export function createRouterLinkPath(
   parentPath: string[],
   routeParams: RouteParams,
+  navigationExtras: NavigationExtras
 ): RouterLinkPath {
   // tslint:disable-next-line: no-object-literal-type-assertion
   return <RouterLinkPath>{
     title: routeParams.title,
     routerLink: [...parentPath, routeParams.path],
+    navigationExtras: navigationExtras,
   };
 }
 
@@ -55,6 +59,6 @@ export class NavbarTools {
 
 /** The list of tools to display in the navbar. */
 export const navbarToolList: RouterLinkPath[] = [
-  createNavbarPath(NavbarTools.GiftingPage),
+  createNavbarPath(NavbarTools.GiftingPage, { skipLocationChange: true }),
   createNavbarPath(NavbarTools.UserDetailsPage),
 ];

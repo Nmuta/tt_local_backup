@@ -22,9 +22,7 @@ describe('SunrisePlayerSelectionComponent', () => {
         ],
         declarations: [SunrisePlayerSelectionComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockSunriseService()
-        ],
+        providers: [createMockSunriseService()],
       }).compileComponents();
 
       const injector = getTestBed();

@@ -24,7 +24,7 @@ import { OpusGiftingComponent } from './opus/opus-gifting.component';
     GravityGiftingComponent,
     SunriseGiftingComponent,
     ApolloGiftingComponent,
-    OpusGiftingComponent
+    OpusGiftingComponent,
   ],
   imports: [
     CommonModule,
@@ -37,7 +37,7 @@ import { OpusGiftingComponent } from './opus/opus-gifting.component';
     FontAwesomeModule,
     FormsModule,
     PlayerSelectionModule,
-    TitleDropdownModule
+    TitleDropdownModule,
   ],
 })
 export class GiftingsModule {}

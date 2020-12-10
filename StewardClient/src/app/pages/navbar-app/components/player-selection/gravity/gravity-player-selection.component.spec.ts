@@ -22,9 +22,7 @@ describe('GravityPlayerSelectionComponent', () => {
         ],
         declarations: [GravityPlayerSelectionComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockGravityService()
-        ],
+        providers: [createMockGravityService()],
       }).compileComponents();
 
       const injector = getTestBed();

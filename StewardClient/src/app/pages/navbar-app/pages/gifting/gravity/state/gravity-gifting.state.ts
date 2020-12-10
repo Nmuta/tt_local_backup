@@ -19,7 +19,6 @@ export class GravityGiftingStateModel {
 })
 /** Defines the gravity gifting page stte. */
 export class GravityGiftingState {
-
   /** Sets the gifting page's selected player identities. */
   @Action(SetGravitySelectedPlayerIdentities, { cancelUncompleted: true })
   public setFakeApi(

@@ -31,8 +31,7 @@ const routes: Routes = [
       },
       {
         path: NavbarTools.GiftingPage.path,
-        loadChildren: () =>
-          import('./pages/gifting/gifting.module').then(m => m.GiftingsModule),
+        loadChildren: () => import('./pages/gifting/gifting.module').then(m => m.GiftingsModule),
       },
       ...sidebarRoutes,
       {

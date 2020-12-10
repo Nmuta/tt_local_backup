@@ -22,9 +22,7 @@ describe('OpusPlayerSelectionComponent', () => {
         ],
         declarations: [OpusPlayerSelectionComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockMockOpusService()
-        ],
+        providers: [createMockMockOpusService()],
       }).compileComponents();
 
       const injector = getTestBed();

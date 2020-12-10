@@ -1,6 +1,10 @@
 <ng-container>
-  <sunrise-player-selection [allowT10Id]="false" [allowGroup]="false" [initPlayerSelectionState]="selectedPlayerIdentities"
-    (selectedPlayerIdentitiesEvent)="selectedPlayerIndentities($event)"></sunrise-player-selection>
+  <sunrise-player-selection
+    [allowT10Id]="false"
+    [allowGroup]="false"
+    [initPlayerSelectionState]="selectedPlayerIdentities"
+    (selectedPlayerIdentitiesEvent)="selectedPlayerIndentities($event)"
+  ></sunrise-player-selection>
 
   <br /><br />
   <h2>Sunrise gifting page state</h2>
