@@ -4,11 +4,6 @@ fa-icon {
   color: mat-color($app-warn);
 }
 
-pre {
-  white-space: pre-wrap;
-  overflow: hidden;
-}
-
 section.checkboxes {
   > mat-checkbox {
     display: block;

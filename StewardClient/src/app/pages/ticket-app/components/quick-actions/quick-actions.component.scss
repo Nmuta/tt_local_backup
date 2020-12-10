@@ -1,0 +1,18 @@
+h1,
+h2 {
+  display: inline-block;
+  margin: 0px;
+}
+
+div.actions {
+  width: 100%;
+  margin-top: 20px;
+
+  button {
+    min-width: 200px;
+  }
+}
+
+section.quick-actions {
+  margin-top: 20px;
+}

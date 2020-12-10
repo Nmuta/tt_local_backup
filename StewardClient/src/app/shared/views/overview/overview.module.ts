@@ -6,6 +6,7 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 
 /** A domain module for displaying account overviews. */
 @NgModule({
@@ -17,6 +18,7 @@ import { MatTableModule } from '@angular/material/table';
     MatTableModule,
     ErrorSpinnerModule,
     PipesModule,
+    JsonDumpModule,
   ],
   exports: [SunriseOverviewComponent],
 })

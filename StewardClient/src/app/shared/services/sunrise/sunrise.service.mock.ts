@@ -9,6 +9,10 @@ import { SunriseService } from './sunrise.service';
 /** Defines the mock for the API Service. */
 @Injectable()
 export class MockSunriseService {
+  public getIdentity = jasmine
+    .createSpy('getIdentity')
+    .and.returnValue(of({ xuid: BigInt(12345), gamertag: 'gamertag' }));
+
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
     .and.returnValue(defer(() => of(_.clone(this.generator()))));

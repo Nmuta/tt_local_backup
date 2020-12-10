@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
 import { ConsolesModule } from '@shared/views/consoles/consoles.module';
@@ -24,6 +25,7 @@ import { SunriseComponent } from './sunrise.component';
     ConsolesModule,
     OverviewModule,
     CreditHistoryModule,
+    JsonDumpModule,
   ],
 })
 export class SunriseModule {}

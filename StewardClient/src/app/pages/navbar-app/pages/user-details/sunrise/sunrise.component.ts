@@ -8,7 +8,6 @@ import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 /** Component for displaying routed Sunrise user details. */
 @Component({
-  selector: 'app-sunrise',
   templateUrl: './sunrise.component.html',
   styleUrls: ['./sunrise.component.scss'],
 })

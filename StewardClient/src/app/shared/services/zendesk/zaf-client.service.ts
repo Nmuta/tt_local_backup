@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoggerService, LogTopic } from '@services/logger';
 import { ExportedZafClient, ZafClient } from '@shared/definitions/zaf-client';
-import { from, Observable, of, Subject } from 'rxjs';
+import { from, Observable, of, ReplaySubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 type SwitchMapperImmediate<T> = (client: ZafClient) => T;
@@ -23,7 +23,7 @@ function evaluateAndExport<T>(code: string, exportedValue: string): T {
 export class ZafClientService {
   public client: ZafClient = undefined;
 
-  private readonly clientInternal$ = new Subject<ZafClient>();
+  private readonly clientInternal$ = new ReplaySubject<ZafClient>(1);
 
   /** The latest client, as an observable. */
   public get client$(): Observable<ZafClient> {
@@ -54,7 +54,7 @@ export class ZafClientService {
   /** Initializes the object. */
   protected async init(): Promise<void> {
     try {
-      const zafUrl = 'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.js';
+      const zafUrl = 'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js';
       const zafText = await this.http.get(zafUrl, { responseType: 'text' }).toPromise();
       const zafObject = evaluateAndExport<ExportedZafClient>(zafText, 'ZAFClient');
       const maybeClient = zafObject.init();

@@ -1,12 +1,12 @@
 /** Enum for the inventory gifting options. */
-export enum InventoryOptions {
+export enum InventoryOption {
   UserGift = 'User Gift',
   GroupGiftByXUID = 'Group Gift [XUID]',
   GroupGiftByGamertag = 'Group Gift [Gamertag]',
 }
 
 /** Enum for game title names. */
-export enum GameTitleNames {
+export enum GameTitleName {
   Street = 'Forza Street',
   FH4 = 'Forza Horizon 4',
   FM7 = 'Forza Motorsport 7',
@@ -14,7 +14,7 @@ export enum GameTitleNames {
 }
 
 /** Enum for game title names. */
-export enum GameTitleCodeNames {
+export enum GameTitleCodeName {
   Street = 'Gravity',
   FH4 = 'Sunrise',
   FM7 = 'Apollo',

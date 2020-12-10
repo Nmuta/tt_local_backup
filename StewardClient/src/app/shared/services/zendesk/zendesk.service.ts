@@ -24,21 +24,22 @@ export interface TicketFieldsResponse {
   providedIn: 'root',
 })
 export class ZendeskService {
-  constructor(private readonly zafClientService: ZafClientService) {}
+  /** Emits true when we're inside zendesk. */
+  public readonly inZendesk$: Observable<boolean>;
+  /** Emits true when we're missing zendesk. */
+  public readonly missingZendesk$: Observable<boolean>;
 
-  /**
-   * True when this app is operating within zendesk.
-   * @deprecated May erroneously return false for the first few ms of operation. Use @see inZendesk$ instead
-   */
-  public get inZendesk(): boolean {
-    return !!this.zafClientService.client;
+  constructor(private readonly zafClientService: ZafClientService) {
+    this.inZendesk$ = this.zafClientService.client$.pipe(map(v => !!v));
+    this.missingZendesk$ = this.zafClientService.client$.pipe(map(v => !v));
   }
 
   /**
    * True when this app is operating within zendesk.
+   * @deprecated May erroneously return false for the first few ms of operation. Use `inZendesk$` instead
    */
-  public get inZendesk$(): Observable<boolean> {
-    return this.zafClientService.client$.pipe(map(v => !!v));
+  public get inZendesk(): boolean {
+    return !!this.zafClientService.client;
   }
 
   /** Gets the zendesk ticket details. */
@@ -59,7 +60,7 @@ export class ZendeskService {
   }
 
   /** Gets a zendesk custom ticket field. */
-  public getTicketCustomField$(field: string): Observable<unknown> {
+  public getTicketCustomField$(field: string): Observable<Record<string, unknown>> {
     return this.zafClientService.runWithClient$(c => c.get(`ticket.customField:${field}`));
   }
 

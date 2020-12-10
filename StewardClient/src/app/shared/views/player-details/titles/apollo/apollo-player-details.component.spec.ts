@@ -8,7 +8,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { of } from 'rxjs';
-import { ApolloService, createMockMockApolloService } from '@services/apollo';
+import { ApolloService, createMockApolloService } from '@services/apollo';
 import { ApolloPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/gamertag/details';
 
 describe('ApolloPlayerDetailsComponent', () => {
@@ -27,11 +27,7 @@ describe('ApolloPlayerDetailsComponent', () => {
         ],
         declarations: [ApolloPlayerDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          createMockWindowService(),
-          createMockMsalService(),
-          createMockMockApolloService(),
-        ],
+        providers: [createMockWindowService(), createMockMsalService(), createMockApolloService()],
       }).compileComponents();
 
       const injector = getTestBed();

@@ -12,7 +12,6 @@ import { WindowService } from '@services/window';
 import { ZendeskService } from '@services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import {
   createNavbarPath,
@@ -36,21 +35,21 @@ export class NavbarComponent {
   public items: RouterLinkPath[] = navbarToolList;
   public homeRouterLink = createNavbarPath(NavbarTools.HomePage).routerLink;
 
-  public profileIcon = faUser;
-  public settingsIcon = faCog;
+  public readonly profileIcon = faUser;
+  public readonly settingsIcon = faCog;
 
   constructor(
     private readonly windowService: WindowService,
     public readonly zendeskService: ZendeskService,
   ) {}
 
-  /** True when the Zendesk Client is not available */
-  public get missingZendesk$(): Observable<boolean> {
-    return this.zendeskService.inZendesk$.pipe(map(v => !v));
-  }
-
   /** A string representing the current location */
   public get location(): string {
     return `${this.windowService.location().pathname}${this.windowService.location().search}`;
+  }
+
+  /** Emits true when we are missing zendesk. */
+  public get missingZendesk$(): Observable<boolean> {
+    return this.zendeskService.missingZendesk$;
   }
 }

@@ -1,0 +1,18 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title
+      ><button
+        mat-icon-button
+        color="warn"
+        matTooltip="Click to copy JSON"
+        [cdkCopyToClipboard]="input | bigjson"
+        clickStop
+      >
+        <fa-icon [icon]="copyIcon"></fa-icon>
+      </button>
+      <ng-content></ng-content>
+    </mat-panel-title>
+    <mat-panel-description>Click to expand JSON</mat-panel-description>
+  </mat-expansion-panel-header>
+  <pre>{{ input | bigjson }}</pre>
+</mat-expansion-panel>
