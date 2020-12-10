@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IdentityResultBeta } from '@models/identity-query.model';
 import { GravityService } from '@services/gravity';
 import { Observable, of } from 'rxjs';
 import { PlayerSelectionBaseComponent } from '../player-selection.base.component';
@@ -9,7 +10,7 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
   templateUrl: '../player-selection.component.html',
   styleUrls: ['../player-selection.component.scss'],
 })
-export class GravityPlayerSelectionComponent extends PlayerSelectionBaseComponent<unknown> {
+export class GravityPlayerSelectionComponent extends PlayerSelectionBaseComponent<IdentityResultBeta> {
   constructor(public readonly gravityService: GravityService) {
     super();
   }
@@ -18,12 +19,17 @@ export class GravityPlayerSelectionComponent extends PlayerSelectionBaseComponen
   public makeRequestToValidateIds$(
     playerIds: string[],
     playerIdType: string,
-  ): Observable<unknown[]> {
+  ): Observable<IdentityResultBeta[]> {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const response: unknown[] = playerIds.map(x => {
-      const tmp = {};
-      tmp[playerIdType] = x;
-      tmp['error'] = Math.random() < 0.5;
+    const response: IdentityResultBeta[] = playerIds.map(x => {
+      const tmp: IdentityResultBeta = {
+        query: undefined,
+        xuid: BigInt(789639236092375),
+        gamertag: `${playerIdType}:${x}`,
+        t10id: `${playerIdType}:${x}`,
+        error: undefined
+        
+      };
       return tmp;
     });
     return of(response);

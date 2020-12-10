@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GameTitleCodeNames } from '@models/enums';
+import { IdentityResultBetaBatch } from '@models/identity-query.model';
 import { Select, Store } from '@ngxs/store';
 import { UpdatecurrentGiftingPageTitle } from '@shared/state/user/user.actions';
 import { Observable } from 'rxjs';
@@ -15,10 +16,10 @@ import { SetGravitySelectedPlayerIdentities } from './state/gravity-gifting.stat
 })
 export class GravityGiftingComponent extends BaseComponent implements OnInit {
   @Select(GravityGiftingState.selectedPlayerIdentities)
-  public selectedPlayerIdentities$: Observable<unknown[]>;
+  public selectedPlayerIdentities$: Observable<IdentityResultBetaBatch>;
 
   title: GameTitleCodeNames = GameTitleCodeNames.Street;
-  selectedPlayerIdentities: unknown[];
+  selectedPlayerIdentities: IdentityResultBetaBatch;
 
   constructor(protected store: Store) {
     super();
@@ -31,13 +32,13 @@ export class GravityGiftingComponent extends BaseComponent implements OnInit {
 
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe((playerIdentities: unknown[]) => {
+      .subscribe((playerIdentities: IdentityResultBetaBatch) => {
         this.selectedPlayerIdentities = playerIdentities;
       });
   }
 
   /** Logic when player selection outputs identities. */
-  public selectedPlayerIndentities(event: unknown[]): void {
+  public selectedPlayerIndentities(event: IdentityResultBetaBatch): void {
     this.store.dispatch(new SetGravitySelectedPlayerIdentities(event));
   }
 }

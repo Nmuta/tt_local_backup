@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GameTitleCodeNames } from '@models/enums';
+import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { Select, Store } from '@ngxs/store';
 import { UpdatecurrentGiftingPageTitle } from '@shared/state/user/user.actions';
 import { Observable } from 'rxjs';
@@ -15,10 +16,10 @@ import { SetSunriseSelectedPlayerIdentities } from './state/sunrise-gifting.stat
 })
 export class SunriseGiftingComponent extends BaseComponent implements OnInit {
   @Select(SunriseGiftingState.selectedPlayerIdentities)
-  public selectedPlayerIdentities$: Observable<unknown[]>;
+  public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
   title: GameTitleCodeNames = GameTitleCodeNames.FH4;
-  selectedPlayerIdentities: unknown[];
+  selectedPlayerIdentities: IdentityResultAlphaBatch;
 
   constructor(protected store: Store) {
     super();
@@ -31,13 +32,13 @@ export class SunriseGiftingComponent extends BaseComponent implements OnInit {
 
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe((playerIdentities: unknown[]) => {
+      .subscribe((playerIdentities: IdentityResultAlphaBatch) => {
         this.selectedPlayerIdentities = playerIdentities;
       });
   }
 
   /** Logic when player selection outputs identities. */
-  public selectedPlayerIndentities(event: unknown[]): void {
+  public selectedPlayerIndentities(event: IdentityResultAlphaBatch): void {
     this.store.dispatch(new SetSunriseSelectedPlayerIdentities(event));
   }
 }

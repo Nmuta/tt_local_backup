@@ -3,6 +3,10 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { Observable } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
+
+type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
+
 
 /** The shared top-level navbar. */
 @Component({
@@ -10,12 +14,12 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './player-selection.component.html',
   styleUrls: ['./player-selection.component.scss'],
 })
-export abstract class PlayerSelectionBaseComponent<T> extends BaseComponent implements OnInit {
+export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion> extends BaseComponent implements OnInit {
   @Input() initPlayerSelectionState: T[] = [];
   @Input() allowT10Id: boolean = true;
   @Input() allowGroup: boolean = true;
   @Output() selectedPlayerIdentitiesEvent = new EventEmitter<T[]>();
-
+  
   /** Close icon */
   public closeIcon = faTimesCircle;
 

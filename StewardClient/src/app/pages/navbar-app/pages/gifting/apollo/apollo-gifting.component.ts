@@ -7,6 +7,7 @@ import { SetApolloSelectedPlayerIdentities } from './state/apollo-gifting.state.
 import { ApolloGiftingState } from './state/apollo-gifting.state';
 import { GameTitleCodeNames } from '@models/enums';
 import { UpdatecurrentGiftingPageTitle } from '@shared/state/user/user.actions';
+import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 
 /** The gifting page for the Navbar app. */
 @Component({
@@ -15,11 +16,11 @@ import { UpdatecurrentGiftingPageTitle } from '@shared/state/user/user.actions';
 })
 export class ApolloGiftingComponent extends BaseComponent implements OnInit {
   @Select(ApolloGiftingState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<
-    unknown[]
+    IdentityResultAlphaBatch
   >;
 
   title: GameTitleCodeNames = GameTitleCodeNames.FM7;
-  selectedPlayerIdentities: unknown[];
+  selectedPlayerIdentities: IdentityResultAlphaBatch;
 
   constructor(protected store: Store) {
     super();
@@ -32,13 +33,13 @@ export class ApolloGiftingComponent extends BaseComponent implements OnInit {
 
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe((playerIdentities: unknown[]) => {
+      .subscribe((playerIdentities: IdentityResultAlphaBatch) => {
         this.selectedPlayerIdentities = playerIdentities;
       });
   }
 
   /** Logic when player selection outputs identities. */
-  public selectedPlayerIndentities(event: unknown[]): void {
+  public selectedPlayerIndentities(event: IdentityResultAlphaBatch): void {
     this.store.dispatch(new SetApolloSelectedPlayerIdentities(event));
   }
 }
