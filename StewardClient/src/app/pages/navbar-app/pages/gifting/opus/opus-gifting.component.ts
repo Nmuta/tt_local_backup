@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { GameTitleCodeNames } from '@models/enums';
+import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { Select, Store } from '@ngxs/store';
-import { UpdatecurrentGiftingPageTitle } from '@shared/state/user/user.actions';
+import { UpdateCurrentGiftingPageTitle } from '@shared/state/user/user.actions';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { OpusGiftingState } from './state/opus-gifting.state';
@@ -19,7 +19,7 @@ export class OpusGiftingComponent extends BaseComponent implements OnInit {
     IdentityResultAlphaBatch
   >;
 
-  title: GameTitleCodeNames = GameTitleCodeNames.FH3;
+  title: GameTitleCodeName = GameTitleCodeName.FH3;
   selectedPlayerIdentities: IdentityResultAlphaBatch;
 
   constructor(protected store: Store) {
@@ -29,7 +29,7 @@ export class OpusGiftingComponent extends BaseComponent implements OnInit {
   /** Initialization hook */
   public ngOnInit(): void {
     // Required to handle window url changes outside the app
-    this.store.dispatch(new UpdatecurrentGiftingPageTitle(this.title));
+    this.store.dispatch(new UpdateCurrentGiftingPageTitle(this.title));
 
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))

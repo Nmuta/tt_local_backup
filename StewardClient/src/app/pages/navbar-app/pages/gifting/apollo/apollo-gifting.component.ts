@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SetApolloSelectedPlayerIdentities } from './state/apollo-gifting.state.actions';
 import { ApolloGiftingState } from './state/apollo-gifting.state';
-import { GameTitleCodeNames } from '@models/enums';
-import { UpdatecurrentGiftingPageTitle } from '@shared/state/user/user.actions';
+import { GameTitleCodeName } from '@models/enums';
+import { UpdateCurrentGiftingPageTitle } from '@shared/state/user/user.actions';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 
 /** The gifting page for the Navbar app. */
@@ -19,7 +19,7 @@ export class ApolloGiftingComponent extends BaseComponent implements OnInit {
     IdentityResultAlphaBatch
   >;
 
-  title: GameTitleCodeNames = GameTitleCodeNames.FM7;
+  title: GameTitleCodeName = GameTitleCodeName.FM7;
   selectedPlayerIdentities: IdentityResultAlphaBatch;
 
   constructor(protected store: Store) {
@@ -29,7 +29,7 @@ export class ApolloGiftingComponent extends BaseComponent implements OnInit {
   /** Initialization hook */
   public ngOnInit(): void {
     // Required to handle window url changes outside the app
-    this.store.dispatch(new UpdatecurrentGiftingPageTitle(this.title));
+    this.store.dispatch(new UpdateCurrentGiftingPageTitle(this.title));
 
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))

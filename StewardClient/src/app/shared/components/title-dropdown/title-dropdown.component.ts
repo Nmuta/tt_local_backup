@@ -2,12 +2,10 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
 } from '@angular/core';
-import { GameTitleCodeNames } from '@models/enums';
+import { GameTitleCodeName } from '@models/enums';
 
 /** Shared module for title dropdown. */
 @Component({
@@ -16,9 +14,9 @@ import { GameTitleCodeNames } from '@models/enums';
   styleUrls: ['./title-dropdown.component.scss'],
 })
 export class TitleDropdownComponent implements OnInit {
-  @Input() titleOptions: GameTitleCodeNames[];
-  @Input() selectedOption: GameTitleCodeNames;
-  @Output() newTitleSelectedEvent = new EventEmitter<GameTitleCodeNames>();
+  @Input() titleOptions: GameTitleCodeName[];
+  @Input() selectedOption: GameTitleCodeName;
+  @Output() newTitleSelectedEvent = new EventEmitter<GameTitleCodeName>();
 
   constructor() {
     // Empty
@@ -26,13 +24,14 @@ export class TitleDropdownComponent implements OnInit {
 
   /** Initialization hook. */
   public ngOnInit(): void {
+    console.log(this.titleOptions);
     if (!this.titleOptions || this.titleOptions.length <= 0) {
       throw new Error('Invalid title options were given to the TitleDropdownComponent.');
     }
   }
 
   /** Outputs new title selected event */
-  public newTitleSelection(title: GameTitleCodeNames): void {
+  public newTitleSelection(title: GameTitleCodeName): void {
     this.newTitleSelectedEvent.emit(title);
   }
 }

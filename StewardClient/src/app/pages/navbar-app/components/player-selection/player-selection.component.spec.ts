@@ -4,11 +4,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { PlayerSelectionComponent } from './player-selection.component';
+import { PlayerSelectionBaseComponent } from './player-selection.base.component';
 
-describe('PlayerSelectionComponent', () => {
-  let fixture: ComponentFixture<PlayerSelectionComponent>;
-  let component: PlayerSelectionComponent;
+describe('PlayerSelectionBaseComponent', () => {
+  let fixture: ComponentFixture<PlayerSelectionBaseComponent<never>>;
+  let component: PlayerSelectionBaseComponent<never>;
 
   beforeEach(
     waitForAsync(() => {
@@ -18,12 +18,12 @@ describe('PlayerSelectionComponent', () => {
           HttpClientTestingModule,
           NgxsModule.forRoot(),
         ],
-        declarations: [PlayerSelectionComponent],
+        declarations: [PlayerSelectionBaseComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(PlayerSelectionComponent);
+      fixture = TestBed.createComponent(PlayerSelectionBaseComponent as any);
       component = fixture.debugElement.componentInstance;
     }),
   );

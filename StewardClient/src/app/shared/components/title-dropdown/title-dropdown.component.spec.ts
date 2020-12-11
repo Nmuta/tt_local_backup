@@ -1,24 +1,30 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { GameTitleCodeName } from '@models/enums';
 
 import { TitleDropdownComponent } from './title-dropdown.component';
 
 describe('TitleDropdownComponent', () => {
-  let component: TitleDropdownComponent;
   let fixture: ComponentFixture<TitleDropdownComponent>;
+  let component: TitleDropdownComponent;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [TitleDropdownComponent],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  });
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [],
+        declarations: [TitleDropdownComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [],
+      }).compileComponents();
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TitleDropdownComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+      fixture = TestBed.createComponent(TitleDropdownComponent);
+      component = fixture.debugElement.componentInstance;
+
+      component.titleOptions = [
+        GameTitleCodeName.Street
+      ];
+    }),
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();

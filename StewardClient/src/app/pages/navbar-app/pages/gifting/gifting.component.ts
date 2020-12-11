@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { GameTitleCodeNames } from '@models/enums';
+import { GameTitleCodeName } from '@models/enums';
 import { Select, Store } from '@ngxs/store';
-import { UpdatecurrentGiftingPageTitle } from '@shared/state/user/user.actions';
+import { UpdateCurrentGiftingPageTitle } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { delay, filter, takeUntil } from 'rxjs/operators';
@@ -18,12 +18,12 @@ import { createNavbarPath, NavbarTools } from '../../navbar-tool-list';
 export class GiftingComponent extends BaseComponent implements OnInit {
   @Select(UserState.currentGiftingPageTitle) public currentGiftingPageTitle$: Observable<string>;
   gameTitleOptions = [
-    GameTitleCodeNames.Street,
-    GameTitleCodeNames.FH4,
-    GameTitleCodeNames.FM7,
-    GameTitleCodeNames.FH3,
+    GameTitleCodeName.Street,
+    GameTitleCodeName.FH4,
+    GameTitleCodeName.FM7,
+    GameTitleCodeName.FH3,
   ];
-  selectedGameTitle: GameTitleCodeNames;
+  selectedGameTitle: GameTitleCodeName;
   pageRoute: string = 'gifting';
 
   constructor(protected store: Store, protected router: Router, protected route: ActivatedRoute) {
@@ -32,13 +32,18 @@ export class GiftingComponent extends BaseComponent implements OnInit {
 
   /** Initialization hook. */
   public ngOnInit(): void {
+    // NOTE: As more tools integrate with the title/player selection components
+    // we can probably move this logic to the base component and use abstract functions
+    // to hookup our obserables to monitor the correct data
+
+
     // Inital load needs to handle if game title is already in route
     this.handleInitalGiftingRoute(this.router.url);
 
     // Watch for gifting title changes and route when found
     this.currentGiftingPageTitle$
       .pipe(takeUntil(this.onDestroy$), delay(0))
-      .subscribe((currentGiftingPageTitle: GameTitleCodeNames) => {
+      .subscribe((currentGiftingPageTitle: GameTitleCodeName) => {
         this.routeToTitlePage(currentGiftingPageTitle);
       });
 
@@ -55,7 +60,7 @@ export class GiftingComponent extends BaseComponent implements OnInit {
         }),
       )
       .subscribe(() => {
-        const lastVisitedGameTitle = this.store.selectSnapshot<GameTitleCodeNames>(
+        const lastVisitedGameTitle = this.store.selectSnapshot<GameTitleCodeName>(
           UserState.currentGiftingPageTitle,
         );
         this.routeToTitlePage(lastVisitedGameTitle);
@@ -63,7 +68,7 @@ export class GiftingComponent extends BaseComponent implements OnInit {
   }
 
   /** Routes to the gifting title page */
-  public routeToTitlePage(title: GameTitleCodeNames): void {
+  public routeToTitlePage(title: GameTitleCodeName): void {
     this.selectedGameTitle = title;
     this.router.navigate([
       ...createNavbarPath(NavbarTools.GiftingPage).routerLink,
@@ -72,8 +77,8 @@ export class GiftingComponent extends BaseComponent implements OnInit {
   }
 
   /** Logic when a new game title is selected */
-  public newGameTitleSelected(title: GameTitleCodeNames): void {
-    this.store.dispatch(new UpdatecurrentGiftingPageTitle(title));
+  public newGameTitleSelected(title: GameTitleCodeName): void {
+    this.store.dispatch(new UpdateCurrentGiftingPageTitle(title));
   }
 
   /**
@@ -86,7 +91,7 @@ export class GiftingComponent extends BaseComponent implements OnInit {
       // When found, game title will be the current index
       if (routePaths[i - 1].toLowerCase() === this.pageRoute) {
         const foundGameTitle = (routePaths[i].charAt(0).toUpperCase() +
-          routePaths[i].slice(1)) as GameTitleCodeNames;
+          routePaths[i].slice(1)) as GameTitleCodeName;
         this.newGameTitleSelected(foundGameTitle);
       }
     }

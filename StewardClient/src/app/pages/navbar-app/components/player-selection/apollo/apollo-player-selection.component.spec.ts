@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ApolloPlayerSelectionComponent } from './apollo-player-selection.component';
-import { ApolloService, createMockMockApolloService } from '@services/apollo';
+import { ApolloService, createMockApolloService } from '@services/apollo';
 
 describe('ApolloPlayerSelectionComponent', () => {
   let fixture: ComponentFixture<ApolloPlayerSelectionComponent>;
@@ -22,7 +22,7 @@ describe('ApolloPlayerSelectionComponent', () => {
         ],
         declarations: [ApolloPlayerSelectionComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockMockApolloService()],
+        providers: [createMockApolloService()],
       }).compileComponents();
 
       const injector = getTestBed();
