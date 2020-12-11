@@ -4,6 +4,6 @@ import { ApolloPlayerInventory } from './apollo-player-inventory.model';
 export interface ApolloGiftHistory {
   playerId: string;
   title: string;
-  giftSendDateUtc: unknown;
+  giftSendDateUtc: Date;
   giftInventory: ApolloPlayerInventory;
 }

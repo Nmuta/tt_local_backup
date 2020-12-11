@@ -4,6 +4,6 @@ import { GravityPlayerInventory } from './gravity-player-inventory.model';
 export interface GravityGiftHistory {
   playerId: string;
   title: string;
-  giftSendDateUtc: unknown;
+  giftSendDateUtc: Date;
   giftInventory: GravityPlayerInventory;
 }

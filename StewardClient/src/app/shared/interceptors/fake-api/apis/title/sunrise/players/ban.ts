@@ -28,7 +28,7 @@ export class SunrisePlayersBanFakeApi extends FakeApiBase {
       {
         xuid: 189456456,
         success: true,
-        BanDescription: {
+        banDescription: {
           xuid: 2533275026603041,
           isActive: true,
           countOfTimesExtended: 0,

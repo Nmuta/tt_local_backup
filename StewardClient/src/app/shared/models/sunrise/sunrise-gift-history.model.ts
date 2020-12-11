@@ -4,6 +4,6 @@ import { SunrisePlayerInventory } from './sunrise-player-inventory.model';
 export interface SunriseGiftHistory {
   playerId: string;
   title: string;
-  giftSendDateUtc: unknown;
+  giftSendDateUtc: Date;
   giftInventory: SunrisePlayerInventory;
 }
