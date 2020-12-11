@@ -2,7 +2,7 @@
 export interface ApolloBanResult {
   xuid: number;
   success: boolean;
-  BanDescription: ApolloBanDescription
+  BanDescription: ApolloBanDescription;
 }
 
 /** Services model for bans. */

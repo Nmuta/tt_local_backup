@@ -2,7 +2,7 @@
 export interface SunriseBanResult {
   xuid: BigInt;
   success: boolean;
-  BanDescription: SunriseBanDescription
+  BanDescription: SunriseBanDescription;
 }
 
 /** Services model for bans. */

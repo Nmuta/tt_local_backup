@@ -25,13 +25,13 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<GravityGiftHistory>> {
     return {
-      playerId: "189456456",
-      title: "Gravity",
-      giftSendDateUtc: "2020-12-08T20:04:05.391Z",
+      playerId: '189456456',
+      title: 'Gravity',
+      giftSendDateUtc: '2020-12-08T20:04:05.391Z',
       giftInventory: {
         xuid: 2533275026603041,
-        turn10Id: "ReAlTuRn1OiD"
-      }
+        turn10Id: 'ReAlTuRn1OiD',
+      },
     };
   }
 }

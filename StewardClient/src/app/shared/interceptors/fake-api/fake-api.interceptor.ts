@@ -30,7 +30,7 @@ import { GravityPlayerXuidInventoryFakeApi } from './apis/title/gravity/player/x
 import { GravityPlayerXuidProfileIdInventoryFakeApi } from './apis/title/gravity/player/xuid/profileId/inventory';
 import { GravityPlayerT10IdInventoryFakeApi } from './apis/title/gravity/player/t10Id/inventory';
 import { GravityPlayerT10IdProfileIdInventoryFakeApi } from './apis/title/gravity/player/t10Id/profileId/inventory';
-import { GravityPlayerT10IdGiftHistoryFakeApi } from './apis/title/gravity/player/t10Id/giftHistory'
+import { GravityPlayerT10IdGiftHistoryFakeApi } from './apis/title/gravity/player/t10Id/giftHistory';
 
 import { OpusPlayerGamertagDetailsFakeApi } from './apis/title/opus/player/gamertag/details';
 import { OpusPlayerProfileIdInventoryFakeApi } from './apis/title/opus/player/profileId/inventory';
@@ -100,7 +100,7 @@ const fakeApiConstructors = [
   ApolloGroupGroupIdInventoryFakeApi,
   ApolloGroupXuidsInventoryFakeApi,
   ApolloGroupGroupIdGiftHistoryFakeApi,
-  
+
   // Opus
   OpusPlayerGamertagDetailsFakeApi,
   OpusPlayerProfileIdInventoryFakeApi,

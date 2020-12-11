@@ -25,12 +25,12 @@ export class ApolloPlayerXuidGiftHistoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<ApolloGiftHistory>> {
     return {
-      playerId: "189456456",
-      title: "Apollo",
-      giftSendDateUtc: "2020-12-08T20:04:05.391Z",
+      playerId: '189456456',
+      title: 'Apollo',
+      giftSendDateUtc: '2020-12-08T20:04:05.391Z',
       giftInventory: {
-        xuid: 189456456
-      }
+        xuid: 189456456,
+      },
     };
   }
 }
