@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { ApolloGiftHistory, ApolloPlayerInventory } from '@models/apollo';
+import { ApolloGiftHistory } from '@models/apollo';
 import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding gift history. */

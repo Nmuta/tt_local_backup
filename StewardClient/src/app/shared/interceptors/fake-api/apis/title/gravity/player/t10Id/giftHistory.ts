@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { GravityGiftHistory, GravityPlayerInventory } from '@models/gravity';
+import { GravityGiftHistory } from '@models/gravity';
 import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding gift history. */

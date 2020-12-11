@@ -1,13 +1,13 @@
 /** The /v1/title/Sunrise/players/ban model */
 export interface SunriseBanResult {
-  xuid: number;
+  xuid: BigInt;
   success: boolean;
   BanDescription: SunriseBanDescription
 }
 
 /** Services model for bans. */
 export interface SunriseBanDescription {
-  xuid: number;
+  xuid: BigInt;
   startTimeUtc: Date;
   expireTimeUtc: Date;
   isActive: boolean;

@@ -7,7 +7,7 @@ export interface ApolloBanResult {
 
 /** Services model for bans. */
 export interface ApolloBanDescription {
-  xuid: number;
+  xuid: BigInt;
   startTimeUtc: Date;
   expireTimeUtc: Date;
   isActive: boolean;
