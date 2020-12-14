@@ -308,7 +308,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
                     foreach (var xuid in xuidBatch)
                     {
-                        await this.banHistoryProvider.UpdateBanHistoryAsync(xuid, TitleConstants.SunriseCodeName, requestingAgent, banParameters).ConfigureAwait(false);
+                        var successfulBan = result.banResults.Where(banAttempt => banAttempt.Xuid == xuid).First()?.Success ?? false;
+                        if (successfulBan)
+                        {
+                            await this.banHistoryProvider
+                                .UpdateBanHistoryAsync(xuid, TitleConstants.SunriseCodeName, requestingAgent, banParameters).ConfigureAwait(false);
+                        }
                     }
 
                     banResults.AddRange(this.mapper.Map<IList<SunriseBanResult>>(result.banResults));

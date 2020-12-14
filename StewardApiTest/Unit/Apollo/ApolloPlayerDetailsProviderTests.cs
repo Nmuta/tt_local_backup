@@ -386,7 +386,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             {
                 this.ApolloUserService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDataByGamertagOutput>());
                 this.ApolloUserService.LiveOpsGetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<LiveOpsGetUserDataByXuidOutput>());
-                this.ApolloUserService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>()).Returns(Fixture.Create<BanUsersOutput>());
+                this.ApolloUserService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>()).Returns(this.GenerateBanUsersOutput());
                 this.ApolloUserService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.ApolloUserService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(this.GenerateGetUserBanHistoryOutput());
                 this.ApolloUserService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
@@ -425,6 +425,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 }
 
                 return Fixture.Build<GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
+            }
+
+            private BanUsersOutput GenerateBanUsersOutput()
+            {
+                var fakeBanResults = new List<ForzaUserBanResult>();
+                fakeBanResults.Add(Fixture.Build<ForzaUserBanResult>().With(x => x.Xuid, (ulong)111).Create());
+
+                return Fixture.Build<BanUsersOutput>().With(x => x.banResults, fakeBanResults.ToArray()).Create();
             }
         }
     }
