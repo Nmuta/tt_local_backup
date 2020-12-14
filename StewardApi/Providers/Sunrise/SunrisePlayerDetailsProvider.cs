@@ -308,7 +308,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
                     foreach (var xuid in xuidBatch)
                     {
-                        var successfulBan = result.banResults.Where(banAttempt => banAttempt.Xuid == xuid).First()?.Success ?? false;
+                        var successfulBan = result.banResults.Where(banAttempt => banAttempt.Xuid == xuid).FirstOrDefault()?.Success ?? false;
                         if (successfulBan)
                         {
                             await this.banHistoryProvider

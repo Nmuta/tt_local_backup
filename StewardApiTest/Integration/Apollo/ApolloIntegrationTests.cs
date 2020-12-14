@@ -178,6 +178,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        public async Task BanPlayers_GamertagOnly()
+        {
+            var banParameters = this.GenerateBanParameters();
+            banParameters[0].Xuid = default;
+            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
+
+            var result = await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Any());
+            Assert.IsTrue(result[0].Success);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
         public async Task BanPlayers_InvalidXuid()
         {
             var banParameters = this.GenerateBanParameters();
