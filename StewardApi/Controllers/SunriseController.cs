@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -914,20 +915,40 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the gift histories.
         /// </summary>
-        /// <param name="giftHistoryAntecedent">The gift history antecedent.</param>
-        /// <param name="giftRecipientId">The gift recipient ID.</param>
+        /// <param name="xuid">The xuid.</param>
         /// <returns>
         ///     The list of <see cref="SunriseGiftHistory"/>.
         /// </returns>
-        [HttpGet("giftHistory/giftRecipientId({giftRecipientId})/giftHistoryAntecedent({giftHistoryAntecedent})")]
+        [HttpGet("player/xuid({xuid})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<SunriseGiftHistory>))]
-        public async Task<IActionResult> GetGiftHistoriesAsync(GiftHistoryAntecedent giftHistoryAntecedent, string giftRecipientId)
+        public async Task<IActionResult> GetGiftHistoriesAsync(ulong xuid)
         {
             try
             {
-                giftRecipientId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(giftRecipientId));
+                var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.SunriseCodeName, GiftHistoryAntecedent.Xuid).ConfigureAwait(true);
 
-                var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(giftRecipientId, Title.ToString(), giftHistoryAntecedent).ConfigureAwait(true);
+                return this.Ok(giftHistory);
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the gift histories.
+        /// </summary>
+        /// <param name="groupId">The group ID.</param>
+        /// <returns>
+        ///     The list of <see cref="SunriseGiftHistory"/>.
+        /// </returns>
+        [HttpGet("group/groupId({groupId})/giftHistory")]
+        [SwaggerResponse(200, type: typeof(IList<SunriseGiftHistory>))]
+        public async Task<IActionResult> GetGiftHistoriesAsync(int groupId)
+        {
+            try
+            {
+                var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.SunriseCodeName, GiftHistoryAntecedent.LspGroupId).ConfigureAwait(true);
 
                 return this.Ok(giftHistory);
             }
