@@ -3,7 +3,6 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultBetaBatch } from '@models/identity-query.model';
 import { Select, Store } from '@ngxs/store';
-import { UpdateCurrentGiftingPageTitle } from '@shared/state/user/user.actions';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GravityGiftingState } from './state/gravity-gifting.state';
@@ -27,9 +26,6 @@ export class GravityGiftingComponent extends BaseComponent implements OnInit {
 
   /** Initialization hook */
   public ngOnInit(): void {
-    // Required to handle window url changes outside the app
-    this.store.dispatch(new UpdateCurrentGiftingPageTitle(this.title));
-
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultBetaBatch) => {

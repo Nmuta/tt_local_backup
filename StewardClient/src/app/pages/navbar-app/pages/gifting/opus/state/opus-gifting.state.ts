@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
+import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Observable, of } from 'rxjs';
 import { SetOpusSelectedPlayerIdentities } from './opus-gifting.state.actions';
 
 /** Defines the opus gifting state model. */
 export class OpusGiftingStateModel {
-  public selectedPlayerIdentities: unknown[];
+  public selectedPlayerIdentities: IdentityResultAlphaBatch;
 }
 
 @Injectable({
   providedIn: 'root',
 })
-@State<Partial<OpusGiftingStateModel>>({
+@State<OpusGiftingStateModel>({
   name: 'opusGifting',
   defaults: {
     selectedPlayerIdentities: [],
@@ -30,7 +31,7 @@ export class OpusGiftingState {
 
   /** Selector for state selected player identities. */
   @Selector()
-  public static selectedPlayerIdentities(state: OpusGiftingStateModel): unknown[] {
+  public static selectedPlayerIdentities(state: OpusGiftingStateModel): IdentityResultAlphaBatch {
     return state.selectedPlayerIdentities;
   }
 }
