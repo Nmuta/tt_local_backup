@@ -14,6 +14,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        redirectTo: 'gravity',
         pathMatch: 'full',
       },
       {

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import {
   faCog,
   faExclamationTriangle,
@@ -40,9 +39,8 @@ export class NavbarComponent {
   public readonly settingsIcon = faCog;
 
   constructor(
-    protected readonly router: Router,
-    protected readonly windowService: WindowService,
-    protected readonly zendeskService: ZendeskService,
+    private readonly windowService: WindowService,
+    public readonly zendeskService: ZendeskService,
   ) {}
 
   /** A string representing the current location */
@@ -53,11 +51,5 @@ export class NavbarComponent {
   /** Emits true when we are missing zendesk. */
   public get missingZendesk$(): Observable<boolean> {
     return this.zendeskService.missingZendesk$;
-  }
-
-  /** Routes based on the provided router link path. */
-  public routeTo(routerLinkPath: RouterLinkPath): void {
-    // Required here so that navigation extas can be used correctly
-    this.router.navigate(routerLinkPath.routerLink, routerLinkPath.navigationExtras);
   }
 }
