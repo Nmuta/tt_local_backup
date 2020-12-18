@@ -37,7 +37,7 @@ export class GravityComponent extends BaseComponent implements OnInit {
         this.gameTitle = title;
         if (title !== GameTitleCodeName.Street) {
           this.store.dispatch(
-            new Navigate(['/ticket-app/title/'], null, { skipLocationChange: true }),
+            new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }),
           );
         }
       });

@@ -67,7 +67,7 @@ describe('ApolloComponent', () => {
     it('it should navigate to the routing page', () => {
       fixture.detectChanges();
       expect(store.dispatch).toHaveBeenCalledWith(
-        new Navigate(['/ticket-app/title/'], null, { skipLocationChange: true }),
+        new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }),
       );
     });
   });

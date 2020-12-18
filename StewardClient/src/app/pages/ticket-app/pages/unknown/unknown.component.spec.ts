@@ -38,7 +38,7 @@ describe('UnknownComponent', () => {
     ticketService.activeTitle = GameTitleCodeName.Street;
     fixture.detectChanges();
     expect(store.dispatch).toHaveBeenCalledWith(
-      new Navigate(['/ticket-app/title/gravity'], null, { skipLocationChange: true }),
+      new Navigate(['/ticket-app/title/gravity'], null, { replaceUrl: true }),
     );
   });
 
@@ -46,7 +46,7 @@ describe('UnknownComponent', () => {
     ticketService.activeTitle = GameTitleCodeName.FM7;
     fixture.detectChanges();
     expect(store.dispatch).toHaveBeenCalledWith(
-      new Navigate(['/ticket-app/title/apollo'], null, { skipLocationChange: true }),
+      new Navigate(['/ticket-app/title/apollo'], null, { replaceUrl: true }),
     );
   });
 
@@ -54,7 +54,7 @@ describe('UnknownComponent', () => {
     ticketService.activeTitle = GameTitleCodeName.FH3;
     fixture.detectChanges();
     expect(store.dispatch).toHaveBeenCalledWith(
-      new Navigate(['/ticket-app/title/opus'], null, { skipLocationChange: true }),
+      new Navigate(['/ticket-app/title/opus'], null, { replaceUrl: true }),
     );
   });
 
@@ -62,7 +62,7 @@ describe('UnknownComponent', () => {
     ticketService.activeTitle = GameTitleCodeName.FH4;
     fixture.detectChanges();
     expect(store.dispatch).toHaveBeenCalledWith(
-      new Navigate(['/ticket-app/title/sunrise'], null, { skipLocationChange: true }),
+      new Navigate(['/ticket-app/title/sunrise'], null, { replaceUrl: true }),
     );
   });
 });

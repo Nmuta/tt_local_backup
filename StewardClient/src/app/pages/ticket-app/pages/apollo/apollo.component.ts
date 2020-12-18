@@ -34,7 +34,7 @@ export class ApolloComponent extends BaseComponent implements OnInit {
         this.gameTitle = title;
         if (title !== GameTitleCodeName.FM7) {
           this.store.dispatch(
-            new Navigate(['/ticket-app/title/'], null, { skipLocationChange: true }),
+            new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }),
           );
         }
       });
