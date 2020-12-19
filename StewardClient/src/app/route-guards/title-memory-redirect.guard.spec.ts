@@ -10,10 +10,14 @@ import { TitleMemoryRedirectGuard } from './title-memory-redirect.guard';
 describe('TitleMemoryRedirectGuard', () => {
   let guard: TitleMemoryRedirectGuard;
   let store: Store;
-  const testRouteParentParent: Partial<ActivatedRouteSnapshot> = { data: { tool: 'gifting' }};
-  const testRouteParent: Partial<ActivatedRouteSnapshot> = { parent: testRouteParentParent as unknown as ActivatedRouteSnapshot };
-  const testRoute: Partial<ActivatedRouteSnapshot> = { parent: testRouteParent as unknown as ActivatedRouteSnapshot};
-  const testSnapshot: Partial<RouterStateSnapshot> = { };
+  const testRouteParentParent: Partial<ActivatedRouteSnapshot> = { data: { tool: 'gifting' } };
+  const testRouteParent: Partial<ActivatedRouteSnapshot> = {
+    parent: (testRouteParentParent as unknown) as ActivatedRouteSnapshot,
+  };
+  const testRoute: Partial<ActivatedRouteSnapshot> = {
+    parent: (testRouteParent as unknown) as ActivatedRouteSnapshot,
+  };
+  const testSnapshot: Partial<RouterStateSnapshot> = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -30,11 +34,13 @@ describe('TitleMemoryRedirectGuard', () => {
     expect(guard).toBeTruthy();
   });
 
-  it('should emit UpdateTitleMemory', (done) => {
-    guard.canActivate(testRoute as ActivatedRouteSnapshot, testSnapshot as RouterStateSnapshot).subscribe(result => {
-      expect(result instanceof UrlTree).toBeTruthy();
-      expect(result).toBeTruthy();
-      done();
-    });
+  it('should emit UpdateTitleMemory', done => {
+    guard
+      .canActivate(testRoute as ActivatedRouteSnapshot, testSnapshot as RouterStateSnapshot)
+      .subscribe(result => {
+        expect(result instanceof UrlTree).toBeTruthy();
+        expect(result).toBeTruthy();
+        done();
+      });
   });
 });

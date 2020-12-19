@@ -10,7 +10,9 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
   templateUrl: '../player-selection.component.html',
   styleUrls: ['../player-selection.component.scss'],
 })
-export class ApolloPlayerSelectionComponent extends PlayerSelectionBaseComponent<IdentityResultAlpha> {
+export class ApolloPlayerSelectionComponent extends PlayerSelectionBaseComponent<
+  IdentityResultAlpha
+> {
   constructor(public readonly apolloService: ApolloService) {
     super();
   }
@@ -26,8 +28,7 @@ export class ApolloPlayerSelectionComponent extends PlayerSelectionBaseComponent
         query: undefined,
         xuid: BigInt(789639236092375),
         gamertag: `${playerIdType}:${x}`,
-        error: undefined
-        
+        error: undefined,
       };
       return tmp;
     });

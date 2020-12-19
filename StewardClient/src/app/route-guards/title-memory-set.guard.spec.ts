@@ -12,10 +12,14 @@ import { TitleMemorySetGuard } from './title-memory-set.guard';
 describe('TitleMemorySetGuard', () => {
   let guard: TitleMemorySetGuard;
   let store: Store;
-  const testRouteParentParent: Partial<ActivatedRouteSnapshot> = { data: { tool: 'gifting' }};
-  const testRouteParent: Partial<ActivatedRouteSnapshot> = { parent: testRouteParentParent as unknown as ActivatedRouteSnapshot };
-  const testRoute: Partial<ActivatedRouteSnapshot> = { parent: testRouteParent as unknown as ActivatedRouteSnapshot};
-  const testSnapshot: Partial<RouterStateSnapshot> = { };
+  const testRouteParentParent: Partial<ActivatedRouteSnapshot> = { data: { tool: 'gifting' } };
+  const testRouteParent: Partial<ActivatedRouteSnapshot> = {
+    parent: (testRouteParentParent as unknown) as ActivatedRouteSnapshot,
+  };
+  const testRoute: Partial<ActivatedRouteSnapshot> = {
+    parent: (testRouteParent as unknown) as ActivatedRouteSnapshot,
+  };
+  const testSnapshot: Partial<RouterStateSnapshot> = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -33,8 +37,13 @@ describe('TitleMemorySetGuard', () => {
   });
 
   it('should emit UpdateTitleMemory', fakeAsync(() => {
-    const result = guard.canActivate(testRoute as ActivatedRouteSnapshot, testSnapshot as RouterStateSnapshot);
+    const result = guard.canActivate(
+      testRoute as ActivatedRouteSnapshot,
+      testSnapshot as RouterStateSnapshot,
+    );
     expect(result).toBeTruthy();
-    expect(store.dispatch).toHaveBeenCalledWith(new UpdateTitleMemory('gifting', GameTitleCodeName.Street))
+    expect(store.dispatch).toHaveBeenCalledWith(
+      new UpdateTitleMemory('gifting', GameTitleCodeName.Street),
+    );
   }));
 });

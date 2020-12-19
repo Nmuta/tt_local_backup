@@ -7,19 +7,20 @@ import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 
-
 /** The shared top-level navbar. */
 @Component({
   selector: 'player-selection',
   templateUrl: './player-selection.component.html',
   styleUrls: ['./player-selection.component.scss'],
 })
-export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion> extends BaseComponent implements OnInit {
+export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion>
+  extends BaseComponent
+  implements OnInit {
   @Input() initPlayerSelectionState: T[] = [];
   @Input() allowT10Id: boolean = true;
   @Input() allowGroup: boolean = true;
   @Output() selectedPlayerIdentitiesEvent = new EventEmitter<T[]>();
-  
+
   /** Close icon */
   public closeIcon = faTimesCircle;
 

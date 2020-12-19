@@ -43,15 +43,19 @@ describe('GravityGiftingComponent', () => {
   describe('Method: selectedPlayerIndentities', () => {
     let event: IdentityResultAlphaBatch;
     beforeEach(() => {
-      event = [{
-        query: undefined,
-        xuid: BigInt(123456789)
-      }];
+      event = [
+        {
+          query: undefined,
+          xuid: BigInt(123456789),
+        },
+      ];
     });
     it('should displatch SetGravitySelectedPlayerIdentities with correct data', () => {
       component.selectedPlayerIndentities(event);
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetGravitySelectedPlayerIdentities(event));
-    })
+      expect(mockStore.dispatch).toHaveBeenCalledWith(
+        new SetGravitySelectedPlayerIdentities(event),
+      );
+    });
   });
 });

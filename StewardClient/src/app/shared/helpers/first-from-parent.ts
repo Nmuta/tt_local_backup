@@ -6,10 +6,10 @@ import { isUndefined } from 'lodash';
  * @param parentSelector How to walk up the chain. Stops when it finds an undefined value.
  * @param resultSelector How to choose the object. Stops when it finds a non-undefined value.
  */
-export function firstFromParent<T,R>(
+export function firstFromParent<T, R>(
   input: T,
   parentSelector: (input: T) => T,
-  resultSelector: (input: T) => R
+  resultSelector: (input: T) => R,
 ): R | undefined {
   const result = resultSelector(input);
   if (!isUndefined(result)) {

@@ -12,17 +12,18 @@ import { last } from 'lodash';
  * This one should be applied to terminal routes (/tool/title/) and will set the memory.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TitleMemorySetGuard implements CanActivate {
-  constructor(public readonly store: Store) { }
+  constructor(public readonly store: Store) {}
 
   /** The guard hook. */
-  public canActivate(
-    route: ActivatedRouteSnapshot,
-    _state: RouterStateSnapshot): boolean
-  {
-    const toolName: keyof TitleMemoryModel = firstFromParent(route, r => r?.parent, r => r?.data?.tool);
+  public canActivate(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): boolean {
+    const toolName: keyof TitleMemoryModel = firstFromParent(
+      route,
+      r => r?.parent,
+      r => r?.data?.tool,
+    );
     const titleName: GameTitleCodeName = last(route.url).path as GameTitleCodeName;
     this.store.dispatch(new UpdateTitleMemory(toolName, titleName));
 

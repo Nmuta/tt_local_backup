@@ -6,6 +6,6 @@ export class UpdateTitleMemory {
   public static readonly type = '[TitleMemory] Update Last Title';
   constructor(
     public readonly tool: keyof TitleMemoryModel,
-    public readonly title: GameTitleCodeName
-  ) { }
+    public readonly title: GameTitleCodeName,
+  ) {}
 }
