@@ -31,9 +31,9 @@ export class TitleMemoryRedirectGuard implements CanActivate {
       const targetSubroute = model[toolName]?.toLowerCase();
       if (targetSubroute) {
         return this.router.parseUrl(`${state.url}/${targetSubroute}`);
-      } else {
-        throw new Error(`no remembered route for ${route.url}`)
       }
+
+      throw new Error(`no remembered route for ${route.url}`)
     }));
   }
 }
