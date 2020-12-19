@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 // Services
 import { ApiService, createMockApiService } from '@shared/services/api';
 import { UserService } from './user.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('service: UserService', () => {
   let service: UserService;
@@ -14,6 +15,7 @@ describe('service: UserService', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [UserService, createMockApiService()],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     service = TestBed.get(UserService);
     apiMock = TestBed.get(ApiService);

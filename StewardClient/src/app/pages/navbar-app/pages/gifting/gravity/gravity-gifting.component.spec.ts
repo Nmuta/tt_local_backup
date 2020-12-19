@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalService } from '@mocks/msal.service.mock';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
-import { UpdateCurrentGiftingPageTitle } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { GravityGiftingComponent } from './gravity-gifting.component';
 import { GravityGiftingState } from './state/gravity-gifting.state';
@@ -39,14 +38,6 @@ describe('GravityGiftingComponent', () => {
   );
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('Method: ngOnInit', () => {
-    it('should displatch UpdateCurrentGiftingPageTitle with correct data', () => {
-      component.ngOnInit();
-
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new UpdateCurrentGiftingPageTitle(component.title));
-    })
   });
 
   describe('Method: selectedPlayerIndentities', () => {

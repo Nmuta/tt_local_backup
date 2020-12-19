@@ -7,6 +7,7 @@ import { createMockUserService, UserService } from '@shared/services/user';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppState } from '@shared/state/app-state';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('State: User', () => {
   let store: Store;
@@ -18,6 +19,7 @@ describe('State: User', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
         providers: [createMockUserService(), createMockMsalService()],
+        schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
 
       store = TestBed.inject(Store);

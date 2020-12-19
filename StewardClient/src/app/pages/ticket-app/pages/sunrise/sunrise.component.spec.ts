@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameTitleCodeName } from '@models/enums';
 import { Navigate } from '@ngxs/router-plugin';
@@ -19,6 +20,7 @@ describe('SunriseComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseComponent],
       imports: [NgxsModule.forRoot([])],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [createMockSunriseService(), createMockTicketService()],
     }).compileComponents();
 

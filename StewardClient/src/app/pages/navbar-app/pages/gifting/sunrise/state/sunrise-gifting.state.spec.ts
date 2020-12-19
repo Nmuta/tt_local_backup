@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
 
@@ -10,6 +11,7 @@ describe('SunriseGiftingState', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([SunriseGiftingState])],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     service = TestBed.inject(SunriseGiftingState);
     // store = TestBed.inject(Store);

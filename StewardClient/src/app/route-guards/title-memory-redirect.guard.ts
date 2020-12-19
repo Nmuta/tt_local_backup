@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router, UrlSegment } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { firstFromParent } from '@helpers/first-from-parent';
 import { Select } from '@ngxs/store';
 import { TitleMemoryModel } from '@shared/state/title-memory/title-memory.model';

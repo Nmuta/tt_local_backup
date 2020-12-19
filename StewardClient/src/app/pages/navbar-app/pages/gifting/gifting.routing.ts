@@ -18,7 +18,6 @@ const routes: Routes = [
       {
         path: '',
         canActivate: [TitleMemoryRedirectGuard],
-        // redirectTo: 'gravity',
         pathMatch: 'full',
       },
       {

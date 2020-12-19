@@ -1,4 +1,5 @@
-﻿import { TestBed, inject } from '@angular/core/testing';
+﻿import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TestBed, inject } from '@angular/core/testing';
 import { faker } from '@interceptors/fake-api/utility';
 import { NgxsModule, Store } from '@ngxs/store';
 import { WindowOpen } from './window.actions';
@@ -11,6 +12,7 @@ describe('service: WindowService', () => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([WindowService])],
       providers: [WindowService],
+      schemas: [NO_ERRORS_SCHEMA],
     });
 
     store = TestBed.inject(Store);

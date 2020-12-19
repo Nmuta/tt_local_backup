@@ -6,6 +6,7 @@ import { GravityPlayerInventory } from '@models/gravity';
 import { HttpParams } from '@angular/common/http';
 import { GiftHistoryAntecedent } from '@shared/constants';
 import { faker } from '@interceptors/fake-api/utility';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('service: GravityService', () => {
   let injector: TestBed;
@@ -16,6 +17,7 @@ describe('service: GravityService', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [ApiService, createMockApiService()],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     injector = getTestBed();
     service = injector.inject(GravityService);

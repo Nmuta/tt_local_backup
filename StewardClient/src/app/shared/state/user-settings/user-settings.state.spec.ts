@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { NgxsModule, Store } from '@ngxs/store';
 import { AppState } from '../app-state';
@@ -12,6 +13,7 @@ describe('UserSettingsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([UserSettingsState])],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     service = TestBed.inject(UserSettingsState);
     store = TestBed.inject(Store);
