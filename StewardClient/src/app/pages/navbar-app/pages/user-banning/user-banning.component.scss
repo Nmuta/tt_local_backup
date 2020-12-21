@@ -1,7 +1,6 @@
-// toolbar adjustment for the sidebar slide-out wrapper
-mat-toolbar {
-  margin-top: -10px;
-  left: 0;
-  right: 0;
-  position: absolute;
+// TODO: This should probably be made into a function
+// add some tasteful padding around our final routed component
+:host ::ng-deep router-outlet + * {
+  padding: 10px;
+  display: block;
 }
