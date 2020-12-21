@@ -9,3 +9,11 @@
 mat-form-field {
   font-size: 14px;
 }
+
+// toolbar adjustment for the sidebar slide-out wrapper
+mat-toolbar {
+  margin-top: -10px;
+  left: 0;
+  right: 0;
+  position: absolute;
+}
