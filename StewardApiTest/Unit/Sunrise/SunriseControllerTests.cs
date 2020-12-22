@@ -210,6 +210,41 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
+        public async Task GetPlayerIdentities_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var query = Fixture.Create<IdentityQueryAlpha>();
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> {query} ).ConfigureAwait(false);
+
+            // Assert.
+            action().Should().BeAssignableTo<Task<IActionResult>>();
+            action().Should().NotBeNull();
+            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as IList<IdentityResultAlpha>;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<List<IdentityResultAlpha>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var query = new IdentityQueryAlpha {Xuid = default, Gamertag = null};
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public async Task GetPlayerDetails_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -222,7 +257,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var actions = new List<Func<Task<IActionResult>>>
             {
                 async () => await controller.GetPlayerDetails(gamertag).ConfigureAwait(false),
-                async () => await controller.GetPlayerDetails(xuid).ConfigureAwait(false)
+                async () => await controller.GetPlayerDetails(xuid).ConfigureAwait(false),
+                async () => await controller.GetPlayerDetails(t10Id).ConfigureAwait(false)
             };
 
             // Assert.
@@ -1301,6 +1337,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 httpContext.Request.Path = TestConstants.TestRequestPath;
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
+                this.SunrisePlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.SunrisePlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.SunrisePlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.SunrisePlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseConsoleDetails>>());

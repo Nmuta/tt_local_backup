@@ -210,6 +210,41 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
+        public async Task GetPlayerIdentities_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var query = Fixture.Create<IdentityQueryAlpha>();
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+
+            // Assert.
+            action().Should().BeAssignableTo<Task<IActionResult>>();
+            action().Should().NotBeNull();
+            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as IList<IdentityResultAlpha>;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<List<IdentityResultAlpha>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var query = new IdentityQueryAlpha { Xuid = default, Gamertag = null };
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public async Task GetPlayerDetails_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1198,6 +1233,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 httpContext.Request.Path = TestConstants.TestRequestPath;
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
+                this.ApolloPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.ApolloPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<ApolloPlayerDetails>());
                 this.ApolloPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloPlayerDetails>());
                 this.ApolloPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);

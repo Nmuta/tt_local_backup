@@ -109,6 +109,42 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets the player identity.
+        /// </summary>
+        /// <param name="identityQueries">The identity queries.</param>
+        /// <returns>
+        ///     The list of <see cref="IdentityResultAlpha"/>.
+        /// </returns>
+        [HttpPost("players/identities")]
+        [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
+        public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
+        {
+            try
+            {
+                var results = new List<IdentityResultAlpha>();
+                var queries = new List<Task<IdentityResultAlpha>>();
+
+                foreach (var query in identityQueries)
+                {
+                    queries.Add(this.RetrieveIdentity(query));
+                }
+
+                await Task.WhenAll(queries).ConfigureAwait(true);
+
+                foreach (var query in queries)
+                {
+                    results.Add(await query.ConfigureAwait(true));
+                }
+
+                return this.Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex);
+            }
+        }
+
+        /// <summary>
         ///     Gets the player details.
         /// </summary>
         /// <param name="gamertag">The gamertag.</param>
@@ -124,7 +160,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
                 var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
-
                 if (playerDetails == null)
                 {
                     return this.NotFound($"Player {gamertag} was not found.");
@@ -134,6 +169,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
             catch (Exception ex)
             {
+                if (ex is ProfileNotFoundException)
+                {
+                    return this.NotFound(ex.Message);
+                }
+
                 return this.BadRequest(ex);
             }
         }
@@ -152,16 +192,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             try
             {
                 var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
-
                 if (playerDetails == null)
                 {
-                    return this.NotFound($"No profile found for XUID: {xuid}.");
+                    return this.NotFound($"Player {xuid} was not found.");
                 }
 
                 return this.Ok(playerDetails);
             }
             catch (Exception ex)
             {
+                if (ex is ProfileNotFoundException)
+                {
+                    return this.NotFound(ex.Message);
+                }
+
                 return this.BadRequest(ex);
             }
         }
@@ -459,6 +503,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
             catch (Exception ex)
             {
+                if (ex is ProfileNotFoundException)
+                {
+                    return this.NotFound(ex.Message);
+                }
+
                 return this.BadRequest(ex);
             }
         }
@@ -491,6 +540,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
             catch (Exception ex)
             {
+                if (ex is ProfileNotFoundException)
+                {
+                    return this.NotFound(ex.Message);
+                }
+
                 return this.BadRequest(ex);
             }
         }
@@ -987,6 +1041,28 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             banHistories.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
 
             return banHistories;
+        }
+
+        private async Task<IdentityResultAlpha> RetrieveIdentity(IdentityQueryAlpha query)
+        {
+            try
+            {
+                return await this.sunrisePlayerDetailsProvider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ArgumentException)
+                {
+                    return new IdentityResultAlpha { Error = new StewardError(StewardErrorCode.RequiredParameterMissing, ex.Message) };
+                }
+
+                if (ex is ProfileNotFoundException)
+                {
+                    return new IdentityResultAlpha { Error = new StewardError(StewardErrorCode.ProfileNotFound, ex.Message) };
+                }
+
+                throw;
+            }
         }
     }
 }

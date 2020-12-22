@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using Forza.WebServices.FH3.Generated;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
@@ -29,6 +30,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.AgeGroup, opt => opt.MapFrom(src => src.UserAgeGroup))
                 .ForMember(des => des.IsFlaggedForSuspiciousActivity, opt => opt.MapFrom(src => src.IsFlaggedForSuspciosActivity));
             this.CreateMap<AdminForzaProfile, OpusInventoryProfile>().ReverseMap();
+            this.CreateMap<OpusPlayerDetails, IdentityResultAlpha>().ReverseMap();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Opus
@@ -8,6 +9,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
     /// </summary>
     public interface IOpusPlayerDetailsProvider
     {
+        /// <summary>
+        ///     Get player identity.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>
+        ///     The <see cref="IdentityResultAlpha"/>.
+        /// </returns>
+        Task<IdentityResultAlpha> GetPlayerIdentityAsync(IdentityQueryAlpha query);
+
         /// <summary>
         ///     Get player details.
         /// </summary>

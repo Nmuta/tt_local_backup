@@ -64,6 +64,85 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 
         [TestMethod]
         [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByT10Id()
+        {
+            var query = new IdentityQueryBeta { Turn10Id = t10Id };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(xuid, result[0].Xuid);
+            Assert.IsNull(result[0].Error);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByT10Id_InvalidT10Id()
+        {
+            var query = new IdentityQueryBeta { Turn10Id = TestConstants.InvalidT10Id };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result[0].Error);
+            Assert.IsTrue(result[0].Xuid == default);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(result[0].Gamertag));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByXuid()
+        {
+            var query = new IdentityQueryBeta { Xuid = xuid };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result[0].Turn10Ids);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByXuid_InvalidXuid()
+        {
+            var query = new IdentityQueryBeta { Xuid = TestConstants.InvalidXuid };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result[0].Error);
+            Assert.IsTrue(result[0].Xuid == default);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(result[0].Gamertag));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByGamertag()
+        {
+            var query = new IdentityQueryBeta { Gamertag = gamertag };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result[0].Turn10Ids);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByGamertag_InvalidGamertag()
+        {
+            var query = new IdentityQueryBeta { Gamertag = TestConstants.InvalidGamertag };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result[0].Error);
+            Assert.IsTrue(result[0].Xuid == default);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(result[0].Gamertag));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
         public async Task GetPlayerDetailsByGamertag()
         {
             var result = await stewardClient.GetPlayerDetailsAsync(gamertag).ConfigureAwait(false);
@@ -84,7 +163,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -125,7 +204,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -166,7 +245,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -206,7 +285,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -246,7 +325,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -286,7 +365,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 

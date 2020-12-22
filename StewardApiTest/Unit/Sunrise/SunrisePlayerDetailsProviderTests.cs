@@ -8,6 +8,7 @@ using Forza.WebServices.FH4.master.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
@@ -90,6 +91,35 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             // Assert.
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "refreshableCacheStore"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var query = Fixture.Create<IdentityQueryAlpha>();
+
+            // Act.
+            Func<Task<IdentityResultAlpha>> action = async () => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+
+            // Assert.
+            action().Result.Should().BeOfType<IdentityResultAlpha>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerIdentitiesAsync_WithNullQuery_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+
+            // Act.
+            Func<Task<IdentityResultAlpha>> action = async () => await provider.GetPlayerIdentityAsync(null).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "query"));
         }
 
         [TestMethod]
@@ -422,6 +452,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper.Map<IList<SunriseBanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<SunriseBanResult>>());
                 this.Mapper.Map<IList<SunriseBanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<SunriseBanSummary>>());
                 this.Mapper.Map<List<SunriseBanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<SunriseBanDescription>>());
+                this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SunrisePlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
             }
 
             public ISunriseUserService SunriseUserService { get; set; } = Substitute.For<ISunriseUserService>();

@@ -33,62 +33,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
-            try
-            {
-                var response = await this.opusInventoryService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
+            var response = await this.opusInventoryService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
 
-                return this.mapper.Map<OpusPlayerInventory>(response.summary);
-            }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
+            return this.mapper.Map<OpusPlayerInventory>(response.summary);
         }
 
         /// <inheritdoc />
         public async Task<IList<OpusInventoryProfile>> GetInventoryProfilesAsync(ulong xuid)
         {
-            try
-            {
-                var response = await this.opusInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+            var response = await this.opusInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
 
-                return this.mapper.Map<IList<OpusInventoryProfile>>(response.profiles);
-            }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
+            return this.mapper.Map<IList<OpusInventoryProfile>>(response.profiles);
         }
 
         /// <inheritdoc />
         public async Task<OpusPlayerInventory> GetPlayerInventoryAsync(int profileId)
         {
-            try
-            {
-                var response = await this.opusInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
-                    .ConfigureAwait(false);
+                var response = await this.opusInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId).ConfigureAwait(false);
 
                 return this.mapper.Map<OpusPlayerInventory>(response.summary);
-            }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
         }
     }
 }

@@ -137,6 +137,41 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
+        public async Task GetPlayerIdentities_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var query = Fixture.Create<IdentityQueryBeta>();
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
+
+            // Assert.
+            action().Should().BeAssignableTo<Task<IActionResult>>();
+            action().Should().NotBeNull();
+            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as IList<IdentityResultBeta>;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<List<IdentityResultBeta>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var query = new IdentityQueryBeta { Xuid = default, Gamertag = null, Turn10Id = null};
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public async Task GetPlayerDetails_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -698,6 +733,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 httpContext.Request.Path = TestConstants.TestRequestPath;
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
+                this.GravityPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryBeta>()).Returns(Fixture.Create<IdentityResultBeta>());
                 this.GravityPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GravityPlayerDetails>());
                 this.GravityPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerDetails>());
                 this.GravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerDetails>());

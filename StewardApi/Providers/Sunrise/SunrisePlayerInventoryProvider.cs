@@ -57,22 +57,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
-            try
-            {
-                var response = await this.sunriseUserInventoryService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
-                var playerInventoryDetails = this.mapper.Map<SunrisePlayerInventory>(response.summary);
+            var response = await this.sunriseUserInventoryService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
+            var playerInventoryDetails = this.mapper.Map<SunrisePlayerInventory>(response.summary);
 
-                return playerInventoryDetails;
-            }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
+            return playerInventoryDetails;
         }
 
         /// <inheritdoc />
@@ -80,43 +68,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
-            try
-            {
-                var response = await this.sunriseUserInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+            var response = await this.sunriseUserInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
 
-                return this.mapper.Map<IList<SunriseInventoryProfile>>(response.profiles);
-            }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
+            return this.mapper.Map<IList<SunriseInventoryProfile>>(response.profiles);
         }
 
         /// <inheritdoc />
         public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(int profileId)
         {
-            try
-            {
-                var response = await this.sunriseUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
-                    .ConfigureAwait(false);
-                var inventoryProfile = this.mapper.Map<SunrisePlayerInventory>(response.summary);
+            var response = await this.sunriseUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                .ConfigureAwait(false);
+            var inventoryProfile = this.mapper.Map<SunrisePlayerInventory>(response.summary);
 
-                return inventoryProfile;
-            }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
+            return inventoryProfile;
         }
 
         /// <inheritdoc />

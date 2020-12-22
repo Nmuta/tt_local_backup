@@ -29,6 +29,15 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         private static ServiceClient ServiceClient => new ServiceClient(60, 60);
 
+        public async Task<IList<IdentityResultAlpha>> GetPlayerIdentitiesAsync(IList<IdentityQueryAlpha> query)
+        {
+            query.ShouldNotBeNull(nameof(query));
+
+            var path = new Uri(this.baseUri, $"{TitlePath}players/identities");
+
+            return await ServiceClient.SendRequestAsync<IList<IdentityResultAlpha>>(HttpMethod.Post, path, this.authKey, Version, query).ConfigureAwait(false);
+        }
+
         public async Task<ApolloPlayerDetails> GetPlayerDetailsAsync(string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));

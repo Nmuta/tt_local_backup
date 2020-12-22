@@ -29,6 +29,15 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 
         private static ServiceClient ServiceClient => new ServiceClient(90, 90);
 
+        public async Task<IList<IdentityResultBeta>> GetPlayerIdentitiesAsync(IList<IdentityQueryBeta> query)
+        {
+            query.ShouldNotBeNull(nameof(query));
+
+            var path = new Uri(this.baseUri, $"{TitlePath}players/identities");
+
+            return await ServiceClient.SendRequestAsync<IList<IdentityResultBeta>>(HttpMethod.Post, path, this.authKey, Version, query).ConfigureAwait(false);
+        }
+
         public async Task<GravityPlayerDetails> GetPlayerDetailsAsync(string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));

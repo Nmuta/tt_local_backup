@@ -86,6 +86,60 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         [TestMethod]
         [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByXuid()
+        {
+            var query = new IdentityQueryAlpha {Xuid = xuid};
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha>{query}).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(xuid, result[0].Xuid);
+            Assert.IsNull(result[0].Error);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByXuid_InvalidXuid()
+        {
+            var query = new IdentityQueryAlpha { Xuid = TestConstants.InvalidXuid };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result[0].Error);
+            Assert.IsTrue(result[0].Xuid == default);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(result[0].Gamertag));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByGamertag()
+        {
+            var query = new IdentityQueryAlpha { Gamertag = gamertag };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(xuid, result[0].Xuid);
+            Assert.IsNull(result[0].Error);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByGamertag_InvalidGamertag()
+        {
+            var query = new IdentityQueryAlpha { Gamertag = TestConstants.InvalidGamertag };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result[0].Error);
+            Assert.IsTrue(result[0].Xuid == default);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(result[0].Gamertag));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
         public async Task GetPlayerDetailsByGamertag()
         {
             var result = await stewardClient.GetPlayerDetailsAsync(gamertag).ConfigureAwait(false);
@@ -105,7 +159,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -837,7 +891,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 

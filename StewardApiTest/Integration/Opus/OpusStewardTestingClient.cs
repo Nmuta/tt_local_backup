@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
@@ -26,6 +27,15 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
         }
 
         private static ServiceClient ServiceClient => new ServiceClient(60, 60);
+
+        public async Task<IList<IdentityResultAlpha>> GetPlayerIdentitiesAsync(IList<IdentityQueryAlpha> query)
+        {
+            query.ShouldNotBeNull(nameof(query));
+
+            var path = new Uri(this.baseUri, $"{TitlePath}players/identities");
+
+            return await ServiceClient.SendRequestAsync<IList<IdentityResultAlpha>>(HttpMethod.Post, path, this.authKey, Version, query).ConfigureAwait(false);
+        }
 
         public async Task<OpusPlayerDetails> GetPlayerDetailsAsync(string gamertag)
         {

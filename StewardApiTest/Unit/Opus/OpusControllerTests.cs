@@ -6,6 +6,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
@@ -57,6 +58,41 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
             // Assert.
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "opusPlayerInventoryProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetPlayerIdentities_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var query = Fixture.Create<IdentityQueryAlpha>();
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+
+            // Assert.
+            action().Should().BeAssignableTo<Task<IActionResult>>();
+            action().Should().NotBeNull();
+            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as IList<IdentityResultAlpha>;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<List<IdentityResultAlpha>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var query = new IdentityQueryAlpha { Xuid = default, Gamertag = null };
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
         }
 
         [TestMethod]
@@ -163,6 +199,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         {
             public Dependencies()
             {
+                this.OpusPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.OpusPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<OpusPlayerDetails>());
                 this.OpusPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<OpusPlayerDetails>());
                 this.OpusPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);

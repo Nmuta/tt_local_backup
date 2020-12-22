@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Forza.WebServices.FH4.master.Generated;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -55,6 +56,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<InventoryItem, SunriseInventoryItem>();
             this.CreateMap<Car, SunriseCar>();
             this.CreateMap<PlayerInventory, SunrisePlayerInventory>();
+            this.CreateMap<SunrisePlayerDetails, IdentityResultAlpha>().ReverseMap();
         }
     }
 }
