@@ -40,7 +40,7 @@ describe('OpusGiftingComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Method: selectedPlayerIndentities', () => {
+  describe('Method: onPlayerIdentitiesChange', () => {
     let event: IdentityResultAlphaBatch;
     beforeEach(() => {
       event = [
@@ -51,7 +51,7 @@ describe('OpusGiftingComponent', () => {
       ];
     });
     it('should displatch SetOpusSelectedPlayerIdentities with correct data', () => {
-      component.selectedPlayerIndentities(event);
+      component.onPlayerIdentitiesChange(event);
 
       expect(mockStore.dispatch).toHaveBeenCalledWith(new SetOpusSelectedPlayerIdentities(event));
     });

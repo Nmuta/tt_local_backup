@@ -26,21 +26,21 @@
   <testcase name="NavbarAppComponent should create" time="0.009" classname="Chrome_Headless_87_0_4280_88_(Windows_10).NavbarAppComponent"/>
   <testcase name="ApolloGiftingComponent should create" time="0.004" classname="Chrome_Headless_87_0_4280_88_(Windows_10).ApolloGiftingComponent"/>
   <testcase name="ApolloGiftingComponent Method: ngOnInit should displatch UpdateCurrentGiftingPageTitle with correct data" time="0.004" classname="Chrome_Headless_87_0_4280_88_(Windows_10).ApolloGiftingComponent"/>
-  <testcase name="ApolloGiftingComponent Method: selectedPlayerIndentities should displatch SetApolloSelectedPlayerIdentities with correct data" time="0.003" classname="Chrome_Headless_87_0_4280_88_(Windows_10).ApolloGiftingComponent"/>
+  <testcase name="ApolloGiftingComponent Method: onPlayerIdentitiesChange should displatch SetApolloSelectedPlayerIdentities with correct data" time="0.003" classname="Chrome_Headless_87_0_4280_88_(Windows_10).ApolloGiftingComponent"/>
   <testcase name="ApolloGiftingState should be created" time="0.001" classname="Chrome_Headless_87_0_4280_88_(Windows_10).ApolloGiftingState"/>
   <testcase name="GiftingComponent should create" time="0.004" classname="Chrome_Headless_87_0_4280_88_(Windows_10).GiftingComponent"/>
   <testcase name="GravityGiftingComponent should create" time="0.004" classname="Chrome_Headless_87_0_4280_88_(Windows_10).GravityGiftingComponent"/>
   <testcase name="GravityGiftingComponent Method: ngOnInit should displatch UpdateCurrentGiftingPageTitle with correct data" time="0.004" classname="Chrome_Headless_87_0_4280_88_(Windows_10).GravityGiftingComponent"/>
-  <testcase name="GravityGiftingComponent Method: selectedPlayerIndentities should displatch SetGravitySelectedPlayerIdentities with correct data" time="0.003" classname="Chrome_Headless_87_0_4280_88_(Windows_10).GravityGiftingComponent"/>
+  <testcase name="GravityGiftingComponent Method: onPlayerIdentitiesChange should displatch SetGravitySelectedPlayerIdentities with correct data" time="0.003" classname="Chrome_Headless_87_0_4280_88_(Windows_10).GravityGiftingComponent"/>
   <testcase name="GravityGiftingState should be created" time="0.001" classname="Chrome_Headless_87_0_4280_88_(Windows_10).GravityGiftingState"/>
   <testcase name="OpusGiftingComponent should create" time="0.004" classname="Chrome_Headless_87_0_4280_88_(Windows_10).OpusGiftingComponent"/>
   <testcase name="OpusGiftingComponent Method: ngOnInit should displatch UpdateCurrentGiftingPageTitle with correct data" time="0.003" classname="Chrome_Headless_87_0_4280_88_(Windows_10).OpusGiftingComponent"/>
-  <testcase name="OpusGiftingComponent Method: selectedPlayerIndentities should displatch SetOpusSelectedPlayerIdentities with correct data" time="0.003" classname="Chrome_Headless_87_0_4280_88_(Windows_10).OpusGiftingComponent"/>
+  <testcase name="OpusGiftingComponent Method: onPlayerIdentitiesChange should displatch SetOpusSelectedPlayerIdentities with correct data" time="0.003" classname="Chrome_Headless_87_0_4280_88_(Windows_10).OpusGiftingComponent"/>
   <testcase name="OpusGiftingState should be created" time="0.001" classname="Chrome_Headless_87_0_4280_88_(Windows_10).OpusGiftingState"/>
   <testcase name="SunriseGiftingState should be created" time="0.001" classname="Chrome_Headless_87_0_4280_88_(Windows_10).SunriseGiftingState"/>
   <testcase name="SunriseGiftingComponent should create" time="0.005" classname="Chrome_Headless_87_0_4280_88_(Windows_10).SunriseGiftingComponent"/>
   <testcase name="SunriseGiftingComponent Method: ngOnInit should displatch UpdateCurrentGiftingPageTitle with correct data" time="0.003" classname="Chrome_Headless_87_0_4280_88_(Windows_10).SunriseGiftingComponent"/>
-  <testcase name="SunriseGiftingComponent Method: selectedPlayerIndentities should displatch SetSunriseSelectedPlayerIdentities with correct data" time="0.003" classname="Chrome_Headless_87_0_4280_88_(Windows_10).SunriseGiftingComponent"/>
+  <testcase name="SunriseGiftingComponent Method: onPlayerIdentitiesChange should displatch SetSunriseSelectedPlayerIdentities with correct data" time="0.003" classname="Chrome_Headless_87_0_4280_88_(Windows_10).SunriseGiftingComponent"/>
   <testcase name="HomeComponent should create" time="0.002" classname="Chrome_Headless_87_0_4280_88_(Windows_10).HomeComponent"/>
   <testcase name="SunriseComponent should create" time="0.008" classname="Chrome_Headless_87_0_4280_88_(Windows_10).SunriseComponent"/>
   <testcase name="UserDetailsComponent should create" time="0.008" classname="Chrome_Headless_87_0_4280_88_(Windows_10).UserDetailsComponent"/>

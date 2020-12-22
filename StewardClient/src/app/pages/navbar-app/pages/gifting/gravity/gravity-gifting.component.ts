@@ -34,7 +34,7 @@ export class GravityGiftingComponent extends BaseComponent implements OnInit {
   }
 
   /** Logic when player selection outputs identities. */
-  public selectedPlayerIndentities(event: IdentityResultBetaBatch): void {
+  public onPlayerIdentitiesChange(event: IdentityResultBetaBatch): void {
     this.store.dispatch(new SetGravitySelectedPlayerIdentities(event));
   }
 }

@@ -40,7 +40,7 @@ describe('SunriseGiftingComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Method: selectedPlayerIndentities', () => {
+  describe('Method: onPlayerIdentitiesChange', () => {
     let event: IdentityResultAlphaBatch;
     beforeEach(() => {
       event = [
@@ -51,7 +51,7 @@ describe('SunriseGiftingComponent', () => {
       ];
     });
     it('should displatch SetSunriseSelectedPlayerIdentities with correct data', () => {
-      component.selectedPlayerIndentities(event);
+      component.onPlayerIdentitiesChange(event);
 
       expect(mockStore.dispatch).toHaveBeenCalledWith(
         new SetSunriseSelectedPlayerIdentities(event),
