@@ -9,9 +9,13 @@
   }
 }
 
+// this element has a reserved area below it for warnings, which we are not using
+// removing it makes the items align better
 :host ::ng-deep {
-  .mat-form-field, .mat-form-field-wrapper {
-    padding-bottom: 0;
+  mat-form-field.date-picker {
+    &, .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
   }
 }
 

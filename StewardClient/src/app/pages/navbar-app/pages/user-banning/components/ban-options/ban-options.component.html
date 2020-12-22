@@ -9,13 +9,13 @@
       </mat-button-toggle-group>
     </section>
 
-    <mat-form-field class="ban-reason">
+    <mat-form-field class="ban-reason" appearance="fill">
       <mat-label>Ban Reason</mat-label>
       <textarea matInput placeholder="ʕ•́ᴥ•̀ʔっ"></textarea>
       <mat-hint>This reason will be shown to the player.</mat-hint>
     </mat-form-field>
 
-    <duration-picker></duration-picker>
+    <duration-picker [(ngModel)]="banDuration"></duration-picker>
 
     <section class="ban-options">
       <ul>
