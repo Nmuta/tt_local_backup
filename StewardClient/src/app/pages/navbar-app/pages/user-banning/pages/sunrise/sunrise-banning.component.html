@@ -1,1 +1,8 @@
-<p>sunrise-banning works!</p>
+<sunrise-player-selection
+  [allowT10Id]="false"
+  [allowGroup]="true"
+  [(playerIdentities)]="selectedPlayerIdentities"
+  (playerIdentitiesChange)="onPlayerIdentitiesChange($event)"
+></sunrise-player-selection>
+
+<ban-options></ban-options>

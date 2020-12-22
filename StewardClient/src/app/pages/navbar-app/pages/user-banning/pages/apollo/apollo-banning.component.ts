@@ -16,6 +16,7 @@ export class ApolloBanningComponent implements OnInit {
   public ngOnInit(): void {
     // this.store.
   }
+  
   public onPlayerIdentitiesChange(results: IdentityResultAlphaBatch) {
     // this.store.dispatch()
   }

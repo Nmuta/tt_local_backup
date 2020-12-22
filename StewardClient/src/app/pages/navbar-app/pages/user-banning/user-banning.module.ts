@@ -10,6 +10,7 @@ import { SunriseBanningComponent } from './pages/sunrise/sunrise-banning.compone
 import { MatButtonModule } from '@angular/material/button';
 import { PlayerSelectionModule } from '../../components/player-selection/player-selection.module';
 import { BanOptionsComponent } from './components/ban-options/ban-options.component';
+import { MatCardModule } from '@angular/material/card';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -18,6 +19,7 @@ import { BanOptionsComponent } from './components/ban-options/ban-options.compon
     CommonModule,
     MatToolbarModule,
     MatButtonModule,
+    MatCardModule,
     UserBanningRoutingModule,
     PlayerSelectionModule,
   ]

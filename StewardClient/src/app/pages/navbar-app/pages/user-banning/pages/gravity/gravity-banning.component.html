@@ -1,1 +1,8 @@
-<p>gravity-banning works!</p>
+<gravity-player-selection
+  [allowT10Id]="true"
+  [allowGroup]="true"
+  [(playerIdentities)]="selectedPlayerIdentities"
+  (playerIdentitiesChange)="onPlayerIdentitiesChange($event)"
+></gravity-player-selection>
+
+<ban-options></ban-options>
