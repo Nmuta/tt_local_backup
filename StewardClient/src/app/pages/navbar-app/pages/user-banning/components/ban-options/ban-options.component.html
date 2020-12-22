@@ -1,14 +1,20 @@
 <mat-card>
-  
-    <mat-button-toggle-group>
+  <div class="ban-area">
+    <span id="ban-area-label">Ban Area</span>
+    <mat-button-toggle-group aria-labelledby="ban-area-label">
       <mat-button-toggle value="all">All Features</mat-button-toggle>
       <mat-button-toggle value="ugc">User Generated Content</mat-button-toggle>
       <mat-button-toggle value="all">Matchmaking</mat-button-toggle>
     </mat-button-toggle-group>
+  </div>
+
+  <hr>
 
   <mat-form-field class="ban-reason">
     <mat-label>Ban Reason</mat-label>
     <textarea matInput placeholder="ʕ•́ᴥ•̀ʔっ"></textarea>
     <mat-hint>This reason will be shown to the player.</mat-hint>
   </mat-form-field>
+
+  <hr>
 </mat-card>
