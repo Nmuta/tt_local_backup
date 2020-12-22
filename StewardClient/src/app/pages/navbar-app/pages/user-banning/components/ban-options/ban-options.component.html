@@ -1,20 +1,30 @@
 <mat-card>
-  <div class="ban-area">
-    <span id="ban-area-label">Ban Area</span>
-    <mat-button-toggle-group aria-labelledby="ban-area-label">
-      <mat-button-toggle value="all">All Features</mat-button-toggle>
-      <mat-button-toggle value="ugc">User Generated Content</mat-button-toggle>
-      <mat-button-toggle value="all">Matchmaking</mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
+  <mat-card-content>
+    <section class="ban-area">
+      <label>Ban Area</label>
+      <mat-button-toggle-group>
+        <mat-button-toggle value="all" checked=true>All Features</mat-button-toggle>
+        <mat-button-toggle value="ugc">User Generated Content</mat-button-toggle>
+        <mat-button-toggle value="all">Matchmaking</mat-button-toggle>
+      </mat-button-toggle-group>
+    </section>
 
-  <hr>
+    <mat-form-field class="ban-reason">
+      <mat-label>Ban Reason</mat-label>
+      <textarea matInput placeholder="ʕ•́ᴥ•̀ʔっ"></textarea>
+      <mat-hint>This reason will be shown to the player.</mat-hint>
+    </mat-form-field>
 
-  <mat-form-field class="ban-reason">
-    <mat-label>Ban Reason</mat-label>
-    <textarea matInput placeholder="ʕ•́ᴥ•̀ʔっ"></textarea>
-    <mat-hint>This reason will be shown to the player.</mat-hint>
-  </mat-form-field>
+    <duration-picker></duration-picker>
 
-  <hr>
+    <section class="ban-options">
+      <ul>
+        <li><mat-checkbox>Ban all Xboxes (No expiry)</mat-checkbox></li>
+        <li><mat-checkbox>Ban all PCs (No expiry)</mat-checkbox></li>
+        <li><mat-checkbox>Delete all leaderboard entries (Permanent)</mat-checkbox></li>
+      </ul>
+    </section>
+
+    <verify-action-button [canSubmit]="false">Submit ban</verify-action-button>
+  </mat-card-content>
 </mat-card>

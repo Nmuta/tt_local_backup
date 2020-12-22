@@ -16,10 +16,14 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { DurationPickerComponent } from './components/duration-picker/duration-picker.component';
+import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 /** Routed module for banning users. */
 @NgModule({
-  declarations: [UserBanningComponent, ApolloBanningComponent, GravityBanningComponent, OpusBanningComponent, SunriseBanningComponent, BanOptionsComponent],
+  declarations: [UserBanningComponent, ApolloBanningComponent, GravityBanningComponent, OpusBanningComponent, SunriseBanningComponent, BanOptionsComponent, DurationPickerComponent],
   imports: [
     CommonModule,
     MatToolbarModule,
@@ -32,6 +36,9 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     FormsModule,
     UserBanningRoutingModule,
     PlayerSelectionModule,
+    VerifyActionButtonModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
   ]
 })
 export class UserBanningModule { }

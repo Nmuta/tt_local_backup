@@ -1,0 +1,10 @@
+<mat-form-field appearance="fill">
+  <mat-label>Ban End Date</mat-label>
+  <input matInput [matDatepicker]="dp1" disabled>
+  <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+  <mat-datepicker #dp1></mat-datepicker>
+</mat-form-field>
+
+<mat-button-toggle-group>
+  <mat-button-toggle *ngFor="let option of options" [value]="option.duration">{{ option.humanized }}</mat-button-toggle>
+</mat-button-toggle-group>
