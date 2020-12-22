@@ -10,14 +10,8 @@ import * as moment from 'moment';
 export class DurationPickerComponent {
 
   public options = [
-    { duration: moment.duration(1, 'week'), humanized: '' },
-    { duration: moment.duration(1, 'month'), humanized: '' },
-    { duration: moment.duration(20, 'years'), humanized: '' },
-  ]
-
-  constructor() {
-    for (const option of this.options) {
-      option.humanized = option.duration.humanize();
-    }
-  }
+    { duration: moment.duration(1, 'week'), humanized: '1 week' },
+    { duration: moment.duration(1, 'month'), humanized: '1 month' },
+    { duration: moment.duration(20, 'years'), humanized: '20 years' },
+  ];
 }

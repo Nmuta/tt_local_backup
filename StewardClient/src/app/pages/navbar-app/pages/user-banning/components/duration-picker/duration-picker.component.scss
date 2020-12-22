@@ -1,5 +1,21 @@
+@import '/src/variables.scss';
+
 :host {
   display: flex !important;
   flex-flow: row wrap;
-  align-items: flex-start;
+  align-items: center;
+  > * {
+    margin: 0 5px;
+  }
+}
+
+:host ::ng-deep {
+  .mat-form-field, .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+}
+
+.mat-button-toggle-checked {
+  background-color: mat-color($app-primary);
+  color: mat-color($app-primary, default-contrast);
 }
