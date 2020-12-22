@@ -1,3 +1,16 @@
 <mat-card>
-  <p>ban-options works!</p>
+  <mat-form-field appearance="fill" class="ban-area">
+    <mat-label>Ban Area</mat-label>
+    <mat-select>
+      <mat-option>All Features</mat-option>
+      <mat-option>User Generated Content</mat-option>
+      <mat-option>Matchmaking</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="ban-reason">
+    <mat-label>Ban Reason</mat-label>
+    <textarea matInput placeholder="ʕ•́ᴥ•̀ʔっ"></textarea>
+    <mat-hint>This reason will be shown to the player.</mat-hint>
+  </mat-form-field>
 </mat-card>

@@ -11,6 +11,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { PlayerSelectionModule } from '../../components/player-selection/player-selection.module';
 import { BanOptionsComponent } from './components/ban-options/ban-options.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonToggle } from '@angular/material/button-toggle';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -20,6 +25,11 @@ import { MatCardModule } from '@angular/material/card';
     MatToolbarModule,
     MatButtonModule,
     MatCardModule,
+    MatSelectModule,
+    MatButtonToggle,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule,
     UserBanningRoutingModule,
     PlayerSelectionModule,
   ]
