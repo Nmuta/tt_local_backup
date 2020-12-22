@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
-import { ApolloBanningComponent } from './apollo/apollo-banning.component';
-import { GravityBanningComponent } from './gravity/gravity-banning.component';
-import { OpusBanningComponent } from './opus/opus-banning.component';
-import { SunriseBanningComponent } from './sunrise/sunrise-banning.component';
+import { ApolloBanningComponent } from './pages/apollo/apollo-banning.component';
+import { GravityBanningComponent } from './pages/gravity/gravity-banning.component';
+import { OpusBanningComponent } from './pages/opus/opus-banning.component';
+import { SunriseBanningComponent } from './pages/sunrise/sunrise-banning.component';
 import { UserBanningComponent } from './user-banning.component';
 
 const routes: Routes = [
