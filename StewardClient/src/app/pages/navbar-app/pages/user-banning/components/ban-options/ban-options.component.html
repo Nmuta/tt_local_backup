@@ -1,12 +1,10 @@
 <mat-card>
-  <mat-form-field appearance="fill" class="ban-area">
-    <mat-label>Ban Area</mat-label>
-    <mat-select>
-      <mat-option>All Features</mat-option>
-      <mat-option>User Generated Content</mat-option>
-      <mat-option>Matchmaking</mat-option>
-    </mat-select>
-  </mat-form-field>
+  
+    <mat-button-toggle-group>
+      <mat-button-toggle value="all">All Features</mat-button-toggle>
+      <mat-button-toggle value="ugc">User Generated Content</mat-button-toggle>
+      <mat-button-toggle value="all">Matchmaking</mat-button-toggle>
+    </mat-button-toggle-group>
 
   <mat-form-field class="ban-reason">
     <mat-label>Ban Reason</mat-label>

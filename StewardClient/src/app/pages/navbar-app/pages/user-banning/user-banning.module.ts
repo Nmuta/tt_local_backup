@@ -15,7 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonToggle } from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -26,7 +26,7 @@ import { MatButtonToggle } from '@angular/material/button-toggle';
     MatButtonModule,
     MatCardModule,
     MatSelectModule,
-    MatButtonToggle,
+    MatButtonToggleModule,
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
