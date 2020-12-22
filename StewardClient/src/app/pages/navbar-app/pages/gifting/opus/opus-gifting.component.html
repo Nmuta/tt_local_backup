@@ -2,8 +2,8 @@
   <opus-player-selection
     [allowT10Id]="false"
     [allowGroup]="false"
-    [initPlayerSelectionState]="selectedPlayerIdentities"
-    (selectedPlayerIdentitiesEvent)="selectedPlayerIndentities($event)"
+    [(playerIdentities)]="selectedPlayerIdentities"
+    (playerIdentitiesChange)="selectedPlayerIndentities($event)"
   ></opus-player-selection>
 
   <br /><br />
