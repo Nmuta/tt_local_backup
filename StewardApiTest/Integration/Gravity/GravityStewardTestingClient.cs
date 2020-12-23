@@ -91,42 +91,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             return await ServiceClient.SendRequestAsync<GravityPlayerInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<GravityPlayerInventory> CreateOrReplacePlayerInventoryByXuidAsync(GravityPlayerInventory playerInventory, Dictionary<string, string> headersToSend)
-        {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
-
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid/inventory");
-
-            return await ServiceClient.SendRequestAsync<GravityPlayerInventory>(HttpMethod.Put, path, this.authKey, Version, playerInventory, headersToSend).ConfigureAwait(false);
-        }
-
-        public async Task<ResponseWithHeaders<GravityPlayerInventory>> CreateOrReplacePlayerInventoryByXuidWithHeaderResponseAsync(GravityPlayerInventory playerInventory, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
-        {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
-
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid/inventory?useBackgroundProcessing=true");
-
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<GravityPlayerInventory>(HttpMethod.Put, path, this.authKey, Version, headersToValidate, playerInventory, headersToSend).ConfigureAwait(false);
-        }
-
-        public async Task<GravityPlayerInventory> CreateOrReplacePlayerInventoryByT10IdAsync(GravityPlayerInventory playerInventory, Dictionary<string, string> headersToSend)
-        {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
-
-            var path = new Uri(this.baseUri, $"{TitlePath}player/t10Id/inventory");
-
-            return await ServiceClient.SendRequestAsync<GravityPlayerInventory>(HttpMethod.Put, path, this.authKey, Version, playerInventory, headersToSend).ConfigureAwait(false);
-        }
-
-        public async Task<ResponseWithHeaders<GravityPlayerInventory>> CreateOrReplacePlayerInventoryByT10IdWithHeaderResponseAsync(GravityPlayerInventory playerInventory, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
-        {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
-
-            var path = new Uri(this.baseUri, $"{TitlePath}player/t10Id/inventory?useBackgroundProcessing=true");
-
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<GravityPlayerInventory>(HttpMethod.Put, path, this.authKey, Version, headersToValidate, playerInventory, headersToSend).ConfigureAwait(false);
-        }
-
         public async Task<GravityPlayerInventory> UpdatePlayerInventoryByXuidAsync(GravityPlayerInventory playerInventory, Dictionary<string, string> headersToSend)
         {
             playerInventory.ShouldNotBeNull(nameof(playerInventory));
@@ -161,22 +125,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             var path = new Uri(this.baseUri, $"{TitlePath}player/t10Id/inventory?useBackgroundProcessing=true");
 
             return await ServiceClient.SendRequestWithHeaderResponseAsync<GravityPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, playerInventory, headersToSend).ConfigureAwait(false);
-        }
-
-        public async Task<GravityPlayerInventory> ResetPlayerInventoryAsync(ulong xuid)
-        {
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/inventory");
-
-            return await ServiceClient.SendRequestAsync<GravityPlayerInventory>(HttpMethod.Delete, path, this.authKey, Version).ConfigureAwait(false);
-        }
-
-        public async Task<GravityPlayerInventory> ResetPlayerInventoryAsync(string t10Id)
-        {
-            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
-
-            var path = new Uri(this.baseUri, $"{TitlePath}player/t10Id({t10Id})/inventory");
-
-            return await ServiceClient.SendRequestAsync<GravityPlayerInventory>(HttpMethod.Delete, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task<GameSettings> GetGameSettingsAsync(string gameSettingsId)

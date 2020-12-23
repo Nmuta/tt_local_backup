@@ -47,10 +47,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 
             authKey = await TestUtilities.MintAuthorizationToken(clientId, clientSecret).ConfigureAwait(false);
 
-            xuid = 2535469594396619;
-            gamertag = "FreeStuff037361";
-            t10Id = "eVegmvmP8Uyf2Udsh8m1cA";
-            profileId = new Guid("f9833877-774c-447a-a7ea-496087d2a9ed");
+            xuid = 2535429724504183;
+            gamertag = "FreeStuff04";
+            t10Id = "Sc5wFABwQEyKkQ694nSdnw";
+            profileId = new Guid("1f818186-9fa6-41c2-b1b0-ac6ecd32a536");
             gameSettingsId = new Guid("{7eed4e97-4ddd-f55a-ac49-d79a6d9ad85d}");
 
             stewardClient = new GravityStewardTestingClient(new Uri(endpoint), authKey);
@@ -351,7 +351,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             var result = await stewardClient.GetPlayerInventoryAsync(xuid, profileId.ToString()).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, result.Cars.Count);
+            Assert.AreEqual(4, result.Cars.Count);
         }
 
         [TestMethod]
@@ -406,7 +406,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             var result = await stewardClient.GetPlayerInventoryAsync(t10Id, profileId.ToString()).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, result.Cars.Count);
+            Assert.AreEqual(4, result.Cars.Count);
         }
 
         [TestMethod]
@@ -446,170 +446,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             try
             {
                 await unauthorizedClient.GetPlayerInventoryAsync(t10Id, profileId.ToString()).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("ResetIntegration")]
-        public async Task CreateOrReplacePlayerInventoryByXuid()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
-
-            var result = await stewardClient.CreateOrReplacePlayerInventoryByXuidAsync(playerInventory, headers).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(playerInventory.Cars.Count, result.Cars.Count);
-            Assert.AreEqual(playerInventory.Currencies.Last().ItemId, result.Currencies.Last().ItemId);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task CreateOrReplacePlayerInventoryByXuid_UseBackgroundProcessing()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-
-            var result = await this.CreateOrReplacePlayerInventoryByXuidWithHeaderResponseAsync(stewardClient, playerInventory, BackgroundJobStatus.Completed).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(playerInventory.Cars.Count, result.Cars.Count);
-            Assert.AreEqual(playerInventory.Currencies.Last().ItemId, result.Currencies.Last().ItemId);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task CreateOrReplacePlayerInventoryByXuid_InvalidXuid()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            playerInventory.Xuid = TestConstants.InvalidXuid;
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
-
-            try
-            {
-                await stewardClient.CreateOrReplacePlayerInventoryByXuidAsync(playerInventory, headers).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task CreateOrReplacePlayerInventoryByXuid_NoRequestingAgent()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend(null);
-
-            try
-            {
-                await stewardClient.CreateOrReplacePlayerInventoryByXuidAsync(playerInventory, headers).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task CreateOrReplacePlayerInventoryByXuid_Unauthorized()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
-
-            try
-            {
-                await unauthorizedClient.CreateOrReplacePlayerInventoryByXuidAsync(playerInventory, headers).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("ResetIntegration")]
-        public async Task CreateOrReplacePlayerInventoryByT10Id()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
-
-            var result = await stewardClient.CreateOrReplacePlayerInventoryByT10IdAsync(playerInventory, headers).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(playerInventory.Cars.Count, result.Cars.Count);
-            Assert.AreEqual(playerInventory.Currencies.Last().ItemId, result.Currencies.Last().ItemId);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task CreateOrReplacePlayerInventoryByT10Id_UseBackgroundProcessing()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-
-            var result = await this.CreateOrReplacePlayerInventoryByT10IdWithHeaderResponseAsync(stewardClient, playerInventory, BackgroundJobStatus.Completed).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(playerInventory.Cars.Count, result.Cars.Count);
-            Assert.AreEqual(playerInventory.Currencies.Last().ItemId, result.Currencies.Last().ItemId);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task CreateOrReplacePlayerInventoryByT10Id_InvalidT10Id()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            playerInventory.Turn10Id = TestConstants.InvalidT10Id;
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
-
-            try
-            {
-                await stewardClient.CreateOrReplacePlayerInventoryByT10IdAsync(playerInventory, headers).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task CreateOrReplacePlayerInventoryByT10Id_NoRequestingAgent()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend(null);
-
-            try
-            {
-                await stewardClient.CreateOrReplacePlayerInventoryByT10IdAsync(playerInventory, headers).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task CreateOrReplacePlayerInventoryByT10Id_Unauthorized()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
-
-            try
-            {
-                await unauthorizedClient.CreateOrReplacePlayerInventoryByT10IdAsync(playerInventory, headers).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -795,86 +631,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         }
 
         [TestMethod]
-        [TestCategory("ResetIntegration")]
-        public async Task ResetPlayerInventoryByXuid()
-        {
-            var result = await stewardClient.ResetPlayerInventoryAsync(xuid).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Cars.Count);
-        }
-
-        [TestMethod]
-        [TestCategory("ResetIntegration")]
-        public async Task ResetPlayerInventoryByXuid_InvalidXuid()
-        {
-            try
-            {
-                await stewardClient.ResetPlayerInventoryAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("ResetIntegration")]
-        public async Task ResetPlayerInventoryByXuid_Unauthorized()
-        {
-            try
-            {
-                await unauthorizedClient.ResetPlayerInventoryAsync(xuid).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("ResetIntegration")]
-        public async Task ResetPlayerInventoryByT10Id()
-        {
-            var result = await stewardClient.ResetPlayerInventoryAsync(t10Id).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Cars.Count);
-        }
-
-        [TestMethod]
-        [TestCategory("ResetIntegration")]
-        public async Task ResetPlayerInventoryByT10Id_InvalidT10Id()
-        {
-            try
-            {
-                await stewardClient.ResetPlayerInventoryAsync(TestConstants.InvalidT10Id).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("ResetIntegration")]
-        public async Task ResetPlayerInventoryByT10Id_Unauthorized()
-        {
-            try
-            {
-                await unauthorizedClient.ResetPlayerInventoryAsync(t10Id).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
         [TestCategory("Integration")]
         public async Task GetGameSettings()
         {
@@ -948,80 +704,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             var result = await stewardClient.GetGiftHistoriesAsync(TestConstants.InvalidT10Id).ConfigureAwait(false);
 
             Assert.IsFalse(result.Any());
-        }
-
-        private async Task<GravityPlayerInventory> CreateOrReplacePlayerInventoryByXuidWithHeaderResponseAsync(GravityStewardTestingClient stewardClient, GravityPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
-        {
-            var headersToValidate = new List<string> { "jobId" };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest");
-
-            var response = await stewardClient.CreateOrReplacePlayerInventoryByXuidWithHeaderResponseAsync(playerInventory, headersToValidate, headersToSend).ConfigureAwait(false);
-
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-
-            bool jobCompleted;
-            BackgroundJobStatus status;
-            GravityPlayerInventory jobResult;
-
-            do
-            {
-                var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"])
-                    .ConfigureAwait(false);
-
-                Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out status);
-
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
-
-                jobResult = backgroundJob.Result?.FromJson<GravityPlayerInventory>();
-
-                if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
-                {
-                    break;
-                }
-            }
-            while (!jobCompleted);
-
-            Assert.AreEqual(expectedStatus, status);
-
-            return jobResult;
-        }
-
-        private async Task<GravityPlayerInventory> CreateOrReplacePlayerInventoryByT10IdWithHeaderResponseAsync(GravityStewardTestingClient stewardClient, GravityPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
-        {
-            var headersToValidate = new List<string> { "jobId" };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest");
-
-            var response = await stewardClient.CreateOrReplacePlayerInventoryByT10IdWithHeaderResponseAsync(playerInventory, headersToValidate, headersToSend).ConfigureAwait(false);
-
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-
-            bool jobCompleted;
-            BackgroundJobStatus status;
-            GravityPlayerInventory jobResult;
-
-            do
-            {
-                var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"])
-                    .ConfigureAwait(false);
-
-                Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out status);
-
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
-
-                jobResult = backgroundJob.Result?.FromJson<GravityPlayerInventory>();
-
-                if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
-                {
-                    break;
-                }
-            }
-            while (!jobCompleted);
-
-            Assert.AreEqual(expectedStatus, status);
-
-            return jobResult;
         }
 
         private async Task<GravityPlayerInventory> UpdatePlayerInventoryByXuidWithHeaderResponseAsync(GravityStewardTestingClient stewardClient, GravityPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
