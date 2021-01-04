@@ -2,12 +2,24 @@ import { Component, OnInit, Output, ViewChild } from '@angular/core';
 import { NEVER, Observable } from 'rxjs';
 import * as moment from 'moment';
 import { VerifyActionButtonComponent } from '@components/verify-action-button/verify-action-button.component';
+import { ControlValueAccessor, FormControl, FormGroup, Validators } from '@angular/forms';
 
-export enum BanOptions {
+export enum BanArea {
   AllFeatures = 'all',
   UserGeneratedContent = 'ugc',
   Matchmaking = 'matchmaking',
 }
+
+export interface BanOptions {
+  banArea: BanArea,
+  banReason: string,
+  banDuration: moment.Duration,
+  checkboxes: {
+    banAllXboxes: boolean,
+    banAllPCs: boolean,
+    deleteLeaderboardEntries: boolean,
+  },
+};
 
 /** The ban-options panel. */
 @Component({
@@ -15,11 +27,9 @@ export enum BanOptions {
   templateUrl: './ban-options.component.html',
   styleUrls: ['./ban-options.component.scss']
 })
-export class BanOptionsComponent implements OnInit {
-  @ViewChild('submitButton') public submitButton: VerifyActionButtonComponent;
-
-  public data = {
-    banArea: BanOptions.AllFeatures,
+export class BanOptionsComponent implements OnInit, ControlValueAccessor {
+  public data: BanOptions = {
+    banArea: BanArea.AllFeatures,
     banReason: '',
     banDuration: moment.duration(10_000, 'days'),
     checkboxes: {
@@ -30,13 +40,35 @@ export class BanOptionsComponent implements OnInit {
   }
 
   public options = {
-    banArea: BanOptions,
+    banArea: BanArea,
   }
 
   public canSubmit = false;
   public canSubmitDisabledReason = 'N/A';
 
+  public onChangeFunction: (data: BanOptions) => void = () => { /** empty */ };
+
   constructor() { }
+
+  /** Form control hook. */
+  public writeValue(data: BanOptions): void {
+    this.data = data;
+  }
+
+  /** Form control hook. */
+  public registerOnChange(fn: (data: BanOptions) => void): void {
+    this.onChangeFunction = fn;
+  }
+  
+  /** Form control hook. */
+  public registerOnTouched(_fn: () => void): void {
+    /** empty */
+  }
+
+  /** Form control hook. */
+  public setDisabledState?(_isDisabled: boolean): void {
+    /** empty */
+  }
 
   /** Init hook. */
   public ngOnInit(): void {
@@ -45,8 +77,6 @@ export class BanOptionsComponent implements OnInit {
 
   /** Called when any child form changes. */
   public onChange(): void {
-    this.submitButton?.reset();
-
     // TODO: This is silly. Surely there's some built in way to handle this better.
     // TODO: It looks like FormControl can handle this but it's not clear how well that plays with angular material in the general case.
     // TODO: Actually it looks like half the things from Angular Material implement FormControl.
@@ -65,6 +95,8 @@ export class BanOptionsComponent implements OnInit {
       this.canSubmit = true;
       this.canSubmitDisabledReason = 'N/A';
     }
+
+    this.onChangeFunction(this.data);
   }
 
   /** Called on submit. */

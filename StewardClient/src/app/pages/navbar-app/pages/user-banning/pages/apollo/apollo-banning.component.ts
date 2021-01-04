@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { Store } from '@ngxs/store';
+import { BanOptions } from '../../components/ban-options/ban-options.component';
 
 /** The page for banning in apollo. */
 @Component({
@@ -9,6 +10,8 @@ import { Store } from '@ngxs/store';
 })
 export class ApolloBanningComponent implements OnInit {
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
+
+  public banOptions: BanOptions;
 
   constructor(public readonly store: Store) { }
 
