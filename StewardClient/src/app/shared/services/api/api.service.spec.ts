@@ -8,6 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 // Services
 import { ApiService } from '@shared/services/api/api.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('service: ApiService', () => {
   let injector: TestBed;
@@ -19,6 +20,7 @@ describe('service: ApiService', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule.withRoutes([]), HttpClientTestingModule],
       providers: [ApiService],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     injector = getTestBed();
     apiService = injector.inject(ApiService);

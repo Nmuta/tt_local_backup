@@ -1,12 +1,12 @@
-<main>
-  <mat-toolbar color="default">
-    <title-dropdown
-      [titleOptions]="gameTitleOptions"
-      [selectedOption]="selectedGameTitle"
-      (newTitleSelectedEvent)="newGameTitleSelected($event)"
-    ></title-dropdown>
-    <span class="spacer"></span>
-  </mat-toolbar>
+<mat-toolbar color="default">
+  <a
+    *ngFor="let link of navbarRouterLinks"
+    [routerLink]="link.route"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    >{{ link.name }}</a
+  >
+  <span class="spacer"></span>
+</mat-toolbar>
 
-  <router-outlet></router-outlet>
-</main>
+<router-outlet></router-outlet>

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Observable, of } from 'rxjs';
 import { SetSunriseSelectedPlayerIdentities } from './sunrise-gifting.state.actions';
 
 /** Defines the sunrise gifting state model. */
 export class SunriseGiftingStateModel {
-  public selectedPlayerIdentities: unknown[];
+  public selectedPlayerIdentities: IdentityResultAlphaBatch;
 }
 
 @Injectable({
@@ -30,7 +31,9 @@ export class SunriseGiftingState {
 
   /** Selector for state selected player identities. */
   @Selector()
-  public static selectedPlayerIdentities(state: SunriseGiftingStateModel): unknown[] {
+  public static selectedPlayerIdentities(
+    state: SunriseGiftingStateModel,
+  ): IdentityResultAlphaBatch {
     return state.selectedPlayerIdentities;
   }
 }

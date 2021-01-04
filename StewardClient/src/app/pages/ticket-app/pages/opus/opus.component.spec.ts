@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameTitleCodeName } from '@models/enums';
 import { Navigate } from '@ngxs/router-plugin';
@@ -19,6 +20,7 @@ describe('OpusComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [OpusComponent],
       imports: [NgxsModule.forRoot([])],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [createMockOpusService(), createMockTicketService()],
     }).compileComponents();
 
@@ -67,7 +69,7 @@ describe('OpusComponent', () => {
     it('it should navigate to the routing page', () => {
       fixture.detectChanges();
       expect(store.dispatch).toHaveBeenCalledWith(
-        new Navigate(['/ticket-app/title/'], null, { skipLocationChange: true }),
+        new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }),
       );
     });
   });

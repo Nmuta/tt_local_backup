@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { TicketService } from './ticket.service';
@@ -9,6 +10,7 @@ describe('TicketService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [createMockZendeskService()],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     service = TestBed.inject(TicketService);
   });

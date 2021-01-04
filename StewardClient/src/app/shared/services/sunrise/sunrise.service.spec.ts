@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { SunriseConsoleIsBannedFakeApi } from '@interceptors/fake-api/apis/title/sunrise/console/isBanned';
 import { SunrisePlayerXuidBanHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/banHistory';
@@ -24,6 +25,7 @@ describe('SunriseService', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [createMockApiService(() => nextReturnValue)],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     injector = getTestBed();
     service = injector.inject(SunriseService);

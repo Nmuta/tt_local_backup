@@ -10,7 +10,9 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
   templateUrl: '../player-selection.component.html',
   styleUrls: ['../player-selection.component.scss'],
 })
-export class SunrisePlayerSelectionComponent extends PlayerSelectionBaseComponent<IdentityResultAlpha> {
+export class SunrisePlayerSelectionComponent extends PlayerSelectionBaseComponent<
+  IdentityResultAlpha
+> {
   constructor(public readonly sunriseService: SunriseService) {
     super();
   }
@@ -26,8 +28,7 @@ export class SunrisePlayerSelectionComponent extends PlayerSelectionBaseComponen
         query: undefined,
         xuid: BigInt(789639236092375),
         gamertag: `${playerIdType}:${x}`,
-        error: undefined
-        
+        error: undefined,
       };
       return tmp;
     });

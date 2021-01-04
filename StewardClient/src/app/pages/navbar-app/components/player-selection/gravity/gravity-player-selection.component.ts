@@ -10,7 +10,9 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
   templateUrl: '../player-selection.component.html',
   styleUrls: ['../player-selection.component.scss'],
 })
-export class GravityPlayerSelectionComponent extends PlayerSelectionBaseComponent<IdentityResultBeta> {
+export class GravityPlayerSelectionComponent extends PlayerSelectionBaseComponent<
+  IdentityResultBeta
+> {
   constructor(public readonly gravityService: GravityService) {
     super();
   }
@@ -27,8 +29,7 @@ export class GravityPlayerSelectionComponent extends PlayerSelectionBaseComponen
         xuid: BigInt(789639236092375),
         gamertag: `${playerIdType}:${x}`,
         t10id: `${playerIdType}:${x}`,
-        error: undefined
-        
+        error: undefined,
       };
       return tmp;
     });

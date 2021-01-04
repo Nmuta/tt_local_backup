@@ -20,9 +20,7 @@ describe('TitleDropdownComponent', () => {
       fixture = TestBed.createComponent(TitleDropdownComponent);
       component = fixture.debugElement.componentInstance;
 
-      component.titleOptions = [
-        GameTitleCodeName.Street
-      ];
+      component.titleOptions = [GameTitleCodeName.Street];
     }),
   );
 

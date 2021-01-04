@@ -33,9 +33,7 @@ export class SunriseComponent extends BaseComponent implements OnInit {
       .subscribe(title => {
         this.gameTitle = title;
         if (title !== GameTitleCodeName.FH4) {
-          this.store.dispatch(
-            new Navigate(['/ticket-app/title/'], null, { skipLocationChange: true }),
-          );
+          this.store.dispatch(new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }));
         }
       });
 

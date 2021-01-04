@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
@@ -14,6 +15,7 @@ describe('ApolloService', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [createMockApiService(() => nextReturnValue)],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     injector = getTestBed();
     service = injector.inject(ApolloService);

@@ -33,6 +33,7 @@ import { GravityGiftingState } from './pages/navbar-app/pages/gifting/gravity/st
 import { SunriseGiftingState } from './pages/navbar-app/pages/gifting/sunrise/state/sunrise-gifting.state';
 import { ApolloGiftingState } from './pages/navbar-app/pages/gifting/apollo/state/apollo-gifting.state';
 import { OpusGiftingState } from './pages/navbar-app/pages/gifting/opus/state/opus-gifting.state';
+import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -69,6 +70,7 @@ function fakeApiOrNothing(): Provider[] {
     NgxsModule.forRoot([
       UserState,
       UserSettingsState,
+      TitleMemoryState,
       // Gifting page states
       GravityGiftingState,
       SunriseGiftingState,

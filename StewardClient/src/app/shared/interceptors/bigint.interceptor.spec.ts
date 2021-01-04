@@ -1,5 +1,6 @@
 import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { BigintInterceptor } from './bigint.interceptor';
@@ -18,6 +19,7 @@ describe('BigintInterceptor:', () => {
     interceptor.handle = jasmine.createSpy('handle', interceptor.handle).and.callThrough();
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
           provide: HTTP_INTERCEPTORS,

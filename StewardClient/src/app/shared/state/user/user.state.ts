@@ -2,7 +2,6 @@
 import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
-import { GameTitleCodeName } from '@models/enums';
 import { Navigate } from '@ngxs/router-plugin';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
@@ -18,18 +17,19 @@ import {
   ResetAccessToken,
   ResetUserProfile,
   SetNoUserProfile,
-  UpdateCurrentGiftingPageTitle,
 } from './user.actions';
 
-/** Defines the user state model. */
+/**
+ * Defines the user state model.
+ * Contains information about a user's identity and their roles.
+ */
 export class UserStateModel {
-  public profile?: UserModel;
-  public accessToken?: string;
-  public currentGiftingPageTitle?: GameTitleCodeName;
+  public profile: UserModel;
+  public accessToken: string;
 }
 
 @Injectable()
-@State<Partial<UserStateModel>>({
+@State<UserStateModel>({
   name: 'user',
   defaults: {
     // undefined means profile hasn't been determined
@@ -37,10 +37,12 @@ export class UserStateModel {
     // defined, means user is signed in
     profile: undefined,
     accessToken: undefined,
-    currentGiftingPageTitle: GameTitleCodeName.Street,
   },
 })
-/** Defines the user state. */
+/**
+ * Defines the user state.
+ * Manages information about a user's identity and their roles.
+ */
 export class UserState {
   constructor(
     private readonly userService: UserService,
@@ -133,21 +135,6 @@ export class UserState {
     ctx.patchState({ accessToken: undefined });
   }
 
-  /** Updates the last gifting page title. */
-  @Action(UpdateCurrentGiftingPageTitle, { cancelUncompleted: true })
-  public UpdateCurrentGiftingPageTitle(
-    ctx: StateContext<UserStateModel>,
-    _action: UpdateCurrentGiftingPageTitle,
-  ): Observable<void> {
-    const state = ctx.getState();
-    const newTitle = _action.title;
-
-    if (state.currentGiftingPageTitle !== newTitle) {
-      ctx.patchState({ currentGiftingPageTitle: newTitle });
-    }
-    return of();
-  }
-
   /** Helper function that timeouts state checks for user profile. */
   public static latestValidProfile$(profile$: Observable<UserModel>): Observable<UserModel> {
     const obs = profile$.pipe(
@@ -169,11 +156,5 @@ export class UserState {
   @Selector()
   public static accessToken(state: UserStateModel): string {
     return state.accessToken;
-  }
-
-  /** Selector for state last gifting page title. */
-  @Selector()
-  public static currentGiftingPageTitle(state: UserStateModel): GameTitleCodeName {
-    return state.currentGiftingPageTitle;
   }
 }

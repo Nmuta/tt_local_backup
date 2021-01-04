@@ -10,7 +10,9 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
   templateUrl: '../player-selection.component.html',
   styleUrls: ['../player-selection.component.scss'],
 })
-export class OpusPlayerSelectionComponent extends PlayerSelectionBaseComponent<IdentityResultAlpha> {
+export class OpusPlayerSelectionComponent extends PlayerSelectionBaseComponent<
+  IdentityResultAlpha
+> {
   constructor(public readonly opusService: OpusService) {
     super();
   }
@@ -26,8 +28,7 @@ export class OpusPlayerSelectionComponent extends PlayerSelectionBaseComponent<I
         query: undefined,
         xuid: BigInt(789639236092375),
         gamertag: `${playerIdType}:${x}`,
-        error: undefined
-        
+        error: undefined,
       };
       return tmp;
     });
