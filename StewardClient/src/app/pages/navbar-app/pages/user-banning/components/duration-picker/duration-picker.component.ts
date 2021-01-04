@@ -1,15 +1,19 @@
-import { AfterViewInit, ChangeDetectorRef, Component, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, forwardRef, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { BaseComponent } from '@components/base-component/base-component.component';
 import { first } from 'lodash';
 import * as moment from 'moment';
-import { Subject } from 'rxjs';
 
 interface DurationOption {
   duration: moment.Duration,
   humanized: string,
 }
+
+export const DurationPickerOptions: DurationOption[] = [
+  { duration: moment.duration(1, 'week'), humanized: '1 week' },
+  { duration: moment.duration(1, 'month'), humanized: '1 month' },
+  { duration: moment.duration(20, 'years'), humanized: '20 years' },
+];
 
 /** Allows selection of a duration. Compatible with ngModel. */
 @Component({
@@ -26,15 +30,9 @@ interface DurationOption {
 export class DurationPickerComponent implements AfterViewInit, ControlValueAccessor {
   @ViewChild('datePicker') public datePicker: MatDatepicker<Date>;
 
-  @Input() public options: DurationOption[] = [
-    { duration: moment.duration(1, 'week'), humanized: '1 week' },
-    { duration: moment.duration(1, 'month'), humanized: '1 month' },
-    { duration: moment.duration(20, 'years'), humanized: '20 years' },
-  ];
+  public options: DurationOption[] = DurationPickerOptions;
 
-  @Input() public startingDuration: moment.Duration = first(this.options).duration;
-
-  public formControl = new FormControl(this.startingDuration);
+  public formControl = new FormControl(first(this.options).duration);
 
   constructor(private ref: ChangeDetectorRef) {
     this.formControl.valueChanges.subscribe(value => this.updateDate(value));
@@ -44,10 +42,6 @@ export class DurationPickerComponent implements AfterViewInit, ControlValueAcces
   public ngAfterViewInit(): void {
     // we're required to synchronize the UI after view init, due to the nature of @ViewChild.
     // We also extract a default value here to ensure that the caller doesn't have to deal set a default value.
-    if (!this.formControl.value) {
-      this.formControl.setValue(first(this.options).duration);
-    }
-
     this.updateDate(this.formControl.value);
     this.ref.markForCheck();
   }
@@ -69,7 +63,6 @@ export class DurationPickerComponent implements AfterViewInit, ControlValueAcces
 
   /** ngModel hook. */
   public registerOnChange(callback: (value: moment.Duration) => void): void {
-    callback(this.formControl.value);
     this.formControl.valueChanges.subscribe(callback);
   }
 

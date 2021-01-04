@@ -1,6 +1,8 @@
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import * as moment from 'moment';
 import { AbstractControl, ControlValueAccessor, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator, Validators } from '@angular/forms';
+import { first } from 'lodash';
+import { DurationPickerOptions } from '../duration-picker/duration-picker.component';
 
 export enum BanArea {
   AllFeatures = 'all',
@@ -37,11 +39,11 @@ export interface BanOptions {
     }
   ]
 })
-export class BanOptionsComponent implements OnInit, ControlValueAccessor, Validator {
+export class BanOptionsComponent implements ControlValueAccessor, Validator {
   public defaults: BanOptions = {
     banArea: BanArea.AllFeatures,
     banReason: '',
-    banDuration: null,
+    banDuration: first(DurationPickerOptions).duration,
     checkboxes: {
       banAllXboxes: false,
       banAllPCs: false,
@@ -101,33 +103,6 @@ export class BanOptionsComponent implements OnInit, ControlValueAccessor, Valida
       this.formGroup.disable();
     } else {
       this.formGroup.enable();
-    }
-  }
-
-  /** Init hook. */
-  public ngOnInit(): void {
-    this.onChange();
-  }
-
-  /** Called when any child form changes. */
-  public onChange(): void {
-    // TODO: This is silly. Surely there's some built in way to handle this better.
-    // TODO: It looks like FormControl can handle this but it's not clear how well that plays with angular material in the general case.
-    // TODO: Actually it looks like half the things from Angular Material implement FormControl.
-    // https://medium.com/angular-in-depth/angular-nested-reactive-forms-using-cvas-b394ba2e5d0d
-    // https://indepth.dev/posts/1055/never-again-be-confused-when-implementing-controlvalueaccessor-in-angular-forms
-    if (!this.defaults.banArea) {
-      this.canSubmit = false;
-      this.canSubmitDisabledReason = 'Missing ban area';
-    } else if (!this.defaults.banDuration) {
-      this.canSubmit = false;
-      this.canSubmitDisabledReason = 'Missing ban duration';
-    } else if (this.defaults.banReason.trim().length <= 0) {
-      this.canSubmit = false;
-      this.canSubmitDisabledReason = 'Missing ban reason';
-    } else {
-      this.canSubmit = true;
-      this.canSubmitDisabledReason = 'N/A';
     }
   }
 
