@@ -5,7 +5,7 @@ import { faCog, faUser } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'overlay',
   templateUrl: './overlay.component.html',
-  styleUrls: ['./overlay.component.scss']
+  styleUrls: ['./overlay.component.scss'],
 })
 export class OverlayComponent {
   public readonly profileIcon = faUser;
