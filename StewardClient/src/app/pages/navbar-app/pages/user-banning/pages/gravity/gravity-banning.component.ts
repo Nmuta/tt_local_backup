@@ -1,22 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { IdentityResultBetaBatch } from '@models/identity-query.model';
-import { Store } from '@ngxs/store';
+import { Component } from '@angular/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 
+/** Routed Component; Gravity Banning Tool. */
 @Component({
   templateUrl: './gravity-banning.component.html',
   styleUrls: ['./gravity-banning.component.scss']
 })
-export class GravityBanningComponent implements OnInit {
-  public selectedPlayerIdentities: IdentityResultBetaBatch;
-
-  constructor(public readonly store: Store) { }
-
-  /** Init hook. */
-  public ngOnInit(): void {
-    // this.store.
+export class GravityBanningComponent {
+  public formControls = {
+    playerIdentities: new FormControl([], [Validators.required, Validators.minLength(1)]),
+    banOptions: new FormControl('', [Validators.required]),
   }
-  
-  public onPlayerIdentitiesChange(results: IdentityResultBetaBatch) {
-    // this.store.dispatch()
+
+  public formGroup = new FormGroup({
+    banOptions: this.formControls.banOptions,
+    playerIdentities: this.formControls.playerIdentities,
+  });
+
+  /** Submit the form. */
+  public submit(): void {
+    // const identities = this.formControls.playerIdentities.value as IdentityResultBetaBatch;
+    // const banOptions = this.formControls.banOptions.value as BanOptions;
+    // TODO
   }
 }
