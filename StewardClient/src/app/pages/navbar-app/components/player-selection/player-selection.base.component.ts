@@ -72,7 +72,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   
   /** Form control hook. */
   public registerOnChange(fn: (value: T[]) => void): void {
-    debugger;
     this.onChangeFunction = fn;
   }
   
@@ -172,7 +171,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** Logic deciding if we should emit the player identities to its listeners. */
   public emitPlayerIdentities(): void {
-    debugger;
     this.onChangeFunction(this.playerIdentities);
   }
 
