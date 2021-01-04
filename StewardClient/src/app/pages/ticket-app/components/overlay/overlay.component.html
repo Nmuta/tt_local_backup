@@ -1,0 +1,27 @@
+<nav>
+  <span class="spacer"></span>
+  <span>
+    <a
+      [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
+      queryParamsHandling="preserve"
+      mat-mini-fab
+      routerLinkActive="mat-stroked-button"
+      aria-label="Settings"
+      color="primary"
+    >
+      <fa-icon [icon]="settingsIcon"></fa-icon>
+    </a>
+  </span>
+  <span>
+    <a
+      [routerLink]="[{ outlets: { sidebar: 'profile' } }]"
+      queryParamsHandling="preserve"
+      mat-mini-fab
+      routerLinkActive="mat-stroked-button"
+      aria-label="Profile"
+      color="primary"
+    >
+      <fa-icon [icon]="profileIcon"></fa-icon>
+    </a>
+  </span>
+</nav>
