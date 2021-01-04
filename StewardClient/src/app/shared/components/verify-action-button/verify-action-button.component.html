@@ -7,7 +7,7 @@
   >
     <ng-content></ng-content>
   </button>
-  <mat-checkbox [(ngModel)]="verified" [disabled]="!canSubmit" [matTooltip]="activeTooltip"></mat-checkbox>
+  <mat-checkbox [(ngModel)]="verified" [disabled]="!canSubmit" [matTooltip]="activeTooltip">{{ checkboxText }}</mat-checkbox>
 </span>
 <error-spinner
   [isActive]="isSubmitting"

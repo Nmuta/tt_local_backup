@@ -37,8 +37,8 @@ export class ApolloBanningComponent implements OnInit {
     // this.store.dispatch()
   }
 
-  public onBanOptionsChange(banOptions: BanOptions) {
-    console.log(banOptions);
-    console.log(this.formControls.banOptions.valid);
+  /** Submit the form. */
+  public submit() {
+
   }
 }

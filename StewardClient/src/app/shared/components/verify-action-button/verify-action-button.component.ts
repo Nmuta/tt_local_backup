@@ -27,8 +27,8 @@ export class VerifyActionButtonComponent extends BaseComponent {
   /** Tooltip to display below disabled button. */
   @Input() public verifyText = 'Action must be verified';
 
-  /** Tooltip to display below checkbox. */
-  @Input() public checkboxText = 'Verify';
+  /** Tooltip to display beside checkbox. */
+  @Input() public checkboxText = '';
 
   public verified = false;
   public isSubmitting = false;

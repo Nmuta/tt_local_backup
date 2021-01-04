@@ -1,4 +1,4 @@
-<ng-container [formGroup]="formGroup">
+<ng-container [formGroup]="formGroup" (ngSubmit)="submit">
   <apollo-player-selection
     [allowT10Id]="false"
     [allowGroup]="false"
@@ -11,7 +11,7 @@
 
     <mat-card>
       <mat-card-content>
-        <verify-action-button #submitButton [alwaysShow]="true" [canSubmit]="formGroup.valid" [canSubmitDisabledReason]="'homk'">
+        <verify-action-button #submitButton [alwaysShow]="true" [canSubmit]="formGroup.valid" [canSubmitDisabledReason]="'Form is invalid'" checkboxText="Check to verify ban">
           Submit ban
         </verify-action-button>
       </mat-card-content>
