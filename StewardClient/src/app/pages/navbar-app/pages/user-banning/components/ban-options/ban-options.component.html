@@ -2,29 +2,33 @@
   <mat-card-content>
     <section class="ban-area">
       <label>Ban Area</label>
-      <mat-button-toggle-group>
-        <mat-button-toggle value="all" checked=true>All Features</mat-button-toggle>
-        <mat-button-toggle value="ugc">User Generated Content</mat-button-toggle>
-        <mat-button-toggle value="all">Matchmaking</mat-button-toggle>
+      <mat-button-toggle-group [(ngModel)]="data.banArea" (ngModelChange)="onChange()">
+        <mat-button-toggle [value]="options.banArea.AllFeatures" checked=true>All Features</mat-button-toggle>
+        <mat-button-toggle [value]="options.banArea.UserGeneratedContent">User Generated Content</mat-button-toggle>
+        <mat-button-toggle [value]="options.banArea.Matchmaking">Matchmaking</mat-button-toggle>
       </mat-button-toggle-group>
     </section>
 
     <mat-form-field class="ban-reason" appearance="fill">
       <mat-label>Ban Reason</mat-label>
-      <textarea matInput placeholder="ʕ•́ᴥ•̀ʔっ"></textarea>
+      <textarea matInput placeholder="ʕ•́ᴥ•̀ʔっ" [(ngModel)]="data.banReason" (ngModelChange)="onChange()"></textarea>
       <mat-hint>This reason will be shown to the player.</mat-hint>
     </mat-form-field>
 
-    <duration-picker [(ngModel)]="banDuration"></duration-picker>
+    <duration-picker [(ngModel)]="data.banDuration" (ngModelChange)="onChange()"></duration-picker>
 
     <section class="ban-options">
       <ul>
-        <li><mat-checkbox>Ban all Xboxes (No expiry)</mat-checkbox></li>
-        <li><mat-checkbox>Ban all PCs (No expiry)</mat-checkbox></li>
-        <li><mat-checkbox>Delete all leaderboard entries (Permanent)</mat-checkbox></li>
+        <li><mat-checkbox [(ngModel)]="data.checkboxes.banAllXboxes" (ngModelChange)="onChange()">Ban all Xboxes (No expiry)</mat-checkbox></li>
+        <li><mat-checkbox [(ngModel)]="data.checkboxes.banAllPCs" (ngModelChange)="onChange()">Ban all PCs (No expiry)</mat-checkbox></li>
+        <li><mat-checkbox [(ngModel)]="data.checkboxes.deleteLeaderboardEntries" (ngModelChange)="onChange()">Delete all leaderboard entries (Permanent)</mat-checkbox></li>
       </ul>
     </section>
 
-    <verify-action-button [canSubmit]="false">Submit ban</verify-action-button>
+    <!-- <div>
+      <verify-action-button #submitButton [alwaysShow]="true" [canSubmit]="canSubmit" [canSubmitDisabledReason]="canSubmitDisabledReason" [action]="submitAction.bind(this)">
+        Submit ban
+      </verify-action-button>
+    </div> -->
   </mat-card-content>
 </mat-card>

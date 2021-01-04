@@ -5,4 +5,14 @@
   (playerIdentitiesChange)="onPlayerIdentitiesChange($event)"
 ></gravity-player-selection>
 
-<ban-options></ban-options>
+<div class="action-container">
+  <ban-options></ban-options>
+
+  <mat-card>
+    <mat-card-content>
+      <verify-action-button #submitButton [alwaysShow]="true" [canSubmit]="true" [canSubmitDisabledReason]="'homk'">
+        Submit ban
+      </verify-action-button>
+    </mat-card-content>
+  </mat-card>
+</div>
