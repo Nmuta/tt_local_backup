@@ -5,8 +5,8 @@
   <mat-datepicker #datePicker></mat-datepicker>
 </mat-form-field>
 
-<mat-button-toggle-group [(ngModel)]="value" (change)="onDurationChange($event)" [disabled]="isDisabled">
-  <mat-button-toggle *ngFor="let option of options; let i=index" [value]="option.duration" [checked]="i === 0">
+<mat-button-toggle-group [formControl]="formControl">
+  <mat-button-toggle *ngFor="let option of options; let i=index" [value]="option.duration">
     {{ option.humanized }}
   </mat-button-toggle>
 </mat-button-toggle-group>

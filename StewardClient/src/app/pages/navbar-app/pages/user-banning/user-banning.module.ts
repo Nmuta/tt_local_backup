@@ -12,7 +12,7 @@ import { PlayerSelectionModule } from '../../components/player-selection/player-
 import { BanOptionsComponent } from './components/ban-options/ban-options.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -34,6 +34,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
+    ReactiveFormsModule,
     UserBanningRoutingModule,
     PlayerSelectionModule,
     VerifyActionButtonModule,

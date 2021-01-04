@@ -1,18 +1,20 @@
-<apollo-player-selection
-  [allowT10Id]="false"
-  [allowGroup]="false"
-  [(playerIdentities)]="selectedPlayerIdentities"
-  (playerIdentitiesChange)="onPlayerIdentitiesChange($event)"
-></apollo-player-selection>
+<ng-container [formGroup]="formGroup">
+  <apollo-player-selection
+    [allowT10Id]="false"
+    [allowGroup]="false"
+    [(playerIdentities)]="selectedPlayerIdentities"
+    (playerIdentitiesChange)="onPlayerIdentitiesChange($event)"
+  ></apollo-player-selection>
 
-<div class="action-container">
-  <ban-options [ngModel]="banOptions"></ban-options>
+  <div class="action-container">
+    <ban-options [formControl]="formControls.banOptions"></ban-options>
 
-  <mat-card>
-    <mat-card-content>
-      <verify-action-button #submitButton [alwaysShow]="true" [canSubmit]="true" [canSubmitDisabledReason]="'homk'">
-        Submit ban
-      </verify-action-button>
-    </mat-card-content>
-  </mat-card>
-</div>
+    <mat-card>
+      <mat-card-content>
+        <verify-action-button #submitButton [alwaysShow]="true" [canSubmit]="formGroup.valid" [canSubmitDisabledReason]="'homk'">
+          Submit ban
+        </verify-action-button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</ng-container>
