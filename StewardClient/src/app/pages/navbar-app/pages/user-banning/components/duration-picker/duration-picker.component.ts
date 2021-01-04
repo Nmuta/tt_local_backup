@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, forwardRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, forwardRef, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { first } from 'lodash';
@@ -41,7 +41,6 @@ export class DurationPickerComponent implements AfterViewInit, ControlValueAcces
   /** Init hook. */
   public ngAfterViewInit(): void {
     // we're required to synchronize the UI after view init, due to the nature of @ViewChild.
-    // We also extract a default value here to ensure that the caller doesn't have to deal set a default value.
     this.updateDate(this.formControl.value);
     this.ref.markForCheck();
   }
