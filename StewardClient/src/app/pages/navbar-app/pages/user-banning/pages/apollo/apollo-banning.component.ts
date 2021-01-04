@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { Store } from '@ngxs/store';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
@@ -15,16 +15,23 @@ export class ApolloBanningComponent implements OnInit {
   public banOptions: BanOptions;
 
   public formControls = {
-    banOptions: new FormControl(''),
+    playerIdentities: new FormControl([], [Validators.required, Validators.minLength(1)]),
+    banOptions: new FormControl('', [Validators.required]),
   }
 
   public formGroup = new FormGroup({
     banOptions: this.formControls.banOptions,
+    playerIdentities: this.formControls.playerIdentities,
   });
 
   constructor(public readonly store: Store) {
     this.formControls.banOptions.valueChanges.subscribe((banOptions: BanOptions) => {
+      debugger;
       console.log(banOptions);
+    });
+    this.formControls.playerIdentities.valueChanges.subscribe((identities: IdentityResultAlphaBatch) => {
+      debugger;
+      console.log(identities);
     });
   }
 

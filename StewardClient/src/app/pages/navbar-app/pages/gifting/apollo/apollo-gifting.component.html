@@ -2,8 +2,8 @@
   <apollo-player-selection
     [allowT10Id]="false"
     [allowGroup]="false"
-    [(playerIdentities)]="selectedPlayerIdentities"
-    (playerIdentitiesChange)="onPlayerIdentitiesChange($event)"
+    [(ngModel)]="selectedPlayerIdentities"
+    (ngModelChange)="onPlayerIdentitiesChange($event)"
   ></apollo-player-selection>
 
   <br /><br />

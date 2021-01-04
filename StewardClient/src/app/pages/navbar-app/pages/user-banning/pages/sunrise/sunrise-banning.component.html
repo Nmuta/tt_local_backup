@@ -1,8 +1,8 @@
 <sunrise-player-selection
   [allowT10Id]="false"
   [allowGroup]="true"
-  [(playerIdentities)]="selectedPlayerIdentities"
-  (playerIdentitiesChange)="onPlayerIdentitiesChange($event)"
+  [(ngModel)]="selectedPlayerIdentities"
+  (ngModelChange)="onPlayerIdentitiesChange($event)"
 ></sunrise-player-selection>
 
 <div class="action-container">

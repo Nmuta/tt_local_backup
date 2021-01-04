@@ -1,8 +1,8 @@
 <gravity-player-selection
   [allowT10Id]="true"
   [allowGroup]="true"
-  [(playerIdentities)]="selectedPlayerIdentities"
-  (playerIdentitiesChange)="onPlayerIdentitiesChange($event)"
+  [(ngModel)]="selectedPlayerIdentities"
+  (ngModelChange)="onPlayerIdentitiesChange($event)"
 ></gravity-player-selection>
 
 <div class="action-container">

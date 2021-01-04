@@ -2,8 +2,8 @@
   <opus-player-selection
     [allowT10Id]="false"
     [allowGroup]="false"
-    [(playerIdentities)]="selectedPlayerIdentities"
-    (playerIdentitiesChange)="onPlayerIdentitiesChange($event)"
+    [(ngModel)]="selectedPlayerIdentities"
+    (ngModelChange)="onPlayerIdentitiesChange($event)"
   ></opus-player-selection>
 
   <br /><br />

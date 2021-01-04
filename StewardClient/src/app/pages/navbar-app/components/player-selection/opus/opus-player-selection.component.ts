@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { OpusService } from '@services/opus';
 import { Observable, of } from 'rxjs';
@@ -9,6 +10,13 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
   selector: 'opus-player-selection',
   templateUrl: '../player-selection.component.html',
   styleUrls: ['../player-selection.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => OpusPlayerSelectionComponent),
+      multi: true
+    },
+  ],
 })
 export class OpusPlayerSelectionComponent extends PlayerSelectionBaseComponent<
   IdentityResultAlpha

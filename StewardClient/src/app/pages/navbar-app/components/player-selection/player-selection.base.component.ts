@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
+import { ControlValueAccessor } from '@angular/forms';
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 
@@ -15,11 +16,11 @@ type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 })
 export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion>
   extends BaseComponent
-  implements OnInit {
-  @Input() playerIdentities: T[] = [];
+  implements OnInit, ControlValueAccessor {
   @Input() allowT10Id: boolean = true;
   @Input() allowGroup: boolean = true;
-  @Output() playerIdentitiesChange = new EventEmitter<T[]>();
+
+  public playerIdentities: T[] = [];
 
   /** Close icon */
   public closeIcon = faTimesCircle;
@@ -62,6 +63,27 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   /** Initialization hook */
   public ngOnInit(): void {
     this.checkPlayerIdentityResultsForErrors();
+  }
+  
+  /** Form control hook. */
+  public writeValue(obj: T[]): void {
+    this.playerIdentities = obj;
+  }
+  
+  /** Form control hook. */
+  public registerOnChange(fn: (value: T[]) => void): void {
+    debugger;
+    this.onChangeFunction = fn;
+  }
+  
+  /** Form control hook. */
+  public registerOnTouched(_fn: unknown): void {
+    /** empty */
+  }
+  
+  /** Form control hook. */
+  public setDisabledState?(_isDisabled: boolean): void {
+    throw new Error('Method not implemented.');
   }
 
   /** Logic when textarea input changes */
@@ -150,6 +172,9 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** Logic deciding if we should emit the player identities to its listeners. */
   public emitPlayerIdentities(): void {
-    this.playerIdentitiesChange.emit(this.playerIdentities);
+    debugger;
+    this.onChangeFunction(this.playerIdentities);
   }
+
+  private onChangeFunction = (_value: T[]) => { /* empty */ };
 }
