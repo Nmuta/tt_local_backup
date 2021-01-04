@@ -25,7 +25,7 @@ export interface BanOptions {
   templateUrl: './ban-options.component.html',
   styleUrls: ['./ban-options.component.scss'],
   providers: [
-       {
+    {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => BanOptionsComponent),
       multi: true

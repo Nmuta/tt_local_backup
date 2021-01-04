@@ -1,6 +1,6 @@
 @import '/src/variables.scss';
 
-mat-card-content {
+.wrapper {
   > *:not(:first-child) {
     display: block;
     padding-top: 30px;
