@@ -9,12 +9,6 @@
 
 mat-drawer-container {
   flex-grow: 1;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
 }
 
 mat-drawer {
@@ -26,6 +20,12 @@ mat-drawer {
   display: flex;
   flex-flow: column nowrap;
   min-height: 100%;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 
 .content {
@@ -77,7 +77,7 @@ overlay {
   position: absolute;
   z-index: 10;
   left: 0;
-  right: 0;
+  right: 1rem;
   top: 0;
 }
 
