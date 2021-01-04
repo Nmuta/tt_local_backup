@@ -32,7 +32,9 @@ export class DurationPickerComponent implements AfterViewInit, ControlValueAcces
     { duration: moment.duration(20, 'years'), humanized: '20 years' },
   ];
 
-  public formControl = new FormControl(first(this.options).duration);
+  @Input() public startingDuration: moment.Duration = first(this.options).duration;
+
+  public formControl = new FormControl(this.startingDuration);
 
   constructor(private ref: ChangeDetectorRef) {
     this.formControl.valueChanges.subscribe(value => this.updateDate(value));
@@ -45,7 +47,6 @@ export class DurationPickerComponent implements AfterViewInit, ControlValueAcces
     if (!this.formControl.value) {
       this.formControl.setValue(first(this.options).duration);
     }
-
 
     this.updateDate(this.formControl.value);
     this.ref.markForCheck();
@@ -68,6 +69,7 @@ export class DurationPickerComponent implements AfterViewInit, ControlValueAcces
 
   /** ngModel hook. */
   public registerOnChange(callback: (value: moment.Duration) => void): void {
+    callback(this.formControl.value);
     this.formControl.valueChanges.subscribe(callback);
   }
 

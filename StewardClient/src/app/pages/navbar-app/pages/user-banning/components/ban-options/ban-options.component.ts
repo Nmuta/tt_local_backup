@@ -136,7 +136,7 @@ export class BanOptionsComponent implements OnInit, ControlValueAccessor, Valida
     if (this.formGroup.valid) {
       return null;
     }
-    
+
     return { invalidForm: {valid: false, message: 'fields are invalid'}};
   }
 }
