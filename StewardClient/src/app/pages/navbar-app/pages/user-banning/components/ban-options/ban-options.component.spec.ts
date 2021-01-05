@@ -36,22 +36,22 @@ describe('BanOptionsComponent', () => {
       component.registerOnTouched(onTouchedFunction);
     });
 
-    it('should not call onChange when writeValue', () => {
+    it('should not call onChange when writeValue(data) called', () => {
       component.writeValue(component.defaults as unknown as Record<string, unknown>);
       expect(onChangeFunction).toHaveBeenCalledTimes(0);
     });
 
-    it('should call onChange changed internally', () => {
+    it('should call onChange(data) when changed internally', () => {
       component.formControls.banReason.setValue('Hello, world!');
       expect(onChangeFunction).toHaveBeenCalledTimes(1);
     });
 
-    it('should set disabled true', () => {
+    it('setDisabledState(true)', () => {
       component.setDisabledState(true);
       expect(component.formGroup.disabled).toBeTruthy();
     });
 
-    it('should set disabled false', () => {
+    it('setDisabledState(false)', () => {
       component.setDisabledState(false);
       expect(component.formGroup.disabled).toBeFalsy();
     });
