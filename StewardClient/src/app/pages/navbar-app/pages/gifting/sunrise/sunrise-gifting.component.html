@@ -1,8 +1,8 @@
 <ng-container>
   <sunrise-player-selection
     [allowT10Id]="false"
-    [initPlayerSelectionState]="selectedPlayerIdentities"
-    (selectedPlayerIdentitiesEvent)="selectedPlayerIndentities($event)"
+    [(ngModel)]="selectedPlayerIdentities"
+    (ngModelChange)="onPlayerIdentitiesChange($event)"
   ></sunrise-player-selection>
 
   <br /><br />

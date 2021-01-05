@@ -33,8 +33,9 @@ mat-drawer {
   flex-grow: 1;
 }
 
-div {
-  padding: 10px;
+// This makes the footer look a bit better, and gets rid of an unncessary scroll bar.
+data-privacy-notice {
+  padding: 10px 0;
 }
 
 .header-buttons {

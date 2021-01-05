@@ -1,0 +1,21 @@
+:host {
+  display: flex;
+  flex-flow: row wrap;
+  > * {
+    margin: 10px;
+  }
+  
+  ban-options {
+    flex-grow: 1;
+  }
+}
+
+.action-container {
+  display: flex;
+  flex-flow: column nowrap;
+  flex-grow: 1;
+  margin: 0;
+  > * {
+    margin: 10px;
+  }
+}

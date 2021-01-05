@@ -1,13 +1,13 @@
-<span *ngIf="canSubmit && !isSubmitting" class="apply">
+<span *ngIf="alwaysShow || (canSubmit && !isSubmitting)" class="apply">
   <button
     mat-stroked-button
-    [disabled]="!verified"
-    [matTooltip]="!verified ? verifyText : undefined"
+    [disabled]="!verified || !canSubmit || isSubmitting"
+    [matTooltip]="activeTooltip"
     (click)="doAction()"
   >
     <ng-content></ng-content>
   </button>
-  <mat-checkbox [(ngModel)]="verified" [matTooltip]="verifyText"></mat-checkbox>
+  <mat-checkbox [(ngModel)]="verified" [disabled]="!canSubmit" [matTooltip]="activeTooltip">{{ checkboxText }}</mat-checkbox>
 </span>
 <error-spinner
   [isActive]="isSubmitting"

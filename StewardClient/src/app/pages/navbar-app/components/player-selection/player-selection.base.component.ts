@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
+import { ControlValueAccessor } from '@angular/forms';
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 
@@ -15,11 +16,11 @@ type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 })
 export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion>
   extends BaseComponent
-  implements OnInit {
-  @Input() initPlayerSelectionState: T[] = [];
+  implements OnInit, ControlValueAccessor {
   @Input() allowT10Id: boolean = true;
   @Input() allowGroup: boolean = true;
-  @Output() selectedPlayerIdentitiesEvent = new EventEmitter<T[]>();
+
+  public playerIdentities: T[] = [];
 
   /** Close icon */
   public closeIcon = faTimesCircle;
@@ -61,8 +62,27 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** Initialization hook */
   public ngOnInit(): void {
-    this.playerIdentityResults = this.initPlayerSelectionState;
     this.checkPlayerIdentityResultsForErrors();
+  }
+  
+  /** Form control hook. */
+  public writeValue(obj: T[]): void {
+    this.playerIdentities = obj;
+  }
+  
+  /** Form control hook. */
+  public registerOnChange(fn: (value: T[]) => void): void {
+    this.onChangeFunction = fn;
+  }
+  
+  /** Form control hook. */
+  public registerOnTouched(_fn: unknown): void {
+    /** empty */
+  }
+  
+  /** Form control hook. */
+  public setDisabledState?(_isDisabled: boolean): void {
+    throw new Error('Method not implemented.');
   }
 
   /** Logic when textarea input changes */
@@ -94,7 +114,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** Clears the player identity results. */
   public clearResults(): void {
-    this.playerIdentityResults = [];
+    this.playerIdentities = [];
     this.playerIdType = undefined;
     this.clearInput();
     this.checkPlayerIdentityResultsForErrors();
@@ -118,7 +138,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
     validateRequest$.pipe(takeUntil(this.onDestroy$), delay(3_000)).subscribe(
       response => {
         this.isLoading = false;
-        this.playerIdentityResults = response.sort((a, b) =>
+        this.playerIdentities = response.sort((a, b) =>
           a['error'] === b['error'] ? 0 : a['error'] ? -1 : 1,
         );
         this.checkPlayerIdentityResultsForErrors();
@@ -133,24 +153,26 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** Removed player at given index from the results list. */
   public removePlayerFromList(index: number): void {
-    this.playerIdentityResults.splice(index, 1);
+    this.playerIdentities.splice(index, 1);
     this.checkPlayerIdentityResultsForErrors();
     this.emitPlayerIdentities();
 
-    if (this.playerIdentityResults.length <= 0) {
+    if (this.playerIdentities.length <= 0) {
       this.clearResults();
     }
   }
 
   /** Sets the number of player identity results that are errors. */
   public checkPlayerIdentityResultsForErrors(): void {
-    this.numPlayerIdentityErrorResults = this.playerIdentityResults.filter(x => x['error']).length;
+    this.numPlayerIdentityErrorResults = this.playerIdentities.filter(x => x['error']).length;
     this.contentCollapseState =
-      this.playerIdentityResults.length > 0 && this.numPlayerIdentityErrorResults <= 0;
+      this.playerIdentities.length > 0 && this.numPlayerIdentityErrorResults <= 0;
   }
 
   /** Logic deciding if we should emit the player identities to its listeners. */
   public emitPlayerIdentities(): void {
-    this.selectedPlayerIdentitiesEvent.emit(this.playerIdentityResults);
+    this.onChangeFunction(this.playerIdentities);
   }
+
+  private onChangeFunction = (_value: T[]) => { /* empty */ };
 }

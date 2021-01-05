@@ -35,6 +35,7 @@ import { SunriseGiftingState } from './pages/navbar-app/pages/gifting/sunrise/st
 import { ApolloGiftingState } from './pages/navbar-app/pages/gifting/apollo/state/apollo-gifting.state';
 import { OpusGiftingState } from './pages/navbar-app/pages/gifting/opus/state/opus-gifting.state';
 import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state';
+import { MatNativeDateModule } from '@angular/material/core';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -67,6 +68,7 @@ function fakeApiOrNothing(): Provider[] {
     HttpClientModule,
     FourOhFourModule,
     MatCardModule,
+    MatNativeDateModule,
     CenterContentsModule,
     NgxsModule.forRoot([
       UserState,

@@ -1,0 +1,25 @@
+@import '/src/variables.scss';
+
+:host {
+  display: flex !important;
+  flex-flow: row wrap;
+  align-items: center;
+  > * {
+    margin: 0 5px;
+  }
+}
+
+// this element has a reserved area below it for warnings, which we are not using
+// removing it makes the items align better
+:host ::ng-deep {
+  mat-form-field.date-picker {
+    &, .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
+  }
+}
+
+.mat-button-toggle-checked {
+  background-color: mat-color($app-primary);
+  color: mat-color($app-primary, default-contrast);
+}
