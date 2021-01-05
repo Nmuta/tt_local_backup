@@ -86,6 +86,60 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         [TestMethod]
         [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByXuid()
+        {
+            var query = new IdentityQueryAlpha {Xuid = xuid};
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha>{query}).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(xuid, result[0].Xuid);
+            Assert.IsNull(result[0].Error);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByXuid_InvalidXuid()
+        {
+            var query = new IdentityQueryAlpha { Xuid = TestConstants.InvalidXuid };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result[0].Error);
+            Assert.IsTrue(result[0].Xuid == default);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(result[0].Gamertag));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByGamertag()
+        {
+            var query = new IdentityQueryAlpha { Gamertag = gamertag };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(xuid, result[0].Xuid);
+            Assert.IsNull(result[0].Error);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByGamertag_InvalidGamertag()
+        {
+            var query = new IdentityQueryAlpha { Gamertag = TestConstants.InvalidGamertag };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result[0].Error);
+            Assert.IsTrue(result[0].Xuid == default);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(result[0].Gamertag));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
         public async Task GetPlayerDetailsByGamertag()
         {
             var result = await stewardClient.GetPlayerDetailsAsync(gamertag).ConfigureAwait(false);
@@ -105,7 +159,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -837,7 +891,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -1481,7 +1535,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var playerInventory = this.CreatePlayerInventory();
             await stewardClient.UpdatePlayerInventoryAsync(playerInventory, headersToSend).ConfigureAwait(false);
 
-            var result = await stewardClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.Xuid, xuid.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+            var result = await stewardClient.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
             Assert.IsTrue(result.Any());
         }
 
@@ -1494,7 +1548,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
             await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift, headersToSend).ConfigureAwait(false);
 
-            var result = await stewardClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.Xuid, xuid.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+            var result = await stewardClient.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
 
             Assert.IsTrue(result.Any());
         }
@@ -1508,7 +1562,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
             await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, playerInventory, headersToSend).ConfigureAwait(false);
 
-            var result = await stewardClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.LspGroupId, lspGroupId.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+            var result = await stewardClient.GetGiftHistoriesAsync(lspGroupId).ConfigureAwait(false);
 
             Assert.IsTrue(result.Any());
         }
@@ -1519,7 +1573,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             try
             {
-                await unauthorizedClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.Xuid, xuid.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+                await unauthorizedClient.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1532,7 +1586,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task GetGiftHistory_InvalidGiftRecipientId()
         {
-            var result = await stewardClient.GetGiftHistoriesAsync(GiftHistoryAntecedent.Xuid, TestConstants.InvalidXuid.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+            var result = await stewardClient.GetGiftHistoriesAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
 
             Assert.IsFalse(result.Any());
         }

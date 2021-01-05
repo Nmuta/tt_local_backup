@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 
@@ -10,6 +11,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
     /// </summary>
     public interface IApolloPlayerDetailsProvider
     {
+        /// <summary>
+        ///     Get player identity.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>
+        ///     The <see cref="IdentityResultAlpha"/>.
+        /// </returns>
+        Task<IdentityResultAlpha> GetPlayerIdentityAsync(IdentityQueryAlpha query);
+
         /// <summary>
         ///     Get player details.
         /// </summary>

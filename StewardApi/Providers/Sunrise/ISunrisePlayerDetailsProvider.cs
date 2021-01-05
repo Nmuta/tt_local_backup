@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 
@@ -10,6 +11,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
     /// </summary>
     public interface ISunrisePlayerDetailsProvider
     {
+        /// <summary>
+        ///     Get player identity.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>
+        ///     The <see cref="IdentityResultAlpha"/>.
+        /// </returns>
+        Task<IdentityResultAlpha> GetPlayerIdentityAsync(IdentityQueryAlpha query);
+
         /// <summary>
         ///     Get player details.
         /// </summary>

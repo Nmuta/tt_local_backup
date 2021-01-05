@@ -7,6 +7,7 @@ using FluentAssertions;
 using Forza.WebServices.FMG.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using static Forza.WebServices.FMG.Generated.UserService;
@@ -58,6 +59,35 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
             // Assert.
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "mapper"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var query = Fixture.Create<IdentityQueryBeta>();
+
+            // Act.
+            Func<Task<IdentityResultBeta>> action = async () => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+
+            // Assert.
+            action().Result.Should().BeOfType<IdentityResultBeta>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerIdentitiesAsync_WithNullQuery_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+
+            // Act.
+            Func<Task<IdentityResultBeta>> action = async () => await provider.GetPlayerIdentityAsync(null).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "query"));
         }
 
         [TestMethod]
@@ -206,6 +236,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 this.GravityUserService.LiveOpsGetUserDetailsByGamerTagAsync(Arg.Any<string>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByGamerTagOutput>());
                 this.GravityUserService.LiveOpsGetUserDetailsByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByT10IdOutput>());
                 this.Mapper.Map<GravityPlayerDetails>(Arg.Any<LiveOpsUserDetails>()).Returns(Fixture.Create<GravityPlayerDetails>());
+                this.Mapper.Map<IdentityResultBeta>(Arg.Any<LiveOpsUserDetails>()).Returns(Fixture.Create<IdentityResultBeta>());
             }
 
             public IGravityUserService GravityUserService { get; set; } = Substitute.For<IGravityUserService>();

@@ -25,6 +25,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { CenterContentsModule } from '@components/center-contents/center-contents.module';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { ZafClientService } from '@services/zendesk/zaf-client.service';
+import { UtcInterceptor } from '@interceptors/utc.interceptor';
 
 // States
 import { UserState } from '@shared/state/user/user.state';
@@ -128,6 +129,12 @@ function fakeApiOrNothing(): Provider[] {
       multi: true,
     },
     {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UtcInterceptor,
+      multi: true,
+    },
+    {
+      // this has to be the last interceptor, since it changes the type of the request to 'text'
       provide: HTTP_INTERCEPTORS,
       useClass: BigintInterceptor,
       multi: true,

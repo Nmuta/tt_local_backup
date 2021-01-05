@@ -8,6 +8,7 @@ using Forza.WebServices.FH4.master.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
@@ -90,6 +91,35 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             // Assert.
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "refreshableCacheStore"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerIdentitiesAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var query = Fixture.Create<IdentityQueryAlpha>();
+
+            // Act.
+            Func<Task<IdentityResultAlpha>> action = async () => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+
+            // Assert.
+            action().Result.Should().BeOfType<IdentityResultAlpha>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerIdentitiesAsync_WithNullQuery_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+
+            // Act.
+            Func<Task<IdentityResultAlpha>> action = async () => await provider.GetPlayerIdentityAsync(null).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "query"));
         }
 
         [TestMethod]
@@ -384,8 +414,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             return new SunriseBanParameters
             {
-                Xuids = new List<ulong> { 111, 222, 333 },
-                Gamertags = new List<string> { "gamerT1", "gamerT2", "gamerT3" },
+                Xuids = new List<ulong> { 111 },
+                Gamertags = new List<string> { "gamerT1" },
                 FeatureArea = "Matchmaking",
                 Reason = "Disgusting license plate.",
                 StartTimeUtc = DateTime.UtcNow,
@@ -402,6 +432,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public Dependencies()
             {
                 this.SunriseUserService.GetLiveOpsUserDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
+                this.SunriseUserService.GetLiveOpsUserDataByGamerTagAsync("gamerT1").Returns(this.GenerateGetLiveOpsUserDataByGamerTagOutPut());
                 this.SunriseUserService.GetLiveOpsUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetLiveOpsUserDataByXuidOutput>());
                 this.SunriseUserService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
                 this.SunriseUserService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
@@ -410,7 +441,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseUserService.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetProfileSummaryOutput>());
                 this.SunriseUserService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
                 this.RefreshableCacheStore.GetItem<IList<SunriseCreditUpdate>>(Arg.Any<string>()).Returns((IList<SunriseCreditUpdate>)null);
-                this.SunriseEnforcementService.BanUsersAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<ForzaUserBanParameters>()).Returns(Fixture.Create<BanUsersOutput>());
+                this.SunriseEnforcementService.BanUsersAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<ForzaUserBanParameters>()).Returns(this.GenerateBanUsersOutput());
                 this.SunriseEnforcementService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.SunriseEnforcementService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(this.GenerateGetUserBanHistoryOutput());
                 this.Mapper.Map<SunrisePlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SunrisePlayerDetails>());
@@ -421,6 +452,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper.Map<IList<SunriseBanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<SunriseBanResult>>());
                 this.Mapper.Map<IList<SunriseBanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<SunriseBanSummary>>());
                 this.Mapper.Map<List<SunriseBanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<SunriseBanDescription>>());
+                this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SunrisePlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
             }
 
             public ISunriseUserService SunriseUserService { get; set; } = Substitute.For<ISunriseUserService>();
@@ -452,6 +484,21 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 }
 
                 return Fixture.Build<GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
+            }
+
+            private BanUsersOutput GenerateBanUsersOutput()
+            {
+                var fakeBanResults = new List<ForzaUserBanResult>();
+                fakeBanResults.Add(Fixture.Build<ForzaUserBanResult>().With(x => x.Xuid, (ulong)111).Create());
+
+                return Fixture.Build<BanUsersOutput>().With(x => x.banResults, fakeBanResults.ToArray()).Create();
+            }
+
+            private GetLiveOpsUserDataByGamerTagOutput GenerateGetLiveOpsUserDataByGamerTagOutPut()
+            {
+                var fakeUser = Fixture.Build<UserData>().With(x => x.qwXuid, (ulong) 111).Create();
+
+                return Fixture.Build<GetLiveOpsUserDataByGamerTagOutput>().With(x => x.userData, fakeUser).Create();
             }
         }
     }

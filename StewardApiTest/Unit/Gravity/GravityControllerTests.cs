@@ -137,6 +137,41 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
+        public async Task GetPlayerIdentities_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var query = Fixture.Create<IdentityQueryBeta>();
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
+
+            // Assert.
+            action().Should().BeAssignableTo<Task<IActionResult>>();
+            action().Should().NotBeNull();
+            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as IList<IdentityResultBeta>;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<List<IdentityResultBeta>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var query = new IdentityQueryBeta { Xuid = default, Gamertag = null, Turn10Id = null};
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public async Task GetPlayerDetails_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -307,124 +342,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task CreateOrReplacePlayerInventory_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var playerInventory = Fixture.Create<GravityPlayerInventory>();
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.CreateOrReplacePlayerInventoryByXuid(playerInventory, requestingAgent).ConfigureAwait(false),
-                async () => await controller.CreateOrReplacePlayerInventoryByT10Id(playerInventory, requestingAgent).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as CreatedResult;
-                var details = result.Value as GravityPlayerInventory;
-                details.Should().NotBeNull();
-                details.Should().BeOfType<GravityPlayerInventory>();
-                result.Location.Should().Be(TestConstants.TestRequestPath);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task CreateOrReplacePlayerInventory_WithNullPlayerInventory_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.CreateOrReplacePlayerInventoryByXuid(null, requestingAgent).ConfigureAwait(false),
-                async () => await controller.CreateOrReplacePlayerInventoryByT10Id(null, requestingAgent).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventory"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task CreateOrReplacePlayerInventory_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var playerInventory = Fixture.Create<GravityPlayerInventory>();
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.CreateOrReplacePlayerInventoryByXuid(playerInventory, null).ConfigureAwait(false),
-                async () => await controller.CreateOrReplacePlayerInventoryByXuid(playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.CreateOrReplacePlayerInventoryByXuid(playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await controller.CreateOrReplacePlayerInventoryByT10Id(playerInventory, null).ConfigureAwait(false),
-                async () => await controller.CreateOrReplacePlayerInventoryByT10Id(playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.CreateOrReplacePlayerInventoryByT10Id(playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task CreateOrReplacePlayerInventory_WithNullEmptyWhitespaceT10Id_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var playerInventoryNull = Fixture.Create<GravityPlayerInventory>();
-            playerInventoryNull.Turn10Id = null;
-            var playerInventoryEmpty = Fixture.Create<GravityPlayerInventory>();
-            playerInventoryEmpty.Turn10Id = TestConstants.Empty;
-            var playerInventoryWhitespace = Fixture.Create<GravityPlayerInventory>();
-            playerInventoryWhitespace.Turn10Id = TestConstants.WhiteSpace;
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.CreateOrReplacePlayerInventoryByT10Id(playerInventoryNull, requestingAgent).ConfigureAwait(false),
-                async () => await controller.CreateOrReplacePlayerInventoryByT10Id(playerInventoryEmpty, requestingAgent).ConfigureAwait(false),
-                async () => await controller.CreateOrReplacePlayerInventoryByT10Id(playerInventoryWhitespace, requestingAgent).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "Turn10Id"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task UpdatePlayerInventory_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -543,62 +460,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task ResetPlayerInventory_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var t10Id = Fixture.Create<string>();
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.ResetPlayerInventory(xuid).ConfigureAwait(false),
-                async () => await controller.ResetPlayerInventory(t10Id).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as OkObjectResult;
-                result.Should().NotBeNull();
-                result.StatusCode.Should().Be(200);
-                result.Value.Should().BeAssignableTo<GravityPlayerInventory>();
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task ResetPlayerInventory_WithNullEmptyWhitespaceT10Id_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var t10Id = Fixture.Create<string>();
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.ResetPlayerInventory(null).ConfigureAwait(false),
-                async () => await controller.ResetPlayerInventory(TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.ResetPlayerInventory(TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "t10Id"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task GetGameSettings_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -649,11 +510,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var antecedent = Fixture.Create<GiftHistoryAntecedent>();
-            var giftRecipientId = TestConstants.InvalidXuid.ToString();
+            var t10Id = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGiftHistoriesAsync(antecedent, giftRecipientId).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.GetGiftHistoriesAsync(t10Id).ConfigureAwait(false);
 
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -666,18 +526,17 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetGiftHistory_WithNullEmptyWhitespaceGiftRecipientId_Throws()
+        public async Task GetGiftHistory_WithNullEmptyWhitespaceT10Id_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var antecedent = Fixture.Create<GiftHistoryAntecedent>();
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.GetGiftHistoriesAsync(antecedent, null).ConfigureAwait(false),
-                async () => await controller.GetGiftHistoriesAsync(antecedent, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.GetGiftHistoriesAsync(antecedent, TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await controller.GetGiftHistoriesAsync(null).ConfigureAwait(false),
+                async () => await controller.GetGiftHistoriesAsync(TestConstants.Empty).ConfigureAwait(false),
+                async () => await controller.GetGiftHistoriesAsync(TestConstants.WhiteSpace).ConfigureAwait(false)
             };
 
             // Assert.
@@ -686,7 +545,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
                 result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftRecipientId"));
+                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "t10Id"));
             }
         }
 
@@ -700,6 +559,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 httpContext.Request.Path = TestConstants.TestRequestPath;
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
+                this.GravityPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryBeta>()).Returns(Fixture.Create<IdentityResultBeta>());
                 this.GravityPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GravityPlayerDetails>());
                 this.GravityPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerDetails>());
                 this.GravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerDetails>());

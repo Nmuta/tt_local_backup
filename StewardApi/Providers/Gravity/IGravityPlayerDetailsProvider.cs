@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Gravity
@@ -8,6 +9,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
     /// </summary>
     public interface IGravityPlayerDetailsProvider
     {
+        /// <summary>
+        ///     Get player identity.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>
+        ///     The <see cref="IdentityResultBeta"/>.
+        /// </returns>
+        Task<IdentityResultBeta> GetPlayerIdentityAsync(IdentityQueryBeta query);
+
         /// <summary>
         ///     Exposes methods for interacting with the Gravity player details.
         /// </summary>
