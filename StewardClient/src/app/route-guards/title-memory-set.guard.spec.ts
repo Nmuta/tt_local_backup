@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { fakeAsync, TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlSegment } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GameTitleCodeName } from '@models/enums';
 import { NgxsModule, Store } from '@ngxs/store';
@@ -18,6 +18,11 @@ describe('TitleMemorySetGuard', () => {
   };
   const testRoute: Partial<ActivatedRouteSnapshot> = {
     parent: (testRouteParent as unknown) as ActivatedRouteSnapshot,
+    url: [
+      new UrlSegment('tool', null),
+      new UrlSegment('gifting', null),
+      new UrlSegment('Gravity', null),
+    ],
   };
   const testSnapshot: Partial<RouterStateSnapshot> = {};
 
