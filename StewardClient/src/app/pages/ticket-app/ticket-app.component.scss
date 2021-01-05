@@ -1,0 +1,86 @@
+@import '/src/variables.scss';
+
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-flow: column nowrap;
+  height: 100%;
+}
+
+mat-drawer-container {
+  flex-grow: 1;
+}
+
+mat-drawer {
+  max-width: 75%;
+}
+
+// this is an implicit element, so we have to use ::ng-deep
+:host ::ng-deep mat-drawer-content {
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 100%;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+// grow only the transcluded content
+:host ::ng-deep .content > router-outlet + * {
+  flex-grow: 1;
+}
+
+div {
+  padding: 5px;
+}
+
+.header-buttons {
+  border: 0px;
+  font-size: 16px;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 500;
+  margin-right: 10px;
+
+  &:hover {
+    color: mat-color($app-primary);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.header-selected {
+  color: mat-color($app-primary);
+}
+
+:host ::ng-deep mat-drawer > * {
+  box-sizing: border-box;
+  padding: 1rem 2rem;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+overlay {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  right: 1rem;
+  top: 0;
+}
+
+mat-drawer {
+  padding-top: 1.5rem;
+}
