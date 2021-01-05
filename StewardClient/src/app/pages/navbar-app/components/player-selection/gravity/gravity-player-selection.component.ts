@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { GravityService } from '@services/gravity';
 import { Observable, of } from 'rxjs';
@@ -9,6 +10,13 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
   selector: 'gravity-player-selection',
   templateUrl: '../player-selection.component.html',
   styleUrls: ['../player-selection.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => GravityPlayerSelectionComponent),
+      multi: true
+    },
+  ],
 })
 export class GravityPlayerSelectionComponent extends PlayerSelectionBaseComponent<
   IdentityResultBeta

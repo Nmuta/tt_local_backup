@@ -33,6 +33,10 @@ const routes: Routes = [
         path: NavbarTools.GiftingPage.path,
         loadChildren: () => import('./pages/gifting/gifting.module').then(m => m.GiftingsModule),
       },
+      {
+        path: NavbarTools.UserBanningPage.path,
+        loadChildren: () => import('./pages/user-banning/user-banning.module').then(m => m.UserBanningModule),
+      },
       ...sidebarRoutes,
       {
         path: '**',

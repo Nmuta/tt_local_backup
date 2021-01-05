@@ -1,7 +1,7 @@
 <ng-container>
   <gravity-player-selection
-    [initPlayerSelectionState]="selectedPlayerIdentities"
-    (selectedPlayerIdentitiesEvent)="selectedPlayerIndentities($event)"
+    [(ngModel)]="selectedPlayerIdentities"
+    (ngModelChange)="onPlayerIdentitiesChange($event)"
   ></gravity-player-selection>
 
   <br /><br />

@@ -35,7 +35,7 @@ export class OpusGiftingComponent extends BaseComponent implements OnInit {
   }
 
   /** Logic when player selection outputs identities. */
-  public selectedPlayerIndentities(event: IdentityResultAlphaBatch): void {
+  public onPlayerIdentitiesChange(event: IdentityResultAlphaBatch): void {
     this.store.dispatch(new SetOpusSelectedPlayerIdentities(event));
   }
 }

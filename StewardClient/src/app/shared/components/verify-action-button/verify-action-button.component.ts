@@ -12,8 +12,14 @@ export class VerifyActionButtonComponent extends BaseComponent {
   /** What to do when the action is confirmed. */
   @Input() public action: () => Observable<unknown>;
 
-  /** Set to true when this action is possible. */
+  /** Caller should set to true when this action is possible. */
   @Input() public canSubmit = false;
+
+  /** Caller should populate this with the reason submit is disabled. */
+  @Input() public canSubmitDisabledReason = 'Action is disabled';
+
+  /** When set to true, will not auto-hide the component. */
+  @Input() public alwaysShow = false;
 
   /** Text to display inside the button. */
   @Input() public buttonText = 'Apply';
@@ -21,8 +27,8 @@ export class VerifyActionButtonComponent extends BaseComponent {
   /** Tooltip to display below disabled button. */
   @Input() public verifyText = 'Action must be verified';
 
-  /** Tooltip to display below checkbox. */
-  @Input() public checkboxText = 'Verify';
+  /** Tooltip to display beside checkbox. */
+  @Input() public checkboxText = '';
 
   public verified = false;
   public isSubmitting = false;
@@ -30,6 +36,19 @@ export class VerifyActionButtonComponent extends BaseComponent {
 
   constructor() {
     super();
+  }
+
+  /** Returns the tooltip that should be used. */
+  public get activeTooltip(): string {
+    if (!this.canSubmit) {
+      return this.canSubmitDisabledReason;
+    }
+
+    if (!this.verified) {
+      return this.verifyText;
+    }
+
+    return undefined;
   }
 
   /** Resets the state of the verification button. */
