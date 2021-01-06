@@ -3,7 +3,7 @@ import { AbstractControl, FormControl } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faTimesCircle, faTimes, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { ControlValueAccessor } from '@angular/forms';
 
@@ -23,10 +23,16 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   public playersSelector = new FormControl('', [this.ValidateGroupSelection.bind(this)]);
 
+  /** The player identites that are given to parent components for use */
   public playerIdentities: T[] = [];
 
-  /** Close icon */
+  /** The identity that has been clicked */
+  public selectedPlayerIdentity: T = null;
+
+  /** FA icons */
   public closeIcon = faTimesCircle;
+  public exitIcon = faTimes;
+  public copyToClipboard = faCopy;
 
   /** ngModel associated to the textarea input. */
   data: string = '';
@@ -119,6 +125,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** Clears the player identity results. */
   public clearResults(): void {
+    this.selectedPlayerIdentity = null;
     this.playerIdentities = [];
     this.clearInput();
     this.emitPlayerIdentities();
@@ -162,6 +169,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** Removed player at given index from the results list. */
   public removePlayerFromList(index: number): void {
+    this.selectedPlayerIdentity = null;
     this.playerIdentities.splice(index, 1);
     this.emitPlayerIdentities();
 

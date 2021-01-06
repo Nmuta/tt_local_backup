@@ -19,6 +19,8 @@ import { OpusPlayerSelectionComponent } from './opus/opus-player-selection.compo
 import { ContentCollapseModule } from '@components/content-collapse/content-collapse.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { PipesModule } from '@shared/pipes/pipes.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -41,11 +43,13 @@ import { MatChipsModule } from '@angular/material/chips';
     MatTableModule,
     MatChipsModule,
     MatExpansionModule,
+    MatTooltipModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
     ContentCollapseModule,
     MatFormFieldModule,
+    PipesModule,
   ],
   exports: [
     GravityPlayerSelectionComponent,
