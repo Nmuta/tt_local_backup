@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 
 import { OpusComponent } from './opus.component';
 
-describe('OpusComponent', () => {
+describe('OpusComponent - Ticket App', () => {
   let component: OpusComponent;
   let fixture: ComponentFixture<OpusComponent>;
   let store: Store;
@@ -35,6 +35,7 @@ describe('OpusComponent', () => {
     component = fixture.componentInstance;
 
     ticketService.activeTitle = GameTitleCodeName.FH3;
+    service.getPlayerIdentity = jasmine.createSpy('getPlayerIdentity').and.returnValue(of({ gamertag: 'test', xuid: BigInt('0123456789') }));
   });
 
   it('should collect title', () => {
@@ -45,7 +46,7 @@ describe('OpusComponent', () => {
   it('should collect gamertag', () => {
     fixture.detectChanges();
     expect(ticketService.getTicketRequestorGamertag$).toHaveBeenCalledTimes(1);
-    expect(service.getIdentity).toHaveBeenCalledWith({ gamertag: ticketService.activeGamertag });
+    expect(service.getPlayerIdentity).toHaveBeenCalledWith({ gamertag: ticketService.activeGamertag });
     expect(component.xuid).toBeTruthy();
   });
 

@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 
 import { ApolloComponent } from './apollo.component';
 
-describe('ApolloComponent', () => {
+describe('ApolloComponent - Ticket App', () => {
   let component: ApolloComponent;
   let fixture: ComponentFixture<ApolloComponent>;
   let store: Store;
@@ -35,6 +35,7 @@ describe('ApolloComponent', () => {
     component = fixture.componentInstance;
 
     ticketService.activeTitle = GameTitleCodeName.FM7;
+    service.getPlayerIdentity = jasmine.createSpy('getPlayerIdentity').and.returnValue(of({ gamertag: 'test', xuid: BigInt('0123456789') }));
   });
 
   it('should collect title', () => {
@@ -45,7 +46,7 @@ describe('ApolloComponent', () => {
   it('should collect gamertag', () => {
     fixture.detectChanges();
     expect(ticketService.getTicketRequestorGamertag$).toHaveBeenCalledTimes(1);
-    expect(service.getIdentity).toHaveBeenCalledWith({ gamertag: ticketService.activeGamertag });
+    expect(service.getPlayerIdentity).toHaveBeenCalledWith({ gamertag: ticketService.activeGamertag });
     expect(component.xuid).toBeTruthy();
   });
 
