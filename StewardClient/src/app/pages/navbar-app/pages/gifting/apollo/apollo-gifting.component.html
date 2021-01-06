@@ -5,6 +5,7 @@
       [allowGroup]="false"
       [(ngModel)]="selectedPlayerIdentities"
       (ngModelChange)="onPlayerIdentitiesChange($event)"
+      (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
     ></apollo-player-selection>
   </div>
 

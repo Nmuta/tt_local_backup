@@ -64,7 +64,7 @@
       <mat-chip *ngFor="let identity of playerIdentities; let i = index"
         [class.validIdentity]="!identity.error"
         [class.invalidIdentity]="!!identity.error"
-        (click)="selectedPlayerIdentity = identity">
+        (click)="emitSelectedPlayerIdentity(identity)">
           <span *ngIf="playerIdType === 'gamertag'">{{ identity.gamertag }}</span>
           <span *ngIf="playerIdType === 'xuid'">{{ identity.xuid }}</span>
           <span *ngIf="playerIdType === 't10id'">{{ identity.t10id }}</span>
@@ -74,7 +74,7 @@
     </mat-chip-list>
   </div>
   <div *ngIf="!!selectedPlayerIdentity" class="selected-player-information">
-    <button mat-mini-fab class="close-player-info-button" color="accent" (click)="selectedPlayerIdentity = null"
+    <button mat-mini-fab class="close-player-info-button" color="accent" (click)="emitSelectedPlayerIdentity(null)"
       matTooltip="Close player information box" aria-label="Close player information box"
     >
       <fa-icon [icon]="exitIcon"></fa-icon>

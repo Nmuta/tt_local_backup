@@ -245,6 +245,20 @@ describe('PlayerSelectionBaseComponent', () => {
         expect(component.emitPlayerIdentities).toHaveBeenCalled();
       });
     });
+    describe('Method: emitSelectedPlayerIdentity', () => {
+      const identity = { gamertag: 'test'} as any;
+      beforeEach(() => {
+        component.playerIdentitySelectedEvent.emit = jasmine.createSpy('playerIdentitySelectedEvent.emit');
+      });
+      it('should set emitSelectedPlayerIdentity', () => {
+        component.emitSelectedPlayerIdentity(identity);
+        expect(component.selectedPlayerIdentity).toEqual(identity);
+      });
+      it('should call playerIdentitySelectedEvent.emit', () => {
+        component.emitSelectedPlayerIdentity(identity);
+        expect(component.playerIdentitySelectedEvent.emit).toHaveBeenCalled();
+      });
+    });
     describe('Method: removePlayerFromList', () => {
       const indexToRemove = 1;
       beforeEach(() => {

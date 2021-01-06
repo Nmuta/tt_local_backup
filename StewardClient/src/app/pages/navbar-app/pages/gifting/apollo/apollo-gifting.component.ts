@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { SetApolloSelectedPlayerIdentities } from './state/apollo-gifting.state.actions';
 import { ApolloGiftingState } from './state/apollo-gifting.state';
 import { GameTitleCodeName } from '@models/enums';
-import { IdentityResultAlphaBatch } from '@models/identity-query.model';
+import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 
 /** The gifting page for the Navbar app. */
 @Component({
@@ -37,5 +37,12 @@ export class ApolloGiftingComponent extends BaseComponent implements OnInit {
   /** Logic when player selection outputs identities. */
   public onPlayerIdentitiesChange(event: IdentityResultAlphaBatch): void {
     this.store.dispatch(new SetApolloSelectedPlayerIdentities(event));
+  }
+
+  /** Player identity selected */
+  public playerIdentitySelected(identity: IdentityResultAlpha): void {
+    if(!!identity) {
+      console.log(`Player has been selected: ${identity.gamertag}`);
+    }
   }
 }
