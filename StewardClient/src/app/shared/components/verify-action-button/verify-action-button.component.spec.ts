@@ -31,13 +31,14 @@ describe('VerifyActionButtonComponent', () => {
     expect(component.verified).toBeFalsy();
   });
 
-  it('should perform action', (done) => {
+  it('should perform action', done => {
     component.verified = true;
-    component.action = () => defer(() => {
-      expect(component.verified).toBeTruthy();
-      expect(component.isSubmitting).toBeTruthy();
-      done();
-    })
+    component.action = () =>
+      defer(() => {
+        expect(component.verified).toBeTruthy();
+        expect(component.isSubmitting).toBeTruthy();
+        done();
+      });
 
     component.doAction();
   });

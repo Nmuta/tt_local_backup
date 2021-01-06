@@ -7,10 +7,6 @@ mat-card {
     display: inline-block;
     margin: 0px;
     width: 100%;
-
-    .num-errors-text {
-      color: rgb(207, 26, 26);
-    }
   }
 
   .clear-identity-results-btn {
@@ -32,10 +28,6 @@ mat-card {
   #fail-state {
     display: block;
     margin-top: 20px;
-  }
-
-  #groupDisabledError {
-    color: mat-color($app-warn);
   }
 
   .mat-button-toggle-checked {
@@ -83,7 +75,7 @@ mat-card {
       background-color: mat-color($app-primary);
       color: #fff;
     }
-  
+
     .invalidIdentity {
       background-color: mat-color($app-warn);
       color: #fff;
@@ -125,5 +117,4 @@ mat-card {
       display: block;
     }
   }
-
 }

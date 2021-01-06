@@ -28,12 +28,12 @@ export class GravityService {
 
   /** Gets a single identity within this service. */
   public getPlayerIdentity(identityQuery: IdentityQueryBeta): Observable<IdentityResultBeta> {
-    const queryBatch: IdentityQueryBetaBatch = [ identityQuery ];
+    const queryBatch: IdentityQueryBetaBatch = [identityQuery];
     return this.getPlayerIdentities(queryBatch).pipe(
       switchMap((data: IdentityResultBetaBatch) => {
         const result = data[0];
         return of(result);
-      })
+      }),
     );
   }
 
@@ -42,13 +42,13 @@ export class GravityService {
     identityQueries: IdentityQueryBetaBatch,
   ): Observable<IdentityResultBetaBatch> {
     const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type':  'application/json',
+      'Content-Type': 'application/json',
     });
     return this.apiService.postRequest<IdentityResultBetaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
       null,
-      headers
+      headers,
     );
   }
 

@@ -9,10 +9,9 @@ describe('GravityBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GravityBanningComponent ],
+      declarations: [GravityBanningComponent],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

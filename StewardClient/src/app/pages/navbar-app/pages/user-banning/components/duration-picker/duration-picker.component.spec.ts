@@ -12,11 +12,10 @@ describe('DurationPickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DurationPickerComponent ],
-      imports: [ MatDatepickerModule, MatNativeDateModule],
+      declarations: [DurationPickerComponent],
+      imports: [MatDatepickerModule, MatNativeDateModule],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

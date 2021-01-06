@@ -9,10 +9,9 @@ describe('SunriseBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SunriseBanningComponent ],
+      declarations: [SunriseBanningComponent],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

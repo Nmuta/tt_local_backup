@@ -18,7 +18,6 @@ export class TitleDropdownComponent implements OnInit {
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    console.log(this.titleOptions);
     if (!this.titleOptions || this.titleOptions.length <= 0) {
       throw new Error('Invalid title options were given to the TitleDropdownComponent.');
     }

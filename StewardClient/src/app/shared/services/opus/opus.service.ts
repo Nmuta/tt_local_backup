@@ -22,12 +22,12 @@ export class OpusService {
 
   /** Gets a single identity within this service. */
   public getPlayerIdentity(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
-    const queryBatch: IdentityQueryAlphaBatch = [ identityQuery ];
+    const queryBatch: IdentityQueryAlphaBatch = [identityQuery];
     return this.getPlayerIdentities(queryBatch).pipe(
       switchMap((data: IdentityResultAlphaBatch) => {
         const result = data[0];
         return of(result);
-      })
+      }),
     );
   }
 
@@ -36,13 +36,13 @@ export class OpusService {
     identityQueries: IdentityQueryAlphaBatch,
   ): Observable<IdentityResultAlphaBatch> {
     const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type':  'application/json',
+      'Content-Type': 'application/json',
     });
     return this.apiService.postRequest<IdentityResultAlphaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
       null,
-      headers
+      headers,
     );
   }
 

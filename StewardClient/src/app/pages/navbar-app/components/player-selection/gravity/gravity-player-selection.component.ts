@@ -1,6 +1,10 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IdentityQueryBeta, IdentityQueryBetaBatch, IdentityResultBeta } from '@models/identity-query.model';
+import {
+  IdentityQueryBeta,
+  IdentityQueryBetaBatch,
+  IdentityResultBeta,
+} from '@models/identity-query.model';
 import { GravityService } from '@services/gravity';
 import { Observable } from 'rxjs';
 import { PlayerSelectionBaseComponent } from '../player-selection.base.component';
@@ -32,16 +36,16 @@ export class GravityPlayerSelectionComponent extends PlayerSelectionBaseComponen
   ): Observable<IdentityResultBeta[]> {
     const identityQueries: IdentityQueryBetaBatch = [];
 
-    for(let i = 0; i < playerIds.length; i++) {
+    for (let i = 0; i < playerIds.length; i++) {
       const playerId = playerIds[i];
       let query: IdentityQueryBeta;
 
-      if(playerIdType == 'gamertag') {
-        query = { 'gamertag': playerId };
-      } else if(playerIdType == 'xuid') {
-        query = { 'xuid': BigInt(playerId) };
-      } else if(playerIdType == 't10id') {
-        query = { 't10id': playerId };
+      if (playerIdType == 'gamertag') {
+        query = { gamertag: playerId };
+      } else if (playerIdType == 'xuid') {
+        query = { xuid: BigInt(playerId) };
+      } else if (playerIdType == 't10id') {
+        query = { t10id: playerId };
       }
 
       identityQueries[i] = query;

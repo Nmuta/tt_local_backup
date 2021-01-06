@@ -1,5 +1,3 @@
-import { GameTitleCodeName } from '@models/enums';
-
 /** GetUser action declaration. */
 export class GetUser {
   public static readonly type = '[User] Get User';

@@ -35,7 +35,9 @@ describe('GravityComponent - Ticket App', () => {
     component = fixture.componentInstance;
 
     ticketService.activeTitle = GameTitleCodeName.Street;
-    service.getPlayerIdentity = jasmine.createSpy('getPlayerIdentity').and.returnValue(of({ gamertag: 'test', xuid: BigInt('0123456789'), t10id: 'test', }));
+    service.getPlayerIdentity = jasmine
+      .createSpy('getPlayerIdentity')
+      .and.returnValue(of({ gamertag: 'test', xuid: BigInt('0123456789'), t10id: 'test' }));
   });
 
   it('should collect title', () => {
@@ -46,7 +48,9 @@ describe('GravityComponent - Ticket App', () => {
   it('should collect gamertag', () => {
     fixture.detectChanges();
     expect(ticketService.getTicketRequestorGamertag$).toHaveBeenCalledTimes(1);
-    expect(service.getPlayerIdentity).toHaveBeenCalledWith({ gamertag: ticketService.activeGamertag });
+    expect(service.getPlayerIdentity).toHaveBeenCalledWith({
+      gamertag: ticketService.activeGamertag,
+    });
     expect(component.xuid).toBeTruthy();
     expect(component.t10id).toBeTruthy();
   });

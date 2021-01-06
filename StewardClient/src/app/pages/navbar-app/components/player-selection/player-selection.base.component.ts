@@ -131,8 +131,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
    * to activate the validate button. */
   public checkValidateButtonState(): void {
     this.disableValidateButton =
-      this.playerIds.length <= 0 ||
-      (!this.allowGroup && this.playerIds.length > 1);
+      this.playerIds.length <= 0 || (!this.allowGroup && this.playerIds.length > 1);
   }
 
   /** Validates the provided player ids by getting each player id profile. */
@@ -143,15 +142,15 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
       response => {
         this.isLoading = false;
         // Sort bad lookups to top of list
-        this.playerIdentities = response.sort((a, b) =>
-          a['error'] === b['error'] ? 0 : a['error'] ? -1 : 1,
-        ).map(data => {
-          // If bad lookup, use query to populate the lookup string to show on ui
-          if(!!data.error) {
-            data[this.playerIdType] = data.query[this.playerIdType]
-          }
-          return data;
-        });
+        this.playerIdentities = response
+          .sort((a, b) => (a['error'] === b['error'] ? 0 : a['error'] ? -1 : 1))
+          .map(data => {
+            // If bad lookup, use query to populate the lookup string to show on ui
+            if (!!data.error) {
+              data[this.playerIdType] = data.query[this.playerIdType];
+            }
+            return data;
+          });
         this.emitPlayerIdentities();
       },
       error => {

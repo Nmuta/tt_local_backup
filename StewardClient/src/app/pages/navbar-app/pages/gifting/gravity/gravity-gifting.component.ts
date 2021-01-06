@@ -20,7 +20,7 @@ export class GravityGiftingComponent extends BaseComponent implements OnInit {
   title: GameTitleCodeName = GameTitleCodeName.Street;
   selectedPlayerIdentities: IdentityResultBetaBatch;
 
-  constructor(protected store: Store) {
+  constructor(protected readonly store: Store) {
     super();
   }
 
@@ -40,8 +40,8 @@ export class GravityGiftingComponent extends BaseComponent implements OnInit {
 
   /** Player identity selected */
   public playerIdentitySelected(identity: IdentityResultBeta): void {
-    if(!!identity) {
-      console.log(`Player has been selected: ${identity.gamertag}`);
+    if (!!identity) {
+      // console.log(`Player has been selected: ${identity.gamertag}`);
     }
   }
 }

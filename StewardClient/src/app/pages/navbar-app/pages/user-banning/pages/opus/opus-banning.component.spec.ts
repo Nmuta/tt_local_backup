@@ -9,10 +9,9 @@ describe('OpusBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OpusBanningComponent ],
+      declarations: [OpusBanningComponent],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

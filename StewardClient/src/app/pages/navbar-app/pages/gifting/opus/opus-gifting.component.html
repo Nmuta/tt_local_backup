@@ -1,18 +1,16 @@
-<ng-container>
-  <div class="left-side">
-    <opus-player-selection
-      [allowT10Id]="false"
-      [allowGroup]="false"
-      [(ngModel)]="selectedPlayerIdentities"
-      (ngModelChange)="onPlayerIdentitiesChange($event)"
-      (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
-    ></opus-player-selection>
-  </div>
+<div class="left-side">
+  <opus-player-selection
+    [allowT10Id]="false"
+    [allowGroup]="false"
+    [(ngModel)]="selectedPlayerIdentities"
+    (ngModelChange)="onPlayerIdentitiesChange($event)"
+    (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
+  ></opus-player-selection>
+</div>
 
-  <div class="action-container">
-    <mat-card>
-      <h2>Opus gifting page state</h2>
-      <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
-    </mat-card>
-  </div>
-</ng-container>
+<div class="action-container">
+  <mat-card>
+    <h2>Opus gifting page state</h2>
+    <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
+  </mat-card>
+</div>

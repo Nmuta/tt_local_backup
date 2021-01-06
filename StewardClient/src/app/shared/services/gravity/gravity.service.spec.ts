@@ -26,11 +26,13 @@ describe('service: GravityService', () => {
 
   describe('Method: getPlayerIdentity', () => {
     beforeEach(() => {
-      service.getPlayerIdentities = jasmine.createSpy('getPlayerIdentities').and.returnValue(of([]));
+      service.getPlayerIdentities = jasmine
+        .createSpy('getPlayerIdentities')
+        .and.returnValue(of([]));
       apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
-    it('should call service.getPlayerIdentities', (done) => {
+    it('should call service.getPlayerIdentities', done => {
       service.getPlayerIdentity({} as any).subscribe(() => {
         expect(service.getPlayerIdentities).toHaveBeenCalled();
         done();
@@ -43,7 +45,7 @@ describe('service: GravityService', () => {
       apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
-    it('should call apiServiceMock.postRequest', (done) => {
+    it('should call apiServiceMock.postRequest', done => {
       service.getPlayerIdentities([] as any).subscribe(() => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,

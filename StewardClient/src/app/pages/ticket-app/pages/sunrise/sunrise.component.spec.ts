@@ -35,7 +35,9 @@ describe('SunriseComponent - Ticket App', () => {
     component = fixture.componentInstance;
 
     ticketService.activeTitle = GameTitleCodeName.FH4;
-    service.getPlayerIdentity = jasmine.createSpy('getPlayerIdentity').and.returnValue(of({ gamertag: 'test', xuid: BigInt('0123456789') }));
+    service.getPlayerIdentity = jasmine
+      .createSpy('getPlayerIdentity')
+      .and.returnValue(of({ gamertag: 'test', xuid: BigInt('0123456789') }));
   });
 
   it('should collect title', () => {
@@ -46,7 +48,9 @@ describe('SunriseComponent - Ticket App', () => {
   it('should collect gamertag', () => {
     fixture.detectChanges();
     expect(ticketService.getTicketRequestorGamertag$).toHaveBeenCalledTimes(1);
-    expect(service.getPlayerIdentity).toHaveBeenCalledWith({ gamertag: ticketService.activeGamertag });
+    expect(service.getPlayerIdentity).toHaveBeenCalledWith({
+      gamertag: ticketService.activeGamertag,
+    });
     expect(component.xuid).toBeTruthy();
   });
 

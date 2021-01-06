@@ -34,7 +34,6 @@ describe('PlayerSelectionBaseComponent', () => {
   });
 
   describe('Player Selection Component:', () => {
-      
     describe('Method: playerInfoChanged', () => {
       beforeEach(() => {
         component.checkValidateButtonState = jasmine.createSpy('checkValidateButtonState');
@@ -94,7 +93,6 @@ describe('PlayerSelectionBaseComponent', () => {
             expect(component.showGroupDisabledError).toBeTruthy();
           });
         });
-      
       });
       describe('When there is less than or equal to one playerId', () => {
         beforeEach(() => {
@@ -135,9 +133,9 @@ describe('PlayerSelectionBaseComponent', () => {
         component.playerIdType = 'gamertag';
       });
       it('should set playerIdType', () => {
-        expect(component.playerIdType).toEqual('gamertag')
+        expect(component.playerIdType).toEqual('gamertag');
         component.playerIdTypeChange(newIdType);
-        expect(component.playerIdType).toEqual(newIdType)
+        expect(component.playerIdType).toEqual(newIdType);
       });
       it('should call checkValidateButtonState', () => {
         component.playerIdTypeChange(newIdType);
@@ -233,7 +231,8 @@ describe('PlayerSelectionBaseComponent', () => {
       const identityResponses = ['foo', 'bar', 'cat', 'dog'];
       beforeEach(() => {
         component.emitPlayerIdentities = jasmine.createSpy('emitPlayerIdentities');
-        component.makeRequestToValidateIds$ = jasmine.createSpy('makeRequestToValidateIds$')
+        component.makeRequestToValidateIds$ = jasmine
+          .createSpy('makeRequestToValidateIds$')
           .and.returnValue(of(identityResponses));
       });
       it('should set playerIdentities', () => {
@@ -246,9 +245,11 @@ describe('PlayerSelectionBaseComponent', () => {
       });
     });
     describe('Method: emitSelectedPlayerIdentity', () => {
-      const identity = { gamertag: 'test'} as any;
+      const identity = { gamertag: 'test' } as any;
       beforeEach(() => {
-        component.playerIdentitySelectedEvent.emit = jasmine.createSpy('playerIdentitySelectedEvent.emit');
+        component.playerIdentitySelectedEvent.emit = jasmine.createSpy(
+          'playerIdentitySelectedEvent.emit',
+        );
       });
       it('should set emitSelectedPlayerIdentity', () => {
         component.emitSelectedPlayerIdentity(identity);

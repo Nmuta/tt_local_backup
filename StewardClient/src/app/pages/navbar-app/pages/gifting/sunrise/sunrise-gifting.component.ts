@@ -20,7 +20,7 @@ export class SunriseGiftingComponent extends BaseComponent implements OnInit {
   title: GameTitleCodeName = GameTitleCodeName.FH4;
   selectedPlayerIdentities: IdentityResultAlphaBatch;
 
-  constructor(protected store: Store) {
+  constructor(protected readonly store: Store) {
     super();
   }
 
@@ -40,8 +40,8 @@ export class SunriseGiftingComponent extends BaseComponent implements OnInit {
 
   /** Player identity selected */
   public playerIdentitySelected(identity: IdentityResultAlpha): void {
-    if(!!identity) {
-      console.log(`Player has been selected: ${identity.gamertag}`);
+    if (!!identity) {
+      // console.log(`Player has been selected: ${identity.gamertag}`);
     }
   }
 }

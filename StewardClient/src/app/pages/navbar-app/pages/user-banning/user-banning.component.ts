@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { createNavbarPath, NavbarTools } from '../../navbar-tool-list';
 
+/**
+ *
+ */
 @Component({
   selector: 'app-user-banning',
   templateUrl: './user-banning.component.html',
