@@ -37,4 +37,14 @@ describe('ApolloPlayerSelectionComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('Method: makeRequestToValidateIds$', () => {
+    beforeEach(() => {
+      mockApolloService.getPlayerIdentities = jasmine.createSpy('getPlayerIdentities');
+    });
+    it('should call getPlayerIdentities', () => {
+      component.makeRequestToValidateIds$(['foo', 'bar'], 'gamertag');
+      expect(mockApolloService.getPlayerIdentities).toHaveBeenCalled();
+    });
+  });
 });

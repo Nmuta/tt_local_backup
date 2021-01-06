@@ -37,4 +37,14 @@ describe('SunrisePlayerSelectionComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('Method: makeRequestToValidateIds$', () => {
+    beforeEach(() => {
+      mockSunriseService.getPlayerIdentities = jasmine.createSpy('getPlayerIdentities');
+    });
+    it('should call getPlayerIdentities', () => {
+      component.makeRequestToValidateIds$(['foo', 'bar'], 'gamertag');
+      expect(mockSunriseService.getPlayerIdentities).toHaveBeenCalled();
+    });
+  });
 });

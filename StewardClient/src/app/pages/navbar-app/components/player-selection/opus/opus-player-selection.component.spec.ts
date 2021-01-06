@@ -37,4 +37,14 @@ describe('OpusPlayerSelectionComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('Method: makeRequestToValidateIds$', () => {
+    beforeEach(() => {
+      mockOpusService.getPlayerIdentities = jasmine.createSpy('getPlayerIdentities');
+    });
+    it('should call getPlayerIdentities', () => {
+      component.makeRequestToValidateIds$(['foo', 'bar'], 'gamertag');
+      expect(mockOpusService.getPlayerIdentities).toHaveBeenCalled();
+    });
+  });
 });
