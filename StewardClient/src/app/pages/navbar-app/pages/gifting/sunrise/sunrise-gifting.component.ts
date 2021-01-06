@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GameTitleCodeName } from '@models/enums';
-import { IdentityResultAlphaBatch } from '@models/identity-query.model';
+import { IdentityResultAlphaBatch, IdentityResultAlpha } from '@models/identity-query.model';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -36,5 +36,10 @@ export class SunriseGiftingComponent extends BaseComponent implements OnInit {
   /** Logic when player selection outputs identities. */
   public onPlayerIdentitiesChange(event: IdentityResultAlphaBatch): void {
     this.store.dispatch(new SetSunriseSelectedPlayerIdentities(event));
+  }
+
+  /** Player identity selected */
+  public playerIdentitySelected(identity: IdentityResultAlpha): void {
+    console.log(`Player has been selected: ${identity.gamertag}`);
   }
 }

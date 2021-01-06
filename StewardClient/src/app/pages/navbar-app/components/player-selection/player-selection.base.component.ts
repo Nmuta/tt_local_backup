@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
@@ -20,6 +20,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   implements ControlValueAccessor {
   @Input() allowT10Id: boolean = true;
   @Input() allowGroup: boolean = true;
+  @Output() playerIdentitySelectedEvent = new EventEmitter<T>();
 
   public playersSelector = new FormControl('', [this.ValidateGroupSelection.bind(this)]);
 
@@ -120,10 +121,10 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** Clears the player identity results. */
   public clearResults(): void {
-    this.selectedPlayerIdentity = null;
     this.playerIdentities = [];
     this.clearInput();
     this.emitPlayerIdentities();
+    this.emitSelectedPlayerIdentity(null);
   }
 
   /** Checks if all required player selection info is present
@@ -162,13 +163,19 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** Removed player at given index from the results list. */
   public removePlayerFromList(index: number): void {
-    this.selectedPlayerIdentity = null;
     this.playerIdentities.splice(index, 1);
     this.emitPlayerIdentities();
+    this.emitSelectedPlayerIdentity(null);
 
     if (this.playerIdentities.length <= 0) {
       this.clearResults();
     }
+  }
+
+  /** Sets and emits the selected player identity */
+  public emitSelectedPlayerIdentity(identity: T): void {
+    this.selectedPlayerIdentity = identity;
+    this.playerIdentitySelectedEvent.emit(this.selectedPlayerIdentity);
   }
 
   /** Logic deciding if we should emit the player identities to its listeners. */

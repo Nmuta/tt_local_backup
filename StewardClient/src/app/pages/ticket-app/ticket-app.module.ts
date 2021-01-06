@@ -18,6 +18,8 @@ import { UnknownComponent } from './pages/unknown/unknown.component';
 import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
 import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { OverlayComponent } from './components/overlay/overlay.component';
 
 /** Defines the ticket sidebar module. */
 @NgModule({
@@ -32,6 +34,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatCardModule,
     ContentCollapseModule,
     MatProgressSpinnerModule,
+    MatSidenavModule,
   ],
   providers: [],
   declarations: [
@@ -43,6 +46,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     UnknownComponent,
     GoToInventoryButtonComponent,
     QuickActionsComponent,
+    OverlayComponent,
   ],
 })
 export class TicketAppModule {}

@@ -28,6 +28,7 @@ export class UserStateModel {
   public accessToken: string;
 }
 
+/** Defines the user state. */
 @Injectable()
 @State<UserStateModel>({
   name: 'user',

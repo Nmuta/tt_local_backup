@@ -98,7 +98,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     convertedInventory = this.mapper.Map<SunrisePlayerInventory>(oldInventory);
                 }
 
-                results.Add(new SunriseGiftHistory(history.PlayerId, history.Title, history.RequestingAgent, history.GiftSendDateUtc, convertedInventory));
+                // The below logic is in place to separate out ID and it's antecedent. Once V1 Zendesk stops uploading
+                // this will be removed and the playerId column in Kusto will be broken out into two columns.
+                var splitId = history.PlayerId.Split(':');
+                var antecedent = Enum.Parse<GiftHistoryAntecedent>(splitId[0]);
+                var id = splitId[1];
+
+                results.Add(new SunriseGiftHistory(antecedent, id, history.Title, history.RequestingAgent, history.GiftSendDateUtc, convertedInventory));
             }
 
             results.Sort((x, y) => DateTime.Compare(y.GiftSendDateUtc, x.GiftSendDateUtc));
