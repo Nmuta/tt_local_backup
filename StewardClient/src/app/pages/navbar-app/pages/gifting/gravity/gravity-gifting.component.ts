@@ -40,6 +40,8 @@ export class GravityGiftingComponent extends BaseComponent implements OnInit {
 
   /** Player identity selected */
   public playerIdentitySelected(identity: IdentityResultBeta): void {
-    console.log(`Player has been selected: ${identity.gamertag}`);
+    if(!!identity) {
+      console.log(`Player has been selected: ${identity.gamertag}`);
+    }
   }
 }

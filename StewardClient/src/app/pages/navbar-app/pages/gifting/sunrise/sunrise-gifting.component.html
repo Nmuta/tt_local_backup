@@ -4,7 +4,7 @@
       [allowT10Id]="false"
       [(ngModel)]="selectedPlayerIdentities"
       (ngModelChange)="onPlayerIdentitiesChange($event)"
-      [playerIdentitySelectedEvent]="playerIdentitySelected($event)"
+      (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
     ></sunrise-player-selection>
   </div>
 

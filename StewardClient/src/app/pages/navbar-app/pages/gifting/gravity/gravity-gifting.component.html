@@ -3,7 +3,7 @@
     <gravity-player-selection
       [(ngModel)]="selectedPlayerIdentities"
       (ngModelChange)="onPlayerIdentitiesChange($event)"
-      [playerIdentitySelectedEvent]="playerIdentitySelected($event)"
+      (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
     ></gravity-player-selection>
   </div>
 
