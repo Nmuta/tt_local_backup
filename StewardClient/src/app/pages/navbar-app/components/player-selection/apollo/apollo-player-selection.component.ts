@@ -14,11 +14,13 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => ApolloPlayerSelectionComponent),
-      multi: true
+      multi: true,
     },
   ],
 })
-export class ApolloPlayerSelectionComponent extends PlayerSelectionBaseComponent<IdentityResultAlpha> {
+export class ApolloPlayerSelectionComponent extends PlayerSelectionBaseComponent<
+  IdentityResultAlpha
+> {
   constructor(public readonly apolloService: ApolloService) {
     super();
   }

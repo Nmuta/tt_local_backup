@@ -8,9 +8,8 @@ describe('GravityBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GravityBanningComponent ]
-    })
-    .compileComponents();
+      declarations: [GravityBanningComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

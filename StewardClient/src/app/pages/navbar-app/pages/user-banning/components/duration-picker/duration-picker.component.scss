@@ -13,7 +13,8 @@
 // removing it makes the items align better
 :host ::ng-deep {
   mat-form-field.date-picker {
-    &, .mat-form-field-wrapper {
+    &,
+    .mat-form-field-wrapper {
       padding-bottom: 0;
     }
   }

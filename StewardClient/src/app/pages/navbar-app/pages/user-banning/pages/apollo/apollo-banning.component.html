@@ -14,7 +14,13 @@
 
     <mat-card>
       <mat-card-content>
-        <verify-action-button #submitButton [alwaysShow]="true" [canSubmit]="formGroup.valid" [canSubmitDisabledReason]="'Form is invalid'" checkboxText="Check to verify ban">
+        <verify-action-button
+          #submitButton
+          [alwaysShow]="true"
+          [canSubmit]="formGroup.valid"
+          [canSubmitDisabledReason]="'Form is invalid'"
+          checkboxText="Check to verify ban"
+        >
           Submit ban
         </verify-action-button>
       </mat-card-content>

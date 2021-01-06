@@ -8,9 +8,8 @@ describe('UserBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserBanningComponent ]
-    })
-    .compileComponents();
+      declarations: [UserBanningComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

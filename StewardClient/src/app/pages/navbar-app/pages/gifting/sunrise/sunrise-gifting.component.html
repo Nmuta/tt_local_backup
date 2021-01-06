@@ -1,11 +1,16 @@
 <ng-container>
-  <sunrise-player-selection
-    [allowT10Id]="false"
-    [(ngModel)]="selectedPlayerIdentities"
-    (ngModelChange)="onPlayerIdentitiesChange($event)"
-  ></sunrise-player-selection>
+  <div class="left-side">
+    <sunrise-player-selection
+      [allowT10Id]="false"
+      [(ngModel)]="selectedPlayerIdentities"
+      (ngModelChange)="onPlayerIdentitiesChange($event)"
+    ></sunrise-player-selection>
+  </div>
 
-  <br /><br />
-  <h2>Sunrise gifting page state</h2>
-  <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
+  <div class="action-container">
+    <mat-card>
+      <h2>Sunrise gifting page state</h2>
+      <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
+    </mat-card>
+  </div>
 </ng-container>

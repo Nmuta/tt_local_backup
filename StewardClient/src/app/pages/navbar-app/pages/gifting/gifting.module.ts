@@ -16,6 +16,7 @@ import { GravityGiftingComponent } from './gravity/gravity-gifting.component';
 import { SunriseGiftingComponent } from './sunrise/sunrise-gifting.component';
 import { ApolloGiftingComponent } from './apollo/apollo-gifting.component';
 import { OpusGiftingComponent } from './opus/opus-gifting.component';
+import { MatCardModule } from '@angular/material/card';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -34,6 +35,7 @@ import { OpusGiftingComponent } from './opus/opus-gifting.component';
     MatButtonModule,
     MatIconModule,
     MatInputModule,
+    MatCardModule,
     FontAwesomeModule,
     FormsModule,
     PlayerSelectionModule,

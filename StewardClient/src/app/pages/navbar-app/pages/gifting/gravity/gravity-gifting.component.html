@@ -1,10 +1,15 @@
 <ng-container>
-  <gravity-player-selection
-    [(ngModel)]="selectedPlayerIdentities"
-    (ngModelChange)="onPlayerIdentitiesChange($event)"
-  ></gravity-player-selection>
+  <div class="left-side">
+    <gravity-player-selection
+      [(ngModel)]="selectedPlayerIdentities"
+      (ngModelChange)="onPlayerIdentitiesChange($event)"
+    ></gravity-player-selection>
+  </div>
 
-  <br /><br />
-  <h2>Gravity gifting page state</h2>
-  <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
+  <div class="action-container">
+    <mat-card>
+      <h2>Gravity gifting page state</h2>
+      <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
+    </mat-card>
+  </div>
 </ng-container>

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
 import { delay, takeUntil } from 'rxjs/operators';
@@ -20,6 +21,8 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   @Input() allowT10Id: boolean = true;
   @Input() allowGroup: boolean = true;
 
+  public playersSelector = new FormControl('', [this.ValidateGroupSelection.bind(this)]);
+
   public playerIdentities: T[] = [];
 
   /** Close icon */
@@ -30,14 +33,10 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   /** Array of player ids populated from the textarea input. */
   playerIds: string[] = [];
   /** The player id type (gamertag|xuid|t10id) populated by the button toggle. */
-  playerIdType: string;
-  /** Player identity results that come from api request. */
-  playerIdentityResults: T[] = [];
+  playerIdType: string = 'gamertag';
   /** Number of player identity lookup errors. */
   numPlayerIdentityErrorResults: number;
 
-  /** Boolean whether card content should be collapsed. */
-  contentCollapseState: boolean = false;
   /** Boolean whether textarea in UI should be expanded.  */
   showExpandedTextArea: boolean = false;
   /** Boolean whether the validate button should be disabled. */
@@ -60,26 +59,34 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
     playerIdType: string,
   ): Observable<T[]>;
 
+  /** Custom form validator */
+  public ValidateGroupSelection(control: AbstractControl): { [key: string]: boolean } | null {
+    if (!!control.value && !this.allowGroup && this.playerIds.length > 1) {
+      return { groupSelectionInvalid: true };
+    }
+    return null;
+  }
+
   /** Initialization hook */
   public ngOnInit(): void {
     this.checkPlayerIdentityResultsForErrors();
   }
-  
+
   /** Form control hook. */
   public writeValue(obj: T[]): void {
     this.playerIdentities = obj;
   }
-  
+
   /** Form control hook. */
   public registerOnChange(fn: (value: T[]) => void): void {
     this.onChangeFunction = fn;
   }
-  
+
   /** Form control hook. */
   public registerOnTouched(_fn: unknown): void {
     /** empty */
   }
-  
+
   /** Form control hook. */
   public setDisabledState?(_isDisabled: boolean): void {
     throw new Error('Method not implemented.');
@@ -115,7 +122,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   /** Clears the player identity results. */
   public clearResults(): void {
     this.playerIdentities = [];
-    this.playerIdType = undefined;
     this.clearInput();
     this.checkPlayerIdentityResultsForErrors();
     this.emitPlayerIdentities();
@@ -165,8 +171,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   /** Sets the number of player identity results that are errors. */
   public checkPlayerIdentityResultsForErrors(): void {
     this.numPlayerIdentityErrorResults = this.playerIdentities.filter(x => x['error']).length;
-    this.contentCollapseState =
-      this.playerIdentities.length > 0 && this.numPlayerIdentityErrorResults <= 0;
   }
 
   /** Logic deciding if we should emit the player identities to its listeners. */
@@ -174,5 +178,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
     this.onChangeFunction(this.playerIdentities);
   }
 
-  private onChangeFunction = (_value: T[]) => { /* empty */ };
+  private onChangeFunction = (_value: T[]) => {
+    /* empty */
+  };
 }

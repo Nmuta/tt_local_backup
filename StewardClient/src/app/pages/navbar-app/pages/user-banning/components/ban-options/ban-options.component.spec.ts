@@ -8,9 +8,8 @@ describe('BanOptionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BanOptionsComponent ]
-    })
-    .compileComponents();
+      declarations: [BanOptionsComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

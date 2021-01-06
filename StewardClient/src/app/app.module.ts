@@ -14,6 +14,7 @@ import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
 import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { environment } from '../environments/environment';
 
@@ -70,6 +71,7 @@ function fakeApiOrNothing(): Provider[] {
     MatCardModule,
     MatNativeDateModule,
     CenterContentsModule,
+    FlexLayoutModule,
     NgxsModule.forRoot([
       UserState,
       UserSettingsState,

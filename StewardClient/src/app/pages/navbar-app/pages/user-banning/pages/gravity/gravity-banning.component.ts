@@ -4,13 +4,13 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 /** Routed Component; Gravity Banning Tool. */
 @Component({
   templateUrl: './gravity-banning.component.html',
-  styleUrls: ['./gravity-banning.component.scss']
+  styleUrls: ['./gravity-banning.component.scss'],
 })
 export class GravityBanningComponent {
   public formControls = {
     playerIdentities: new FormControl([], [Validators.required, Validators.minLength(1)]),
     banOptions: new FormControl('', [Validators.required]),
-  }
+  };
 
   public formGroup = new FormGroup({
     banOptions: this.formControls.banOptions,

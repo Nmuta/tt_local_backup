@@ -4,13 +4,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 /** Routed Component; Apollo Banning Tool. */
 @Component({
   templateUrl: './apollo-banning.component.html',
-  styleUrls: ['./apollo-banning.component.scss']
+  styleUrls: ['./apollo-banning.component.scss'],
 })
 export class ApolloBanningComponent {
   public formControls = {
     playerIdentities: new FormControl([], [Validators.required, Validators.minLength(1)]),
     banOptions: new FormControl('', [Validators.required]),
-  }
+  };
 
   public formGroup = new FormGroup({
     banOptions: this.formControls.banOptions,

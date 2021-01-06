@@ -3,7 +3,9 @@
     <label>Ban Area</label>
     <mat-button-toggle-group [formControl]="formControls.banArea">
       <mat-button-toggle [value]="options.banArea.AllFeatures">All Features</mat-button-toggle>
-      <mat-button-toggle [value]="options.banArea.UserGeneratedContent">User Generated Content</mat-button-toggle>
+      <mat-button-toggle [value]="options.banArea.UserGeneratedContent"
+        >User Generated Content</mat-button-toggle
+      >
       <mat-button-toggle [value]="options.banArea.Matchmaking">Matchmaking</mat-button-toggle>
     </mat-button-toggle-group>
   </section>
@@ -12,18 +14,28 @@
     <mat-label>Ban Reason</mat-label>
     <textarea matInput placeholder="ʕ•́ᴥ•̀ʔっ" [formControl]="formControls.banReason"></textarea>
     <mat-hint>This reason will be shown to the player.</mat-hint>
-    <mat-error *ngIf="formControls.banReason.hasError('required')">
-      Missing ban reason
-    </mat-error>
+    <mat-error *ngIf="formControls.banReason.hasError('required')"> Missing ban reason </mat-error>
   </mat-form-field>
 
   <duration-picker [formControl]="formControls.banDuration"></duration-picker>
 
   <section class="ban-options" formGroupName="checkboxes">
     <ul>
-      <li><mat-checkbox [formControl]="formControls.checkboxes.banAllXboxes">Ban all Xboxes (No expiry)</mat-checkbox></li>
-      <li><mat-checkbox [formControl]="formControls.checkboxes.banAllPCs">Ban all PCs (No expiry)</mat-checkbox></li>
-      <li><mat-checkbox [formControl]="formControls.checkboxes.deleteLeaderboardEntries">Delete all leaderboard entries (Permanent)</mat-checkbox></li>
+      <li>
+        <mat-checkbox [formControl]="formControls.checkboxes.banAllXboxes"
+          >Ban all Xboxes (No expiry)</mat-checkbox
+        >
+      </li>
+      <li>
+        <mat-checkbox [formControl]="formControls.checkboxes.banAllPCs"
+          >Ban all PCs (No expiry)</mat-checkbox
+        >
+      </li>
+      <li>
+        <mat-checkbox [formControl]="formControls.checkboxes.deleteLeaderboardEntries"
+          >Delete all leaderboard entries (Permanent)</mat-checkbox
+        >
+      </li>
     </ul>
   </section>
 </div>

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -9,7 +9,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ApolloPlayerSelectionComponent } from './apollo/apollo-player-selection.component';
@@ -17,6 +17,8 @@ import { GravityPlayerSelectionComponent } from './gravity/gravity-player-select
 import { SunrisePlayerSelectionComponent } from './sunrise/sunrise-player-selection.component';
 import { OpusPlayerSelectionComponent } from './opus/opus-player-selection.component';
 import { ContentCollapseModule } from '@components/content-collapse/content-collapse.module';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatChipsModule } from '@angular/material/chips';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -37,9 +39,13 @@ import { ContentCollapseModule } from '@components/content-collapse/content-coll
     MatButtonToggleModule,
     MatProgressSpinnerModule,
     MatTableModule,
+    MatChipsModule,
+    MatExpansionModule,
     FontAwesomeModule,
     FormsModule,
+    ReactiveFormsModule,
     ContentCollapseModule,
+    MatFormFieldModule,
   ],
   exports: [
     GravityPlayerSelectionComponent,

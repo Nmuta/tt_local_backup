@@ -8,9 +8,8 @@ describe('SunriseBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SunriseBanningComponent ]
-    })
-    .compileComponents();
+      declarations: [SunriseBanningComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

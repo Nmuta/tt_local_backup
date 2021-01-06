@@ -5,7 +5,7 @@ import { createNavbarPath, NavbarTools } from '../../navbar-tool-list';
 @Component({
   selector: 'app-user-banning',
   templateUrl: './user-banning.component.html',
-  styleUrls: ['./user-banning.component.scss']
+  styleUrls: ['./user-banning.component.scss'],
 })
 export class UserBanningComponent {
   public rootRouterLink = createNavbarPath(NavbarTools.UserBanningPage).routerLink;

@@ -23,7 +23,15 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 
 /** Routed module for banning users. */
 @NgModule({
-  declarations: [UserBanningComponent, ApolloBanningComponent, GravityBanningComponent, OpusBanningComponent, SunriseBanningComponent, BanOptionsComponent, DurationPickerComponent],
+  declarations: [
+    UserBanningComponent,
+    ApolloBanningComponent,
+    GravityBanningComponent,
+    OpusBanningComponent,
+    SunriseBanningComponent,
+    BanOptionsComponent,
+    DurationPickerComponent,
+  ],
   imports: [
     CommonModule,
     MatToolbarModule,
@@ -40,6 +48,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     VerifyActionButtonModule,
     MatCheckboxModule,
     MatDatepickerModule,
-  ]
+  ],
 })
-export class UserBanningModule { }
+export class UserBanningModule {}

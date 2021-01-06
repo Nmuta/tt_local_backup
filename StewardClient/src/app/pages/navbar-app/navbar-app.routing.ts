@@ -35,7 +35,8 @@ const routes: Routes = [
       },
       {
         path: NavbarTools.UserBanningPage.path,
-        loadChildren: () => import('./pages/user-banning/user-banning.module').then(m => m.UserBanningModule),
+        loadChildren: () =>
+          import('./pages/user-banning/user-banning.module').then(m => m.UserBanningModule),
       },
       ...sidebarRoutes,
       {

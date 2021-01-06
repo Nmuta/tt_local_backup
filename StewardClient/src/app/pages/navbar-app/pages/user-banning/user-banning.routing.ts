@@ -43,8 +43,8 @@ const routes: Routes = [
         component: OpusBanningComponent,
         pathMatch: 'full',
       },
-    ]
-  }
+    ],
+  },
 ];
 
 /** Defines the sidebar routing module. */

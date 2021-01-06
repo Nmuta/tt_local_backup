@@ -8,9 +8,8 @@ describe('DurationPickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DurationPickerComponent ]
-    })
-    .compileComponents();
+      declarations: [DurationPickerComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

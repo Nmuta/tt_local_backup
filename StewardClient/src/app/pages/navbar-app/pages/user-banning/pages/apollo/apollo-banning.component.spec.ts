@@ -8,9 +8,8 @@ describe('ApolloBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ApolloBanningComponent ]
-    })
-    .compileComponents();
+      declarations: [ApolloBanningComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

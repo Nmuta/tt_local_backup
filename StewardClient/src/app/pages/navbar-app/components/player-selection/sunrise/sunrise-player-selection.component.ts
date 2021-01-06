@@ -14,7 +14,7 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => SunrisePlayerSelectionComponent),
-      multi: true
+      multi: true,
     },
   ],
 })

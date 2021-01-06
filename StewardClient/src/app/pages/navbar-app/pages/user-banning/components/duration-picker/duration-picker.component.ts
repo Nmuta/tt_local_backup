@@ -5,8 +5,8 @@ import { first } from 'lodash';
 import * as moment from 'moment';
 
 interface DurationOption {
-  duration: moment.Duration,
-  humanized: string,
+  duration: moment.Duration;
+  humanized: string;
 }
 
 export const DurationPickerOptions: DurationOption[] = [
@@ -20,12 +20,13 @@ export const DurationPickerOptions: DurationOption[] = [
   selector: 'duration-picker',
   templateUrl: './duration-picker.component.html',
   styleUrls: ['./duration-picker.component.scss'],
-  providers: [{
+  providers: [
+    {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DurationPickerComponent),
-      multi: true
-  }]
-
+      multi: true,
+    },
+  ],
 })
 export class DurationPickerComponent implements AfterViewInit, ControlValueAccessor {
   @ViewChild('datePicker') public datePicker: MatDatepicker<Date>;
@@ -66,7 +67,9 @@ export class DurationPickerComponent implements AfterViewInit, ControlValueAcces
   }
 
   /** ngModel hook. */
-  public registerOnTouched(_callback: unknown): void { /** empty */ }
+  public registerOnTouched(_callback: unknown): void {
+    /** empty */
+  }
 
   /** ngModel hook. */
   public setDisabledState?(isDisabled: boolean): void {

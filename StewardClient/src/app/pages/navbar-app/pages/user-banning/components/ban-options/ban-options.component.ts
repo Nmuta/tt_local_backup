@@ -1,6 +1,16 @@
 import { Component, forwardRef } from '@angular/core';
 import * as moment from 'moment';
-import { AbstractControl, ControlValueAccessor, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator,
+  Validators,
+} from '@angular/forms';
 import { first } from 'lodash';
 import { DurationPickerOptions } from '../duration-picker/duration-picker.component';
 
@@ -11,15 +21,15 @@ export enum BanArea {
 }
 
 export interface BanOptions {
-  banArea: BanArea,
-  banReason: string,
-  banDuration: moment.Duration,
+  banArea: BanArea;
+  banReason: string;
+  banDuration: moment.Duration;
   checkboxes: {
-    banAllXboxes: boolean,
-    banAllPCs: boolean,
-    deleteLeaderboardEntries: boolean,
-  },
-};
+    banAllXboxes: boolean;
+    banAllPCs: boolean;
+    deleteLeaderboardEntries: boolean;
+  };
+}
 
 /** The ban-options panel. */
 @Component({
@@ -30,14 +40,14 @@ export interface BanOptions {
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => BanOptionsComponent),
-      multi: true
+      multi: true,
     },
-     {
+    {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => BanOptionsComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class BanOptionsComponent implements ControlValueAccessor, Validator {
   public defaults: BanOptions = {
@@ -48,8 +58,8 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator {
       banAllXboxes: false,
       banAllPCs: false,
       deleteLeaderboardEntries: false,
-    }
-  }
+    },
+  };
 
   public formControls = {
     banArea: new FormControl(this.defaults.banArea, [Validators.required]),
@@ -61,7 +71,7 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator {
       deleteLeaderboardEntries: new FormControl(this.defaults.checkboxes.deleteLeaderboardEntries),
     },
   };
-  
+
   public formGroup = new FormGroup({
     banArea: this.formControls.banArea,
     banReason: this.formControls.banReason,
@@ -75,7 +85,7 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator {
 
   public options = {
     banArea: BanArea,
-  }
+  };
 
   public canSubmit = false;
   public canSubmitDisabledReason = 'N/A';
@@ -89,9 +99,9 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator {
 
   /** Form control hook. */
   public registerOnChange(fn: (data: BanOptions) => void): void {
-    this.formGroup.valueChanges.subscribe(fn)
+    this.formGroup.valueChanges.subscribe(fn);
   }
-  
+
   /** Form control hook. */
   public registerOnTouched(_fn: () => void): void {
     /** empty */
@@ -107,11 +117,11 @@ export class BanOptionsComponent implements ControlValueAccessor, Validator {
   }
 
   /** Form control hook. */
-  public validate(_: AbstractControl): ValidationErrors | null{
+  public validate(_: AbstractControl): ValidationErrors | null {
     if (this.formGroup.valid) {
       return null;
     }
 
-    return { invalidForm: {valid: false, message: 'fields are invalid'}};
+    return { invalidForm: { valid: false, message: 'fields are invalid' } };
   }
 }

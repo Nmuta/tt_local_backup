@@ -8,9 +8,8 @@ describe('OpusBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OpusBanningComponent ]
-    })
-    .compileComponents();
+      declarations: [OpusBanningComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
