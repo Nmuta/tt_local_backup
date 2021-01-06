@@ -5,6 +5,7 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
 import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { faUndo } from '@fortawesome/free-solid-svg-icons';
 
 /** Retreives and displays Sunrise User Flags by XUID. */
 @Component({
@@ -30,6 +31,8 @@ export class SunriseUserFlagsComponent extends BaseComponent implements OnChange
   public isSubmitting: boolean;
   /** The error received when submitting. */
   public submitError: unknown;
+  /** The icon used to refresh the user flags. */
+  public refreshIcon = faUndo;
 
   constructor(public readonly sunrise: SunriseService) {
     super();
@@ -52,7 +55,7 @@ export class SunriseUserFlagsComponent extends BaseComponent implements OnChange
       flags => {
         this.isLoading = false;
         this.currentFlags = flags;
-        this.flags = _.clone(this.currentFlags);
+        this.setFlagsToCurrent();
       },
       _error => {
         this.isLoading = false;
@@ -66,8 +69,13 @@ export class SunriseUserFlagsComponent extends BaseComponent implements OnChange
     return this.sunrise.putFlagsByXuid(this.xuid, this.flags).pipe(
       tap(value => {
         this.currentFlags = value;
-        this.flags = _.clone(this.currentFlags);
+        this.setFlagsToCurrent();
       }),
     );
+  }
+
+  /** Resets the flag visuals. */
+  public setFlagsToCurrent(): void {
+    this.flags = _.clone(this.currentFlags);
   }
 }

@@ -1,6 +1,15 @@
 <mat-card>
   <mat-card-content>
     <h2>
+      <button
+        class="reset-button"
+        mat-mini-fab
+        *ngIf="hasChanges"
+        (click)="setFlagsToCurrent()"
+        matTooltip="Clear Changes"
+      >
+        <fa-icon [icon]="refreshIcon" class="reset-icon"></fa-icon>
+      </button>
       Sunrise Flags
       <error-spinner
         [isActive]="false"
