@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
@@ -17,7 +17,7 @@ type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 })
 export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion>
   extends BaseComponent
-  implements OnInit, ControlValueAccessor {
+  implements ControlValueAccessor {
   @Input() allowT10Id: boolean = true;
   @Input() allowGroup: boolean = true;
 
@@ -69,11 +69,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
       return { groupSelectionInvalid: true };
     }
     return null;
-  }
-
-  /** Initialization hook */
-  public ngOnInit(): void {
-    // Empty
   }
 
   /** Form control hook. */
@@ -136,8 +131,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   public checkValidateButtonState(): void {
     this.disableValidateButton =
       this.playerIds.length <= 0 ||
-      !this.playerIdType ||
-      this.playerIdType === '' ||
       (!this.allowGroup && this.playerIds.length > 1);
   }
 
