@@ -41,7 +41,7 @@ export class SunriseComponent extends BaseComponent implements OnInit {
       .getTicketRequestorGamertag$()
       .pipe(
         takeUntil(this.onDestroy$),
-        switchMap(gamertag => this.sunrise.getIdentity({ gamertag })),
+        switchMap(gamertag => this.sunrise.getPlayerIdentity({ gamertag })),
       )
       .subscribe(identity => {
         this.gamertag = identity.gamertag;

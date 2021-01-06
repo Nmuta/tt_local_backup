@@ -44,7 +44,7 @@ export class GravityComponent extends BaseComponent implements OnInit {
       .getTicketRequestorGamertag$()
       .pipe(
         takeUntil(this.onDestroy$),
-        switchMap(gamertag => this.gravity.getIdentity({ gamertag })),
+        switchMap(gamertag => this.gravity.getPlayerIdentity({ gamertag })),
       )
       .subscribe(identity => {
         this.gamertag = identity.gamertag;

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
-import { delay, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { ControlValueAccessor } from '@angular/forms';
@@ -34,8 +34,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   playerIds: string[] = [];
   /** The player id type (gamertag|xuid|t10id) populated by the button toggle. */
   playerIdType: string = 'gamertag';
-  /** Number of player identity lookup errors. */
-  numPlayerIdentityErrorResults: number;
 
   /** Boolean whether textarea in UI should be expanded.  */
   showExpandedTextArea: boolean = false;
@@ -69,7 +67,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** Initialization hook */
   public ngOnInit(): void {
-    this.checkPlayerIdentityResultsForErrors();
+    // Empty
   }
 
   /** Form control hook. */
@@ -123,7 +121,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   public clearResults(): void {
     this.playerIdentities = [];
     this.clearInput();
-    this.checkPlayerIdentityResultsForErrors();
     this.emitPlayerIdentities();
   }
 
@@ -141,13 +138,19 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   public validatePlayerIds(): void {
     this.isLoading = true;
     const validateRequest$ = this.makeRequestToValidateIds$(this.playerIds, this.playerIdType);
-    validateRequest$.pipe(takeUntil(this.onDestroy$), delay(3_000)).subscribe(
+    validateRequest$.pipe(takeUntil(this.onDestroy$)).subscribe(
       response => {
         this.isLoading = false;
+        // Sort bad lookups to top of list
         this.playerIdentities = response.sort((a, b) =>
           a['error'] === b['error'] ? 0 : a['error'] ? -1 : 1,
-        );
-        this.checkPlayerIdentityResultsForErrors();
+        ).map(data => {
+          // If bad lookup, use query to populate the lookup string to show on ui
+          if(!!data.error) {
+            data[this.playerIdType] = data.query[this.playerIdType]
+          }
+          return data;
+        });
         this.emitPlayerIdentities();
       },
       error => {
@@ -160,17 +163,11 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   /** Removed player at given index from the results list. */
   public removePlayerFromList(index: number): void {
     this.playerIdentities.splice(index, 1);
-    this.checkPlayerIdentityResultsForErrors();
     this.emitPlayerIdentities();
 
     if (this.playerIdentities.length <= 0) {
       this.clearResults();
     }
-  }
-
-  /** Sets the number of player identity results that are errors. */
-  public checkPlayerIdentityResultsForErrors(): void {
-    this.numPlayerIdentityErrorResults = this.playerIdentities.filter(x => x['error']).length;
   }
 
   /** Logic deciding if we should emit the player identities to its listeners. */

@@ -41,7 +41,7 @@ export class ApolloComponent extends BaseComponent implements OnInit {
       .getTicketRequestorGamertag$()
       .pipe(
         takeUntil(this.onDestroy$),
-        switchMap(gamertag => this.apollo.getIdentity({ gamertag })),
+        switchMap(gamertag => this.apollo.getPlayerIdentity({ gamertag })),
       )
       .subscribe(identity => {
         this.gamertag = identity.gamertag;

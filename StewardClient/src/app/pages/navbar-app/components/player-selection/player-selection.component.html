@@ -2,11 +2,6 @@
   <h2>
     Player Selection
     <span *ngIf="playerIdentities?.length > 0">({{ playerIdentities.length }})</span>
-    <span *ngIf="numPlayerIdentityErrorResults > 0" class="num-errors-text">
-      ({{ numPlayerIdentityErrorResults }} error{{
-        numPlayerIdentityErrorResults > 1 ? 's' : ''
-      }})</span
-    >
   </h2>
 
   <ng-container
@@ -70,7 +65,9 @@
         <mat-chip *ngFor="let identity of playerIdentities; let i = index"
           [class.validIdentity]="!identity.error"
           [class.invalidIdentity]="!!identity.error">
-            {{ identity.gamertag }}
+            <span *ngIf="playerIdType === 'gamertag'">{{ identity.gamertag }}</span>
+            <span *ngIf="playerIdType === 'xuid'">{{ identity.xuid }}</span>
+            <span *ngIf="playerIdType === 't10id'">{{ identity.t10id }}</span>
             <fa-icon class="remove-player-icon" [icon]="closeIcon" 
               (click)="removePlayerFromList(i)" title="Remove Player"></fa-icon>
         </mat-chip>

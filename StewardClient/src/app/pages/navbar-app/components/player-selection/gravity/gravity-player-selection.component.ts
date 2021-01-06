@@ -1,8 +1,8 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IdentityResultBeta } from '@models/identity-query.model';
+import { IdentityQueryBeta, IdentityQueryBetaBatch, IdentityResultBeta } from '@models/identity-query.model';
 import { GravityService } from '@services/gravity';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PlayerSelectionBaseComponent } from '../player-selection.base.component';
 
 /** Gravity Player Selection */
@@ -30,17 +30,23 @@ export class GravityPlayerSelectionComponent extends PlayerSelectionBaseComponen
     playerIds: string[],
     playerIdType: string,
   ): Observable<IdentityResultBeta[]> {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const response: IdentityResultBeta[] = playerIds.map(x => {
-      const tmp: IdentityResultBeta = {
-        query: undefined,
-        xuid: BigInt(789639236092375),
-        gamertag: `${playerIdType}:${x}`,
-        t10id: `${playerIdType}:${x}`,
-        error: undefined,
-      };
-      return tmp;
-    });
-    return of(response);
+    const identityQueries: IdentityQueryBetaBatch = [];
+
+    for(let i = 0; i < playerIds.length; i++) {
+      const playerId = playerIds[i];
+      let query: IdentityQueryBeta;
+
+      if(playerIdType == 'gamertag') {
+        query = { 'gamertag': playerId };
+      } else if(playerIdType == 'xuid') {
+        query = { 'xuid': BigInt(playerId) };
+      } else if(playerIdType == 't10id') {
+        query = { 't10id': playerId };
+      }
+
+      identityQueries[i] = query;
+    }
+
+    return this.gravityService.getPlayerIdentities(identityQueries);
   }
 }

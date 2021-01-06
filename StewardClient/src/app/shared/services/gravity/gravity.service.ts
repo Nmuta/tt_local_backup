@@ -1,6 +1,5 @@
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MSError } from '@models/error.model';
 import {
   GravityGameSettings,
   GravityGiftHistory,
@@ -12,14 +11,11 @@ import {
   IdentityQueryBetaBatch,
   IdentityResultBeta,
   IdentityResultBetaBatch,
-  isGamertagQuery,
-  isT10IdQuery,
-  isXuidQuery,
 } from '@models/identity-query.model';
 import { ApiService } from '@services/api';
 import { GiftHistoryAntecedent } from '@shared/constants';
-import { forkJoin, Observable, of, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 /** Defines the gravity service. */
 @Injectable({
@@ -31,15 +27,29 @@ export class GravityService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets a single identity within this service. */
-  public getIdentity(identityQuery: IdentityQueryBeta): Observable<IdentityResultBeta> {
-    return this.getIdentitySingle(identityQuery);
+  public getPlayerIdentity(identityQuery: IdentityQueryBeta): Observable<IdentityResultBeta> {
+    const queryBatch: IdentityQueryBetaBatch = [ identityQuery ];
+    return this.getPlayerIdentities(queryBatch).pipe(
+      switchMap((data: IdentityResultBetaBatch) => {
+        const result = data[0];
+        return of(result);
+      })
+    );
   }
 
   /** Gets identities within this service. */
-  public getIdentities(
+  public getPlayerIdentities(
     identityQueries: IdentityQueryBetaBatch,
   ): Observable<IdentityResultBetaBatch> {
-    return forkJoin([...identityQueries.map(q => this.getIdentitySingle(q))]);
+    const headers: HttpHeaders = new HttpHeaders({
+      'Content-Type':  'application/json',
+    });
+    return this.apiService.postRequest<IdentityResultBetaBatch>(
+      `${this.basePath}/players/identities`,
+      identityQueries,
+      null,
+      headers
+    );
   }
 
   /** Gets gravity player details with a gamertag. */
@@ -172,40 +182,5 @@ export class GravityService {
     return this.apiService.getRequest<GravityGiftHistory>(
       `${this.basePath}/giftHistory/giftRecipientId/(${giftRecipientId})/giftHistoryAntecedent/(${giftHistoryAntecedent})`,
     );
-  }
-
-  private getIdentitySingle(query: IdentityQueryBeta): Observable<IdentityResultBeta> {
-    return this.getIdentityHelper(query).pipe(
-      map(
-        v =>
-          <IdentityResultBeta>{
-            query: query,
-            gamertag: v.gamertag,
-            xuid: v.xuid,
-            t10id: v.turn10Id,
-          },
-        catchError((e: string) =>
-          of(<IdentityResultBeta>{ query: query, error: ({ details: e } as unknown) as MSError }),
-        ),
-      ),
-    );
-  }
-
-  private getIdentityHelper(query: IdentityQueryBeta): Observable<GravityPlayerDetails> {
-    if (isGamertagQuery(query)) {
-      return this.apiService.getRequest<GravityPlayerDetails>(
-        `${this.basePath}/player/gamertag(${query.gamertag})/details`,
-      );
-    } else if (isXuidQuery(query)) {
-      return this.apiService.getRequest<GravityPlayerDetails>(
-        `${this.basePath}/player/xuid(${query.xuid})/details`,
-      );
-    } else if (isT10IdQuery(query)) {
-      return this.apiService.getRequest<GravityPlayerDetails>(
-        `${this.basePath}/player/t10id(${query.t10id})/details`,
-      );
-    } else {
-      return throwError(`query not recognized ${JSON.stringify(query)}`);
-    }
   }
 }
