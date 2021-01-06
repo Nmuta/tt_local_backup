@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ApolloBanningComponent } from './apollo-banning.component';
@@ -8,8 +9,10 @@ describe('ApolloBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ApolloBanningComponent],
-    }).compileComponents();
+      declarations: [ ApolloBanningComponent ],
+      schemas: [NO_ERRORS_SCHEMA],
+    })
+    .compileComponents();
   });
 
   beforeEach(() => {
@@ -20,5 +23,9 @@ describe('ApolloBanningComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should submit', () => {
+    component.submit();
   });
 });

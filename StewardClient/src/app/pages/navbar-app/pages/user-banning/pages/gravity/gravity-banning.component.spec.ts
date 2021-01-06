@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GravityBanningComponent } from './gravity-banning.component';
@@ -8,8 +9,10 @@ describe('GravityBanningComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GravityBanningComponent],
-    }).compileComponents();
+      declarations: [ GravityBanningComponent ],
+      schemas: [NO_ERRORS_SCHEMA],
+    })
+    .compileComponents();
   });
 
   beforeEach(() => {
@@ -20,5 +23,9 @@ describe('GravityBanningComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should submit', () => {
+    component.submit();
   });
 });
