@@ -11,7 +11,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GiftingComponent } from './gifting.component';
 import { GiftingRouterModule } from './gifting.routing';
 import { PlayerSelectionModule } from '../../components/player-selection/player-selection.module';
-import { TitleDropdownModule } from '@components/title-dropdown/title-dropdown.module';
 import { GravityGiftingComponent } from './gravity/gravity-gifting.component';
 import { SunriseGiftingComponent } from './sunrise/sunrise-gifting.component';
 import { ApolloGiftingComponent } from './apollo/apollo-gifting.component';
@@ -39,7 +38,6 @@ import { MatCardModule } from '@angular/material/card';
     FontAwesomeModule,
     FormsModule,
     PlayerSelectionModule,
-    TitleDropdownModule,
   ],
 })
 export class GiftingsModule {}
