@@ -37,7 +37,7 @@ describe('ApolloService', () => {
     });
 
     it('should call service.getPlayerIdentities', done => {
-      service.getPlayerIdentity({gamertag: 'test'}).subscribe(() => {
+      service.getPlayerIdentity({ gamertag: 'test' }).subscribe(() => {
         expect(service.getPlayerIdentities).toHaveBeenCalled();
         done();
       });

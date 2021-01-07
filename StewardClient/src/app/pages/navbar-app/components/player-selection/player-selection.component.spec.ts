@@ -25,7 +25,9 @@ describe('PlayerSelectionBaseComponent', () => {
         providers: [],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(PlayerSelectionBaseComponent as Type<PlayerSelectionBaseComponent<IdentityResultBeta>>);
+      fixture = TestBed.createComponent(
+        PlayerSelectionBaseComponent as Type<PlayerSelectionBaseComponent<IdentityResultBeta>>,
+      );
       component = fixture.debugElement.componentInstance;
     }),
   );
@@ -35,9 +37,7 @@ describe('PlayerSelectionBaseComponent', () => {
   });
 
   describe('Player Selection Component:', () => {
-
     describe('Method: playerInfoChanged', () => {
-
       beforeEach(() => {
         component.checkValidateButtonState = jasmine.createSpy('checkValidateButtonState');
       });
@@ -48,7 +48,6 @@ describe('PlayerSelectionBaseComponent', () => {
       });
 
       describe('When textarea data has no newlines in it', () => {
-
         it('should set playerIds array with only one element', () => {
           const expectedData = 'foo';
           component.data = expectedData;
@@ -59,7 +58,6 @@ describe('PlayerSelectionBaseComponent', () => {
       });
 
       describe('When textarea data has newlines in it', () => {
-
         it('should set playerIds array with only one element', () => {
           const expectedData1 = 'foo';
           const expectedData2 = 'bar';
@@ -72,13 +70,11 @@ describe('PlayerSelectionBaseComponent', () => {
       });
 
       describe('When there is more than one playerIds', () => {
-
         beforeEach(() => {
           component.data = `foo\nbar`;
         });
 
         describe('And allowGroup is set to true', () => {
-
           beforeEach(() => {
             component.allowGroup = true;
           });
@@ -95,7 +91,6 @@ describe('PlayerSelectionBaseComponent', () => {
         });
 
         describe('And allowGroup is set to false', () => {
-
           beforeEach(() => {
             component.allowGroup = false;
           });
@@ -113,13 +108,11 @@ describe('PlayerSelectionBaseComponent', () => {
       });
 
       describe('When there is less than or equal to one playerId', () => {
-
         beforeEach(() => {
           component.data = `foo`;
         });
 
         describe('And allowGroup is set to true', () => {
-
           beforeEach(() => {
             component.allowGroup = true;
           });
@@ -136,7 +129,6 @@ describe('PlayerSelectionBaseComponent', () => {
         });
 
         describe('And allowGroup is set to false', () => {
-
           beforeEach(() => {
             component.allowGroup = false;
           });
@@ -175,7 +167,6 @@ describe('PlayerSelectionBaseComponent', () => {
     });
 
     describe('Method: clearInput', () => {
-
       beforeEach(() => {
         component.playerInfoChanged = jasmine.createSpy('playerInfoChanged');
       });
@@ -197,7 +188,6 @@ describe('PlayerSelectionBaseComponent', () => {
     });
 
     describe('Method: clearResults', () => {
-
       beforeEach(() => {
         component.clearInput = jasmine.createSpy('clearInput');
         component.emitPlayerIdentities = jasmine.createSpy('emitPlayerIdentities');
@@ -225,19 +215,16 @@ describe('PlayerSelectionBaseComponent', () => {
     });
 
     describe('Method: checkValidateButtonState', () => {
-
       beforeEach(() => {
         component.disableValidateButton = true;
       });
 
       describe('If playerIds is > 1', () => {
-
         beforeEach(() => {
           component.playerIds = ['foo', 'bar'];
         });
 
         describe('If allowGroup is true', () => {
-
           beforeEach(() => {
             component.allowGroup = true;
           });
@@ -249,7 +236,6 @@ describe('PlayerSelectionBaseComponent', () => {
         });
 
         describe('If allowGroup is false', () => {
-
           beforeEach(() => {
             component.allowGroup = false;
           });
@@ -262,7 +248,6 @@ describe('PlayerSelectionBaseComponent', () => {
       });
 
       describe('If playerIds is === 1', () => {
-
         beforeEach(() => {
           component.playerIds = ['foo'];
         });
@@ -274,7 +259,6 @@ describe('PlayerSelectionBaseComponent', () => {
       });
 
       describe('If playerIds is < 0', () => {
-
         beforeEach(() => {
           component.playerIds = [];
         });
@@ -287,7 +271,12 @@ describe('PlayerSelectionBaseComponent', () => {
     });
 
     describe('Method: validatePlayerIds', () => {
-      const identityResponses = [{query: null, gamertag: 'foo'}, {query: null, gamertag: 'bar'}, {query: null, gamertag: 'cat'}, {query: null, gamertag: 'dog'}];
+      const identityResponses = [
+        { query: null, gamertag: 'foo' },
+        { query: null, gamertag: 'bar' },
+        { query: null, gamertag: 'cat' },
+        { query: null, gamertag: 'dog' },
+      ];
 
       beforeEach(() => {
         component.emitPlayerIdentities = jasmine.createSpy('emitPlayerIdentities');
@@ -334,7 +323,12 @@ describe('PlayerSelectionBaseComponent', () => {
         component.emitPlayerIdentities = jasmine.createSpy('emitPlayerIdentities');
         component.clearResults = jasmine.createSpy('clearResults');
 
-        component.playerIdentities = [{query: null, gamertag: 'foo'}, {query: null, gamertag: 'bar'}, {query: null, gamertag: 'cat'}, {query: null, gamertag: 'dog'}];
+        component.playerIdentities = [
+          { query: null, gamertag: 'foo' },
+          { query: null, gamertag: 'bar' },
+          { query: null, gamertag: 'cat' },
+          { query: null, gamertag: 'dog' },
+        ];
       });
 
       it('should set selectedPlayerIdentity to null', () => {
@@ -356,7 +350,6 @@ describe('PlayerSelectionBaseComponent', () => {
       });
 
       describe('If playerIdentities >= 1 after index is removed', () => {
-
         it('should not call clearResults', () => {
           component.removePlayerFromList(indexToRemove);
           expect(component.clearResults).not.toHaveBeenCalled();
@@ -364,9 +357,8 @@ describe('PlayerSelectionBaseComponent', () => {
       });
 
       describe('If playerIdentities < 1 after index is removed', () => {
-        
         beforeEach(() => {
-          component.playerIdentities = [{query: null, gamertag: 'foo'}];
+          component.playerIdentities = [{ query: null, gamertag: 'foo' }];
         });
 
         it('should call clearResults', () => {

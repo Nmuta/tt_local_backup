@@ -39,11 +39,10 @@ describe('SunrisePlayerSelectionComponent', () => {
   });
 
   describe('Method: makeRequestToValidateIds$', () => {
-
     beforeEach(() => {
       mockSunriseService.getPlayerIdentities = jasmine.createSpy('getPlayerIdentities');
     });
-    
+
     it('should call getPlayerIdentities', () => {
       component.makeRequestToValidateIds$(['foo', 'bar'], 'gamertag');
       expect(mockSunriseService.getPlayerIdentities).toHaveBeenCalled();
