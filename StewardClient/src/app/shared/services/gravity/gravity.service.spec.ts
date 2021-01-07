@@ -33,7 +33,7 @@ describe('service: GravityService', () => {
     });
 
     it('should call service.getPlayerIdentities', done => {
-      service.getPlayerIdentity({} as any).subscribe(() => {
+      service.getPlayerIdentity({gamertag: 'test'}).subscribe(() => {
         expect(service.getPlayerIdentities).toHaveBeenCalled();
         done();
       });
@@ -46,7 +46,7 @@ describe('service: GravityService', () => {
     });
 
     it('should call apiServiceMock.postRequest', done => {
-      service.getPlayerIdentities([] as any).subscribe(() => {
+      service.getPlayerIdentities([]).subscribe(() => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,
           jasmine.any(Object),

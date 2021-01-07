@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -6,10 +6,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { PlayerSelectionBaseComponent } from './player-selection.base.component';
 import { of } from 'rxjs';
+import { IdentityResultBeta } from '@models/identity-query.model';
 
 describe('PlayerSelectionBaseComponent', () => {
-  let fixture: ComponentFixture<PlayerSelectionBaseComponent<any>>;
-  let component: PlayerSelectionBaseComponent<any>;
+  let fixture: ComponentFixture<PlayerSelectionBaseComponent<IdentityResultBeta>>;
+  let component: PlayerSelectionBaseComponent<IdentityResultBeta>;
 
   beforeEach(
     waitForAsync(() => {
@@ -24,7 +25,7 @@ describe('PlayerSelectionBaseComponent', () => {
         providers: [],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(PlayerSelectionBaseComponent as any);
+      fixture = TestBed.createComponent(PlayerSelectionBaseComponent as Type<PlayerSelectionBaseComponent<IdentityResultBeta>>);
       component = fixture.debugElement.componentInstance;
     }),
   );
@@ -286,7 +287,7 @@ describe('PlayerSelectionBaseComponent', () => {
     });
 
     describe('Method: validatePlayerIds', () => {
-      const identityResponses = ['foo', 'bar', 'cat', 'dog'];
+      const identityResponses = [{query: null, gamertag: 'foo'}, {query: null, gamertag: 'bar'}, {query: null, gamertag: 'cat'}, {query: null, gamertag: 'dog'}];
 
       beforeEach(() => {
         component.emitPlayerIdentities = jasmine.createSpy('emitPlayerIdentities');
@@ -307,7 +308,7 @@ describe('PlayerSelectionBaseComponent', () => {
     });
 
     describe('Method: emitSelectedPlayerIdentity', () => {
-      const identity = { gamertag: 'test' } as any;
+      const identity = { gamertag: 'test' } as IdentityResultBeta;
 
       beforeEach(() => {
         component.playerIdentitySelectedEvent.emit = jasmine.createSpy(
@@ -333,7 +334,7 @@ describe('PlayerSelectionBaseComponent', () => {
         component.emitPlayerIdentities = jasmine.createSpy('emitPlayerIdentities');
         component.clearResults = jasmine.createSpy('clearResults');
 
-        component.playerIdentities = ['foo', 'bar', 'cat', 'dog'];
+        component.playerIdentities = [{query: null, gamertag: 'foo'}, {query: null, gamertag: 'bar'}, {query: null, gamertag: 'cat'}, {query: null, gamertag: 'dog'}];
       });
 
       it('should set selectedPlayerIdentity to null', () => {
@@ -344,9 +345,9 @@ describe('PlayerSelectionBaseComponent', () => {
       it('should remove the correct index from playerIdentities', () => {
         component.removePlayerFromList(indexToRemove);
         expect(component.playerIdentities.length).toEqual(3);
-        expect(component.playerIdentities[0]).toEqual('foo');
-        expect(component.playerIdentities[1]).toEqual('cat');
-        expect(component.playerIdentities[2]).toEqual('dog');
+        expect(component.playerIdentities[0].gamertag).toEqual('foo');
+        expect(component.playerIdentities[1].gamertag).toEqual('cat');
+        expect(component.playerIdentities[2].gamertag).toEqual('dog');
       });
 
       it('should call emitPlayerIdentities', () => {
@@ -365,9 +366,9 @@ describe('PlayerSelectionBaseComponent', () => {
       describe('If playerIdentities < 1 after index is removed', () => {
         
         beforeEach(() => {
-          component.playerIdentities = ['foo'];
+          component.playerIdentities = [{query: null, gamertag: 'foo'}];
         });
-        
+
         it('should call clearResults', () => {
           component.removePlayerFromList(0);
           expect(component.clearResults).toHaveBeenCalled();

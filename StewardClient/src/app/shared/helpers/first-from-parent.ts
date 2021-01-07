@@ -2,9 +2,9 @@ import { isUndefined } from 'lodash';
 
 /**
  * Returns the first non-undefined value from resultSelector, as seen by walking up the chain through parentSelector.
- * @param input The first object to check.
- * @param parentSelector How to walk up the chain. Stops when it finds an undefined value.
- * @param resultSelector How to choose the object. Stops when it finds a non-undefined value.
+ * @param {any} input The first object to check.
+ * @param {any} parentSelector How to walk up the chain. Stops when it finds an undefined value.
+ * @param {any} resultSelector How to choose the object. Stops when it finds a non-undefined value.
  */
 export function firstFromParent<T, R>(
   input: T,
