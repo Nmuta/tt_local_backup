@@ -9,6 +9,7 @@ export class SunriseGiftingStateModel {
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
 }
 
+/** Defines the sunrise gifting page state. */
 @Injectable({
   providedIn: 'root',
 })
@@ -18,7 +19,6 @@ export class SunriseGiftingStateModel {
     selectedPlayerIdentities: [],
   },
 })
-/** Defines the sunrise gifting page stte. */
 export class SunriseGiftingState {
   /** Sets the gifting page's selected player identities. */
   @Action(SetSunriseSelectedPlayerIdentities, { cancelUncompleted: true })

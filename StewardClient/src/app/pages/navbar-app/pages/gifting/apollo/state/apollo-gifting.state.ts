@@ -9,6 +9,7 @@ export class ApolloGiftingStateModel {
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
 }
 
+/** Defines the apollo gifting page state. */
 @Injectable({
   providedIn: 'root',
 })
@@ -18,7 +19,6 @@ export class ApolloGiftingStateModel {
     selectedPlayerIdentities: [],
   },
 })
-/** Defines the apollo gifting page stte. */
 export class ApolloGiftingState {
   /** Sets the gifting page's selected player identities. */
   @Action(SetApolloSelectedPlayerIdentities, { cancelUncompleted: true })

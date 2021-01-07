@@ -9,6 +9,7 @@ export class GravityGiftingStateModel {
   public selectedPlayerIdentities: IdentityResultBetaBatch;
 }
 
+/** Defines the gravity gifting page state. */
 @Injectable({
   providedIn: 'root',
 })
@@ -18,7 +19,6 @@ export class GravityGiftingStateModel {
     selectedPlayerIdentities: [],
   },
 })
-/** Defines the gravity gifting page stte. */
 export class GravityGiftingState {
   /** Sets the gifting page's selected player identities. */
   @Action(SetGravitySelectedPlayerIdentities, { cancelUncompleted: true })

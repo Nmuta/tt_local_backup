@@ -9,6 +9,7 @@ export class OpusGiftingStateModel {
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
 }
 
+/** Defines the opus gifting page state. */
 @Injectable({
   providedIn: 'root',
 })
@@ -18,7 +19,6 @@ export class OpusGiftingStateModel {
     selectedPlayerIdentities: [],
   },
 })
-/** Defines the opus gifting page stte. */
 export class OpusGiftingState {
   /** Sets the gifting page's selected player identities. */
   @Action(SetOpusSelectedPlayerIdentities, { cancelUncompleted: true })
