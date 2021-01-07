@@ -18,7 +18,7 @@ import {
   navbarToolList,
   NavbarTools,
   RouterLinkPath,
-} from '../../navbar-tool-list';
+} from '@navbar-app/navbar-tool-list';
 
 /** The shared top-level navbar. */
 @Component({

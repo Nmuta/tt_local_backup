@@ -22,7 +22,7 @@
       "@models/*": ["app/shared/models/*"],
       "@services/*": ["app/shared/services/*"],
       "@shared/*": ["app/shared/*"],
-      "@navbar-app/*": ["app/pages/navbar-app"]
+      "@navbar-app/*": ["app/pages/navbar-app/*"]
     },
     "allowSyntheticDefaultImports": true
   }
