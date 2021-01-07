@@ -39,9 +39,11 @@ describe('GravityPlayerSelectionComponent', () => {
   });
 
   describe('Method: makeRequestToValidateIds$', () => {
+
     beforeEach(() => {
       mockGravityService.getPlayerIdentities = jasmine.createSpy('getPlayerIdentities');
     });
+    
     it('should call getPlayerIdentities', () => {
       component.makeRequestToValidateIds$(['foo', 'bar'], 'gamertag');
       expect(mockGravityService.getPlayerIdentities).toHaveBeenCalled();
