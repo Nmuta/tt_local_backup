@@ -28,7 +28,10 @@ export class UserStateModel {
   public accessToken: string;
 }
 
-/** Defines the user state. */
+/**
+ * Defines the user state.
+ * Manages information about a user's identity and their roles.
+ */
 @Injectable()
 @State<UserStateModel>({
   name: 'user',
@@ -40,10 +43,6 @@ export class UserStateModel {
     accessToken: undefined,
   },
 })
-/**
- * Defines the user state.
- * Manages information about a user's identity and their roles.
- */
 export class UserState {
   constructor(
     private readonly userService: UserService,
