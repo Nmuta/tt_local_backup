@@ -11,9 +11,7 @@ type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 
 /** The shared top-level navbar. */
 @Component({
-  selector: 'player-selection',
-  templateUrl: './player-selection.component.html',
-  styleUrls: ['./player-selection.component.scss'],
+  template: '',
 })
 export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion>
   extends BaseComponent
