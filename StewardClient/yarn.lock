@@ -6008,7 +6008,7 @@ istanbul-lib-instrument@^3.3.0:
     istanbul-lib-coverage "^2.0.5"
     semver "^6.0.0"
 
-istanbul-lib-instrument@^4.0.3:
+istanbul-lib-instrument@^4.0.1, istanbul-lib-instrument@^4.0.3:
   version "4.0.3"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/istanbul-lib-instrument/-/istanbul-lib-instrument-4.0.3.tgz#873c6fff897450118222774696a3f28902d77c1d"
   integrity sha1-hzxv/4l0UBGCIndGlqPyiQLXfB0=
@@ -6027,6 +6027,15 @@ istanbul-lib-report@^2.0.8:
     make-dir "^2.1.0"
     supports-color "^6.1.0"
 
+istanbul-lib-report@^3.0.0:
+  version "3.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/istanbul-lib-report/-/istanbul-lib-report-3.0.0.tgz#7518fe52ea44de372f460a76b5ecda9ffb73d8a6"
+  integrity sha1-dRj+UupE3jcvRgp2tezan/tz2KY=
+  dependencies:
+    istanbul-lib-coverage "^3.0.0"
+    make-dir "^3.0.0"
+    supports-color "^7.1.0"
+
 istanbul-lib-source-maps@^3.0.6:
   version "3.0.6"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/istanbul-lib-source-maps/-/istanbul-lib-source-maps-3.0.6.tgz#284997c48211752ec486253da97e3879defba8c8"
@@ -6038,12 +6047,29 @@ istanbul-lib-source-maps@^3.0.6:
     rimraf "^2.6.3"
     source-map "^0.6.1"
 
+istanbul-lib-source-maps@^4.0.0:
+  version "4.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/istanbul-lib-source-maps/-/istanbul-lib-source-maps-4.0.0.tgz#75743ce6d96bb86dc7ee4352cf6366a23f0b1ad9"
+  integrity sha1-dXQ85tlruG3H7kNSz2Nmoj8LGtk=
+  dependencies:
+    debug "^4.1.1"
+    istanbul-lib-coverage "^3.0.0"
+    source-map "^0.6.1"
+
 istanbul-reports@^2.2.5:
   version "2.2.7"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/istanbul-reports/-/istanbul-reports-2.2.7.tgz#5d939f6237d7b48393cc0959eab40cd4fd056931"
   integrity sha1-XZOfYjfXtIOTzAlZ6rQM1P0FaTE=
   dependencies:
     html-escaper "^2.0.0"
+
+istanbul-reports@^3.0.0:
+  version "3.0.2"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/istanbul-reports/-/istanbul-reports-3.0.2.tgz#d593210e5000683750cb09fc0644e4b6e27fd53b"
+  integrity sha1-1ZMhDlAAaDdQywn8BkTktuJ/1Ts=
+  dependencies:
+    html-escaper "^2.0.0"
+    istanbul-lib-report "^3.0.0"
 
 jasmine-core@~2.99.1:
   version "2.99.1"
@@ -6221,6 +6247,18 @@ karma-coverage-istanbul-reporter@~2.1.0:
   integrity sha1-N6d1+/uzy+mM6/GWBclMYnfDuIo=
   dependencies:
     istanbul-api "^2.1.6"
+    minimatch "^3.0.4"
+
+karma-coverage@^2.0.3:
+  version "2.0.3"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/karma-coverage/-/karma-coverage-2.0.3.tgz#c10f4711f4cf5caaaa668b1d6f642e7da122d973"
+  integrity sha1-wQ9HEfTPXKqqZosdb2QufaEi2XM=
+  dependencies:
+    istanbul-lib-coverage "^3.0.0"
+    istanbul-lib-instrument "^4.0.1"
+    istanbul-lib-report "^3.0.0"
+    istanbul-lib-source-maps "^4.0.0"
+    istanbul-reports "^3.0.0"
     minimatch "^3.0.4"
 
 karma-firefox-launcher@^2.1.0:
@@ -6555,7 +6593,7 @@ make-dir@^2.0.0, make-dir@^2.1.0:
     pify "^4.0.1"
     semver "^5.6.0"
 
-make-dir@^3.0.2:
+make-dir@^3.0.0, make-dir@^3.0.2:
   version "3.1.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/make-dir/-/make-dir-3.1.0.tgz#415e967046b3a7f1d185277d84aa58203726a13f"
   integrity sha1-QV6WcEazp/HRhSd9hKpYIDcmoT8=
