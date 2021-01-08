@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { UserModel } from '@models/user.model';
@@ -18,6 +19,7 @@ describe('AuthGuard:', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([])],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     guard = TestBed.inject(AuthGuard);
     store = TestBed.inject(Store);

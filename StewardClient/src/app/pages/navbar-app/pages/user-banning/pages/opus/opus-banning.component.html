@@ -1,0 +1,29 @@
+<ng-container [formGroup]="formGroup" (ngSubmit)="submit()">
+  <opus-player-selection
+    [allowT10Id]="false"
+    [allowGroup]="false"
+    [formControl]="formControls.playerIdentities"
+  ></opus-player-selection>
+
+  <div class="action-container">
+    <mat-card>
+      <mat-card-content>
+        <ban-options [formControl]="formControls.banOptions"></ban-options>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-content>
+        <verify-action-button
+          #submitButton
+          [alwaysShow]="true"
+          [canSubmit]="formGroup.valid"
+          [canSubmitDisabledReason]="'Form is invalid'"
+          checkboxText="Check to verify ban"
+        >
+          Submit ban
+        </verify-action-button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</ng-container>

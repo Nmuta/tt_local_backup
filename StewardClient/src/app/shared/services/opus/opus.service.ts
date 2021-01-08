@@ -1,17 +1,15 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MSError } from '@models/error.model';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,
   IdentityResultAlpha,
   IdentityResultAlphaBatch,
-  isGamertagQuery,
-  isXuidQuery,
 } from '@models/identity-query.model';
 import { OpusPlayerDetails } from '@models/opus';
 import { ApiService } from '@services/api';
-import { forkJoin, Observable, of, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -23,15 +21,29 @@ export class OpusService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets a single identity within this service. */
-  public getIdentity(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
-    return this.getIdentitySingle(identityQuery);
+  public getPlayerIdentity(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
+    const queryBatch: IdentityQueryAlphaBatch = [identityQuery];
+    return this.getPlayerIdentities(queryBatch).pipe(
+      switchMap((data: IdentityResultAlphaBatch) => {
+        const result = data[0];
+        return of(result);
+      }),
+    );
   }
 
   /** Gets identities within this service. */
-  public getIdentities(
+  public getPlayerIdentities(
     identityQueries: IdentityQueryAlphaBatch,
   ): Observable<IdentityResultAlphaBatch> {
-    return forkJoin([...identityQueries.map(q => this.getIdentitySingle(q))]);
+    const headers: HttpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.apiService.postRequest<IdentityResultAlphaBatch>(
+      `${this.basePath}/players/identities`,
+      identityQueries,
+      null,
+      headers,
+    );
   }
 
   /** Gets opus player details with a gamertag. This can be used to retrieve a XUID. */
@@ -45,35 +57,5 @@ export class OpusService {
           return details;
         }),
       );
-  }
-
-  private getIdentitySingle(query: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
-    return this.getIdentityHelper(query).pipe(
-      map(
-        v =>
-          <IdentityResultAlpha>{
-            query: query,
-            gamertag: v.gamertag,
-            xuid: v.xuid,
-          },
-        catchError((e: string) =>
-          of(<IdentityResultAlpha>{ query: query, error: ({ details: e } as unknown) as MSError }),
-        ),
-      ),
-    );
-  }
-
-  private getIdentityHelper(query: IdentityQueryAlpha): Observable<OpusPlayerDetails> {
-    if (isGamertagQuery(query)) {
-      return this.apiService.getRequest<OpusPlayerDetails>(
-        `${this.basePath}/player/gamertag(${query.gamertag})/details`,
-      );
-    } else if (isXuidQuery(query)) {
-      return this.apiService.getRequest<OpusPlayerDetails>(
-        `${this.basePath}/player/xuid(${query.xuid})/details`,
-      );
-    } else {
-      return throwError(`query not recognized ${JSON.stringify(query)}`);
-    }
   }
 }

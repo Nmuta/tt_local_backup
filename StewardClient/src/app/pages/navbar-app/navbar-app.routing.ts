@@ -29,6 +29,15 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/user-details/user-details.module').then(m => m.UserDetailsModule),
       },
+      {
+        path: NavbarTools.GiftingPage.path,
+        loadChildren: () => import('./pages/gifting/gifting.module').then(m => m.GiftingsModule),
+      },
+      {
+        path: NavbarTools.UserBanningPage.path,
+        loadChildren: () =>
+          import('./pages/user-banning/user-banning.module').then(m => m.UserBanningModule),
+      },
       ...sidebarRoutes,
       {
         path: '**',

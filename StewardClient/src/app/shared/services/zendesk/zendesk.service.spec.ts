@@ -3,6 +3,7 @@ import { ZendeskService } from './zendesk.service';
 import { ZafClientService } from './zaf-client.service';
 import { createMockZafClientService } from './zaf-client.service.mock';
 import { ZafClient } from '@shared/definitions/zaf-client';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('service: UserService', () => {
   let service: ZendeskService;
@@ -13,6 +14,7 @@ describe('service: UserService', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [ZendeskService, createMockZafClientService()],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     service = TestBed.inject(ZendeskService);
 

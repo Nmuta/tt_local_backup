@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameTitleCodeName } from '@models/enums';
 import { Navigate } from '@ngxs/router-plugin';
@@ -8,7 +9,7 @@ import { of } from 'rxjs';
 
 import { SunriseComponent } from './sunrise.component';
 
-describe('SunriseComponent', () => {
+describe('SunriseComponent - Ticket App', () => {
   let component: SunriseComponent;
   let fixture: ComponentFixture<SunriseComponent>;
   let store: Store;
@@ -19,6 +20,7 @@ describe('SunriseComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseComponent],
       imports: [NgxsModule.forRoot([])],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [createMockSunriseService(), createMockTicketService()],
     }).compileComponents();
 
@@ -33,6 +35,9 @@ describe('SunriseComponent', () => {
     component = fixture.componentInstance;
 
     ticketService.activeTitle = GameTitleCodeName.FH4;
+    service.getPlayerIdentity = jasmine
+      .createSpy('getPlayerIdentity')
+      .and.returnValue(of({ gamertag: 'test', xuid: BigInt('0123456789') }));
   });
 
   it('should collect title', () => {
@@ -43,7 +48,9 @@ describe('SunriseComponent', () => {
   it('should collect gamertag', () => {
     fixture.detectChanges();
     expect(ticketService.getTicketRequestorGamertag$).toHaveBeenCalledTimes(1);
-    expect(service.getIdentity).toHaveBeenCalledWith({ gamertag: ticketService.activeGamertag });
+    expect(service.getPlayerIdentity).toHaveBeenCalledWith({
+      gamertag: ticketService.activeGamertag,
+    });
     expect(component.xuid).toBeTruthy();
   });
 
@@ -67,7 +74,7 @@ describe('SunriseComponent', () => {
     it('it should navigate to the routing page', () => {
       fixture.detectChanges();
       expect(store.dispatch).toHaveBeenCalledWith(
-        new Navigate(['/ticket-app/title/'], null, { skipLocationChange: true }),
+        new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }),
       );
     });
   });

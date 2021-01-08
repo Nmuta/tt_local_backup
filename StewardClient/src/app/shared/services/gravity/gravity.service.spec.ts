@@ -3,9 +3,10 @@ import { ApiService, createMockApiService } from '@shared/services/api';
 import { of } from 'rxjs';
 import { GravityService } from './gravity.service';
 import { GravityPlayerInventory } from '@models/gravity';
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { GiftHistoryAntecedent } from '@shared/constants';
 import { faker } from '@interceptors/fake-api/utility';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('service: GravityService', () => {
   let injector: TestBed;
@@ -16,10 +17,45 @@ describe('service: GravityService', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [ApiService, createMockApiService()],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     injector = getTestBed();
     service = injector.inject(GravityService);
     apiServiceMock = injector.inject(ApiService);
+  });
+
+  describe('Method: getPlayerIdentity', () => {
+    beforeEach(() => {
+      service.getPlayerIdentities = jasmine
+        .createSpy('getPlayerIdentities')
+        .and.returnValue(of([]));
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+    });
+
+    it('should call service.getPlayerIdentities', done => {
+      service.getPlayerIdentity({ gamertag: 'test' }).subscribe(() => {
+        expect(service.getPlayerIdentities).toHaveBeenCalled();
+        done();
+      });
+    });
+  });
+
+  describe('Method: getPlayerIdentities', () => {
+    beforeEach(() => {
+      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+    });
+
+    it('should call apiServiceMock.postRequest', done => {
+      service.getPlayerIdentities([]).subscribe(() => {
+        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+          `${service.basePath}/players/identities`,
+          jasmine.any(Object),
+          null,
+          jasmine.any(HttpHeaders),
+        );
+        done();
+      });
+    });
   });
 
   describe('Method: getPlayerDetailsByGamertag', () => {

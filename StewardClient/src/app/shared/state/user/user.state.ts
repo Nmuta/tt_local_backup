@@ -19,15 +19,21 @@ import {
   SetNoUserProfile,
 } from './user.actions';
 
-/** Defines the user state model. */
+/**
+ * Defines the user state model.
+ * Contains information about a user's identity and their roles.
+ */
 export class UserStateModel {
-  public profile?: UserModel;
-  public accessToken?: string;
+  public profile: UserModel;
+  public accessToken: string;
 }
 
-/** Defines the user state. */
+/**
+ * Defines the user state.
+ * Manages information about a user's identity and their roles.
+ */
 @Injectable()
-@State<Partial<UserStateModel>>({
+@State<UserStateModel>({
   name: 'user',
   defaults: {
     // undefined means profile hasn't been determined

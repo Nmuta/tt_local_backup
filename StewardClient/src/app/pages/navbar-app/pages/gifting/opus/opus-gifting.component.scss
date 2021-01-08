@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  flex-flow: row wrap;
+  > * {
+    margin: 10px;
+  }
+}
+
+.action-container {
+  display: flex;
+  flex-flow: column nowrap;
+  flex-grow: 1;
+  margin: 0;
+  > * {
+    margin: 10px;
+  }
+}
+
+.left-side {
+  max-width: 400px;
+  width: 100%;
+}

@@ -33,9 +33,7 @@ export class ApolloComponent extends BaseComponent implements OnInit {
       .subscribe(title => {
         this.gameTitle = title;
         if (title !== GameTitleCodeName.FM7) {
-          this.store.dispatch(
-            new Navigate(['/ticket-app/title/'], null, { skipLocationChange: true }),
-          );
+          this.store.dispatch(new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }));
         }
       });
 
@@ -43,7 +41,7 @@ export class ApolloComponent extends BaseComponent implements OnInit {
       .getTicketRequestorGamertag$()
       .pipe(
         takeUntil(this.onDestroy$),
-        switchMap(gamertag => this.apollo.getIdentity({ gamertag })),
+        switchMap(gamertag => this.apollo.getPlayerIdentity({ gamertag })),
       )
       .subscribe(identity => {
         this.gamertag = identity.gamertag;

@@ -1,0 +1,143 @@
+<mat-card>
+  <h2>
+    Player Selection
+    <span *ngIf="playerIdentities?.length > 0">({{ playerIdentities.length }})</span>
+  </h2>
+
+  <ng-container
+    content-body
+    class="selection-content"
+    *ngIf="!isLoading && !loadError; else failState"
+  >
+    <ng-container *ngIf="playerIdentities?.length <= 0; else resultsView">
+      <div class="content-container">
+        <mat-button-toggle-group
+          #group="matButtonToggleGroup"
+          name="playerIdType"
+          aria-label="Player id type"
+          [value]="playerIdType"
+          (change)="playerIdTypeChange(group.value)"
+        >
+          <mat-button-toggle value="gamertag">Gamertag</mat-button-toggle>
+          <mat-button-toggle value="xuid">Xuid</mat-button-toggle>
+          <mat-button-toggle *ngIf="allowT10Id" value="t10id">T10Id</mat-button-toggle>
+        </mat-button-toggle-group>
+        <div class="player-id-input">
+          <mat-form-field appearance="fill">
+            <mat-label>Player Id{{ allowGroup ? '(s)' : '' }}:</mat-label>
+            <textarea
+              matInput
+              #playerInfo
+              [formControl]="playersSelector"
+              [ngClass]="{ 'expanded-text-area': showExpandedTextArea }"
+              [(ngModel)]="data"
+              (ngModelChange)="playerInfoChanged()"
+            ></textarea>
+            <mat-error>Group selection is disabled for this tool.</mat-error>
+          </mat-form-field>
+          <button
+            (click)="validatePlayerIds()"
+            [disabled]="disableValidateButton"
+            class="validate-btn"
+            mat-raised-button
+            color="primary"
+          >
+            Validate
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+  <button
+    class="clear-identity-results-btn"
+    mat-stroked-button
+    color="accent"
+    (click)="playerIdentities?.length > 0 ? clearResults() : clearInput()"
+  >
+    Clear
+  </button>
+</mat-card>
+
+<ng-template #resultsView id="results-view">
+  <div class="identity-results">
+    <mat-chip-list aria-label="Player selection">
+      <mat-chip
+        *ngFor="let identity of playerIdentities; let i = index"
+        [class.validIdentity]="!identity.error"
+        [class.invalidIdentity]="!!identity.error"
+        (click)="emitSelectedPlayerIdentity(identity)"
+      >
+        <span *ngIf="playerIdType === 'gamertag'">{{ identity.gamertag }}</span>
+        <span *ngIf="playerIdType === 'xuid'">{{ identity.xuid }}</span>
+        <span *ngIf="playerIdType === 't10id'">{{ identity.t10id }}</span>
+        <fa-icon
+          class="remove-player-icon"
+          [icon]="closeIcon"
+          matTooltip="Remove player from list"
+          (click)="removePlayerFromList(i)"
+          title="Remove Player"
+        ></fa-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+  <div *ngIf="!!selectedPlayerIdentity" class="selected-player-information">
+    <button
+      mat-mini-fab
+      class="close-player-info-button"
+      color="accent"
+      (click)="emitSelectedPlayerIdentity(null)"
+      matTooltip="Close player information box"
+      aria-label="Close player information box"
+    >
+      <fa-icon [icon]="exitIcon"></fa-icon>
+    </button>
+    <div class="selected-player-information-content">
+      <p *ngIf="!selectedPlayerIdentity.error">
+        <span>
+          <button
+            mat-icon-button
+            class="copy-to-clipboard"
+            matTooltip="Copy gamertag to clipbopard"
+            aria-label="Copy gamertag to clipbopard"
+          >
+            <fa-icon [icon]="copyToClipboard" size="lg"></fa-icon>
+          </button>
+          <b>Gamertag:</b> {{ selectedPlayerIdentity.gamertag }} </span
+        ><br />
+        <span>
+          <button
+            mat-icon-button
+            class="copy-to-clipboard"
+            matTooltip="Copy XUID to clipbopard"
+            aria-label="Copy XUID to clipbopard"
+          >
+            <fa-icon [icon]="copyToClipboard" size="lg"></fa-icon>
+          </button>
+          <b>Xuid:</b> {{ selectedPlayerIdentity.xuid }} </span
+        ><br />
+        <span *ngIf="allowT10Id">
+          <button
+            mat-icon-button
+            class="copy-to-clipboard"
+            matTooltip="Copy T10 ID to clipbopard"
+            aria-label="Copy T10 ID to clipbopard"
+          >
+            <fa-icon [icon]="copyToClipboard" size="lg"></fa-icon>
+          </button>
+          <b>T10Id:</b> {{ selectedPlayerIdentity.t10id }}
+        </span>
+      </p>
+      <p *ngIf="!!selectedPlayerIdentity.error">
+        {{ selectedPlayerIdentity.error | bigjson }}
+      </p>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #failState id="fail-state">
+  <div id="fail-state">
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+    <p *ngIf="loadError">Failed to load.</p>
+    <pre *ngIf="loadError">{{ loadError | json }}</pre>
+  </div>
+</ng-template>

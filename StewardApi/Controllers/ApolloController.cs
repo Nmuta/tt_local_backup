@@ -977,12 +977,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             {
                 if (ex is ArgumentException)
                 {
-                    return new IdentityResultAlpha { Error = new StewardError(StewardErrorCode.RequiredParameterMissing, ex.Message) };
+                    return new IdentityResultAlpha
+                    {
+                        Error = new StewardError(StewardErrorCode.RequiredParameterMissing, ex.Message),
+                        Query = query
+                    };
                 }
 
                 if (ex is ProfileNotFoundException)
                 {
-                    return new IdentityResultAlpha { Error = new StewardError(StewardErrorCode.ProfileNotFound, ex.Message) };
+                    return new IdentityResultAlpha
+                    {
+                        Error = new StewardError(StewardErrorCode.ProfileNotFound, ex.Message),
+                        Query = query
+                    };
                 }
 
                 throw;

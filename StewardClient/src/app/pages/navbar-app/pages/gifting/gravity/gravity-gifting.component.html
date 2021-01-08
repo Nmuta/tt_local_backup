@@ -1,0 +1,16 @@
+<div class="left-side">
+  <gravity-player-selection
+    [allowT10Id]="true"
+    [allowGroup]="true"
+    [(ngModel)]="selectedPlayerIdentities"
+    (ngModelChange)="onPlayerIdentitiesChange($event)"
+    (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
+  ></gravity-player-selection>
+</div>
+
+<div class="action-container">
+  <mat-card>
+    <h2>Gravity gifting page state</h2>
+    <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
+  </mat-card>
+</div>

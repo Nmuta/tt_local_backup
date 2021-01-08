@@ -1,0 +1,29 @@
+<ng-container [formGroup]="formGroup" (ngSubmit)="submit()">
+  <gravity-player-selection
+    [allowT10Id]="true"
+    [allowGroup]="true"
+    [formControl]="formControls.playerIdentities"
+  ></gravity-player-selection>
+
+  <div class="action-container">
+    <mat-card>
+      <mat-card-content>
+        <ban-options [formControl]="formControls.banOptions"></ban-options>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-content>
+        <verify-action-button
+          #submitButton
+          [alwaysShow]="true"
+          [canSubmit]="formGroup.valid"
+          [canSubmitDisabledReason]="'Form is invalid'"
+          checkboxText="Check to verify ban"
+        >
+          Submit ban
+        </verify-action-button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</ng-container>

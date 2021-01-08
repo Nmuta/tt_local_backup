@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
@@ -14,6 +15,7 @@ describe('LoggerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [createMockApplicationInsights()],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     service = TestBed.inject(LoggerService);
     mockAppInsights = TestBed.inject(ApplicationInsights);

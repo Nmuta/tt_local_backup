@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameTitleCodeName } from '@models/enums';
 import { Navigate } from '@ngxs/router-plugin';
@@ -8,7 +9,7 @@ import { of } from 'rxjs';
 
 import { GravityComponent } from './gravity.component';
 
-describe('GravityComponent', () => {
+describe('GravityComponent - Ticket App', () => {
   let component: GravityComponent;
   let fixture: ComponentFixture<GravityComponent>;
   let store: Store;
@@ -19,6 +20,7 @@ describe('GravityComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [GravityComponent],
       imports: [NgxsModule.forRoot([])],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [createMockGravityService(), createMockTicketService()],
     }).compileComponents();
 
@@ -33,6 +35,9 @@ describe('GravityComponent', () => {
     component = fixture.componentInstance;
 
     ticketService.activeTitle = GameTitleCodeName.Street;
+    service.getPlayerIdentity = jasmine
+      .createSpy('getPlayerIdentity')
+      .and.returnValue(of({ gamertag: 'test', xuid: BigInt('0123456789'), t10id: 'test' }));
   });
 
   it('should collect title', () => {
@@ -43,7 +48,9 @@ describe('GravityComponent', () => {
   it('should collect gamertag', () => {
     fixture.detectChanges();
     expect(ticketService.getTicketRequestorGamertag$).toHaveBeenCalledTimes(1);
-    expect(service.getIdentity).toHaveBeenCalledWith({ gamertag: ticketService.activeGamertag });
+    expect(service.getPlayerIdentity).toHaveBeenCalledWith({
+      gamertag: ticketService.activeGamertag,
+    });
     expect(component.xuid).toBeTruthy();
     expect(component.t10id).toBeTruthy();
   });
@@ -68,7 +75,7 @@ describe('GravityComponent', () => {
     it('it should navigate to the routing page', () => {
       fixture.detectChanges();
       expect(store.dispatch).toHaveBeenCalledWith(
-        new Navigate(['/ticket-app/title/'], null, { skipLocationChange: true }),
+        new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }),
       );
     });
   });

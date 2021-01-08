@@ -13,8 +13,8 @@ import { NgxsModule } from '@ngxs/store';
 import { LoggerService } from '@services/logger/logger.service';
 import { Clipboard } from '@shared/helpers/clipboard';
 import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interceptor';
-import { UserState } from '@shared/state/user/user.state';
 import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { environment } from '../environments/environment';
 
@@ -24,10 +24,19 @@ import { ErrorComponent } from './pages/error/error.component';
 import { SidebarsModule } from './sidebars/sidebars.module';
 import { HomeComponent } from './pages/home/home.component';
 import { CenterContentsModule } from '@components/center-contents/center-contents.module';
-import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { ZafClientService } from '@services/zendesk/zaf-client.service';
 import { UtcInterceptor } from '@interceptors/utc.interceptor';
+
+// States
+import { UserState } from '@shared/state/user/user.state';
+import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
+import { GravityGiftingState } from './pages/navbar-app/pages/gifting/gravity/state/gravity-gifting.state';
+import { SunriseGiftingState } from './pages/navbar-app/pages/gifting/sunrise/state/sunrise-gifting.state';
+import { ApolloGiftingState } from './pages/navbar-app/pages/gifting/apollo/state/apollo-gifting.state';
+import { OpusGiftingState } from './pages/navbar-app/pages/gifting/opus/state/opus-gifting.state';
+import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state';
+import { MatNativeDateModule } from '@angular/material/core';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -60,8 +69,19 @@ function fakeApiOrNothing(): Provider[] {
     HttpClientModule,
     FourOhFourModule,
     MatCardModule,
+    MatNativeDateModule,
     CenterContentsModule,
-    NgxsModule.forRoot([UserState, UserSettingsState]),
+    FlexLayoutModule,
+    NgxsModule.forRoot([
+      UserState,
+      UserSettingsState,
+      TitleMemoryState,
+      // Gifting page states
+      GravityGiftingState,
+      SunriseGiftingState,
+      ApolloGiftingState,
+      OpusGiftingState,
+    ]),
     NgxsStoragePluginModule.forRoot({ key: [UserSettingsState] }),
     NgxsRouterPluginModule.forRoot(),
     MsalModule.forRoot(

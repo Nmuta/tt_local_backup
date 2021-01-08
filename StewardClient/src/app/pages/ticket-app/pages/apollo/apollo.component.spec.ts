@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameTitleCodeName } from '@models/enums';
 import { Navigate } from '@ngxs/router-plugin';
@@ -8,7 +9,7 @@ import { of } from 'rxjs';
 
 import { ApolloComponent } from './apollo.component';
 
-describe('ApolloComponent', () => {
+describe('ApolloComponent - Ticket App', () => {
   let component: ApolloComponent;
   let fixture: ComponentFixture<ApolloComponent>;
   let store: Store;
@@ -19,6 +20,7 @@ describe('ApolloComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloComponent],
       imports: [NgxsModule.forRoot([])],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [createMockApolloService(), createMockTicketService()],
     }).compileComponents();
 
@@ -33,6 +35,9 @@ describe('ApolloComponent', () => {
     component = fixture.componentInstance;
 
     ticketService.activeTitle = GameTitleCodeName.FM7;
+    service.getPlayerIdentity = jasmine
+      .createSpy('getPlayerIdentity')
+      .and.returnValue(of({ gamertag: 'test', xuid: BigInt('0123456789') }));
   });
 
   it('should collect title', () => {
@@ -43,7 +48,9 @@ describe('ApolloComponent', () => {
   it('should collect gamertag', () => {
     fixture.detectChanges();
     expect(ticketService.getTicketRequestorGamertag$).toHaveBeenCalledTimes(1);
-    expect(service.getIdentity).toHaveBeenCalledWith({ gamertag: ticketService.activeGamertag });
+    expect(service.getPlayerIdentity).toHaveBeenCalledWith({
+      gamertag: ticketService.activeGamertag,
+    });
     expect(component.xuid).toBeTruthy();
   });
 
@@ -67,7 +74,7 @@ describe('ApolloComponent', () => {
     it('it should navigate to the routing page', () => {
       fixture.detectChanges();
       expect(store.dispatch).toHaveBeenCalledWith(
-        new Navigate(['/ticket-app/title/'], null, { skipLocationChange: true }),
+        new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }),
       );
     });
   });

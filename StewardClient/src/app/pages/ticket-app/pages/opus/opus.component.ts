@@ -33,9 +33,7 @@ export class OpusComponent extends BaseComponent implements OnInit {
       .subscribe(title => {
         this.gameTitle = title;
         if (title !== GameTitleCodeName.FH3) {
-          this.store.dispatch(
-            new Navigate(['/ticket-app/title/'], null, { skipLocationChange: true }),
-          );
+          this.store.dispatch(new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }));
         }
       });
 
@@ -43,7 +41,7 @@ export class OpusComponent extends BaseComponent implements OnInit {
       .getTicketRequestorGamertag$()
       .pipe(
         takeUntil(this.onDestroy$),
-        switchMap(gamertag => this.opus.getIdentity({ gamertag })),
+        switchMap(gamertag => this.opus.getPlayerIdentity({ gamertag })),
       )
       .subscribe(identity => {
         this.gamertag = identity.gamertag;

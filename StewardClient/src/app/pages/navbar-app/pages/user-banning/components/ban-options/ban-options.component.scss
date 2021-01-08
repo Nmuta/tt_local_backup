@@ -1,0 +1,30 @@
+@import '/src/variables.scss';
+
+.wrapper {
+  > *:not(:first-child) {
+    display: block;
+    padding-top: 30px;
+  }
+}
+
+.ban-area label {
+  display: block;
+}
+
+.ban-reason {
+  display: block;
+  width: 100%;
+}
+
+.mat-button-toggle-checked {
+  background-color: mat-color($app-primary);
+  color: mat-color($app-primary, default-contrast);
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  li {
+    list-style: none;
+  }
+}
