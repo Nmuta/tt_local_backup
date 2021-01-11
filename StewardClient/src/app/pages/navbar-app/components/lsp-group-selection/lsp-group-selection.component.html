@@ -1,0 +1,20 @@
+<mat-card>
+  <h2>
+    Lsp Group Selection
+  </h2>
+
+  <ng-container
+    content-body
+    class="selection-content"
+    *ngIf="!isLoading && !loadError; else failState"
+  >
+  </ng-container>
+</mat-card>
+
+<ng-template #failState id="fail-state">
+  <div id="fail-state">
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+    <p *ngIf="loadError">Failed to load.</p>
+    <pre *ngIf="loadError">{{ loadError | json }}</pre>
+  </div>
+</ng-template>

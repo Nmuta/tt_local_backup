@@ -6,6 +6,7 @@ import {
   IdentityQueryAlpha,
   IdentityResultAlpha,
 } from '@models/identity-query.model';
+import { LspGroups } from '@models/lsp-group';
 import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
 import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
@@ -51,7 +52,14 @@ export class SunriseService {
     );
   }
 
-  /** Gets gravity player details with a gamertag. This can be used to retrieve a XUID. */
+  /** Gets the sunrise lsp groups. */
+  public getLspGroups(): Observable<LspGroups> {
+    return this.apiService.getRequest<LspGroups>(
+      `${this.basePath}/groups`,
+    );
+  }
+
+  /** Gets sunrise player details with a gamertag. This can be used to retrieve a XUID. */
   public getPlayerDetailsByGamertag(gamertag: string): Observable<SunrisePlayerDetails> {
     return this.apiService.getRequest<SunrisePlayerDetails>(
       `${this.basePath}/player/gamertag(${gamertag})/details`,

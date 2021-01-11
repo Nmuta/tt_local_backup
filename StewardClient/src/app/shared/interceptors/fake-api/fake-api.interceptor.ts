@@ -24,6 +24,8 @@ import { ApolloGroupGamertagsInventoryFakeApi } from './apis/title/apollo/group/
 import { ApolloGroupGroupIdInventoryFakeApi } from './apis/title/apollo/group/groupId/inventory';
 import { ApolloGroupXuidsInventoryFakeApi } from './apis/title/apollo/group/xuids/inventory';
 import { ApolloGroupGroupIdGiftHistoryFakeApi } from './apis/title/apollo/group/groupId/giftHistory';
+import { ApolloGroupsFakeApi } from './apis/title/apollo/groups';
+
 
 import { GravityPlayerGamertagDetailsFakeApi } from './apis/title/gravity/player/gamertag/details';
 import { GravityPlayerXuidInventoryFakeApi } from './apis/title/gravity/player/xuid/inventory';
@@ -47,7 +49,6 @@ import { SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/
 import { SunrisePlayerXuidUserFlagsFakeApi } from './apis/title/sunrise/player/xuid/userFlags';
 import { SunrisePlayerXuidGiftHistoryFakeApi } from './apis/title/sunrise/player/xuid/giftHistory';
 import { SunrisePlayersBanFakeApi } from './apis/title/sunrise/players/ban';
-import { SunriseGroupsFakeApi } from './apis/title/sunrise/groups';
 import { SunrisePlayerXuidInventoryFakeApi } from './apis/title/sunrise/player/xuid/inventory';
 import { SunrisePlayerXuidInventoryProfilesFakeApi } from './apis/title/sunrise/player/xuid/inventoryProfiles';
 import { SunrisePlayerProfileIdInventoryFakeApi } from './apis/title/sunrise/player/profileId/inventory';
@@ -55,6 +56,7 @@ import { SunriseGroupGamertagsInventoryFakeApi } from './apis/title/sunrise/grou
 import { SunriseGroupGroupIdInventoryFakeApi } from './apis/title/sunrise/group/groupId/inventory';
 import { SunriseGroupXuidsInventoryFakeApi } from './apis/title/sunrise/group/xuids/inventory';
 import { SunriseGroupGroupIdGiftHistoryFakeApi } from './apis/title/sunrise/group/groupId/giftHistory';
+import { SunriseGroupsFakeApi } from './apis/title/sunrise/groups';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -100,6 +102,7 @@ const fakeApiConstructors = [
   ApolloGroupGroupIdInventoryFakeApi,
   ApolloGroupXuidsInventoryFakeApi,
   ApolloGroupGroupIdGiftHistoryFakeApi,
+  ApolloGroupsFakeApi,
 
   // Opus
   OpusPlayerGamertagDetailsFakeApi,
