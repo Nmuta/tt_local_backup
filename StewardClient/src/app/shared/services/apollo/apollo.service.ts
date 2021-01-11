@@ -62,8 +62,6 @@ export class ApolloService {
 
   /** Gets the apollo lsp groups. */
   public getLspGroups(): Observable<LspGroups> {
-    return this.apiService.getRequest<LspGroups>(
-      `${this.basePath}/groups`,
-    );
+    return this.apiService.getRequest<LspGroups>(`${this.basePath}/groups`);
   }
 }

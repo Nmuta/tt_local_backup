@@ -3,14 +3,11 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { Observable } from 'rxjs';
 import { LspGroups } from '@models/lsp-group';
 
-
 /** The shared top-level navbar. */
 @Component({
   template: '',
 })
-export abstract class LspGroupSelectionBaseComponent
-  extends BaseComponent {
-  
+export abstract class LspGroupSelectionBaseComponent extends BaseComponent {
   /** True while waiting on a request. */
   public isLoading = false;
   /** The error received while loading. */

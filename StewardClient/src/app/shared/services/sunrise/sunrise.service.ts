@@ -54,9 +54,7 @@ export class SunriseService {
 
   /** Gets the sunrise lsp groups. */
   public getLspGroups(): Observable<LspGroups> {
-    return this.apiService.getRequest<LspGroups>(
-      `${this.basePath}/groups`,
-    );
+    return this.apiService.getRequest<LspGroups>(`${this.basePath}/groups`);
   }
 
   /** Gets sunrise player details with a gamertag. This can be used to retrieve a XUID. */

@@ -25,8 +25,8 @@ export class SunriseGroupsFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<LspGroups>> {
     return [
-      { id: 0, name: 'Fake Lsp Group 1'},
-      { id: 1, name: 'Fake Lsp Group 2'},
+      { id: 0, name: 'Fake Lsp Group 1' },
+      { id: 1, name: 'Fake Lsp Group 2' },
     ];
   }
 }

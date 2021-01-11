@@ -26,7 +26,6 @@ import { ApolloGroupXuidsInventoryFakeApi } from './apis/title/apollo/group/xuid
 import { ApolloGroupGroupIdGiftHistoryFakeApi } from './apis/title/apollo/group/groupId/giftHistory';
 import { ApolloGroupsFakeApi } from './apis/title/apollo/groups';
 
-
 import { GravityPlayerGamertagDetailsFakeApi } from './apis/title/gravity/player/gamertag/details';
 import { GravityPlayerXuidInventoryFakeApi } from './apis/title/gravity/player/xuid/inventory';
 import { GravityPlayerXuidProfileIdInventoryFakeApi } from './apis/title/gravity/player/xuid/profileId/inventory';
