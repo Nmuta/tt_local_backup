@@ -21,10 +21,10 @@ module.exports = function (config) {
         // for example, you can disable the random execution with `random: false`
         // or set a specific seed with `seed: 4321`
       },
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
     jasmineHtmlReporter: {
-      suppressAll: true // removes the duplicated traces
+      suppressAll: true, // removes the duplicated traces
     },
     coverageReporter: {
       // see https://github.com/karma-runner/karma-coverage/blob/master/docs/configuration.md
@@ -41,20 +41,15 @@ module.exports = function (config) {
           statements: 60,
           lines: 60,
           functions: 60,
-          excludes: [
-            '**/*.spec.ts',
-            'src/shared/interceptors/fake-api/**/*',
-          ]
+          excludes: ['**/*.spec.ts', 'src/shared/interceptors/fake-api/**/*'],
         },
         each: {
           statements: 20,
           lines: 20,
           functions: 20,
-          excludes: [
-            '**/*.spec.ts',
-          ]
+          excludes: ['**/*.spec.ts'],
         },
-      }
+      },
     },
     reporters: ['progress', 'junit', 'kjhtml'],
     port: 9876,
