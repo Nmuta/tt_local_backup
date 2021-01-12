@@ -47,7 +47,7 @@ export class LspGroupMemoryState {
 
     // Set request to get lsp groups
     let request$: Observable<LspGroups>;
-    switch(title) {
+    switch (title) {
       case GameTitleCodeName.FH4:
         request$ = this.sunriseService.getLspGroups();
         break;

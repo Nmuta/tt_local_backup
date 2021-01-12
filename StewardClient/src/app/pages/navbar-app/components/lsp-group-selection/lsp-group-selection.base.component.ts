@@ -12,7 +12,9 @@ import { GameTitleCodeName } from '@models/enums';
 @Component({
   template: '',
 })
-export abstract class LspGroupSelectionBaseComponent extends BaseComponent implements OnInit, ControlValueAccessor {
+export abstract class LspGroupSelectionBaseComponent
+  extends BaseComponent
+  implements OnInit, ControlValueAccessor {
   /** Lsp Groups. */
   public lspGroups: LspGroups = [];
   /** Selected lsp group. */

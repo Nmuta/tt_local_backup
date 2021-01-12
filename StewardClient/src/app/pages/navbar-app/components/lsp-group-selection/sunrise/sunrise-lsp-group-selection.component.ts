@@ -23,7 +23,7 @@ import { LspGroupSelectionBaseComponent } from '../lsp-group-selection.base.comp
 })
 export class SunriseLspGroupSelectionComponent extends LspGroupSelectionBaseComponent {
   public title = GameTitleCodeName.FH4;
-  
+
   constructor(protected readonly store: Store) {
     super();
   }
