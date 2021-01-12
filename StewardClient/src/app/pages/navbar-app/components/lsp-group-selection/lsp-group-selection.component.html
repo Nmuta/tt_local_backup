@@ -30,7 +30,8 @@
       <button
         mat-mini-fab
         color="accent"
-        aria-label="Clear LSP Group selection"
+        aria-label="Clear LSP Group Selection"
+        matTooltip="Clear LSP Group Selection"
         class="clear-selection-button"
         (click)="clearSelection()"
       >
@@ -40,7 +41,7 @@
   </ng-container>
 </mat-card>
 
-<ng-template #failState id="fail-state">
+<ng-template #failState>
   <div id="fail-state">
     <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
     <p *ngIf="loadError">Failed to load.</p>
