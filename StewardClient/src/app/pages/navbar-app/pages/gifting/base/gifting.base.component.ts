@@ -13,7 +13,6 @@ type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 export abstract class GiftingBaseComponent<T extends IdentityResultUnion> extends BaseComponent {
   public title: GameTitleCodeName = GameTitleCodeName.FH4;
   public matTabSelectedIndex: number = 0;
-
   public disableLspGroupSelection: boolean = true;
 
   /** Logic when player selection outputs identities. */

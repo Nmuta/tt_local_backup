@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -40,6 +41,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatFormFieldModule,
     PipesModule,
     ReactiveFormsModule,
+    JsonDumpModule,
     FormsModule,
   ],
   exports: [SunriseLspGroupSelectionComponent, ApolloLspGroupSelectionComponent],

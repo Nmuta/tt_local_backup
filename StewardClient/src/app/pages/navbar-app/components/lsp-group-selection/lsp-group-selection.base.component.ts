@@ -4,14 +4,14 @@ import { NEVER } from 'rxjs';
 import { LspGroup, LspGroups } from '@models/lsp-group';
 import { catchError, takeUntil, tap, filter, map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
-import { FormControl } from '@angular/forms';
+import { ControlValueAccessor, FormControl } from '@angular/forms';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 /** The shared top-level navbar. */
 @Component({
   template: '',
 })
-export abstract class LspGroupSelectionBaseComponent extends BaseComponent implements OnInit {
+export abstract class LspGroupSelectionBaseComponent extends BaseComponent implements OnInit, ControlValueAccessor {
   /** Lsp Groups. */
   public lspGroups: LspGroups = [];
   /** Selected lsp group. */
