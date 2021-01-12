@@ -19,7 +19,9 @@ import { GiftingBaseComponent } from '../base/gifting.base.component';
   templateUrl: './apollo-gifting.component.html',
   styleUrls: ['./apollo-gifting.component.scss'],
 })
-export class ApolloGiftingComponent extends GiftingBaseComponent<IdentityResultAlpha> implements OnInit {
+export class ApolloGiftingComponent
+  extends GiftingBaseComponent<IdentityResultAlpha>
+  implements OnInit {
   @Select(ApolloGiftingState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<
     IdentityResultAlphaBatch
   >;

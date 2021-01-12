@@ -14,7 +14,9 @@ import { SetOpusSelectedPlayerIdentities } from './state/opus-gifting.state.acti
   templateUrl: './opus-gifting.component.html',
   styleUrls: ['./opus-gifting.component.scss'],
 })
-export class OpusGiftingComponent extends GiftingBaseComponent<IdentityResultAlpha> implements OnInit {
+export class OpusGiftingComponent
+  extends GiftingBaseComponent<IdentityResultAlpha>
+  implements OnInit {
   @Select(OpusGiftingState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<
     IdentityResultAlphaBatch
   >;

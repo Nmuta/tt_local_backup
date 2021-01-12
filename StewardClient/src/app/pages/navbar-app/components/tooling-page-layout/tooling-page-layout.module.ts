@@ -5,15 +5,8 @@ import { ToolingPageLayoutComponent } from './tooling-page-layout.component';
 
 /** The feature module for the User Details route. */
 @NgModule({
-  declarations: [
-    ToolingPageLayoutComponent,
-  ],
-  imports: [
-    CommonModule,
-    MatTabsModule,
-  ],
-  exports: [
-    ToolingPageLayoutComponent,
-  ],
+  declarations: [ToolingPageLayoutComponent],
+  imports: [CommonModule, MatTabsModule],
+  exports: [ToolingPageLayoutComponent],
 })
 export class ToolingPageLayoutModule {}

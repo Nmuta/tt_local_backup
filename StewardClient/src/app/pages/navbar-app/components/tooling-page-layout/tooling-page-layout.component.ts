@@ -11,7 +11,9 @@ export class ToolingPageLayoutComponent {
   @Input() public matTabSelectedIndex: number = 0;
   @Output() public matTabSelectionChangeEvent = new EventEmitter<number>();
 
-  constructor() { /** Empty */ }
+  constructor() {
+    /** Empty */
+  }
 
   /** Tracks when the mat tab is changed  */
   public matTabSelectionChange(index: number): void {

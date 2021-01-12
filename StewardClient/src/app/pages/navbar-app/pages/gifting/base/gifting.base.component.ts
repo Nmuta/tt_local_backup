@@ -6,13 +6,11 @@ import { LspGroup } from '@models/lsp-group';
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 
-
 /** The sunrise gifting page for the Navbar app. */
 @Component({
-  template: ''
+  template: '',
 })
-export abstract class GiftingBaseComponent<T extends IdentityResultUnion> extends BaseComponent {  
-
+export abstract class GiftingBaseComponent<T extends IdentityResultUnion> extends BaseComponent {
   public title: GameTitleCodeName = GameTitleCodeName.FH4;
   public matTabSelectedIndex: number = 0;
   public selectedPlayerIdentities: T[];

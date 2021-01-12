@@ -25,7 +25,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   public title: GameTitleCodeName;
 
   public playersSelector = new FormControl('', [this.ValidateGroupSelection.bind(this)]);
-  
+
   /** The player identites that are given to parent components for use */
   public playerIdentities: T[] = [];
   /** The identity that has been clicked */

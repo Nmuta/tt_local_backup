@@ -19,8 +19,11 @@ import {
   templateUrl: './sunrise-gifting.component.html',
   styleUrls: ['./sunrise-gifting.component.scss'],
 })
-export class SunriseGiftingComponent extends GiftingBaseComponent<IdentityResultAlpha> implements OnInit {
-  @Select(SunriseGiftingState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
+export class SunriseGiftingComponent
+  extends GiftingBaseComponent<IdentityResultAlpha>
+  implements OnInit {
+  @Select(SunriseGiftingState.selectedPlayerIdentities)
+  public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
   public title: GameTitleCodeName = GameTitleCodeName.FH4;
   public matTabSelectedIndex: number = 0;
