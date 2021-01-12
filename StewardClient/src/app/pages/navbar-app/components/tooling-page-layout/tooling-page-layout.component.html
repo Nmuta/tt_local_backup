@@ -1,0 +1,17 @@
+<div class="left-side">
+  <mat-tab-group mat-stretch-tabs
+    [(selectedIndex)]="matTabSelectedIndex"
+    (selectedTabChange)="matTabSelectionChange($event.index)"
+  >
+    <mat-tab label="Player Selection">
+      <ng-content select="[player-selection]"></ng-content>
+    </mat-tab>
+    <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
+      <ng-content select="[lsp-group-selection]"></ng-content>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<div class="action-container">
+  <ng-content select="[tool-container]"></ng-content>
+</div>

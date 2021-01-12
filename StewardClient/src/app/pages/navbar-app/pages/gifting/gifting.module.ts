@@ -17,7 +17,7 @@ import { ApolloGiftingComponent } from './apollo/apollo-gifting.component';
 import { OpusGiftingComponent } from './opus/opus-gifting.component';
 import { MatCardModule } from '@angular/material/card';
 import { LspGroupSelectionModule } from '@navbar-app/components/lsp-group-selection/lsp-group-selection.module';
-import { MatTabsModule } from '@angular/material/tabs';
+import { ToolingPageLayoutModule } from '@navbar-app/components/tooling-page-layout/tooling-page-layout.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -37,11 +37,11 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatIconModule,
     MatInputModule,
     MatCardModule,
-    MatTabsModule,
     FontAwesomeModule,
     FormsModule,
     PlayerSelectionModule,
     LspGroupSelectionModule,
+    ToolingPageLayoutModule,
   ],
 })
 export class GiftingsModule {}

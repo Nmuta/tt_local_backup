@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,24 +12,21 @@ import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-
 import { LspGroup } from '@models/lsp-group';
 import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
+import { GiftingBaseComponent } from '../base/gifting.base.component';
 
 /** The gifting page for the Navbar app. */
 @Component({
   templateUrl: './apollo-gifting.component.html',
   styleUrls: ['./apollo-gifting.component.scss'],
 })
-export class ApolloGiftingComponent extends BaseComponent implements OnInit {
+export class ApolloGiftingComponent extends GiftingBaseComponent<IdentityResultAlpha> implements OnInit {
   @Select(ApolloGiftingState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<
     IdentityResultAlphaBatch
   >;
 
-  public matTabSelectedIndex: number = 0;
-
   public title: GameTitleCodeName = GameTitleCodeName.FM7;
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   public selectedLspGroup: LspGroup;
-
-  public disableLspGroupSelection: boolean = true;
 
   constructor(protected readonly store: Store) {
     super();
@@ -44,11 +40,17 @@ export class ApolloGiftingComponent extends BaseComponent implements OnInit {
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       ApolloGiftingState.selectedMatTabIndex,
     );
+
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultAlphaBatch) => {
         this.selectedPlayerIdentities = playerIdentities;
       });
+  }
+
+  /** Tracks when the mat tab is changed  */
+  public matTabSelectionChange(index: number): void {
+    this.store.dispatch(new SetApolloGiftingMatTabIndex(index));
   }
 
   /** Logic when player selection outputs identities. */
@@ -63,13 +65,9 @@ export class ApolloGiftingComponent extends BaseComponent implements OnInit {
     }
   }
 
-  /** Tracks when the mat tab is changed  */
-  public matTabSelectionChange(index: number): void {
-    this.store.dispatch(new SetApolloGiftingMatTabIndex(index));
-  }
-
   /** Logic when lspgroup selection outputs new value. */
-  public onLspGroupChange(/* event: LspGroup */): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public onLspGroupChange(event: LspGroup): void {
     // Empty
   }
 }

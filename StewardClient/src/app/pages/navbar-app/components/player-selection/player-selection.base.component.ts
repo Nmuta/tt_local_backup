@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { faTimesCircle, faTimes, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { ControlValueAccessor } from '@angular/forms';
+import { GameTitleCodeName } from '@models/enums';
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 
@@ -20,11 +21,13 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   @Input() allowGroup: boolean = true;
   @Output() playerIdentitySelectedEvent = new EventEmitter<T>();
 
-  public playersSelector = new FormControl('', [this.ValidateGroupSelection.bind(this)]);
+  /** Game title */
+  public title: GameTitleCodeName;
 
+  public playersSelector = new FormControl('', [this.ValidateGroupSelection.bind(this)]);
+  
   /** The player identites that are given to parent components for use */
   public playerIdentities: T[] = [];
-
   /** The identity that has been clicked */
   public selectedPlayerIdentity: T = null;
 
@@ -39,7 +42,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   playerIds: string[] = [];
   /** The player id type (gamertag|xuid|t10id) populated by the button toggle. */
   playerIdType: string = 'gamertag';
-
   /** Boolean whether textarea in UI should be expanded.  */
   showExpandedTextArea: boolean = false;
   /** Boolean whether the validate button should be disabled. */

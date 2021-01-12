@@ -1,5 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { GameTitleCodeName } from '@models/enums';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,
@@ -25,6 +26,8 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
 export class ApolloPlayerSelectionComponent extends PlayerSelectionBaseComponent<
   IdentityResultAlpha
 > {
+  public title = GameTitleCodeName.FM7;
+
   constructor(public readonly apolloService: ApolloService) {
     super();
   }

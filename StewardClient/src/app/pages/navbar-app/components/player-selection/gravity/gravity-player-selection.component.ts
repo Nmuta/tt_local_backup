@@ -1,5 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { GameTitleCodeName } from '@models/enums';
 import {
   IdentityQueryBeta,
   IdentityQueryBetaBatch,
@@ -25,6 +26,8 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
 export class GravityPlayerSelectionComponent extends PlayerSelectionBaseComponent<
   IdentityResultBeta
 > {
+  public title = GameTitleCodeName.Street;
+
   constructor(public readonly gravityService: GravityService) {
     super();
   }

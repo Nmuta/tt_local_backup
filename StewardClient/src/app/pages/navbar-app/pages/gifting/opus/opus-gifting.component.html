@@ -1,16 +1,23 @@
-<div class="left-side">
+<tooling-page-layout
+  [disableLspGroupSelection]="disableLspGroupSelection"
+  [matTabSelectedIndex]="matTabSelectedIndex"
+  (matTabSelectionChangeEvent)="matTabSelectionChange($event)"
+>
+  <!-- Player selection -->
   <opus-player-selection
+    player-selection
     [allowT10Id]="false"
     [allowGroup]="false"
     [(ngModel)]="selectedPlayerIdentities"
     (ngModelChange)="onPlayerIdentitiesChange($event)"
     (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
   ></opus-player-selection>
-</div>
 
-<div class="action-container">
+  <!-- LSP Group Selection - disabled for opus title -->
+
+  <!-- Page tool -->
   <mat-card>
     <h2>Opus gifting page state</h2>
     <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
   </mat-card>
-</div>
+</tooling-page-layout>
