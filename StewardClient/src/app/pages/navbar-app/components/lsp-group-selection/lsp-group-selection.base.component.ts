@@ -6,6 +6,7 @@ import { catchError, takeUntil, tap, filter, map, startWith } from 'rxjs/operato
 import { Observable } from 'rxjs/internal/Observable';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { GameTitleCodeName } from '@models/enums';
 
 /** The shared top-level navbar. */
 @Component({
@@ -29,6 +30,8 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
   public isLoading = false;
   /** The error received while loading. */
   public loadError: unknown;
+
+  public abstract title: GameTitleCodeName;
 
   constructor() {
     super();

@@ -40,25 +40,25 @@ export class LspGroupMemoryState {
     const state = ctx.getState();
     const title = action.title;
 
+    // Check if memory already has lsp groups
+    if (!!state[title] && state[title].length > 0) {
+      return of(state[title]);
+    }
+
     // Set request to get lsp groups
-    let request: Observable<LspGroups>;
+    let request$: Observable<LspGroups>;
     switch(title) {
       case GameTitleCodeName.FH4:
-        request = this.sunriseService.getLspGroups();
+        request$ = this.sunriseService.getLspGroups();
         break;
       case GameTitleCodeName.FM7:
-        request = this.apolloService.getLspGroups();
+        request$ = this.apolloService.getLspGroups();
         break;
       default:
         return throwError(`${title} is not currently setup to handle LSP groups.`);
     }
 
-    // Check if memory already has lsp groups
-    if (state[title].length > 0) {
-      return of(state[title]);
-    }
-
-    return request.pipe(
+    return request$.pipe(
       tap(data => {
         ctx.patchState({ [title]: data });
       }),

@@ -25,3 +25,27 @@ body {
 ::-webkit-scrollbar-thumb {
   background: mat-color($app-theme, 800);
 }
+
+// Default page layout template
+.default-page-layout {
+  display: flex;
+  flex-flow: row wrap;
+  > * {
+    margin: 10px;
+  }
+  
+  .default-page-layout-left {
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .default-page-layout-right {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    margin: 0;
+    > * {
+      margin: 10px;
+    }
+  }
+}
