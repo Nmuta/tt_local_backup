@@ -6,6 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { GetLspGroups } from '@shared/state/lsp-group-memory/lsp-group-memory.actions';
 import { GameTitleCodeName } from '@models/enums';
 import { SunriseLspGroupSelectionComponent } from './sunrise-lsp-group-selection.component';
+import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-memory.state';
 
 describe('SunriseLspGroupSelectionComponent', () => {
   let fixture: ComponentFixture<SunriseLspGroupSelectionComponent>;
@@ -44,9 +45,20 @@ describe('SunriseLspGroupSelectionComponent', () => {
       mockStore.dispatch = jasmine.createSpy('dispatch');
     });
 
-    it('should return correct model', () => {
+    it('should dispatch GetLspGroups', () => {
       component.dispatchLspGroupStoreAction();
       expect(mockStore.dispatch).toHaveBeenCalledWith(new GetLspGroups(GameTitleCodeName.FH4));
+    });
+  });
+
+  describe('Method: lspGroupSelector', () => {
+    beforeEach(() => {
+      mockStore.select = jasmine.createSpy('select');
+    });
+
+    it('should select sunrise lsp groups from memory', () => {
+      component.lspGroupSelector();
+      expect(mockStore.select).toHaveBeenCalledWith(LspGroupMemoryState.sunriseLspGroups);
     });
   });
 });
