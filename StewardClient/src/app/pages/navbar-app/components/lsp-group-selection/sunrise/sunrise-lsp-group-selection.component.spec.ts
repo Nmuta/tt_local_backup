@@ -40,9 +40,13 @@ describe('SunriseLspGroupSelectionComponent', () => {
   });
 
   describe('Method: dispatchLspGroupStoreAction', () => {
+    beforeEach(() => {
+      mockStore.dispatch = jasmine.createSpy('dispatch');
+    });
+
     it('should return correct model', () => {
-      const getLspGroupAction = component.dispatchLspGroupStoreAction();
-      expect(getLspGroupAction).toEqual(new GetLspGroups(GameTitleCodeName.FH4));
+      component.dispatchLspGroupStoreAction();
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new GetLspGroups(GameTitleCodeName.FH4));
     });
   });
 });

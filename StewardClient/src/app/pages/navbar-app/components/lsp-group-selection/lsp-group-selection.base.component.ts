@@ -27,6 +27,8 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
   public trashIcon = faTrashAlt;
 
   /** True while waiting on a request. */
+  public restrictFeature = false;
+  /** True while waiting on a request. */
   public isLoading = false;
   /** The error received while loading. */
   public loadError: unknown;
@@ -46,27 +48,27 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
     this.isLoading = true;
     this.dispatchLspGroupStoreAction();
     const selector = this.lspGroupSelector();
-    selector.pipe(
-      takeUntil(this.onDestroy$),
-      filter(data => data.length > 0),
-      tap((data: LspGroups) => {
-        this.isLoading = false;
-        this.lspGroups = data;
-      }),
-      catchError(error => {
-        this.loadError = error;
-        this.isLoading = false;
-        return NEVER;
-      })
-    ).subscribe();
-
-
-    this.filteredLspGroupOptions = this.autocompleteControl.valueChanges
+    selector
       .pipe(
-        startWith(''),
-        map(value => typeof value === 'string' ? value : value.name),
-        map(name => name ? this._filter(name) : this.lspGroups.slice())
-      );
+        takeUntil(this.onDestroy$),
+        filter(data => data.length > 0),
+        tap((data: LspGroups) => {
+          this.isLoading = false;
+          this.lspGroups = data;
+        }),
+        catchError(error => {
+          this.loadError = error;
+          this.isLoading = false;
+          return NEVER;
+        }),
+      )
+      .subscribe();
+
+    this.filteredLspGroupOptions = this.autocompleteControl.valueChanges.pipe(
+      startWith(''),
+      map(value => (typeof value === 'string' ? value : value.name)),
+      map(name => (name ? this._filter(name) : this.lspGroups.slice())),
+    );
   }
 
   /** Mat option display */
@@ -77,9 +79,8 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
   /** Clear the current selection. */
   public clearSelection(): void {
     this.lspInputValue = '';
-    this.emitNewSelection(null)
+    this.emitNewSelection(null);
   }
-
 
   /** New LSP Group selected event */
   public emitNewSelection(value: LspGroup): void {
@@ -110,6 +111,4 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
   private onChangeFunction = (_value: LspGroup) => {
     /* empty */
   };
-
-
 }

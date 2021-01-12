@@ -7,7 +7,7 @@ import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { SunriseGiftingState } from './state/sunrise-gifting.state';
-import { SetSunriseSelectedPlayerIdentities } from './state/sunrise-gifting.state.actions';
+import { SetSunriseGiftingSelectedPlayerIdentities } from './state/sunrise-gifting.state.actions';
 import { SunriseGiftingComponent } from './sunrise-gifting.component';
 
 describe('SunriseGiftingComponent', () => {
@@ -50,11 +50,11 @@ describe('SunriseGiftingComponent', () => {
         },
       ];
     });
-    it('should displatch SetSunriseSelectedPlayerIdentities with correct data', () => {
+    it('should displatch SetSunriseGiftingSelectedPlayerIdentities with correct data', () => {
       component.onPlayerIdentitiesChange(event);
 
       expect(mockStore.dispatch).toHaveBeenCalledWith(
-        new SetSunriseSelectedPlayerIdentities(event),
+        new SetSunriseGiftingSelectedPlayerIdentities(event),
       );
     });
   });

@@ -1,34 +1,42 @@
 <mat-card>
-  <h2>Lsp Group Selection</h2>
+  <h2>LSP Group Selection</h2>
 
   <ng-container
     content-body
     class="selection-content"
     *ngIf="!isLoading && !loadError; else failState"
   >
-  <form>
-    <mat-form-field appearance="fill">
-      <mat-label>Select LSP Group</mat-label>
-      <input type="text"
-            aria-label="Select LSP Group"
-            matInput
-            [formControl]="autocompleteControl"
-            [matAutocomplete]="auto"
-            [(ngModel)]="lspInputValue"
-            name="LspSelectionInput"
-            ngDefaultControl>
-      <mat-autocomplete (optionSelected)="emitNewSelection($event.option.value)" #auto="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let option of filteredLspGroupOptions | async" [value]="option">
-          {{option.name}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-    <button mat-mini-fab color="accent" aria-label="Clear LSP Group selection" class="clear-selection-button"
-      (click)="clearSelection()">
-      <fa-icon [icon]="trashIcon"></fa-icon>
-    </button>
-  </form>
-
+    <form>
+      <mat-form-field appearance="fill">
+        <mat-label>Select LSP Group</mat-label>
+        <input
+          type="text"
+          aria-label="Select LSP Group"
+          matInput
+          [formControl]="autocompleteControl"
+          [matAutocomplete]="auto"
+          [(ngModel)]="lspInputValue"
+        />
+        <mat-autocomplete
+          (optionSelected)="emitNewSelection($event.option.value)"
+          #auto="matAutocomplete"
+          [displayWith]="displayFn"
+        >
+          <mat-option *ngFor="let option of filteredLspGroupOptions | async" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <button
+        mat-mini-fab
+        color="accent"
+        aria-label="Clear LSP Group selection"
+        class="clear-selection-button"
+        (click)="clearSelection()"
+      >
+        <fa-icon [icon]="trashIcon"></fa-icon>
+      </button>
+    </form>
   </ng-container>
 </mat-card>
 

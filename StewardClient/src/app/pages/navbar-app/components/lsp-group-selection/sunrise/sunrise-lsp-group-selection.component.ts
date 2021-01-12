@@ -22,8 +22,7 @@ import { LspGroupSelectionBaseComponent } from '../lsp-group-selection.base.comp
   ],
 })
 export class SunriseLspGroupSelectionComponent extends LspGroupSelectionBaseComponent {
-  constructor(
-    protected readonly store: Store) {
+  constructor(protected readonly store: Store) {
     super();
   }
 

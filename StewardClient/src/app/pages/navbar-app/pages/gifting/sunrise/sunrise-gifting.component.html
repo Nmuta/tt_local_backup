@@ -1,5 +1,8 @@
 <div class="left-side">
-  <mat-tab-group>
+  <mat-tab-group
+    [(selectedIndex)]="matTabSelectedIndex"
+    (selectedTabChange)="matTabSelectionChange($event.index)"
+  >
     <mat-tab label="Player Selection">
       <sunrise-player-selection
         [allowGroup]="true"
@@ -10,10 +13,11 @@
         (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
       ></sunrise-player-selection>
     </mat-tab>
-    <mat-tab label="LSP Group Selection">
+    <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
       <sunrise-lsp-group-selection
         [(ngModel)]="selectedLspGroup"
-        (ngModelChange)="onLspGroupChange($event)"></sunrise-lsp-group-selection>
+        (ngModelChange)="onLspGroupChange($event)"
+      ></sunrise-lsp-group-selection>
     </mat-tab>
   </mat-tab-group>
 </div>
@@ -22,5 +26,6 @@
   <mat-card>
     <h2>Sunrise gifting page state</h2>
     <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
+    <p>LSP Group: {{ selectedLspGroup?.name || 'None' }}</p>
   </mat-card>
 </div>
