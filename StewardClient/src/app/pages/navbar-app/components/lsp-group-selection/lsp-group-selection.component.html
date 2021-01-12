@@ -22,7 +22,7 @@
           #auto="matAutocomplete"
           [displayWith]="displayFn"
         >
-          <mat-option *ngFor="let option of filteredLspGroupOptions | async" [value]="option">
+          <mat-option *ngFor="let option of filteredLspGroupOptions$ | async" [value]="option">
             {{ option.name }}
           </mat-option>
         </mat-autocomplete>

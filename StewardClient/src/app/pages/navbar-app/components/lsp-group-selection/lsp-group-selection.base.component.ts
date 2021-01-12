@@ -19,7 +19,7 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
 
   /** Mat-Autocomplete form controls */
   public autocompleteControl = new FormControl();
-  public filteredLspGroupOptions: Observable<LspGroups>;
+  public filteredLspGroupOptions$: Observable<LspGroups>;
   public lspInputValue: string = '';
 
   /** Font awesome icons */
@@ -44,8 +44,8 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
   public ngOnInit(): void {
     this.isLoading = true;
     this.dispatchLspGroupStoreAction();
-    const selector = this.lspGroupSelector();
-    selector
+    const selector$ = this.lspGroupSelector();
+    selector$
       .pipe(
         takeUntil(this.onDestroy$),
         filter(data => data.length > 0),
@@ -61,7 +61,7 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
       )
       .subscribe();
 
-    this.filteredLspGroupOptions = this.autocompleteControl.valueChanges.pipe(
+    this.filteredLspGroupOptions$ = this.autocompleteControl.valueChanges.pipe(
       startWith(''),
       map(value => (typeof value === 'string' ? value : value.name)),
       map(name => (name ? this._filter(name) : this.lspGroups.slice())),
