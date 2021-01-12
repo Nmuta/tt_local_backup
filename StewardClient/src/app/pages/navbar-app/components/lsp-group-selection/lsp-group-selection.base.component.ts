@@ -26,8 +26,6 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
   public trashIcon = faTrashAlt;
 
   /** True while waiting on a request. */
-  public restrictFeature = false;
-  /** True while waiting on a request. */
   public isLoading = false;
   /** The error received while loading. */
   public loadError: unknown;
