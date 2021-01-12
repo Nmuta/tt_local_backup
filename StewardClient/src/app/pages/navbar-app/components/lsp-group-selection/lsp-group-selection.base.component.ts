@@ -1,13 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { Observable } from 'rxjs';
-import { LspGroups } from '@models/lsp-group';
+import { NEVER } from 'rxjs';
+import { LspGroup, LspGroups } from '@models/lsp-group';
+import { catchError, takeUntil, tap, filter, map, startWith } from 'rxjs/operators';
+import { Observable } from 'rxjs/internal/Observable';
+import { FormControl } from '@angular/forms';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 /** The shared top-level navbar. */
 @Component({
   template: '',
 })
-export abstract class LspGroupSelectionBaseComponent extends BaseComponent {
+export abstract class LspGroupSelectionBaseComponent extends BaseComponent implements OnInit {
+  /** Lsp Groups. */
+  public lspGroups: LspGroups = [];
+  /** Selected lsp group. */
+  public selectedLspGroup: LspGroup = null;
+  /** Autocomplete form control */
+  public autocompleteControl = new FormControl();
+  /** Filtered lsp group options */
+  public filteredLspGroupOptions: Observable<LspGroups>;
+  /** LSP Group input value */
+  public lspInputValue: string = '';
+
+  /** Font awesome icons */
+  public trashIcon = faTrashAlt;
+
   /** True while waiting on a request. */
   public isLoading = false;
   /** The error received while loading. */
@@ -18,5 +36,80 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent {
   }
 
   /** Child(title) class should implement. */
-  public abstract makeRequestToGetLspGroups$(): Observable<LspGroups>;
+  public abstract dispatchLspGroupStoreAction(): void;
+
+  /** Child(title) class should implement. */
+  public abstract lspGroupSelector(): Observable<LspGroups>;
+
+  /** Initialization hook. */
+  public ngOnInit(): void {
+    this.isLoading = true;
+    this.dispatchLspGroupStoreAction();
+    const selector = this.lspGroupSelector();
+    selector.pipe(
+      takeUntil(this.onDestroy$),
+      filter(data => data.length > 0),
+      tap((data: LspGroups) => {
+        this.isLoading = false;
+        this.lspGroups = data;
+      }),
+      catchError(error => {
+        this.loadError = error;
+        this.isLoading = false;
+        return NEVER;
+      })
+    ).subscribe();
+
+
+    this.filteredLspGroupOptions = this.autocompleteControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : value.name),
+        map(name => name ? this._filter(name) : this.lspGroups.slice())
+      );
+  }
+
+  /** Mat option display */
+  public displayFn(lspGroup: LspGroup): string {
+    return lspGroup && lspGroup.name ? lspGroup.name : '';
+  }
+
+  /** Clear the current selection. */
+  public clearSelection(): void {
+    this.lspInputValue = '';
+    this.emitNewSelection(null)
+  }
+
+
+  /** New LSP Group selected event */
+  public emitNewSelection(value: LspGroup): void {
+    this.onChangeFunction(value);
+  }
+
+  /** Form control hook. */
+  public writeValue(obj: LspGroup): void {
+    this.selectedLspGroup = obj;
+  }
+
+  /** Form control hook. */
+  public registerOnChange(fn: (value: LspGroup) => void): void {
+    this.onChangeFunction = fn;
+  }
+
+  /** Form control hook. */
+  public registerOnTouched(_fn: unknown): void {
+    /** empty */
+  }
+
+  /** Autocomplete filter */
+  private _filter(value: string): LspGroups {
+    const filterValue = value.toLowerCase();
+    return this.lspGroups.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  private onChangeFunction = (_value: LspGroup) => {
+    /* empty */
+  };
+
+
 }

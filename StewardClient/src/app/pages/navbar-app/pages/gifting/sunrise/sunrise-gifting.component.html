@@ -1,12 +1,21 @@
 <div class="left-side">
-  <sunrise-player-selection
-    [allowGroup]="true"
-    [allowT10Id]="false"
-    [allowGroup]="true"
-    [(ngModel)]="selectedPlayerIdentities"
-    (ngModelChange)="onPlayerIdentitiesChange($event)"
-    (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
-  ></sunrise-player-selection>
+  <mat-tab-group>
+    <mat-tab label="Player Selection">
+      <sunrise-player-selection
+        [allowGroup]="true"
+        [allowT10Id]="false"
+        [allowGroup]="true"
+        [(ngModel)]="selectedPlayerIdentities"
+        (ngModelChange)="onPlayerIdentitiesChange($event)"
+        (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
+      ></sunrise-player-selection>
+    </mat-tab>
+    <mat-tab label="LSP Group Selection">
+      <sunrise-lsp-group-selection
+        [(ngModel)]="selectedLspGroup"
+        (ngModelChange)="onLspGroupChange($event)"></sunrise-lsp-group-selection>
+    </mat-tab>
+  </mat-tab-group>
 </div>
 
 <div class="action-container">

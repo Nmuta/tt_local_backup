@@ -39,14 +39,10 @@ describe('ApolloLspGroupSelectionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Method: makeRequestToGetLspGroups$', () => {
-    beforeEach(() => {
-      mockStore.dispatch = jasmine.createSpy('dispatch');
-    });
-
-    it('should call dispatch', () => {
-      component.makeRequestToGetLspGroups$();
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new GetLspGroups(GameTitleCodeName.FM7));
+  describe('Method: dispatchLspGroupStoreAction', () => {
+    it('should return correct model', () => {
+      const getLspGroupAction = component.dispatchLspGroupStoreAction();
+      expect(getLspGroupAction).toEqual(new GetLspGroups(GameTitleCodeName.FM7));
     });
   });
 });

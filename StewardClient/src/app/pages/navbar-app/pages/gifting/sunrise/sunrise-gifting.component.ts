@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultAlphaBatch, IdentityResultAlpha } from '@models/identity-query.model';
+import { LspGroup } from '@models/lsp-group';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,6 +17,7 @@ import { SetSunriseSelectedPlayerIdentities } from './state/sunrise-gifting.stat
 export class SunriseGiftingComponent extends BaseComponent implements OnInit {
   @Select(SunriseGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
+  public selectedLspGroup$: Observable<LspGroup>
 
   title: GameTitleCodeName = GameTitleCodeName.FH4;
   selectedPlayerIdentities: IdentityResultAlphaBatch;
@@ -36,6 +38,11 @@ export class SunriseGiftingComponent extends BaseComponent implements OnInit {
   /** Logic when player selection outputs identities. */
   public onPlayerIdentitiesChange(event: IdentityResultAlphaBatch): void {
     this.store.dispatch(new SetSunriseSelectedPlayerIdentities(event));
+  }
+
+  /** Logic when lspgroup selection outputs new value. */
+  public onLspGroupChange(event: LspGroup): void {
+    console.log(event);
   }
 
   /** Player identity selected */

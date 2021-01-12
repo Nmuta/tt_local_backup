@@ -7,7 +7,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
 import { concat, from, Observable, of, throwError } from 'rxjs';
-import { catchError, filter, switchMap, take, tap, timeout } from 'rxjs/operators';
+import { catchError, filter, switchMap, take, map, timeout } from 'rxjs/operators';
 
 import {
   GetUser,
@@ -69,12 +69,14 @@ export class UserState {
   @Action(GetUser, { cancelUncompleted: true })
   public getUser(ctx: StateContext<UserStateModel>): Observable<UserModel> {
     return this.userService.getUserProfile().pipe(
-      tap(
+      map(
         data => {
           ctx.patchState({ profile: data });
+          return data;
         },
         () => {
           ctx.patchState({ profile: null });
+          return null;
         },
       ),
     );
