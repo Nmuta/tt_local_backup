@@ -40,8 +40,15 @@ export class LspGroupMemoryState {
     const state = ctx.getState();
     const title = action.title;
 
-    // Handle unsupported titles
-    if (title === GameTitleCodeName.Street || title === GameTitleCodeName.FH3) {
+    // Set request to get lsp groups
+    const request =
+      title === GameTitleCodeName.FH4 
+        ? this.sunriseService.getLspGroups()
+        : title === GameTitleCodeName.FM7 
+          ? this.apolloService.getLspGroups()
+          : null;
+          
+    if (!request) {
       return throwError(`${title} is not currently setup to handle LSP groups.`);
     }
 
@@ -49,12 +56,6 @@ export class LspGroupMemoryState {
     if (state[title].length > 0) {
       return of(state[title]);
     }
-
-    // Request lsp groups
-    const request =
-      title === GameTitleCodeName.FH4
-        ? this.sunriseService.getLspGroups()
-        : this.apolloService.getLspGroups();
 
     return request.pipe(
       tap(data => {
