@@ -64,7 +64,7 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
     this.filteredLspGroupOptions$ = this.autocompleteControl.valueChanges.pipe(
       startWith(''),
       map(value => (typeof value === 'string' ? value : value.name)),
-      map(name => (name ? this._filter(name) : this.lspGroups.slice())),
+      map(name => (name ? this.filter(name) : this.lspGroups.slice())),
     );
   }
 
@@ -100,7 +100,7 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
   }
 
   /** Autocomplete filter */
-  private _filter(value: string): LspGroups {
+  private filter(value: string): LspGroups {
     const filterValue = value.toLowerCase();
     return this.lspGroups.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
   }
