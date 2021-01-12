@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LspGroupSelectionBaseComponent } from './lsp-group-selection.base.component';
 import { of } from 'rxjs';
 import { throwError } from 'rxjs';
+import { LspGroup } from '@models/lsp-group';
 
 describe('LspGroupSelectionBaseComponent', () => {
   let fixture: ComponentFixture<LspGroupSelectionBaseComponent>;
@@ -99,6 +100,34 @@ describe('LspGroupSelectionBaseComponent', () => {
       component.clearSelection();
 
       expect(component.emitNewSelection).toHaveBeenCalledWith(null);
+    });
+  });
+
+  describe('Method: displayFn', () => {
+    let lspGroup: LspGroup;
+    describe('If name in lspGroup is defined', () => {
+      const lspGroupName = 'test-1';
+      beforeEach(() => {
+        lspGroup = { id: 0, name: lspGroupName };
+      });
+
+      it('should return test-1', () => {
+        const response = component.displayFn(lspGroup);
+
+        expect(response).toEqual(lspGroupName);
+      });
+    });
+
+    describe('If name in lspGroup is defined', () => {
+      beforeEach(() => {
+        lspGroup = null;
+      });
+
+      it('should return empty string', () => {
+        const response = component.displayFn(lspGroup);
+
+        expect(response).toEqual('');
+      });
     });
   });
 

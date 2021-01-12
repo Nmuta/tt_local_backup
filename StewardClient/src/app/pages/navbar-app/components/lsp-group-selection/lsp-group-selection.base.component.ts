@@ -81,6 +81,11 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
     this.onChangeFunction(value);
   }
 
+  /** Mat option display */
+  public displayFn(lspGroup: LspGroup): string {
+    return lspGroup && lspGroup.name ? lspGroup.name : '';
+  }
+
   /** Form control hook. */
   public writeValue(obj: LspGroup): void {
     this.selectedLspGroup = obj;
