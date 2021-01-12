@@ -21,9 +21,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   @Input() allowGroup: boolean = true;
   @Output() playerIdentitySelectedEvent = new EventEmitter<T>();
 
-  /** Game title */
-  public title: GameTitleCodeName;
-
   public playersSelector = new FormControl('', [this.ValidateGroupSelection.bind(this)]);
 
   /** The player identites that are given to parent components for use */
@@ -53,6 +50,9 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   public isLoading = false;
   /** The error received while loading. */
   public loadError: unknown;
+
+  /** Game title */
+  public abstract title: GameTitleCodeName;
 
   constructor() {
     super();

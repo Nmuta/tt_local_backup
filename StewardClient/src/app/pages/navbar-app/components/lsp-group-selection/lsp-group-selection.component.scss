@@ -1,7 +1,7 @@
 @import '/src/variables.scss';
 
 mat-card {
-  height: 200px;
+  min-height: 200px;
 
   mat-form-field {
     max-width: 300px;

@@ -18,10 +18,6 @@ export abstract class GiftingBaseComponent<T extends IdentityResultUnion> extend
 
   public disableLspGroupSelection: boolean = true;
 
-  constructor() {
-    super();
-  }
-
   /** Tracks when the mat tab is changed  */
   public abstract matTabSelectionChange(index: number): void;
 

@@ -72,11 +72,9 @@ export class UserState {
       tap(
         data => {
           ctx.patchState({ profile: data });
-          return data;
         },
         () => {
           ctx.patchState({ profile: null });
-          return null;
         },
       ),
     );
