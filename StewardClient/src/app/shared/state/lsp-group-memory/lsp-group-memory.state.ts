@@ -7,7 +7,6 @@ import { Observable, of, throwError } from 'rxjs';
 import { GetLspGroups } from './lsp-group-memory.actions';
 import { LspGroup, LspGroups } from '@models/lsp-group';
 import { tap } from 'rxjs/operators';
-import { Observable } from 'rxjs/internal/Observable';
 
 /**
  * Defines the lsp group memory model.
@@ -53,7 +52,7 @@ export class LspGroupMemoryState {
       default:
         return throwError(`${title} is not currently setup to handle LSP groups.`);
     }
-    
+
     // Check if memory already has lsp groups
     if (state[title].length > 0) {
       return of(state[title]);
