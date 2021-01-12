@@ -7,7 +7,10 @@ import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { SunriseGiftingState } from './state/sunrise-gifting.state';
-import { SetSunriseGiftingSelectedPlayerIdentities } from './state/sunrise-gifting.state.actions';
+import {
+  SetSunriseGiftingMatTabIndex,
+  SetSunriseGiftingSelectedPlayerIdentities,
+} from './state/sunrise-gifting.state.actions';
 import { SunriseGiftingComponent } from './sunrise-gifting.component';
 
 describe('SunriseGiftingComponent', () => {
@@ -38,6 +41,16 @@ describe('SunriseGiftingComponent', () => {
   );
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Method: matTabSelectionChange', () => {
+    const testIndex: number = 1;
+
+    it('should displatch SetApolloGiftingMatTabIndex with correct data', () => {
+      component.matTabSelectionChange(testIndex);
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetSunriseGiftingMatTabIndex(testIndex));
+    });
   });
 
   describe('Method: onPlayerIdentitiesChange', () => {

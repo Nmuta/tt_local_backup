@@ -44,6 +44,7 @@ export class LspGroupMemoryState {
     if (title === GameTitleCodeName.Street || title === GameTitleCodeName.FH3) {
       return throwError(`${title} is not currently setup to handle LSP groups.`);
     }
+
     // Check if memory already has lsp groups
     if (state[title].length > 0) {
       return of(state[title]);

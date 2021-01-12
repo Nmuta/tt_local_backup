@@ -16,11 +16,10 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
   public lspGroups: LspGroups = [];
   /** Selected lsp group. */
   public selectedLspGroup: LspGroup = null;
-  /** Autocomplete form control */
+
+  /** Mat-Autocomplete form controls */
   public autocompleteControl = new FormControl();
-  /** Filtered lsp group options */
   public filteredLspGroupOptions: Observable<LspGroups>;
-  /** LSP Group input value */
   public lspInputValue: string = '';
 
   /** Font awesome icons */
@@ -57,8 +56,8 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
           this.lspGroups = data;
         }),
         catchError(error => {
-          this.loadError = error;
           this.isLoading = false;
+          this.loadError = error;
           return NEVER;
         }),
       )
@@ -69,11 +68,6 @@ export abstract class LspGroupSelectionBaseComponent extends BaseComponent imple
       map(value => (typeof value === 'string' ? value : value.name)),
       map(name => (name ? this._filter(name) : this.lspGroups.slice())),
     );
-  }
-
-  /** Mat option display */
-  public displayFn(lspGroup: LspGroup): string {
-    return lspGroup && lspGroup.name ? lspGroup.name : '';
   }
 
   /** Clear the current selection. */

@@ -61,10 +61,9 @@ export class ApolloGiftingComponent
   }
 
   /** Player identity selected */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public playerIdentitySelected(identity: IdentityResultAlpha): void {
-    if (!!identity) {
-      // console.log(`Player has been selected: ${identity.gamertag}`);
-    }
+    // Empty
   }
 
   /** Logic when lspgroup selection outputs new value. */
