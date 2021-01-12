@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultBeta, IdentityResultBetaBatch } from '@models/identity-query.model';
-import { LspGroup } from '@models/lsp-group';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,7 +21,6 @@ export class GravityGiftingComponent
 
   public title: GameTitleCodeName = GameTitleCodeName.Street;
   public selectedPlayerIdentities: IdentityResultBetaBatch;
-  public disableLspGroupSelection = true; // Gravity LSP Groups are not integrated yet
 
   constructor(protected readonly store: Store) {
     super();
@@ -46,17 +44,5 @@ export class GravityGiftingComponent
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public playerIdentitySelected(identity: IdentityResultBeta): void {
     // Empty
-  }
-
-  /** Tracks when the mat tab is changed  */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public matTabSelectionChange(index: number): void {
-    throw new Error('LSP Group selection tab is disabled for gravity gifting tool.');
-  }
-
-  /** Logic when lspgroup selection outputs new value. */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public onLspGroupChange(event: LspGroup): void {
-    throw new Error('LSP Group selection is disabled for gravity gifting tool.');
   }
 }

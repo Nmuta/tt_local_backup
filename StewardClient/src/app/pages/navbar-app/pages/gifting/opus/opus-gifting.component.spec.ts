@@ -56,28 +56,4 @@ describe('OpusGiftingComponent', () => {
       expect(mockStore.dispatch).toHaveBeenCalledWith(new SetOpusSelectedPlayerIdentities(event));
     });
   });
-
-  describe('Method: matTabSelectionChange', () => {
-    it('should throw error', () => {
-      try {
-        component.matTabSelectionChange(0);
-        expect(true).toBeFalsy();
-      } catch (err) {
-        expect(err).toEqual(
-          new Error('LSP Group selection tab is disabled for opus gifting tool.'),
-        );
-      }
-    });
-  });
-
-  describe('Method: onLspGroupChange', () => {
-    it('should throw error', () => {
-      try {
-        component.onLspGroupChange({ id: 0, name: 'test-1' });
-        expect(true).toBeFalsy();
-      } catch (err) {
-        expect(err).toEqual(new Error('LSP Group selection is disabled for opus gifting tool.'));
-      }
-    });
-  });
 });

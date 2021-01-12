@@ -13,13 +13,8 @@ type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 export abstract class GiftingBaseComponent<T extends IdentityResultUnion> extends BaseComponent {
   public title: GameTitleCodeName = GameTitleCodeName.FH4;
   public matTabSelectedIndex: number = 0;
-  public selectedPlayerIdentities: T[];
-  public selectedLspGroup: LspGroup;
 
   public disableLspGroupSelection: boolean = true;
-
-  /** Tracks when the mat tab is changed  */
-  public abstract matTabSelectionChange(index: number): void;
 
   /** Logic when player selection outputs identities. */
   public abstract onPlayerIdentitiesChange(event: T[]): void;
@@ -27,6 +22,16 @@ export abstract class GiftingBaseComponent<T extends IdentityResultUnion> extend
   /** Player identity selected */
   public abstract playerIdentitySelected(identity: T): void;
 
+
+  /** Tracks when the mat tab is changed  */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected matTabSelectionChange(index: number): void {
+    throw new Error('LSP Group selection tab is disabled.');
+  };
+
   /** Logic when lspgroup selection outputs new value. */
-  public abstract onLspGroupChange(event: LspGroup): void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected onLspGroupChange(event: LspGroup): void {
+    throw new Error('LSP Group selection tab is disabled.');
+  };
 }
