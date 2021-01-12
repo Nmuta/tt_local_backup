@@ -28,7 +28,6 @@ describe('SunriseLspGroupSelectionComponent', () => {
       }).compileComponents();
 
       const injector = getTestBed();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       mockStore = injector.inject(Store);
 
       fixture = TestBed.createComponent(SunriseLspGroupSelectionComponent);
