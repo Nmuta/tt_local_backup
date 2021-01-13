@@ -71,6 +71,15 @@ describe('SunriseService', () => {
     });
   });
 
+  describe('Method: getLspGroups', () => {
+    it('should call API service getRequest', done => {
+      service.getLspGroups().subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(`${service.basePath}/groups`);
+        done();
+      });
+    });
+  });
+
   describe('Method: getPlayerDetailsByGamertag', () => {
     let expectedGamertag;
 

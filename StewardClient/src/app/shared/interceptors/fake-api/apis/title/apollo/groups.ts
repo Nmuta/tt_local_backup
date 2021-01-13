@@ -3,8 +3,8 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { LspGroups } from '@models/lsp-group';
 import { Unprocessed } from '@models/unprocessed';
 
-/** Fake API for finding sunrise groups. */
-export class SunriseGroupsFakeApi extends FakeApiBase {
+/** Fake API for finding apollo groups. */
+export class ApolloGroupsFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -13,13 +13,13 @@ export class SunriseGroupsFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/sunrise\/groups/i;
+    const regex = /\/?api\/v1\/title\/apollo\/groups/i;
     return regex.test(url.pathname);
   }
 
   /** Produces a sample API response. */
   public handle(): Partial<Unprocessed<LspGroups>> {
-    return SunriseGroupsFakeApi.make();
+    return ApolloGroupsFakeApi.make();
   }
 
   /** Generates a sample object */

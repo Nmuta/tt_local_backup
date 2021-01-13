@@ -1,16 +1,36 @@
-<div class="left-side">
-  <apollo-player-selection
-    [allowT10Id]="false"
-    [allowGroup]="false"
-    [(ngModel)]="selectedPlayerIdentities"
-    (ngModelChange)="onPlayerIdentitiesChange($event)"
-    (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
-  ></apollo-player-selection>
-</div>
+<div class="default-page-layout">
+  <div class="default-page-layout-left">
+    <mat-tab-group
+      mat-stretch-tabs
+      [(selectedIndex)]="matTabSelectedIndex"
+      (selectedTabChange)="matTabSelectionChange($event.index)"
+    >
+      <mat-tab label="Player Selection">
+        <!-- Player selection -->
+        <apollo-player-selection
+          [allowT10Id]="false"
+          [allowGroup]="false"
+          [(ngModel)]="selectedPlayerIdentities"
+          (ngModelChange)="onPlayerIdentitiesChange($event)"
+          (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
+        ></apollo-player-selection>
+      </mat-tab>
+      <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
+        <!-- LSP Group Selection -->
+        <apollo-lsp-group-selection
+          [(ngModel)]="selectedLspGroup"
+          (ngModelChange)="onLspGroupChange($event)"
+        ></apollo-lsp-group-selection>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 
-<div class="action-container">
-  <mat-card>
-    <h2>Apollo gifting page state</h2>
-    <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
-  </mat-card>
+  <div class="default-page-layout-right">
+    <!-- Page tool -->
+    <mat-card>
+      <h2>Apollo gifting page state</h2>
+      <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
+      <p>LSP Group: {{ selectedLspGroup?.name || 'None' }}</p>
+    </mat-card>
+  </div>
 </div>

@@ -1,5 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { GameTitleCodeName } from '@models/enums';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,
@@ -25,6 +26,8 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
 export class OpusPlayerSelectionComponent extends PlayerSelectionBaseComponent<
   IdentityResultAlpha
 > {
+  public title = GameTitleCodeName.FH3;
+
   constructor(public readonly opusService: OpusService) {
     super();
   }

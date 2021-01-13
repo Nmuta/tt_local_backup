@@ -7,6 +7,7 @@ import {
   IdentityResultAlpha,
   IdentityResultAlphaBatch,
 } from '@models/identity-query.model';
+import { LspGroups } from '@models/lsp-group';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -57,5 +58,10 @@ export class ApolloService {
           return details;
         }),
       );
+  }
+
+  /** Gets the apollo lsp groups. */
+  public getLspGroups(): Observable<LspGroups> {
+    return this.apiService.getRequest<LspGroups>(`${this.basePath}/groups`);
   }
 }

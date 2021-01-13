@@ -8,7 +8,10 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { ApolloGiftingComponent } from './apollo-gifting.component';
 import { ApolloGiftingState } from './state/apollo-gifting.state';
-import { SetApolloSelectedPlayerIdentities } from './state/apollo-gifting.state.actions';
+import {
+  SetApolloGiftingMatTabIndex,
+  SetApolloGiftingSelectedPlayerIdentities,
+} from './state/apollo-gifting.state.actions';
 
 describe('ApolloGiftingComponent', () => {
   let component: ApolloGiftingComponent;
@@ -40,6 +43,16 @@ describe('ApolloGiftingComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('Method: matTabSelectionChange', () => {
+    const testIndex: number = 1;
+
+    it('should displatch SetApolloGiftingMatTabIndex with correct data', () => {
+      component.matTabSelectionChange(testIndex);
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetApolloGiftingMatTabIndex(testIndex));
+    });
+  });
+
   describe('Method: onPlayerIdentitiesChange', () => {
     let event: IdentityResultAlphaBatch;
     beforeEach(() => {
@@ -50,10 +63,12 @@ describe('ApolloGiftingComponent', () => {
         },
       ];
     });
-    it('should displatch SetApolloSelectedPlayerIdentities with correct data', () => {
+    it('should displatch SetApolloGiftingSelectedPlayerIdentities with correct data', () => {
       component.onPlayerIdentitiesChange(event);
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetApolloSelectedPlayerIdentities(event));
+      expect(mockStore.dispatch).toHaveBeenCalledWith(
+        new SetApolloGiftingSelectedPlayerIdentities(event),
+      );
     });
   });
 });

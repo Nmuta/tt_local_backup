@@ -37,6 +37,7 @@ import { ApolloGiftingState } from './pages/navbar-app/pages/gifting/apollo/stat
 import { OpusGiftingState } from './pages/navbar-app/pages/gifting/opus/state/opus-gifting.state';
 import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state';
 import { MatNativeDateModule } from '@angular/material/core';
+import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-memory.state';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -76,6 +77,7 @@ function fakeApiOrNothing(): Provider[] {
       UserState,
       UserSettingsState,
       TitleMemoryState,
+      LspGroupMemoryState,
       // Gifting page states
       GravityGiftingState,
       SunriseGiftingState,
