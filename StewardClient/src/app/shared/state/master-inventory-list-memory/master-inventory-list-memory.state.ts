@@ -2,16 +2,13 @@ import { Injectable } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { Action, State, StateContext, Selector } from '@ngxs/store';
 import { SunriseService } from '@services/sunrise';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { GravityService } from '@services/gravity';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
-import { GetMasterInventoryList } from './master-inventory-list-memory.actions';
+import { GetGravityMasterInventoryList, GetSunriseMasterInventoryList } from './master-inventory-list-memory.actions';
 import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
-
-
-type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory;
 
 /**
  * Defines the master inventory list memory model.
@@ -36,63 +33,53 @@ export class MasterInventoryListMemoryState {
     protected readonly sunriseService: SunriseService,
   ) {}
 
-  /** Updates the last gifting page title. */
-  @Action(GetMasterInventoryList, { cancelUncompleted: true })
-  public getItemMasterList(
+  /** Gets gravity's master inventory list. */
+  @Action(GetGravityMasterInventoryList, { cancelUncompleted: true })
+  public getGravityMasterInventoryList(
     ctx: StateContext<MasterInventoryListMemoryModel>,
-    action: GetMasterInventoryList,
-  ): void {
+    action: GetGravityMasterInventoryList,
+  ): Observable<GravityMasterInventory> {
     const state = ctx.getState();
-    const title = action.title;
     const gameSettingsId = action.gameSettingsId;
 
     // Error handling
-    if(title === GameTitleCodeName.Street && !gameSettingsId) {
-      return;
-    }
-
-    if(title === GameTitleCodeName.FH4 && !!gameSettingsId) {
+    if(!gameSettingsId) {
       return;
     }
 
     // Memory check
-    if(title === GameTitleCodeName.Street) {
-      if (!!state[title] && !!state[title][gameSettingsId]) {
-        return;
-      }
+    if (!!state[GameTitleCodeName.Street][gameSettingsId]) {
+      return of(state[GameTitleCodeName.Street][gameSettingsId]);
     }
 
-    if(title === GameTitleCodeName.FH4) {
-      if (!!state[title]) {
-        return;
-      }
-    }
-    console.log(state);
-    // Not found in memory, make request
-    let request$: Observable<MasterInventoryUnion>;
-    switch (title) {
-      case GameTitleCodeName.Street:
-        request$ = this.gravityService.getGameSettings(gameSettingsId);
-        break;
-      case GameTitleCodeName.FH4:
-        request$ = this.sunriseService.getMasterInventory();
-        break;
-      default:
-        return;
-    }
-
+    // If not found in memory, make request
+    const request$ = this.gravityService.getGameSettings(gameSettingsId);
     request$.pipe(
       tap(data => {
-        if(title === GameTitleCodeName.Street) {
-          const gravityVal = state[title];
-          console.log(gravityVal);
-          gravityVal[gameSettingsId] = data;
-          ctx.patchState({ [title]: gravityVal });
-        }
+        const gravityVal = state[GameTitleCodeName.Street];
+        gravityVal[gameSettingsId] = data;
+        ctx.patchState({ [GameTitleCodeName.Street]: gravityVal });
+      }),
+    );
+  }
 
-        if(title === GameTitleCodeName.FH4) {
-          ctx.patchState({ [title]: data });
-        }
+  /** Gets sunrise's master inventory list. */
+  @Action(GetSunriseMasterInventoryList, { cancelUncompleted: true })
+  public getSunriseMasterInventoryList(
+    ctx: StateContext<MasterInventoryListMemoryModel>,
+  ): Observable<SunriseMasterInventory> {
+    const state = ctx.getState();
+
+    // Memory check
+    if (!!state[GameTitleCodeName.FH4]) {
+      return of(state[GameTitleCodeName.FH4]);
+    }
+
+    // If not found in memory, make request
+    const request$ = this.sunriseService.getMasterInventory();
+    return request$.pipe(
+      tap(data => {
+        ctx.patchState({ [GameTitleCodeName.FH4]: data });
       }),
     );
   }

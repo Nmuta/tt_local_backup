@@ -1,10 +1,13 @@
-import { GameTitleCodeName } from '@models/enums';
-
-/** Gets the given title's master inventory list. */
-export class GetMasterInventoryList {
-  public static readonly type = '[GiftingMasterListMemory] Get Master Inventory List';
+/** Gets gravity's master inventory list. */
+export class GetGravityMasterInventoryList {
+  public static readonly type = '[GiftingMasterListMemory] Get Gravity Master Inventory List';
   constructor(
-    public readonly title: GameTitleCodeName,
-    public readonly gameSettingsId?: string, // Only used when title is Gravity
+    public readonly gameSettingsId: string,
   ) {}
+}
+
+/** Gets sunrise's master inventory list. */
+export class GetSunriseMasterInventoryList {
+  public static readonly type = '[GiftingMasterListMemory] Get Sunrise Master Inventory List';
+  constructor() { /** Empty */ }
 }

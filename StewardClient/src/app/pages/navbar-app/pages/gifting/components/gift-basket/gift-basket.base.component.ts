@@ -4,8 +4,9 @@ import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.
 import { GameTitleCodeName } from '@models/enums';
 import { Observable } from 'rxjs/internal/Observable';
 import { takeUntil, filter, tap } from 'rxjs/operators';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
+import { LspGroup } from '@models/lsp-group';
 import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
+import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 type MasterInventoryUnion = GravityMasterInventoryLists | SunriseMasterInventory;
@@ -18,7 +19,11 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion>
   extends BaseComponent
   implements OnInit {
   @Input() public playerIdentities: T[];
-  @Input() public gameSettings: MasterInventoryUnion;
+  @Input() public lspGroup: LspGroup;
+  @Input() public gameSettingsId: string;
+
+  /** Master inventory list. */
+  public masterInventory: MasterInventoryUnion;
 
   /** True while waiting on a request. */
   public isLoading = false;
@@ -33,9 +38,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion>
   }
 
   /** Parent component to implement */
-  public abstract dispatchGetMasterInventoryAction(): void;
-
-  /** Parent component to implement */
   public abstract masterInventorySelect$(): Observable<MasterInventoryUnion>;
 
   /** Angular lifecycle */
@@ -48,17 +50,17 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion>
       filter(data => {
         switch(this.title) {
           case GameTitleCodeName.Street:
-            console.log(data);
-            return false;
+            return !!data[this.title];
           case GameTitleCodeName.FH4:
-            console.log(data);
-            return false;
+            return !!data;
           default:
             return false;
         }      
       }),
       tap((data: MasterInventoryUnion) => {
-        console.log('testing');
+        this.masterInventory = this.title === GameTitleCodeName.Street
+          ? data[this.gameSettingsId]
+          : data;
       }),
     ).subscribe();
   }
