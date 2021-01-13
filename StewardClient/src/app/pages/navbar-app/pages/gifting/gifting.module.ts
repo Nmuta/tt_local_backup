@@ -18,6 +18,7 @@ import { OpusGiftingComponent } from './opus/opus-gifting.component';
 import { MatCardModule } from '@angular/material/card';
 import { LspGroupSelectionModule } from '@navbar-app/components/lsp-group-selection/lsp-group-selection.module';
 import { MatTabsModule } from '@angular/material/tabs';
+import { GiftBasketModule } from './components/gift-basket/gift-basket.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -42,6 +43,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     PlayerSelectionModule,
     LspGroupSelectionModule,
     MatTabsModule,
+    GiftBasketModule,
   ],
 })
 export class GiftingsModule {}

@@ -28,6 +28,10 @@
 
   <div class="default-page-layout-right">
     <!-- Page tool -->
+    <sunrise-gift-basket
+      [playerIdentities]="selectedPlayerIdentities"
+    ></sunrise-gift-basket>
+    
     <mat-card>
       <h2>Sunrise gifting page state</h2>
       <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
