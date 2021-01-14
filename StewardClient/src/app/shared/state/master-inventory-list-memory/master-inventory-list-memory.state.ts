@@ -92,7 +92,7 @@ export class MasterInventoryListMemoryState {
   public static gravityMasterInventory(
     state: MasterInventoryListMemoryModel,
   ): GravityMasterInventoryLists {
-    return state.Gravity;
+    return state[GameTitleCodeName.Street];
   }
 
   /** Sunrise master inventory list. */
@@ -100,6 +100,6 @@ export class MasterInventoryListMemoryState {
   public static sunriseMasterInventory(
     state: MasterInventoryListMemoryModel,
   ): SunriseMasterInventory {
-    return state.Sunrise;
+    return state[GameTitleCodeName.FH4];
   }
 }
