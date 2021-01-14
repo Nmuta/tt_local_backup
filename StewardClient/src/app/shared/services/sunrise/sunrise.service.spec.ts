@@ -155,7 +155,7 @@ describe('SunriseService', () => {
 
   it('handles getConsoleDetailsByXuid', done => {
     nextReturnValue = SunrisePlayerXuidConsolesFakeApi.makeMany();
-    service.getConsoleDetailsByXuid(fakeXuid()).subscribe(output => {
+    service.getConsoleDetailsByXuid(BigInt(fakeXuid())).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',

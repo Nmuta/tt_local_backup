@@ -15,7 +15,7 @@ describe('SunrisePlayerNotificationsComponent', () => {
   let component: SunrisePlayerNotificationsComponent;
   let fixture: ComponentFixture<SunrisePlayerNotificationsComponent>;
 
-  beforeEach(async () => {
+  beforeEach(waitForAsync(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunrisePlayerNotificationsComponent],
       providers: [createMockSunriseService()],
@@ -24,13 +24,13 @@ describe('SunrisePlayerNotificationsComponent', () => {
 
     injector = getTestBed();
     service = injector.inject(SunriseService);
-  });
+  }));
 
-  beforeEach(() => {
+  beforeEach(waitForAsync(() => {
     fixture = TestBed.createComponent(SunrisePlayerNotificationsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
   it(
     'should create',
@@ -44,22 +44,15 @@ describe('SunrisePlayerNotificationsComponent', () => {
   describe('valid initialization', () => {
     let consoleDetails$: Subject<SunrisePlayerNotifications> = undefined;
     let consoleDetailsValue: SunrisePlayerNotifications = undefined;
-    let banStatus$: Subject<void> = undefined;
 
     beforeEach(
       waitForAsync(() => {
-        // console details prep
+        // notifications list prep
         consoleDetails$ = new Subject<SunrisePlayerNotifications>();
         consoleDetailsValue = SunrisePlayerXuidNotificationsFakeApi.makeMany() as SunrisePlayerNotifications;
-        service.getConsoleDetailsByXuid = jasmine
-          .createSpy('getConsoleDetailsByXuid')
+        service.getPlayerNotificationsByXuid = jasmine
+          .createSpy('getPlayerNotificationsByXuid')
           .and.returnValue(consoleDetails$);
-
-        // ban status prep
-        banStatus$ = new Subject<void>();
-        service.putBanStatusByConsoleId = jasmine
-          .createSpy('putBanStatusByConsoleId')
-          .and.returnValue(banStatus$);
 
         // emulate initialization event
         component.ngOnChanges();
