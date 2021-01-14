@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { Action, State, StateContext, Selector } from '@ngxs/store';
 import { SunriseService } from '@services/sunrise';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { GravityService } from '@services/gravity';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
@@ -47,7 +47,7 @@ export class MasterInventoryListMemoryState {
 
     // Error handling
     if (!gameSettingsId) {
-      return;
+      return throwError('Game settings ID is required to get a gravity master inventory list.');
     }
 
     // Memory check
@@ -57,7 +57,7 @@ export class MasterInventoryListMemoryState {
 
     // If not found in memory, make request
     const request$ = this.gravityService.getGameSettings(gameSettingsId);
-    request$.pipe(
+    return request$.pipe(
       tap(data => {
         const gravityVal = state[GameTitleCodeName.Street];
         gravityVal[gameSettingsId] = data;

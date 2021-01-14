@@ -34,16 +34,16 @@ describe('ApolloGiftingState', () => {
         },
       });
     });
-    it('should patch access token to undefined', () => {
+    it('should patch selected player identities', () => {
       // Action
       store.dispatch(action);
 
       // Assert
       store
         .selectOnce(state => state.apolloGifting.selectedPlayerIdentities)
-        .subscribe(selectedPlayerIdentities => {
-          expect(selectedPlayerIdentities.length).toEqual(1);
-          expect(selectedPlayerIdentities[0]).toEqual(selectedPlayerIdentities);
+        .subscribe(data => {
+          expect(data.length).toEqual(1);
+          expect(data[0]).toEqual(selectedPlayerIdentities);
         });
     });
   });

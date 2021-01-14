@@ -32,7 +32,7 @@ describe('ApolloGiftingState', () => {
         },
       });
     });
-    it('should patch access token to undefined', () => {
+    it('should patch selected mat index', () => {
       // Action
       store.dispatch(action);
 
