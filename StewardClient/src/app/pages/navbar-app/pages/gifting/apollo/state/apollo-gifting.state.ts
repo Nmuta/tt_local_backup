@@ -27,7 +27,7 @@ export class ApolloGiftingStateModel {
 export class ApolloGiftingState {
   /** Sets the gifting page's selected player identities. */
   @Action(SetApolloGiftingSelectedPlayerIdentities, { cancelUncompleted: true })
-  public setFakeApi(
+  public setSelectedPlayerIdentities(
     ctx: StateContext<ApolloGiftingStateModel>,
     action: SetApolloGiftingSelectedPlayerIdentities,
   ): Observable<ApolloGiftingStateModel> {
