@@ -15,6 +15,10 @@ import { NavbarComponent } from '@navbar-app/components/navbar/navbar.component'
 import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
 import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-privacy-notice.module';
 import { GiftHistoryComponent } from './pages/gift-history/gift-history.component';
+import { GravityGiftHistoryComponent } from './pages/gift-history/gravity/gravity-gift-history.component';
+import { SunriseGiftHistoryComponent } from './pages/gift-history/sunrise/sunrise-gift-history.component';
+import { ApolloGiftHistoryComponent } from './pages/gift-history/apollo/apollo-gift-history.component';
+import { OpusGiftHistoryComponent } from './pages/gift-history/opus/opus-gift-history.component';
 
 /** Defines the sidebar module. */
 @NgModule({
@@ -33,6 +37,6 @@ import { GiftHistoryComponent } from './pages/gift-history/gift-history.componen
     FourOhFourModule,
   ],
   providers: [],
-  declarations: [NavbarAppComponent, HomeComponent, NavbarComponent, GiftHistoryComponent],
+  declarations: [NavbarAppComponent, HomeComponent, NavbarComponent, GiftHistoryComponent, GravityGiftHistoryComponent, SunriseGiftHistoryComponent, ApolloGiftHistoryComponent, OpusGiftHistoryComponent],
 })
 export class NavbarAppModule {}
