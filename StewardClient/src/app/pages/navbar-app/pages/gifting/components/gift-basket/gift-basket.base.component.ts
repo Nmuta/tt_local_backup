@@ -13,8 +13,7 @@ type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory;
 @Component({
   template: '',
 })
-export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion>
-  extends BaseComponent {
+export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> extends BaseComponent {
   @Input() public playerIdentities: T[];
   @Input() public lspGroup: LspGroup;
 

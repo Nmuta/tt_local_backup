@@ -1,10 +1,6 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  GravityGiftHistory,
-  GravityPlayerDetails,
-  GravityPlayerInventory,
-} from '@models/gravity';
+import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
   IdentityQueryBeta,

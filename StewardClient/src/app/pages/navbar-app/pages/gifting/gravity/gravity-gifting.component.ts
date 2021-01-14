@@ -19,7 +19,7 @@ export class GravityGiftingComponent
   implements OnInit {
   @Select(GravityGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultBetaBatch>;
-  
+
   /** Game title. */
   public title: GameTitleCodeName = GameTitleCodeName.Street;
   /** All selected player identities from player selection tool. */

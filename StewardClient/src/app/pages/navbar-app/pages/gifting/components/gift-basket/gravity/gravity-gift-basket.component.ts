@@ -23,9 +23,9 @@ import { GiftBasketBaseComponent } from '../gift-basket.base.component';
     },
   ],
 })
-export class GravityGiftBasketComponent extends GiftBasketBaseComponent<
-  IdentityResultBeta
-> implements OnChanges{
+export class GravityGiftBasketComponent
+  extends GiftBasketBaseComponent<IdentityResultBeta>
+  implements OnChanges {
   @Input() public playerInventory: GravityPlayerInventory;
 
   public title = GameTitleCodeName.Street;
@@ -41,16 +41,16 @@ export class GravityGiftBasketComponent extends GiftBasketBaseComponent<
 
   /** Angular lifecycle */
   public ngOnChanges(changes: SimpleChanges): void {
-    if(!!changes?.playerInventory?.currentValue) {
+    if (!!changes?.playerInventory?.currentValue) {
       this.isLoading = true;
       const gameSettings = this.playerInventory.previousGameSettingsId;
-      this.store.dispatch(new GetGravityMasterInventoryList(gameSettings)).subscribe(
-        () => {
-          this.isLoading = false;
-          const gravityMasterInventory = this.store.selectSnapshot<GravityMasterInventoryLists>(MasterInventoryListMemoryState.gravityMasterInventory);
-          this.masterInventory = gravityMasterInventory[gameSettings];
-        }
-      );
+      this.store.dispatch(new GetGravityMasterInventoryList(gameSettings)).subscribe(() => {
+        this.isLoading = false;
+        const gravityMasterInventory = this.store.selectSnapshot<GravityMasterInventoryLists>(
+          MasterInventoryListMemoryState.gravityMasterInventory,
+        );
+        this.masterInventory = gravityMasterInventory[gameSettings];
+      });
     } else {
       this.masterInventory = undefined;
     }

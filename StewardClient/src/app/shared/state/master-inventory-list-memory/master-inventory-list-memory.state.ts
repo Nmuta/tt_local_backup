@@ -7,7 +7,10 @@ import { tap } from 'rxjs/operators';
 import { GravityService } from '@services/gravity';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
-import { GetGravityMasterInventoryList, GetSunriseMasterInventoryList } from './master-inventory-list-memory.actions';
+import {
+  GetGravityMasterInventoryList,
+  GetSunriseMasterInventoryList,
+} from './master-inventory-list-memory.actions';
 import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
 
 /**
@@ -43,7 +46,7 @@ export class MasterInventoryListMemoryState {
     const gameSettingsId = action.gameSettingsId;
 
     // Error handling
-    if(!gameSettingsId) {
+    if (!gameSettingsId) {
       return;
     }
 
@@ -86,13 +89,17 @@ export class MasterInventoryListMemoryState {
 
   /** Gravity master inventory list. */
   @Selector()
-  public static gravityMasterInventory(state: MasterInventoryListMemoryModel): GravityMasterInventoryLists {
+  public static gravityMasterInventory(
+    state: MasterInventoryListMemoryModel,
+  ): GravityMasterInventoryLists {
     return state.Gravity;
   }
 
   /** Sunrise master inventory list. */
   @Selector()
-  public static sunriseMasterInventory(state: MasterInventoryListMemoryModel): SunriseMasterInventory {
+  public static sunriseMasterInventory(
+    state: MasterInventoryListMemoryModel,
+  ): SunriseMasterInventory {
     return state.Sunrise;
   }
 }

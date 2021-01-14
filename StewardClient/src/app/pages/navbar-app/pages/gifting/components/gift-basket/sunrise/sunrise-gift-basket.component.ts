@@ -21,9 +21,9 @@ import { GiftBasketBaseComponent } from '../gift-basket.base.component';
     },
   ],
 })
-export class SunriseGiftBasketComponent extends GiftBasketBaseComponent<
-  IdentityResultBeta
-> implements OnInit{
+export class SunriseGiftBasketComponent
+  extends GiftBasketBaseComponent<IdentityResultBeta>
+  implements OnInit {
   public title = GameTitleCodeName.FH4;
 
   constructor(protected readonly store: Store) {
@@ -33,12 +33,12 @@ export class SunriseGiftBasketComponent extends GiftBasketBaseComponent<
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.isLoading = true;
-    this.store.dispatch(new GetSunriseMasterInventoryList()).subscribe(
-      () => {
-        this.isLoading = false;
-        const sunriseMasterInventory = this.store.selectSnapshot<SunriseMasterInventory>(MasterInventoryListMemoryState.sunriseMasterInventory);
-        this.masterInventory = sunriseMasterInventory;
-      }
-    );
+    this.store.dispatch(new GetSunriseMasterInventoryList()).subscribe(() => {
+      this.isLoading = false;
+      const sunriseMasterInventory = this.store.selectSnapshot<SunriseMasterInventory>(
+        MasterInventoryListMemoryState.sunriseMasterInventory,
+      );
+      this.masterInventory = sunriseMasterInventory;
+    });
   }
 }

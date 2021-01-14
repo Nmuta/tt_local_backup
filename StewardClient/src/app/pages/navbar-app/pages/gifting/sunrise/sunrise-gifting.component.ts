@@ -24,7 +24,7 @@ export class SunriseGiftingComponent
   implements OnInit {
   @Select(SunriseGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
-  
+
   /** Game title. */
   public title: GameTitleCodeName = GameTitleCodeName.FH4;
   /** Current mat tab selected. */
