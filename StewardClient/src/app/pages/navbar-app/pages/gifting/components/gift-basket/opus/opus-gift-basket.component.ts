@@ -20,8 +20,4 @@ import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 export class OpusGiftBasketComponent extends GiftBasketBaseComponent<IdentityResultBeta> {
   public title = GameTitleCodeName.FH3;
   public disableCard: boolean = true;
-
-  constructor() {
-    super();
-  }
 }

@@ -29,8 +29,4 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
   /** Game title */
   public abstract title: GameTitleCodeName;
-
-  constructor() {
-    super();
-  }
 }

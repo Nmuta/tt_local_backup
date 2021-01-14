@@ -20,8 +20,4 @@ import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 export class ApolloGiftBasketComponent extends GiftBasketBaseComponent<IdentityResultBeta> {
   public title = GameTitleCodeName.FM7;
   public disableCard: boolean = true;
-
-  constructor() {
-    super();
-  }
 }
