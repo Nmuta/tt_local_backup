@@ -7,7 +7,6 @@ import { IdentityResultBeta } from '@models/identity-query.model';
 import { Store } from '@ngxs/store';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
-import { Observable } from 'rxjs';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
 /** Gravity gift basket. */
@@ -32,11 +31,6 @@ export class GravityGiftBasketComponent
 
   constructor(protected readonly store: Store) {
     super();
-  }
-
-  /** The master inventory store select. */
-  public masterInventorySelect$(): Observable<GravityMasterInventoryLists> {
-    return this.store.select(MasterInventoryListMemoryState.gravityMasterInventory);
   }
 
   /** Angular lifecycle */
