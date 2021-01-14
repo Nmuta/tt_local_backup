@@ -23,7 +23,10 @@ describe('GravityGiftingState', () => {
   });
 
   describe('[SetGravitySelectedPlayerIdentities] Action', () => {
-    const selectedPlayerIdentities: IdentityResultBeta = { query: { xuid: BigInt(0) }, gamertag: 'test-gamertag',  };
+    const selectedPlayerIdentities: IdentityResultBeta = {
+      query: { xuid: BigInt(0) },
+      gamertag: 'test-gamertag',
+    };
     let action;
     beforeEach(() => {
       action = new SetGravitySelectedPlayerIdentities([selectedPlayerIdentities]);

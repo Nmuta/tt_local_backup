@@ -12,7 +12,6 @@ import { createMockApolloService } from '@services/apollo';
 import { NEVER } from 'rxjs';
 
 describe('State: LspGroupMemoryState', () => {
-
   let service: LspGroupMemoryState;
   let store: Store;
   let mockSunriseService: SunriseService;
@@ -20,13 +19,8 @@ describe('State: LspGroupMemoryState', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [
-          HttpClientTestingModule,
-          NgxsModule.forRoot([LspGroupMemoryState])],
-        providers: [
-          createMockSunriseService(),
-          createMockApolloService()
-        ],
+        imports: [HttpClientTestingModule, NgxsModule.forRoot([LspGroupMemoryState])],
+        providers: [createMockSunriseService(), createMockApolloService()],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
 
@@ -53,7 +47,7 @@ describe('State: LspGroupMemoryState', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-  
+
   describe('[GetLspGroups] Action', () => {
     let action;
 

@@ -23,7 +23,10 @@ describe('OpusGiftingState', () => {
   });
 
   describe('[SetOpusSelectedPlayerIdentities] Action', () => {
-    const selectedPlayerIdentities: IdentityResultAlpha = { query: { xuid: BigInt(0) }, gamertag: 'test-gamertag',  };
+    const selectedPlayerIdentities: IdentityResultAlpha = {
+      query: { xuid: BigInt(0) },
+      gamertag: 'test-gamertag',
+    };
     let action;
     beforeEach(() => {
       action = new SetOpusSelectedPlayerIdentities([selectedPlayerIdentities]);

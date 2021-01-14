@@ -23,7 +23,10 @@ describe('SunriseGiftingState', () => {
   });
 
   describe('[SetSunriseGiftingSelectedPlayerIdentities] Action', () => {
-    const selectedPlayerIdentities: IdentityResultAlpha = { query: { xuid: BigInt(0) }, gamertag: 'test-gamertag',  };
+    const selectedPlayerIdentities: IdentityResultAlpha = {
+      query: { xuid: BigInt(0) },
+      gamertag: 'test-gamertag',
+    };
     let action;
     beforeEach(() => {
       action = new SetSunriseGiftingSelectedPlayerIdentities([selectedPlayerIdentities]);
