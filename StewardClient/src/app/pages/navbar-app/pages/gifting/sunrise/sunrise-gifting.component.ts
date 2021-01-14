@@ -24,11 +24,17 @@ export class SunriseGiftingComponent
   implements OnInit {
   @Select(SunriseGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
-
+  
+  /** Game title. */
   public title: GameTitleCodeName = GameTitleCodeName.FH4;
+  /** Current mat tab selected. */
   public matTabSelectedIndex: number = 0;
+  /** All selected player identities from player selection tool. */
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
+  /** Selected LSP group. */
   public selectedLspGroup: LspGroup;
+  /** Selected player identity when user clicks on identity chip. */
+  public selectedPlayerIdentity: IdentityResultAlpha;
 
   public disableLspGroupSelection: boolean = true;
 

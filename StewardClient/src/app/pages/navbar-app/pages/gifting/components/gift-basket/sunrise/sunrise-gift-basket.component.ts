@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultBeta } from '@models/identity-query.model';
@@ -6,7 +6,6 @@ import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory
 import { Store } from '@ngxs/store';
 import { GetSunriseMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
-import { Observable } from 'rxjs';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
 /** Apollo gift basket. */
@@ -24,22 +23,22 @@ import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 })
 export class SunriseGiftBasketComponent extends GiftBasketBaseComponent<
   IdentityResultBeta
-> implements OnChanges{
+> implements OnInit{
   public title = GameTitleCodeName.FH4;
 
   constructor(protected readonly store: Store) {
     super();
   }
 
-  /** The master inventory store select. */
-  public masterInventorySelect$(): Observable<SunriseMasterInventory> {
-    return this.store.select(MasterInventoryListMemoryState.sunriseMasterInventory);
-  }
-
   /** Angular lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
-    if(changes?.playerIdentities?.currentValue?.length > 0) {
-      this.store.dispatch(new GetSunriseMasterInventoryList());
-    }
+  public ngOnInit(): void {
+    this.isLoading = true;
+    this.store.dispatch(new GetSunriseMasterInventoryList()).subscribe(
+      () => {
+        this.isLoading = false;
+        const sunriseMasterInventory = this.store.selectSnapshot<SunriseMasterInventory>(MasterInventoryListMemoryState.sunriseMasterInventory);
+        this.masterInventory = sunriseMasterInventory;
+      }
+    );
   }
 }

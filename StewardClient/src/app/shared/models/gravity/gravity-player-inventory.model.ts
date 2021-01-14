@@ -4,7 +4,7 @@ import { GravityCar, GravityInventoryItem, GravityKit } from './inventory-items'
 export interface GravityPlayerInventory {
   xuid: BigInt;
   turn10Id: string;
-  previousGameSettingsId: unknown;
+  previousGameSettingsId: string;
   currentExternalProfileId: unknown;
   cars: GravityCar[];
   masteryKits: GravityInventoryItem[];

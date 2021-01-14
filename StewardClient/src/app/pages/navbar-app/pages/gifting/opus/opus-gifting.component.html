@@ -12,9 +12,9 @@
 
   <div class="default-page-layout-right">
     <!-- Page tool -->
-    <mat-card>
-      <h2>Opus gifting page state</h2>
-      <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
-    </mat-card>
+    <opus-gift-basket
+      [playerIdentities]="selectedPlayerIdentities"
+      [lspGroup]="undefined"
+    ></opus-gift-basket>
   </div>
 </div>

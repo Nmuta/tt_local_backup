@@ -1,53 +1,69 @@
 <mat-card>
   <h2>
-    Fill Out The {{ title }} Gift Basket
+    {{ title }} Gift Basket
   </h2>
 
   <ng-container *ngIf="!isLoading && !loadError; else failState">
-    <h3><b>Overview</b></h3>
-    <p>Number of identities: {{ playerIdentities?.length || '0' }}</p>
-    <p>LSP Group: {{ lspGroup?.name || 'None' }}</p><br/>
+    <!-- Verify card is not disabled. Set in game title components that extend base -->
+    <ng-container *ngIf="!disableCard; else giftingNotSupported">
+      <!-- Gravity is unique, master inventory is based on player inventory game settings -->
+      <ng-container *ngIf="title !== 'Gravity' || (title === 'Gravity' && !!playerInventory); else waitingForGameSettings">
+        <h3><b>Overview</b></h3>
+        <p>Number of identities: {{ playerIdentities?.length || '0' }}</p>
+        <p>LSP Group: {{ lspGroup?.name || 'None' }}</p><br/>
 
-    <h3><b>Master Inventory</b></h3>
-    <p *ngIf="!!masterInventory">
-      Credit Rewards<br/>
-      <span *ngFor="let item of masterInventory.creditRewards">
-        {{ item }}<br />
-      </span>
+        <h3><b>Master Inventory</b></h3>
+        <p *ngIf="!!masterInventory">
+          Credit Rewards<br/>
+          <span *ngFor="let item of masterInventory.creditRewards">
+            {{ item }}<br />
+          </span>
 
-      <b>Cars</b><br/>
-      <span *ngFor="let item of masterInventory.cars">
-        {{ item.displayName }}<br />
-      </span>
+          <b>Cars</b><br/>
+          <span *ngFor="let item of masterInventory.cars">
+            {{ item.displayName }}<br />
+          </span>
 
-      <b>CarHorns</b><br/>
-      <span *ngFor="let item of masterInventory.carHorns">
-        {{ item.displayName }}<br />
-      </span>
+          <b>CarHorns</b><br/>
+          <span *ngFor="let item of masterInventory.carHorns">
+            {{ item.displayName }}<br />
+          </span>
 
-      <b>Emotes</b><br/>
-      <span *ngFor="let item of masterInventory.emotes">
-        {{ item.name }}<br />
-      </span>
+          <b>Emotes</b><br/>
+          <span *ngFor="let item of masterInventory.emotes">
+            {{ item.name }}<br />
+          </span>
 
-      <b>Quick Chat Lines</b><br/>
-      <span *ngFor="let item of masterInventory.quickChatLines">
-        {{ item.chatMessage }}<br />
-      </span>
+          <b>Quick Chat Lines</b><br/>
+          <span *ngFor="let item of masterInventory.quickChatLines">
+            {{ item.chatMessage }}<br />
+          </span>
 
-      <b>Vanity Items</b><br/>
-      <span *ngFor="let item of masterInventory.vanityItems">
-        {{ item.itemId }}<br />
-      </span>
-
-    </p>
-
+          <b>Vanity Items</b><br/>
+          <span *ngFor="let item of masterInventory.vanityItems">
+            {{ item.itemId }}<br />
+          </span>
+        </p>
+        </ng-container>
+    </ng-container>
   </ng-container>
 </mat-card>
 
-<ng-template #failState id="fail-state">
+<ng-template #failState>
   <div id="fail-state">
     <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
     <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+  </div>
+</ng-template>
+
+<ng-template #giftingNotSupported>
+  <div id="disable-card">
+    <p>This card is disabled for {{ title }}</p>
+  </div>
+</ng-template>
+
+<ng-template #waitingForGameSettings>
+  <div id="waiting-for-game-settings">
+    <p>Waiting for player inventory to populate...</p>
   </div>
 </ng-template>

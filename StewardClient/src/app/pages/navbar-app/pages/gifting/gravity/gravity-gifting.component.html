@@ -5,15 +5,16 @@
       [allowGroup]="true"
       [(ngModel)]="selectedPlayerIdentities"
       (ngModelChange)="onPlayerIdentitiesChange($event)"
-      (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
+      (playerIdentitySelectedEvent)="selectedPlayerIdentity = $event"
     ></gravity-player-selection>
   </div>
 
   <div class="default-page-layout-right">
     <!-- Page tool -->
-    <mat-card>
-      <h2>Gravity gifting page state</h2>
-      <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
-    </mat-card>
+    <gravity-gift-basket
+      [playerIdentities]="selectedPlayerIdentities"
+      [lspGroup]="undefined"
+      [playerInventory]="selectedPlayerInventory"
+    ></gravity-gift-basket>
   </div>
 </div>
