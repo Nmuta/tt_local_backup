@@ -1,0 +1,53 @@
+<mat-card>
+  <mat-card-content>
+    <h2>
+      Notifications (Sunrise)
+      <error-spinner
+        [isActive]="false"
+        [error]="loadError"
+        spinnerMessage="Loading"
+        errorMessage="Failed to load"
+      ></error-spinner>
+    </h2>
+    <ng-container *ngIf="!isLoading && !loadError; else failstate">
+      <table mat-table [dataSource]="notifications">
+        <ng-container matColumnDef="isRead">
+          <th mat-header-cell *matHeaderCellDef>Is Read</th>
+          <td mat-cell *matCellDef="let entry">
+            <fa-icon *ngIf="entry.isRead" [icon]="seenIcon" matTooltip="Seen" aria-label="Seen" class="seen"></fa-icon>
+            <fa-icon *ngIf="!entry.isRead" [icon]="unSeenIcon" matTooltip="Not Seen" aria-label="Not Seen" class="not-seen"></fa-icon>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="notificationType">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let entry">{{ entry.notificationType | humanize }}</td>
+        </ng-container>
+        <ng-container matColumnDef="notificationId">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let entry">
+            {{ entry.notificationId }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="sendDateUtc">
+          <th mat-header-cell *matHeaderCellDef>Sent</th>
+          <td mat-cell *matCellDef="let entry">
+            {{ entry.sendDateUtc | date: 'short' }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="expirationDateUtc">
+          <th mat-header-cell *matHeaderCellDef>Expires</th>
+          <td mat-cell *matCellDef="let entry">
+            {{ entry.expirationDateUtc | date: 'short' }}
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
+      </table>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"> </mat-progress-spinner>
+  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+</ng-template>

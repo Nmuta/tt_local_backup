@@ -8,6 +8,7 @@ import { ConsolesModule } from '@shared/views/consoles/consoles.module';
 import { CreditHistoryModule } from '@shared/views/credit-history/credit-history.module';
 import { GamertagsModule } from '@shared/views/gamertags/gamertags.module';
 import { OverviewModule } from '@shared/views/overview/overview.module';
+import { PlayerNotificationsModule } from '@shared/views/player-notifications/player-notifications.module';
 import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
 
 import { SunriseComponent } from './sunrise.component';
@@ -26,6 +27,7 @@ import { SunriseComponent } from './sunrise.component';
     OverviewModule,
     CreditHistoryModule,
     JsonDumpModule,
+    PlayerNotificationsModule,
   ],
 })
 export class SunriseModule {}

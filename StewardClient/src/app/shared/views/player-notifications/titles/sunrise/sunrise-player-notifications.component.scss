@@ -1,0 +1,9 @@
+@import '/src/variables.scss';
+
+table {
+  width: 100%;
+}
+
+.not-seen {
+  @include screenreader-only;
+}

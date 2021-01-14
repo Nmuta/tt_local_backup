@@ -87,7 +87,7 @@ describe('SunriseConsolesComponent', () => {
         'should update when xuid set',
         waitForAsync(async () => {
           // emulate xuid update event
-          component.xuid = faker.random.number({ min: 10_000, max: 500_000 });
+          component.xuid = BigInt(faker.random.number({ min: 10_000, max: 500_000 }));
           component.ngOnChanges();
 
           // waiting on value
@@ -108,7 +108,7 @@ describe('SunriseConsolesComponent', () => {
         'should update when request errored',
         waitForAsync(async () => {
           // emulate xuid update event
-          component.xuid = faker.random.number({ min: 10_000, max: 500_000 });
+          component.xuid = BigInt(faker.random.number({ min: 10_000, max: 500_000 }));
           component.ngOnChanges();
 
           // waiting on value
@@ -140,7 +140,7 @@ describe('SunriseConsolesComponent', () => {
             .first();
 
           // emulate xuid update event
-          component.xuid = faker.random.number({ min: 10_000, max: 500_000 });
+          component.xuid = BigInt(faker.random.number({ min: 10_000, max: 500_000 }));
           component.ngOnChanges();
 
           // waiting on value
