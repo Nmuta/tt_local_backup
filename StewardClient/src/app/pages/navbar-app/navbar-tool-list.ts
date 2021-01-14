@@ -46,6 +46,12 @@ export class NavbarTools {
     path: 'gifting',
   };
 
+    /** The gift history tool page. */
+    public static readonly GiftHistoryPage: RouteParams = {
+      title: 'Gift History',
+      path: 'gift-history',
+    };
+
   /** The user details tool page. */
   public static readonly UserDetailsPage: RouteParams = {
     title: 'User Details',
@@ -62,6 +68,7 @@ export class NavbarTools {
 /** The list of tools to display in the navbar. */
 export const navbarToolList: RouterLinkPath[] = [
   createNavbarPath(NavbarTools.GiftingPage),
+  createNavbarPath(NavbarTools.GiftHistoryPage),
   createNavbarPath(NavbarTools.UserBanningPage),
   createNavbarPath(NavbarTools.UserDetailsPage),
 ];

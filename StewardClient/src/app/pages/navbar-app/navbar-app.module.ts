@@ -14,6 +14,7 @@ import { UserDetailsModule } from '@navbar-app/pages/user-details/user-details.m
 import { NavbarComponent } from '@navbar-app/components/navbar/navbar.component';
 import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
 import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-privacy-notice.module';
+import { GiftHistoryComponent } from './pages/gift-history/gift-history.component';
 
 /** Defines the sidebar module. */
 @NgModule({
@@ -32,6 +33,6 @@ import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-
     FourOhFourModule,
   ],
   providers: [],
-  declarations: [NavbarAppComponent, HomeComponent, NavbarComponent],
+  declarations: [NavbarAppComponent, HomeComponent, NavbarComponent, GiftHistoryComponent],
 })
 export class NavbarAppModule {}
