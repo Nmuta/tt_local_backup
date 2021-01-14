@@ -123,11 +123,6 @@ describe('State: MasterInventoryListMemoryState', () => {
   });
 
   describe('[GetSunriseMasterInventoryList] Action', () => {
-    // let action;
-
-    beforeEach(() => {
-      // action = new GetSunriseMasterInventoryList();
-    });
 
     describe('Master list already exists in state', () => {
       beforeEach(() => {
