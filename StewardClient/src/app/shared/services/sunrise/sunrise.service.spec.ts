@@ -42,7 +42,6 @@ describe('SunriseService', () => {
       service.getPlayerIdentities = jasmine
         .createSpy('getPlayerIdentities')
         .and.returnValue(of([]));
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call service.getPlayerIdentities', done => {
@@ -55,7 +54,7 @@ describe('SunriseService', () => {
 
   describe('Method: getPlayerIdentities', () => {
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      nextReturnValue = [];
     });
 
     it('should call apiServiceMock.postRequest', done => {
@@ -80,12 +79,28 @@ describe('SunriseService', () => {
     });
   });
 
+  describe('Method: getPlayerNotificationsByXuid', () => {
+    let expectedXuid;
+
+    beforeEach(() => {
+      expectedXuid = BigInt(fakeXuid());
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getPlayerNotificationsByXuid(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${expectedXuid})/notifications`,
+        );
+        done();
+      });
+    });
+  });
+
   describe('Method: getPlayerDetailsByGamertag', () => {
     let expectedGamertag;
 
     beforeEach(() => {
       expectedGamertag = 'test-gamertag';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call API service getRequest with the expected params', done => {
