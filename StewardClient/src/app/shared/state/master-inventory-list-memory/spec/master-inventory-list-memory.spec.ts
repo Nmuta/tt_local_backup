@@ -123,7 +123,6 @@ describe('State: MasterInventoryListMemoryState', () => {
   });
 
   describe('[GetSunriseMasterInventoryList] Action', () => {
-
     describe('Master list already exists in state', () => {
       beforeEach(() => {
         store.reset({
