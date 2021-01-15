@@ -38,7 +38,6 @@ export class OpusService {
     return this.apiService.postRequest<IdentityResultAlphaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
-      null,
     );
   }
 
