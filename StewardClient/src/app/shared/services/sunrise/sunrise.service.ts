@@ -7,7 +7,11 @@ import {
   IdentityResultAlpha,
 } from '@models/identity-query.model';
 import { LspGroups } from '@models/lsp-group';
-import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
+import {
+  SunrisePlayerDetails,
+  SunrisePlayerNotifications,
+  SunriseUserFlags,
+} from '@models/sunrise';
 import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
@@ -25,6 +29,11 @@ export class SunriseService {
   public basePath: string = 'v1/title/sunrise';
 
   constructor(private readonly apiService: ApiService) {}
+
+  /** Gets the status of a player's notifications. */
+  public getPlayerNotificationsByXuid(xuid: BigInt): Observable<SunrisePlayerNotifications> {
+    return this.apiService.getRequest(`${this.basePath}/player/xuid(${xuid})/notifications`);
+  }
 
   /** Gets a single identity within this service. */
   public getPlayerIdentity(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
@@ -103,7 +112,7 @@ export class SunriseService {
     );
   }
   /** Gets console details by XUID. */
-  public getConsoleDetailsByXuid(xuid: number): Observable<SunriseConsoleDetails> {
+  public getConsoleDetailsByXuid(xuid: BigInt): Observable<SunriseConsoleDetails> {
     return this.apiService.getRequest<SunriseConsoleDetails>(
       `${this.basePath}/player/xuid(${xuid})/consoleDetails`,
     );

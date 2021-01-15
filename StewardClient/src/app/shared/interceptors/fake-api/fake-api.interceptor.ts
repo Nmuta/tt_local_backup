@@ -56,6 +56,7 @@ import { SunriseGroupGroupIdInventoryFakeApi } from './apis/title/sunrise/group/
 import { SunriseGroupXuidsInventoryFakeApi } from './apis/title/sunrise/group/xuids/inventory';
 import { SunriseGroupGroupIdGiftHistoryFakeApi } from './apis/title/sunrise/group/groupId/giftHistory';
 import { SunriseGroupsFakeApi } from './apis/title/sunrise/groups';
+import { SunrisePlayerXuidNotificationsFakeApi } from './apis/title/sunrise/player/xuid/notifications';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -88,6 +89,7 @@ const fakeApiConstructors = [
   SunriseGroupGroupIdInventoryFakeApi,
   SunriseGroupXuidsInventoryFakeApi,
   SunriseGroupGroupIdGiftHistoryFakeApi,
+  SunrisePlayerXuidNotificationsFakeApi,
 
   // Apollo
   ApolloPlayerGamertagDetailsFakeApi,
