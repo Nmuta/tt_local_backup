@@ -28,6 +28,7 @@ export class GravityGiftBasketComponent
   @Input() public playerInventory: GravityPlayerInventory;
 
   public title = GameTitleCodeName.Street;
+  public hasGameSettings: boolean = true;
 
   constructor(protected readonly store: Store) {
     super();

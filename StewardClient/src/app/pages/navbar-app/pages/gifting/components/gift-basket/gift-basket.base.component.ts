@@ -22,6 +22,8 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   /** If gift basket is disabled. TODO: Remove once component is built out */
   public disableCard: boolean = false;
 
+  /** If master inventory is based on game settings ids. */
+  public hasGameSettings: boolean = false;
   /** True while waiting on a request. */
   public isLoading = false;
   /** The error received while loading. */
