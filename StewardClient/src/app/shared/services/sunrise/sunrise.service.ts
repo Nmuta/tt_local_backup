@@ -49,8 +49,10 @@ export class SunriseService {
   public getPlayerIdentities(
     identityQueries: IdentityQueryAlphaBatch,
   ): Observable<IdentityResultAlphaBatch> {
-    return this.apiService
-      .postRequest<IdentityResultAlphaBatch>(`${this.basePath}/players/identities`, identityQueries);
+    return this.apiService.postRequest<IdentityResultAlphaBatch>(
+      `${this.basePath}/players/identities`,
+      identityQueries,
+    );
   }
 
   /** Gets the sunrise lsp groups. */
