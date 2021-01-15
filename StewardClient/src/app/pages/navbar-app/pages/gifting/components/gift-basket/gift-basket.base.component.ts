@@ -19,7 +19,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
   /** Master inventory list. */
   public masterInventory: MasterInventoryUnion;
-  /** If gift basket is disabled. */
+  /** If gift basket is disabled. TODO: Remove once component is built out */
   public disableCard: boolean = false;
 
   /** True while waiting on a request. */
