@@ -23,8 +23,8 @@ export class SunrisePlayerNotificationsComponent implements OnChanges {
 
   public notifications: SunrisePlayerNotifications = undefined;
   public columnsToDisplay = [
-    'notificationType',
     'isRead',
+    'notificationType',
     'notificationId',
     'sendDateUtc',
     'expirationDateUtc',
