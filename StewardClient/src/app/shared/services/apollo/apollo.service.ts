@@ -36,14 +36,9 @@ export class ApolloService {
   public getPlayerIdentities(
     identityQueries: IdentityQueryAlphaBatch,
   ): Observable<IdentityResultAlphaBatch> {
-    const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
     return this.apiService.postRequest<IdentityResultAlphaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
-      null,
-      headers,
     );
   }
 
