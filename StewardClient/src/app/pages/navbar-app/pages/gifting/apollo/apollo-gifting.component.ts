@@ -29,6 +29,8 @@ export class ApolloGiftingComponent
   public title: GameTitleCodeName = GameTitleCodeName.FM7;
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   public selectedLspGroup: LspGroup;
+  /** Selected player identity when user clicks on identity chip. */
+  public selectedPlayerIdentity: IdentityResultAlpha;
 
   constructor(protected readonly store: Store) {
     super();

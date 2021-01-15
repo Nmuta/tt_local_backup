@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
+import { GravityPlayerInventory } from '@models/gravity';
 import { IdentityResultBeta, IdentityResultBetaBatch } from '@models/identity-query.model';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -19,8 +20,14 @@ export class GravityGiftingComponent
   @Select(GravityGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultBetaBatch>;
 
+  /** Game title. */
   public title: GameTitleCodeName = GameTitleCodeName.Street;
+  /** All selected player identities from player selection tool. */
   public selectedPlayerIdentities: IdentityResultBetaBatch;
+  /** Selected player inventory from inventory tool. */
+  public selectedPlayerInventory: GravityPlayerInventory;
+  /** Selected player identity when user clicks on identity chip. */
+  public selectedPlayerIdentity: IdentityResultBeta;
 
   constructor(protected readonly store: Store) {
     super();

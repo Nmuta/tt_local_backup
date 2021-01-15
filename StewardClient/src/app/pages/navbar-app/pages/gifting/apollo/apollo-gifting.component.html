@@ -27,10 +27,9 @@
 
   <div class="default-page-layout-right">
     <!-- Page tool -->
-    <mat-card>
-      <h2>Apollo gifting page state</h2>
-      <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
-      <p>LSP Group: {{ selectedLspGroup?.name || 'None' }}</p>
-    </mat-card>
+    <apollo-gift-basket
+      [playerIdentities]="selectedPlayerIdentities"
+      [lspGroup]="undefined"
+    ></apollo-gift-basket>
   </div>
 </div>

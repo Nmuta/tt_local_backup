@@ -1,11 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  GravityGameSettings,
-  GravityGiftHistory,
-  GravityPlayerDetails,
-  GravityPlayerInventory,
-} from '@models/gravity';
+import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
+import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
   IdentityQueryBeta,
   IdentityQueryBetaBatch,
@@ -163,8 +159,8 @@ export class GravityService {
   }
 
   /** Gets gravity game settings. */
-  public getGameSettings(gameSettingsId: string): Observable<GravityGameSettings> {
-    return this.apiService.getRequest<GravityGameSettings>(
+  public getGameSettings(gameSettingsId: string): Observable<GravityMasterInventory> {
+    return this.apiService.getRequest<GravityMasterInventory>(
       `${this.basePath}/data/gameSettingsId(${gameSettingsId})`,
     );
   }
