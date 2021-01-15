@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { SunriseConsoleIsBannedFakeApi } from '@interceptors/fake-api/apis/title/sunrise/console/isBanned';
@@ -62,8 +61,6 @@ describe('SunriseService', () => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,
           jasmine.any(Object),
-          null,
-          jasmine.any(HttpHeaders),
         );
         done();
       });

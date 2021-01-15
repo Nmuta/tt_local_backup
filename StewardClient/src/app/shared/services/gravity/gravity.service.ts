@@ -1,4 +1,4 @@
-import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   GravityGameSettings,
@@ -41,14 +41,9 @@ export class GravityService {
   public getPlayerIdentities(
     identityQueries: IdentityQueryBetaBatch,
   ): Observable<IdentityResultBetaBatch> {
-    const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
     return this.apiService.postRequest<IdentityResultBetaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
-      null,
-      headers,
     );
   }
 
