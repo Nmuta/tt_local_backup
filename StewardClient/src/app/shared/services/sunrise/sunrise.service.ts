@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   IdentityQueryAlphaBatch,
@@ -19,7 +18,7 @@ import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.m
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -51,12 +50,7 @@ export class SunriseService {
     identityQueries: IdentityQueryAlphaBatch,
   ): Observable<IdentityResultAlphaBatch> {
     return this.apiService
-      .postRequest<IdentityResultAlphaBatch>(`${this.basePath}/players/identities`, identityQueries)
-      .pipe(
-        tap(_v => {
-          debugger;
-        }),
-      );
+      .postRequest<IdentityResultAlphaBatch>(`${this.basePath}/players/identities`, identityQueries);
   }
 
   /** Gets the sunrise lsp groups. */
