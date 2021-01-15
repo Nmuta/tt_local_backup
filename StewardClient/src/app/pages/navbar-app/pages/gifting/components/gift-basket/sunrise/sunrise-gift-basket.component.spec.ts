@@ -41,20 +41,12 @@ describe('SunriseGiftBasketComponent', () => {
 
   describe('Method: ngOnInit', () => {
     const testMasterInventory: SunriseMasterInventory = {
-      credits: 0,
-      wheelSpins: 0,
-      superWheelSpins: 0,
-      skillPoints: 0,
-      forzathonPoints: 0,
       cars: [],
-      rebuilds: [],
       vanityItems: [],
       carHorns: [],
       quickChatLines: [],
       creditRewards: [],
       emotes: [],
-      barnFindRumors: [],
-      perks: [],
     };
     beforeEach(() => {
       mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
