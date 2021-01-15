@@ -44,4 +44,4 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTabsModule,
   ],
 })
-export class GiftingsModule {}
+export class GiftHistoryModule {}

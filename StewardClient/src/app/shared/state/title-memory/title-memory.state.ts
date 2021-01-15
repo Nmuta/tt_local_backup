@@ -11,6 +11,7 @@ import { TitleMemoryModel } from './title-memory.model';
   defaults: {
     gifting: GameTitleCodeName.Street,
     banning: GameTitleCodeName.Street,
+    giftHistory: GameTitleCodeName.Street,
   },
 })
 /** Defines the user state. */

@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: '',
     component: GiftHistoryComponent,
-    data: { tool: 'gift-history' },
+    data: { tool: 'giftHistory' },
     children: [
       {
         path: '',
