@@ -13,7 +13,7 @@
           [allowGroup]="true"
           [(ngModel)]="selectedPlayerIdentities"
           (ngModelChange)="onPlayerIdentitiesChange($event)"
-          (playerIdentitySelectedEvent)="selectedPlayerIdentity = $event"
+          (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
         ></sunrise-player-selection>
       </mat-tab>
       <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
