@@ -54,8 +54,6 @@ describe('OpusService', () => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,
           jasmine.any(Object),
-          null,
-          jasmine.any(HttpHeaders),
         );
         done();
       });

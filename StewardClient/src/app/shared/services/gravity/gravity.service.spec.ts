@@ -50,8 +50,6 @@ describe('service: GravityService', () => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,
           jasmine.any(Object),
-          null,
-          jasmine.any(HttpHeaders),
         );
         done();
       });
