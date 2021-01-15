@@ -25,7 +25,7 @@ export class SunrisePlayerXuidNotificationsFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static makeMany(): Unprocessed<SunrisePlayerNotification[]> {
-    return new Array(faker.random.number({min: 5, max: 20})).fill(null).map(_ => {
+    return new Array(faker.random.number({ min: 5, max: 20 })).fill(null).map(_ => {
       return {
         expirationDateUtc: faker.date.future().toISOString(),
         sendDateUtc: faker.date.past().toISOString(),

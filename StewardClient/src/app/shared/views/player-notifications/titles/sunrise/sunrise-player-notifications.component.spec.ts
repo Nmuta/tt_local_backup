@@ -15,22 +15,26 @@ describe('SunrisePlayerNotificationsComponent', () => {
   let component: SunrisePlayerNotificationsComponent;
   let fixture: ComponentFixture<SunrisePlayerNotificationsComponent>;
 
-  beforeEach(waitForAsync(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [SunrisePlayerNotificationsComponent],
-      providers: [createMockSunriseService()],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(async () => {
+      await TestBed.configureTestingModule({
+        declarations: [SunrisePlayerNotificationsComponent],
+        providers: [createMockSunriseService()],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
 
-    injector = getTestBed();
-    service = injector.inject(SunriseService);
-  }));
+      injector = getTestBed();
+      service = injector.inject(SunriseService);
+    }),
+  );
 
-  beforeEach(waitForAsync(() => {
-    fixture = TestBed.createComponent(SunrisePlayerNotificationsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      fixture = TestBed.createComponent(SunrisePlayerNotificationsComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    }),
+  );
 
   it(
     'should create',
@@ -38,8 +42,6 @@ describe('SunrisePlayerNotificationsComponent', () => {
       expect(component).toBeTruthy();
     }),
   );
-
-  
 
   describe('valid initialization', () => {
     let consoleDetails$: Subject<SunrisePlayerNotifications> = undefined;

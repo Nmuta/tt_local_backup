@@ -7,7 +7,11 @@ import {
   IdentityResultAlpha,
 } from '@models/identity-query.model';
 import { LspGroups } from '@models/lsp-group';
-import { SunrisePlayerDetails, SunrisePlayerNotifications, SunriseUserFlags } from '@models/sunrise';
+import {
+  SunrisePlayerDetails,
+  SunrisePlayerNotifications,
+  SunriseUserFlags,
+} from '@models/sunrise';
 import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';

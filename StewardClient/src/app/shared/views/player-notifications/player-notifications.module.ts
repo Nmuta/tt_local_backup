@@ -26,4 +26,4 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   ],
   exports: [SunrisePlayerNotificationsComponent],
 })
-export class PlayerNotificationsModule { }
+export class PlayerNotificationsModule {}

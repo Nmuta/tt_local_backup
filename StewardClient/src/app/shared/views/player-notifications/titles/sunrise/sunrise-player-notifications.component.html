@@ -16,8 +16,20 @@
             <fa-icon [icon]="seenIcon" matTooltip="Read Status" aria-label="Read Status"></fa-icon>
           </th>
           <td mat-cell *matCellDef="let entry">
-            <fa-icon *ngIf="entry.isRead" [icon]="seenIcon" matTooltip="Seen" aria-label="Seen" class="seen"></fa-icon>
-            <fa-icon *ngIf="!entry.isRead" [icon]="unSeenIcon" matTooltip="Not Seen" aria-label="Not Seen" class="not-seen"></fa-icon>
+            <fa-icon
+              *ngIf="entry.isRead"
+              [icon]="seenIcon"
+              matTooltip="Seen"
+              aria-label="Seen"
+              class="seen"
+            ></fa-icon>
+            <fa-icon
+              *ngIf="!entry.isRead"
+              [icon]="unSeenIcon"
+              matTooltip="Not Seen"
+              aria-label="Not Seen"
+              class="not-seen"
+            ></fa-icon>
           </td>
         </ng-container>
         <ng-container matColumnDef="notificationType">
