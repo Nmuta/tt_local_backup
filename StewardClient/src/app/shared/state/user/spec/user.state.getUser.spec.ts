@@ -50,10 +50,8 @@ describe('State: User', () => {
       });
 
       it('should patch profile', () => {
-        // Action
         store.dispatch(action);
 
-        // Assert
         store
           .selectOnce((state: AppState) => state.user.profile)
           .subscribe(profile => {
@@ -62,12 +60,10 @@ describe('State: User', () => {
       });
 
       it('should succeed the action', done => {
-        // Assert
         actions$.pipe(ofActionSuccessful(GetUser)).subscribe(() => {
           done();
         });
 
-        // Action
         store.dispatch(action);
       });
     });
@@ -80,10 +76,8 @@ describe('State: User', () => {
       });
 
       it('should patch profile with null', () => {
-        // Action
         store.dispatch(action);
 
-        // Assert
         store
           .selectOnce(state => state.user.profile)
           .subscribe(profile => {
@@ -92,12 +86,10 @@ describe('State: User', () => {
       });
 
       it('should error the action', done => {
-        // Assert
         actions$.pipe(ofActionErrored(GetUser)).subscribe(() => {
           done();
         });
 
-        // Action
         store.dispatch(action);
       });
     });

@@ -38,10 +38,8 @@ describe('ApolloGiftingState', () => {
       });
     });
     it('should patch selected player identities', () => {
-      // Action
       store.dispatch(action);
 
-      // Assert
       store
         .selectOnce(state => state.apolloGifting.selectedPlayerIdentities)
         .subscribe(data => {

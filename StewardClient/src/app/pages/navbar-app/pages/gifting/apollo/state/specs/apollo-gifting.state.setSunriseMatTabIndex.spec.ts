@@ -33,10 +33,8 @@ describe('ApolloGiftingState', () => {
       });
     });
     it('should patch selected mat index', () => {
-      // Action
       store.dispatch(action);
 
-      // Assert
       store
         .selectOnce(state => state.apolloGifting.selectedMatIndex)
         .subscribe(selectedMatIndex => {

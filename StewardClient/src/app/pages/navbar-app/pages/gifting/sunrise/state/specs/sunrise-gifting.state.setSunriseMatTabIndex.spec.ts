@@ -32,10 +32,8 @@ describe('SunriseGiftingState', () => {
       });
     });
     it('should patch selected mat index', () => {
-      // Action
       store.dispatch(action);
 
-      // Assert
       store
         .selectOnce(state => state.sunriseGifting.selectedMatIndex)
         .subscribe(selectedMatIndex => {

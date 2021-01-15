@@ -37,10 +37,8 @@ describe('SunriseGiftingState', () => {
       });
     });
     it('should patch selected player identities', () => {
-      // Action
       store.dispatch(action);
 
-      // Assert
       store
         .selectOnce(state => state.sunriseGifting.selectedPlayerIdentities)
         .subscribe(data => {

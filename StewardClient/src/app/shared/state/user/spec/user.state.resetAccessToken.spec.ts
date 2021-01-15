@@ -42,10 +42,8 @@ describe('State: User', () => {
       });
     });
     it('should patch access token to undefined', () => {
-      // Action
       store.dispatch(action);
 
-      // Assert
       store
         .selectOnce(state => state.user.accessToken)
         .subscribe(accessToken => {
