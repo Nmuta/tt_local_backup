@@ -16,7 +16,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
             "Credits",
             "ForzathonPoints",
             "SkillPoints",
-            "Wheel Spins",
+            "WheelSpins",
             "SuperWheelSpins"
         };
 
