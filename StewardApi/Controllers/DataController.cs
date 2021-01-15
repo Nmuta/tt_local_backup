@@ -44,15 +44,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             try
             {
                 var masterInventory = new SunriseMasterInventory();
-                var creditRewards = new List<string>()
-                {
-                    "Credits",
-                    "ForzathonPoints",
-                    "SkillPoints",
-                    "Wheel Spins",
-                    "SuperWheelSpins"
-                };
-                masterInventory.CreditRewards = creditRewards;
                 masterInventory.Cars = await this.kustoProvider.GetCarsAsync(KustoGameDbSupportedTitle.Sunrise).ConfigureAwait(true);
                 masterInventory.CarHorns = await this.kustoProvider.GetCarHornsAsync(KustoGameDbSupportedTitle.Sunrise).ConfigureAwait(true);
                 masterInventory.VanityItems = await this.kustoProvider.GetCharacterCustomizationsAsync(KustoGameDbSupportedTitle.Sunrise).ConfigureAwait(true);
