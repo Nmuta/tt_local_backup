@@ -9,6 +9,10 @@ import { SunriseService } from './sunrise.service';
 /** Defines the mock for the API Service. */
 @Injectable()
 export class MockSunriseService {
+  public getIdentity = jasmine
+    .createSpy('getIdentity')
+    .and.returnValue(of({ xuid: BigInt(12345), gamertag: 'gamertag' }));
+
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
     .and.returnValue(defer(() => of(_.clone(this.generator()))));
@@ -27,12 +31,7 @@ export class MockSunriseService {
         entry.expireTimeUtc = new Date(entry.expireTimeUtc);
       }
 
-      for (const entry of unprocessed.servicesBanHistory) {
-        entry.startTimeUtc = new Date(entry.startTimeUtc);
-        entry.expireTimeUtc = new Date(entry.expireTimeUtc);
-      }
-
-      return of(unprocessed);
+      return of(unprocessed.liveOpsBanHistory);
     }),
   );
   public getSharedConsoleUsersByXuid = jasmine
@@ -49,6 +48,9 @@ export class MockSunriseService {
     .and.returnValue(defer(() => of(_.clone(this.generator()))));
   public getCreditHistoryByXuid = jasmine
     .createSpy('getCreditHistoryByXuid')
+    .and.returnValue(defer(() => of(_.clone(this.generator()))));
+  public getPlayerNotificationsByXuid = jasmine
+    .createSpy('getPlayerNotificationsByXuid')
     .and.returnValue(defer(() => of(_.clone(this.generator()))));
 
   constructor(private readonly generator: () => unknown) {}

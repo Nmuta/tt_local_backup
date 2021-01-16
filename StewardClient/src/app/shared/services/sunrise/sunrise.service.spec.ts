@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { SunriseConsoleIsBannedFakeApi } from '@interceptors/fake-api/apis/title/sunrise/console/isBanned';
 import { SunrisePlayerXuidBanHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/banHistory';
@@ -24,6 +25,7 @@ describe('SunriseService', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [createMockApiService(() => nextReturnValue)],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     injector = getTestBed();
     service = injector.inject(SunriseService);
@@ -34,12 +36,68 @@ describe('SunriseService', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('Method: getPlayerIdentity', () => {
+    beforeEach(() => {
+      service.getPlayerIdentities = jasmine
+        .createSpy('getPlayerIdentities')
+        .and.returnValue(of([]));
+    });
+
+    it('should call service.getPlayerIdentities', done => {
+      service.getPlayerIdentity({ gamertag: 'test' }).subscribe(() => {
+        expect(service.getPlayerIdentities).toHaveBeenCalled();
+        done();
+      });
+    });
+  });
+
+  describe('Method: getPlayerIdentities', () => {
+    beforeEach(() => {
+      nextReturnValue = [];
+    });
+
+    it('should call apiServiceMock.postRequest', done => {
+      service.getPlayerIdentities([]).subscribe(() => {
+        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+          `${service.basePath}/players/identities`,
+          jasmine.any(Object),
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getLspGroups', () => {
+    it('should call API service getRequest', done => {
+      service.getLspGroups().subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(`${service.basePath}/groups`);
+        done();
+      });
+    });
+  });
+
+  describe('Method: getPlayerNotificationsByXuid', () => {
+    let expectedXuid;
+
+    beforeEach(() => {
+      expectedXuid = BigInt(fakeXuid());
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getPlayerNotificationsByXuid(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${expectedXuid})/notifications`,
+        );
+        done();
+      });
+    });
+  });
+
   describe('Method: getPlayerDetailsByGamertag', () => {
     let expectedGamertag;
 
     beforeEach(() => {
       expectedGamertag = 'test-gamertag';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call API service getRequest with the expected params', done => {
@@ -76,29 +134,15 @@ describe('SunriseService', () => {
   it('handles getBanHistoryByXuid', done => {
     const typedReturnValue = (nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make());
     service.getBanHistoryByXuid(fakeXuid()).subscribe(output => {
-      expect(output.liveOpsBanHistory[0].startTimeUtc instanceof Date).toBe(
-        true,
-        'liveOps.startTimeUtc is Date',
-      );
-      expect(output.liveOpsBanHistory[0].expireTimeUtc instanceof Date).toBe(
-        true,
-        'liveOps.expireTimeUtc is Date',
-      );
-      expect(output.servicesBanHistory[0].startTimeUtc instanceof Date).toBe(
-        true,
-        'services.startTimeUtc is Date',
-      );
-      expect(output.servicesBanHistory[0].expireTimeUtc instanceof Date).toBe(
-        true,
-        'services.expireTimeUtc is Date',
-      );
+      expect(output[0].startTimeUtc instanceof Date).toBe(true, 'liveOps.startTimeUtc is Date');
+      expect(output[0].expireTimeUtc instanceof Date).toBe(true, 'liveOps.expireTimeUtc is Date');
+      expect(output[0].startTimeUtc instanceof Date).toBe(true, 'services.startTimeUtc is Date');
+      expect(output[0].expireTimeUtc instanceof Date).toBe(true, 'services.expireTimeUtc is Date');
 
       // clear the validated fields
       for (const value of [output, typedReturnValue]) {
-        for (const history of [value.liveOpsBanHistory, value.servicesBanHistory]) {
-          history.forEach(v => (v.startTimeUtc = null));
-          history.forEach(v => (v.expireTimeUtc = null));
-        }
+        value.forEach(v => (v.startTimeUtc = null));
+        value.forEach(v => (v.expireTimeUtc = null));
       }
 
       expect(output as unknown).toEqual(
@@ -123,7 +167,7 @@ describe('SunriseService', () => {
 
   it('handles getConsoleDetailsByXuid', done => {
     nextReturnValue = SunrisePlayerXuidConsolesFakeApi.makeMany();
-    service.getConsoleDetailsByXuid(fakeXuid()).subscribe(output => {
+    service.getConsoleDetailsByXuid(BigInt(fakeXuid())).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',

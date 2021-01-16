@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Opus
@@ -26,6 +28,36 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         }
 
         /// <inheritdoc />
+        public async Task<IdentityResultAlpha> GetPlayerIdentityAsync(IdentityQueryAlpha query)
+        {
+            query.ShouldNotBeNull(nameof(query));
+
+            var result = new OpusPlayerDetails();
+
+            if (query.Xuid == default && string.IsNullOrWhiteSpace(query.Gamertag))
+            {
+                throw new ArgumentException("Gamertag or Xuid must be provided.");
+            }
+            else if (query.Xuid != null)
+            {
+                var playerDetails = await this.GetPlayerDetailsAsync(query.Xuid.Value).ConfigureAwait(false);
+
+                result = playerDetails ?? throw new ProfileNotFoundException($"No profile found for XUID: {query.Xuid}.");
+            }
+            else if (!string.IsNullOrWhiteSpace(query.Gamertag))
+            {
+                var playerDetails = await this.GetPlayerDetailsAsync(query.Gamertag).ConfigureAwait(false);
+
+                result = playerDetails ?? throw new ProfileNotFoundException($"No profile found for Gamertag: {query.Gamertag}.");
+            }
+
+            var identity = this.mapper.Map<IdentityResultAlpha>(result);
+            identity.Query = query;
+
+            return identity;
+        }
+
+        /// <inheritdoc />
         public async Task<OpusPlayerDetails> GetPlayerDetailsAsync(string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
@@ -36,11 +68,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
 
                 return this.mapper.Map<OpusPlayerDetails>(response.userMasterData);
             }
-            catch (ForzaClientException ex)
+            catch (Exception ex)
             {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound) { return null; }
-
-                throw;
+                throw new ProfileNotFoundException($"Player {gamertag} was not found.", ex);
             }
         }
 
@@ -53,11 +83,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
 
                 return this.mapper.Map<OpusPlayerDetails>(response.userMasterData);
             }
-            catch (ForzaClientException ex)
+            catch (Exception ex)
             {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound) { return null; }
-
-                throw;
+                throw new ProfileNotFoundException($"Player {xuid} was not found.", ex);
             }
         }
 

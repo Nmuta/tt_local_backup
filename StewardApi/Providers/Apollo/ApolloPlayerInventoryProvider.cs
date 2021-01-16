@@ -55,21 +55,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
-            try
-            {
-                var response = await this.apolloUserInventoryService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
+            var response = await this.apolloUserInventoryService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
 
-                return this.mapper.Map<ApolloPlayerInventory>(response.summary);
-            }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
+            return this.mapper.Map<ApolloPlayerInventory>(response.summary);
         }
 
         /// <inheritdoc/>
@@ -77,41 +65,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
-            try
-            {
-                var response = await this.apolloUserInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+            var response = await this.apolloUserInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
 
-                return this.mapper.Map<IList<ApolloInventoryProfile>>(response.profiles);
-            }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
+            return this.mapper.Map<IList<ApolloInventoryProfile>>(response.profiles);
         }
 
         /// <inheritdoc/>
         public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(int profileId)
         {
-            try
-            {
-                var response = await this.apolloUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId).ConfigureAwait(false);
+            var response = await this.apolloUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId).ConfigureAwait(false);
 
-                return this.mapper.Map<ApolloPlayerInventory>(response.summary);
-            }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
+            return this.mapper.Map<ApolloPlayerInventory>(response.summary);
         }
 
         /// <inheritdoc />

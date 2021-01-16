@@ -10,7 +10,7 @@
   "location": {
     "support": {
       "nav_bar": "http://localhost:4200/navbar-app/tools",
-      "ticket_sidebar": "http://localhost:4200/ticket-sidebar",
+      "ticket_sidebar": "http://localhost:4200/ticket-app/title",
       "background": "assets/background.html"
     }
   },

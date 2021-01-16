@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Turn10.LiveOps.ServiceClient</AssemblyName>
+    <RootNamespace>Turn10.Services</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Turn10.Data.Common" Version="2.1.0" />
+  </ItemGroup>
+
+</Project>

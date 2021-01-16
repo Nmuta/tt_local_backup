@@ -1,6 +1,8 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
+import { of } from 'rxjs';
 
 import { ApolloService } from './apollo.service';
 
@@ -14,6 +16,7 @@ describe('ApolloService', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [createMockApiService(() => nextReturnValue)],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     injector = getTestBed();
     service = injector.inject(ApolloService);
@@ -22,6 +25,38 @@ describe('ApolloService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('Method: getPlayerIdentity', () => {
+    beforeEach(() => {
+      service.getPlayerIdentities = jasmine
+        .createSpy('getPlayerIdentities')
+        .and.returnValue(of([]));
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+    });
+
+    it('should call service.getPlayerIdentities', done => {
+      service.getPlayerIdentity({ gamertag: 'test' }).subscribe(() => {
+        expect(service.getPlayerIdentities).toHaveBeenCalled();
+        done();
+      });
+    });
+  });
+
+  describe('Method: getPlayerIdentities', () => {
+    beforeEach(() => {
+      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+    });
+
+    it('should call apiServiceMock.postRequest', done => {
+      service.getPlayerIdentities([]).subscribe(() => {
+        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+          `${service.basePath}/players/identities`,
+          jasmine.any(Object),
+        );
+        done();
+      });
+    });
   });
 
   describe('Method: getPlayerDetailsByGamertag', () => {
@@ -37,6 +72,15 @@ describe('ApolloService', () => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/gamertag(${expectedGamertag})/details`,
         );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getLspGroups', () => {
+    it('should call API service getRequest', done => {
+      service.getLspGroups().subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(`${service.basePath}/groups`);
         done();
       });
     });

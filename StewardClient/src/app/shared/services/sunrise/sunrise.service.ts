@@ -1,13 +1,25 @@
 import { Injectable } from '@angular/core';
-import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
-import { SunriseBanHistory } from '@models/sunrise/sunrise-ban-history.model';
+import {
+  IdentityQueryAlphaBatch,
+  IdentityResultAlphaBatch,
+  IdentityQueryAlpha,
+  IdentityResultAlpha,
+} from '@models/identity-query.model';
+import { LspGroups } from '@models/lsp-group';
+import {
+  SunrisePlayerDetails,
+  SunrisePlayerNotifications,
+  SunriseUserFlags,
+} from '@models/sunrise';
+import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
+import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -18,7 +30,43 @@ export class SunriseService {
 
   constructor(private readonly apiService: ApiService) {}
 
-  /** Gets gravity player details with a gamertag. This can be used to retrieve a XUID. */
+  /** Gets the status of a player's notifications. */
+  public getPlayerNotificationsByXuid(xuid: BigInt): Observable<SunrisePlayerNotifications> {
+    return this.apiService.getRequest(`${this.basePath}/player/xuid(${xuid})/notifications`);
+  }
+
+  /** Gets a single identity within this service. */
+  public getPlayerIdentity(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
+    const queryBatch: IdentityQueryAlphaBatch = [identityQuery];
+    return this.getPlayerIdentities(queryBatch).pipe(
+      switchMap((data: IdentityResultAlphaBatch) => {
+        const result = data[0];
+        return of(result);
+      }),
+    );
+  }
+
+  /** Gets identities within this service. */
+  public getPlayerIdentities(
+    identityQueries: IdentityQueryAlphaBatch,
+  ): Observable<IdentityResultAlphaBatch> {
+    return this.apiService.postRequest<IdentityResultAlphaBatch>(
+      `${this.basePath}/players/identities`,
+      identityQueries,
+    );
+  }
+
+  /** Gets the sunrise lsp groups. */
+  public getLspGroups(): Observable<LspGroups> {
+    return this.apiService.getRequest<LspGroups>(`${this.basePath}/groups`);
+  }
+
+  /** Gets the sunrise master inventory. */
+  public getMasterInventory(): Observable<SunriseMasterInventory> {
+    return this.apiService.getRequest<SunriseMasterInventory>(`${this.basePath}/masterInventory`);
+  }
+
+  /** Gets sunrise player details with a gamertag. This can be used to retrieve a XUID. */
   public getPlayerDetailsByGamertag(gamertag: string): Observable<SunrisePlayerDetails> {
     return this.apiService.getRequest<SunrisePlayerDetails>(
       `${this.basePath}/player/gamertag(${gamertag})/details`,
@@ -41,21 +89,15 @@ export class SunriseService {
   }
 
   /** Gets user flags by a XUID. */
-  public getBanHistoryByXuid(xuid: number): Observable<SunriseBanHistory> {
+  public getBanHistoryByXuid(xuid: number): Observable<LiveOpsBanDescriptions> {
     return this.apiService
-      .getRequest<SunriseBanHistory>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
+      .getRequest<LiveOpsBanDescriptions>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
       .pipe(
         map(banHistory => {
           // these come in stringly-typed and must be converted
-
-          for (const entry of banHistory.liveOpsBanHistory) {
-            entry.startTimeUtc = new Date(entry.startTimeUtc);
-            entry.expireTimeUtc = new Date(entry.expireTimeUtc);
-          }
-
-          for (const entry of banHistory.servicesBanHistory) {
-            entry.startTimeUtc = new Date(entry.startTimeUtc);
-            entry.expireTimeUtc = new Date(entry.expireTimeUtc);
+          for (const ban of banHistory) {
+            ban.startTimeUtc = new Date(ban.startTimeUtc);
+            ban.expireTimeUtc = new Date(ban.expireTimeUtc);
           }
 
           return banHistory;
@@ -70,7 +112,7 @@ export class SunriseService {
     );
   }
   /** Gets console details by XUID. */
-  public getConsoleDetailsByXuid(xuid: number): Observable<SunriseConsoleDetails> {
+  public getConsoleDetailsByXuid(xuid: BigInt): Observable<SunriseConsoleDetails> {
     return this.apiService.getRequest<SunriseConsoleDetails>(
       `${this.basePath}/player/xuid(${xuid})/consoleDetails`,
     );

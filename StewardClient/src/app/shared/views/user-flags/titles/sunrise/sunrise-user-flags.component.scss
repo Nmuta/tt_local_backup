@@ -1,0 +1,26 @@
+@import '/src/variables.scss';
+
+fa-icon {
+  color: mat-color($app-warn);
+}
+
+section.checkboxes {
+  > mat-checkbox {
+    display: block;
+  }
+}
+
+h2 {
+  height: 36px;
+  verify-action-button {
+    font-size: 12px;
+  }
+}
+
+.reset-button {
+  margin: 0 5px;
+
+  .reset-icon {
+    color: #ffffff;
+  }
+}

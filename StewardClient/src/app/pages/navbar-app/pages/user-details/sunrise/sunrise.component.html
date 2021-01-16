@@ -17,10 +17,14 @@
             <sunrise-credit-history [xuid]="xuid"></sunrise-credit-history>
           </div>
         </mat-tab>
+        <mat-tab label="Notifications">
+          <div class="tab-container">
+            <sunrise-player-notifications [xuid]="xuid"></sunrise-player-notifications>
+          </div>
+        </mat-tab>
         <mat-tab label="JSON">
           <div class="tab-container">
-            <p>Gamertag: {{ gamertag }}</p>
-            <pre>{{ userDetails | bigjson }}</pre>
+            <json-dump [input]="userDetails">Gamertag: {{ gamertag }}</json-dump>
           </div>
         </mat-tab>
       </mat-tab-group>
@@ -34,7 +38,7 @@
     <hr />
     <h2>Request failed</h2>
     <p>If this keeps happening, contact support.</p>
-    <pre>{{ error | bigjson }}</pre>
+    <json-dump [input]="error">View error</json-dump>
   </ng-container>
 </ng-template>
 
@@ -44,6 +48,6 @@
     <hr />
     <h2>Request failed</h2>
     <p>If this keeps happening, contact support.</p>
-    <pre>{{ error | bigjson }}</pre>
+    <json-dump [input]="error">View error</json-dump>
   </ng-container>
 </ng-template>

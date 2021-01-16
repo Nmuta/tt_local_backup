@@ -21,7 +21,8 @@
       "@mocks/*": ["app/shared/mocks/*"],
       "@models/*": ["app/shared/models/*"],
       "@services/*": ["app/shared/services/*"],
-      "@shared/*": ["app/shared/*"]
+      "@shared/*": ["app/shared/*"],
+      "@navbar-app/*": ["app/pages/navbar-app/*"]
     },
     "allowSyntheticDefaultImports": true
   }

@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { MsalService } from '@azure/msal-angular';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('State: User', () => {
   let store: Store;
@@ -17,6 +18,7 @@ describe('State: User', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
         providers: [createMockMsalService()],
+        schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
 
       store = TestBed.inject(Store);
@@ -40,10 +42,8 @@ describe('State: User', () => {
       });
     });
     it('should patch access token to undefined', () => {
-      // Action
       store.dispatch(action);
 
-      // Assert
       store
         .selectOnce(state => state.user.accessToken)
         .subscribe(accessToken => {

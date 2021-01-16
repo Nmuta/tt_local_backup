@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ApolloPlayerDetails } from '@models/apollo';
+import {
+  IdentityQueryAlpha,
+  IdentityQueryAlphaBatch,
+  IdentityResultAlpha,
+  IdentityResultAlphaBatch,
+} from '@models/identity-query.model';
+import { LspGroups } from '@models/lsp-group';
 import { ApiService } from '@services/api';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -12,6 +19,27 @@ export class ApolloService {
   public basePath: string = 'v1/title/apollo';
 
   constructor(private readonly apiService: ApiService) {}
+
+  /** Gets a single identity within this service. */
+  public getPlayerIdentity(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
+    const queryBatch: IdentityQueryAlphaBatch = [identityQuery];
+    return this.getPlayerIdentities(queryBatch).pipe(
+      switchMap((data: IdentityResultAlphaBatch) => {
+        const result = data[0];
+        return of(result);
+      }),
+    );
+  }
+
+  /** Gets identities within this service. */
+  public getPlayerIdentities(
+    identityQueries: IdentityQueryAlphaBatch,
+  ): Observable<IdentityResultAlphaBatch> {
+    return this.apiService.postRequest<IdentityResultAlphaBatch>(
+      `${this.basePath}/players/identities`,
+      identityQueries,
+    );
+  }
 
   /** Gets apollo player details with a gamertag. This can be used to retrieve a XUID. */
   public getPlayerDetailsByGamertag(gamertag: string): Observable<ApolloPlayerDetails> {
@@ -24,5 +52,10 @@ export class ApolloService {
           return details;
         }),
       );
+  }
+
+  /** Gets the apollo lsp groups. */
+  public getLspGroups(): Observable<LspGroups> {
+    return this.apiService.getRequest<LspGroups>(`${this.basePath}/groups`);
   }
 }

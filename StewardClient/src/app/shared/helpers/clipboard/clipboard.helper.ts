@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+// TODO: This seems to already exist in ClipboardModule
 /** Helper that sets text to the client's clipboard. */
 @Injectable({
   providedIn: 'root',

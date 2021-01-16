@@ -1,0 +1,21 @@
+@import '/src/variables.scss';
+
+mat-card {
+  min-height: 200px;
+
+  mat-form-field {
+    max-width: 300px;
+    width: 100%;
+  }
+
+  .clear-selection-button {
+    position: relative;
+    top: -0.4em;
+    left: 1em;
+    display: inline-block;
+
+    fa-icon {
+      color: #fff;
+    }
+  }
+}

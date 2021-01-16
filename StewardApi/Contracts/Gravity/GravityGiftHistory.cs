@@ -11,19 +11,21 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityGiftHistory"/> class.
         /// </summary>
-        /// <param name="playerId">The player ID.</param>
+        /// <param name="idType">The ID type.</param>
+        /// <param name="id">The ID.</param>
         /// <param name="title">The title.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <param name="giftSendDateUtc">The gift send date.</param>
         /// <param name="giftInventory">The gift inventory.</param>
-        public GravityGiftHistory(string playerId, string title, string requestingAgent, DateTime giftSendDateUtc, GravityPlayerInventory giftInventory)
+        public GravityGiftHistory(GiftHistoryAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, GravityPlayerInventory giftInventory)
         {
-            playerId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerId));
+            id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
             giftInventory.ShouldNotBeNull(nameof(giftInventory));
 
-            this.PlayerId = playerId;
+            this.IdType = idType;
+            this.Id = id;
             this.Title = title;
             this.RequestingAgent = requestingAgent;
             this.GiftSendDateUtc = giftSendDateUtc;
@@ -31,9 +33,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
         }
 
         /// <summary>
-        ///     Gets or sets the player ID.
+        ///     Gets or sets the ID type.
         /// </summary>
-        public string PlayerId { get; set; }
+        public GiftHistoryAntecedent IdType { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the ID.
+        /// </summary>
+        public string Id { get; set; }
 
         /// <summary>
         ///     Gets or sets the Title.

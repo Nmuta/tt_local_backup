@@ -9,6 +9,7 @@ import {
 import { UserModel } from '@models/user.model';
 import { Select } from '@ngxs/store';
 import { WindowService } from '@services/window';
+import { ZendeskService } from '@services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 
@@ -17,7 +18,7 @@ import {
   navbarToolList,
   NavbarTools,
   RouterLinkPath,
-} from '../../navbar-tool-list';
+} from '@navbar-app/navbar-tool-list';
 
 /** The shared top-level navbar. */
 @Component({
@@ -34,18 +35,21 @@ export class NavbarComponent {
   public items: RouterLinkPath[] = navbarToolList;
   public homeRouterLink = createNavbarPath(NavbarTools.HomePage).routerLink;
 
-  public profileIcon = faUser;
-  public settingsIcon = faCog;
+  public readonly profileIcon = faUser;
+  public readonly settingsIcon = faCog;
 
-  constructor(private readonly windowService: WindowService) {}
-
-  /** True when the Zendesk Client is not available */
-  public get missingZendesk(): boolean {
-    return !this.windowService.zafClient();
-  }
+  constructor(
+    private readonly windowService: WindowService,
+    public readonly zendeskService: ZendeskService,
+  ) {}
 
   /** A string representing the current location */
   public get location(): string {
-    return `${window.location.pathname}${window.location.search}`;
+    return `${this.windowService.location().pathname}${this.windowService.location().search}`;
+  }
+
+  /** Emits true when we are missing zendesk. */
+  public get missingZendesk$(): Observable<boolean> {
+    return this.zendeskService.missingZendesk$;
   }
 }

@@ -7,5 +7,7 @@
 >
   <fa-icon [icon]="contentCollapsed ? plusIcon : minusIcon"></fa-icon>
 </button>
-<ng-content class="content-collapse-title" select="[content-title]"></ng-content>
+<div class="content-title" (click)="contentCollapsed = !contentCollapsed;">
+  <ng-content class="content-collapse-title" select="[content-title]"></ng-content>
+</div>
 <ng-content *ngIf="!contentCollapsed" select="[content-body]"></ng-content>

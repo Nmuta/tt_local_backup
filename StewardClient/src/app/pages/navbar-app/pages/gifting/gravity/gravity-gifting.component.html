@@ -1,0 +1,20 @@
+<div class="default-page-layout">
+  <div class="default-page-layout-left">
+    <gravity-player-selection
+      [allowT10Id]="true"
+      [allowGroup]="true"
+      [(ngModel)]="selectedPlayerIdentities"
+      (ngModelChange)="onPlayerIdentitiesChange($event)"
+      (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
+    ></gravity-player-selection>
+  </div>
+
+  <div class="default-page-layout-right">
+    <!-- Page tool -->
+    <gravity-gift-basket
+      [playerIdentities]="selectedPlayerIdentities"
+      [lspGroup]="undefined"
+      [playerInventory]="selectedPlayerInventory"
+    ></gravity-gift-basket>
+  </div>
+</div>

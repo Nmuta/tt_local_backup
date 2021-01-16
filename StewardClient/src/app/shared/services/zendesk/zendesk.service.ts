@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ZAFRequestOptions } from '@shared/definitions/zaf-client';
-import { WindowService } from '@shared/services/window';
-import { from, Observable } from 'rxjs';
+import { ZafRequestOptions } from '@shared/definitions/zaf-client';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ZafClientService } from './zaf-client.service';
 
 /** A typings shell for a zendesk response. */
 export interface TicketRequesterResponse {
@@ -23,50 +24,72 @@ export interface TicketFieldsResponse {
   providedIn: 'root',
 })
 export class ZendeskService {
-  constructor(private windowService: WindowService) {}
+  /** Emits true when we're inside zendesk. */
+  public readonly inZendesk$: Observable<boolean>;
+  /** Emits true when we're missing zendesk. */
+  public readonly missingZendesk$: Observable<boolean>;
+
+  constructor(private readonly zafClientService: ZafClientService) {
+    this.inZendesk$ = this.zafClientService.client$.pipe(map(v => !!v));
+    this.missingZendesk$ = this.zafClientService.client$.pipe(map(v => !v));
+  }
+
+  /**
+   * True when this app is operating within zendesk.
+   * @deprecated May erroneously return false for the first few ms of operation. Use `inZendesk$` instead
+   */
+  public get inZendesk(): boolean {
+    return !!this.zafClientService.client;
+  }
 
   /** Gets the zendesk ticket details. */
-  public getTicketDetails(): Observable<{ ticket: unknown }> {
-    return from(this.windowService.zafClient().get('ticket'));
+  public getTicketDetails$(): Observable<{ ticket: unknown }> {
+    return this.zafClientService.runWithClient$(c => c.get('ticket'));
   }
 
   /** Gets the zendesk ticket requestor information. */
-  public getTicketRequestor(): Observable<TicketRequesterResponse> {
-    return from(this.windowService.zafClient().get<TicketRequesterResponse>('ticket.requester'));
+  public getTicketRequestor$(): Observable<TicketRequesterResponse> {
+    return this.zafClientService.runWithClient$(c =>
+      c.get<TicketRequesterResponse>('ticket.requester'),
+    );
   }
 
   /** Gets the zendesk ticket fields. */
-  public getTicketFields(): Observable<TicketFieldsResponse> {
-    return from(this.windowService.zafClient().get('ticketFields'));
+  public getTicketFields$(): Observable<TicketFieldsResponse> {
+    return this.zafClientService.runWithClient$(c => c.get('ticketFields'));
   }
 
   /** Gets a zendesk custom ticket field. */
-  public getTicketCustomField(field: string): Observable<unknown> {
-    return from(this.windowService.zafClient().get(`ticket.customField:${field}`));
+  public getTicketCustomField$(field: string): Observable<Record<string, unknown>> {
+    return this.zafClientService.runWithClient$(c => c.get(`ticket.customField:${field}`));
   }
 
-  /** Sends https request through zaf client. */
-  public sendRequest(reqSettings: ZAFRequestOptions): Observable<unknown> {
-    return from(this.windowService.zafClient().request(reqSettings));
+  /** Sends https request through ZAF client. */
+  public sendRequest$(reqSettings: ZafRequestOptions): Observable<unknown> {
+    return this.zafClientService.runWithClient$(c => c.request(reqSettings));
   }
 
   /** Gets the current zendesk user. */
-  public currentUser(): Observable<unknown> {
-    return from(this.windowService.zafClient().get('currentUser'));
+  public currentUser$(): Observable<unknown> {
+    return this.zafClientService.runWithClient$(c => c.get('currentUser'));
   }
 
   /** Gets the zendesk context. */
-  public context(): Observable<unknown> {
-    return from(this.windowService.zafClient().context());
+  public context$(): Observable<unknown> {
+    return this.zafClientService.runWithClient$(c => c.context());
   }
 
   /** Resizes the zendesk app. */
-  public resize(width: string, height: string): void {
-    this.windowService.zafClient().invoke('resize', { width: width, height: height });
+  public resize$(width: string, height: string): Observable<unknown> {
+    return this.zafClientService.runWithClient$(c =>
+      c.invoke('resize', { width: width, height: height }),
+    );
   }
 
   /** Opens up the sepcified zendesk app. */
-  public goToApp(appLocation: string, appName: string, paramPath: string): void {
-    this.windowService.zafClient().invoke('routeTo', appLocation, appName, paramPath);
+  public goToApp$(appLocation: string, appName: string, paramPath: string): Observable<unknown> {
+    return this.zafClientService.runWithClient$(c =>
+      c.invoke('routeTo', appLocation, appName, paramPath),
+    );
   }
 }

@@ -1,15 +1,15 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { GameTitleCodeNames } from '@models/enums';
 import { Select } from '@ngxs/store';
+import { WindowService } from '@services/window';
 import { UserModel } from '@shared/models/user.model';
 import { ZendeskService } from '@shared/services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-/** Defines the ticket sidebar component. */
+/** Coordination component for for ticket-app. */
 @Component({
   templateUrl: './ticket-app.component.html',
   styleUrls: ['./ticket-app.component.scss'],
@@ -17,26 +17,16 @@ import { takeUntil } from 'rxjs/operators';
 export class TicketAppComponent extends BaseComponent implements OnInit, AfterViewInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  public appName = 'ticket-sidebar';
-
   public loading: boolean;
   public profile: UserModel;
-  public xuid: string;
-  public gameTitle: GameTitleCodeNames;
-  public gamertag: string;
 
-  public isStreet: boolean;
-  public isFH4: boolean;
-  public isFM7: boolean;
-  public isFH3: boolean;
-
-  constructor(private router: Router, private zendeskService: ZendeskService) {
+  constructor(
+    private readonly zendesk: ZendeskService,
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly windowService: WindowService,
+  ) {
     super();
-  }
-
-  /** Access layer for html to check again code name enum. */
-  public get gameTitleCodeNames(): typeof GameTitleCodeNames {
-    return GameTitleCodeNames;
   }
 
   /** Logic for the OnInit component lifecycle. */
@@ -48,7 +38,6 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
         profile => {
           this.loading = false;
           this.profile = profile;
-          this.getTicketRequestor();
         },
         _error => {
           this.loading = false;
@@ -58,57 +47,20 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
 
   /** Logic for the AfterViewInit component lifecycle. */
   public ngAfterViewInit(): void {
-    this.zendeskService.resize('100%', '500px');
+    this.zendesk.resize$('100%', '500px').subscribe();
   }
 
-  /** Gets the ticket requestor information. */
-  public getTicketRequestor(): void {
-    this.zendeskService.getTicketRequestor().subscribe(response => {
-      const requester = response['ticket.requester'];
-
-      // TODO: Check if gamertag was input into the custom ticket field.
-      // If it was, use that over the ticket requestor as gamertag lookup.
-      this.gamertag = requester.name;
-      this.getTicketFields();
+  /** Clears the current sidebar outlet path. */
+  public clearSidebar(): void {
+    // https://github.com/angular/angular/issues/5122
+    this.router.navigate([{ outlets: { sidebar: null } }], {
+      relativeTo: this.route,
+      queryParamsHandling: 'preserve',
     });
   }
 
-  /** Gets all the ticket's custom fields. */
-  public getTicketFields(): void {
-    this.zendeskService.getTicketFields().subscribe(response => {
-      const ticketFields = response.ticketFields;
-      let titleCustomField = '';
-      for (const field in ticketFields) {
-        if (ticketFields[field].label === 'Forza Title') {
-          titleCustomField = ticketFields[field].name;
-        }
-      }
-      this.getTitleData(titleCustomField);
-    });
-  }
-
-  /** Gets title data from ticket. */
-  public getTitleData(titleCustomField: string): void {
-    this.zendeskService.getTicketCustomField(titleCustomField).subscribe(response => {
-      const titleName = response[`ticket.customField:${titleCustomField}`];
-      const titleNameUppercase = titleName.toUpperCase();
-
-      this.gameTitle =
-        titleNameUppercase === 'FORZA_STREET'
-          ? GameTitleCodeNames.Street
-          : titleNameUppercase === 'FORZA_HORIZON_4'
-          ? GameTitleCodeNames.FH4
-          : titleNameUppercase === 'FORZA_MOTORSPORT_7'
-          ? GameTitleCodeNames.FM7
-          : titleNameUppercase === 'FORZA_HORIZON_3'
-          ? GameTitleCodeNames.FH3
-          : null;
-    });
-  }
-
-  /** Opens up inventory app with predefined info filled out. */
-  public goToInventory(): void {
-    const appSection = this.gameTitle + '/' + this.xuid;
-    this.zendeskService.goToApp('nav_bar', 'forza-inventory-support', appSection);
+  /** Produces the current location, for reference when in iframe. */
+  public get location(): string {
+    return `${this.windowService.location().pathname}${this.windowService.location().search}`;
   }
 }

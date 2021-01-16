@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Forza.WebServices.FM7.Generated;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Providers;
 using Xls.Security.FM7.Generated;
 using Xls.WebServices.FM7.Generated;
 
@@ -52,6 +55,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaConsole, ApolloConsoleDetails>().ReverseMap();
             this.CreateMap<ForzaSharedConsoleUser, ApolloSharedConsoleUser>().ReverseMap();
             this.CreateMap<ForzaUserGroup, ApolloLspGroup>();
+            this.CreateMap<ApolloPlayerDetails, IdentityResultAlpha>().ReverseMap();
         }
     }
 }

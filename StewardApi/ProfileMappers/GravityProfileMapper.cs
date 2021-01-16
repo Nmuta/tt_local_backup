@@ -1,6 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Forza.WebServices.FMG.Generated;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
+using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
@@ -64,6 +67,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<LiveOpsUserInventory, GravityPlayerInventory>()
                 .ForMember(des => des.PreviousGameSettingsId, opt => opt.MapFrom(src => src.PreviousGameSettingsGuid))
+                .ReverseMap();
+            this.CreateMap<PlayerInventory, GravityPlayerInventory>();
+            this.CreateMap<LiveOpsUserDetails, IdentityResultBeta>()
                 .ReverseMap();
         }
     }

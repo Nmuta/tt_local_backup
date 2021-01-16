@@ -19,7 +19,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
   },
   {
-    path: 'ticket-sidebar',
+    path: 'ticket-app',
     canActivate: [AuthGuard, ZendeskGuard],
     canActivateChild: [AuthGuard],
     loadChildren: () => import('./pages/ticket-app/ticket-app.module').then(m => m.TicketAppModule),
@@ -44,6 +44,7 @@ const routes: Routes = [
       scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled',
       relativeLinkResolution: 'legacy',
+      enableTracing: false,
     }),
   ],
   exports: [RouterModule],

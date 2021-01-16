@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FH4.master.Generated;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.ProfileMappers;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {
@@ -52,6 +55,36 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
+        public async Task<IdentityResultAlpha> GetPlayerIdentityAsync(IdentityQueryAlpha query)
+        {
+            query.ShouldNotBeNull(nameof(query));
+
+            var result = new SunrisePlayerDetails();
+
+            if (query.Xuid == default && string.IsNullOrWhiteSpace(query.Gamertag))
+            {
+                throw new ArgumentException("Gamertag or Xuid must be provided.");
+            }
+            else if (query.Xuid != null)
+            {
+                var playerDetails = await this.GetPlayerDetailsAsync(query.Xuid.Value).ConfigureAwait(false);
+
+                result = playerDetails ?? throw new ProfileNotFoundException($"No profile found for XUID: {query.Xuid}.");
+            }
+            else if (!string.IsNullOrWhiteSpace(query.Gamertag))
+            {
+                var playerDetails = await this.GetPlayerDetailsAsync(query.Gamertag).ConfigureAwait(false);
+
+                result = playerDetails ?? throw new ProfileNotFoundException($"No profile found for Gamertag: {query.Gamertag}.");
+            }
+
+            var identity = this.mapper.Map<IdentityResultAlpha>(result);
+            identity.Query = query;
+
+            return identity;
+        }
+
+        /// <inheritdoc />
         public async Task<SunrisePlayerDetails> GetPlayerDetailsAsync(string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
@@ -62,14 +95,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
                 return this.mapper.Map<SunrisePlayerDetails>(response.userData);
             }
-            catch (ForzaClientException ex)
+            catch (Exception ex)
             {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
+                throw new ProfileNotFoundException($"Player {gamertag} was not found.", ex);
             }
         }
 
@@ -84,14 +112,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
                 return this.mapper.Map<SunrisePlayerDetails>(response.userData);
             }
-            catch (ForzaClientException ex)
+            catch (Exception ex)
             {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
+                throw new ProfileNotFoundException($"Player {xuid} was not found.", ex);
             }
         }
 
@@ -123,72 +146,36 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <inheritdoc />
         public async Task<IList<SunriseConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
         {
-            try
-            {
-                var response = await this.sunriseUserService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+            var response = await this.sunriseUserService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
-                return this.mapper.Map<IList<SunriseConsoleDetails>>(response.consoles);
+            return this.mapper.Map<IList<SunriseConsoleDetails>>(response.consoles);
             }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
-        }
 
         /// <inheritdoc />
         public async Task<IList<SunriseSharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
         {
-            try
-            {
-                var response = await this.sunriseUserService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
+            var response = await this.sunriseUserService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
 
-                return this.mapper.Map<IList<SunriseSharedConsoleUser>>(response.sharedConsoleUsers);
+            return this.mapper.Map<IList<SunriseSharedConsoleUser>>(response.sharedConsoleUsers);
             }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
-        }
 
         /// <inheritdoc/>
         public async Task<SunriseUserFlags> GetUserFlagsAsync(ulong xuid)
         {
-            try
+            var userGroupResults = await this.sunriseUserService.GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(false);
+            var suspiciousResults = await this.sunriseUserService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
+
+            userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
+
+            return new SunriseUserFlags
             {
-                var userGroupResults = await this.sunriseUserService.GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(false);
-                var suspiciousResults = await this.sunriseUserService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
-
-                userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
-
-                return new SunriseUserFlags
-                {
-                    IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
-                    IsUltimateVip = userGroupResults.userGroups.Any(r => r.Id == UltimateVipUserGroupId),
-                    IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
-                    IsCommunityManager = userGroupResults.userGroups.Any(r => r.Id == CommunityManagerUserGroupId),
-                    IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
-                    IsUnderReview = suspiciousResults.isUnderReview
-                };
-            }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
+                IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
+                IsUltimateVip = userGroupResults.userGroups.Any(r => r.Id == UltimateVipUserGroupId),
+                IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
+                IsCommunityManager = userGroupResults.userGroups.Any(r => r.Id == CommunityManagerUserGroupId),
+                IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
+                IsUnderReview = suspiciousResults.isUnderReview
+            };
         }
 
         /// <inheritdoc />
@@ -207,22 +194,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <inheritdoc />
         public async Task<SunriseProfileSummary> GetProfileSummaryAsync(ulong xuid)
         {
-            try
-            {
-                var result = await this.sunriseUserService.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
-                var profileSummary = this.mapper.Map<SunriseProfileSummary>(result.forzaProfileSummary);
+            var result = await this.sunriseUserService.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
+            var profileSummary = this.mapper.Map<SunriseProfileSummary>(result.forzaProfileSummary);
 
-                return profileSummary;
-            }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
+            return profileSummary;
         }
 
         /// <inheritdoc />
@@ -243,21 +218,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 return creditUpdates;
             }
 
-            try
-            {
-                var result = this.refreshableCacheStore.GetItem<IList<SunriseCreditUpdate>>(creditUpdateId) ?? await CreditUpdates().ConfigureAwait(false);
+            var result = this.refreshableCacheStore.GetItem<IList<SunriseCreditUpdate>>(creditUpdateId) ?? await CreditUpdates().ConfigureAwait(false);
 
-                return result;
-            }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
-            }
+            return result;
         }
 
         /// <inheritdoc />
@@ -268,143 +231,100 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
             const int maxXuidsPerRequest = 10;
 
-            try
+            if (banParameters.StartTimeUtc == DateTime.MinValue)
             {
-                if (banParameters.StartTimeUtc == DateTime.MinValue)
-                {
-                    banParameters.StartTimeUtc = DateTime.UtcNow;
-                }
+                banParameters.StartTimeUtc = DateTime.UtcNow;
+            }
 
-                var mappedBanParameters = this.mapper.Map<ForzaUserBanParameters>(banParameters);
+            var mappedBanParameters = this.mapper.Map<ForzaUserBanParameters>(banParameters);
 
-                var xuids = new List<ulong>();
-                if (banParameters.Xuids != null && banParameters.Xuids.Any())
-                {
-                    xuids = banParameters.Xuids.ToList();
-                }
+            var xuids = new List<ulong>();
+            if (banParameters.Xuids != null && banParameters.Xuids.Any())
+            {
+                xuids = banParameters.Xuids.ToList();
+            }
 
-                if (banParameters.Gamertags != null && banParameters.Gamertags.Any())
+            if (banParameters.Gamertags != null && banParameters.Gamertags.Any())
+            {
+                foreach (var gamertag in banParameters.Gamertags)
                 {
-                    foreach (var gamertag in banParameters.Gamertags)
+                    var userResult = await this.sunriseUserService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
+                    if (userResult.userData.region <= 0)
                     {
-                        var userResult = await this.sunriseUserService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
-                        if (userResult.userData.region <= 0)
-                        {
-                            throw new ArgumentException($"Player lookup for {gamertag} failed.");
-                        }
+                        throw new ArgumentException($"Player lookup for {gamertag} failed.");
+                    }
 
-                        xuids.Add(userResult.userData.qwXuid);
+                    xuids.Add(userResult.userData.qwXuid);
+                }
+            }
+
+            var banResults = new List<SunriseBanResult>();
+
+            for (var i = 0; i < xuids.Count; i += maxXuidsPerRequest)
+            {
+                var xuidBatch = xuids.GetRange(i, Math.Min(maxXuidsPerRequest, xuids.Count - i));
+                var result = await this.sunriseEnforcementService.BanUsersAsync(xuidBatch.ToArray(), xuidBatch.Count, mappedBanParameters).ConfigureAwait(false);
+
+                foreach (var xuid in xuidBatch)
+                {
+                    var successfulBan = result.banResults.Where(banAttempt => banAttempt.Xuid == xuid).FirstOrDefault()?.Success ?? false;
+                    if (successfulBan)
+                    {
+                        await this.banHistoryProvider
+                            .UpdateBanHistoryAsync(xuid, TitleConstants.SunriseCodeName, requestingAgent, banParameters).ConfigureAwait(false);
                     }
                 }
 
-                var banResults = new List<SunriseBanResult>();
-
-                for (var i = 0; i < xuids.Count; i += maxXuidsPerRequest)
-                {
-                    var xuidBatch = xuids.GetRange(i, Math.Min(maxXuidsPerRequest, xuids.Count - i));
-                    var result = await this.sunriseEnforcementService.BanUsersAsync(xuidBatch.ToArray(), xuidBatch.Count, mappedBanParameters).ConfigureAwait(false);
-
-                    foreach (var xuid in xuidBatch)
-                    {
-                        await this.banHistoryProvider.UpdateBanHistoryAsync(xuid, TitleConstants.SunriseCodeName, requestingAgent, banParameters).ConfigureAwait(false);
-                    }
-
-                    banResults.AddRange(this.mapper.Map<IList<SunriseBanResult>>(result.banResults));
-                }
-
-                return banResults;
+                banResults.AddRange(this.mapper.Map<IList<SunriseBanResult>>(result.banResults));
             }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
 
-                throw;
-            }
+            return banResults;
         }
 
         /// <inheritdoc />
         public async Task<IList<SunriseBanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)
         {
-            try
+            if (xuids.Count == 0)
             {
-                if (xuids.Count == 0)
-                {
-                    return new List<SunriseBanSummary>();
-                }
-
-                var result = await this.sunriseEnforcementService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
-
-                var banSummaryResults = this.mapper.Map<IList<SunriseBanSummary>>(result.banSummaries);
-
-                return banSummaryResults;
+                return new List<SunriseBanSummary>();
             }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
 
-                throw;
-            }
+            var result = await this.sunriseEnforcementService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
+
+            var banSummaryResults = this.mapper.Map<IList<SunriseBanSummary>>(result.banSummaries);
+
+            return banSummaryResults;
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseBanDescription>> GetUserBanHistoryAsync(ulong xuid)
+        public async Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid)
         {
-            try
+            var result = await this.sunriseEnforcementService.GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
+
+            if (result.availableCount > DefaultMaxResults)
             {
-                var result = await this.sunriseEnforcementService.GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
-
-                if (result.availableCount > DefaultMaxResults)
-                {
-                    result = await this.sunriseEnforcementService.GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
-                }
-
-                var banResults = this.mapper.Map<List<SunriseBanDescription>>(result.bans);
-                banResults.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
-
-                return banResults;
+                result = await this.sunriseEnforcementService.GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
             }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
 
-                throw;
-            }
+            var banResults = result.bans.Select(ban => { return LiveOpsBanHistoryMapper.Map(ban); }).ToList();
+            banResults.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+
+            return banResults;
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseBanDescription>> GetUserBanHistoryAsync(string gamertag)
+        public async Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            try
+            var userResult = await this.sunriseUserService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
+
+            if (userResult.userData.region > 0)
             {
-                var userResult = await this.sunriseUserService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
-
-                if (userResult.userData.region > 0)
-                {
-                    return await this.GetUserBanHistoryAsync(userResult.userData.qwXuid).ConfigureAwait(false);
-                }
-
-                throw new ArgumentException("Player lookup for ${banHistoryRequest.Gamertag} failed.");
+                return await this.GetUserBanHistoryAsync(userResult.userData.qwXuid).ConfigureAwait(false);
             }
-            catch (ForzaClientException ex)
-            {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
 
-                throw;
-            }
+            throw new ArgumentException("Player lookup for ${banHistoryRequest.Gamertag} failed.");
         }
 
         /// <inheritdoc />

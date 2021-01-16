@@ -6,6 +6,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
 import { JSONBigInt } from '@helpers/json-bigint';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -18,7 +19,8 @@ export class BigintInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    const shouldHandle = request.responseType === 'json';
+    const shouldHandle =
+      request.responseType === 'json' && request.url.startsWith(environment.stewardApiUrl);
     if (!shouldHandle) {
       return next.handle(request);
     }

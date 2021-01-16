@@ -8,6 +8,7 @@ using Turn10.Contracts.STS;
 using Turn10.Contracts.STS.Responses;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
+using Turn10.LiveOps.StewardApi.Common;
 
 namespace Turn10.LiveOps.StewardApi.Providers
 {

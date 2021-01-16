@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
+using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -24,7 +26,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     /// </summary>
     [Route("api/v1/title/Sunrise")]
     [ApiController]
-    [Authorize]
+    [AuthorizeRoles(
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew)]
     public sealed class SunriseController : ControllerBase
     {
         private const int DefaultStartIndex = 0;
@@ -104,6 +110,42 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets the player identity.
+        /// </summary>
+        /// <param name="identityQueries">The identity queries.</param>
+        /// <returns>
+        ///     The list of <see cref="IdentityResultAlpha"/>.
+        /// </returns>
+        [HttpPost("players/identities")]
+        [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
+        public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
+        {
+            try
+            {
+                var results = new List<IdentityResultAlpha>();
+                var queries = new List<Task<IdentityResultAlpha>>();
+
+                foreach (var query in identityQueries)
+                {
+                    queries.Add(this.RetrieveIdentity(query));
+                }
+
+                await Task.WhenAll(queries).ConfigureAwait(true);
+
+                foreach (var query in queries)
+                {
+                    results.Add(await query.ConfigureAwait(true));
+                }
+
+                return this.Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex);
+            }
+        }
+
+        /// <summary>
         ///     Gets the player details.
         /// </summary>
         /// <param name="gamertag">The gamertag.</param>
@@ -119,7 +161,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
                 var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
-
                 if (playerDetails == null)
                 {
                     return this.NotFound($"Player {gamertag} was not found.");
@@ -129,6 +170,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
             catch (Exception ex)
             {
+                if (ex is ProfileNotFoundException)
+                {
+                    return this.NotFound(ex.Message);
+                }
+
                 return this.BadRequest(ex);
             }
         }
@@ -147,16 +193,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             try
             {
                 var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
-
                 if (playerDetails == null)
                 {
-                    return this.NotFound($"No profile found for XUID: {xuid}.");
+                    return this.NotFound($"Player {xuid} was not found.");
                 }
 
                 return this.Ok(playerDetails);
             }
             catch (Exception ex)
             {
+                if (ex is ProfileNotFoundException)
+                {
+                    return this.NotFound(ex.Message);
+                }
+
                 return this.BadRequest(ex);
             }
         }
@@ -167,7 +217,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="xuid">The xuid.</param>
         /// <param name="maxResults">A value that specifies how many consoles to return.</param>
         /// <returns>
-        ///     The list of <see cref="SunriseConsoleDetails"/>.
+        ///     A <see cref="List{SunriseConsoleDetails}"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/consoleDetails")]
         [SwaggerResponse(200, type: typeof(List<SunriseConsoleDetails>))]
@@ -381,7 +431,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.Created(this.Request.Path, results);
                 }
 
-                var username = this.User.Identity.Name;
+                var username = this.User.GetNameIdentifier();
                 var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), username).ConfigureAwait(true);
 
                 async Task BackgroundProcessing(CancellationToken cancellationToken)
@@ -440,10 +490,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="SunriseBanHistory"/>.
+        ///     A list of <see cref="LiveOpsBanHistory"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/banHistory")]
-        [SwaggerResponse(200, type: typeof(SunriseBanHistory))]
+        [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
         public async Task<IActionResult> GetBanHistory(ulong xuid)
         {
             try
@@ -454,6 +504,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
             catch (Exception ex)
             {
+                if (ex is ProfileNotFoundException)
+                {
+                    return this.NotFound(ex.Message);
+                }
+
                 return this.BadRequest(ex);
             }
         }
@@ -463,10 +518,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="gamertag">The gamertag.</param>
         /// <returns>
-        ///     The <see cref="SunriseBanHistory"/>.
+        ///     A list of <see cref="LiveOpsBanHistory"/>.
         /// </returns>
         [HttpGet("player/gamertag({gamertag})/banHistory")]
-        [SwaggerResponse(200, type: typeof(SunriseBanHistory))]
+        [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
         public async Task<IActionResult> GetBanHistory(string gamertag)
         {
             try
@@ -486,6 +541,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
             catch (Exception ex)
             {
+                if (ex is ProfileNotFoundException)
+                {
+                    return this.NotFound(ex.Message);
+                }
+
                 return this.BadRequest(ex);
             }
         }
@@ -666,7 +726,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.Created(this.Request.Path, playerInventory);
                 }
 
-                var username = this.User.Identity.Name;
+                var username = this.User.GetNameIdentifier();
                 var jobId = await this.AddJobIdToHeaderAsync(playerInventory.ToJson(), username).ConfigureAwait(true);
 
                 async Task BackgroundProcessing(CancellationToken cancellationToken)
@@ -746,7 +806,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.Created(this.Request.Path, groupGift.GiftInventory);
                 }
 
-                var username = this.User.Identity.Name;
+                var username = this.User.GetNameIdentifier();
                 var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), username).ConfigureAwait(true);
 
                 async Task BackgroundProcessing(CancellationToken cancellationToken)
@@ -829,7 +889,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.Created(this.Request.Path, groupGift.GiftInventory);
                 }
 
-                var username = this.User.Identity.Name;
+                var username = this.User.GetNameIdentifier();
                 var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), username).ConfigureAwait(true);
 
                 async Task BackgroundProcessing(CancellationToken cancellationToken)
@@ -910,20 +970,40 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the gift histories.
         /// </summary>
-        /// <param name="giftHistoryAntecedent">The gift history antecedent.</param>
-        /// <param name="giftRecipientId">The gift recipient ID.</param>
+        /// <param name="xuid">The xuid.</param>
         /// <returns>
         ///     The list of <see cref="SunriseGiftHistory"/>.
         /// </returns>
-        [HttpGet("giftHistory/giftRecipientId({giftRecipientId})/giftHistoryAntecedent({giftHistoryAntecedent})")]
+        [HttpGet("player/xuid({xuid})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<SunriseGiftHistory>))]
-        public async Task<IActionResult> GetGiftHistoriesAsync(GiftHistoryAntecedent giftHistoryAntecedent, string giftRecipientId)
+        public async Task<IActionResult> GetGiftHistoriesAsync(ulong xuid)
         {
             try
             {
-                giftRecipientId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(giftRecipientId));
+                var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.SunriseCodeName, GiftHistoryAntecedent.Xuid).ConfigureAwait(true);
 
-                var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(giftRecipientId, Title.ToString(), giftHistoryAntecedent).ConfigureAwait(true);
+                return this.Ok(giftHistory);
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex);
+            }
+        }
+
+        /// <summary>
+        ///     Gets the gift histories.
+        /// </summary>
+        /// <param name="groupId">The group ID.</param>
+        /// <returns>
+        ///     The list of <see cref="SunriseGiftHistory"/>.
+        /// </returns>
+        [HttpGet("group/groupId({groupId})/giftHistory")]
+        [SwaggerResponse(200, type: typeof(IList<SunriseGiftHistory>))]
+        public async Task<IActionResult> GetGiftHistoriesAsync(int groupId)
+        {
+            try
+            {
+                var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.SunriseCodeName, GiftHistoryAntecedent.LspGroupId).ConfigureAwait(true);
 
                 return this.Ok(giftHistory);
             }
@@ -942,7 +1022,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return jobId;
         }
 
-        private async Task<SunriseBanHistory> GetBanHistoryAsync(ulong xuid)
+        private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid)
         {
             var getServicesBanHistory = this.sunrisePlayerDetailsProvider.GetUserBanHistoryAsync(xuid);
             var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(xuid, Title.ToString());
@@ -950,10 +1030,48 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             await Task.WhenAll(getServicesBanHistory, getLiveOpsBanHistory).ConfigureAwait(true);
 
             var servicesBanHistory = await getServicesBanHistory.ConfigureAwait(true);
-
             var liveOpsBanHistory = await getLiveOpsBanHistory.ConfigureAwait(true);
 
-            return new SunriseBanHistory(servicesBanHistory, liveOpsBanHistory);
+            var banHistories = liveOpsBanHistory.Union(servicesBanHistory, new LiveOpsBanHistoryComparer()).ToList();
+
+            foreach (var banHistory in banHistories)
+            {
+                banHistory.IsActive = DateTime.UtcNow.CompareTo(banHistory.ExpireTimeUtc) < 0;
+            }
+
+            banHistories.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+
+            return banHistories;
+        }
+
+        private async Task<IdentityResultAlpha> RetrieveIdentity(IdentityQueryAlpha query)
+        {
+            try
+            {
+                return await this.sunrisePlayerDetailsProvider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                if (ex is ArgumentException)
+                {
+                    return new IdentityResultAlpha
+                    {
+                        Error = new StewardError(StewardErrorCode.RequiredParameterMissing, ex.Message),
+                        Query = query
+                    };
+                }
+
+                if (ex is ProfileNotFoundException)
+                {
+                    return new IdentityResultAlpha
+                    {
+                        Error = new StewardError(StewardErrorCode.ProfileNotFound, ex.Message),
+                        Query = query
+                    };
+                }
+
+                throw;
+            }
         }
     }
 }

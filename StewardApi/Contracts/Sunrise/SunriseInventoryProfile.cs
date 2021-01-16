@@ -21,5 +21,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         ///     Gets or sets a value indicating whether profile is current.
         /// </summary>
         public bool IsCurrent { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the device type.
+        /// </summary>
+        public string DeviceType { get; set; }
     }
 }

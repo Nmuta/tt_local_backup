@@ -7,6 +7,7 @@ import { createMockUserService, UserService } from '@shared/services/user';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppState } from '@shared/state/app-state';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('State: User', () => {
   let store: Store;
@@ -18,6 +19,7 @@ describe('State: User', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
         providers: [createMockUserService(), createMockMsalService()],
+        schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
 
       store = TestBed.inject(Store);
@@ -48,10 +50,8 @@ describe('State: User', () => {
       });
 
       it('should patch profile', () => {
-        // Action
         store.dispatch(action);
 
-        // Assert
         store
           .selectOnce((state: AppState) => state.user.profile)
           .subscribe(profile => {
@@ -60,12 +60,10 @@ describe('State: User', () => {
       });
 
       it('should succeed the action', done => {
-        // Assert
         actions$.pipe(ofActionSuccessful(GetUser)).subscribe(() => {
           done();
         });
 
-        // Action
         store.dispatch(action);
       });
     });
@@ -78,10 +76,8 @@ describe('State: User', () => {
       });
 
       it('should patch profile with null', () => {
-        // Action
         store.dispatch(action);
 
-        // Assert
         store
           .selectOnce(state => state.user.profile)
           .subscribe(profile => {
@@ -90,12 +86,10 @@ describe('State: User', () => {
       });
 
       it('should error the action', done => {
-        // Assert
         actions$.pipe(ofActionErrored(GetUser)).subscribe(() => {
           done();
         });
 
-        // Action
         store.dispatch(action);
       });
     });

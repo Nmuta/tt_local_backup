@@ -9,3 +9,10 @@
 mat-form-field {
   font-size: 14px;
 }
+
+// TODO: This should probably be made into a function
+// add some tasteful padding around our final routed component
+:host ::ng-deep router-outlet + * {
+  padding: 10px;
+  display: block;
+}

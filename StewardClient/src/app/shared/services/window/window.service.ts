@@ -1,12 +1,11 @@
-﻿// General
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
-import { ZAFClient } from '@shared/definitions/zaf-client';
+import { Observable, of } from 'rxjs';
 import { WindowOpen } from './window.actions';
 
+/** Defines the Window Service. */
 @Injectable({ providedIn: 'root' })
 @State<void>({ name: 'window' })
-/** Defines the Window Service. */
 export class WindowService {
   /** Checks if this window is in an iframe. */
   public get isInIframe(): boolean {
@@ -18,39 +17,14 @@ export class WindowService {
     }
   }
 
-  /** Adds event listener to the window. */
-  public addEventListener(eventName: string, func: EventListener): void {
-    window.addEventListener(eventName, func);
-  }
-
-  /** Removes event listener to the window. */
-  public removeEventListener(eventName: string, func: EventListener): void {
-    window.removeEventListener(eventName, func);
-  }
-
-  /** Gets the window's top property. */
-  public top(): Window {
-    return window.top;
-  }
-
   /** Gets the window's location property. */
   public location(): Location {
     return window.location;
   }
 
-  /** Runs the window.close function. */
-  public close(): void {
-    return window.close();
-  }
-
-  /** Gets the window's zafClient property. */
-  public zafClient(): ZAFClient {
-    return window.zafClient;
-  }
-
   /** Runs the window.open function. */
   @Action(WindowOpen)
-  private openAction(_: StateContext<void>, action: WindowOpen) {
-    return window.open(action.url, action.target);
+  public openAction(_: StateContext<void>, action: WindowOpen): Observable<Window> {
+    return of(window.open(action.url, action.target));
   }
 }

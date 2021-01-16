@@ -1,8 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Forza.WebServices.FH4.master.Generated;
+using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Providers;
 using Xls.Security.FH4.master.Generated;
 using Xls.WebServices.FH4.master.Generated;
 
@@ -51,6 +53,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaCredityUpdateEntry, SunriseCreditUpdate>().ReverseMap();
             this.CreateMap<AdminForzaProfile, SunriseInventoryProfile>().ReverseMap();
             this.CreateMap<ForzaUserGroup, SunriseLspGroup>();
+            this.CreateMap<InventoryItem, SunriseInventoryItem>();
+            this.CreateMap<Car, SunriseCar>();
+            this.CreateMap<PlayerInventory, SunrisePlayerInventory>();
+            this.CreateMap<SunrisePlayerDetails, IdentityResultAlpha>().ReverseMap();
         }
     }
 }

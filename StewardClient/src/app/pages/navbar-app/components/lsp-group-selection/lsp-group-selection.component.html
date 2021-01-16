@@ -1,0 +1,49 @@
+<mat-card>
+  <h2>Select {{ title }} LSP Group</h2>
+
+  <ng-container
+    content-body
+    class="selection-content"
+    *ngIf="!isLoading && !loadError; else failState"
+  >
+    <form>
+      <mat-form-field appearance="fill">
+        <mat-label>Select LSP Group</mat-label>
+        <input
+          type="text"
+          aria-label="Select LSP Group"
+          matInput
+          [formControl]="autocompleteControl"
+          [matAutocomplete]="auto"
+          [(ngModel)]="lspInputValue"
+        />
+        <mat-autocomplete
+          (optionSelected)="emitNewSelection($event.option.value)"
+          #auto="matAutocomplete"
+          [displayWith]="displayFn"
+        >
+          <mat-option *ngFor="let option of filteredLspGroupOptions$ | async" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <button
+        mat-mini-fab
+        color="accent"
+        aria-label="Clear LSP Group Selection"
+        matTooltip="Clear LSP Group Selection"
+        class="clear-selection-button"
+        (click)="clearSelection()"
+      >
+        <fa-icon [icon]="trashIcon"></fa-icon>
+      </button>
+    </form>
+  </ng-container>
+</mat-card>
+
+<ng-template #failState>
+  <div id="fail-state">
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+    <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+  </div>
+</ng-template>

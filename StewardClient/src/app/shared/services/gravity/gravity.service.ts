@@ -1,15 +1,17 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
+import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
-  GravityGameSettings,
-  GravityGiftHistory,
-  GravityPlayerDetails,
-  GravityPlayerInventory,
-} from '@models/gravity';
+  IdentityQueryBeta,
+  IdentityQueryBetaBatch,
+  IdentityResultBeta,
+  IdentityResultBetaBatch,
+} from '@models/identity-query.model';
 import { ApiService } from '@services/api';
 import { GiftHistoryAntecedent } from '@shared/constants';
-import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 /** Defines the gravity service. */
 @Injectable({
@@ -19,6 +21,27 @@ export class GravityService {
   public basePath: string = 'v1/title/gravity';
 
   constructor(private readonly apiService: ApiService) {}
+
+  /** Gets a single identity within this service. */
+  public getPlayerIdentity(identityQuery: IdentityQueryBeta): Observable<IdentityResultBeta> {
+    const queryBatch: IdentityQueryBetaBatch = [identityQuery];
+    return this.getPlayerIdentities(queryBatch).pipe(
+      switchMap((data: IdentityResultBetaBatch) => {
+        const result = data[0];
+        return of(result);
+      }),
+    );
+  }
+
+  /** Gets identities within this service. */
+  public getPlayerIdentities(
+    identityQueries: IdentityQueryBetaBatch,
+  ): Observable<IdentityResultBetaBatch> {
+    return this.apiService.postRequest<IdentityResultBetaBatch>(
+      `${this.basePath}/players/identities`,
+      identityQueries,
+    );
+  }
 
   /** Gets gravity player details with a gamertag. */
   public getPlayerDetailsByGamertag(gamertag: string): Observable<GravityPlayerDetails> {
@@ -136,8 +159,8 @@ export class GravityService {
   }
 
   /** Gets gravity game settings. */
-  public getGameSettings(gameSettingsId: string): Observable<GravityGameSettings> {
-    return this.apiService.getRequest<GravityGameSettings>(
+  public getGameSettings(gameSettingsId: string): Observable<GravityMasterInventory> {
+    return this.apiService.getRequest<GravityMasterInventory>(
       `${this.basePath}/data/gameSettingsId(${gameSettingsId})`,
     );
   }

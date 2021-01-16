@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
+using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -97,7 +98,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     convertedInventory = this.mapper.Map<ApolloPlayerInventory>(oldInventory);
                 }
 
-                results.Add(new ApolloGiftHistory(history.PlayerId, history.Title, history.RequestingAgent, history.GiftSendDateUtc, convertedInventory));
+                // The below logic is in place to separate out ID and it's antecedent. Once V1 Zendesk stops uploading
+                // this will be removed and the playerId column in Kusto will be broken out into two columns.
+                var splitId = history.PlayerId.Split(':');
+                var antecedent = Enum.Parse<GiftHistoryAntecedent>(splitId[0]);
+                var id = splitId[1];
+
+                results.Add(new ApolloGiftHistory(antecedent, id, history.Title, history.RequestingAgent, history.GiftSendDateUtc, convertedInventory));
             }
 
             results.Sort((x, y) => DateTime.Compare(y.GiftSendDateUtc, x.GiftSendDateUtc));

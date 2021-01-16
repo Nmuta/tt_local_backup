@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 {
@@ -9,6 +11,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
     /// </summary>
     public interface IApolloPlayerDetailsProvider
     {
+        /// <summary>
+        ///     Get player identity.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>
+        ///     The <see cref="IdentityResultAlpha"/>.
+        /// </returns>
+        Task<IdentityResultAlpha> GetPlayerIdentityAsync(IdentityQueryAlpha query);
+
         /// <summary>
         ///     Get player details.
         /// </summary>
@@ -62,7 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <returns>
         ///     The list of <see cref="ApolloBanDescription"/>.
         /// </returns>
-        Task<IList<ApolloBanDescription>> GetUserBanHistoryAsync(ulong xuid);
+        Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid);
 
         /// <summary>
         ///     Get user ban summaries.

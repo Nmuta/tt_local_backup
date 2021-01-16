@@ -8,6 +8,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { NavbarComponent } from './navbar.component';
 import { createMockWindowService } from '@services/window';
+import { createMockZendeskService } from '@services/zendesk';
 
 describe('NavbarComponent', () => {
   let fixture: ComponentFixture<NavbarComponent>;
@@ -23,7 +24,7 @@ describe('NavbarComponent', () => {
         ],
         declarations: [NavbarComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWindowService(), createMockMsalService()],
+        providers: [createMockWindowService(), createMockMsalService(), createMockZendeskService()],
       }).compileComponents();
 
       fixture = TestBed.createComponent(NavbarComponent);

@@ -51,10 +51,17 @@ export class NavbarTools {
     title: 'User Details',
     path: 'user-details',
   };
+
+  /** The user banning tool page. */
+  public static readonly UserBanningPage: RouteParams = {
+    title: 'User Banning',
+    path: 'user-banning',
+  };
 }
 
 /** The list of tools to display in the navbar. */
 export const navbarToolList: RouterLinkPath[] = [
   createNavbarPath(NavbarTools.GiftingPage),
+  createNavbarPath(NavbarTools.UserBanningPage),
   createNavbarPath(NavbarTools.UserDetailsPage),
 ];

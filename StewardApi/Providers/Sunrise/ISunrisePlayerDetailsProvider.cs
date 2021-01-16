@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
@@ -9,6 +11,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
     /// </summary>
     public interface ISunrisePlayerDetailsProvider
     {
+        /// <summary>
+        ///     Get player identity.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <returns>
+        ///     The <see cref="IdentityResultAlpha"/>.
+        /// </returns>
+        Task<IdentityResultAlpha> GetPlayerIdentityAsync(IdentityQueryAlpha query);
+
         /// <summary>
         ///     Get player details.
         /// </summary>
@@ -139,9 +150,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The list of <see cref="SunriseBanDescription"/>.
+        ///     The list of <see cref="LiveOpsBanHistory"/>.
         /// </returns>
-        Task<IList<SunriseBanDescription>> GetUserBanHistoryAsync(ulong xuid);
+        Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid);
 
         /// <summary>
         ///     Get user ban history.
@@ -150,6 +161,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <returns>
         ///     The list of <see cref="SunriseBanDescription"/>.
         /// </returns>
-        Task<IList<SunriseBanDescription>> GetUserBanHistoryAsync(string gamertag);
+        Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(string gamertag);
     }
 }
