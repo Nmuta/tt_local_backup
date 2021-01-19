@@ -1,1 +1,20 @@
-<p>gravity-gift-history works!</p>
+<div class="default-page-layout">
+    <div class="default-page-layout-left">
+      <gravity-player-selection
+        [allowT10Id]="true"
+        [allowGroup]="false"
+        [(ngModel)]="selectedPlayerIdentities"
+        (ngModelChange)="onPlayerIdentitiesChange($event)"
+        (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
+      ></gravity-player-selection>
+    </div>
+  
+    <div class="default-page-layout-right">
+      <!-- Page tool -->
+      <mat-card>
+        <h2>Gravity gift history page state</h2>
+        <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
+      </mat-card>
+    </div>
+  </div>
+  

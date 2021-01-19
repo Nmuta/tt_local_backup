@@ -9,7 +9,7 @@
           <!-- Player selection -->
           <sunrise-player-selection
             [allowT10Id]="false"
-            [allowGroup]="true"
+            [allowGroup]="false"
             [(ngModel)]="selectedPlayerIdentities"
             (ngModelChange)="onPlayerIdentitiesChange($event)"
             (playerIdentitySelectedEvent)="playerIdentitySelected($event)"

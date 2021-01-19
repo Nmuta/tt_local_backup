@@ -38,6 +38,10 @@ import { OpusGiftingState } from './pages/navbar-app/pages/gifting/opus/state/op
 import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state';
 import { MatNativeDateModule } from '@angular/material/core';
 import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-memory.state';
+import { GravityGiftHistoryState } from '@navbar-app/pages/gift-history/gravity/state/gravity-gift-history.state';
+import { SunriseGiftHistoryState } from '@navbar-app/pages/gift-history/sunrise/state/sunrise-gift-history.state';
+import { ApolloGiftHistoryState } from '@navbar-app/pages/gift-history/apollo/state/apollo-gift-history.state';
+import { OpusGiftHistoryState } from '@navbar-app/pages/gift-history/opus/state/opus-gift-history.state';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -83,6 +87,11 @@ function fakeApiOrNothing(): Provider[] {
       SunriseGiftingState,
       ApolloGiftingState,
       OpusGiftingState,
+      // Gift History page states
+      GravityGiftHistoryState,
+      SunriseGiftHistoryState,
+      ApolloGiftHistoryState,
+      OpusGiftHistoryState,
     ]),
     NgxsStoragePluginModule.forRoot({ key: [UserSettingsState] }),
     NgxsRouterPluginModule.forRoot(),

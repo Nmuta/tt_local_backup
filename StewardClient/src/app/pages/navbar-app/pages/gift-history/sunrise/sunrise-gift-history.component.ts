@@ -25,7 +25,7 @@ implements OnInit {
   @Select(SunriseGiftHistoryState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<
     IdentityResultAlphaBatch>
 
-    public title: GameTitleCodeName = GameTitleCodeName.FM7;
+    public title: GameTitleCodeName = GameTitleCodeName.FH4;
     public selectedPlayerIdentities: IdentityResultAlphaBatch;
     public selectedLspGroup: LspGroup;
 
@@ -56,6 +56,7 @@ implements OnInit {
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentitiesChange(event: IdentityResultAlphaBatch): void {
+    debugger;
     this.store.dispatch(new SetSunriseGiftHistorySelectedPlayerIdentities(event));
   }
 
