@@ -7,11 +7,11 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
 
 /** Retreives and displays Sunrise Gift history by XUID. */
 @Component({
-  selector: 'app-sunrise-gift-history',
-  templateUrl: './sunrise-gift-history.component.html',
-  styleUrls: ['./sunrise-gift-history.component.scss']
+  selector: 'sunrise-gift-history-results',
+  templateUrl: './sunrise-gift-history-results.component.html',
+  styleUrls: ['./sunrise-gift-history-results.component.scss']
 })
-export class SunriseGiftHistoryComponent extends BaseComponent implements OnChanges {
+export class SunriseGiftHistoryResultsComponent extends BaseComponent implements OnChanges {
   @Input() public xuid?: number;
 
   /** True while waiting on a request. */

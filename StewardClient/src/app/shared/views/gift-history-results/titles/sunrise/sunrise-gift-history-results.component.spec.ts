@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SunriseGiftHistoryComponent } from './sunrise-gift-history.component';
+import { SunriseGiftHistoryResultsComponent } from './sunrise-gift-history-results.component';
 
 describe('SunriseGiftHistoryComponent', () => {
-  let component: SunriseGiftHistoryComponent;
-  let fixture: ComponentFixture<SunriseGiftHistoryComponent>;
+  let component: SunriseGiftHistoryResultsComponent;
+  let fixture: ComponentFixture<SunriseGiftHistoryResultsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SunriseGiftHistoryComponent ]
+      declarations: [ SunriseGiftHistoryResultsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SunriseGiftHistoryComponent);
+    fixture = TestBed.createComponent(SunriseGiftHistoryResultsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

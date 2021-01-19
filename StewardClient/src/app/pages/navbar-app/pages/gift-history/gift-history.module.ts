@@ -12,6 +12,7 @@ import { GiftHistoryComponent } from './gift-history.component';
 import { GiftHistoryRouterModule } from './gift-history.routing';
 import { PlayerSelectionModule } from '../../components/player-selection/player-selection.module';
 import { GravityGiftHistoryComponent } from './gravity/gravity-gift-history.component';
+import { GiftHistoryResultsModule } from '@shared/views/gift-history-results/gift-history-results.module';
 import { SunriseGiftHistoryComponent } from './sunrise/sunrise-gift-history.component';
 import { ApolloGiftHistoryComponent } from './apollo/apollo-gift-history.component';
 import { OpusGiftHistoryComponent } from './opus/opus-gift-history.component';
@@ -32,6 +33,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     CommonModule,
     ErrorSpinnerModule,
     GiftHistoryRouterModule,
+    GiftHistoryResultsModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
