@@ -7,6 +7,3 @@ export interface SunriseGiftHistory {
   giftSendDateUtc: Date;
   giftInventory: SunrisePlayerInventory;
 }
-
-/** LiveOps model for multiple ban descriptions. */
-export type SunriseGiftHistories = SunriseGiftHistory[];

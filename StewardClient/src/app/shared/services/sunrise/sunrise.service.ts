@@ -12,7 +12,6 @@ import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.mode
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
 import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
-import { SunriseGiftHistories } from '@models/sunrise/sunrise-gift-history.model';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
@@ -96,22 +95,6 @@ export class SunriseService {
         }),
       );
   }
-
-    /** Gets Gift history by a XUID. */
-    public getGiftHistoryByXuid(xuid: number): Observable<SunriseGiftHistories> {
-      return this.apiService
-        .getRequest<SunriseGiftHistories>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
-        .pipe(
-          map(giftHistory => {
-            // these come in stringly-typed and must be converted
-            for (const gift of giftHistory) {
-              gift.giftSendDateUtc = new Date(gift.giftSendDateUtc);
-            }
-  
-            return giftHistory;
-          }),
-        );
-    }
 
   /** Gets shared console users by XUID. */
   public getSharedConsoleUsersByXuid(xuid: number): Observable<SunriseSharedConsoleUsers> {
