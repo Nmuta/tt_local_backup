@@ -31,6 +31,7 @@
         <h2>Sunrise gift history page state</h2>
         <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
         <p>LSP Group: {{ selectedLspGroup?.name || 'None' }}</p>
+        <sunrise-gift-history [xuid]="xuid"></sunrise-gift-history>
       </mat-card>
     </div>
   </div>
