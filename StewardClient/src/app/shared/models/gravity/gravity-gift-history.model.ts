@@ -7,3 +7,6 @@ export interface GravityGiftHistory {
   giftSendDateUtc: Date;
   giftInventory: GravityPlayerInventory;
 }
+
+/** LiveOps model for multiple gift history descriptions. */
+export type GravityGiftHistories = GravityGiftHistory[];

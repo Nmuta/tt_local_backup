@@ -12,6 +12,7 @@ import {
   IdentityResultBeta,
   IdentityResultBetaBatch,
 } from '@models/identity-query.model';
+import { GravityGiftHistories } from '@models/gravity/gravity-gift-history.model';
 import { ApiService } from '@services/api';
 import { GiftHistoryAntecedent } from '@shared/constants';
 import { Observable, of, throwError } from 'rxjs';
@@ -183,4 +184,20 @@ export class GravityService {
       `${this.basePath}/giftHistory/giftRecipientId/(${giftRecipientId})/giftHistoryAntecedent/(${giftHistoryAntecedent})`,
     );
   }
+
+      /** Gets Gift history by a XUID. */
+      public getGiftHistoryByXuid(xuid: number): Observable<GravityGiftHistories> {
+        return this.apiService
+          .getRequest<GravityGiftHistories>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
+          .pipe(
+            map(giftHistory => {
+              // these come in stringly-typed and must be converted
+              for (const gift of giftHistory) {
+                gift.giftSendDateUtc = new Date(gift.giftSendDateUtc);
+              }
+    
+              return giftHistory;
+            }),
+          );
+      }
 }
