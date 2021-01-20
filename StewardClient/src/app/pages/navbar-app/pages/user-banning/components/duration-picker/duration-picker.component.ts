@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, forwardRef, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, forwardRef, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { first } from 'lodash';
@@ -28,29 +28,24 @@ export const DurationPickerOptions: DurationOption[] = [
     },
   ],
 })
-export class DurationPickerComponent implements AfterViewInit, ControlValueAccessor {
+export class DurationPickerComponent implements ControlValueAccessor {
   @ViewChild('datePicker') public datePicker: MatDatepicker<Date>;
 
   public options: DurationOption[] = DurationPickerOptions;
 
   public formControl = new FormControl(first(this.options).duration);
 
+  public targetDate: Date = null;
+
   constructor(private ref: ChangeDetectorRef) {
     this.formControl.valueChanges.subscribe(value => this.updateDate(value));
-  }
-
-  /** Init hook. */
-  public ngAfterViewInit(): void {
-    // we're required to synchronize the UI after view init, due to the nature of @ViewChild.
-    this.updateDate(this.formControl.value);
-    this.ref.markForCheck();
   }
 
   /** Updates the displayed date. */
   public updateDate(newDuration: moment.Duration): void {
     const today = moment().startOf('day');
     const endDate = today.add(newDuration);
-    this.datePicker.select(endDate.toDate());
+    this.targetDate = endDate.toDate();
   }
 
   /** ngModel hook. */

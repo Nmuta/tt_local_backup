@@ -17,7 +17,7 @@
     <mat-error *ngIf="formControls.banReason.hasError('required')"> Missing ban reason </mat-error>
   </mat-form-field>
 
-  <!-- <duration-picker [formControl]="formControls.banDuration"></duration-picker> -->
+  <duration-picker [formControl]="formControls.banDuration"></duration-picker>
 
   <section class="ban-options" formGroupName="checkboxes">
     <ul>
