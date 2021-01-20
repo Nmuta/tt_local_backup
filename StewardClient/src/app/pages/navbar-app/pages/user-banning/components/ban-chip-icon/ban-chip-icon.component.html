@@ -4,7 +4,6 @@
     class="ban-count"
     [matTooltip]="banSummary?.banCount + ' bans found'">
     <fa-icon
-      class="remove-player-icon"
       [icon]="bannedIcon"
     ></fa-icon>
     <span *ngIf="banSummary">{{ banSummary?.banCount }}</span>

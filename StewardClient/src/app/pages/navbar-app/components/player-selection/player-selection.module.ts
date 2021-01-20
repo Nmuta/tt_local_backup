@@ -22,6 +22,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { PlayerSelectionChipComponent } from './player-selection-chip/player-selection-chip.component';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -52,6 +53,7 @@ import { PlayerSelectionChipComponent } from './player-selection-chip/player-sel
     ContentCollapseModule,
     MatFormFieldModule,
     PipesModule,
+    DirectivesModule,
   ],
   exports: [
     GravityPlayerSelectionComponent,
