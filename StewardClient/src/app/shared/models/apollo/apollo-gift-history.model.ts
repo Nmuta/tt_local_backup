@@ -7,3 +7,6 @@ export interface ApolloGiftHistory {
   giftSendDateUtc: Date;
   giftInventory: ApolloPlayerInventory;
 }
+
+/** LiveOps model for multiple gift history descriptions. */
+export type ApolloGiftHistories = ApolloGiftHistory[];

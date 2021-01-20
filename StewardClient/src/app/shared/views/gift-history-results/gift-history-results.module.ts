@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SunriseGiftHistoryResultsComponent } from './titles/sunrise/sunrise-gift-history-results.component';
+import { ApolloGiftHistoryResultsComponent } from './titles/apollo/apollo-gift-history-results.component';
 import { MatCardModule } from '@angular/material/card';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { MatTableModule } from '@angular/material/table';
@@ -11,7 +12,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 
 /** A domain module for displaying player gift histories. */
 @NgModule({
-  declarations: [SunriseGiftHistoryResultsComponent],
+  declarations: [SunriseGiftHistoryResultsComponent, ApolloGiftHistoryResultsComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -22,6 +23,6 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
     PipesModule,
     JsonDumpModule,
   ],
-  exports: [SunriseGiftHistoryResultsComponent],
+  exports: [SunriseGiftHistoryResultsComponent, ApolloGiftHistoryResultsComponent],
 })
 export class GiftHistoryResultsModule {}

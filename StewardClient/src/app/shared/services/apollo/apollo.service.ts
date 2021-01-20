@@ -1,6 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApolloPlayerDetails } from '@models/apollo';
+import { ApolloGiftHistories } from '@models/apollo/apollo-gift-history.model';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,
@@ -59,6 +60,22 @@ export class ApolloService {
         }),
       );
   }
+
+    /** Gets Gift history by a XUID. */
+    public getGiftHistoryByXuid(xuid: number): Observable<ApolloGiftHistories> {
+      return this.apiService
+        .getRequest<ApolloGiftHistories>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
+        .pipe(
+          map(giftHistory => {
+            // these come in stringly-typed and must be converted
+            for (const gift of giftHistory) {
+              gift.giftSendDateUtc = new Date(gift.giftSendDateUtc);
+            }
+  
+            return giftHistory;
+          }),
+        );
+    }
 
   /** Gets the apollo lsp groups. */
   public getLspGroups(): Observable<LspGroups> {

@@ -8,5 +8,5 @@ export interface SunriseGiftHistory {
   giftInventory: SunrisePlayerInventory;
 }
 
-/** LiveOps model for multiple ban descriptions. */
+/** LiveOps model for multiple gift history descriptions. */
 export type SunriseGiftHistories = SunriseGiftHistory[];
