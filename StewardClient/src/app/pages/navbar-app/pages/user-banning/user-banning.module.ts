@@ -20,6 +20,11 @@ import { DurationPickerComponent } from './components/duration-picker/duration-p
 import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatChipsModule } from '@angular/material/chips';
+import { BanChipsComponent } from './components/ban-chips/ban-chips.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BanChipIconModule } from './components/ban-chip-icon/ban-chip-icon.module';
+import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -31,6 +36,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     SunriseBanningComponent,
     BanOptionsComponent,
     DurationPickerComponent,
+    BanChipsComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +54,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     VerifyActionButtonModule,
     MatCheckboxModule,
     MatDatepickerModule,
+    FontAwesomeModule,
+    MatChipsModule,
+    BanChipIconModule,
+    BanHistoryModule,
   ],
 })
 export class UserBanningModule {}

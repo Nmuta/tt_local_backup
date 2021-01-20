@@ -7,11 +7,15 @@ import {
 } from '@models/identity-query.model';
 import { LspGroups } from '@models/lsp-group';
 import {
+  SunriseBanSummary,
   SunrisePlayerDetails,
   SunrisePlayerNotifications,
   SunriseUserFlags,
 } from '@models/sunrise';
-import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.model';
+import {
+  LiveOpsBanDescriptions,
+  SunriseBanHistory,
+} from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
@@ -28,7 +32,7 @@ import { map, switchMap } from 'rxjs/operators';
 export class SunriseService {
   public basePath: string = 'v1/title/sunrise';
 
-  constructor(private readonly apiService: ApiService) {}
+  constructor(private readonly apiService: ApiService) { }
 
   /** Gets the status of a player's notifications. */
   public getPlayerNotificationsByXuid(xuid: BigInt): Observable<SunrisePlayerNotifications> {
@@ -89,20 +93,18 @@ export class SunriseService {
   }
 
   /** Gets user flags by a XUID. */
-  public getBanHistoryByXuid(xuid: number): Observable<LiveOpsBanDescriptions> {
-    return this.apiService
-      .getRequest<LiveOpsBanDescriptions>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
-      .pipe(
-        map(banHistory => {
-          // these come in stringly-typed and must be converted
-          for (const ban of banHistory) {
-            ban.startTimeUtc = new Date(ban.startTimeUtc);
-            ban.expireTimeUtc = new Date(ban.expireTimeUtc);
-          }
+  public getBanHistoryByXuid(xuid: BigInt): Observable<LiveOpsBanDescriptions> {
+    return this.apiService.getRequest<LiveOpsBanDescriptions>(
+      `${this.basePath}/player/xuid(${xuid})/banHistory`,
+    );
+  }
 
-          return banHistory;
-        }),
-      );
+  /** Gets user flags by a XUID. */
+  public getBanSummariesByXuids(xuids: BigInt[]): Observable<SunriseBanSummary[]> {
+    return this.apiService.postRequest<SunriseBanSummary[]>(
+      `${this.basePath}/players/banSummaries`,
+      xuids,
+    );
   }
 
   /** Gets shared console users by XUID. */

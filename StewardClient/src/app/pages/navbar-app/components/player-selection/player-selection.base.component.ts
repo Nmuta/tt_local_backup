@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ContentChild, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
@@ -7,7 +7,9 @@ import { faTimesCircle, faTimes, faCopy } from '@fortawesome/free-solid-svg-icon
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { ControlValueAccessor } from '@angular/forms';
 import { GameTitleCodeName } from '@models/enums';
+import { isEqual } from 'lodash';
 
+type IdentityResultsIntersection = IdentityResultAlpha & IdentityResultBeta
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 
 /** The shared top-level navbar. */
@@ -25,6 +27,8 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** The player identites that are given to parent components for use */
   public playerIdentities: T[] = [];
+  /** The player identities in a format the template can consume. */
+  public get playerIdentitiesFull(): IdentityResultsIntersection[] { return this.playerIdentities as unknown as IdentityResultsIntersection[]; }
   /** The identity that has been clicked */
   public selectedPlayerIdentity: T = null;
 
@@ -34,17 +38,17 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   public copyToClipboard = faCopy;
 
   /** ngModel associated to the textarea input. */
-  data: string = '';
+  public data: string = '';
   /** Array of player ids populated from the textarea input. */
-  playerIds: string[] = [];
+  public playerIds: string[] = [];
   /** The player id type (gamertag|xuid|t10id) populated by the button toggle. */
-  playerIdType: string = 'gamertag';
+  public playerIdType: string = 'gamertag';
   /** Boolean whether textarea in UI should be expanded.  */
-  showExpandedTextArea: boolean = false;
+  public showExpandedTextArea: boolean = false;
   /** Boolean whether the validate button should be disabled. */
-  disableValidateButton: boolean = true;
+  public disableValidateButton: boolean = true;
   /** Boolean whether UI should show group disabled error. */
-  showGroupDisabledError: boolean = false;
+  public showGroupDisabledError: boolean = false;
 
   /** True while waiting on a request. */
   public isLoading = false;
@@ -53,10 +57,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** Game title */
   public abstract title: GameTitleCodeName;
-
-  constructor() {
-    super();
-  }
 
   /** Child(title) class should implement. */
   public abstract makeRequestToValidateIds$(
@@ -158,6 +158,16 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
         this.loadError = error;
       },
     );
+  }
+
+  /** Removes a given identity from the list. */
+  public removeIdentityFromList(identity: IdentityResultsIntersection): void {
+    this.playerIdentities = this.playerIdentities.filter(i => !isEqual(i, identity));
+    this.emitPlayerIdentities();
+
+    if (this.playerIdentities.length <= 0) {
+      this.clearResults();
+    }
   }
 
   /** Removed player at given index from the results list. */

@@ -1,0 +1,15 @@
+<mat-chip-list>
+  <mat-chip *ngFor="let identity of playerSelection.playerIdentitiesFull"
+    [class.invalid-identity]="!!identity.error">
+    <span class="name">
+      {{ identity[playerSelection.playerIdType] || 'mystery' }}
+    </span>
+    <fa-icon
+      class="remove-player-icon"
+      [icon]="closeIcon"
+      matTooltip="Remove player from list"
+      (click)="playerSelection.removeIdentityFromList(identity)"
+      title="Remove Player"
+    ></fa-icon>
+  </mat-chip>
+</mat-chip-list>

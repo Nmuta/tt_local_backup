@@ -58,7 +58,8 @@ mat-card {
 
   .identity-results {
     max-height: 350px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
     margin-top: 20px;
 
     ::-webkit-scrollbar {
@@ -114,5 +115,45 @@ mat-card {
       right: 10px;
       display: block;
     }
+  }
+}
+
+/** Title layout */
+mat-card-header {
+  & ::ng-deep > div {
+    margin: 0;
+  }
+
+  mat-card-title {
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 0;
+    margin: 0;
+    h2 {
+      flex-grow: 1;
+      margin-right: 1rem;
+    }
+  }
+}
+
+/** Hide the default chip format when there is no custom chip format. */
+.identity-results .default {
+  display: none;
+
+  &:only-child {
+    display: inherit;
+  }
+}
+
+/** Make the chip format align to a grid. */
+:host ::ng-deep .mat-chip-list-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 12rem));
+  grid-gap: 0.25rem;
+  margin: 0; // default margin was negative, which made the scrollbar appear for no reason.
+
+  .mat-standard-chip.mat-standard-chip.mat-standard-chip {
+    width: auto;
+    white-space: nowrap;
   }
 }

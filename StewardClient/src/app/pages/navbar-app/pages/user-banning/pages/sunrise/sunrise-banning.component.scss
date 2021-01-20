@@ -19,3 +19,22 @@
     margin: 10px;
   }
 }
+
+.left {
+  display: flex;
+  flex-flow: column;
+  > * {
+    margin-bottom: 10px;
+    &:not(:first-child) {
+      margin-top: 10px;
+    }
+  }
+
+  .bottom {
+    flex-grow: 1;
+
+    mat-card {
+      height: 100%;
+    }
+  }
+}

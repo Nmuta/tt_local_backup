@@ -1,8 +1,19 @@
 <mat-card>
-  <h2>
-    Select {{ title }} Players
-    <span *ngIf="playerIdentities?.length > 0">({{ playerIdentities.length }})</span>
-  </h2>
+  <mat-card-header>
+    <mat-card-title>
+      <h2>
+        Select {{ title }} Players
+        <span *ngIf="playerIdentities?.length > 0">({{ playerIdentities.length }})</span>
+      </h2>
+      <button
+        mat-stroked-button
+        color="accent"
+        (click)="playerIdentities?.length > 0 ? clearResults() : clearInput()"
+      >
+        Clear
+      </button>
+    </mat-card-title>
+  </mat-card-header>
 
   <ng-container
     content-body
@@ -48,37 +59,16 @@
       </div>
     </ng-container>
   </ng-container>
-  <button
-    class="clear-identity-results-btn"
-    mat-stroked-button
-    color="accent"
-    (click)="playerIdentities?.length > 0 ? clearResults() : clearInput()"
-  >
-    Clear
-  </button>
 </mat-card>
 
 <ng-template #resultsView id="results-view">
   <div class="identity-results">
-    <mat-chip-list aria-label="Player selection">
-      <mat-chip
-        *ngFor="let identity of playerIdentities; let i = index"
-        [class.validIdentity]="!identity.error"
-        [class.invalidIdentity]="!!identity.error"
-        (click)="emitSelectedPlayerIdentity(identity)"
-      >
-        <span *ngIf="playerIdType === 'gamertag'">{{ identity.gamertag }}</span>
-        <span *ngIf="playerIdType === 'xuid'">{{ identity.xuid }}</span>
-        <span *ngIf="playerIdType === 't10id'">{{ identity.t10id }}</span>
-        <fa-icon
-          class="remove-player-icon"
-          [icon]="closeIcon"
-          matTooltip="Remove player from list"
-          (click)="removePlayerFromList(i)"
-          title="Remove Player"
-        ></fa-icon>
-      </mat-chip>
+    <mat-chip-list>
+      <ng-content></ng-content>
     </mat-chip-list>
+    <div class="default">
+      failure
+    </div>
   </div>
   <!-- 
     TODO: Remove

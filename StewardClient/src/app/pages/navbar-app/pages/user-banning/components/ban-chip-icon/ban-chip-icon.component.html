@@ -1,0 +1,22 @@
+<error-spinner [isActive]="!banSummary" spinnerMessage="Looking for bans"></error-spinner>
+<ng-container *ngIf="banSummary?.banCount > 0 || false">
+  <span
+    class="ban-count"
+    [matTooltip]="banSummary?.banCount + ' bans found'">
+    <fa-icon
+      class="remove-player-icon"
+      [icon]="bannedIcon"
+    ></fa-icon>
+    <span *ngIf="banSummary">{{ banSummary?.banCount }}</span>
+  </span>
+
+  <span
+    class="ban-count"
+    [matTooltip]="'Ban Areas: ' + banSummary?.bannedAreas?.join(', ')">
+    <fa-icon
+      class="remove-player-icon"
+      [icon]="bannedIcon"
+    ></fa-icon>
+    <span *ngIf="banSummary">{{ banSummary?.bannedAreas?.length }}</span>
+  </span>
+</ng-container>
