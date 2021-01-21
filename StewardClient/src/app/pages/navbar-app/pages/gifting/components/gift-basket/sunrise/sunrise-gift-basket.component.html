@@ -11,7 +11,7 @@
           else waitingForGameSettings
         "
       >
-        <sunrise-item-selection [masterInventory]="masterInventory"></sunrise-item-selection>
+        <sunrise-item-selection [masterInventory]="masterInventory" (addItemEvent)="addItemtoBasket($event)"></sunrise-item-selection>
       </ng-container>
     </ng-container>
   </ng-container>

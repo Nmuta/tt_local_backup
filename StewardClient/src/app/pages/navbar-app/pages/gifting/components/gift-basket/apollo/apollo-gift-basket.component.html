@@ -11,7 +11,7 @@
           else waitingForGameSettings
         "
       >
-        <apollo-item-selection [masterInventory]="masterInventory"></apollo-item-selection>
+        <apollo-item-selection [masterInventory]="masterInventory" (addItemEvent)="addItemtoBasket($event)"></apollo-item-selection>
       </ng-container>
     </ng-container>
   </ng-container>

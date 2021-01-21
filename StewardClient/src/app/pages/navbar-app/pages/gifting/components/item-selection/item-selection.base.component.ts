@@ -1,20 +1,13 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { InventoryItem, InventoryItemGroup } from '../gift-basket/gift-basket.base.component';
+import { map, startWith } from 'rxjs/operators';
 
 type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory;
-export type InventoryItem = {
-  itemId: BigInt;
-  description: string;
-  quantity: BigInt;
-};
-export type InventoryItemGroup = {
-  category: string;
-  items: InventoryItem[];
-};
 
 /** The base gift-basket component. */
 @Component({
@@ -22,6 +15,10 @@ export type InventoryItemGroup = {
 })
 export abstract class ItemSelectionBaseComponent extends BaseComponent implements OnChanges {
   @Input() public masterInventory: MasterInventoryUnion;
+  @Output() public addItemEvent = new EventEmitter<InventoryItem>();
+
+  public selectedItem: InventoryItem;
+  public itemInputValue: string = '';
 
   /** True while waiting on a request. */
   public isLoading = false;
@@ -29,7 +26,11 @@ export abstract class ItemSelectionBaseComponent extends BaseComponent implement
   public loadError: unknown;
 
   /** Master Inventory autocomplete varsiables */
-  public stateForm: FormGroup = this.formBuilder.group({ stateGroup: '' });
+  public stateFormInitState = {
+    itemInput: new FormControl('', Validators.required),
+    quantity: new FormControl(undefined, Validators.required),
+  };
+  public stateForm: FormGroup = this.formBuilder.group(this.stateFormInitState);
   public stateGroups: InventoryItemGroup[] = [];
   public stateGroupOptions: Observable<InventoryItemGroup[]>;
 
@@ -48,8 +49,24 @@ export abstract class ItemSelectionBaseComponent extends BaseComponent implement
   }
 
   /** New item selected. */
-  public newItemSelected(_item: InventoryItem): void {
-    // console.log(item);
+  public addItemEmit(): void {
+    this.selectedItem.quantity = BigInt(this.stateForm.value['quantity']);
+    this.addItemEvent.emit(this.selectedItem);
+
+    this.selectedItem = undefined;
+    this.stateForm.reset(this.stateFormInitState);
+
+
+    this.stateGroupOptions = this.stateForm.get('itemInput')?.valueChanges.pipe(
+      startWith(''),
+      map(value => this.filterGroup(value)),
+    );
+  }
+
+  /** New item is selected from the dropdown. */
+  public newItemSelected(item: InventoryItem): void {
+    this.selectedItem = item;
+    document.getElementById('item-selection-quanity-input')?.focus();
   }
 
   /** Mat option display */

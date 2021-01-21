@@ -6,12 +6,13 @@ import { LspGroup } from '@models/lsp-group';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 
-type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
-type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory;
+export type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
+export type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory;
 export type InventoryItem = {
   itemId: BigInt;
   description: string;
   quantity: BigInt;
+  itemType: string;
 };
 export type InventoryItemGroup = {
   category: string;
@@ -43,5 +44,9 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
   constructor() {
     super();
+  }
+
+  public addItemtoBasket(item: InventoryItem): void {
+    console.log(item);
   }
 }

@@ -30,7 +30,7 @@ export class ApolloItemSelectionComponent extends ItemSelectionBaseComponent {
         // IMPORTANT (vanity items): Ids 30-40 are wristbands with backing achievement/game progress. We're not handing them out, but we will allow a restore. June 9th, 2020
         for (let i = 0; i < masterInventoryItems.length; i++) {
           // const masterInventoryItem = masterInventoryItems[i];
-          const inventoryItem = { itemId: undefined, description: undefined, quantity: BigInt(0) };
+          const inventoryItem = { itemType: prop, itemId: undefined, description: undefined, quantity: BigInt(0) };
 
           // switch(prop) {
           //   case 'creditRewards':
@@ -68,7 +68,7 @@ export class ApolloItemSelectionComponent extends ItemSelectionBaseComponent {
       }
     }
 
-    this.stateGroupOptions = this.stateForm.get('stateGroup')?.valueChanges.pipe(
+    this.stateGroupOptions = this.stateForm.get('itemInput')?.valueChanges.pipe(
       startWith(''),
       map(value => this.filterGroup(value)),
     );

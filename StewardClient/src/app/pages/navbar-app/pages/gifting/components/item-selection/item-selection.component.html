@@ -4,9 +4,10 @@
       type="text"
       matInput
       placeholder="Select Item"
-      formControlName="stateGroup"
+      formControlName="itemInput"
       required
       [matAutocomplete]="autoGroup"
+      [(ngModel)]="itemInputValue"
     />
     <mat-autocomplete
       #autoGroup="matAutocomplete"
@@ -22,7 +23,7 @@
   </mat-form-field>
   <mat-form-field class="quantity-form-field">
     <mat-label>Quantity</mat-label>
-    <input type="number" matInput placeholder="1" value="1" />
+    <input id="item-selection-quanity-input" type="number" matInput placeholder="1" formControlName="quantity" />
   </mat-form-field>
-  <button mat-raised-button color="primary">Add Item</button>
+  <button mat-raised-button color="primary" (click)="addItemEmit()" [disabled]="!stateForm.valid">Add Item</button>
 </form>
