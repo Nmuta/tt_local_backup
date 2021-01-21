@@ -1,4 +1,4 @@
-import { Component, ContentChild, ElementRef, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.
 import { ControlValueAccessor } from '@angular/forms';
 import { GameTitleCodeName } from '@models/enums';
 import { isEqual } from 'lodash';
+import { MatChipListChange } from '@angular/material/chips';
 
 type IdentityResultsIntersection = IdentityResultAlpha & IdentityResultBeta
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
@@ -21,6 +22,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   implements ControlValueAccessor {
   @Input() allowT10Id: boolean = true;
   @Input() allowGroup: boolean = true;
+  @Output() public selectionChange = new EventEmitter<T>();
   @Output() playerIdentitySelectedEvent = new EventEmitter<T>();
 
   public playersSelector = new FormControl('', [this.ValidateGroupSelection.bind(this)]);
@@ -124,6 +126,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
     this.playerIdentities = [];
     this.clearInput();
     this.emitPlayerIdentities();
+    this.selectedPlayerIdentity = null;
     this.emitSelectedPlayerIdentity(null);
   }
 
@@ -190,6 +193,13 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   /** Logic deciding if we should emit the player identities to its listeners. */
   public emitPlayerIdentities(): void {
     this.onChangeFunction(this.playerIdentities);
+  }
+
+  /** Called when the selected chips change. */
+  public chipSelectionChange(event: MatChipListChange): void {
+    const identity = event.value as T;
+    this.selectedPlayerIdentity = identity;
+    this.selectionChange.emit(event.value as T);
   }
 
   private onChangeFunction = (_value: T[]) => {

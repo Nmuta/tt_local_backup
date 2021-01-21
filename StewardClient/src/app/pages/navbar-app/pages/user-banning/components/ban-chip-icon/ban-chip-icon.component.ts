@@ -13,12 +13,13 @@ export interface BanQuery {
   banList: unknown[];
 }
 
+/** Displays the ban chip icons for a given identity/query. */
 @Component({
   selector: 'ban-chip-icon',
   templateUrl: './ban-chip-icon.component.html',
   styleUrls: ['./ban-chip-icon.component.scss']
 })
-export class BanChipIconComponent extends BaseComponent {
+export class BanChipIconComponent extends BaseComponent implements OnChanges {
   @Input() public identity: IdentityResultAlpha | IdentityResultBeta = null;
   @Input() public banSummary: SunriseBanSummary = null;
   @Input() public banQuery: BanQuery = null;
@@ -27,8 +28,22 @@ export class BanChipIconComponent extends BaseComponent {
   public spinnerIcon = faSpinner;
   public bannedIcon = faGavel;
 
+  public hasBans = false;
+  public banCount: BigInt = BigInt(0);
+
   constructor() {
     super();
+  }
+
+  /** Angular hook. */
+  public ngOnChanges(_changes: SimpleChanges): void {
+    if (this.banSummary) {
+      this.banCount = this.banSummary.banCount
+      this.hasBans = this.banSummary.banCount > BigInt(0);
+    } else {
+      this.banCount = BigInt(0);
+      this.hasBans = false;
+    }
   }
 
   /** Fires when the gavel icon is clicked. */

@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { MatChip } from '@angular/material/chips';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { PlayerSelectionBaseComponent } from '../player-selection.base.component';
@@ -13,8 +14,12 @@ export class PlayerSelectionChipComponent implements OnChanges {
   @Input() public playerSelection: PlayerSelectionBaseComponent<IdentityResultAlpha | IdentityResultBeta> = null;
   @Input() public identity: IdentityResultAlpha | IdentityResultBeta = null;
 
+  @ViewChild('chip') public chip: MatChip;
+
   public name = '';
   public nameTooltip = '';
+  public selected = false;
+  public theme = null;
 
   public closeIcon = faTimesCircle;
 
@@ -22,6 +27,7 @@ export class PlayerSelectionChipComponent implements OnChanges {
   public ngOnChanges(_changes: SimpleChanges): void {
     this.name = this.identity[this.playerSelection.playerIdType];
     this.nameTooltip = this.name;
+    this.theme = !this.identity.error ? 'primary' : 'warn';
     if (!!this.identity.error) {
       this.nameTooltip += ' (invalid)';
     }

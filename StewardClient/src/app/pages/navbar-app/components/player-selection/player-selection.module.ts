@@ -23,6 +23,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { PlayerSelectionChipComponent } from './player-selection-chip/player-selection-chip.component';
 import { DirectivesModule } from '@shared/directives/directives.module';
+import { PlayerSelectionChipListComponent } from './player-selection-chip-list/player-selection-chip-list.component';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -32,6 +33,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     ApolloPlayerSelectionComponent,
     OpusPlayerSelectionComponent,
     PlayerSelectionChipComponent,
+    PlayerSelectionChipListComponent,
   ],
   imports: [
     CommonModule,
@@ -61,6 +63,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     ApolloPlayerSelectionComponent,
     OpusPlayerSelectionComponent,
     PlayerSelectionChipComponent,
+    PlayerSelectionChipListComponent,
   ],
 })
 export class PlayerSelectionModule {}

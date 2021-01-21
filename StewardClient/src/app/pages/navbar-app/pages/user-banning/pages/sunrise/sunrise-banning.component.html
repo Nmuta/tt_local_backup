@@ -5,21 +5,26 @@
       [allowT10Id]="false"
       [allowGroup]="true"
       [formControl]="formControls.playerIdentities">
-      <player-selection-chip
+      <player-selection-chip-list
+        [playerSelection]="playerSelection"
+        [identities]="playerSelection.playerIdentitiesFull"
+      ></player-selection-chip-list>
+      <!-- <player-selection-chip
         *ngFor="let identity of playerSelection.playerIdentitiesFull"
+        (click)="selectPlayer(identity)"
         [playerSelection]="playerSelection"
         [identity]="identity">
         <ban-chip-icon
           [identity]="identity"
           [banSummary]="summaryLookup[identity.xuid]"
           [banQuery]="getBanHistoryComponentByXuid(identity.xuid)"></ban-chip-icon>
-      </player-selection-chip>
+      </player-selection-chip> -->
     </sunrise-player-selection>
     <div class="bottom">
       <mat-card>
         <mat-card-content>
-          <ng-container *ngFor="let identity of playerSelection.playerIdentitiesFull">
-            <sunrise-ban-history [xuid]="identity.xuid"></sunrise-ban-history>
+          <ng-container *ngFor="let xuid of bannedXuids">
+            <sunrise-ban-history [xuid]="xuid" [hidden]="xuid !== selectedPlayer?.xuid"></sunrise-ban-history>
           </ng-container>
         </mat-card-content>
       </mat-card>
