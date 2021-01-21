@@ -4,7 +4,8 @@
     #chip="matChip"
     [color]="identity.extra.theme"
     (click)="chip.toggleSelected(true)">
-    <span class="name"
+    <ng-container *ngTemplateOutlet="template; context: { $implicit: identity }"></ng-container>
+    <!-- <span class="name"
       [matTooltip]="identity.extra.nameTooltip">
       {{ identity.extra.name || 'N/A' }}
     </span>
@@ -16,6 +17,6 @@
       matTooltip="Remove player from list"
       (click)="playerSelection.removeIdentityFromList(identity)"
       title="Remove Player"
-    ></fa-icon>
+    ></fa-icon> -->
   </mat-chip>
 </mat-chip-list>

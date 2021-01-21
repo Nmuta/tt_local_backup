@@ -2,15 +2,6 @@
 
 /** chip layout */
 mat-chip {
-  display: flex;
-  flex-flow: row nowrap;
-
-  .name {
-    flex-grow: 1;
-    flex-shrink: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
 }
 
 // the chip is clickable

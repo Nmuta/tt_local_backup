@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChildren, Input, OnChanges, OnInit, QueryList, SimpleChanges } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, Component, ContentChild, ContentChildren, Input, OnChanges, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { cloneDeep } from 'lodash';
@@ -22,8 +22,8 @@ type EitherIdentityResultAugmented = EitherIdentityResult & Augmentation;
   templateUrl: './player-selection-chip-list.component.html',
   styleUrls: ['./player-selection-chip-list.component.scss']
 })
-export class PlayerSelectionChipListComponent implements OnInit, OnChanges, AfterContentInit {
-  @ContentChildren(PlayerSelectionChipComponent, { descendants: true }) public chips: QueryList<PlayerSelectionChipComponent>;
+export class PlayerSelectionChipListComponent implements OnInit, OnChanges {
+  @ContentChild(TemplateRef) public template: TemplateRef<any>;
 
   @Input() public playerSelection: PlayerSelectionBaseComponent<IdentityResultAlpha | IdentityResultBeta> = null;
   @Input() public identities: EitherIdentityResult[] = [];
@@ -32,10 +32,6 @@ export class PlayerSelectionChipListComponent implements OnInit, OnChanges, Afte
   public closeIcon = faTimesCircle;
   
   constructor() { }
-
-  /** Lifecycle hook. */
-  public ngAfterContentInit(): void {
-  }
 
   /** Lifecycle hook. */
   public ngOnChanges(_changes: SimpleChanges): void {
