@@ -68,7 +68,7 @@ export class ApolloItemSelectionComponent extends ItemSelectionBaseComponent {
       }
     }
 
-    this.stateGroupOptions = this.stateForm.get('itemInput')?.valueChanges.pipe(
+    this.stateGroupOptions = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
       startWith(''),
       map(value => this.filterGroup(value)),
     );

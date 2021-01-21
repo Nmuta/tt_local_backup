@@ -26,11 +26,10 @@ export abstract class ItemSelectionBaseComponent extends BaseComponent implement
   public loadError: unknown;
 
   /** Master Inventory autocomplete varsiables */
-  public stateFormInitState = {
+  public itemSelectionForm: FormGroup = this.formBuilder.group({
     itemInput: new FormControl('', Validators.required),
     quantity: new FormControl(undefined, Validators.required),
-  };
-  public stateForm: FormGroup = this.formBuilder.group(this.stateFormInitState);
+  });
   public stateGroups: InventoryItemGroup[] = [];
   public stateGroupOptions: Observable<InventoryItemGroup[]>;
 
@@ -50,14 +49,14 @@ export abstract class ItemSelectionBaseComponent extends BaseComponent implement
 
   /** New item selected. */
   public addItemEmit(): void {
-    this.selectedItem.quantity = BigInt(this.stateForm.value['quantity']);
+    this.selectedItem.quantity = BigInt(this.itemSelectionForm.value['quantity']);
     this.addItemEvent.emit(this.selectedItem);
 
     this.selectedItem = undefined;
-    this.stateForm.reset(this.stateFormInitState);
+    this.itemSelectionForm.reset();
 
 
-    this.stateGroupOptions = this.stateForm.get('itemInput')?.valueChanges.pipe(
+    this.stateGroupOptions = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
       startWith(''),
       map(value => this.filterGroup(value)),
     );
