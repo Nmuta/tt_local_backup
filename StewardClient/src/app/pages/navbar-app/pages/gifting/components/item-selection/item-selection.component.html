@@ -1,0 +1,28 @@
+<form [formGroup]="stateForm">
+  <mat-form-field class="item-selection-form-field">
+    <input
+      type="text"
+      matInput
+      placeholder="Select Item"
+      formControlName="stateGroup"
+      required
+      [matAutocomplete]="autoGroup"
+    />
+    <mat-autocomplete
+      #autoGroup="matAutocomplete"
+      (optionSelected)="newItemSelected($event.option.value)"
+      [displayWith]="itemAutoCompleteDisplayFn"
+    >
+      <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.category">
+        <mat-option *ngFor="let item of group.items" [value]="item">
+          {{ item.description }}
+        </mat-option>
+      </mat-optgroup>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field class="quantity-form-field">
+    <mat-label>Quantity</mat-label>
+    <input type="number" matInput placeholder="1" value="1" />
+  </mat-form-field>
+  <button mat-raised-button color="primary">Add Item</button>
+</form>

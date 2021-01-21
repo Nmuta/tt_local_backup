@@ -3,32 +3,31 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { MatCardModule } from '@angular/material/card';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PipesModule } from '@shared/pipes/pipes.module';
-import { GravityGiftBasketComponent } from './gravity/gravity-gift-basket.component';
-import { SunriseGiftBasketComponent } from './sunrise/sunrise-gift-basket.component';
-import { ApolloGiftBasketComponent } from './apollo/apollo-gift-basket.component';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { ItemSelectionModule } from '../item-selection/item-selection.module';
+import { GravityItemSelectionComponent } from './gravity/gravity-item-selection.component';
+import { SunriseItemSelectionComponent } from './sunrise/sunrise-item-selection.component';
+import { ApolloItemSelectionComponent } from './apollo/apollo-item-selection.component';
 
 /** The feature module for the User Details route. */
 @NgModule({
-  declarations: [GravityGiftBasketComponent, SunriseGiftBasketComponent, ApolloGiftBasketComponent],
+  declarations: [
+    GravityItemSelectionComponent,
+    SunriseItemSelectionComponent,
+    ApolloItemSelectionComponent,
+  ],
   imports: [
     CommonModule,
     ErrorSpinnerModule,
     MatButtonModule,
     MatInputModule,
-    MatCardModule,
-    MatProgressSpinnerModule,
     MatTooltipModule,
     MatAutocompleteModule,
     MatOptionModule,
@@ -39,8 +38,11 @@ import { ItemSelectionModule } from '../item-selection/item-selection.module';
     MatFormFieldModule,
     PipesModule,
     JsonDumpModule,
-    ItemSelectionModule,
   ],
-  exports: [GravityGiftBasketComponent, SunriseGiftBasketComponent, ApolloGiftBasketComponent],
+  exports: [
+    GravityItemSelectionComponent,
+    SunriseItemSelectionComponent,
+    ApolloItemSelectionComponent,
+  ],
 })
-export class GiftBasketModule {}
+export class ItemSelectionModule {}

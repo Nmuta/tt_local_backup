@@ -1,0 +1,37 @@
+<mat-card>
+  <h2>{{ title }} Gift Basket</h2>
+
+  <ng-container *ngIf="!isLoading && !loadError; else failState">
+    <!-- Verify card is not disabled. Set in game title components that extend base -->
+    <ng-container *ngIf="!disableCard; else giftingNotSupported">
+      <!-- Gravity is unique, master inventory is based on player inventory game settings -->
+      <ng-container
+        *ngIf="
+          !hasGameSettings || (hasGameSettings && !!playerInventory);
+          else waitingForGameSettings
+        "
+      >
+        <sunrise-item-selection [masterInventory]="masterInventory"></sunrise-item-selection>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</mat-card>
+
+<ng-template #failState>
+  <div id="fail-state">
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+    <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+  </div>
+</ng-template>
+
+<ng-template #giftingNotSupported>
+  <div id="disable-card">
+    <p>This card is disabled for {{ title }}</p>
+  </div>
+</ng-template>
+
+<ng-template #waitingForGameSettings>
+  <div id="waiting-for-game-settings">
+    <p>Waiting for player inventory to populate...</p>
+  </div>
+</ng-template>

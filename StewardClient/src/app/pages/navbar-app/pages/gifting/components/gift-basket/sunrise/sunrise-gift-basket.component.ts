@@ -11,7 +11,7 @@ import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 /** Apollo gift basket. */
 @Component({
   selector: 'sunrise-gift-basket',
-  templateUrl: '../gift-basket.component.html',
+  templateUrl: './sunrise-gift-basket.component.html',
   styleUrls: ['../gift-basket.component.scss'],
   providers: [
     {

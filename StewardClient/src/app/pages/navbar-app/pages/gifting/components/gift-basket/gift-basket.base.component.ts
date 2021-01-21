@@ -8,6 +8,15 @@ import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory;
+export type InventoryItem = {
+  itemId: BigInt;
+  description: string;
+  quantity: BigInt;
+};
+export type InventoryItemGroup = {
+  category: string;
+  items: InventoryItem[];
+};
 
 /** The base gift-basket component. */
 @Component({
@@ -31,4 +40,8 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
   /** Game title */
   public abstract title: GameTitleCodeName;
+
+  constructor() {
+    super();
+  }
 }

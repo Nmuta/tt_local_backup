@@ -1,5 +1,14 @@
 @import '/src/variables.scss';
 
 mat-card {
-  width: 100%;
+  .item-selection-form-field {
+    max-width: 400px;
+    width: 100%;
+    margin-right: 10px;
+  }
+
+  .quantity-form-field {
+    width: 100px;
+    margin-right: 10px;
+  }
 }

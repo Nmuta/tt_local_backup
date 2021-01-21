@@ -12,7 +12,7 @@ import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 /** Gravity gift basket. */
 @Component({
   selector: 'gravity-gift-basket',
-  templateUrl: '../gift-basket.component.html',
+  templateUrl: './gravity-gift-basket.component.html',
   styleUrls: ['../gift-basket.component.scss'],
   providers: [
     {

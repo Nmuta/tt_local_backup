@@ -3,11 +3,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { OpusGiftBasketComponent } from './opus-gift-basket.component';
+import { GravityItemSelectionComponent } from './gravity-item-selection.component';
 
-describe('OpusGiftBasketComponent', () => {
-  let fixture: ComponentFixture<OpusGiftBasketComponent>;
-  let component: OpusGiftBasketComponent;
+describe('GravityItemSelectionComponent', () => {
+  let fixture: ComponentFixture<GravityItemSelectionComponent>;
+  let component: GravityItemSelectionComponent;
 
   beforeEach(
     waitForAsync(() => {
@@ -17,23 +17,17 @@ describe('OpusGiftBasketComponent', () => {
           HttpClientTestingModule,
           NgxsModule.forRoot(),
         ],
-        declarations: [OpusGiftBasketComponent],
+        declarations: [GravityItemSelectionComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [],
       }).compileComponents();
 
-      // const injector = getTestBed();
-
-      fixture = TestBed.createComponent(OpusGiftBasketComponent);
+      fixture = TestBed.createComponent(GravityItemSelectionComponent);
       component = fixture.debugElement.componentInstance;
     }),
   );
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should have disableCard set to true', () => {
-    expect(component.disableCard).toBeTruthy();
   });
 });

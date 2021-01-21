@@ -34,7 +34,6 @@ import { UserSettingsState } from '@shared/state/user-settings/user-settings.sta
 import { GravityGiftingState } from './pages/navbar-app/pages/gifting/gravity/state/gravity-gifting.state';
 import { SunriseGiftingState } from './pages/navbar-app/pages/gifting/sunrise/state/sunrise-gifting.state';
 import { ApolloGiftingState } from './pages/navbar-app/pages/gifting/apollo/state/apollo-gifting.state';
-import { OpusGiftingState } from './pages/navbar-app/pages/gifting/opus/state/opus-gifting.state';
 import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state';
 import { MatNativeDateModule } from '@angular/material/core';
 import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-memory.state';
@@ -84,7 +83,6 @@ function fakeApiOrNothing(): Provider[] {
       GravityGiftingState,
       SunriseGiftingState,
       ApolloGiftingState,
-      OpusGiftingState,
     ]),
     NgxsStoragePluginModule.forRoot({ key: [UserSettingsState] }),
     NgxsRouterPluginModule.forRoot(),
