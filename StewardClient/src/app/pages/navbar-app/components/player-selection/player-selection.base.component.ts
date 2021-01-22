@@ -71,6 +71,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
     if (!!control.value && !this.allowGroup && this.playerIds.length > 1) {
       return { groupSelectionInvalid: true };
     }
+
     return null;
   }
 

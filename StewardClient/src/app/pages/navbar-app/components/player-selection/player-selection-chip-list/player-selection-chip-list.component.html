@@ -2,6 +2,8 @@
   <mat-chip
     *ngFor="let identity of augmentedIdentities"
     #chip="matChip"
+    [class.identity-valid]="identity.extra.isValid"
+    [class.identity-invalid]="!identity.extra.isValid"
     [color]="identity.extra.theme"
     (click)="chip.toggleSelected(true)">
     <ng-container *ngTemplateOutlet="template; context: { $implicit: identity }"></ng-container>

@@ -1,11 +1,8 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { faGavel, faSpinner, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faGavel, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { SunriseBanSummary } from '@models/sunrise';
-import { PlayerSelectionBaseComponent } from '@navbar-app/components/player-selection/player-selection.base.component';
-import { Subject } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
 
 export interface BanQuery {
   isLoading: boolean;

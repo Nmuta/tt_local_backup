@@ -9,11 +9,6 @@ mat-chip {
   cursor: pointer;
 }
 
-// vertically center the icons
-fa-icon {
-  line-height: 1em;
-}
-
 .identity-valid {
   background-color: mat-color($app-primary, 'lighter');
 }
