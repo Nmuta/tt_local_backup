@@ -12,17 +12,11 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { GravityItemSelectionComponent } from './gravity/gravity-item-selection.component';
-import { SunriseItemSelectionComponent } from './sunrise/sunrise-item-selection.component';
-import { ApolloItemSelectionComponent } from './apollo/apollo-item-selection.component';
+import { ItemSelectionComponent } from './item-selection.component';
 
-/** The feature module for the User Details route. */
+/** The feature module for the item selection component. */
 @NgModule({
-  declarations: [
-    GravityItemSelectionComponent,
-    SunriseItemSelectionComponent,
-    ApolloItemSelectionComponent,
-  ],
+  declarations: [ItemSelectionComponent],
   imports: [
     CommonModule,
     ErrorSpinnerModule,
@@ -39,10 +33,6 @@ import { ApolloItemSelectionComponent } from './apollo/apollo-item-selection.com
     PipesModule,
     JsonDumpModule,
   ],
-  exports: [
-    GravityItemSelectionComponent,
-    SunriseItemSelectionComponent,
-    ApolloItemSelectionComponent,
-  ],
+  exports: [ItemSelectionComponent],
 })
 export class ItemSelectionModule {}

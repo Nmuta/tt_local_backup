@@ -140,7 +140,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
     const validateRequest$ = this.makeRequestToValidateIds$(this.playerIds, this.playerIdType);
     validateRequest$.pipe(takeUntil(this.onDestroy$)).subscribe(
       response => {
-        console.log(response);
         this.isLoading = false;
         // Sort bad lookups to top of list
         this.playerIdentities = response

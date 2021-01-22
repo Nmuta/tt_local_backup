@@ -7,6 +7,7 @@ import { GravityGiftBasketComponent } from './gravity-gift-basket.component';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import { of } from 'rxjs';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('GravityGiftBasketComponent', () => {
   let fixture: ComponentFixture<GravityGiftBasketComponent>;
@@ -21,6 +22,7 @@ describe('GravityGiftBasketComponent', () => {
           RouterTestingModule.withRoutes([]),
           HttpClientTestingModule,
           NgxsModule.forRoot(),
+          ReactiveFormsModule,
         ],
         declarations: [GravityGiftBasketComponent],
         schemas: [NO_ERRORS_SCHEMA],

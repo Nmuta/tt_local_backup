@@ -17,6 +17,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 import { ItemSelectionModule } from '../item-selection/item-selection.module';
 
 /** The feature module for the User Details route. */
@@ -33,6 +34,7 @@ import { ItemSelectionModule } from '../item-selection/item-selection.module';
     MatAutocompleteModule,
     MatOptionModule,
     MatSelectModule,
+    MatTableModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,

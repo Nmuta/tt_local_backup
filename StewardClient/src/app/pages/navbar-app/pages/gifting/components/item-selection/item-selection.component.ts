@@ -1,20 +1,18 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
-import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { InventoryItem, InventoryItemGroup } from '../gift-basket/gift-basket.base.component';
 import { map, startWith } from 'rxjs/operators';
 
-type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory;
-
-/** The base gift-basket component. */
+/** The item-selection component. */
 @Component({
-  template: '',
+  selector: 'item-selection',
+  templateUrl: './item-selection.component.html',
+  styleUrls: ['./item-selection.component.scss'],
 })
-export abstract class ItemSelectionBaseComponent extends BaseComponent implements OnChanges {
-  @Input() public masterInventory: MasterInventoryUnion;
+export class ItemSelectionComponent extends BaseComponent implements OnChanges {
+  @Input() public inventoryItemGroups: InventoryItemGroup[];
   @Output() public addItemEvent = new EventEmitter<InventoryItem>();
 
   public selectedItem: InventoryItem;
@@ -28,38 +26,42 @@ export abstract class ItemSelectionBaseComponent extends BaseComponent implement
   /** Master Inventory autocomplete varsiables */
   public itemSelectionForm: FormGroup = this.formBuilder.group({
     itemInput: new FormControl('', Validators.required),
-    quantity: new FormControl(undefined, Validators.required),
+    quantity: new FormControl(undefined, [
+      Validators.required,
+      Validators.min(1),
+      Validators.pattern('^(0|[1-9][0-9]*)$'),
+    ]),
   });
-  public stateGroups: InventoryItemGroup[] = [];
   public stateGroupOptions: Observable<InventoryItemGroup[]>;
 
   constructor(protected readonly formBuilder: FormBuilder) {
     super();
   }
 
-  /** Build mat autocomplete state groups. */
-  public abstract buildMatAutocompleteState(): void;
-
   /** Angular lifecycle hook. */
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes?.masterInventory && !!this.masterInventory) {
-      this.buildMatAutocompleteState();
+    if (changes?.inventoryItemGroups && !!this.inventoryItemGroups) {
+      this.stateGroupOptions = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
+        startWith(''),
+        map(value => this.filterGroup(value)),
+      );
     }
   }
 
   /** New item selected. */
   public addItemEmit(): void {
     this.selectedItem.quantity = BigInt(this.itemSelectionForm.value['quantity']);
-    this.addItemEvent.emit(this.selectedItem);
+    this.addItemEvent.emit({ ...this.selectedItem });
 
     this.selectedItem = undefined;
     this.itemSelectionForm.reset();
-
 
     this.stateGroupOptions = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
       startWith(''),
       map(value => this.filterGroup(value)),
     );
+
+    document.getElementById('item-selection-input')?.focus();
   }
 
   /** New item is selected from the dropdown. */
@@ -77,10 +79,10 @@ export abstract class ItemSelectionBaseComponent extends BaseComponent implement
   protected filterGroup(value: string | InventoryItem): InventoryItemGroup[] {
     if (value) {
       if (typeof value !== 'string') {
-        return this.stateGroups;
+        return this.inventoryItemGroups;
       }
 
-      const prefilter = this.stateGroups.map((group: InventoryItemGroup) => ({
+      const prefilter = this.inventoryItemGroups.map((group: InventoryItemGroup) => ({
         category: group.category,
         items: this.filter(group.category, group.items, value),
       }));
@@ -92,7 +94,7 @@ export abstract class ItemSelectionBaseComponent extends BaseComponent implement
       }
       return prefilter.filter(group => group.items.length > 0);
     }
-    return this.stateGroups;
+    return this.inventoryItemGroups;
   }
 
   private filter(prefix: string, opt: InventoryItem[], value: string): InventoryItem[] {

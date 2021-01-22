@@ -1,9 +1,10 @@
 <form [formGroup]="itemSelectionForm">
   <mat-form-field class="item-selection-form-field">
     <input
+      id="item-selection-input"
       type="text"
       matInput
-      placeholder="Select Item"
+      placeholder="Select an item"
       formControlName="itemInput"
       required
       [matAutocomplete]="autoGroup"
@@ -23,7 +24,20 @@
   </mat-form-field>
   <mat-form-field class="quantity-form-field">
     <mat-label>Quantity</mat-label>
-    <input id="item-selection-quanity-input" type="number" matInput placeholder="1" formControlName="quantity" />
+    <input
+      id="item-selection-quanity-input"
+      type="number"
+      matInput
+      placeholder="1"
+      formControlName="quantity"
+    />
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="addItemEmit()" [disabled]="!itemSelectionForm.valid">Add Item</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="addItemEmit()"
+    [disabled]="!itemSelectionForm.valid"
+  >
+    Add Item
+  </button>
 </form>

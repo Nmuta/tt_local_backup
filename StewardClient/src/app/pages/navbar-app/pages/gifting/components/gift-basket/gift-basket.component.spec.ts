@@ -5,8 +5,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { GiftBasketBaseComponent } from './gift-basket.base.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
-describe('PlayerSelectionBaseComponent', () => {
+describe('GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<GiftBasketBaseComponent<IdentityResultBeta>>;
   let component: GiftBasketBaseComponent<IdentityResultBeta>;
 
@@ -17,6 +18,7 @@ describe('PlayerSelectionBaseComponent', () => {
           RouterTestingModule.withRoutes([]),
           HttpClientTestingModule,
           NgxsModule.forRoot(),
+          ReactiveFormsModule,
         ],
         declarations: [GiftBasketBaseComponent],
         schemas: [NO_ERRORS_SCHEMA],

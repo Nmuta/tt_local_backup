@@ -3,12 +3,13 @@ import { NgxsModule } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IdentityResultBeta } from '@models/identity-query.model';
-import { GiftBasketBaseComponent } from './gift-basket.base.component';
+import { ItemSelectionComponent } from './item-selection.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
-describe('PlayerSelectionBaseComponent', () => {
-  let fixture: ComponentFixture<GiftBasketBaseComponent<IdentityResultBeta>>;
-  let component: GiftBasketBaseComponent<IdentityResultBeta>;
+describe('ItemSelectionComponent', () => {
+  let fixture: ComponentFixture<ItemSelectionComponent>;
+  let component: ItemSelectionComponent;
 
   beforeEach(
     waitForAsync(() => {
@@ -17,14 +18,16 @@ describe('PlayerSelectionBaseComponent', () => {
           RouterTestingModule.withRoutes([]),
           HttpClientTestingModule,
           NgxsModule.forRoot(),
+          ReactiveFormsModule,
+          MatAutocompleteModule,
         ],
-        declarations: [GiftBasketBaseComponent],
+        declarations: [ItemSelectionComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [],
       }).compileComponents();
 
       fixture = TestBed.createComponent(
-        GiftBasketBaseComponent as Type<GiftBasketBaseComponent<IdentityResultBeta>>,
+        ItemSelectionComponent as Type<ItemSelectionComponent>,
       );
       component = fixture.debugElement.componentInstance;
     }),

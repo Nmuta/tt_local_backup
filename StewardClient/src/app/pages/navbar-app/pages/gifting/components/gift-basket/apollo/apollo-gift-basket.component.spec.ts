@@ -4,6 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ApolloGiftBasketComponent } from './apollo-gift-basket.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('ApolloGiftBasketComponent', () => {
   let fixture: ComponentFixture<ApolloGiftBasketComponent>;
@@ -16,6 +17,7 @@ describe('ApolloGiftBasketComponent', () => {
           RouterTestingModule.withRoutes([]),
           HttpClientTestingModule,
           NgxsModule.forRoot(),
+          ReactiveFormsModule,
         ],
         declarations: [ApolloGiftBasketComponent],
         schemas: [NO_ERRORS_SCHEMA],
