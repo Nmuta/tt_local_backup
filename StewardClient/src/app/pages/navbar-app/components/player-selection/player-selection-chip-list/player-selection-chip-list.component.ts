@@ -1,4 +1,5 @@
-import { AfterContentChecked, AfterContentInit, Component, ContentChild, ContentChildren, Input, OnChanges, OnInit, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, Component, ContentChild, ContentChildren, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
+import { MatChipListChange, MatChipSelectionChange } from '@angular/material/chips';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { cloneDeep } from 'lodash';
@@ -25,6 +26,7 @@ type EitherIdentityResultAugmented = EitherIdentityResult & Augmentation;
 export class PlayerSelectionChipListComponent implements OnInit, OnChanges {
   @ContentChild(TemplateRef) public template: TemplateRef<any>;
 
+  @Output() public selectionChange = new EventEmitter<EitherIdentityResult>();
   @Input() public playerSelection: PlayerSelectionBaseComponent<IdentityResultAlpha | IdentityResultBeta> = null;
   @Input() public identities: EitherIdentityResult[] = [];
   public augmentedIdentities: EitherIdentityResultAugmented[] = [];
@@ -64,4 +66,8 @@ export class PlayerSelectionChipListComponent implements OnInit, OnChanges {
   public ngOnInit(): void {
   }
 
+  /** Event proxy. */
+  public onChipListChange(event: MatChipListChange): void {
+    this.selectionChange.emit(event.value);
+  }
 }

@@ -1,7 +1,8 @@
-<mat-chip-list>
+<mat-chip-list (change)="onChipListChange($event)">
   <mat-chip
     *ngFor="let identity of augmentedIdentities"
     #chip="matChip"
+    [value]="identity"
     [class.identity-valid]="identity.extra.isValid"
     [class.identity-invalid]="!identity.extra.isValid"
     [color]="identity.extra.theme"

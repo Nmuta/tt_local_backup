@@ -4,8 +4,6 @@ import { UserBanningComponent } from './user-banning.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { UserBanningRoutingModule } from './user-banning.routing';
 import { ApolloBanningComponent } from './pages/apollo/apollo-banning.component';
-import { GravityBanningComponent } from './pages/gravity/gravity-banning.component';
-import { OpusBanningComponent } from './pages/opus/opus-banning.component';
 import { SunriseBanningComponent } from './pages/sunrise/sunrise-banning.component';
 import { MatButtonModule } from '@angular/material/button';
 import { PlayerSelectionModule } from '../../components/player-selection/player-selection.module';
@@ -31,8 +29,6 @@ import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
   declarations: [
     UserBanningComponent,
     ApolloBanningComponent,
-    GravityBanningComponent,
-    OpusBanningComponent,
     SunriseBanningComponent,
     BanOptionsComponent,
     DurationPickerComponent,

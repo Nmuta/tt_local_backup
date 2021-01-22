@@ -14,7 +14,6 @@ import {
 } from '@models/sunrise';
 import {
   LiveOpsBanDescriptions,
-  SunriseBanHistory,
 } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
@@ -23,7 +22,7 @@ import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.m
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -99,7 +98,7 @@ export class SunriseService {
     );
   }
 
-  /** Gets user flags by a XUID. */
+  /** Gets ban summaries by a list of XUIDs. */
   public getBanSummariesByXuids(xuids: BigInt[]): Observable<SunriseBanSummary[]> {
     return this.apiService.postRequest<SunriseBanSummary[]>(
       `${this.basePath}/players/banSummaries`,

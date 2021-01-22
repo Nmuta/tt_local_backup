@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApolloPlayerDetails } from '@models/apollo';
+import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,
@@ -38,6 +39,14 @@ export class ApolloService {
     return this.apiService.postRequest<IdentityResultAlphaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
+    );
+  }
+
+  /** Gets ban summaries by a list of XUIDs. */
+  public getBanSummariesByXuids(xuids: BigInt[]): Observable<ApolloBanSummary[]> {
+    return this.apiService.postRequest<ApolloBanSummary[]>(
+      `${this.basePath}/players/banSummaries`,
+      xuids,
     );
   }
 

@@ -1,9 +1,23 @@
 <ng-container [formGroup]="formGroup" (ngSubmit)="submit()">
   <apollo-player-selection
+    #playerSelection
     [allowT10Id]="false"
     [allowGroup]="false"
-    [formControl]="formControls.playerIdentities"
-  ></apollo-player-selection>
+    [formControl]="formControls.playerIdentities">
+    <player-selection-chip-list
+      [playerSelection]="playerSelection"
+      [identities]="playerSelection.playerIdentitiesFull">
+      <ng-template let-identity>
+        <player-selection-chip
+          [playerSelection]="playerSelection"
+          [identity]="identity">
+          <ban-chip-icon
+            [identity]="identity"
+            [banSummary]="summaryLookup[identity.xuid]"></ban-chip-icon>
+        </player-selection-chip>
+      </ng-template>
+    </player-selection-chip-list>
+  </apollo-player-selection>
 
   <div class="action-container">
     <mat-card>
