@@ -178,7 +178,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IApolloPlayerDetailsProvider, ApolloPlayerDetailsProvider>();
             services.AddSingleton<IApolloPlayerInventoryProvider, ApolloPlayerInventoryProvider>();
             services.AddSingleton<IApolloBanHistoryProvider, ApolloBanHistoryProvider>();
-            services.AddSingleton<IRequestValidator<ApolloBanParameters>, ApolloBanParametersRequestValidator>();
+            services.AddSingleton<IRequestValidator<ApolloBanParametersInput>, ApolloBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<ApolloPlayerInventory>, ApolloPlayerInventoryRequestValidator>();
             services.AddSingleton<IRequestValidator<ApolloGroupGift>, ApolloGroupGiftRequestValidator>();
             services.AddSingleton<IApolloGiftHistoryProvider, ApolloGiftHistoryProvider>();

@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
     /// <summary>
     ///     Represents a Apollo ban parameters.
     /// </summary>
-    public sealed class ApolloBanParameters
+    public sealed class ApolloBanParametersInput
     {
         /// <summary>
         ///     Gets or sets the reason.
@@ -20,12 +20,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         /// <summary>
         ///     Gets or sets the start time.
         /// </summary>
-        public DateTime StartTimeUtc { get; set; }
+        public DateTime? StartTimeUtc { get; set; }
 
         /// <summary>
-        ///   Gets or sets the expiry time.
+        ///   Gets or sets the duration.
         /// </summary>
-        public DateTime ExpireTimeUtc { get; set; }
+        public TimeSpan? Duration { get; set; }
 
         /// <summary>
         ///     Gets or sets the xuid.

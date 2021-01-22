@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using AutoFixture;
+using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Controllers;
+using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -311,7 +313,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             action().Should().BeAssignableTo<Task<IActionResult>>();
             var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
             result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParameters"));
+            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
         }
 
         [TestMethod]
@@ -320,7 +322,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = this.GenerateBanParametersInput();
             var useBackgroundProcessing = false;
 
             // Act.
@@ -347,7 +349,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = this.GenerateBanParametersInput();
             var useBackgroundProcessing = true;
             var requestingAgent = Fixture.Create<string>();
 
@@ -374,7 +376,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             action().Should().BeAssignableTo<Task<IActionResult>>();
             var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
             result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParameters"));
+            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
         }
 
         [TestMethod]
@@ -1195,23 +1197,23 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             details.Should().BeOfType<List<ApolloGiftHistory>>();
         }
 
-        private List<ApolloBanParameters> GenerateBanParameters()
+        private List<ApolloBanParametersInput> GenerateBanParametersInput()
         {
-            var newParams = new ApolloBanParameters
+            var newParams = new ApolloBanParametersInput
             {
                 Xuid = 111,
                 Gamertag = "gamerT1",
                 FeatureArea = "Matchmaking",
                 Reason = "Disgusting license plate.",
                 StartTimeUtc = DateTime.UtcNow,
-                ExpireTimeUtc = DateTime.UtcNow.AddSeconds(1),
+                Duration = TimeSpan.FromSeconds(1),
                 BanAllConsoles = false,
                 BanAllPcs = false,
                 DeleteLeaderboardEntries = false,
                 SendReasonNotification = false
             };
 
-            return new List<ApolloBanParameters> { newParams };
+            return new List<ApolloBanParametersInput> { newParams };
         }
 
         private sealed class Dependencies
@@ -1268,7 +1270,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
             public IJobTracker JobTracker { get; set; } = Substitute.For<IJobTracker>();
 
-            public IRequestValidator<ApolloBanParameters> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloBanParameters>>();
+            public IMapper Mapper { get; set; } = Substitute.ForPartsOf<Mapper>(new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ApolloProfileMapper());
+                mc.AllowNullCollections = true;
+            }));
+
+            public IRequestValidator<ApolloBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloBanParametersInput>>();
 
             public IRequestValidator<ApolloPlayerInventory> PlayerInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloPlayerInventory>>();
 
@@ -1283,6 +1291,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                                                                     this.Configuration,
                                                                     this.Scheduler,
                                                                     this.JobTracker,
+                                                                    this.Mapper,
                                                                     this.BanParametersRequestValidator,
                                                                     this.PlayerInventoryRequestValidator,
                                                                     this.GroupGiftRequestValidator)

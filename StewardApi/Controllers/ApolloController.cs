@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
@@ -47,7 +48,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IApolloBanHistoryProvider banHistoryProvider;
         private readonly IScheduler scheduler;
         private readonly IJobTracker jobTracker;
-        private readonly IRequestValidator<ApolloBanParameters> banParametersRequestValidator;
+        private readonly IMapper mapper;
+        private readonly IRequestValidator<ApolloBanParametersInput> banParametersRequestValidator;
         private readonly IRequestValidator<ApolloPlayerInventory> playerInventoryRequestValidator;
         private readonly IRequestValidator<ApolloGroupGift> groupGiftRequestValidator;
         private readonly string giftingPassword;
@@ -63,6 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="configuration">The configuration.</param>
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="jobTracker">The job tracker.</param>
+        /// <param name="mapper">The mapper.</param>
         /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
         /// <param name="playerInventoryRequestValidator">The player inventory request validator.</param>
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
@@ -75,7 +78,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                                 IConfiguration configuration,
                                 IScheduler scheduler,
                                 IJobTracker jobTracker,
-                                IRequestValidator<ApolloBanParameters> banParametersRequestValidator,
+                                IMapper mapper,
+                                IRequestValidator<ApolloBanParametersInput> banParametersRequestValidator,
                                 IRequestValidator<ApolloPlayerInventory> playerInventoryRequestValidator,
                                 IRequestValidator<ApolloGroupGift> groupGiftRequestValidator)
         {
@@ -87,6 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             configuration.ShouldNotBeNull(nameof(configuration));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
+            mapper.ShouldNotBeNull(nameof(mapper));
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
             playerInventoryRequestValidator.ShouldNotBeNull(nameof(playerInventoryRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
@@ -98,6 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.banHistoryProvider = banHistoryProvider;
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
+            this.mapper = mapper;
             this.banParametersRequestValidator = banParametersRequestValidator;
             this.playerInventoryRequestValidator = playerInventoryRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
@@ -204,7 +210,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Bans players.
         /// </summary>
-        /// <param name="banParameters">The list of ban parameters.</param>
+        /// <param name="banInput">The list of ban parameters.</param>
         /// <param name="useBackgroundProcessing">A value that indicates whether to use background processing.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
@@ -213,18 +219,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<ApolloBanResult>))]
         [SwaggerResponse(202)]
-        public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParameters> banParameters, [FromQuery] bool useBackgroundProcessing, [FromHeader] string requestingAgent)
+        public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput, [FromQuery] bool useBackgroundProcessing, [FromHeader] string requestingAgent)
         {
             try
             {
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-                banParameters.ShouldNotBeNull(nameof(banParameters));
+                banInput.ShouldNotBeNull(nameof(banInput));
 
-                foreach (var banParam in banParameters)
+                foreach (var banParam in banInput)
                 {
                     this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
                     this.banParametersRequestValidator.Validate(banParam, this.ModelState);
                 }
+
+                var banParameters = this.mapper.Map<IList<ApolloBanParameters>>(banInput);
 
                 if (!this.ModelState.IsValid)
                 {
