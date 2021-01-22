@@ -3,7 +3,7 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { InventoryItem, InventoryItemGroup } from '../gift-basket/gift-basket.base.component';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 
 /** The item-selection component. */
 @Component({
@@ -42,6 +42,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes?.inventoryItemGroups && !!this.inventoryItemGroups) {
       this.stateGroupOptions = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
+        takeUntil(this.onDestroy$),
         startWith(''),
         map(value => this.filterGroup(value)),
       );
@@ -55,11 +56,6 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
 
     this.selectedItem = undefined;
     this.itemSelectionForm.reset();
-
-    this.stateGroupOptions = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
-      startWith(''),
-      map(value => this.filterGroup(value)),
-    );
 
     document.getElementById('item-selection-input')?.focus();
   }
@@ -81,12 +77,11 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
       if (typeof value !== 'string') {
         return this.inventoryItemGroups;
       }
-
       const prefilter = this.inventoryItemGroups.map((group: InventoryItemGroup) => ({
         category: group.category,
         items: this.filter(group.category, group.items, value),
       }));
-      if ('category'.startsWith(value.toLowerCase())) {
+      if ('?'.startsWith(value.toLowerCase())) {
         return prefilter.map(g => ({
           items: [],
           category: g.category,
@@ -103,6 +98,6 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
     if (prefixFilterValue.includes(filterValue)) {
       return opt;
     }
-    return opt.filter(item => item?.description?.toLowerCase().includes(filterValue));
+    return opt.filter(item => item?.description?.toLowerCase().includes(filterValue) || item?.itemId?.toString()?.toLowerCase().includes(filterValue));
   }
 }
