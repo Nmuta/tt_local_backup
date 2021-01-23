@@ -1,1 +1,35 @@
-<p>apollo-gift-history works!</p>
+<mat-card>
+  <mat-card-content>
+    <h2>
+        Apollo Gift History
+        <error-spinner
+          [isActive]="false"
+          [error]="loadError"
+          spinnerMessage="Loading"
+          errorMessage="Failed to load"
+        ></error-spinner>
+      </h2>
+      <ng-container *ngIf="!isLoading && !loadError; else failstate">
+        <table mat-table [dataSource]="giftHistoryList" multiTemplateDataRows>
+          <ng-container matColumnDef="requestingAgent">
+            <th mat-header-cell *matHeaderCellDef>Requesting Agent</th>
+            <td mat-cell *matCellDef="let entry">{{ entry.requestingAgent }}</td>
+          </ng-container>
+          <ng-container matColumnDef="giftSendDateUtc">
+            <th mat-header-cell *matHeaderCellDef>Gift Send Date</th>
+            <td mat-cell *matCellDef="let entry">
+              {{ entry.giftSendDateUtc | date: 'short' }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="giftInventory">
+            <th mat-header-cell *matHeaderCellDef>Gift Inventory</th>
+            <td mat-cell *matCellDef="let entry">
+              {{ entry.giftInventory | humanize }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let element; columns: columnsToDisplay" class="element-row"></tr>
+        </table>
+      </ng-container>
+  </mat-card-content>
+</mat-card>

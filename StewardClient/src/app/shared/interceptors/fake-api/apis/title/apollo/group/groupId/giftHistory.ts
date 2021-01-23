@@ -25,7 +25,8 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<ApolloGiftHistory>> {
     return {
-      playerId: '189456456',
+      idType: 'LspGroupId',
+      id: '189456456',
       title: 'Apollo',
       giftSendDateUtc: '2020-12-08T20:04:05.391Z',
       giftInventory: {

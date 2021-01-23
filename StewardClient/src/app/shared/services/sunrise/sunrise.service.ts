@@ -98,9 +98,9 @@ export class SunriseService {
   }
 
     /** Gets Gift history by a XUID. */
-    public getGiftHistoryByXuid(xuid: number): Observable<SunriseGiftHistories> {
+    public getGiftHistoryByXuid(xuid: BigInt): Observable<SunriseGiftHistories> {
       return this.apiService
-        .getRequest<SunriseGiftHistories>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
+        .getRequest<SunriseGiftHistories>(`${this.basePath}/player/xuid(${xuid})/giftHistory`)
         .pipe(
           map(giftHistory => {
             // these come in stringly-typed and must be converted

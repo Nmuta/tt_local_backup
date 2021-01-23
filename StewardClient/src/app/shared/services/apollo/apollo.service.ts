@@ -62,9 +62,9 @@ export class ApolloService {
   }
 
     /** Gets Gift history by a XUID. */
-    public getGiftHistoryByXuid(xuid: number): Observable<ApolloGiftHistories> {
+    public getGiftHistoryByXuid(xuid: BigInt): Observable<ApolloGiftHistories> {
       return this.apiService
-        .getRequest<ApolloGiftHistories>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
+        .getRequest<ApolloGiftHistories>(`${this.basePath}/player/xuid(${xuid})/giftHistory`)
         .pipe(
           map(giftHistory => {
             // these come in stringly-typed and must be converted

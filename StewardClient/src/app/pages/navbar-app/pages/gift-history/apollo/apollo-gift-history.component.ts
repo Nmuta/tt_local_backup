@@ -28,6 +28,7 @@ implements OnInit {
     public title: GameTitleCodeName = GameTitleCodeName.FM7;
     public selectedPlayerIdentities: IdentityResultAlphaBatch;
     public selectedLspGroup: LspGroup;
+    public currentPlayer: IdentityResultAlpha;
 
     constructor(protected readonly store: Store) {
       super();
@@ -46,6 +47,8 @@ implements OnInit {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultAlphaBatch) => {
         this.selectedPlayerIdentities = playerIdentities;
+        this.currentPlayer = this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
+        console.log(this.currentPlayer);
       });
   }
 

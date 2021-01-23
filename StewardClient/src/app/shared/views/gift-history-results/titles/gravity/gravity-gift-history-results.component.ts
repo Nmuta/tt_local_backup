@@ -2,7 +2,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { GravityGiftHistory } from '@models/gravity/gravity-gift-history.model';
+import { GravityGiftHistories } from '@models/gravity/gravity-gift-history.model';
+import { IdentityResultBeta } from '@models/identity-query.model';
 import { GravityService } from '@services/gravity/gravity.service';
 
 /** Retreives and displays Gravity Gift history by XUID. */
@@ -12,7 +13,7 @@ import { GravityService } from '@services/gravity/gravity.service';
   styleUrls: ['./gravity-gift-history-results.component.scss']
 })
 export class GravityGiftHistoryResultsComponent extends BaseComponent implements OnChanges {
-  @Input() public xuid?: number;
+  @Input() public currentPlayer: IdentityResultBeta;
 
   /** True while waiting on a request. */
   public isLoading = true;
@@ -20,12 +21,12 @@ export class GravityGiftHistoryResultsComponent extends BaseComponent implements
   public loadError: unknown;
 
   /** The ban list to display. */
-  public giftHistoryList: GravityGiftHistory[];
+  public giftHistoryList: GravityGiftHistories;
 
   public isActiveIcon = faCheck;
 
   /** The columns + order to display. */
-  public columnsToDisplay = ['isActive', 'reason', 'featureArea', 'startTimeUtc', 'expireTimeUtc'];
+  public columnsToDisplay = ['requestingAgent', 'giftSendDateUtc', 'giftInventory'];
   
   constructor(public readonly gravity: GravityService) {
     super();
@@ -33,13 +34,13 @@ export class GravityGiftHistoryResultsComponent extends BaseComponent implements
 
   /** Initialization hook. */
   public ngOnChanges(): void {
-    if (this.xuid === undefined) {
+    if (this.currentPlayer === undefined) {
       return;
     }
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.gravity.getGiftHistoryByXuid(this.xuid).subscribe(
+    this.gravity.getGiftHistoryByT10Id(this.currentPlayer.t10id).subscribe(
       giftHistories => {
         this.isLoading = false;
         this.giftHistoryList = giftHistories;

@@ -1,4 +1,6 @@
 ﻿using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
@@ -40,6 +42,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
         /// <summary>
         ///     Gets or sets the ID.
         /// </summary>
+        /// <remarks>
+        ///     We make use of the JsonConverter to return the IdType string names instead of their integer values.
+        ///     Xuid is a much more understandable ID type than 0.
+        /// </remarks>
+        [JsonConverter(typeof(StringEnumConverter))]
         public string Id { get; set; }
 
         /// <summary>
