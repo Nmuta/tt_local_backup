@@ -14,6 +14,7 @@ import { ApolloService } from '@services/apollo/apollo.service';
 })
 export class ApolloGiftHistoryResultsComponent extends BaseComponent implements OnChanges {
   @Input() public currentPlayer: IdentityResultAlpha;
+  @Input() public usingPlayerIdentities: boolean;
 
   /** True while waiting on a request. */
   public isLoading = true;
@@ -36,6 +37,15 @@ export class ApolloGiftHistoryResultsComponent extends BaseComponent implements 
   public ngOnChanges(): void {
     if (this.currentPlayer === undefined) {
       return;
+    }
+
+    if (this.usingPlayerIdentities)
+    {
+      console.log("You are on LSP group gifting.")
+    }
+    else
+    {
+      console.log("You are on individual player gifting.")
     }
 
     this.isLoading = true;
