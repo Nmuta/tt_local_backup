@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
 {
     /// <summary>
-    ///     Validated Sunrise ban parameters, as stored internally.
+    ///     Sunrise ban parameters as sent to the API.
     /// </summary>
-    public sealed class SunriseBanParameters
+    public sealed class SunriseBanParametersInput
     {
         /// <summary>
         ///     Gets or sets the reason.
@@ -21,22 +21,22 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <summary>
         ///     Gets or sets the start time.
         /// </summary>
-        public DateTime StartTimeUtc { get; set; }
+        public DateTime? StartTimeUtc { get; set; }
 
         /// <summary>
-        ///     Gets or sets the expire time.
+        ///     Gets or sets the duration.
         /// </summary>
-        public DateTime ExpireTimeUtc { get; set; }
+        public TimeSpan? Duration { get; set; }
 
         /// <summary>
-        ///     Gets or sets the xuid list.
+        ///     Gets or sets the xuid.
         /// </summary>
-        public IList<ulong> Xuids { get; set; }
+        public ulong Xuid { get; set; }
 
         /// <summary>
-        ///     Gets or sets the gamertag list.
+        ///     Gets or sets the gamertag.
         /// </summary>
-        public IList<string> Gamertags { get; set; }
+        public string Gamertag { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether to ban all consoles.

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Forza.WebServices.FH4.master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts;
@@ -38,6 +39,17 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaSharedConsoleUser, SunriseSharedConsoleUser>().ReverseMap();
             this.CreateMap<ForzaUserBanResult, SunriseBanResult>();
             this.CreateMap<ForzaUserBanSummary, SunriseBanSummary>();
+            this.CreateMap<IList<SunriseBanParametersInput>, SunriseBanParameters>()
+                .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.First().Reason))
+                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(src => src.First().FeatureArea))
+                .ForMember(dest => dest.Xuids, opt => opt.MapFrom(src => src.Select(v => v.Xuid)))
+                .ForMember(dest => dest.Gamertags, opt => opt.MapFrom(src => src.Select(v => v.Gamertag)))
+                .ForMember(dest => dest.BanAllConsoles, opt => opt.MapFrom(src => src.First().BanAllConsoles))
+                .ForMember(dest => dest.BanAllPcs, opt => opt.MapFrom(src => src.First().BanAllPcs))
+                .ForMember(dest => dest.DeleteLeaderboardEntries, opt => opt.MapFrom(src => src.First().DeleteLeaderboardEntries))
+                .ForMember(dest => dest.SendReasonNotification, opt => opt.MapFrom(src => src.First().SendReasonNotification))
+                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.First().StartTimeUtc ?? DateTime.UtcNow))
+                .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.First().StartTimeUtc ?? DateTime.UtcNow) + src.First().Duration));
             this.CreateMap<SunriseBanParameters, ForzaUserBanParameters>()
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))

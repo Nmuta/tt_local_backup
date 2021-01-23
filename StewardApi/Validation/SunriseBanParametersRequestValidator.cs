@@ -10,27 +10,27 @@ namespace Turn10.LiveOps.StewardApi.Validation
     /// <summary>
     ///     Validates a <see cref="SunriseBanParameters"/> request.
     /// </summary>
-    public sealed class SunriseBanParametersRequestValidator : RequestValidatorBase, IRequestValidator<SunriseBanParameters>
+    public sealed class SunriseBanParametersRequestValidator : RequestValidatorBase, IRequestValidator<SunriseBanParametersInput>
     {
         /// <inheritdoc />
-        public void Validate(SunriseBanParameters model, ModelStateDictionary modelState)
+        public void Validate(SunriseBanParametersInput model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
 
-            if (model.ExpireTimeUtc == default)
+            if (!model.Duration.HasValue)
             {
-                modelState.AddModelError("BanParameters.ExpireTimeUtc", $"Property value must be valid DateTime. {nameof(model.ExpireTimeUtc)} was {model.ExpireTimeUtc}.");
+                modelState.AddModelError("BanParameters.Duration", $"Property value must be valid TimeSpan. {nameof(model.Duration)} was {model.Duration}.");
             }
 
-            if (model.ExpireTimeUtc < DateTime.UtcNow)
+            if (model.Duration == TimeSpan.Zero)
             {
-                modelState.AddModelError("BanParameters.ExpireTimeUtc", $"Property value must come before current time.{nameof(model.ExpireTimeUtc)} was {model.ExpireTimeUtc}.");
+                modelState.AddModelError("BanParameters.Duration", $"Duration must be non-zero. {nameof(model.Duration)} was {model.Duration}.");
             }
 
-            if (model.StartTimeUtc >= model.ExpireTimeUtc)
+            if (model.Duration < TimeSpan.Zero)
             {
-                modelState.AddModelError("BanParameters.ExpireTimeUtc", $"Property value must come after StartTimeUtc. {nameof(model.StartTimeUtc)} was {model.StartTimeUtc}. {nameof(model.ExpireTimeUtc)} was {model.ExpireTimeUtc}.");
+                modelState.AddModelError("BanParameters.Duration", $"Duration must be positive. {nameof(model.Duration)} was {model.Duration}.");
             }
 
             if (model.SendReasonNotification && string.IsNullOrWhiteSpace(model.Reason))
@@ -47,19 +47,16 @@ namespace Turn10.LiveOps.StewardApi.Validation
         }
 
         /// <inheritdoc />
-        public void ValidateIds(SunriseBanParameters model, ModelStateDictionary modelState)
+        public void ValidateIds(SunriseBanParametersInput model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
 
-            if ((model.Xuids == null || !model.Xuids.Any()) && (model.Gamertags == null || !model.Gamertags.Any()))
+            if (model.Xuid == default && string.IsNullOrWhiteSpace(model.Gamertag))
             {
-                var xuidStatus = model.Xuids == null ? "Null" : "Empty";
-                var gamertagStatus = model.Gamertags == null ? "Null" : "Empty";
-
                 modelState.AddModelError(
-                    "BanParameters.Xuids/BanParameters.Gamertags",
-                    $"Properties must have at least one xuid or gamertag. {nameof(model.Xuids)} was {xuidStatus}. {nameof(model.Gamertags)} was {gamertagStatus}.");
+                    "BanParameters.Xuid/BanParameters.Gamertag",
+                    $"Properties must have either XUID or Gamertag defined. {nameof(model.Xuid)} was {model.Xuid}. {nameof(model.Gamertag)} was {model.Gamertag}.");
             }
         }
     }

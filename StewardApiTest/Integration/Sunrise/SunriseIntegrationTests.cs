@@ -551,8 +551,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var banParameters = this.GenerateBanParameters();
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-            banParameters.Xuids = new List<ulong> { TestConstants.InvalidXuid };
-            banParameters.Gamertags = null;
+            banParameters[0].Xuid = TestConstants.InvalidXuid;
+            banParameters[0].Gamertag = null;
 
             var result = await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
 
@@ -566,8 +566,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers_InvalidGamertag()
         {
             var banParameters = GenerateBanParameters();
-            banParameters.Xuids = null;
-            banParameters.Gamertags = new List<string> { TestConstants.InvalidGamertag };
+            banParameters[0].Xuid = default(ulong);
+            banParameters[0].Gamertag = TestConstants.InvalidGamertag;
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -622,7 +622,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers_InvalidFeatureArea()
         {
             var banParameters = GenerateBanParameters();
-            banParameters.FeatureArea = "invalidFeatureArea";
+            banParameters[0].FeatureArea = "invalidFeatureArea";
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -641,7 +641,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers_UndefinedStartTimeUtc()
         {
             var banParameters = GenerateBanParameters();
-            banParameters.StartTimeUtc = default;
+            banParameters[0].StartTimeUtc = default;
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             var result = await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
@@ -657,8 +657,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers_NoXuidsOrGamertagsProvided()
         {
             var banParameters = GenerateBanParameters();
-            banParameters.Xuids = null;
-            banParameters.Gamertags = null;
+            banParameters[0].Xuid = default;
+            banParameters[0].Gamertag = null;
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -674,10 +674,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_ExpireTimeNotProvided()
+        public async Task BanPlayers_DurationNull()
         {
             var banParameters = GenerateBanParameters();
-            banParameters.ExpireTimeUtc = default;
+            banParameters[0].Duration = default;
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -693,11 +693,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_ExpireTimeBeforeCurrentTime()
+        public async Task BanPlayers_DurationZero()
         {
             var banParameters = GenerateBanParameters();
-            banParameters.ExpireTimeUtc = DateTime.UtcNow.AddMinutes(-10);
-            banParameters.StartTimeUtc = DateTime.UtcNow.AddMinutes(-15);
+            banParameters[0].Duration= TimeSpan.Zero;
+            banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-15);
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -713,11 +713,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_ExpireTimeBeforeStartTime()
+        public async Task BanPlayers_DurationNegative()
         {
             var banParameters = GenerateBanParameters();
-            banParameters.ExpireTimeUtc = DateTime.UtcNow.AddMinutes(-15);
-            banParameters.StartTimeUtc = DateTime.UtcNow.AddMinutes(-10);
+            banParameters[0].Duration= TimeSpan.FromMinutes(-10);
+            banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-10);
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -736,8 +736,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers_SendNotificationWithoutReason()
         {
             var banParameters = GenerateBanParameters();
-            banParameters.SendReasonNotification = true;
-            banParameters.Reason = string.Empty;
+            banParameters[0].SendReasonNotification = true;
+            banParameters[0].Reason = string.Empty;
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -768,7 +768,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers_UseBackgroundProcessing_InvalidXuid()
         {
             var banParameters = GenerateBanParameters();
-            banParameters.Xuids = new List<ulong> { TestConstants.InvalidXuid };
+            banParameters[0].Xuid = TestConstants.InvalidXuid;
 
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
@@ -781,7 +781,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers_UseBackgroundProcessing_InvalidGamertag()
         {
             var banParameters = GenerateBanParameters();
-            banParameters.Gamertags = new List<string> { TestConstants.InvalidGamertag };
+            banParameters[0].Gamertag = TestConstants.InvalidGamertag;
 
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Failed).ConfigureAwait(false);
 
@@ -1627,7 +1627,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return jobResult;
         }
 
-        private async Task<IList<SunriseBanResult>> BanPlayersWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, SunriseBanParameters banParameters, BackgroundJobStatus expectedStatus)
+        private async Task<IList<SunriseBanResult>> BanPlayersWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, IList<SunriseBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
@@ -1662,20 +1662,23 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return jobResults;
         }
 
-        private SunriseBanParameters GenerateBanParameters()
+        private IList<SunriseBanParametersInput> GenerateBanParameters()
         {
-            return new SunriseBanParameters
+            return new List<SunriseBanParametersInput>
             {
-                Xuids = new List<ulong> { xuid },
-                Gamertags = new List<string> { gamertag },
-                FeatureArea = "Matchmaking",
-                Reason = "This is an automated test.",
-                StartTimeUtc = DateTime.UtcNow,
-                ExpireTimeUtc = DateTime.UtcNow.AddSeconds(5),
-                BanAllConsoles = false,
-                BanAllPcs = false,
-                DeleteLeaderboardEntries = false,
-                SendReasonNotification = false
+                new SunriseBanParametersInput
+                {
+                    Xuid = xuid,
+                    Gamertag = gamertag,
+                    FeatureArea = "Matchmaking",
+                    Reason = "This is an automated test.",
+                    StartTimeUtc = DateTime.UtcNow,
+                    Duration = TimeSpan.FromSeconds(5),
+                    BanAllConsoles = false,
+                    BanAllPcs = false,
+                    DeleteLeaderboardEntries = false,
+                    SendReasonNotification = false
+                }
             };
         }
 

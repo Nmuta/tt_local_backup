@@ -3,7 +3,7 @@
 namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
 {
     /// <summary>
-    ///     Represents a Apollo ban parameters.
+    ///     Apollo ban parameters, as sent to the API.
     /// </summary>
     public sealed class ApolloBanParametersInput
     {
