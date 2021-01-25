@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, OnInit } from '@angular/core';
 import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultBeta } from '@models/identity-query.model';
@@ -18,12 +18,28 @@ import { GiftBasketBaseComponent, InventoryItemGroup } from '../gift-basket.base
     },
   ],
 })
-export class ApolloGiftBasketComponent extends GiftBasketBaseComponent<IdentityResultBeta> {
+export class ApolloGiftBasketComponent extends GiftBasketBaseComponent<IdentityResultBeta> implements OnInit {
   public title = GameTitleCodeName.FM7;
   public disableCard: boolean = true;
 
   constructor(protected readonly store: Store, protected readonly formBuilder: FormBuilder) {
     super(formBuilder);
+  }
+
+  /** Angular lifecycle hook. */
+  public ngOnInit(): void {
+    this.isLoading = true;
+    // TODO: Uncomment once apollo master inventory is setup. 
+    // This is currently blocked since apollo vanity item data is incorrect
+
+    // this.store.dispatch(new GetApolloMasterInventoryList()).subscribe(() => {
+    //   this.isLoading = false;
+    //   const apolloMasterInventory = this.store.selectSnapshot<ApolloMasterInventory>(
+    //     MasterInventoryListMemoryState.sunriseMasterInventory,
+    //   );
+    //   this.masterInventory = apolloMasterInventory;
+    //   this.buildMatAutocompleteState();
+    // });
   }
 
   /** Sets up the stateGroups variable used with the autocomplete */
@@ -38,7 +54,6 @@ export class ApolloGiftBasketComponent extends GiftBasketBaseComponent<IdentityR
 
         // TODO: Switch 'unknown' to Apollo inventory item once it has been built
         const masterInventoryItems = this.masterInventory[prop] as unknown[];
-        // IMPORTANT (vanity items): Ids 30-40 are wristbands with backing achievement/game progress. We're not handing them out, but we will allow a restore. June 9th, 2020
         for (let i = 0; i < masterInventoryItems.length; i++) {
           // const masterInventoryItem = masterInventoryItems[i];
           const inventoryItem = {
@@ -48,30 +63,13 @@ export class ApolloGiftBasketComponent extends GiftBasketBaseComponent<IdentityR
             quantity: BigInt(0),
           };
 
+          // TODO: Update this logic so each property in ApolloMasterInventory is handled according to build valid
+          // inventory items
+
           // switch(prop) {
-          //   case 'creditRewards':
+          //   case 'itemType':
           //     inventoryItem.itemId = -1;
           //     inventoryItem.description = masterInventoryItem;
-          //     break;
-          //   case 'cars':
-          //     inventoryItem.itemId = masterInventoryItem.id;
-          //     inventoryItem.description = masterInventoryItem.modelShort;
-          //     break;
-          //   case 'carHorns':
-          //     inventoryItem.itemId = masterInventoryItem.id;
-          //     inventoryItem.description = masterInventoryItem.displayName;
-          //     break;
-          //   case 'vanityItems':
-          //     inventoryItem.itemId = masterInventoryItem.id;
-          //     inventoryItem.description = masterInventoryItem.itemId;
-          //     break;
-          //   case 'emotes':
-          //     inventoryItem.itemId = masterInventoryItem.id;
-          //     inventoryItem.description = masterInventoryItem.name;
-          //     break;
-          //   case 'quickChatLines':
-          //     inventoryItem.itemId = masterInventoryItem.id;
-          //     inventoryItem.description = masterInventoryItem.chatMessage;
           //     break;
           //   default:
           //     break;

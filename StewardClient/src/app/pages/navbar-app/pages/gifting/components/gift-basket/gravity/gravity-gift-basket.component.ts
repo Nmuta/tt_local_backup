@@ -47,6 +47,9 @@ export class GravityGiftBasketComponent
         );
         this.masterInventory = gravityMasterInventory[gameSettings];
 
+        // TODO: Call buildMatAutocompleteState() so the mat-autocomplete data can be built and send down to the item-selection component
+        // We are currently blocked on this while we figure out what all is required for Gravity gifting (mostly around Cars and if we need to send more data than just itemId)
+
         // TODO: When a valid game settings updates the masterInventory, we need to verify the existing contents of a gift basket
         // in relation to the new master inventory (show item errors & disallow gift send while there are errors)
       });
@@ -68,7 +71,6 @@ export class GravityGiftBasketComponent
         } as InventoryItemGroup;
 
         const masterInventoryItems = this.masterInventory[prop] as GravityGameSettingsItem[];
-        // IMPORTANT (vanity items): Ids 30-40 are wristbands with backing achievement/game progress. We're not handing them out, but we will allow a restore. June 9th, 2020
         for (let i = 0; i < masterInventoryItems.length; i++) {
           // const masterInventoryItem = masterInventoryItems[i];
           const inventoryItem = {
@@ -78,30 +80,13 @@ export class GravityGiftBasketComponent
             quantity: BigInt(0),
           };
 
+          // TODO: Update this logic so each property in GravityMasterInventory is handled according to build valid
+          // inventory items
+
           // switch(prop) {
-          //   case 'creditRewards':
+          //   case 'itemType':
           //     inventoryItem.itemId = -1;
           //     inventoryItem.description = masterInventoryItem;
-          //     break;
-          //   case 'cars':
-          //     inventoryItem.itemId = masterInventoryItem.id;
-          //     inventoryItem.description = masterInventoryItem.modelShort;
-          //     break;
-          //   case 'carHorns':
-          //     inventoryItem.itemId = masterInventoryItem.id;
-          //     inventoryItem.description = masterInventoryItem.displayName;
-          //     break;
-          //   case 'vanityItems':
-          //     inventoryItem.itemId = masterInventoryItem.id;
-          //     inventoryItem.description = masterInventoryItem.itemId;
-          //     break;
-          //   case 'emotes':
-          //     inventoryItem.itemId = masterInventoryItem.id;
-          //     inventoryItem.description = masterInventoryItem.name;
-          //     break;
-          //   case 'quickChatLines':
-          //     inventoryItem.itemId = masterInventoryItem.id;
-          //     inventoryItem.description = masterInventoryItem.chatMessage;
           //     break;
           //   default:
           //     break;
