@@ -34,8 +34,4 @@ describe('ApolloGiftBasketComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should have disableCard set to true', () => {
-    expect(component.disableCard).toBeTruthy();
-  });
 });

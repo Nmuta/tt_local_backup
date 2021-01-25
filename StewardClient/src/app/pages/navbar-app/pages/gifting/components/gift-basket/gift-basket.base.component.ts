@@ -123,4 +123,9 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     tmpGiftBasket.splice(index, 1);
     this.giftBasket.data = tmpGiftBasket;
   }
+
+  /** Sends the gift basket */
+  public sendGiftBasket(): void {
+    // TODO: Send request to Steward API and emit results back up to parent gifting page component
+  }
 }
