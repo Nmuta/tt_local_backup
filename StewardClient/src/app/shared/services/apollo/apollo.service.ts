@@ -61,10 +61,26 @@ export class ApolloService {
       );
   }
 
+  /** Gets Gift history by a XUID. */
+  public getGiftHistoryByXuid(xuid: BigInt): Observable<ApolloGiftHistories> {
+    return this.apiService
+      .getRequest<ApolloGiftHistories>(`${this.basePath}/player/xuid(${xuid})/giftHistory`)
+      .pipe(
+        map(giftHistory => {
+          // these come in stringly-typed and must be converted
+          for (const gift of giftHistory) {
+            gift.giftSendDateUtc = new Date(gift.giftSendDateUtc);
+          }
+
+          return giftHistory;
+        }),
+      );
+  }
+
     /** Gets Gift history by a XUID. */
-    public getGiftHistoryByXuid(xuid: BigInt): Observable<ApolloGiftHistories> {
+    public getGiftHistoryByLspGroup(lspGroupId: number): Observable<ApolloGiftHistories> {
       return this.apiService
-        .getRequest<ApolloGiftHistories>(`${this.basePath}/player/xuid(${xuid})/giftHistory`)
+        .getRequest<ApolloGiftHistories>(`${this.basePath}/group/groupId(${lspGroupId})/giftHistory`)
         .pipe(
           map(giftHistory => {
             // these come in stringly-typed and must be converted

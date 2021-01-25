@@ -4,6 +4,7 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { ApolloGiftHistories } from '@models/apollo/apollo-gift-history.model';
 import { IdentityResultAlpha } from '@models/identity-query.model';
+import { LspGroup } from '@models/lsp-group';
 import { ApolloService } from '@services/apollo/apollo.service';
 
 /** Retreives and displays Apollo Gift history by XUID. */
@@ -13,7 +14,8 @@ import { ApolloService } from '@services/apollo/apollo.service';
   styleUrls: ['./apollo-gift-history-results.component.scss']
 })
 export class ApolloGiftHistoryResultsComponent extends BaseComponent implements OnChanges {
-  @Input() public currentPlayer: IdentityResultAlpha;
+  @Input() public selectedPlayer: IdentityResultAlpha;
+  @Input() public selectedGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
 
   /** True while waiting on a request. */
@@ -35,31 +37,45 @@ export class ApolloGiftHistoryResultsComponent extends BaseComponent implements 
 
   /** Initialization hook. */
   public ngOnChanges(): void {
-    if (this.currentPlayer === undefined) {
-      return;
-    }
+    this.isLoading = true;
+    this.loadError = undefined;
 
     if (this.usingPlayerIdentities)
     {
-      console.log("You are on LSP group gifting.")
+      if(this.selectedPlayer === undefined) {
+        return
+      }
+
+      console.log("You are on individual player gifting.")
+      this.apollo.getGiftHistoryByXuid(this.selectedPlayer.xuid).subscribe(
+        giftHistories => {
+          this.isLoading = false;
+          this.giftHistoryList = giftHistories;
+        },
+        _error => {
+          this.isLoading = false;
+          this.loadError = _error; // TODO: Display something useful to the user
+        },
+      );
     }
     else
     {
-      console.log("You are on individual player gifting.")
-    }
+      if(this.selectedGroup === undefined || this.selectedGroup === null) {
+        return
+      }
 
-    this.isLoading = true;
-    this.loadError = undefined;
-    this.apollo.getGiftHistoryByXuid(this.currentPlayer.xuid).subscribe(
-      giftHistories => {
-        this.isLoading = false;
-        this.giftHistoryList = giftHistories;
-      },
-      _error => {
-        this.isLoading = false;
-        this.loadError = _error; // TODO: Display something useful to the user
-      },
-    );
+      console.log("You are on LSP group gifting.")
+      this.apollo.getGiftHistoryByLspGroup(this.selectedGroup.id).subscribe(
+        giftHistories => {
+          this.isLoading = false;
+          this.giftHistoryList = giftHistories;
+        },
+        _error => {
+          this.isLoading = false;
+          this.loadError = _error; // TODO: Display something useful to the user
+        },
+      );
+    }
   }
 
 }

@@ -97,21 +97,37 @@ export class SunriseService {
       );
   }
 
-    /** Gets Gift history by a XUID. */
-    public getGiftHistoryByXuid(xuid: BigInt): Observable<SunriseGiftHistories> {
-      return this.apiService
-        .getRequest<SunriseGiftHistories>(`${this.basePath}/player/xuid(${xuid})/giftHistory`)
-        .pipe(
-          map(giftHistory => {
-            // these come in stringly-typed and must be converted
-            for (const gift of giftHistory) {
-              gift.giftSendDateUtc = new Date(gift.giftSendDateUtc);
-            }
-  
-            return giftHistory;
-          }),
-        );
-    }
+  /** Gets Gift history by a XUID. */
+  public getGiftHistoryByXuid(xuid: BigInt): Observable<SunriseGiftHistories> {
+    return this.apiService
+      .getRequest<SunriseGiftHistories>(`${this.basePath}/player/xuid(${xuid})/giftHistory`)
+      .pipe(
+        map(giftHistory => {
+          // these come in stringly-typed and must be converted
+          for (const gift of giftHistory) {
+            gift.giftSendDateUtc = new Date(gift.giftSendDateUtc);
+          }
+
+          return giftHistory;
+        }),
+      );
+  }
+
+  /** Gets Gift history by a LSP group ID. */
+  public getGiftHistoryByLspGroup(lspGroupId: number): Observable<SunriseGiftHistories> {
+    return this.apiService
+      .getRequest<SunriseGiftHistories>(`${this.basePath}/group/groupId(${lspGroupId})/giftHistory`)
+      .pipe(
+        map(giftHistory => {
+          // these come in stringly-typed and must be converted
+          for (const gift of giftHistory) {
+            gift.giftSendDateUtc = new Date(gift.giftSendDateUtc);
+          }
+
+          return giftHistory;
+        }),
+      );
+  }
 
   /** Gets shared console users by XUID. */
   public getSharedConsoleUsersByXuid(xuid: number): Observable<SunriseSharedConsoleUsers> {

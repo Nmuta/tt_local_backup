@@ -28,7 +28,7 @@ implements OnInit {
     public title: GameTitleCodeName = GameTitleCodeName.FH4;
     public selectedPlayerIdentities: IdentityResultAlphaBatch;
     public selectedLspGroup: LspGroup;
-    public currentPlayer: IdentityResultAlpha;
+    public selectedPlayer: IdentityResultAlpha;
 
     constructor(protected readonly store: Store) {
       super();
@@ -47,8 +47,8 @@ implements OnInit {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultAlphaBatch) => {
         this.selectedPlayerIdentities = playerIdentities;
-        this.currentPlayer = this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
-        console.log(this.currentPlayer);
+        this.selectedPlayer = this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
+        console.log(this.selectedPlayer);
       });
   }
 
@@ -59,7 +59,6 @@ implements OnInit {
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentitiesChange(event: IdentityResultAlphaBatch): void {
-    debugger;
     this.store.dispatch(new SetSunriseGiftHistorySelectedPlayerIdentities(event));
   }
 
