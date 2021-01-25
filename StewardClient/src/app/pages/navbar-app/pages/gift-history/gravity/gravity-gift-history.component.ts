@@ -21,7 +21,7 @@ export class GravityGiftHistoryComponent
 
   public title: GameTitleCodeName = GameTitleCodeName.Street;
   public selectedPlayerIdentities: IdentityResultBetaBatch;
-  public currentPlayer: IdentityResultBeta;
+  public selectedPlayer: IdentityResultBeta;
 
   constructor(protected readonly store: Store) {
     super();
@@ -32,9 +32,9 @@ export class GravityGiftHistoryComponent
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultBetaBatch) => {
-        this.selectedPlayerIdentities = playerIdentities;
-        this.currentPlayer = this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
-        console.log(this.currentPlayer);
+        this.selectedPlayerIdentities = playerIdentities;        
+        this.selectedPlayer = this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
+        console.log(this.selectedPlayer);
       });
   }
 

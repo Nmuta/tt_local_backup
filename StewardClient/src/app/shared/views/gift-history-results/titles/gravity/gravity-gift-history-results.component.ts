@@ -13,7 +13,7 @@ import { GravityService } from '@services/gravity/gravity.service';
   styleUrls: ['./gravity-gift-history-results.component.scss']
 })
 export class GravityGiftHistoryResultsComponent extends BaseComponent implements OnChanges {
-  @Input() public currentPlayer: IdentityResultBeta;
+  @Input() public selectedPlayer: IdentityResultBeta;
 
   /** True while waiting on a request. */
   public isLoading = true;
@@ -34,13 +34,24 @@ export class GravityGiftHistoryResultsComponent extends BaseComponent implements
 
   /** Initialization hook. */
   public ngOnChanges(): void {
-    if (this.currentPlayer === undefined) {
+    if (this.selectedPlayer === undefined) {
       return;
     }
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.gravity.getGiftHistoryByT10Id(this.currentPlayer.t10id).subscribe(
+
+    console.log('selected player ids:');
+    console.log(this.selectedPlayer.t10ids);
+
+    var lookupt10id = this.selectedPlayer.t10id ? 
+      this.selectedPlayer.t10id :
+      this.selectedPlayer.t10ids.sort((a,b) => {return a.lastAccessedUtc.getTime() - b.lastAccessedUtc.getTime()})[0];
+
+    console.log('lookup T10ID:')
+    console.log(lookupt10id)
+
+    this.gravity.getGiftHistoryByT10Id(this.selectedPlayer.t10id).subscribe(
       giftHistories => {
         this.isLoading = false;
         this.giftHistoryList = giftHistories;

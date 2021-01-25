@@ -36,7 +36,7 @@ export class ApolloGiftHistoryState {
 
   /** Sets the gift history page's selected mat tab index. */
   @Action(SetApolloGiftHistoryMatTabIndex, { cancelUncompleted: true })
-  public setSunriseMatTabIndex(
+  public setApolloMatTabIndex(
     ctx: StateContext<ApolloGiftHistoryStateModel>,
     action: SetApolloGiftHistoryMatTabIndex,
   ): Observable<ApolloGiftHistoryStateModel> {
