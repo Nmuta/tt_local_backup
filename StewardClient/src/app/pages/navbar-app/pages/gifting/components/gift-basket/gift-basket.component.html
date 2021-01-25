@@ -45,7 +45,10 @@
                   <fa-icon
                     [icon]="pencilIcon"
                     (click)="element.edit = true"
+                    (keyup.enter)="element.edit = true"
                     matTooltip="Edit Quantity"
+                    tabindex="0"
+                    [attr.aria-label]="'Edit quantity for ' + element.description"
                   ></fa-icon
                 ></span>
                 <span *ngIf="element.edit">
@@ -62,12 +65,18 @@
                   <fa-icon
                     [icon]="approveIcon"
                     (click)="editItemQuantity(i)"
+                    (keyup.enter)="editItemQuantity(i)"
                     matTooltip="Approve Edit"
+                    tabindex="0"
+                    [attr.aria-label]="'Set new quantity for ' + element.description"
                   ></fa-icon>
                   <fa-icon
                     [icon]="closeIcon"
                     (click)="element.edit = false"
+                    (keyup.enter)="element.edit = false"
                     matTooltip="Cancel Edit"
+                    tabindex="0"
+                    [attr.aria-label]="'Cancel quantity edit for ' + element.description"
                   ></fa-icon>
                 </span>
               </td>
@@ -81,8 +90,9 @@
                   color="accent"
                   matTooltip="Remove item from gift basket"
                   aria-label="Remove item from gift basket"
+                  (click)="removeItemFromGiftBasket(i)"
                 >
-                  <fa-icon [icon]="trashIcon" (click)="removeItemFromGiftBasket(i)"></fa-icon>
+                  <fa-icon [icon]="trashIcon"></fa-icon>
                 </button>
               </td>
             </ng-container>
