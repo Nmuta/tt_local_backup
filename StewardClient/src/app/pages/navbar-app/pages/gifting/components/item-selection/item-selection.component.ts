@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Observable } from 'rxjs';
 import { InventoryItem, InventoryItemGroup } from '../gift-basket/gift-basket.base.component';
 import { map, startWith, takeUntil } from 'rxjs/operators';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 /** The item-selection component. */
 @Component({
@@ -22,6 +23,9 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   public isLoading = false;
   /** The error received while loading. */
   public loadError: unknown;
+
+  // Icons
+  public questionIcon = faQuestionCircle;
 
   /** Master Inventory autocomplete varsiables */
   public itemSelectionForm: FormGroup = this.formBuilder.group({
@@ -50,7 +54,11 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   }
 
   /** New item selected. */
-  public addItemEmit(): void {
+  public addItemEmitter(): void {
+    if(!this.selectedItem) {
+      return;
+    }
+
     this.selectedItem.quantity = BigInt(this.itemSelectionForm.value['quantity']);
     this.addItemEvent.emit({ ...this.selectedItem });
 
@@ -72,7 +80,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   }
 
   /** Autocomplete filter function. */
-  protected filterGroup(value: string | InventoryItem): InventoryItemGroup[] {
+  private filterGroup(value: string | InventoryItem): InventoryItemGroup[] {
     if (value) {
       if (typeof value !== 'string') {
         return this.inventoryItemGroups;
@@ -98,6 +106,22 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
     if (prefixFilterValue.includes(filterValue)) {
       return opt;
     }
-    return opt.filter(item => item?.description?.toLowerCase().includes(filterValue) || item?.itemId?.toString()?.toLowerCase().includes(filterValue));
+    
+    const filterValues = filterValue.split(':');
+    return opt.filter(item => {
+      // If no semi-colon is used, do normal search
+      if(filterValues.length <= 1) {
+        return item?.description?.toLowerCase().includes(filterValue) || item?.itemId?.toString()?.toLowerCase().includes(filterValue);
+      }
+      // If semi-colon is used, search requires mutliple strings to be matched
+      let found = true;
+      for(let i = 0; i < filterValues.length; i++) {
+        const filter = filterValues[i].trim();
+        if(filter === '') continue;
+        found = found ? item?.description?.toLowerCase().includes(filter) || item?.itemId?.toString()?.toLowerCase().includes(filter) : false;
+      }
+
+      return found;
+    });
   }
 }

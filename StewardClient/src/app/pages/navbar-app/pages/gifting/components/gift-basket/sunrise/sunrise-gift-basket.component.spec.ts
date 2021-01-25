@@ -55,6 +55,8 @@ describe('SunriseGiftBasketComponent', () => {
       mockStore.selectSnapshot = jasmine
         .createSpy('selectSnapshot')
         .and.returnValue(testMasterInventory);
+
+        component.buildMatAutocompleteState = jasmine.createSpy('buildMatAutocompleteState');
     });
 
     it('should dispatch GetSunriseMasterInventoryList action', () => {
@@ -69,6 +71,12 @@ describe('SunriseGiftBasketComponent', () => {
       expect(component.masterInventory).not.toBeUndefined();
       expect(component.masterInventory).not.toBeNull();
       expect(component.masterInventory).toEqual(testMasterInventory);
+    });
+
+    it('should call buildMatAutocompleteState', () => {
+      component.ngOnInit();
+
+      expect(component.buildMatAutocompleteState).toHaveBeenCalled();
     });
   });
 });

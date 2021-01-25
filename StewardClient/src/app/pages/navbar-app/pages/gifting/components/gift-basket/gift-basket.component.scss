@@ -1,6 +1,8 @@
 @import '/src/variables.scss';
 
 mat-card {
+  min-width: 450px;
+
   .hide-content {
     display: none;
   }
@@ -62,5 +64,11 @@ mat-card {
       position: relative;
       top: -7px;
     }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  mat-card {
+    min-width: unset;
   }
 }
