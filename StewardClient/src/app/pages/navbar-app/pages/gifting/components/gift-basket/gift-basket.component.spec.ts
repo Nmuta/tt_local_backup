@@ -73,7 +73,7 @@ describe('GiftBasketBaseComponent', () => {
             quantity: BigInt(50),
             itemType: 'test type',
             edit: false,
-          }
+          },
         ];
       });
 
@@ -88,21 +88,23 @@ describe('GiftBasketBaseComponent', () => {
 
   describe('Method: editItemQuantity', () => {
     const testItemQuantity = 10;
-    const itemQuantityInput = { value: testItemQuantity};
+    const itemQuantityInput = { value: testItemQuantity };
     beforeEach(() => {
-      document.getElementById = jasmine.createSpy('getElementById').and.returnValue(itemQuantityInput);
+      document.getElementById = jasmine
+        .createSpy('getElementById')
+        .and.returnValue(itemQuantityInput);
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
-        component.giftBasket.data = [
-          {
-            itemId: BigInt(1234),
-            description: 'test description',
-            quantity: BigInt(50),
-            itemType: 'test type',
-            edit: false,
-          }
-        ];
+      component.giftBasket.data = [
+        {
+          itemId: BigInt(1234),
+          description: 'test description',
+          quantity: BigInt(50),
+          itemType: 'test type',
+          edit: false,
+        },
+      ];
     });
-    
+
     it('should set the item quantity to the new value', () => {
       component.editItemQuantity(0);
 
@@ -115,22 +117,22 @@ describe('GiftBasketBaseComponent', () => {
     const testItemId = BigInt(4321);
     beforeEach(() => {
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
-        component.giftBasket.data = [
-          {
-            itemId: BigInt(1234),
-            description: 'test description 1',
-            quantity: BigInt(50),
-            itemType: 'test type 1',
-            edit: false,
-          },
-          {
-            itemId: testItemId,
-            description: 'test description 2',
-            quantity: BigInt(10),
-            itemType: 'test type 2',
-            edit: false,
-          }
-        ];
+      component.giftBasket.data = [
+        {
+          itemId: BigInt(1234),
+          description: 'test description 1',
+          quantity: BigInt(50),
+          itemType: 'test type 1',
+          edit: false,
+        },
+        {
+          itemId: testItemId,
+          description: 'test description 2',
+          quantity: BigInt(10),
+          itemType: 'test type 2',
+          edit: false,
+        },
+      ];
     });
 
     it('should remove the given index from the gift basket', () => {

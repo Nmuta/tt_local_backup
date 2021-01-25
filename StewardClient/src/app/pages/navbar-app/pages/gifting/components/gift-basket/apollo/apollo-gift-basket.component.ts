@@ -18,7 +18,9 @@ import { GiftBasketBaseComponent, InventoryItemGroup } from '../gift-basket.base
     },
   ],
 })
-export class ApolloGiftBasketComponent extends GiftBasketBaseComponent<IdentityResultBeta> implements OnInit {
+export class ApolloGiftBasketComponent
+  extends GiftBasketBaseComponent<IdentityResultBeta>
+  implements OnInit {
   public title = GameTitleCodeName.FM7;
   public disableCard: boolean = true;
 
@@ -29,7 +31,7 @@ export class ApolloGiftBasketComponent extends GiftBasketBaseComponent<IdentityR
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.isLoading = true;
-    // TODO: Uncomment once apollo master inventory is setup. 
+    // TODO: Uncomment once apollo master inventory is setup.
     // This is currently blocked since apollo vanity item data is incorrect
 
     // this.store.dispatch(new GetApolloMasterInventoryList()).subscribe(() => {

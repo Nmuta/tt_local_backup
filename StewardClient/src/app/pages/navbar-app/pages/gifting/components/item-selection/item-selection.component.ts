@@ -55,7 +55,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
 
   /** New item selected. */
   public addItemEmitter(): void {
-    if(!this.selectedItem) {
+    if (!this.selectedItem) {
       return;
     }
 
@@ -106,19 +106,25 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
     if (prefixFilterValue.includes(filterValue)) {
       return opt;
     }
-    
+
     const filterValues = filterValue.split(':');
     return opt.filter(item => {
       // If no semi-colon is used, do normal search
-      if(filterValues.length <= 1) {
-        return item?.description?.toLowerCase().includes(filterValue) || item?.itemId?.toString()?.toLowerCase().includes(filterValue);
+      if (filterValues.length <= 1) {
+        return (
+          item?.description?.toLowerCase().includes(filterValue) ||
+          item?.itemId?.toString()?.toLowerCase().includes(filterValue)
+        );
       }
       // If semi-colon is used, search requires mutliple strings to be matched
       let found = true;
-      for(let i = 0; i < filterValues.length; i++) {
+      for (let i = 0; i < filterValues.length; i++) {
         const filter = filterValues[i].trim();
-        if(filter === '') continue;
-        found = found ? item?.description?.toLowerCase().includes(filter) || item?.itemId?.toString()?.toLowerCase().includes(filter) : false;
+        if (filter === '') continue;
+        found = found
+          ? item?.description?.toLowerCase().includes(filter) ||
+            item?.itemId?.toString()?.toLowerCase().includes(filter)
+          : false;
       }
 
       return found;

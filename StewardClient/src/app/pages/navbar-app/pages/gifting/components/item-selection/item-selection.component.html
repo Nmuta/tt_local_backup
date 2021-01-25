@@ -18,7 +18,8 @@
       <mat-option [disabled]="true">Showing item types</mat-option>
       <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.category">
         <mat-option *ngFor="let item of group.items" [value]="item">
-          {{ item.description }} <span class="item-id-text" *ngIf="item.itemId >= 0">[{{ item.itemId }}]</span>
+          {{ item.description }}
+          <span class="item-id-text" *ngIf="item.itemId >= 0">[{{ item.itemId }}]</span>
         </mat-option>
       </mat-optgroup>
     </mat-autocomplete>

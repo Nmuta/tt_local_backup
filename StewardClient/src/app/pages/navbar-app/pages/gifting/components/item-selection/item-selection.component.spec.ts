@@ -26,14 +26,10 @@ describe('ItemSelectionComponent', () => {
         ],
         declarations: [ItemSelectionComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          { provide: FormBuilder, useValue: formBuilder }
-        ],
+        providers: [{ provide: FormBuilder, useValue: formBuilder }],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(
-        ItemSelectionComponent as Type<ItemSelectionComponent>,
-      );
+      fixture = TestBed.createComponent(ItemSelectionComponent as Type<ItemSelectionComponent>);
       component = fixture.debugElement.componentInstance;
     }),
   );
@@ -47,7 +43,7 @@ describe('ItemSelectionComponent', () => {
     beforeEach(() => {
       component.addItemEvent.emit = jasmine.createSpy('emit');
       component.itemSelectionForm = formBuilder.group({
-        quantity: new FormControl(testQuantity)
+        quantity: new FormControl(testQuantity),
       });
     });
 
@@ -64,22 +60,33 @@ describe('ItemSelectionComponent', () => {
     });
 
     describe('If there is a selection item', () => {
-      const testInventoryItem = { itemId: BigInt(1), description: 'test-description', quantity: BigInt(0), itemType: 'fake type'};
-      const selectionItemInput = { focus: () => { /** Empty */}};
+      const testInventoryItem = {
+        itemId: BigInt(1),
+        description: 'test-description',
+        quantity: BigInt(0),
+        itemType: 'fake type',
+      };
+      const selectionItemInput = {
+        focus: () => {
+          /** Empty */
+        },
+      };
       beforeEach(() => {
         component.selectedItem = testInventoryItem;
         component.itemSelectionForm.reset = jasmine.createSpy('reset');
         selectionItemInput.focus = jasmine.createSpy('focus');
-        document.getElementById = jasmine.createSpy('getElementById').and.returnValue(selectionItemInput);
+        document.getElementById = jasmine
+          .createSpy('getElementById')
+          .and.returnValue(selectionItemInput);
       });
 
       it('should emit addItemEvent with correct quantity', () => {
         component.addItemEmitter();
 
-        testInventoryItem.quantity = BigInt(testQuantity); // This quantity is set from the form control 
+        testInventoryItem.quantity = BigInt(testQuantity); // This quantity is set from the form control
         expect(component.addItemEvent.emit).toHaveBeenCalledWith(testInventoryItem);
       });
-      
+
       it('should set selectedItem undefined', () => {
         component.addItemEmitter();
 
@@ -94,7 +101,7 @@ describe('ItemSelectionComponent', () => {
 
       it('should set focus back item selection', () => {
         component.addItemEmitter();
-        
+
         expect(document.getElementById).toHaveBeenCalledWith('item-selection-input');
         expect(selectionItemInput.focus).toHaveBeenCalled();
       });
@@ -102,12 +109,23 @@ describe('ItemSelectionComponent', () => {
   });
 
   describe('Method: newItemSelected', () => {
-    const testInventoryItem = { itemId: BigInt(1), description: 'test-description', quantity: BigInt(0), itemType: 'fake type'};
-    const selectionItemInput = { focus: () => { /** Empty */}};
+    const testInventoryItem = {
+      itemId: BigInt(1),
+      description: 'test-description',
+      quantity: BigInt(0),
+      itemType: 'fake type',
+    };
+    const selectionItemInput = {
+      focus: () => {
+        /** Empty */
+      },
+    };
     beforeEach(() => {
       component.selectedItem = undefined;
       selectionItemInput.focus = jasmine.createSpy('focus');
-      document.getElementById = jasmine.createSpy('getElementById').and.returnValue(selectionItemInput);
+      document.getElementById = jasmine
+        .createSpy('getElementById')
+        .and.returnValue(selectionItemInput);
     });
 
     it('should set selectedItem', () => {
@@ -129,14 +147,18 @@ describe('ItemSelectionComponent', () => {
     let testInventoryItem: InventoryItem;
 
     beforeEach(() => {
-      testInventoryItem = { itemId: BigInt(1), description: testDescription, quantity: BigInt(1), itemType: 'test type'};
-    })
-    ;
+      testInventoryItem = {
+        itemId: BigInt(1),
+        description: testDescription,
+        quantity: BigInt(1),
+        itemType: 'test type',
+      };
+    });
     describe('If item is undefined', () => {
       it('should return empty string', () => {
         const response = component.itemAutoCompleteDisplayFn(undefined);
         expect(response).toEqual('');
-      })
+      });
     });
 
     describe('If item.description is null', () => {
@@ -144,14 +166,14 @@ describe('ItemSelectionComponent', () => {
         testInventoryItem.description = null;
         const response = component.itemAutoCompleteDisplayFn(testInventoryItem);
         expect(response).toEqual('');
-      })
+      });
     });
 
     describe('If item is valid', () => {
       it('should return empty string', () => {
         const response = component.itemAutoCompleteDisplayFn(testInventoryItem);
         expect(response).toEqual(testDescription);
-      })
+      });
     });
   });
 });

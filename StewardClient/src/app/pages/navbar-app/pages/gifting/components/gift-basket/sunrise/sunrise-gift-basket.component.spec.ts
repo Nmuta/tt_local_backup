@@ -56,7 +56,7 @@ describe('SunriseGiftBasketComponent', () => {
         .createSpy('selectSnapshot')
         .and.returnValue(testMasterInventory);
 
-        component.buildMatAutocompleteState = jasmine.createSpy('buildMatAutocompleteState');
+      component.buildMatAutocompleteState = jasmine.createSpy('buildMatAutocompleteState');
     });
 
     it('should dispatch GetSunriseMasterInventoryList action', () => {
