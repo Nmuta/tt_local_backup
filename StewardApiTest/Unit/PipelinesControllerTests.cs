@@ -12,7 +12,7 @@ using Turn10.LiveOps.StewardApi.Obligation;
 namespace Turn10.LiveOps.StewardTest.Unit
 {
     [TestClass]
-    public sealed class TitleControllerTests
+    public sealed class PipelinesControllerTests
     {
         private static readonly Fixture Fixture = new Fixture();
 
