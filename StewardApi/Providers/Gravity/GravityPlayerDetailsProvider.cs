@@ -39,29 +39,45 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             var result = new IdentityResultBeta();
 
-            if (query.Xuid == default && string.IsNullOrWhiteSpace(query.Gamertag) && string.IsNullOrWhiteSpace(query.Turn10Id))
+            if (query.Xuid == default && string.IsNullOrWhiteSpace(query.Gamertag) && string.IsNullOrWhiteSpace(query.T10Id))
             {
                 result.Error = new StewardError(StewardErrorCode.RequiredParameterMissing, "T10ID, Gamertag, or XUID must be provided.");
             }
-            else if (!string.IsNullOrWhiteSpace(query.Turn10Id))
+            else if (!string.IsNullOrWhiteSpace(query.T10Id))
             {
-                var details = await this.GetUserDetailsByT10Id(query.Turn10Id).ConfigureAwait(false);
+                var details = await this.GetUserDetailsByT10Id(query.T10Id).ConfigureAwait(false);
 
                 result = details == null
-                    ? throw new ProfileNotFoundException($"No profile found for Turn 10 ID: {query.Turn10Id}.")
+                    ? throw new ProfileNotFoundException($"No profile found for Turn 10 ID: {query.T10Id}.")
                     : this.mapper.Map<IdentityResultBeta>(details);
             }
             else if (query.Xuid != null)
             {
                 var details = await this.GetUserDetailsByXuid(query.Xuid.Value).ConfigureAwait(false);
 
-                result.Turn10Ids = details ?? throw new ProfileNotFoundException($"No profile found for XUID: {query.Xuid}.");
+                result.T10Ids = details ?? throw new ProfileNotFoundException($"No profile found for XUID: {query.Xuid}.");
+
+                var activePlayer = details.OrderByDescending(e => e.LastLogin).FirstOrDefault();
+                if (activePlayer != null)
+                {
+                    result.Xuid = activePlayer.Xuid;
+                    result.Gamertag = activePlayer.GamerTag;
+                    result.T10Id = activePlayer.Turn10Id;
+                }
             }
             else if (!string.IsNullOrWhiteSpace(query.Gamertag))
             {
                 var details = await this.GetUserDetailsByGamertag(query.Gamertag).ConfigureAwait(false);
 
-                result.Turn10Ids = details ?? throw new ProfileNotFoundException($"No profile found for Gamertag: {query.Gamertag}.");
+                result.T10Ids = details ?? throw new ProfileNotFoundException($"No profile found for Gamertag: {query.Gamertag}.");
+
+                var activePlayer = details.OrderByDescending(e => e.LastLogin).FirstOrDefault();
+                if (activePlayer != null)
+                {
+                    result.Xuid = activePlayer.Xuid;
+                    result.Gamertag = activePlayer.GamerTag;
+                    result.T10Id = activePlayer.Turn10Id;
+                }
             }
 
             result.Query = query;

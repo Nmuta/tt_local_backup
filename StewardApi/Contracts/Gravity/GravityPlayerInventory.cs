@@ -16,7 +16,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
         /// <summary>
         ///     Gets or sets the Turn 10 ID.
         /// </summary>
-        public string Turn10Id { get; set; }
+        public string T10Id { get; set; }
 
         /// <summary>
         ///     Gets or sets the cars.
