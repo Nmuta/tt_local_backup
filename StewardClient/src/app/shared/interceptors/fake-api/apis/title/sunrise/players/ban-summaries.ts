@@ -26,9 +26,10 @@ export class SunrisePlayersBanSummariesFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(xuids: BigInt[]): Partial<Unprocessed<SunriseBanSummary[]>> {
+
     return xuids.map(xuid => {
       return <SunriseBanSummary>{
-        banCount: BigInt(faker.random.number()),
+        banCount: faker.random.boolean() ? BigInt(0) : BigInt(faker.random.number()),
         bannedAreas: faker.random.arrayElements(Object.values(SunriseBanArea)),
         gamertag: faker.random.word(),
         xuid: xuid,

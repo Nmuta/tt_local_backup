@@ -60,6 +60,10 @@ import { SunrisePlayerXuidNotificationsFakeApi } from './apis/title/sunrise/play
 import { SunrisePlayersBanSummariesFakeApi } from './apis/title/sunrise/players/ban-summaries';
 import { ApolloPlayersBanSummariesFakeApi } from './apis/title/apollo/players/ban-summaries';
 import { LoggerService, LogTopic } from '@services/logger';
+import { ApolloPlayersIdentitiesFakeApi } from './apis/title/apollo/players/identities';
+import { OpusPlayersIdentitiesFakeApi } from './apis/title/opus/players/identities';
+import { SunrisePlayersIdentitiesFakeApi } from './apis/title/sunrise/players/identities';
+import { GravityPlayersIdentitiesFakeApi } from './apis/title/gravity/players/identities';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -72,6 +76,7 @@ const fakeApiConstructors = [
   GravityPlayerT10IdInventoryFakeApi,
   GravityPlayerXuidInventoryFakeApi,
   GravityPlayerT10IdGiftHistoryFakeApi,
+  GravityPlayersIdentitiesFakeApi,
 
   // Sunrise
   SunrisePlayerGamertagDetailsFakeApi,
@@ -89,6 +94,7 @@ const fakeApiConstructors = [
   SunrisePlayerProfileIdInventoryFakeApi,
   SunrisePlayersBanFakeApi,
   SunrisePlayersBanSummariesFakeApi,
+  SunrisePlayersIdentitiesFakeApi,
   SunriseGroupGamertagsInventoryFakeApi,
   SunriseGroupGroupIdInventoryFakeApi,
   SunriseGroupXuidsInventoryFakeApi,
@@ -104,6 +110,7 @@ const fakeApiConstructors = [
   ApolloPlayerXuidGiftHistoryFakeApi,
   ApolloPlayersBanFakeApi,
   ApolloPlayersBanSummariesFakeApi,
+  ApolloPlayersIdentitiesFakeApi,
   ApolloGroupGamertagsInventoryFakeApi,
   ApolloGroupGroupIdInventoryFakeApi,
   ApolloGroupXuidsInventoryFakeApi,
@@ -115,19 +122,12 @@ const fakeApiConstructors = [
   OpusPlayerProfileIdInventoryFakeApi,
   OpusPlayerXuidInventoryFakeApi,
   OpusPlayerXuidInventoryProfilesFakeApi,
+  OpusPlayersIdentitiesFakeApi,
 ];
 
 /** The URLs this interceptor will not block. */
 const urlAllowList = [
   `${environment.stewardApiUrl}/api/v1/me`,
-  `${environment.stewardApiUrl}/api/v1/title/sunrise/players/identities`,
-  `${environment.stewardApiUrl}/api/v1/title/apollo/players/identities`,
-  `${environment.stewardApiUrl}/api/v1/title/gravity/players/identities`,
-  `${environment.stewardApiUrl}/api/v1/title/opus/players/identities`,
-  `${environment.stewardApiUrl}/api/v1/title/sunrise/players/identities`,
-  `${environment.stewardApiUrl}/api/v1/title/apollo/players/identities`,
-  `${environment.stewardApiUrl}/api/v1/title/gravity/players/identities`,
-  `${environment.stewardApiUrl}/api/v1/title/opus/players/identities`,
   'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.js',
   'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js',
 ];
