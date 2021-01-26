@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Obligation;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
@@ -12,7 +12,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     /// </summary>
     [Route("api/v1")]
     [ApiController]
-    //// [Authorize]
+    [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     public sealed class PipelinesController : ControllerBase
     {
         private readonly IObligationProvider obligationProvider;
