@@ -135,10 +135,7 @@ const urlAllowList = [
 /** Intercepts every request and returns a sample response if it matches the conditions. */
 @Injectable()
 export class FakeApiInterceptor implements HttpInterceptor {
-  constructor(
-    private readonly store: Store,
-    private readonly logger: LoggerService,
-  ) {}
+  constructor(private readonly store: Store, private readonly logger: LoggerService) {}
 
   /** Interception hook. */
   public intercept(

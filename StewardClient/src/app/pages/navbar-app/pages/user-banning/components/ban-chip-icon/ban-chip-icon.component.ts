@@ -14,7 +14,7 @@ export interface BanQuery {
 @Component({
   selector: 'ban-chip-icon',
   templateUrl: './ban-chip-icon.component.html',
-  styleUrls: ['./ban-chip-icon.component.scss']
+  styleUrls: ['./ban-chip-icon.component.scss'],
 })
 export class BanChipIconComponent extends BaseComponent implements OnChanges {
   @Input() public identity: IdentityResultAlpha | IdentityResultBeta = null;
@@ -35,7 +35,7 @@ export class BanChipIconComponent extends BaseComponent implements OnChanges {
   /** Angular hook. */
   public ngOnChanges(_changes: SimpleChanges): void {
     if (this.banSummary) {
-      this.banCount = this.banSummary.banCount
+      this.banCount = this.banSummary.banCount;
       this.hasBans = this.banSummary.banCount > BigInt(0);
     } else {
       this.banCount = BigInt(0);

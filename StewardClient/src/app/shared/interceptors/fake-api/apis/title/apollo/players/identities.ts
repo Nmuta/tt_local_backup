@@ -1,6 +1,11 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { IdentityQueryAlpha, IdentityResultAlpha, isGamertagQuery, isXuidQuery } from '@models/identity-query.model';
+import {
+  IdentityQueryAlpha,
+  IdentityResultAlpha,
+  isGamertagQuery,
+  isXuidQuery,
+} from '@models/identity-query.model';
 import faker from 'faker';
 
 /** Fake API for identifying players. */
@@ -29,7 +34,7 @@ export class ApolloPlayersIdentitiesFakeApi extends FakeApiBase {
         query: query,
         gamertag: isGamertagQuery(query) ? query.gamertag : faker.name.firstName(),
         xuid: isXuidQuery(query) ? query.xuid : BigInt(faker.random.number()),
-      }
+      };
     });
   }
 }

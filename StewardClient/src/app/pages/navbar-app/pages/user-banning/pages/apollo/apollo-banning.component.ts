@@ -33,16 +33,19 @@ export class ApolloBanningComponent {
     const summaries = new Subject<ApolloBanSummary[]>();
     this.formControls.playerIdentities.valueChanges
       .pipe(
-        map((identities: (IdentityResultAlpha)[]) => identities.map(v => v.xuid)), // to xuid list
+        map((identities: IdentityResultAlpha[]) => identities.map(v => v.xuid)), // to xuid list
         switchMap(xuids => this.apollo.getBanSummariesByXuids(xuids)), // make requests
-      ).subscribe(summaries);
-    summaries.pipe(
-      map(summaries => keyBy(summaries, e => e.xuid) as Dictionary<ApolloBanSummary>),
-    ).subscribe(summaryLookup => this.summaryLookup = summaryLookup);
-    summaries.pipe(
-      map(summaries => filter(summaries, summary => summary.banCount > BigInt(0))), // only banned identities
-      map(summaries => summaries.map(summary => summary.xuid)), // map to xuids
-    ).subscribe(bannedXuids => this.bannedXuids = bannedXuids);
+      )
+      .subscribe(summaries);
+    summaries
+      .pipe(map(summaries => keyBy(summaries, e => e.xuid) as Dictionary<ApolloBanSummary>))
+      .subscribe(summaryLookup => (this.summaryLookup = summaryLookup));
+    summaries
+      .pipe(
+        map(summaries => filter(summaries, summary => summary.banCount > BigInt(0))), // only banned identities
+        map(summaries => summaries.map(summary => summary.xuid)), // map to xuids
+      )
+      .subscribe(bannedXuids => (this.bannedXuids = bannedXuids));
   }
 
   /** Selects a given player. */
@@ -64,7 +67,7 @@ export class ApolloBanningComponent {
         deleteLeaderboardEntries: banOptions.checkboxes.deleteLeaderboardEntries,
         sendReasonNotification: true,
         reason: banOptions.banReason,
-        featureArea: banOptions.banArea as unknown as ApolloBanArea,
+        featureArea: (banOptions.banArea as unknown) as ApolloBanArea,
         duration: banOptions.banDuration,
       };
     });

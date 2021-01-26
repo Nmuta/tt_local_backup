@@ -53,10 +53,7 @@ export class ApolloService {
 
   /** Bans players by a list of XUIDs. */
   public postBanPlayers(bans: ApolloBanRequest[]): Observable<ApolloBanResult[]> {
-    return this.apiService.postRequest<ApolloBanResult[]>(
-      `${this.basePath}/players/ban`,
-      bans,
-    );
+    return this.apiService.postRequest<ApolloBanResult[]>(`${this.basePath}/players/ban`, bans);
   }
 
   /** Gets apollo player details with a gamertag. This can be used to retrieve a XUID. */

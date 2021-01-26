@@ -6,7 +6,8 @@
     [class.identity-valid]="identity.extra.isValid"
     [class.identity-invalid]="!identity.extra.isValid"
     [color]="identity.extra.theme"
-    (click)="chip.toggleSelected(true)">
+    (click)="chip.toggleSelected(true)"
+  >
     <ng-container *ngTemplateOutlet="template; context: { $implicit: identity }"></ng-container>
     <!-- <span class="name"
       [matTooltip]="identity.extra.nameTooltip">

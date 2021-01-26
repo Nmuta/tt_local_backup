@@ -37,14 +37,14 @@ export class ApolloPlayersBanSummariesFakeApi extends FakeApiBase {
           expireTimeUtc: faker.date.future(),
           featureArea: faker.random.arrayElement(Object.values(ApolloBanArea)),
           isActive: faker.random.boolean(),
-          lastExtendedReason: faker.random.words(faker.random.number({min: 5, max: 50})),
+          lastExtendedReason: faker.random.words(faker.random.number({ min: 5, max: 50 })),
           lastExtendedTimeUtc: faker.date.past(),
-          reason: faker.random.words(faker.random.number({min: 5, max: 50})),
+          reason: faker.random.words(faker.random.number({ min: 5, max: 50 })),
           startTimeUtc: faker.date.past(),
           xuid: xuid,
         },
         userExists: faker.random.boolean(),
-      }
+      };
     });
   }
 }

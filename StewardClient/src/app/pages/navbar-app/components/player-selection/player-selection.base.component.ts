@@ -10,7 +10,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { isEqual } from 'lodash';
 import { MatChipListChange } from '@angular/material/chips';
 
-type IdentityResultsIntersection = IdentityResultAlpha & IdentityResultBeta
+type IdentityResultsIntersection = IdentityResultAlpha & IdentityResultBeta;
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 
 /** The shared top-level navbar. */
@@ -30,7 +30,9 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   /** The player identites that are given to parent components for use */
   public playerIdentities: T[] = [];
   /** The player identities in a format the template can consume. */
-  public get playerIdentitiesFull(): IdentityResultsIntersection[] { return this.playerIdentities as unknown as IdentityResultsIntersection[]; }
+  public get playerIdentitiesFull(): IdentityResultsIntersection[] {
+    return (this.playerIdentities as unknown) as IdentityResultsIntersection[];
+  }
   /** The identity that has been clicked */
   public selectedPlayerIdentity: T = null;
 

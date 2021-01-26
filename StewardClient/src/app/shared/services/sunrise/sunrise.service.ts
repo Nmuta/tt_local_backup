@@ -14,9 +14,7 @@ import {
   SunrisePlayerNotifications,
   SunriseUserFlags,
 } from '@models/sunrise';
-import {
-  LiveOpsBanDescriptions,
-} from '@models/sunrise/sunrise-ban-history.model';
+import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
@@ -33,7 +31,7 @@ import { switchMap } from 'rxjs/operators';
 export class SunriseService {
   public basePath: string = 'v1/title/sunrise';
 
-  constructor(private readonly apiService: ApiService) { }
+  constructor(private readonly apiService: ApiService) {}
 
   /** Gets the status of a player's notifications. */
   public getPlayerNotificationsByXuid(xuid: BigInt): Observable<SunrisePlayerNotifications> {
@@ -110,10 +108,7 @@ export class SunriseService {
 
   /** Bans players by a list of XUIDs. */
   public postBanPlayers(bans: SunriseBanRequest[]): Observable<SunriseBanResult[]> {
-    return this.apiService.postRequest<SunriseBanResult[]>(
-      `${this.basePath}/players/ban`,
-      bans,
-    );
+    return this.apiService.postRequest<SunriseBanResult[]>(`${this.basePath}/players/ban`, bans);
   }
 
   /** Gets shared console users by XUID. */

@@ -1,14 +1,10 @@
 <error-spinner [isActive]="!banSummary" spinnerMessage="Looking for bans"></error-spinner>
-<span *ngIf="hasBans"
-    [matTooltip]="banCount.toString() + ' bans found'">
+<span *ngIf="hasBans" [matTooltip]="banCount.toString() + ' bans found'">
   <span *ngIf="banSummary">{{ banSummary?.banCount }}</span>
-  <span
-    class="ban-count">
-    <fa-icon
-      [icon]="bannedIcon"
-    ></fa-icon>
+  <span class="ban-count">
+    <fa-icon [icon]="bannedIcon"></fa-icon>
   </span>
-<!-- 
+  <!-- 
   <span
     class="ban-count"
     [matTooltip]="'Ban Areas: ' + banSummary?.bannedAreas?.join(', ')">

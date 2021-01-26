@@ -1,6 +1,8 @@
 <mat-chip-list>
-  <mat-chip *ngFor="let identity of playerSelection.playerIdentitiesFull"
-    [class.invalid-identity]="!!identity.error">
+  <mat-chip
+    *ngFor="let identity of playerSelection.playerIdentitiesFull"
+    [class.invalid-identity]="!!identity.error"
+  >
     <span class="name">
       {{ identity[playerSelection.playerIdType] || 'mystery' }}
     </span>

@@ -15,7 +15,8 @@ import { BanOptions } from '../../components/ban-options/ban-options.component';
   styleUrls: ['./sunrise-banning.component.scss'],
 })
 export class SunriseBanningComponent {
-  @ViewChildren('sunrise-ban-history') public banHistoryComponents: SunriseBanHistoryComponent[] = [];
+  @ViewChildren('sunrise-ban-history')
+  public banHistoryComponents: SunriseBanHistoryComponent[] = [];
 
   public formControls = {
     playerIdentities: new FormControl([], [Validators.required, Validators.minLength(1)]),
@@ -35,16 +36,19 @@ export class SunriseBanningComponent {
     const summaries = new Subject<SunriseBanSummary[]>();
     this.formControls.playerIdentities.valueChanges
       .pipe(
-        map((identities: (IdentityResultAlpha)[]) => identities.map(v => v.xuid)), // to xuid list
+        map((identities: IdentityResultAlpha[]) => identities.map(v => v.xuid)), // to xuid list
         switchMap(xuids => this.sunrise.getBanSummariesByXuids(xuids)), // make request
-      ).subscribe(summaries);
-    summaries.pipe(
-      map(summaries => keyBy(summaries, e => e.xuid) as Dictionary<SunriseBanSummary>),
-    ).subscribe(summaryLookup => this.summaryLookup = summaryLookup);
-    summaries.pipe(
-      map(summaries => filter(summaries, summary => summary.banCount > BigInt(0))), // only banned identities
-      map(summaries => summaries.map(summary => summary.xuid)), // map to xuids
-    ).subscribe(bannedXuids => this.bannedXuids = bannedXuids);
+      )
+      .subscribe(summaries);
+    summaries
+      .pipe(map(summaries => keyBy(summaries, e => e.xuid) as Dictionary<SunriseBanSummary>))
+      .subscribe(summaryLookup => (this.summaryLookup = summaryLookup));
+    summaries
+      .pipe(
+        map(summaries => filter(summaries, summary => summary.banCount > BigInt(0))), // only banned identities
+        map(summaries => summaries.map(summary => summary.xuid)), // map to xuids
+      )
+      .subscribe(bannedXuids => (this.bannedXuids = bannedXuids));
   }
 
   /** Selects a given player. */
@@ -66,7 +70,7 @@ export class SunriseBanningComponent {
         deleteLeaderboardEntries: banOptions.checkboxes.deleteLeaderboardEntries,
         sendReasonNotification: true,
         reason: banOptions.banReason,
-        featureArea: banOptions.banArea as unknown as SunriseBanArea,
+        featureArea: (banOptions.banArea as unknown) as SunriseBanArea,
         duration: banOptions.banDuration,
       };
     });

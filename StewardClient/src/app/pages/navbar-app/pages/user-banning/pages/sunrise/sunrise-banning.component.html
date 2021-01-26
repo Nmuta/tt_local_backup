@@ -4,18 +4,19 @@
       #playerSelection
       [allowT10Id]="false"
       [allowGroup]="true"
-      [formControl]="formControls.playerIdentities">
+      [formControl]="formControls.playerIdentities"
+    >
       <player-selection-chip-list
         [playerSelection]="playerSelection"
         [identities]="playerSelection.playerIdentitiesFull"
-        (selectionChange)="selectPlayer($event)">
+        (selectionChange)="selectPlayer($event)"
+      >
         <ng-template let-identity>
-          <player-selection-chip
-            [playerSelection]="playerSelection"
-            [identity]="identity">
+          <player-selection-chip [playerSelection]="playerSelection" [identity]="identity">
             <ban-chip-icon
               [identity]="identity"
-              [banSummary]="summaryLookup[identity.xuid]"></ban-chip-icon>
+              [banSummary]="summaryLookup[identity.xuid]"
+            ></ban-chip-icon>
           </player-selection-chip>
         </ng-template>
       </player-selection-chip-list>
@@ -24,7 +25,10 @@
       <mat-card>
         <mat-card-content>
           <ng-container *ngFor="let xuid of bannedXuids">
-            <sunrise-ban-history [xuid]="xuid" [hidden]="xuid !== selectedPlayer?.xuid"></sunrise-ban-history>
+            <sunrise-ban-history
+              [xuid]="xuid"
+              [hidden]="xuid !== selectedPlayer?.xuid"
+            ></sunrise-ban-history>
           </ng-container>
         </mat-card-content>
       </mat-card>
@@ -46,7 +50,8 @@
           [alwaysShow]="true"
           [canSubmit]="formGroup.valid"
           [canSubmitDisabledReason]="'Form is invalid'"
-          checkboxText="Check to verify ban">
+          checkboxText="Check to verify ban"
+        >
           Submit ban
         </verify-action-button>
       </mat-card-content>

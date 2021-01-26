@@ -1,4 +1,4 @@
-import { SunriseBanArea } from "./sunrise-ban-request.model";
+import { SunriseBanArea } from './sunrise-ban-request.model';
 
 /** The /v1/title/Sunrise/players/ban model */
 export interface SunriseBanResult {

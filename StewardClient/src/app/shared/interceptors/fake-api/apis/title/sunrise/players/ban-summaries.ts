@@ -26,7 +26,6 @@ export class SunrisePlayersBanSummariesFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(xuids: BigInt[]): Partial<Unprocessed<SunriseBanSummary[]>> {
-
     return xuids.map(xuid => {
       return <SunriseBanSummary>{
         banCount: faker.random.boolean() ? BigInt(0) : BigInt(faker.random.number()),
@@ -38,14 +37,14 @@ export class SunrisePlayersBanSummariesFakeApi extends FakeApiBase {
           expireTimeUtc: faker.date.future(),
           featureArea: faker.random.arrayElement(Object.values(SunriseBanArea)),
           isActive: faker.random.boolean(),
-          lastExtendedReason: faker.random.words(faker.random.number({min: 5, max: 50})),
+          lastExtendedReason: faker.random.words(faker.random.number({ min: 5, max: 50 })),
           lastExtendedTimeUtc: faker.date.past(),
-          reason: faker.random.words(faker.random.number({min: 5, max: 50})),
+          reason: faker.random.words(faker.random.number({ min: 5, max: 50 })),
           startTimeUtc: faker.date.past(),
           xuid: xuid,
         },
         userExists: faker.random.boolean(),
-      }
+      };
     });
   }
 }

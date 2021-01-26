@@ -8,9 +8,8 @@ describe('PlayerSelectionChipListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlayerSelectionChipListComponent ]
-    })
-    .compileComponents();
+      declarations: [PlayerSelectionChipListComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

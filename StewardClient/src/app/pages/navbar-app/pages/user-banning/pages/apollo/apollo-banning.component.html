@@ -3,17 +3,18 @@
     #playerSelection
     [allowT10Id]="false"
     [allowGroup]="false"
-    [formControl]="formControls.playerIdentities">
+    [formControl]="formControls.playerIdentities"
+  >
     <player-selection-chip-list
       [playerSelection]="playerSelection"
-      [identities]="playerSelection.playerIdentitiesFull">
+      [identities]="playerSelection.playerIdentitiesFull"
+    >
       <ng-template let-identity>
-        <player-selection-chip
-          [playerSelection]="playerSelection"
-          [identity]="identity">
+        <player-selection-chip [playerSelection]="playerSelection" [identity]="identity">
           <ban-chip-icon
             [identity]="identity"
-            [banSummary]="summaryLookup[identity.xuid]"></ban-chip-icon>
+            [banSummary]="summaryLookup[identity.xuid]"
+          ></ban-chip-icon>
         </player-selection-chip>
       </ng-template>
     </player-selection-chip-list>

@@ -1,4 +1,4 @@
-import { ApolloBanArea } from "./apollo-ban-request.model";
+import { ApolloBanArea } from './apollo-ban-request.model';
 
 /** The /v1/title/Apollo/players/ban model */
 export interface ApolloBanResult {

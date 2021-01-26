@@ -8,10 +8,12 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
 @Component({
   selector: 'player-selection-chip',
   templateUrl: './player-selection-chip.component.html',
-  styleUrls: ['./player-selection-chip.component.scss']
+  styleUrls: ['./player-selection-chip.component.scss'],
 })
 export class PlayerSelectionChipComponent implements OnChanges {
-  @Input() public playerSelection: PlayerSelectionBaseComponent<IdentityResultAlpha | IdentityResultBeta> = null;
+  @Input() public playerSelection: PlayerSelectionBaseComponent<
+    IdentityResultAlpha | IdentityResultBeta
+  > = null;
   @Input() public identity: IdentityResultAlpha | IdentityResultBeta = null;
 
   @ViewChild('chip') public chip: MatChip;
