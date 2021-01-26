@@ -7,6 +7,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Turn10.Data.Common;
+using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -218,6 +219,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task BanPlayers()
         {
             var banParameters = this.GenerateBanParameters();
@@ -232,6 +234,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task BanPlayers_GamertagOnly()
         {
             var banParameters = this.GenerateBanParameters();
@@ -247,6 +250,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task BanPlayers_InvalidXuid()
         {
             var banParameters = this.GenerateBanParameters();
@@ -337,6 +341,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task BanPlayers_UndefinedStartTimeUtc()
         {
             var banParameters = this.GenerateBanParameters();
@@ -450,6 +455,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task BanPlayers_UseBackgroundProcessing()
         {
             var banParameters = this.GenerateBanParameters();
@@ -462,6 +468,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task BanPlayers_UseBackgroundProcessing_InvalidXuid()
         {
             var banParameters = this.GenerateBanParameters();
@@ -989,6 +996,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdatePlayerInventory()
         {
             var playerInventory = this.CreatePlayerInventory();
@@ -1002,6 +1010,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdatePlayerInventory_InvalidXuid()
         {
             var playerInventory = this.CreatePlayerInventory();
@@ -1021,6 +1030,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdatePlayerInventory_NoXuid()
         {
             var playerInventory = this.CreatePlayerInventory();
@@ -1040,6 +1050,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdatePlayerInventory_NoRequestingAgent()
         {
             var playerInventory = this.CreatePlayerInventory();
@@ -1058,6 +1069,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdatePlayerInventory_NegativeItemId()
         {
             var playerInventory = this.CreatePlayerInventory();
@@ -1077,6 +1089,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdatePlayerInventory_NegativeCurrency()
         {
             var playerInventory = this.CreatePlayerInventory();
@@ -1096,6 +1109,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdatePlayerInventory_Unauthorized()
         {
             var playerInventory = this.CreatePlayerInventory();
@@ -1114,6 +1128,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdatePlayerInventory_UseBackgroundProcessing()
         {
             var playerInventory = this.CreatePlayerInventory();
@@ -1126,6 +1141,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdateGroupInventoriesByXuid()
         {
             var groupGift = this.CreateGroupGift();
@@ -1195,6 +1211,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdateGroupInventoriesByXuid_InvalidRecipient()
         {
             var groupGift = this.CreateGroupGift();
@@ -1233,6 +1250,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdateGroupInventoriesByGamertag()
         {
             var groupGift = this.CreateGroupGift();
@@ -1339,6 +1357,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdateGroupInventoriesByLspGroupId()
         {
             var playerInventory = this.CreatePlayerInventory();
@@ -1406,6 +1425,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task UpdateGroupInventoriesByLspGroupId_InvalidGroupId()
         {
             var playerInventory = this.CreatePlayerInventory();
@@ -1424,6 +1444,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task GetGiftHistory()
         {
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
@@ -1437,6 +1458,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task GetGiftHistoryForGroupGift()
         {
             var groupGift = this.CreateGroupGift();
@@ -1451,6 +1473,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task GetGiftHistoryForLspGroupGift()
         {
             var playerInventory = this.CreatePlayerInventory();
@@ -1480,6 +1503,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task GetGiftHistory_InvalidGiftRecipientId()
         {
             var result = await stewardClient.GetGiftHistoriesAsync(TestConstants.InvalidXuid).ConfigureAwait(false);

@@ -30,7 +30,7 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
       giftSendDateUtc: '2020-12-08T20:04:05.391Z',
       giftInventory: {
         xuid: 2533275026603041,
-        turn10Id: 'ReAlTuRn1OiD',
+        t10Id: 'ReAlTuRn1OiD',
       },
     };
   }

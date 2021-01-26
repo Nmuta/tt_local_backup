@@ -4,11 +4,11 @@ function expectTypes(
   query: unknown,
   gamertagState: boolean,
   xuidState: boolean,
-  t10idState: boolean,
+  t10IdState: boolean,
 ) {
   expect(isGamertagQuery(query)).toBe(gamertagState);
   expect(isXuidQuery(query)).toBe(xuidState);
-  expect(isT10IdQuery(query)).toBe(t10idState);
+  expect(isT10IdQuery(query)).toBe(t10IdState);
 }
 
 describe('identity query models', () => {
@@ -26,8 +26,8 @@ describe('identity query models', () => {
     });
   });
 
-  describe('t10id query', () => {
-    const query = { t10id: 't10id' };
+  describe('t10Id query', () => {
+    const query = { t10Id: 't10Id' };
     it('should detect type properly', () => {
       expectTypes(query, false, false, true);
     });

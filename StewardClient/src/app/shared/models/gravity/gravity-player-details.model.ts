@@ -2,7 +2,7 @@
 export interface GravityPlayerDetails {
   xuid: BigInt;
   gamertag: string;
-  turn10Id: string;
+  t10Id: string;
   playFabId: string;
   userInventoryId: string;
   lcid: number;

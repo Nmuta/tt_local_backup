@@ -161,7 +161,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var query = new IdentityQueryBeta { Xuid = default, Gamertag = null, Turn10Id = null};
+            var query = new IdentityQueryBeta { Xuid = default, Gamertag = null, T10Id = null};
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
@@ -432,11 +432,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Arrange.
             var controller = new Dependencies().Build();
             var playerInventoryNull = Fixture.Create<GravityPlayerInventory>();
-            playerInventoryNull.Turn10Id = null;
+            playerInventoryNull.T10Id = null;
             var playerInventoryEmpty = Fixture.Create<GravityPlayerInventory>();
-            playerInventoryEmpty.Turn10Id = TestConstants.Empty;
+            playerInventoryEmpty.T10Id = TestConstants.Empty;
             var playerInventoryWhitespace = Fixture.Create<GravityPlayerInventory>();
-            playerInventoryWhitespace.Turn10Id = TestConstants.WhiteSpace;
+            playerInventoryWhitespace.T10Id = TestConstants.WhiteSpace;
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
@@ -454,7 +454,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
                 result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "Turn10Id"));
+                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "T10Id"));
             }
         }
 

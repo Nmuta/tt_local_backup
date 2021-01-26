@@ -142,7 +142,7 @@ export class GravityService {
     inventory: GravityPlayerInventory,
     useBackgroundProcessing: boolean = false,
   ): Observable<GravityPlayerInventory> {
-    if (!inventory.turn10Id || inventory.turn10Id === '') {
+    if (!inventory.t10Id || inventory.t10Id === '') {
       return throwError('No T10 Id provided.');
     }
 
