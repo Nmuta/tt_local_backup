@@ -28,6 +28,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.UserInventoryId, opt => opt.MapFrom(src => src.CurrentExternalProfileId))
                 .ForMember(des => des.LastLoginUtc, opt => opt.MapFrom(src => src.LastLogin))
                 .ForMember(des => des.FirstLoginUtc, opt => opt.MapFrom(src => src.FirstLogin))
+                .ForMember(des => des.T10Id, opt => opt.MapFrom(src => src.Turn10Id))
                 .ReverseMap();
             this.CreateMap<LiveOpsCar, Contracts.Gravity.GravityCar>()
                 .ForMember(des => des.PurchaseUtc, opt => opt.MapFrom(src => src.PurchaseTimestamp))
@@ -70,6 +71,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<PlayerInventory, GravityPlayerInventory>();
             this.CreateMap<LiveOpsUserDetails, IdentityResultBeta>()
+                .ForMember(des => des.T10Id, opt => opt.MapFrom(src => src.Turn10Id))
                 .ReverseMap();
         }
     }

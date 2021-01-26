@@ -59,9 +59,9 @@ namespace Turn10.LiveOps.StewardApi.Validation
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
 
-            if (model.Xuid == default && string.IsNullOrWhiteSpace(model.Turn10Id))
+            if (model.Xuid == default && string.IsNullOrWhiteSpace(model.T10Id))
             {
-                modelState.AddModelError($"PlayerInventory.Xuid/T10Id", $"Properties must have one Xuid or T10Id defined. Xuid: {model.Xuid}. T10Id: {model.Turn10Id}.");
+                modelState.AddModelError($"PlayerInventory.Xuid/T10Id", $"Properties must have one Xuid or T10Id defined. Xuid: {model.Xuid}. T10Id: {model.T10Id}.");
             }
         }
 

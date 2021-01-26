@@ -45,7 +45,7 @@ describe('GravityGiftBasketComponent', () => {
     const previousGameSettingsId: string = 'test-previous-game-settings-id';
     const playerInventory = {
       xuid: BigInt(0),
-      turn10Id: 'test-id',
+      t10Id: 'test-id',
       previousGameSettingsId: previousGameSettingsId,
       currentExternalProfileId: null,
       cars: [],

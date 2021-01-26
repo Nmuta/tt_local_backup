@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Turn10.Data.Common;
+using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -66,7 +67,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         [TestCategory("Integration")]
         public async Task GetPlayerIdentityByT10Id()
         {
-            var query = new IdentityQueryBeta { Turn10Id = t10Id };
+            var query = new IdentityQueryBeta { T10Id = t10Id };
 
             var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
 
@@ -79,7 +80,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         [TestCategory("Integration")]
         public async Task GetPlayerIdentityByT10Id_InvalidT10Id()
         {
-            var query = new IdentityQueryBeta { Turn10Id = TestConstants.InvalidT10Id };
+            var query = new IdentityQueryBeta { T10Id = TestConstants.InvalidT10Id };
 
             var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
 
@@ -98,7 +99,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsNotNull(result[0].Turn10Ids);
+            Assert.IsNotNull(result[0].T10Ids);
         }
 
         [TestMethod]
@@ -124,7 +125,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsNotNull(result[0].Turn10Ids);
+            Assert.IsNotNull(result[0].T10Ids);
         }
 
         [TestMethod]
@@ -148,7 +149,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             var result = await stewardClient.GetPlayerDetailsAsync(gamertag).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(t10Id, result.Turn10Id);
+            Assert.AreEqual(t10Id, result.T10Id);
             Assert.AreEqual(xuid, result.Xuid);
         }
 
@@ -190,6 +191,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 
             Assert.IsNotNull(result);
             Assert.AreEqual(gamertag, result.Gamertag);
+            Assert.AreEqual(t10Id, result.T10Id);
             Assert.AreEqual(xuid, result.Xuid);
         }
 
@@ -580,7 +582,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         public async Task UpdatePlayerInventoryByT10Id_InvalidT10Id()
         {
             var playerInventory = this.CreatePlayerInventory();
-            playerInventory.Turn10Id = TestConstants.InvalidT10Id;
+            playerInventory.T10Id = TestConstants.InvalidT10Id;
             var headers = this.GenerateHeadersToSend("IntegrationTest");
 
             try
@@ -876,7 +878,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
                     }
                 },
                 Xuid = xuid,
-                Turn10Id = t10Id
+                T10Id = t10Id
             };
         }
     }

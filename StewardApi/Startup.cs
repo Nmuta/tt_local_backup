@@ -13,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
+using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -20,6 +21,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Middleware;
+using Turn10.LiveOps.StewardApi.Obligation;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
@@ -38,6 +40,7 @@ namespace Turn10.LiveOps.StewardApi
     /// <summary>
     ///     Entry point for the app.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This can't be avoided.")]
     public sealed class Startup
     {
         private readonly IConfiguration configuration;
@@ -57,7 +60,7 @@ namespace Turn10.LiveOps.StewardApi
         /// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMicrosoftWebApiAuthentication(this.configuration);
+            services.AddMicrosoftIdentityWebApiAuthentication(this.configuration);
             services.Configure<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
                 // Use the groups claim for populating roles
@@ -85,7 +88,7 @@ namespace Turn10.LiveOps.StewardApi
                     Title = "Turn 10 Steward API",
                     Version = "v1",
                     Description = "Turn 10 Steward",
-                    Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                    Contact = new OpenApiContact
                     {
                         Email = "t10liveopstools@microsoft.com",
                         Name = "Turn 10 LiveOps Tools"
@@ -109,6 +112,10 @@ namespace Turn10.LiveOps.StewardApi
                 options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
+            services.AddSingleton<IKeyVaultClientFactory, KeyVaultClientFactory>();
+            services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
+            services.AddSingleton<IObligationAuthoringClient, ObligationAuthoringClient>();
+            services.AddSingleton<IObligationProvider, ObligationProvider>();
             // Prepare LogSink
             var ifxLogSink = new IfxLogSink(
                 this.configuration[ConfigurationKeyConstants.GenevaTenantId],
@@ -139,7 +146,7 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
 
-            services.AddSingleton<IConfiguration>(this.configuration);
+            services.AddSingleton(this.configuration);
 
             services.AddSingleton<IStsClient, StsClientWrapper>();
 

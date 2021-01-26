@@ -410,7 +410,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             try
             {
                 playerInventory.ShouldNotBeNull(nameof(playerInventory));
-                playerInventory.Turn10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerInventory.Turn10Id));
+                playerInventory.T10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerInventory.T10Id));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
                 this.playerInventoryRequestValidator.ValidateIds(playerInventory, this.ModelState);
@@ -423,15 +423,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.BadRequest(result);
                 }
 
-                if (!await this.gravityPlayerDetailsProvider.EnsurePlayerExistsByT10IdAsync(playerInventory.Turn10Id).ConfigureAwait(true))
+                if (!await this.gravityPlayerDetailsProvider.EnsurePlayerExistsByT10IdAsync(playerInventory.T10Id).ConfigureAwait(true))
                 {
-                    return this.NotFound($"No inventory found for T10Id: {playerInventory.Turn10Id}");
+                    return this.NotFound($"No inventory found for T10Id: {playerInventory.T10Id}");
                 }
 
                 if (!useBackgroundProcessing)
                 {
-                    await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.Turn10Id, playerInventory, requestingAgent).ConfigureAwait(true);
-                    var results = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(playerInventory.Turn10Id).ConfigureAwait(true);
+                    await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.T10Id, playerInventory, requestingAgent).ConfigureAwait(true);
+                    var results = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(playerInventory.T10Id).ConfigureAwait(true);
 
                     return this.Created(this.Request.Path, results);
                 }
@@ -445,7 +445,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     // Do not throw.
                     try
                     {
-                        await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.Turn10Id, playerInventory, requestingAgent).ConfigureAwait(true);
+                        await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.T10Id, playerInventory, requestingAgent).ConfigureAwait(true);
                         var result = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(playerInventory.Xuid).ConfigureAwait(true);
 
                         await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, result.ToJson()).ConfigureAwait(true);

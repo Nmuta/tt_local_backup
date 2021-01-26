@@ -264,7 +264,7 @@ describe('service: GravityService', () => {
     let expectedParams: HttpParams;
 
     beforeEach(() => {
-      expectedInventory = { turn10Id: 't10Id' };
+      expectedInventory = { t10Id: 't10Id' };
       expectedParams = new HttpParams().append('useBackgroundProcessing', false.toString());
       apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of({}));
     });
