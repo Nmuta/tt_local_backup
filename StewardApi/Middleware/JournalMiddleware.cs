@@ -55,7 +55,8 @@ namespace Turn10.LiveOps.StewardApi.Middleware
 
             // Make sure the request body is buffered, read it out and then reset it so the next caller can read it as needed.
             context.Request.EnableBuffering();
-            var requestBody = new StreamReader(context.Request.Body).ReadToEnd();
+            using var requestStreamReader = new StreamReader(context.Request.Body);
+            var requestBody = requestStreamReader.ReadToEnd();
             context.Request.Body.Position = 0;
 
             // The rest of this code is to handle manually upgrading the response body to
@@ -72,7 +73,10 @@ namespace Turn10.LiveOps.StewardApi.Middleware
                     await this.requestDelegate(context).ConfigureAwait(false);
 
                     newResponseBody.Position = 0;
-                    var responseBody = new StreamReader(newResponseBody).ReadToEnd();
+
+                    using var responseStreamReader = new StreamReader(newResponseBody);
+
+                    var responseBody = responseStreamReader.ReadToEnd();
 
                     newResponseBody.Position = 0;
                     await newResponseBody.CopyToAsync(originalResponseBody).ConfigureAwait(false);

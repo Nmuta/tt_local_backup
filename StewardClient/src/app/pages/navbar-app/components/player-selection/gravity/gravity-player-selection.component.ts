@@ -47,8 +47,8 @@ export class GravityPlayerSelectionComponent extends PlayerSelectionBaseComponen
         query = { gamertag: playerId };
       } else if (playerIdType == 'xuid') {
         query = { xuid: BigInt(playerId) };
-      } else if (playerIdType == 't10id') {
-        query = { t10id: playerId };
+      } else if (playerIdType == 't10Id') {
+        query = { t10Id: playerId };
       }
 
       identityQueries[i] = query;
