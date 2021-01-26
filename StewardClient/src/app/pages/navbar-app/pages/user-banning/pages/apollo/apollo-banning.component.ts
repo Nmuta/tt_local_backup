@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ApolloBanRequest, ApolloBanArea } from '@models/apollo/apollo-ban-request.model';
 import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
-import { IdentityResultAlpha } from '@models/identity-query.model';
+import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { ApolloService } from '@services/apollo';
 import { Dictionary, filter, keyBy } from 'lodash';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { BanOptions } from '../../components/ban-options/ban-options.component';
 
 /** Routed Component; Apollo Banning Tool. */
 @Component({
@@ -49,9 +51,22 @@ export class ApolloBanningComponent {
   }
 
   /** Submit the form. */
-  public submit(): void {
-    // const identities = this.formControls.playerIdentities.value as IdentityResultAlphaBatch;
-    // const banOptions = this.formControls.banOptions.value as BanOptions;
-    // TODO
+  public submit(): Observable<unknown> {
+    const identities = this.formControls.playerIdentities.value as IdentityResultAlphaBatch;
+    const banOptions = this.formControls.banOptions.value as BanOptions;
+    const bans: ApolloBanRequest[] = identities.map(identity => {
+      return <ApolloBanRequest>{
+        xuid: identity.xuid,
+        banAllConsoles: banOptions.checkboxes.banAllXboxes,
+        banAllPcs: banOptions.checkboxes.banAllPCs,
+        deleteLeaderboardEntries: banOptions.checkboxes.deleteLeaderboardEntries,
+        sendReasonNotification: true,
+        reason: banOptions.banReason,
+        featureArea: banOptions.banArea as unknown as ApolloBanArea,
+        duration: banOptions.banDuration,
+      };
+    });
+
+    return this.apollo.postBanPlayers(bans);
   }
 }

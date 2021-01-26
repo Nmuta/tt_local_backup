@@ -57,6 +57,9 @@ import { SunriseGroupXuidsInventoryFakeApi } from './apis/title/sunrise/group/xu
 import { SunriseGroupGroupIdGiftHistoryFakeApi } from './apis/title/sunrise/group/groupId/giftHistory';
 import { SunriseGroupsFakeApi } from './apis/title/sunrise/groups';
 import { SunrisePlayerXuidNotificationsFakeApi } from './apis/title/sunrise/player/xuid/notifications';
+import { SunrisePlayersBanSummariesFakeApi } from './apis/title/sunrise/players/ban-summaries';
+import { ApolloPlayersBanSummariesFakeApi } from './apis/title/apollo/players/ban-summaries';
+import { LoggerService, LogTopic } from '@services/logger';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -85,6 +88,7 @@ const fakeApiConstructors = [
   SunrisePlayerXuidInventoryProfilesFakeApi,
   SunrisePlayerProfileIdInventoryFakeApi,
   SunrisePlayersBanFakeApi,
+  SunrisePlayersBanSummariesFakeApi,
   SunriseGroupGamertagsInventoryFakeApi,
   SunriseGroupGroupIdInventoryFakeApi,
   SunriseGroupXuidsInventoryFakeApi,
@@ -99,6 +103,7 @@ const fakeApiConstructors = [
   ApolloPlayerXuidInventoryFakeApi,
   ApolloPlayerXuidGiftHistoryFakeApi,
   ApolloPlayersBanFakeApi,
+  ApolloPlayersBanSummariesFakeApi,
   ApolloGroupGamertagsInventoryFakeApi,
   ApolloGroupGroupIdInventoryFakeApi,
   ApolloGroupXuidsInventoryFakeApi,
@@ -115,6 +120,14 @@ const fakeApiConstructors = [
 /** The URLs this interceptor will not block. */
 const urlAllowList = [
   `${environment.stewardApiUrl}/api/v1/me`,
+  `${environment.stewardApiUrl}/api/v1/title/sunrise/players/identities`,
+  `${environment.stewardApiUrl}/api/v1/title/apollo/players/identities`,
+  `${environment.stewardApiUrl}/api/v1/title/gravity/players/identities`,
+  `${environment.stewardApiUrl}/api/v1/title/opus/players/identities`,
+  `${environment.stewardApiUrl}/api/v1/title/sunrise/players/identities`,
+  `${environment.stewardApiUrl}/api/v1/title/apollo/players/identities`,
+  `${environment.stewardApiUrl}/api/v1/title/gravity/players/identities`,
+  `${environment.stewardApiUrl}/api/v1/title/opus/players/identities`,
   'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.js',
   'https://static.zdassets.com/zendesk_app_framework_sdk/2.0/zaf_sdk.min.js',
 ];
@@ -122,7 +135,10 @@ const urlAllowList = [
 /** Intercepts every request and returns a sample response if it matches the conditions. */
 @Injectable()
 export class FakeApiInterceptor implements HttpInterceptor {
-  constructor(private readonly store: Store) {}
+  constructor(
+    private readonly store: Store,
+    private readonly logger: LoggerService,
+  ) {}
 
   /** Interception hook. */
   public intercept(
@@ -139,9 +155,10 @@ export class FakeApiInterceptor implements HttpInterceptor {
     for (const fakeApiConstructor of fakeApiConstructors) {
       const fakeApi = new fakeApiConstructor(request);
       if (fakeApi.canHandle) {
+        this.logger.log([LogTopic.FakeApi], `${request.url} -> ${fakeApi.constructor.name}`);
         return ObservableOf(
           new HttpResponse({
-            body: fakeApi.handleString(),
+            body: fakeApi.handleString(request.body),
           }),
         ).pipe(delay(_.random(1500) + 500));
       }

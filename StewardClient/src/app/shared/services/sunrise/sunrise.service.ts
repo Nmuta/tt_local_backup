@@ -102,6 +102,7 @@ export class SunriseService {
 
   /** Gets ban summaries by a list of XUIDs. */
   public getBanSummariesByXuids(xuids: BigInt[]): Observable<SunriseBanSummary[]> {
+    debugger;
     return this.apiService.postRequest<SunriseBanSummary[]>(
       `${this.basePath}/players/banSummaries`,
       xuids,

@@ -1,3 +1,5 @@
+import { SunriseBanArea } from "./sunrise-ban-request.model";
+
 /** The /v1/title/Sunrise/players/ban model */
 export interface SunriseBanResult {
   xuid: BigInt;
@@ -15,5 +17,5 @@ export interface SunriseBanDescription {
   lastExtendedTimeUtc: Date;
   lastExtendedReason: string;
   reason: string;
-  featureArea: string;
+  featureArea: SunriseBanArea;
 }

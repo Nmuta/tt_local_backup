@@ -12,10 +12,10 @@ export abstract class FakeApiBase {
   public abstract get canHandle(): boolean;
 
   /** The object that should be returned for this request. */
-  public abstract handle(): Unprocessed<unknown>;
+  public abstract handle(body?: unknown): Unprocessed<unknown>;
 
   /** The stringified object that should be returned for this request. */
-  public handleString(): string {
-    return JSONAlwaysBig.stringify(this.handle());
+  public handleString(body: unknown): string {
+    return JSONAlwaysBig.stringify(this.handle(body));
   }
 }

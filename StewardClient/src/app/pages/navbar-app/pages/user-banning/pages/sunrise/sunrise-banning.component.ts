@@ -33,6 +33,7 @@ export class SunriseBanningComponent {
 
   constructor(private readonly sunrise: SunriseService) {
     const summaries = new Subject<SunriseBanSummary[]>();
+    debugger;
     this.formControls.playerIdentities.valueChanges
       .pipe(
         map((identities: (IdentityResultAlpha)[]) => identities.map(v => v.xuid)), // to xuid list
