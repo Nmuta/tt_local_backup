@@ -33,11 +33,10 @@ export class SunriseBanningComponent {
 
   constructor(private readonly sunrise: SunriseService) {
     const summaries = new Subject<SunriseBanSummary[]>();
-    debugger;
     this.formControls.playerIdentities.valueChanges
       .pipe(
         map((identities: (IdentityResultAlpha)[]) => identities.map(v => v.xuid)), // to xuid list
-        switchMap(xuids => this.sunrise.getBanSummariesByXuids(xuids)), // make requests
+        switchMap(xuids => this.sunrise.getBanSummariesByXuids(xuids)), // make request
       ).subscribe(summaries);
     summaries.pipe(
       map(summaries => keyBy(summaries, e => e.xuid) as Dictionary<SunriseBanSummary>),

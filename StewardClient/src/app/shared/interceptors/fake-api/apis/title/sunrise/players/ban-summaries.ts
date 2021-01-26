@@ -15,13 +15,13 @@ export class SunrisePlayersBanSummariesFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\^\/?api\/v1\/title\/sunrise\/players\/banSummaries$/i;
-    debugger;
+    const regex = /^\/?api\/v1\/title\/sunrise\/players\/banSummaries$/i;
     return regex.test(url.pathname);
   }
 
   /** Produces a sample API response. */
   public handle(body?: unknown): Partial<Unprocessed<SunriseBanSummary[]>> {
+    debugger;
     return SunrisePlayersBanSummariesFakeApi.make(body as BigInt[]);
   }
 

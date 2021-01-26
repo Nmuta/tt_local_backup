@@ -15,7 +15,7 @@ export class ApolloPlayersBanSummariesFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\^\/?api\/v1\/title\/apollo\/players\/banSummaries$/i;
+    const regex = /^\/?api\/v1\/title\/apollo\/players\/banSummaries$/i;
     return regex.test(url.pathname);
   }
 

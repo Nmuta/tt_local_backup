@@ -158,7 +158,7 @@ export class FakeApiInterceptor implements HttpInterceptor {
         this.logger.log([LogTopic.FakeApi], `${request.url} -> ${fakeApi.constructor.name}`);
         return ObservableOf(
           new HttpResponse({
-            body: fakeApi.handleString(request.body),
+            body: fakeApi.handle(request.body),
           }),
         ).pipe(delay(_.random(1500) + 500));
       }
