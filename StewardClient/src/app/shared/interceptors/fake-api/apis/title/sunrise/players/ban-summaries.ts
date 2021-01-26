@@ -15,7 +15,7 @@ export class SunrisePlayersBanSummariesFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/sunrise\/players\/banSummaries/i;
+    const regex = /\^\/?api\/v1\/title\/sunrise\/players\/banSummaries$/i;
     debugger;
     return regex.test(url.pathname);
   }

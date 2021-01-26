@@ -17,7 +17,7 @@ export class SunriseGroupXuidsInventoryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/sunrise\/group\/xuids\/inventory/i;
+    const regex = /\^\/?api\/v1\/title\/sunrise\/group\/xuids\/inventory$/i;
     return regex.test(url.pathname);
   }
 

@@ -13,7 +13,7 @@ export class SunriseGroupsFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/sunrise\/groups/i;
+    const regex = /\^\/?api\/v1\/title\/sunrise\/groups$/i;
     return regex.test(url.pathname);
   }
 

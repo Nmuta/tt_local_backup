@@ -17,7 +17,7 @@ export class OpusPlayerProfileIdInventoryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/opus\/player\/profileId\((.+)\)\/inventory/i;
+    const regex = /\^\/?api\/v1\/title\/opus\/player\/profileId\((.+)\)\/inventory$/i;
     return regex.test(url.pathname);
   }
 
