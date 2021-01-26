@@ -10,9 +10,9 @@ interface IdentityQueryByXuid {
   xuid: BigInt;
 }
 
-/** An identity query by t10id. */
+/** An identity query by t10Id. */
 interface IdentityQueryByT10Id {
-  t10id: string;
+  t10Id: string;
 }
 
 /** Type-checking for @see IdentityQueryByGamertag */
@@ -30,12 +30,12 @@ export function isXuidQuery(mystery: unknown): mystery is IdentityQueryByXuid {
 /** Type-checking for @see IdentityQueryByT10Id */
 export function isT10IdQuery(mystery: unknown): mystery is IdentityQueryByT10Id {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return 't10id' in (mystery as any);
+  return 't10Id' in (mystery as any);
 }
 
 /** Contextual information about T10IDs. */
 export interface T10IdInfo {
-  t10id: string;
+  t10Id: string;
   createdUtc: Date;
   lastAccessedUtc: Date;
 }
@@ -96,9 +96,9 @@ export interface IdentityResultBeta {
   /** The XUID, if found. */
   xuid?: BigInt;
   /** The principal T10ID, if found. */
-  t10id?: string;
+  t10Id?: string;
   /** The other T10IDs, if found. */
-  t10ids?: T10IdInfo[];
+  t10Ids?: T10IdInfo[];
   /** Why this query failed. */
   error?: MSError;
 }

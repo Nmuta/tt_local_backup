@@ -37,7 +37,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   data: string = '';
   /** Array of player ids populated from the textarea input. */
   playerIds: string[] = [];
-  /** The player id type (gamertag|xuid|t10id) populated by the button toggle. */
+  /** The player id type (gamertag|xuid|t10Id) populated by the button toggle. */
   playerIdType: string = 'gamertag';
   /** Boolean whether textarea in UI should be expanded.  */
   showExpandedTextArea: boolean = false;

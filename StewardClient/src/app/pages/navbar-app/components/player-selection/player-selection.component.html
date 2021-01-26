@@ -20,7 +20,7 @@
         >
           <mat-button-toggle value="gamertag">Gamertag</mat-button-toggle>
           <mat-button-toggle value="xuid">Xuid</mat-button-toggle>
-          <mat-button-toggle *ngIf="allowT10Id" value="t10id">T10Id</mat-button-toggle>
+          <mat-button-toggle *ngIf="allowT10Id" value="t10Id">T10Id</mat-button-toggle>
         </mat-button-toggle-group>
         <div class="player-id-input">
           <mat-form-field appearance="fill">
@@ -69,7 +69,7 @@
       >
         <span *ngIf="playerIdType === 'gamertag'">{{ identity.gamertag }}</span>
         <span *ngIf="playerIdType === 'xuid'">{{ identity.xuid }}</span>
-        <span *ngIf="playerIdType === 't10id'">{{ identity.t10id }}</span>
+        <span *ngIf="playerIdType === 't10Id'">{{ identity.t10Id }}</span>
         <fa-icon
           class="remove-player-icon"
           [icon]="closeIcon"
@@ -129,7 +129,7 @@
           >
             <fa-icon [icon]="copyToClipboard" size="lg"></fa-icon>
           </button>
-          <b>T10Id:</b> {{ selectedPlayerIdentity.t10id }}
+          <b>T10Id:</b> {{ selectedPlayerIdentity.t10Id }}
         </span>
       </p>
       <p *ngIf="!!selectedPlayerIdentity.error">
