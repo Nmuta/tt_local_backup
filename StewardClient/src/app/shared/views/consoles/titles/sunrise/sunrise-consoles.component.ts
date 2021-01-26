@@ -13,7 +13,7 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./sunrise-consoles.component.scss'],
 })
 export class SunriseConsolesComponent implements OnChanges {
-  @Input() public xuid?: number;
+  @Input() public xuid?: BigInt;
 
   public bannedIcon = faGavel;
 

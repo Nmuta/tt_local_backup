@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   IdentityQueryAlpha,
@@ -35,14 +34,9 @@ export class OpusService {
   public getPlayerIdentities(
     identityQueries: IdentityQueryAlphaBatch,
   ): Observable<IdentityResultAlphaBatch> {
-    const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
     return this.apiService.postRequest<IdentityResultAlphaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
-      null,
-      headers,
     );
   }
 

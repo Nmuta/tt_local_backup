@@ -80,7 +80,12 @@
       </mat-chip>
     </mat-chip-list>
   </div>
-  <div *ngIf="!!selectedPlayerIdentity" class="selected-player-information">
+  <!-- 
+    TODO: Remove
+    This will probably get moved to the sub-tool section below player-selection tool
+    Leaving the (click) on the mat-chip that selected a specific player identity
+  -->
+  <!-- <div *ngIf="!!selectedPlayerIdentity" class="selected-player-information">
     <button
       mat-mini-fab
       class="close-player-info-button"
@@ -131,7 +136,7 @@
         {{ selectedPlayerIdentity.error | bigjson }}
       </p>
     </div>
-  </div>
+  </div> -->
 </ng-template>
 
 <ng-template #failState id="fail-state">

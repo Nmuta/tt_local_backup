@@ -49,6 +49,9 @@ export class MockSunriseService {
   public getCreditHistoryByXuid = jasmine
     .createSpy('getCreditHistoryByXuid')
     .and.returnValue(defer(() => of(_.clone(this.generator()))));
+  public getPlayerNotificationsByXuid = jasmine
+    .createSpy('getPlayerNotificationsByXuid')
+    .and.returnValue(defer(() => of(_.clone(this.generator()))));
 
   constructor(private readonly generator: () => unknown) {}
 }

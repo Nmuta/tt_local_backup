@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   IdentityQueryAlphaBatch,
@@ -7,10 +6,15 @@ import {
   IdentityResultAlpha,
 } from '@models/identity-query.model';
 import { LspGroups } from '@models/lsp-group';
-import { SunrisePlayerDetails, SunriseUserFlags } from '@models/sunrise';
+import {
+  SunrisePlayerDetails,
+  SunrisePlayerNotifications,
+  SunriseUserFlags,
+} from '@models/sunrise';
 import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.model';
 import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
+import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
 import { SunriseGiftHistories } from '@models/sunrise/sunrise-gift-history.model';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
@@ -27,6 +31,11 @@ export class SunriseService {
 
   constructor(private readonly apiService: ApiService) {}
 
+  /** Gets the status of a player's notifications. */
+  public getPlayerNotificationsByXuid(xuid: BigInt): Observable<SunrisePlayerNotifications> {
+    return this.apiService.getRequest(`${this.basePath}/player/xuid(${xuid})/notifications`);
+  }
+
   /** Gets a single identity within this service. */
   public getPlayerIdentity(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
     const queryBatch: IdentityQueryAlphaBatch = [identityQuery];
@@ -42,20 +51,20 @@ export class SunriseService {
   public getPlayerIdentities(
     identityQueries: IdentityQueryAlphaBatch,
   ): Observable<IdentityResultAlphaBatch> {
-    const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
     return this.apiService.postRequest<IdentityResultAlphaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
-      null,
-      headers,
     );
   }
 
   /** Gets the sunrise lsp groups. */
   public getLspGroups(): Observable<LspGroups> {
     return this.apiService.getRequest<LspGroups>(`${this.basePath}/groups`);
+  }
+
+  /** Gets the sunrise master inventory. */
+  public getMasterInventory(): Observable<SunriseMasterInventory> {
+    return this.apiService.getRequest<SunriseMasterInventory>(`${this.basePath}/masterInventory`);
   }
 
   /** Gets sunrise player details with a gamertag. This can be used to retrieve a XUID. */
@@ -136,7 +145,7 @@ export class SunriseService {
     );
   }
   /** Gets console details by XUID. */
-  public getConsoleDetailsByXuid(xuid: number): Observable<SunriseConsoleDetails> {
+  public getConsoleDetailsByXuid(xuid: BigInt): Observable<SunriseConsoleDetails> {
     return this.apiService.getRequest<SunriseConsoleDetails>(
       `${this.basePath}/player/xuid(${xuid})/consoleDetails`,
     );

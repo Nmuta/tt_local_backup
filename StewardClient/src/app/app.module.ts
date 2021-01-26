@@ -42,6 +42,7 @@ import { GravityGiftHistoryState } from '@navbar-app/pages/gift-history/gravity/
 import { SunriseGiftHistoryState } from '@navbar-app/pages/gift-history/sunrise/state/sunrise-gift-history.state';
 import { ApolloGiftHistoryState } from '@navbar-app/pages/gift-history/apollo/state/apollo-gift-history.state';
 import { OpusGiftHistoryState } from '@navbar-app/pages/gift-history/opus/state/opus-gift-history.state';
+import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -81,6 +82,7 @@ function fakeApiOrNothing(): Provider[] {
       UserState,
       UserSettingsState,
       TitleMemoryState,
+      MasterInventoryListMemoryState,
       LspGroupMemoryState,
       // Gifting page states
       GravityGiftingState,

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -28,6 +29,33 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
 
             this.kustoProvider = kustoProvider;
+        }
+
+        /// <summary>
+        ///     Gets Sunrise master inventory data.
+        /// </summary>
+        /// <returns>
+        ///     <see cref="SunriseMasterInventory"/>.
+        /// </returns>
+        [HttpGet("sunrise/masterInventory")]
+        [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
+        public async Task<IActionResult> GetSunriseMasterInventoryList()
+        {
+            try
+            {
+                var masterInventory = new SunriseMasterInventory();
+                masterInventory.Cars = await this.kustoProvider.GetCarsAsync(KustoGameDbSupportedTitle.Sunrise).ConfigureAwait(true);
+                masterInventory.CarHorns = await this.kustoProvider.GetCarHornsAsync(KustoGameDbSupportedTitle.Sunrise).ConfigureAwait(true);
+                masterInventory.VanityItems = await this.kustoProvider.GetCharacterCustomizationsAsync(KustoGameDbSupportedTitle.Sunrise).ConfigureAwait(true);
+                masterInventory.Emotes = await this.kustoProvider.GetEmotesAsync(KustoGameDbSupportedTitle.Sunrise).ConfigureAwait(true);
+                masterInventory.QuickChatLines = await this.kustoProvider.GetQuickChatsAsync(KustoGameDbSupportedTitle.Sunrise).ConfigureAwait(true);
+
+                return this.Ok(masterInventory);
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex);
+            }
         }
 
         /// <summary>

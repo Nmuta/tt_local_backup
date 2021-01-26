@@ -3,7 +3,7 @@ import { ApiService, createMockApiService } from '@shared/services/api';
 import { of } from 'rxjs';
 import { GravityService } from './gravity.service';
 import { GravityPlayerInventory } from '@models/gravity';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { GiftHistoryAntecedent } from '@shared/constants';
 import { faker } from '@interceptors/fake-api/utility';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -50,8 +50,6 @@ describe('service: GravityService', () => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,
           jasmine.any(Object),
-          null,
-          jasmine.any(HttpHeaders),
         );
         done();
       });
@@ -266,7 +264,7 @@ describe('service: GravityService', () => {
     let expectedParams: HttpParams;
 
     beforeEach(() => {
-      expectedInventory = { turn10Id: 't10Id' };
+      expectedInventory = { t10Id: 't10Id' };
       expectedParams = new HttpParams().append('useBackgroundProcessing', false.toString());
       apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of({}));
     });

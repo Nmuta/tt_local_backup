@@ -1,11 +1,7 @@
-import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  GravityGameSettings,
-  GravityGiftHistory,
-  GravityPlayerDetails,
-  GravityPlayerInventory,
-} from '@models/gravity';
+import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
+import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
   IdentityQueryBeta,
   IdentityQueryBetaBatch,
@@ -42,14 +38,9 @@ export class GravityService {
   public getPlayerIdentities(
     identityQueries: IdentityQueryBetaBatch,
   ): Observable<IdentityResultBetaBatch> {
-    const headers: HttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
     return this.apiService.postRequest<IdentityResultBetaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
-      null,
-      headers,
     );
   }
 
@@ -152,7 +143,7 @@ export class GravityService {
     inventory: GravityPlayerInventory,
     useBackgroundProcessing: boolean = false,
   ): Observable<GravityPlayerInventory> {
-    if (!inventory.turn10Id || inventory.turn10Id === '') {
+    if (!inventory.t10Id || inventory.t10Id === '') {
       return throwError('No T10 Id provided.');
     }
 
@@ -169,8 +160,8 @@ export class GravityService {
   }
 
   /** Gets gravity game settings. */
-  public getGameSettings(gameSettingsId: string): Observable<GravityGameSettings> {
-    return this.apiService.getRequest<GravityGameSettings>(
+  public getGameSettings(gameSettingsId: string): Observable<GravityMasterInventory> {
+    return this.apiService.getRequest<GravityMasterInventory>(
       `${this.basePath}/data/gameSettingsId(${gameSettingsId})`,
     );
   }

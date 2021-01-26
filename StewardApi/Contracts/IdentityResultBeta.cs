@@ -26,12 +26,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         /// <summary>
         ///     Gets or sets the Turn 10 ID.
         /// </summary>
-        public string Turn10Id { get; set; }
+        public string T10Id { get; set; }
 
         /// <summary>
         ///     Gets or sets the Turn 10 ID.
         /// </summary>
-        public IList<LiveOpsUserDetails> Turn10Ids { get; set; }
+        public IList<LiveOpsUserDetails> T10Ids { get; set; }
 
         /// <summary>
         ///     Gets or sets the error.

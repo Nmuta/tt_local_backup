@@ -28,10 +28,9 @@
 
   <div class="default-page-layout-right">
     <!-- Page tool -->
-    <mat-card>
-      <h2>Sunrise gifting page state</h2>
-      <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
-      <p>LSP Group: {{ selectedLspGroup?.name || 'None' }}</p>
-    </mat-card>
+    <sunrise-gift-basket
+      [playerIdentities]="selectedPlayerIdentities"
+      [lspGroup]="selectedLspGroup"
+    ></sunrise-gift-basket>
   </div>
 </div>

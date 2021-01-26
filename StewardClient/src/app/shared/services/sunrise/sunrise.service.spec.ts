@@ -1,4 +1,3 @@
-import { HttpHeaders } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { SunriseConsoleIsBannedFakeApi } from '@interceptors/fake-api/apis/title/sunrise/console/isBanned';
@@ -42,7 +41,6 @@ describe('SunriseService', () => {
       service.getPlayerIdentities = jasmine
         .createSpy('getPlayerIdentities')
         .and.returnValue(of([]));
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call service.getPlayerIdentities', done => {
@@ -55,7 +53,7 @@ describe('SunriseService', () => {
 
   describe('Method: getPlayerIdentities', () => {
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      nextReturnValue = [];
     });
 
     it('should call apiServiceMock.postRequest', done => {
@@ -63,8 +61,6 @@ describe('SunriseService', () => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,
           jasmine.any(Object),
-          null,
-          jasmine.any(HttpHeaders),
         );
         done();
       });
@@ -80,12 +76,28 @@ describe('SunriseService', () => {
     });
   });
 
+  describe('Method: getPlayerNotificationsByXuid', () => {
+    let expectedXuid;
+
+    beforeEach(() => {
+      expectedXuid = BigInt(fakeXuid());
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getPlayerNotificationsByXuid(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${expectedXuid})/notifications`,
+        );
+        done();
+      });
+    });
+  });
+
   describe('Method: getPlayerDetailsByGamertag', () => {
     let expectedGamertag;
 
     beforeEach(() => {
       expectedGamertag = 'test-gamertag';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call API service getRequest with the expected params', done => {
@@ -155,7 +167,7 @@ describe('SunriseService', () => {
 
   it('handles getConsoleDetailsByXuid', done => {
     nextReturnValue = SunrisePlayerXuidConsolesFakeApi.makeMany();
-    service.getConsoleDetailsByXuid(fakeXuid()).subscribe(output => {
+    service.getConsoleDetailsByXuid(BigInt(fakeXuid())).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
