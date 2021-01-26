@@ -7,6 +7,8 @@ import {
 } from '@models/identity-query.model';
 import { LspGroups } from '@models/lsp-group';
 import {
+  SunriseBanRequest,
+  SunriseBanResult,
   SunriseBanSummary,
   SunrisePlayerDetails,
   SunrisePlayerNotifications,
@@ -103,6 +105,14 @@ export class SunriseService {
     return this.apiService.postRequest<SunriseBanSummary[]>(
       `${this.basePath}/players/banSummaries`,
       xuids,
+    );
+  }
+
+  /** Bans players by a list of XUIDs. */
+  public postBanPlayers(bans: SunriseBanRequest[]): Observable<SunriseBanResult[]> {
+    return this.apiService.postRequest<SunriseBanResult[]>(
+      `${this.basePath}/players/ban`,
+      bans,
     );
   }
 

@@ -1,7 +1,8 @@
 import * as moment from 'moment';
 
-export enum ApolloBanArea {
+export enum SunriseBanArea {
   AllRequests = 'AllRequests',
+  AuctionHouse = 'AuctionHouse',
   Community = 'Community',
   DailyCredit = 'DailyCredit',
   Drivatar = 'Drivatar',
@@ -15,28 +16,15 @@ export enum ApolloBanArea {
   UserGeneratedContent = 'UserGeneratedContent',
 }
 
-/** A single part of the bulk /v1/title/Apollo/players/ban request model */
-export interface ApolloBanRequest {
-  xuid: BigInt;
-  gamertag: string;
+/** A single part of the bulk /v1/title/Sunrise/players/ban request model */
+export interface SunriseBanRequest {
+  xuid?: BigInt;
+  gamertag?: string;
   banAllConsoles: boolean;
   banAllPcs: boolean;
   deleteLeaderboardEntries: boolean;
   sendReasonNotification: boolean;
   reason: string;
-  featureArea: ApolloBanArea;
+  featureArea: SunriseBanArea;
   duration: moment.Duration;
-}
-
-/** Services model for bans. */
-export interface ApolloBanDescription {
-  xuid: BigInt;
-  startTimeUtc: Date;
-  expireTimeUtc: Date;
-  isActive: boolean;
-  countOfTimesExtended: number;
-  lastExtendedTimeUtc: Date;
-  lastExtendedReason: string;
-  reason: string;
-  featureArea: string;
 }

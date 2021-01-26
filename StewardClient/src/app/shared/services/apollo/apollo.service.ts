@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ApolloPlayerDetails } from '@models/apollo';
+import { ApolloBanResult, ApolloPlayerDetails } from '@models/apollo';
+import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
 import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
 import {
   IdentityQueryAlpha,
@@ -47,6 +48,14 @@ export class ApolloService {
     return this.apiService.postRequest<ApolloBanSummary[]>(
       `${this.basePath}/players/banSummaries`,
       xuids,
+    );
+  }
+
+  /** Bans players by a list of XUIDs. */
+  public postBanPlayers(bans: ApolloBanRequest[]): Observable<ApolloBanResult[]> {
+    return this.apiService.postRequest<ApolloBanResult[]>(
+      `${this.basePath}/players/ban`,
+      bans,
     );
   }
 

@@ -1,12 +1,13 @@
 import { Component, ViewChildren } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { IdentityResultAlpha } from '@models/identity-query.model';
-import { SunriseBanSummary } from '@models/sunrise';
+import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
+import { SunriseBanArea, SunriseBanRequest, SunriseBanSummary } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise';
 import { SunriseBanHistoryComponent } from '@shared/views/ban-history/titles/sunrise/sunrise-ban-history.component';
 import { Dictionary, filter, keyBy } from 'lodash';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { BanOptions } from '../../components/ban-options/ban-options.component';
 
 /** Routed Component; Sunrise Banning Tool. */
 @Component({
@@ -52,9 +53,22 @@ export class SunriseBanningComponent {
   }
 
   /** Submit the form. */
-  public submit(): void {
-    // const identities = this.formControls.playerIdentities.value as IdentityResultAlphaBatch;
-    // const banOptions = this.formControls.banOptions.value as BanOptions;
-    // TODO
+  public submit(): Observable<unknown> {
+    const identities = this.formControls.playerIdentities.value as IdentityResultAlphaBatch;
+    const banOptions = this.formControls.banOptions.value as BanOptions;
+    const bans: SunriseBanRequest[] = identities.map(identity => {
+      return <SunriseBanRequest>{
+        xuid: identity.xuid,
+        banAllConsoles: banOptions.checkboxes.banAllXboxes,
+        banAllPcs: banOptions.checkboxes.banAllPCs,
+        deleteLeaderboardEntries: banOptions.checkboxes.deleteLeaderboardEntries,
+        sendReasonNotification: true,
+        reason: banOptions.banReason,
+        featureArea: banOptions.banArea as unknown as SunriseBanArea,
+        duration: banOptions.banDuration,
+      };
+    });
+
+    return this.sunrise.postBanPlayers(bans);
   }
 }
