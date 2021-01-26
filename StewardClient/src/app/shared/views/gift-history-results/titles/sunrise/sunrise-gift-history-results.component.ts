@@ -18,12 +18,14 @@ export class SunriseGiftHistoryResultsComponent extends BaseComponent implements
   @Input() public selectedGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
 
-  /** True while waiting on a request. */
-  public isLoading = false;
+  /** True when request succeeds. */
+  public isLoaded = false;
   /** The error received while loading. */
   public loadError: unknown;
+  /** True while waiting on request. */
+  public showSpinner = false;
 
-  /** The ban list to display. */
+  /** The gift history list to display. */
   public giftHistoryList: SunriseGiftHistories;
 
   public isActiveIcon = faCheck;
@@ -37,23 +39,26 @@ export class SunriseGiftHistoryResultsComponent extends BaseComponent implements
 
   /** Initialization hook. */
    public ngOnChanges(): void {
-    this.loadError = undefined;
-
     if (this.usingPlayerIdentities)
     {
       if(this.selectedPlayer === undefined) {
+        this.isLoaded = false;
         return
       }
 
-      this.isLoading = true;
-      console.log("You are on individual player gifting.")
+      this.loadError = undefined;
+      this.isLoaded = false;
+      this.showSpinner = true;
+
       this.sunrise.getGiftHistoryByXuid(this.selectedPlayer.xuid).subscribe(
         giftHistories => {
-          this.isLoading = false;
+          this.isLoaded = true;
+          this.showSpinner = false;
           this.giftHistoryList = giftHistories;
         },
         _error => {
-          this.isLoading = false;
+          this.isLoaded = false;
+          this.showSpinner = false;
           this.loadError = _error; // TODO: Display something useful to the user
         },
       );
@@ -61,18 +66,23 @@ export class SunriseGiftHistoryResultsComponent extends BaseComponent implements
     else
     {
       if(this.selectedGroup === undefined || this.selectedGroup === null) {
+        this.isLoaded = false;
         return
       }
 
-      this.isLoading = true;
-      console.log("You are on LSP group gifting.")
+      this.loadError = undefined;
+      this.isLoaded = false;
+      this.showSpinner = true;
+
       this.sunrise.getGiftHistoryByLspGroup(this.selectedGroup.id).subscribe(
         giftHistories => {
-          this.isLoading = false;
+          this.isLoaded = true;
+          this.showSpinner = false;
           this.giftHistoryList = giftHistories;
         },
         _error => {
-          this.isLoading = false;
+          this.isLoaded = false;
+          this.showSpinner = false;
           this.loadError = _error; // TODO: Display something useful to the user
         },
       );

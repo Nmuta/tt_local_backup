@@ -169,7 +169,7 @@ export class GravityService {
   /** Gets Gift history by a XUID. */
   public getGiftHistoryByT10Id(t10Id: string): Observable<GravityGiftHistories> {
     return this.apiService
-      .getRequest<GravityGiftHistories>(`${this.basePath}/player/t10id(${t10Id})/banHistory`)
+      .getRequest<GravityGiftHistories>(`${this.basePath}/player/t10Id(${t10Id})/giftHistory`)
       .pipe(
         map(giftHistory => {
           // these come in stringly-typed and must be converted

@@ -15,12 +15,14 @@ import { GravityService } from '@services/gravity/gravity.service';
 export class GravityGiftHistoryResultsComponent extends BaseComponent implements OnChanges {
   @Input() public selectedPlayer: IdentityResultBeta;
 
-  /** True while waiting on a request. */
-  public isLoading = true;
+  /** True when request succeeds. */
+  public isLoaded = false;
   /** The error received while loading. */
   public loadError: unknown;
+  /** True while waiting on request. */
+  public showSpinner = false;
 
-  /** The ban list to display. */
+  /** The gift history list to display. */
   public giftHistoryList: GravityGiftHistories;
 
   public isActiveIcon = faCheck;
@@ -32,35 +34,28 @@ export class GravityGiftHistoryResultsComponent extends BaseComponent implements
     super();
   }
 
-  /** Initialization hook. */
-  public ngOnChanges(): void {
-    if (this.selectedPlayer === undefined) {
-      return;
+    /** Initialization hook. */
+    public ngOnChanges(): void {
+      if(this.selectedPlayer === undefined) {
+        this.isLoaded = false;
+        return
+      }
+
+      this.loadError = undefined;
+      this.isLoaded = false;
+      this.showSpinner = true;
+
+      this.gravity.getGiftHistoryByT10Id(this.selectedPlayer.t10Id).subscribe(
+        giftHistories => {
+          this.isLoaded = true;
+          this.showSpinner = false;
+          this.giftHistoryList = giftHistories;
+        },
+        _error => {
+          this.isLoaded = false;
+          this.showSpinner = false;
+          this.loadError = _error; // TODO: Display something useful to the user
+        },
+      );
     }
-
-    this.isLoading = true;
-    this.loadError = undefined;
-
-    console.log('selected player ids:');
-    console.log(this.selectedPlayer.t10ids);
-
-    var lookupt10id = this.selectedPlayer.t10id ? 
-      this.selectedPlayer.t10id :
-      this.selectedPlayer.t10ids.sort((a,b) => {return a.lastAccessedUtc.getTime() - b.lastAccessedUtc.getTime()})[0];
-
-    console.log('lookup T10ID:')
-    console.log(lookupt10id)
-
-    this.gravity.getGiftHistoryByT10Id(this.selectedPlayer.t10id).subscribe(
-      giftHistories => {
-        this.isLoading = false;
-        this.giftHistoryList = giftHistories;
-      },
-      _error => {
-        this.isLoading = false;
-        this.loadError = _error; // TODO: Display something useful to the user
-      },
-    );
-  }
-
 }

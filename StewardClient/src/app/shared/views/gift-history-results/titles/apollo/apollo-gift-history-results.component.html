@@ -3,13 +3,13 @@
     <h2>
         Apollo Gift History
         <error-spinner
-          [isActive]="false"
+          [isActive]="showSpinner"
           [error]="loadError"
           spinnerMessage="Loading"
           errorMessage="Failed to load"
         ></error-spinner>
       </h2>
-      <ng-container *ngIf="!isLoading && !loadError; else failstate">
+      <ng-container *ngIf="isLoaded && !loadError; else failstate">
         <table mat-table [dataSource]="giftHistoryList" multiTemplateDataRows>
           <ng-container matColumnDef="requestingAgent">
             <th mat-header-cell *matHeaderCellDef>Requesting Agent</th>
