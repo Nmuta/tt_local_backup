@@ -52,8 +52,10 @@ export class SunriseBanningComponent {
     this.selectedPlayer = identity;
   }
 
+  public submit = (): Observable<unknown> => this.submitInternal();
+
   /** Submit the form. */
-  public submit(): Observable<unknown> {
+  public submitInternal(): Observable<unknown> {
     const identities = this.formControls.playerIdentities.value as IdentityResultAlphaBatch;
     const banOptions = this.formControls.banOptions.value as BanOptions;
     const bans: SunriseBanRequest[] = identities.map(identity => {

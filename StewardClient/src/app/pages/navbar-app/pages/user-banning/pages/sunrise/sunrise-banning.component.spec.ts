@@ -25,6 +25,6 @@ describe('SunriseBanningComponent', () => {
   });
 
   it('should submit', () => {
-    component.submit();
+    component.submitInternal();
   });
 });
