@@ -35,7 +35,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         ///     Gets a pipeline.
         /// </summary>
         /// <param name="pipelineName">The pipeline name.</param>
-        /// <returns>A GUID to track the operation.</returns>
+        /// <returns>A new instance of <see cref="ObligationPipeline"/>.</returns>
         Task<ObligationPipeline> GetPipelineAsync(string pipelineName);
 
         /// <summary>

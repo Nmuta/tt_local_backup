@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
     /// <summary>
     ///     A dependency represents a relationship between two data activities.
     /// </summary>
-    public class Dependency
+    public sealed class Dependency
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="Dependency"/> class.
