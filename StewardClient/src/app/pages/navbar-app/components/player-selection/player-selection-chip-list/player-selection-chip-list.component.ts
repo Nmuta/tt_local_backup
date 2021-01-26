@@ -1,23 +1,17 @@
 import {
-  AfterContentChecked,
-  AfterContentInit,
   Component,
   ContentChild,
-  ContentChildren,
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
-  QueryList,
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
-import { MatChipListChange, MatChipSelectionChange } from '@angular/material/chips';
+import { MatChipListChange } from '@angular/material/chips';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { cloneDeep } from 'lodash';
-import { PlayerSelectionChipComponent } from '../player-selection-chip/player-selection-chip.component';
 import { PlayerSelectionBaseComponent } from '../player-selection.base.component';
 
 interface Augmentation {
@@ -33,15 +27,15 @@ type EitherIdentityResult = IdentityResultAlpha | IdentityResultBeta;
 type EitherIdentityResultAugmented = EitherIdentityResult & Augmentation;
 
 /**
- *
+ *  Chip-list designed for handling player chips.
  */
 @Component({
   selector: 'player-selection-chip-list',
   templateUrl: './player-selection-chip-list.component.html',
   styleUrls: ['./player-selection-chip-list.component.scss'],
 })
-export class PlayerSelectionChipListComponent implements OnInit, OnChanges {
-  @ContentChild(TemplateRef) public template: TemplateRef<any>;
+export class PlayerSelectionChipListComponent implements OnChanges {
+  @ContentChild(TemplateRef) public template: TemplateRef<unknown>;
 
   @Output() public selectionChange = new EventEmitter<EitherIdentityResult>();
   @Input() public playerSelection: PlayerSelectionBaseComponent<
@@ -51,8 +45,6 @@ export class PlayerSelectionChipListComponent implements OnInit, OnChanges {
   public augmentedIdentities: EitherIdentityResultAugmented[] = [];
 
   public closeIcon = faTimesCircle;
-
-  constructor() {}
 
   /** Lifecycle hook. */
   public ngOnChanges(_changes: SimpleChanges): void {
@@ -81,11 +73,6 @@ export class PlayerSelectionChipListComponent implements OnInit, OnChanges {
       return identity;
     });
   }
-
-  /**
-   *
-   */
-  public ngOnInit(): void {}
 
   /** Event proxy. */
   public onChipListChange(event: MatChipListChange): void {
