@@ -1673,7 +1673,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
                     FeatureArea = "Matchmaking",
                     Reason = "This is an automated test.",
                     StartTimeUtc = DateTime.UtcNow,
-                    Duration = TimeSpan.FromSeconds(5),
+                    Duration = TimeSpan.FromMinutes(5),
                     BanAllConsoles = false,
                     BanAllPcs = false,
                     DeleteLeaderboardEntries = false,

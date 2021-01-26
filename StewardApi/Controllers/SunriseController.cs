@@ -465,7 +465,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     var nestedResults = await Task.WhenAll(tasks).ConfigureAwait(true);
                     var results = nestedResults.SelectMany(v => v).ToList();
 
-                    return this.Created(this.Request.Path, nestedResults);
+                    return this.Created(this.Request.Path, results);
                 }
 
                 var username = this.User.GetNameIdentifier();
