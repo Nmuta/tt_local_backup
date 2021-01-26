@@ -35,7 +35,7 @@ export class GravityPlayersIdentitiesFakeApi extends FakeApiBase {
         query: query,
         gamertag: isGamertagQuery(query) ? query.gamertag : faker.name.firstName(),
         xuid: isXuidQuery(query) ? query.xuid : BigInt(faker.random.number()),
-        t10id: isT10IdQuery(query) ? query.t10id : faker.random.uuid(),
+        t10id: isT10IdQuery(query) ? query.t10Id : faker.random.uuid(),
       };
     });
   }

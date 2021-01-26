@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BanChipsComponent } from './ban-chips.component';
@@ -9,6 +10,7 @@ describe('BanChipsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [BanChipsComponent],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

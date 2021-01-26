@@ -77,14 +77,14 @@ export class SunriseService {
   }
 
   /** Gets user flags by a XUID. */
-  public getFlagsByXuid(xuid: number): Observable<SunriseUserFlags> {
+  public getFlagsByXuid(xuid: BigInt): Observable<SunriseUserFlags> {
     return this.apiService.getRequest<SunriseUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
     );
   }
 
   /** Gets user flags by a XUID. */
-  public putFlagsByXuid(xuid: number, flags: SunriseUserFlags): Observable<SunriseUserFlags> {
+  public putFlagsByXuid(xuid: BigInt, flags: SunriseUserFlags): Observable<SunriseUserFlags> {
     return this.apiService.putRequest<SunriseUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
       flags,
@@ -112,7 +112,7 @@ export class SunriseService {
   }
 
   /** Gets shared console users by XUID. */
-  public getSharedConsoleUsersByXuid(xuid: number): Observable<SunriseSharedConsoleUsers> {
+  public getSharedConsoleUsersByXuid(xuid: BigInt): Observable<SunriseSharedConsoleUsers> {
     return this.apiService.getRequest<SunriseSharedConsoleUsers>(
       `${this.basePath}/player/xuid(${xuid})/sharedConsoleUsers`,
     );
@@ -133,14 +133,14 @@ export class SunriseService {
   }
 
   /** Gets a player's Profile Summary by XUID. */
-  public getProfileSummaryByXuid(xuid: number): Observable<SunriseProfileSummary> {
+  public getProfileSummaryByXuid(xuid: BigInt): Observable<SunriseProfileSummary> {
     return this.apiService.getRequest<SunriseProfileSummary>(
       `${this.basePath}/player/xuid(${xuid})/profileSummary`,
     );
   }
 
   /** Gets a player's Profile Summary by XUID. */
-  public getCreditHistoryByXuid(xuid: number): Observable<SunriseCreditHistory> {
+  public getCreditHistoryByXuid(xuid: BigInt): Observable<SunriseCreditHistory> {
     return this.apiService.getRequest<SunriseCreditHistory>(
       `${this.basePath}/player/xuid(${xuid})/creditUpdates`,
     );

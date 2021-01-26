@@ -1,5 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { createMockApolloService } from '@services/apollo';
 
 import { ApolloBanningComponent } from './apollo-banning.component';
 
@@ -10,6 +11,7 @@ describe('ApolloBanningComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloBanningComponent],
+      providers: [createMockApolloService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -25,6 +27,6 @@ describe('ApolloBanningComponent', () => {
   });
 
   it('should submit', () => {
-    component.submit();
+    component.submitInternal();
   });
 });

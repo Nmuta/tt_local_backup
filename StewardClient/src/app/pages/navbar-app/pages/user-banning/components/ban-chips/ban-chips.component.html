@@ -1,10 +1,10 @@
 <mat-chip-list>
   <mat-chip
-    *ngFor="let identity of playerSelection.playerIdentitiesFull"
+    *ngFor="let identity of playerSelection?.playerIdentitiesFull"
     [class.invalid-identity]="!!identity.error"
   >
     <span class="name">
-      {{ identity[playerSelection.playerIdType] || 'mystery' }}
+      {{ identity[playerSelection?.playerIdType] || 'mystery' }}
     </span>
     <fa-icon
       class="remove-player-icon"
