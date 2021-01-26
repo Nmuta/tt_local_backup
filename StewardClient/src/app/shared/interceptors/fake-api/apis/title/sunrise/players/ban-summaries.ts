@@ -21,7 +21,6 @@ export class SunrisePlayersBanSummariesFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(body?: unknown): Partial<Unprocessed<SunriseBanSummary[]>> {
-    debugger;
     return SunrisePlayersBanSummariesFakeApi.make(body as BigInt[]);
   }
 
