@@ -19,7 +19,7 @@ export class SunriseGiftHistoryResultsComponent extends BaseComponent implements
   @Input() public usingPlayerIdentities: boolean;
 
   /** True while waiting on a request. */
-  public isLoading = true;
+  public isLoading = false;
   /** The error received while loading. */
   public loadError: unknown;
 
@@ -36,9 +36,7 @@ export class SunriseGiftHistoryResultsComponent extends BaseComponent implements
   }
 
   /** Initialization hook. */
-  /** Initialization hook. */
-  public ngOnChanges(): void {
-    this.isLoading = true;
+   public ngOnChanges(): void {
     this.loadError = undefined;
 
     if (this.usingPlayerIdentities)
@@ -47,6 +45,7 @@ export class SunriseGiftHistoryResultsComponent extends BaseComponent implements
         return
       }
 
+      this.isLoading = true;
       console.log("You are on individual player gifting.")
       this.sunrise.getGiftHistoryByXuid(this.selectedPlayer.xuid).subscribe(
         giftHistories => {
@@ -65,6 +64,7 @@ export class SunriseGiftHistoryResultsComponent extends BaseComponent implements
         return
       }
 
+      this.isLoading = true;
       console.log("You are on LSP group gifting.")
       this.sunrise.getGiftHistoryByLspGroup(this.selectedGroup.id).subscribe(
         giftHistories => {
