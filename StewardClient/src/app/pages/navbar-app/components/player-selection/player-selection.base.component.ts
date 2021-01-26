@@ -167,7 +167,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   }
 
   /** Removes a given identity from the list. */
-  public removeIdentityFromList(identity: IdentityResultsIntersection): void {
+  public removeIdentityFromList(identity: T): void {
     this.playerIdentities = this.playerIdentities.filter(i => !isEqual(i, identity));
     this.emitPlayerIdentities();
 
