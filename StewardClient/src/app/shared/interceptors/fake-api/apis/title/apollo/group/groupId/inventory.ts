@@ -17,7 +17,7 @@ export class ApolloGroupGroupIdInventoryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\^\/?api\/v1\/title\/apollo\/group\/groupId\((.+)\)\/inventory$/i;
+    const regex = /^\/?api\/v1\/title\/apollo\/group\/groupId\((.+)\)\/inventory$/i;
     return regex.test(url.pathname);
   }
 

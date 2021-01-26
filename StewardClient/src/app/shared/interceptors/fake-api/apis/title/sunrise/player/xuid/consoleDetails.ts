@@ -14,7 +14,7 @@ export class SunrisePlayerXuidConsolesFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\^\/?api\/v1\/title\/sunrise\/player\/xuid\((\d+)\)\/consoleDetails$/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/player\/xuid\((\d+)\)\/consoleDetails$/i;
     return regex.test(url.pathname);
   }
 

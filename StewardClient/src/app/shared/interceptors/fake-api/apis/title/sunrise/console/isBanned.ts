@@ -18,7 +18,7 @@ export class SunriseConsoleIsBannedFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\^\/?api\/v1\/title\/sunrise\/console\/consoleId\((\d+)\)\/isBanned\((true|false)\)$/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/console\/consoleId\((\d+)\)\/isBanned\((true|false)\)$/i;
     return regex.test(url.pathname);
   }
 

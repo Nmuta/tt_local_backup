@@ -13,7 +13,7 @@ export class GravityPlayerXuidProfileIdInventoryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\^\/?api\/v1\/title\/gravity\/player\/xuid\((.+)\)\/profileId\((.+)\)\/inventory$/i;
+    const regex = /^\/?api\/v1\/title\/gravity\/player\/xuid\((.+)\)\/profileId\((.+)\)\/inventory$/i;
     return regex.test(url.pathname);
   }
 
