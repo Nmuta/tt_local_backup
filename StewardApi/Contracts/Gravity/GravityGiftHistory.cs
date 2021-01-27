@@ -37,16 +37,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
         /// <summary>
         ///     Gets or sets the ID type.
         /// </summary>
-        public GiftHistoryAntecedent IdType { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the ID.
-        /// </summary>
         /// <remarks>
         ///     We make use of the JsonConverter to return the IdType string names instead of their integer values.
         ///     Xuid is a much more understandable ID type than 0.
         /// </remarks>
         [JsonConverter(typeof(StringEnumConverter))]
+        public GiftHistoryAntecedent IdType { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the ID.
+        /// </summary>
         public string Id { get; set; }
 
         /// <summary>
