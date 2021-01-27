@@ -38,5 +38,5 @@ export interface ApolloBanDescription {
   lastExtendedTimeUtc: Date;
   lastExtendedReason: string;
   reason: string;
-  featureArea: string;
+  featureArea: ApolloBanArea;
 }
