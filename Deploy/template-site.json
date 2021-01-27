@@ -74,6 +74,7 @@
           "webSocketsEnabled": false,
           "alwaysOn": true,
           "httpLoggingEnabled": true,
+          "httpsOnly": true,
           "logsDirectorySizeLimit": 50,
           "appSettings": [
             {
