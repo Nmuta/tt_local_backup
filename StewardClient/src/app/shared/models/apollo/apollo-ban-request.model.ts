@@ -34,7 +34,7 @@ export interface ApolloBanDescription {
   startTimeUtc: Date;
   expireTimeUtc: Date;
   isActive: boolean;
-  countOfTimesExtended: number;
+  countOfTimesExtended: BigInt;
   lastExtendedTimeUtc: Date;
   lastExtendedReason: string;
   reason: string;
