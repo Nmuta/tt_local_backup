@@ -169,124 +169,19 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void CreateOrReplacePlayerInventoryAsync_WithValidParameters_DoesNotThrow()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var t10Id = Fixture.Create<string>();
-            var xuid = Fixture.Create<ulong>();
-            var requestingAgent = Fixture.Create<string>();
-            var playerInventory = Fixture.Create<GravityPlayerInventory>();
-            var grantStartingPackage = Fixture.Create<bool>();
-            var preserveBookingItems = Fixture.Create<bool>();
-
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.CreateOrReplacePlayerInventoryAsync(xuid, playerInventory, requestingAgent, grantStartingPackage, preserveBookingItems).ConfigureAwait(false),
-                async () => await provider.CreateOrReplacePlayerInventoryAsync(t10Id, playerInventory, requestingAgent, grantStartingPackage, preserveBookingItems).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().NotThrow();
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateOrReplacePlayerInventoryAsync_WithNullEmptyWhitespaceT10Id_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var playerInventory = Fixture.Create<GravityPlayerInventory>();
-            var requestingAgent = Fixture.Create<string>();
-            var grantStartingPackage = Fixture.Create<bool>();
-            var preserveBookingItems = Fixture.Create<bool>();
-
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.CreateOrReplacePlayerInventoryAsync(null, playerInventory, requestingAgent, grantStartingPackage, preserveBookingItems).ConfigureAwait(false),
-                async () => await provider.CreateOrReplacePlayerInventoryAsync(TestConstants.Empty, playerInventory, requestingAgent, grantStartingPackage, preserveBookingItems).ConfigureAwait(false),
-                async () => await provider.CreateOrReplacePlayerInventoryAsync(TestConstants.WhiteSpace, playerInventory, requestingAgent, grantStartingPackage, preserveBookingItems).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "t10Id"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateOrReplacePlayerInventoryAsync_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var playerInventory = Fixture.Create<GravityPlayerInventory>();
-            var t10Id = Fixture.Create<string>();
-            var grantStartingPackage = Fixture.Create<bool>();
-            var preserveBookingItems = Fixture.Create<bool>();
-
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.CreateOrReplacePlayerInventoryAsync(t10Id, playerInventory, null, grantStartingPackage, preserveBookingItems).ConfigureAwait(false),
-                async () => await provider.CreateOrReplacePlayerInventoryAsync(t10Id, playerInventory, TestConstants.Empty, grantStartingPackage, preserveBookingItems).ConfigureAwait(false),
-                async () => await provider.CreateOrReplacePlayerInventoryAsync(t10Id, playerInventory, TestConstants.WhiteSpace, grantStartingPackage, preserveBookingItems).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void CreateOrReplacePlayerInventoryAsync_WithNullPlayerInventory_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var t10Id = Fixture.Create<string>();
-            var requestingAgent = Fixture.Create<string>();
-            var grantStartingPackage = Fixture.Create<bool>();
-            var preserveBookingItems = Fixture.Create<bool>();
-
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.CreateOrReplacePlayerInventoryAsync(xuid, null, requestingAgent, grantStartingPackage, preserveBookingItems).ConfigureAwait(false),
-                async () => await provider.CreateOrReplacePlayerInventoryAsync(t10Id, null, requestingAgent, grantStartingPackage, preserveBookingItems).ConfigureAwait(false)
-            };
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventory"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void UpdatePlayerInventoryAsync_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
             var provider = new Dependencies().Build();
             var t10Id = Fixture.Create<string>();
             var xuid = Fixture.Create<ulong>();
-            var playerInventory = Fixture.Create<GravityPlayerInventory>();
+            var masterInventory = Fixture.Create<GravityMasterInventory>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, playerInventory, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, playerInventory, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, masterInventory, requestingAgent).ConfigureAwait(false)
             };
 
             // Assert.
@@ -302,15 +197,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var playerInventory = Fixture.Create<GravityPlayerInventory>();
+            var masterInventory = Fixture.Create<GravityMasterInventory>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(null, playerInventory, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.Empty, playerInventory, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.WhiteSpace, playerInventory, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(null, masterInventory, requestingAgent).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.Empty, masterInventory, requestingAgent).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.WhiteSpace, masterInventory, requestingAgent).ConfigureAwait(false)
             };
             // Assert.
             foreach (var action in actions)
@@ -325,15 +220,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var playerInventory = Fixture.Create<GravityPlayerInventory>();
+            var masterInventory = Fixture.Create<GravityMasterInventory>();
             var t10Id = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, playerInventory, null).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, masterInventory, null).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, masterInventory, TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, masterInventory, TestConstants.WhiteSpace).ConfigureAwait(false)
             };
             // Assert.
             foreach (var action in actions)
@@ -355,7 +250,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, null, requestingAgent).ConfigureAwait(false),
                 async () => await provider.UpdatePlayerInventoryAsync(t10Id, null, requestingAgent).ConfigureAwait(false)
             };
             // Assert.

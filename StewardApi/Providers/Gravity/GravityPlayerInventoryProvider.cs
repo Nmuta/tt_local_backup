@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -159,81 +161,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task CreateOrReplacePlayerInventoryAsync(ulong xuid, GravityPlayerInventory playerInventory, string requestingAgent, bool grantStartingPackage, bool preserveBookingItems)
-        {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-            var identity = await this.gravityUserService.LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
-            if (identity.userDetails == null)
-            {
-                throw new ProfileNotFoundException($"No profile found for Xuid: {xuid}.");
-            }
-
-            var profile = identity.userDetails.OrderByDescending(e => e.LastLogin).FirstOrDefault();
-            if (profile == null)
-            {
-                throw new ProfileNotFoundException($"No profile found for Xuid: {xuid}.");
-            }
-
-            var playerInventoryData = this.mapper.Map<LiveOpsUserInventory>(playerInventory);
-
-            await this.gravityUserInventoryService.LiveOpsApplyUserInventoryAsync(profile.Turn10Id, playerInventoryData, true, grantStartingPackage, preserveBookingItems).ConfigureAwait(false);
-
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(profile.Turn10Id, Title, requestingAgent, GiftHistoryAntecedent.T10Id, playerInventory).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task CreateOrReplacePlayerInventoryAsync(string t10Id, GravityPlayerInventory playerInventory, string requestingAgent, bool grantStartingPackage, bool preserveBookingItems)
+        public async Task<GravityGiftingMasterInventoryResponse> UpdatePlayerInventoryAsync(string t10Id, GravityMasterInventory masterInventory, string requestingAgent)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            masterInventory.ShouldNotBeNull(nameof(masterInventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-            var playerInventoryData = this.mapper.Map<LiveOpsUserInventory>(playerInventory);
+            var giftingResponse = new GravityGiftingMasterInventoryResponse();
+            giftingResponse.T10Id = masterInventory.T10Id;
 
-            await this.gravityUserInventoryService.LiveOpsApplyUserInventoryAsync(t10Id, playerInventoryData, true, grantStartingPackage, preserveBookingItems).ConfigureAwait(false);
+            giftingResponse.Cars = await this.UpdatePlayerInventoryHelperAsync(t10Id, masterInventory.Cars, ForzaUserInventoryItemType.Car).ConfigureAwait(true);
+            giftingResponse.Currencies = await this.UpdatePlayerInventoryHelperAsync(t10Id, masterInventory.Currencies, ForzaUserInventoryItemType.Currency).ConfigureAwait(true);
+            giftingResponse.EnergyRefills = await this.UpdatePlayerInventoryHelperAsync(t10Id, masterInventory.EnergyRefills, ForzaUserInventoryItemType.EnergyRefill).ConfigureAwait(true);
+            giftingResponse.UpgradeKits = await this.UpdatePlayerInventoryHelperAsync(t10Id, masterInventory.UpgradeKits, ForzaUserInventoryItemType.UpgradeKit).ConfigureAwait(true);
+            giftingResponse.MasteryKits = await this.UpdatePlayerInventoryHelperAsync(t10Id, masterInventory.MasteryKits, ForzaUserInventoryItemType.MasteryKit).ConfigureAwait(true);
+            giftingResponse.RepairKits = await this.UpdatePlayerInventoryHelperAsync(t10Id, masterInventory.RepairKits, ForzaUserInventoryItemType.RepairKit).ConfigureAwait(true);
 
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(t10Id, Title, requestingAgent, GiftHistoryAntecedent.T10Id, playerInventory).ConfigureAwait(false);
-        }
+            await this.giftHistoryProvider.UpdateGiftHistoryAsync(t10Id, Title, requestingAgent, GiftHistoryAntecedent.T10Id, giftingResponse).ConfigureAwait(false);
 
-        /// <inheritdoc />
-        public async Task UpdatePlayerInventoryAsync(ulong xuid, GravityPlayerInventory playerInventory, string requestingAgent)
-        {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-            var identity = await this.gravityUserService.LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
-            if (identity.userDetails == null)
-            {
-                throw new ProfileNotFoundException($"No profile found for Xuid: {xuid}.");
-            }
-
-            var profile = identity.userDetails.OrderByDescending(e => e.LastLogin).FirstOrDefault();
-            if (profile == null)
-            {
-                throw new ProfileNotFoundException($"No profile found for Xuid: {xuid}.");
-            }
-
-            var playerInventoryData = this.mapper.Map<LiveOpsUserInventory>(playerInventory);
-
-            await this.gravityUserInventoryService.LiveOpsApplyUserInventoryAsync(profile.Turn10Id, playerInventoryData, false, false, false).ConfigureAwait(false);
-
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(profile.Turn10Id, Title, requestingAgent, GiftHistoryAntecedent.T10Id, playerInventory).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task UpdatePlayerInventoryAsync(string t10Id, GravityPlayerInventory playerInventory, string requestingAgent)
-        {
-            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-            var playerInventoryData = this.mapper.Map<LiveOpsUserInventory>(playerInventory);
-
-            await this.gravityUserInventoryService.LiveOpsApplyUserInventoryAsync(t10Id, playerInventoryData, false, false, false).ConfigureAwait(false);
-
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(t10Id, Title, requestingAgent, GiftHistoryAntecedent.T10Id, playerInventory).ConfigureAwait(false);
+            return giftingResponse;
         }
 
         /// <inheritdoc />
@@ -260,6 +206,36 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
             await this.gravityUserInventoryService.ResetUserInventoryAsync(t10Id).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///     UpdatePlayerInventoryAsync Helper to process each item type in the GravityMasterInventory.
+        /// </summary>
+        /// <param name="t10Id">The T10 ID.</param>
+        /// <param name="items">The inventory items to add.</param>
+        /// <param name="itemType">The inventory item type.</param>
+        /// <returns>
+        ///     The updated <see cref="IList{GiftingMasterInventoryItemResponse}"/>.
+        /// </returns>
+        private async Task<IList<GiftingMasterInventoryItemResponse>> UpdatePlayerInventoryHelperAsync(string t10Id, IList<MasterInventoryItem> items, ForzaUserInventoryItemType itemType)
+        {
+            var response = new List<GiftingMasterInventoryItemResponse>();
+            foreach (var item in items)
+            {
+                var giftResponse = this.mapper.Map<GiftingMasterInventoryItemResponse>(item);
+                try
+                {
+                    await this.gravityUserInventoryService.GrantItem(t10Id, itemType, item.Id, item.Quantity).ConfigureAwait(true);
+                }
+                catch (Exception ex)
+                {
+                    giftResponse.Error = ex;
+                }
+
+                response.Add(giftResponse);
+            }
+
+            return response;
         }
     }
 }

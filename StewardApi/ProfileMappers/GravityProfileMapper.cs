@@ -70,6 +70,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.PreviousGameSettingsId, opt => opt.MapFrom(src => src.PreviousGameSettingsGuid))
                 .ReverseMap();
             this.CreateMap<PlayerInventory, GravityPlayerInventory>();
+            this.CreateMap<MasterInventoryItem, GiftingMasterInventoryItemResponse>();
             this.CreateMap<LiveOpsUserDetails, IdentityResultBeta>()
                 .ForMember(des => des.T10Id, opt => opt.MapFrom(src => src.Turn10Id))
                 .ReverseMap();

@@ -18,11 +18,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <param name="title">The title.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <param name="giftHistoryAntecedent">The gift history antecedent.</param>
-        /// <param name="playerInventory">The player inventory.</param>
+        /// <param name="giftingResponse">The gifting response.</param>
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, GravityPlayerInventory playerInventory);
+        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, GravityGiftingMasterInventoryResponse giftingResponse);
 
         /// <summary>
         ///     Gets gift histories.

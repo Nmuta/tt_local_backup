@@ -122,6 +122,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             await userInventoryService.ResetUserInventory(t10Id).ConfigureAwait(false);
         }
 
+        /// <inheritdoc />
+        public async Task<GrantItemOutput> GrantItem(string t10Id, ForzaUserInventoryItemType type, int id, int quantity)
+        {
+            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
+            if (type == ForzaUserInventoryItemType.Pack || type == ForzaUserInventoryItemType.ReviveKit || type == ForzaUserInventoryItemType.Chest || type == ForzaUserInventoryItemType.XBLSignInReward || type == ForzaUserInventoryItemType.EnumCount)
+            {
+                throw new ArgumentException($"Invalid ForzaUserInventoryItemType: {type}");
+            }
+
+            if (quantity <= 0)
+            {
+                throw new ArgumentException($"Quantity must be greater than zero. Quantity provided was: {quantity}");
+            }
+
+            var userInventoryService = await this.PrepareUserInventoryServiceAsync().ConfigureAwait(false);
+
+            return await userInventoryService.GrantItem(t10Id, type, id, quantity).ConfigureAwait(false);
+        }
+
         private async Task<UserInventoryService> PrepareUserInventoryServiceAsync()
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)

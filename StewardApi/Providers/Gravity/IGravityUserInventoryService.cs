@@ -70,5 +70,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <returns>
         ///     A task with a status.</returns>
         Task ResetUserInventoryAsync(string t10Id);
+
+        /// <summary>
+        ///     Grants an item to a player's inventory.
+        /// </summary>
+        /// <param name="t10Id">The player's T10 ID.</param>
+        /// <param name="type">The type of an inventory item.</param>
+        /// <param name="id">The item ID.</param>
+        /// <param name="quantity">The quantity of the item.</param>
+        /// <returns>
+        ///     The <see cref="GrantItemOutput"/>.
+        /// </returns>
+        Task<GrantItemOutput> GrantItem(string t10Id, ForzaUserInventoryItemType type, int id, int quantity);
     }
 }

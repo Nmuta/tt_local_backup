@@ -35,7 +35,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly ISettingsProvider gravitySettingsProvider;
         private readonly IJobTracker jobTracker;
         private readonly IScheduler scheduler;
-        private readonly IRequestValidator<GravityPlayerInventory> playerInventoryRequestValidator;
+        private readonly IRequestValidator<GravityMasterInventory> masterInventoryRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityController"/> class.
@@ -46,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="gravitySettingsProvider">The Gravity settings provider.</param>
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="jobTracker">The job tracker.</param>
-        /// <param name="playerInventoryRequestValidator">The player inventory request validator.</param>
+        /// <param name="masterInventoryRequestValidator">The player inventory request validator.</param>
         public GravityController(
                                  IGravityPlayerDetailsProvider gravityPlayerDetailsProvider,
                                  IGravityPlayerInventoryProvider gravityPlayerInventoryProvider,
@@ -54,7 +54,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                                  ISettingsProvider gravitySettingsProvider,
                                  IScheduler scheduler,
                                  IJobTracker jobTracker,
-                                 IRequestValidator<GravityPlayerInventory> playerInventoryRequestValidator)
+                                 IRequestValidator<GravityMasterInventory> masterInventoryRequestValidator)
         {
             gravityPlayerDetailsProvider.ShouldNotBeNull(nameof(gravityPlayerDetailsProvider));
             gravityPlayerInventoryProvider.ShouldNotBeNull(nameof(gravityPlayerInventoryProvider));
@@ -62,7 +62,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             gravitySettingsProvider.ShouldNotBeNull(nameof(gravitySettingsProvider));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
-            playerInventoryRequestValidator.ShouldNotBeNull(nameof(playerInventoryRequestValidator));
+            masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
 
             this.gravityPlayerDetailsProvider = gravityPlayerDetailsProvider;
             this.gravityPlayerInventoryProvider = gravityPlayerInventoryProvider;
@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.gravitySettingsProvider = gravitySettingsProvider;
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
-            this.playerInventoryRequestValidator = playerInventoryRequestValidator;
+            this.masterInventoryRequestValidator = masterInventoryRequestValidator;
         }
 
         /// <summary>
@@ -322,122 +322,47 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Update the player inventory.
         /// </summary>
-        /// <param name="playerInventory">The player inventory.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
+        /// <param name="masterInventory">The player inventory.</param>
         /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
         /// <returns>
-        ///     The updated <see cref="GravityPlayerInventory"/>.
-        /// </returns>
-        [HttpPost("player/xuid/inventory")]
-        [SwaggerResponse(201, type: typeof(GravityPlayerInventory))]
-        [SwaggerResponse(202)]
-        public async Task<IActionResult> UpdatePlayerInventoryByXuid([FromBody] GravityPlayerInventory playerInventory, [FromHeader]string requestingAgent, [FromQuery] bool useBackgroundProcessing = false)
-        {
-            try
-            {
-                playerInventory.ShouldNotBeNull(nameof(playerInventory));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-                this.playerInventoryRequestValidator.ValidateIds(playerInventory, this.ModelState);
-                this.playerInventoryRequestValidator.Validate(playerInventory, this.ModelState);
-
-                if (!this.ModelState.IsValid)
-                {
-                    var result = this.playerInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
-
-                    return this.BadRequest(result);
-                }
-
-                if (!await this.gravityPlayerDetailsProvider.EnsurePlayerExistsAsync(playerInventory.Xuid)
-                    .ConfigureAwait(true))
-                {
-                    return this.NotFound($"No inventory found for XUID: {playerInventory.Xuid}");
-                }
-
-                if (!useBackgroundProcessing)
-                {
-                    await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.Xuid, playerInventory, requestingAgent).ConfigureAwait(true);
-                    var results = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(playerInventory.Xuid).ConfigureAwait(true);
-
-                    return this.Created(this.Request.Path, results);
-                }
-
-                var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(playerInventory.ToJson(), username).ConfigureAwait(true);
-
-                async Task BackgroundProcessing(CancellationToken cancellationToken)
-                {
-                    // Throwing within the hosting environment background worker seems to have significant consequences.
-                    // Do not throw.
-                    try
-                    {
-                        await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.Xuid, playerInventory, requestingAgent).ConfigureAwait(true);
-                        var result = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(playerInventory.Xuid).ConfigureAwait(true);
-
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, result.ToJson()).ConfigureAwait(true);
-                    }
-                    catch (Exception)
-                    {
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed)
-                            .ConfigureAwait(true);
-                    }
-                }
-
-                this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
-        }
-
-        /// <summary>
-        ///     Update the player inventory.
-        /// </summary>
-        /// <param name="playerInventory">The player inventory.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
-        /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
-        /// <returns>
-        ///     The updated <see cref="GravityPlayerInventory"/>.
+        ///     TODO: This should return a GravityMasterInventoryResponse which items have a success boolean attached
+        ///     The updated <see cref="GravityGiftingMasterInventoryResponse"/>.
         /// </returns>
         [HttpPost("player/t10Id/inventory")]
-        [SwaggerResponse(201, type: typeof(GravityPlayerInventory))]
+        [SwaggerResponse(200, type: typeof(GravityGiftingMasterInventoryResponse))]
         [SwaggerResponse(202)]
-        public async Task<IActionResult> UpdatePlayerInventoryByT10Id([FromBody] GravityPlayerInventory playerInventory, [FromHeader] string requestingAgent, [FromQuery] bool useBackgroundProcessing = false)
+        public async Task<IActionResult> UpdatePlayerInventoryByT10Id([FromBody] GravityMasterInventory masterInventory, [FromQuery] bool useBackgroundProcessing = false)
         {
             try
             {
-                playerInventory.ShouldNotBeNull(nameof(playerInventory));
-                playerInventory.T10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerInventory.T10Id));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+                masterInventory.ShouldNotBeNull(nameof(masterInventory));
+                masterInventory.T10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(masterInventory.T10Id));
 
-                this.playerInventoryRequestValidator.ValidateIds(playerInventory, this.ModelState);
-                this.playerInventoryRequestValidator.Validate(playerInventory, this.ModelState);
+                var requestingAgent = this.User.Identity.Name;
+
+                this.masterInventoryRequestValidator.Validate(masterInventory, this.ModelState);
 
                 if (!this.ModelState.IsValid)
                 {
-                    var result = this.playerInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
+                    var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
 
                     return this.BadRequest(result);
                 }
 
-                if (!await this.gravityPlayerDetailsProvider.EnsurePlayerExistsByT10IdAsync(playerInventory.T10Id).ConfigureAwait(true))
+                if (!await this.gravityPlayerDetailsProvider.EnsurePlayerExistsByT10IdAsync(masterInventory.T10Id).ConfigureAwait(true))
                 {
-                    return this.NotFound($"No inventory found for T10Id: {playerInventory.T10Id}");
+                    return this.NotFound($"No inventory found for T10Id: {masterInventory.T10Id}");
                 }
 
                 if (!useBackgroundProcessing)
                 {
-                    await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.T10Id, playerInventory, requestingAgent).ConfigureAwait(true);
-                    var results = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(playerInventory.T10Id).ConfigureAwait(true);
+                    var results = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(masterInventory.T10Id, masterInventory, requestingAgent).ConfigureAwait(true);
 
-                    return this.Created(this.Request.Path, results);
+                    return this.Ok(results);
                 }
 
                 var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(playerInventory.ToJson(), username).ConfigureAwait(true);
+                var jobId = await this.AddJobIdToHeaderAsync(masterInventory.ToJson(), username).ConfigureAwait(true);
 
                 async Task BackgroundProcessing(CancellationToken cancellationToken)
                 {
@@ -445,8 +370,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     // Do not throw.
                     try
                     {
-                        await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.T10Id, playerInventory, requestingAgent).ConfigureAwait(true);
-                        var result = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(playerInventory.Xuid).ConfigureAwait(true);
+                        var result = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(masterInventory.T10Id, masterInventory, requestingAgent).ConfigureAwait(true);
 
                         await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, result.ToJson()).ConfigureAwait(true);
                     }

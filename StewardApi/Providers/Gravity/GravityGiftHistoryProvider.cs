@@ -48,16 +48,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, GravityPlayerInventory playerInventory)
+        public async Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, GravityGiftingMasterInventoryResponse giftingResponse)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            giftingResponse.ShouldNotBeNull(nameof(giftingResponse));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
             var playerId = $"{giftHistoryAntecedent}:{id}";
-            var giftHistory = new GiftHistory(playerId, title, requestingAgent, DateTime.UtcNow, playerInventory.ToJson());
+            var giftHistory = new GiftHistory(playerId, title, requestingAgent, DateTime.UtcNow, giftingResponse.ToJson());
             var kustoColumnMappings = giftHistory.ToJsonColumnMappings();
             var tableName = typeof(GiftHistory).Name;
             var giftHistories = new List<GiftHistory> { giftHistory };
