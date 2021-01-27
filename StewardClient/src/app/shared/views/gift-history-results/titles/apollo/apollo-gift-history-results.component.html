@@ -9,18 +9,20 @@
           errorMessage="Failed to load"
         ></error-spinner>
       </h2>
-      <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{history.requestingAgent}}
-          </mat-panel-title>
-          <mat-panel-description>
-            {{history.giftSendDateUtc}}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <p>
-          {{history.giftInventory}}
-        </p>
-      </mat-expansion-panel>
+      <ng-container *ngIf="isLoaded && !loadError; else failstate">
+        <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{history.requestingAgent}}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{history.giftSendDateUtc}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <p>
+            {{history.giftInventory}}
+          </p>
+        </mat-expansion-panel>
+      </ng-container>
   </mat-card-content>
 </mat-card>
