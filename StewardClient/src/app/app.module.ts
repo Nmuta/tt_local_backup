@@ -41,7 +41,6 @@ import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-me
 import { GravityGiftHistoryState } from '@navbar-app/pages/gift-history/gravity/state/gravity-gift-history.state';
 import { SunriseGiftHistoryState } from '@navbar-app/pages/gift-history/sunrise/state/sunrise-gift-history.state';
 import { ApolloGiftHistoryState } from '@navbar-app/pages/gift-history/apollo/state/apollo-gift-history.state';
-import { OpusGiftHistoryState } from '@navbar-app/pages/gift-history/opus/state/opus-gift-history.state';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 
 const protectedResourceMap: [string, string[]][] = [
@@ -93,7 +92,6 @@ function fakeApiOrNothing(): Provider[] {
       GravityGiftHistoryState,
       SunriseGiftHistoryState,
       ApolloGiftHistoryState,
-      OpusGiftHistoryState,
     ]),
     NgxsStoragePluginModule.forRoot({ key: [UserSettingsState] }),
     NgxsRouterPluginModule.forRoot(),

@@ -15,7 +15,6 @@ import { GravityGiftHistoryComponent } from './gravity/gravity-gift-history.comp
 import { GiftHistoryResultsModule } from '@shared/views/gift-history-results/gift-history-results.module';
 import { SunriseGiftHistoryComponent } from './sunrise/sunrise-gift-history.component';
 import { ApolloGiftHistoryComponent } from './apollo/apollo-gift-history.component';
-import { OpusGiftHistoryComponent } from './opus/opus-gift-history.component';
 import { MatCardModule } from '@angular/material/card';
 import { LspGroupSelectionModule } from '@navbar-app/components/lsp-group-selection/lsp-group-selection.module';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -27,7 +26,6 @@ import { MatTabsModule } from '@angular/material/tabs';
     GravityGiftHistoryComponent,
     SunriseGiftHistoryComponent,
     ApolloGiftHistoryComponent,
-    OpusGiftHistoryComponent,
   ],
   imports: [
     CommonModule,

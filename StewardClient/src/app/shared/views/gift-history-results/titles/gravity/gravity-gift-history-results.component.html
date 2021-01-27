@@ -18,9 +18,42 @@
               {{history.giftSendDateUtc}}
             </mat-panel-description>
           </mat-expansion-panel-header>
-          <p>
-            {{history.giftInventory}}
-          </p>
+          <div *ngIf="history.giftInventory.cars">
+            <h3>Cars: {{history.giftInventory.cars.length}}</h3>
+            <p *ngFor="let car of history.giftInventory.cars">
+              {{car.quantity}} {{car.description}} [{{car.itemId}}]
+            </p>
+          </div>
+          <div *ngIf="history.giftInventory.currencies">
+            <h3>Currencies: {{history.giftInventory.currencies.length}}</h3>
+            <p *ngFor="let currency of history.giftInventory.currencies">
+              {{currency.quantity}} {{currency.description}} [{{currency.itemId}}]
+            </p>
+          </div>
+          <div *ngIf="history.giftInventory.energyRefills">
+            <h3>Currencies: {{history.giftInventory.energyRefills.length}}</h3>
+            <p *ngFor="let energyRefill of history.energyRefills.currencies">
+              {{energyRefill.quantity}} {{energyRefill.description}} [{{energyRefill.itemId}}]
+            </p>
+          </div>
+          <div *ngIf="history.giftInventory.masteryKits">
+            <h3>Currencies: {{history.giftInventory.masteryKits.length}}</h3>
+            <p *ngFor="let masteryKit of history.giftInventory.masteryKits">
+              {{masteryKit.quantity}} {{masteryKit.description}} [{{masteryKit.itemId}}]
+            </p>
+          </div>
+          <div *ngIf="history.giftInventory.repairKits">
+            <h3>Currencies: {{history.giftInventory.repairKits.length}}</h3>
+            <p *ngFor="let repairKit of history.giftInventory.repairKits">
+              {{repairKit.quantity}} {{repairKit.description}} [{{repairKit.itemId}}]
+            </p>
+          </div>
+          <div *ngIf="history.giftInventory.upgradeKits">
+            <h3>Currencies: {{history.giftInventory.upgradeKits.length}}</h3>
+            <p *ngFor="let upgradeKit of history.giftInventory.upgradeKits">
+              {{upgradeKit.quantity}} {{upgradeKit.description}} [{{upgradeKit.itemId}}]
+            </p>
+          </div>
         </mat-expansion-panel>
     </mat-card-content>
   </mat-card>

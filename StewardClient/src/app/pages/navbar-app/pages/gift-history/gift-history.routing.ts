@@ -6,7 +6,6 @@ import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
 import { GiftHistoryComponent } from './gift-history.component';
 import { ApolloGiftHistoryComponent } from './apollo/apollo-gift-history.component';
 import { GravityGiftHistoryComponent } from './gravity/gravity-gift-history.component';
-import { OpusGiftHistoryComponent } from './opus/opus-gift-history.component';
 import { SunriseGiftHistoryComponent } from './sunrise/sunrise-gift-history.component';
 
 const routes: Routes = [
@@ -36,12 +35,6 @@ const routes: Routes = [
         path: 'apollo',
         canActivate: [TitleMemorySetGuard],
         component: ApolloGiftHistoryComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'opus',
-        canActivate: [TitleMemorySetGuard],
-        component: OpusGiftHistoryComponent,
         pathMatch: 'full',
       },
     ],
