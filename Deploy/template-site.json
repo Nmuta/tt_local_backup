@@ -130,6 +130,7 @@
               "use32BitWorkerProcess": true,
               "webSocketsEnabled": false,
               "alwaysOn": true,
+              "httpsOnly": true,
               "httpLoggingEnabled": true,
               "logsDirectorySizeLimit": 50,
               "appSettings": [
