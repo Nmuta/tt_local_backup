@@ -23,9 +23,5 @@ export class GiftHistoryComponent {
       name: GameTitleCodeName.FM7,
       route: [...this.rootRouterLink, GameTitleCodeName.FM7.toLowerCase()],
     },
-    {
-      name: GameTitleCodeName.FH3,
-      route: [...this.rootRouterLink, GameTitleCodeName.FH3.toLowerCase()],
-    },
   ];
 }
