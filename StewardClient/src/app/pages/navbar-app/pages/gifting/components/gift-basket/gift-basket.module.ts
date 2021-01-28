@@ -20,7 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { ItemSelectionModule } from '../item-selection/item-selection.module';
 
-/** The gift basket model. */
+/** The gift basket module. */
 @NgModule({
   declarations: [GravityGiftBasketComponent, SunriseGiftBasketComponent, ApolloGiftBasketComponent],
   imports: [

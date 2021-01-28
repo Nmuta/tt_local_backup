@@ -63,7 +63,7 @@ describe('ItemSelectionComponent', () => {
       const testInventoryItem = {
         itemId: BigInt(1),
         description: 'test-description',
-        quantity: BigInt(0),
+        quantity: 0,
         itemType: 'fake type',
       };
       const selectionItemInput = {
@@ -83,7 +83,7 @@ describe('ItemSelectionComponent', () => {
       it('should emit addItemEvent with correct quantity', () => {
         component.addItemEmitter();
 
-        testInventoryItem.quantity = BigInt(testQuantity); // This quantity is set from the form control
+        testInventoryItem.quantity = testQuantity; // This quantity is set from the form control
         expect(component.addItemEvent.emit).toHaveBeenCalledWith(testInventoryItem);
       });
 
@@ -112,7 +112,7 @@ describe('ItemSelectionComponent', () => {
     const testInventoryItem = {
       itemId: BigInt(1),
       description: 'test-description',
-      quantity: BigInt(0),
+      quantity: 0,
       itemType: 'fake type',
     };
     const selectionItemInput = {
@@ -150,7 +150,7 @@ describe('ItemSelectionComponent', () => {
       testInventoryItem = {
         itemId: BigInt(1),
         description: testDescription,
-        quantity: BigInt(1),
+        quantity: 1,
         itemType: 'test type',
       };
     });

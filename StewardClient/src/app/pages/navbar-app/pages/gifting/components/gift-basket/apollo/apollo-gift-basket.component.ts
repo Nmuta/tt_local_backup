@@ -62,7 +62,7 @@ export class ApolloGiftBasketComponent
             itemType: prop,
             itemId: undefined,
             description: undefined,
-            quantity: BigInt(0),
+            quantity: 0,
           };
 
           // TODO: Update this logic so each property in ApolloMasterInventory is handled according to build valid

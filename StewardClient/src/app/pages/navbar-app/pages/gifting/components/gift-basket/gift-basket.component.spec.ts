@@ -44,7 +44,7 @@ describe('GiftBasketBaseComponent', () => {
       testItemNew = {
         itemId: BigInt(1234),
         description: 'test description',
-        quantity: BigInt(10),
+        quantity: 10,
         itemType: 'test type',
         edit: false,
       };
@@ -70,7 +70,7 @@ describe('GiftBasketBaseComponent', () => {
           {
             itemId: BigInt(1234),
             description: 'test description',
-            quantity: BigInt(50),
+            quantity: 50,
             itemType: 'test type',
             edit: false,
           },
@@ -98,7 +98,7 @@ describe('GiftBasketBaseComponent', () => {
         {
           itemId: BigInt(1234),
           description: 'test description',
-          quantity: BigInt(50),
+          quantity: 50,
           itemType: 'test type',
           edit: false,
         },
@@ -121,14 +121,14 @@ describe('GiftBasketBaseComponent', () => {
         {
           itemId: BigInt(1234),
           description: 'test description 1',
-          quantity: BigInt(50),
+          quantity: 50,
           itemType: 'test type 1',
           edit: false,
         },
         {
           itemId: testItemId,
           description: 'test description 2',
-          quantity: BigInt(10),
+          quantity: 10,
           itemType: 'test type 2',
           edit: false,
         },

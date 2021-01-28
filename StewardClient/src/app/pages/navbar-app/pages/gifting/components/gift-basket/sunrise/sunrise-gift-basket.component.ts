@@ -61,7 +61,7 @@ export class SunriseGiftBasketComponent
             itemType: prop,
             itemId: undefined,
             description: undefined,
-            quantity: BigInt(0),
+            quantity: 0,
           };
 
           switch (prop) {

@@ -13,7 +13,7 @@ export type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInvento
 export type InventoryItem = {
   itemId: BigInt;
   description: string;
-  quantity: BigInt;
+  quantity: number;
   itemType: string;
 };
 export type InventoryItemGroup = {
@@ -90,7 +90,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
     if (existingItemIndex >= 0) {
       this.giftBasket.data[existingItemIndex].quantity =
-        this.giftBasket.data[existingItemIndex].quantity.valueOf() + item.quantity.valueOf();
+        this.giftBasket.data[existingItemIndex].quantity + item.quantity;
       return;
     }
 
@@ -115,7 +115,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     const newQuantity = parseInt(newQuantityStr);
 
     if (newQuantity > 0) {
-      this.giftBasket.data[index].quantity = BigInt(newQuantity);
+      this.giftBasket.data[index].quantity = newQuantity;
       this.giftBasket.data[index].edit = false;
     }
   }
