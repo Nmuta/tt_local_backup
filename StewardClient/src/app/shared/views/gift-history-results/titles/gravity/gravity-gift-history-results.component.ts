@@ -4,7 +4,7 @@ import { GravityGiftHistories } from '@models/gravity/gravity-gift-history.model
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { GravityService } from '@services/gravity';
 import { Observable, of, throwError } from 'rxjs';
-import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base.component';
+import { GiftHistoryResultsBaseComponent } from '../../gift-history-result.base.component';
 
 /** Retreives and displays Gravity Gift history by XUID. */
 @Component({

@@ -4,7 +4,7 @@ import { ApolloGiftHistories } from '@models/apollo/apollo-gift-history.model';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { ApolloService } from '@services/apollo/apollo.service';
 import { Observable, of } from 'rxjs';
-import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base.component';
+import { GiftHistoryResultsBaseComponent } from '../../gift-history-result.base.component';
 
 /** Retreives and displays Apollo Gift history by XUID. */
 @Component({
