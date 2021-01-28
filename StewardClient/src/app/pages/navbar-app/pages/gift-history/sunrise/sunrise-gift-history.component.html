@@ -27,15 +27,10 @@
   
     <div class="default-page-layout-right">
       <!-- Page tool -->
-      <mat-card>
-        <h2>Sunrise gift history page state</h2>
-        <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
-        <p>LSP Group: {{ selectedLspGroup?.name || 'None' }}</p>
-        <sunrise-gift-history-results
-          [selectedPlayer]="selectedPlayer"
-          [selectedGroup]="selectedLspGroup"
-          [usingPlayerIdentities]="matTabSelectedIndex == 0"
-        ></sunrise-gift-history-results>
-      </mat-card>
+      <sunrise-gift-history-results
+        [selectedPlayer]="selectedPlayer"
+        [selectedGroup]="selectedLspGroup"
+        [usingPlayerIdentities]="matTabSelectedIndex == 0"
+      ></sunrise-gift-history-results>
     </div>
   </div>

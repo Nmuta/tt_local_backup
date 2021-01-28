@@ -11,11 +11,9 @@
   
     <div class="default-page-layout-right">
       <!-- Page tool -->
-      <mat-card>
-        <h2>Gravity gift history page state</h2>
-        <p>Number of identities: {{ selectedPlayerIdentities?.length }}</p>
-        <gravity-gift-history-results [selectedPlayer]="selectedPlayer"></gravity-gift-history-results>
-      </mat-card>
+      <gravity-gift-history-results
+        [selectedPlayer]="selectedPlayer"
+      ></gravity-gift-history-results>
     </div>
   </div>
   

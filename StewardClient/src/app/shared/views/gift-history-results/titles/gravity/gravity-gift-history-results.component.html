@@ -13,10 +13,10 @@
           <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                {{history.requestingAgent}}
+                {{history.requestingAgent}} {{history.giftSendDateUtc?.toGMTString()}}
               </mat-panel-title>
               <mat-panel-description>
-                {{history.giftSendDateUtc}}
+                Inventory Summary goes here.
               </mat-panel-description>
             </mat-expansion-panel-header>
             <ng-container *ngIf="history.giftInventory.cars">
