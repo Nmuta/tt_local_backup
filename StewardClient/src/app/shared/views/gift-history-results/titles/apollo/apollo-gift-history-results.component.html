@@ -4,7 +4,7 @@
       Apollo Gift History
     </h2>
     <ng-container *ngIf="!isLoading && !loadError; else failState">
-      <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList$ | async">
+      <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
         <mat-expansion-panel-header>
           <mat-panel-title>
             {{history.requestingAgent}} {{history.giftSendDateUtc?.toGMTString()}}
@@ -26,6 +26,7 @@
     </ng-container>
   </mat-card-content>
 </mat-card>
+
 <ng-template #failState>
   <div id="fail-state">
     <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>

@@ -1,9 +1,8 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { ApolloGiftHistories } from '@models/apollo/apollo-gift-history.model';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { ApolloService } from '@services/apollo/apollo.service';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { GiftHistoryResultsBaseComponent } from '../../gift-history-result.base.component';
 
 /** Retreives and displays Apollo Gift history by XUID. */
@@ -14,25 +13,21 @@ import { GiftHistoryResultsBaseComponent } from '../../gift-history-result.base.
 })
 export class ApolloGiftHistoryResultsComponent extends GiftHistoryResultsBaseComponent<IdentityResultAlpha, ApolloGiftHistories>{
 
-  constructor(public readonly apollo: ApolloService) {
+  /** The gift history list to display. */
+  public giftHistoryList: ApolloGiftHistories;
+  
+  constructor(public readonly apolloService: ApolloService) {
     super();
   }
 
-  public retrieveHistoryByPlayer(): Observable<ApolloGiftHistories>
-  {
-    if(this.selectedPlayer === undefined) {
-      return of([]);
-    }
-
-    return this.apollo.getGiftHistoryByXuid(this.selectedPlayer.xuid);
+  /** Reteives the gift history of the player. */
+  public retrieveHistoryByPlayer(): Observable<ApolloGiftHistories> {
+    return this.apolloService.getGiftHistoryByXuid(this.selectedPlayer.xuid);
   }
 
-  public retrieveHistoryByLspGroup(): Observable<ApolloGiftHistories>
-  {
-    if(this.selectedGroup === undefined || this.selectedGroup === null) {
-      return of([]);
-    }
-
-    return this.apollo.getGiftHistoryByLspGroup(this.selectedGroup.id);
+  /** Reteives the gift history of a LSP group. */
+  public retrieveHistoryByLspGroup(): Observable<ApolloGiftHistories> {
+    //return throwError("LSP Group Gifting not supported for Gravity.");
+    return this.apolloService.getGiftHistoryByLspGroup(this.selectedGroup.id);
   }
 }
