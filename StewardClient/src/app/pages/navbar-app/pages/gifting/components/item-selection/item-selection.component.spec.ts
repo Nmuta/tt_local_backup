@@ -107,17 +107,10 @@ describe('ItemSelectionComponent', () => {
       quantity: 0,
       itemType: 'fake type',
     };
-    const selectionItemInput = {
-      focus: () => {
-        /** Empty */
-      },
-    };
     beforeEach(() => {
       component.selectedItem = undefined;
-      selectionItemInput.focus = jasmine.createSpy('focus');
-      document.getElementById = jasmine
-        .createSpy('getElementById')
-        .and.returnValue(selectionItemInput);
+      component.quantityElement = { nativeElement : { focus: () => { /** Empty */}}};
+      component.quantityElement.nativeElement.focus = jasmine.createSpy('focus');
     });
 
     it('should set selectedItem', () => {
@@ -129,8 +122,7 @@ describe('ItemSelectionComponent', () => {
     it('should set focus to quantity selection', () => {
       component.newItemSelected(testInventoryItem);
 
-      expect(document.getElementById).toHaveBeenCalledWith('item-selection-quanity-input');
-      expect(selectionItemInput.focus).toHaveBeenCalled();
+      expect(component.quantityElement.nativeElement.focus).toHaveBeenCalled();
     });
   });
 

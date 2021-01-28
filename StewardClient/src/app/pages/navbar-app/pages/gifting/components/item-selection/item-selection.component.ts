@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import {
   FormBuilder,
@@ -20,6 +20,9 @@ import _ from 'lodash';
   styleUrls: ['./item-selection.component.scss'],
 })
 export class ItemSelectionComponent extends BaseComponent implements OnChanges {
+  @ViewChild('quantity') quantityElement: ElementRef;
+
+
   @Input() public inventoryItemGroups: InventoryItemGroup[];
   @Output() public addItemEvent = new EventEmitter<InventoryItem>();
 
@@ -76,7 +79,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   /** New item is selected from the dropdown. */
   public newItemSelected(item: InventoryItem): void {
     this.selectedItem = item;
-    document.getElementById('item-selection-quanity-input')?.focus();
+    this.quantityElement.nativeElement.focus();
   }
 
   /** Mat option display */
