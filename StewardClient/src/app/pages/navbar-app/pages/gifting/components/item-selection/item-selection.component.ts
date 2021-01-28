@@ -1,4 +1,13 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import {
   FormBuilder,
@@ -21,7 +30,6 @@ import _ from 'lodash';
 })
 export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   @ViewChild('quantity') quantityElement: ElementRef;
-
 
   @Input() public inventoryItemGroups: InventoryItemGroup[];
   @Output() public addItemEvent = new EventEmitter<InventoryItem>();

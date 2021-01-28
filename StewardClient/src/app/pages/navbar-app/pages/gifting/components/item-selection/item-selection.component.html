@@ -29,13 +29,7 @@
   </mat-form-field>
   <mat-form-field class="quantity-form-field">
     <mat-label>Quantity</mat-label>
-    <input
-      #quantity
-      type="number"
-      matInput
-      placeholder="1"
-      formControlName="quantity"
-    />
+    <input #quantity type="number" matInput placeholder="1" formControlName="quantity" />
   </mat-form-field>
   <button mat-raised-button color="primary" type="submit" [disabled]="!itemSelectionForm.valid">
     Add Item

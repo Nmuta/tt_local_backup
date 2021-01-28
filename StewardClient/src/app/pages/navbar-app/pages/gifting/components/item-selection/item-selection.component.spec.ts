@@ -109,7 +109,13 @@ describe('ItemSelectionComponent', () => {
     };
     beforeEach(() => {
       component.selectedItem = undefined;
-      component.quantityElement = { nativeElement : { focus: () => { /** Empty */}}};
+      component.quantityElement = {
+        nativeElement: {
+          focus: () => {
+            /** Empty */
+          },
+        },
+      };
       component.quantityElement.nativeElement.focus = jasmine.createSpy('focus');
     });
 
