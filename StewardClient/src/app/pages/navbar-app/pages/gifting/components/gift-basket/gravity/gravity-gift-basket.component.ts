@@ -58,8 +58,6 @@ export class GravityGiftBasketComponent
 
       // TODO:When no/ bad game settings, we need to show show errors for all items in the gift basket and disallow gift send
     }
-
-    this.setIsGiftBasketReady();
   }
 
   /** Sets up the stateGroups variable used with the autocomplete */
