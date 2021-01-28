@@ -27,8 +27,6 @@ export class SunriseGiftingComponent
 
   /** Game title. */
   public title: GameTitleCodeName = GameTitleCodeName.FH4;
-  /** Current mat tab selected. */
-  public matTabSelectedIndex: number = 0;
   /** All selected player identities from player selection tool. */
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   /** Selected LSP group. */
