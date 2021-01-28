@@ -64,7 +64,17 @@
 <ng-template #resultsView id="results-view">
   <div class="identity-results">
     <ng-content></ng-content>
-    <div class="default">failure</div>
+    <div class="default">
+      <player-selection-chip-list
+        [playerSelection]="this"
+        [identities]="playerIdentitiesFull"
+      >
+        <ng-template let-identity>
+          <player-selection-chip [playerSelection]="this" [identity]="identity">
+          </player-selection-chip>
+        </ng-template>
+      </player-selection-chip-list>
+    </div>
   </div>
 </ng-template>
 
