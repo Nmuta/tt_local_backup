@@ -117,12 +117,7 @@
               class="send-gift-basket"
               color="primary"
               type="submit"
-              [disabled]="
-                !sendGiftForm.valid ||
-                giftBasket?.data?.length <= 0 ||
-                (usingPlayerIdentities && playerIdentities?.length <= 0) ||
-                (!usingPlayerIdentities && !lspGroup)
-              "
+              [disabled]="!sendGiftForm.valid || !isGiftBasketReady"
             >
               Send Gift
               <span *ngIf="usingPlayerIdentities">To Player(s)</span>

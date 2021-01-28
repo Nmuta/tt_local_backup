@@ -59,7 +59,7 @@ describe('GiftBasketBaseComponent', () => {
         component.addItemtoBasket(testItemNew);
 
         expect(component.giftBasket.data.length).toEqual(1);
-        expect(component.giftBasket.data[0].quantity).toEqual(BigInt(10));
+        expect(component.giftBasket.data[0].quantity).toEqual(10);
       });
     });
 
@@ -81,7 +81,7 @@ describe('GiftBasketBaseComponent', () => {
         component.addItemtoBasket(testItemNew);
 
         expect(component.giftBasket.data.length).toEqual(1);
-        expect(component.giftBasket.data[0].quantity).toEqual(BigInt(60));
+        expect(component.giftBasket.data[0].quantity).toEqual(60);
       });
     });
   });
@@ -108,7 +108,7 @@ describe('GiftBasketBaseComponent', () => {
     it('should set the item quantity to the new value', () => {
       component.editItemQuantity(0);
 
-      expect(component.giftBasket.data[0].quantity).toEqual(BigInt(testItemQuantity));
+      expect(component.giftBasket.data[0].quantity).toEqual(testItemQuantity);
       expect(component.giftBasket.data[0].edit).toBeFalsy();
     });
   });
@@ -140,6 +140,146 @@ describe('GiftBasketBaseComponent', () => {
 
       expect(component.giftBasket.data.length).toEqual(1);
       expect(component.giftBasket.data[0].itemId).toEqual(testItemId);
+    });
+  });
+
+  describe('Method: clearGiftBasket', () => {
+    beforeEach(() => {
+      component.setIsGiftBasketReady = jasmine.createSpy('setIsGiftBasketReady');
+      component.giftBasket = new MatTableDataSource<GiftBasketModel>();
+      component.giftBasket.data = component.giftBasket.data = [
+        {
+          itemId: BigInt(1234),
+          description: 'test description 1',
+          quantity: 50,
+          itemType: 'test type 1',
+          edit: false,
+        },
+        {
+          itemId: BigInt(4321),
+          description: 'test description 2',
+          quantity: 10,
+          itemType: 'test type 2',
+          edit: false,
+        },
+      ];
+    });
+
+    it('should empty gift basket data', () => {
+      expect(component.giftBasket.data.length).toEqual(2);
+      component.clearGiftBasket();
+
+      expect(component.giftBasket.data.length).toEqual(0);
+    });
+
+    it('should call setIsGiftBasketReady', () => {
+      component.clearGiftBasket();
+
+      expect(component.setIsGiftBasketReady).toHaveBeenCalled();
+    });
+  });
+
+  describe('Method: setIsGiftBasketReady', () => {
+    beforeEach(() => {
+      // Set valid form data
+      component.playerIdentities = [
+        {
+          query: { xuid: BigInt(123456789), t10Id: 'test-t10-id' },
+          xuid: BigInt(123456789),
+          t10Id: 'test-t10-id',
+          gamertag: 'test-gamertag',
+        },
+      ];
+      component.lspGroup = { id: 1, name: 'test-lsp-group' };
+      component.giftBasket = new MatTableDataSource<GiftBasketModel>();
+      component.giftBasket.data = component.giftBasket.data = [
+        {
+          itemId: BigInt(1234),
+          description: 'test description 1',
+          quantity: 50,
+          itemType: 'test type 1',
+          edit: false,
+        },
+        {
+          itemId: BigInt(4321),
+          description: 'test description 2',
+          quantity: 10,
+          itemType: 'test type 2',
+          edit: false,
+        },
+      ];
+    });
+
+    describe('If using player identities is true', () => {
+      beforeEach(() => {
+        component.usingPlayerIdentities = true;
+      });
+
+      describe('Player identities has content', () => {
+        it('should set isGiftBasketReady to true', () => {
+          component.setIsGiftBasketReady();
+
+          expect(component.isGiftBasketReady).toBeTruthy();
+        });
+      });
+
+      describe('Player identities is empty', () => {
+        beforeEach(() => {
+          component.playerIdentities = [];
+        });
+
+        it('should set isGiftBasketReady to false', () => {
+          component.setIsGiftBasketReady();
+
+          expect(component.isGiftBasketReady).toBeFalsy();
+        });
+      });
+    });
+
+    describe('If using player identities is false', () => {
+      beforeEach(() => {
+        component.usingPlayerIdentities = false;
+      });
+
+      describe('LspGroup has content', () => {
+        it('should set isGiftBasketReady to true', () => {
+          component.setIsGiftBasketReady();
+
+          expect(component.isGiftBasketReady).toBeTruthy();
+        });
+      });
+
+      describe('LspGroup is empty', () => {
+        beforeEach(() => {
+          component.lspGroup = undefined;
+        });
+
+        it('should set isGiftBasketReady to false', () => {
+          component.setIsGiftBasketReady();
+
+          expect(component.isGiftBasketReady).toBeFalsy();
+        });
+      });
+    });
+
+    describe('If gift basket has content', () => {
+      it('should set isGiftBasketReady to true', () => {
+        component.setIsGiftBasketReady();
+
+        expect(component.isGiftBasketReady).toBeTruthy();
+      });
+    });
+
+    describe('If gift basket is empty', () => {
+      beforeEach(() => {
+        component.giftBasket.data = [];
+      });
+
+      it('should set isGiftBasketReady to false', () => {
+        component.setIsGiftBasketReady();
+
+        expect(component.isGiftBasketReady).toBeFalsy();
+      });
     });
   });
 });

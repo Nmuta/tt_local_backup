@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitleCodeName } from '@models/enums';
@@ -27,7 +27,9 @@ export type GiftBasketModel = InventoryItem & { edit: boolean };
 @Component({
   template: '',
 })
-export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> extends BaseComponent {
+export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion>
+  extends BaseComponent
+  implements OnChanges {
   @Input() public playerIdentities: T[];
   @Input() public lspGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
@@ -61,6 +63,8 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
   /** If master inventory is based on game settings ids. */
   public hasGameSettings: boolean = false;
+  /** True is gift basket is valid to send gift to API */
+  public isGiftBasketReady: boolean = true;
   /** True while waiting on a request. */
   public isLoading = false;
   /** The error received while loading. */
@@ -78,6 +82,11 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
   constructor(protected readonly formBuilder: FormBuilder) {
     super();
+  }
+
+  /** Angular lifecycle hook. */
+  public ngOnChanges(_changes: SimpleChanges): void {
+    this.setIsGiftBasketReady();
   }
 
   /** Adds a new item to the gift basket. */
@@ -100,11 +109,13 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     });
 
     this.giftBasket.data = temporaryGiftBasket;
+    this.setIsGiftBasketReady();
   }
 
   /** Clears the gift basket. */
   public clearGiftBasket(): void {
     this.giftBasket.data = [];
+    this.setIsGiftBasketReady();
   }
 
   /** Edit item quantity */
@@ -125,10 +136,19 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     const tmpGiftBasket = this.giftBasket.data;
     tmpGiftBasket.splice(index, 1);
     this.giftBasket.data = tmpGiftBasket;
+    this.setIsGiftBasketReady();
   }
 
   /** Sends the gift basket */
   public sendGiftBasket(): void {
     // TODO: Send request to Steward API and emit results back up to parent gifting page component
+  }
+
+  /** Sets IsGiftBasketReady based the component variables. */
+  public setIsGiftBasketReady(): void {
+    this.isGiftBasketReady =
+      this.giftBasket?.data?.length > 0 &&
+      ((this.usingPlayerIdentities && this.playerIdentities?.length > 0) ||
+        (!this.usingPlayerIdentities && !!this.lspGroup));
   }
 }

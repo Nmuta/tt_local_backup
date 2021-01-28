@@ -1,6 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+} from '@angular/forms';
 import { Observable } from 'rxjs';
 import { InventoryItem, InventoryItemGroup } from '../gift-basket/gift-basket.base.component';
 import { map, startWith, takeUntil } from 'rxjs/operators';
@@ -54,7 +60,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   }
 
   /** New item selected. */
-  public addItemEmitter(): void {
+  public addItemEmitter(formDirective: FormGroupDirective): void {
     if (!this.selectedItem) {
       return;
     }
@@ -64,8 +70,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
 
     this.selectedItem = undefined;
     this.itemSelectionForm.reset();
-
-    document.getElementById('item-selection-input')?.focus();
+    formDirective.resetForm();
   }
 
   /** New item is selected from the dropdown. */
@@ -82,7 +87,6 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   /** Autocomplete filter function. */
   private filterGroup(value: string | InventoryItem): InventoryItemGroup[] {
     if (value) {
-
       if (typeof value !== 'string') {
         return this.inventoryItemGroups;
       }

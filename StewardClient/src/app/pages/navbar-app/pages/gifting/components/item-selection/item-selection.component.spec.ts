@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ItemSelectionComponent } from './item-selection.component';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { InventoryItem } from '../gift-basket/gift-basket.base.component';
 
@@ -40,6 +40,7 @@ describe('ItemSelectionComponent', () => {
 
   describe('Method: addItemEmit', () => {
     const testQuantity = 5;
+    const formGroupDirective = new FormGroupDirective([], []);
     beforeEach(() => {
       component.addItemEvent.emit = jasmine.createSpy('emit');
       component.itemSelectionForm = formBuilder.group({
@@ -53,7 +54,7 @@ describe('ItemSelectionComponent', () => {
       });
 
       it('should not emit addItemEvent', () => {
-        component.addItemEmitter();
+        component.addItemEmitter(formGroupDirective);
 
         expect(component.addItemEvent.emit).not.toHaveBeenCalled();
       });
@@ -66,44 +67,35 @@ describe('ItemSelectionComponent', () => {
         quantity: 0,
         itemType: 'fake type',
       };
-      const selectionItemInput = {
-        focus: () => {
-          /** Empty */
-        },
-      };
       beforeEach(() => {
         component.selectedItem = testInventoryItem;
         component.itemSelectionForm.reset = jasmine.createSpy('reset');
-        selectionItemInput.focus = jasmine.createSpy('focus');
-        document.getElementById = jasmine
-          .createSpy('getElementById')
-          .and.returnValue(selectionItemInput);
+        formGroupDirective.resetForm = jasmine.createSpy('reset');
       });
 
       it('should emit addItemEvent with correct quantity', () => {
-        component.addItemEmitter();
+        component.addItemEmitter(formGroupDirective);
 
         testInventoryItem.quantity = testQuantity; // This quantity is set from the form control
         expect(component.addItemEvent.emit).toHaveBeenCalledWith(testInventoryItem);
       });
 
       it('should set selectedItem undefined', () => {
-        component.addItemEmitter();
+        component.addItemEmitter(formGroupDirective);
 
         expect(component.selectedItem).toBeUndefined();
       });
 
       it('should call itemSelectionForm reset', () => {
-        component.addItemEmitter();
+        component.addItemEmitter(formGroupDirective);
 
         expect(component.itemSelectionForm.reset).toHaveBeenCalled();
       });
 
-      it('should set focus back item selection', () => {
-        component.addItemEmitter();
+      it('should call formGroupDirective.resetForm', () => {
+        component.addItemEmitter(formGroupDirective);
 
-        expect(document.getElementById).toHaveBeenCalledWith('item-selection-input');
-        expect(selectionItemInput.focus).toHaveBeenCalled();
+        expect(formGroupDirective.resetForm).toHaveBeenCalled();
       });
     });
   });
