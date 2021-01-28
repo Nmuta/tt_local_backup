@@ -61,7 +61,9 @@ export class MockSunriseService {
     .and.returnValue(defer(() => SunrisePlayersBanFakeApi.make()));
   public getBanSummariesByXuids = jasmine
     .createSpy('getBanSummariesByXuids')
-    .and.callFake((xuids: BigInt[]) => defer(() => of(SunrisePlayersBanSummariesFakeApi.make(xuids))));
+    .and.callFake((xuids: BigInt[]) =>
+      defer(() => of(SunrisePlayersBanSummariesFakeApi.make(xuids))),
+    );
 
   constructor(private readonly generator: () => unknown) {}
 }

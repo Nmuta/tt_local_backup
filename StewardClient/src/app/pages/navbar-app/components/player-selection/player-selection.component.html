@@ -65,10 +65,7 @@
   <div class="identity-results">
     <ng-content></ng-content>
     <div class="default">
-      <player-selection-chip-list
-        [playerSelection]="this"
-        [identities]="playerIdentitiesFull"
-      >
+      <player-selection-chip-list [playerSelection]="this" [identities]="playerIdentitiesFull">
         <ng-template let-identity>
           <player-selection-chip [playerSelection]="this" [identity]="identity">
           </player-selection-chip>

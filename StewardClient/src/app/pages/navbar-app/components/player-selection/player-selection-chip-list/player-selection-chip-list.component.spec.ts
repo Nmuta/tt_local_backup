@@ -22,6 +22,7 @@ describe('PlayerSelectionChipListComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     component.playerSelection = { playerIdType: 'xuid' } as any;
   });
 
@@ -31,7 +32,7 @@ describe('PlayerSelectionChipListComponent', () => {
 
   it('should augment identities', () => {
     const fakeXuids = [fakeXuid(), fakeXuid(), fakeXuid()];
-    const fakeIdentityQueries = fakeXuids.map(xuid => <IdentityQueryAlpha> { xuid: xuid });
+    const fakeIdentityQueries = fakeXuids.map(xuid => <IdentityQueryAlpha>{ xuid: xuid });
 
     component.identities = ApolloPlayersIdentitiesFakeApi.make(fakeIdentityQueries);
     fixture.detectChanges();

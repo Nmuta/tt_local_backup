@@ -42,16 +42,18 @@ describe('ApolloBanningComponent', () => {
 
   it('should gather summaries', () => {
     const testXuids = [fakeXuid(), fakeXuid(), fakeXuid()];
-    apollo.getBanSummariesByXuids =
-      jasmine.createSpy('getBanSummariesByXuids')
-        .and.callFake((xuids: BigInt[]) => {
-          const summaries = ApolloPlayersBanSummariesFakeApi.make(xuids);
-          summaries.forEach(s => s.banCount = 0);
-          summaries[0].banCount = 5;
-          return defer(() => of(summaries));
-        });
+    apollo.getBanSummariesByXuids = jasmine
+      .createSpy('getBanSummariesByXuids')
+      .and.callFake((xuids: BigInt[]) => {
+        const summaries = ApolloPlayersBanSummariesFakeApi.make(xuids);
+        summaries.forEach(s => (s.banCount = 0));
+        summaries[0].banCount = 5;
+        return defer(() => of(summaries));
+      });
 
-    const fakeIdentities = testXuids.map(xuid => <IdentityResultAlpha>{ gamertag: faker.name.firstName(), xuid: xuid });
+    const fakeIdentities = testXuids.map(
+      xuid => <IdentityResultAlpha>{ gamertag: faker.name.firstName(), xuid: xuid },
+    );
     component.formControls.playerIdentities.setValue(fakeIdentities, { emitEvent: true });
     fixture.detectChanges();
 
