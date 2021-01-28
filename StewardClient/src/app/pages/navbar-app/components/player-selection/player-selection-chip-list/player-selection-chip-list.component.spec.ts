@@ -21,6 +21,8 @@ describe('PlayerSelectionChipListComponent', () => {
     fixture = TestBed.createComponent(PlayerSelectionChipListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    component.playerSelection = { playerIdType: 'xuid' } as any;
   });
 
   it('should create', () => {
@@ -30,8 +32,10 @@ describe('PlayerSelectionChipListComponent', () => {
   it('should augment identities', () => {
     const fakeXuids = [fakeXuid(), fakeXuid(), fakeXuid()];
     const fakeIdentityQueries = fakeXuids.map(xuid => <IdentityQueryAlpha> { xuid: xuid });
+
     component.identities = ApolloPlayersIdentitiesFakeApi.make(fakeIdentityQueries);
     fixture.detectChanges();
+    component.ngOnChanges(null);
 
     expect(component.augmentedIdentities).toBeDefined();
     expect(component.augmentedIdentities.length).toBe(fakeXuids.length);
