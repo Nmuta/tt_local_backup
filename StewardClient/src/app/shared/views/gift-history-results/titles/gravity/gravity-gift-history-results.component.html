@@ -1,61 +1,61 @@
 <mat-card>
-    <mat-card-content>
-      <h2>
-          Gravity Gift History
-          <error-spinner
-            [isActive]="showSpinner"
-            [error]="loadError"
-            spinnerMessage="Loading"
-            errorMessage="Failed to load"
-          ></error-spinner>
-        </h2>
-        <ng-container *ngIf="isLoaded && !loadError; else failstate">
-          <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                {{history.requestingAgent}} {{history.giftSendDateUtc?.toGMTString()}}
-              </mat-panel-title>
-              <mat-panel-description>
-                Inventory Summary goes here.
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <ng-container *ngIf="history.giftInventory.cars">
-              <h3>Cars: {{history.giftInventory.cars.length}}</h3>
-              <p *ngFor="let car of history.giftInventory.cars">
-                {{car.quantity}} {{car.description}} [{{car.itemId}}]
-              </p>
-            </ng-container>
-            <ng-container *ngIf="history.giftInventory.currencies">
-              <h3>Currencies: {{history.giftInventory.currencies.length}}</h3>
-              <p *ngFor="let currency of history.giftInventory.currencies">
-                {{currency.quantity}} {{currency.description}} [{{currency.itemId}}]
-              </p>
-            </ng-container>
-            <ng-container *ngIf="history.giftInventory.energyRefills">
-              <h3>Energy Refills: {{history.giftInventory.energyRefills.length}}</h3>
-              <p *ngFor="let energyRefill of history.energyRefills.currencies">
-                {{energyRefill.quantity}} {{energyRefill.description}} [{{energyRefill.itemId}}]
-              </p>
-            </ng-container>
-            <ng-container *ngIf="history.giftInventory.masteryKits">
-              <h3>Mastery Kits: {{history.giftInventory.masteryKits.length}}</h3>
-              <p *ngFor="let masteryKit of history.giftInventory.masteryKits">
-                {{masteryKit.quantity}} {{masteryKit.description}} [{{masteryKit.itemId}}]
-              </p>
-            </ng-container>
-            <ng-container *ngIf="history.giftInventory.repairKits">
-              <h3>Repair Kits: {{history.giftInventory.repairKits.length}}</h3>
-              <p *ngFor="let repairKit of history.giftInventory.repairKits">
-                {{repairKit.quantity}} {{repairKit.description}} [{{repairKit.itemId}}]
-              </p>
-            </ng-container>
-            <ng-container *ngIf="history.giftInventory.upgradeKits">
-              <h3>Upgrade Kits: {{history.giftInventory.upgradeKits.length}}</h3>
-              <p *ngFor="let upgradeKit of history.giftInventory.upgradeKits">
-                {{upgradeKit.quantity}} {{upgradeKit.description}} [{{upgradeKit.itemId}}]
-              </p>
-            </ng-container>
-          </mat-expansion-panel>
+  <mat-card-content>
+    <h2>
+        Gravity Gift History
+    </h2>
+    <ng-container *ngIf="!isLoading && !loadError; else failState">
+      <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList$ | async">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{history.requestingAgent}} {{history.giftSendDateUtc?.toGMTString()}}
+          </mat-panel-title>
+          <mat-panel-description>
+            Inventory Summary goes here.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <ng-container *ngIf="history.giftInventory.cars">
+          <h3>Cars: {{history.giftInventory.cars.length}}</h3>
+          <p *ngFor="let car of history.giftInventory.cars">
+            {{car.quantity}} {{car.description}} [{{car.itemId}}]
+          </p>
         </ng-container>
-    </mat-card-content>
-  </mat-card>
+        <ng-container *ngIf="history.giftInventory.currencies">
+          <h3>Currencies: {{history.giftInventory.currencies.length}}</h3>
+          <p *ngFor="let currency of history.giftInventory.currencies">
+            {{currency.quantity}} {{currency.description}} [{{currency.itemId}}]
+          </p>
+        </ng-container>
+        <ng-container *ngIf="history.giftInventory.energyRefills">
+          <h3>Energy Refills: {{history.giftInventory.energyRefills.length}}</h3>
+          <p *ngFor="let energyRefill of history.energyRefills.currencies">
+            {{energyRefill.quantity}} {{energyRefill.description}} [{{energyRefill.itemId}}]
+          </p>
+        </ng-container>
+        <ng-container *ngIf="history.giftInventory.masteryKits">
+          <h3>Mastery Kits: {{history.giftInventory.masteryKits.length}}</h3>
+          <p *ngFor="let masteryKit of history.giftInventory.masteryKits">
+            {{masteryKit.quantity}} {{masteryKit.description}} [{{masteryKit.itemId}}]
+          </p>
+        </ng-container>
+        <ng-container *ngIf="history.giftInventory.repairKits">
+          <h3>Repair Kits: {{history.giftInventory.repairKits.length}}</h3>
+          <p *ngFor="let repairKit of history.giftInventory.repairKits">
+            {{repairKit.quantity}} {{repairKit.description}} [{{repairKit.itemId}}]
+          </p>
+        </ng-container>
+        <ng-container *ngIf="history.giftInventory.upgradeKits">
+          <h3>Upgrade Kits: {{history.giftInventory.upgradeKits.length}}</h3>
+          <p *ngFor="let upgradeKit of history.giftInventory.upgradeKits">
+            {{upgradeKit.quantity}} {{upgradeKit.description}} [{{upgradeKit.itemId}}]
+          </p>
+        </ng-container>
+      </mat-expansion-panel>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+<ng-template #failState>
+  <div id="fail-state">
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+    <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+  </div>
+</ng-template>

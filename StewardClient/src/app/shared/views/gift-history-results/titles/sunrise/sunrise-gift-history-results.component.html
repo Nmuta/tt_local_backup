@@ -1,70 +1,70 @@
 <mat-card>
-    <mat-card-content>
-      <h2>
-          Sunrise Gift History
-          <error-spinner
-            [isActive]="showSpinner"
-            [error]="loadError"
-            spinnerMessage="Loading"
-            errorMessage="Failed to load"
-          ></error-spinner>
-        </h2>
-        <ng-container *ngIf="isLoaded && !loadError; else failstate">
-          <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                {{history.requestingAgent}} {{history.giftSendDateUtc?.toGMTString()}}
-              </mat-panel-title>
-              <mat-panel-description>
-                Inventory Summary goes here.
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <div *ngIf="history.giftInventory.credits">
-              <h3>Credits: {{history.giftInventory.credits}}</h3>
-            </div>
-            <div *ngIf="history.giftInventory.wheelSpins">
-              <h3>Wheel Spins: {{history.giftInventory.wheelSpins}}</h3>
-            </div>
-            <div *ngIf="history.giftInventory.superWheelSpins">
-              <h3>Super Wheel Spins: {{history.giftInventory.superWheelSpins}}</h3>
-            </div>
-            <div *ngIf="history.giftInventory.skillPoints">
-              <h3>Skill Points: {{history.giftInventory.skillPoints}}</h3>
-            </div>
-            <div *ngIf="history.giftInventory.forzathonPoints">
-              <h3>Forzathon Points: {{history.giftInventory.forzathonPoints}}</h3>
-            </div>
-            <ng-container *ngIf="history.giftInventory.cars">
-              <h3>Cars: {{history.giftInventory.cars.length}}</h3>
-              <p *ngFor="let car of history.giftInventory.cars">
-                {{car.quantity}} {{car.description}} [{{car.itemId}}]
-              </p>
-            </ng-container>
-            <ng-container *ngIf="history.giftInventory.carHorns">
-              <h3>Car Horns: {{history.giftInventory.carHorns.length}}</h3>
-              <p *ngFor="let carHorn of history.giftInventory.carHorns">
-                {{carHorn.quantity}} {{carHorn.description}} [{{carHorn.itemId}}]
-              </p>
-            </ng-container>
-            <ng-container *ngIf="history.giftInventory.emotes">
-              <h3>Emotes: {{history.giftInventory.emotes.length}}</h3>
-              <p *ngFor="let emote of history.giftInventory.emotes">
-                {{emote.quantity}} {{emote.description}} [{{emote.itemId}}]
-              </p>
-            </ng-container>
-            <ng-container *ngIf="history.giftInventory.quickChatLines">
-              <h3>Quick Chat Lines: {{history.giftInventory.quickChatLines.length}}</h3>
-              <p *ngFor="let chatLine of history.giftInventory.quickChatLines">
-                {{chatLine.quantity}} {{chatLine.description}} [{{chatLine.itemId}}]
-              </p>
-            </ng-container>
-            <ng-container *ngIf="history.giftInventory.vanityItems">
-              <h3>Vanity Items: {{history.giftInventory.vanityItems.length}}</h3>
-              <p *ngFor="let vanityItem of history.giftInventory.vanityItems">
-                {{vanityItem.quantity}} {{vanityItem.description}} [{{vanityItem.itemId}}]
-              </p>
-            </ng-container>
-          </mat-expansion-panel>
+  <mat-card-content>
+    <h2>
+        Sunrise Gift History
+    </h2>
+    <ng-container *ngIf="!isLoading && !loadError; else failState">
+      <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{history.requestingAgent}} {{history.giftSendDateUtc?.toGMTString()}}
+          </mat-panel-title>
+          <mat-panel-description>
+            Inventory Summary goes here.
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div *ngIf="history.giftInventory.credits">
+          <h3>Credits: {{history.giftInventory.credits}}</h3>
+        </div>
+        <div *ngIf="history.giftInventory.wheelSpins">
+          <h3>Wheel Spins: {{history.giftInventory.wheelSpins}}</h3>
+        </div>
+        <div *ngIf="history.giftInventory.superWheelSpins">
+          <h3>Super Wheel Spins: {{history.giftInventory.superWheelSpins}}</h3>
+        </div>
+        <div *ngIf="history.giftInventory.skillPoints">
+          <h3>Skill Points: {{history.giftInventory.skillPoints}}</h3>
+        </div>
+        <div *ngIf="history.giftInventory.forzathonPoints">
+          <h3>Forzathon Points: {{history.giftInventory.forzathonPoints}}</h3>
+        </div>
+        <ng-container *ngIf="history.giftInventory.cars">
+          <h3>Cars: {{history.giftInventory.cars.length}}</h3>
+          <p *ngFor="let car of history.giftInventory.cars">
+            {{car.quantity}} {{car.description}} [{{car.itemId}}]
+          </p>
         </ng-container>
-    </mat-card-content>
-  </mat-card>
+        <ng-container *ngIf="history.giftInventory.carHorns">
+          <h3>Car Horns: {{history.giftInventory.carHorns.length}}</h3>
+          <p *ngFor="let carHorn of history.giftInventory.carHorns">
+            {{carHorn.quantity}} {{carHorn.description}} [{{carHorn.itemId}}]
+          </p>
+        </ng-container>
+        <ng-container *ngIf="history.giftInventory.emotes">
+          <h3>Emotes: {{history.giftInventory.emotes.length}}</h3>
+          <p *ngFor="let emote of history.giftInventory.emotes">
+            {{emote.quantity}} {{emote.description}} [{{emote.itemId}}]
+          </p>
+        </ng-container>
+        <ng-container *ngIf="history.giftInventory.quickChatLines">
+          <h3>Quick Chat Lines: {{history.giftInventory.quickChatLines.length}}</h3>
+          <p *ngFor="let chatLine of history.giftInventory.quickChatLines">
+            {{chatLine.quantity}} {{chatLine.description}} [{{chatLine.itemId}}]
+          </p>
+        </ng-container>
+        <ng-container *ngIf="history.giftInventory.vanityItems">
+          <h3>Vanity Items: {{history.giftInventory.vanityItems.length}}</h3>
+          <p *ngFor="let vanityItem of history.giftInventory.vanityItems">
+            {{vanityItem.quantity}} {{vanityItem.description}} [{{vanityItem.itemId}}]
+          </p>
+        </ng-container>
+      </mat-expansion-panel>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+<ng-template #failState>
+  <div id="fail-state">
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+    <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+  </div>
+</ng-template>
