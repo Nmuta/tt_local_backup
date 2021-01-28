@@ -3,7 +3,7 @@ import { ApolloGiftHistories } from '@models/apollo/apollo-gift-history.model';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { ApolloService } from '@services/apollo/apollo.service';
 import { Observable } from 'rxjs';
-import { GiftHistoryResultsBaseComponent } from '../../gift-history-result.base.component';
+import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base.component';
 
 /** Retreives and displays Apollo Gift history by XUID. */
 @Component({
@@ -27,7 +27,6 @@ export class ApolloGiftHistoryResultsComponent extends GiftHistoryResultsBaseCom
 
   /** Reteives the gift history of a LSP group. */
   public retrieveHistoryByLspGroup(): Observable<ApolloGiftHistories> {
-    //return throwError("LSP Group Gifting not supported for Gravity.");
     return this.apolloService.getGiftHistoryByLspGroup(this.selectedGroup.id);
   }
 }

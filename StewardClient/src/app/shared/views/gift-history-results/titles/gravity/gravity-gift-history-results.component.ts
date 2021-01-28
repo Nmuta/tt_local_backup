@@ -4,7 +4,7 @@ import { GravityGiftHistories } from '@models/gravity/gravity-gift-history.model
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { GravityService } from '@services/gravity';
 import { Observable, of, throwError } from 'rxjs';
-import { GiftHistoryResultsBaseComponent } from '../../gift-history-result.base.component';
+import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base.component';
 
 /** Retreives and displays Gravity Gift history by XUID. */
 @Component({
@@ -20,19 +20,11 @@ export class GravityGiftHistoryResultsComponent extends GiftHistoryResultsBaseCo
 
   public retrieveHistoryByPlayer(): Observable<GravityGiftHistories>
   {
-    if(this.selectedPlayer === undefined) {
-      return of([]);
-    }
-
     return this.gravity.getGiftHistoryByT10Id(this.selectedPlayer.t10Id);
   }
 
   public retrieveHistoryByLspGroup(): Observable<GravityGiftHistories>
   {
-    if(this.selectedGroup === undefined || this.selectedGroup === null) {
-      return of([]);
-    }
-
     return throwError("LSP Group Gifting not supported for Gravity.");
   }
 }
