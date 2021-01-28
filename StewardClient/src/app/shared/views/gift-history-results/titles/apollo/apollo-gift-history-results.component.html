@@ -19,7 +19,7 @@
         <ng-container *ngIf="history.giftInventory.cars">
           <h3>Cars: {{history.giftInventory.cars.length}}</h3>
           <p *ngFor="let car of history.giftInventory.cars">
-            {{car.quantity}} {{car.description}} [{{car.itemId}}]
+            [{{car.quantity}}] {{car.description}} (Item Id:{{car.itemId}})
           </p>
         </ng-container>
       </mat-expansion-panel>

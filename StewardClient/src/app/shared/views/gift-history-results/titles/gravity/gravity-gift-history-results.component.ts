@@ -10,7 +10,7 @@ import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base
 @Component({
   selector: 'gravity-gift-history-results',
   templateUrl: './gravity-gift-history-results.component.html',
-  styleUrls: ['./gravity-gift-history-results.component.scss']
+  styleUrls: ['../../gift-history-results.base.component.scss']
 })
 export class GravityGiftHistoryResultsComponent extends GiftHistoryResultsBaseComponent<IdentityResultBeta, GravityGiftHistories>{
 

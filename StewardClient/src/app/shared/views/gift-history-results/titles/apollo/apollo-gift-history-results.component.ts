@@ -9,7 +9,7 @@ import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base
 @Component({
   selector: 'apollo-gift-history-results',
   templateUrl: './apollo-gift-history-results.component.html',
-  styleUrls: ['./apollo-gift-history-results.component.scss']
+  styleUrls: ['../../gift-history-results.base.component.scss']
 })
 export class ApolloGiftHistoryResultsComponent extends GiftHistoryResultsBaseComponent<IdentityResultAlpha, ApolloGiftHistories>{
 

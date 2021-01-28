@@ -10,7 +10,7 @@ import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base
 @Component({
   selector: 'sunrise-gift-history-results',
   templateUrl: './sunrise-gift-history-results.component.html',
-  styleUrls: ['./sunrise-gift-history-results.component.scss']
+  styleUrls: ['../../gift-history-results.base.component.scss']
 })
 export class SunriseGiftHistoryResultsComponent extends GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistories>{
 
