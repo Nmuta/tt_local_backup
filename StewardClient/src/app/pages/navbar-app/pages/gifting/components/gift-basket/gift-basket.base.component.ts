@@ -82,9 +82,9 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
   /** Adds a new item to the gift basket. */
   public addItemtoBasket(item: GiftBasketModel): void {
-    const tmpGiftBasket = this.giftBasket.data;
+    const temporaryGiftBasket = this.giftBasket.data;
 
-    const existingItemIndex = tmpGiftBasket.findIndex(data => {
+    const existingItemIndex = temporaryGiftBasket.findIndex(data => {
       return data.itemId === item.itemId && data.itemType === item.itemType;
     });
 
@@ -94,12 +94,12 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
       return;
     }
 
-    tmpGiftBasket.push(item);
-    tmpGiftBasket.sort((a: GiftBasketModel, b: GiftBasketModel) => {
+    temporaryGiftBasket.push(item);
+    temporaryGiftBasket.sort((a: GiftBasketModel, b: GiftBasketModel) => {
       return a.itemType.localeCompare(b.itemType) || a.description.localeCompare(b.description);
     });
 
-    this.giftBasket.data = tmpGiftBasket;
+    this.giftBasket.data = temporaryGiftBasket;
   }
 
   /** Clears the gift basket. */

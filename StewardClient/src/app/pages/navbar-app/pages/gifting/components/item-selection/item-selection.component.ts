@@ -82,6 +82,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   /** Autocomplete filter function. */
   private filterGroup(value: string | InventoryItem): InventoryItemGroup[] {
     if (value) {
+      
       if (typeof value !== 'string') {
         return this.inventoryItemGroups;
       }
