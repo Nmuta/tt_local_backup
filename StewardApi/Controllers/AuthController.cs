@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Turn10.Data.Common;
@@ -39,6 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var userIdentity = this.User;
             var role = "None";
+            var email = this.User.FindFirstValue(ClaimTypes.Email);
             if (this.User.IsInRole(UserRole.LiveOpsAdmin))
             {
                 role = UserRole.LiveOpsAdmin;
@@ -58,7 +60,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var user = new LiveOpsUser
             {
-                EmailAddress = userIdentity.Identity.Name,
+                EmailAddress = email,
                 Role = role,
             };
 

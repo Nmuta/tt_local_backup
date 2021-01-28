@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -338,7 +339,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 masterInventory.ShouldNotBeNull(nameof(masterInventory));
                 masterInventory.T10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(masterInventory.T10Id));
 
-                var requestingAgent = this.User.Identity.Name;
+                var requestingAgent = this.User.FindFirstValue(ClaimTypes.Email);
 
                 this.masterInventoryRequestValidator.Validate(masterInventory, this.ModelState);
 
