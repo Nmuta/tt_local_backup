@@ -27,9 +27,7 @@ export type GiftBasketModel = InventoryItem & { edit: boolean };
 @Component({
   template: '',
 })
-export abstract class GiftBasketBaseComponent<
-  T extends IdentityResultsUnion
-> extends BaseComponent {
+export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> extends BaseComponent {
   @Input() public playerIdentities: T[];
   @Input() public lspGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;

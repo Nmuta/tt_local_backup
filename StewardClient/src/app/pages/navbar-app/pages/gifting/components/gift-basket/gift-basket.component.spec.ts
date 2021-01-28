@@ -5,12 +5,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { GiftBasketBaseComponent, GiftBasketModel } from './gift-basket.base.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 
 describe('GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<GiftBasketBaseComponent<IdentityResultBeta>>;
   let component: GiftBasketBaseComponent<IdentityResultBeta>;
+
+  const formBuilder: FormBuilder = new FormBuilder();
 
   beforeEach(
     waitForAsync(() => {
@@ -145,7 +147,6 @@ describe('GiftBasketBaseComponent', () => {
 
   describe('Method: clearGiftBasket', () => {
     beforeEach(() => {
-      component.setIsGiftBasketReady = jasmine.createSpy('setIsGiftBasketReady');
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       component.giftBasket.data = component.giftBasket.data = [
         {
@@ -171,15 +172,9 @@ describe('GiftBasketBaseComponent', () => {
 
       expect(component.giftBasket.data.length).toEqual(0);
     });
-
-    it('should call setIsGiftBasketReady', () => {
-      component.clearGiftBasket();
-
-      expect(component.setIsGiftBasketReady).toHaveBeenCalled();
-    });
   });
 
-  describe('Method: setIsGiftBasketReady', () => {
+  describe('Method: isGiftBasketReady', () => {
     beforeEach(() => {
       // Set valid form data
       component.playerIdentities = [
@@ -208,6 +203,32 @@ describe('GiftBasketBaseComponent', () => {
           edit: false,
         },
       ];
+
+      component.sendGiftForm = formBuilder.group({
+        test: new FormControl('', Validators.required),
+      });
+
+      component.sendGiftForm.controls['test'].setValue('test value');
+    });
+
+    describe('If sendGiftForm is valid', () => {
+      it('should return true', () => {
+        const response = component.isGiftBasketReady();
+
+        expect(response).toBeTruthy();
+      });
+    });
+
+    describe('If sendGiftForm is invalid', () => {
+      beforeEach(() => {
+        component.sendGiftForm.controls['test'].setValue('');
+      });
+
+      it('should return false', () => {
+        const response = component.isGiftBasketReady();
+
+        expect(response).toBeFalsy();
+      });
     });
 
     describe('If using player identities is true', () => {
@@ -216,10 +237,10 @@ describe('GiftBasketBaseComponent', () => {
       });
 
       describe('Player identities has content', () => {
-        it('should set isGiftBasketReady to true', () => {
-          component.setIsGiftBasketReady();
+        it('should return true', () => {
+          const response = component.isGiftBasketReady();
 
-          expect(component.isGiftBasketReady).toBeTruthy();
+          expect(response).toBeTruthy();
         });
       });
 
@@ -228,10 +249,10 @@ describe('GiftBasketBaseComponent', () => {
           component.playerIdentities = [];
         });
 
-        it('should set isGiftBasketReady to false', () => {
-          component.setIsGiftBasketReady();
+        it('should return false', () => {
+          const response = component.isGiftBasketReady();
 
-          expect(component.isGiftBasketReady).toBeFalsy();
+          expect(response).toBeFalsy();
         });
       });
     });
@@ -242,10 +263,10 @@ describe('GiftBasketBaseComponent', () => {
       });
 
       describe('LspGroup has content', () => {
-        it('should set isGiftBasketReady to true', () => {
-          component.setIsGiftBasketReady();
+        it('should return true', () => {
+          const response = component.isGiftBasketReady();
 
-          expect(component.isGiftBasketReady).toBeTruthy();
+          expect(response).toBeTruthy();
         });
       });
 
@@ -254,19 +275,19 @@ describe('GiftBasketBaseComponent', () => {
           component.lspGroup = undefined;
         });
 
-        it('should set isGiftBasketReady to false', () => {
-          component.setIsGiftBasketReady();
+        it('should return false', () => {
+          const response = component.isGiftBasketReady();
 
-          expect(component.isGiftBasketReady).toBeFalsy();
+          expect(response).toBeFalsy();
         });
       });
     });
 
     describe('If gift basket has content', () => {
-      it('should set isGiftBasketReady to true', () => {
-        component.setIsGiftBasketReady();
+      it('should return true', () => {
+        const response = component.isGiftBasketReady();
 
-        expect(component.isGiftBasketReady).toBeTruthy();
+        expect(response).toBeTruthy();
       });
     });
 
@@ -275,10 +296,10 @@ describe('GiftBasketBaseComponent', () => {
         component.giftBasket.data = [];
       });
 
-      it('should set isGiftBasketReady to false', () => {
-        component.setIsGiftBasketReady();
+      it('should return false', () => {
+        const response = component.isGiftBasketReady();
 
-        expect(component.isGiftBasketReady).toBeFalsy();
+        expect(response).toBeFalsy();
       });
     });
   });
