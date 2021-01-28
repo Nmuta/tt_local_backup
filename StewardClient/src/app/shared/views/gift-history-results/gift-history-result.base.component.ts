@@ -3,7 +3,7 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
-import { NEVER, Observable, Subject } from 'rxjs';
+import { merge, NEVER, Observable, Subject } from 'rxjs';
 import { GravityGiftHistories } from '@models/gravity';
 import { SunriseGiftHistories } from '@models/sunrise';
 import { ApolloGiftHistories } from '@models/apollo';
@@ -43,12 +43,11 @@ export abstract class GiftHistoryResultsBaseComponent<T extends IdentityResultUn
 
   /** Angular lifecycle hook. */
   public ngOnChanges(_changes: SimpleChanges): void {
-    // Verify component data is valid before sending off request
     if((this.usingPlayerIdentities && !this.selectedPlayer) || (!this.usingPlayerIdentities && !this.selectedGroup)) {
-      // Cancel the previous observable is the user clears out the existing lookup information
       (this.cancelGiftHistoryRequest$ as Subject<void>)?.next();
       (this.cancelGiftHistoryRequest$ as Subject<void>)?.complete();
-      this.giftHistoryList = null;
+      this.giftHistoryList = undefined;
+      this.isLoading = false;
       return;
     }
 
@@ -57,14 +56,14 @@ export abstract class GiftHistoryResultsBaseComponent<T extends IdentityResultUn
 
     const getGiftHistory$ = this.usingPlayerIdentities ? this.retrieveHistoryByPlayer() : this.retrieveHistoryByLspGroup();
     getGiftHistory$.pipe(
-      takeUntil(this.onDestroy$ || this.cancelGiftHistoryRequest$),
+      takeUntil(merge(this.onDestroy$, this.cancelGiftHistoryRequest$)),
+      tap(() => { this.isLoading = false; }),
       catchError(error => {
-          this.isLoading = false;
           this.loadError = error;
+          this.giftHistoryList = undefined;
           return NEVER;
       }),
       tap(giftHistories => {
-          this.isLoading = false;
           this.giftHistoryList = giftHistories;
       })).subscribe();
   }
