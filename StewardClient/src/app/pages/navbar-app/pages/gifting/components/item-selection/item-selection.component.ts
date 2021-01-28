@@ -79,7 +79,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   /** New item is selected from the dropdown. */
   public newItemSelected(item: InventoryItem): void {
     this.selectedItem = item;
-    this.quantityElement.nativeElement.focus();
+    this.quantityElement?.nativeElement?.focus();
   }
 
   /** Mat option display */
