@@ -1,6 +1,7 @@
 import { Injectable, Provider } from '@angular/core';
 import { SunrisePlayerXuidBanHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/banHistory';
 import { SunrisePlayersBanFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/ban';
+import { SunrisePlayersBanSummariesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/ban-summaries';
 import { SunriseBanHistory } from '@models/sunrise';
 import _ from 'lodash';
 import { defer, of } from 'rxjs';
@@ -58,6 +59,9 @@ export class MockSunriseService {
   public postBanPlayers = jasmine
     .createSpy('postBanPlayers')
     .and.returnValue(defer(() => SunrisePlayersBanFakeApi.make()));
+  public getBanSummariesByXuids = jasmine
+    .createSpy('getBanSummariesByXuids')
+    .and.callFake((xuids: BigInt[]) => defer(() => of(SunrisePlayersBanSummariesFakeApi.make(xuids))));
 
   constructor(private readonly generator: () => unknown) {}
 }

@@ -1,4 +1,4 @@
-<ng-container [formGroup]="formGroup" (ngSubmit)="submit()">
+<ng-container [formGroup]="formGroup">
   <div class="left">
     <sunrise-player-selection
       #playerSelection
@@ -22,16 +22,12 @@
       </player-selection-chip-list>
     </sunrise-player-selection>
     <div class="bottom">
-      <mat-card>
-        <mat-card-content>
-          <ng-container *ngFor="let xuid of bannedXuids">
-            <sunrise-ban-history
-              [xuid]="xuid"
-              [hidden]="xuid !== selectedPlayer?.xuid"
-            ></sunrise-ban-history>
-          </ng-container>
-        </mat-card-content>
-      </mat-card>
+      <ng-container *ngFor="let xuid of bannedXuids">
+        <sunrise-ban-history
+          [xuid]="xuid"
+          [hidden]="xuid !== selectedPlayer?.xuid"
+        ></sunrise-ban-history>
+      </ng-container>
     </div>
   </div>
 
