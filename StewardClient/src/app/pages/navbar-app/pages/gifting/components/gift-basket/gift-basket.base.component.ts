@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
+import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitleCodeName } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
@@ -9,7 +9,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-export type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 export type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory;
 export type InventoryItem = {
   itemId: BigInt;
@@ -85,7 +84,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   public addItemtoBasket(item: GiftBasketModel): void {
     const tmpGiftBasket = this.giftBasket.data;
 
-    // Check if the item already exists in the gift basket
     const existingItemIndex = tmpGiftBasket.findIndex(data => {
       return data.itemId === item.itemId && data.itemType === item.itemType;
     });
@@ -96,12 +94,17 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
       return;
     }
 
-    tmpGiftBasket[tmpGiftBasket.length] = item;
+    tmpGiftBasket.push(item);
     tmpGiftBasket.sort((a: GiftBasketModel, b: GiftBasketModel) => {
       return a.itemType.localeCompare(b.itemType) || a.description.localeCompare(b.description);
     });
 
     this.giftBasket.data = tmpGiftBasket;
+  }
+
+  /** Clears the gift basket. */
+  public clearGiftBasket(): void {
+    this.giftBasket.data = [];
   }
 
   /** Edit item quantity */

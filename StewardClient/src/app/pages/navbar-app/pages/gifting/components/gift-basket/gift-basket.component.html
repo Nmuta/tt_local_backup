@@ -103,7 +103,7 @@
 
         <!-- Send Gift Basket -->
         <div class="send-gift-basket-container">
-          <form [formGroup]="sendGiftForm">
+          <form [formGroup]="sendGiftForm" (ngSubmit)="sendGiftBasket()">
             <mat-form-field appearance="fill">
               <mat-label>Gift Reason</mat-label>
               <mat-select formControlName="giftReason">
@@ -116,7 +116,7 @@
               mat-raised-button
               class="send-gift-basket"
               color="primary"
-              (click)="sendGiftBasket()"
+              type="submit"
               [disabled]="
                 !sendGiftForm.valid ||
                 giftBasket?.data?.length <= 0 ||
@@ -132,7 +132,7 @@
           <button
             mat-raised-button
             color="accent"
-            (click)="giftBasket.data = []"
+            (click)="clearGiftBasket()"
             [disabled]="giftBasket?.data?.length <= 0"
           >
             Clear Gift Basket

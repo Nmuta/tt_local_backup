@@ -8,7 +8,7 @@ import { GetSunriseMasterInventoryList } from '@shared/state/master-inventory-li
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { GiftBasketBaseComponent, InventoryItemGroup } from '../gift-basket.base.component';
 
-/** Apollo gift basket. */
+/** Sunrise gift basket. */
 @Component({
   selector: 'sunrise-gift-basket',
   templateUrl: '../gift-basket.component.html',
@@ -95,10 +95,10 @@ export class SunriseGiftBasketComponent
               break;
           }
 
-          inventoryGroup.items[inventoryGroup.items.length] = inventoryItem;
+          inventoryGroup.items.push(inventoryItem);
         }
 
-        this.inventoryItemGroups[this.inventoryItemGroups.length] = inventoryGroup;
+        this.inventoryItemGroups.push(inventoryGroup);
       }
     }
   }

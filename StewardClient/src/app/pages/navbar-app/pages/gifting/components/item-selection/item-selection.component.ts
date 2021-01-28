@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { InventoryItem, InventoryItemGroup } from '../gift-basket/gift-basket.base.component';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import _ from 'lodash';
 
 /** The item-selection component. */
 @Component({
@@ -24,7 +25,6 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   /** The error received while loading. */
   public loadError: unknown;
 
-  // Icons
   public questionIcon = faQuestionCircle;
 
   /** Master Inventory autocomplete varsiables */
@@ -60,7 +60,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
     }
 
     this.selectedItem.quantity = BigInt(this.itemSelectionForm.value['quantity']);
-    this.addItemEvent.emit({ ...this.selectedItem });
+    this.addItemEvent.emit(_.clone(this.selectedItem));
 
     this.selectedItem = undefined;
     this.itemSelectionForm.reset();
@@ -76,7 +76,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
 
   /** Mat option display */
   public itemAutoCompleteDisplayFn(item: InventoryItem): string {
-    return item && item.description ? item.description : '';
+    return item?.description ?? '';
   }
 
   /** Autocomplete filter function. */
@@ -89,14 +89,17 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
         category: group.category,
         items: this.filter(group.category, group.items, value),
       }));
+
       if ('?'.startsWith(value.toLowerCase())) {
         return prefilter.map(g => ({
           items: [],
           category: g.category,
         }));
       }
+
       return prefilter.filter(group => group.items.length > 0);
     }
+
     return this.inventoryItemGroups;
   }
 
@@ -109,25 +112,28 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
 
     const filterValues = filterValue.split(':');
     return opt.filter(item => {
-      // If no semi-colon is used, do normal search
+      // If no colon is used, do normal search
       if (filterValues.length <= 1) {
-        return (
-          item?.description?.toLowerCase().includes(filterValue) ||
-          item?.itemId?.toString()?.toLowerCase().includes(filterValue)
-        );
+        return this.checkFilterAgainstInventoryItem(item, filterValue);
       }
-      // If semi-colon is used, search requires mutliple strings to be matched
+
+      // If colon is used, search requires mutliple strings to be matched
       let found = true;
       for (let i = 0; i < filterValues.length; i++) {
         const filter = filterValues[i].trim();
         if (filter === '') continue;
-        found = found
-          ? item?.description?.toLowerCase().includes(filter) ||
-            item?.itemId?.toString()?.toLowerCase().includes(filter)
-          : false;
+        found = found ? this.checkFilterAgainstInventoryItem(item, filter) : false;
       }
 
       return found;
     });
+  }
+
+  /** Compares a filter string against an InventoryItem, returning true if the string was found. */
+  private checkFilterAgainstInventoryItem(item: InventoryItem, filter: string): boolean {
+    return (
+      item?.description?.toLowerCase().includes(filter) ||
+      item?.itemId?.toString()?.toLowerCase().includes(filter)
+    );
   }
 }

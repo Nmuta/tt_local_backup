@@ -1,4 +1,4 @@
-<form [formGroup]="itemSelectionForm">
+<form [formGroup]="itemSelectionForm" (ngSubmit)="addItemEmitter()">
   <mat-form-field class="item-selection-form-field">
     <input
       id="item-selection-input"
@@ -34,12 +34,7 @@
       formControlName="quantity"
     />
   </mat-form-field>
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="addItemEmitter()"
-    [disabled]="!itemSelectionForm.valid"
-  >
+  <button mat-raised-button color="primary" type="submit" [disabled]="!itemSelectionForm.valid">
     Add Item
   </button>
 </form>

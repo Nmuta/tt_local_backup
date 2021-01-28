@@ -92,10 +92,10 @@ export class GravityGiftBasketComponent
           //     break;
           // }
 
-          inventoryGroup.items[inventoryGroup.items.length] = inventoryItem;
+          inventoryGroup.items.push(inventoryItem);
         }
 
-        this.inventoryItemGroups[this.inventoryItemGroups.length] = inventoryGroup;
+        this.inventoryItemGroups.push(inventoryGroup);
       }
     }
   }
