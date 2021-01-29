@@ -19,11 +19,7 @@
       "tabFilter": "https://forzasupport1570048282.zendesk.com/agent/apps/scrutineer-inventory-management-angular?zat=true",
       // this is the separate tab
       // "tabFilter": "http://localhost:4200/*",
-      "skipFiles": [
-        "${workspaceFolder}/node_modules/**/*",
-        "http?(s):/**",
-        "**/zendesk.com/**",
-      ],
+      "skipFiles": ["${workspaceFolder}/node_modules/**/*", "http?(s):/**", "**/zendesk.com/**"],
       "pathMappings": [
         {
           "url": "webpack:///src/app",
