@@ -9,6 +9,7 @@
     "raagh.angular-karma-test-explorer",
     "ryanluker.vscode-coverage-gutters",
     "firefox-devtools.vscode-firefox-debug",
-    "bierner.markdown-mermaid"
+    "bierner.markdown-mermaid",
+    "shd101wyy.markdown-preview-enhanced"
   ]
 }
