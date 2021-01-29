@@ -15,6 +15,8 @@ export class ApolloGiftHistoryResultsComponent extends GiftHistoryResultsBaseCom
 
   /** The gift history list to display. */
   public giftHistoryList: ApolloGiftHistories;
+
+  public validProperties = ['credits', 'cars'];
   
   constructor(public readonly apolloService: ApolloService) {
     super();

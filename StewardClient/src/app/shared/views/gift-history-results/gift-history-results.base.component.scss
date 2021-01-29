@@ -8,3 +8,18 @@ h3 {
 p {
     margin-bottom: 0;
 }
+
+mat-panel-description {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.inventoryPreview {
+    > .label{
+        font-weight: bold;
+        margin-right: 1em;
+    }
+    > .data{
+        margin-right: 2em;
+    }
+}

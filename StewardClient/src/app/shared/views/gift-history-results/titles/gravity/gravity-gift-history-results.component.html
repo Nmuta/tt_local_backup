@@ -13,42 +13,42 @@
             Inventory Summary goes here.
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <ng-container *ngIf="history.giftInventory.cars">
+        <div *ngIf="history.giftInventory.cars">
           <h3>Cars: {{history.giftInventory.cars.length}}</h3>
           <p *ngFor="let car of history.giftInventory.cars">
-            {{car.quantity}} {{car.description}} [{{car.itemId}}]
+            [{{car.quantity}}] {{car.description}} (Item ID: {{car.itemId}})
           </p>
-        </ng-container>
-        <ng-container *ngIf="history.giftInventory.currencies">
+        </div>
+        <div *ngIf="history.giftInventory.currencies">
           <h3>Currencies: {{history.giftInventory.currencies.length}}</h3>
           <p *ngFor="let currency of history.giftInventory.currencies">
-            {{currency.quantity}} {{currency.description}} [{{currency.itemId}}]
+            [{{currency.quantity}}] {{currency.description}} (Item ID: {{currency.itemId}})
           </p>
-        </ng-container>
-        <ng-container *ngIf="history.giftInventory.energyRefills">
+        </div>
+        <div *ngIf="history.giftInventory.energyRefills">
           <h3>Energy Refills: {{history.giftInventory.energyRefills.length}}</h3>
           <p *ngFor="let energyRefill of history.energyRefills.currencies">
-            {{energyRefill.quantity}} {{energyRefill.description}} [{{energyRefill.itemId}}]
+            [{{energyRefill.quantity}}] {{energyRefill.description}} (Item ID: {{energyRefill.itemId}})
           </p>
-        </ng-container>
-        <ng-container *ngIf="history.giftInventory.masteryKits">
+        </div>
+        <div *ngIf="history.giftInventory.masteryKits">
           <h3>Mastery Kits: {{history.giftInventory.masteryKits.length}}</h3>
           <p *ngFor="let masteryKit of history.giftInventory.masteryKits">
-            {{masteryKit.quantity}} {{masteryKit.description}} [{{masteryKit.itemId}}]
+            [{{masteryKit.quantity}}] {{masteryKit.description}} (Item ID: {{masteryKit.itemId}})
           </p>
-        </ng-container>
-        <ng-container *ngIf="history.giftInventory.repairKits">
+        </div>
+        <div *ngIf="history.giftInventory.repairKits">
           <h3>Repair Kits: {{history.giftInventory.repairKits.length}}</h3>
           <p *ngFor="let repairKit of history.giftInventory.repairKits">
-            {{repairKit.quantity}} {{repairKit.description}} [{{repairKit.itemId}}]
+            [{{repairKit.quantity}}] {{repairKit.description}} (Item ID: {{repairKit.itemId}})
           </p>
-        </ng-container>
-        <ng-container *ngIf="history.giftInventory.upgradeKits">
+        </div>
+        <div *ngIf="history.giftInventory.upgradeKits">
           <h3>Upgrade Kits: {{history.giftInventory.upgradeKits.length}}</h3>
           <p *ngFor="let upgradeKit of history.giftInventory.upgradeKits">
-            {{upgradeKit.quantity}} {{upgradeKit.description}} [{{upgradeKit.itemId}}]
+            [{{upgradeKit.quantity}}] {{upgradeKit.description}} Item ID: {{upgradeKit.itemId}})
           </p>
-        </ng-container>
+        </div>
       </mat-expansion-panel>
     </ng-container>
   </mat-card-content>

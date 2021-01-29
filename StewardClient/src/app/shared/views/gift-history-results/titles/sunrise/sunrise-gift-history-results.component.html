@@ -28,36 +28,36 @@
         <div *ngIf="history.giftInventory.forzathonPoints">
           <h3>Forzathon Points: {{history.giftInventory.forzathonPoints}}</h3>
         </div>
-        <ng-container *ngIf="history.giftInventory.cars">
+        <div *ngIf="history.giftInventory.cars">
           <h3>Cars: {{history.giftInventory.cars.length}}</h3>
           <p *ngFor="let car of history.giftInventory.cars">
-            {{car.quantity}} {{car.description}} [{{car.itemId}}]
+            [{{car.quantity}}] {{car.description}} (Item ID: {{car.itemId}})
           </p>
-        </ng-container>
-        <ng-container *ngIf="history.giftInventory.carHorns">
+        </div>
+        <div *ngIf="history.giftInventory.carHorns">
           <h3>Car Horns: {{history.giftInventory.carHorns.length}}</h3>
           <p *ngFor="let carHorn of history.giftInventory.carHorns">
-            {{carHorn.quantity}} {{carHorn.description}} [{{carHorn.itemId}}]
+            [{{carHorn.quantity}}] {{carHorn.description}} (Item ID: {{carHorn.itemId}})
           </p>
-        </ng-container>
-        <ng-container *ngIf="history.giftInventory.emotes">
+        </div>
+        <div *ngIf="history.giftInventory.emotes">
           <h3>Emotes: {{history.giftInventory.emotes.length}}</h3>
           <p *ngFor="let emote of history.giftInventory.emotes">
-            {{emote.quantity}} {{emote.description}} [{{emote.itemId}}]
+            [{{emote.quantity}}] {{emote.description}} (Item ID: {{emote.itemId}})
           </p>
-        </ng-container>
-        <ng-container *ngIf="history.giftInventory.quickChatLines">
+        </div>
+        <div *ngIf="history.giftInventory.quickChatLines">
           <h3>Quick Chat Lines: {{history.giftInventory.quickChatLines.length}}</h3>
           <p *ngFor="let chatLine of history.giftInventory.quickChatLines">
-            {{chatLine.quantity}} {{chatLine.description}} [{{chatLine.itemId}}]
+            [{{chatLine.quantity}}] {{chatLine.description}} (Item ID: {{chatLine.itemId}})
           </p>
-        </ng-container>
-        <ng-container *ngIf="history.giftInventory.vanityItems">
+        </div>
+        <div *ngIf="history.giftInventory.vanityItems">
           <h3>Vanity Items: {{history.giftInventory.vanityItems.length}}</h3>
           <p *ngFor="let vanityItem of history.giftInventory.vanityItems">
-            {{vanityItem.quantity}} {{vanityItem.description}} [{{vanityItem.itemId}}]
+            [{{vanityItem.quantity}}] {{vanityItem.description}} (Item ID: {{vanityItem.itemId}})
           </p>
-        </ng-container>
+        </div>
       </mat-expansion-panel>
     </ng-container>
   </mat-card-content>

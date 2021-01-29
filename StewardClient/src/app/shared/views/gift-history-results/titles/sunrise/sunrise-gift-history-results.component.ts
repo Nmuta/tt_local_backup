@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { SunriseGiftHistories } from '@models/sunrise/sunrise-gift-history.model';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SunriseService } from '@services/sunrise/sunrise.service';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base.component';
 
 /** Retreives and displays Sunrise Gift history by XUID. */

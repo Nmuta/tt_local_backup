@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { GravityGiftHistories } from '@models/gravity/gravity-gift-history.model';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { GravityService } from '@services/gravity';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base.component';
 
 /** Retreives and displays Gravity Gift history by XUID. */
