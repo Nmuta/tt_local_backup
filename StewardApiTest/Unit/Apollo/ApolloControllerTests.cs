@@ -43,6 +43,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenKustoProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { KustoProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "kustoProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenApolloPlayerDetailsProviderNull_Throws()
         {
             // Arrange.
@@ -1253,6 +1267,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
             }
 
+            public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
+
             public IApolloPlayerDetailsProvider ApolloPlayerDetailsProvider { get; set; } = Substitute.For<IApolloPlayerDetailsProvider>();
 
             public IApolloPlayerInventoryProvider ApolloPlayerInventoryProvider { get; set; } = Substitute.For<IApolloPlayerInventoryProvider>();
@@ -1276,18 +1292,19 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             public IRequestValidator<ApolloGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloGroupGift>>();
 
             public ApolloController Build() => new ApolloController(
-                                                                    this.ApolloPlayerDetailsProvider,
-                                                                    this.ApolloPlayerInventoryProvider,
-                                                                    this.KeyVaultProvider,
-                                                                    this.GiftHistoryProvider,
-                                                                    this.BanHistoryProvider,
-                                                                    this.Configuration,
-                                                                    this.Scheduler,
-                                                                    this.JobTracker,
-                                                                    this.BanParametersRequestValidator,
-                                                                    this.PlayerInventoryRequestValidator,
-                                                                    this.GroupGiftRequestValidator)
-                { ControllerContext = this.ControllerContext };
+                this.KustoProvider,
+                this.ApolloPlayerDetailsProvider,
+                this.ApolloPlayerInventoryProvider,
+                this.KeyVaultProvider,
+                this.GiftHistoryProvider,
+                this.BanHistoryProvider,
+                this.Configuration,
+                this.Scheduler,
+                this.JobTracker,
+                this.BanParametersRequestValidator,
+                this.PlayerInventoryRequestValidator,
+                this.GroupGiftRequestValidator)
+            { ControllerContext = this.ControllerContext };
         }
     }
 }

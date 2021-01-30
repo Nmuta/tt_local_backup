@@ -43,6 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ConfigurationKeyConstants.GroupGiftPasswordSecretName
         };
 
+        private readonly IKustoProvider kustoProvider;
         private readonly ISunrisePlayerInventoryProvider sunrisePlayerInventoryProvider;
         private readonly ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider;
         private readonly ISunriseGiftHistoryProvider giftHistoryProvider;
@@ -57,6 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseController"/> class.
         /// </summary>
+        /// <param name="kustoProvider">The Kusto provider.</param>
         /// <param name="sunrisePlayerInventoryProvider">The Sunrise player inventory provider.</param>
         /// <param name="sunrisePlayerDetailsProvider">The Sunrise player details provider.</param>
         /// <param name="keyVaultProvider">The key vault provider.</param>
@@ -69,18 +71,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
         /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
         public SunriseController(
-                                 ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider,
-                                 ISunrisePlayerInventoryProvider sunrisePlayerInventoryProvider,
-                                 IKeyVaultProvider keyVaultProvider,
-                                 ISunriseGiftHistoryProvider giftHistoryProvider,
-                                 ISunriseBanHistoryProvider banHistoryProvider,
-                                 IConfiguration configuration,
-                                 IScheduler scheduler,
-                                 IJobTracker jobTracker,
-                                 IRequestValidator<SunrisePlayerInventory> playerInventoryRequestValidator,
-                                 IRequestValidator<SunriseGroupGift> groupGiftRequestValidator,
-                                 IRequestValidator<SunriseBanParameters> banParametersRequestValidator)
+            IKustoProvider kustoProvider,
+            ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider,
+            ISunrisePlayerInventoryProvider sunrisePlayerInventoryProvider,
+            IKeyVaultProvider keyVaultProvider,
+            ISunriseGiftHistoryProvider giftHistoryProvider,
+            ISunriseBanHistoryProvider banHistoryProvider,
+            IConfiguration configuration,
+            IScheduler scheduler,
+            IJobTracker jobTracker,
+            IRequestValidator<SunrisePlayerInventory> playerInventoryRequestValidator,
+            IRequestValidator<SunriseGroupGift> groupGiftRequestValidator,
+            IRequestValidator<SunriseBanParameters> banParametersRequestValidator)
         {
+            kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             sunrisePlayerDetailsProvider.ShouldNotBeNull(nameof(sunrisePlayerDetailsProvider));
             sunrisePlayerInventoryProvider.ShouldNotBeNull(nameof(sunrisePlayerInventoryProvider));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
@@ -94,6 +98,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
+            this.kustoProvider = kustoProvider;
             this.sunrisePlayerDetailsProvider = sunrisePlayerDetailsProvider;
             this.sunrisePlayerInventoryProvider = sunrisePlayerInventoryProvider;
             this.giftHistoryProvider = giftHistoryProvider;
@@ -107,6 +112,35 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.giftingPassword = keyVaultProvider.GetSecretAsync(
                 configuration[ConfigurationKeyConstants.KeyVaultUrl],
                 configuration[ConfigurationKeyConstants.GroupGiftPasswordSecretName]).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        ///     Gets the master inventory data.
+        /// </summary>
+        /// <returns>
+        ///     <see cref="SunriseMasterInventory"/>.
+        /// </returns>
+        [HttpGet("masterInventory")]
+        [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
+        public async Task<IActionResult> GetMasterInventoryList()
+        {
+            try
+            {
+                var masterInventory = new SunriseMasterInventory
+                {
+                    Cars = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Cars).ConfigureAwait(true),
+                    CarHorns = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4CarHorns).ConfigureAwait(true),
+                    VanityItems = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4VanityItems).ConfigureAwait(true),
+                    Emotes = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Emotes).ConfigureAwait(true),
+                    QuickChatLines = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4QuickChatLines).ConfigureAwait(true)
+                };
+
+                return this.Ok(masterInventory);
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex);
+            }
         }
 
         /// <summary>

@@ -15,6 +15,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -42,6 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ConfigurationKeyConstants.GroupGiftPasswordSecretName
         };
 
+        private readonly IKustoProvider kustoProvider;
         private readonly IApolloPlayerDetailsProvider apolloPlayerDetailsProvider;
         private readonly IApolloPlayerInventoryProvider apolloPlayerInventoryProvider;
         private readonly IApolloGiftHistoryProvider giftHistoryProvider;
@@ -56,6 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloController"/> class.
         /// </summary>
+        /// <param name="kustoProvider">The Kusto provider.</param>
         /// <param name="apolloPlayerDetailsProvider">The Apollo player details provider.</param>
         /// <param name="apolloPlayerInventoryProvider">The Apollo player inventory provider.</param>
         /// <param name="keyVaultProvider">The key vault provider.</param>
@@ -68,18 +71,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="playerInventoryRequestValidator">The player inventory request validator.</param>
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
         public ApolloController(
-                                IApolloPlayerDetailsProvider apolloPlayerDetailsProvider,
-                                IApolloPlayerInventoryProvider apolloPlayerInventoryProvider,
-                                IKeyVaultProvider keyVaultProvider,
-                                IApolloGiftHistoryProvider giftHistoryProvider,
-                                IApolloBanHistoryProvider banHistoryProvider,
-                                IConfiguration configuration,
-                                IScheduler scheduler,
-                                IJobTracker jobTracker,
-                                IRequestValidator<ApolloBanParameters> banParametersRequestValidator,
-                                IRequestValidator<ApolloPlayerInventory> playerInventoryRequestValidator,
-                                IRequestValidator<ApolloGroupGift> groupGiftRequestValidator)
+            IKustoProvider kustoProvider,
+            IApolloPlayerDetailsProvider apolloPlayerDetailsProvider,
+            IApolloPlayerInventoryProvider apolloPlayerInventoryProvider,
+            IKeyVaultProvider keyVaultProvider,
+            IApolloGiftHistoryProvider giftHistoryProvider,
+            IApolloBanHistoryProvider banHistoryProvider,
+            IConfiguration configuration,
+            IScheduler scheduler,
+            IJobTracker jobTracker,
+            IRequestValidator<ApolloBanParameters> banParametersRequestValidator,
+            IRequestValidator<ApolloPlayerInventory> playerInventoryRequestValidator,
+            IRequestValidator<ApolloGroupGift> groupGiftRequestValidator)
         {
+            kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             apolloPlayerDetailsProvider.ShouldNotBeNull(nameof(apolloPlayerDetailsProvider));
             apolloPlayerInventoryProvider.ShouldNotBeNull(nameof(apolloPlayerInventoryProvider));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
@@ -93,6 +98,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
+            this.kustoProvider = kustoProvider;
             this.apolloPlayerDetailsProvider = apolloPlayerDetailsProvider;
             this.apolloPlayerInventoryProvider = apolloPlayerInventoryProvider;
             this.giftHistoryProvider = giftHistoryProvider;
@@ -106,6 +112,32 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.giftingPassword = keyVaultProvider.GetSecretAsync(
                 configuration[ConfigurationKeyConstants.KeyVaultUrl],
                 configuration[ConfigurationKeyConstants.GroupGiftPasswordSecretName]).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        ///     Gets the master inventory data.
+        /// </summary>
+        /// <returns>
+        ///     <see cref="ApolloMasterInventory"/>.
+        /// </returns>
+        [HttpGet("masterInventory")]
+        [SwaggerResponse(200, type: typeof(ApolloMasterInventory))]
+        public async Task<IActionResult> GetMasterInventoryList()
+        {
+            try
+            {
+                var masterInventory = new ApolloMasterInventory()
+                {
+                    Cars = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM7Cars).ConfigureAwait(true),
+                    VanityItems = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM7VanityItems).ConfigureAwait(true),
+                };
+
+                return this.Ok(masterInventory);
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex);
+            }
         }
 
         /// <summary>

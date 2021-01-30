@@ -9,25 +9,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
     public interface IKustoProvider
     {
         /// <summary>
-        ///     Gets the car horns.
+        ///     Gets master inventory item list.
         /// </summary>
-        /// <param name="supportedTitle">The supported title.</param>
-        /// <returns>The car horns.</returns>
-        Task<IList<CarHorn>> GetCarHornsAsync(KustoGameDbSupportedTitle supportedTitle);
-
-        /// <summary>
-        ///     Gets the forza cars.
-        /// </summary>
-        /// <param name="supportedTitle">The supported title.</param>
-        /// <returns>The forza cars.</returns>
-        Task<IList<ForzaCar>> GetCarsAsync(KustoGameDbSupportedTitle supportedTitle);
-
-        /// <summary>
-        ///     Gets the character customizations.
-        /// </summary>
-        /// <param name="supportedTitle">The supported titles.</param>
-        /// <returns>The character customizations.</returns>
-        Task<IList<CharacterCustomization>> GetCharacterCustomizationsAsync(KustoGameDbSupportedTitle supportedTitle);
+        /// <param name="kustoQuery">The Kusto query.</param>
+        /// <returns>The master inventory items.</returns>
+        Task<IList<MasterInventoryItem>> GetMasterInventoryList(string kustoQuery);
 
         /// <summary>
         ///     Gets the credit rewards.
@@ -35,20 +21,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <param name="supportedTitle">The supported title.</param>
         /// <returns>The credit rewards.</returns>
         Task<IList<CreditReward>> GetCreditRewardsAsync(KustoGameDbSupportedTitle supportedTitle);
-
-        /// <summary>
-        ///     Gets the emotes.
-        /// </summary>
-        /// <param name="supportedTitle">The supported title.</param>
-        /// <returns>The emotes.</returns>
-        Task<IList<Emote>> GetEmotesAsync(KustoGameDbSupportedTitle supportedTitle);
-
-        /// <summary>
-        ///     Gets the quick chats.
-        /// </summary>
-        /// <param name="supportedTitle">The supported title.</param>
-        /// <returns>The quick chats.</returns>
-        Task<IList<QuickChat>> GetQuickChatsAsync(KustoGameDbSupportedTitle supportedTitle);
 
         /// <summary>
         ///     Gets gift history.
