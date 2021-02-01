@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using AutoMapper;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -195,19 +197,21 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IOpusPlayerDetailsProvider, OpusPlayerDetailsProvider>();
             services.AddSingleton<IOpusPlayerInventoryProvider, OpusPlayerInventoryProvider>();
 
-            var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
+            var client = new SecretClient(new Uri($"https://{this.configuration[ConfigurationKeyConstants.KeyVaultUrl]}.vault.azure.net/"), new DefaultAzureCredential());
+
+            var kustoClientSecret = client.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
 
             var kustoLoggerConfiguration = new KustoConfiguration();
 
             this.configuration.Bind("KustoLoggerConfiguration", kustoLoggerConfiguration);
-            kustoLoggerConfiguration.ClientSecret = kustoClientSecret;
+            kustoLoggerConfiguration.ClientSecret = kustoClientSecret.Value.Value;
             var kustoStreamingLogger = new KustoStreamingLogger(new KustoFactory(kustoLoggerConfiguration));
             services.AddSingleton<IKustoStreamingLogger>(kustoStreamingLogger);
 
             // TODO: This is not how to do DI. I'll come back later and fix all of this (emersonf).
             var kustoConfiguration = new KustoConfiguration();
             this.configuration.Bind("KustoConfiguration", kustoConfiguration);
-            kustoConfiguration.ClientSecret = kustoClientSecret;
+            kustoConfiguration.ClientSecret = kustoClientSecret.Value.Value;
             var kustoProvider = new KustoProvider(new KustoFactory(kustoConfiguration), new LocalCacheStore(), this.configuration);
             services.AddSingleton<IKustoProvider>(kustoProvider);
 
@@ -218,9 +222,10 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddSingleton<ITableStorageClientFactory, TableStorageClientFactory>();
 
-            var blobConnectionString = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).GetAwaiter().GetResult();
+            // var blobConnectionString = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).GetAwaiter().GetResult();
+            var blobConnectionString = client.GetSecretAsync(this.configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).GetAwaiter().GetResult();
 
-            var blobRepo = new BlobRepository(new CloudBlobProxy(blobConnectionString));
+            var blobRepo = new BlobRepository(new CloudBlobProxy(blobConnectionString.Value.Value));
 
             services.AddSingleton<IBlobRepository>(blobRepo);
 
