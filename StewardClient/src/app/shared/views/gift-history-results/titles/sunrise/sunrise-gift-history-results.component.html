@@ -10,7 +10,14 @@
             {{history.requestingAgent}} {{history.giftSendDateUtc?.toGMTString()}}
           </mat-panel-title>
           <mat-panel-description>
-            Inventory Summary goes here.
+
+            
+            <span class="inventoryPreview" *ngIf="history.giftInventory.cars?.length > 0"><span class="label">Cars</span><span class="data">{{history.giftInventory.cars.length}}</span></span>
+            <span class="inventoryPreview" *ngIf="history.giftInventory.energyRefills?.length > 0"><span class="label">Energy Refills</span><span class="data">{{history.giftInventory.energyRefills.length}}</span></span>
+            <span class="inventoryPreview" *ngIf="history.giftInventory.masteryKits?.length > 0"><span class="label">Mastery Kits</span><span class="data">{{history.giftInventory.masteryKits.length}}</span></span>
+            <span class="inventoryPreview" *ngIf="history.giftInventory.repairKits?.length > 0"><span class="label">Repair Kits</span><span class="data">{{history.giftInventory.repairKits.length}}</span></span>
+            <span class="inventoryPreview" *ngIf="history.giftInventory.upgradeKits?.length > 0"><span class="label">Upgrade Kits</span><span class="data">{{history.giftInventory.upgradeKits.length}}</span></span>
+
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div *ngIf="history.giftInventory.credits">
