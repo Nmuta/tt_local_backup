@@ -13,6 +13,9 @@
     },
     "suffix": {
       "value": "dev"
+    },
+    "environment": {
+      "value": "Development"
     }
   }
 }

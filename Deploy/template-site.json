@@ -31,6 +31,12 @@
       "metadata": {
         "description": "The suffix for all managed resources"
       }
+    },
+    "environment": {
+      "type": "string",
+      "metadata": {
+        "description": "The appsettings.X.json file to rely on."
+      }
     }
   },
   "variables": {
@@ -43,7 +49,8 @@
     "resourceGroup": "[concat(variables('prefix'), '-', variables('suffix'))]",
     "identityName": "[concat(variables('prefix'), '-identity-', variables('suffix'))]",
     "identityApiVersion": "[providers('Microsoft.ManagedIdentity', 'userAssignedIdentities').apiVersions[0]]",
-    "tenantId": "[subscription().tenantId]"
+    "tenantId": "[subscription().tenantId]",
+    "environment": "[parameters('environment')]"
   },
   "resources": [
     {
@@ -53,7 +60,7 @@
       "identity": {
         "type": "UserAssigned",
         "userAssignedIdentities": {
-            "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]": {}
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]": {}
         }
       },
       "apiVersion": "2015-08-01",
@@ -69,7 +76,6 @@
         "siteConfig": {
           "phpVersion": "off",
           "scmType": null,
-          "netFrameworkVersion": "v4.0",
           "use32BitWorkerProcess": true,
           "webSocketsEnabled": false,
           "alwaysOn": true,
@@ -98,6 +104,17 @@
               "name": "WEBSITE_LOAD_USER_PROFILE",
               "value": "1",
               "slotSetting": false
+            },
+            {
+              "name": "ASPNETCORE_ENVIRONMENT",
+              "value": "[variables('environment')]",
+              "slotSetting": false
+            }
+          ],
+          "metadata": [
+            {
+              "name": "CURRENT_STACK",
+              "value": "dotnetcore"
             }
           ]
         }
@@ -110,7 +127,7 @@
           "identity": {
             "type": "UserAssigned",
             "userAssignedIdentities": {
-                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]": {}
+              "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('identityName'))]": {}
             }
           },
           "apiVersion": "2015-08-01",
@@ -152,9 +169,20 @@
                   "slotSetting": false
                 },
                 {
+                  "name": "ASPNETCORE_ENVIRONMENT",
+                  "value": "[variables('environment')]",
+                  "slotSetting": false
+                },
+                {
                   "name": "WEBSITE_LOAD_USER_PROFILE",
                   "value": "1",
                   "slotSetting": false
+                }
+              ],
+              "metadata": [
+                {
+                  "name": "CURRENT_STACK",
+                  "value": "dotnetcore"
                 }
               ]
             }

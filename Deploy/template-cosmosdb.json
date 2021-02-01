@@ -25,6 +25,12 @@
       "metadata": {
         "description": "The suffix for all managed resources"
       }
+    },
+    "environment": {
+      "type": "string",
+      "metadata": {
+        "description": "The appsettings.X.json file to rely on."
+      }
     }
   },
   "variables": {

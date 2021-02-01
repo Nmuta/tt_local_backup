@@ -3,6 +3,9 @@
 # requires nuget to be on the path
 # requires Azure CLI to be installed
 
+# you may have to login to run this
+# az login
+
 # you may have to bypass execution policy for the process to run this
 # Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
@@ -39,6 +42,7 @@ Function Invoke-Deploy {
         
         $Subscription = "UNSET"
         If ($DevProd -eq "dev")  { $Subscription = "c4dda634-84ec-483e-9ee5-c4c43511f8f3" }
+        If ($DevProd -eq "test")  { $Subscription = "c4dda634-84ec-483e-9ee5-c4c43511f8f3" }
         If ($DevProd -eq "prod") { $Subscription = "a6d4cc22-0b13-4871-b146-db7138d3e3cb"}
 
         Write-Output "Project Root = $ProjectRoot"
