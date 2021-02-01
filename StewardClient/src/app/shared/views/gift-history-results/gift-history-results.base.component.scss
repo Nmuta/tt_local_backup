@@ -10,17 +10,19 @@ p {
 }
 
 mat-panel-description {
-    display: flex;
-    flex-flow: row nowrap;
+    display: block;
+    flex-flow: row;
 }
 
 .inventoryPreview {
+    color: grey;
     > .label{
         font-weight: bold;
         margin-right: .5em;
+        white-space: pre;
     }
     > .data{
-        margin-right: 1em;
+        margin-right: .5em;
     }
 }
 

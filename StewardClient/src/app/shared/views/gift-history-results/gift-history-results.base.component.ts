@@ -62,6 +62,10 @@ export abstract class GiftHistoryResultsBaseComponent<T extends IdentityResultUn
       }),
       tap(giftHistories => {
           this.giftHistoryList = giftHistories;
+          this.giftHistoryList.map(x => x.giftInventory.credits = 0);
+          this.giftHistoryList.map(x => x.giftInventory.wheelSpins = 0);
+          this.giftHistoryList.map(x => x.giftInventory.superWheelSpins = 0);
+          this.giftHistoryList.map(x => x.giftInventory.skillPoints = 0);
       })).subscribe();
   }
 }
