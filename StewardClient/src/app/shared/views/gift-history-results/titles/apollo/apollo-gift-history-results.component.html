@@ -11,8 +11,8 @@
           </mat-panel-title>
           <mat-panel-description>
 
-            <span class="inventoryPreview" *ngIf="history.giftInventory.credits > 0"><span class="label">Credits</span><span class="data">{{history.giftInventory.credits}}</span></span>
-            <span class="inventoryPreview" *ngIf="history.giftInventory.cars.length > 0"><span class="label">Cars</span><span class="data">{{history.giftInventory.cars.length}}</span></span>
+            <span class="inventoryPreview" *ngIf="history.giftInventory?.credits > 0"><span class="label">Credits</span><span class="data">{{history.giftInventory.credits}}</span></span>
+            <span class="inventoryPreview" *ngIf="history.giftInventory?.cars.length > 0"><span class="label">Cars</span><span class="data">{{history.giftInventory.cars.length}}</span></span>
 
           </mat-panel-description>
         </mat-expansion-panel-header>
