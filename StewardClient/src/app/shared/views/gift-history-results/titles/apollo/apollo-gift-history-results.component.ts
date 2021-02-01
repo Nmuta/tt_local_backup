@@ -13,11 +13,6 @@ import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base
 })
 export class ApolloGiftHistoryResultsComponent extends GiftHistoryResultsBaseComponent<IdentityResultAlpha, ApolloGiftHistories>{
 
-  /** The gift history list to display. */
-  public giftHistoryList: ApolloGiftHistories;
-
-  public validProperties = ['credits', 'cars'];
-  
   constructor(public readonly apolloService: ApolloService) {
     super();
   }

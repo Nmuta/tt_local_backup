@@ -3,7 +3,7 @@
     <h2>
         Gravity Gift History
     </h2>
-    <ng-container *ngIf="!isLoading && !loadError; else failState">
+    <div class="scrollable" *ngIf="!isLoading && !loadError; else failState">
       <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -55,7 +55,7 @@
           </p>
         </div>
       </mat-expansion-panel>
-    </ng-container>
+    </div>
   </mat-card-content>
 </mat-card>
 <ng-template #failState>

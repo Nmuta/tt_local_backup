@@ -62,7 +62,6 @@ export abstract class GiftHistoryResultsBaseComponent<T extends IdentityResultUn
       }),
       tap(giftHistories => {
           this.giftHistoryList = giftHistories;
-          //this.giftHistoryList.map(x => x.giftInventory.cars = []);
       })).subscribe();
   }
 }
