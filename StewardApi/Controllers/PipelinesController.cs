@@ -14,9 +14,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [ApiController]
     [AuthorizeRoles(
         UserRole.LiveOpsAdmin,
-        UserRole.DataPipelinesAdmin,
-        UserRole.DataPipelinesContributor,
-        UserRole.DataPipelinesRead)]
+        UserRole.DataPipelineAdmin,
+        UserRole.DataPipelineContributor,
+        UserRole.DataPipelineRead)]
     public sealed class PipelinesController : ControllerBase
     {
         private readonly IObligationProvider obligationProvider;

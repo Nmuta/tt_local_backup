@@ -31,18 +31,18 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         public const string SupportAgentNew = "SupportAgentNew";
 
         /// <summary>
-        ///     The data pipelines admin role.
+        ///     The data pipeline admin role.
         /// </summary>
-        public const string DataPipelinesAdmin = "DataPipelinesAdmin";
+        public const string DataPipelineAdmin = "DataPipelineAdmin";
 
         /// <summary>
-        ///     The data pipelines contributor role.
+        ///     The data pipeline contributor role.
         /// </summary>
-        public const string DataPipelinesContributor = "DataPipelinesContributor";
+        public const string DataPipelineContributor = "DataPipelineContributor";
 
         /// <summary>
-        ///     The data pipelines read role.
+        ///     The data pipeline read role.
         /// </summary>
-        public const string DataPipelinesRead = "DataPipelinesRead";
+        public const string DataPipelineRead = "DataPipelineRead";
     }
 }
