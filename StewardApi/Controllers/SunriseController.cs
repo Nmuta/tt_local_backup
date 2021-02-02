@@ -420,6 +420,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromQuery] bool useBackgroundProcessing,
             [FromHeader] string requestingAgent)
         {
+            async Task<List<SunriseBanResult>> BulkBanUsersAsync(List<SunriseBanParameters> groupedBanParameters)
+            {
+                var tasks =
+                    groupedBanParameters.Select(
+                        banParameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent))
+                    .ToList();
+
+                var nestedResults = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var results = nestedResults.SelectMany(v => v).ToList();
+
+                return results;
+            }
+
             try
             {
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
@@ -458,13 +471,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 if (!useBackgroundProcessing)
                 {
-                    var tasks =
-                        groupedBanParameters.Select(
-                            banParameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent))
-                        .ToList();
-
-                    var nestedResults = await Task.WhenAll(tasks).ConfigureAwait(true);
-                    var results = nestedResults.SelectMany(v => v).ToList();
+                    var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
 
                     return this.Created(this.Request.Path, results);
                 }
@@ -478,15 +485,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     // Do not throw.
                     try
                     {
-                        var tasks =
-                            groupedBanParameters.Select(
-                                banParameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent))
-                            .ToList();
+                        var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
 
-                        var nestedResults = await Task.WhenAll(tasks).ConfigureAwait(true);
-                        var results = nestedResults.SelectMany(v => v).ToList();
-
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, results.ToJson()).ConfigureAwait(true);
+                        await this.jobTracker
+                            .UpdateJobAsync(
+                                jobId,
+                                username,
+                                BackgroundJobStatus.Completed,
+                                results.ToJson())
+                            .ConfigureAwait(true);
                     }
                     catch (Exception)
                     {
