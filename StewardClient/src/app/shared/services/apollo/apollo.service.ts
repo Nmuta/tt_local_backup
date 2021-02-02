@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApolloMasterInventory, ApolloPlayerDetails, ApolloBanResult } from '@models/apollo';
-import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
-import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
+import { ApolloPlayerDetails } from '@models/apollo';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,

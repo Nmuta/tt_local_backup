@@ -175,7 +175,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<ISunrisePlayerDetailsProvider, SunrisePlayerDetailsProvider>();
             services.AddSingleton<ISunrisePlayerInventoryProvider, SunrisePlayerInventoryProvider>();
             services.AddSingleton<IRequestValidator<SunrisePlayerInventory>, SunrisePlayerInventoryRequestValidator>();
-            services.AddSingleton<IRequestValidator<SunriseBanParametersInput>, SunriseBanParametersRequestValidator>();
+            // services.AddSingleton<IRequestValidator<SunriseBanParameters>, SunriseBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<SunriseGroupGift>, SunriseGroupGiftRequestValidator>();
             services.AddSingleton<ISunriseGiftHistoryProvider, SunriseGiftHistoryProvider>();
             services.AddSingleton<ISunriseBanHistoryProvider, SunriseBanHistoryProvider>();
@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IApolloPlayerDetailsProvider, ApolloPlayerDetailsProvider>();
             services.AddSingleton<IApolloPlayerInventoryProvider, ApolloPlayerInventoryProvider>();
             services.AddSingleton<IApolloBanHistoryProvider, ApolloBanHistoryProvider>();
-            services.AddSingleton<IRequestValidator<ApolloBanParametersInput>, ApolloBanParametersRequestValidator>();
+            // services.AddSingleton<IRequestValidator<ApolloBanParameters>, ApolloBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<ApolloPlayerInventory>, ApolloPlayerInventoryRequestValidator>();
             services.AddSingleton<IRequestValidator<ApolloGroupGift>, ApolloGroupGiftRequestValidator>();
             services.AddSingleton<IApolloGiftHistoryProvider, ApolloGiftHistoryProvider>();
@@ -197,21 +197,19 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IOpusPlayerDetailsProvider, OpusPlayerDetailsProvider>();
             services.AddSingleton<IOpusPlayerInventoryProvider, OpusPlayerInventoryProvider>();
 
-            var client = new SecretClient(new Uri($"https://{this.configuration[ConfigurationKeyConstants.KeyVaultUrl]}.vault.azure.net/"), new DefaultAzureCredential());
-
-            var kustoClientSecret = client.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
+            var kustoClientSecret = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.KustoClientSecretName]).GetAwaiter().GetResult();
 
             var kustoLoggerConfiguration = new KustoConfiguration();
 
             this.configuration.Bind("KustoLoggerConfiguration", kustoLoggerConfiguration);
-            kustoLoggerConfiguration.ClientSecret = kustoClientSecret.Value.Value;
+            kustoLoggerConfiguration.ClientSecret = kustoClientSecret;
             var kustoStreamingLogger = new KustoStreamingLogger(new KustoFactory(kustoLoggerConfiguration));
             services.AddSingleton<IKustoStreamingLogger>(kustoStreamingLogger);
 
             // TODO: This is not how to do DI. I'll come back later and fix all of this (emersonf).
             var kustoConfiguration = new KustoConfiguration();
             this.configuration.Bind("KustoConfiguration", kustoConfiguration);
-            kustoConfiguration.ClientSecret = kustoClientSecret.Value.Value;
+            kustoConfiguration.ClientSecret = kustoClientSecret;
             var kustoProvider = new KustoProvider(new KustoFactory(kustoConfiguration), new LocalCacheStore(), this.configuration);
             services.AddSingleton<IKustoProvider>(kustoProvider);
 
@@ -222,10 +220,9 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddSingleton<ITableStorageClientFactory, TableStorageClientFactory>();
 
-            // var blobConnectionString = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).GetAwaiter().GetResult();
-            var blobConnectionString = client.GetSecretAsync(this.configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).GetAwaiter().GetResult();
+            var blobConnectionString = keyVaultProvider.GetSecretAsync(this.configuration[ConfigurationKeyConstants.KeyVaultUrl], this.configuration[ConfigurationKeyConstants.BlobConnectionSecretName]).GetAwaiter().GetResult();
 
-            var blobRepo = new BlobRepository(new CloudBlobProxy(blobConnectionString.Value.Value));
+            var blobRepo = new BlobRepository(new CloudBlobProxy(blobConnectionString));
 
             services.AddSingleton<IBlobRepository>(blobRepo);
 
