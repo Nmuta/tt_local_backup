@@ -41,4 +41,30 @@ describe('GiftingBaseComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('Method: isUsingPlayerIdentities', () => {
+    describe('If matTabSelectedIndex is 0', () => {
+      beforeEach(() => {
+        component.matTabSelectedIndex = 0;
+      });
+
+      it('should return true', () => {
+        const response = component.isUsingPlayerIdentities();
+
+        expect(response).toBeTruthy();
+      });
+    });
+
+    describe('If matTabSelectedIndex is 1', () => {
+      beforeEach(() => {
+        component.matTabSelectedIndex = 1;
+      });
+
+      it('should return false', () => {
+        const response = component.isUsingPlayerIdentities();
+
+        expect(response).toBeFalsy();
+      });
+    });
+  });
 });

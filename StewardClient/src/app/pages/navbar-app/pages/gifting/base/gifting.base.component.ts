@@ -19,4 +19,9 @@ export abstract class GiftingBaseComponent<T extends IdentityResultUnion> extend
 
   /** Player identity selected */
   public abstract playerIdentitySelected(identity: T): void;
+
+  /** Returns true if player identities is  being used for player selection. */
+  public isUsingPlayerIdentities(): boolean {
+    return this.matTabSelectedIndex === 0;
+  }
 }

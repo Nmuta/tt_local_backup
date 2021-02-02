@@ -74,6 +74,7 @@
           "webSocketsEnabled": false,
           "alwaysOn": true,
           "httpLoggingEnabled": true,
+          "httpsOnly": true,
           "logsDirectorySizeLimit": 50,
           "appSettings": [
             {
@@ -129,6 +130,7 @@
               "use32BitWorkerProcess": true,
               "webSocketsEnabled": false,
               "alwaysOn": true,
+              "httpsOnly": true,
               "httpLoggingEnabled": true,
               "logsDirectorySizeLimit": 50,
               "appSettings": [

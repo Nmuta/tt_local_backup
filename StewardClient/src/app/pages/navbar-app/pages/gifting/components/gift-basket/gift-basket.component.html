@@ -11,34 +11,128 @@
           else waitingForGameSettings
         "
       >
-        <!-- TODO: Remove when building out gift basket UI -->
-        <h3><b>Overview</b></h3>
-        <p>Number of identities: {{ playerIdentities?.length || '0' }}</p>
-        <p>LSP Group: {{ lspGroup?.name || 'None' }}</p>
-        <br />
+        <!-- Item Selection -->
+        <item-selection
+          [inventoryItemGroups]="inventoryItemGroups"
+          (addItemEvent)="addItemtoBasket($event)"
+        ></item-selection>
 
-        <h3><b>Master Inventory</b></h3>
-        <p *ngIf="!!masterInventory">
-          <b>Credit Rewards</b><br />
-          <span *ngFor="let item of masterInventory.creditRewards"> {{ item }}<br /> </span>
+        <!-- Gift Basket Display -->
+        <div class="table-container">
+          <table mat-table [dataSource]="giftBasket" class="mat-elevation-z8">
+            <ng-container matColumnDef="itemId">
+              <th id="item-id-table-header" mat-header-cell *matHeaderCellDef>Id</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.itemId >= 0 ? element.itemId : 'N/A' }}
+              </td>
+            </ng-container>
 
-          <b>Cars</b><br />
-          <span *ngFor="let item of masterInventory.cars"> {{ item.displayName }}<br /> </span>
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>Description</th>
+              <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+            </ng-container>
 
-          <b>CarHorns</b><br />
-          <span *ngFor="let item of masterInventory.carHorns"> {{ item.displayName }}<br /> </span>
+            <ng-container matColumnDef="itemType">
+              <th mat-header-cell *matHeaderCellDef>Type</th>
+              <td mat-cell *matCellDef="let element">{{ element.itemType }}</td>
+            </ng-container>
 
-          <b>Emotes</b><br />
-          <span *ngFor="let item of masterInventory.emotes"> {{ item.name }}<br /> </span>
+            <ng-container matColumnDef="quantity">
+              <th id="quantity-table-header" mat-header-cell *matHeaderCellDef>Quantity</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <span *ngIf="!element.edit">
+                  {{ element.quantity }}
+                  <fa-icon
+                    [icon]="pencilIcon"
+                    (click)="element.edit = true"
+                    (keyup.enter)="element.edit = true"
+                    matTooltip="Edit Quantity"
+                    tabindex="0"
+                    [attr.aria-label]="'Edit quantity for ' + element.description"
+                  ></fa-icon
+                ></span>
+                <span *ngIf="element.edit">
+                  <mat-form-field>
+                    <mat-label>New Quantity</mat-label>
+                    <input
+                      [id]="'new-item-quantity-' + i"
+                      type="number"
+                      matInput
+                      placeholder="1"
+                      [value]="element.quantity"
+                    />
+                  </mat-form-field>
+                  <fa-icon
+                    [icon]="approveIcon"
+                    (click)="editItemQuantity(i)"
+                    (keyup.enter)="editItemQuantity(i)"
+                    matTooltip="Approve Edit"
+                    tabindex="0"
+                    [attr.aria-label]="'Set new quantity for ' + element.description"
+                  ></fa-icon>
+                  <fa-icon
+                    [icon]="closeIcon"
+                    (click)="element.edit = false"
+                    (keyup.enter)="element.edit = false"
+                    matTooltip="Cancel Edit"
+                    tabindex="0"
+                    [attr.aria-label]="'Cancel quantity edit for ' + element.description"
+                  ></fa-icon>
+                </span>
+              </td>
+            </ng-container>
 
-          <b>Quick Chat Lines</b><br />
-          <span *ngFor="let item of masterInventory.quickChatLines">
-            {{ item.chatMessage }}<br />
-          </span>
+            <ng-container matColumnDef="remove">
+              <th id="quantity-table-header" mat-header-cell *matHeaderCellDef>Remove</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <button
+                  mat-mini-fab
+                  color="accent"
+                  matTooltip="Remove item from gift basket"
+                  aria-label="Remove item from gift basket"
+                  (click)="removeItemFromGiftBasket(i)"
+                >
+                  <fa-icon [icon]="trashIcon"></fa-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
 
-          <b>Vanity Items</b><br />
-          <span *ngFor="let item of masterInventory.vanityItems"> {{ item.itemId }}<br /> </span>
-        </p>
+        <!-- Send Gift Basket -->
+        <div class="send-gift-basket-container">
+          <form [formGroup]="sendGiftForm" (ngSubmit)="sendGiftBasket()">
+            <mat-form-field appearance="fill">
+              <mat-label>Gift Reason</mat-label>
+              <mat-select formControlName="giftReason">
+                <mat-option *ngFor="let reason of giftReasons" [value]="reason">
+                  {{ reason }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button
+              mat-raised-button
+              class="send-gift-basket"
+              color="primary"
+              type="submit"
+              [disabled]="!isGiftBasketReady()"
+            >
+              Send Gift
+              <span *ngIf="usingPlayerIdentities">To Player(s)</span>
+              <span *ngIf="!usingPlayerIdentities">To LSP Groups</span>
+            </button>
+          </form>
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="clearGiftBasket()"
+            [disabled]="giftBasket?.data?.length <= 0"
+          >
+            Clear Gift Basket
+          </button>
+        </div>
       </ng-container>
     </ng-container>
   </ng-container>
