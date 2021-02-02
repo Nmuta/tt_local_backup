@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 
@@ -16,11 +15,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     /// </summary>
     [Route("api/v1/title/")]
     [ApiController]
-    [AuthorizeRoles(
-        UserRole.LiveOpsAdmin,
-        UserRole.DataPipelinesAdmin,
-        UserRole.DataPipelinesContributor,
-        UserRole.DataPipelinesRead)]
+    [Authorize]
     public sealed class DataController : ControllerBase
     {
         private readonly IKustoProvider kustoProvider;
