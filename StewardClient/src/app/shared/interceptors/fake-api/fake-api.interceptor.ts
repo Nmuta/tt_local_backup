@@ -57,6 +57,13 @@ import { SunriseGroupXuidsInventoryFakeApi } from './apis/title/sunrise/group/xu
 import { SunriseGroupGroupIdGiftHistoryFakeApi } from './apis/title/sunrise/group/groupId/giftHistory';
 import { SunriseGroupsFakeApi } from './apis/title/sunrise/groups';
 import { SunrisePlayerXuidNotificationsFakeApi } from './apis/title/sunrise/player/xuid/notifications';
+import { SunrisePlayersBanSummariesFakeApi } from './apis/title/sunrise/players/ban-summaries';
+import { ApolloPlayersBanSummariesFakeApi } from './apis/title/apollo/players/ban-summaries';
+import { LoggerService, LogTopic } from '@services/logger';
+import { ApolloPlayersIdentitiesFakeApi } from './apis/title/apollo/players/identities';
+import { OpusPlayersIdentitiesFakeApi } from './apis/title/opus/players/identities';
+import { SunrisePlayersIdentitiesFakeApi } from './apis/title/sunrise/players/identities';
+import { GravityPlayersIdentitiesFakeApi } from './apis/title/gravity/players/identities';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -69,6 +76,7 @@ const fakeApiConstructors = [
   GravityPlayerT10IdInventoryFakeApi,
   GravityPlayerXuidInventoryFakeApi,
   GravityPlayerT10IdGiftHistoryFakeApi,
+  GravityPlayersIdentitiesFakeApi,
 
   // Sunrise
   SunrisePlayerGamertagDetailsFakeApi,
@@ -85,6 +93,8 @@ const fakeApiConstructors = [
   SunrisePlayerXuidInventoryProfilesFakeApi,
   SunrisePlayerProfileIdInventoryFakeApi,
   SunrisePlayersBanFakeApi,
+  SunrisePlayersBanSummariesFakeApi,
+  SunrisePlayersIdentitiesFakeApi,
   SunriseGroupGamertagsInventoryFakeApi,
   SunriseGroupGroupIdInventoryFakeApi,
   SunriseGroupXuidsInventoryFakeApi,
@@ -99,6 +109,8 @@ const fakeApiConstructors = [
   ApolloPlayerXuidInventoryFakeApi,
   ApolloPlayerXuidGiftHistoryFakeApi,
   ApolloPlayersBanFakeApi,
+  ApolloPlayersBanSummariesFakeApi,
+  ApolloPlayersIdentitiesFakeApi,
   ApolloGroupGamertagsInventoryFakeApi,
   ApolloGroupGroupIdInventoryFakeApi,
   ApolloGroupXuidsInventoryFakeApi,
@@ -110,6 +122,7 @@ const fakeApiConstructors = [
   OpusPlayerProfileIdInventoryFakeApi,
   OpusPlayerXuidInventoryFakeApi,
   OpusPlayerXuidInventoryProfilesFakeApi,
+  OpusPlayersIdentitiesFakeApi,
 ];
 
 /** The URLs this interceptor will not block. */
@@ -122,7 +135,7 @@ const urlAllowList = [
 /** Intercepts every request and returns a sample response if it matches the conditions. */
 @Injectable()
 export class FakeApiInterceptor implements HttpInterceptor {
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store, private readonly logger: LoggerService) {}
 
   /** Interception hook. */
   public intercept(
@@ -139,9 +152,10 @@ export class FakeApiInterceptor implements HttpInterceptor {
     for (const fakeApiConstructor of fakeApiConstructors) {
       const fakeApi = new fakeApiConstructor(request);
       if (fakeApi.canHandle) {
+        this.logger.log([LogTopic.FakeApi], `${request.url} -> ${fakeApi.constructor.name}`);
         return ObservableOf(
           new HttpResponse({
-            body: fakeApi.handleString(),
+            body: fakeApi.handle(request.body),
           }),
         ).pipe(delay(_.random(1500) + 500));
       }

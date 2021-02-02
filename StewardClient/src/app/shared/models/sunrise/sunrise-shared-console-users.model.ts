@@ -1,7 +1,7 @@
 /** A single shared console user. */
 export interface SunriseSharedConsoleUser {
-  sharedConsoleId: number;
-  xuid: number;
+  sharedConsoleId: BigInt;
+  xuid: BigInt;
   gamertag: string;
   everBanned: boolean;
 }

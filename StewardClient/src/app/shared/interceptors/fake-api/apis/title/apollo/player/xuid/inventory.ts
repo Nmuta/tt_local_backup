@@ -13,7 +13,7 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/apollo\/player\/xuid\((.+)\)\/inventory/i;
+    const regex = /^\/?api\/v1\/title\/apollo\/player\/xuid\((.+)\)\/inventory$/i;
     return regex.test(url.pathname);
   }
 

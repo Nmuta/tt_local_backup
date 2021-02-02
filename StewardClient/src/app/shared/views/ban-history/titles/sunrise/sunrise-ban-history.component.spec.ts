@@ -19,7 +19,7 @@ describe('SunriseBanHistoryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SunriseBanHistoryComponent);
     component = fixture.componentInstance;
-    component.xuid = 8675309;
+    component.xuid = BigInt(8675309);
     fixture.detectChanges();
   });
 

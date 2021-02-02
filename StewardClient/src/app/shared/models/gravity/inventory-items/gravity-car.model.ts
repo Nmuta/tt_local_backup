@@ -4,12 +4,12 @@ import { GravityInventoryItem } from './gravity-inventory-item.model';
 export interface GravityCar extends GravityInventoryItem {
   vin: string;
   purchaseUtc: unknown;
-  currentMasteryRank: number;
-  cumulativeMastery: number;
-  repairState: number;
-  starPoints: number;
-  color: number;
-  livery: number;
-  clientPr: number;
-  advancedCarCustomization: number;
+  currentMasteryRank: BigInt;
+  cumulativeMastery: BigInt;
+  repairState: BigInt;
+  starPoints: BigInt;
+  color: BigInt;
+  livery: BigInt;
+  clientPr: BigInt;
+  advancedCarCustomization: BigInt;
 }

@@ -1,12 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
 {
     /// <summary>
-    ///     Represents a Sunrise ban parameters.
+    ///     Validated Sunrise ban parameters, as stored internally.
     /// </summary>
-    public sealed class SunriseBanParameters : SunriseBanBase
+    public sealed class SunriseBanParameters
     {
+        /// <summary>
+        ///     Gets or sets the reason.
+        /// </summary>
+        public string Reason { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the feature area.
+        /// </summary>
+        public string FeatureArea { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the start time.
+        /// </summary>
+        public DateTime StartTimeUtc { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the expire time.
+        /// </summary>
+        public DateTime ExpireTimeUtc { get; set; }
+
         /// <summary>
         ///     Gets or sets the xuid list.
         /// </summary>

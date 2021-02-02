@@ -14,7 +14,7 @@ export class SunrisePlayerXuidNotificationsFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/sunrise\/player\/xuid\((.+)\)\/notifications/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/player\/xuid\((.+)\)\/notifications$/i;
     return regex.test(url.pathname);
   }
 

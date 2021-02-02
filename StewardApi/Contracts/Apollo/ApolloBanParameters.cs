@@ -1,10 +1,32 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
+﻿using System;
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
 {
     /// <summary>
-    ///     Represents a Apollo ban parameters.
+    ///     Validated Apollo ban parameters, as stored internally.
     /// </summary>
-    public sealed class ApolloBanParameters : ApolloBanBase
+    public sealed class ApolloBanParameters
     {
+        /// <summary>
+        ///     Gets or sets the reason.
+        /// </summary>
+        public string Reason { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the feature area.
+        /// </summary>
+        public string FeatureArea { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the start time.
+        /// </summary>
+        public DateTime StartTimeUtc { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the expiry time.
+        /// </summary>
+        public DateTime ExpireTimeUtc { get; set; }
+
         /// <summary>
         ///     Gets or sets the xuid.
         /// </summary>

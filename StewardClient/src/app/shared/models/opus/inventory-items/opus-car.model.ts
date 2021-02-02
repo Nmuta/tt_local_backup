@@ -1,8 +1,8 @@
 /** Interface for opus car item. */
 export interface OpusCar {
   vin: string;
-  baseCost: number;
-  carId: number;
+  baseCost: BigInt;
+  carId: BigInt;
   dateCreatedUtc: unknown;
   displayName: string;
   special: string;

@@ -1,9 +1,35 @@
-<ng-container [formGroup]="formGroup" (ngSubmit)="submit()">
-  <sunrise-player-selection
-    [allowT10Id]="false"
-    [allowGroup]="true"
-    [formControl]="formControls.playerIdentities"
-  ></sunrise-player-selection>
+<form [formGroup]="formGroup">
+  <div class="left">
+    <sunrise-player-selection
+      #playerSelection
+      [allowT10Id]="false"
+      [allowGroup]="true"
+      [formControl]="formControls.playerIdentities"
+    >
+      <player-selection-chip-list
+        [playerSelection]="playerSelection"
+        [identities]="playerSelection.playerIdentitiesFull"
+        (selectionChange)="selectPlayer($event)"
+      >
+        <ng-template let-identity>
+          <player-selection-chip [playerSelection]="playerSelection" [identity]="identity">
+            <ban-chip-icon
+              [identity]="identity"
+              [banSummary]="summaryLookup[identity.xuid]"
+            ></ban-chip-icon>
+          </player-selection-chip>
+        </ng-template>
+      </player-selection-chip-list>
+    </sunrise-player-selection>
+    <div class="bottom">
+      <ng-container *ngFor="let xuid of bannedXuids">
+        <sunrise-ban-history
+          [xuid]="xuid"
+          [hidden]="xuid !== selectedPlayer?.xuid"
+        ></sunrise-ban-history>
+      </ng-container>
+    </div>
+  </div>
 
   <div class="action-container">
     <mat-card>
@@ -16,6 +42,7 @@
       <mat-card-content>
         <verify-action-button
           #submitButton
+          [action]="submit"
           [alwaysShow]="true"
           [canSubmit]="formGroup.valid"
           [canSubmitDisabledReason]="'Form is invalid'"
@@ -26,4 +53,4 @@
       </mat-card-content>
     </mat-card>
   </div>
-</ng-container>
+</form>
