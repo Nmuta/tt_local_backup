@@ -126,10 +126,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             try
             {
+                var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM7Cars);
+                var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM7VanityItems);
+
+                await Task.WhenAll(cars, vanityItems).ConfigureAwait(true);
+
                 var masterInventory = new ApolloMasterInventory()
                 {
-                    Cars = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM7Cars).ConfigureAwait(true),
-                    VanityItems = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM7VanityItems).ConfigureAwait(true),
+                    Cars = await cars.ConfigureAwait(true),
+                    VanityItems = await vanityItems.ConfigureAwait(true),
                 };
 
                 return this.Ok(masterInventory);

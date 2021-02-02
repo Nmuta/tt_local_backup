@@ -126,13 +126,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             try
             {
+                var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Cars);
+                var carHorns = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4CarHorns);
+                var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4VanityItems);
+                var emotes = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Emotes);
+                var quickChatLines = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4QuickChatLines);
+
+                await Task.WhenAll(cars, carHorns, vanityItems, emotes, quickChatLines).ConfigureAwait(true);
+
                 var masterInventory = new SunriseMasterInventory
                 {
-                    Cars = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Cars).ConfigureAwait(true),
-                    CarHorns = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4CarHorns).ConfigureAwait(true),
-                    VanityItems = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4VanityItems).ConfigureAwait(true),
-                    Emotes = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Emotes).ConfigureAwait(true),
-                    QuickChatLines = await this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4QuickChatLines).ConfigureAwait(true)
+                    Cars = await cars.ConfigureAwait(true),
+                    CarHorns = await carHorns.ConfigureAwait(true),
+                    VanityItems = await vanityItems.ConfigureAwait(true),
+                    Emotes = await emotes.ConfigureAwait(true),
+                    QuickChatLines = await quickChatLines.ConfigureAwait(true)
                 };
 
                 return this.Ok(masterInventory);
