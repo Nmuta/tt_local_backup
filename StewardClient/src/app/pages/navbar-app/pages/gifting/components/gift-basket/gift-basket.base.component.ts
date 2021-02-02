@@ -8,20 +8,15 @@ import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { MasterInventoryItem } from '@models/master-inventory-item';
 
 export type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory;
-export type InventoryItem = {
-  itemId: BigInt;
-  description: string;
-  quantity: number;
-  itemType: string;
-};
 export type InventoryItemGroup = {
   category: string;
-  items: InventoryItem[];
+  items: MasterInventoryItem[];
 };
 
-export type GiftBasketModel = InventoryItem & { edit: boolean };
+export type GiftBasketModel = MasterInventoryItem & { edit: boolean };
 
 /** The base gift-basket component. */
 @Component({
@@ -85,7 +80,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     const temporaryGiftBasket = this.giftBasket.data;
 
     const existingItemIndex = temporaryGiftBasket.findIndex(data => {
-      return data.itemId === item.itemId && data.itemType === item.itemType;
+      return data.id === item.id && data.itemType === item.itemType;
     });
 
     if (existingItemIndex >= 0) {
