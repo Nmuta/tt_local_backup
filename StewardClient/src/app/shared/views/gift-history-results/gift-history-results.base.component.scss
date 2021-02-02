@@ -9,9 +9,23 @@ p {
     margin-bottom: 0;
 }
 
+mat-panel-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline;
+}
+
 mat-panel-description {
-    display: block;
-    flex-flow: row;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline;
+}
+
+mat-expansion-panel-header {
+    padding-left: 12px;
+    padding-right: 12px;
 }
 
 .inventoryPreview {
