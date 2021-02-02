@@ -26,12 +26,18 @@
           "description": "The suffix for all managed resources"
         }
       },
-    "environment": {
-      "type": "string",
-      "metadata": {
-        "description": "The appsettings.X.json file to rely on."
+      "environment": {
+        "type": "string",
+        "metadata": {
+          "description": "The appsettings.X.json file to rely on."
+        }
+      },
+      "pipeline-service-principal-oid": {
+        "type": "string",
+        "metadata": {
+          "description": "The object ID for the pipeline service principal. Used to grant pipeline access to the keyvault."
+        }
       }
-    }
     },
     "variables": {
       "prefix": "[parameters('prefix')]",

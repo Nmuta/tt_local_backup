@@ -16,6 +16,9 @@
     },
     "environment": {
       "value": ""
+    },
+    "pipeline-service-principal-oid": {
+      "value": "6b411734-0fb8-4a58-b245-7a938c0b552a"
     }
   }
 }

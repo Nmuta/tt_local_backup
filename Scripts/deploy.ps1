@@ -65,11 +65,11 @@ Function Invoke-Deploy {
         if (-not $?) { exit }
 
         # TODO: Running this will erase the access policies but not the secrets. Figure out how to only run this if it is missing?
-        # Write-Output "-----------------------"
-        # Write-Output "Deploying KeyVault"
-        # Write-Output "-----------------------"
-        # az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_KeyVault --parameters @$Parameters_Sites --verbose
-        # if (-not $?) { exit }
+        Write-Output "-----------------------"
+        Write-Output "Deploying KeyVault"
+        Write-Output "-----------------------"
+        az deployment group create --subscription $Subscription --resource-group $ResourceGroup --template-file $Template_KeyVault --parameters @$Parameters_Sites --verbose
+        if (-not $?) { exit }
         
         Write-Output "-----------------------"
         Write-Output "Deploying Cosmos DB"
