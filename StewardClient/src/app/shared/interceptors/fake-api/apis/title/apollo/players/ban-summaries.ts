@@ -33,7 +33,7 @@ export class ApolloPlayersBanSummariesFakeApi extends FakeApiBase {
         gamertag: faker.random.word(),
         xuid: xuid,
         lastBanDescription: {
-          countOfTimesExtended: faker.random.number(),
+          countOfTimesExtended: BigInt(faker.random.number()),
           expireTimeUtc: faker.date.future(),
           featureArea: faker.random.arrayElement(Object.values(ApolloBanArea)),
           isActive: faker.random.boolean(),

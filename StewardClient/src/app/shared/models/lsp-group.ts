@@ -1,6 +1,6 @@
 /** Interface for an lsp group. */
 export interface LspGroup {
-  id: number;
+  id: BigInt;
   name: string;
 }
 

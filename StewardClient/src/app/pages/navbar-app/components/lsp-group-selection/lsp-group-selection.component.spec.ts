@@ -49,7 +49,7 @@ describe('LspGroupSelectionBaseComponent', () => {
     });
 
     describe('When lspGroupSelector observable returns valid data', () => {
-      const testData = [{ id: 0, name: 'test-1' }];
+      const testData = [{ id: BigInt(0), name: 'test-1' }];
       beforeEach(() => {
         component.lspGroupSelector = jasmine
           .createSpy('lspGroupSelector')
@@ -108,7 +108,7 @@ describe('LspGroupSelectionBaseComponent', () => {
     describe('If name in lspGroup is defined', () => {
       const lspGroupName = 'test-1';
       beforeEach(() => {
-        lspGroup = { id: 0, name: lspGroupName };
+        lspGroup = { id: BigInt(0), name: lspGroupName };
       });
 
       it('should return test-1', () => {
@@ -132,7 +132,7 @@ describe('LspGroupSelectionBaseComponent', () => {
   });
 
   describe('Method: writeValue', () => {
-    const testLspGroup = { id: 0, name: 'test-1' };
+    const testLspGroup = { id: BigInt(0), name: 'test-1' };
 
     it('should set selectedLspGroup to given value', () => {
       component.writeValue(testLspGroup);

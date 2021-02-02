@@ -4,7 +4,7 @@ import { ApolloInventoryItem, ApolloCar } from './inventory-items';
 export interface ApolloPlayerInventory {
   xuid: BigInt;
   giftReason: string;
-  credits: number;
+  credits: BigInt;
   cars: ApolloCar[];
   mods: ApolloInventoryItem[];
   vanityItems: ApolloInventoryItem[];
