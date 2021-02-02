@@ -46,11 +46,11 @@ export class NavbarTools {
     path: 'gifting',
   };
 
-    /** The gift history tool page. */
-    public static readonly GiftHistoryPage: RouteParams = {
-      title: 'Gift History',
-      path: 'gift-history',
-    };
+  /** The gift history tool page. */
+  public static readonly GiftHistoryPage: RouteParams = {
+    title: 'Gift History',
+    path: 'gift-history',
+  };
 
   /** The user details tool page. */
   public static readonly UserDetailsPage: RouteParams = {

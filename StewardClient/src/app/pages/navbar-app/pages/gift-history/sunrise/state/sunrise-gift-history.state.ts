@@ -45,7 +45,9 @@ export class SunriseGiftHistoryState {
 
   /** Selector for state selected player identities. */
   @Selector()
-  public static selectedPlayerIdentities(state: SunriseGiftHistoryStateModel): IdentityResultAlphaBatch {
+  public static selectedPlayerIdentities(
+    state: SunriseGiftHistoryStateModel,
+  ): IdentityResultAlphaBatch {
     return state.selectedPlayerIdentities;
   }
 

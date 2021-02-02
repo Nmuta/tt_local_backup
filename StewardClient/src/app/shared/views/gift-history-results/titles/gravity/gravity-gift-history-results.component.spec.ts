@@ -9,11 +9,10 @@ describe('GravityGiftHistoryResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GravityGiftHistoryResultsComponent ],
+      declarations: [GravityGiftHistoryResultsComponent],
       providers: [createMockGravityService()],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

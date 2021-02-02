@@ -17,22 +17,22 @@ import {
 /** The gift history page for the Navbar app. */
 @Component({
   templateUrl: './apollo-gift-history.component.html',
-  styleUrls: ['./apollo-gift-history.component.scss']
+  styleUrls: ['./apollo-gift-history.component.scss'],
 })
 export class ApolloGiftHistoryComponent
-extends GiftHistoryBaseComponent<IdentityResultAlpha>
-implements OnInit {
-  @Select(ApolloGiftHistoryState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<
-    IdentityResultAlphaBatch>
+  extends GiftHistoryBaseComponent<IdentityResultAlpha>
+  implements OnInit {
+  @Select(ApolloGiftHistoryState.selectedPlayerIdentities)
+  public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
-    public title: GameTitleCodeName = GameTitleCodeName.FM7;
-    public selectedPlayerIdentities: IdentityResultAlphaBatch;
-    public selectedLspGroup: LspGroup;
-    public selectedPlayer: IdentityResultAlpha;
+  public title: GameTitleCodeName = GameTitleCodeName.FM7;
+  public selectedPlayerIdentities: IdentityResultAlphaBatch;
+  public selectedLspGroup: LspGroup;
+  public selectedPlayer: IdentityResultAlpha;
 
-    constructor(protected readonly store: Store) {
-      super();
-    }
+  constructor(protected readonly store: Store) {
+    super();
+  }
 
   /** Initialization hook */
   public ngOnInit(): void {
@@ -47,7 +47,8 @@ implements OnInit {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultAlphaBatch) => {
         this.selectedPlayerIdentities = playerIdentities;
-        this.selectedPlayer = this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
+        this.selectedPlayer =
+          this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
       });
   }
 
@@ -72,5 +73,4 @@ implements OnInit {
   public onLspGroupChange(event: LspGroup): void {
     // Empty
   }
-
 }

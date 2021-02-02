@@ -1,4 +1,3 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { SunriseGiftHistories } from '@models/sunrise/sunrise-gift-history.model';
 import { IdentityResultAlpha } from '@models/identity-query.model';
@@ -10,21 +9,23 @@ import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base
 @Component({
   selector: 'sunrise-gift-history-results',
   templateUrl: './sunrise-gift-history-results.component.html',
-  styleUrls: ['../../gift-history-results.base.component.scss']
+  styleUrls: ['../../gift-history-results.base.component.scss'],
 })
-export class SunriseGiftHistoryResultsComponent extends GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistories>{
-
+export class SunriseGiftHistoryResultsComponent extends GiftHistoryResultsBaseComponent<
+  IdentityResultAlpha,
+  SunriseGiftHistories
+> {
   constructor(public readonly sunrise: SunriseService) {
     super();
   }
 
-  public retrieveHistoryByPlayer(): Observable<SunriseGiftHistories>
-  {
+  /** Reteives the gift history of the player. */
+  public retrieveHistoryByPlayer(): Observable<SunriseGiftHistories> {
     return this.sunrise.getGiftHistoryByXuid(this.selectedPlayer.xuid);
   }
 
-  public retrieveHistoryByLspGroup(): Observable<SunriseGiftHistories>
-  {
+  /** Reteives the gift history of a LSP group. */
+  public retrieveHistoryByLspGroup(): Observable<SunriseGiftHistories> {
     return this.sunrise.getGiftHistoryByLspGroup(this.selectedGroup.id);
   }
 }

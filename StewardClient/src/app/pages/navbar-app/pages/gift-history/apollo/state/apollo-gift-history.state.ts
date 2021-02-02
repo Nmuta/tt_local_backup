@@ -45,7 +45,9 @@ export class ApolloGiftHistoryState {
 
   /** Selector for state selected player identities. */
   @Selector()
-  public static selectedPlayerIdentities(state: ApolloGiftHistoryStateModel): IdentityResultAlphaBatch {
+  public static selectedPlayerIdentities(
+    state: ApolloGiftHistoryStateModel,
+  ): IdentityResultAlphaBatch {
     return state.selectedPlayerIdentities;
   }
 

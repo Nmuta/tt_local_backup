@@ -5,9 +5,8 @@ import { createNavbarPath, NavbarTools } from 'app/pages/navbar-app/navbar-tool-
 /** The gift history page for the Navbar app. */
 @Component({
   templateUrl: './gift-history.component.html',
-  styleUrls: ['./gift-history.component.scss']
+  styleUrls: ['./gift-history.component.scss'],
 })
-
 export class GiftHistoryComponent {
   public rootRouterLink = createNavbarPath(NavbarTools.GiftHistoryPage).routerLink;
   public navbarRouterLinks = [

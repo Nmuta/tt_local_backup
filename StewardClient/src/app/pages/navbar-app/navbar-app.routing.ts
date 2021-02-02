@@ -35,7 +35,8 @@ const routes: Routes = [
       },
       {
         path: NavbarTools.GiftHistoryPage.path,
-        loadChildren: () => import('./pages/gift-history/gift-history.module').then(m => m.GiftHistoryModule),
+        loadChildren: () =>
+          import('./pages/gift-history/gift-history.module').then(m => m.GiftHistoryModule),
       },
       {
         path: NavbarTools.UserBanningPage.path,

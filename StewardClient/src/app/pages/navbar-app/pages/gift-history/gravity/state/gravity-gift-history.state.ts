@@ -31,7 +31,9 @@ export class GravityGiftHistoryState {
 
   /** Selector for state selected player identities. */
   @Selector()
-  public static selectedPlayerIdentities(state: GravityGiftHistoryStateModel): IdentityResultBetaBatch {
+  public static selectedPlayerIdentities(
+    state: GravityGiftHistoryStateModel,
+  ): IdentityResultBetaBatch {
     return state.selectedPlayerIdentities;
   }
 }

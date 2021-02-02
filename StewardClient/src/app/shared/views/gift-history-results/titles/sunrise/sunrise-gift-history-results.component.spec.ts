@@ -9,11 +9,10 @@ describe('SunriseGiftHistoryResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SunriseGiftHistoryResultsComponent ],
+      declarations: [SunriseGiftHistoryResultsComponent],
       providers: [createMockSunriseService()],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -4,7 +4,10 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
 
 import { ApolloGiftHistoryState } from './apollo-gift-history.state';
-import { SetApolloGiftHistoryMatTabIndex, SetApolloGiftHistorySelectedPlayerIdentities } from './apollo-gift-history.state.actions';
+import {
+  SetApolloGiftHistoryMatTabIndex,
+  SetApolloGiftHistorySelectedPlayerIdentities,
+} from './apollo-gift-history.state.actions';
 
 describe('ApolloGiftHistoryState', () => {
   let store: Store;

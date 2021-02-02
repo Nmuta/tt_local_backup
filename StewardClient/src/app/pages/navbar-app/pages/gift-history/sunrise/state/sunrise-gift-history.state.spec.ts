@@ -4,7 +4,10 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
 
 import { SunriseGiftHistoryState } from './sunrise-gift-history.state';
-import { SetSunriseGiftHistoryMatTabIndex, SetSunriseGiftHistorySelectedPlayerIdentities } from './sunrise-gift-history.state.actions';
+import {
+  SetSunriseGiftHistoryMatTabIndex,
+  SetSunriseGiftHistorySelectedPlayerIdentities,
+} from './sunrise-gift-history.state.actions';
 
 describe('SunriseGiftHistoryState', () => {
   let store: Store;

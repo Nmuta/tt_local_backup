@@ -9,11 +9,10 @@ describe('ApolloGiftHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ApolloGiftHistoryResultsComponent ],
+      declarations: [ApolloGiftHistoryResultsComponent],
       providers: [createMockApolloService()],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -15,7 +15,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 /** A domain module for displaying player gift histories. */
 @NgModule({
-  declarations: [GravityGiftHistoryResultsComponent, SunriseGiftHistoryResultsComponent, ApolloGiftHistoryResultsComponent],
+  declarations: [
+    GravityGiftHistoryResultsComponent,
+    SunriseGiftHistoryResultsComponent,
+    ApolloGiftHistoryResultsComponent,
+  ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -28,6 +32,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     JsonDumpModule,
     MatTooltipModule,
   ],
-  exports: [GravityGiftHistoryResultsComponent, SunriseGiftHistoryResultsComponent, ApolloGiftHistoryResultsComponent],
+  exports: [
+    GravityGiftHistoryResultsComponent,
+    SunriseGiftHistoryResultsComponent,
+    ApolloGiftHistoryResultsComponent,
+  ],
 })
 export class GiftHistoryResultsModule {}

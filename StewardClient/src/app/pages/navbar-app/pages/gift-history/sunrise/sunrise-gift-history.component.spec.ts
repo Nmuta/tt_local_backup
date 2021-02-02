@@ -49,7 +49,9 @@ describe('SunriseGiftHistoryComponent', () => {
     it('should displatch SetSunriseGiftHistoryMatTabIndex with correct data', () => {
       component.matTabSelectionChange(testIndex);
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetSunriseGiftHistoryMatTabIndex(testIndex));
+      expect(mockStore.dispatch).toHaveBeenCalledWith(
+        new SetSunriseGiftHistoryMatTabIndex(testIndex),
+      );
     });
   });
 

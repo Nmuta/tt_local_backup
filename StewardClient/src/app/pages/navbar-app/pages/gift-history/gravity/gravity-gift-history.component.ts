@@ -32,8 +32,9 @@ export class GravityGiftHistoryComponent
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultBetaBatch) => {
-        this.selectedPlayerIdentities = playerIdentities;        
-        this.selectedPlayer = this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
+        this.selectedPlayerIdentities = playerIdentities;
+        this.selectedPlayer =
+          this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
       });
   }
 

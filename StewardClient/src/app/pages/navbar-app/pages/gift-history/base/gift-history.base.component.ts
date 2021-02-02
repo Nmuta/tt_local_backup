@@ -9,7 +9,9 @@ type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 @Component({
   template: '',
 })
-export abstract class GiftHistoryBaseComponent<T extends IdentityResultUnion> extends BaseComponent {
+export abstract class GiftHistoryBaseComponent<
+  T extends IdentityResultUnion
+> extends BaseComponent {
   public title: GameTitleCodeName = GameTitleCodeName.FH4;
   public matTabSelectedIndex: number = 0;
   public disableLspGroupSelection: boolean = true;

@@ -17,22 +17,22 @@ import {
 /** The gift history page for the Navbar app. */
 @Component({
   templateUrl: './sunrise-gift-history.component.html',
-  styleUrls: ['./sunrise-gift-history.component.scss']
+  styleUrls: ['./sunrise-gift-history.component.scss'],
 })
 export class SunriseGiftHistoryComponent
-extends GiftHistoryBaseComponent<IdentityResultAlpha>
-implements OnInit {
-  @Select(SunriseGiftHistoryState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<
-    IdentityResultAlphaBatch>
+  extends GiftHistoryBaseComponent<IdentityResultAlpha>
+  implements OnInit {
+  @Select(SunriseGiftHistoryState.selectedPlayerIdentities)
+  public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
-    public title: GameTitleCodeName = GameTitleCodeName.FH4;
-    public selectedPlayerIdentities: IdentityResultAlphaBatch;
-    public selectedLspGroup: LspGroup;
-    public selectedPlayer: IdentityResultAlpha;
+  public title: GameTitleCodeName = GameTitleCodeName.FH4;
+  public selectedPlayerIdentities: IdentityResultAlphaBatch;
+  public selectedLspGroup: LspGroup;
+  public selectedPlayer: IdentityResultAlpha;
 
-    constructor(protected readonly store: Store) {
-      super();
-    }
+  constructor(protected readonly store: Store) {
+    super();
+  }
 
   /** Initialization hook */
   public ngOnInit(): void {
@@ -47,7 +47,8 @@ implements OnInit {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultAlphaBatch) => {
         this.selectedPlayerIdentities = playerIdentities;
-        this.selectedPlayer = this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
+        this.selectedPlayer =
+          this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
       });
   }
 
@@ -72,5 +73,4 @@ implements OnInit {
   public onLspGroupChange(event: LspGroup): void {
     // Empty
   }
-
 }

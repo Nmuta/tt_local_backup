@@ -49,7 +49,9 @@ describe('ApolloGiftHistoryComponent', () => {
     it('should displatch SetApolloGiftHistoryMatTabIndex with correct data', () => {
       component.matTabSelectionChange(testIndex);
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetApolloGiftHistoryMatTabIndex(testIndex));
+      expect(mockStore.dispatch).toHaveBeenCalledWith(
+        new SetApolloGiftHistoryMatTabIndex(testIndex),
+      );
     });
   });
 

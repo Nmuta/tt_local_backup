@@ -7,16 +7,18 @@ import { GravityGiftHistories } from '@models/gravity';
 import { SunriseGiftHistories } from '@models/sunrise';
 import { ApolloGiftHistories } from '@models/apollo';
 import { catchError, takeUntil, tap } from 'rxjs/operators';
-import { first, take } from 'lodash';
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
-type GiftHistoryResultUnion = (GravityGiftHistories | SunriseGiftHistories | ApolloGiftHistories);
+type GiftHistoryResultUnion = GravityGiftHistories | SunriseGiftHistories | ApolloGiftHistories;
 
 /** Base gift history result component. */
 @Component({
-    template: '',
-  })
-export abstract class GiftHistoryResultsBaseComponent<T extends IdentityResultUnion, U extends GiftHistoryResultUnion>
+  template: '',
+})
+export abstract class GiftHistoryResultsBaseComponent<
+    T extends IdentityResultUnion,
+    U extends GiftHistoryResultUnion
+  >
   extends BaseComponent
   implements OnChanges {
   @Input() public selectedPlayer: T;
@@ -31,13 +33,16 @@ export abstract class GiftHistoryResultsBaseComponent<T extends IdentityResultUn
   public isLoading = false;
   /** The gift history list to display. */
   public giftHistoryList: U;
-  
+
   public abstract retrieveHistoryByPlayer(): Observable<U>;
   public abstract retrieveHistoryByLspGroup(): Observable<U>;
 
   /** Angular lifecycle hook. */
   public ngOnChanges(_changes: SimpleChanges): void {
-    if((this.usingPlayerIdentities && !this.selectedPlayer) || (!this.usingPlayerIdentities && !this.selectedGroup)) {
+    if (
+      (this.usingPlayerIdentities && !this.selectedPlayer) ||
+      (!this.usingPlayerIdentities && !this.selectedGroup)
+    ) {
       (this.cancelGiftHistoryRequest$ as Subject<void>)?.next();
       (this.cancelGiftHistoryRequest$ as Subject<void>)?.complete();
       this.giftHistoryList = undefined;
@@ -48,17 +53,24 @@ export abstract class GiftHistoryResultsBaseComponent<T extends IdentityResultUn
     this.isLoading = true;
     this.cancelGiftHistoryRequest$ = new Subject<void>();
 
-    const getGiftHistory$ = this.usingPlayerIdentities ? this.retrieveHistoryByPlayer() : this.retrieveHistoryByLspGroup();
-    getGiftHistory$.pipe(
-      takeUntil(merge(this.onDestroy$, this.cancelGiftHistoryRequest$)),
-      tap(() => { this.isLoading = false; }),
-      catchError(error => {
+    const getGiftHistory$ = this.usingPlayerIdentities
+      ? this.retrieveHistoryByPlayer()
+      : this.retrieveHistoryByLspGroup();
+    getGiftHistory$
+      .pipe(
+        takeUntil(merge(this.onDestroy$, this.cancelGiftHistoryRequest$)),
+        tap(() => {
+          this.isLoading = false;
+        }),
+        catchError(error => {
           this.loadError = error;
           this.giftHistoryList = undefined;
           return NEVER;
-      }),
-      tap(giftHistories => {
+        }),
+        tap(giftHistories => {
           this.giftHistoryList = giftHistories;
-      })).subscribe();
+        }),
+      )
+      .subscribe();
   }
 }

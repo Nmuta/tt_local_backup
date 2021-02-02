@@ -96,11 +96,11 @@ describe('ApolloService', () => {
 
     it('should call API service getRequest with the expected params', done => {
       service.getGiftHistoryByXuid(expectedXuid).subscribe(() => {
-          expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-            `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
-          );
-          done();
-        });
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
+        );
+        done();
+      });
     });
   });
 
@@ -114,11 +114,11 @@ describe('ApolloService', () => {
 
     it('should call API service getRequest with the expected params', done => {
       service.getGiftHistoryByXuid(expectedLspGroupId).subscribe(() => {
-          expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-            `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
-          );
-          done();
-        });
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
+        );
+        done();
+      });
     });
   });
 });
