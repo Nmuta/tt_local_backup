@@ -17,7 +17,8 @@ mat-panel-title {
         text-overflow: ellipsis;
     }
 
-    flex-basis: auto; // Probably delte/
+    min-width: 150px;
+    flex-basis: auto;
 }
 
 mat-panel-description {

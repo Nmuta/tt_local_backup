@@ -1,6 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
+import { GravityGiftHistories, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
   IdentityQueryBeta,
@@ -8,7 +8,6 @@ import {
   IdentityResultBeta,
   IdentityResultBetaBatch,
 } from '@models/identity-query.model';
-import { GravityGiftHistories } from '@models/gravity/gravity-gift-history.model';
 import { ApiService } from '@services/api';
 import { GiftHistoryAntecedent } from '@shared/constants';
 import { Observable, of, throwError } from 'rxjs';

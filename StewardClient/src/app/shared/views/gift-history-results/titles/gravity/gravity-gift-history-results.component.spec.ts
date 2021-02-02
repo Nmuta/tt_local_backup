@@ -1,14 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { createMockGravityService } from '@services/gravity/gravity.service.mock';
 import { GravityGiftHistoryResultsComponent } from './gravity-gift-history-results.component';
 
-describe('GravityGiftHistoryComponent', () => {
+describe('GravityGiftHistoryResultsComponent', () => {
   let component: GravityGiftHistoryResultsComponent;
   let fixture: ComponentFixture<GravityGiftHistoryResultsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GravityGiftHistoryResultsComponent ]
+      declarations: [ GravityGiftHistoryResultsComponent ],
+      providers: [createMockGravityService()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
     .compileComponents();
   });
@@ -19,7 +22,10 @@ describe('GravityGiftHistoryComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  it(
+    'should create',
+    waitForAsync(() => {
+      expect(component).toBeTruthy();
+    }),
+  );
 });

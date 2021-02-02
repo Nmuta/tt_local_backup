@@ -3,14 +3,14 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { merge, NEVER, Observable, Subject } from 'rxjs';
-import { GravityGiftHistory } from '@models/gravity';
-import { SunriseGiftHistory } from '@models/sunrise';
-import { ApolloGiftHistory } from '@models/apollo';
+import { GravityGiftHistories } from '@models/gravity';
+import { SunriseGiftHistories } from '@models/sunrise';
+import { ApolloGiftHistories } from '@models/apollo';
 import { catchError, takeUntil, tap } from 'rxjs/operators';
 import { first, take } from 'lodash';
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
-type GiftHistoryResultUnion = (GravityGiftHistory | SunriseGiftHistory | ApolloGiftHistory)[];
+type GiftHistoryResultUnion = (GravityGiftHistories | SunriseGiftHistories | ApolloGiftHistories);
 
 /** Base gift history result component. */
 @Component({
@@ -31,10 +31,6 @@ export abstract class GiftHistoryResultsBaseComponent<T extends IdentityResultUn
   public isLoading = false;
   /** The gift history list to display. */
   public giftHistoryList: U;
-  
-  constructor() {
-    super();
-  }
   
   public abstract retrieveHistoryByPlayer(): Observable<U>;
   public abstract retrieveHistoryByLspGroup(): Observable<U>;
@@ -62,11 +58,7 @@ export abstract class GiftHistoryResultsBaseComponent<T extends IdentityResultUn
           return NEVER;
       }),
       tap(giftHistories => {
-          this.giftHistoryList = take(giftHistories, 5) as unknown as U;
-          //this.giftHistoryList.map(x => x.giftInventory.credits = 0);
-          //this.giftHistoryList.map(x => x.giftInventory.wheelSpins = 0);
-          //this.giftHistoryList.map(x => x.giftInventory.superWheelSpins = 0);
-          //this.giftHistoryList.map(x => x.giftInventory.skillPoints = 0);
+          this.giftHistoryList = giftHistories;
       })).subscribe();
   }
 }

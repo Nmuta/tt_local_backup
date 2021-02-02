@@ -85,4 +85,40 @@ describe('ApolloService', () => {
       });
     });
   });
+
+  describe('Method: getGiftHistoryByXuid', () => {
+    let expectedXuid;
+
+    beforeEach(() => {
+      expectedXuid = '123456789';
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getGiftHistoryByXuid(expectedXuid).subscribe(() => {
+          expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+            `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
+          );
+          done();
+        });
+    });
+  });
+
+  describe('Method: getGiftHistoryByLspGroup', () => {
+    let expectedLspGroupId;
+
+    beforeEach(() => {
+      expectedLspGroupId = '123';
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getGiftHistoryByXuid(expectedLspGroupId).subscribe(() => {
+          expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+            `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
+          );
+          done();
+        });
+    });
+  });
 });

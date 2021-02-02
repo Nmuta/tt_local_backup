@@ -1,5 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { createMockApolloService } from '@services/apollo/apollo.service.mock';
 import { ApolloGiftHistoryResultsComponent } from './apollo-gift-history-results.component';
 
 describe('ApolloGiftHistoryComponent', () => {
@@ -8,7 +9,9 @@ describe('ApolloGiftHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ApolloGiftHistoryResultsComponent ]
+      declarations: [ ApolloGiftHistoryResultsComponent ],
+      providers: [createMockApolloService()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
     .compileComponents();
   });
@@ -19,7 +22,10 @@ describe('ApolloGiftHistoryComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  it(
+    'should create',
+    waitForAsync(() => {
+      expect(component).toBeTruthy();
+    }),
+  );
 });

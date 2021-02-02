@@ -6,12 +6,12 @@ import { createMockMsalService } from '@mocks/msal.service.mock';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
-import { SunriseGiftHistoryComponent } from './sunrise-gift-history.component';
 import { SunriseGiftHistoryState } from './state/sunrise-gift-history.state';
 import {
   SetSunriseGiftHistoryMatTabIndex,
   SetSunriseGiftHistorySelectedPlayerIdentities,
 } from './state/sunrise-gift-history.state.actions';
+import { SunriseGiftHistoryComponent } from './sunrise-gift-history.component';
 
 describe('SunriseGiftHistoryComponent', () => {
   let component: SunriseGiftHistoryComponent;
