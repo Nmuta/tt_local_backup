@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { merge, NEVER, Observable, Subject } from 'rxjs';
@@ -31,8 +30,6 @@ export abstract class GiftHistoryResultsBaseComponent<T extends IdentityResultUn
   public isLoading = false;
   /** The gift history list to display. */
   public giftHistoryList: U;
-
-  public isActiveIcon = faCheck;
   
   constructor() {
     super();
@@ -65,6 +62,10 @@ export abstract class GiftHistoryResultsBaseComponent<T extends IdentityResultUn
       }),
       tap(giftHistories => {
           this.giftHistoryList = giftHistories;
+          //this.giftHistoryList.map(x => x.giftInventory.credits = 0);
+          //this.giftHistoryList.map(x => x.giftInventory.wheelSpins = 0);
+          //this.giftHistoryList.map(x => x.giftInventory.superWheelSpins = 0);
+          //this.giftHistoryList.map(x => x.giftInventory.skillPoints = 0);
       })).subscribe();
   }
 }

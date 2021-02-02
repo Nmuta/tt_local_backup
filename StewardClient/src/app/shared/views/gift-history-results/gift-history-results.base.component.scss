@@ -1,0 +1,46 @@
+@import '/src/variables.scss';
+
+h3 {
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+p {
+    margin-bottom: 0;
+}
+
+mat-panel-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline;
+}
+
+mat-panel-description {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline;
+}
+
+mat-expansion-panel-header {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.inventoryPreview {
+    color: grey;
+    > .label{
+        font-weight: bold;
+        margin-right: .5em;
+        white-space: pre;
+    }
+    > .data{
+        margin-right: .5em;
+    }
+}
+
+.scrollable {
+    height: 500px;
+    overflow: auto;
+}

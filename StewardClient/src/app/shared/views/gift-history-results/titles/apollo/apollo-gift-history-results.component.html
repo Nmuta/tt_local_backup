@@ -3,27 +3,29 @@
     <h2>
       Apollo Gift History
     </h2>
-    <ng-container *ngIf="!isLoading && !loadError; else failState">
+    <div class="scrollable" *ngIf="!isLoading && !loadError; else failState">
       <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            {{history.requestingAgent}} {{history.giftSendDateUtc?.toGMTString()}}
+            {{history.requestingAgent}} <br />
+            {{history.giftSendDateUtc?.toGMTString()}}
           </mat-panel-title>
           <mat-panel-description>
-            Inventory Summary goes here.
+            <span class="inventoryPreview" *ngIf="history.giftInventory?.credits > 0"><span class="label">Credits</span><span class="data">{{history.giftInventory.credits}}</span></span>
+            <span class="inventoryPreview" *ngIf="history.giftInventory?.cars.length > 0"><span class="label">Cars</span><span class="data">{{history.giftInventory.cars.length}}</span></span>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div *ngIf="history.giftInventory.credits">
           <h3>Credits: {{history.giftInventory.credits}}</h3>
         </div>
-        <ng-container *ngIf="history.giftInventory.cars">
+        <div *ngIf="history.giftInventory.cars">
           <h3>Cars: {{history.giftInventory.cars.length}}</h3>
           <p *ngFor="let car of history.giftInventory.cars">
-            {{car.quantity}} {{car.description}} [{{car.itemId}}]
+            [{{car.quantity}}] {{car.description}} (Item Id: {{car.itemId}})
           </p>
-        </ng-container>
+        </div>
       </mat-expansion-panel>
-    </ng-container>
+    </div>
   </mat-card-content>
 </mat-card>
 
