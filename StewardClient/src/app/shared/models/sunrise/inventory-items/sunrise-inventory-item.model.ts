@@ -1,6 +1,6 @@
 /** Interface for sunrise player inventory item. */
 export interface SunriseInventoryItem {
-  itemId: number;
+  itemId: BigInt;
   quantity: unknown;
   acquisitionUtc: unknown;
   modifiedUtc: unknown;

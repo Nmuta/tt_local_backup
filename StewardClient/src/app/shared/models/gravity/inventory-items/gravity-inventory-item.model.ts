@@ -1,6 +1,6 @@
 /** Interface for gravity player inventory item. */
 export interface GravityInventoryItem {
-  itemId: number;
+  itemId: BigInt;
   quantity: unknown;
   acquisitionUtc: unknown;
   modifiedUtc: unknown;
