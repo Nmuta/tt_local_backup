@@ -4,11 +4,11 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { faTimesCircle, faTimes, faCopy } from '@fortawesome/free-solid-svg-icons';
-import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { ControlValueAccessor } from '@angular/forms';
 import { GameTitleCodeName } from '@models/enums';
-
-type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
+import { isEqual } from 'lodash';
+import { MatChipListChange } from '@angular/material/chips';
+import { IdentityResultIntersection, IdentityResultUnion } from '@models/identity-query.model';
 
 /** The shared top-level navbar. */
 @Component({
@@ -19,12 +19,17 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   implements ControlValueAccessor {
   @Input() allowT10Id: boolean = true;
   @Input() allowGroup: boolean = true;
+  @Output() public selectionChange = new EventEmitter<T>();
   @Output() playerIdentitySelectedEvent = new EventEmitter<T>();
 
   public playersSelector = new FormControl('', [this.ValidateGroupSelection.bind(this)]);
 
   /** The player identites that are given to parent components for use */
   public playerIdentities: T[] = [];
+  /** The player identities in a format the template can consume. */
+  public get playerIdentitiesFull(): IdentityResultIntersection[] {
+    return (this.playerIdentities as unknown) as IdentityResultIntersection[];
+  }
   /** The identity that has been clicked */
   public selectedPlayerIdentity: T = null;
 
@@ -34,17 +39,17 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   public copyToClipboard = faCopy;
 
   /** ngModel associated to the textarea input. */
-  data: string = '';
+  public data: string = '';
   /** Array of player ids populated from the textarea input. */
   playerIds: string[] = [];
   /** The player id type (gamertag|xuid|t10Id) populated by the button toggle. */
   playerIdType: string = 'gamertag';
   /** Boolean whether textarea in UI should be expanded.  */
-  showExpandedTextArea: boolean = false;
+  public showExpandedTextArea: boolean = false;
   /** Boolean whether the validate button should be disabled. */
-  disableValidateButton: boolean = true;
+  public disableValidateButton: boolean = true;
   /** Boolean whether UI should show group disabled error. */
-  showGroupDisabledError: boolean = false;
+  public showGroupDisabledError: boolean = false;
 
   /** True while waiting on a request. */
   public isLoading = false;
@@ -53,10 +58,6 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
 
   /** Game title */
   public abstract title: GameTitleCodeName;
-
-  constructor() {
-    super();
-  }
 
   /** Child(title) class should implement. */
   public abstract makeRequestToValidateIds$(
@@ -69,6 +70,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
     if (!!control.value && !this.allowGroup && this.playerIds.length > 1) {
       return { groupSelectionInvalid: true };
     }
+
     return null;
   }
 
@@ -124,6 +126,7 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
     this.playerIdentities = [];
     this.clearInput();
     this.emitPlayerIdentities();
+    this.selectedPlayerIdentity = null;
     this.emitSelectedPlayerIdentity(null);
   }
 
@@ -160,6 +163,16 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
     );
   }
 
+  /** Removes a given identity from the list. */
+  public removeIdentityFromList(identity: T): void {
+    this.playerIdentities = this.playerIdentities.filter(i => !isEqual(i, identity));
+    this.emitPlayerIdentities();
+
+    if (this.playerIdentities.length <= 0) {
+      this.clearResults();
+    }
+  }
+
   /** Removed player at given index from the results list. */
   public removePlayerFromList(index: number): void {
     this.playerIdentities.splice(index, 1);
@@ -180,6 +193,13 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   /** Logic deciding if we should emit the player identities to its listeners. */
   public emitPlayerIdentities(): void {
     this.onChangeFunction(this.playerIdentities);
+  }
+
+  /** Called when the selected chips change. */
+  public chipSelectionChange(event: MatChipListChange): void {
+    const identity = event.value as T;
+    this.selectedPlayerIdentity = identity;
+    this.selectionChange.emit(event.value as T);
   }
 
   private onChangeFunction = (_value: T[]) => {

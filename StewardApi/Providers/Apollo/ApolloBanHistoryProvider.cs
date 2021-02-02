@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.ProfileMappers;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 {
@@ -29,7 +31,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <param name="kustoStreamingLogger">The Kusto streaming logger.</param>
         /// <param name="kustoProvider">The Kusto provider.</param>
         /// <param name="configuration">The configuration.</param>
-        public ApolloBanHistoryProvider(IKustoStreamingLogger kustoStreamingLogger, IKustoProvider kustoProvider, IConfiguration configuration)
+        public ApolloBanHistoryProvider(
+          IKustoStreamingLogger kustoStreamingLogger,
+          IKustoProvider kustoProvider,
+          IConfiguration configuration)
         {
             kustoStreamingLogger.ShouldNotBeNull(nameof(kustoStreamingLogger));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
@@ -50,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             // Gamertag must be set to null for NGP. v-joyate 20201123
             banParameters.Gamertag = null;
-
+            var startTimeUtc = banParameters.StartTimeUtc; // just in case
             var banHistory = new LiveOpsBanHistory(
                                             (long)xuid,
                                             title,

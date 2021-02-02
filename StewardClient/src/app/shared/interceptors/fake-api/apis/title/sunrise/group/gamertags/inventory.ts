@@ -17,7 +17,7 @@ export class SunriseGroupGamertagsInventoryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/sunrise\/group\/gamertags\/inventory/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/group\/gamertags\/inventory$/i;
     return regex.test(url.pathname);
   }
 

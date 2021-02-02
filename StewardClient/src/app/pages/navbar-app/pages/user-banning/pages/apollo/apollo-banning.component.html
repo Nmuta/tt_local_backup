@@ -1,9 +1,26 @@
-<ng-container [formGroup]="formGroup" (ngSubmit)="submit()">
-  <apollo-player-selection
-    [allowT10Id]="false"
-    [allowGroup]="false"
-    [formControl]="formControls.playerIdentities"
-  ></apollo-player-selection>
+<form [formGroup]="formGroup">
+  <div class="left">
+    <apollo-player-selection
+      #playerSelection
+      [allowT10Id]="false"
+      [allowGroup]="false"
+      [formControl]="formControls.playerIdentities"
+    >
+      <player-selection-chip-list
+        [playerSelection]="playerSelection"
+        [identities]="playerSelection.playerIdentitiesFull"
+      >
+        <ng-template let-identity>
+          <player-selection-chip [playerSelection]="playerSelection" [identity]="identity">
+            <ban-chip-icon
+              [identity]="identity"
+              [banSummary]="summaryLookup[identity.xuid]"
+            ></ban-chip-icon>
+          </player-selection-chip>
+        </ng-template>
+      </player-selection-chip-list>
+    </apollo-player-selection>
+  </div>
 
   <div class="action-container">
     <mat-card>
@@ -16,6 +33,7 @@
       <mat-card-content>
         <verify-action-button
           #submitButton
+          [action]="submit || 'testing'"
           [alwaysShow]="true"
           [canSubmit]="formGroup.valid"
           [canSubmitDisabledReason]="'Form is invalid'"
@@ -26,4 +44,4 @@
       </mat-card-content>
     </mat-card>
   </div>
-</ng-container>
+</form>

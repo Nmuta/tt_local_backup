@@ -173,7 +173,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<ISunrisePlayerDetailsProvider, SunrisePlayerDetailsProvider>();
             services.AddSingleton<ISunrisePlayerInventoryProvider, SunrisePlayerInventoryProvider>();
             services.AddSingleton<IRequestValidator<SunrisePlayerInventory>, SunrisePlayerInventoryRequestValidator>();
-            services.AddSingleton<IRequestValidator<SunriseBanParameters>, SunriseBanParametersRequestValidator>();
+            services.AddSingleton<IRequestValidator<SunriseBanParametersInput>, SunriseBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<SunriseGroupGift>, SunriseGroupGiftRequestValidator>();
             services.AddSingleton<ISunriseGiftHistoryProvider, SunriseGiftHistoryProvider>();
             services.AddSingleton<ISunriseBanHistoryProvider, SunriseBanHistoryProvider>();
@@ -185,7 +185,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IApolloPlayerDetailsProvider, ApolloPlayerDetailsProvider>();
             services.AddSingleton<IApolloPlayerInventoryProvider, ApolloPlayerInventoryProvider>();
             services.AddSingleton<IApolloBanHistoryProvider, ApolloBanHistoryProvider>();
-            services.AddSingleton<IRequestValidator<ApolloBanParameters>, ApolloBanParametersRequestValidator>();
+            services.AddSingleton<IRequestValidator<ApolloBanParametersInput>, ApolloBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<ApolloPlayerInventory>, ApolloPlayerInventoryRequestValidator>();
             services.AddSingleton<IRequestValidator<ApolloGroupGift>, ApolloGroupGiftRequestValidator>();
             services.AddSingleton<IApolloGiftHistoryProvider, ApolloGiftHistoryProvider>();

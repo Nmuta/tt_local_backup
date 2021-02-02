@@ -5,8 +5,28 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
     /// <summary>
     ///     Represents a Sunrise ban description.
     /// </summary>
-    public sealed class SunriseBanDescription : SunriseBanBase
+    public sealed class SunriseBanDescription
     {
+        /// <summary>
+        ///     Gets or sets the reason.
+        /// </summary>
+        public string Reason { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the feature area.
+        /// </summary>
+        public string FeatureArea { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the start time.
+        /// </summary>
+        public DateTime StartTimeUtc { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the expire time.
+        /// </summary>
+        public DateTime ExpireTimeUtc { get; set; }
+
         /// <summary>
         ///     Gets or sets the xuid.
         /// </summary>

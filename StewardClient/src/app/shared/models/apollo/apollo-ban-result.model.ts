@@ -1,3 +1,5 @@
+import { ApolloBanArea } from './apollo-ban-request.model';
+
 /** The /v1/title/Apollo/players/ban model */
 export interface ApolloBanResult {
   xuid: number;
@@ -15,5 +17,5 @@ export interface ApolloBanDescription {
   lastExtendedTimeUtc: Date;
   lastExtendedReason: string;
   reason: string;
-  featureArea: string;
+  featureArea: ApolloBanArea;
 }

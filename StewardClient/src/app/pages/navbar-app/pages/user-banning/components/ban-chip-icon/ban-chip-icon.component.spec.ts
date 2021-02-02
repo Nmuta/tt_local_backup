@@ -1,30 +1,26 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GravityBanningComponent } from './gravity-banning.component';
+import { BanChipIconComponent } from './ban-chip-icon.component';
 
-describe('GravityBanningComponent', () => {
-  let component: GravityBanningComponent;
-  let fixture: ComponentFixture<GravityBanningComponent>;
+describe('BanChipIconComponent', () => {
+  let component: BanChipIconComponent;
+  let fixture: ComponentFixture<BanChipIconComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GravityBanningComponent],
+      declarations: [BanChipIconComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GravityBanningComponent);
+    fixture = TestBed.createComponent(BanChipIconComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should submit', () => {
-    component.submit();
   });
 });

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
@@ -48,10 +49,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly ISunriseGiftHistoryProvider giftHistoryProvider;
         private readonly ISunriseBanHistoryProvider banHistoryProvider;
         private readonly IJobTracker jobTracker;
+        private readonly IMapper mapper;
         private readonly IScheduler scheduler;
         private readonly IRequestValidator<SunrisePlayerInventory> playerInventoryRequestValidator;
         private readonly IRequestValidator<SunriseGroupGift> groupGiftRequestValidator;
-        private readonly IRequestValidator<SunriseBanParameters> banParametersRequestValidator;
+        private readonly IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator;
         private readonly string giftingPassword;
 
         /// <summary>
@@ -65,6 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="configuration">The configuration.</param>
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="jobTracker">The job tracker.</param>
+        /// <param name="mapper">The mapper.</param>
         /// <param name="playerInventoryRequestValidator">The player inventory request validator.</param>
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
         /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
@@ -77,9 +80,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                                  IConfiguration configuration,
                                  IScheduler scheduler,
                                  IJobTracker jobTracker,
+                                 IMapper mapper,
                                  IRequestValidator<SunrisePlayerInventory> playerInventoryRequestValidator,
                                  IRequestValidator<SunriseGroupGift> groupGiftRequestValidator,
-                                 IRequestValidator<SunriseBanParameters> banParametersRequestValidator)
+                                 IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator)
         {
             sunrisePlayerDetailsProvider.ShouldNotBeNull(nameof(sunrisePlayerDetailsProvider));
             sunrisePlayerInventoryProvider.ShouldNotBeNull(nameof(sunrisePlayerInventoryProvider));
@@ -89,6 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             configuration.ShouldNotBeNull(nameof(configuration));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
+            mapper.ShouldNotBeNull(nameof(mapper));
             playerInventoryRequestValidator.ShouldNotBeNull(nameof(playerInventoryRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
@@ -100,6 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.banHistoryProvider = banHistoryProvider;
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
+            this.mapper = mapper;
             this.playerInventoryRequestValidator = playerInventoryRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
             this.banParametersRequestValidator = banParametersRequestValidator;
@@ -400,7 +406,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Bans players.
         /// </summary>
-        /// <param name="banParameters">The ban parameters.</param>
+        /// <param name="banInput">The ban parameter input.</param>
         /// <param name="useBackgroundProcessing">A value that indicates whether to use background processing.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
@@ -409,14 +415,34 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<SunriseBanResult>))]
         [SwaggerResponse(202)]
-        public async Task<IActionResult> BanPlayers([FromBody] SunriseBanParameters banParameters, [FromQuery] bool useBackgroundProcessing, [FromHeader] string requestingAgent)
+        public async Task<IActionResult> BanPlayers(
+            [FromBody] IList<SunriseBanParametersInput> banInput,
+            [FromQuery] bool useBackgroundProcessing,
+            [FromHeader] string requestingAgent)
         {
+            async Task<List<SunriseBanResult>> BulkBanUsersAsync(List<SunriseBanParameters> groupedBanParameters)
+            {
+                var tasks =
+                    groupedBanParameters.Select(
+                        banParameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent))
+                    .ToList();
+
+                var nestedResults = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var results = nestedResults.SelectMany(v => v).ToList();
+
+                return results;
+            }
+
             try
             {
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-                banParameters.ShouldNotBeNull(nameof(banParameters));
-                this.banParametersRequestValidator.ValidateIds(banParameters, this.ModelState);
-                this.banParametersRequestValidator.Validate(banParameters, this.ModelState);
+                banInput.ShouldNotBeNull(nameof(banInput));
+
+                foreach (var banParam in banInput)
+                {
+                    this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
+                    this.banParametersRequestValidator.Validate(banParam, this.ModelState);
+                }
 
                 if (!this.ModelState.IsValid)
                 {
@@ -424,15 +450,34 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.BadRequest(result);
                 }
 
+                var groupedBanParameters = banInput.GroupBy(v =>
+                    {
+                        var compareUsingValues = new object[]
+                        {
+                            v.BanAllConsoles,
+                            v.BanAllPcs,
+                            v.DeleteLeaderboardEntries,
+                            v.StartTimeUtc,
+                            v.Duration,
+                            v.SendReasonNotification,
+                            v.Reason,
+                        };
+
+                        var compareValue = string.Join('|', compareUsingValues);
+                        return compareValue;
+                    })
+                    .Select(group => this.mapper.Map<SunriseBanParameters>(group.ToList()))
+                    .ToList();
+
                 if (!useBackgroundProcessing)
                 {
-                    var results = await this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
+                    var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
 
                     return this.Created(this.Request.Path, results);
                 }
 
                 var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), username).ConfigureAwait(true);
+                var jobId = await this.AddJobIdToHeaderAsync(groupedBanParameters.ToJson(), username).ConfigureAwait(true);
 
                 async Task BackgroundProcessing(CancellationToken cancellationToken)
                 {
@@ -440,9 +485,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     // Do not throw.
                     try
                     {
-                        var results = await this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
+                        var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
 
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, results.ToJson()).ConfigureAwait(true);
+                        await this.jobTracker
+                            .UpdateJobAsync(
+                                jobId,
+                                username,
+                                BackgroundJobStatus.Completed,
+                                results.ToJson())
+                            .ConfigureAwait(true);
                     }
                     catch (Exception)
                     {
