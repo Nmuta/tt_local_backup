@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { faGavel, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
+import { IdentityResultUnion } from '@models/identity-query.model';
 import { SunriseBanSummary } from '@models/sunrise';
 
 export interface BanQuery {
@@ -17,7 +17,7 @@ export interface BanQuery {
   styleUrls: ['./ban-chip-icon.component.scss'],
 })
 export class BanChipIconComponent extends BaseComponent implements OnChanges {
-  @Input() public identity: IdentityResultAlpha | IdentityResultBeta = null;
+  @Input() public identity: IdentityResultUnion = null;
   @Input() public banSummary: SunriseBanSummary = null;
   @Input() public banQuery: BanQuery = null;
   @Output() public gavelClick = new EventEmitter<BanChipIconComponent>();

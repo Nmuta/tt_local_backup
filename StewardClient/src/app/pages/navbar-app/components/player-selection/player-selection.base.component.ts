@@ -4,14 +4,11 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { faTimesCircle, faTimes, faCopy } from '@fortawesome/free-solid-svg-icons';
-import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { ControlValueAccessor } from '@angular/forms';
 import { GameTitleCodeName } from '@models/enums';
 import { isEqual } from 'lodash';
 import { MatChipListChange } from '@angular/material/chips';
-
-type IdentityResultsIntersection = IdentityResultAlpha & IdentityResultBeta;
-type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
+import { IdentityResultIntersection, IdentityResultUnion } from '@models/identity-query.model';
 
 /** The shared top-level navbar. */
 @Component({
@@ -30,8 +27,8 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
   /** The player identites that are given to parent components for use */
   public playerIdentities: T[] = [];
   /** The player identities in a format the template can consume. */
-  public get playerIdentitiesFull(): IdentityResultsIntersection[] {
-    return (this.playerIdentities as unknown) as IdentityResultsIntersection[];
+  public get playerIdentitiesFull(): IdentityResultIntersection[] {
+    return (this.playerIdentities as unknown) as IdentityResultIntersection[];
   }
   /** The identity that has been clicked */
   public selectedPlayerIdentity: T = null;

@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { MatChipListChange } from '@angular/material/chips';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
+import { IdentityResultAlpha, IdentityResultBeta, IdentityResultIntersection, IdentityResultUnion } from '@models/identity-query.model';
 import { cloneDeep } from 'lodash';
 import { PlayerSelectionBaseComponent } from '../player-selection.base.component';
 
@@ -23,8 +23,7 @@ interface Augmentation {
   };
 }
 
-type EitherIdentityResult = IdentityResultAlpha | IdentityResultBeta;
-type EitherIdentityResultAugmented = EitherIdentityResult & Augmentation;
+type IdentityResultUnionAugmented = IdentityResultUnion & Augmentation;
 
 /**
  *  Chip-list designed for handling player chips.
@@ -37,12 +36,12 @@ type EitherIdentityResultAugmented = EitherIdentityResult & Augmentation;
 export class PlayerSelectionChipListComponent implements OnChanges {
   @ContentChild(TemplateRef) public template: TemplateRef<unknown>;
 
-  @Output() public selectionChange = new EventEmitter<EitherIdentityResult>();
+  @Output() public selectionChange = new EventEmitter<IdentityResultUnion>();
   @Input() public playerSelection: PlayerSelectionBaseComponent<
-    IdentityResultAlpha | IdentityResultBeta
+    IdentityResultIntersection
   > = null;
-  @Input() public identities: EitherIdentityResult[] = [];
-  public augmentedIdentities: EitherIdentityResultAugmented[] = [];
+  @Input() public identities: IdentityResultUnion[] = [];
+  public augmentedIdentities: IdentityResultUnionAugmented[] = [];
 
   public closeIcon = faTimesCircle;
 
@@ -54,7 +53,7 @@ export class PlayerSelectionChipListComponent implements OnChanges {
     }
 
     this.augmentedIdentities = this.identities.map(i => {
-      const identity = cloneDeep(i) as EitherIdentityResultAugmented;
+      const identity = cloneDeep(i) as IdentityResultUnionAugmented;
 
       const isValid = !identity.error;
       const name = identity[this.playerSelection.playerIdType];

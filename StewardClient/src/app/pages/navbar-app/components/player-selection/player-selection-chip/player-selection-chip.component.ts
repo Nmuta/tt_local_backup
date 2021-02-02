@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MatChip } from '@angular/material/chips';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
+import { IdentityResultUnion } from '@models/identity-query.model';
 import { PlayerSelectionBaseComponent } from '../player-selection.base.component';
 
 /** A base chip for the player selection component. */
@@ -12,9 +12,9 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
 })
 export class PlayerSelectionChipComponent implements OnChanges {
   @Input() public playerSelection: PlayerSelectionBaseComponent<
-    IdentityResultAlpha | IdentityResultBeta
+    IdentityResultUnion
   > = null;
-  @Input() public identity: IdentityResultAlpha | IdentityResultBeta = null;
+  @Input() public identity: IdentityResultUnion = null;
 
   @ViewChild('chip') public chip: MatChip;
 
