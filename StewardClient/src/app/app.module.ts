@@ -86,7 +86,6 @@ function fakeApiOrNothing(): Provider[] {
       GravityGiftingState,
       SunriseGiftingState,
       ApolloGiftingState,
-      OpusGiftingState,
       // Gift History page states
       GravityGiftHistoryState,
       SunriseGiftHistoryState,
