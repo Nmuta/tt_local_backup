@@ -11,7 +11,10 @@ import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-sol
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { ApolloMasterInventory } from '@models/apollo';
 
-export type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory | ApolloMasterInventory;
+export type MasterInventoryUnion =
+  | GravityMasterInventory
+  | SunriseMasterInventory
+  | ApolloMasterInventory;
 export type InventoryItemGroup = {
   category: string;
   items: MasterInventoryItem[];

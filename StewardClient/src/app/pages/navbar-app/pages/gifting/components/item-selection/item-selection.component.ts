@@ -26,7 +26,10 @@ import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { ApolloMasterInventory } from '@models/apollo';
 
-export type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory | ApolloMasterInventory;
+export type MasterInventoryUnion =
+  | GravityMasterInventory
+  | SunriseMasterInventory
+  | ApolloMasterInventory;
 
 /** The item-selection component. */
 @Component({

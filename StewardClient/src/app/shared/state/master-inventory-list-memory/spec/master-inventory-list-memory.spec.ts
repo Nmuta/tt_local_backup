@@ -8,6 +8,7 @@ import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { MasterInventoryListMemoryState } from '../master-inventory-list-memory.state';
 import { createMockGravityService, GravityService } from '@services/gravity';
 import {
+  GetApolloMasterInventoryList,
   GetGravityMasterInventoryList,
   GetSunriseMasterInventoryList,
 } from '../master-inventory-list-memory.actions';
@@ -36,7 +37,7 @@ describe('State: MasterInventoryListMemoryState', () => {
 
       service = TestBed.inject(MasterInventoryListMemoryState);
       store = TestBed.inject(Store);
-      
+
       mockGravityService = TestBed.inject(GravityService);
       mockSunriseService = TestBed.inject(SunriseService);
       mockApolloService = TestBed.inject(ApolloService);
@@ -170,6 +171,50 @@ describe('State: MasterInventoryListMemoryState', () => {
             }),
             tap(() => {
               expect(mockSunriseService.getMasterInventory).toHaveBeenCalled();
+            }),
+          )
+          .subscribe();
+      });
+    });
+  });
+
+  describe('[GetApolloMasterInventoryList] Action', () => {
+    describe('Master list already exists in state', () => {
+      beforeEach(() => {
+        store.reset({
+          giftingMasterListMemory: {
+            [GameTitleCodeName.FM7]: {},
+          },
+        });
+      });
+
+      it('should not request apollo master list from api', () => {
+        store
+          .dispatch(new GetApolloMasterInventoryList())
+          .pipe(
+            catchError(() => {
+              expect(false).toBeTruthy();
+              return NEVER;
+            }),
+            tap(() => {
+              expect(mockApolloService.getMasterInventory).not.toHaveBeenCalled();
+            }),
+          )
+          .subscribe();
+      });
+    });
+
+    describe('Master list does not exist in state', () => {
+      it('should request apollo master list from api', () => {
+        store
+          .dispatch(new GetApolloMasterInventoryList())
+          .pipe(
+            catchError(() => {
+              expect(false).toBeTruthy();
+              return NEVER;
+            }),
+            tap(() => {
+              expect(mockApolloService.getMasterInventory).toHaveBeenCalled();
             }),
           )
           .subscribe();
