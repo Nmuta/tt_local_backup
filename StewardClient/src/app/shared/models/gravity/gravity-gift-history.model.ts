@@ -7,6 +7,7 @@ export interface GravityGiftHistory {
   title: string;
   giftSendDateUtc: Date;
   giftInventory: GravityPlayerInventory;
+  requestingAgent: string;
 }
 
 /** LiveOps model for multiple gift history descriptions. */

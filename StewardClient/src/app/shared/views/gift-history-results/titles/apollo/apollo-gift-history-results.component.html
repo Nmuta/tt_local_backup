@@ -7,8 +7,8 @@
       <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            {{history.requestingAgent}} <br />
-            {{history.giftSendDateUtc?.toGMTString()}}
+            <div>{{history.requestingAgent}}</div>
+            <div [matTooltip]="history.giftSendDateUtc | date : 'long'">{{history.giftSendDateUtc| date : 'short'}}</div>
           </mat-panel-title>
           <mat-panel-description>
             <span class="inventoryPreview" *ngIf="history.giftInventory?.credits > 0"><span class="label">Credits</span><span class="data">{{history.giftInventory.credits}}</span></span>

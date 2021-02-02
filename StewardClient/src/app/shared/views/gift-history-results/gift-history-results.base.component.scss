@@ -9,11 +9,6 @@ p {
     margin-bottom: 0;
 }
 
-mat-expansion-panel-header {
-    padding-left: 12px;
-    padding-right: 12px;
-}
-
 mat-panel-title {
     display: inline;
     &, & > * {
@@ -22,14 +17,12 @@ mat-panel-title {
         text-overflow: ellipsis;
     }
 
-    flex-basis: auto;
+    flex-basis: auto; // Probably delte/
 }
 
 mat-panel-description {
     overflow: hidden;
     text-overflow: ellipsis;
-    // white-space: nowrap;
-    // display: inline;
     display: flex;
     flex-flow: row wrap;
     max-height: 2.5em;
@@ -48,6 +41,6 @@ mat-panel-description {
 }
 
 .scrollable {
-    height: 500px;
+    max-height: 80vh;
     overflow: auto;
 }

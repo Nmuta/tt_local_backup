@@ -7,6 +7,7 @@ export interface ApolloGiftHistory {
   title: string;
   giftSendDateUtc: Date;
   giftInventory: ApolloPlayerInventory;
+  requestingAgent: string;
 }
 
 /** LiveOps model for multiple gift history descriptions. */
