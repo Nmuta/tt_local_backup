@@ -5,15 +5,15 @@ export interface GravityPlayerDetails {
   t10Id: string;
   playFabId: string;
   userInventoryId: string;
-  lcid: number;
-  country: number;
-  region: number;
+  lcid: BigInt;
+  country: BigInt;
+  region: BigInt;
   ipAddress: string;
   subscriptionTier: string;
   lastLoginUtc: Date;
   firstLoginUtc: Date;
   ageGroup: unknown;
-  timeOffsetInSeconds: number;
+  timeOffsetInSeconds: BigInt;
   lastGameSettingsUsed: unknown;
   saveStates: unknown[];
 }

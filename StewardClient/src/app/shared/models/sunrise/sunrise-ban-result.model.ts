@@ -13,7 +13,7 @@ export interface SunriseBanDescription {
   startTimeUtc: Date;
   expireTimeUtc: Date;
   isActive: boolean;
-  countOfTimesExtended: number;
+  countOfTimesExtended: BigInt;
   lastExtendedTimeUtc: Date;
   lastExtendedReason: string;
   reason: string;

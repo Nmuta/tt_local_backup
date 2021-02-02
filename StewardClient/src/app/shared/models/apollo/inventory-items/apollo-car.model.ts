@@ -3,10 +3,10 @@ import { ApolloInventoryItem } from './apollo-inventory-item.model';
 /** Interface for sunrise car item. */
 export interface ApolloCar extends ApolloInventoryItem {
   vin: string;
-  baseCost: number;
-  collectorScore: number;
+  baseCost: BigInt;
+  collectorScore: BigInt;
   isOnlineOnly: boolean;
-  productionNumber: number;
+  productionNumber: BigInt;
   purchaseUtc: unknown;
   versionedLiveryId: unknown;
   versionedTuneId: unknown;
