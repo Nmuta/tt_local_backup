@@ -1,9 +1,9 @@
-import { Turn10IdString } from "@models/extended-types";
+import { GamertagString, Turn10IdString } from '@models/extended-types';
 
 /** Interface for gravity player details. */
 export interface GravityPlayerDetails {
   xuid: BigInt;
-  gamertag: string;
+  gamertag: GamertagString;
   t10Id: Turn10IdString;
   playFabId: string;
   userInventoryId: string;

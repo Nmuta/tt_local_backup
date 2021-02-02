@@ -1,9 +1,9 @@
 import { MSError } from './error.model';
-import { Turn10IdString } from './extended-types';
+import { GamertagString, Turn10IdString } from './extended-types';
 
 /** An identity query by gamertag. */
 interface IdentityQueryByGamertag {
-  gamertag: string;
+  gamertag: GamertagString;
 }
 
 /** An identity query by xuid. */

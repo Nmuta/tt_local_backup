@@ -1,4 +1,4 @@
-import { GuidLikeString } from "@models/extended-types";
+import { GuidLikeString } from '@models/extended-types';
 
 /** Interface for opus car item. */
 export interface OpusCar {

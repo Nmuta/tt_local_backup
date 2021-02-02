@@ -1,7 +1,9 @@
+import { GamertagString } from "@models/extended-types";
+
 /** The /v1/title/Sunrise/player/???/details model */
 export interface SunrisePlayerDetails {
   xuid: BigInt;
-  gamertag: string;
+  gamertag: GamertagString;
   region: BigInt;
   licensePlate: string;
   customizationSlots: BigInt[];
