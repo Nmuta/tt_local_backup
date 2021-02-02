@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { MatChipListChange } from '@angular/material/chips';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { IdentityResultAlpha, IdentityResultBeta, IdentityResultIntersection, IdentityResultUnion } from '@models/identity-query.model';
+import { IdentityResultIntersection, IdentityResultUnion } from '@models/identity-query.model';
 import { cloneDeep } from 'lodash';
 import { PlayerSelectionBaseComponent } from '../player-selection.base.component';
 
