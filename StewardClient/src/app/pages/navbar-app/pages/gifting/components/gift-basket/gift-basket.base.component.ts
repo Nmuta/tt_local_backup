@@ -9,8 +9,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { MasterInventoryItem } from '@models/master-inventory-item';
+import { ApolloMasterInventory } from '@models/apollo';
 
-export type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory;
+export type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory | ApolloMasterInventory;
 export type InventoryItemGroup = {
   category: string;
   items: MasterInventoryItem[];
@@ -29,8 +30,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
   /** Master inventory list. */
   public masterInventory: MasterInventoryUnion;
-  /** If gift basket is disabled. TODO: Remove once component is built out */
-  public disableCard: boolean = false;
   /** The gift basket of current items to be send. */
   public giftBasket = new MatTableDataSource<GiftBasketModel>();
   /** The gift basket display columns */

@@ -17,10 +17,16 @@ import {
   Validators,
 } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { InventoryItem, InventoryItemGroup } from '../gift-basket/gift-basket.base.component';
+import { InventoryItemGroup } from '../gift-basket/gift-basket.base.component';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import _ from 'lodash';
+import { MasterInventoryItem } from '@models/master-inventory-item';
+import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
+import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
+import { ApolloMasterInventory } from '@models/apollo';
+
+export type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory | ApolloMasterInventory;
 
 /** The item-selection component. */
 @Component({
@@ -31,10 +37,11 @@ import _ from 'lodash';
 export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   @ViewChild('quantity') quantityElement: ElementRef;
 
-  @Input() public inventoryItemGroups: InventoryItemGroup[];
-  @Output() public addItemEvent = new EventEmitter<InventoryItem>();
+  @Input() public masterInventory: MasterInventoryUnion;
+  @Output() public addItemEvent = new EventEmitter<MasterInventoryItem>();
 
-  public selectedItem: InventoryItem;
+  public inventoryItemGroups: InventoryItemGroup[];
+  public selectedItem: MasterInventoryItem;
   public itemInputValue: string = '';
 
   /** True while waiting on a request. */
@@ -60,13 +67,36 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   }
 
   /** Angular lifecycle hook. */
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes?.inventoryItemGroups && !!this.inventoryItemGroups) {
+  public ngOnChanges(_changes: SimpleChanges): void {
+    if (!!this.masterInventory) {
+      this.buildMatAutocompleteState();
       this.stateGroupOptions = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
         takeUntil(this.onDestroy$),
         startWith(''),
         map(value => this.filterGroup(value)),
       );
+    }
+  }
+
+  /** Sets up the stateGroups variable used with the autocomplete */
+  public buildMatAutocompleteState(): void {
+    this.inventoryItemGroups = [];
+    for (const prop in this.masterInventory) {
+      if (this.masterInventory.hasOwnProperty(prop)) {
+        const inventoryGroup = {
+          category: prop,
+          items: [],
+        } as InventoryItemGroup;
+
+        const masterInventoryItems = this.masterInventory[prop] as MasterInventoryItem[];
+        for (let i = 0; i < masterInventoryItems.length; i++) {
+          const masterInventoryItem = masterInventoryItems[i];
+          masterInventoryItem.itemType = prop;
+          inventoryGroup.items.push(masterInventoryItem);
+        }
+
+        this.inventoryItemGroups.push(inventoryGroup);
+      }
     }
   }
 
@@ -85,18 +115,18 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   }
 
   /** New item is selected from the dropdown. */
-  public newItemSelected(item: InventoryItem): void {
+  public newItemSelected(item: MasterInventoryItem): void {
     this.selectedItem = item;
     this.quantityElement?.nativeElement?.focus();
   }
 
   /** Mat option display */
-  public itemAutoCompleteDisplayFn(item: InventoryItem): string {
+  public itemAutoCompleteDisplayFn(item: MasterInventoryItem): string {
     return item?.description ?? '';
   }
 
   /** Autocomplete filter function. */
-  private filterGroup(value: string | InventoryItem): InventoryItemGroup[] {
+  private filterGroup(value: string | MasterInventoryItem): InventoryItemGroup[] {
     if (value) {
       if (typeof value !== 'string') {
         return this.inventoryItemGroups;
@@ -119,7 +149,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
     return this.inventoryItemGroups;
   }
 
-  private filter(prefix: string, opt: InventoryItem[], value: string): InventoryItem[] {
+  private filter(prefix: string, opt: MasterInventoryItem[], value: string): MasterInventoryItem[] {
     const filterValue = value.toLowerCase();
     const prefixFilterValue = prefix.toLowerCase();
     if (prefixFilterValue.includes(filterValue)) {
@@ -146,10 +176,10 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   }
 
   /** Compares a filter string against an InventoryItem, returning true if the string was found. */
-  private checkFilterAgainstInventoryItem(item: InventoryItem, filter: string): boolean {
+  private checkFilterAgainstInventoryItem(item: MasterInventoryItem, filter: string): boolean {
     return (
       item?.description?.toLowerCase().includes(filter) ||
-      item?.itemId?.toString()?.toLowerCase().includes(filter)
+      item?.id?.toString()?.toLowerCase().includes(filter)
     );
   }
 }

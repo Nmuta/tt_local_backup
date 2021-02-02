@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ItemSelectionComponent } from './item-selection.component';
 import { FormBuilder, FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { InventoryItem } from '../gift-basket/gift-basket.base.component';
+import { MasterInventoryItem } from '@models/master-inventory-item';
 
 describe('ItemSelectionComponent', () => {
   let fixture: ComponentFixture<ItemSelectionComponent>;
@@ -62,7 +62,7 @@ describe('ItemSelectionComponent', () => {
 
     describe('If there is a selection item', () => {
       const testInventoryItem = {
-        itemId: BigInt(1),
+        id: BigInt(1),
         description: 'test-description',
         quantity: 0,
         itemType: 'fake type',
@@ -102,7 +102,7 @@ describe('ItemSelectionComponent', () => {
 
   describe('Method: newItemSelected', () => {
     const testInventoryItem = {
-      itemId: BigInt(1),
+      id: BigInt(1),
       description: 'test-description',
       quantity: 0,
       itemType: 'fake type',
@@ -134,11 +134,11 @@ describe('ItemSelectionComponent', () => {
 
   describe('Method: itemAutoCompleteDisplayFn', () => {
     const testDescription = 'test description';
-    let testInventoryItem: InventoryItem;
+    let testInventoryItem: MasterInventoryItem;
 
     beforeEach(() => {
       testInventoryItem = {
-        itemId: BigInt(1),
+        id: BigInt(1),
         description: testDescription,
         quantity: 1,
         itemType: 'test type',

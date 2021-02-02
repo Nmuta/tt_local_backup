@@ -8,10 +8,13 @@ import { GravityService } from '@services/gravity';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
+  GetApolloMasterInventoryList,
   GetGravityMasterInventoryList,
   GetSunriseMasterInventoryList,
 } from './master-inventory-list-memory.actions';
 import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
+import { ApolloMasterInventory } from '@models/apollo';
+import { ApolloService } from '@services/apollo';
 
 /**
  * Defines the master inventory list memory model.
@@ -19,6 +22,7 @@ import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inve
 export class MasterInventoryListMemoryModel {
   public [GameTitleCodeName.Street]: GravityMasterInventoryLists;
   public [GameTitleCodeName.FH4]: SunriseMasterInventory;
+  public [GameTitleCodeName.FM7]: ApolloMasterInventory;
 }
 
 @Injectable()
@@ -27,6 +31,7 @@ export class MasterInventoryListMemoryModel {
   defaults: {
     [GameTitleCodeName.Street]: {},
     [GameTitleCodeName.FH4]: undefined,
+    [GameTitleCodeName.FM7]: undefined,
   },
 })
 /** Defines the lsp group memoty state. */
@@ -34,6 +39,7 @@ export class MasterInventoryListMemoryState {
   constructor(
     protected readonly gravityService: GravityService,
     protected readonly sunriseService: SunriseService,
+    protected readonly apolloService: ApolloService,
   ) {}
 
   /** Gets gravity's master inventory list. */
@@ -87,6 +93,27 @@ export class MasterInventoryListMemoryState {
     );
   }
 
+  /** Gets apollo's master inventory list. */
+  @Action(GetApolloMasterInventoryList, { cancelUncompleted: true })
+  public getApolloMasterInventoryList(
+    ctx: StateContext<MasterInventoryListMemoryModel>,
+  ): Observable<ApolloMasterInventory> {
+    const state = ctx.getState();
+
+    // Memory check
+    if (!!state[GameTitleCodeName.FM7]) {
+      return of(state[GameTitleCodeName.FM7]);
+    }
+
+    // If not found in memory, make request
+    const request$ = this.apolloService.getMasterInventory();
+    return request$.pipe(
+      tap(data => {
+        ctx.patchState({ [GameTitleCodeName.FM7]: data });
+      }),
+    );
+  }
+
   /** Gravity master inventory list. */
   @Selector()
   public static gravityMasterInventory(
@@ -101,5 +128,13 @@ export class MasterInventoryListMemoryState {
     state: MasterInventoryListMemoryModel,
   ): SunriseMasterInventory {
     return state[GameTitleCodeName.FH4];
+  }
+
+  /** Apollo master inventory list. */
+  @Selector()
+  public static apolloMasterInventory(
+    state: MasterInventoryListMemoryModel,
+  ): ApolloMasterInventory {
+    return state[GameTitleCodeName.FM7];
   }
 }

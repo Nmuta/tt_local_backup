@@ -12,6 +12,7 @@ import {
   GetSunriseMasterInventoryList,
 } from '../master-inventory-list-memory.actions';
 import { NEVER, of } from 'rxjs';
+import { ApolloService, createMockApolloService } from '@services/apollo';
 
 describe('State: MasterInventoryListMemoryState', () => {
   let service: MasterInventoryListMemoryState;
@@ -19,19 +20,26 @@ describe('State: MasterInventoryListMemoryState', () => {
 
   let mockGravityService: GravityService;
   let mockSunriseService: SunriseService;
+  let mockApolloService: ApolloService;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, NgxsModule.forRoot([MasterInventoryListMemoryState])],
-        providers: [createMockGravityService(), createMockSunriseService()],
+        providers: [
+          createMockGravityService(),
+          createMockSunriseService(),
+          createMockApolloService(),
+        ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
 
       service = TestBed.inject(MasterInventoryListMemoryState);
       store = TestBed.inject(Store);
+      
       mockGravityService = TestBed.inject(GravityService);
       mockSunriseService = TestBed.inject(SunriseService);
+      mockApolloService = TestBed.inject(ApolloService);
 
       store.reset({
         giftingMasterListMemory: {
@@ -44,6 +52,9 @@ describe('State: MasterInventoryListMemoryState', () => {
         .createSpy('getGameSettings')
         .and.returnValue(of({}));
       mockSunriseService.getMasterInventory = jasmine
+        .createSpy('getMasterInventory')
+        .and.returnValue(of({}));
+      mockApolloService.getMasterInventory = jasmine
         .createSpy('getMasterInventory')
         .and.returnValue(of({}));
     }),

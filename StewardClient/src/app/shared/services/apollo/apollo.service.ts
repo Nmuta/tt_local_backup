@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApolloPlayerDetails } from '@models/apollo';
+import { ApolloMasterInventory, ApolloPlayerDetails } from '@models/apollo';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,
@@ -57,5 +57,10 @@ export class ApolloService {
   /** Gets the apollo lsp groups. */
   public getLspGroups(): Observable<LspGroups> {
     return this.apiService.getRequest<LspGroups>(`${this.basePath}/groups`);
+  }
+
+  /** Gets the apollo master inventory. */
+  public getMasterInventory(): Observable<ApolloMasterInventory> {
+    return this.apiService.getRequest<ApolloMasterInventory>(`${this.basePath}/masterInventory`);
   }
 }
