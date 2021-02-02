@@ -115,7 +115,7 @@ describe('SunriseGiftHistoryComponent', () => {
       });
       describe('when selectedGroup is valid', () => {
         beforeEach(() => {
-          component.selectedGroup = { id: 4, name: 'testName' };
+          component.selectedGroup = { id: BigInt(4), name: 'testName' };
         });
         describe('when service returns valid gift histories', () => {
           const validGiftHistories: SunriseGiftHistories = [];

@@ -86,8 +86,8 @@ export class ApolloService {
       );
   }
 
-  /** Gets Gift history by a XUID. */
-  public getGiftHistoryByLspGroup(lspGroupId: number): Observable<ApolloGiftHistories> {
+  /** Gets Gift history by a LSP Group. */
+  public getGiftHistoryByLspGroup(lspGroupId: BigInt): Observable<ApolloGiftHistories> {
     return this.apiService
       .getRequest<ApolloGiftHistories>(`${this.basePath}/group/groupId(${lspGroupId})/giftHistory`)
       .pipe(

@@ -129,7 +129,7 @@ export class SunriseService {
   }
 
   /** Gets Gift history by a LSP group ID. */
-  public getGiftHistoryByLspGroup(lspGroupId: number): Observable<SunriseGiftHistories> {
+  public getGiftHistoryByLspGroup(lspGroupId: BigInt): Observable<SunriseGiftHistories> {
     return this.apiService
       .getRequest<SunriseGiftHistories>(`${this.basePath}/group/groupId(${lspGroupId})/giftHistory`)
       .pipe(
