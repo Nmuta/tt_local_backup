@@ -1,4 +1,4 @@
-import { GamertagString } from "@models/extended-types";
+import { GamertagString } from '@models/extended-types';
 
 /** The /v1/title/Sunrise/player/???/details model */
 export interface SunrisePlayerDetails {

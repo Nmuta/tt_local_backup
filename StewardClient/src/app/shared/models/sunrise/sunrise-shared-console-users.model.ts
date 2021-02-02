@@ -1,4 +1,4 @@
-import { GamertagString } from "@models/extended-types";
+import { GamertagString } from '@models/extended-types';
 
 /** A single shared console user. */
 export interface SunriseSharedConsoleUser {
