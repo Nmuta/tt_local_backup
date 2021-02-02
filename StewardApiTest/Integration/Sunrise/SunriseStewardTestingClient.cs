@@ -98,7 +98,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<List<SunriseCreditUpdate>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<SunriseBanResult>> BanPlayersAsync(SunriseBanParameters banParameters, Dictionary<string, string> headersToSend)
+        public async Task<IList<SunriseBanResult>> BanPlayersAsync(IList<SunriseBanParametersInput> banParameters, Dictionary<string, string> headersToSend)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
@@ -107,7 +107,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<SunriseBanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters, headersToSend).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<IList<SunriseBanResult>>> BanPlayersWithHeaderResponseAsync(SunriseBanParameters banParameters, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
+        public async Task<ResponseWithHeaders<IList<SunriseBanResult>>> BanPlayersWithHeaderResponseAsync(IList<SunriseBanParametersInput> banParameters, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 

@@ -231,11 +231,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
             const int maxXuidsPerRequest = 10;
 
-            if (banParameters.StartTimeUtc == DateTime.MinValue)
-            {
-                banParameters.StartTimeUtc = DateTime.UtcNow;
-            }
-
             var mappedBanParameters = this.mapper.Map<ForzaUserBanParameters>(banParameters);
 
             var xuids = new List<ulong>();
@@ -257,6 +252,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     xuids.Add(userResult.userData.qwXuid);
                 }
             }
+
+            xuids = xuids.Distinct().ToList();
 
             var banResults = new List<SunriseBanResult>();
 

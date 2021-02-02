@@ -6,6 +6,7 @@
     "ng": "ng",
     "lint": "ng lint",
     "eslint": "eslint -c ./.eslintrc.js --ext .ts,.html ./**/*.ts",
+    "find:missing_no_errors_schema": "grep -rn -C 0 --include \\*.component.spec.ts -L \"\\[NO_ERRORS_SCHEMA\\]\" ./src/*",
     "prettier:fix": "prettier --write .",
     "prettier:check": "prettier --check .",
     "zat": "C:\\Windows\\system32\\bash.exe -c \"cd app-local && zat serve\"",

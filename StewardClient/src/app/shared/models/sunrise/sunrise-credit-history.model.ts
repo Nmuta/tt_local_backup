@@ -2,10 +2,10 @@
 export interface SunriseCreditDetailsEntry {
   eventTimestampUtc: Date;
   deviceType: string;
-  creditsAfter: number;
-  creditAmount: number;
+  creditsAfter: BigInt;
+  creditAmount: BigInt;
   sceneName: string;
-  totalXp: number;
+  totalXp: BigInt;
 }
 
 /** The /v1/title/Sunrise/player/???/creditHistory model */

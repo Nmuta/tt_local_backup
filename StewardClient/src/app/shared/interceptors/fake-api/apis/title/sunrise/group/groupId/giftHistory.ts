@@ -13,7 +13,7 @@ export class SunriseGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/sunrise\/group\/groupId\((.+)\)\/giftHistory/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/group\/groupId\((.+)\)\/giftHistory$/i;
     return regex.test(url.pathname);
   }
 

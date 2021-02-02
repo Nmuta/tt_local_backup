@@ -378,10 +378,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_ExpireTimeNotProvided()
+        public async Task BanPlayers_DurationTimeNotProvided()
         {
             var banParameters = this.GenerateBanParameters();
-            banParameters[0].ExpireTimeUtc = default;
+            banParameters[0].Duration = null;
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -397,11 +397,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_ExpireTimeBeforeCurrentTime()
+        public async Task BanPlayers_DurationNegative()
         {
             var banParameters = this.GenerateBanParameters();
-            banParameters[0].ExpireTimeUtc = DateTime.UtcNow.AddMinutes(-10);
-            banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-15);
+            banParameters[0].Duration= TimeSpan.FromMinutes(-10);
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -417,11 +416,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_ExpireTimeBeforeStartTime()
+        public async Task BanPlayers_DurationZero()
         {
             var banParameters = this.GenerateBanParameters();
-            banParameters[0].ExpireTimeUtc = DateTime.UtcNow.AddMinutes(-15);
-            banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-10);
+            banParameters[0].Duration = TimeSpan.Zero;
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -1513,7 +1511,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             Assert.IsFalse(result.Any());
         }
 
-        private async Task<IList<ApolloBanResult>> BanPlayersWithHeaderResponseAsync(ApolloStewardTestingClient stewardClient, IList<ApolloBanParameters> banParameters, BackgroundJobStatus expectedStatus)
+        private async Task<IList<ApolloBanResult>> BanPlayersWithHeaderResponseAsync(ApolloStewardTestingClient stewardClient, IList<ApolloBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
@@ -1586,23 +1584,23 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return jobResult;
         }
 
-        private List<ApolloBanParameters> GenerateBanParameters()
+        private List<ApolloBanParametersInput> GenerateBanParameters()
         {
-            var newParams = new ApolloBanParameters
+            var newParams = new ApolloBanParametersInput
             {
                 Xuid = xuid,
                 Gamertag = gamertag,
                 FeatureArea = "Matchmaking",
                 Reason = "This is an automated test.",
-                StartTimeUtc = DateTime.UtcNow,
-                ExpireTimeUtc = DateTime.UtcNow.AddSeconds(5),
+                StartTimeUtc = null,
+                Duration = TimeSpan.FromSeconds(5),
                 BanAllConsoles = false,
                 BanAllPcs = false,
                 DeleteLeaderboardEntries = false,
                 SendReasonNotification = false
             };
 
-            return new List<ApolloBanParameters> { newParams };
+            return new List<ApolloBanParametersInput> { newParams };
         }
 
         private ApolloPlayerInventory CreatePlayerInventory()

@@ -5,8 +5,28 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
     /// <summary>
     ///     Represents an Apollo ban description.
     /// </summary>
-    public sealed class ApolloBanDescription : ApolloBanBase
+    public sealed class ApolloBanDescription
     {
+        /// <summary>
+        ///     Gets or sets the reason.
+        /// </summary>
+        public string Reason { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the feature area.
+        /// </summary>
+        public string FeatureArea { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the start time.
+        /// </summary>
+        public DateTime StartTimeUtc { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the expire time.
+        /// </summary>
+        public DateTime ExpireTimeUtc { get; set; }
+
         /// <summary>
         ///     Gets or sets the xuid.
         /// </summary>

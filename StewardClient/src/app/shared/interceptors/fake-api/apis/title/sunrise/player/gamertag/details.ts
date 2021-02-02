@@ -13,7 +13,7 @@ export class SunrisePlayerGamertagDetailsFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/sunrise\/player\/gamertag\((.+)\)\/details/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/player\/gamertag\((.+)\)\/details$/i;
     return regex.test(url.pathname);
   }
 

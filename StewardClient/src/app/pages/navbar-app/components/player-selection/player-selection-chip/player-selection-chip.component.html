@@ -1,0 +1,13 @@
+<span class="name" [matTooltip]="nameTooltip">
+  {{ name || 'N/A' }}
+</span>
+<ng-content></ng-content>
+<fa-icon
+  aria-role="button"
+  class="clickable"
+  [icon]="closeIcon"
+  clickStop
+  matTooltip="Remove player from list"
+  (click)="playerSelection.removeIdentityFromList(identity)"
+  title="Remove Player"
+></fa-icon>

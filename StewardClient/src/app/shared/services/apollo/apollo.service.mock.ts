@@ -1,5 +1,6 @@
 import { Injectable, Provider } from '@angular/core';
-import { of } from 'rxjs';
+import { ApolloPlayersBanFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/ban';
+import { defer, of } from 'rxjs';
 
 import { ApolloService } from './apollo.service';
 
@@ -13,6 +14,10 @@ export class MockApolloService {
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
     .and.returnValue(of({ xuid: BigInt(12345) }));
+
+  public postBanPlayers = jasmine
+    .createSpy('postBanPlayers')
+    .and.returnValue(defer(() => ApolloPlayersBanFakeApi.make()));
 }
 
 /** Creates an injectable mock for Apollo Service. */

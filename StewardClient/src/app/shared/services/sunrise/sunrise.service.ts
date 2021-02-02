@@ -7,6 +7,9 @@ import {
 } from '@models/identity-query.model';
 import { LspGroups } from '@models/lsp-group';
 import {
+  SunriseBanRequest,
+  SunriseBanResult,
+  SunriseBanSummary,
   SunrisePlayerDetails,
   SunrisePlayerNotifications,
   SunriseUserFlags,
@@ -19,7 +22,7 @@ import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.m
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -74,14 +77,14 @@ export class SunriseService {
   }
 
   /** Gets user flags by a XUID. */
-  public getFlagsByXuid(xuid: number): Observable<SunriseUserFlags> {
+  public getFlagsByXuid(xuid: BigInt): Observable<SunriseUserFlags> {
     return this.apiService.getRequest<SunriseUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
     );
   }
 
   /** Gets user flags by a XUID. */
-  public putFlagsByXuid(xuid: number, flags: SunriseUserFlags): Observable<SunriseUserFlags> {
+  public putFlagsByXuid(xuid: BigInt, flags: SunriseUserFlags): Observable<SunriseUserFlags> {
     return this.apiService.putRequest<SunriseUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
       flags,
@@ -89,24 +92,27 @@ export class SunriseService {
   }
 
   /** Gets user flags by a XUID. */
-  public getBanHistoryByXuid(xuid: number): Observable<LiveOpsBanDescriptions> {
-    return this.apiService
-      .getRequest<LiveOpsBanDescriptions>(`${this.basePath}/player/xuid(${xuid})/banHistory`)
-      .pipe(
-        map(banHistory => {
-          // these come in stringly-typed and must be converted
-          for (const ban of banHistory) {
-            ban.startTimeUtc = new Date(ban.startTimeUtc);
-            ban.expireTimeUtc = new Date(ban.expireTimeUtc);
-          }
+  public getBanHistoryByXuid(xuid: BigInt): Observable<LiveOpsBanDescriptions> {
+    return this.apiService.getRequest<LiveOpsBanDescriptions>(
+      `${this.basePath}/player/xuid(${xuid})/banHistory`,
+    );
+  }
 
-          return banHistory;
-        }),
-      );
+  /** Gets ban summaries by a list of XUIDs. */
+  public getBanSummariesByXuids(xuids: BigInt[]): Observable<SunriseBanSummary[]> {
+    return this.apiService.postRequest<SunriseBanSummary[]>(
+      `${this.basePath}/players/banSummaries`,
+      xuids,
+    );
+  }
+
+  /** Bans players by a list of XUIDs. */
+  public postBanPlayers(bans: SunriseBanRequest[]): Observable<SunriseBanResult[]> {
+    return this.apiService.postRequest<SunriseBanResult[]>(`${this.basePath}/players/ban`, bans);
   }
 
   /** Gets shared console users by XUID. */
-  public getSharedConsoleUsersByXuid(xuid: number): Observable<SunriseSharedConsoleUsers> {
+  public getSharedConsoleUsersByXuid(xuid: BigInt): Observable<SunriseSharedConsoleUsers> {
     return this.apiService.getRequest<SunriseSharedConsoleUsers>(
       `${this.basePath}/player/xuid(${xuid})/sharedConsoleUsers`,
     );
@@ -127,14 +133,14 @@ export class SunriseService {
   }
 
   /** Gets a player's Profile Summary by XUID. */
-  public getProfileSummaryByXuid(xuid: number): Observable<SunriseProfileSummary> {
+  public getProfileSummaryByXuid(xuid: BigInt): Observable<SunriseProfileSummary> {
     return this.apiService.getRequest<SunriseProfileSummary>(
       `${this.basePath}/player/xuid(${xuid})/profileSummary`,
     );
   }
 
   /** Gets a player's Profile Summary by XUID. */
-  public getCreditHistoryByXuid(xuid: number): Observable<SunriseCreditHistory> {
+  public getCreditHistoryByXuid(xuid: BigInt): Observable<SunriseCreditHistory> {
     return this.apiService.getRequest<SunriseCreditHistory>(
       `${this.basePath}/player/xuid(${xuid})/creditUpdates`,
     );
