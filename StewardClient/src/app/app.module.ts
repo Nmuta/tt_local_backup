@@ -131,6 +131,7 @@ function fakeApiOrNothing(): Provider[] {
     },
     LoggerService,
     Clipboard,
+    ...fakeApiOrNothing(),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
@@ -152,7 +153,6 @@ function fakeApiOrNothing(): Provider[] {
       useClass: BigintInterceptor,
       multi: true,
     },
-    ...fakeApiOrNothing(),
   ],
   bootstrap: [AppComponent],
 })

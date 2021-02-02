@@ -54,7 +54,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<ApolloPlayerDetails>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<ApolloBanResult>> BanPlayersAsync(IList<ApolloBanParameters> banParameters, Dictionary<string, string> headersToSend)
+        public async Task<IList<ApolloBanResult>> BanPlayersAsync(IList<ApolloBanParametersInput> banParameters, Dictionary<string, string> headersToSend)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<IList<ApolloBanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters, headersToSend).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<IList<ApolloBanResult>>> BanPlayersWithHeaderResponseAsync(IList<ApolloBanParameters> banParameters, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
+        public async Task<ResponseWithHeaders<IList<ApolloBanResult>>> BanPlayersWithHeaderResponseAsync(IList<ApolloBanParametersInput> banParameters, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 

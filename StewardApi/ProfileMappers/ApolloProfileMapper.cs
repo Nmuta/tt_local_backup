@@ -41,6 +41,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.AgeGroup, opt => opt.MapFrom(src => src.UserAgeGroup));
             this.CreateMap<AdminForzaProfile, ApolloInventoryProfile>().ReverseMap();
             this.CreateMap<ForzaUserBanSummary, ApolloBanSummary>();
+            this.CreateMap<ApolloBanParametersInput, ApolloBanParameters>()
+                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
+                .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));
             this.CreateMap<ApolloBanParameters, ForzaUserBanParameters>()
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))

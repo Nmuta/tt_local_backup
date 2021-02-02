@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using AutoFixture;
+using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Controllers;
+using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -579,7 +581,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             action().Should().BeAssignableTo<Task<IActionResult>>();
             var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
             result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParameters"));
+            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
         }
 
         [TestMethod]
@@ -642,7 +644,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             action().Should().BeAssignableTo<Task<IActionResult>>();
             var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
             result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParameters"));
+            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
         }
 
         [TestMethod]
@@ -1302,20 +1304,46 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             details.Should().BeOfType<List<SunriseGiftHistory>>();
         }
 
-        private SunriseBanParameters GenerateBanParameters()
+        private IList<SunriseBanParametersInput> GenerateBanParameters()
         {
-            return new SunriseBanParameters
+            return new List<SunriseBanParametersInput>
             {
-                Xuids = new List<ulong> { 111, 222, 333 },
-                Gamertags = new List<string> { "gamerT1", "gamerT2", "gamerT3" },
-                FeatureArea = "Matchmaking",
-                Reason = "Disgusting license plate.",
-                StartTimeUtc = DateTime.UtcNow,
-                ExpireTimeUtc = DateTime.UtcNow.AddSeconds(1),
-                BanAllConsoles = false,
-                BanAllPcs = false,
-                DeleteLeaderboardEntries = false,
-                SendReasonNotification = false
+                new SunriseBanParametersInput {
+                    Xuid = 111,
+                    Gamertag = "gamerT1",
+                    FeatureArea = "Matchmaking",
+                    Reason = "Disgusting license plate.",
+                    StartTimeUtc = DateTime.UtcNow,
+                    Duration = TimeSpan.FromSeconds(1),
+                    BanAllConsoles = false,
+                    BanAllPcs = false,
+                    DeleteLeaderboardEntries = false,
+                    SendReasonNotification = false
+                },
+                new SunriseBanParametersInput {
+                    Xuid = 222,
+                    Gamertag = "gamerT2",
+                    FeatureArea = "Matchmaking",
+                    Reason = "Disgusting license plate.",
+                    StartTimeUtc = DateTime.UtcNow,
+                    Duration = TimeSpan.FromSeconds(1),
+                    BanAllConsoles = false,
+                    BanAllPcs = false,
+                    DeleteLeaderboardEntries = false,
+                    SendReasonNotification = false
+                },
+                new SunriseBanParametersInput {
+                    Xuid = 333,
+                    Gamertag = "gamerT3",
+                    FeatureArea = "Matchmaking",
+                    Reason = "Disgusting license plate.",
+                    StartTimeUtc = DateTime.UtcNow,
+                    Duration = TimeSpan.FromSeconds(1),
+                    BanAllConsoles = false,
+                    BanAllPcs = false,
+                    DeleteLeaderboardEntries = false,
+                    SendReasonNotification = false
+                }
             };
         }
 
@@ -1377,11 +1405,17 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public IJobTracker JobTracker { get; set; } = Substitute.For<IJobTracker>();
 
+            public IMapper Mapper { get; set; } = Substitute.ForPartsOf<Mapper>(new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new SunriseProfileMapper());
+                mc.AllowNullCollections = true;
+            }));
+
             public IRequestValidator<SunrisePlayerInventory> PlayerInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunrisePlayerInventory>>();
 
             public IRequestValidator<SunriseGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseGroupGift>>();
 
-            public IRequestValidator<SunriseBanParameters> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseBanParameters>>();
+            public IRequestValidator<SunriseBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseBanParametersInput>>();
 
             public SunriseController Build() => new SunriseController(
                                                                       this.SunrisePlayerDetailsProvider,
@@ -1392,6 +1426,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                                                                       this.Configuration,
                                                                       this.Scheduler,
                                                                       this.JobTracker,
+                                                                      this.Mapper,
                                                                       this.PlayerInventoryRequestValidator,
                                                                       this.GroupGiftRequestValidator,
                                                                       this.BanParametersRequestValidator)

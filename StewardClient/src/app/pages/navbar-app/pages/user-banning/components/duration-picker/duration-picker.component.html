@@ -1,6 +1,6 @@
 <mat-form-field class="date-picker" appearance="fill">
   <mat-label>Ban End Date</mat-label>
-  <input matInput [matDatepicker]="datePicker" disabled />
+  <input matInput [matDatepicker]="datePicker" [value]="targetDate" disabled />
   <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
   <mat-datepicker #datePicker></mat-datepicker>
 </mat-form-field>
