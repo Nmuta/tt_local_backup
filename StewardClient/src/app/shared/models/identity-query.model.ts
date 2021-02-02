@@ -144,3 +144,6 @@ export type IdentityResultAlphaBatch = IdentityResultAlpha[];
  * @see IdentityResultBeta
  */
 export type IdentityResultBetaBatch = IdentityResultBeta[];
+
+/** Union of IdentityResultAlpha and IdentityResultBeta */
+export type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;

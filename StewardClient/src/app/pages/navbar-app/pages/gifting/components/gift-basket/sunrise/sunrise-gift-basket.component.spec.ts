@@ -7,6 +7,7 @@ import { SunriseGiftBasketComponent } from './sunrise-gift-basket.component';
 import { GetSunriseMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { of } from 'rxjs';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('SunriseGiftBasketComponent', () => {
   let fixture: ComponentFixture<SunriseGiftBasketComponent>;
@@ -21,6 +22,7 @@ describe('SunriseGiftBasketComponent', () => {
           RouterTestingModule.withRoutes([]),
           HttpClientTestingModule,
           NgxsModule.forRoot(),
+          ReactiveFormsModule,
         ],
         declarations: [SunriseGiftBasketComponent],
         schemas: [NO_ERRORS_SCHEMA],
@@ -53,6 +55,8 @@ describe('SunriseGiftBasketComponent', () => {
       mockStore.selectSnapshot = jasmine
         .createSpy('selectSnapshot')
         .and.returnValue(testMasterInventory);
+
+      component.buildMatAutocompleteState = jasmine.createSpy('buildMatAutocompleteState');
     });
 
     it('should dispatch GetSunriseMasterInventoryList action', () => {
@@ -67,6 +71,12 @@ describe('SunriseGiftBasketComponent', () => {
       expect(component.masterInventory).not.toBeUndefined();
       expect(component.masterInventory).not.toBeNull();
       expect(component.masterInventory).toEqual(testMasterInventory);
+    });
+
+    it('should call buildMatAutocompleteState', () => {
+      component.ngOnInit();
+
+      expect(component.buildMatAutocompleteState).toHaveBeenCalled();
     });
   });
 });

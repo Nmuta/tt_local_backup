@@ -6,7 +6,6 @@ import { ApolloGiftingComponent } from './apollo/apollo-gifting.component';
 
 import { GiftingComponent } from './gifting.component';
 import { GravityGiftingComponent } from './gravity/gravity-gifting.component';
-import { OpusGiftingComponent } from './opus/opus-gifting.component';
 import { SunriseGiftingComponent } from './sunrise/sunrise-gifting.component';
 
 const routes: Routes = [
@@ -36,12 +35,6 @@ const routes: Routes = [
         path: 'apollo',
         canActivate: [TitleMemorySetGuard],
         component: ApolloGiftingComponent,
-        pathMatch: 'full',
-      },
-      {
-        path: 'opus',
-        canActivate: [TitleMemorySetGuard],
-        component: OpusGiftingComponent,
         pathMatch: 'full',
       },
     ],

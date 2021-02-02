@@ -1,5 +1,74 @@
 @import '/src/variables.scss';
 
 mat-card {
-  width: 100%;
+  min-width: 450px;
+
+  .hide-content {
+    display: none;
+  }
+
+  .item-selection-form-field {
+    max-width: 400px;
+    width: 100%;
+    margin-right: 10px;
+  }
+
+  .quantity-form-field {
+    width: 100px;
+    margin-right: 10px;
+  }
+
+  .table-container {
+    max-height: 500px;
+    overflow: auto;
+    margin-top: 30px;
+
+    table {
+      width: 100%;
+
+      .mat-column-quantity {
+        width: 160px !important;
+
+        mat-form-field {
+          width: 80px !important;
+        }
+
+        fa-icon {
+          margin-left: 0.6em;
+          margin-right: 0.6em;
+        }
+      }
+
+      .mat-column-remove {
+        width: 50px !important;
+      }
+
+      .mat-row {
+        td {
+          padding-top: 10px !important;
+          padding-bottom: 10px !important;
+        }
+
+        fa-icon {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .send-gift-basket-container {
+    margin-top: 100px;
+
+    .send-gift-basket {
+      padding: 7px 20px;
+      position: relative;
+      top: -7px;
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  mat-card {
+    min-width: unset;
+  }
 }
