@@ -11,9 +11,7 @@ import { PlayerSelectionBaseComponent } from '../player-selection.base.component
   styleUrls: ['./player-selection-chip.component.scss'],
 })
 export class PlayerSelectionChipComponent implements OnChanges {
-  @Input() public playerSelection: PlayerSelectionBaseComponent<
-    IdentityResultUnion
-  > = null;
+  @Input() public playerSelection: PlayerSelectionBaseComponent<IdentityResultUnion> = null;
   @Input() public identity: IdentityResultUnion = null;
 
   @ViewChild('chip') public chip: MatChip;

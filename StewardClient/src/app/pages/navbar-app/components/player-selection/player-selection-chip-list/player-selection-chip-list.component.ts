@@ -37,9 +37,7 @@ export class PlayerSelectionChipListComponent implements OnChanges {
   @ContentChild(TemplateRef) public template: TemplateRef<unknown>;
 
   @Output() public selectionChange = new EventEmitter<IdentityResultUnion>();
-  @Input() public playerSelection: PlayerSelectionBaseComponent<
-    IdentityResultIntersection
-  > = null;
+  @Input() public playerSelection: PlayerSelectionBaseComponent<IdentityResultIntersection> = null;
   @Input() public identities: IdentityResultUnion[] = [];
   public augmentedIdentities: IdentityResultUnionAugmented[] = [];
 

@@ -10,9 +10,7 @@ import { PlayerSelectionBaseComponent } from '@navbar-app/components/player-sele
   styleUrls: ['./ban-chips.component.scss'],
 })
 export class BanChipsComponent {
-  @Input() public playerSelection: PlayerSelectionBaseComponent<
-    IdentityResultUnion
-  > = null;
+  @Input() public playerSelection: PlayerSelectionBaseComponent<IdentityResultUnion> = null;
 
   public closeIcon = faTimesCircle;
 }
