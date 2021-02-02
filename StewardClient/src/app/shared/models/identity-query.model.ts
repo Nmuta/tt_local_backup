@@ -1,4 +1,5 @@
 import { MSError } from './error.model';
+import { Turn10IdString } from './extended-types';
 
 /** An identity query by gamertag. */
 interface IdentityQueryByGamertag {
@@ -12,7 +13,7 @@ interface IdentityQueryByXuid {
 
 /** An identity query by t10Id. */
 interface IdentityQueryByT10Id {
-  t10Id: string;
+  t10Id: Turn10IdString;
 }
 
 /** Type-checking for @see IdentityQueryByGamertag */
@@ -35,7 +36,7 @@ export function isT10IdQuery(mystery: unknown): mystery is IdentityQueryByT10Id 
 
 /** Contextual information about T10IDs. */
 export interface T10IdInfo {
-  t10Id: string;
+  t10Id: Turn10IdString;
   createdUtc: Date;
   lastAccessedUtc: Date;
 }
