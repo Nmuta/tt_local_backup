@@ -185,7 +185,7 @@ describe('GiftBasketBaseComponent', () => {
           gamertag: 'test-gamertag',
         },
       ];
-      component.lspGroup = { id: 1, name: 'test-lsp-group' };
+      component.lspGroup = { id: BigInt(1), name: 'test-lsp-group' };
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       component.giftBasket.data = component.giftBasket.data = [
         {
