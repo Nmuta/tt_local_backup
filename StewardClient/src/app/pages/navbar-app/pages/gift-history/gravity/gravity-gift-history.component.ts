@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { GiftHistoryBaseComponent } from '../base/gift-history.base.component';
 import { GravityGiftHistoryState } from './state/gravity-gift-history.state';
 import { SetGravitySelectedPlayerIdentities } from './state/gravity-gift-history.state.actions';
+import { first } from 'lodash';
 
 /** The gravity gift history page for the Navbar app. */
 @Component({
@@ -33,8 +34,7 @@ export class GravityGiftHistoryComponent
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultBetaBatch) => {
         this.selectedPlayerIdentities = playerIdentities;
-        this.selectedPlayer =
-          this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
+        this.selectedPlayer = first(this.selectedPlayerIdentities);
       });
   }
 

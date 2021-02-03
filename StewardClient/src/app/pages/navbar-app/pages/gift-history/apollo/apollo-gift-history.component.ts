@@ -13,6 +13,7 @@ import {
   SetApolloGiftHistoryMatTabIndex,
   SetApolloGiftHistorySelectedPlayerIdentities,
 } from './state/apollo-gift-history.state.actions';
+import { first } from 'lodash';
 
 /** The gift history page for the Navbar app. */
 @Component({
@@ -47,8 +48,7 @@ export class ApolloGiftHistoryComponent
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultAlphaBatch) => {
         this.selectedPlayerIdentities = playerIdentities;
-        this.selectedPlayer =
-          this.selectedPlayerIdentities.length > 0 ? this.selectedPlayerIdentities[0] : undefined;
+        this.selectedPlayer = first(this.selectedPlayerIdentities);
       });
   }
 
