@@ -1,5 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
+import { fakeXuid } from '@interceptors/fake-api/utility';
 import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
 import { of } from 'rxjs';
@@ -53,6 +54,23 @@ describe('OpusService', () => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,
           jasmine.any(Object),
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getPlayerInventoryByXuid', () => {
+    const xuid = fakeXuid();
+
+    beforeEach(() => {
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call apiServiceMock.getRequest', done => {
+      service.getPlayerInventoryByXuid(xuid).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${xuid})/inventory`
         );
         done();
       });

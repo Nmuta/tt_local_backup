@@ -100,7 +100,7 @@ describe('service: GravityService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getPlayerInventoryByT10Id(expectedT10Id).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/inventory/t10Id(${expectedT10Id})`,
+          `${service.basePath}/player/t10Id(${expectedT10Id})/inventory`,
         );
         done();
       });
@@ -122,7 +122,7 @@ describe('service: GravityService', () => {
         .getPlayerInventoryByProfileIdWithT10Id(expectedt10Id, expectedProfileId)
         .subscribe(() => {
           expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-            `${service.basePath}/player/inventory/t10Id(${expectedt10Id})/profileId(${expectedProfileId})`,
+            `${service.basePath}/player/t10Id(${expectedt10Id})/profileId(${expectedProfileId})/inventory`,
           );
           done();
         });
