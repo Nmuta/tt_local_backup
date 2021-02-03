@@ -123,7 +123,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<SunrisePlayerInventory>();
+                var response = action();
+                response.Result.Should().BeOfType<SunrisePlayerInventory>();
             }
         }
 
@@ -168,16 +169,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuids = Fixture.Create<List<ulong>>();
             var gamertags = Fixture.Create<List<string>>();
             var groupId = Fixture.Create<int>();
-            var playerInventory = Fixture.Create<SunrisePlayerInventory>();
+            var giftInventory = Fixture.Create<SunriseMasterInventory>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, playerInventory, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(xuids, playerInventory, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(gamertags, playerInventory, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, playerInventory, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, giftInventory, requestingAgent).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(xuids, giftInventory, requestingAgent).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, giftInventory, requestingAgent).ConfigureAwait(false)
             };
 
             // Assert.
@@ -204,14 +204,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             {
                 async () => await provider.UpdatePlayerInventoryAsync(xuid, null, requestingAgent).ConfigureAwait(false),
                 async () => await provider.UpdatePlayerInventoriesAsync(xuids, null, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(gamertags, null, requestingAgent).ConfigureAwait(false),
                 async () => await provider.UpdateGroupInventoriesAsync(groupId, null, requestingAgent).ConfigureAwait(false)
             };
 
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventory"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftInventory"));
             }
         }
 
@@ -223,25 +222,21 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var xuids = Fixture.Create<List<ulong>>();
-            var gamertags = Fixture.Create<List<string>>();
             var groupId = Fixture.Create<int>();
-            var playerInventory = Fixture.Create<SunrisePlayerInventory>();
+            var giftInventory = Fixture.Create<SunriseMasterInventory>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, playerInventory, null).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(xuids, playerInventory, null).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(xuids, playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(xuids, playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(gamertags, playerInventory, null).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(gamertags, playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(gamertags, playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, playerInventory, null).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, giftInventory, null).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, giftInventory, TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, giftInventory, TestConstants.WhiteSpace).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(xuids, giftInventory, null).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(xuids, giftInventory, TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(xuids, giftInventory, TestConstants.WhiteSpace).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, giftInventory, null).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, giftInventory, TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, giftInventory, TestConstants.WhiteSpace).ConfigureAwait(false)
             };
 
             // Assert.
@@ -257,30 +252,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var playerInventory = Fixture.Create<SunrisePlayerInventory>();
+            var giftInventory = Fixture.Create<SunriseMasterInventory>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync((IList<ulong>)null, playerInventory, requestingAgent).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync((IList<ulong>)null, giftInventory, requestingAgent).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UpdatePlayerInventoriesAsync_WithNullGamertags_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var playerInventory = Fixture.Create<SunrisePlayerInventory>();
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync((IList<string>)null, playerInventory, requestingAgent).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gamertags"));
         }
 
         private sealed class Dependencies

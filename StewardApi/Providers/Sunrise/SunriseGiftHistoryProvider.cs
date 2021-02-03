@@ -48,15 +48,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, SunrisePlayerInventory playerInventory)
+        public async Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, SunriseMasterInventory giftInventory)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            giftInventory.ShouldNotBeNull(nameof(giftInventory));
 
             var playerId = $"{giftHistoryAntecedent}:{id}";
-            var giftHistory = new GiftHistory(playerId, title, requestingAgent, DateTime.UtcNow, playerInventory.ToJson());
+            var giftHistory = new GiftHistory(playerId, title, requestingAgent, DateTime.UtcNow, giftInventory.ToJson());
             var kustoColumnMappings = giftHistory.ToJsonColumnMappings();
             var tableName = typeof(GiftHistory).Name;
             var giftHistories = new List<GiftHistory> { giftHistory };

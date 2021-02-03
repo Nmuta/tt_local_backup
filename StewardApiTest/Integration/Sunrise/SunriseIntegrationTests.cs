@@ -1292,7 +1292,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var groupGift = this.CreateGroupGift();
             groupGift.Xuids = new List<ulong>();
-            groupGift.Gamertags = new List<string>();
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -1337,113 +1336,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             try
             {
                 await unauthorizedClient.UpdateGroupInventoriesByXuidAsync(groupGift, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        [Ignore]
-        public async Task UpdateGroupInventoriesByGamertag()
-        {
-            var groupGift = this.CreateGroupGift();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            var result = await stewardClient.UpdateGroupInventoriesByGamertagAsync(groupGift, headersToSend).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Credits);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByGamertag_InvalidGiftInventory()
-        {
-            var groupGift = this.CreateGroupGift();
-            groupGift.GiftInventory = null;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await stewardClient.UpdateGroupInventoriesByGamertagAsync(groupGift, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByGamertag_NoRequestingAgent()
-        {
-            var groupGift = this.CreateGroupGift();
-
-            try
-            {
-                await stewardClient.UpdateGroupInventoriesByGamertagAsync(groupGift, new Dictionary<string, string>()).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByGamertag_NoRecipient()
-        {
-            var groupGift = this.CreateGroupGift();
-            groupGift.Xuids = new List<ulong>();
-            groupGift.Gamertags = new List<string>();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await stewardClient.UpdateGroupInventoriesByGamertagAsync(groupGift, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByGamertag_InvalidRecipient()
-        {
-            var groupGift = this.CreateGroupGift();
-            groupGift.Gamertags = new List<string> { TestConstants.InvalidGamertag };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await stewardClient.UpdateGroupInventoriesByGamertagAsync(groupGift, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByGamertag_Unauthorized()
-        {
-            var groupGift = this.CreateGroupGift();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await unauthorizedClient.UpdateGroupInventoriesByGamertagAsync(groupGift, headersToSend).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1698,6 +1590,66 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             };
         }
 
+        private SunriseMasterInventory CreateGiftInventory()
+        {
+            var giftInventory = new SunriseMasterInventory();
+
+            // TODO: Add gift reason
+            // GiftReason = "Integration Test Run"
+
+            giftInventory.CreditRewards = giftInventory.CreditRewards.Select(creditReward => {
+                creditReward.Quantity = 1;
+                return creditReward;
+            }).ToList();
+
+            giftInventory.Cars = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 2616,
+                    Quantity = 1
+                }
+            };
+
+            giftInventory.CarHorns = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 22,
+                    Quantity = 1
+                }
+            };
+
+            giftInventory.VanityItems = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 3,
+                    Quantity = 1
+                }
+            };
+
+            giftInventory.Emotes = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 6,
+                    Quantity = 1
+                }
+            };
+
+            giftInventory.QuickChatLines = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 190,
+                    Quantity = 1
+                }
+            };
+
+            return giftInventory;
+        }
+
         private SunrisePlayerInventory CreatePlayerInventory()
         {
             return new SunrisePlayerInventory
@@ -1779,13 +1731,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
                     xuid,
                     xuid
                 },
-                Gamertags = new List<string>
-                {
-                    gamertag,
-                    gamertag,
-                    gamertag
-                },
-                GiftInventory = this.CreatePlayerInventory()
+                GiftInventory = this.CreateGiftInventory()
             };
         }
     }

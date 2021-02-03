@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation;
+using Turn10.Services.Authentication;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -52,7 +54,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
         private readonly IScheduler scheduler;
-        private readonly IRequestValidator<SunrisePlayerInventory> playerInventoryRequestValidator;
+        private readonly IRequestValidator<SunriseMasterInventory> masterInventoryRequestValidator;
         private readonly IRequestValidator<SunriseGroupGift> groupGiftRequestValidator;
         private readonly IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator;
         private readonly string giftingPassword;
@@ -70,7 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="jobTracker">The job tracker.</param>
         /// <param name="mapper">The mapper.</param>
-        /// <param name="playerInventoryRequestValidator">The player inventory request validator.</param>
+        /// <param name="masterInventoryRequestValidator">The player inventory request validator.</param>
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
         /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
         public SunriseController(
@@ -84,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IScheduler scheduler,
             IJobTracker jobTracker,
             IMapper mapper,
-            IRequestValidator<SunrisePlayerInventory> playerInventoryRequestValidator,
+            IRequestValidator<SunriseMasterInventory> masterInventoryRequestValidator,
             IRequestValidator<SunriseGroupGift> groupGiftRequestValidator,
             IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator)
         {
@@ -98,7 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
             mapper.ShouldNotBeNull(nameof(mapper));
-            playerInventoryRequestValidator.ShouldNotBeNull(nameof(playerInventoryRequestValidator));
+            masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
@@ -111,7 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
             this.mapper = mapper;
-            this.playerInventoryRequestValidator = playerInventoryRequestValidator;
+            this.masterInventoryRequestValidator = masterInventoryRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
             this.banParametersRequestValidator = banParametersRequestValidator;
 
@@ -781,46 +783,49 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Updates the player inventory.
         /// </summary>
-        /// <param name="playerInventory">The player inventory.</param>
+        /// <param name="xuid">The player XUID.</param>
+        /// <param name="giftInventory">The player inventory.</param>
         /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
-        ///     The <see cref="SunrisePlayerInventory"/>.
+        ///     The <see cref="SunriseMasterInventory"/>.
         /// </returns>
-        [HttpPost("player/xuid/inventory")]
-        [SwaggerResponse(201, type: typeof(SunrisePlayerInventory))]
+        [HttpPost("player/xuid({xuid})/inventory")]
+        [SwaggerResponse(201, type: typeof(SunriseMasterInventory))]
         [SwaggerResponse(202)]
-        public async Task<IActionResult> UpdatePlayerInventory([FromBody] SunrisePlayerInventory playerInventory, [FromQuery] bool useBackgroundProcessing, [FromHeader] string requestingAgent)
+        public async Task<IActionResult> UpdatePlayerInventory(ulong xuid, [FromBody] SunriseMasterInventory giftInventory, [FromQuery] bool useBackgroundProcessing)
         {
             try
             {
-                playerInventory.ShouldNotBeNull(nameof(playerInventory));
+                var requestingAgent = this.User.GetClaimValue(ClaimTypes.Email);
+
+                xuid.ShouldNotBeNull(nameof(xuid));
+                giftInventory.ShouldNotBeNull(nameof(giftInventory));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-                this.playerInventoryRequestValidator.ValidateIds(playerInventory, this.ModelState);
-                this.playerInventoryRequestValidator.Validate(playerInventory, this.ModelState);
+                this.masterInventoryRequestValidator.Validate(giftInventory, this.ModelState);
+                this.masterInventoryRequestValidator.ValidateIds(giftInventory, this.ModelState);
 
                 if (!this.ModelState.IsValid)
                 {
-                    var result = this.playerInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
+                    var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
 
                     return this.BadRequest(result);
                 }
 
-                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(playerInventory.Xuid).ConfigureAwait(true))
+                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
                 {
-                    return this.NotFound($"No profile found for XUID: {playerInventory.Xuid}.");
+                    return this.NotFound($"No profile found for XUID: {xuid}.");
                 }
 
                 if (!useBackgroundProcessing)
                 {
-                    await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.Xuid, playerInventory, requestingAgent).ConfigureAwait(true);
+                    await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoryAsync(xuid, giftInventory, requestingAgent).ConfigureAwait(true);
 
-                    return this.Created(this.Request.Path, playerInventory);
+                    return this.Created(this.Request.Path, giftInventory);
                 }
 
                 var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(playerInventory.ToJson(), username).ConfigureAwait(true);
+                var jobId = await this.AddJobIdToHeaderAsync(giftInventory.ToJson(), username).ConfigureAwait(true);
 
                 async Task BackgroundProcessing(CancellationToken cancellationToken)
                 {
@@ -828,9 +833,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     // Do not throw.
                     try
                     {
-                        await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.Xuid, playerInventory, requestingAgent).ConfigureAwait(true);
+                        await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoryAsync(xuid, giftInventory, requestingAgent).ConfigureAwait(true);
 
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, playerInventory.ToJson()).ConfigureAwait(true);
+                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, giftInventory.ToJson()).ConfigureAwait(true);
                     }
                     catch (Exception)
                     {
@@ -840,7 +845,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-                return this.Accepted();
+                return this.Ok();
             }
             catch (Exception ex)
             {
@@ -853,18 +858,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="groupGift">The group gift.</param>
         /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
         ///     The <see cref="SunrisePlayerInventory"/>.
         /// </returns>
-        [HttpPost("group/xuids/inventory")]
+        [HttpPost("group/players/inventory")]
         [SwaggerResponse(201, type: typeof(SunrisePlayerInventory))]
         [SwaggerResponse(202)]
-        public async Task<IActionResult> UpdateGroupInventories([FromBody] SunriseGroupGift groupGift, [FromQuery] bool useBackgroundProcessing, [FromHeader] string requestingAgent)
+        public async Task<IActionResult> UpdateGroupInventories([FromBody] SunriseGroupGift groupGift, [FromQuery] bool useBackgroundProcessing)
         {
             try
             {
+                var requestingAgent = this.User.GetClaimValue(ClaimTypes.Email);
+
                 groupGift.ShouldNotBeNull(nameof(groupGift));
+                groupGift.GiftInventory.ShouldNotBeNull(nameof(groupGift.GiftInventory));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
                 var stringBuilder = new StringBuilder();
@@ -874,9 +881,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 if (!this.ModelState.IsValid)
                 {
-                    var result = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
-
-                    return this.BadRequest(result);
+                    var errorResponse = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
+                    return this.BadRequest(errorResponse);
                 }
 
                 foreach (var xuid in groupGift.Xuids)
@@ -920,7 +926,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-                return this.Accepted();
+                return this.Ok();
             }
             catch (Exception ex)
             {
@@ -929,130 +935,40 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Update group inventories.
+        ///     Update inventories for an LSP group.
         /// </summary>
-        /// <param name="groupGift">The group gift.</param>
-        /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
+        /// <param name="groupId">The LSP group ID.</param>
+        /// <param name="giftInventory">The player inventory.</param>
         /// <returns>
         ///     The <see cref="SunrisePlayerInventory"/>.
         /// </returns>
-        [HttpPost("group/gamertags/inventory")]
-        [SwaggerResponse(201, type: typeof(SunrisePlayerInventory))]
-        [SwaggerResponse(202)]
-        public async Task<IActionResult> UpdateGroupInventoriesByGamertags(
-            [FromBody] SunriseGroupGift groupGift,
-            [FromQuery] bool useBackgroundProcessing,
-            [FromHeader] string requestingAgent)
-        {
-            try
-            {
-                groupGift.ShouldNotBeNull(nameof(groupGift));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-                var stringBuilder = new StringBuilder();
-
-                this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
-                this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
-
-                if (!this.ModelState.IsValid)
-                {
-                    var result = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
-
-                    return this.BadRequest(result);
-                }
-
-                foreach (var gamertag in groupGift.Gamertags)
-                {
-                    if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(gamertag).ConfigureAwait(true))
-                    {
-                        stringBuilder.Append($"{gamertag} ");
-                    }
-                }
-
-                if (stringBuilder.Length > 0)
-                {
-                    return this.NotFound($"Players with gamertags: {stringBuilder} were not found.");
-                }
-
-                if (!useBackgroundProcessing)
-                {
-                    await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift.Gamertags, groupGift.GiftInventory, requestingAgent).ConfigureAwait(true);
-
-                    return this.Created(this.Request.Path, groupGift.GiftInventory);
-                }
-
-                var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), username).ConfigureAwait(true);
-
-                async Task BackgroundProcessing(CancellationToken cancellationToken)
-                {
-                    // Throwing within the hosting environment background worker seems to have significant consequences.
-                    // Do not throw.
-                    try
-                    {
-                        await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift.Gamertags, groupGift.GiftInventory, requestingAgent).ConfigureAwait(true);
-
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed).ConfigureAwait(true);
-                    }
-                    catch (Exception)
-                    {
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
-                    }
-                }
-
-                this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
-        }
-
-        /// <summary>
-        ///     Update group inventories.
-        /// </summary>
-        /// <param name="groupId">The group ID.</param>
-        /// <param name="playerInventory">The player inventory.</param>
-        /// <param name="adminAuth">The admin auth.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
-        /// <returns>
-        ///     The <see cref="SunrisePlayerInventory"/>.
-        /// </returns>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin)]
         [HttpPost("group/groupId({groupId})/inventory")]
         [SwaggerResponse(201, type: typeof(SunrisePlayerInventory))]
-        public async Task<IActionResult> UpdateGroupInventories(
-            int groupId,
-            [FromBody] SunrisePlayerInventory playerInventory,
-            [FromHeader] string adminAuth,
-            [FromHeader] string requestingAgent)
+        public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] SunriseMasterInventory giftInventory)
         {
             try
             {
-                playerInventory.ShouldNotBeNull(nameof(playerInventory));
-                adminAuth.ShouldNotBeNullEmptyOrWhiteSpace(nameof(adminAuth));
+                var requestingAgent = this.User.GetClaimValue(ClaimTypes.Email);
+
+                giftInventory.ShouldNotBeNull(nameof(giftInventory));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-                if (adminAuth != this.giftingPassword)
-                {
-                    return this.Unauthorized("adminAuth header was incorrect.");
-                }
-
-                this.playerInventoryRequestValidator.ValidateIds(playerInventory, this.ModelState);
-                this.playerInventoryRequestValidator.Validate(playerInventory, this.ModelState);
+                this.masterInventoryRequestValidator.Validate(giftInventory, this.ModelState);
+                this.masterInventoryRequestValidator.ValidateIds(giftInventory, this.ModelState);
 
                 if (!this.ModelState.IsValid)
                 {
-                    var result = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
+                    var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
 
                     return this.BadRequest(result);
                 }
 
-                await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, playerInventory, requestingAgent).ConfigureAwait(true);
+                await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, giftInventory, requestingAgent).ConfigureAwait(true);
 
-                return this.Created(this.Request.Path, playerInventory);
+                return this.Ok();
             }
             catch (Exception ex)
             {

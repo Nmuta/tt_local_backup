@@ -9,9 +9,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
     public sealed class SunriseMasterInventory
     {
         /// <summary>
-        ///     Gets the credit reward options.
+        ///     Gets or sets the credit reward options.
         /// </summary>
-        public IList<MasterInventoryItem> CreditRewards { get; } = new List<MasterInventoryItem>()
+        public IList<MasterInventoryItem> CreditRewards { get; set; } = new List<MasterInventoryItem>()
         {
             new MasterInventoryItem() { Id = -1, Description = "Credits" },
             new MasterInventoryItem() { Id = -1, Description = "ForzathonPoints" },

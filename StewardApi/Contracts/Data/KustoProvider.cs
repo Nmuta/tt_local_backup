@@ -53,7 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
                     {
                         items.Add(new MasterInventoryItem
                         {
-                            Id = reader.GetInt64(0),
+                            Id = reader.GetInt32(0),
                             Description = reader.GetString(1),
                         });
                     }
