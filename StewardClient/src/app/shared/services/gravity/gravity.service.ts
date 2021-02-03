@@ -1,4 +1,3 @@
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Turn10IdString } from '@models/extended-types';
 import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
@@ -11,7 +10,7 @@ import {
 } from '@models/identity-query.model';
 import { ApiService } from '@services/api';
 import { GiftHistoryAntecedent } from '@shared/constants';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 /** Defines the gravity service. */
@@ -72,7 +71,7 @@ export class GravityService {
 
   /** Gets the gravity player's inventory */
   public getPlayerInventoryByT10Id(t10Id: Turn10IdString): Observable<GravityPlayerInventory> {
-    return this.apiService.getRequest<GravityPlayerInventory>(`${this.basePath}/player/t10id(${t10Id})/inventory`);
+    return this.apiService.getRequest<GravityPlayerInventory>(`${this.basePath}/player/t10Id(${t10Id})/inventory`);
   }
 
   /** Gets gravity player inventory with a profile ID. */
