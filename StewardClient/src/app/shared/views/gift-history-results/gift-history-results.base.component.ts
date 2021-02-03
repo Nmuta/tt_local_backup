@@ -56,6 +56,7 @@ export abstract class GiftHistoryResultsBaseComponent<
     const getGiftHistory$ = this.usingPlayerIdentities
       ? this.retrieveHistoryByPlayer()
       : this.retrieveHistoryByLspGroup();
+      
     getGiftHistory$
       .pipe(
         takeUntil(merge(this.onDestroy$, this.cancelGiftHistoryRequest$)),
