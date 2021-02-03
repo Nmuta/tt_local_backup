@@ -1,5 +1,6 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Turn10IdString } from '@models/extended-types';
 import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
@@ -82,18 +83,9 @@ export class GravityService {
       );
   }
 
-  /** Gets gravity player inventory with a XUID. */
-  public getPlayerInventoryByXuid(xuid: string): Observable<GravityPlayerInventory> {
-    return this.apiService.getRequest<GravityPlayerInventory>(
-      `${this.basePath}/player/inventory/xuid(${xuid})`,
-    );
-  }
-
-  /** Gets gravity player inventory with a T10 ID. */
-  public getPlayerInventoryByT10Id(t10Id: string): Observable<GravityPlayerInventory> {
-    return this.apiService.getRequest<GravityPlayerInventory>(
-      `${this.basePath}/player/inventory/t10Id(${t10Id})`,
-    );
+  /** Gets the gravity player's inventory */
+  public getPlayerInventoryByT10Id(t10Id: Turn10IdString): Observable<GravityPlayerInventory> {
+    return this.apiService.getRequest<GravityPlayerInventory>(`${this.basePath}/player/t10id(${t10Id})/inventory`);
   }
 
   /** Gets gravity player inventory with a profile ID. */
