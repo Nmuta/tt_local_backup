@@ -10,7 +10,7 @@ import { TitleMemoryModel } from './title-memory.model';
   name: 'titleMemory',
   defaults: {
     gifting: GameTitleCodeName.Street,
-    banning: GameTitleCodeName.Street,
+    banning: GameTitleCodeName.FH4,
     giftHistory: GameTitleCodeName.Street,
   },
 })

@@ -168,19 +168,9 @@ export class GravityService {
     );
   }
 
-  /** Gets Gift history by a XUID. */
+  /** Gets Gift history by a Turn 10 ID. */
   public getGiftHistoryByT10Id(t10Id: string): Observable<GravityGiftHistories> {
     return this.apiService
-      .getRequest<GravityGiftHistories>(`${this.basePath}/player/t10Id(${t10Id})/giftHistory`)
-      .pipe(
-        map(giftHistory => {
-          // these come in stringly-typed and must be converted
-          for (const gift of giftHistory) {
-            gift.giftSendDateUtc = new Date(gift.giftSendDateUtc);
-          }
-
-          return giftHistory;
-        }),
-      );
+      .getRequest<GravityGiftHistories>(`${this.basePath}/player/t10Id(${t10Id})/giftHistory`);
   }
 }

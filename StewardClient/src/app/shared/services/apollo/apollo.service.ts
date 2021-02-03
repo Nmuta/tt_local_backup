@@ -73,33 +73,13 @@ export class ApolloService {
   /** Gets Gift history by a XUID. */
   public getGiftHistoryByXuid(xuid: BigInt): Observable<ApolloGiftHistories> {
     return this.apiService
-      .getRequest<ApolloGiftHistories>(`${this.basePath}/player/xuid(${xuid})/giftHistory`)
-      .pipe(
-        map(giftHistory => {
-          // these come in stringly-typed and must be converted
-          for (const gift of giftHistory) {
-            gift.giftSendDateUtc = new Date(gift.giftSendDateUtc);
-          }
-
-          return giftHistory;
-        }),
-      );
+      .getRequest<ApolloGiftHistories>(`${this.basePath}/player/xuid(${xuid})/giftHistory`);
   }
 
   /** Gets Gift history by a LSP Group. */
   public getGiftHistoryByLspGroup(lspGroupId: BigInt): Observable<ApolloGiftHistories> {
     return this.apiService
-      .getRequest<ApolloGiftHistories>(`${this.basePath}/group/groupId(${lspGroupId})/giftHistory`)
-      .pipe(
-        map(giftHistory => {
-          // these come in stringly-typed and must be converted
-          for (const gift of giftHistory) {
-            gift.giftSendDateUtc = new Date(gift.giftSendDateUtc);
-          }
-
-          return giftHistory;
-        }),
-      );
+      .getRequest<ApolloGiftHistories>(`${this.basePath}/group/groupId(${lspGroupId})/giftHistory`);
   }
 
   /** Gets the apollo lsp groups. */
