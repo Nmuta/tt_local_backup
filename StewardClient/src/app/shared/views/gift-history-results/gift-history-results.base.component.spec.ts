@@ -38,27 +38,13 @@ describe('SunriseGiftHistoryComponent', () => {
   );
 
   describe('Method: ngOnChanges', () => {
+    beforeEach(() => {
+      // Need to subscribe to intermediate observable to verify component variable set correctly.
+      component.ngOnInit();
+    });
     describe('when usingPlayerIdentities set to true', () => {
       beforeEach(() => {
         component.usingPlayerIdentities = true;
-      });
-      describe('when selectedPlayer is undefined', () => {
-        beforeEach(() => {
-          component.selectedPlayer = undefined;
-          component.cancelGiftHistoryRequest$ = new Subject<void>();
-          (component.cancelGiftHistoryRequest$ as Subject<void>).next = jasmine.createSpy('next');
-          (component.cancelGiftHistoryRequest$ as Subject<void>).complete = jasmine.createSpy(
-            'complete',
-          );
-        });
-        it('should handle invalid player input.', () => {
-          component.ngOnChanges(null);
-          expect(component.giftHistoryList).toBeUndefined();
-          expect((component.cancelGiftHistoryRequest$ as Subject<void>).next).toHaveBeenCalled();
-          expect(
-            (component.cancelGiftHistoryRequest$ as Subject<void>).complete,
-          ).toHaveBeenCalled();
-        });
       });
       describe('when selectedPlayer is valid', () => {
         beforeEach(() => {
@@ -94,24 +80,6 @@ describe('SunriseGiftHistoryComponent', () => {
     describe('when usingPlayerIdentities set to false', () => {
       beforeEach(() => {
         component.usingPlayerIdentities = false;
-      });
-      describe('when selectedGroup is undefined', () => {
-        beforeEach(() => {
-          component.selectedGroup = undefined;
-          component.cancelGiftHistoryRequest$ = new Subject<void>();
-          (component.cancelGiftHistoryRequest$ as Subject<void>).next = jasmine.createSpy('next');
-          (component.cancelGiftHistoryRequest$ as Subject<void>).complete = jasmine.createSpy(
-            'complete',
-          );
-        });
-        it('should handle invalid player input.', () => {
-          component.ngOnChanges(null);
-          expect(component.giftHistoryList).toBeUndefined();
-          expect((component.cancelGiftHistoryRequest$ as Subject<void>).next).toHaveBeenCalled();
-          expect(
-            (component.cancelGiftHistoryRequest$ as Subject<void>).complete,
-          ).toHaveBeenCalled();
-        });
       });
       describe('when selectedGroup is valid', () => {
         beforeEach(() => {
