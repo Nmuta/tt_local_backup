@@ -14,7 +14,7 @@
           (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
         ></apollo-player-selection>
       </mat-tab>
-      <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
+      <mat-tab label="LSP Group Selection">
         <apollo-lsp-group-selection
           [(ngModel)]="selectedLspGroup"
           (ngModelChange)="onLspGroupChange($event)"

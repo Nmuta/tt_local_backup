@@ -38,7 +38,6 @@ export class ApolloGiftHistoryComponent
   /** Initialization hook */
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.disableLspGroupSelection = user.role !== UserRoles.LiveOpsAdmin;
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       ApolloGiftHistoryState.selectedMatTabIndex,
