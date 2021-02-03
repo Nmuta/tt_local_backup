@@ -28,6 +28,7 @@ describe('GravityGiftHistoryState', () => {
       query: { xuid: BigInt(0) },
       gamertag: 'test-gamertag',
     };
+
     let action;
     beforeEach(() => {
       action = new SetGravitySelectedPlayerIdentities([selectedPlayerIdentities]);
@@ -37,6 +38,7 @@ describe('GravityGiftHistoryState', () => {
         },
       });
     });
+    
     it('should patch selected player identities', () => {
       store.dispatch(action);
 

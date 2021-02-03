@@ -2,7 +2,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
-
 import { SunriseGiftHistoryState } from './sunrise-gift-history.state';
 import {
   SetSunriseGiftHistoryMatTabIndex,
@@ -31,6 +30,7 @@ describe('SunriseGiftHistoryState', () => {
       query: { xuid: BigInt(0) },
       gamertag: 'test-gamertag',
     };
+
     let action;
     beforeEach(() => {
       action = new SetSunriseGiftHistorySelectedPlayerIdentities([selectedPlayerIdentities]);
@@ -40,6 +40,7 @@ describe('SunriseGiftHistoryState', () => {
         },
       });
     });
+
     it('should patch selected player identities', () => {
       store.dispatch(action);
 
@@ -63,6 +64,7 @@ describe('SunriseGiftHistoryState', () => {
         },
       });
     });
+
     it('should patch selected mat index', () => {
       store.dispatch(action);
 
