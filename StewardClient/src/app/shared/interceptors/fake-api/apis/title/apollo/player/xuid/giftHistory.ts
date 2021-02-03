@@ -2,6 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloGiftHistory } from '@models/apollo';
 import { Unprocessed } from '@models/unprocessed';
+import faker from 'faker';
 
 /** Fake API for finding gift history. */
 export class ApolloPlayerXuidGiftHistoryFakeApi extends FakeApiBase {
@@ -18,20 +19,25 @@ export class ApolloPlayerXuidGiftHistoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<ApolloGiftHistory>> {
-    return ApolloPlayerXuidGiftHistoryFakeApi.make();
+  public handle(body?: unknown): Partial<Unprocessed<ApolloGiftHistory[]>> {
+    return ApolloPlayerXuidGiftHistoryFakeApi.make(body as BigInt);
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<ApolloGiftHistory>> {
-    return {
+  public static make(xuid: BigInt): Partial<Unprocessed<ApolloGiftHistory[]>> {
+    return [{
       idType: 'Xuid',
-      id: '189456456',
+      id: xuid,
       title: 'Apollo',
-      giftSendDateUtc: '2020-12-08T20:04:05.391Z',
+      giftSendDateUtc: faker.date.past(),
       giftInventory: {
-        xuid: 189456456,
+        credits: BigInt(faker.random.number({ min: 0, max: 10000 })),
+        cars: [{
+          itemId: BigInt(faker.random.number()),
+          description: faker.random.word(),
+          quantity: faker.random.number()
+        }]
       },
-    };
+    }];
   }
 }

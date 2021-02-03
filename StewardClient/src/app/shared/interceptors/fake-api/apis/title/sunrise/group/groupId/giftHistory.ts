@@ -2,6 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunriseGiftHistory } from '@models/sunrise';
 import { Unprocessed } from '@models/unprocessed';
+import faker from 'faker';
 
 /** Fake API for finding gift history. */
 export class SunriseGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
@@ -18,20 +19,49 @@ export class SunriseGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<SunriseGiftHistory>> {
-    return SunriseGroupGroupIdGiftHistoryFakeApi.make();
+  public handle(body?: unknown): Partial<Unprocessed<SunriseGiftHistory[]>> {
+    return SunriseGroupGroupIdGiftHistoryFakeApi.make(body as BigInt);
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<SunriseGiftHistory>> {
-    return {
+  public static make(lspId: BigInt): Partial<Unprocessed<SunriseGiftHistory[]>> {
+    return [{
       idType: 'LspGroupId',
-      id: '189456456',
+      id: lspId,
       title: 'Sunrise',
-      giftSendDateUtc: '2020-12-08T20:04:05.391Z',
+      giftSendDateUtc: faker.date.past(),
       giftInventory: {
-        xuid: 189456456,
+        credits: BigInt(faker.random.number({ min: 0, max: 10000 })),
+        wheelSpins: BigInt(faker.random.number({ min: 0, max: 1000 })),
+        superWheelSpins: BigInt(faker.random.number({ min: 0, max: 200 })),
+        skillPoints: BigInt(faker.random.number({ min: 0, max: 1000 })),
+        forzathonPoints: BigInt(faker.random.number({ min: 0, max: 1000 })),
+        cars: [{
+          itemId: BigInt(faker.random.number()),
+          description: faker.random.word(),
+          quantity: BigInt(faker.random.number())
+        }],
+        carHorns: [{
+          itemId: BigInt(faker.random.number()),
+          description: faker.random.word(),
+          quantity: BigInt(faker.random.number())
+        }],
+        emotes: [{
+          itemId: BigInt(faker.random.number()),
+          description: faker.random.word(),
+          quantity: BigInt(faker.random.number())
+        }],
+        vanityItems: [{
+          itemId: BigInt(faker.random.number()),
+          description: faker.random.word(),
+          quantity: BigInt(faker.random.number())
+        }],
+        quickChatLines: [{
+          itemId: BigInt(faker.random.number()),
+          description: faker.random.word(),
+          quantity: BigInt(faker.random.number())
+        }]
       },
-    };
+    }];
   }
 }
