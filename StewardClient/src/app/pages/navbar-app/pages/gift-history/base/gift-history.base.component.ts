@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GameTitleCodeName } from '@models/enums';
-import { IdentityResultAlpha, IdentityResultBeta, IdentityResultUnion } from '@models/identity-query.model';
+import { IdentityResultUnion } from '@models/identity-query.model';
 
 /** The sunrise gift history page for the Navbar app. */
 @Component({

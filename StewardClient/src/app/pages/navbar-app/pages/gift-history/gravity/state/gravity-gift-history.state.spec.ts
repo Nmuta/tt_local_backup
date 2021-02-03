@@ -38,7 +38,7 @@ describe('GravityGiftHistoryState', () => {
         },
       });
     });
-    
+
     it('should patch selected player identities', () => {
       store.dispatch(action);
 

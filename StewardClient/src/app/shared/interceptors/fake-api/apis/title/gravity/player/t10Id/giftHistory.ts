@@ -25,44 +25,58 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(t10Id: string): Partial<Unprocessed<GravityGiftHistory[]>> {
-    return [{
-      idType: 'T10Id',
-      id: t10Id,
-      title: 'Gravity',
-      giftSendDateUtc: faker.date.past(),
-      giftInventory: {
-        t10Id: t10Id,
-        cars: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: BigInt(faker.random.number())
-        }],
-        currencies: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: BigInt(faker.random.number())
-        }],
-        energyRefills: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: BigInt(faker.random.number())
-        }],
-        upgradeKits: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: BigInt(faker.random.number())
-        }],
-        repairKits: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: BigInt(faker.random.number())
-        }],
-        masteryKits: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: BigInt(faker.random.number())
-        }],
+    return [
+      {
+        idType: 'T10Id',
+        id: t10Id,
+        title: 'Gravity',
+        giftSendDateUtc: faker.date.past(),
+        giftInventory: {
+          t10Id: t10Id,
+          cars: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          currencies: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          energyRefills: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          upgradeKits: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          repairKits: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          masteryKits: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+        },
       },
-    }];
+    ];
   }
 }

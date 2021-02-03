@@ -23,7 +23,7 @@ import { SunriseGiftHistory } from '@models/sunrise/sunrise-gift-history.model';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -114,14 +114,16 @@ export class SunriseService {
 
   /** Gets Gift history by a XUID. */
   public getGiftHistoryByXuid(xuid: BigInt): Observable<SunriseGiftHistory[]> {
-    return this.apiService
-      .getRequest<SunriseGiftHistory[]>(`${this.basePath}/player/xuid(${xuid})/giftHistory`);
+    return this.apiService.getRequest<SunriseGiftHistory[]>(
+      `${this.basePath}/player/xuid(${xuid})/giftHistory`,
+    );
   }
 
   /** Gets Gift history by a LSP group ID. */
   public getGiftHistoryByLspGroup(lspGroupId: BigInt): Observable<SunriseGiftHistory[]> {
-    return this.apiService
-      .getRequest<SunriseGiftHistory[]>(`${this.basePath}/group/groupId(${lspGroupId})/giftHistory`);
+    return this.apiService.getRequest<SunriseGiftHistory[]>(
+      `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
+    );
   }
 
   /** Gets shared console users by XUID. */

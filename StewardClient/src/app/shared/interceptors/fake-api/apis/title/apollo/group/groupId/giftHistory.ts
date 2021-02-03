@@ -25,19 +25,23 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(lspId: BigInt): Partial<Unprocessed<ApolloGiftHistory[]>> {
-    return [{
-      idType: 'LspGroupId',
-      id: lspId,
-      title: 'Apollo',
-      giftSendDateUtc: faker.date.past(),
-      giftInventory: {
-        credits: BigInt(faker.random.number({ min: 0, max: 10000 })),
-        cars: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: faker.random.number()
-        }]
+    return [
+      {
+        idType: 'LspGroupId',
+        id: lspId,
+        title: 'Apollo',
+        giftSendDateUtc: faker.date.past(),
+        giftInventory: {
+          credits: BigInt(faker.random.number({ min: 0, max: 10000 })),
+          cars: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: faker.random.number(),
+            },
+          ],
+        },
       },
-    }];
+    ];
   }
 }

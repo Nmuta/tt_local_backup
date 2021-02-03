@@ -25,43 +25,55 @@ export class SunrisePlayerXuidGiftHistoryFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(xuid: BigInt): Partial<Unprocessed<SunriseGiftHistory[]>> {
-    return [{
-      idType: 'Xuid',
-      id: xuid,
-      title: 'Sunrise',
-      giftSendDateUtc: faker.date.past(),
-      giftInventory: {
-        credits: BigInt(faker.random.number({ min: 0, max: 10000 })),
-        wheelSpins: BigInt(faker.random.number({ min: 0, max: 1000 })),
-        superWheelSpins: BigInt(faker.random.number({ min: 0, max: 200 })),
-        skillPoints: BigInt(faker.random.number({ min: 0, max: 1000 })),
-        forzathonPoints: BigInt(faker.random.number({ min: 0, max: 1000 })),
-        cars: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: BigInt(faker.random.number())
-        }],
-        carHorns: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: BigInt(faker.random.number())
-        }],
-        emotes: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: BigInt(faker.random.number())
-        }],
-        vanityItems: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: BigInt(faker.random.number())
-        }],
-        quickChatLines: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: BigInt(faker.random.number())
-        }]
+    return [
+      {
+        idType: 'Xuid',
+        id: xuid,
+        title: 'Sunrise',
+        giftSendDateUtc: faker.date.past(),
+        giftInventory: {
+          credits: BigInt(faker.random.number({ min: 0, max: 10000 })),
+          wheelSpins: BigInt(faker.random.number({ min: 0, max: 1000 })),
+          superWheelSpins: BigInt(faker.random.number({ min: 0, max: 200 })),
+          skillPoints: BigInt(faker.random.number({ min: 0, max: 1000 })),
+          forzathonPoints: BigInt(faker.random.number({ min: 0, max: 1000 })),
+          cars: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          carHorns: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          emotes: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          vanityItems: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          quickChatLines: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+        },
       },
-    }];
+    ];
   }
 }

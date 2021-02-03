@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
-import { merge, NEVER, Observable, Subject } from 'rxjs';
+import { NEVER, Observable, Subject } from 'rxjs';
 import { GravityGiftHistory } from '@models/gravity';
 import { SunriseGiftHistory } from '@models/sunrise';
 import { ApolloGiftHistory } from '@models/apollo';
@@ -32,27 +32,30 @@ export abstract class GiftHistoryResultsBaseComponent<
   /** The gift history list to display. */
   public giftHistoryList: U;
 
+  private readonly intermediate = new Subject<Observable<U>>();
+
   public abstract retrieveHistoryByPlayer(): Observable<U>;
   public abstract retrieveHistoryByLspGroup(): Observable<U>;
 
-
-  private readonly intermediate = new Subject<Observable<U>>();
+  /** Angular lifecycle hook. */
   public ngOnInit() {
-    this.intermediate.pipe(
-      switchMap(s => s),
-      takeUntil(this.onDestroy$),
-      tap(() => {
-        this.isLoading = false;
-      }),
-      catchError(error => {
-        this.loadError = error;
-        this.giftHistoryList = undefined;
-        return NEVER;
-      }),
-      tap(giftHistories => {
-        this.giftHistoryList = giftHistories;
-      }),
-    ).subscribe();
+    this.intermediate
+      .pipe(
+        switchMap(s => s),
+        takeUntil(this.onDestroy$),
+        tap(() => {
+          this.isLoading = false;
+        }),
+        catchError(error => {
+          this.loadError = error;
+          this.giftHistoryList = undefined;
+          return NEVER;
+        }),
+        tap(giftHistories => {
+          this.giftHistoryList = giftHistories;
+        }),
+      )
+      .subscribe();
   }
 
   /** Angular lifecycle hook. */
@@ -71,8 +74,8 @@ export abstract class GiftHistoryResultsBaseComponent<
     this.isLoading = true;
 
     const getGiftHistory$ = this.usingPlayerIdentities
-    ? this.retrieveHistoryByPlayer()
-    : this.retrieveHistoryByLspGroup();
+      ? this.retrieveHistoryByPlayer()
+      : this.retrieveHistoryByLspGroup();
 
     this.intermediate.next(getGiftHistory$);
   }

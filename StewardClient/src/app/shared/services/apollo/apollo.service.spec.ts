@@ -87,7 +87,7 @@ describe('ApolloService', () => {
   });
 
   describe('Method: getGiftHistoryByXuid', () => {
-    let expectedXuid = BigInt(123456789);
+    const expectedXuid = BigInt(123456789);
 
     beforeEach(() => {
       apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
@@ -104,7 +104,7 @@ describe('ApolloService', () => {
   });
 
   describe('Method: getGiftHistoryByLspGroup', () => {
-    let expectedLspGroupId = BigInt(1234);
+    const expectedLspGroupId = BigInt(1234);
 
     beforeEach(() => {
       apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));

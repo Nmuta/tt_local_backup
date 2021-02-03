@@ -25,19 +25,23 @@ export class ApolloPlayerXuidGiftHistoryFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(xuid: BigInt): Partial<Unprocessed<ApolloGiftHistory[]>> {
-    return [{
-      idType: 'Xuid',
-      id: xuid,
-      title: 'Apollo',
-      giftSendDateUtc: faker.date.past(),
-      giftInventory: {
-        credits: BigInt(faker.random.number({ min: 0, max: 10000 })),
-        cars: [{
-          itemId: BigInt(faker.random.number()),
-          description: faker.random.word(),
-          quantity: faker.random.number()
-        }]
+    return [
+      {
+        idType: 'Xuid',
+        id: xuid,
+        title: 'Apollo',
+        giftSendDateUtc: faker.date.past(),
+        giftInventory: {
+          credits: BigInt(faker.random.number({ min: 0, max: 10000 })),
+          cars: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: faker.random.number(),
+            },
+          ],
+        },
       },
-    }];
+    ];
   }
 }

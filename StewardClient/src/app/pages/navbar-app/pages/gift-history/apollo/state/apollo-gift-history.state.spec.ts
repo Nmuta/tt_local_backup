@@ -64,7 +64,7 @@ describe('ApolloGiftHistoryState', () => {
         },
       });
     });
-    
+
     it('should patch selected mat index', () => {
       store.dispatch(action);
 

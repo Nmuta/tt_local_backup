@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { GameTitleCodeName, UserRoles } from '@models/enums';
+import { GameTitleCodeName } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { Select, Store } from '@ngxs/store';
-import { UserModel } from '@models/user.model';
-import { UserState } from '@shared/state/user/user.state';
 import { GiftHistoryBaseComponent } from '../base/gift-history.base.component';
 import { SunriseGiftHistoryState } from './state/sunrise-gift-history.state';
 import {
@@ -37,8 +35,6 @@ export class SunriseGiftHistoryComponent
 
   /** Initialization hook */
   public ngOnInit(): void {
-    const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       SunriseGiftHistoryState.selectedMatTabIndex,
     );

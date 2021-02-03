@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SunriseGiftHistory } from '@models/sunrise';
-import { of, Subject, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { GiftHistoryResultsBaseComponent } from './gift-history-results.base.component';
 
 describe('SunriseGiftHistoryComponent', () => {
