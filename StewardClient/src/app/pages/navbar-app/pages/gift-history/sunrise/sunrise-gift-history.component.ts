@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitleCodeName, UserRoles } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { Select, Store } from '@ngxs/store';
 import { UserModel } from '@models/user.model';
@@ -38,7 +38,7 @@ export class SunriseGiftHistoryComponent
   /** Initialization hook */
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.disableLspGroupSelection = user.role !== 'LiveOpsAdmin';
+    this.disableLspGroupSelection = user.role !== UserRoles.LiveOpsAdmin;
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       SunriseGiftHistoryState.selectedMatTabIndex,
