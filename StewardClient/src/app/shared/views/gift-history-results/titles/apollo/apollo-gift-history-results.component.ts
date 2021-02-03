@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ApolloGiftHistories } from '@models/apollo/apollo-gift-history.model';
+import { ApolloGiftHistory } from '@models/apollo/apollo-gift-history.model';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { ApolloService } from '@services/apollo/apollo.service';
 import { Observable } from 'rxjs';
@@ -13,19 +13,19 @@ import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base
 })
 export class ApolloGiftHistoryResultsComponent extends GiftHistoryResultsBaseComponent<
   IdentityResultAlpha,
-  ApolloGiftHistories
+  ApolloGiftHistory[]
 > {
   constructor(public readonly apolloService: ApolloService) {
     super();
   }
 
   /** Reteives the gift history of the player. */
-  public retrieveHistoryByPlayer(): Observable<ApolloGiftHistories> {
+  public retrieveHistoryByPlayer(): Observable<ApolloGiftHistory[]> {
     return this.apolloService.getGiftHistoryByXuid(this.selectedPlayer.xuid);
   }
 
   /** Reteives the gift history of a LSP group. */
-  public retrieveHistoryByLspGroup(): Observable<ApolloGiftHistories> {
+  public retrieveHistoryByLspGroup(): Observable<ApolloGiftHistory[]> {
     return this.apolloService.getGiftHistoryByLspGroup(this.selectedGroup.id);
   }
 }

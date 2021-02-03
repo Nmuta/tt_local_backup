@@ -9,6 +9,3 @@ export interface ApolloGiftHistory {
   giftInventory: ApolloPlayerInventory;
   requestingAgent: string;
 }
-
-/** LiveOps model for multiple gift history descriptions. */
-export type ApolloGiftHistories = ApolloGiftHistory[];

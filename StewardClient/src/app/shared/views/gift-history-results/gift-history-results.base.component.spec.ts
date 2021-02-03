@@ -1,15 +1,15 @@
 import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { SunriseGiftHistories } from '@models/sunrise';
+import { SunriseGiftHistory } from '@models/sunrise';
 import { of, Subject, throwError } from 'rxjs';
 import { GiftHistoryResultsBaseComponent } from './gift-history-results.base.component';
 
 describe('SunriseGiftHistoryComponent', () => {
-  let component: GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistories>;
+  let component: GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistory[]>;
   let fixture: ComponentFixture<GiftHistoryResultsBaseComponent<
     IdentityResultAlpha,
-    SunriseGiftHistories
+    SunriseGiftHistory[]
   >>;
 
   beforeEach(
@@ -23,7 +23,7 @@ describe('SunriseGiftHistoryComponent', () => {
 
       fixture = TestBed.createComponent(
         GiftHistoryResultsBaseComponent as Type<
-          GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistories>
+          GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistory[]>
         >,
       );
       component = fixture.debugElement.componentInstance;
@@ -65,7 +65,7 @@ describe('SunriseGiftHistoryComponent', () => {
           component.selectedPlayer = { query: { xuid: BigInt(123456789) } };
         });
         describe('when service returns valid gift histories', () => {
-          const validGiftHistories: SunriseGiftHistories = [];
+          const validGiftHistories: SunriseGiftHistory[] = [];
           beforeEach(() => {
             component.retrieveHistoryByPlayer = jasmine
               .createSpy('retrieveHistoryByPlayer')
@@ -118,7 +118,7 @@ describe('SunriseGiftHistoryComponent', () => {
           component.selectedGroup = { id: BigInt(4), name: 'testName' };
         });
         describe('when service returns valid gift histories', () => {
-          const validGiftHistories: SunriseGiftHistories = [];
+          const validGiftHistories: SunriseGiftHistory[] = [];
           beforeEach(() => {
             component.retrieveHistoryByLspGroup = jasmine
               .createSpy('retrieveHistoryByLspGroup')

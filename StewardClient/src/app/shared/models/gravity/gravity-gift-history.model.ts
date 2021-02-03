@@ -9,6 +9,3 @@ export interface GravityGiftHistory {
   giftInventory: GravityPlayerInventory;
   requestingAgent: string;
 }
-
-/** LiveOps model for multiple gift history descriptions. */
-export type GravityGiftHistories = GravityGiftHistory[];

@@ -3,13 +3,13 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { merge, NEVER, Observable, Subject } from 'rxjs';
-import { GravityGiftHistories } from '@models/gravity';
-import { SunriseGiftHistories } from '@models/sunrise';
-import { ApolloGiftHistories } from '@models/apollo';
+import { GravityGiftHistory } from '@models/gravity';
+import { SunriseGiftHistory } from '@models/sunrise';
+import { ApolloGiftHistory } from '@models/apollo';
 import { catchError, takeUntil, tap } from 'rxjs/operators';
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
-type GiftHistoryResultUnion = GravityGiftHistories | SunriseGiftHistories | ApolloGiftHistories;
+type GiftHistoryResultUnion = (GravityGiftHistory | SunriseGiftHistory | ApolloGiftHistory)[];
 
 /** Base gift history result component. */
 @Component({

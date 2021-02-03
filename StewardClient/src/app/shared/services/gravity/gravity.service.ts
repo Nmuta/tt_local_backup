@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  GravityGiftHistories,
+  GravityGiftHistory,
   GravityPlayerDetails,
   GravityPlayerInventory,
 } from '@models/gravity';
@@ -169,8 +169,8 @@ export class GravityService {
   }
 
   /** Gets Gift history by a Turn 10 ID. */
-  public getGiftHistoryByT10Id(t10Id: string): Observable<GravityGiftHistories> {
+  public getGiftHistoryByT10Id(t10Id: string): Observable<GravityGiftHistory[]> {
     return this.apiService
-      .getRequest<GravityGiftHistories>(`${this.basePath}/player/t10Id(${t10Id})/giftHistory`);
+      .getRequest<GravityGiftHistory[]>(`${this.basePath}/player/t10Id(${t10Id})/giftHistory`);
   }
 }

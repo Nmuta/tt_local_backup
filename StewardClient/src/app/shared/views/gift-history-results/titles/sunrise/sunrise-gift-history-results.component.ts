@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SunriseGiftHistories } from '@models/sunrise/sunrise-gift-history.model';
+import { SunriseGiftHistory } from '@models/sunrise/sunrise-gift-history.model';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { Observable } from 'rxjs';
@@ -13,19 +13,19 @@ import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base
 })
 export class SunriseGiftHistoryResultsComponent extends GiftHistoryResultsBaseComponent<
   IdentityResultAlpha,
-  SunriseGiftHistories
+  SunriseGiftHistory[]
 > {
   constructor(public readonly sunrise: SunriseService) {
     super();
   }
 
   /** Reteives the gift history of the player. */
-  public retrieveHistoryByPlayer(): Observable<SunriseGiftHistories> {
+  public retrieveHistoryByPlayer(): Observable<SunriseGiftHistory[]> {
     return this.sunrise.getGiftHistoryByXuid(this.selectedPlayer.xuid);
   }
 
   /** Reteives the gift history of a LSP group. */
-  public retrieveHistoryByLspGroup(): Observable<SunriseGiftHistories> {
+  public retrieveHistoryByLspGroup(): Observable<SunriseGiftHistory[]> {
     return this.sunrise.getGiftHistoryByLspGroup(this.selectedGroup.id);
   }
 }

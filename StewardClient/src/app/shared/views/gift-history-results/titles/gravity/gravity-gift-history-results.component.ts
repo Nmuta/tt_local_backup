@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GravityGiftHistories } from '@models/gravity/gravity-gift-history.model';
+import { GravityGiftHistory } from '@models/gravity/gravity-gift-history.model';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { GravityService } from '@services/gravity';
 import { Observable, throwError } from 'rxjs';
@@ -13,19 +13,19 @@ import { GiftHistoryResultsBaseComponent } from '../../gift-history-results.base
 })
 export class GravityGiftHistoryResultsComponent extends GiftHistoryResultsBaseComponent<
   IdentityResultBeta,
-  GravityGiftHistories
+  GravityGiftHistory[]
 > {
   constructor(public readonly gravity: GravityService) {
     super();
   }
 
   /** Reteives the gift history of the player. */
-  public retrieveHistoryByPlayer(): Observable<GravityGiftHistories> {
+  public retrieveHistoryByPlayer(): Observable<GravityGiftHistory[]> {
     return this.gravity.getGiftHistoryByT10Id(this.selectedPlayer.t10Id);
   }
 
   /** Reteives the gift history of a LSP group. */
-  public retrieveHistoryByLspGroup(): Observable<GravityGiftHistories> {
+  public retrieveHistoryByLspGroup(): Observable<GravityGiftHistory[]> {
     return throwError('LSP Group Gifting not supported for Gravity.');
   }
 }

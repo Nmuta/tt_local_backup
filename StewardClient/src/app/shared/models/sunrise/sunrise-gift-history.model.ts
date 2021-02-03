@@ -9,6 +9,3 @@ export interface SunriseGiftHistory {
   giftInventory: SunrisePlayerInventory;
   requestingAgent: string;
 }
-
-/** LiveOps model for multiple gift history descriptions. */
-export type SunriseGiftHistories = SunriseGiftHistory[];
