@@ -1106,6 +1106,32 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
         }
 
+        /// <summary>
+        ///     Gets the player notifications.
+        /// </summary>
+        /// <param name="xuid">The xuid.</param>
+        /// <param name="maxResults">The max results.</param>
+        /// <returns>
+        ///     The list of <see cref="SunriseNotification"/>.
+        /// </returns>
+        [HttpGet("player/xuid({xuid})/notifications")]
+        [SwaggerResponse(200, type: typeof(IList<SunriseNotification>))]
+        public async Task<IActionResult> GetPlayerNotifications(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
+        {
+            try
+            {
+                maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+
+                var notifications = await this.sunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(xuid, maxResults).ConfigureAwait(true);
+
+                return this.Ok(notifications);
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex);
+            }
+        }
+
         private async Task<string> AddJobIdToHeaderAsync(string requestBody, string username)
         {
             var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, username).ConfigureAwait(true);
