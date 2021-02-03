@@ -95,13 +95,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task UpdatePlayerInventoryAsync(ulong xuid, SunriseMasterInventory giftInventory, string requestingAgent)
+        public async Task UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requestingAgent)
         {
-            giftInventory.ShouldNotBeNull(nameof(giftInventory));
+            gift.ShouldNotBeNull(nameof(gift));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-            var inventoryGifts = this.BuildInventoryItems(giftInventory);
-            var currencyGifts = this.BuildCurrencyItems(giftInventory);
+            var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
+            var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
             currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
             currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
@@ -113,31 +113,35 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.Xuid, giftInventory).ConfigureAwait(false);
+            // TODO: THis currently does not add gift reason to KUSTO
+            await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.Xuid, gift.Inventory).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task UpdatePlayerInventoriesAsync(IList<ulong> xuids, SunriseMasterInventory giftInventory, string requestingAgent)
+        public async Task UpdatePlayerInventoriesAsync(IList<ulong> xuids, SunriseGroupGift groupGift, string requestingAgent)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
-            giftInventory.ShouldNotBeNull(nameof(giftInventory));
+            groupGift.ShouldNotBeNull(nameof(groupGift));
+            groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
+            var gift = this.mapper.Map<SunriseGift>(groupGift);
             foreach (var xuid in xuids)
             {
-                await this.UpdatePlayerInventoryAsync(xuid, giftInventory, requestingAgent).ConfigureAwait(false);
+                await this.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent).ConfigureAwait(false);
             }
         }
 
         /// <inheritdoc/>
-        public async Task UpdateGroupInventoriesAsync(int groupId, SunriseMasterInventory giftInventory, string requestingAgent)
+        public async Task UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requestingAgent)
         {
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
-            giftInventory.ShouldNotBeNull(nameof(giftInventory));
+            gift.ShouldNotBeNull(nameof(gift));
+            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-            var inventoryGifts = this.BuildInventoryItems(giftInventory);
-            var currencyGifts = this.BuildCurrencyItems(giftInventory);
+            var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
+            var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
             currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
             currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
@@ -149,7 +153,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.LspGroupId, giftInventory).ConfigureAwait(false);
+            // TODO: THis currently does not add gift reason to KUSTO
+            await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.LspGroupId, gift.Inventory).ConfigureAwait(false);
         }
 
         private async Task SendGifts(Func<InventoryItemType, int, Task> serviceCall, IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts, IDictionary<InventoryItemType, int> currencyGifts)

@@ -6,17 +6,17 @@ using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 namespace Turn10.LiveOps.StewardApi.Validation
 {
     /// <summary>
-    ///     Validates a <see cref="SunriseGroupGift"/> request.
+    ///     Validates a <see cref="SunriseGift"/> request.
     /// </summary>
-    public sealed class SunriseGroupGiftRequestValidator : RequestValidatorBase, IRequestValidator<SunriseGroupGift>
+    public sealed class SunriseGiftRequestValidator : RequestValidatorBase, IRequestValidator<SunriseGift>
     {
         private readonly IRequestValidator<SunriseMasterInventory> masterInventoryRequestValidator;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SunriseGroupGiftRequestValidator"/> class.
+        ///     Initializes a new instance of the <see cref="SunriseGiftRequestValidator"/> class.
         /// </summary>
         /// <param name="masterInventoryRequestValidator">The player inventory request validator.</param>
-        public SunriseGroupGiftRequestValidator(IRequestValidator<SunriseMasterInventory> masterInventoryRequestValidator)
+        public SunriseGiftRequestValidator(IRequestValidator<SunriseMasterInventory> masterInventoryRequestValidator)
         {
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
 
@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Validation
         }
 
         /// <inheritdoc />
-        public void Validate(SunriseGroupGift model, ModelStateDictionary modelState)
+        public void Validate(SunriseGift model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
@@ -36,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Validation
 
             if (model.Inventory == null)
             {
-                modelState.AddModelError("GroupGift.GiftInventory", $"Property {nameof(model.Inventory)} was not supplied.");
+                modelState.AddModelError("Gift.GiftInventory", $"Property {nameof(model.Inventory)} was not supplied.");
             }
             else
             {
@@ -45,19 +45,10 @@ namespace Turn10.LiveOps.StewardApi.Validation
         }
 
         /// <inheritdoc />
-        public void ValidateIds(SunriseGroupGift model, ModelStateDictionary modelState)
+        public void ValidateIds(SunriseGift model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
-
-            if (model.Xuids == null || !model.Xuids.Any())
-            {
-                var xuidStatus = model.Xuids == null ? "Null" : "Empty";
-
-                modelState.AddModelError(
-                    "GroupGift.Xuids",
-                    $"Properties must have at least one xuid or gamertag. {nameof(model.Xuids)} was {xuidStatus}.");
-            }
         }
     }
 }

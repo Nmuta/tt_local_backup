@@ -69,6 +69,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<Car, SunriseCar>();
             this.CreateMap<PlayerInventory, SunrisePlayerInventory>();
             this.CreateMap<SunrisePlayerDetails, IdentityResultAlpha>().ReverseMap();
+            this.CreateMap<SunriseGroupGift, SunriseGift>().ReverseMap();
         }
     }
 }

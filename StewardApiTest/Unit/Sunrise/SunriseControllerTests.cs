@@ -186,6 +186,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenGiftRequestValidatorNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { GiftRequestValidator = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftRequestValidator"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenGroupGiftRequestValidatorNull_Throws()
         {
             // Arrange.
@@ -863,84 +877,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var giftInventory = Fixture.Create<SunriseMasterInventory>();
-            var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
-            var xuid = Fixture.Create<ulong>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdatePlayerInventory(xuid, giftInventory, useBackgroundProcessing).ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as CreatedResult;
-            var details = result.Value as SunriseMasterInventory;
-            details.Should().NotBeNull();
-            details.Should().BeOfType<SunriseMasterInventory>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullgiftInventory_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var useBackgroundProcessing = false;
-            var xuid = Fixture.Create<ulong>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdatePlayerInventory(xuid, null, useBackgroundProcessing).ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftInventory"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var giftInventory = Fixture.Create<SunriseMasterInventory>();
-            var useBackgroundProcessing = true;
-            var xuid = Fixture.Create<ulong>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdatePlayerInventory(xuid, giftInventory, useBackgroundProcessing).ConfigureAwait(false);
-
-            // Assert.
-            action().Result.Should().BeAssignableTo<OkResult>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullgiftInventory_UseBackgroundProcessing_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var useBackgroundProcessing = true;
-            var xuid = Fixture.Create<ulong>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdatePlayerInventory(xuid, null, useBackgroundProcessing).ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftInventory"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task UpdatePlayerInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1046,10 +982,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
-            var giftInventory = Fixture.Create<SunriseMasterInventory>();
+            var gift = Fixture.Create<SunriseGift>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, giftInventory).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, gift).ConfigureAwait(false);
 
             // Assert.
             action().Result.Should().BeAssignableTo<OkResult>();
@@ -1057,7 +993,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdateGroupInventories_WithNullGiftInventory_Throws()
+        public async Task UpdateGroupInventories_WithNullGift_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -1070,7 +1006,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             action().Should().BeAssignableTo<Task<IActionResult>>();
             var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
             result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftInventory"));
+            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
 
         [TestMethod]
@@ -1229,6 +1165,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public IRequestValidator<SunriseMasterInventory> MasterInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseMasterInventory>>();
 
+            public IRequestValidator<SunriseGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseGift>>();
+
             public IRequestValidator<SunriseGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseGroupGift>>();
 
             public IRequestValidator<SunriseBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseBanParametersInput>>();
@@ -1245,6 +1183,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.JobTracker,
                 this.Mapper,
                 this.MasterInventoryRequestValidator,
+                this.GiftRequestValidator,
                 this.GroupGiftRequestValidator,
                 this.BanParametersRequestValidator)
             { ControllerContext = this.ControllerContext };

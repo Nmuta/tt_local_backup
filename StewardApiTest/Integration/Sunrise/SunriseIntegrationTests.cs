@@ -1255,7 +1255,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task UpdateGroupInventoriesByXuid_InvalidGiftInventory()
         {
             var groupGift = this.CreateGroupGift();
-            groupGift.GiftInventory = null;
+            groupGift.Inventory = null;
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -1731,7 +1731,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
                     xuid,
                     xuid
                 },
-                GiftInventory = this.CreateGiftInventory()
+                Inventory = this.CreateGiftInventory()
             };
         }
     }
