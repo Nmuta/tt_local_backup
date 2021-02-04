@@ -215,8 +215,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 { InventoryItemType.Credits, credits != default(MasterInventoryItem) ? credits.Quantity : 0 },
                 { InventoryItemType.ForzathonPoints, forzathonPoints != default(MasterInventoryItem) ? forzathonPoints.Quantity : 0 },
                 { InventoryItemType.SkillPoints, skillPoints != default(MasterInventoryItem) ? skillPoints.Quantity : 0 },
-                { InventoryItemType.SuperWheelSpins, wheelSpins != default(MasterInventoryItem) ? wheelSpins.Quantity : 0 },
-                { InventoryItemType.WheelSpins, superWheelSpins != default(MasterInventoryItem) ? superWheelSpins.Quantity : 0 }
+                { InventoryItemType.WheelSpins, wheelSpins != default(MasterInventoryItem) ? wheelSpins.Quantity : 0 },
+                { InventoryItemType.SuperWheelSpins, superWheelSpins != default(MasterInventoryItem) ? superWheelSpins.Quantity : 0 },
             };
         }
 

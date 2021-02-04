@@ -149,6 +149,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 var masterInventory = new SunriseMasterInventory
                 {
+                    CreditRewards = new List<MasterInventoryItem>()
+                    {
+                        new MasterInventoryItem() { Id = -1, Description = "Credits" },
+                        new MasterInventoryItem() { Id = -1, Description = "ForzathonPoints" },
+                        new MasterInventoryItem() { Id = -1, Description = "SkillPoints" },
+                        new MasterInventoryItem() { Id = -1, Description = "WheelSpins" },
+                        new MasterInventoryItem() { Id = -1, Description = "SuperWheelSpins" },
+                    },
                     Cars = await cars.ConfigureAwait(true),
                     CarHorns = await carHorns.ConfigureAwait(true),
                     VanityItems = await vanityItems.ConfigureAwait(true),
@@ -833,7 +841,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift.Xuids, groupGift, requestingAgent).ConfigureAwait(true);
 
-                    return this.Created(this.Request.Path, groupGift.Inventory);
+                    return this.Ok();
                 }
 
                 var username = this.User.GetNameIdentifier();
@@ -876,8 +884,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin)]
-        [HttpPost("gifiting/groupId({groupId})")]
-        [SwaggerResponse(201, type: typeof(SunriseGift))]
+        [HttpPost("gifting/groupId({groupId})")]
+        [SwaggerResponse(200, type: typeof(SunriseGift))]
         public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] SunriseGift gift)
         {
             try

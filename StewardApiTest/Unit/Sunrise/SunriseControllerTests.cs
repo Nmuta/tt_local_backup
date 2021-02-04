@@ -894,12 +894,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as CreatedResult;
-                var details = result.Value as SunriseMasterInventory;
-                details.Should().NotBeNull();
-                details.Should().BeOfType<SunriseMasterInventory>();
+                action().Result.Should().BeAssignableTo<OkResult>();
             }
         }
 
