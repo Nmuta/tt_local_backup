@@ -110,6 +110,40 @@ describe('SunriseService', () => {
     });
   });
 
+  describe('Method: getGiftHistoryByXuid', () => {
+    const expectedXuid = BigInt(123456789);
+
+    beforeEach(() => {
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getGiftHistoryByXuid(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getGiftHistoryByLspGroup', () => {
+    const expectedLspGroupId = BigInt(1234);
+
+    beforeEach(() => {
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getGiftHistoryByXuid(expectedLspGroupId).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
+        );
+        done();
+      });
+    });
+  });
+
   it('handles getFlagsByXuid', done => {
     service.getFlagsByXuid(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(

@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { GravityService } from './gravity.service';
 import { GravityPlayerInventory } from '@models/gravity';
 import { HttpParams } from '@angular/common/http';
-import { GiftHistoryAntecedent } from '@shared/constants';
 import { faker } from '@interceptors/fake-api/utility';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
@@ -343,25 +342,21 @@ describe('service: GravityService', () => {
     });
   });
 
-  describe('Method: getGiftHistories', () => {
-    let expectedGiftHistoryAntecedent;
-    let expectedGiftRecipientId;
+  describe('Method: getGiftHistoryByT10Id', () => {
+    let expectedGiftT10Id;
 
     beforeEach(() => {
-      expectedGiftHistoryAntecedent = GiftHistoryAntecedent.Xuid;
-      expectedGiftRecipientId = 'test-xuid';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+      expectedGiftT10Id = '1234t10Id6789';
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service
-        .getGiftHistories(expectedGiftHistoryAntecedent, expectedGiftRecipientId)
-        .subscribe(() => {
-          expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-            `${service.basePath}/giftHistory/giftRecipientId/(${expectedGiftRecipientId})/giftHistoryAntecedent/(${expectedGiftHistoryAntecedent})`,
-          );
-          done();
-        });
+      service.getGiftHistoryByT10Id(expectedGiftT10Id).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/t10Id(${expectedGiftT10Id})/giftHistory`,
+        );
+        done();
+      });
     });
   });
 });

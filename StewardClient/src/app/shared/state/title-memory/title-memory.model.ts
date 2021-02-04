@@ -5,4 +5,5 @@ export class TitleMemoryModel {
   /** The title to automatically redirect to on the gifting page. */
   public gifting: GameTitleCodeName;
   public banning: GameTitleCodeName;
+  public giftHistory: GameTitleCodeName;
 }

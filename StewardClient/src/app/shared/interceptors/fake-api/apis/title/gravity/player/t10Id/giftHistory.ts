@@ -2,6 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GravityGiftHistory } from '@models/gravity';
 import { Unprocessed } from '@models/unprocessed';
+import faker from 'faker';
 
 /** Fake API for finding gift history. */
 export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
@@ -18,20 +19,64 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<GravityGiftHistory>> {
-    return GravityPlayerT10IdGiftHistoryFakeApi.make();
+  public handle(body?: unknown): Partial<Unprocessed<GravityGiftHistory[]>> {
+    return GravityPlayerT10IdGiftHistoryFakeApi.make(body as string);
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<GravityGiftHistory>> {
-    return {
-      playerId: '189456456',
-      title: 'Gravity',
-      giftSendDateUtc: '2020-12-08T20:04:05.391Z',
-      giftInventory: {
-        xuid: 2533275026603041,
-        t10Id: 'ReAlTuRn1OiD',
+  public static make(t10Id: string): Partial<Unprocessed<GravityGiftHistory[]>> {
+    return [
+      {
+        idType: 'T10Id',
+        id: t10Id,
+        title: 'Gravity',
+        giftSendDateUtc: faker.date.past(),
+        giftInventory: {
+          t10Id: t10Id,
+          cars: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          currencies: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          energyRefills: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          upgradeKits: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          repairKits: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+          masteryKits: [
+            {
+              itemId: BigInt(faker.random.number()),
+              description: faker.random.word(),
+              quantity: BigInt(faker.random.number()),
+            },
+          ],
+        },
       },
-    };
+    ];
   }
 }
