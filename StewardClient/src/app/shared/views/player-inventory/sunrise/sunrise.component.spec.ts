@@ -1,4 +1,6 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { createMockSunriseService } from '@services/sunrise';
 
 import { SunrisePlayerInventoryComponent } from './sunrise.component';
 
@@ -8,7 +10,9 @@ describe('SunriseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SunrisePlayerInventoryComponent ]
+      declarations: [ SunrisePlayerInventoryComponent ],
+      providers: [createMockSunriseService()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
     .compileComponents();
   });
