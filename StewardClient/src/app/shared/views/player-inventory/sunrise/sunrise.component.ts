@@ -72,10 +72,13 @@ export class SunrisePlayerInventoryComponent extends BaseComponent implements On
     this.identity$.next(this.identity);
   }
 
-  private makeWhatToShow(): PropertyToExpandoData[] {
+  private makeWhatToShow(): PropertyToExpandoData<SunrisePlayerInventory>[] {
     const inventory = this.inventory;
 
-    function makeEntry(property: keyof SunrisePlayerInventory, title: string): PropertyToExpandoData {
+    function makeEntry(
+      property: keyof SunrisePlayerInventory,
+      title: string,
+    ): PropertyToExpandoData<SunrisePlayerInventory> {
       const count = (inventory[property] as SunriseInventoryItem[]).reduce(
         (accumulator, entry) => accumulator + entry.quantity,
         BigInt(0),
