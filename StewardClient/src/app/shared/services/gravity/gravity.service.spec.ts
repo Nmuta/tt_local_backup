@@ -2,9 +2,6 @@
 import { ApiService, createMockApiService } from '@shared/services/api';
 import { of } from 'rxjs';
 import { GravityService } from './gravity.service';
-import { GravityPlayerInventory } from '@models/gravity';
-import { HttpParams } from '@angular/common/http';
-import { faker } from '@interceptors/fake-api/utility';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('service: GravityService', () => {
@@ -73,24 +70,6 @@ describe('service: GravityService', () => {
     });
   });
 
-  describe('Method: getPlayerDetailsByXuid', () => {
-    let expectedXuid;
-
-    beforeEach(() => {
-      expectedXuid = 'test-xuid';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
-    });
-
-    it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByXuid(expectedXuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/xuid(${expectedXuid})/details`,
-        );
-        done();
-      });
-    });
-  });
-
   describe('Method: getPlayerDetailsByT10Id', () => {
     let expectedT10Id;
 
@@ -109,24 +88,6 @@ describe('service: GravityService', () => {
     });
   });
 
-  describe('Method: getPlayerInventoryByXuid', () => {
-    let expectedXuid;
-
-    beforeEach(() => {
-      expectedXuid = 'test-xuid';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
-    });
-
-    it('should call API service getRequest with the expected params', done => {
-      service.getPlayerInventoryByXuid(expectedXuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/inventory/xuid(${expectedXuid})`,
-        );
-        done();
-      });
-    });
-  });
-
   describe('Method: getPlayerInventoryByT10Id', () => {
     let expectedT10Id;
 
@@ -138,32 +99,10 @@ describe('service: GravityService', () => {
     it('should call API service getRequest with the expected params', done => {
       service.getPlayerInventoryByT10Id(expectedT10Id).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/inventory/t10Id(${expectedT10Id})`,
+          `${service.basePath}/player/t10Id(${expectedT10Id})/inventory`,
         );
         done();
       });
-    });
-  });
-
-  describe('Method: getPlayerInventoryByProfileIdWithXuid', () => {
-    let expectedXuid;
-    let expectedProfileId;
-
-    beforeEach(() => {
-      expectedXuid = 'test-xuid';
-      expectedProfileId = 'test-profile-id';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
-    });
-
-    it('should call API service getRequest with the expected params', done => {
-      service
-        .getPlayerInventoryByProfileIdWithXuid(expectedXuid, expectedProfileId)
-        .subscribe(() => {
-          expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-            `${service.basePath}/player/inventory/xuid(${expectedXuid})/profileId(${expectedProfileId})`,
-          );
-          done();
-        });
     });
   });
 
@@ -182,145 +121,10 @@ describe('service: GravityService', () => {
         .getPlayerInventoryByProfileIdWithT10Id(expectedt10Id, expectedProfileId)
         .subscribe(() => {
           expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-            `${service.basePath}/player/inventory/t10Id(${expectedt10Id})/profileId(${expectedProfileId})`,
+            `${service.basePath}/player/t10Id(${expectedt10Id})/profileId(${expectedProfileId})/inventory`,
           );
           done();
         });
-    });
-  });
-
-  describe('Method: updatePlayerInventoryByXuid', () => {
-    let expectedInventory: Partial<GravityPlayerInventory>;
-    let expectedParams: HttpParams;
-
-    beforeEach(() => {
-      expectedInventory = {
-        xuid:
-          BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER)),
-      };
-      expectedParams = new HttpParams().append('useBackgroundProcessing', false.toString());
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of({}));
-    });
-
-    it('should call API service postRequest with the expected params', done => {
-      service
-        .updatePlayerInventoryByXuid(expectedInventory as GravityPlayerInventory)
-        .subscribe(() => {
-          expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
-            `${service.basePath}/player/inventory/xuid`,
-            expectedInventory,
-            expectedParams,
-          );
-          done();
-        });
-    });
-
-    describe('When xuid is not provided', () => {
-      beforeEach(() => {
-        expectedInventory = {};
-        expectedParams = new HttpParams().append('useBackgroundProcessing', false.toString());
-        apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of({}));
-      });
-
-      it('should throw error from observable', done => {
-        service
-          .updatePlayerInventoryByXuid(expectedInventory as GravityPlayerInventory, true)
-          .subscribe(
-            () => {
-              expect(false).toBeTruthy();
-              done();
-            },
-            () => {
-              expect(true).toBeTruthy();
-              done();
-            },
-          );
-      });
-    });
-
-    describe('When background processing is set to true', () => {
-      beforeEach(() => {
-        expectedParams = new HttpParams().append('useBackgroundProcessing', true.toString());
-      });
-
-      it('should call API service postRequest with the expected param', done => {
-        service
-          .updatePlayerInventoryByXuid(expectedInventory as GravityPlayerInventory, true)
-          .subscribe(() => {
-            expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
-              `${service.basePath}/player/inventory/xuid`,
-              expectedInventory,
-              expectedParams,
-            );
-            done();
-          });
-      });
-    });
-  });
-
-  describe('Method: updatePlayerInventoryByT10Id', () => {
-    let expectedInventory: Partial<GravityPlayerInventory>;
-    let expectedParams: HttpParams;
-
-    beforeEach(() => {
-      expectedInventory = { t10Id: 't10Id' };
-      expectedParams = new HttpParams().append('useBackgroundProcessing', false.toString());
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of({}));
-    });
-
-    it('should call API service postRequest with the expected params', done => {
-      service
-        .updatePlayerInventoryByT10Id(expectedInventory as GravityPlayerInventory)
-        .subscribe(() => {
-          expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
-            `${service.basePath}/player/inventory/t10Id`,
-            expectedInventory,
-            expectedParams,
-          );
-          done();
-        });
-    });
-
-    describe('When xuid is not provided', () => {
-      beforeEach(() => {
-        expectedInventory = {};
-        expectedParams = new HttpParams().append('useBackgroundProcessing', false.toString());
-        apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of({}));
-      });
-
-      it('should throw error from observable', done => {
-        service
-          .updatePlayerInventoryByT10Id(expectedInventory as GravityPlayerInventory, true)
-          .subscribe(
-            () => {
-              expect(false).toBeTruthy();
-              done();
-            },
-            () => {
-              expect(true).toBeTruthy();
-              done();
-            },
-          );
-      });
-    });
-
-    describe('When background processing is set to true', () => {
-      beforeEach(() => {
-        expectedParams = new HttpParams().append('useBackgroundProcessing', true.toString());
-      });
-
-      it('should call API service postRequest with the expected param', done => {
-        service
-          .updatePlayerInventoryByT10Id(expectedInventory as GravityPlayerInventory, true)
-          .subscribe(() => {
-            expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
-              `${service.basePath}/player/inventory/t10Id`,
-              expectedInventory,
-              expectedParams,
-            );
-            done();
-          });
-      });
     });
   });
 
