@@ -3,13 +3,11 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitleCodeName } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
-import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
 
-export type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory;
 export type InventoryItem = {
   itemId: bigint;
   description: string;
@@ -18,10 +16,10 @@ export type InventoryItem = {
 };
 export type InventoryItemGroup = {
   category: string;
-  items: InventoryItem[];
+  items: MasterInventoryItem[];
 };
 
-export type GiftBasketModel = InventoryItem & { edit: boolean };
+export type GiftBasketModel = MasterInventoryItem & { edit: boolean };
 
 /** The base gift-basket component. */
 @Component({
@@ -34,8 +32,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
   /** Master inventory list. */
   public masterInventory: MasterInventoryUnion;
-  /** If gift basket is disabled. TODO: Remove once component is built out */
-  public disableCard: boolean = false;
   /** The gift basket of current items to be send. */
   public giftBasket = new MatTableDataSource<GiftBasketModel>();
   /** The gift basket display columns */
@@ -85,7 +81,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     const temporaryGiftBasket = this.giftBasket.data;
 
     const existingItemIndex = temporaryGiftBasket.findIndex(data => {
-      return data.itemId === item.itemId && data.itemType === item.itemType;
+      return data.id === item.id && data.itemType === item.itemType;
     });
 
     if (existingItemIndex >= 0) {
