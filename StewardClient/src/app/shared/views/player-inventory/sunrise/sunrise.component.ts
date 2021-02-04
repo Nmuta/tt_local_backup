@@ -90,11 +90,11 @@ export class SunrisePlayerInventoryComponent extends BaseComponent implements On
     return [
       makeEntry('cars', 'Cars'),
       makeEntry('vanityItems', 'Vanity Items'),
-      makeEntry('rebuilds', 'Rebuilds'),
       makeEntry('carHorns', 'Car Horns'),
       makeEntry('quickChatLines', 'Quick Chat Lines'),
-      makeEntry('creditRewards', 'Credit Rewards'),
       makeEntry('emotes', 'Emotes'),
+      makeEntry('rebuilds', 'Rebuilds'),
+      makeEntry('creditRewards', 'Credit Rewards'),
       makeEntry('barnFindRumors', 'Barn Find Rumors'),
       makeEntry('perks', 'Perks'),
     ];
