@@ -18,7 +18,7 @@ export enum ApolloBanArea {
 
 /** A single part of the bulk /v1/title/Apollo/players/ban request model */
 export interface ApolloBanRequest {
-  xuid: BigInt;
+  xuid: bigint;
   gamertag: GamertagString;
   banAllConsoles: boolean;
   banAllPcs: boolean;
@@ -31,11 +31,11 @@ export interface ApolloBanRequest {
 
 /** Services model for bans. */
 export interface ApolloBanDescription {
-  xuid: BigInt;
+  xuid: bigint;
   startTimeUtc: Date;
   expireTimeUtc: Date;
   isActive: boolean;
-  countOfTimesExtended: BigInt;
+  countOfTimesExtended: bigint;
   lastExtendedTimeUtc: Date;
   lastExtendedReason: string;
   reason: string;

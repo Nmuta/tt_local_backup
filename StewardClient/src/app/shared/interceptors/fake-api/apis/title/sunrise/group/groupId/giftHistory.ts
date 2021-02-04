@@ -29,7 +29,7 @@ export class SunriseGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
       title: 'Sunrise',
       giftSendDateUtc: '2020-12-08T20:04:05.391Z',
       giftInventory: {
-        xuid: 189456456,
+        xuid: BigInt(189456456),
       },
     };
   }

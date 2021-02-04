@@ -25,13 +25,13 @@ export class SunrisePlayerXuidProfileSummaryFakeApi extends FakeApiBase {
   /** Creates a sample object. */
   public static make(): Unprocessed<SunriseProfileSummary> {
     return {
-      totalTombolaSpins: 13,
-      totalSuperTombolaSpins: 0,
-      currentCredits: 511830,
-      maxCredits: 511830,
-      housesPurchased: 0,
-      unaccountedForCredits: -359026,
-      totalXp: 325702,
+      totalTombolaSpins: BigInt(13),
+      totalSuperTombolaSpins: BigInt(0),
+      currentCredits: BigInt(511830),
+      maxCredits: BigInt(511830),
+      housesPurchased: BigInt(0),
+      unaccountedForCredits: BigInt(-359026),
+      totalXp: BigInt(325702),
       hackFlags: [
         'FileDecryptionAuthFailure',
         'Checksum_ObfuscatedDataAccessors',

@@ -3,7 +3,7 @@ import { GravityCar, GravityInventoryItem, GravityKit } from './inventory-items'
 
 /** Interface for gravity player inventory. */
 export interface GravityPlayerInventory {
-  xuid: BigInt;
+  xuid: bigint;
   t10Id: Turn10IdString;
   previousGameSettingsId: GuidLikeString;
   currentExternalProfileId: GuidLikeString;

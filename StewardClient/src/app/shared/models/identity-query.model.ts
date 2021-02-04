@@ -8,7 +8,7 @@ interface IdentityQueryByGamertag {
 
 /** An identity query by xuid. */
 interface IdentityQueryByXuid {
-  xuid: BigInt;
+  xuid: bigint;
 }
 
 /** An identity query by t10Id. */
@@ -65,7 +65,7 @@ export interface IdentityResultAlpha {
   /** The gamertag, if found. */
   gamertag?: string;
   /** The XUID, if found. */
-  xuid?: BigInt;
+  xuid?: bigint;
   /** Why this query failed. */
   error?: MSError;
 }
@@ -95,7 +95,7 @@ export interface IdentityResultBeta {
   /** The gamertag, if found. */
   gamertag?: string;
   /** The XUID, if found. */
-  xuid?: BigInt;
+  xuid?: bigint;
   /** The principal T10ID, if found. */
   t10Id?: string;
   /** The other T10IDs, if found. */

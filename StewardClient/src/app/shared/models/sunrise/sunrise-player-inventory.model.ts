@@ -2,12 +2,12 @@ import { SunriseInventoryItem, SunriseCar } from './inventory-items';
 
 /** Interface for sunrise player inventory. */
 export interface SunrisePlayerInventory {
-  xuid: BigInt;
-  credits: BigInt;
-  wheelSpins: BigInt;
-  superWheelSpins: BigInt;
-  skillPoints: BigInt;
-  forzathonPoints: BigInt;
+  xuid: bigint;
+  credits: bigint;
+  wheelSpins: bigint;
+  superWheelSpins: bigint;
+  skillPoints: bigint;
+  forzathonPoints: bigint;
   cars: SunriseCar[];
   rebuilds: SunriseInventoryItem[];
   vanityItems: SunriseInventoryItem[];

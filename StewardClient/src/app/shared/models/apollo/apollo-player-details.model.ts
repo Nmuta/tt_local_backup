@@ -2,25 +2,25 @@ import { GamertagString } from '@models/extended-types';
 
 /** The /v1/title/apollo/player/???/details model */
 export interface ApolloPlayerDetails {
-  xuid: BigInt;
+  xuid: bigint;
   gamertag: GamertagString;
-  currentProfileId: BigInt;
+  currentProfileId: bigint;
   subscriptionTier: string;
   ageGroup: string;
-  country: BigInt;
-  region: BigInt;
-  lcid: BigInt;
+  country: bigint;
+  region: bigint;
+  lcid: bigint;
   ipAddress: string;
   lastLoginUtc: Date;
   firstLoginUtc: Date;
-  currentDriverModelId: BigInt;
+  currentDriverModelId: bigint;
   currentPlayerTitleId: string;
   currentBadgeId: string;
   clubTag: string;
   clubId: string;
   roleInClub: string;
-  currentCareerLevel: BigInt;
-  equippedVanityItemId: BigInt;
+  currentCareerLevel: bigint;
+  equippedVanityItemId: bigint;
   currentCarCollectionTier: string;
-  currentCarCollectionScore: BigInt;
+  currentCarCollectionScore: bigint;
 }

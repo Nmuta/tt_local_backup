@@ -11,7 +11,7 @@ import { createNavbarPath, NavbarTools } from 'app/pages/navbar-app/navbar-tool-
   styleUrls: ['./sunrise-gamertags.component.scss'],
 })
 export class SunriseGamertagsComponent implements OnChanges {
-  @Input() public xuid?: BigInt;
+  @Input() public xuid?: bigint;
 
   public everBannedIcon = faGavel;
 

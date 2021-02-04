@@ -1,11 +1,11 @@
 /** The /v1/title/Sunrise/player/???/profileSummary model */
 export interface SunriseProfileSummary {
-  totalTombolaSpins: BigInt;
-  totalSuperTombolaSpins: BigInt;
-  currentCredits: BigInt;
-  maxCredits: BigInt;
-  housesPurchased: BigInt;
-  unaccountedForCredits: BigInt;
-  totalXp: BigInt;
+  totalTombolaSpins: bigint;
+  totalSuperTombolaSpins: bigint;
+  currentCredits: bigint;
+  maxCredits: bigint;
+  housesPurchased: bigint;
+  unaccountedForCredits: bigint;
+  totalXp: bigint;
   hackFlags: string[];
 }

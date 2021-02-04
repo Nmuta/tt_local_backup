@@ -29,7 +29,7 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
       title: 'Apollo',
       giftSendDateUtc: '2020-12-08T20:04:05.391Z',
       giftInventory: {
-        xuid: 189456456,
+        xuid: BigInt(189456456),
       },
     };
   }

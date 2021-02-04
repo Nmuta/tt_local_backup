@@ -11,7 +11,7 @@ import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-sol
 
 export type MasterInventoryUnion = GravityMasterInventory | SunriseMasterInventory;
 export type InventoryItem = {
-  itemId: BigInt;
+  itemId: bigint;
   description: string;
   quantity: number;
   itemType: string;

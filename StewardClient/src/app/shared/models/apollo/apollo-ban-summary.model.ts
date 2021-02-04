@@ -4,9 +4,9 @@ import { ApolloBanDescription } from './apollo-ban-result.model';
 
 /** A single ban summary. */
 export interface ApolloBanSummary {
-  xuid: BigInt;
+  xuid: bigint;
   gamertag: GamertagString;
-  banCount: BigInt;
+  banCount: bigint;
   bannedAreas: ApolloBanArea[];
   lastBanDescription: ApolloBanDescription;
   userExists: boolean;

@@ -166,7 +166,7 @@ export class FakeApiInterceptor implements HttpInterceptor {
       return throwError(
         new HttpErrorResponse({
           url: request.url,
-          status: 9000,
+          status: BigInt(9000),
           statusText:
             'Request blocked because Fake API enabled. URL was not handled by Fake API, and was not on the allowed real-API list.',
         }),

@@ -6,7 +6,7 @@ import { SunriseCar, SunriseInventoryItem } from '@models/sunrise/inventory-item
 
 /** Fake API for sunrise player inventory. */
 export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
-  private xuid: BigInt;
+  private xuid: bigint;
 
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
@@ -33,12 +33,12 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Generates a sample object */
-  public static make(xuid: BigInt): SunrisePlayerInventory {
+  public static make(xuid: bigint): SunrisePlayerInventory {
     function makeFakeItems(count: number): SunriseInventoryItem[] {
       return Array(faker.random.number(count)).fill(0).map(() => {
         return {
           itemId: fakeBigInt(),
-          quantity: fakeBigInt({ min: 1, max: 20 }),
+          quantity: fakeBigInt({ min: BigInt(1), max: BigInt(20) }),
           acquisitionUtc: faker.date.past(),
           modifiedUtc: faker.date.recent(),
           lastUsedUtc: faker.date.recent(),
@@ -52,10 +52,10 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
         return {
           ...i,
           vin: faker.random.uuid(),
-          baseCost: fakeBigInt({ min: 4_000 }),
-          collectorScore: fakeBigInt({ min: 4_000, max: 200_000}),
+          baseCost: fakeBigInt({ min: BigInt(4_000) }),
+          collectorScore: fakeBigInt({ min: BigInt(4_000), max: BigInt(200_000)}),
           isOnlineOnly: faker.random.boolean(),
-          productionNumber: fakeBigInt({ min: 4_000, max: 200_000}),
+          productionNumber: fakeBigInt({ min: BigInt(4_000), max: BigInt(200_000)}),
           purchaseUtc: faker.date.past(),
           versionedLiveryId: faker.random.uuid(),
           versionedTuneId: faker.random.uuid(),
@@ -65,11 +65,11 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
 
     return {
       xuid: xuid,
-      credits: fakeBigInt({ min: 0 }),
-      wheelSpins: fakeBigInt({ min: 0 }),
-      superWheelSpins: fakeBigInt({ min: 0 }),
-      skillPoints: fakeBigInt({ min: 0 }),
-      forzathonPoints: fakeBigInt({ min: 0 }),
+      credits: fakeBigInt({ min: BigInt(0) }),
+      wheelSpins: fakeBigInt({ min: BigInt(0) }),
+      superWheelSpins: fakeBigInt({ min: BigInt(0) }),
+      skillPoints: fakeBigInt({ min: BigInt(0) }),
+      forzathonPoints: fakeBigInt({ min: BigInt(0) }),
       cars: makeFakeCars(200),
       rebuilds: makeFakeItems(200),
       vanityItems: makeFakeItems(200),
