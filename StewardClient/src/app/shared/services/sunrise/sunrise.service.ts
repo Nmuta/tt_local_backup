@@ -20,6 +20,7 @@ import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.m
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
+import { SunriseGiftHistory } from '@models/sunrise/sunrise-gift-history.model';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
@@ -110,6 +111,20 @@ export class SunriseService {
   /** Bans players by a list of XUIDs. */
   public postBanPlayers(bans: SunriseBanRequest[]): Observable<SunriseBanResult[]> {
     return this.apiService.postRequest<SunriseBanResult[]>(`${this.basePath}/players/ban`, bans);
+  }
+
+  /** Gets Gift history by a XUID. */
+  public getGiftHistoryByXuid(xuid: BigInt): Observable<SunriseGiftHistory[]> {
+    return this.apiService.getRequest<SunriseGiftHistory[]>(
+      `${this.basePath}/player/xuid(${xuid})/giftHistory`,
+    );
+  }
+
+  /** Gets Gift history by a LSP group ID. */
+  public getGiftHistoryByLspGroup(lspGroupId: BigInt): Observable<SunriseGiftHistory[]> {
+    return this.apiService.getRequest<SunriseGiftHistory[]>(
+      `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
+    );
   }
 
   /** Gets shared console users by XUID. */

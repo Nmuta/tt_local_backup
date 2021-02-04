@@ -225,6 +225,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<SunriseGiftHistory>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
+        public async Task<IList<SunriseNotification>> GetNotificationsAsync(ulong xuid, int maxResults)
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/notifications?maxResults={maxResults}");
+
+            return await ServiceClient.SendRequestAsync<IList<SunriseNotification>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+        }
+
         public async Task<BackgroundJob> GetJobStatusAsync(string jobId)
         {
             jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));

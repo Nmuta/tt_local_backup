@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Turn10IdString } from '@models/extended-types';
+import { T10IdString } from '@models/extended-types';
 import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
@@ -9,7 +9,6 @@ import {
   IdentityResultBetaBatch,
 } from '@models/identity-query.model';
 import { ApiService } from '@services/api';
-import { GiftHistoryAntecedent } from '@shared/constants';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -70,7 +69,7 @@ export class GravityService {
   }
 
   /** Gets the gravity player's inventory */
-  public getPlayerInventoryByT10Id(t10Id: Turn10IdString): Observable<GravityPlayerInventory> {
+  public getPlayerInventoryByT10Id(t10Id: T10IdString): Observable<GravityPlayerInventory> {
     return this.apiService.getRequest<GravityPlayerInventory>(
       `${this.basePath}/player/t10Id(${t10Id})/inventory`,
     );
@@ -93,13 +92,10 @@ export class GravityService {
     );
   }
 
-  /** Gets gravity gift histories. */
-  public getGiftHistories(
-    giftHistoryAntecedent: GiftHistoryAntecedent,
-    giftRecipientId: string,
-  ): Observable<GravityGiftHistory> {
-    return this.apiService.getRequest<GravityGiftHistory>(
-      `${this.basePath}/giftHistory/giftRecipientId/(${giftRecipientId})/giftHistoryAntecedent/(${giftHistoryAntecedent})`,
+  /** Gets Gift history by a Turn 10 ID. */
+  public getGiftHistoryByT10Id(t10Id: string): Observable<GravityGiftHistory[]> {
+    return this.apiService.getRequest<GravityGiftHistory[]>(
+      `${this.basePath}/player/t10Id(${t10Id})/giftHistory`,
     );
   }
 }
