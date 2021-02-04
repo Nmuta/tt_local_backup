@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { T10IdStringrom '@angular/core';
 import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
@@ -70,7 +70,7 @@ export class GravityService {
   }
 
   /** Gets gravity player details with a T10 ID. */
-  public getPlayerDetailsByT10Id(t10Id: string): Observable<GravityPlayerDetails> {
+  public getPlayerDetailsByT10Id(t10Id: stT10IdStringble<GravityPlayerDetails> {
     return this.apiService
       .getRequest<GravityPlayerDetails>(`${this.basePath}/player/t10Id(${t10Id})/details`)
       .pipe(
