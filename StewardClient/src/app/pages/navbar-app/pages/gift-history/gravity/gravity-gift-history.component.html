@@ -1,0 +1,18 @@
+<div class="default-page-layout">
+  <div class="default-page-layout-left">
+    <gravity-player-selection
+      [allowT10Id]="true"
+      [allowGroup]="false"
+      [(ngModel)]="selectedPlayerIdentities"
+      (ngModelChange)="onPlayerIdentitiesChange($event)"
+      (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
+    ></gravity-player-selection>
+  </div>
+
+  <div class="default-page-layout-right">
+    <gravity-gift-history-results
+      [selectedPlayer]="selectedPlayer"
+      [usingPlayerIdentities]="matTabSelectedIndex === 0"
+    ></gravity-gift-history-results>
+  </div>
+</div>

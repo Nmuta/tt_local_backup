@@ -9,7 +9,6 @@ import {
   IdentityResultBetaBatch,
 } from '@models/identity-query.model';
 import { ApiService } from '@services/api';
-import { GiftHistoryAntecedent } from '@shared/constants';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -93,13 +92,10 @@ export class GravityService {
     );
   }
 
-  /** Gets gravity gift histories. */
-  public getGiftHistories(
-    giftHistoryAntecedent: GiftHistoryAntecedent,
-    giftRecipientId: string,
-  ): Observable<GravityGiftHistory> {
-    return this.apiService.getRequest<GravityGiftHistory>(
-      `${this.basePath}/giftHistory/giftRecipientId/(${giftRecipientId})/giftHistoryAntecedent/(${giftHistoryAntecedent})`,
+  /** Gets Gift history by a Turn 10 ID. */
+  public getGiftHistoryByT10Id(t10Id: string): Observable<GravityGiftHistory[]> {
+    return this.apiService.getRequest<GravityGiftHistory[]>(
+      `${this.basePath}/player/t10Id(${t10Id})/giftHistory`,
     );
   }
 }
