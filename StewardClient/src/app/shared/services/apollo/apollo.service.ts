@@ -76,6 +76,8 @@ export class ApolloService {
 
   /** Gets the apollo player's inventory */
   public getPlayerInventoryByXuid(xuid: BigInt): Observable<ApolloPlayerInventory> {
-    return this.apiService.getRequest<ApolloPlayerInventory>(`${this.basePath}/player/xuid(${xuid})/inventory`);
+    return this.apiService.getRequest<ApolloPlayerInventory>(
+      `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
   }
 }

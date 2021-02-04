@@ -35,23 +35,25 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(t10Id: string): GravityPlayerInventory {
     function makeFakeItems(count: number): GravityInventoryItem[] {
-      return Array(faker.random.number(count)).fill(0).map(() => {
-        return {
-          itemId: fakeBigInt(),
-          quantity: fakeBigInt({ min: 1, max: 20 }),
-          acquisitionUtc: faker.date.past(),
-          modifiedUtc: faker.date.recent(),
-          lastUsedUtc: faker.date.recent(),
-          description: faker.lorem.sentences(2),
-        };
-      });
+      return Array(faker.random.number(count))
+        .fill(0)
+        .map(() => {
+          return {
+            itemId: fakeBigInt(),
+            quantity: fakeBigInt({ min: 1, max: 20 }),
+            acquisitionUtc: faker.date.past(),
+            modifiedUtc: faker.date.recent(),
+            lastUsedUtc: faker.date.recent(),
+            description: faker.lorem.sentences(2),
+          };
+        });
     }
 
     function makeFakeKits(count: number): GravityKit[] {
       return makeFakeItems(count).map(i => {
         return {
           ...i,
-          partialQuantity: fakeBigInt({ min: 0, max: 100 })
+          partialQuantity: fakeBigInt({ min: 0, max: 100 }),
         };
       });
     }

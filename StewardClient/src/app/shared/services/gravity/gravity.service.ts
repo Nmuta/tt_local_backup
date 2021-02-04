@@ -71,7 +71,9 @@ export class GravityService {
 
   /** Gets the gravity player's inventory */
   public getPlayerInventoryByT10Id(t10Id: Turn10IdString): Observable<GravityPlayerInventory> {
-    return this.apiService.getRequest<GravityPlayerInventory>(`${this.basePath}/player/t10Id(${t10Id})/inventory`);
+    return this.apiService.getRequest<GravityPlayerInventory>(
+      `${this.basePath}/player/t10Id(${t10Id})/inventory`,
+    );
   }
 
   /** Gets gravity player inventory with a profile ID. */

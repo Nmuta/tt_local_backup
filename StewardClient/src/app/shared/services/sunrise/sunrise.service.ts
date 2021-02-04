@@ -149,6 +149,8 @@ export class SunriseService {
 
   /** Gets the player's inventory */
   public getPlayerInventoryByXuid(xuid: BigInt): Observable<SunrisePlayerInventory> {
-    return this.apiService.getRequest<SunrisePlayerInventory>(`${this.basePath}/player/xuid(${xuid})/inventory`);
+    return this.apiService.getRequest<SunrisePlayerInventory>(
+      `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
   }
 }

@@ -103,7 +103,7 @@ describe('SunriseService', () => {
     it('should call apiServiceMock.getRequest', done => {
       service.getPlayerInventoryByXuid(xuid).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/player/xuid(${xuid})/inventory`
+          `${service.basePath}/player/xuid(${xuid})/inventory`,
         );
         done();
       });
