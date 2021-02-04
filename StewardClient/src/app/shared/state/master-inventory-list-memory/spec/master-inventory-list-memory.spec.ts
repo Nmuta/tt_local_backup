@@ -12,7 +12,7 @@ import {
   GetGravityMasterInventoryList,
   GetSunriseMasterInventoryList,
 } from '../master-inventory-list-memory.actions';
-import { NEVER, of } from 'rxjs';
+import { NEVER } from 'rxjs';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 
 describe('State: MasterInventoryListMemoryState', () => {
@@ -48,16 +48,6 @@ describe('State: MasterInventoryListMemoryState', () => {
           [GameTitleCodeName.FH4]: undefined,
         },
       });
-
-      mockGravityService.getGameSettings = jasmine
-        .createSpy('getGameSettings')
-        .and.returnValue(of({}));
-      mockSunriseService.getMasterInventory = jasmine
-        .createSpy('getMasterInventory')
-        .and.returnValue(of({}));
-      mockApolloService.getMasterInventory = jasmine
-        .createSpy('getMasterInventory')
-        .and.returnValue(of({}));
     }),
   );
 

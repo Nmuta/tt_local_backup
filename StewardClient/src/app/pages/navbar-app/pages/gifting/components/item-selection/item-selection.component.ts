@@ -21,15 +21,7 @@ import { InventoryItemGroup } from '../gift-basket/gift-basket.base.component';
 import { map, startWith, takeUntil } from 'rxjs/operators';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import _ from 'lodash';
-import { MasterInventoryItem } from '@models/master-inventory-item';
-import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
-import { ApolloMasterInventory } from '@models/apollo';
-
-export type MasterInventoryUnion =
-  | GravityMasterInventory
-  | SunriseMasterInventory
-  | ApolloMasterInventory;
+import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
 
 /** The item-selection component. */
 @Component({
