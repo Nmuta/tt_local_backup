@@ -1,3 +1,5 @@
+// TODO: Revert or Expand: GuidLikeString, T10IdString, GamertagString typings (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/640494)
+
 /** For strings that look like guids. */
 export type GuidLikeString = string;
 
