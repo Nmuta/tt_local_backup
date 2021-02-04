@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ApolloBanResult, ApolloPlayerDetails } from '@models/apollo';
+import { ApolloBanResult, ApolloPlayerDetails, ApolloPlayerInventory } from '@models/apollo';
 import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
 import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
+import { ApolloGiftHistory } from '@models/apollo/apollo-gift-history.model';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,
@@ -69,8 +70,29 @@ export class ApolloService {
       );
   }
 
+  /** Gets Gift history by a XUID. */
+  public getGiftHistoryByXuid(xuid: BigInt): Observable<ApolloGiftHistory[]> {
+    return this.apiService.getRequest<ApolloGiftHistory[]>(
+      `${this.basePath}/player/xuid(${xuid})/giftHistory`,
+    );
+  }
+
+  /** Gets Gift history by a LSP Group. */
+  public getGiftHistoryByLspGroup(lspGroupId: BigInt): Observable<ApolloGiftHistory[]> {
+    return this.apiService.getRequest<ApolloGiftHistory[]>(
+      `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
+    );
+  }
+
   /** Gets the apollo lsp groups. */
   public getLspGroups(): Observable<LspGroups> {
     return this.apiService.getRequest<LspGroups>(`${this.basePath}/groups`);
+  }
+
+  /** Gets the apollo player's inventory */
+  public getPlayerInventoryByXuid(xuid: bigint): Observable<ApolloPlayerInventory> {
+    return this.apiService.getRequest<ApolloPlayerInventory>(
+      `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
   }
 }

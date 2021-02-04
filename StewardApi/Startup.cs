@@ -170,6 +170,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<ISunriseEnforcementService, SunriseEnforcementServiceWrapper>();
             services.AddSingleton<ISunriseUserInventoryService, SunriseUserInventoryServiceWrapper>();
             services.AddSingleton<ISunriseGiftingService, SunriseGiftingServiceWrapper>();
+            services.AddSingleton<ISunriseNotificationsService, SunriseNotificationsServiceWrapper>();
             services.AddSingleton<ISunrisePlayerDetailsProvider, SunrisePlayerDetailsProvider>();
             services.AddSingleton<ISunrisePlayerInventoryProvider, SunrisePlayerInventoryProvider>();
             services.AddSingleton<IRequestValidator<SunriseMasterInventory>, SunriseMasterInventoryRequestValidator>();

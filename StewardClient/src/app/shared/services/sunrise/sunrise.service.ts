@@ -11,6 +11,7 @@ import {
   SunriseBanResult,
   SunriseBanSummary,
   SunrisePlayerDetails,
+  SunrisePlayerInventory,
   SunrisePlayerNotifications,
   SunriseUserFlags,
 } from '@models/sunrise';
@@ -19,6 +20,7 @@ import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.m
 import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
+import { SunriseGiftHistory } from '@models/sunrise/sunrise-gift-history.model';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
@@ -34,7 +36,7 @@ export class SunriseService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets the status of a player's notifications. */
-  public getPlayerNotificationsByXuid(xuid: BigInt): Observable<SunrisePlayerNotifications> {
+  public getPlayerNotificationsByXuid(xuid: bigint): Observable<SunrisePlayerNotifications> {
     return this.apiService.getRequest(`${this.basePath}/player/xuid(${xuid})/notifications`);
   }
 
@@ -77,14 +79,14 @@ export class SunriseService {
   }
 
   /** Gets user flags by a XUID. */
-  public getFlagsByXuid(xuid: BigInt): Observable<SunriseUserFlags> {
+  public getFlagsByXuid(xuid: bigint): Observable<SunriseUserFlags> {
     return this.apiService.getRequest<SunriseUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
     );
   }
 
   /** Gets user flags by a XUID. */
-  public putFlagsByXuid(xuid: BigInt, flags: SunriseUserFlags): Observable<SunriseUserFlags> {
+  public putFlagsByXuid(xuid: bigint, flags: SunriseUserFlags): Observable<SunriseUserFlags> {
     return this.apiService.putRequest<SunriseUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
       flags,
@@ -92,7 +94,7 @@ export class SunriseService {
   }
 
   /** Gets user flags by a XUID. */
-  public getBanHistoryByXuid(xuid: BigInt): Observable<LiveOpsBanDescriptions> {
+  public getBanHistoryByXuid(xuid: bigint): Observable<LiveOpsBanDescriptions> {
     return this.apiService.getRequest<LiveOpsBanDescriptions>(
       `${this.basePath}/player/xuid(${xuid})/banHistory`,
     );
@@ -111,14 +113,28 @@ export class SunriseService {
     return this.apiService.postRequest<SunriseBanResult[]>(`${this.basePath}/players/ban`, bans);
   }
 
+  /** Gets Gift history by a XUID. */
+  public getGiftHistoryByXuid(xuid: BigInt): Observable<SunriseGiftHistory[]> {
+    return this.apiService.getRequest<SunriseGiftHistory[]>(
+      `${this.basePath}/player/xuid(${xuid})/giftHistory`,
+    );
+  }
+
+  /** Gets Gift history by a LSP group ID. */
+  public getGiftHistoryByLspGroup(lspGroupId: BigInt): Observable<SunriseGiftHistory[]> {
+    return this.apiService.getRequest<SunriseGiftHistory[]>(
+      `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
+    );
+  }
+
   /** Gets shared console users by XUID. */
-  public getSharedConsoleUsersByXuid(xuid: BigInt): Observable<SunriseSharedConsoleUsers> {
+  public getSharedConsoleUsersByXuid(xuid: bigint): Observable<SunriseSharedConsoleUsers> {
     return this.apiService.getRequest<SunriseSharedConsoleUsers>(
       `${this.basePath}/player/xuid(${xuid})/sharedConsoleUsers`,
     );
   }
   /** Gets console details by XUID. */
-  public getConsoleDetailsByXuid(xuid: BigInt): Observable<SunriseConsoleDetails> {
+  public getConsoleDetailsByXuid(xuid: bigint): Observable<SunriseConsoleDetails> {
     return this.apiService.getRequest<SunriseConsoleDetails>(
       `${this.basePath}/player/xuid(${xuid})/consoleDetails`,
     );
@@ -133,16 +149,23 @@ export class SunriseService {
   }
 
   /** Gets a player's Profile Summary by XUID. */
-  public getProfileSummaryByXuid(xuid: BigInt): Observable<SunriseProfileSummary> {
+  public getProfileSummaryByXuid(xuid: bigint): Observable<SunriseProfileSummary> {
     return this.apiService.getRequest<SunriseProfileSummary>(
       `${this.basePath}/player/xuid(${xuid})/profileSummary`,
     );
   }
 
   /** Gets a player's Profile Summary by XUID. */
-  public getCreditHistoryByXuid(xuid: BigInt): Observable<SunriseCreditHistory> {
+  public getCreditHistoryByXuid(xuid: bigint): Observable<SunriseCreditHistory> {
     return this.apiService.getRequest<SunriseCreditHistory>(
       `${this.basePath}/player/xuid(${xuid})/creditUpdates`,
+    );
+  }
+
+  /** Gets the player's inventory */
+  public getPlayerInventoryByXuid(xuid: bigint): Observable<SunrisePlayerInventory> {
+    return this.apiService.getRequest<SunrisePlayerInventory>(
+      `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
 }

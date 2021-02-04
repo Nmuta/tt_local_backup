@@ -46,8 +46,8 @@ describe('ApolloBanningComponent', () => {
       .createSpy('getBanSummariesByXuids')
       .and.callFake((xuids: BigInt[]) => {
         const summaries = ApolloPlayersBanSummariesFakeApi.make(xuids);
-        summaries.forEach(s => (s.banCount = 0));
-        summaries[0].banCount = 5;
+        summaries.forEach(s => (s.banCount = BigInt(0)));
+        summaries[0].banCount = BigInt(5);
         return defer(() => of(summaries));
       });
 

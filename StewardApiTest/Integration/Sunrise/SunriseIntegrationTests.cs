@@ -9,7 +9,6 @@ using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
-using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardTest.Utilities;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
@@ -20,6 +19,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
     {
         private static string endpoint;
         private static string authKey;
+        private static ulong notificationXuid;
         private static ulong xuid;
         private static ulong consoleId;
         private static string gamertag;
@@ -59,6 +59,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
             }
 
+            notificationXuid = 2535406565799176; // This xuid is required until we have access to an API to clear notification queue on LSP.
             xuid = 2535467864609498;
             gamertag = "FreeStuff019446";
             profileId = 18785266;
@@ -1450,6 +1451,61 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var result = await stewardClient.GetGiftHistoriesAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
 
             Assert.IsFalse(result.Any());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetNotifications()
+        {
+            var result = await stewardClient.GetNotificationsAsync(notificationXuid, TestConstants.DefaultMaxResults).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Any());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetNotifications_InvalidXuid()
+        {
+            try
+            {
+                await stewardClient.GetNotificationsAsync(TestConstants.InvalidXuid, TestConstants.DefaultMaxResults).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetNotifications_NegativeMaxResults()
+        {
+            try
+            {
+                await stewardClient.GetNotificationsAsync(notificationXuid, TestConstants.NegativeValue).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetNotifications_Unauthorized()
+        {
+            try
+            {
+                await unauthorizedClient.GetNotificationsAsync(notificationXuid, TestConstants.DefaultMaxResults).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
+            }
         }
 
         private async Task<SunrisePlayerInventory> UpdatePlayerInventoryWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, SunrisePlayerInventory playerInventory, BackgroundJobStatus expectedStatus)

@@ -14,7 +14,7 @@ import { takeUntil, switchMap } from 'rxjs/operators';
 })
 export class SunriseComponent extends BaseComponent implements OnInit {
   public gamertag: string;
-  public xuid: BigInt;
+  public xuid: bigint;
   public gameTitle: GameTitleCodeName;
 
   constructor(

@@ -1,0 +1,48 @@
+@import '/src/variables.scss';
+
+h3 {
+  margin-bottom: 0;
+  font-weight: bold;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+mat-panel-title {
+  display: inline;
+  &,
+  & > * {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  min-width: 150px;
+  flex-basis: auto;
+}
+
+mat-panel-description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  flex-flow: row wrap;
+  max-height: 2.5em;
+}
+
+.inventoryPreview {
+  color: mat-color($app-background, 600);
+  > .label {
+    font-weight: bold;
+    margin-right: 0.5em;
+    white-space: nowrap;
+  }
+  > .data {
+    margin-right: 0.5em;
+  }
+}
+
+.scrollable {
+  max-height: 80vh;
+  overflow: auto;
+}

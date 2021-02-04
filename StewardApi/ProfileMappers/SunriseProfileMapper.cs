@@ -70,6 +70,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<PlayerInventory, SunrisePlayerInventory>();
             this.CreateMap<SunrisePlayerDetails, IdentityResultAlpha>().ReverseMap();
             this.CreateMap<SunriseGroupGift, SunriseGift>().ReverseMap();
+            this.CreateMap<LiveOpsNotification, SunriseNotification>()
+                .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(source => source.id))
+                .ForMember(dest => dest.SendDateUtc, opt => opt.MapFrom(source => source.sentDate))
+                .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(source => source.expirationDate))
+                .ReverseMap();
         }
     }
 }

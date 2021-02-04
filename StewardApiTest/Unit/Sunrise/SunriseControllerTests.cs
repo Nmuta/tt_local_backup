@@ -1060,6 +1060,26 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             details.Should().BeOfType<List<SunriseGiftHistory>>();
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetPlayerNotifications_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerNotifications(xuid).ConfigureAwait(false);
+
+            // Assert.
+            action().Should().BeAssignableTo<Task<IActionResult>>();
+            action().Should().NotBeNull();
+            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as IList<SunriseNotification>;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<List<SunriseNotification>>();
+        }
+
         private IList<SunriseBanParametersInput> GenerateBanParameters()
         {
             return new List<SunriseBanParametersInput>
@@ -1143,6 +1163,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<SunriseBanSummary>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<string>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
+                this.SunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseNotification>>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
