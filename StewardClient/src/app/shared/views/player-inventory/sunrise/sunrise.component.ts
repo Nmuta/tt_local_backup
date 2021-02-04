@@ -65,8 +65,10 @@ export class SunrisePlayerInventoryComponent extends BaseComponent implements On
   }
 
   private makeWhatToShow(): WhatToShowEntry[] {
+    const inventory = this.inventory;
+
     function makeEntry(property: keyof SunrisePlayerInventory, title: string): WhatToShowEntry {
-      const count = (this.inventory[property] as SunriseInventoryItem[]).reduce((accumulator, entry) => accumulator + entry.quantity, BigInt(0))
+      const count = (inventory[property] as SunriseInventoryItem[]).reduce((accumulator, entry) => accumulator + entry.quantity, BigInt(0))
       return {
         property: property,
         title: title,
