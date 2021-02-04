@@ -1,11 +1,13 @@
+import { GuidLikeString } from '@models/extended-types';
+
 /** Interface for opus car item. */
 export interface OpusCar {
-  vin: string;
+  vin: GuidLikeString;
   baseCost: BigInt;
   carId: BigInt;
-  dateCreatedUtc: unknown;
+  dateCreatedUtc: Date;
   displayName: string;
   special: string;
-  versionedLiveryId: unknown;
-  versionedTuneId: unknown;
+  versionedLiveryId: GuidLikeString;
+  versionedTuneId: GuidLikeString;
 }

@@ -1,8 +1,9 @@
 import { MSError } from './error.model';
+import { GamertagString, T10IdString } from './extended-types';
 
 /** An identity query by gamertag. */
 interface IdentityQueryByGamertag {
-  gamertag: string;
+  gamertag: GamertagString;
 }
 
 /** An identity query by xuid. */
@@ -12,7 +13,7 @@ interface IdentityQueryByXuid {
 
 /** An identity query by t10Id. */
 interface IdentityQueryByT10Id {
-  t10Id: string;
+  t10Id: T10IdString;
 }
 
 /** Type-checking for @see IdentityQueryByGamertag */
@@ -35,7 +36,7 @@ export function isT10IdQuery(mystery: unknown): mystery is IdentityQueryByT10Id 
 
 /** Contextual information about T10IDs. */
 export interface T10IdInfo {
-  t10Id: string;
+  t10Id: T10IdString;
   createdUtc: Date;
   lastAccessedUtc: Date;
 }

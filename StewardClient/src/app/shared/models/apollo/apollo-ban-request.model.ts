@@ -1,3 +1,4 @@
+import { GamertagString } from '@models/extended-types';
 import * as moment from 'moment';
 
 export enum ApolloBanArea {
@@ -18,7 +19,7 @@ export enum ApolloBanArea {
 /** A single part of the bulk /v1/title/Apollo/players/ban request model */
 export interface ApolloBanRequest {
   xuid: BigInt;
-  gamertag: string;
+  gamertag: GamertagString;
   banAllConsoles: boolean;
   banAllPcs: boolean;
   deleteLeaderboardEntries: boolean;

@@ -1,8 +1,10 @@
+import { GamertagString, T10IdString } from '@models/extended-types';
+
 /** Interface for gravity player details. */
 export interface GravityPlayerDetails {
   xuid: BigInt;
-  gamertag: string;
-  t10Id: string;
+  gamertag: GamertagString;
+  t10Id: T10IdString;
   playFabId: string;
   userInventoryId: string;
   lcid: BigInt;

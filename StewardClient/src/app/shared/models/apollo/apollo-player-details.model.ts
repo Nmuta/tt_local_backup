@@ -1,7 +1,9 @@
+import { GamertagString } from '@models/extended-types';
+
 /** The /v1/title/apollo/player/???/details model */
 export interface ApolloPlayerDetails {
   xuid: BigInt;
-  gamertag: string;
+  gamertag: GamertagString;
   currentProfileId: BigInt;
   subscriptionTier: string;
   ageGroup: string;

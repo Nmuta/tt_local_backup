@@ -2,9 +2,8 @@
 export interface ApolloInventoryItem {
   itemId: BigInt;
   quantity: BigInt;
-  acquisitionUtc: unknown;
-
-  lastUsedUtc: unknown;
+  acquisitionUtc: Date;
+  lastUsedUtc: Date;
   description: string;
-  special: string;
+  special: 'Unicorn' | ''; // may be other values
 }
