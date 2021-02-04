@@ -1,6 +1,6 @@
-import * as faker from 'faker';
+import { fakeBigInt } from './fake-bigint';
 
 /** Generate a fake xuid. */
-export function fakeXuid(): BigInt {
-  return BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number());
+export function fakeXuid(): bigint {
+  return fakeBigInt({ min: Number.MAX_SAFE_INTEGER });
 }

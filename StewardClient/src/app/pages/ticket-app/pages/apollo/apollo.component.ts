@@ -14,7 +14,7 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 })
 export class ApolloComponent extends BaseComponent implements OnInit {
   public gamertag: string;
-  public xuid: BigInt;
+  public xuid: bigint;
   public gameTitle: GameTitleCodeName;
 
   constructor(

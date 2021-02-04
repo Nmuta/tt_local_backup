@@ -3,18 +3,17 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitleCodeName } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
-import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { MasterInventoryItem } from '@models/master-inventory-item';
-import { ApolloMasterInventory } from '@models/apollo';
+import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
 
-export type MasterInventoryUnion =
-  | GravityMasterInventory
-  | SunriseMasterInventory
-  | ApolloMasterInventory;
+export type InventoryItem = {
+  itemId: bigint;
+  description: string;
+  quantity: number;
+  itemType: string;
+};
 export type InventoryItemGroup = {
   category: string;
   items: MasterInventoryItem[];

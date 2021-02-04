@@ -1,22 +1,24 @@
+import { GamertagString } from '@models/extended-types';
+
 /** The /v1/title/opus/player/???/details model */
 export interface OpusPlayerDetails {
-  xuid: BigInt;
-  gamertag: string;
+  xuid: bigint;
+  gamertag: GamertagString;
   licensePlate: string;
   ageGroup: string;
   subscriptionTier: string;
-  country: BigInt;
-  region: BigInt;
-  lcid: BigInt;
+  country: bigint;
+  region: bigint;
+  lcid: bigint;
   ipAddress: string;
   lastLoginUtc: Date;
   firstLoginUtc: Date;
-  currentDriverModelId: BigInt;
+  currentDriverModelId: bigint;
   currentPlayerTitleId: string;
   currentBadgeId: string;
-  currentCareerLevel: BigInt;
+  currentCareerLevel: bigint;
   acceptsClubInvites: boolean;
-  clubTopTierCount: BigInt;
+  clubTopTierCount: bigint;
   clubTag: string;
   roleInClub: string;
 }

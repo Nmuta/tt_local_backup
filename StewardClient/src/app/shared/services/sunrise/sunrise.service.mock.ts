@@ -2,6 +2,8 @@ import { Injectable, Provider } from '@angular/core';
 import { SunrisePlayerXuidBanHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/banHistory';
 import { SunrisePlayersBanFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/ban';
 import { SunrisePlayersBanSummariesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/ban-summaries';
+import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
+import { IdentityQueryAlpha, IdentityQueryAlphaBatch } from '@models/identity-query.model';
 import { SunriseBanHistory } from '@models/sunrise';
 import _ from 'lodash';
 import { defer, of } from 'rxjs';
@@ -67,6 +69,17 @@ export class MockSunriseService {
   public getMasterInventory = jasmine
     .createSpy('getMasterInventory')
     .and.returnValue(of({}));
+
+  public getPlayerIdentity = jasmine
+    .createSpy('getPlayerIdentity')
+    .and.callFake((query: IdentityQueryAlpha) =>
+      defer(() => of(SunrisePlayersIdentitiesFakeApi.make([query]))),
+    );
+  public getPlayerIdentities = jasmine
+    .createSpy('getPlayerIdentities')
+    .and.callFake((query: IdentityQueryAlphaBatch) =>
+      defer(() => of(SunrisePlayersIdentitiesFakeApi.make(query))),
+    );
 
   constructor(private readonly generator: () => unknown) {}
 }

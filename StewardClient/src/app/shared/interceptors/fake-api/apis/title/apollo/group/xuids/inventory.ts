@@ -29,7 +29,7 @@ export class ApolloGroupXuidsInventoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<ApolloPlayerInventory>> {
     return {
-      xuid: 2533275026603041,
+      xuid: BigInt(2533275026603041),
     };
   }
 }

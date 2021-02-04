@@ -1,10 +1,9 @@
 /** Interface for apollo player inventory item. */
 export interface ApolloInventoryItem {
-  itemId: BigInt;
-  quantity: BigInt;
-  acquisitionUtc: unknown;
-
-  lastUsedUtc: unknown;
+  itemId: bigint;
+  quantity: bigint;
+  acquisitionUtc: Date;
+  lastUsedUtc: Date;
   description: string;
-  special: string;
+  special: 'Unicorn' | ''; // may be other values
 }

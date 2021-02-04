@@ -1,3 +1,4 @@
+import { GamertagString } from '@models/extended-types';
 import * as moment from 'moment';
 
 export enum ApolloBanArea {
@@ -17,8 +18,8 @@ export enum ApolloBanArea {
 
 /** A single part of the bulk /v1/title/Apollo/players/ban request model */
 export interface ApolloBanRequest {
-  xuid: BigInt;
-  gamertag: string;
+  xuid: bigint;
+  gamertag: GamertagString;
   banAllConsoles: boolean;
   banAllPcs: boolean;
   deleteLeaderboardEntries: boolean;
@@ -30,11 +31,11 @@ export interface ApolloBanRequest {
 
 /** Services model for bans. */
 export interface ApolloBanDescription {
-  xuid: BigInt;
+  xuid: bigint;
   startTimeUtc: Date;
   expireTimeUtc: Date;
   isActive: boolean;
-  countOfTimesExtended: BigInt;
+  countOfTimesExtended: bigint;
   lastExtendedTimeUtc: Date;
   lastExtendedReason: string;
   reason: string;
