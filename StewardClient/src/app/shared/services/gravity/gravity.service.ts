@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Turn10IdString } from '@models/extended-types';
+import { T10IdString } from '@models/extended-types';
 import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
@@ -70,7 +70,7 @@ export class GravityService {
   }
 
   /** Gets the gravity player's inventory */
-  public getPlayerInventoryByT10Id(t10Id: Turn10IdString): Observable<GravityPlayerInventory> {
+  public getPlayerInventoryByT10Id(t10Id: T10IdString): Observable<GravityPlayerInventory> {
     return this.apiService.getRequest<GravityPlayerInventory>(
       `${this.basePath}/player/t10Id(${t10Id})/inventory`,
     );
