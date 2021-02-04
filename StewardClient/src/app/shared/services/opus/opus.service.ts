@@ -55,6 +55,8 @@ export class OpusService {
 
   /** Gets the opus player's inventory */
   public getPlayerInventoryByXuid(xuid: bigint): Observable<OpusPlayerInventory> {
-    return this.apiService.getRequest<OpusPlayerInventory>(`${this.basePath}/player/xuid(${xuid})/inventory`);
+    return this.apiService.getRequest<OpusPlayerInventory>(
+      `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
   }
 }

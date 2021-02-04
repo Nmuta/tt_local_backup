@@ -27,8 +27,7 @@ export function fakeBigInt(params: FakeBigIntParams = { min: Number.MAX_SAFE_INT
     } while (difference > ACCUMULATOR_STEP_BIGINT);
 
     result = result + BigInt(faker.random.number(Number(difference)));
-  }
-  else {
+  } else {
     result = result + BigInt(faker.random.number());
   }
 

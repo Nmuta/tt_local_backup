@@ -35,16 +35,18 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(xuid: bigint): SunrisePlayerInventory {
     function makeFakeItems(count: number): SunriseInventoryItem[] {
-      return Array(faker.random.number(count)).fill(0).map(() => {
-        return {
-          itemId: fakeBigInt(),
-          quantity: fakeBigInt({ min: BigInt(1), max: BigInt(20) }),
-          acquisitionUtc: faker.date.past(),
-          modifiedUtc: faker.date.recent(),
-          lastUsedUtc: faker.date.recent(),
-          description: faker.lorem.sentences(2),
-        };
-      });
+      return Array(faker.random.number(count))
+        .fill(0)
+        .map(() => {
+          return {
+            itemId: fakeBigInt(),
+            quantity: fakeBigInt({ min: BigInt(1), max: BigInt(20) }),
+            acquisitionUtc: faker.date.past(),
+            modifiedUtc: faker.date.recent(),
+            lastUsedUtc: faker.date.recent(),
+            description: faker.lorem.sentences(2),
+          };
+        });
     }
 
     function makeFakeCars(count: number): SunriseCar[] {
@@ -53,9 +55,9 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
           ...i,
           vin: faker.random.uuid(),
           baseCost: fakeBigInt({ min: BigInt(4_000) }),
-          collectorScore: fakeBigInt({ min: BigInt(4_000), max: BigInt(200_000)}),
+          collectorScore: fakeBigInt({ min: BigInt(4_000), max: BigInt(200_000) }),
           isOnlineOnly: faker.random.boolean(),
-          productionNumber: fakeBigInt({ min: BigInt(4_000), max: BigInt(200_000)}),
+          productionNumber: fakeBigInt({ min: BigInt(4_000), max: BigInt(200_000) }),
           purchaseUtc: faker.date.past(),
           versionedLiveryId: faker.random.uuid(),
           versionedTuneId: faker.random.uuid(),
