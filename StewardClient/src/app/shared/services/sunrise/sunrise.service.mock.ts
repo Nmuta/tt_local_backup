@@ -66,9 +66,7 @@ export class MockSunriseService {
     .and.callFake((xuids: BigInt[]) =>
       defer(() => of(SunrisePlayersBanSummariesFakeApi.make(xuids))),
     );
-  public getMasterInventory = jasmine
-    .createSpy('getMasterInventory')
-    .and.returnValue(of({}));
+  public getMasterInventory = jasmine.createSpy('getMasterInventory').and.returnValue(of({}));
 
   public getPlayerIdentity = jasmine
     .createSpy('getPlayerIdentity')

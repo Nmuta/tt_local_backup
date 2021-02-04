@@ -14,9 +14,7 @@ export class MockGravityService {
     .createSpy('getPlayerDetailsByGamertag')
     .and.returnValue(of({}));
 
-  public getGameSettings = jasmine
-    .createSpy('getGameSettings')
-    .and.returnValue(of({}));
+  public getGameSettings = jasmine.createSpy('getGameSettings').and.returnValue(of({}));
 }
 
 /** Creates an injectable mock for Gravity Service. */

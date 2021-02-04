@@ -1,6 +1,6 @@
-import { ApolloMasterInventory } from "./apollo";
-import { GravityMasterInventory } from "./gravity/gravity-master-inventory.model";
-import { SunriseMasterInventory } from "./sunrise/sunrise-master-inventory.model";
+import { ApolloMasterInventory } from './apollo';
+import { GravityMasterInventory } from './gravity/gravity-master-inventory.model';
+import { SunriseMasterInventory } from './sunrise/sunrise-master-inventory.model';
 
 /** Interface for a master inventory item. */
 export interface MasterInventoryItem {

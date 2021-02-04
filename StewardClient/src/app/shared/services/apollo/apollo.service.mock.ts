@@ -19,9 +19,7 @@ export class MockApolloService {
     .createSpy('postBanPlayers')
     .and.returnValue(defer(() => ApolloPlayersBanFakeApi.make()));
 
-  public getMasterInventory = jasmine
-      .createSpy('getMasterInventory')
-      .and.returnValue(of({}));
+  public getMasterInventory = jasmine.createSpy('getMasterInventory').and.returnValue(of({}));
 }
 
 /** Creates an injectable mock for Apollo Service. */

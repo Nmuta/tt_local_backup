@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ApolloBanResult, ApolloMasterInventory, ApolloPlayerDetails, ApolloPlayerInventory } from '@models/apollo';
+import {
+  ApolloBanResult,
+  ApolloMasterInventory,
+  ApolloPlayerDetails,
+  ApolloPlayerInventory,
+} from '@models/apollo';
 import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
 import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
 import { ApolloGiftHistory } from '@models/apollo/apollo-gift-history.model';
