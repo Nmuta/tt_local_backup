@@ -38,7 +38,9 @@ export class SunriseComponent extends BaseComponent implements OnInit {
         switchMap(gamertag => {
           return this.sunrise.getPlayerIdentity({ gamertag: gamertag });
         }),
-        tap(identity => { this.identity = identity; }),
+        tap(identity => {
+          this.identity = identity;
+        }),
         switchMap(identity => {
           // TODO: This should be using identity.xuid (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/640413)
           return this.sunrise.getPlayerDetailsByGamertag(identity.gamertag).pipe(

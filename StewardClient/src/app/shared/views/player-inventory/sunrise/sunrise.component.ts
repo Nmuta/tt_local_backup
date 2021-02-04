@@ -17,7 +17,7 @@ interface WhatToShowEntry {
 @Component({
   selector: 'sunrise-player-inventory',
   templateUrl: './sunrise.component.html',
-  styleUrls: ['./sunrise.component.scss']
+  styleUrls: ['./sunrise.component.scss'],
 })
 export class SunrisePlayerInventoryComponent extends BaseComponent implements OnInit, OnChanges {
   @Input() public identity: IdentityResultAlpha;
@@ -26,6 +26,10 @@ export class SunrisePlayerInventoryComponent extends BaseComponent implements On
   public inventory: SunrisePlayerInventory;
   /** The computed total number of cars. */
   public totalCars = BigInt(0);
+  /** True while loading. */
+  public get isLoading(): boolean {
+    return !this.inventory;
+  }
   /** The last error. */
   public error: unknown;
 
@@ -35,7 +39,9 @@ export class SunrisePlayerInventoryComponent extends BaseComponent implements On
   /** Intermediate event that is fired when @see identity changes. */
   private identity$ = new Subject<IdentityResultAlpha>();
 
-  constructor(private readonly sunrise: SunriseService) { super(); }
+  constructor(private readonly sunrise: SunriseService) {
+    super();
+  }
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
@@ -51,7 +57,8 @@ export class SunrisePlayerInventoryComponent extends BaseComponent implements On
           this.error = error;
           return NEVER;
         }),
-      ).subscribe(inventory => {
+      )
+      .subscribe(inventory => {
         this.inventory = inventory;
         this.whatToShow = this.makeWhatToShow();
       });
@@ -68,18 +75,20 @@ export class SunrisePlayerInventoryComponent extends BaseComponent implements On
     const inventory = this.inventory;
 
     function makeEntry(property: keyof SunrisePlayerInventory, title: string): WhatToShowEntry {
-      const count = (inventory[property] as SunriseInventoryItem[]).reduce((accumulator, entry) => accumulator + entry.quantity, BigInt(0))
+      const count = (inventory[property] as SunriseInventoryItem[]).reduce(
+        (accumulator, entry) => accumulator + entry.quantity,
+        BigInt(0),
+      );
       return {
         property: property,
         title: title,
-        description: `${count} Total`
-      }
+        description: `${count} Total`,
+      };
     }
 
     return [
       makeEntry('cars', 'Cars'),
       makeEntry('vanityItems', 'Vanity Items'),
-      makeEntry('rebuilds', 'Rebuilds'),
       makeEntry('rebuilds', 'Rebuilds'),
       makeEntry('carHorns', 'Car Horns'),
       makeEntry('quickChatLines', 'Quick Chat Lines'),
@@ -87,6 +96,6 @@ export class SunrisePlayerInventoryComponent extends BaseComponent implements On
       makeEntry('emotes', 'Emotes'),
       makeEntry('barnFindRumors', 'Barn Find Rumors'),
       makeEntry('perks', 'Perks'),
-    ]
+    ];
   }
 }

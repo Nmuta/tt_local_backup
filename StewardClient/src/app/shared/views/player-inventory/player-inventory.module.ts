@@ -6,12 +6,11 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 /** Feature module containing cards that display player inventory. */
 @NgModule({
-  declarations: [
-    SunrisePlayerInventoryComponent
-  ],
+  declarations: [SunrisePlayerInventoryComponent],
   imports: [
     CommonModule,
     PipesModule,
@@ -19,9 +18,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatTableModule,
     MatTooltipModule,
     MatExpansionModule,
+    MatProgressSpinnerModule,
   ],
-  exports: [
-    SunrisePlayerInventoryComponent,
-  ]
+  exports: [SunrisePlayerInventoryComponent],
 })
-export class PlayerInventoryModule { }
+export class PlayerInventoryModule {}

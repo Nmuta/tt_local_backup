@@ -27,11 +27,13 @@ describe('PlayerSelectionChipComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
+
   describe('with good identity', () => {
     beforeEach(() => {
       component.identity = ApolloPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])[0];
-      component.playerSelection = { playerIdType: 'xuid' } as unknown as PlayerSelectionBaseComponent<IdentityResultUnion>;
+      component.playerSelection = ({
+        playerIdType: 'xuid',
+      } as unknown) as PlayerSelectionBaseComponent<IdentityResultUnion>;
       component.ngOnChanges(undefined);
     });
 
@@ -39,15 +41,23 @@ describe('PlayerSelectionChipComponent', () => {
       expect(component.name.toString()).toBe(component.identity.xuid.toString());
       expect(component.nameTooltip.toString()).toBe(component.identity.xuid.toString());
       expect(component.theme).toBe('primary');
-      expect()
+      expect();
     });
   });
-  
+
   describe('with bad identity', () => {
     beforeEach(() => {
       component.identity = ApolloPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])[0];
-      component.identity.error = { code: 'test code', details: null, innererror: null, message: 'test message', target: null };
-      component.playerSelection = { playerIdType: 'xuid' } as unknown as PlayerSelectionBaseComponent<IdentityResultUnion>;
+      component.identity.error = {
+        code: 'test code',
+        details: null,
+        innererror: null,
+        message: 'test message',
+        target: null,
+      };
+      component.playerSelection = ({
+        playerIdType: 'xuid',
+      } as unknown) as PlayerSelectionBaseComponent<IdentityResultUnion>;
       component.ngOnChanges(undefined);
     });
 
@@ -55,7 +65,7 @@ describe('PlayerSelectionChipComponent', () => {
       expect(component.name.toString()).toBe(component.identity.xuid.toString());
       expect(component.nameTooltip).toContain('invalid');
       expect(component.theme).toBe('warn');
-      expect()
+      expect();
     });
   });
 });

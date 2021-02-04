@@ -10,11 +10,10 @@ describe('SunriseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SunrisePlayerInventoryComponent ],
+      declarations: [SunrisePlayerInventoryComponent],
       providers: [createMockSunriseService()],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
