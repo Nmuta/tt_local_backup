@@ -37,6 +37,9 @@ import { ApolloGiftingState } from './pages/navbar-app/pages/gifting/apollo/stat
 import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state';
 import { MatNativeDateModule } from '@angular/material/core';
 import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-memory.state';
+import { GravityGiftHistoryState } from '@navbar-app/pages/gift-history/gravity/state/gravity-gift-history.state';
+import { SunriseGiftHistoryState } from '@navbar-app/pages/gift-history/sunrise/state/sunrise-gift-history.state';
+import { ApolloGiftHistoryState } from '@navbar-app/pages/gift-history/apollo/state/apollo-gift-history.state';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 
 const protectedResourceMap: [string, string[]][] = [
@@ -83,6 +86,10 @@ function fakeApiOrNothing(): Provider[] {
       GravityGiftingState,
       SunriseGiftingState,
       ApolloGiftingState,
+      // Gift History page states
+      GravityGiftHistoryState,
+      SunriseGiftHistoryState,
+      ApolloGiftHistoryState,
     ]),
     NgxsStoragePluginModule.forRoot({ key: [UserSettingsState] }),
     NgxsRouterPluginModule.forRoot(),

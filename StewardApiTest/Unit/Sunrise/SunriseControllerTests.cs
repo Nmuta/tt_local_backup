@@ -45,6 +45,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenKustoProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { KustoProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "kustoProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenSunrisePlayerDetailsProviderNull_Throws()
         {
             // Arrange.
@@ -1304,6 +1318,26 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             details.Should().BeOfType<List<SunriseGiftHistory>>();
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetPlayerNotifications_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerNotifications(xuid).ConfigureAwait(false);
+
+            // Assert.
+            action().Should().BeAssignableTo<Task<IActionResult>>();
+            action().Should().NotBeNull();
+            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as IList<SunriseNotification>;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<List<SunriseNotification>>();
+        }
+
         private IList<SunriseBanParametersInput> GenerateBanParameters()
         {
             return new List<SunriseBanParametersInput>
@@ -1380,6 +1414,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<SunriseBanSummary>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<string>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
+                this.SunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseNotification>>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
@@ -1388,6 +1423,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftHistoryAntecedent>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());
             }
+
+            public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
 
             public ISunrisePlayerDetailsProvider SunrisePlayerDetailsProvider { get; set; } = Substitute.For<ISunrisePlayerDetailsProvider>();
 
@@ -1418,18 +1455,19 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public IRequestValidator<SunriseBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseBanParametersInput>>();
 
             public SunriseController Build() => new SunriseController(
-                                                                      this.SunrisePlayerDetailsProvider,
-                                                                      this.SunrisePlayerInventoryProvider,
-                                                                      this.KeyVaultProvider,
-                                                                      this.GiftHistoryProvider,
-                                                                      this.BanHistoryProvider,
-                                                                      this.Configuration,
-                                                                      this.Scheduler,
-                                                                      this.JobTracker,
-                                                                      this.Mapper,
-                                                                      this.PlayerInventoryRequestValidator,
-                                                                      this.GroupGiftRequestValidator,
-                                                                      this.BanParametersRequestValidator)
+                this.KustoProvider,
+                this.SunrisePlayerDetailsProvider,
+                this.SunrisePlayerInventoryProvider,
+                this.KeyVaultProvider,
+                this.GiftHistoryProvider,
+                this.BanHistoryProvider,
+                this.Configuration,
+                this.Scheduler,
+                this.JobTracker,
+                this.Mapper,
+                this.PlayerInventoryRequestValidator,
+                this.GroupGiftRequestValidator,
+                this.BanParametersRequestValidator)
             { ControllerContext = this.ControllerContext };
         }
     }

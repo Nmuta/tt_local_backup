@@ -39,113 +39,35 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<CarHorn>> GetCarHornsAsync(KustoGameDbSupportedTitle supportedTitle)
+        public async Task<IList<MasterInventoryItem>> GetMasterInventoryList(string kustoQuery)
         {
-            var query = await this.BuildQuery(supportedTitle, KustoQueries.GetCarHorns).ConfigureAwait(false);
-
-            async Task<IList<CarHorn>> CarHorns()
+            async Task<IList<MasterInventoryItem>> MasterInventoryItems()
             {
-                var horns = new List<CarHorn>();
+                var items = new List<MasterInventoryItem>();
 
                 using (var reader = await this.cslQueryProvider
-                    .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
+                    .ExecuteQueryAsync(GameDatabaseName, kustoQuery, new ClientRequestProperties())
                     .ConfigureAwait(false))
                 {
                     while (reader.Read())
                     {
-                        horns.Add(new CarHorn
+                        items.Add(new MasterInventoryItem
                         {
                             Id = reader.GetInt64(0),
-                            Category = reader.GetInt64(1),
-                            DisplayName = reader.GetString(2),
-                            Rarity = reader.GetString(2)
+                            Description = reader.GetString(1),
                         });
                     }
 
                     reader.Close();
                 }
 
-                this.refreshableCacheStore.PutItem(query, TimeSpan.FromHours(24), horns);
+                this.refreshableCacheStore.PutItem(kustoQuery, TimeSpan.FromHours(24), items);
 
-                return horns;
+                return items;
             }
 
-            return this.refreshableCacheStore.GetItem<IList<CarHorn>>(query)
-                   ?? await CarHorns().ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task<IList<ForzaCar>> GetCarsAsync(KustoGameDbSupportedTitle supportedTitle)
-        {
-            var query = await this.BuildQuery(supportedTitle, KustoQueries.GetCars).ConfigureAwait(false);
-
-            async Task<IList<ForzaCar>> ForzaCars()
-            {
-                var cars = new List<ForzaCar>();
-
-                using (var reader = await this.cslQueryProvider
-                    .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
-                    .ConfigureAwait(false))
-                {
-                    while (reader.Read())
-                    {
-                        cars.Add(new ForzaCar
-                        {
-                            Id = reader.GetInt64(0),
-                            DisplayName = reader.GetString(1),
-                            MediaName = reader.GetString(2),
-                            ModelShort = reader.GetString(3),
-                            MakeDisplayName = reader.GetString(4)
-                        });
-                    }
-
-                    reader.Close();
-                }
-
-                this.refreshableCacheStore.PutItem(query, TimeSpan.FromHours(24), cars);
-
-                return cars;
-            }
-
-            return this.refreshableCacheStore.GetItem<IList<ForzaCar>>(query)
-                   ?? await ForzaCars().ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task<IList<CharacterCustomization>> GetCharacterCustomizationsAsync(KustoGameDbSupportedTitle supportedTitle)
-        {
-            var query = await this.BuildQuery(supportedTitle, KustoQueries.GetCharacterCustomizations).ConfigureAwait(false);
-
-            async Task<IList<CharacterCustomization>> CharacterCustomizations()
-            {
-                var characterCustomizations = new List<CharacterCustomization>();
-
-                using (var reader = await this.cslQueryProvider
-                    .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
-                    .ConfigureAwait(false))
-                {
-                    while (reader.Read())
-                    {
-                        characterCustomizations.Add(new CharacterCustomization
-                        {
-                            Id = reader.GetInt64(0),
-                            ItemId = reader.GetString(1),
-                            Rarity = reader.GetString(2),
-                            SlotId = reader.GetString(3),
-                            DisplayName = reader.GetString(4)
-                        });
-                    }
-
-                    reader.Close();
-                }
-
-                this.refreshableCacheStore.PutItem(query, TimeSpan.FromHours(24), characterCustomizations);
-
-                return characterCustomizations;
-            }
-
-            return this.refreshableCacheStore.GetItem<IList<CharacterCustomization>>(query)
-                   ?? await CharacterCustomizations().ConfigureAwait(false);
+            return this.refreshableCacheStore.GetItem<IList<MasterInventoryItem>>(kustoQuery)
+                   ?? await MasterInventoryItems().ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -181,78 +103,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
 
             return this.refreshableCacheStore.GetItem<IList<CreditReward>>(query)
                    ?? await CreditRewards().ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task<IList<Emote>> GetEmotesAsync(KustoGameDbSupportedTitle supportedTitle)
-        {
-            var query = await this.BuildQuery(supportedTitle, KustoQueries.GetEmotes).ConfigureAwait(false);
-
-            async Task<IList<Emote>> Emotes()
-            {
-                var emotes = new List<Emote>();
-
-                using (var reader = await this.cslQueryProvider
-                    .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
-                    .ConfigureAwait(false))
-                {
-                    while (reader.Read())
-                    {
-                        emotes.Add(new Emote
-                        {
-                            Id = reader.GetInt64(0),
-                            Name = reader.GetString(1),
-                            Animation = reader.GetString(2),
-                            Rarity = reader.GetString(3)
-                        });
-                    }
-
-                    reader.Close();
-                }
-
-                this.refreshableCacheStore.PutItem(query, TimeSpan.FromHours(24), emotes);
-
-                return emotes;
-            }
-
-            return this.refreshableCacheStore.GetItem<IList<Emote>>(query)
-                   ?? await Emotes().ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task<IList<QuickChat>> GetQuickChatsAsync(KustoGameDbSupportedTitle supportedTitle)
-        {
-            var query = await this.BuildQuery(supportedTitle, KustoQueries.GetQuickChats).ConfigureAwait(false);
-
-            async Task<IList<QuickChat>> QuickChats()
-            {
-                var quickChats = new List<QuickChat>();
-
-                using (var reader = await this.cslQueryProvider
-                    .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
-                    .ConfigureAwait(false))
-                {
-                    while (reader.Read())
-                    {
-                        quickChats.Add(new QuickChat
-                        {
-                            Id = reader.GetInt64(0),
-                            ChatMessage = reader.GetString(1),
-                            RequiresUnlock = byte.Parse(reader.GetValue(2).ToString(), CultureInfo.InvariantCulture),
-                            Hidden = byte.Parse(reader.GetValue(3).ToString(), CultureInfo.InvariantCulture)
-                        });
-                    }
-
-                    reader.Close();
-                }
-
-                this.refreshableCacheStore.PutItem(query, TimeSpan.FromHours(24), quickChats);
-
-                return quickChats;
-            }
-
-            return this.refreshableCacheStore.GetItem<IList<QuickChat>>(query)
-                   ?? await QuickChats().ConfigureAwait(false);
         }
 
         /// <inheritdoc />

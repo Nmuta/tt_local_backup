@@ -20,3 +20,13 @@ export enum GameTitleCodeName {
   FM7 = 'Apollo',
   FH3 = 'Opus',
 }
+
+export enum UserRoles {
+  LiveOpsAdmin = 'LiveOpsAdmin',
+  SupportAgentAdmin = 'SupportAgentAdmin',
+  SupportAgent = 'SupportAgent',
+  SupportAgentNew = 'SupportAgentNew',
+  DataPipelineAdmin = 'DataPipelineAdmin',
+  DataPipelineContributor = 'DataPipelineContributor',
+  DataPipelineRead = 'DataPipelineRead',
+}
