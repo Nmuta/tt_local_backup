@@ -1176,13 +1176,15 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task UpdatePlayerInventory_NegativeCurrency()
         {
             var playerGift = this.CreateGroupGift();
-            playerGift.Inventory.CreditRewards = playerGift.Inventory.CreditRewards.Select(creditReward => {
-                if (creditReward.Description == "WheelSpins")
+            playerGift.Inventory.CreditRewards = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
                 {
-                    creditReward.Quantity = -1;
+                    Id = -1,
+                    Description = "WheelSpins",
+                    Quantity = -1,
                 }
-                return creditReward;
-            }).ToList();
+            };
                 
             try
             {
@@ -1192,6 +1194,33 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             catch (ServiceException e)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task UpdatePlayerInventory_InvalidItemId()
+        {
+            var playerGift = this.CreateGroupGift();
+            playerGift.Inventory.VanityItems = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 700,
+                    Description = "Bad Item",
+                    Quantity = 1,
+                },
+            };
+
+            try
+            {
+                await stewardClient.UpdateGroupInventoriesByXuidAsync(playerGift).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual("Invalid items found. VanityItem: 700, ", e.ResponseBody);
             }
         }
 

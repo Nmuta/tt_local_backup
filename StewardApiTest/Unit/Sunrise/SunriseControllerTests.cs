@@ -884,6 +884,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var groupGift = Fixture.Create<SunriseGroupGift>();
             var useBackgroundProcessing = false;
             var xuid = Fixture.Create<ulong>();
+            groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.CarHorns = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.Emotes = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -930,6 +935,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<SunriseGroupGift>();
             var useBackgroundProcessing = true;
+            groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.CarHorns = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.Emotes = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -978,6 +988,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
             var gift = Fixture.Create<SunriseGift>();
+            gift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            gift.Inventory.CarHorns = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            gift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            gift.Inventory.Emotes = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            gift.Inventory.QuickChatLines = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, gift).ConfigureAwait(false);
@@ -1003,6 +1018,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             result.StatusCode.Should().Be(400);
             (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
+
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -1111,6 +1127,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
+                this.KustoProvider.GetMasterInventoryList(Arg.Any<string>()).Returns(new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } });
+                this.SunrisePlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.SunrisePlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.SunrisePlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.SunrisePlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerDetails>());

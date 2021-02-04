@@ -139,31 +139,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             try
             {
-                var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Cars);
-                var carHorns = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4CarHorns);
-                var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4VanityItems);
-                var emotes = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Emotes);
-                var quickChatLines = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4QuickChatLines);
-
-                await Task.WhenAll(cars, carHorns, vanityItems, emotes, quickChatLines).ConfigureAwait(true);
-
-                var masterInventory = new SunriseMasterInventory
-                {
-                    CreditRewards = new List<MasterInventoryItem>()
-                    {
-                        new MasterInventoryItem() { Id = -1, Description = "Credits" },
-                        new MasterInventoryItem() { Id = -1, Description = "ForzathonPoints" },
-                        new MasterInventoryItem() { Id = -1, Description = "SkillPoints" },
-                        new MasterInventoryItem() { Id = -1, Description = "WheelSpins" },
-                        new MasterInventoryItem() { Id = -1, Description = "SuperWheelSpins" },
-                    },
-                    Cars = await cars.ConfigureAwait(true),
-                    CarHorns = await carHorns.ConfigureAwait(true),
-                    VanityItems = await vanityItems.ConfigureAwait(true),
-                    Emotes = await emotes.ConfigureAwait(true),
-                    QuickChatLines = await quickChatLines.ConfigureAwait(true)
-                };
-
+                var masterInventory = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
                 return this.Ok(masterInventory);
             }
             catch (Exception ex)
@@ -807,7 +783,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             try
             {
-                var requestingAgent = this.User.GetClaimValue(ClaimTypes.Email);
+                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
+                    ? this.User.GetClaimValue(ClaimTypes.Email)
+                    : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
 
                 groupGift.ShouldNotBeNull(nameof(groupGift));
                 groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
@@ -834,7 +812,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 if (stringBuilder.Length > 0)
                 {
-                    return this.NotFound($"Players with XUIDs: {stringBuilder} were not found.");
+                    return this.BadRequest($"Players with XUIDs: {stringBuilder} were not found.");
+                }
+
+                var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
+                if (invalidItems.Length > 0)
+                {
+                    return this.BadRequest($"Invalid items found. {invalidItems}");
                 }
 
                 if (!useBackgroundProcessing)
@@ -903,6 +887,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
 
                     return this.BadRequest(result);
+                }
+
+                var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.Inventory).ConfigureAwait(true);
+                if (invalidItems.Length > 0)
+                {
+                    return this.BadRequest($"Invalid items found. {invalidItems}");
                 }
 
                 await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(true);
@@ -1020,6 +1010,87 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 throw;
             }
+        }
+
+        /// <summary>
+        ///     Gets the master inventory list.
+        /// </summary>
+        /// <returns>
+        ///     <see cref="SunriseMasterInventory"/>.
+        /// </returns>
+        private async Task<SunriseMasterInventory> RetrieveMasterInventoryList()
+        {
+            var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Cars);
+            var carHorns = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4CarHorns);
+            var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4VanityItems);
+            var emotes = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Emotes);
+            var quickChatLines = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4QuickChatLines);
+
+            await Task.WhenAll(cars, carHorns, vanityItems, emotes, quickChatLines).ConfigureAwait(true);
+
+            var masterInventory = new SunriseMasterInventory
+            {
+                CreditRewards = new List<MasterInventoryItem>()
+                    {
+                        new MasterInventoryItem() { Id = -1, Description = "Credits" },
+                        new MasterInventoryItem() { Id = -1, Description = "ForzathonPoints" },
+                        new MasterInventoryItem() { Id = -1, Description = "SkillPoints" },
+                        new MasterInventoryItem() { Id = -1, Description = "WheelSpins" },
+                        new MasterInventoryItem() { Id = -1, Description = "SuperWheelSpins" },
+                    },
+                Cars = await cars.ConfigureAwait(true),
+                CarHorns = await carHorns.ConfigureAwait(true),
+                VanityItems = await vanityItems.ConfigureAwait(true),
+                Emotes = await emotes.ConfigureAwait(true),
+                QuickChatLines = await quickChatLines.ConfigureAwait(true)
+            };
+
+            return masterInventory;
+        }
+
+        /// <summary>
+        ///     Verifies the gift inventory against the title master inventory list.
+        /// </summary>
+        /// <param name="gift">The sunrise gift.</param>
+        /// <returns>
+        ///     String of items that are invalid
+        /// </returns>
+        private async Task<string> VerifyGiftAgainstMasterInventory(SunriseMasterInventory gift)
+        {
+            var masterInventoryItem = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
+            var error = string.Empty;
+
+            foreach (var car in gift.Cars)
+            {
+                var validItem = masterInventoryItem.Cars.Any(data => { return data.Id == car.Id; });
+                error += validItem ? string.Empty : $"Car: {car.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var carHorn in gift.CarHorns)
+            {
+                var validItem = masterInventoryItem.CarHorns.Any(data => { return data.Id == carHorn.Id; });
+                error += validItem ? string.Empty : $"CarHarn: {carHorn.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var vanityItem in gift.VanityItems)
+            {
+                var validItem = masterInventoryItem.VanityItems.Any(data => { return data.Id == vanityItem.Id; });
+                error += validItem ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var emote in gift.Emotes)
+            {
+                var validItem = masterInventoryItem.Emotes.Any(data => { return data.Id == emote.Id; });
+                error += validItem ? string.Empty : $"Emote: {emote.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var quickChatLine in gift.QuickChatLines)
+            {
+                var validItem = masterInventoryItem.QuickChatLines.Any(data => { return data.Id == quickChatLine.Id; });
+                error += validItem ? string.Empty : $"QuickChatLine: {quickChatLine.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            return error;
         }
     }
 }
