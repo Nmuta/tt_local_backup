@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';

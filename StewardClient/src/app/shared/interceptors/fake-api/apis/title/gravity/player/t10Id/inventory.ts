@@ -40,7 +40,7 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
         .map(() => {
           return {
             itemId: fakeBigInt(),
-            quantity: fakeBigInt({ min: BigInt(1), max: BigInt(20) }),
+            quantity: fakeBigInt({ min: 1, max: 20 }),
             acquisitionUtc: faker.date.past(),
             modifiedUtc: faker.date.recent(),
             lastUsedUtc: faker.date.recent(),
@@ -53,7 +53,7 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
       return makeFakeItems(count).map(i => {
         return {
           ...i,
-          partialQuantity: fakeBigInt({ min: BigInt(0), max: BigInt(100) }),
+          partialQuantity: fakeBigInt({ min: 0, max: 100 }),
         };
       });
     }
@@ -64,14 +64,14 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
           ...i,
           vin: faker.random.uuid(),
           purchaseUtc: faker.date.past(),
-          currentMasteryRank: fakeBigInt({ min: BigInt(0), max: BigInt(20) }),
-          cumulativeMastery: fakeBigInt({ min: BigInt(0), max: BigInt(20) }),
-          repairState: fakeBigInt({ min: BigInt(0) }),
-          starPoints: fakeBigInt({ min: BigInt(0) }),
-          color: fakeBigInt({ min: BigInt(0) }),
-          livery: fakeBigInt({ min: BigInt(0) }),
-          clientPr: fakeBigInt({ min: BigInt(0) }),
-          advancedCarCustomization: fakeBigInt({ min: BigInt(0) }),
+          currentMasteryRank: fakeBigInt({ min: 0, max: 20 }),
+          cumulativeMastery: fakeBigInt({ min: 0, max: 20 }),
+          repairState: fakeBigInt({ min: 0 }),
+          starPoints: fakeBigInt({ min: 0 }),
+          color: fakeBigInt({ min: 0 }),
+          livery: fakeBigInt({ min: 0 }),
+          clientPr: fakeBigInt({ min: 0 }),
+          advancedCarCustomization: fakeBigInt({ min: 0 }),
         };
       });
     }

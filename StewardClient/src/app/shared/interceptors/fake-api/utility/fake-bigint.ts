@@ -1,8 +1,8 @@
 import * as faker from 'faker';
 
 interface FakeBigIntParams {
-  min: BigInt | number;
-  max?: BigInt | number;
+  min: bigint | number;
+  max?: bigint | number;
 }
 
 /** Generate a fake BigInt that is at least as large as MAX_SAFE_INTEGER by default. */

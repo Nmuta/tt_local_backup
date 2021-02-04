@@ -29,16 +29,16 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): OpusPlayerInventory {
     return {
-      credits: fakeBigInt({ min: BigInt(0) }),
+      credits: fakeBigInt({ min: 0 }),
       cars: Array(faker.random.number(200))
         .fill(0)
         .map(() => {
           return {
             vin: faker.random.uuid(),
-            baseCost: fakeBigInt({ min: BigInt(4_000) }),
-            collectorScore: fakeBigInt({ min: BigInt(4_000), max: BigInt(200_000) }),
+            baseCost: fakeBigInt({ min: 4_000 }),
+            collectorScore: fakeBigInt({ min: 4_000, max: 200_000 }),
             isOnlineOnly: faker.random.boolean(),
-            productionNumber: fakeBigInt({ min: BigInt(4_000), max: BigInt(200_000) }),
+            productionNumber: fakeBigInt({ min: 4_000, max: 200_000 }),
             purchaseUtc: faker.date.past(),
             versionedLiveryId: faker.random.uuid(),
             versionedTuneId: faker.random.uuid(),

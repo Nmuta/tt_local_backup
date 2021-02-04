@@ -41,7 +41,7 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
         .map(() => {
           return {
             itemId: fakeBigInt(),
-            quantity: fakeBigInt({ min: BigInt(1), max: BigInt(20) }),
+            quantity: fakeBigInt({ min: 1, max: 20 }),
             acquisitionUtc: faker.date.past(),
             lastUsedUtc: faker.date.recent(),
             description: faker.lorem.sentences(2),
@@ -55,10 +55,10 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
         return {
           ...i,
           vin: faker.random.uuid(),
-          baseCost: fakeBigInt({ min: BigInt(4_000) }),
-          collectorScore: fakeBigInt({ min: BigInt(4_000), max: BigInt(200_000) }),
+          baseCost: fakeBigInt({ min: 4_000 }),
+          collectorScore: fakeBigInt({ min: 4_000, max: 200_000 }),
           isOnlineOnly: faker.random.boolean(),
-          productionNumber: fakeBigInt({ min: BigInt(4_000), max: BigInt(200_000) }),
+          productionNumber: fakeBigInt({ min: 4_000, max: 200_000 }),
           purchaseUtc: faker.date.past(),
           versionedLiveryId: faker.random.uuid(),
           versionedTuneId: faker.random.uuid(),
@@ -69,7 +69,7 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
     return {
       xuid: xuid,
       giftReason: faker.lorem.paragraph(),
-      credits: fakeBigInt({ min: BigInt(0) }),
+      credits: fakeBigInt({ min: 0 }),
       cars: makeFakeCars(200),
       mods: makeFakeItems(200),
       vanityItems: makeFakeItems(200),
