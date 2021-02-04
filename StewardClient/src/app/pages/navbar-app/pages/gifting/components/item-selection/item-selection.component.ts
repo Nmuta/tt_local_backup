@@ -64,7 +64,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   /** Angular lifecycle hook. */
   public ngOnChanges(_changes: SimpleChanges): void {
     if (!!this.masterInventory) {
-      this.buildMatAutocompleteState();
+      this.inventoryItemGroups = this.buildMatAutocompleteState();
       this.stateGroupOptions = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
         takeUntil(this.onDestroy$),
         startWith(''),
@@ -74,8 +74,8 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   }
 
   /** Sets up the stateGroups variable used with the autocomplete */
-  public buildMatAutocompleteState(): void {
-    this.inventoryItemGroups = [];
+  public buildMatAutocompleteState(): InventoryItemGroup[] {
+    const inventoryItemGroups: InventoryItemGroup[] = [];
     for (const prop in this.masterInventory) {
       if (this.masterInventory.hasOwnProperty(prop)) {
         const inventoryGroup = {
@@ -90,9 +90,11 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
           inventoryGroup.items.push(masterInventoryItem);
         }
 
-        this.inventoryItemGroups.push(inventoryGroup);
+        inventoryItemGroups.push(inventoryGroup);
       }
     }
+
+    return inventoryItemGroups;
   }
 
   /** New item selected. */
