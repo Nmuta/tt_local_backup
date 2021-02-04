@@ -11,7 +11,7 @@ import faker from 'faker';
 
 /** Fake API for finding User Flags. */
 export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
-  private xuid: BigInt;
+  private xuid: bigint;
 
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
@@ -38,7 +38,7 @@ export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
   }
 
   /** Creates a sample object. */
-  public static make(xuid: BigInt, min: number = 0): Unprocessed<LiveOpsBanDescriptions> {
+  public static make(xuid: bigint, min: number = 0): Unprocessed<LiveOpsBanDescriptions> {
     return new Array(faker.random.number({ min: min, max: 5 })).fill(undefined).map(
       () =>
         <LiveOpsBanDescription>{

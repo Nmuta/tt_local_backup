@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
@@ -20,7 +20,7 @@ export abstract class GiftHistoryResultsBaseComponent<
     U extends GiftHistoryResultUnion
   >
   extends BaseComponent
-  implements OnChanges {
+  implements OnChanges, OnInit {
   @Input() public selectedPlayer: T;
   @Input() public selectedGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
@@ -38,7 +38,7 @@ export abstract class GiftHistoryResultsBaseComponent<
   public abstract retrieveHistoryByLspGroup(): Observable<U>;
 
   /** Angular lifecycle hook. */
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.intermediate
       .pipe(
         switchMap(s => s),

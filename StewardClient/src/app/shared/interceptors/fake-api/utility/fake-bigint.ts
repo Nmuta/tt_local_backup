@@ -1,12 +1,12 @@
 import * as faker from 'faker';
 
 interface FakeBigIntParams {
-  min: BigInt | number;
-  max?: BigInt | number;
+  min: bigint | number;
+  max?: bigint | number;
 }
 
 /** Generate a fake BigInt that is at least as large as MAX_SAFE_INTEGER by default. */
-export function fakeBigInt(params: FakeBigIntParams = { min: Number.MAX_SAFE_INTEGER }): BigInt {
+export function fakeBigInt(params: FakeBigIntParams = { min: Number.MAX_SAFE_INTEGER }): bigint {
   const min = BigInt(params.min ?? 0);
   const max = params.max ? BigInt(params.max) : undefined;
 

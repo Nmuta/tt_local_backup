@@ -6,7 +6,7 @@ import { SunriseCar, SunriseInventoryItem } from '@models/sunrise/inventory-item
 
 /** Fake API for sunrise player inventory. */
 export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
-  private xuid: BigInt;
+  private xuid: bigint;
 
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
@@ -33,7 +33,7 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Generates a sample object */
-  public static make(xuid: BigInt): SunrisePlayerInventory {
+  public static make(xuid: bigint): SunrisePlayerInventory {
     function makeFakeItems(count: number): SunriseInventoryItem[] {
       return Array(faker.random.number(count))
         .fill(0)

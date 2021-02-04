@@ -1,7 +1,7 @@
 /** Interface for apollo player inventory item. */
 export interface ApolloInventoryItem {
-  itemId: BigInt;
-  quantity: BigInt;
+  itemId: bigint;
+  quantity: bigint;
   acquisitionUtc: Date;
   lastUsedUtc: Date;
   description: string;

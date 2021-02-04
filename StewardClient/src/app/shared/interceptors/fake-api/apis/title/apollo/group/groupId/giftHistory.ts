@@ -1,5 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { fakeBigInt } from '@interceptors/fake-api/utility/fake-bigint';
 import { ApolloGiftHistory } from '@models/apollo';
 import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
@@ -32,12 +33,12 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
         title: 'Apollo',
         giftSendDateUtc: faker.date.past(),
         giftInventory: {
-          credits: BigInt(faker.random.number({ min: 0, max: 10000 })),
+          credits: fakeBigInt({ min: 0, max: 10_000 }),
           cars: [
             {
-              itemId: BigInt(faker.random.number()),
+              itemId: fakeBigInt(),
               description: faker.random.word(),
-              quantity: faker.random.number(),
+              quantity: fakeBigInt(),
             },
           ],
         },

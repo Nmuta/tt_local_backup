@@ -7,7 +7,7 @@ import faker from 'faker';
 
 /** Fake API for apollo player inventory. */
 export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
-  private xuid: BigInt;
+  private xuid: bigint;
 
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
@@ -34,7 +34,7 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Generates a sample object */
-  public static make(xuid: BigInt): ApolloPlayerInventory {
+  public static make(xuid: bigint): ApolloPlayerInventory {
     function makeFakeItems(count: number): ApolloInventoryItem[] {
       return Array(faker.random.number(count))
         .fill(0)

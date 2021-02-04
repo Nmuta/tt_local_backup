@@ -1,6 +1,6 @@
 /** Interface for gravity game settings item. */
 export interface GravityGameSettingsItem {
-  itemId: BigInt;
+  itemId: bigint;
   name: string;
   description: string;
 }

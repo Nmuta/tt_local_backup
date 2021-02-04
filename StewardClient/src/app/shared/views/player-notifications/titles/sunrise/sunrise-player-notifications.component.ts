@@ -11,7 +11,7 @@ import { sortBy } from 'lodash';
   styleUrls: ['./sunrise-player-notifications.component.scss'],
 })
 export class SunrisePlayerNotificationsComponent implements OnChanges {
-  @Input() public xuid?: BigInt;
+  @Input() public xuid?: bigint;
 
   /** True while waiting on a request. */
   public isLoading = true;

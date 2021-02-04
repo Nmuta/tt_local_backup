@@ -1,5 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { fakeBigInt } from '@interceptors/fake-api/utility/fake-bigint';
 import { GravityGiftHistory } from '@models/gravity';
 import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
@@ -35,44 +36,44 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
           t10Id: t10Id,
           cars: [
             {
-              itemId: BigInt(faker.random.number()),
+              itemId: fakeBigInt(),
               description: faker.random.word(),
-              quantity: BigInt(faker.random.number()),
+              quantity: fakeBigInt(),
             },
           ],
           currencies: [
             {
-              itemId: BigInt(faker.random.number()),
+              itemId: fakeBigInt(),
               description: faker.random.word(),
-              quantity: BigInt(faker.random.number()),
+              quantity: fakeBigInt(),
             },
           ],
           energyRefills: [
             {
-              itemId: BigInt(faker.random.number()),
+              itemId: fakeBigInt(),
               description: faker.random.word(),
-              quantity: BigInt(faker.random.number()),
+              quantity: fakeBigInt(),
             },
           ],
           upgradeKits: [
             {
-              itemId: BigInt(faker.random.number()),
+              itemId: fakeBigInt(),
               description: faker.random.word(),
-              quantity: BigInt(faker.random.number()),
+              quantity: fakeBigInt(),
             },
           ],
           repairKits: [
             {
-              itemId: BigInt(faker.random.number()),
+              itemId: fakeBigInt(),
               description: faker.random.word(),
-              quantity: BigInt(faker.random.number()),
+              quantity: fakeBigInt(),
             },
           ],
           masteryKits: [
             {
-              itemId: BigInt(faker.random.number()),
+              itemId: fakeBigInt(),
               description: faker.random.word(),
-              quantity: BigInt(faker.random.number()),
+              quantity: fakeBigInt(),
             },
           ],
         },

@@ -15,7 +15,7 @@ import { switchMap, takeUntil } from 'rxjs/operators';
 })
 export class GravityComponent extends BaseComponent implements OnInit {
   public gamertag: string;
-  public xuid: BigInt;
+  public xuid: bigint;
   public t10Id: string;
   public t10Ids: T10IdInfo[];
   public gameTitle: GameTitleCodeName;

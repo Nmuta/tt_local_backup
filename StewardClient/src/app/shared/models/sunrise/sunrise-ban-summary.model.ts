@@ -4,9 +4,9 @@ import { SunriseBanDescription } from './sunrise-ban-result.model';
 
 /** A single ban summary. */
 export interface SunriseBanSummary {
-  xuid: BigInt;
+  xuid: bigint;
   gamertag: GamertagString;
-  banCount: BigInt;
+  banCount: bigint;
   bannedAreas: SunriseBanArea[];
   lastBanDescription: SunriseBanDescription;
   userExists: boolean;

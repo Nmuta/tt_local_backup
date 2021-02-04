@@ -15,7 +15,7 @@ import { faUndo } from '@fortawesome/free-solid-svg-icons';
 })
 export class SunriseUserFlagsComponent extends BaseComponent implements OnChanges {
   /** The XUID to look up. */
-  @Input() public xuid: BigInt;
+  @Input() public xuid: bigint;
 
   /** True while waiting on a request. */
   public isLoading = true;

@@ -14,7 +14,7 @@ import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 export class SunriseComponent extends BaseComponent implements OnInit {
   public gamertag: string;
   public userDetails: SunrisePlayerDetails;
-  public xuid: BigInt;
+  public xuid: bigint;
   public error: unknown;
 
   constructor(private readonly route: ActivatedRoute, private readonly sunrise: SunriseService) {
