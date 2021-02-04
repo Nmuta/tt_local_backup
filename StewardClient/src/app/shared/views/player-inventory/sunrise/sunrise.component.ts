@@ -7,8 +7,9 @@ import { SunriseService } from '@services/sunrise';
 import { NEVER, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 
-interface WhatToShowEntry {
-  property: keyof SunrisePlayerInventory;
+/** A model for identifying a property of an object and mapping that to a title & description for a simple expando. */
+interface PropertyToExpandoData<T> {
+  property: keyof T;
   title: string;
   description: string;
 }
@@ -34,7 +35,7 @@ export class SunrisePlayerInventoryComponent extends BaseComponent implements On
   public error: unknown;
 
   /** The properties to display in a standard fashion. */
-  public whatToShow: WhatToShowEntry[] = [];
+  public whatToShow: PropertyToExpandoData<SunrisePlayerInventory>[] = [];
 
   /** Intermediate event that is fired when @see identity changes. */
   private identity$ = new Subject<IdentityResultAlpha>();
@@ -71,10 +72,10 @@ export class SunrisePlayerInventoryComponent extends BaseComponent implements On
     this.identity$.next(this.identity);
   }
 
-  private makeWhatToShow(): WhatToShowEntry[] {
+  private makeWhatToShow(): PropertyToExpandoData[] {
     const inventory = this.inventory;
 
-    function makeEntry(property: keyof SunrisePlayerInventory, title: string): WhatToShowEntry {
+    function makeEntry(property: keyof SunrisePlayerInventory, title: string): PropertyToExpandoData {
       const count = (inventory[property] as SunriseInventoryItem[]).reduce(
         (accumulator, entry) => accumulator + entry.quantity,
         BigInt(0),
