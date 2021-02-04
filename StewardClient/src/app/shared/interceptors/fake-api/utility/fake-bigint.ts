@@ -8,7 +8,7 @@ interface FakeBigIntParams {
 /** Generate a fake BigInt that is at least as large as MAX_SAFE_INTEGER by default. */
 export function fakeBigInt(params: FakeBigIntParams = { min: Number.MAX_SAFE_INTEGER }): bigint {
   const min = BigInt(params.min ?? 0);
-  const max = BigInt(params.max ?? undefined)
+  const max = params.max ? BigInt(params.max) : undefined;
 
   let result = min;
 
