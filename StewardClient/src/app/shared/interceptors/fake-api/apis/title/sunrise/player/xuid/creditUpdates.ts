@@ -701,7 +701,7 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
         eventTimestampUtc: '2020-07-03T06:33:03.424Z',
         deviceType: 'UWP',
         creditsAfter: BigInt(223267),
-        creditAmount: -230000,
+        creditAmount: BigInt(-230000),
         sceneName: 'CarColorSelect',
         totalXp: BigInt(235567),
       },

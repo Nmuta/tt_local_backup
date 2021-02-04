@@ -27,7 +27,7 @@ export class SunrisePlayerXuidConsolesFakeApi extends FakeApiBase {
   public static makeMany(): Unprocessed<SunriseConsoleDetails> {
     return [
       {
-        clientVersion: faker.random.number({ min: BigInt(432815), max: BigInt(500000) }).toString(),
+        clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
         consoleId: (
           BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
         ).toString(),
@@ -36,7 +36,7 @@ export class SunrisePlayerXuidConsolesFakeApi extends FakeApiBase {
         deviceType: 'WindowsOneCore',
       },
       {
-        clientVersion: faker.random.number({ min: BigInt(432815), max: BigInt(500000) }).toString(),
+        clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
         consoleId: (
           BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
         ).toString(),
@@ -45,7 +45,7 @@ export class SunrisePlayerXuidConsolesFakeApi extends FakeApiBase {
         deviceType: 'WindowsOneCore',
       },
       {
-        clientVersion: faker.random.number({ min: BigInt(432815), max: BigInt(500000) }).toString(),
+        clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
         consoleId: (
           BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
         ).toString(),
@@ -54,7 +54,7 @@ export class SunrisePlayerXuidConsolesFakeApi extends FakeApiBase {
         deviceType: 'WindowsOneCore',
       },
       {
-        clientVersion: faker.random.number({ min: BigInt(432815), max: BigInt(500000) }).toString(),
+        clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
         consoleId: (
           BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
         ).toString(),

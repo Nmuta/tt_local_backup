@@ -39,7 +39,7 @@ export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
 
   /** Creates a sample object. */
   public static make(xuid: bigint, min: number = 0): Unprocessed<LiveOpsBanDescriptions> {
-    return new Array(faker.random.number({ min: min, max: BigInt(5) })).fill(undefined).map(
+    return new Array(faker.random.number({ min: min, max: 5 })).fill(undefined).map(
       () =>
         <LiveOpsBanDescription>{
           banParameters: faker.lorem.paragraph(),
