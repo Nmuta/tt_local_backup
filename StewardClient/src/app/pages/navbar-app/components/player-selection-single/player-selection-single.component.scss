@@ -1,0 +1,18 @@
+@import '/src/variables.scss';
+
+mat-form-field {
+  width: 100%;
+}
+
+// the chip is clickable
+mat-chip {
+  cursor: pointer;
+}
+
+.identity-valid {
+  background-color: mat-color($app-primary, 'lighter');
+}
+
+.identity-invalid {
+  background-color: mat-color($app-warn, 'lighter');
+}

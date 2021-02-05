@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PlayerSelectionSingleModule } from '@navbar-app/components/player-selection-single/player-selection-single.module';
 
 import { SunriseModule } from './sunrise/sunrise.module';
 import { UserDetailsComponent } from './user-details.component';
@@ -26,6 +27,7 @@ import { UserDetailsRouterModule } from './user-details.routing';
     FontAwesomeModule,
     FormsModule,
     SunriseModule,
+    PlayerSelectionSingleModule,
   ],
 })
 export class UserDetailsModule {}

@@ -16,6 +16,42 @@ interface IdentityQueryByT10Id {
   t10Id: T10IdString;
 }
 
+/** Creates a valid @see IdentityQueryAlpha from a variety of inputs. */
+export function makeAlphaQuery(type: 'gamertag' | 'xuid', value: string | bigint): IdentityQueryAlpha {
+  switch (type) {
+    case 'gamertag':
+      return { gamertag: value.toString() };
+    case 'xuid':
+      return { xuid: BigInt(value) };
+    default:
+      throw new Error(`Unacceptable type ${type} (value: ${value})`);
+  }
+}
+
+/** Creates a valid @see IdentityQueryBeta from a variety of inputs. */
+export function makeBetaQuery(type: 'gamertag' | 'xuid' | 't10Id', value: string | bigint): IdentityQueryBeta {
+  switch (type) {
+    case 'gamertag':
+      return { gamertag: value.toString() };
+    case 'xuid':
+      return { xuid: BigInt(value) };
+    case 't10Id':
+      return { t10Id: value.toString() };
+    default:
+      throw new Error(`Unacceptable type ${type} (value: ${value})`);
+  }
+}
+
+/** Type-checking for @see IdentityQueryAlpha */
+export function isValidAlphaQuery(mystery: unknown): mystery is IdentityQueryAlpha {
+  return isGamertagQuery(mystery) || isXuidQuery(mystery);
+}
+
+/** Type-checking for @see IdentityQueryBeta */
+export function isValidBetaQuery(mystery: unknown): mystery is IdentityQueryBeta {
+  return isGamertagQuery(mystery) || isXuidQuery(mystery) || isT10IdQuery(mystery);
+}
+
 /** Type-checking for @see IdentityQueryByGamertag */
 export function isGamertagQuery(mystery: unknown): mystery is IdentityQueryByGamertag {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -151,3 +187,9 @@ export type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 
 /** Intersection of IdentityResultAlpha and IdentityResultBeta */
 export type IdentityResultIntersection = IdentityResultAlpha & IdentityResultBeta;
+
+/** Intersection version of @see IdentityQueryAlpha */
+export type IdentityQueryAlphaIntersection = IdentityQueryByXuid & IdentityQueryByGamertag;
+
+/** Intersection version of @see IdentityQueryBeta */
+export type IdentityQueryBetaIntersection = IdentityQueryByXuid & IdentityQueryByGamertag & IdentityQueryByT10Id;
