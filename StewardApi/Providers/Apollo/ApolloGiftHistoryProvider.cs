@@ -102,8 +102,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 {
                     try
                     {
-                        var sunrisePlayerInventory = history.GiftInventory.FromJson<ApolloPlayerInventory>();
-                        convertedGift = this.mapper.Map<ApolloGift>(sunrisePlayerInventory);
+                        var apolloPlayerInventory = history.GiftInventory.FromJson<ApolloPlayerInventory>();
+                        convertedGift = this.mapper.Map<ApolloGift>(apolloPlayerInventory);
                         if (convertedGift.Inventory == null)
                         {
                             throw new InvalidOperationException("Not an ApolloPlayerInventory model");
@@ -112,8 +112,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     catch
                     {
                         var playerInventory = history.GiftInventory.FromJson<PlayerInventory>();
-                        var sunrisePlayerInventory = this.mapper.Map<ApolloPlayerInventory>(playerInventory);
-                        convertedGift = this.mapper.Map<ApolloGift>(sunrisePlayerInventory);
+                        var apolloPlayerInventory = this.mapper.Map<ApolloPlayerInventory>(playerInventory);
+                        convertedGift = this.mapper.Map<ApolloGift>(apolloPlayerInventory);
                     }
                 }
 
