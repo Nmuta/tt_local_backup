@@ -8,7 +8,6 @@ using Forza.UserInventory.FH4.master.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
-using Turn10.Services.Orm.SqlGen;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {
@@ -113,8 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-            // TODO: THis currently does not add gift reason to KUSTO
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.Xuid, gift.Inventory).ConfigureAwait(false);
+            await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.Xuid, gift).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -153,8 +151,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-            // TODO: THis currently does not add gift reason to KUSTO
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.LspGroupId, gift.Inventory).ConfigureAwait(false);
+            await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.LspGroupId, gift).ConfigureAwait(false);
         }
 
         private async Task SendGifts(Func<InventoryItemType, int, Task> serviceCall, IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts, IDictionary<InventoryItemType, int> currencyGifts)

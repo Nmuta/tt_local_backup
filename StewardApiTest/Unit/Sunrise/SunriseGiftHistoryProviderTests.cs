@@ -102,7 +102,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var title = Fixture.Create<string>();
             var requestingAgent = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftHistoryAntecedent>();
-            var giftInventory = Fixture.Create<SunriseMasterInventory>();
+            var giftInventory = Fixture.Create<SunriseGift>();
 
             // Act.
             Func<Task> act = async () =>
@@ -121,7 +121,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var title = Fixture.Create<string>();
             var requestingAgent = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftHistoryAntecedent>();
-            var giftInventory = Fixture.Create<SunriseMasterInventory>();
+            var giftInventory = Fixture.Create<SunriseGift>();
 
             // Act.
             var actions = new List<Func<Task>>
@@ -147,7 +147,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var id = Fixture.Create<string>();
             var requestingAgent = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftHistoryAntecedent>();
-            var giftInventory = Fixture.Create<SunriseMasterInventory>();
+            var giftInventory = Fixture.Create<SunriseGift>();
 
             // Act.
             var actions = new List<Func<Task>>
@@ -173,7 +173,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var id = Fixture.Create<string>();
             var title = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftHistoryAntecedent>();
-            var giftInventory = Fixture.Create<SunriseMasterInventory>();
+            var giftInventory = Fixture.Create<SunriseGift>();
 
             // Act.
             var actions = new List<Func<Task>>
@@ -205,7 +205,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Func<Task> action = async () => await provider.UpdateGiftHistoryAsync(id, title, requestingAgent, antecedent, null).ConfigureAwait(false);
 
             // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftInventory"));
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
 
         [TestMethod]

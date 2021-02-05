@@ -70,6 +70,29 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<PlayerInventory, SunrisePlayerInventory>();
             this.CreateMap<SunrisePlayerDetails, IdentityResultAlpha>().ReverseMap();
             this.CreateMap<SunriseGroupGift, SunriseGift>().ReverseMap();
+            this.CreateMap<SunriseCar, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.ItemId));
+            this.CreateMap<SunriseInventoryItem, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.ItemId));
+            this.CreateMap<SunrisePlayerInventory, SunriseGift>()
+                .ForMember(dest => dest.GiftReason, opt => opt.MapFrom(source => source.GiftReason))
+                .ForMember(dest => dest.Inventory, opt => opt.MapFrom((source, destObj, destMem, context) => new SunriseMasterInventory()
+                {
+                    CreditRewards = new List<MasterInventoryItem>()
+                    {
+                        new MasterInventoryItem() { Description = "Credits", Quantity = source.Credits, Id = -1 },
+                        new MasterInventoryItem() { Description = "ForzathonPoints", Quantity = source.ForzathonPoints, Id = -1 },
+                        new MasterInventoryItem() { Description = "SkillPoints", Quantity = source.SkillPoints, Id = -1 },
+                        new MasterInventoryItem() { Description = "WheelSpins", Quantity = source.WheelSpins, Id = -1 },
+                        new MasterInventoryItem() { Description = "SuperWheelSpins", Quantity = source.SuperWheelSpins, Id = -1 },
+                    },
+                    Cars = context.Mapper.Map<IList<MasterInventoryItem>>(source.Cars),
+                    CarHorns = context.Mapper.Map<IList<MasterInventoryItem>>(source.CarHorns),
+                    VanityItems = context.Mapper.Map<IList<MasterInventoryItem>>(source.VanityItems),
+                    Emotes = context.Mapper.Map<IList<MasterInventoryItem>>(source.Emotes),
+                    QuickChatLines = context.Mapper.Map<IList<MasterInventoryItem>>(source.QuickChatLines),
+                }))
+                .ReverseMap();
             this.CreateMap<LiveOpsNotification, SunriseNotification>()
                 .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(source => source.id))
                 .ForMember(dest => dest.SendDateUtc, opt => opt.MapFrom(source => source.sentDate))
