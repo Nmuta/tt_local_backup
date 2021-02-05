@@ -1420,7 +1420,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task GetGiftHistoryForLspGroupGift()
         {
             var gift = this.CreateGift();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", lspGiftingPassword);
 
             await stewardClient.GiftInventoryByLspGroupId(lspGroupId, gift).ConfigureAwait(false);
 

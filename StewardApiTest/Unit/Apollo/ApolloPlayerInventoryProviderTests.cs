@@ -147,19 +147,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var xuids = Fixture.Create<List<ulong>>();
-            var gamertags = Fixture.Create<List<string>>();
             var groupId = Fixture.Create<int>();
-            var playerInventory = Fixture.Create<ApolloPlayerInventory>();
+            var gift = Fixture.Create<ApolloGift>();
+            var groupGift = Fixture.Create<ApolloGroupGift>();
+            groupGift.Xuids = Fixture.Create<List<ulong>>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, playerInventory, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(xuids, playerInventory, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(gamertags, playerInventory, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, playerInventory, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(false)
             };
 
             // Assert.
@@ -171,29 +170,49 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void UpdatePlayerInventoriesAsync_WithNullPlayerInventory_Throws()
+        public void UpdateGroupInventoriesAsync_WithNullGift_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var xuids = Fixture.Create<List<ulong>>();
-            var gamertags = Fixture.Create<List<string>>();
             var groupId = Fixture.Create<int>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, null, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(xuids, null, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(gamertags, null, requestingAgent).ConfigureAwait(false),
                 async () => await provider.UpdateGroupInventoriesAsync(groupId, null, requestingAgent).ConfigureAwait(false)
             };
 
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventory"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void UpdatePlayerInventoriesAsync_WithNullGift_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var xuids = Fixture.Create<List<ulong>>();
+            var groupId = Fixture.Create<int>();
+            var requestingAgent = Fixture.Create<string>();
+
+            // Act.
+            var actions = new List<Func<Task>>
+            {
+                async () => await provider.UpdatePlayerInventoriesAsync(null, requestingAgent).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
             }
         }
 
@@ -204,26 +223,23 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var xuids = Fixture.Create<List<ulong>>();
-            var gamertags = Fixture.Create<List<string>>();
             var groupId = Fixture.Create<int>();
-            var playerInventory = Fixture.Create<ApolloPlayerInventory>();
+            var gift = Fixture.Create<ApolloGift>();
+            var groupGift = Fixture.Create<ApolloGroupGift>();
+            groupGift.Xuids = Fixture.Create<List<ulong>>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, playerInventory, null).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(xuids, playerInventory, null).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(xuids, playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(xuids, playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(gamertags, playerInventory, null).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(gamertags, playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(gamertags, playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, playerInventory, null).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, null).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.WhiteSpace).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, null).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.WhiteSpace).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, null).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.WhiteSpace).ConfigureAwait(false)
             };
 
             // Assert.
@@ -239,30 +255,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var playerInventory = Fixture.Create<ApolloPlayerInventory>();
+            var groupGift = Fixture.Create<ApolloGroupGift>();
+            groupGift.Xuids = null;
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync((IList<ulong>)null, playerInventory, requestingAgent).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventoriesAsync_WithNullGamertags_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var playerInventory = Fixture.Create<ApolloPlayerInventory>();
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync((IList<string>)null, playerInventory, requestingAgent).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gamertags"));
         }
 
         private sealed class Dependencies
@@ -275,6 +276,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloUserService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<UserService.LiveOpsGetUserDataByGamertagOutput>());
                 this.Mapper.Map<ApolloPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<ApolloPlayerInventory>());
                 this.Mapper.Map<IList<ApolloInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<ApolloInventoryProfile>>());
+                this.Mapper.Map<ApolloGift>(Arg.Any<ApolloGroupGift>()).Returns(Fixture.Create<ApolloGift>());
             }
 
             public IApolloUserInventoryService ApolloUserInventoryService { get; set; } = Substitute.For<IApolloUserInventoryService>();
