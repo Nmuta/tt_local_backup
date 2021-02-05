@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
@@ -188,13 +189,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         public void Ctor_WhenPlayerInventoryRequestValidatorNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { PlayerInventoryRequestValidator = null };
+            var dependencies = new Dependencies { GiftRequestValidator = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventoryRequestValidator"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftRequestValidator"));
         }
 
         [TestMethod]
@@ -756,161 +757,25 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var playerInventory = Fixture.Create<ApolloPlayerInventory>();
-            var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as CreatedResult;
-            var details = result.Value as ApolloPlayerInventory;
-            details.Should().NotBeNull();
-            details.Should().BeOfType<ApolloPlayerInventory>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullPlayerInventory_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdatePlayerInventory(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventory"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var playerInventory = Fixture.Create<ApolloPlayerInventory>();
-            var useBackgroundProcessing = false;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UpdatePlayerInventory_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var playerInventory = Fixture.Create<ApolloPlayerInventory>();
-            var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
-
-            // Assert.
-            action().Result.Should().BeAssignableTo<AcceptedResult>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullPlayerInventory_UseBackgroundProcessing_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdatePlayerInventory(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventory"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullEmptyWhitespaceRequestingAgent_UseBackgroundProcessing_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var playerInventory = Fixture.Create<ApolloPlayerInventory>();
-            var useBackgroundProcessing = true;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task UpdatePlayerInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<ApolloGroupGift>();
             var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
+            groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, requestingAgent).ConfigureAwait(false)
+                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing).ConfigureAwait(false),
             };
 
             // Assert.
             foreach (var action in actions)
             {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as CreatedResult;
-                var details = result.Value as ApolloPlayerInventory;
-                details.Should().NotBeNull();
-                details.Should().BeOfType<ApolloPlayerInventory>();
+                action().Result.Should().BeAssignableTo<OkResult>();
             }
         }
 
@@ -921,13 +786,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false)
+                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing).ConfigureAwait(false),
             };
 
             // Assert.
@@ -937,36 +800,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
                 result.StatusCode.Should().Be(400);
                 (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventories_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var groupGift = Fixture.Create<ApolloGroupGift>();
-            var useBackgroundProcessing = false;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
             }
         }
 
@@ -978,13 +811,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<ApolloGroupGift>();
             var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
+            groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, requestingAgent).ConfigureAwait(false)
+                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing).ConfigureAwait(false),
             };
 
             // Assert.
@@ -992,7 +825,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             {
                 // To reset the context and prevent header key collision, rebuild the Dependencies.
                 controller = new Dependencies().Build();
-                action().Result.Should().BeAssignableTo<AcceptedResult>();
+                action().Result.Should().BeAssignableTo<OkResult>();
             }
         }
 
@@ -1003,13 +836,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false)
+                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1024,152 +855,38 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventories_WithNullEmptyWhitespaceRequestingAgent_UseBackgroundProcessing_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var groupGift = Fixture.Create<ApolloGroupGift>();
-            var useBackgroundProcessing = true;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task UpdateGroupInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
-            var playerInventory = Fixture.Create<ApolloPlayerInventory>();
-            var adminAuth = TestConstants.GetSecretResult;
-            var requestingAgent = Fixture.Create<string>();
+            var gift = Fixture.Create<ApolloGift>();
+            gift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            gift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, playerInventory, adminAuth, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, gift).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as CreatedResult;
-            var details = result.Value as ApolloPlayerInventory;
-            details.Should().NotBeNull();
-            details.Should().BeOfType<ApolloPlayerInventory>();
+            action().Result.Should().BeAssignableTo<OkResult>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdateGroupInventories_WithNullPlayerInventory_Throws()
+        public async Task UpdateGroupInventories_WithNullGift_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
-            var adminAuth = TestConstants.GetSecretResult;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, null, adminAuth, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, null).ConfigureAwait(false);
 
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();
             var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
             result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventory"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdateGroupInventories_WithIncorrectAdminAuth_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var groupId = Fixture.Create<int>();
-            var playerInventory = Fixture.Create<ApolloPlayerInventory>();
-            var adminAuth = Fixture.Create<string>();
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, playerInventory, adminAuth, requestingAgent).ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as UnauthorizedObjectResult;
-            result.StatusCode.Should().Be(401);
-            result.Value.Should().Be("adminAuth header was incorrect.");
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdateGroupInventories_WithNullEmptyWhitespaceAdminAuth_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var groupId = Fixture.Create<int>();
-            var playerInventory = Fixture.Create<ApolloPlayerInventory>();
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(groupId, playerInventory, null, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupId, playerInventory, TestConstants.Empty, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupId, playerInventory, TestConstants.WhiteSpace, requestingAgent).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "adminAuth"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdateGroupInventories_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var groupId = Fixture.Create<int>();
-            var adminAuth = TestConstants.GetSecretResult;
-            var playerInventory = Fixture.Create<ApolloPlayerInventory>();
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(groupId, playerInventory, adminAuth, null).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupId, playerInventory, adminAuth, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupId, playerInventory, adminAuth, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
+            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
 
         [TestMethod]
@@ -1248,8 +965,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
                 var httpContext = new DefaultHttpContext();
                 httpContext.Request.Path = TestConstants.TestRequestPath;
+
+                var claims = new List<Claim>() { new Claim(ClaimTypes.Email, "requesting-agent-email") };
+                var claimsIdentities = new List<ClaimsIdentity>() { new ClaimsIdentity(claims) };
+                httpContext.User = new ClaimsPrincipal(claimsIdentities);
+
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
+                this.KustoProvider.GetMasterInventoryList(Arg.Any<string>()).Returns(new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } });
                 this.ApolloPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.ApolloPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<ApolloPlayerDetails>());
                 this.ApolloPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloPlayerDetails>());
@@ -1295,7 +1018,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
             public IRequestValidator<ApolloBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloBanParametersInput>>();
 
-            public IRequestValidator<ApolloPlayerInventory> PlayerInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloPlayerInventory>>();
+            public IRequestValidator<ApolloGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloGift>>();
 
             public IRequestValidator<ApolloGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloGroupGift>>();
 
@@ -1311,7 +1034,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.JobTracker,
                 this.Mapper,
                 this.BanParametersRequestValidator,
-                this.PlayerInventoryRequestValidator,
+                this.GiftRequestValidator,
                 this.GroupGiftRequestValidator)
             { ControllerContext = this.ControllerContext };
         }

@@ -3,15 +3,10 @@
 namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
 {
     /// <summary>
-    ///     Represents a Apollo group gift.
+    ///     Represents a Apollo gift.
     /// </summary>
-    public sealed class ApolloGroupGift
+    public sealed class ApolloGift
     {
-        /// <summary>
-        ///     Gets or sets the xuid list.
-        /// </summary>
-        public IList<ulong> Xuids { get; set; }
-
         /// <summary>
         ///     Gets or sets the gift reason.
         /// </summary>

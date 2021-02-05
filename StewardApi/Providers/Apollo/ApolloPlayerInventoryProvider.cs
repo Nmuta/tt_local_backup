@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FM7.Generated;
@@ -79,14 +80,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task UpdatePlayerInventoryAsync(ulong xuid, ApolloPlayerInventory playerInventory, string requestingAgent)
+        public async Task UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requestingAgent)
         {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            gift.ShouldNotBeNull(nameof(gift));
+            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-            var inventoryGifts = this.BuildInventoryItems(playerInventory);
-
-            var currencyGifts = this.BuildCurrencyItems(playerInventory);
+            var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
+            var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
             async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
             {
@@ -95,49 +96,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftHistoryAntecedent.Xuid, playerInventory).ConfigureAwait(false);
+            await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftHistoryAntecedent.Xuid, gift).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task UpdatePlayerInventoriesAsync(IList<ulong> xuids, ApolloPlayerInventory playerInventory, string requestingAgent)
+        public async Task UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requestingAgent)
         {
-            xuids.ShouldNotBeNull(nameof(xuids));
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            groupGift.ShouldNotBeNull(nameof(groupGift));
+            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
+            groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-            foreach (var xuid in xuids)
+            var gift = this.mapper.Map<ApolloGift>(groupGift);
+            foreach (var xuid in groupGift.Xuids)
             {
-                await this.UpdatePlayerInventoryAsync(xuid, playerInventory, requestingAgent).ConfigureAwait(false);
+                await this.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent).ConfigureAwait(false);
             }
-        }
-
-        /// <inheritdoc />
-        public async Task UpdatePlayerInventoriesAsync(IList<string> gamertags, ApolloPlayerInventory playerInventory, string requestingAgent)
-        {
-            gamertags.ShouldNotBeNull(nameof(gamertags));
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-            var xuids = new List<ulong>();
-            foreach (var gamertag in gamertags)
-            {
-                var result = await this.apolloUserService.LiveOpsGetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
-                xuids.Add(result.returnData.qwXuid);
-            }
-
-            await this.UpdatePlayerInventoriesAsync(xuids, playerInventory, requestingAgent).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task UpdateGroupInventoriesAsync(int groupId, ApolloPlayerInventory playerInventory, string requestingAgent)
+        public async Task UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requestingAgent)
         {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            gift.ShouldNotBeNull(nameof(gift));
+            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
 
-            var inventoryGifts = this.BuildInventoryItems(playerInventory);
-
-            var currencyGifts = this.BuildCurrencyItems(playerInventory);
+            var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
+            var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
             async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
             {
@@ -146,10 +132,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftHistoryAntecedent.LspGroupId, playerInventory).ConfigureAwait(false);
+            await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftHistoryAntecedent.LspGroupId, gift).ConfigureAwait(false);
         }
 
-        private async Task SendGifts(Func<InventoryItemType, int, Task> serviceCall, IDictionary<InventoryItemType, IList<ApolloInventoryItem>> inventoryGifts, IDictionary<InventoryItemType, int> currencyGifts)
+        private async Task SendGifts(Func<InventoryItemType, int, Task> serviceCall, IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts, IDictionary<InventoryItemType, int> currencyGifts)
         {
             foreach (var (key, value) in inventoryGifts)
             {
@@ -157,7 +143,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 {
                     for (var i = 0; i < item.Quantity; i++)
                     {
-                        await serviceCall(key, item.ItemId).ConfigureAwait(false);
+                        await serviceCall(key, item.Id).ConfigureAwait(false);
                     }
                 }
             }
@@ -180,20 +166,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             }
         }
 
-        private IDictionary<InventoryItemType, IList<ApolloInventoryItem>> BuildInventoryItems(ApolloPlayerInventory playerInventory)
+        private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(ApolloMasterInventory giftInventory)
         {
-            return new Dictionary<InventoryItemType, IList<ApolloInventoryItem>>
+            return new Dictionary<InventoryItemType, IList<MasterInventoryItem>>
             {
-                { InventoryItemType.Car, this.EmptyIfNull(playerInventory.Cars).ConvertAll(car => (ApolloInventoryItem)car) },
-                { InventoryItemType.VanityItem, this.EmptyIfNull(playerInventory.VanityItems) }
+                { InventoryItemType.Car, this.EmptyIfNull(giftInventory.Cars) },
+                { InventoryItemType.VanityItem, this.EmptyIfNull(giftInventory.VanityItems) }
             };
         }
 
-        private IDictionary<InventoryItemType, int> BuildCurrencyItems(ApolloPlayerInventory playerInventory)
+        private IDictionary<InventoryItemType, int> BuildCurrencyItems(ApolloMasterInventory giftInventory)
         {
+            var credits = giftInventory.CreditRewards.FirstOrDefault(data => { return data.Description == "Credits"; });
+
             return new Dictionary<InventoryItemType, int>
             {
-                { InventoryItemType.Credits, playerInventory.Credits }
+                { InventoryItemType.Credits, credits != default(MasterInventoryItem) ? credits.Quantity : 0 },
             };
         }
 

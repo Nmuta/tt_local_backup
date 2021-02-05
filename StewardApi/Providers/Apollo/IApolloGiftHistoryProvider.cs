@@ -18,11 +18,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <param name="title">The title.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <param name="giftHistoryAntecedent">The gift history antecedent.</param>
-        /// <param name="playerInventory">The player inventory.</param>
+        /// <param name="gift">The gift sent to player.</param>
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, ApolloPlayerInventory playerInventory);
+        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, ApolloGift gift);
 
         /// <summary>
         ///     Gets gift histories.

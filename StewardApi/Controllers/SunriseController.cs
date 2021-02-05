@@ -874,7 +874,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             try
             {
-                var requestingAgent = this.User.GetClaimValue(ClaimTypes.Email);
+                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
+                    ? this.User.GetClaimValue(ClaimTypes.Email)
+                    : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
 
                 gift.ShouldNotBeNull(nameof(gift));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
