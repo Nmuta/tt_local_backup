@@ -93,13 +93,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 try
                 {
                     convertedGift = history.GiftInventory.FromJson<SunriseGift>();
+                    if (convertedGift.Inventory == null)
+                    {
+                        throw new InvalidOperationException("Not a SunriseGift model");
+                    }
                 }
                 catch
                 {
                     try
                     {
-                        var sunrisePlayerInventory = history.GiftInventory.FromJson<SunriseGift>();
+                        var sunrisePlayerInventory = history.GiftInventory.FromJson<SunrisePlayerInventory>();
                         convertedGift = this.mapper.Map<SunriseGift>(sunrisePlayerInventory);
+                        if (convertedGift.Inventory == null)
+                        {
+                            throw new InvalidOperationException("Not a SunrisePlayerInventory model");
+                        }
                     }
                     catch
                     {
