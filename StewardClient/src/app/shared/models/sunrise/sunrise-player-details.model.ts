@@ -1,19 +1,21 @@
+import { GamertagString } from '@models/extended-types';
+
 /** The /v1/title/Sunrise/player/???/details model */
 export interface SunrisePlayerDetails {
-  xuid: BigInt;
-  gamertag: string;
-  region: BigInt;
+  xuid: bigint;
+  gamertag: GamertagString;
+  region: bigint;
   licensePlate: string;
   customizationSlots: BigInt[];
-  currentDriverModelId: BigInt;
-  currentPlayerTitleId: BigInt;
-  currentPlayerBadgeId: BigInt;
-  currentCareerLevel: BigInt;
-  flags: BigInt;
-  blueprintThreadLevel: BigInt;
-  photoThreadLevel: BigInt;
-  tunerThreadLevel: BigInt;
-  painterThreadLevel: BigInt;
+  currentDriverModelId: bigint;
+  currentPlayerTitleId: bigint;
+  currentPlayerBadgeId: bigint;
+  currentCareerLevel: bigint;
+  flags: bigint;
+  blueprintThreadLevel: bigint;
+  photoThreadLevel: bigint;
+  tunerThreadLevel: bigint;
+  painterThreadLevel: bigint;
   teamId: string;
   teamTag: string;
   roleInTeam: string;

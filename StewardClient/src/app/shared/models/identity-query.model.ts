@@ -1,18 +1,19 @@
 import { MSError } from './error.model';
+import { GamertagString, T10IdString } from './extended-types';
 
 /** An identity query by gamertag. */
 interface IdentityQueryByGamertag {
-  gamertag: string;
+  gamertag: GamertagString;
 }
 
 /** An identity query by xuid. */
 interface IdentityQueryByXuid {
-  xuid: BigInt;
+  xuid: bigint;
 }
 
-/** An identity query by t10id. */
+/** An identity query by t10Id. */
 interface IdentityQueryByT10Id {
-  t10id: string;
+  t10Id: T10IdString;
 }
 
 /** Type-checking for @see IdentityQueryByGamertag */
@@ -30,12 +31,12 @@ export function isXuidQuery(mystery: unknown): mystery is IdentityQueryByXuid {
 /** Type-checking for @see IdentityQueryByT10Id */
 export function isT10IdQuery(mystery: unknown): mystery is IdentityQueryByT10Id {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return 't10id' in (mystery as any);
+  return 't10Id' in (mystery as any);
 }
 
 /** Contextual information about T10IDs. */
 export interface T10IdInfo {
-  t10id: string;
+  t10Id: T10IdString;
   createdUtc: Date;
   lastAccessedUtc: Date;
 }
@@ -64,7 +65,7 @@ export interface IdentityResultAlpha {
   /** The gamertag, if found. */
   gamertag?: string;
   /** The XUID, if found. */
-  xuid?: BigInt;
+  xuid?: bigint;
   /** Why this query failed. */
   error?: MSError;
 }
@@ -94,11 +95,11 @@ export interface IdentityResultBeta {
   /** The gamertag, if found. */
   gamertag?: string;
   /** The XUID, if found. */
-  xuid?: BigInt;
+  xuid?: bigint;
   /** The principal T10ID, if found. */
-  t10id?: string;
+  t10Id?: string;
   /** The other T10IDs, if found. */
-  t10ids?: T10IdInfo[];
+  t10Ids?: T10IdInfo[];
   /** Why this query failed. */
   error?: MSError;
 }
@@ -144,3 +145,9 @@ export type IdentityResultAlphaBatch = IdentityResultAlpha[];
  * @see IdentityResultBeta
  */
 export type IdentityResultBetaBatch = IdentityResultBeta[];
+
+/** Union of IdentityResultAlpha and IdentityResultBeta */
+export type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
+
+/** Intersection of IdentityResultAlpha and IdentityResultBeta */
+export type IdentityResultIntersection = IdentityResultAlpha & IdentityResultBeta;

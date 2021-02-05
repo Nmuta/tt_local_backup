@@ -13,7 +13,7 @@ export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBa
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/sunrise\/player\/xuid\((\d+)\)\/sharedConsoleUsers/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/player\/xuid\((\d+)\)\/sharedConsoleUsers$/i;
     return regex.test(url.pathname);
   }
 
@@ -26,8 +26,8 @@ export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBa
   public static makeMany(): Unprocessed<SunriseSharedConsoleUsers> {
     return [
       {
-        sharedConsoleId: 17942385017267761210,
-        xuid: 2535460485267489,
+        sharedConsoleId: BigInt(17942385017267761210),
+        xuid: BigInt(2535460485267489),
         gamertag: 'temporary1021',
         everBanned: false,
       },

@@ -50,44 +50,33 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         ///     Update player inventory.
         /// </summary>
         /// <param name="xuid">The xuid.</param>
-        /// <param name="playerInventory">The player inventory.</param>
+        /// <param name="gift">The gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task UpdatePlayerInventoryAsync(ulong xuid, SunrisePlayerInventory playerInventory, string requestingAgent);
+        Task UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requestingAgent);
 
         /// <summary>
         ///     Update player inventories.
         /// </summary>
         /// <param name="xuids">The xuids.</param>
-        /// <param name="playerInventory">The player inventory.</param>
+        /// <param name="groupGift">The group gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task UpdatePlayerInventoriesAsync(IList<ulong> xuids, SunrisePlayerInventory playerInventory, string requestingAgent);
-
-        /// <summary>
-        ///     Update player inventories.
-        /// </summary>
-        /// <param name="gamertags">The gamertags.</param>
-        /// <param name="playerInventory">The player inventory.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
-        /// <returns>
-        ///     A task with a status.
-        /// </returns>
-        Task UpdatePlayerInventoriesAsync(IList<string> gamertags, SunrisePlayerInventory playerInventory, string requestingAgent);
+        Task UpdatePlayerInventoriesAsync(IList<ulong> xuids, SunriseGroupGift groupGift, string requestingAgent);
 
         /// <summary>
         ///     Updates LSP group inventories.
         /// </summary>
         /// <param name="groupId">The group ID.</param>
-        /// <param name="playerInventory">The player inventory.</param>
+        /// <param name="gift">The gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task UpdateGroupInventoriesAsync(int groupId, SunrisePlayerInventory playerInventory, string requestingAgent);
+        Task UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requestingAgent);
     }
 }

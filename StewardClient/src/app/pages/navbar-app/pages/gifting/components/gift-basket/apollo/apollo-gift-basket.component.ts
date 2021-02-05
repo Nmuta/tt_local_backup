@@ -1,7 +1,11 @@
-import { Component, forwardRef } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, forwardRef, OnInit } from '@angular/core';
+import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ApolloMasterInventory } from '@models/apollo';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultBeta } from '@models/identity-query.model';
+import { Store } from '@ngxs/store';
+import { GetApolloMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
+import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
 /** Apollo gift basket. */
@@ -17,7 +21,24 @@ import { GiftBasketBaseComponent } from '../gift-basket.base.component';
     },
   ],
 })
-export class ApolloGiftBasketComponent extends GiftBasketBaseComponent<IdentityResultBeta> {
+export class ApolloGiftBasketComponent
+  extends GiftBasketBaseComponent<IdentityResultBeta>
+  implements OnInit {
   public title = GameTitleCodeName.FM7;
-  public disableCard: boolean = true;
+
+  constructor(protected readonly store: Store, protected readonly formBuilder: FormBuilder) {
+    super(formBuilder);
+  }
+
+  /** Angular lifecycle hook. */
+  public ngOnInit(): void {
+    this.isLoading = true;
+    this.store.dispatch(new GetApolloMasterInventoryList()).subscribe(() => {
+      this.isLoading = false;
+      const apolloMasterInventory = this.store.selectSnapshot<ApolloMasterInventory>(
+        MasterInventoryListMemoryState.apolloMasterInventory,
+      );
+      this.masterInventory = apolloMasterInventory;
+    });
+  }
 }

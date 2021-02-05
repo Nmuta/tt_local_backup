@@ -150,18 +150,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             {
                 param.FeatureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(param.FeatureArea));
 
-                if (param.StartTimeUtc == DateTime.MinValue)
+                if (param.Xuid == default)
                 {
-                    param.StartTimeUtc = DateTime.UtcNow;
-                }
+                    if (string.IsNullOrWhiteSpace(param.Gamertag))
+                    {
+                        throw new ArgumentException("No XUID or Gamertag provided.");
+                    }
 
-                if (param.Xuid == default && string.IsNullOrWhiteSpace(param.Gamertag))
-                {
-                    throw new ArgumentException("No XUID or Gamertag provided.");
-                }
-
-                if (param.Xuid == default && !string.IsNullOrWhiteSpace(param.Gamertag))
-                {
                     try
                     {
                         var userResult = await this.apolloUserService.LiveOpsGetUserDataByGamertagAsync(param.Gamertag).ConfigureAwait(false);
@@ -188,7 +183,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     var successfulBan = result.banResults.Where(banAttempt => banAttempt.Xuid == param.Xuid).FirstOrDefault()?.Success ?? false;
                     if (successfulBan)
                     {
-                        await this.banHistoryProvider.UpdateBanHistoryAsync(param.Xuid, TitleConstants.ApolloCodeName, requestingAgent, param).ConfigureAwait(false);
+                        await
+                            this.banHistoryProvider.UpdateBanHistoryAsync(
+                                param.Xuid,
+                                TitleConstants.ApolloCodeName,
+                                requestingAgent,
+                                param)
+                            .ConfigureAwait(false);
                     }
                 }
 

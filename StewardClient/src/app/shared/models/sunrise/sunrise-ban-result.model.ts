@@ -1,19 +1,21 @@
+import { SunriseBanArea } from './sunrise-ban-request.model';
+
 /** The /v1/title/Sunrise/players/ban model */
 export interface SunriseBanResult {
-  xuid: BigInt;
+  xuid: bigint;
   success: boolean;
   banDescription: SunriseBanDescription;
 }
 
 /** Services model for bans. */
 export interface SunriseBanDescription {
-  xuid: BigInt;
+  xuid: bigint;
   startTimeUtc: Date;
   expireTimeUtc: Date;
   isActive: boolean;
-  countOfTimesExtended: number;
+  countOfTimesExtended: bigint;
   lastExtendedTimeUtc: Date;
   lastExtendedReason: string;
   reason: string;
-  featureArea: string;
+  featureArea: SunriseBanArea;
 }

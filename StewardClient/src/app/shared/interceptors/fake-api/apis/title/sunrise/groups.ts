@@ -13,7 +13,7 @@ export class SunriseGroupsFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/sunrise\/groups/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/groups$/i;
     return regex.test(url.pathname);
   }
 
@@ -25,8 +25,8 @@ export class SunriseGroupsFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<LspGroups>> {
     return [
-      { id: 0, name: 'Fake Lsp Group 1' },
-      { id: 1, name: 'Fake Lsp Group 2' },
+      { id: BigInt(0), name: 'Fake Lsp Group 1' },
+      { id: BigInt(1), name: 'Fake Lsp Group 2' },
     ];
   }
 }

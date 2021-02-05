@@ -13,7 +13,7 @@ export class ApolloPlayerGamertagDetailsFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/apollo\/player\/gamertag\((.+)\)\/details/i;
+    const regex = /^\/?api\/v1\/title\/apollo\/player\/gamertag\((.+)\)\/details$/i;
     return regex.test(url.pathname);
   }
 
@@ -25,31 +25,31 @@ export class ApolloPlayerGamertagDetailsFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<ApolloPlayerDetails>> {
     return {
-      xuid: 189456456,
+      xuid: BigInt(189456456),
       gamertag: 'apollo-gamertag',
       country: 'United States',
       region: 'Washington',
       // these are all responses from the old API and aren't actually used by the new UI
       // firstLogin: '0001-01-01T00:00:00',
       // lastLogin: '0001-01-01T00:00:00',
-      // region: 1,
-      // country: 0,
-      // lcid: 0,
+      // region: BigInt(1),
+      // country: BigInt(0),
+      // lcid: BigInt(0),
       // ipAddress: null,
-      // ageGroup: 0,
+      // ageGroup: BigInt(0),
       // subscriptionTier: null,
       // lastGameSettingsUsed: '00000000-0000-0000-0000-000000000000',
-      // timeOffsetInSeconds: 0,
+      // timeOffsetInSeconds: BigInt(0),
       // userInventoryId: '00000000-0000-0000-0000-000000000000',
       // userInventoryIdHistory: null,
       // profileDetails: null,
-      // blueprintThreadLevel: 1,
+      // blueprintThreadLevel: BigInt(1),
       // clubId: '',
       // clubTag: '',
-      // currentBadgeId: 326,
-      // currentCareerLevel: 288424,
-      // currentDriverModelId: 12,
-      // currentPlayerTitleId: 326,
+      // currentBadgeId: BigInt(326),
+      // currentCareerLevel: BigInt(288424),
+      // currentDriverModelId: BigInt(12),
+      // currentPlayerTitleId: BigInt(326),
       // customizationSlots: [
       //   -1,
       //   -1,
@@ -72,16 +72,16 @@ export class ApolloPlayerGamertagDetailsFakeApi extends FakeApiBase {
       //   -1,
       //   -1,
       // ],
-      // flags: 0,
+      // flags: BigInt(0),
       // licensePlate: '  TEMP  ',
-      // painterThreadLevel: 1,
-      // photoThreadLevel: 1,
-      // qwXuid: 2535460485267489,
+      // painterThreadLevel: BigInt(1),
+      // photoThreadLevel: BigInt(1),
+      // qwXuid: BigInt(2535460485267489),
       // roleInClub: 'Invalid',
       // roleInTeam: 'Invalid',
       // teamId: '',
       // teamTag: '',
-      // tunerThreadLevel: 1,
+      // tunerThreadLevel: BigInt(1),
       // wzGamertag: 'temporary1021',
       // isFeaturedDrivatar: false,
       // isFeaturedPhotographer: false,
@@ -94,13 +94,13 @@ export class ApolloPlayerGamertagDetailsFakeApi extends FakeApiBase {
       // isTurn10Employee: false,
       // isVip: false,
       // acceptsClubInvites: false,
-      // clubTopTierCount: 0,
-      // userAgeGroup: 0,
+      // clubTopTierCount: BigInt(0),
+      // userAgeGroup: BigInt(0),
       // isFeaturedCommentator: false,
-      // currentCarCollectionScore: 0,
-      // currentCarCollectionTier: 0,
-      // currentProfileId: 0,
-      // equippedVanityItemId: 0,
+      // currentCarCollectionScore: BigInt(0),
+      // currentCarCollectionTier: BigInt(0),
+      // currentProfileId: BigInt(0),
+      // equippedVanityItemId: BigInt(0),
       // environment: null,
     };
   }

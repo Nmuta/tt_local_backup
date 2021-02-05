@@ -9,7 +9,7 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
   styleUrls: ['./sunrise-credit-history.component.scss'],
 })
 export class SunriseCreditHistoryComponent implements OnChanges {
-  @Input() public xuid?: number;
+  @Input() public xuid?: bigint;
 
   /** True while waiting on a request. */
   public isLoading = true;

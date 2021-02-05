@@ -13,17 +13,16 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { GravityGiftBasketComponent } from './gravity/gravity-gift-basket.component';
 import { SunriseGiftBasketComponent } from './sunrise/sunrise-gift-basket.component';
 import { ApolloGiftBasketComponent } from './apollo/apollo-gift-basket.component';
-import { OpusGiftBasketComponent } from './opus/opus-gift-basket.component';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { ItemSelectionModule } from '../item-selection/item-selection.module';
 
-/** The feature module for the User Details route. */
+/** The gift basket module. */
 @NgModule({
-  declarations: [
-    GravityGiftBasketComponent,
-    SunriseGiftBasketComponent,
-    ApolloGiftBasketComponent,
-    OpusGiftBasketComponent,
-  ],
+  declarations: [GravityGiftBasketComponent, SunriseGiftBasketComponent, ApolloGiftBasketComponent],
   imports: [
     CommonModule,
     ErrorSpinnerModule,
@@ -32,18 +31,18 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
     MatCardModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    MatAutocompleteModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatTableModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     PipesModule,
     JsonDumpModule,
+    ItemSelectionModule,
   ],
-  exports: [
-    GravityGiftBasketComponent,
-    SunriseGiftBasketComponent,
-    ApolloGiftBasketComponent,
-    OpusGiftBasketComponent,
-  ],
+  exports: [GravityGiftBasketComponent, SunriseGiftBasketComponent, ApolloGiftBasketComponent],
 })
 export class GiftBasketModule {}

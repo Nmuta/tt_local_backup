@@ -93,6 +93,23 @@ describe('SunriseService', () => {
     });
   });
 
+  describe('Method: getPlayerInventoryByXuid', () => {
+    const xuid = fakeXuid();
+
+    beforeEach(() => {
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call apiServiceMock.getRequest', done => {
+      service.getPlayerInventoryByXuid(xuid).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${xuid})/inventory`,
+        );
+        done();
+      });
+    });
+  });
+
   describe('Method: getPlayerDetailsByGamertag', () => {
     let expectedGamertag;
 
@@ -104,6 +121,40 @@ describe('SunriseService', () => {
       service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/gamertag(${expectedGamertag})/details`,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getGiftHistoryByXuid', () => {
+    const expectedXuid = BigInt(123456789);
+
+    beforeEach(() => {
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getGiftHistoryByXuid(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getGiftHistoryByLspGroup', () => {
+    const expectedLspGroupId = BigInt(1234);
+
+    beforeEach(() => {
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getGiftHistoryByXuid(expectedLspGroupId).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
         );
         done();
       });
@@ -132,7 +183,10 @@ describe('SunriseService', () => {
   });
 
   it('handles getBanHistoryByXuid', done => {
-    const typedReturnValue = (nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make());
+    const typedReturnValue = (nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make(
+      BigInt(12345),
+      1,
+    ));
     service.getBanHistoryByXuid(fakeXuid()).subscribe(output => {
       expect(output[0].startTimeUtc instanceof Date).toBe(true, 'liveOps.startTimeUtc is Date');
       expect(output[0].expireTimeUtc instanceof Date).toBe(true, 'liveOps.expireTimeUtc is Date');

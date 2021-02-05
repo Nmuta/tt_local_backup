@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FH4.master.Generated;
@@ -27,6 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
         private readonly ISunriseUserService sunriseUserService;
         private readonly ISunriseEnforcementService sunriseEnforcementService;
+        private readonly ISunriseNotificationsService sunriseNotificationsService;
         private readonly ISunriseBanHistoryProvider banHistoryProvider;
         private readonly IMapper mapper;
         private readonly IRefreshableCacheStore refreshableCacheStore;
@@ -36,19 +38,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// </summary>
         /// <param name="sunriseUserService">The Sunrise user service.</param>
         /// <param name="sunriseEnforcementService">The Sunrise enforcement service.</param>
+        /// <param name="sunriseNotificationsService">The Sunrise notifications service.</param>
         /// <param name="banHistoryProvider">The ban history provider.</param>
         /// <param name="mapper">The mapper.</param>
         /// <param name="refreshableCacheStore">The refreshable cache store.</param>
-        public SunrisePlayerDetailsProvider(ISunriseUserService sunriseUserService, ISunriseEnforcementService sunriseEnforcementService, ISunriseBanHistoryProvider banHistoryProvider, IMapper mapper, IRefreshableCacheStore refreshableCacheStore)
+        public SunrisePlayerDetailsProvider(ISunriseUserService sunriseUserService, ISunriseEnforcementService sunriseEnforcementService, ISunriseNotificationsService sunriseNotificationsService, ISunriseBanHistoryProvider banHistoryProvider, IMapper mapper, IRefreshableCacheStore refreshableCacheStore)
         {
             sunriseUserService.ShouldNotBeNull(nameof(sunriseUserService));
             sunriseEnforcementService.ShouldNotBeNull(nameof(sunriseEnforcementService));
+            sunriseNotificationsService.ShouldNotBeNull(nameof(sunriseNotificationsService));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
             mapper.ShouldNotBeNull(nameof(mapper));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
 
             this.sunriseUserService = sunriseUserService;
             this.sunriseEnforcementService = sunriseEnforcementService;
+            this.sunriseNotificationsService = sunriseNotificationsService;
             this.banHistoryProvider = banHistoryProvider;
             this.mapper = mapper;
             this.refreshableCacheStore = refreshableCacheStore;
@@ -231,11 +236,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
             const int maxXuidsPerRequest = 10;
 
-            if (banParameters.StartTimeUtc == DateTime.MinValue)
-            {
-                banParameters.StartTimeUtc = DateTime.UtcNow;
-            }
-
             var mappedBanParameters = this.mapper.Map<ForzaUserBanParameters>(banParameters);
 
             var xuids = new List<ulong>();
@@ -257,6 +257,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     xuids.Add(userResult.userData.qwXuid);
                 }
             }
+
+            xuids = xuids.Distinct().ToList();
 
             var banResults = new List<SunriseBanResult>();
 
@@ -331,6 +333,23 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned)
         {
             await this.sunriseUserService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<SunriseNotification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults)
+        {
+            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+
+            try
+            {
+                var notifications = await this.sunriseNotificationsService.LiveOpsRetrieveForUserAsync(xuid, maxResults).ConfigureAwait(false);
+
+                return this.mapper.Map<IList<SunriseNotification>>(notifications.results);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new ProfileNotFoundException($"Notifications for player with xuid: {xuid} could not be found.", ex);
+            }
         }
 
         private IList<int> PrepareGroupIds(SunriseUserFlags userFlags, bool toggleOn)

@@ -1,8 +1,10 @@
+import { GamertagString } from '@models/extended-types';
+
 /** A single shared console user. */
 export interface SunriseSharedConsoleUser {
-  sharedConsoleId: number;
-  xuid: number;
-  gamertag: string;
+  sharedConsoleId: bigint;
+  xuid: bigint;
+  gamertag: GamertagString;
   everBanned: boolean;
 }
 

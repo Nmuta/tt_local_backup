@@ -1,0 +1,10 @@
+@import '/src/variables.scss';
+
+.multiline-tooltip {
+  white-space: pre-line;
+}
+
+span {
+  margin: 0 0.125rem;
+  color: mat-color($app-warn);
+}

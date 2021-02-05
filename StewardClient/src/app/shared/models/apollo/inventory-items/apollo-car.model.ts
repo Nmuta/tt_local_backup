@@ -1,13 +1,14 @@
+import { GuidLikeString } from '@models/extended-types';
 import { ApolloInventoryItem } from './apollo-inventory-item.model';
 
 /** Interface for sunrise car item. */
 export interface ApolloCar extends ApolloInventoryItem {
-  vin: string;
-  baseCost: number;
-  collectorScore: number;
+  vin: GuidLikeString;
+  baseCost: bigint;
+  collectorScore: bigint;
   isOnlineOnly: boolean;
-  productionNumber: number;
-  purchaseUtc: unknown;
-  versionedLiveryId: unknown;
-  versionedTuneId: unknown;
+  productionNumber: bigint;
+  purchaseUtc: Date;
+  versionedLiveryId: GuidLikeString;
+  versionedTuneId: GuidLikeString;
 }

@@ -1,5 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
+import { fakeXuid } from '@interceptors/fake-api/utility';
 import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
 import { of } from 'rxjs';
@@ -43,6 +44,23 @@ describe('ApolloService', () => {
     });
   });
 
+  describe('Method: getPlayerInventoryByXuid', () => {
+    const xuid = fakeXuid();
+
+    beforeEach(() => {
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call apiServiceMock.getRequest', done => {
+      service.getPlayerInventoryByXuid(xuid).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${xuid})/inventory`,
+        );
+        done();
+      });
+    });
+  });
+
   describe('Method: getPlayerIdentities', () => {
     beforeEach(() => {
       apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
@@ -81,6 +99,40 @@ describe('ApolloService', () => {
     it('should call API service getRequest', done => {
       service.getLspGroups().subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(`${service.basePath}/groups`);
+        done();
+      });
+    });
+  });
+
+  describe('Method: getGiftHistoryByXuid', () => {
+    const expectedXuid = BigInt(123456789);
+
+    beforeEach(() => {
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getGiftHistoryByXuid(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getGiftHistoryByLspGroup', () => {
+    const expectedLspGroupId = BigInt(1234);
+
+    beforeEach(() => {
+      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getGiftHistoryByXuid(expectedLspGroupId).subscribe(() => {
+        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
+        );
         done();
       });
     });

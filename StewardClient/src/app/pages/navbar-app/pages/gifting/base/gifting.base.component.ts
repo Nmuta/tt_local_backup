@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GameTitleCodeName } from '@models/enums';
-import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
-
-type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
+import { IdentityResultUnion } from '@models/identity-query.model';
 
 /** The sunrise gifting page for the Navbar app. */
 @Component({
@@ -19,4 +17,9 @@ export abstract class GiftingBaseComponent<T extends IdentityResultUnion> extend
 
   /** Player identity selected */
   public abstract playerIdentitySelected(identity: T): void;
+
+  /** Returns true if player identities is  being used for player selection. */
+  public isUsingPlayerIdentities(): boolean {
+    return this.matTabSelectedIndex === 0;
+  }
 }

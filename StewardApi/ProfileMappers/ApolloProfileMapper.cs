@@ -41,6 +41,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.AgeGroup, opt => opt.MapFrom(src => src.UserAgeGroup));
             this.CreateMap<AdminForzaProfile, ApolloInventoryProfile>().ReverseMap();
             this.CreateMap<ForzaUserBanSummary, ApolloBanSummary>();
+            this.CreateMap<ApolloBanParametersInput, ApolloBanParameters>()
+                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
+                .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));
             this.CreateMap<ApolloBanParameters, ForzaUserBanParameters>()
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))
@@ -56,6 +59,24 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaSharedConsoleUser, ApolloSharedConsoleUser>().ReverseMap();
             this.CreateMap<ForzaUserGroup, ApolloLspGroup>();
             this.CreateMap<ApolloPlayerDetails, IdentityResultAlpha>().ReverseMap();
+
+            this.CreateMap<ApolloGroupGift, ApolloGift>().ReverseMap();
+            this.CreateMap<ApolloCar, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.ItemId));
+            this.CreateMap<ApolloInventoryItem, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.ItemId));
+            this.CreateMap<ApolloPlayerInventory, ApolloGift>()
+                .ForMember(dest => dest.GiftReason, opt => opt.MapFrom(source => source.GiftReason))
+                .ForMember(dest => dest.Inventory, opt => opt.MapFrom((source, destObj, destMem, context) => new ApolloMasterInventory()
+                {
+                    CreditRewards = new List<MasterInventoryItem>()
+                    {
+                        new MasterInventoryItem() { Description = "Credits", Quantity = source.Credits, Id = -1 },
+                    },
+                    Cars = context.Mapper.Map<IList<MasterInventoryItem>>(source.Cars),
+                    VanityItems = context.Mapper.Map<IList<MasterInventoryItem>>(source.VanityItems),
+                }))
+                .ReverseMap();
         }
     }
 }

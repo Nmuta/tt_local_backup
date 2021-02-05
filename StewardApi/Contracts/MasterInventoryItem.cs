@@ -1,7 +1,7 @@
 ﻿namespace Turn10.LiveOps.StewardApi.Contracts
 {
     /// <summary>
-    ///     Represents an identity query.
+    ///     Represents a master inventory item.
     /// </summary>
     public sealed class MasterInventoryItem
     {
@@ -19,5 +19,10 @@
         ///     Gets or sets the item quantity.
         /// </summary>
         public int Quantity { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the item error.
+        /// </summary>
+        public object Error { get; set; }
     }
 }

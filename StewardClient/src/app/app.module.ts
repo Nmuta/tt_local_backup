@@ -34,10 +34,12 @@ import { UserSettingsState } from '@shared/state/user-settings/user-settings.sta
 import { GravityGiftingState } from './pages/navbar-app/pages/gifting/gravity/state/gravity-gifting.state';
 import { SunriseGiftingState } from './pages/navbar-app/pages/gifting/sunrise/state/sunrise-gifting.state';
 import { ApolloGiftingState } from './pages/navbar-app/pages/gifting/apollo/state/apollo-gifting.state';
-import { OpusGiftingState } from './pages/navbar-app/pages/gifting/opus/state/opus-gifting.state';
 import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state';
 import { MatNativeDateModule } from '@angular/material/core';
 import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-memory.state';
+import { GravityGiftHistoryState } from '@navbar-app/pages/gift-history/gravity/state/gravity-gift-history.state';
+import { SunriseGiftHistoryState } from '@navbar-app/pages/gift-history/sunrise/state/sunrise-gift-history.state';
+import { ApolloGiftHistoryState } from '@navbar-app/pages/gift-history/apollo/state/apollo-gift-history.state';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 
 const protectedResourceMap: [string, string[]][] = [
@@ -84,7 +86,10 @@ function fakeApiOrNothing(): Provider[] {
       GravityGiftingState,
       SunriseGiftingState,
       ApolloGiftingState,
-      OpusGiftingState,
+      // Gift History page states
+      GravityGiftHistoryState,
+      SunriseGiftHistoryState,
+      ApolloGiftHistoryState,
     ]),
     NgxsStoragePluginModule.forRoot({ key: [UserSettingsState] }),
     NgxsRouterPluginModule.forRoot(),
@@ -126,6 +131,7 @@ function fakeApiOrNothing(): Provider[] {
     },
     LoggerService,
     Clipboard,
+    ...fakeApiOrNothing(),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
@@ -147,7 +153,6 @@ function fakeApiOrNothing(): Provider[] {
       useClass: BigintInterceptor,
       multi: true,
     },
-    ...fakeApiOrNothing(),
   ],
   bootstrap: [AppComponent],
 })

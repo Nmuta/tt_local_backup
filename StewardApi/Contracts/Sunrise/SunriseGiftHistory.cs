@@ -1,4 +1,6 @@
 ﻿using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
@@ -17,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <param name="giftSendDateUtc">The gift send date.</param>
         /// <param name="giftInventory">The gift inventory.</param>
-        public SunriseGiftHistory(GiftHistoryAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, SunrisePlayerInventory giftInventory)
+        public SunriseGiftHistory(GiftHistoryAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, SunriseGift giftInventory)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -35,6 +37,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <summary>
         ///     Gets or sets the ID type.
         /// </summary>
+        /// <remarks>
+        ///     We make use of the JsonConverter to return the IdType string names instead of their integer values.
+        ///     Xuid is a much more understandable ID type than 0.
+        /// </remarks>
+        [JsonConverter(typeof(StringEnumConverter))]
         public GiftHistoryAntecedent IdType { get; set; }
 
         /// <summary>
@@ -60,6 +67,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <summary>
         ///     Gets or sets gift inventory.
         /// </summary>
-        public SunrisePlayerInventory GiftInventory { get; set; }
+        public SunriseGift GiftInventory { get; set; }
     }
 }

@@ -17,7 +17,7 @@ export class SunriseGroupGroupIdInventoryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/sunrise\/group\/groupId\((.+)\)\/inventory/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/group\/groupId\((.+)\)\/inventory$/i;
     return regex.test(url.pathname);
   }
 
@@ -29,7 +29,7 @@ export class SunriseGroupGroupIdInventoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<SunrisePlayerInventory>> {
     return {
-      xuid: 2533275026603041,
+      xuid: BigInt(2533275026603041),
     };
   }
 }

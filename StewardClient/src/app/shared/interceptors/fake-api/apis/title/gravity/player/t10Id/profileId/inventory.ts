@@ -13,7 +13,7 @@ export class GravityPlayerT10IdProfileIdInventoryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/gravity\/player\/t10Id\((.+)\)\/profileId\((.+)\)\/inventory/i;
+    const regex = /^\/?api\/v1\/title\/gravity\/player\/t10Id\((.+)\)\/profileId\((.+)\)\/inventory$/i;
     return regex.test(url.pathname);
   }
 
@@ -25,7 +25,7 @@ export class GravityPlayerT10IdProfileIdInventoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<GravityPlayerInventory>> {
     return {
-      xuid: 2533275026603041,
+      xuid: BigInt(2533275026603041),
     };
   }
 }

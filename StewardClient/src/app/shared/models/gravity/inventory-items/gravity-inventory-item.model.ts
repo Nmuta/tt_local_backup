@@ -1,9 +1,9 @@
 /** Interface for gravity player inventory item. */
 export interface GravityInventoryItem {
-  itemId: number;
-  quantity: unknown;
-  acquisitionUtc: unknown;
-  modifiedUtc: unknown;
-  lastUsedUtc: unknown;
+  itemId: bigint;
+  quantity: bigint;
+  acquisitionUtc: Date;
+  modifiedUtc: Date;
+  lastUsedUtc: Date;
   description: string;
 }

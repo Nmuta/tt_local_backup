@@ -34,6 +34,11 @@ const routes: Routes = [
         loadChildren: () => import('./pages/gifting/gifting.module').then(m => m.GiftingsModule),
       },
       {
+        path: NavbarTools.GiftHistoryPage.path,
+        loadChildren: () =>
+          import('./pages/gift-history/gift-history.module').then(m => m.GiftHistoryModule),
+      },
+      {
         path: NavbarTools.UserBanningPage.path,
         loadChildren: () =>
           import('./pages/user-banning/user-banning.module').then(m => m.UserBanningModule),

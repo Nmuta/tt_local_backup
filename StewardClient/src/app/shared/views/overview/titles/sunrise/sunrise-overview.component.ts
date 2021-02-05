@@ -9,7 +9,7 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
   styleUrls: ['./sunrise-overview.component.scss'],
 })
 export class SunriseOverviewComponent implements OnChanges {
-  @Input() public xuid?: number;
+  @Input() public xuid?: bigint;
 
   /** True while waiting on a request. */
   public isLoading = true;

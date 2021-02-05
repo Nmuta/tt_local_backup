@@ -1,0 +1,11 @@
+<mat-toolbar color="default">
+  <a
+    *ngFor="let link of navbarRouterLinks"
+    [routerLink]="link.route"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    >{{ link.name }}</a
+  >
+</mat-toolbar>
+
+<router-outlet></router-outlet>

@@ -54,7 +54,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<ApolloPlayerDetails>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<ApolloBanResult>> BanPlayersAsync(IList<ApolloBanParameters> banParameters, Dictionary<string, string> headersToSend)
+        public async Task<IList<ApolloBanResult>> BanPlayersAsync(IList<ApolloBanParametersInput> banParameters, Dictionary<string, string> headersToSend)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
@@ -63,7 +63,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<IList<ApolloBanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters, headersToSend).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<IList<ApolloBanResult>>> BanPlayersWithHeaderResponseAsync(IList<ApolloBanParameters> banParameters, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
+        public async Task<ResponseWithHeaders<IList<ApolloBanResult>>> BanPlayersWithHeaderResponseAsync(IList<ApolloBanParametersInput> banParameters, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
@@ -160,13 +160,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<IList<ApolloLspGroup>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<ApolloPlayerInventory> UpdatePlayerInventoryAsync(ApolloPlayerInventory playerInventory, Dictionary<string, string> headersToSend)
-        {
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid/inventory");
-
-            return await ServiceClient.SendRequestAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, playerInventory, headersToSend).ConfigureAwait(false);
-        }
-
         public async Task<ResponseWithHeaders<ApolloPlayerInventory>> UpdatePlayerInventoryWithHeaderResponseAsync(ApolloPlayerInventory playerInventory, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
         {
             playerInventory.ShouldNotBeNull(nameof(playerInventory));
@@ -176,25 +169,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestWithHeaderResponseAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, playerInventory, headersToSend).ConfigureAwait(false);
         }
 
-        public async Task<ApolloPlayerInventory> UpdateGroupInventoriesByXuidAsync(ApolloGroupGift groupGift, Dictionary<string, string> headersToSend)
+        public async Task<ApolloPlayerInventory> UpdateGroupInventoriesByXuidAsync(ApolloGroupGift groupGift)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}group/xuids/inventory");
+            var path = new Uri(this.baseUri, $"{TitlePath}gifting/players");
 
-            return await ServiceClient.SendRequestAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, groupGift, headersToSend).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, groupGift).ConfigureAwait(false);
         }
 
-        public async Task<ApolloPlayerInventory> UpdateGroupInventoriesByGamertagAsync(ApolloGroupGift groupGift, Dictionary<string, string> headersToSend)
+        public async Task<ApolloPlayerInventory> UpdateGroupInventoriesByLspGroupId(int groupId, ApolloGift gift)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}group/gamertags/inventory");
+            var path = new Uri(this.baseUri, $"{TitlePath}gifting/groupId({groupId})");
 
-            return await ServiceClient.SendRequestAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, groupGift, headersToSend).ConfigureAwait(false);
-        }
-
-        public async Task<ApolloPlayerInventory> UpdateGroupInventoriesByLspGroupId(int groupId, ApolloPlayerInventory playerInventory, Dictionary<string, string> headersToSend)
-        {
-            var path = new Uri(this.baseUri, $"{TitlePath}group/groupId({groupId})/inventory");
-
-            return await ServiceClient.SendRequestAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, playerInventory, headersToSend).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, gift).ConfigureAwait(false);
         }
 
         public async Task<IList<ApolloGiftHistory>> GetGiftHistoriesAsync(ulong xuid)

@@ -19,7 +19,7 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
   ],
 })
 export class SunriseBanHistoryComponent extends BaseComponent implements OnChanges {
-  @Input() public xuid?: number;
+  @Input() public xuid?: bigint;
 
   /** True while waiting on a request. */
   public isLoading = true;

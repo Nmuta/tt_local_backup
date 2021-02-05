@@ -1,5 +1,5 @@
 import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GameTitleCodeName } from '@models/enums';
 import { GravityPlayerInventory } from '@models/gravity';
 import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
@@ -30,8 +30,8 @@ export class GravityGiftBasketComponent
   public title = GameTitleCodeName.Street;
   public hasGameSettings: boolean = true;
 
-  constructor(protected readonly store: Store) {
-    super();
+  constructor(protected readonly store: Store, protected readonly formBuilder: FormBuilder) {
+    super(formBuilder);
   }
 
   /** Angular lifecycle */
@@ -45,9 +45,17 @@ export class GravityGiftBasketComponent
           MasterInventoryListMemoryState.gravityMasterInventory,
         );
         this.masterInventory = gravityMasterInventory[gameSettings];
+
+        // TODO: Call buildMatAutocompleteState() so the mat-autocomplete data can be built and send down to the item-selection component
+        // We are currently blocked on this while we figure out what all is required for Gravity gifting (mostly around Cars and if we need to send more data than just itemId)
+
+        // TODO: When a valid game settings updates the masterInventory, we need to verify the existing contents of a gift basket
+        // in relation to the new master inventory (show item errors & disallow gift send while there are errors)
       });
     } else {
       this.masterInventory = undefined;
+
+      // TODO:When no/ bad game settings, we need to show show errors for all items in the gift basket and disallow gift send
     }
   }
 }

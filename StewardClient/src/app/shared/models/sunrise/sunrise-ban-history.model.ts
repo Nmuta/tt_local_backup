@@ -8,7 +8,7 @@ export interface SunriseBanHistory {
 /** LiveOps model for a single ban description. */
 export interface LiveOpsBanDescription {
   isActive: boolean;
-  xuid: number;
+  xuid: bigint;
   startTimeUtc: Date;
   expireTimeUtc: Date;
   title: string;

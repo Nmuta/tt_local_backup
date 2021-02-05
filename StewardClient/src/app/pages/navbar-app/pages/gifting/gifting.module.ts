@@ -14,11 +14,11 @@ import { PlayerSelectionModule } from '../../components/player-selection/player-
 import { GravityGiftingComponent } from './gravity/gravity-gifting.component';
 import { SunriseGiftingComponent } from './sunrise/sunrise-gifting.component';
 import { ApolloGiftingComponent } from './apollo/apollo-gifting.component';
-import { OpusGiftingComponent } from './opus/opus-gifting.component';
 import { MatCardModule } from '@angular/material/card';
 import { LspGroupSelectionModule } from '@navbar-app/components/lsp-group-selection/lsp-group-selection.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { GiftBasketModule } from './components/gift-basket/gift-basket.module';
+import { ItemSelectionModule } from './components/item-selection/item-selection.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -27,7 +27,6 @@ import { GiftBasketModule } from './components/gift-basket/gift-basket.module';
     GravityGiftingComponent,
     SunriseGiftingComponent,
     ApolloGiftingComponent,
-    OpusGiftingComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +43,7 @@ import { GiftBasketModule } from './components/gift-basket/gift-basket.module';
     LspGroupSelectionModule,
     MatTabsModule,
     GiftBasketModule,
+    ItemSelectionModule,
   ],
 })
 export class GiftingsModule {}

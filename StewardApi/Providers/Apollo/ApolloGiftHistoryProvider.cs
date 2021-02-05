@@ -48,15 +48,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, ApolloPlayerInventory playerInventory)
+        public async Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, ApolloGift gift)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            gift.ShouldNotBeNull(nameof(gift));
 
             var playerId = $"{giftHistoryAntecedent}:{id}";
-            var giftHistory = new GiftHistory(playerId, title, requestingAgent, DateTime.UtcNow, playerInventory.ToJson());
+            var giftHistory = new GiftHistory(playerId, title, requestingAgent, DateTime.UtcNow, gift.ToJson());
             var kustoColumnMappings = giftHistory.ToJsonColumnMappings();
             var tableName = typeof(GiftHistory).Name;
             var giftHistories = new List<GiftHistory> { giftHistory };
@@ -85,17 +85,36 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             foreach (var history in giftHistoryResult)
             {
-                ApolloPlayerInventory convertedInventory;
-                // The below logic is in place because V1 inventories are still being uploaded by V1 Zendesk.
-                // It can be removed once V1 endpoints are no longer uploading data into the table.
+                ApolloGift convertedGift;
+                // TODO: Remove these conversions once KUSTO is only using the new SunriseGift model
+                // PlayerInventory model is from Scrutineer V1
+                // SunrisePlayerInventory is from Scrutineer V2 & Steward V1
+                // SunriseGift is the new model that uses a shared inventory model between all titles
                 try
                 {
-                    convertedInventory = history.GiftInventory.FromJson<ApolloPlayerInventory>();
+                    convertedGift = history.GiftInventory.FromJson<ApolloGift>();
+                    if (convertedGift.Inventory == null)
+                    {
+                        throw new InvalidOperationException("Not an ApolloGift model");
+                    }
                 }
                 catch
                 {
-                    var oldInventory = history.GiftInventory.FromJson<PlayerInventory>();
-                    convertedInventory = this.mapper.Map<ApolloPlayerInventory>(oldInventory);
+                    try
+                    {
+                        var apolloPlayerInventory = history.GiftInventory.FromJson<ApolloPlayerInventory>();
+                        convertedGift = this.mapper.Map<ApolloGift>(apolloPlayerInventory);
+                        if (convertedGift.Inventory == null)
+                        {
+                            throw new InvalidOperationException("Not an ApolloPlayerInventory model");
+                        }
+                    }
+                    catch
+                    {
+                        var playerInventory = history.GiftInventory.FromJson<PlayerInventory>();
+                        var apolloPlayerInventory = this.mapper.Map<ApolloPlayerInventory>(playerInventory);
+                        convertedGift = this.mapper.Map<ApolloGift>(apolloPlayerInventory);
+                    }
                 }
 
                 // The below logic is in place to separate out ID and it's antecedent. Once V1 Zendesk stops uploading
@@ -104,7 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 var antecedent = Enum.Parse<GiftHistoryAntecedent>(splitId[0]);
                 var id = splitId[1];
 
-                results.Add(new ApolloGiftHistory(antecedent, id, history.Title, history.RequestingAgent, history.GiftSendDateUtc, convertedInventory));
+                results.Add(new ApolloGiftHistory(antecedent, id, history.Title, history.RequestingAgent, history.GiftSendDateUtc, convertedGift));
             }
 
             results.Sort((x, y) => DateTime.Compare(y.GiftSendDateUtc, x.GiftSendDateUtc));

@@ -15,9 +15,9 @@ import { first } from 'lodash';
 import { DurationPickerOptions } from '../duration-picker/duration-picker.component';
 
 export enum BanArea {
-  AllFeatures = 'all',
-  UserGeneratedContent = 'ugc',
-  Matchmaking = 'matchmaking',
+  AllFeatures = 'AllRequests',
+  UserGeneratedContent = 'UserGeneratedContent',
+  Matchmaking = 'Matchmaking',
 }
 
 export interface BanOptions {

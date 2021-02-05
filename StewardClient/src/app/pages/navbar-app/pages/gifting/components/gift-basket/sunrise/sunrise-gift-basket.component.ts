@@ -1,5 +1,5 @@
 import { Component, forwardRef, OnInit } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
@@ -8,7 +8,7 @@ import { GetSunriseMasterInventoryList } from '@shared/state/master-inventory-li
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
-/** Apollo gift basket. */
+/** Sunrise gift basket. */
 @Component({
   selector: 'sunrise-gift-basket',
   templateUrl: '../gift-basket.component.html',
@@ -26,8 +26,8 @@ export class SunriseGiftBasketComponent
   implements OnInit {
   public title = GameTitleCodeName.FH4;
 
-  constructor(protected readonly store: Store) {
-    super();
+  constructor(protected readonly store: Store, protected readonly formBuilder: FormBuilder) {
+    super(formBuilder);
   }
 
   /** Angular lifecycle hook. */

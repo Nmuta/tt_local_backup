@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ApolloPlayerDetails } from '@models/apollo';
+import {
+  ApolloBanResult,
+  ApolloMasterInventory,
+  ApolloPlayerDetails,
+  ApolloPlayerInventory,
+} from '@models/apollo';
+import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
+import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
+import { ApolloGiftHistory } from '@models/apollo/apollo-gift-history.model';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,
@@ -41,6 +49,19 @@ export class ApolloService {
     );
   }
 
+  /** Gets ban summaries by a list of XUIDs. */
+  public getBanSummariesByXuids(xuids: BigInt[]): Observable<ApolloBanSummary[]> {
+    return this.apiService.postRequest<ApolloBanSummary[]>(
+      `${this.basePath}/players/banSummaries`,
+      xuids,
+    );
+  }
+
+  /** Bans players by a list of XUIDs. */
+  public postBanPlayers(bans: ApolloBanRequest[]): Observable<ApolloBanResult[]> {
+    return this.apiService.postRequest<ApolloBanResult[]>(`${this.basePath}/players/ban`, bans);
+  }
+
   /** Gets apollo player details with a gamertag. This can be used to retrieve a XUID. */
   public getPlayerDetailsByGamertag(gamertag: string): Observable<ApolloPlayerDetails> {
     return this.apiService
@@ -54,8 +75,34 @@ export class ApolloService {
       );
   }
 
+  /** Gets Gift history by a XUID. */
+  public getGiftHistoryByXuid(xuid: BigInt): Observable<ApolloGiftHistory[]> {
+    return this.apiService.getRequest<ApolloGiftHistory[]>(
+      `${this.basePath}/player/xuid(${xuid})/giftHistory`,
+    );
+  }
+
+  /** Gets Gift history by a LSP Group. */
+  public getGiftHistoryByLspGroup(lspGroupId: BigInt): Observable<ApolloGiftHistory[]> {
+    return this.apiService.getRequest<ApolloGiftHistory[]>(
+      `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
+    );
+  }
+
   /** Gets the apollo lsp groups. */
   public getLspGroups(): Observable<LspGroups> {
     return this.apiService.getRequest<LspGroups>(`${this.basePath}/groups`);
+  }
+
+  /** Gets the apollo master inventory. */
+  public getMasterInventory(): Observable<ApolloMasterInventory> {
+    return this.apiService.getRequest<ApolloMasterInventory>(`${this.basePath}/masterInventory`);
+  }
+
+  /** Gets the apollo player's inventory */
+  public getPlayerInventoryByXuid(xuid: bigint): Observable<ApolloPlayerInventory> {
+    return this.apiService.getRequest<ApolloPlayerInventory>(
+      `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
   }
 }

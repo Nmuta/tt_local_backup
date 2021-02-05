@@ -9,27 +9,27 @@ namespace Turn10.LiveOps.StewardApi.Validation
     /// <summary>
     ///     Validates a <see cref="ApolloBanParameters"/> request.
     /// </summary>
-    public sealed class ApolloBanParametersRequestValidator : RequestValidatorBase, IRequestValidator<ApolloBanParameters>
+    public sealed class ApolloBanParametersRequestValidator : RequestValidatorBase, IRequestValidator<ApolloBanParametersInput>
     {
         /// <inheritdoc />
-        public void Validate(ApolloBanParameters model, ModelStateDictionary modelState)
+        public void Validate(ApolloBanParametersInput model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
 
-            if (model.ExpireTimeUtc == default)
+            if (!model.Duration.HasValue)
             {
-                modelState.AddModelError("BanParameters.ExpireTimeUtc", $"Property value must be valid DateTime. {nameof(model.ExpireTimeUtc)} was {model.ExpireTimeUtc}.");
+                modelState.AddModelError("BanParameters.Duration", $"Property value must be valid TimeSpan. {nameof(model.Duration)} was {model.Duration}.");
             }
 
-            if (model.ExpireTimeUtc < DateTime.UtcNow)
+            if (model.Duration == TimeSpan.Zero)
             {
-                modelState.AddModelError("BanParameters.ExpireTimeUtc", $"Property value must come before current time.{nameof(model.ExpireTimeUtc)} was {model.ExpireTimeUtc}.");
+                modelState.AddModelError("BanParameters.Duration", $"Duration must be non-zero. {nameof(model.Duration)} was {model.Duration}.");
             }
 
-            if (model.StartTimeUtc >= model.ExpireTimeUtc)
+            if (model.Duration < TimeSpan.Zero)
             {
-                modelState.AddModelError("BanParameters.ExpireTimeUtc", $"Property value must come after StartTimeUtc. {nameof(model.StartTimeUtc)} was {model.StartTimeUtc}. {nameof(model.ExpireTimeUtc)} was {model.ExpireTimeUtc}.");
+                modelState.AddModelError("BanParameters.Duration", $"Duration must be positive. {nameof(model.Duration)} was {model.Duration}.");
             }
 
             if (model.SendReasonNotification && string.IsNullOrWhiteSpace(model.Reason))
@@ -46,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Validation
         }
 
         /// <inheritdoc />
-        public void ValidateIds(ApolloBanParameters model, ModelStateDictionary modelState)
+        public void ValidateIds(ApolloBanParametersInput model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));

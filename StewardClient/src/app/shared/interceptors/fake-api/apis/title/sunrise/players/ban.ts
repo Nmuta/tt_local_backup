@@ -13,7 +13,7 @@ export class SunrisePlayersBanFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /\/?api\/v1\/title\/sunrise\/players\/ban/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/players\/ban$/i;
     return regex.test(url.pathname);
   }
 
@@ -26,12 +26,12 @@ export class SunrisePlayersBanFakeApi extends FakeApiBase {
   public static make(): Partial<Unprocessed<SunriseBanResult[]>> {
     return [
       {
-        xuid: 189456456,
+        xuid: BigInt(189456456),
         success: true,
         banDescription: {
-          xuid: 2533275026603041,
+          xuid: BigInt(2533275026603041),
           isActive: true,
-          countOfTimesExtended: 0,
+          countOfTimesExtended: BigInt(0),
           lastExtendedTimeUtc: '0001-01-01T00:00:00Z',
           lastExtendedReason: null,
           reason: 'Illegitimately obtaining the Owens McLaren',

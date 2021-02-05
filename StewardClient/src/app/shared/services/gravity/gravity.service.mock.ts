@@ -8,11 +8,13 @@ import { GravityService } from './gravity.service';
 export class MockGravityService {
   public getIdentity = jasmine
     .createSpy('getIdentity')
-    .and.returnValue(of({ xuid: BigInt(12345), gamertag: 'gamertag', t10id: '1234567489' }));
+    .and.returnValue(of({ xuid: BigInt(12345), gamertag: 'gamertag', t10Id: '1234567489' }));
 
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
     .and.returnValue(of({}));
+
+  public getGameSettings = jasmine.createSpy('getGameSettings').and.returnValue(of({}));
 }
 
 /** Creates an injectable mock for Gravity Service. */

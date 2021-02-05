@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
@@ -18,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Validation;
+using Turn10.Services.Authentication;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -42,20 +45,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ConfigurationKeyConstants.GroupGiftPasswordSecretName
         };
 
+        private readonly IKustoProvider kustoProvider;
         private readonly IApolloPlayerDetailsProvider apolloPlayerDetailsProvider;
         private readonly IApolloPlayerInventoryProvider apolloPlayerInventoryProvider;
         private readonly IApolloGiftHistoryProvider giftHistoryProvider;
         private readonly IApolloBanHistoryProvider banHistoryProvider;
         private readonly IScheduler scheduler;
         private readonly IJobTracker jobTracker;
-        private readonly IRequestValidator<ApolloBanParameters> banParametersRequestValidator;
-        private readonly IRequestValidator<ApolloPlayerInventory> playerInventoryRequestValidator;
+        private readonly IMapper mapper;
+        private readonly IRequestValidator<ApolloBanParametersInput> banParametersRequestValidator;
+        private readonly IRequestValidator<ApolloGift> giftRequestValidator;
         private readonly IRequestValidator<ApolloGroupGift> groupGiftRequestValidator;
-        private readonly string giftingPassword;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloController"/> class.
         /// </summary>
+        /// <param name="kustoProvider">The Kusto provider.</param>
         /// <param name="apolloPlayerDetailsProvider">The Apollo player details provider.</param>
         /// <param name="apolloPlayerInventoryProvider">The Apollo player inventory provider.</param>
         /// <param name="keyVaultProvider">The key vault provider.</param>
@@ -64,22 +69,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="configuration">The configuration.</param>
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="jobTracker">The job tracker.</param>
+        /// <param name="mapper">The mapper.</param>
         /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
-        /// <param name="playerInventoryRequestValidator">The player inventory request validator.</param>
+        /// <param name="giftRequestValidator">The gift request validator.</param>
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
         public ApolloController(
-                                IApolloPlayerDetailsProvider apolloPlayerDetailsProvider,
-                                IApolloPlayerInventoryProvider apolloPlayerInventoryProvider,
-                                IKeyVaultProvider keyVaultProvider,
-                                IApolloGiftHistoryProvider giftHistoryProvider,
-                                IApolloBanHistoryProvider banHistoryProvider,
-                                IConfiguration configuration,
-                                IScheduler scheduler,
-                                IJobTracker jobTracker,
-                                IRequestValidator<ApolloBanParameters> banParametersRequestValidator,
-                                IRequestValidator<ApolloPlayerInventory> playerInventoryRequestValidator,
-                                IRequestValidator<ApolloGroupGift> groupGiftRequestValidator)
+            IKustoProvider kustoProvider,
+            IApolloPlayerDetailsProvider apolloPlayerDetailsProvider,
+            IApolloPlayerInventoryProvider apolloPlayerInventoryProvider,
+            IKeyVaultProvider keyVaultProvider,
+            IApolloGiftHistoryProvider giftHistoryProvider,
+            IApolloBanHistoryProvider banHistoryProvider,
+            IConfiguration configuration,
+            IScheduler scheduler,
+            IJobTracker jobTracker,
+            IMapper mapper,
+            IRequestValidator<ApolloBanParametersInput> banParametersRequestValidator,
+            IRequestValidator<ApolloGift> giftRequestValidator,
+            IRequestValidator<ApolloGroupGift> groupGiftRequestValidator)
         {
+            kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             apolloPlayerDetailsProvider.ShouldNotBeNull(nameof(apolloPlayerDetailsProvider));
             apolloPlayerInventoryProvider.ShouldNotBeNull(nameof(apolloPlayerInventoryProvider));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
@@ -88,24 +97,44 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             configuration.ShouldNotBeNull(nameof(configuration));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
+            mapper.ShouldNotBeNull(nameof(mapper));
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
-            playerInventoryRequestValidator.ShouldNotBeNull(nameof(playerInventoryRequestValidator));
+            giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
+            this.kustoProvider = kustoProvider;
             this.apolloPlayerDetailsProvider = apolloPlayerDetailsProvider;
             this.apolloPlayerInventoryProvider = apolloPlayerInventoryProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
+            this.mapper = mapper;
             this.banParametersRequestValidator = banParametersRequestValidator;
-            this.playerInventoryRequestValidator = playerInventoryRequestValidator;
+            this.giftRequestValidator = giftRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
+        }
 
-            this.giftingPassword = keyVaultProvider.GetSecretAsync(
-                configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                configuration[ConfigurationKeyConstants.GroupGiftPasswordSecretName]).GetAwaiter().GetResult();
+        /// <summary>
+        ///     Gets the master inventory data.
+        /// </summary>
+        /// <returns>
+        ///     <see cref="ApolloMasterInventory"/>.
+        /// </returns>
+        [HttpGet("masterInventory")]
+        [SwaggerResponse(200, type: typeof(ApolloMasterInventory))]
+        public async Task<IActionResult> GetMasterInventoryList()
+        {
+            try
+            {
+                var masterInventory = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
+                return this.Ok(masterInventory);
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex);
+            }
         }
 
         /// <summary>
@@ -205,7 +234,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Bans players.
         /// </summary>
-        /// <param name="banParameters">The list of ban parameters.</param>
+        /// <param name="banInput">The list of ban parameters.</param>
         /// <param name="useBackgroundProcessing">A value that indicates whether to use background processing.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
@@ -214,18 +243,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<ApolloBanResult>))]
         [SwaggerResponse(202)]
-        public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParameters> banParameters, [FromQuery] bool useBackgroundProcessing, [FromHeader] string requestingAgent)
+        public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput, [FromQuery] bool useBackgroundProcessing, [FromHeader] string requestingAgent)
         {
             try
             {
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-                banParameters.ShouldNotBeNull(nameof(banParameters));
+                banInput.ShouldNotBeNull(nameof(banInput));
 
-                foreach (var banParam in banParameters)
+                foreach (var banParam in banInput)
                 {
                     this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
                     this.banParametersRequestValidator.Validate(banParam, this.ModelState);
                 }
+
+                var banParameters = this.mapper.Map<IList<ApolloBanParameters>>(banInput);
 
                 if (!this.ModelState.IsValid)
                 {
@@ -610,103 +641,35 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Updates the player inventory.
-        /// </summary>
-        /// <param name="playerInventory">The player inventory.</param>
-        /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
-        /// <returns>
-        ///     The <see cref="ApolloPlayerInventory"/>.
-        /// </returns>
-        [HttpPost("player/xuid/inventory")]
-        [SwaggerResponse(201, type: typeof(ApolloPlayerInventory))]
-        [SwaggerResponse(202)]
-        public async Task<IActionResult> UpdatePlayerInventory([FromBody] ApolloPlayerInventory playerInventory, [FromQuery] bool useBackgroundProcessing, [FromHeader] string requestingAgent)
-        {
-            try
-            {
-                playerInventory.ShouldNotBeNull(nameof(playerInventory));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-                this.playerInventoryRequestValidator.ValidateIds(playerInventory, this.ModelState);
-                this.playerInventoryRequestValidator.Validate(playerInventory, this.ModelState);
-
-                if (!this.ModelState.IsValid)
-                {
-                    var result = this.playerInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
-
-                    return this.BadRequest(result);
-                }
-
-                if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(playerInventory.Xuid).ConfigureAwait(true))
-                {
-                    return this.NotFound($"No profile found for XUID: {playerInventory.Xuid}.");
-                }
-
-                if (!useBackgroundProcessing)
-                {
-                    await this.apolloPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.Xuid, playerInventory, requestingAgent).ConfigureAwait(true);
-
-                    return this.Created(this.Request.Path, playerInventory);
-                }
-
-                var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(playerInventory.ToJson(), username).ConfigureAwait(true);
-
-                async Task BackgroundProcessing(CancellationToken cancellationToken)
-                {
-                    // Throwing within the hosting environment background worker seems to have significant consequences.
-                    // Do not throw.
-                    try
-                    {
-                        await this.apolloPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.Xuid, playerInventory, requestingAgent).ConfigureAwait(true);
-
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, playerInventory.ToJson()).ConfigureAwait(true);
-                    }
-                    catch (Exception)
-                    {
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
-                    }
-                }
-
-                this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
-        }
-
-        /// <summary>
         ///     Update group inventories.
         /// </summary>
         /// <param name="groupGift">The group gift.</param>
         /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
         ///     The <see cref="ApolloPlayerInventory"/>.
         /// </returns>
-        [HttpPost("group/xuids/inventory")]
-        [SwaggerResponse(201, type: typeof(ApolloPlayerInventory))]
-        [SwaggerResponse(202)]
-        public async Task<IActionResult> UpdateGroupInventories([FromBody] ApolloGroupGift groupGift, [FromQuery] bool useBackgroundProcessing, [FromHeader] string requestingAgent)
+        [HttpPost("gifting/players")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> UpdateGroupInventories([FromBody] ApolloGroupGift groupGift, [FromQuery] bool useBackgroundProcessing)
         {
             try
             {
+                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
+                    ? this.User.GetClaimValue(ClaimTypes.Email)
+                    : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+
                 groupGift.ShouldNotBeNull(nameof(groupGift));
+                groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
                 var stringBuilder = new StringBuilder();
 
-                this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
                 this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
+                this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
 
                 if (!this.ModelState.IsValid)
                 {
                     var result = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
-
                     return this.BadRequest(result);
                 }
 
@@ -723,11 +686,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.NotFound($"Players with XUIDs: {stringBuilder} were not found.");
                 }
 
+                var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
+                if (invalidItems.Length > 0)
+                {
+                    return this.BadRequest($"Invalid items found. {invalidItems}");
+                }
+
                 if (!useBackgroundProcessing)
                 {
-                    await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift.Xuids, groupGift.GiftInventory, requestingAgent).ConfigureAwait(true);
-
-                    return this.Created(this.Request.Path, groupGift.GiftInventory);
+                    await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+                    return this.Ok();
                 }
 
                 var username = this.User.GetNameIdentifier();
@@ -739,7 +707,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     // Do not throw.
                     try
                     {
-                        await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift.Xuids, groupGift.GiftInventory, requestingAgent).ConfigureAwait(true);
+                        await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
 
                         await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed).ConfigureAwait(true);
                     }
@@ -751,90 +719,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
-        }
-
-        /// <summary>
-        ///     Update group inventories.
-        /// </summary>
-        /// <param name="groupGift">The group gift.</param>
-        /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
-        /// <returns>
-        ///     The <see cref="ApolloPlayerInventory"/>.
-        /// </returns>
-        [HttpPost("group/gamertags/inventory")]
-        [SwaggerResponse(201, type: typeof(ApolloPlayerInventory))]
-        [SwaggerResponse(202)]
-        public async Task<IActionResult> UpdateGroupInventoriesByGamertags(
-            [FromBody] ApolloGroupGift groupGift,
-            [FromQuery] bool useBackgroundProcessing,
-            [FromHeader] string requestingAgent)
-        {
-            try
-            {
-                groupGift.ShouldNotBeNull(nameof(groupGift));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-                var stringBuilder = new StringBuilder();
-
-                this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
-                this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
-
-                if (!this.ModelState.IsValid)
-                {
-                    var result = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
-
-                    return this.BadRequest(result);
-                }
-
-                foreach (var gamertag in groupGift.Gamertags)
-                {
-                    if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(gamertag).ConfigureAwait(true))
-                    {
-                        stringBuilder.Append($"{gamertag} ");
-                    }
-                }
-
-                if (stringBuilder.Length > 0)
-                {
-                    return this.NotFound($"Players with gamertags: {stringBuilder} were not found.");
-                }
-
-                if (!useBackgroundProcessing)
-                {
-                    await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift.Gamertags, groupGift.GiftInventory, requestingAgent).ConfigureAwait(true);
-
-                    return this.Created(this.Request.Path, groupGift.GiftInventory);
-                }
-
-                var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), username).ConfigureAwait(true);
-
-                async Task BackgroundProcessing(CancellationToken cancellationToken)
-                {
-                    // Throwing within the hosting environment background worker seems to have significant consequences.
-                    // Do not throw.
-                    try
-                    {
-                        await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift.Gamertags, groupGift.GiftInventory, requestingAgent).ConfigureAwait(true);
-
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed).ConfigureAwait(true);
-                    }
-                    catch (Exception)
-                    {
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
-                    }
-                }
-
-                this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-                return this.Accepted();
+                return this.Ok();
             }
             catch (Exception ex)
             {
@@ -846,33 +731,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Update group inventories.
         /// </summary>
         /// <param name="groupId">The group ID.</param>
-        /// <param name="playerInventory">The player inventory.</param>
-        /// <param name="adminAuth">The admin auth.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
+        /// <param name="gift">The player inventory.</param>
         /// <returns>
         ///     The <see cref="ApolloPlayerInventory"/>.
         /// </returns>
-        [HttpPost("group/groupId({groupId})/inventory")]
-        [SwaggerResponse(201, type: typeof(ApolloPlayerInventory))]
-        public async Task<IActionResult> UpdateGroupInventories(
-            int groupId,
-            [FromBody] ApolloPlayerInventory playerInventory,
-            [FromHeader] string adminAuth,
-            [FromHeader] string requestingAgent)
+        [HttpPost("gifting/groupId({groupId})")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] ApolloGift gift)
         {
             try
             {
-                playerInventory.ShouldNotBeNull(nameof(playerInventory));
-                adminAuth.ShouldNotBeNullEmptyOrWhiteSpace(nameof(adminAuth));
+                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
+                    ? this.User.GetClaimValue(ClaimTypes.Email)
+                    : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+
+                gift.ShouldNotBeNull(nameof(gift));
+                gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-                if (adminAuth != this.giftingPassword)
-                {
-                    return this.Unauthorized("adminAuth header was incorrect.");
-                }
-
-                this.playerInventoryRequestValidator.ValidateIds(playerInventory, this.ModelState);
-                this.playerInventoryRequestValidator.Validate(playerInventory, this.ModelState);
+                this.giftRequestValidator.Validate(gift, this.ModelState);
+                this.giftRequestValidator.ValidateIds(gift, this.ModelState);
 
                 if (!this.ModelState.IsValid)
                 {
@@ -881,9 +759,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.BadRequest(result);
                 }
 
-                await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, playerInventory, requestingAgent).ConfigureAwait(true);
+                var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.Inventory).ConfigureAwait(true);
+                if (invalidItems.Length > 0)
+                {
+                    return this.BadRequest($"Invalid items found. {invalidItems}");
+                }
 
-                return this.Created(this.Request.Path, playerInventory);
+                await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(true);
+
+                return this.Ok();
             }
             catch (Exception ex)
             {
@@ -996,6 +880,59 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 throw;
             }
+        }
+
+        /// <summary>
+        ///     Gets the master inventory list.
+        /// </summary>
+        /// <returns>
+        ///     <see cref="ApolloMasterInventory"/>.
+        /// </returns>
+        private async Task<ApolloMasterInventory> RetrieveMasterInventoryList()
+        {
+            var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM7Cars);
+            var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM7VanityItems);
+
+            await Task.WhenAll(cars, vanityItems).ConfigureAwait(true);
+
+            var masterInventory = new ApolloMasterInventory()
+            {
+                CreditRewards = new List<MasterInventoryItem>()
+                    {
+                        new MasterInventoryItem() { Id = -1, Description = "Credits" },
+                    },
+                Cars = await cars.ConfigureAwait(true),
+                VanityItems = await vanityItems.ConfigureAwait(true),
+            };
+
+            return masterInventory;
+        }
+
+        /// <summary>
+        ///     Verifies the gift inventory against the title master inventory list.
+        /// </summary>
+        /// <param name="gift">The apollo gift.</param>
+        /// <returns>
+        ///     String of items that are invalid
+        /// </returns>
+        private async Task<string> VerifyGiftAgainstMasterInventory(ApolloMasterInventory gift)
+        {
+            var masterInventoryItem = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
+            var error = string.Empty;
+
+            foreach (var car in gift.Cars)
+            {
+                var validItem = masterInventoryItem.Cars.Any(data => { return data.Id == car.Id; });
+                error += validItem ? string.Empty : $"Car: {car.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var vanityItem in gift.VanityItems)
+            {
+                var validItem = masterInventoryItem.VanityItems.Any(data => { return data.Id == vanityItem.Id; });
+                error += validItem ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            return error;
         }
     }
 }

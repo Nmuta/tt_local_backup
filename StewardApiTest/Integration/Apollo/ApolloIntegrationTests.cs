@@ -378,10 +378,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_ExpireTimeNotProvided()
+        public async Task BanPlayers_DurationTimeNotProvided()
         {
             var banParameters = this.GenerateBanParameters();
-            banParameters[0].ExpireTimeUtc = default;
+            banParameters[0].Duration = null;
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -397,11 +397,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_ExpireTimeBeforeCurrentTime()
+        public async Task BanPlayers_DurationNegative()
         {
             var banParameters = this.GenerateBanParameters();
-            banParameters[0].ExpireTimeUtc = DateTime.UtcNow.AddMinutes(-10);
-            banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-15);
+            banParameters[0].Duration= TimeSpan.FromMinutes(-10);
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -417,11 +416,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task BanPlayers_ExpireTimeBeforeStartTime()
+        public async Task BanPlayers_DurationZero()
         {
             var banParameters = this.GenerateBanParameters();
-            banParameters[0].ExpireTimeUtc = DateTime.UtcNow.AddMinutes(-15);
-            banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-10);
+            banParameters[0].Duration = TimeSpan.Zero;
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
@@ -999,138 +997,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestMethod]
         [TestCategory("Integration")]
         [Ignore]
-        public async Task UpdatePlayerInventory()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            var result = await stewardClient.UpdatePlayerInventoryAsync(playerInventory, headersToSend).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.Cars.Any());
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        [Ignore]
-        public async Task UpdatePlayerInventory_InvalidXuid()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            playerInventory.Xuid = TestConstants.InvalidXuid;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await stewardClient.UpdatePlayerInventoryAsync(playerInventory, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        [Ignore]
-        public async Task UpdatePlayerInventory_NoXuid()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            playerInventory.Xuid = default;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await stewardClient.UpdatePlayerInventoryAsync(playerInventory, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        [Ignore]
-        public async Task UpdatePlayerInventory_NoRequestingAgent()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            playerInventory.Xuid = default;
-
-            try
-            {
-                await stewardClient.UpdatePlayerInventoryAsync(playerInventory, new Dictionary<string, string>()).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        [Ignore]
-        public async Task UpdatePlayerInventory_NegativeItemId()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            playerInventory.Cars[0].ItemId = -1;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await stewardClient.UpdatePlayerInventoryAsync(playerInventory, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        [Ignore]
-        public async Task UpdatePlayerInventory_NegativeCurrency()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            playerInventory.Credits = -1;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await stewardClient.UpdatePlayerInventoryAsync(playerInventory, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        [Ignore]
-        public async Task UpdatePlayerInventory_Unauthorized()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await unauthorizedClient.UpdatePlayerInventoryAsync(playerInventory, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        [Ignore]
         public async Task UpdatePlayerInventory_UseBackgroundProcessing()
         {
             var playerInventory = this.CreatePlayerInventory();
@@ -1147,9 +1013,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         public async Task UpdateGroupInventoriesByXuid()
         {
             var groupGift = this.CreateGroupGift();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
-            var result = await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift, headersToSend).ConfigureAwait(false);
+            var result = await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Credits);
@@ -1160,12 +1025,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         public async Task UpdateGroupInventoriesByXuid_InvalidGiftInventory()
         {
             var groupGift = this.CreateGroupGift();
-            groupGift.GiftInventory = null;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
+            groupGift.Inventory = null;
 
             try
             {
-                await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift, headersToSend).ConfigureAwait(false);
+                await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1176,18 +1040,29 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByXuid_NoRequestingAgent()
+        public async Task UpdateGroupInventoriesByXuid_InvalidItemId()
         {
-            var groupGift = this.CreateGroupGift();
+            var playerGift = this.CreateGroupGift();
+            playerGift.Inventory.VanityItems = new List<MasterInventoryItem>();
+            playerGift.Inventory.Cars = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 10000,
+                    Description = "Bad Item",
+                    Quantity = 1,
+                },
+            };
 
             try
             {
-                await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift, new Dictionary<string, string>()).ConfigureAwait(false);
+                await stewardClient.UpdateGroupInventoriesByXuidAsync(playerGift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual("Invalid items found. Car: 10000, ", e.ResponseBody);
             }
         }
 
@@ -1197,12 +1072,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             var groupGift = this.CreateGroupGift();
             groupGift.Xuids = new List<ulong>();
-            groupGift.Gamertags = new List<string>();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift, headersToSend).ConfigureAwait(false);
+                await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1218,11 +1091,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             var groupGift = this.CreateGroupGift();
             groupGift.Xuids = new List<ulong> { TestConstants.InvalidXuid };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift, headersToSend).ConfigureAwait(false);
+                await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1237,118 +1109,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             var groupGift = this.CreateGroupGift();
             groupGift.Xuids = new List<ulong> { TestConstants.InvalidXuid };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await unauthorizedClient.UpdateGroupInventoriesByXuidAsync(groupGift, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        [Ignore]
-        public async Task UpdateGroupInventoriesByGamertag()
-        {
-            var groupGift = this.CreateGroupGift();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            var result = await stewardClient.UpdateGroupInventoriesByGamertagAsync(groupGift, headersToSend).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Credits);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByGamertag_InvalidGiftInventory()
-        {
-            var groupGift = this.CreateGroupGift();
-            groupGift.GiftInventory = null;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await stewardClient.UpdateGroupInventoriesByGamertagAsync(groupGift, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByGamertag_NoRequestingAgent()
-        {
-            var groupGift = this.CreateGroupGift();
-
-            try
-            {
-                await stewardClient.UpdateGroupInventoriesByGamertagAsync(groupGift, new Dictionary<string, string>()).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByGamertag_NoRecipient()
-        {
-            var groupGift = this.CreateGroupGift();
-            groupGift.Xuids = new List<ulong>();
-            groupGift.Gamertags = new List<string>();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await stewardClient.UpdateGroupInventoriesByGamertagAsync(groupGift, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByGamertag_InvalidRecipient()
-        {
-            var groupGift = this.CreateGroupGift();
-            groupGift.Gamertags = new List<string> { TestConstants.InvalidGamertag };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await stewardClient.UpdateGroupInventoriesByGamertagAsync(groupGift, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByGamertag_Unauthorized()
-        {
-            var groupGift = this.CreateGroupGift();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            try
-            {
-                await unauthorizedClient.UpdateGroupInventoriesByGamertagAsync(groupGift, headersToSend).ConfigureAwait(false);
+                await unauthorizedClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1362,10 +1126,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task UpdateGroupInventoriesByLspGroupId()
         {
-            var playerInventory = this.CreatePlayerInventory();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", lspGiftingPassword);
+            var gift = this.CreateGift();
 
-            var result = await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, playerInventory, headersToSend).ConfigureAwait(false);
+            var result = await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, gift).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Credits);
@@ -1373,32 +1136,14 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByLspGroupId_InvalidGiftingPassword()
+        public async Task UpdateGroupInventoriesByLspGroupId_InvalidGiftInventory()
         {
-            var playerInventory = this.CreatePlayerInventory();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", TestConstants.GetSecretResult);
+            var gift = this.CreateGift();
+            gift.Inventory = null;
 
             try
             {
-                await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, playerInventory, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByLspGroupId_NoRequestingAgent()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            var headersToSend = this.GenerateHeadersToSend(null, lspGiftingPassword);
-
-            try
-            {
-                await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, playerInventory, headersToSend).ConfigureAwait(false);
+                await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, gift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1407,16 +1152,16 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             }
         }
 
+
         [TestMethod]
         [TestCategory("Integration")]
         public async Task UpdateGroupInventoriesByLspGroupId_Unauthorized()
         {
-            var playerInventory = this.CreatePlayerInventory();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", lspGiftingPassword);
+            var gift = this.CreateGift();
 
             try
             {
-                await unauthorizedClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, playerInventory, headersToSend).ConfigureAwait(false);
+                await unauthorizedClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, gift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1430,12 +1175,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task UpdateGroupInventoriesByLspGroupId_InvalidGroupId()
         {
-            var playerInventory = this.CreatePlayerInventory();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", lspGiftingPassword);
+            var gift = this.CreateGift();
 
             try
             {
-                await stewardClient.UpdateGroupInventoriesByLspGroupId(TestConstants.InvalidProfileId, playerInventory, headersToSend).ConfigureAwait(false);
+                await stewardClient.UpdateGroupInventoriesByLspGroupId(TestConstants.InvalidProfileId, gift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1449,10 +1193,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task GetGiftHistory()
         {
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            var playerInventory = this.CreatePlayerInventory();
-            await stewardClient.UpdatePlayerInventoryAsync(playerInventory, headersToSend).ConfigureAwait(false);
+            var groupGift = this.CreateGroupGift();
+            await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
 
             var result = await stewardClient.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
             Assert.IsTrue(result.Any());
@@ -1464,9 +1206,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         public async Task GetGiftHistoryForGroupGift()
         {
             var groupGift = this.CreateGroupGift();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
-
-            await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift, headersToSend).ConfigureAwait(false);
+            await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
 
             var result = await stewardClient.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
 
@@ -1478,10 +1218,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task GetGiftHistoryForLspGroupGift()
         {
-            var playerInventory = this.CreatePlayerInventory();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", lspGiftingPassword);
-
-            await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, playerInventory, headersToSend).ConfigureAwait(false);
+            var gift = this.CreateGift();
+            await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, gift).ConfigureAwait(false);
 
             var result = await stewardClient.GetGiftHistoriesAsync(lspGroupId).ConfigureAwait(false);
 
@@ -1513,7 +1251,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             Assert.IsFalse(result.Any());
         }
 
-        private async Task<IList<ApolloBanResult>> BanPlayersWithHeaderResponseAsync(ApolloStewardTestingClient stewardClient, IList<ApolloBanParameters> banParameters, BackgroundJobStatus expectedStatus)
+        private async Task<IList<ApolloBanResult>> BanPlayersWithHeaderResponseAsync(ApolloStewardTestingClient stewardClient, IList<ApolloBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
             var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
@@ -1586,23 +1324,54 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return jobResult;
         }
 
-        private List<ApolloBanParameters> GenerateBanParameters()
+        private List<ApolloBanParametersInput> GenerateBanParameters()
         {
-            var newParams = new ApolloBanParameters
+            var newParams = new ApolloBanParametersInput
             {
                 Xuid = xuid,
                 Gamertag = gamertag,
                 FeatureArea = "Matchmaking",
                 Reason = "This is an automated test.",
-                StartTimeUtc = DateTime.UtcNow,
-                ExpireTimeUtc = DateTime.UtcNow.AddSeconds(5),
+                StartTimeUtc = null,
+                Duration = TimeSpan.FromSeconds(5),
                 BanAllConsoles = false,
                 BanAllPcs = false,
                 DeleteLeaderboardEntries = false,
                 SendReasonNotification = false
             };
 
-            return new List<ApolloBanParameters> { newParams };
+            return new List<ApolloBanParametersInput> { newParams };
+        }
+
+        private ApolloMasterInventory CreateGiftInventory()
+        {
+            var giftInventory = new ApolloMasterInventory();
+
+            giftInventory.CreditRewards = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem() { Id = -1, Description = "Credits", Quantity = 1 },
+            };
+
+
+            giftInventory.Cars = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 2616,
+                    Quantity = 1
+                }
+            };
+
+            giftInventory.VanityItems = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 3,
+                    Quantity = 1
+                }
+            };
+
+            return giftInventory;
         }
 
         private ApolloPlayerInventory CreatePlayerInventory()
@@ -1633,6 +1402,15 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             };
         }
 
+        private ApolloGift CreateGift()
+        {
+            return new ApolloGift
+            {
+                GiftReason = "Integration Test",
+                Inventory = this.CreateGiftInventory()
+            };
+        }
+
         private ApolloGroupGift CreateGroupGift()
         {
             return new ApolloGroupGift
@@ -1643,13 +1421,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
                     xuid,
                     xuid
                 },
-                Gamertags = new List<string>
-                {
-                    gamertag,
-                    gamertag,
-                    gamertag
-                },
-                GiftInventory = this.CreatePlayerInventory()
+                GiftReason = "Integration Test",
+                Inventory = this.CreateGiftInventory()
             };
         }
 

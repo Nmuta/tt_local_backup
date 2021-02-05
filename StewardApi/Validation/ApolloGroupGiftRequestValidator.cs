@@ -10,17 +10,17 @@ namespace Turn10.LiveOps.StewardApi.Validation
     /// </summary>
     public sealed class ApolloGroupGiftRequestValidator : RequestValidatorBase, IRequestValidator<ApolloGroupGift>
     {
-        private readonly IRequestValidator<ApolloPlayerInventory> playerInventoryRequestValidator;
+        private readonly IRequestValidator<ApolloMasterInventory> masterInventoryRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloGroupGiftRequestValidator"/> class.
         /// </summary>
-        /// <param name="playerInventoryRequestValidator">The player inventory request validator.</param>
-        public ApolloGroupGiftRequestValidator(IRequestValidator<ApolloPlayerInventory> playerInventoryRequestValidator)
+        /// <param name="masterInventoryRequestValidator">The player inventory request validator.</param>
+        public ApolloGroupGiftRequestValidator(IRequestValidator<ApolloMasterInventory> masterInventoryRequestValidator)
         {
-            playerInventoryRequestValidator.ShouldNotBeNull(nameof(playerInventoryRequestValidator));
+            masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
 
-            this.playerInventoryRequestValidator = playerInventoryRequestValidator;
+            this.masterInventoryRequestValidator = masterInventoryRequestValidator;
         }
 
         /// <inheritdoc />
@@ -29,13 +29,18 @@ namespace Turn10.LiveOps.StewardApi.Validation
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
 
-            if (model.GiftInventory == null)
+            if (string.IsNullOrEmpty(model.GiftReason))
             {
-                modelState.AddModelError("GroupGift.GiftInventory", $"Property {nameof(model.GiftInventory)} was not supplied.");
+                modelState.AddModelError("Gift.GiftReason", $"Property {nameof(model.GiftReason)} was not supplied.");
+            }
+
+            if (model.Inventory == null)
+            {
+                modelState.AddModelError("GroupGift.GiftInventory", $"Property {nameof(model.Inventory)} was not supplied.");
             }
             else
             {
-                this.playerInventoryRequestValidator.Validate(model.GiftInventory, modelState);
+                this.masterInventoryRequestValidator.Validate(model.Inventory, modelState);
             }
         }
 
@@ -45,14 +50,13 @@ namespace Turn10.LiveOps.StewardApi.Validation
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
 
-            if ((model.Xuids == null || !model.Xuids.Any()) && (model.Gamertags == null || !model.Gamertags.Any()))
+            if (model.Xuids == null || !model.Xuids.Any())
             {
                 var xuidStatus = model.Xuids == null ? "Null" : "Empty";
-                var gamertagStatus = model.Gamertags == null ? "Null" : "Empty";
 
                 modelState.AddModelError(
-                    "GroupGift.Xuids/GroupGift.Gamertags",
-                    $"Properties must have at least one xuid or gamertag. {nameof(model.Xuids)} was {xuidStatus}. {nameof(model.Gamertags)} was {gamertagStatus}.");
+                    "GroupGift.Xuids",
+                    $"Properties must have at least one xuid or gamertag. {nameof(model.Xuids)} was {xuidStatus}.");
             }
         }
     }
