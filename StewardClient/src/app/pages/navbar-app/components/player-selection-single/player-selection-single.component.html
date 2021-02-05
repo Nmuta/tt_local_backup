@@ -18,6 +18,12 @@
       (removed)="remove(identity)"
     >
       {{ identity.query[this.lookupType] }}
+      ({{  identity.extra ? '' : '?'
+      }}{{ identity.extra?.hasApollo ? 'A' : ''
+      }}{{ identity.extra?.hasGravity ? 'G' : ''
+      }}{{ identity.extra?.hasOpus ? 'O' : ''
+      }}{{ identity.extra?.hasSunrise ? 'S' : ''
+      }})
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
     <input

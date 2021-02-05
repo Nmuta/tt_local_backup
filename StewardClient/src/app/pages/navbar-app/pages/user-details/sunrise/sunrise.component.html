@@ -1,3 +1,5 @@
+<player-selection-single></player-selection-single>
+
 <ng-container *ngIf="gamertag; else noGamertag">
   <ng-container *ngIf="xuid; else noXuid">
     <h1>{{ gamertag }} (xuid: {{ xuid !== undefined ? xuid : '?' }})</h1>
