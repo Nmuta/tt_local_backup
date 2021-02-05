@@ -9,14 +9,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
     public sealed class GravityMasterInventory
     {
         /// <summary>
-        ///     Gets or sets the Turn 10 ID.
+        ///     Gets or sets the credit rewards.
         /// </summary>
-        public string T10Id { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the currencies.
-        /// </summary>
-        public IList<MasterInventoryItem> Currencies { get; set; }
+        public IList<MasterInventoryItem> CreditRewards { get; set; }
 
         /// <summary>
         ///     Gets or sets the cars.

@@ -47,15 +47,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         Task<GravityPlayerInventory> GetPlayerInventoryAsync(string t10Id, string profileId);
 
         /// <summary>
-        ///     Update a player inventory.
+        ///     Sends inventory item gifts to a player.
         /// </summary>
         /// <param name="t10Id">The Turn 10 ID.</param>
-        /// <param name="masterInventory">The player inventory.</param>
+        /// <param name="gift">The gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
-        ///     <see cref="GravityGiftingMasterInventoryResponse"/>.
+        ///     An awaitable task.
         /// </returns>
-        Task<GravityGiftingMasterInventoryResponse> UpdatePlayerInventoryAsync(string t10Id, GravityMasterInventory masterInventory, string requestingAgent);
+        Task UpdatePlayerInventoryAsync(string t10Id, GravityGift gift, string requestingAgent);
 
         /// <summary>
         ///     Delete player inventory.

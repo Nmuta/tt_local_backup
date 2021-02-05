@@ -161,25 +161,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<GravityGiftingMasterInventoryResponse> UpdatePlayerInventoryAsync(string t10Id, GravityMasterInventory masterInventory, string requestingAgent)
+        public async Task UpdatePlayerInventoryAsync(string t10Id, GravityGift gift, string requestingAgent)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
-            masterInventory.ShouldNotBeNull(nameof(masterInventory));
+            gift.ShouldNotBeNull(nameof(gift));
+            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-            var giftingResponse = new GravityGiftingMasterInventoryResponse();
-            giftingResponse.T10Id = masterInventory.T10Id;
+            await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.CreditRewards, ForzaUserInventoryItemType.Currency).ConfigureAwait(true);
+            await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.Cars, ForzaUserInventoryItemType.Car).ConfigureAwait(true);
+            await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.EnergyRefills, ForzaUserInventoryItemType.EnergyRefill).ConfigureAwait(true);
+            await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.UpgradeKits, ForzaUserInventoryItemType.UpgradeKit).ConfigureAwait(true);
+            await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.MasteryKits, ForzaUserInventoryItemType.MasteryKit).ConfigureAwait(true);
+            await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.RepairKits, ForzaUserInventoryItemType.RepairKit).ConfigureAwait(true);
 
-            giftingResponse.Cars = await this.UpdatePlayerInventoryHelperAsync(t10Id, masterInventory.Cars, ForzaUserInventoryItemType.Car).ConfigureAwait(true);
-            giftingResponse.Currencies = await this.UpdatePlayerInventoryHelperAsync(t10Id, masterInventory.Currencies, ForzaUserInventoryItemType.Currency).ConfigureAwait(true);
-            giftingResponse.EnergyRefills = await this.UpdatePlayerInventoryHelperAsync(t10Id, masterInventory.EnergyRefills, ForzaUserInventoryItemType.EnergyRefill).ConfigureAwait(true);
-            giftingResponse.UpgradeKits = await this.UpdatePlayerInventoryHelperAsync(t10Id, masterInventory.UpgradeKits, ForzaUserInventoryItemType.UpgradeKit).ConfigureAwait(true);
-            giftingResponse.MasteryKits = await this.UpdatePlayerInventoryHelperAsync(t10Id, masterInventory.MasteryKits, ForzaUserInventoryItemType.MasteryKit).ConfigureAwait(true);
-            giftingResponse.RepairKits = await this.UpdatePlayerInventoryHelperAsync(t10Id, masterInventory.RepairKits, ForzaUserInventoryItemType.RepairKit).ConfigureAwait(true);
-
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(t10Id, Title, requestingAgent, GiftHistoryAntecedent.T10Id, giftingResponse).ConfigureAwait(false);
-
-            return giftingResponse;
+            await this.giftHistoryProvider.UpdateGiftHistoryAsync(t10Id, Title, requestingAgent, GiftHistoryAntecedent.T10Id, gift).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -217,25 +213,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <returns>
         ///     The updated <see cref="IList{GiftingMasterInventoryItemResponse}"/>.
         /// </returns>
-        private async Task<IList<GiftingMasterInventoryItemResponse>> UpdatePlayerInventoryHelperAsync(string t10Id, IList<MasterInventoryItem> items, ForzaUserInventoryItemType itemType)
+        private async Task UpdatePlayerInventoryHelperAsync(string t10Id, IList<MasterInventoryItem> items, ForzaUserInventoryItemType itemType)
         {
-            var response = new List<GiftingMasterInventoryItemResponse>();
             foreach (var item in items)
             {
-                var giftResponse = this.mapper.Map<GiftingMasterInventoryItemResponse>(item);
-                try
-                {
-                    await this.gravityUserInventoryService.GrantItem(t10Id, itemType, item.Id, item.Quantity).ConfigureAwait(true);
-                }
-                catch (Exception ex)
-                {
-                    giftResponse.Error = ex;
-                }
-
-                response.Add(giftResponse);
+                await this.gravityUserInventoryService.GrantItem(t10Id, itemType, item.Id, item.Quantity).ConfigureAwait(true);
             }
-
-            return response;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
 using FluentAssertions;
@@ -126,13 +127,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         public void Ctor_WhenPlayerInventoryRequestValidatorNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { PlayerInventoryRequestValidator = null };
+            var dependencies = new Dependencies { GiftRequestValidator = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventoryRequestValidator"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftRequestValidator"));
         }
 
         [TestMethod]
@@ -346,26 +347,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var playerInventory = Fixture.Create<GravityPlayerInventory>();
+            var t10Id = Fixture.Create<string>();
+            var gift = Fixture.Create<GravityGift>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdatePlayerInventoryByXuid(playerInventory, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventoryByT10Id(playerInventory, requestingAgent).ConfigureAwait(false)
+                async () => await controller.UpdatePlayerInventoryByT10Id(t10Id, gift).ConfigureAwait(false)
             };
 
             // Assert.
             foreach (var action in actions)
             {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as CreatedResult;
-                var details = result.Value as GravityPlayerInventory;
-                details.Should().NotBeNull();
-                details.Should().BeOfType<GravityPlayerInventory>();
-                result.Location.Should().Be(TestConstants.TestRequestPath);
+                action().Result.Should().BeAssignableTo<OkResult>();
             }
         }
 
@@ -375,13 +370,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var requestingAgent = Fixture.Create<string>();
+            var t10Id = Fixture.Create<string>();
+            var gift = Fixture.Create<GravityGift>();
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdatePlayerInventoryByXuid(null, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventoryByT10Id(null, requestingAgent).ConfigureAwait(false)
+                async () => await controller.UpdatePlayerInventoryByT10Id(t10Id, null).ConfigureAwait(false)
             };
 
             // Assert.
@@ -391,37 +386,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
                 result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventory"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var playerInventory = Fixture.Create<GravityPlayerInventory>();
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdatePlayerInventoryByXuid(playerInventory, null).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventoryByXuid(playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventoryByXuid(playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventoryByT10Id(playerInventory, null).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventoryByT10Id(playerInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventoryByT10Id(playerInventory, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
+                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
             }
         }
 
@@ -431,20 +396,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var playerInventoryNull = Fixture.Create<GravityPlayerInventory>();
-            playerInventoryNull.T10Id = null;
-            var playerInventoryEmpty = Fixture.Create<GravityPlayerInventory>();
-            playerInventoryEmpty.T10Id = TestConstants.Empty;
-            var playerInventoryWhitespace = Fixture.Create<GravityPlayerInventory>();
-            playerInventoryWhitespace.T10Id = TestConstants.WhiteSpace;
-            var requestingAgent = Fixture.Create<string>();
+            string t10IdNull = null;
+            var t10IdEmpty = TestConstants.Empty;
+            var t10IdWhitespace = TestConstants.WhiteSpace;
+            var gift = Fixture.Create<GravityGift>();
+
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdatePlayerInventoryByT10Id(playerInventoryNull, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventoryByT10Id(playerInventoryEmpty, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventoryByT10Id(playerInventoryWhitespace, requestingAgent).ConfigureAwait(false)
+                async () => await controller.UpdatePlayerInventoryByT10Id(t10IdNull, gift).ConfigureAwait(false),
+                async () => await controller.UpdatePlayerInventoryByT10Id(t10IdEmpty, gift).ConfigureAwait(false),
+                async () => await controller.UpdatePlayerInventoryByT10Id(t10IdWhitespace, gift).ConfigureAwait(false)
             };
 
             // Assert.
@@ -454,7 +417,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
                 result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "T10Id"));
+                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "t10Id"));
             }
         }
 
@@ -557,6 +520,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             {
                 var httpContext = new DefaultHttpContext();
                 httpContext.Request.Path = TestConstants.TestRequestPath;
+
+                var claims = new List<Claim>() { new Claim(ClaimTypes.Email, "requesting-agent-email") };
+                var claimsIdentities = new List<ClaimsIdentity>() { new ClaimsIdentity(claims) };
+                httpContext.User = new ClaimsPrincipal(claimsIdentities);
+
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
                 this.GravityPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryBeta>()).Returns(Fixture.Create<IdentityResultBeta>());
@@ -585,16 +553,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
             public IJobTracker JobTracker { get; set; } = Substitute.For<IJobTracker>();
 
-            public IRequestValidator<GravityPlayerInventory> PlayerInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<GravityPlayerInventory>>();
+            public IRequestValidator<GravityGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<GravityGift>>();
 
             public GravityController Build() => new GravityController(
-                                                                      this.GravityPlayerDetailsProvider,
-                                                                      this.GravityPlayerInventoryProvider,
-                                                                      this.GiftHistoryProvider,
-                                                                      this.GravitySettingsProvider,
-                                                                      this.Scheduler,
-                                                                      this.JobTracker,
-                                                                      this.PlayerInventoryRequestValidator)
+                this.GravityPlayerDetailsProvider,
+                this.GravityPlayerInventoryProvider,
+                this.GiftHistoryProvider,
+                this.GravitySettingsProvider,
+                this.Scheduler,
+                this.JobTracker,
+                this.GiftRequestValidator)
             { ControllerContext = this.ControllerContext };
         }
     }

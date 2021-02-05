@@ -155,7 +155,9 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IGravityPlayerDetailsProvider, GravityPlayerDetailsProvider>();
             services.AddSingleton<IGravityPlayerInventoryProvider, GravityPlayerInventoryProvider>();
             services.AddSingleton<IRequestValidator<GravityPlayerInventory>, GravityPlayerInventoryRequestValidator>();
-            services.AddSingleton<IRequestValidator<GravityMasterInventory>, GravityMAsterInventoryRequestValidator>();
+            services.AddSingleton<IRequestValidator<GravityMasterInventory>, GravityMasterInventoryRequestValidator>();
+            services.AddSingleton<IRequestValidator<GravityGift>, GravityGiftRequestValidator>();
+
             services.AddSingleton<IGravityGiftHistoryProvider, GravityGiftHistoryProvider>();
             if (this.configuration[ConfigurationKeyConstants.GravitySandbox]
                 .Equals("RETAIL", StringComparison.OrdinalIgnoreCase))

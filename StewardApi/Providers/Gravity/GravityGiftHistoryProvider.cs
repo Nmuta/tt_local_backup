@@ -48,16 +48,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, GravityGiftingMasterInventoryResponse giftingResponse)
+        public async Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, GravityGift gift)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-            giftingResponse.ShouldNotBeNull(nameof(giftingResponse));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            gift.ShouldNotBeNull(nameof(gift));
+            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
 
             var playerId = $"{giftHistoryAntecedent}:{id}";
-            var giftHistory = new GiftHistory(playerId, title, requestingAgent, DateTime.UtcNow, giftingResponse.ToJson());
+            var giftHistory = new GiftHistory(playerId, title, requestingAgent, DateTime.UtcNow, gift.ToJson());
             var kustoColumnMappings = giftHistory.ToJsonColumnMappings();
             var tableName = typeof(GiftHistory).Name;
             var giftHistories = new List<GiftHistory> { giftHistory };
@@ -86,17 +86,36 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             foreach (var history in giftHistoryResult)
             {
-                GravityPlayerInventory convertedInventory;
-                // The below logic is in place because V1 inventories are still being uploaded by V1 Zendesk.
-                // It can be removed once V1 endpoints are no longer uploading data into the table.
+                GravityGift convertedGift;
+                // TODO: Remove these conversions once KUSTO is only using the new SunriseGift model
+                // PlayerInventory model is from Scrutineer V1
+                // SunrisePlayerInventory is from Scrutineer V2 & Steward V1
+                // SunriseGift is the new model that uses a shared inventory model between all titles
                 try
                 {
-                    convertedInventory = history.GiftInventory.FromJson<GravityPlayerInventory>();
+                    convertedGift = history.GiftInventory.FromJson<GravityGift>();
+                    if (convertedGift.Inventory == null)
+                    {
+                        throw new InvalidOperationException("Not a GravityGift model");
+                    }
                 }
                 catch
                 {
-                    var oldInventory = history.GiftInventory.FromJson<PlayerInventory>();
-                    convertedInventory = this.mapper.Map<GravityPlayerInventory>(oldInventory);
+                    try
+                    {
+                        var gravityPlayerInventory = history.GiftInventory.FromJson<GravityPlayerInventory>();
+                        convertedGift = this.mapper.Map<GravityGift>(gravityPlayerInventory);
+                        if (convertedGift.Inventory == null)
+                        {
+                            throw new InvalidOperationException("Not a GravityPlayerInventory model");
+                        }
+                    }
+                    catch
+                    {
+                        var playerInventory = history.GiftInventory.FromJson<PlayerInventory>();
+                        var gravityPlayerInventory = this.mapper.Map<GravityPlayerInventory>(playerInventory);
+                        convertedGift = this.mapper.Map<GravityGift>(gravityPlayerInventory);
+                    }
                 }
 
                 // The below logic is in place to separate out ID and it's antecedent. Once V1 Zendesk stops uploading
@@ -105,7 +124,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 var antecedent = Enum.Parse<GiftHistoryAntecedent>(splitId[0]);
                 var id = splitId[1];
 
-                results.Add(new GravityGiftHistory(antecedent, id, history.Title, history.RequestingAgent, history.GiftSendDateUtc, convertedInventory));
+                results.Add(new GravityGiftHistory(antecedent, id, history.Title, history.RequestingAgent, history.GiftSendDateUtc, convertedGift));
             }
 
             results.Sort((x, y) => DateTime.Compare(y.GiftSendDateUtc, x.GiftSendDateUtc));

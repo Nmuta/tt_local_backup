@@ -175,13 +175,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var provider = new Dependencies().Build();
             var t10Id = Fixture.Create<string>();
             var xuid = Fixture.Create<ulong>();
-            var masterInventory = Fixture.Create<GravityMasterInventory>();
+            var gift = Fixture.Create<GravityGift>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, masterInventory, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gift, requestingAgent).ConfigureAwait(false)
             };
 
             // Assert.
@@ -197,15 +197,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var masterInventory = Fixture.Create<GravityMasterInventory>();
+            var gift = Fixture.Create<GravityGift>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(null, masterInventory, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.Empty, masterInventory, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.WhiteSpace, masterInventory, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(null, gift, requestingAgent).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.Empty, gift, requestingAgent).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.WhiteSpace, gift, requestingAgent).ConfigureAwait(false)
             };
             // Assert.
             foreach (var action in actions)
@@ -220,15 +220,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var masterInventory = Fixture.Create<GravityMasterInventory>();
+            var gift = Fixture.Create<GravityGift>();
             var t10Id = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, masterInventory, null).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, masterInventory, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, masterInventory, TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gift, null).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gift, TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gift, TestConstants.WhiteSpace).ConfigureAwait(false)
             };
             // Assert.
             foreach (var action in actions)
@@ -255,7 +255,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventory"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
             }
         }
 

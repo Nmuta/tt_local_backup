@@ -10,7 +10,7 @@ namespace Turn10.LiveOps.StewardApi.Validation
     /// <summary>
     ///     Validates a <see cref="GravityMasterInventory"/> request.
     /// </summary>
-    public sealed class GravityMAsterInventoryRequestValidator : RequestValidatorBase, IRequestValidator<GravityMasterInventory>
+    public sealed class GravityMasterInventoryRequestValidator : RequestValidatorBase, IRequestValidator<GravityMasterInventory>
     {
         /// <inheritdoc />
         public void Validate(GravityMasterInventory model, ModelStateDictionary modelState)
@@ -18,56 +18,59 @@ namespace Turn10.LiveOps.StewardApi.Validation
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
 
+            foreach (var creditReward in model.CreditRewards)
+            {
+                if (creditReward.Quantity < 0)
+                {
+                    modelState.AddModelError($"GiftInventory.{creditReward.Description}", $"Property cannot be negative. {nameof(creditReward.Description)} was {creditReward.Description}.");
+                }
+            }
+
             if (model.Cars != null)
             {
-                this.ValidateItemIds(model.Cars.ToList<MasterInventoryItem>(), modelState, nameof(model.MasteryKits));
+                this.ValidateItems(model.Cars.ToList<MasterInventoryItem>(), modelState, nameof(model.Cars));
             }
 
             if (model.MasteryKits != null)
             {
-                this.ValidateItemIds(model.MasteryKits.ToList<MasterInventoryItem>(), modelState, nameof(model.MasteryKits));
+                this.ValidateItems(model.MasteryKits.ToList<MasterInventoryItem>(), modelState, nameof(model.MasteryKits));
             }
 
             if (model.UpgradeKits != null)
             {
-                this.ValidateItemIds(model.UpgradeKits.ToList<MasterInventoryItem>(), modelState, nameof(model.UpgradeKits));
+                this.ValidateItems(model.UpgradeKits.ToList<MasterInventoryItem>(), modelState, nameof(model.UpgradeKits));
             }
 
             if (model.RepairKits != null)
             {
-                this.ValidateItemIds(model.RepairKits.ToList<MasterInventoryItem>(), modelState, nameof(model.RepairKits));
+                this.ValidateItems(model.RepairKits.ToList<MasterInventoryItem>(), modelState, nameof(model.RepairKits));
             }
 
             if (model.EnergyRefills != null)
             {
-                this.ValidateItemIds(model.EnergyRefills.ToList<MasterInventoryItem>(), modelState, nameof(model.EnergyRefills));
+                this.ValidateItems(model.EnergyRefills.ToList<MasterInventoryItem>(), modelState, nameof(model.EnergyRefills));
             }
-
-            if (model.Currencies != null)
-            {
-                this.ValidateItemIds(model.Currencies.ToList<MasterInventoryItem>(), modelState, nameof(model.Currencies));
-            }
-        }
+    }
 
         /// <inheritdoc />
         public void ValidateIds(GravityMasterInventory model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
-
-            if (string.IsNullOrWhiteSpace(model.T10Id))
-            {
-                modelState.AddModelError($"GravityMasterInventory.T10Id", $"Properties must have a T10Id defined. T10Id: {model.T10Id}.");
-            }
         }
 
-        private void ValidateItemIds(IList<MasterInventoryItem> items, ModelStateDictionary modelState, string propertyName)
+        private void ValidateItems(IList<MasterInventoryItem> items, ModelStateDictionary modelState, string propertyName)
         {
             foreach (var item in items)
             {
                 if (item.Id < 0)
                 {
-                    modelState.AddModelError($"GravityMasterInventory.{propertyName}", $"Property ItemId cannot be negative. {propertyName}.{nameof(item.Id)} was {item.Id}.");
+                    modelState.AddModelError($"GiftInventory.{propertyName}", $"Item Id cannot be negative. {propertyName}.{nameof(item.Id)} was {item.Id}.");
+                }
+
+                if (item.Quantity < 0)
+                {
+                    modelState.AddModelError($"GiftInventory.{propertyName}", $"Item quantity cannot be negative. {propertyName}.{nameof(item.Id)} was {item.Quantity}.");
                 }
             }
         }
