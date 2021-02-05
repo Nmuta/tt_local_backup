@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
@@ -82,7 +83,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "sunrisePlayerInventoryProvider"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "SunrisePlayerInventoryProvider"));
         }
 
         [TestMethod]
@@ -171,16 +172,30 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenPlayerInventoryRequestValidatorNull_Throws()
+        public void Ctor_WhenMasterInventoryRequestValidatorNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { PlayerInventoryRequestValidator = null };
+            var dependencies = new Dependencies { MasterInventoryRequestValidator = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventoryRequestValidator"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "masterInventoryRequestValidator"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenGiftRequestValidatorNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { GiftRequestValidator = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "giftRequestValidator"));
         }
 
         [TestMethod]
@@ -783,7 +798,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetPlayerInventoryProfiles_WithValidParameters_ReturnsCorrectType()
+        public async Task GetgiftInventoryProfiles_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -862,161 +877,29 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var playerInventory = Fixture.Create<SunrisePlayerInventory>();
-            var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as CreatedResult;
-            var details = result.Value as SunrisePlayerInventory;
-            details.Should().NotBeNull();
-            details.Should().BeOfType<SunrisePlayerInventory>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullPlayerInventory_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdatePlayerInventory(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventory"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var playerInventory = Fixture.Create<SunrisePlayerInventory>();
-            var useBackgroundProcessing = false;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var playerInventory = Fixture.Create<SunrisePlayerInventory>();
-            var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
-
-            // Assert.
-            action().Result.Should().BeAssignableTo<AcceptedResult>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullPlayerInventory_UseBackgroundProcessing_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdatePlayerInventory(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventory"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullEmptyWhitespaceRequestingAgent_UseBackgroundProcessing_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var playerInventory = Fixture.Create<SunrisePlayerInventory>();
-            var useBackgroundProcessing = true;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdatePlayerInventory(playerInventory, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task UpdatePlayerInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<SunriseGroupGift>();
             var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
+            var xuid = Fixture.Create<ulong>();
+            groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.CarHorns = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.Emotes = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, requestingAgent).ConfigureAwait(false)
+                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing).ConfigureAwait(false),
             };
 
             // Assert.
             foreach (var action in actions)
             {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                action().Should().NotBeNull();
-                var result = await action().ConfigureAwait(false) as CreatedResult;
-                var details = result.Value as SunrisePlayerInventory;
-                details.Should().NotBeNull();
-                details.Should().BeOfType<SunrisePlayerInventory>();
+                action().Result.Should().BeAssignableTo<OkResult>();
             }
         }
 
@@ -1027,13 +910,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false)
+                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1043,36 +924,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
                 result.StatusCode.Should().Be(400);
                 (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdatePlayerInventories_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var groupGift = Fixture.Create<SunriseGroupGift>();
-            var useBackgroundProcessing = false;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
             }
         }
 
@@ -1084,13 +935,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<SunriseGroupGift>();
             var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
+            groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.CarHorns = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.Emotes = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, requestingAgent).ConfigureAwait(false)
+                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1098,7 +952,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             {
                 // To reset the context and prevent header key collision, rebuild the Dependencies.
                 controller = new Dependencies().Build();
-                action().Result.Should().BeAssignableTo<AcceptedResult>();
+                action().Result.Should().BeAssignableTo<OkResult>();
             }
         }
 
@@ -1109,13 +963,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false)
+                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1130,153 +982,43 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventories_WithNullEmptyWhitespaceRequestingAgent_UseBackgroundProcessing_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var groupGift = Fixture.Create<SunriseGroupGift>();
-            var useBackgroundProcessing = true;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventoriesByGamertags(groupGift, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task UpdateGroupInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
-            var playerInventory = Fixture.Create<SunrisePlayerInventory>();
-            var adminAuth = TestConstants.GetSecretResult;
-            var requestingAgent = Fixture.Create<string>();
+            var gift = Fixture.Create<SunriseGift>();
+            gift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            gift.Inventory.CarHorns = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            gift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            gift.Inventory.Emotes = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            gift.Inventory.QuickChatLines = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, playerInventory, adminAuth, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, gift).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as CreatedResult;
-            var details = result.Value as SunrisePlayerInventory;
-            details.Should().NotBeNull();
-            details.Should().BeOfType<SunrisePlayerInventory>();
+            action().Result.Should().BeAssignableTo<OkResult>();
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdateGroupInventories_WithNullPlayerInventory_Throws()
+        public async Task UpdateGroupInventories_WithNullGift_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
-            var adminAuth = TestConstants.GetSecretResult;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, null, adminAuth, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, null).ConfigureAwait(false);
 
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();
             var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
             result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "playerInventory"));
+            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdateGroupInventories_WithIncorrectAdminAuth_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var groupId = Fixture.Create<int>();
-            var playerInventory = Fixture.Create<SunrisePlayerInventory>();
-            var adminAuth = Fixture.Create<string>();
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, playerInventory, adminAuth, requestingAgent).ConfigureAwait(false);
-
-            // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as UnauthorizedObjectResult;
-            result.StatusCode.Should().Be(401);
-            result.Value.Should().Be("adminAuth header was incorrect.");
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdateGroupInventories_WithNullEmptyWhitespaceAdminAuth_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var groupId = Fixture.Create<int>();
-            var playerInventory = Fixture.Create<SunrisePlayerInventory>();
-            var requestingAgent = Fixture.Create<string>();
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(groupId, playerInventory, null, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupId, playerInventory, TestConstants.Empty, requestingAgent).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupId, playerInventory, TestConstants.WhiteSpace, requestingAgent).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "adminAuth"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task UpdateGroupInventories_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var groupId = Fixture.Create<int>();
-            var adminAuth = TestConstants.GetSecretResult;
-            var playerInventory = Fixture.Create<SunrisePlayerInventory>();
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(groupId, playerInventory, adminAuth, null).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupId, playerInventory, adminAuth, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.UpdateGroupInventories(groupId, playerInventory, adminAuth, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
-        }
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -1398,8 +1140,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
                 var httpContext = new DefaultHttpContext();
                 httpContext.Request.Path = TestConstants.TestRequestPath;
+
+                var claims = new List<Claim>() { new Claim(ClaimTypes.Email, "requesting-agent-email") };
+                var claimsIdentities = new List<ClaimsIdentity>() { new ClaimsIdentity(claims) };
+                httpContext.User = new ClaimsPrincipal(claimsIdentities);
+
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
+                this.KustoProvider.GetMasterInventoryList(Arg.Any<string>()).Returns(new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } });
+                this.SunrisePlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.SunrisePlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.SunrisePlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.SunrisePlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerDetails>());
@@ -1448,7 +1197,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 mc.AllowNullCollections = true;
             }));
 
-            public IRequestValidator<SunrisePlayerInventory> PlayerInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunrisePlayerInventory>>();
+            public IRequestValidator<SunriseMasterInventory> MasterInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseMasterInventory>>();
+
+            public IRequestValidator<SunriseGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseGift>>();
 
             public IRequestValidator<SunriseGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseGroupGift>>();
 
@@ -1465,7 +1216,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Scheduler,
                 this.JobTracker,
                 this.Mapper,
-                this.PlayerInventoryRequestValidator,
+                this.MasterInventoryRequestValidator,
+                this.GiftRequestValidator,
                 this.GroupGiftRequestValidator,
                 this.BanParametersRequestValidator)
             { ControllerContext = this.ControllerContext };

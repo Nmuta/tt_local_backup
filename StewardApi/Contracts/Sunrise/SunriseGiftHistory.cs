@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <param name="giftSendDateUtc">The gift send date.</param>
         /// <param name="giftInventory">The gift inventory.</param>
-        public SunriseGiftHistory(GiftHistoryAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, SunrisePlayerInventory giftInventory)
+        public SunriseGiftHistory(GiftHistoryAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, SunriseGift giftInventory)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -67,6 +67,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <summary>
         ///     Gets or sets gift inventory.
         /// </summary>
-        public SunrisePlayerInventory GiftInventory { get; set; }
+        public SunriseGift GiftInventory { get; set; }
     }
 }

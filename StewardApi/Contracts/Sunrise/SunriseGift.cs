@@ -3,15 +3,10 @@
 namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
 {
     /// <summary>
-    ///     Represents a Sunrise group gift.
+    ///     Represents a Sunrise gift.
     /// </summary>
-    public sealed class SunriseGroupGift
+    public sealed class SunriseGift
     {
-        /// <summary>
-        ///     Gets or sets the xuid list.
-        /// </summary>
-        public IList<ulong> Xuids { get; set; }
-
         /// <summary>
         ///     Gets or sets the gift reason.
         /// </summary>
