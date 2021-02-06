@@ -646,10 +646,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="groupGift">The group gift.</param>
         /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
         /// <returns>
-        ///     The <see cref="ApolloPlayerInventory"/>.
+        ///     A <see cref="IList{GiftResponse}"/>.
         /// </returns>
         [HttpPost("gifting/players")]
-        [SwaggerResponse(200)]
+        [SwaggerResponse(200, type: typeof(GiftResponse<ulong>))]
         public async Task<IActionResult> UpdateGroupInventories([FromBody] ApolloGroupGift groupGift, [FromQuery] bool useBackgroundProcessing)
         {
             try
@@ -694,8 +694,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 if (!useBackgroundProcessing)
                 {
-                    await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
-                    return this.Ok();
+                    var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+                    return this.Ok(response);
                 }
 
                 var username = this.User.GetNameIdentifier();
@@ -707,9 +707,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     // Do not throw.
                     try
                     {
-                        await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+                        var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
 
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed).ConfigureAwait(true);
+                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response.ToJson()).ConfigureAwait(true);
                     }
                     catch (Exception)
                     {
@@ -765,9 +765,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.BadRequest($"Invalid items found. {invalidItems}");
                 }
 
-                await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(true);
-
-                return this.Ok();
+                var response = await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(true);
+                return this.Ok(response);
             }
             catch (Exception ex)
             {

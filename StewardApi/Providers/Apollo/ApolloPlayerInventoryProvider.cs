@@ -80,59 +80,87 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requestingAgent)
+        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requestingAgent)
         {
-            gift.ShouldNotBeNull(nameof(gift));
-            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            var giftResponse = new GiftResponse<ulong>();
+            giftResponse.PlayerOrLspGroup = xuid;
 
-            var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
-            var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
-
-            async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
+            try
             {
-                await this.apolloGiftingService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
+                gift.ShouldNotBeNull(nameof(gift));
+                gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
+                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+
+                var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
+                var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
+
+                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
+                {
+                    await this.apolloGiftingService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
+                }
+
+                await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftHistoryAntecedent.Xuid, gift).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                giftResponse.Error = ex;
             }
 
-            await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
-
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftHistoryAntecedent.Xuid, gift).ConfigureAwait(false);
+            return giftResponse;
         }
 
         /// <inheritdoc />
-        public async Task UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requestingAgent)
+        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requestingAgent)
         {
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
+            var response = new List<GiftResponse<ulong>>();
+
             var gift = this.mapper.Map<ApolloGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
-                await this.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent).ConfigureAwait(false);
+                response.Add(await this.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent).ConfigureAwait(false));
             }
+
+            return response;
         }
 
         /// <inheritdoc/>
-        public async Task UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requestingAgent)
+        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requestingAgent)
         {
-            gift.ShouldNotBeNull(nameof(gift));
-            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-            groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
+            var giftResponse = new GiftResponse<int>();
+            giftResponse.PlayerOrLspGroup = groupId;
 
-            var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
-            var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
-
-            async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
+            try
             {
-                await this.apolloGiftingService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
+                gift.ShouldNotBeNull(nameof(gift));
+                gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
+                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+                groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
+
+                var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
+                var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
+
+                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
+                {
+                    await this.apolloGiftingService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
+                }
+
+                await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftHistoryAntecedent.LspGroupId, gift).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                giftResponse.Error = ex;
             }
 
-            await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
-
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftHistoryAntecedent.LspGroupId, gift).ConfigureAwait(false);
+            return giftResponse;
         }
 
         private async Task SendGifts(Func<InventoryItemType, int, Task> serviceCall, IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts, IDictionary<InventoryItemType, int> currencyGifts)
