@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
@@ -55,18 +56,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requestingAgent);
+        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requestingAgent);
 
         /// <summary>
         ///     Update player inventories.
         /// </summary>
-        /// <param name="xuids">The xuids.</param>
         /// <param name="groupGift">The group gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task UpdatePlayerInventoriesAsync(IList<ulong> xuids, SunriseGroupGift groupGift, string requestingAgent);
+        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SunriseGroupGift groupGift, string requestingAgent);
 
         /// <summary>
         ///     Updates LSP group inventories.
@@ -77,6 +77,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requestingAgent);
+        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requestingAgent);
     }
 }

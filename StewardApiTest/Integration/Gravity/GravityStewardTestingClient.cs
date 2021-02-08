@@ -91,15 +91,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             return await ServiceClient.SendRequestAsync<GravityPlayerInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<GravityPlayerInventory> UpdatePlayerInventoryByXuidAsync(GravityPlayerInventory playerInventory, Dictionary<string, string> headersToSend)
-        {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
-
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid/inventory");
-
-            return await ServiceClient.SendRequestAsync<GravityPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, playerInventory, headersToSend).ConfigureAwait(false);
-        }
-
         public async Task<ResponseWithHeaders<GravityPlayerInventory>> UpdatePlayerInventoryByXuidWithHeaderResponseAsync(GravityPlayerInventory playerInventory, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
         {
             playerInventory.ShouldNotBeNull(nameof(playerInventory));
@@ -109,13 +100,14 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             return await ServiceClient.SendRequestWithHeaderResponseAsync<GravityPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, playerInventory, headersToSend).ConfigureAwait(false);
         }
 
-        public async Task<GravityPlayerInventory> UpdatePlayerInventoryByT10IdAsync(GravityPlayerInventory playerInventory, Dictionary<string, string> headersToSend)
+        public async Task<GravityPlayerInventory> UpdatePlayerInventoryByT10IdAsync(string t10Id, GravityGift gift)
         {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            t10Id.ShouldNotBeNull(nameof(t10Id));
+            gift.ShouldNotBeNull(nameof(gift));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}player/t10Id/inventory");
+            var path = new Uri(this.baseUri, $"{TitlePath}gifting/t10Id({t10Id})");
 
-            return await ServiceClient.SendRequestAsync<GravityPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, playerInventory, headersToSend).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<GravityPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, gift).ConfigureAwait(false);
         }
 
         public async Task<ResponseWithHeaders<GravityPlayerInventory>> UpdatePlayerInventoryByT10IdWithHeaderResponseAsync(GravityPlayerInventory playerInventory, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
@@ -131,7 +123,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         {
             gameSettingsId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gameSettingsId));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}data/gameSettingsId({gameSettingsId})");
+            var path = new Uri(this.baseUri, $"{TitlePath}masterInventory/gameSettingsId({gameSettingsId})");
 
             return await ServiceClient.SendRequestAsync<GameSettings>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }

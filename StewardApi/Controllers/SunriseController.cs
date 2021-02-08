@@ -58,7 +58,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IRequestValidator<SunriseGift> giftRequestValidator;
         private readonly IRequestValidator<SunriseGroupGift> groupGiftRequestValidator;
         private readonly IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator;
-        private readonly string giftingPassword;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseController"/> class.
@@ -121,10 +120,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.giftRequestValidator = giftRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
             this.banParametersRequestValidator = banParametersRequestValidator;
-
-            this.giftingPassword = keyVaultProvider.GetSecretAsync(
-                configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                configuration[ConfigurationKeyConstants.GroupGiftPasswordSecretName]).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -775,10 +770,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="groupGift">The group gift.</param>
         /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
         /// <returns>
-        ///     The <see cref="SunrisePlayerInventory"/>.
+        ///     The <see cref="IList{GiftResponse}"/>.
         /// </returns>
         [HttpPost("gifting/players")]
-        [SwaggerResponse(200, type: typeof(SunrisePlayerInventory))]
+        [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
         public async Task<IActionResult> UpdateGroupInventories([FromBody] SunriseGroupGift groupGift, [FromQuery] bool useBackgroundProcessing)
         {
             try
@@ -788,6 +783,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
 
                 groupGift.ShouldNotBeNull(nameof(groupGift));
+                groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
                 groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
@@ -823,9 +819,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 if (!useBackgroundProcessing)
                 {
-                    await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift.Xuids, groupGift, requestingAgent).ConfigureAwait(true);
-
-                    return this.Ok();
+                    var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+                    return this.Ok(response);
                 }
 
                 var username = this.User.GetNameIdentifier();
@@ -837,9 +832,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     // Do not throw.
                     try
                     {
-                        await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift.Xuids, groupGift, requestingAgent).ConfigureAwait(true);
-
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed).ConfigureAwait(true);
+                        var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response.ToJson()).ConfigureAwait(true);
                     }
                     catch (Exception)
                     {
@@ -863,13 +857,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="groupId">The LSP group ID.</param>
         /// <param name="gift">The gift to send.</param>
         /// <returns>
-        ///     The <see cref="SunrisePlayerInventory"/>.
+        ///     The <see cref="GiftResponse{T}"/>.
         /// </returns>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin)]
         [HttpPost("gifting/groupId({groupId})")]
-        [SwaggerResponse(200, type: typeof(SunriseGift))]
+        [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] SunriseGift gift)
         {
             try
@@ -897,9 +891,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.BadRequest($"Invalid items found. {invalidItems}");
                 }
 
-                await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(true);
-
-                return this.Ok();
+                var response = await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(true);
+                return this.Ok(response);
             }
             catch (Exception ex)
             {

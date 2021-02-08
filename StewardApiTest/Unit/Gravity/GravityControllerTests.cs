@@ -360,7 +360,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeAssignableTo<OkResult>();
+                action().Should().BeAssignableTo<Task<IActionResult>>();
+                var result = await action().ConfigureAwait(false) as OkObjectResult;
+                result.Should().NotBeNull();
+                result.StatusCode.Should().Be(200);
+                result.Value.Should().NotBeNull();
             }
         }
 
@@ -537,6 +541,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
+                this.GravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(Arg.Any<string>(), Arg.Any<GravityGift>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<string>>()); ;
                 this.GravitySettingsProvider.GetGameSettingAsync(Arg.Any<Guid>()).Returns(Fixture.Create<GameSettings>());
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftHistoryAntecedent>()).Returns(Fixture.Create<IList<GravityGiftHistory>>());
             }

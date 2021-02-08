@@ -161,21 +161,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task UpdatePlayerInventoryAsync(string t10Id, GravityGift gift, string requestingAgent)
+        public async Task<GiftResponse<string>> UpdatePlayerInventoryAsync(string t10Id, GravityGift gift, string requestingAgent)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-            await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.CreditRewards, ForzaUserInventoryItemType.Currency).ConfigureAwait(true);
-            await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.Cars, ForzaUserInventoryItemType.Car).ConfigureAwait(true);
-            await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.EnergyRefills, ForzaUserInventoryItemType.EnergyRefill).ConfigureAwait(true);
-            await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.UpgradeKits, ForzaUserInventoryItemType.UpgradeKit).ConfigureAwait(true);
-            await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.MasteryKits, ForzaUserInventoryItemType.MasteryKit).ConfigureAwait(true);
-            await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.RepairKits, ForzaUserInventoryItemType.RepairKit).ConfigureAwait(true);
+            var giftResponse = new GiftResponse<string>();
+            giftResponse.PlayerOrLspGroup = t10Id;
+            giftResponse.IdentityAntecedent = GiftHistoryAntecedent.T10Id;
 
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(t10Id, Title, requestingAgent, GiftHistoryAntecedent.T10Id, gift).ConfigureAwait(false);
+            try
+            {
+                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.CreditRewards, ForzaUserInventoryItemType.Currency).ConfigureAwait(true);
+                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.Cars, ForzaUserInventoryItemType.Car).ConfigureAwait(true);
+                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.EnergyRefills, ForzaUserInventoryItemType.EnergyRefill).ConfigureAwait(true);
+                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.UpgradeKits, ForzaUserInventoryItemType.UpgradeKit).ConfigureAwait(true);
+                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.MasteryKits, ForzaUserInventoryItemType.MasteryKit).ConfigureAwait(true);
+                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.RepairKits, ForzaUserInventoryItemType.RepairKit).ConfigureAwait(true);
+
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(t10Id, Title, requestingAgent, GiftHistoryAntecedent.T10Id, gift).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                giftResponse.Error = ex;
+            }
+
+            return giftResponse;
         }
 
         /// <inheritdoc />

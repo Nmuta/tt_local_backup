@@ -82,15 +82,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <inheritdoc />
         public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requestingAgent)
         {
+            gift.ShouldNotBeNull(nameof(gift));
+            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+
             var giftResponse = new GiftResponse<ulong>();
             giftResponse.PlayerOrLspGroup = xuid;
+            giftResponse.IdentityAntecedent = GiftHistoryAntecedent.Xuid;
 
             try
             {
-                gift.ShouldNotBeNull(nameof(gift));
-                gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
@@ -120,7 +121,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
             var response = new List<GiftResponse<ulong>>();
-
             var gift = this.mapper.Map<ApolloGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
@@ -133,16 +133,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <inheritdoc/>
         public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requestingAgent)
         {
+            gift.ShouldNotBeNull(nameof(gift));
+            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
+
             var giftResponse = new GiftResponse<int>();
             giftResponse.PlayerOrLspGroup = groupId;
+            giftResponse.IdentityAntecedent = GiftHistoryAntecedent.LspGroupId;
 
             try
             {
-                gift.ShouldNotBeNull(nameof(gift));
-                gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-                groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
-
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 

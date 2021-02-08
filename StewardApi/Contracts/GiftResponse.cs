@@ -9,9 +9,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts
     public sealed class GiftResponse<T>
     {
         /// <summary>
-        ///     Gets or sets the player or LspGroup the gift was sent to/.
+        ///     Gets or sets the player or LspGroup the gift was sent to.
         /// </summary>
         public T PlayerOrLspGroup { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the gift identifier antecedent.
+        /// </summary>
+        public GiftHistoryAntecedent IdentityAntecedent { get; set; }
 
         /// <summary>
         ///     Gets or sets the gifting error.
