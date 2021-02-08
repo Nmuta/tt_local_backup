@@ -57,7 +57,7 @@ describe('GravityGiftBasketComponent', () => {
       energyRefills: [],
     };
     const testMasterInventory: GravityMasterInventory = {
-      currencies: [],
+      creditRewards: [],
       repairKits: [],
       masteryKits: [],
       upgradeKits: [],

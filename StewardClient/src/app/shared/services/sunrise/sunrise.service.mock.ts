@@ -79,6 +79,14 @@ export class MockSunriseService {
       defer(() => of(SunrisePlayersIdentitiesFakeApi.make(query))),
     );
 
+  public postGiftPlayers = jasmine.createSpy('postGiftPlayers').and.returnValue(of([]));
+
+  public postGiftPlayersUsingBackgroundTask = jasmine
+    .createSpy('postGiftPlayersUsingBackgroundTask')
+    .and.returnValue(of('fake-job-id'));
+
+  public postGiftLspGroup = jasmine.createSpy('postGiftLspGroup').and.returnValue(of({}));
+
   constructor(private readonly generator: () => unknown) {}
 }
 

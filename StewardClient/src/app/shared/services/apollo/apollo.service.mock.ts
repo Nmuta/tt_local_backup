@@ -20,6 +20,14 @@ export class MockApolloService {
     .and.returnValue(defer(() => ApolloPlayersBanFakeApi.make()));
 
   public getMasterInventory = jasmine.createSpy('getMasterInventory').and.returnValue(of({}));
+
+  public postGiftPlayers = jasmine.createSpy('postGiftPlayers').and.returnValue(of([]));
+
+  public postGiftPlayersUsingBackgroundTask = jasmine
+    .createSpy('postGiftPlayersUsingBackgroundTask')
+    .and.returnValue(of('fake-job-id'));
+
+  public postGiftLspGroup = jasmine.createSpy('postGiftLspGroup').and.returnValue(of({}));
 }
 
 /** Creates an injectable mock for Apollo Service. */

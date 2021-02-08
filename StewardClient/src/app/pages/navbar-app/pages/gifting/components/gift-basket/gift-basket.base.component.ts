@@ -7,6 +7,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
+import { GiftResponses } from '@models/gift-response';
+import { BackgroundJobService } from '@services/background-job/background-job.service';
+import { catchError, delayWhen, retryWhen, takeUntil, tap } from 'rxjs/operators';
+import { NEVER, timer } from 'rxjs';
 
 export type InventoryItem = {
   itemId: bigint;
@@ -34,6 +38,8 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   public masterInventory: MasterInventoryUnion;
   /** The gift basket of current items to be send. */
   public giftBasket = new MatTableDataSource<GiftBasketModel>();
+  /** Gifting response. */
+  public giftResponse: GiftResponses<bigint | string>;
   /** The gift basket display columns */
   public displayedColumns: string[] = ['itemId', 'description', 'itemType', 'quantity', 'remove'];
   /** Gift reasons */
@@ -72,9 +78,15 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   /** Game title */
   public abstract title: GameTitleCodeName;
 
-  constructor(protected readonly formBuilder: FormBuilder) {
+  constructor(
+    protected readonly backgroundJobService: BackgroundJobService,
+    protected readonly formBuilder: FormBuilder,
+  ) {
     super();
   }
+
+  /** Sends the gift basket. */
+  public abstract sendGiftBasket(): void;
 
   /** Adds a new item to the gift basket. */
   public addItemtoBasket(item: GiftBasketModel): void {
@@ -123,11 +135,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     this.giftBasket.data = tmpGiftBasket;
   }
 
-  /** Sends the gift basket */
-  public sendGiftBasket(): void {
-    // TODO: Send request to Steward API and emit results back up to parent gifting page component
-  }
-
   /** Returns whether the gift basket is okay to send to the API. */
   public isGiftBasketReady(): boolean {
     // TODO: When we introduce item errors, add the errors check here
@@ -138,5 +145,36 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
       ((this.usingPlayerIdentities && this.playerIdentities?.length > 0) ||
         (!this.usingPlayerIdentities && !!this.lspGroup))
     );
+  }
+
+  /** Waits for a background job to complete. */
+  public waitForBackgroundJobToComplete(jobId: string): void {
+    this.backgroundJobService
+      .getBackgroundJob(jobId)
+      .pipe(
+        takeUntil(this.onDestroy$),
+        catchError(_error => {
+          this.loadError = _error;
+          this.isLoading = false;
+          return NEVER;
+        }),
+        tap(backgroundJob => {
+          switch (backgroundJob.status) {
+            case 'Completed':
+              this.giftResponse = JSON.parse(backgroundJob.result) as GiftResponses<
+                bigint | string
+              >;
+              break;
+            case 'InProgress':
+              throw 'still in progress';
+              break;
+            default:
+              this.loadError = backgroundJob.result;
+          }
+          this.isLoading = false;
+        }),
+        retryWhen(errors => errors.pipe(delayWhen(() => timer(3_000)))),
+      )
+      .subscribe();
   }
 }

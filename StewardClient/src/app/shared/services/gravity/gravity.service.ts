@@ -1,6 +1,12 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { T10IdString } from '@models/extended-types';
-import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
+import {
+  GravityGift,
+  GravityGiftHistory,
+  GravityPlayerDetails,
+  GravityPlayerInventory,
+} from '@models/gravity';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
   IdentityQueryBeta,
@@ -86,9 +92,9 @@ export class GravityService {
   }
 
   /** Gets gravity game settings. */
-  public getGameSettings(gameSettingsId: string): Observable<GravityMasterInventory> {
+  public getMasterInventory(gameSettingsId: string): Observable<GravityMasterInventory> {
     return this.apiService.getRequest<GravityMasterInventory>(
-      `${this.basePath}/data/gameSettingsId(${gameSettingsId})`,
+      `${this.basePath}/masterInventory/gameSettingsId(${gameSettingsId})`,
     );
   }
 
@@ -96,6 +102,16 @@ export class GravityService {
   public getGiftHistoryByT10Id(t10Id: string): Observable<GravityGiftHistory[]> {
     return this.apiService.getRequest<GravityGiftHistory[]>(
       `${this.basePath}/player/t10Id(${t10Id})/giftHistory`,
+    );
+  }
+
+  /** Gift players inventory items using a background task. */
+  public postGiftPlayerUsingBackgroundTask(t10Id: string, gift: GravityGift): Observable<string> {
+    const params = new HttpParams().set('useBackgroundProcessing', 'true');
+    return this.apiService.postRequest<string>(
+      `${this.basePath}/gifting/t10Id(${t10Id})`,
+      gift,
+      params,
     );
   }
 }

@@ -2,15 +2,15 @@
   <h2>{{ title }} Gift Basket</h2>
 
   <ng-container *ngIf="!isLoading && !loadError; else failState">
-    <!-- Verify card is not disabled. Set in game title components that extend base -->
-    <ng-container *ngIf="!disableCard; else giftingNotSupported">
-      <!-- Gravity is unique, master inventory is based on player inventory game settings -->
-      <ng-container
-        *ngIf="
-          !hasGameSettings || (hasGameSettings && !!playerInventory);
-          else waitingForGameSettings
-        "
-      >
+    <!-- Gravity is unique, master inventory is based on player inventory game settings -->
+    <ng-container
+      *ngIf="
+        !hasGameSettings || (hasGameSettings && !!playerInventory);
+        else waitingForGameSettings
+      "
+    >
+      <!-- Direct view to use gifting response state if component is waiting for response or has response -->
+      <ng-container *ngIf="!!giftResponse; else giftResponseState">
         <!-- Item Selection -->
         <item-selection
           [masterInventory]="masterInventory"
@@ -145,10 +145,11 @@
   </div>
 </ng-template>
 
-<ng-template #giftingNotSupported>
-  <div id="disable-card">
-    <p>This card is disabled for {{ title }}</p>
-  </div>
+<ng-template #giftResponseState>
+  <!-- Gift was successful -->
+  <ng-container *ngIf="!!giftResponse">
+    <p>Gifting was successful</p>
+  </ng-container>
 </ng-template>
 
 <ng-template #waitingForGameSettings>
