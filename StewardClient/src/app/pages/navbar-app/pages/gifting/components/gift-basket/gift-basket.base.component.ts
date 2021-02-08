@@ -11,6 +11,7 @@ import { GiftResponses } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { catchError, delayWhen, retryWhen, takeUntil, tap } from 'rxjs/operators';
 import { NEVER, timer } from 'rxjs';
+import { BackgroundJob } from '@models/background-job';
 
 export type InventoryItem = {
   itemId: bigint;
@@ -148,28 +149,30 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   }
 
   /** Waits for a background job to complete. */
-  public waitForBackgroundJobToComplete(jobId: string): void {
+  public waitForBackgroundJobToComplete(job: BackgroundJob<void>): void {
+    console.log('waitForBackgroundJobToComplete');
     this.backgroundJobService
-      .getBackgroundJob(jobId)
+      .getBackgroundJob<GiftResponses<bigint | string>>(job.jobId)
       .pipe(
         takeUntil(this.onDestroy$),
         catchError(_error => {
+          console.log('waitForBackgroundJobToComplete - ERROR');
           this.loadError = _error;
           this.isLoading = false;
           return NEVER;
         }),
-        tap(backgroundJob => {
-          switch (backgroundJob.status) {
+        tap(job => {
+          console.log('backgroundJob found');
+          console.log(job);
+          switch (job.status) {
             case 'Completed':
-              this.giftResponse = JSON.parse(backgroundJob.result) as GiftResponses<
-                bigint | string
-              >;
+              this.giftResponse = job.parsedResult;
               break;
             case 'InProgress':
               throw 'still in progress';
               break;
             default:
-              this.loadError = backgroundJob.result;
+              this.loadError = job.result;
           }
           this.isLoading = false;
         }),

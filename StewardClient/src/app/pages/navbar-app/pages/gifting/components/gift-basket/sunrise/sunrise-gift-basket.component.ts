@@ -92,13 +92,15 @@ export class SunriseGiftBasketComponent
         .pipe(
           takeUntil(this.onDestroy$),
           catchError(error => {
+            console.log('ERROR');
             this.loadError = error;
             this.isLoading = false;
             return NEVER;
           }),
           take(1),
-          tap(jobId => {
-            this.waitForBackgroundJobToComplete(jobId);
+          tap(job => {
+            console.log(job);
+            this.waitForBackgroundJobToComplete(job);
           }),
         )
         .subscribe();

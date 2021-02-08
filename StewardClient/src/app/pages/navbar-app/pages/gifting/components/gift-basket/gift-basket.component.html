@@ -10,7 +10,7 @@
       "
     >
       <!-- Direct view to use gifting response state if component is waiting for response or has response -->
-      <ng-container *ngIf="!!giftResponse; else giftResponseState">
+      <ng-container *ngIf="!giftResponse; else giftResponseState">
         <!-- Item Selection -->
         <item-selection
           [masterInventory]="masterInventory"

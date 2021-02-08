@@ -11,6 +11,7 @@ import {
 import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
 import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
 import { ApolloGiftHistory } from '@models/apollo/apollo-gift-history.model';
+import { BackgroundJob } from '@models/background-job';
 import { GiftResponse, GiftResponses } from '@models/gift-response';
 import {
   IdentityQueryAlpha,
@@ -119,9 +120,9 @@ export class ApolloService {
   }
 
   /** Gift players inventory items using a background task. */
-  public postGiftPlayersUsingBackgroundTask(gift: ApolloGroupGift): Observable<string> {
+  public postGiftPlayersUsingBackgroundTask(gift: ApolloGroupGift): Observable<BackgroundJob<void>> {
     const params = new HttpParams().set('useBackgroundProcessing', 'true');
-    return this.apiService.postRequest<string>(`${this.basePath}/gifting/players`, gift, params);
+    return this.apiService.postRequest<BackgroundJob<void>>(`${this.basePath}/gifting/players`, gift, params);
   }
 
   /** Gift lsp group inventory items. */

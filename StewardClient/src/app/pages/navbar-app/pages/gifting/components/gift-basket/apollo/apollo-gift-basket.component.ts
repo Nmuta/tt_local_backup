@@ -87,8 +87,8 @@ export class ApolloGiftBasketComponent
             return NEVER;
           }),
           take(1),
-          tap(jobId => {
-            this.waitForBackgroundJobToComplete(jobId);
+          tap(job => {
+            this.waitForBackgroundJobToComplete(job);
           }),
         )
         .subscribe();

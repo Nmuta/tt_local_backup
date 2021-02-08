@@ -29,6 +29,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { GiftResponse, GiftResponses } from '@models/gift-response';
 import { HttpParams } from '@angular/common/http';
+import { BackgroundJob } from '@models/background-job';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -182,9 +183,9 @@ export class SunriseService {
   }
 
   /** Gift players inventory items using a background task. */
-  public postGiftPlayersUsingBackgroundTask(gift: SunriseGroupGift): Observable<string> {
+  public postGiftPlayersUsingBackgroundTask(gift: SunriseGroupGift): Observable<BackgroundJob<void>> {
     const params = new HttpParams().set('useBackgroundProcessing', 'true');
-    return this.apiService.postRequest<string>(`${this.basePath}/gifting/players`, gift, params);
+    return this.apiService.postRequest<BackgroundJob<void>>(`${this.basePath}/gifting/players`, gift, params);
   }
 
   /** Gift lsp group inventory items. */

@@ -718,7 +718,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-                return this.Ok(jobId);
+                return this.Ok(new BackgroundJob()
+                {
+                    JobId = jobId,
+                    Status = BackgroundJobStatus.InProgress.ToString(),
+                });
             }
             catch (Exception ex)
             {
