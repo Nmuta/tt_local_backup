@@ -1,6 +1,5 @@
 import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { SunrisePlayerDetails } from '@models/sunrise';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 
@@ -10,9 +9,6 @@ import { UserDetailsComponent } from '../user-details.component';
   styleUrls: ['./sunrise.component.scss'],
 })
 export class SunriseComponent {
-  public userDetails: SunrisePlayerDetails;
-  public error: unknown;
-
   /** The lookup type. */
   public get lookupType(): string {
     return this.parent.lookupType ?? '?';

@@ -9,8 +9,6 @@ import { first } from 'lodash';
 import { takeUntil } from 'rxjs/operators';
 import { createNavbarPath, NavbarTools } from '../../navbar-tool-list';
 
-import { SunriseComponent } from './sunrise/sunrise.component';
-
 /** User Details page. */
 @Component({
   templateUrl: './user-details.component.html',

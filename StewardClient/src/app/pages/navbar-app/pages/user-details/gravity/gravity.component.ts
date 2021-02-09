@@ -1,15 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, forwardRef, Inject } from '@angular/core';
+import { IdentityResultBeta } from '@models/identity-query.model';
+import { first } from 'lodash';
+import { UserDetailsComponent } from '../user-details.component';
 
+/** Component for displaying routed Gravity user details. */
 @Component({
   selector: 'app-gravity',
   templateUrl: './gravity.component.html',
   styleUrls: ['./gravity.component.scss']
 })
-export class GravityComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
+export class GravityComponent {
+  /** The lookup type. */
+  public get lookupType(): string {
+    return this.parent.lookupType ?? '?';
   }
 
+  /** The lookup value. */
+  public get lookupName(): string {
+    return first(this.parent.lookupList) ?? '?';
+  }
+
+  /** The specific relevant identity from the parent. */
+  public get identity(): IdentityResultBeta {
+    return this.parent.identity?.sunrise;
+  }
+
+  constructor(
+    @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
+  ) {
+  }
 }

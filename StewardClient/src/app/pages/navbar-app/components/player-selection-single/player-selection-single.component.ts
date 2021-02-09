@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity, PlayerSelectionBaseComponent } from './player-selection-base.component';
 

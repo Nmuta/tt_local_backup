@@ -1,4 +1,4 @@
-<ng-container *ngIf="identity; else noIdentity">
+<ng-container *ngIf="identity && !identity?.error; else noIdentity">
   <h1>{{ identity.gamertag }} (xuid: {{ identity.xuid !== undefined ? identity.xuid : '?' }})</h1>
   <section *ngIf="!!identity.gamertag">
     <mat-tab-group animationDuration="0ms">
@@ -37,10 +37,10 @@
 
 <ng-template #noIdentity>
   <h1>Finding {{ lookupName }} by {{ lookupType | humanize }}</h1>
-  <ng-container *ngIf="error">
+  <ng-container *ngIf="identity.error">
     <hr />
     <h2>Request failed</h2>
     <p>If this keeps happening, contact support.</p>
-    <json-dump [input]="error">View error</json-dump>
+    <json-dump [input]="identity.error">View error</json-dump>
   </ng-container>
 </ng-template>
