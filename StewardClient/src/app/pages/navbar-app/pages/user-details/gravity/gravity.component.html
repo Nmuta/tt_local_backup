@@ -1,8 +1,8 @@
 <ng-container *ngIf="identity && !identity?.error; else noIdentity">
   <h1>
     {{ identity.gamertag }}
-    (xuid: {{ identity.xuid !== undefined ? identity.xuid : '?' }})
-    (t10id: {{ identity.t10Id !== undefined ? identity.t10Id : '?' }})
+    (xuid: {{ identity.xuid !== undefined ? identity.xuid : '?' }}) (t10id:
+    {{ identity.t10Id !== undefined ? identity.t10Id : '?' }})
   </h1>
   <section *ngIf="!!identity.gamertag">
     <mat-tab-group animationDuration="0ms">

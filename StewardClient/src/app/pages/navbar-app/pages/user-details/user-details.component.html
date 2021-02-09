@@ -1,19 +1,48 @@
 <mat-toolbar color="default">
-  <a [class.mat-button-disabled]="!identity?.extra.hasSunrise" [routerLink]="sunriseRouterLink"
-    [queryParams]="{ gamertag: gamertag }" mat-button [color]="identity?.extra.hasSunrise ? 'primary' : null"
-    routerLinkActive="mat-stroked-button">Sunrise</a>
-  <a [class.mat-button-disabled]="!identity?.extra.hasOpus" [routerLink]="opusRouterLink"
-    [queryParams]="{ gamertag: gamertag }" mat-button [color]="identity?.extra.hasOpus ? 'primary' : null"
-    routerLinkActive="mat-stroked-button">Opus</a>
-  <a [class.mat-button-disabled]="!identity?.extra.hasApollo" [routerLink]="apolloRouterLink"
-    [queryParams]="{ gamertag: gamertag }" mat-button [color]="identity?.extra.hasApollo ? 'primary' : null"
-    routerLinkActive="mat-stroked-button">Apollo</a>
-  <a [class.mat-button-disabled]="!identity?.extra.hasGravity" [routerLink]="gravityRouterLink"
-    [queryParams]="{ gamertag: gamertag }" mat-button [color]="identity?.extra.hasGravity ? 'primary' : null"
-    routerLinkActive="mat-stroked-button">Gravity</a>
+  <a
+    [class.mat-button-disabled]="!identity?.extra.hasSunrise"
+    [routerLink]="sunriseRouterLink"
+    [queryParams]="{ gamertag: gamertag }"
+    mat-button
+    [color]="identity?.extra.hasSunrise ? 'primary' : null"
+    routerLinkActive="mat-stroked-button"
+    >Sunrise</a
+  >
+  <a
+    [class.mat-button-disabled]="!identity?.extra.hasOpus"
+    [routerLink]="opusRouterLink"
+    [queryParams]="{ gamertag: gamertag }"
+    mat-button
+    [color]="identity?.extra.hasOpus ? 'primary' : null"
+    routerLinkActive="mat-stroked-button"
+    >Opus</a
+  >
+  <a
+    [class.mat-button-disabled]="!identity?.extra.hasApollo"
+    [routerLink]="apolloRouterLink"
+    [queryParams]="{ gamertag: gamertag }"
+    mat-button
+    [color]="identity?.extra.hasApollo ? 'primary' : null"
+    routerLinkActive="mat-stroked-button"
+    >Apollo</a
+  >
+  <a
+    [class.mat-button-disabled]="!identity?.extra.hasGravity"
+    [routerLink]="gravityRouterLink"
+    [queryParams]="{ gamertag: gamertag }"
+    mat-button
+    [color]="identity?.extra.hasGravity ? 'primary' : null"
+    routerLinkActive="mat-stroked-button"
+    >Gravity</a
+  >
   <span class="icon-spacer"></span>
-  <player-selection-single [(lookupType)]="lookupType" [(lookupList)]="lookupList" (lookupListChange)="lookupChange()"
-    (lookupTypeChange)="lookupChange()" (found)="found($event)"></player-selection-single>
+  <player-selection-single
+    [(lookupType)]="lookupType"
+    [(lookupList)]="lookupList"
+    (lookupListChange)="lookupChange()"
+    (lookupTypeChange)="lookupChange()"
+    (found)="found($event)"
+  ></player-selection-single>
   <span class="spacer"></span>
 </mat-toolbar>
 <router-outlet></router-outlet>

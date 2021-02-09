@@ -14,7 +14,7 @@ describe('SunriseComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PipesModule],
       declarations: [SunriseComponent],
-      providers: [createMockSunriseService(), {provide: UserDetailsComponent, useValue: {}}],
+      providers: [createMockSunriseService(), { provide: UserDetailsComponent, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

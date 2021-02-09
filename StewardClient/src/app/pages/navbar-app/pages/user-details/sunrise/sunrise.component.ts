@@ -26,6 +26,5 @@ export class SunriseComponent {
 
   constructor(
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
-  ) {
-  }
+  ) {}
 }

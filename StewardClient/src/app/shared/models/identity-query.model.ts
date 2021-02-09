@@ -17,7 +17,10 @@ interface IdentityQueryByT10Id {
 }
 
 /** Creates a valid @see IdentityQueryAlpha from a variety of inputs. */
-export function makeAlphaQuery(type: 'gamertag' | 'xuid', value: string | bigint): IdentityQueryAlpha {
+export function makeAlphaQuery(
+  type: 'gamertag' | 'xuid',
+  value: string | bigint,
+): IdentityQueryAlpha {
   switch (type) {
     case 'gamertag':
       return { gamertag: value.toString() };
@@ -29,7 +32,10 @@ export function makeAlphaQuery(type: 'gamertag' | 'xuid', value: string | bigint
 }
 
 /** Creates a valid @see IdentityQueryBeta from a variety of inputs. */
-export function makeBetaQuery(type: 'gamertag' | 'xuid' | 't10Id', value: string | bigint): IdentityQueryBeta {
+export function makeBetaQuery(
+  type: 'gamertag' | 'xuid' | 't10Id',
+  value: string | bigint,
+): IdentityQueryBeta {
   switch (type) {
     case 'gamertag':
       return { gamertag: value.toString() };
@@ -192,4 +198,6 @@ export type IdentityResultIntersection = IdentityResultAlpha & IdentityResultBet
 export type IdentityQueryAlphaIntersection = IdentityQueryByXuid & IdentityQueryByGamertag;
 
 /** Intersection version of @see IdentityQueryBeta */
-export type IdentityQueryBetaIntersection = IdentityQueryByXuid & IdentityQueryByGamertag & IdentityQueryByT10Id;
+export type IdentityQueryBetaIntersection = IdentityQueryByXuid &
+  IdentityQueryByGamertag &
+  IdentityQueryByT10Id;

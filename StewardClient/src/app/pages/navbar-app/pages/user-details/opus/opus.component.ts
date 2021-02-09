@@ -6,7 +6,7 @@ import { UserDetailsComponent } from '../user-details.component';
 /** Component for displaying routed Opus user details. */
 @Component({
   templateUrl: './opus.component.html',
-  styleUrls: ['./opus.component.scss']
+  styleUrls: ['./opus.component.scss'],
 })
 export class OpusComponent {
   /** The lookup type. */
@@ -26,6 +26,5 @@ export class OpusComponent {
 
   constructor(
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
-  ) {
-  }
+  ) {}
 }

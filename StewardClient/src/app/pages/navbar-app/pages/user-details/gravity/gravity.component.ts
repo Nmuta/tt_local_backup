@@ -7,7 +7,7 @@ import { UserDetailsComponent } from '../user-details.component';
 @Component({
   selector: 'app-gravity',
   templateUrl: './gravity.component.html',
-  styleUrls: ['./gravity.component.scss']
+  styleUrls: ['./gravity.component.scss'],
 })
 export class GravityComponent {
   /** The lookup type. */
@@ -27,6 +27,5 @@ export class GravityComponent {
 
   constructor(
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
-  ) {
-  }
+  ) {}
 }

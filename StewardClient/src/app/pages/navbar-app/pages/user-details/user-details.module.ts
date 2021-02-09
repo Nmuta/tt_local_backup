@@ -29,7 +29,13 @@ import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
-  declarations: [UserDetailsComponent, SunriseComponent, OpusComponent, ApolloComponent, GravityComponent],
+  declarations: [
+    UserDetailsComponent,
+    SunriseComponent,
+    OpusComponent,
+    ApolloComponent,
+    GravityComponent,
+  ],
   imports: [
     CommonModule,
     ErrorSpinnerModule,

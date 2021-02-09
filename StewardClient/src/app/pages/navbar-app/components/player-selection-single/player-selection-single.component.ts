@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { first } from 'lodash';
-import { AugmentedCompositeIdentity, PlayerSelectionBaseComponent } from './player-selection-base.component';
+import {
+  AugmentedCompositeIdentity,
+  PlayerSelectionBaseComponent,
+} from './player-selection-base.component';
 
 /** An inline user-picker with a single output. */
 @Component({

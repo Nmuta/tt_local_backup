@@ -8,9 +8,8 @@ describe('ApolloComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ApolloComponent ]
-    })
-    .compileComponents();
+      declarations: [ApolloComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

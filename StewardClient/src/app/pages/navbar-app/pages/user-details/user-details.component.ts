@@ -38,7 +38,8 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly route: ActivatedRoute,
-    private readonly router: Router) {
+    private readonly router: Router,
+  ) {
     super();
   }
 
@@ -66,19 +67,15 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   /** Handles when the lookup list changes. */
   public lookupChange(replaceUrl: boolean = false): void {
     const name = first(this.lookupList) ?? '';
-    this.store.dispatch(new Navigate(
-      [
-        ...this.sunriseRouterLink,
-      ],
-      null,
-      {
+    this.store.dispatch(
+      new Navigate([...this.sunriseRouterLink], null, {
         queryParams: {
           lookupType: this.lookupType,
           lookupName: name,
         },
         replaceUrl: replaceUrl,
-      }
-    ));
+      }),
+    );
   }
 
   /** Handles the identity-found */

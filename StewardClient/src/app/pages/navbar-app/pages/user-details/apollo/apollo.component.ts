@@ -7,7 +7,7 @@ import { UserDetailsComponent } from '../user-details.component';
 @Component({
   selector: 'app-apollo',
   templateUrl: './apollo.component.html',
-  styleUrls: ['./apollo.component.scss']
+  styleUrls: ['./apollo.component.scss'],
 })
 export class ApolloComponent {
   /** The lookup type. */
@@ -27,6 +27,5 @@ export class ApolloComponent {
 
   constructor(
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
-  ) {
-  }
+  ) {}
 }

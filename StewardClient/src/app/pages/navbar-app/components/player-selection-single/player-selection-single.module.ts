@@ -20,8 +20,6 @@ import { FormsModule } from '@angular/forms';
     PipesModule,
     FormsModule,
   ],
-  exports: [
-    PlayerSelectionSingleComponent,
-  ],
+  exports: [PlayerSelectionSingleComponent],
 })
-export class PlayerSelectionSingleModule { }
+export class PlayerSelectionSingleModule {}

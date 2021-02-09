@@ -22,11 +22,11 @@ import { OpusService } from '@services/opus';
 import { combineLatest, of, Subject } from 'rxjs';
 
 export interface AugmentedCompositeIdentity {
-  query: IdentityQueryBeta & IdentityQueryAlpha,
-  sunrise: IdentityResultAlpha,
-  gravity: IdentityResultBeta,
-  apollo: IdentityResultAlpha,
-  opus: IdentityResultAlpha,
+  query: IdentityQueryBeta & IdentityQueryAlpha;
+  sunrise: IdentityResultAlpha;
+  gravity: IdentityResultBeta;
+  apollo: IdentityResultAlpha;
+  opus: IdentityResultAlpha;
 
   extra?: {
     lookupType: keyof IdentityQueryBetaIntersection;
@@ -64,7 +64,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   }
   /** The list of things to look up. */
   public get lookupList(): string[] {
-    return this.foundIdentities.map(i => <string> i.query[this.lookupType]);
+    return this.foundIdentities.map(i => <string>i.query[this.lookupType]);
   }
 
   /** Triggers a lookup on these items (two way bindings). */
@@ -218,27 +218,39 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
         ? this.gravity.getPlayerIdentities(newQueries as IdentityQueryBeta[])
         : of(undefined as IdentityResultBeta[]),
     ])
-      .pipe(
-        takeUntil(this.onDestroy$),
-        takeUntil(this.lookupTypeGroupChange),
-      )
+      .pipe(takeUntil(this.onDestroy$), takeUntil(this.lookupTypeGroupChange))
       .subscribe(results => {
         // destructure
         const [sunriseIdentities, opusIdentities, apolloIdentities, gravityIdentities] = results;
 
         // make lookup for faster operations later
-        const sunriseLookup = keyBy<IdentityResultAlpha>(sunriseIdentities, r => r.query[this.lookupType]);
-        const opusLookup = keyBy<IdentityResultAlpha>(opusIdentities, r => r.query[this.lookupType]);
-        const apolloLookup = keyBy<IdentityResultAlpha>(apolloIdentities, r => r.query[this.lookupType]);
-        const gravityLookup = keyBy<IdentityResultBeta>(gravityIdentities, r => r.query[this.lookupType]);
-        
+        const sunriseLookup = keyBy<IdentityResultAlpha>(
+          sunriseIdentities,
+          r => r.query[this.lookupType],
+        );
+        const opusLookup = keyBy<IdentityResultAlpha>(
+          opusIdentities,
+          r => r.query[this.lookupType],
+        );
+        const apolloLookup = keyBy<IdentityResultAlpha>(
+          apolloIdentities,
+          r => r.query[this.lookupType],
+        );
+        const gravityLookup = keyBy<IdentityResultBeta>(
+          gravityIdentities,
+          r => r.query[this.lookupType],
+        );
+
         // get all unique queries that came back
-        const allQueries = uniqBy([
-          ...sunriseIdentities.map(q => q.query),
-          ...opusIdentities.map(q => q.query),
-          ...apolloIdentities.map(q => q.query),
-          ...gravityIdentities.map(q => q.query),
-        ], q => q[this.lookupType]);
+        const allQueries = uniqBy(
+          [
+            ...sunriseIdentities.map(q => q.query),
+            ...opusIdentities.map(q => q.query),
+            ...apolloIdentities.map(q => q.query),
+            ...gravityIdentities.map(q => q.query),
+          ],
+          q => q[this.lookupType],
+        );
 
         // replace the results inline
         for (const query of allQueries) {
