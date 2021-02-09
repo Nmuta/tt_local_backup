@@ -7,11 +7,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
-import { GiftResponses } from '@models/gift-response';
+import { GiftResponse, GiftResponses } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
-import { catchError, delayWhen, retryWhen, takeUntil, tap } from 'rxjs/operators';
-import { NEVER, timer } from 'rxjs';
-import { BackgroundJob } from '@models/background-job';
+import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
+import { NEVER, Observable, timer } from 'rxjs';
+import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
+import { GravityGift } from '@models/gravity';
+import { SunriseGift, SunriseGroupGift } from '@models/sunrise';
+import { ApolloGift, ApolloGroupGift } from '@models/apollo';
 
 export type InventoryItem = {
   itemId: bigint;
@@ -23,6 +26,9 @@ export type InventoryItemGroup = {
   category: string;
   items: MasterInventoryItem[];
 };
+export type GiftUnion = GravityGift | SunriseGift | ApolloGift;
+export type GroupGiftUnion = SunriseGroupGift | ApolloGroupGift;
+
 
 export type GiftBasketModel = MasterInventoryItem & { edit: boolean };
 
@@ -86,8 +92,14 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     super();
   }
 
-  /** Sends the gift basket. */
-  public abstract sendGiftBasket(): void;
+  /** Generates a title specific gift. */
+  public abstract generateGiftInventoryFromGiftBasket(): GiftUnion;
+
+  /** Sends a gift to players. */
+  public abstract sendGiftToPlayers(gift: GiftUnion): Observable<BackgroundJob<void>>;
+
+   /** Sends a gift to an LSP group. */
+  public abstract sendGiftToLspGroup(gift: GiftUnion): Observable<GiftResponse<bigint>>;
 
   /** Adds a new item to the gift basket. */
   public addItemtoBasket(item: GiftBasketModel): void {
@@ -148,27 +160,54 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     );
   }
 
+   /** Sends the gift basket. */
+   public sendGiftBasket(): void {
+    this.isLoading = true;
+    const gift = this.generateGiftInventoryFromGiftBasket();
+
+    const sendGift$: Observable<BackgroundJob<void> | GiftResponse<bigint>> = this.usingPlayerIdentities
+      ? this.sendGiftToPlayers(gift)
+      : this.sendGiftToLspGroup(gift);
+
+    sendGift$.pipe(
+      takeUntil(this.onDestroy$),
+      catchError(error => {
+        this.loadError = error;
+        this.isLoading = false;
+        return NEVER;
+      }),
+      take(1),
+      tap(response => {
+        // If response is a background job, we must wait for it to complete.
+        if(!!(response as BackgroundJob<void>)?.jobId) {
+          this.waitForBackgroundJobToComplete(response as BackgroundJob<void>);
+          return;
+        }
+
+        this.giftResponse = [response as GiftResponse<bigint>];
+        this.isLoading = false;
+      }),
+    ).subscribe();
+  }
+
   /** Waits for a background job to complete. */
   public waitForBackgroundJobToComplete(job: BackgroundJob<void>): void {
-    console.log('waitForBackgroundJobToComplete');
     this.backgroundJobService
       .getBackgroundJob<GiftResponses<bigint | string>>(job.jobId)
       .pipe(
         takeUntil(this.onDestroy$),
         catchError(_error => {
-          console.log('waitForBackgroundJobToComplete - ERROR');
           this.loadError = _error;
           this.isLoading = false;
           return NEVER;
         }),
+        take(1),
         tap(job => {
-          console.log('backgroundJob found');
-          console.log(job);
           switch (job.status) {
-            case 'Completed':
+            case BackgroundJobStatus.Completed:
               this.giftResponse = job.parsedResult;
               break;
-            case 'InProgress':
+            case BackgroundJobStatus.InProgress:
               throw 'still in progress';
               break;
             default:
@@ -177,7 +216,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
           this.isLoading = false;
         }),
         retryWhen(errors => errors.pipe(delayWhen(() => timer(3_000)))),
-      )
-      .subscribe();
+      ).subscribe();
   }
 }

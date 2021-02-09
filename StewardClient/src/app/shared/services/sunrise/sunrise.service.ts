@@ -189,8 +189,8 @@ export class SunriseService {
   }
 
   /** Gift lsp group inventory items. */
-  public postGiftLspGroup(lspGroup: LspGroup, gift: SunriseGift): Observable<GiftResponse<string>> {
-    return this.apiService.postRequest<GiftResponse<string>>(
+  public postGiftLspGroup(lspGroup: LspGroup, gift: SunriseGift): Observable<GiftResponse<bigint>> {
+    return this.apiService.postRequest<GiftResponse<bigint>>(
       `${this.basePath}/gifting/groupId(${lspGroup.id})`,
       gift,
     );

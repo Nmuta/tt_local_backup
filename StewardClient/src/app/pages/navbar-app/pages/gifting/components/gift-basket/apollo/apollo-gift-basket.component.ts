@@ -1,7 +1,9 @@
 import { Component, forwardRef, OnInit } from '@angular/core';
 import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ApolloGift, ApolloGroupGift, ApolloMasterInventory } from '@models/apollo';
+import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
+import { GiftResponse } from '@models/gift-response';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { Store } from '@ngxs/store';
@@ -9,8 +11,7 @@ import { ApolloService } from '@services/apollo';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { GetApolloMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
-import { NEVER } from 'rxjs';
-import { catchError, take, takeUntil, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
 /** Apollo gift basket. */
@@ -52,11 +53,10 @@ export class ApolloGiftBasketComponent
     });
   }
 
-  /** Sends the gift basket. */
-  public sendGiftBasket(): void {
-    this.isLoading = true;
+  /** Generates an apollo gift from the gift basket. */
+  public generateGiftInventoryFromGiftBasket(): ApolloGift {
     const giftBasketItems = this.giftBasket.data;
-    const gift: ApolloGift = {
+    return {
       giftReason: this.sendGiftForm.controls['giftReason'].value,
       inventory: {
         creditRewards: giftBasketItems
@@ -70,45 +70,20 @@ export class ApolloGiftBasketComponent
           .map(item => item as MasterInventoryItem),
       },
     };
+  }
 
-    // If gifting to players, we are using background jobs
-    if (this.usingPlayerIdentities) {
-      const groupGift: ApolloGroupGift = gift as ApolloGroupGift;
-      groupGift.xuids = this.playerIdentities
-        .filter(player => !player.error)
-        .map(player => player.xuid);
-      this.apolloService
-        .postGiftPlayersUsingBackgroundTask(groupGift)
-        .pipe(
-          takeUntil(this.onDestroy$),
-          catchError(error => {
-            this.loadError = error;
-            this.isLoading = false;
-            return NEVER;
-          }),
-          take(1),
-          tap(job => {
-            this.waitForBackgroundJobToComplete(job);
-          }),
-        )
-        .subscribe();
-    } else {
-      this.apolloService
-        .postGiftLspGroup(this.lspGroup, gift)
-        .pipe(
-          takeUntil(this.onDestroy$),
-          catchError(error => {
-            this.loadError = error;
-            this.isLoading = false;
-            return NEVER;
-          }),
-          take(1),
-          tap(giftReponse => {
-            this.giftResponse = [giftReponse];
-            this.isLoading = false;
-          }),
-        )
-        .subscribe();
-    }
+  /** Sends an apollo gift to players. */
+  public sendGiftToPlayers(gift: ApolloGift): Observable<BackgroundJob<void>> {
+    const groupGift: ApolloGroupGift = gift as ApolloGroupGift;
+    groupGift.xuids = this.playerIdentities
+      .filter(player => !player.error)
+      .map(player => player.xuid);
+
+    return this.apolloService.postGiftPlayersUsingBackgroundTask(groupGift);
+  }
+
+   /** Sends an apollo gift to an LSP group. */
+  public sendGiftToLspGroup(gift: ApolloGift): Observable<GiftResponse<bigint>> {
+    return this.apolloService.postGiftLspGroup(this.lspGroup, gift);
   }
 }

@@ -1,6 +1,8 @@
 import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
+import { GiftResponse } from '@models/gift-response';
 import { GravityGift, GravityPlayerInventory } from '@models/gravity';
 import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
 import { IdentityResultBeta } from '@models/identity-query.model';
@@ -10,7 +12,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { GravityService } from '@services/gravity';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
-import { NEVER } from 'rxjs';
+import { NEVER, Observable, throwError } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
@@ -65,11 +67,10 @@ export class GravityGiftBasketComponent
     }
   }
 
-  /** Sends the gift basket. */
-  public sendGiftBasket(): void {
-    this.isLoading = true;
+  /** Generates a gravity gift from the gift basket. */
+  public generateGiftInventoryFromGiftBasket(): GravityGift {
     const giftBasketItems = this.giftBasket.data;
-    const gift: GravityGift = {
+    return {
       giftReason: this.sendGiftForm.controls['giftReason'].value,
       inventory: {
         creditRewards: giftBasketItems
@@ -92,6 +93,23 @@ export class GravityGiftBasketComponent
           .map(item => item as MasterInventoryItem),
       },
     };
+  }
+
+  /** Sends a gravity gift to players. */
+  public sendGiftToPlayers(gift: GravityGift): Observable<BackgroundJob<void>> {
+    const t10Id = this.playerIdentities[0].t10Id;
+    return this.gravityService.postGiftPlayerUsingBackgroundTask(t10Id, gift);
+  }
+
+   /** Sends a gravity gift to an LSP group. */
+  public sendGiftToLspGroup(_gift: GravityGift): Observable<GiftResponse<bigint>> {
+    return throwError('Gravity does not support LSP gifting.');
+  }
+
+  /** Sends the gift basket. */
+  public sendGiftBasket(): void {
+    this.isLoading = true;
+    const gift: GravityGift = this.generateGiftInventoryFromGiftBasket();
 
     this.gravityService
       .postGiftPlayerUsingBackgroundTask(this.playerIdentities[0].t10Id, gift)

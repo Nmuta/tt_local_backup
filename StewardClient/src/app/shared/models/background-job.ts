@@ -5,3 +5,9 @@ export interface BackgroundJob<T> {
   result: string;
   parsedResult: T;
 }
+
+export enum BackgroundJobStatus {
+  Completed = 'Completed',
+  InProgress  = 'InProgress',
+  Failed  = 'Failed',
+}

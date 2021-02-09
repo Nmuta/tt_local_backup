@@ -126,8 +126,8 @@ export class ApolloService {
   }
 
   /** Gift lsp group inventory items. */
-  public postGiftLspGroup(lspGroup: LspGroup, gift: ApolloGift): Observable<GiftResponse<string>> {
-    return this.apiService.postRequest<GiftResponse<string>>(
+  public postGiftLspGroup(lspGroup: LspGroup, gift: ApolloGift): Observable<GiftResponse<bigint>> {
+    return this.apiService.postRequest<GiftResponse<bigint>>(
       `${this.basePath}/gifting/groupId(${lspGroup.id})`,
       gift,
     );

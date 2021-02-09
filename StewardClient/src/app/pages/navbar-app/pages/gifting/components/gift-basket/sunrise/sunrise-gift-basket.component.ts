@@ -1,6 +1,8 @@
 import { Component, forwardRef, OnInit } from '@angular/core';
 import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
+import { GiftResponse } from '@models/gift-response';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { SunriseGift, SunriseGroupGift } from '@models/sunrise';
@@ -10,8 +12,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { SunriseService } from '@services/sunrise';
 import { GetSunriseMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
-import { NEVER } from 'rxjs';
-import { catchError, take, takeUntil, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
 /** Sunrise gift basket. */
@@ -53,11 +54,10 @@ export class SunriseGiftBasketComponent
     });
   }
 
-  /** Sends the gift basket. */
-  public sendGiftBasket(): void {
-    this.isLoading = true;
+  /** Generates a sunrise gift from the gift basket. */
+  public generateGiftInventoryFromGiftBasket(): SunriseGift {
     const giftBasketItems = this.giftBasket.data;
-    const gift: SunriseGift = {
+    return {
       giftReason: this.sendGiftForm.controls['giftReason'].value,
       inventory: {
         creditRewards: giftBasketItems
@@ -79,48 +79,21 @@ export class SunriseGiftBasketComponent
           .filter(item => item.itemType === 'emotes')
           .map(item => item as MasterInventoryItem),
       },
-    };
-
-    // If gifting to players, we are using background jobs
-    if (this.usingPlayerIdentities) {
-      const groupGift = gift as SunriseGroupGift;
-      groupGift.xuids = this.playerIdentities
-        .filter(player => !player.error)
-        .map(player => player.xuid);
-      this.sunriseService
-        .postGiftPlayersUsingBackgroundTask(groupGift)
-        .pipe(
-          takeUntil(this.onDestroy$),
-          catchError(error => {
-            console.log('ERROR');
-            this.loadError = error;
-            this.isLoading = false;
-            return NEVER;
-          }),
-          take(1),
-          tap(job => {
-            console.log(job);
-            this.waitForBackgroundJobToComplete(job);
-          }),
-        )
-        .subscribe();
-    } else {
-      this.sunriseService
-        .postGiftLspGroup(this.lspGroup, gift)
-        .pipe(
-          takeUntil(this.onDestroy$),
-          catchError(error => {
-            this.loadError = error;
-            this.isLoading = false;
-            return NEVER;
-          }),
-          take(1),
-          tap(giftReponse => {
-            this.giftResponse = [giftReponse];
-            this.isLoading = false;
-          }),
-        )
-        .subscribe();
     }
+  }
+
+  /** Sends a sunrise gift to players. */
+  public sendGiftToPlayers(gift: SunriseGift): Observable<BackgroundJob<void>> {
+    const groupGift = gift as SunriseGroupGift;
+    groupGift.xuids = this.playerIdentities
+      .filter(player => !player.error)
+      .map(player => player.xuid);
+
+    return this.sunriseService.postGiftPlayersUsingBackgroundTask(groupGift);
+  }
+
+   /** Sends a sunrise gift to an LSP group. */
+  public sendGiftToLspGroup(gift: SunriseGift): Observable<GiftResponse<bigint>> {
+    return this.sunriseService.postGiftLspGroup(this.lspGroup, gift);
   }
 }
