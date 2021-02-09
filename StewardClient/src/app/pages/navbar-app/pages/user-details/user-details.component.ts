@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { IdentityQueryBetaIntersection } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection-single/player-selection-base.component';
+import { Navigate } from '@ngxs/router-plugin';
+import { Store } from '@ngxs/store';
 import { first } from 'lodash';
 import { takeUntil } from 'rxjs/operators';
 import { createNavbarPath, NavbarTools } from '../../navbar-tool-list';
@@ -35,7 +37,10 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     'gravity',
   ];
 
-  constructor(private readonly route: ActivatedRoute, private readonly router: Router) {
+  constructor(
+    private readonly store: Store,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router) {
     super();
   }
 
@@ -63,10 +68,11 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   /** Handles when the lookup list changes. */
   public lookupChange(replaceUrl: boolean = false): void {
     const name = first(this.lookupList) ?? '';
-    this.router.navigate(
+    this.store.dispatch(new Navigate(
       [
         ...this.sunriseRouterLink,
       ],
+      null,
       {
         queryParams: {
           lookupType: this.lookupType,
@@ -74,7 +80,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
         },
         replaceUrl: replaceUrl,
       }
-    );
+    ));
   }
 
   /** Handles the identity-found */
