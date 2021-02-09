@@ -14,12 +14,12 @@ import {
 } from '@models/identity-query.model';
 import { COMMA, ENTER, SEMICOLON } from '@angular/cdk/keycodes';
 import { SunriseService } from '@services/sunrise';
-import { chain, every, find, isEqual, keyBy, uniqBy } from 'lodash';
+import { chain, every, find, isEmpty, isEqual, keyBy, uniqBy } from 'lodash';
 import { map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { GravityService } from '@services/gravity';
 import { ApolloService } from '@services/apollo';
 import { OpusService } from '@services/opus';
-import { combineLatest, NEVER, of, Subject } from 'rxjs';
+import { combineLatest, of, Subject } from 'rxjs';
 
 export interface AugmentedCompositeIdentity {
   query: IdentityQueryBeta & IdentityQueryAlpha,
@@ -58,7 +58,9 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   @Input() public set lookupList(values: string[]) {
     this.knownIdentities.clear();
     this.foundIdentities = [];
-    this.handleNewValues(values);
+    if (!isEmpty(values)) {
+      this.handleNewValues(values, false);
+    }
   }
   /** The list of things to look up. */
   public get lookupList(): string[] {
@@ -112,7 +114,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
         const values = this.foundIdentities.map(i => i.query[previous]);
         this.foundIdentities = [];
 
-        this.handleNewValues(values);
+        this.handleNewValues(values, false);
       });
   }
 
@@ -131,7 +133,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       .map(v => v.trim())
       .filter(v => v.length > 0);
 
-    this.handleNewValues(values);
+    this.handleNewValues(values, true);
 
     event.preventDefault();
   }
@@ -146,7 +148,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       .map(v => v.trim())
       .filter(v => v.length > 0);
 
-    this.handleNewValues(values);
+    this.handleNewValues(values, true);
 
     // Reset the input value
     if (input) {
@@ -161,6 +163,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     if (index >= 0) {
       this.foundIdentities.splice(index, 1);
       this.knownIdentities.delete(item.query[this.lookupType].toString());
+      this.lookupListChange.next();
     }
   }
 
@@ -172,13 +175,12 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
    * 4. makes queries
    * 5. updates results with the query results, if possible
    */
-  private handleNewValues(values: string[]): void {
+  private handleNewValues(values: string[], emit = true): void {
     const uniqueValues = chain(values)
       .uniq()
       .filter(v => !this.knownIdentities.has(v));
     const newQueries = uniqueValues.map(v => makeBetaQuery(this.lookupType, v)).value();
-
-    this.handleNewQueries(newQueries);
+    this.handleNewQueries(newQueries, emit);
   }
 
   /**
@@ -187,14 +189,16 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
    * 2. makes queries
    * 3. updates results with the query results, if possible
    */
-  private handleNewQueries(newQueries: IdentityQueryBeta[]): void {
+  private handleNewQueries(newQueries: IdentityQueryBeta[], emit = true): void {
     const tempResults = newQueries.map(q => <AugmentedCompositeIdentity>{ query: q });
     tempResults.forEach(v => {
       this.knownIdentities.add(v.query[this.lookupType].toString());
       this.foundIdentities.push(v);
     });
 
-    this.lookupListChange.next(this.lookupList);
+    if (emit) {
+      this.lookupListChange.next(this.lookupList);
+    }
 
     const queryIsAlphaCompatible = every(newQueries, q => isValidAlphaQuery(q));
     const queryIsBetaCompatible = every(newQueries, q => isValidBetaQuery(q));
@@ -220,7 +224,10 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       )
       .subscribe(results => {
         // destructure
-        const [sunriseIdentities, opusIdentities, apolloIdentities, gravityIdentities] = results;
+        const [sunriseIdentities, opusIdentities, apolloIdentities, gravityIdentitiesBroken] = results;
+
+        // waiting on fix from Jordan
+        const gravityIdentities = gravityIdentitiesBroken.filter(i => i.query);
 
         // make lookup for faster operations later
         const sunriseLookup = keyBy<IdentityResultAlpha>(sunriseIdentities, r => r.query[this.lookupType]);

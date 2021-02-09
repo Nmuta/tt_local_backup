@@ -60,20 +60,9 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     });
   }
 
-  /** Update the routed component. */
-  public navigate(): void {
-    const childComponent = this.route.snapshot.firstChild.component;
-    if (childComponent === SunriseComponent) {
-      this.router.navigate(this.sunriseRouterLink, {
-        queryParams: { gamertag: this.gamertag },
-      });
-    }
-  }
-
   /** Handles when the lookup list changes. */
   public lookupChange(replaceUrl: boolean = false): void {
-    debugger;
-    return;
+    const name = first(this.lookupList) ?? '';
     this.router.navigate(
       [
         ...this.sunriseRouterLink,
@@ -81,7 +70,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
       {
         queryParams: {
           lookupType: this.lookupType,
-          lookupName: first(this.lookupList) ?? '',
+          lookupName: name,
         },
         replaceUrl: replaceUrl,
       }

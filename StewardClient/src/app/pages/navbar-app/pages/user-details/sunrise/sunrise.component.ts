@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { IdentityResultAlpha } from '@models/identity-query.model';
+import { IdentityQueryAlphaIntersection, IdentityResultAlpha, makeAlphaQuery } from '@models/identity-query.model';
 import { SunrisePlayerDetails } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { NEVER } from 'rxjs';
-import { catchError, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 /** Component for displaying routed Sunrise user details. */
 @Component({
@@ -28,22 +28,36 @@ export class SunriseComponent extends BaseComponent implements OnInit {
     this.route.queryParamMap
       .pipe(
         takeUntil(this.onDestroy$),
-        map(params => params.get('gamertag')),
-        tap(gamertag => {
-          this.gamertag = gamertag;
+        filter(params => params.has('lookupType') && params.has('lookupName')),
+        map(params => {
+          return { type: params.get('lookupType') as keyof IdentityQueryAlphaIntersection, name: params.get('lookupName') };
+        }),
+        tap(bundle => {
+          this.gamertag = undefined;
           this.xuid = undefined;
           this.error = undefined;
           this.userDetails = undefined;
+          switch (bundle.type.toLowerCase()) {
+            case 'xuid':
+              this.xuid = BigInt(bundle.name);
+              break;
+            case 'gamertag':
+              this.gamertag = bundle.name;
+              break;
+            default:
+              break;
+          }
         }),
-        switchMap(gamertag => {
-          return this.sunrise.getPlayerIdentity({ gamertag: gamertag });
+        switchMap(bundle => {
+          const query = makeAlphaQuery(bundle.type as keyof IdentityQueryAlphaIntersection, bundle.name)
+          return this.sunrise.getPlayerIdentity(query);
         }),
         tap(identity => {
           this.identity = identity;
         }),
         switchMap(identity => {
           // TODO: This should be using identity.xuid (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/640413)
-          return this.sunrise.getPlayerDetailsByGamertag(identity.gamertag).pipe(
+          return this.sunrise.getPlayerDetailsByXuid(identity.xuid).pipe(
             catchError(error => {
               this.error = error;
               return NEVER;

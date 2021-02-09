@@ -16,3 +16,7 @@ mat-chip {
 .identity-invalid {
   background-color: mat-color($app-warn, 'lighter');
 }
+
+:host ::ng-deep .mat-chip-list-wrapper {
+  flex-wrap: nowrap;
+}
