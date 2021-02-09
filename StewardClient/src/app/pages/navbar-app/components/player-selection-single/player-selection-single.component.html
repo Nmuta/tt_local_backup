@@ -1,6 +1,6 @@
-
-<mat-button-toggle-group aria-label="ID Type" name="lookupType" #lookupTypeGroup="matButtonToggleGroup">
-  <mat-button-toggle value="gamertag" checked="true">GTAG</mat-button-toggle>
+<mat-button-toggle-group aria-label="ID Type" name="lookupType" #lookupTypeGroup="matButtonToggleGroup"
+  [(ngModel)]="lookupType">
+  <mat-button-toggle value="gamertag">GTAG</mat-button-toggle>
   <mat-button-toggle value="xuid">XUID</mat-button-toggle>
   <mat-button-toggle value="t10Id">T10</mat-button-toggle>
 </mat-button-toggle-group>
@@ -8,17 +8,11 @@
 <mat-form-field class="example-chip-list">
   <mat-label>{{ lookupType | humanize }}</mat-label>
   <mat-chip-list #chipList aria-label="Fruit selection">
-    <mat-chip
-      *ngFor="let identity of foundIdentities"
-      [selectable]="false"
-      [removable]="true"
-      [class.identity-valid]="identity.extra?.isValid"
-      [class.identity-invalid]="identity.extra?.isInvalid"
-      [color]="identity.extra?.theme"
-      (removed)="remove(identity)"
-    >
+    <mat-chip *ngFor="let identity of foundIdentities" [selectable]="false" [removable]="true"
+      [class.identity-valid]="identity.extra?.isValid" [class.identity-invalid]="identity.extra?.isInvalid"
+      [color]="identity.extra?.theme" (removed)="remove(identity)">
       {{ identity.query[this.lookupType] }}
-      ({{  identity.extra ? '' : '?'
+      ({{ identity.extra ? '' : '?'
       }}{{ identity.extra?.hasApollo ? 'A' : ''
       }}{{ identity.extra?.hasGravity ? 'G' : ''
       }}{{ identity.extra?.hasOpus ? 'O' : ''
@@ -26,14 +20,8 @@
       }})
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
-    <input
-      [disabled]="this.disable"
-      [placeholder]="this.disable ? '' : ('New ' + (this.lookupType | humanize))"
-      [matChipInputFor]="chipList"
-      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-      [matChipInputAddOnBlur]="true"
-      (paste)="paste($event)"
-      (matChipInputTokenEnd)="add($event)"
-    />
+    <input [disabled]="this.disable" [placeholder]="this.disable ? '' : ('New ' + (this.lookupType | humanize))"
+      [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+      (paste)="paste($event)" (matChipInputTokenEnd)="add($event)" />
   </mat-chip-list>
 </mat-form-field>

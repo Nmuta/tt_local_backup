@@ -12,10 +12,13 @@ import { PlayerSelectionSingleModule } from '@navbar-app/components/player-selec
 import { SunriseModule } from './sunrise/sunrise.module';
 import { UserDetailsComponent } from './user-details.component';
 import { UserDetailsRouterModule } from './user-details.routing';
+import { OpusComponent } from './opus/opus.component';
+import { ApolloComponent } from './apollo/apollo.component';
+import { GravityComponent } from './gravity/gravity.component';
 
 /** The feature module for the User Details route. */
 @NgModule({
-  declarations: [UserDetailsComponent],
+  declarations: [UserDetailsComponent, OpusComponent, ApolloComponent, GravityComponent],
   imports: [
     CommonModule,
     ErrorSpinnerModule,
