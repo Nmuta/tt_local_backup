@@ -224,11 +224,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       )
       .subscribe(results => {
         // destructure
-        const [sunriseIdentitiesBroken, opusIdentities, apolloIdentities, gravityIdentitiesBroken] = results;
-
-        // waiting on fix from Jordan
-        const sunriseIdentities = sunriseIdentitiesBroken.filter(i => i.query);
-        const gravityIdentities = gravityIdentitiesBroken.filter(i => i.query);
+        const [sunriseIdentities, opusIdentities, apolloIdentities, gravityIdentities] = results;
 
         // make lookup for faster operations later
         const sunriseLookup = keyBy<IdentityResultAlpha>(sunriseIdentities, r => r.query[this.lookupType]);
