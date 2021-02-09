@@ -49,6 +49,7 @@ export class SunriseComponent extends BaseComponent implements OnInit {
           }
         }),
         switchMap(bundle => {
+          // TODO: Cache the results of getPlayerIdentity (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/646007)
           const query = makeAlphaQuery(bundle.type as keyof IdentityQueryAlphaIntersection, bundle.name)
           return this.sunrise.getPlayerIdentity(query);
         }),
@@ -56,7 +57,6 @@ export class SunriseComponent extends BaseComponent implements OnInit {
           this.identity = identity;
         }),
         switchMap(identity => {
-          // TODO: This should be using identity.xuid (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/640413)
           return this.sunrise.getPlayerDetailsByXuid(identity.xuid).pipe(
             catchError(error => {
               this.error = error;
