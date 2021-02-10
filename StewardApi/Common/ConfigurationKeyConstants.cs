@@ -6,6 +6,21 @@
     public sealed class ConfigurationKeyConstants
     {
         /// <summary>
+        ///     The Azure instance.
+        /// </summary>
+        public const string AzureInstance = "AzureAd:Instance";
+
+        /// <summary>
+        ///     The Azure tenant ID.
+        /// </summary>
+        public const string AzureTenantId = "AzureAd:TenantId";
+
+        /// <summary>
+        ///     The Azure client ID.
+        /// </summary>
+        public const string AzureClientId = "AzureAd:ClientId";
+
+        /// <summary>
         ///     The key vault url.
         /// </summary>
         public const string KeyVaultUrl = "KeyVaultUrl";
