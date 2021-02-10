@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
 {
@@ -7,6 +8,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
     /// </summary>
     public sealed class GravityGift
     {
+        /// <summary>
+        ///     Gets or sets the game settings Id.
+        /// </summary>
+        public Guid GameSettingsId { get; set; }
+
         /// <summary>
         ///     Gets or sets the gift reason.
         /// </summary>

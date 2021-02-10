@@ -174,12 +174,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.CreditRewards, ForzaUserInventoryItemType.Currency).ConfigureAwait(true);
-                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.Cars, ForzaUserInventoryItemType.Car).ConfigureAwait(true);
-                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.EnergyRefills, ForzaUserInventoryItemType.EnergyRefill).ConfigureAwait(true);
-                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.UpgradeKits, ForzaUserInventoryItemType.UpgradeKit).ConfigureAwait(true);
-                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.MasteryKits, ForzaUserInventoryItemType.MasteryKit).ConfigureAwait(true);
-                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.Inventory.RepairKits, ForzaUserInventoryItemType.RepairKit).ConfigureAwait(true);
+                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.GameSettingsId, gift.Inventory.CreditRewards, ForzaUserInventoryItemType.Currency).ConfigureAwait(true);
+                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.GameSettingsId, gift.Inventory.Cars, ForzaUserInventoryItemType.Car).ConfigureAwait(true);
+                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.GameSettingsId, gift.Inventory.EnergyRefills, ForzaUserInventoryItemType.EnergyRefill).ConfigureAwait(true);
+                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.GameSettingsId, gift.Inventory.UpgradeKits, ForzaUserInventoryItemType.UpgradeKit).ConfigureAwait(true);
+                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.GameSettingsId, gift.Inventory.MasteryKits, ForzaUserInventoryItemType.MasteryKit).ConfigureAwait(true);
+                await this.UpdatePlayerInventoryHelperAsync(t10Id, gift.GameSettingsId, gift.Inventory.RepairKits, ForzaUserInventoryItemType.RepairKit).ConfigureAwait(true);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(t10Id, Title, requestingAgent, GiftHistoryAntecedent.T10Id, gift).ConfigureAwait(false);
             }
@@ -221,16 +221,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         ///     UpdatePlayerInventoryAsync Helper to process each item type in the GravityMasterInventory.
         /// </summary>
         /// <param name="t10Id">The T10 ID.</param>
+        /// <param name="gameSettingsId">The game settings ID.</param>
         /// <param name="items">The inventory items to add.</param>
         /// <param name="itemType">The inventory item type.</param>
         /// <returns>
-        ///     The updated <see cref="IList{GiftingMasterInventoryItemResponse}"/>.
+        ///     An awaitable task.
         /// </returns>
-        private async Task UpdatePlayerInventoryHelperAsync(string t10Id, IList<MasterInventoryItem> items, ForzaUserInventoryItemType itemType)
+        private async Task UpdatePlayerInventoryHelperAsync(string t10Id, Guid gameSettingsId, IList<MasterInventoryItem> items, ForzaUserInventoryItemType itemType)
         {
             foreach (var item in items)
             {
-                await this.gravityUserInventoryService.GrantItem(t10Id, itemType, item.Id, item.Quantity).ConfigureAwait(true);
+                await this.gravityUserInventoryService.LiveOpsGrantItem(t10Id, gameSettingsId, itemType, item.Id, item.Quantity).ConfigureAwait(true);
             }
         }
     }

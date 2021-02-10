@@ -342,6 +342,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
                 gift.ShouldNotBeNull(nameof(gift));
+                gift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gift.GiftReason));
+                gift.GameSettingsId.ShouldNotBeNull(nameof(gift.GameSettingsId));
                 gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
