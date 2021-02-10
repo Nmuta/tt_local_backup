@@ -27,7 +27,7 @@ export function makeAlphaQuery(
     case 'xuid':
       return { xuid: BigInt(value) };
     default:
-      throw new Error(`Unacceptable type ${type} (value: ${value})`);
+      throw new Error(`Unacceptable type for makeAlphaQuery: ${type} (value: ${value})`);
   }
 }
 
@@ -44,7 +44,7 @@ export function makeBetaQuery(
     case 't10Id':
       return { t10Id: value.toString() };
     default:
-      throw new Error(`Unacceptable type ${type} (value: ${value})`);
+      throw new Error(`Unacceptable type for makeBetaQuery: ${type} (value: ${value})`);
   }
 }
 

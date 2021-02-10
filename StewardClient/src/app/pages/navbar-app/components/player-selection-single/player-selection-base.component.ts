@@ -37,6 +37,8 @@ export interface AugmentedCompositeIdentity {
     hasApollo: boolean;
     hasOpus: boolean;
     hasGravity: boolean;
+    label: string;
+    labelTooltip: string;
   };
 }
 
@@ -286,7 +288,23 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             hasApollo: compositeIdentity.apollo ? !compositeIdentity.apollo?.error : false,
             hasOpus: compositeIdentity.opus ? !compositeIdentity.opus?.error : false,
             hasGravity: compositeIdentity.gravity ? !compositeIdentity.gravity?.error : false,
+            label: '',
+            labelTooltip: '',
           };
+
+          compositeIdentity.extra.label = [
+            compositeIdentity.extra.hasApollo ? 'A' : undefined,
+            compositeIdentity.extra.hasGravity ? 'G' : undefined,
+            compositeIdentity.extra.hasOpus ? 'O' : undefined,
+            compositeIdentity.extra.hasSunrise ? 'S' : undefined,
+          ].filter(v => !!v).join('');
+
+          compositeIdentity.extra.labelTooltip = [
+            compositeIdentity.extra.hasApollo ? 'Apollo' : undefined,
+            compositeIdentity.extra.hasGravity ? 'Gravity' : undefined,
+            compositeIdentity.extra.hasOpus ? 'Opus' : undefined,
+            compositeIdentity.extra.hasSunrise ? 'Sunrise' : undefined,
+          ].filter(v => !!v).join(', ');
 
           this.onFound();
         }

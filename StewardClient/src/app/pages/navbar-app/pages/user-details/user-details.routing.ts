@@ -14,7 +14,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'sunrise/gamertag/',
+        redirectTo: 'sunrise',
         pathMatch: 'full',
       },
       {

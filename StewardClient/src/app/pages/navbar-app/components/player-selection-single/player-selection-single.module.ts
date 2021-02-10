@@ -7,6 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { FormsModule } from '@angular/forms';
+import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /** Feature module for selecting a single player. */
 @NgModule({
@@ -19,6 +21,8 @@ import { FormsModule } from '@angular/forms';
     MatButtonToggleModule,
     PipesModule,
     FormsModule,
+    ErrorSpinnerModule,
+    MatTooltipModule,
   ],
   exports: [PlayerSelectionSingleComponent],
 })

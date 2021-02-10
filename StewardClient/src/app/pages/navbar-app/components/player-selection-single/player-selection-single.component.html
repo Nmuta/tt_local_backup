@@ -21,10 +21,13 @@
       [color]="identity.extra?.theme"
       (removed)="remove(identity)"
     >
-      {{ identity.query[this.lookupType] }}
-      ({{ identity.extra ? '' : '?' }}{{ identity.extra?.hasApollo ? 'A' : ''
-      }}{{ identity.extra?.hasGravity ? 'G' : '' }}{{ identity.extra?.hasOpus ? 'O' : ''
-      }}{{ identity.extra?.hasSunrise ? 'S' : '' }})
+      <span>{{ identity.query[this.lookupType] }}</span>
+
+      <error-spinner [isActive]="!identity.extra" [error]="identity.extra?.isInvalid ? identity : undefined" spinnerMessage="Finding user"></error-spinner>
+
+      <span *ngIf="identity.extra?.label" [matTooltip]="identity.extra?.labelTooltip">
+        ({{ identity.extra.label }})
+      </span>
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
     <input

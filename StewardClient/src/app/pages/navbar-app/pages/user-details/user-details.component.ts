@@ -38,7 +38,6 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private readonly route: ActivatedRoute,
-    private readonly router: Router,
   ) {
     super();
   }
