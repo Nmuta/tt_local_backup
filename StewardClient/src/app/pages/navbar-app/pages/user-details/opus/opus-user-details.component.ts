@@ -8,7 +8,7 @@ import { UserDetailsComponent } from '../user-details.component';
   templateUrl: './opus-user-details.component.html',
   styleUrls: ['./opus-user-details.component.scss'],
 })
-export class OpusComponent {
+export class OpusUserDetailsComponent {
   /** The lookup type. */
   public get lookupType(): string {
     return this.parent.lookupType ?? '?';

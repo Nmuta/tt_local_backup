@@ -3,15 +3,15 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { UserDetailsComponent } from '../user-details.component';
 
-import { SunriseComponent } from './sunrise-user-details.component';
+import { SunriseUserDetailsComponent } from './sunrise-user-details.component';
 
-describe('SunriseComponent', () => {
-  let component: SunriseComponent;
-  let fixture: ComponentFixture<SunriseComponent>;
+describe('SunriseUserDetailsComponent', () => {
+  let component: SunriseUserDetailsComponent;
+  let fixture: ComponentFixture<SunriseUserDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SunriseComponent],
+      declarations: [SunriseUserDetailsComponent],
       imports: [PipesModule],
       providers: [{ provide: UserDetailsComponent, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
@@ -19,7 +19,7 @@ describe('SunriseComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SunriseComponent);
+    fixture = TestBed.createComponent(SunriseUserDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

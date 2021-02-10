@@ -8,7 +8,7 @@ import { UserDetailsComponent } from '../user-details.component';
   templateUrl: './sunrise-user-details.component.html',
   styleUrls: ['./sunrise-user-details.component.scss'],
 })
-export class SunriseComponent {
+export class SunriseUserDetailsComponent {
   /** The lookup type. */
   public get lookupType(): string {
     return this.parent.lookupType ?? '?';

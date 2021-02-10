@@ -9,7 +9,7 @@ import { UserDetailsComponent } from '../user-details.component';
   templateUrl: './apollo-user-details.component.html',
   styleUrls: ['./apollo-user-details.component.scss'],
 })
-export class ApolloComponent {
+export class ApolloUserDetailsComponent {
   /** The lookup type. */
   public get lookupType(): string {
     return this.parent.lookupType ?? '?';

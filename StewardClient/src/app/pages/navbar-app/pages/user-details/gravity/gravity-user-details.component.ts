@@ -9,7 +9,7 @@ import { UserDetailsComponent } from '../user-details.component';
   templateUrl: './gravity-user-details.component.html',
   styleUrls: ['./gravity-user-details.component.scss'],
 })
-export class GravityComponent {
+export class GravityUserDetailsComponent {
   /** The lookup type. */
   public get lookupType(): string {
     return this.parent.lookupType ?? '?';

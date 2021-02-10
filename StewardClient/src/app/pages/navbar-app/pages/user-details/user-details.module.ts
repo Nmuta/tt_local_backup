@@ -11,10 +11,10 @@ import { PlayerSelectionSingleModule } from '@navbar-app/components/player-selec
 
 import { UserDetailsComponent } from './user-details.component';
 import { UserDetailsRouterModule } from './user-details.routing';
-import { OpusComponent } from './opus/opus-user-details.component';
-import { ApolloComponent } from './apollo/apollo-user-details.component';
-import { GravityComponent } from './gravity/gravity-user-details.component';
-import { SunriseComponent } from './sunrise/sunrise-user-details.component';
+import { OpusUserDetailsComponent } from './opus/opus-user-details.component';
+import { ApolloUserDetailsComponent } from './apollo/apollo-user-details.component';
+import { GravityUserDetailsComponent } from './gravity/gravity-user-details.component';
+import { SunriseUserDetailsComponent } from './sunrise/sunrise-user-details.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
@@ -32,10 +32,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
   declarations: [
     UserDetailsComponent,
-    SunriseComponent,
-    OpusComponent,
-    ApolloComponent,
-    GravityComponent,
+    SunriseUserDetailsComponent,
+    OpusUserDetailsComponent,
+    ApolloUserDetailsComponent,
+    GravityUserDetailsComponent,
   ],
   imports: [
     CommonModule,

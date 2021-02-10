@@ -3,15 +3,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { UserDetailsComponent } from '../user-details.component';
 
-import { GravityComponent } from './gravity-user-details.component';
+import { GravityUserDetailsComponent } from './gravity-user-details.component';
 
-describe('GravityComponent', () => {
-  let component: GravityComponent;
-  let fixture: ComponentFixture<GravityComponent>;
+describe('GravityUserDetailsComponent', () => {
+  let component: GravityUserDetailsComponent;
+  let fixture: ComponentFixture<GravityUserDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GravityComponent],
+      declarations: [GravityUserDetailsComponent],
       imports: [PipesModule],
       providers: [{ provide: UserDetailsComponent, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
@@ -19,7 +19,7 @@ describe('GravityComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GravityComponent);
+    fixture = TestBed.createComponent(GravityUserDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
