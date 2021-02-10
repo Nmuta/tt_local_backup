@@ -145,8 +145,11 @@ describe('GiftBasketBaseComponent', () => {
     });
   });
 
-  describe('Method: clearGiftBasket', () => {
+  describe('Method: clearGiftBasketState', () => {
     beforeEach(() => {
+      component.sendGiftForm.controls['giftReason'].setValue('test value');
+      component.isLoading = true;
+      component.loadError = { foo: 'bar' };
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       component.giftBasket.data = component.giftBasket.data = [
         {
@@ -168,9 +171,12 @@ describe('GiftBasketBaseComponent', () => {
 
     it('should empty gift basket data', () => {
       expect(component.giftBasket.data.length).toEqual(2);
-      component.clearGiftBasket();
+      component.clearGiftBasketState();
 
       expect(component.giftBasket.data.length).toEqual(0);
+      expect(component.isLoading).toBeFalsy();
+      expect(component.loadError).toBeUndefined();
+      expect(component.sendGiftForm.controls['giftReason'].value).toEqual('');
     });
   });
 

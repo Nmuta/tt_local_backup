@@ -15,6 +15,7 @@ import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { GravityGift } from '@models/gravity';
 import { SunriseGift, SunriseGroupGift } from '@models/sunrise';
 import { ApolloGift, ApolloGroupGift } from '@models/apollo';
+import { GiftHistoryAntecedent } from '@shared/constants';
 
 export type InventoryItem = {
   itemId: bigint;
@@ -27,8 +28,10 @@ export type InventoryItemGroup = {
   items: MasterInventoryItem[];
 };
 export type GiftUnion = GravityGift | SunriseGift | ApolloGift;
-export type GroupGiftUnion = SunriseGroupGift | ApolloGroupGift;
-
+export type FileDownload = {
+  name: string,
+  encodedUri: string,
+};
 
 export type GiftBasketModel = MasterInventoryItem & { edit: boolean };
 
@@ -47,6 +50,8 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   public giftBasket = new MatTableDataSource<GiftBasketModel>();
   /** Gifting response. */
   public giftResponse: GiftResponses<bigint | string>;
+  /** Gifting response file download. */
+  public giftResponseFileDownload: FileDownload;
   /** The gift basket display columns */
   public displayedColumns: string[] = ['itemId', 'description', 'itemType', 'quantity', 'remove'];
   /** Gift reasons */
@@ -98,7 +103,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   /** Sends a gift to players. */
   public abstract sendGiftToPlayers(gift: GiftUnion): Observable<BackgroundJob<void>>;
 
-   /** Sends a gift to an LSP group. */
+  /** Sends a gift to an LSP group. */
   public abstract sendGiftToLspGroup(gift: GiftUnion): Observable<GiftResponse<bigint>>;
 
   /** Adds a new item to the gift basket. */
@@ -121,11 +126,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     });
 
     this.giftBasket.data = temporaryGiftBasket;
-  }
-
-  /** Clears the gift basket. */
-  public clearGiftBasket(): void {
-    this.giftBasket.data = [];
   }
 
   /** Edit item quantity */
@@ -160,34 +160,38 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     );
   }
 
-   /** Sends the gift basket. */
-   public sendGiftBasket(): void {
+  /** Sends the gift basket. */
+  public sendGiftBasket(): void {
     this.isLoading = true;
     const gift = this.generateGiftInventoryFromGiftBasket();
 
-    const sendGift$: Observable<BackgroundJob<void> | GiftResponse<bigint>> = this.usingPlayerIdentities
+    const sendGift$: Observable<BackgroundJob<void> | GiftResponse<bigint>> = this
+      .usingPlayerIdentities
       ? this.sendGiftToPlayers(gift)
       : this.sendGiftToLspGroup(gift);
 
-    sendGift$.pipe(
-      takeUntil(this.onDestroy$),
-      catchError(error => {
-        this.loadError = error;
-        this.isLoading = false;
-        return NEVER;
-      }),
-      take(1),
-      tap(response => {
-        // If response is a background job, we must wait for it to complete.
-        if(!!(response as BackgroundJob<void>)?.jobId) {
-          this.waitForBackgroundJobToComplete(response as BackgroundJob<void>);
-          return;
-        }
+    sendGift$
+      .pipe(
+        takeUntil(this.onDestroy$),
+        catchError(error => {
+          this.loadError = error;
+          this.isLoading = false;
+          return NEVER;
+        }),
+        take(1),
+        tap(response => {
+          // If response is a background job, we must wait for it to complete.
+          if (!!(response as BackgroundJob<void>)?.jobId) {
+            this.waitForBackgroundJobToComplete(response as BackgroundJob<void>);
+            return;
+          }
 
-        this.giftResponse = [response as GiftResponse<bigint>];
-        this.isLoading = false;
-      }),
-    ).subscribe();
+          this.giftResponse = [response as GiftResponse<bigint>];
+          this.giftResponseFileDownload = this.createGiftResultsFileDownload();
+          this.isLoading = false;
+        }),
+      )
+      .subscribe();
   }
 
   /** Waits for a background job to complete. */
@@ -206,6 +210,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
           switch (job.status) {
             case BackgroundJobStatus.Completed:
               this.giftResponse = job.parsedResult;
+              this.giftResponseFileDownload = this.createGiftResultsFileDownload();
               break;
             case BackgroundJobStatus.InProgress:
               throw 'still in progress';
@@ -216,6 +221,17 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
           this.isLoading = false;
         }),
         retryWhen(errors => errors.pipe(delayWhen(() => timer(3_000)))),
-      ).subscribe();
+      )
+      .subscribe();
+  }
+
+  /** Clears the gift basket state by reinitializing component variables. */
+  public clearGiftBasketState(): void {
+    this.sendGiftForm.reset();
+    this.giftResponse = undefined;
+    this.giftResponseFileDownload = undefined;
+    this.giftBasket.data = [];
+    this.loadError = undefined;
+    this.isLoading = false;
   }
 }

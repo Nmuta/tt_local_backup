@@ -1,0 +1,14 @@
+<div>
+  <mat-expansion-panel  *ngFor="let result of giftingResult" [disabled]="!result.error">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ result.playerOrLspGroup }} ({{ GiftHistoryAntecedent[result.identityAntecedent] }})
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ !!result.error ? 'Click to see error' : 'Gift sent successfully' }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    
+    <p>{{ result.error | bigjson }}</p>
+  </mat-expansion-panel>
+</div>

@@ -82,7 +82,7 @@ export class ApolloGiftBasketComponent
     return this.apolloService.postGiftPlayersUsingBackgroundTask(groupGift);
   }
 
-   /** Sends an apollo gift to an LSP group. */
+  /** Sends an apollo gift to an LSP group. */
   public sendGiftToLspGroup(gift: ApolloGift): Observable<GiftResponse<bigint>> {
     return this.apolloService.postGiftLspGroup(this.lspGroup, gift);
   }

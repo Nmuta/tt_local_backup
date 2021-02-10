@@ -183,9 +183,15 @@ export class SunriseService {
   }
 
   /** Gift players inventory items using a background task. */
-  public postGiftPlayersUsingBackgroundTask(gift: SunriseGroupGift): Observable<BackgroundJob<void>> {
+  public postGiftPlayersUsingBackgroundTask(
+    gift: SunriseGroupGift,
+  ): Observable<BackgroundJob<void>> {
     const params = new HttpParams().set('useBackgroundProcessing', 'true');
-    return this.apiService.postRequest<BackgroundJob<void>>(`${this.basePath}/gifting/players`, gift, params);
+    return this.apiService.postRequest<BackgroundJob<void>>(
+      `${this.basePath}/gifting/players`,
+      gift,
+      params,
+    );
   }
 
   /** Gift lsp group inventory items. */

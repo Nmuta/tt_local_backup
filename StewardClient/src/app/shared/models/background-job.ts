@@ -8,6 +8,6 @@ export interface BackgroundJob<T> {
 
 export enum BackgroundJobStatus {
   Completed = 'Completed',
-  InProgress  = 'InProgress',
-  Failed  = 'Failed',
+  InProgress = 'InProgress',
+  Failed = 'Failed',
 }

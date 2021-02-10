@@ -16,3 +16,13 @@
   </mat-expansion-panel-header>
   <pre>{{ input | bigjson }}</pre>
 </mat-expansion-panel>
+<button
+  class="reset-state"
+  mat-raised-button
+  color="primary"
+  matTooltip="Reset the failed tool."
+  (click)="emitResetStateEvent()"
+  clickStop
+>
+  Reset Tool
+</button>

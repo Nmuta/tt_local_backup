@@ -19,6 +19,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { ItemSelectionModule } from '../item-selection/item-selection.module';
+import { GiftingResultModule } from '../gifting-result/gifting-result.module';
 
 /** The gift basket module. */
 @NgModule({
@@ -42,6 +43,7 @@ import { ItemSelectionModule } from '../item-selection/item-selection.module';
     PipesModule,
     JsonDumpModule,
     ItemSelectionModule,
+    GiftingResultModule,
   ],
   exports: [GravityGiftBasketComponent, SunriseGiftBasketComponent, ApolloGiftBasketComponent],
 })

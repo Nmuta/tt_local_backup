@@ -79,7 +79,7 @@ export class SunriseGiftBasketComponent
           .filter(item => item.itemType === 'emotes')
           .map(item => item as MasterInventoryItem),
       },
-    }
+    };
   }
 
   /** Sends a sunrise gift to players. */
@@ -92,7 +92,7 @@ export class SunriseGiftBasketComponent
     return this.sunriseService.postGiftPlayersUsingBackgroundTask(groupGift);
   }
 
-   /** Sends a sunrise gift to an LSP group. */
+  /** Sends a sunrise gift to an LSP group. */
   public sendGiftToLspGroup(gift: SunriseGift): Observable<GiftResponse<bigint>> {
     return this.sunriseService.postGiftLspGroup(this.lspGroup, gift);
   }

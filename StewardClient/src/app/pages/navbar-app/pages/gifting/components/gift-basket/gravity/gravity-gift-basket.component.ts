@@ -101,7 +101,7 @@ export class GravityGiftBasketComponent
     return this.gravityService.postGiftPlayerUsingBackgroundTask(t10Id, gift);
   }
 
-   /** Sends a gravity gift to an LSP group. */
+  /** Sends a gravity gift to an LSP group. */
   public sendGiftToLspGroup(_gift: GravityGift): Observable<GiftResponse<bigint>> {
     return throwError('Gravity does not support LSP gifting.');
   }

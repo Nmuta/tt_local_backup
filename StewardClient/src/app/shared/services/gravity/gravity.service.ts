@@ -107,7 +107,10 @@ export class GravityService {
   }
 
   /** Gift players inventory items using a background task. */
-  public postGiftPlayerUsingBackgroundTask(t10Id: string, gift: GravityGift): Observable<BackgroundJob<void>> {
+  public postGiftPlayerUsingBackgroundTask(
+    t10Id: string,
+    gift: GravityGift,
+  ): Observable<BackgroundJob<void>> {
     const params = new HttpParams().set('useBackgroundProcessing', 'true');
     return this.apiService.postRequest<BackgroundJob<void>>(
       `${this.basePath}/gifting/t10Id(${t10Id})`,

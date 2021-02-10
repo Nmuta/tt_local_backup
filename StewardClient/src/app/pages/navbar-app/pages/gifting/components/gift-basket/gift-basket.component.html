@@ -127,7 +127,7 @@
           <button
             mat-raised-button
             color="accent"
-            (click)="clearGiftBasket()"
+            (click)="clearGiftBasketState()"
             [disabled]="giftBasket?.data?.length <= 0"
           >
             Clear Gift Basket
@@ -141,15 +141,22 @@
 <ng-template #failState>
   <div id="fail-state">
     <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-    <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+    <json-dump *ngIf="loadError" [input]="loadError" (resetStateEvent)="clearGiftBasketState()">Failure occured.</json-dump>
   </div>
 </ng-template>
 
 <ng-template #giftResponseState>
-  <!-- Gift was successful -->
-  <ng-container *ngIf="!!giftResponse">
-    <p>Gifting was successful</p>
-  </ng-container>
+    <gifting-result [giftingResult]="giftResponse"></gifting-result>
+    <button
+      class="reset-state"
+      mat-raised-button
+      color="accent"
+      matTooltip="Reset the failed tool."
+      (click)="clearGiftBasketState()"
+      clickStop
+    >
+      Reset Tool
+    </button>
 </ng-template>
 
 <ng-template #waitingForGameSettings>
