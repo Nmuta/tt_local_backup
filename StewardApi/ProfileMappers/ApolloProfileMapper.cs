@@ -59,6 +59,24 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaSharedConsoleUser, ApolloSharedConsoleUser>().ReverseMap();
             this.CreateMap<ForzaUserGroup, ApolloLspGroup>();
             this.CreateMap<ApolloPlayerDetails, IdentityResultAlpha>().ReverseMap();
+
+            this.CreateMap<ApolloGroupGift, ApolloGift>().ReverseMap();
+            this.CreateMap<ApolloCar, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.ItemId));
+            this.CreateMap<ApolloInventoryItem, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.ItemId));
+            this.CreateMap<ApolloPlayerInventory, ApolloGift>()
+                .ForMember(dest => dest.GiftReason, opt => opt.MapFrom(source => source.GiftReason))
+                .ForMember(dest => dest.Inventory, opt => opt.MapFrom((source, destObj, destMem, context) => new ApolloMasterInventory()
+                {
+                    CreditRewards = new List<MasterInventoryItem>()
+                    {
+                        new MasterInventoryItem() { Description = "Credits", Quantity = source.Credits, Id = -1 },
+                    },
+                    Cars = context.Mapper.Map<IList<MasterInventoryItem>>(source.Cars),
+                    VanityItems = context.Mapper.Map<IList<MasterInventoryItem>>(source.VanityItems),
+                }))
+                .ReverseMap();
         }
     }
 }

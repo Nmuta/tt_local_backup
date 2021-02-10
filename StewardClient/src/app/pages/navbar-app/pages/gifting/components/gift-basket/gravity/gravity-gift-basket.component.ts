@@ -3,12 +3,11 @@ import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { GameTitleCodeName } from '@models/enums';
 import { GravityPlayerInventory } from '@models/gravity';
 import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
-import { GravityGameSettingsItem } from '@models/gravity/inventory-items/gravity-game-settings-item.model';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { Store } from '@ngxs/store';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
-import { GiftBasketBaseComponent, InventoryItemGroup } from '../gift-basket.base.component';
+import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
 /** Gravity gift basket. */
 @Component({
@@ -57,46 +56,6 @@ export class GravityGiftBasketComponent
       this.masterInventory = undefined;
 
       // TODO:When no/ bad game settings, we need to show show errors for all items in the gift basket and disallow gift send
-    }
-  }
-
-  /** Sets up the stateGroups variable used with the autocomplete */
-  public buildMatAutocompleteState(): void {
-    // Loop through master list properties (categories)
-    for (const prop in this.masterInventory) {
-      if (this.masterInventory.hasOwnProperty(prop)) {
-        const inventoryGroup = {
-          category: prop,
-          items: [],
-        } as InventoryItemGroup;
-
-        const masterInventoryItems = this.masterInventory[prop] as GravityGameSettingsItem[];
-        for (let i = 0; i < masterInventoryItems.length; i++) {
-          // const masterInventoryItem = masterInventoryItems[i];
-          const inventoryItem = {
-            itemType: prop,
-            itemId: undefined,
-            description: undefined,
-            quantity: 0,
-          };
-
-          // TODO: Update this logic so each property in GravityMasterInventory is handled according to build valid
-          // inventory items
-
-          // switch(prop) {
-          //   case 'itemType':
-          //     inventoryItem.itemId = -1;
-          //     inventoryItem.description = masterInventoryItem;
-          //     break;
-          //   default:
-          //     break;
-          // }
-
-          inventoryGroup.items.push(inventoryItem);
-        }
-
-        this.inventoryItemGroups.push(inventoryGroup);
-      }
     }
   }
 }

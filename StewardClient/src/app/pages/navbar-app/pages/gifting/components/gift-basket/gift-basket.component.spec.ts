@@ -44,7 +44,7 @@ describe('GiftBasketBaseComponent', () => {
 
     beforeEach(() => {
       testItemNew = {
-        itemId: BigInt(1234),
+        id: BigInt(1234),
         description: 'test description',
         quantity: 10,
         itemType: 'test type',
@@ -70,7 +70,7 @@ describe('GiftBasketBaseComponent', () => {
         component.giftBasket = new MatTableDataSource<GiftBasketModel>();
         component.giftBasket.data = [
           {
-            itemId: BigInt(1234),
+            id: BigInt(1234),
             description: 'test description',
             quantity: 50,
             itemType: 'test type',
@@ -98,7 +98,7 @@ describe('GiftBasketBaseComponent', () => {
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       component.giftBasket.data = [
         {
-          itemId: BigInt(1234),
+          id: BigInt(1234),
           description: 'test description',
           quantity: 50,
           itemType: 'test type',
@@ -116,19 +116,19 @@ describe('GiftBasketBaseComponent', () => {
   });
 
   describe('Method: removeItemFromGiftBasket', () => {
-    const testItemId = BigInt(4321);
+    const testid = BigInt(4321);
     beforeEach(() => {
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       component.giftBasket.data = [
         {
-          itemId: BigInt(1234),
+          id: BigInt(1234),
           description: 'test description 1',
           quantity: 50,
           itemType: 'test type 1',
           edit: false,
         },
         {
-          itemId: testItemId,
+          id: testid,
           description: 'test description 2',
           quantity: 10,
           itemType: 'test type 2',
@@ -141,7 +141,7 @@ describe('GiftBasketBaseComponent', () => {
       component.removeItemFromGiftBasket(0);
 
       expect(component.giftBasket.data.length).toEqual(1);
-      expect(component.giftBasket.data[0].itemId).toEqual(testItemId);
+      expect(component.giftBasket.data[0].id).toEqual(testid);
     });
   });
 
@@ -150,14 +150,14 @@ describe('GiftBasketBaseComponent', () => {
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       component.giftBasket.data = component.giftBasket.data = [
         {
-          itemId: BigInt(1234),
+          id: BigInt(1234),
           description: 'test description 1',
           quantity: 50,
           itemType: 'test type 1',
           edit: false,
         },
         {
-          itemId: BigInt(4321),
+          id: BigInt(4321),
           description: 'test description 2',
           quantity: 10,
           itemType: 'test type 2',
@@ -189,14 +189,14 @@ describe('GiftBasketBaseComponent', () => {
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       component.giftBasket.data = component.giftBasket.data = [
         {
-          itemId: BigInt(1234),
+          id: BigInt(1234),
           description: 'test description 1',
           quantity: 50,
           itemType: 'test type 1',
           edit: false,
         },
         {
-          itemId: BigInt(4321),
+          id: BigInt(4321),
           description: 'test description 2',
           quantity: 10,
           itemType: 'test type 2',

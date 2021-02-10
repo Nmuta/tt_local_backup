@@ -30,6 +30,8 @@ export class MockApolloService {
     .and.callFake((query: IdentityQueryAlphaBatch) =>
       defer(() => of(ApolloPlayersIdentitiesFakeApi.make(query))),
     );
+
+  public getMasterInventory = jasmine.createSpy('getMasterInventory').and.returnValue(of({}));
 }
 
 /** Creates an injectable mock for Apollo Service. */

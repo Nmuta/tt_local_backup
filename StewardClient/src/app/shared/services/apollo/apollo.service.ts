@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ApolloBanResult, ApolloPlayerDetails, ApolloPlayerInventory } from '@models/apollo';
+import {
+  ApolloBanResult,
+  ApolloMasterInventory,
+  ApolloPlayerDetails,
+  ApolloPlayerInventory,
+} from '@models/apollo';
 import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
 import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
 import { ApolloGiftHistory } from '@models/apollo/apollo-gift-history.model';
@@ -87,6 +92,11 @@ export class ApolloService {
   /** Gets the apollo lsp groups. */
   public getLspGroups(): Observable<LspGroups> {
     return this.apiService.getRequest<LspGroups>(`${this.basePath}/groups`);
+  }
+
+  /** Gets the apollo master inventory. */
+  public getMasterInventory(): Observable<ApolloMasterInventory> {
+    return this.apiService.getRequest<ApolloMasterInventory>(`${this.basePath}/masterInventory`);
   }
 
   /** Gets the apollo player's inventory */

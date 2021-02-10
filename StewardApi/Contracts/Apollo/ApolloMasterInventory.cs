@@ -8,6 +8,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
     public sealed class ApolloMasterInventory
     {
         /// <summary>
+        ///     Gets or sets the credit reward options.
+        /// </summary>
+        public IList<MasterInventoryItem> CreditRewards { get; set; }
+
+        /// <summary>
         ///     Gets or sets the cars.
         /// </summary>
         public IList<MasterInventoryItem> Cars { get; set; }

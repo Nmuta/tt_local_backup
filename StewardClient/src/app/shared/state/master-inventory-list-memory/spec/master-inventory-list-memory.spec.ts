@@ -8,10 +8,12 @@ import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { MasterInventoryListMemoryState } from '../master-inventory-list-memory.state';
 import { createMockGravityService, GravityService } from '@services/gravity';
 import {
+  GetApolloMasterInventoryList,
   GetGravityMasterInventoryList,
   GetSunriseMasterInventoryList,
 } from '../master-inventory-list-memory.actions';
-import { NEVER, of } from 'rxjs';
+import { NEVER } from 'rxjs';
+import { ApolloService, createMockApolloService } from '@services/apollo';
 
 describe('State: MasterInventoryListMemoryState', () => {
   let service: MasterInventoryListMemoryState;
@@ -19,19 +21,26 @@ describe('State: MasterInventoryListMemoryState', () => {
 
   let mockGravityService: GravityService;
   let mockSunriseService: SunriseService;
+  let mockApolloService: ApolloService;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, NgxsModule.forRoot([MasterInventoryListMemoryState])],
-        providers: [createMockGravityService(), createMockSunriseService()],
+        providers: [
+          createMockGravityService(),
+          createMockSunriseService(),
+          createMockApolloService(),
+        ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
 
       service = TestBed.inject(MasterInventoryListMemoryState);
       store = TestBed.inject(Store);
+
       mockGravityService = TestBed.inject(GravityService);
       mockSunriseService = TestBed.inject(SunriseService);
+      mockApolloService = TestBed.inject(ApolloService);
 
       store.reset({
         giftingMasterListMemory: {
@@ -39,13 +48,6 @@ describe('State: MasterInventoryListMemoryState', () => {
           [GameTitleCodeName.FH4]: undefined,
         },
       });
-
-      mockGravityService.getGameSettings = jasmine
-        .createSpy('getGameSettings')
-        .and.returnValue(of({}));
-      mockSunriseService.getMasterInventory = jasmine
-        .createSpy('getMasterInventory')
-        .and.returnValue(of({}));
     }),
   );
 
@@ -159,6 +161,50 @@ describe('State: MasterInventoryListMemoryState', () => {
             }),
             tap(() => {
               expect(mockSunriseService.getMasterInventory).toHaveBeenCalled();
+            }),
+          )
+          .subscribe();
+      });
+    });
+  });
+
+  describe('[GetApolloMasterInventoryList] Action', () => {
+    describe('Master list already exists in state', () => {
+      beforeEach(() => {
+        store.reset({
+          giftingMasterListMemory: {
+            [GameTitleCodeName.FM7]: {},
+          },
+        });
+      });
+
+      it('should not request apollo master list from api', () => {
+        store
+          .dispatch(new GetApolloMasterInventoryList())
+          .pipe(
+            catchError(() => {
+              expect(false).toBeTruthy();
+              return NEVER;
+            }),
+            tap(() => {
+              expect(mockApolloService.getMasterInventory).not.toHaveBeenCalled();
+            }),
+          )
+          .subscribe();
+      });
+    });
+
+    describe('Master list does not exist in state', () => {
+      it('should request apollo master list from api', () => {
+        store
+          .dispatch(new GetApolloMasterInventoryList())
+          .pipe(
+            catchError(() => {
+              expect(false).toBeTruthy();
+              return NEVER;
+            }),
+            tap(() => {
+              expect(mockApolloService.getMasterInventory).toHaveBeenCalled();
             }),
           )
           .subscribe();

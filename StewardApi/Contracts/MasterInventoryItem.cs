@@ -8,7 +8,7 @@
         /// <summary>
         ///     Gets or sets the item ID.
         /// </summary>
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         ///     Gets or sets the item description.
@@ -19,5 +19,10 @@
         ///     Gets or sets the item quantity.
         /// </summary>
         public int Quantity { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the item error.
+        /// </summary>
+        public object Error { get; set; }
     }
 }

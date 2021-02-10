@@ -174,13 +174,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<SunriseLspGroup>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<SunrisePlayerInventory> UpdatePlayerInventoryAsync(SunrisePlayerInventory playerInventory, Dictionary<string, string> headersToSend)
-        {
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid/inventory");
-
-            return await ServiceClient.SendRequestAsync<SunrisePlayerInventory>(HttpMethod.Post, path, this.authKey, Version, playerInventory, headersToSend).ConfigureAwait(false);
-        }
-
         public async Task<ResponseWithHeaders<SunrisePlayerInventory>> UpdatePlayerInventoryWithHeaderResponseAsync(SunrisePlayerInventory playerInventory, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
         {
             playerInventory.ShouldNotBeNull(nameof(playerInventory));
@@ -190,11 +183,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestWithHeaderResponseAsync<SunrisePlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, playerInventory, headersToSend).ConfigureAwait(false);
         }
 
-        public async Task<SunrisePlayerInventory> UpdateGroupInventoriesByXuidAsync(SunriseGroupGift groupGift, Dictionary<string, string> headersToSend)
+        public async Task<SunrisePlayerInventory> UpdateGroupInventoriesByXuidAsync(SunriseGroupGift groupGift)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}group/xuids/inventory");
+            var path = new Uri(this.baseUri, $"{TitlePath}gifting/players");
 
-            return await ServiceClient.SendRequestAsync<SunrisePlayerInventory>(HttpMethod.Post, path, this.authKey, Version, groupGift, headersToSend).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<SunrisePlayerInventory>(HttpMethod.Post, path, this.authKey, Version, groupGift).ConfigureAwait(false);
         }
 
         public async Task<SunrisePlayerInventory> UpdateGroupInventoriesByGamertagAsync(SunriseGroupGift groupGift, Dictionary<string, string> headersToSend)
@@ -204,11 +197,17 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<SunrisePlayerInventory>(HttpMethod.Post, path, this.authKey, Version, groupGift, headersToSend).ConfigureAwait(false);
         }
 
-        public async Task<SunrisePlayerInventory> UpdateGroupInventoriesByLspGroupId(int groupId, SunrisePlayerInventory playerInventory, Dictionary<string, string> headersToSend)
+        public async Task GiftInventoryByLspGroupId(int groupId, SunriseGift gift)
         {
-            var path = new Uri(this.baseUri, $"{TitlePath}group/groupId({groupId})/inventory");
+            var path = new Uri(this.baseUri, $"{TitlePath}gifting/groupId({groupId})");
 
-            return await ServiceClient.SendRequestAsync<SunrisePlayerInventory>(HttpMethod.Post, path, this.authKey, Version, playerInventory, headersToSend).ConfigureAwait(false);
+            try
+            {
+                await ServiceClient.SendRequestAsync(HttpMethod.Post, path, this.authKey, Version, gift).ConfigureAwait(false);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
         }
 
         public async Task<IList<SunriseGiftHistory>> GetGiftHistoriesAsync(ulong xuid)

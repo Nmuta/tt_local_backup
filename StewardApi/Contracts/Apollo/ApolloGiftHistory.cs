@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <param name="giftSendDateUtc">The gift send date.</param>
         /// <param name="giftInventory">The gift inventory.</param>
-        public ApolloGiftHistory(GiftHistoryAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, ApolloPlayerInventory giftInventory)
+        public ApolloGiftHistory(GiftHistoryAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, ApolloGift giftInventory)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -67,6 +67,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         /// <summary>
         ///     Gets or sets gift inventory.
         /// </summary>
-        public ApolloPlayerInventory GiftInventory { get; set; }
+        public ApolloGift GiftInventory { get; set; }
     }
 }

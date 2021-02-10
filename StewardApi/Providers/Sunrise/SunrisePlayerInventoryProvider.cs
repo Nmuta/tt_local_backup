@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.UserInventory.FH4.master.Generated;
@@ -93,17 +94,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task UpdatePlayerInventoryAsync(ulong xuid, SunrisePlayerInventory playerInventory, string requestingAgent)
+        public async Task UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requestingAgent)
         {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            gift.ShouldNotBeNull(nameof(gift));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-            playerInventory.WheelSpins = Math.Min(playerInventory.WheelSpins, MaxWheelSpinAmount);
-            playerInventory.SuperWheelSpins = Math.Min(playerInventory.SuperWheelSpins, MaxWheelSpinAmount);
+            var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
+            var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
-            var inventoryGifts = this.BuildInventoryItems(playerInventory);
-
-            var currencyGifts = this.BuildCurrencyItems(playerInventory);
+            currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
+            currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
 
             async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
             {
@@ -112,52 +112,37 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.Xuid, playerInventory).ConfigureAwait(false);
+            await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.Xuid, gift).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task UpdatePlayerInventoriesAsync(IList<ulong> xuids, SunrisePlayerInventory playerInventory, string requestingAgent)
+        public async Task UpdatePlayerInventoriesAsync(IList<ulong> xuids, SunriseGroupGift groupGift, string requestingAgent)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            groupGift.ShouldNotBeNull(nameof(groupGift));
+            groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
+            var gift = this.mapper.Map<SunriseGift>(groupGift);
             foreach (var xuid in xuids)
             {
-                await this.UpdatePlayerInventoryAsync(xuid, playerInventory, requestingAgent).ConfigureAwait(false);
+                await this.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent).ConfigureAwait(false);
             }
-        }
-
-        /// <inheritdoc />
-        public async Task UpdatePlayerInventoriesAsync(IList<string> gamertags, SunrisePlayerInventory playerInventory, string requestingAgent)
-        {
-            gamertags.ShouldNotBeNull(nameof(gamertags));
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-            var xuids = new List<ulong>();
-            foreach (var gamertag in gamertags)
-            {
-                var result = await this.sunriseUserService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
-                xuids.Add(result.userData.qwXuid);
-            }
-
-            await this.UpdatePlayerInventoriesAsync(xuids, playerInventory, requestingAgent).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task UpdateGroupInventoriesAsync(int groupId, SunrisePlayerInventory playerInventory, string requestingAgent)
+        public async Task UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requestingAgent)
         {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
+            gift.ShouldNotBeNull(nameof(gift));
+            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-            playerInventory.WheelSpins = Math.Min(playerInventory.WheelSpins, MaxWheelSpinAmount);
-            playerInventory.SuperWheelSpins = Math.Min(playerInventory.SuperWheelSpins, MaxWheelSpinAmount);
+            var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
+            var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
-            var inventoryGifts = this.BuildInventoryItems(playerInventory);
-
-            var currencyGifts = this.BuildCurrencyItems(playerInventory);
+            currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
+            currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
 
             async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
             {
@@ -166,10 +151,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.LspGroupId, playerInventory).ConfigureAwait(false);
+            await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.LspGroupId, gift).ConfigureAwait(false);
         }
 
-        private async Task SendGifts(Func<InventoryItemType, int, Task> serviceCall, IDictionary<InventoryItemType, IList<SunriseInventoryItem>> inventoryGifts, IDictionary<InventoryItemType, int> currencyGifts)
+        private async Task SendGifts(Func<InventoryItemType, int, Task> serviceCall, IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts, IDictionary<InventoryItemType, int> currencyGifts)
         {
             foreach (var (key, value) in inventoryGifts)
             {
@@ -177,7 +162,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 {
                     for (var i = 0; i < item.Quantity; i++)
                     {
-                        await serviceCall(key, item.ItemId).ConfigureAwait(false);
+                        await serviceCall(key, item.Id).ConfigureAwait(false);
                     }
                 }
             }
@@ -202,27 +187,33 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
         }
 
-        private IDictionary<InventoryItemType, IList<SunriseInventoryItem>> BuildInventoryItems(SunrisePlayerInventory playerInventory)
+        private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(SunriseMasterInventory giftInventory)
         {
-            return new Dictionary<InventoryItemType, IList<SunriseInventoryItem>>
+            return new Dictionary<InventoryItemType, IList<MasterInventoryItem>>
             {
-                { InventoryItemType.Car, this.EmptyIfNull(playerInventory.Cars).ConvertAll(car => (SunriseInventoryItem)car) },
-                { InventoryItemType.CarHorns, this.EmptyIfNull(playerInventory.CarHorns) },
-                { InventoryItemType.Emote, this.EmptyIfNull(playerInventory.Emotes) },
-                { InventoryItemType.QuickChatLines, this.EmptyIfNull(playerInventory.QuickChatLines) },
-                { InventoryItemType.VanityItem, this.EmptyIfNull(playerInventory.VanityItems) }
+                { InventoryItemType.Car, this.EmptyIfNull(giftInventory.Cars) },
+                { InventoryItemType.CarHorns, this.EmptyIfNull(giftInventory.CarHorns) },
+                { InventoryItemType.Emote, this.EmptyIfNull(giftInventory.Emotes) },
+                { InventoryItemType.QuickChatLines, this.EmptyIfNull(giftInventory.QuickChatLines) },
+                { InventoryItemType.VanityItem, this.EmptyIfNull(giftInventory.VanityItems) }
             };
         }
 
-        private IDictionary<InventoryItemType, int> BuildCurrencyItems(SunrisePlayerInventory playerInventory)
+        private IDictionary<InventoryItemType, int> BuildCurrencyItems(SunriseMasterInventory giftInventory)
         {
+            var credits = giftInventory.CreditRewards.FirstOrDefault(data => { return data.Description == "Credits"; });
+            var forzathonPoints = giftInventory.CreditRewards.FirstOrDefault(data => { return data.Description == "ForzathonPoints"; });
+            var skillPoints = giftInventory.CreditRewards.FirstOrDefault(data => { return data.Description == "SkillPoints"; });
+            var wheelSpins = giftInventory.CreditRewards.FirstOrDefault(data => { return data.Description == "WheelSpins"; });
+            var superWheelSpins = giftInventory.CreditRewards.FirstOrDefault(data => { return data.Description == "SuperWheelSpins"; });
+
             return new Dictionary<InventoryItemType, int>
             {
-                { InventoryItemType.Credits, playerInventory.Credits },
-                { InventoryItemType.ForzathonPoints, playerInventory.ForzathonPoints },
-                { InventoryItemType.SkillPoints, playerInventory.SkillPoints },
-                { InventoryItemType.SuperWheelSpins, playerInventory.SuperWheelSpins },
-                { InventoryItemType.WheelSpins, playerInventory.WheelSpins }
+                { InventoryItemType.Credits, credits != default(MasterInventoryItem) ? credits.Quantity : 0 },
+                { InventoryItemType.ForzathonPoints, forzathonPoints != default(MasterInventoryItem) ? forzathonPoints.Quantity : 0 },
+                { InventoryItemType.SkillPoints, skillPoints != default(MasterInventoryItem) ? skillPoints.Quantity : 0 },
+                { InventoryItemType.WheelSpins, wheelSpins != default(MasterInventoryItem) ? wheelSpins.Quantity : 0 },
+                { InventoryItemType.SuperWheelSpins, superWheelSpins != default(MasterInventoryItem) ? superWheelSpins.Quantity : 0 },
             };
         }
 

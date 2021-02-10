@@ -18,11 +18,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <param name="title">The title.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <param name="giftHistoryAntecedent">The gift history antecedent.</param>
-        /// <param name="playerInventory">The player inventory.</param>
+        /// <param name="gift">The gift that was sent to player.</param>
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, SunrisePlayerInventory playerInventory);
+        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, SunriseGift gift);
 
         /// <summary>
         ///     Gets gift histories.
@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <param name="title">The title.</param>
         /// <param name="giftHistoryAntecedent">The gift history antecedent.</param>
         /// <returns>
-        ///     The list of <see cref="GiftHistory"/>.
+        ///     The list of <see cref="SunriseGiftHistory"/>.
         /// </returns>
         Task<IList<SunriseGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftHistoryAntecedent giftHistoryAntecedent);
     }

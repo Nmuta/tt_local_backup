@@ -11,3 +11,11 @@ export class GetSunriseMasterInventoryList {
     /** Empty */
   }
 }
+
+/** Gets apollo's master inventory list. */
+export class GetApolloMasterInventoryList {
+  public static readonly type = '[GiftingMasterListMemory] Get Apollo Master Inventory List';
+  constructor() {
+    /** Empty */
+  }
+}

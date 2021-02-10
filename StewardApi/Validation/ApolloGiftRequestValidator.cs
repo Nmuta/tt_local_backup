@@ -2,21 +2,22 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 
 namespace Turn10.LiveOps.StewardApi.Validation
 {
     /// <summary>
-    ///     Validates a <see cref="ApolloGroupGift"/> request.
+    ///     Validates a <see cref="ApolloGift"/> request.
     /// </summary>
-    public sealed class ApolloGroupGiftRequestValidator : RequestValidatorBase, IRequestValidator<ApolloGroupGift>
+    public sealed class ApolloGiftRequestValidator : RequestValidatorBase, IRequestValidator<ApolloGift>
     {
         private readonly IRequestValidator<ApolloMasterInventory> masterInventoryRequestValidator;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ApolloGroupGiftRequestValidator"/> class.
+        ///     Initializes a new instance of the <see cref="ApolloGiftRequestValidator"/> class.
         /// </summary>
         /// <param name="masterInventoryRequestValidator">The player inventory request validator.</param>
-        public ApolloGroupGiftRequestValidator(IRequestValidator<ApolloMasterInventory> masterInventoryRequestValidator)
+        public ApolloGiftRequestValidator(IRequestValidator<ApolloMasterInventory> masterInventoryRequestValidator)
         {
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
 
@@ -24,7 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Validation
         }
 
         /// <inheritdoc />
-        public void Validate(ApolloGroupGift model, ModelStateDictionary modelState)
+        public void Validate(ApolloGift model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
@@ -36,7 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Validation
 
             if (model.Inventory == null)
             {
-                modelState.AddModelError("GroupGift.GiftInventory", $"Property {nameof(model.Inventory)} was not supplied.");
+                modelState.AddModelError("Gift.GiftInventory", $"Property {nameof(model.Inventory)} was not supplied.");
             }
             else
             {
@@ -45,19 +46,10 @@ namespace Turn10.LiveOps.StewardApi.Validation
         }
 
         /// <inheritdoc />
-        public void ValidateIds(ApolloGroupGift model, ModelStateDictionary modelState)
+        public void ValidateIds(ApolloGift model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
-
-            if (model.Xuids == null || !model.Xuids.Any())
-            {
-                var xuidStatus = model.Xuids == null ? "Null" : "Empty";
-
-                modelState.AddModelError(
-                    "GroupGift.Xuids",
-                    $"Properties must have at least one xuid or gamertag. {nameof(model.Xuids)} was {xuidStatus}.");
-            }
         }
     }
 }

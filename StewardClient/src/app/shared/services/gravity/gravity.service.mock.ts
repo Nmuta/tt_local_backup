@@ -26,6 +26,7 @@ export class MockGravityService {
     .and.callFake((query: IdentityQueryBetaBatch) =>
       defer(() => of(GravityPlayersIdentitiesFakeApi.make(query))),
     );
+  public getGameSettings = jasmine.createSpy('getGameSettings').and.returnValue(of({}));
 }
 
 /** Creates an injectable mock for Gravity Service. */
