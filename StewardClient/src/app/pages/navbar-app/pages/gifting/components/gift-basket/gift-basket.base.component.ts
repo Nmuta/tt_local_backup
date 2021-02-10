@@ -13,9 +13,8 @@ import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/ope
 import { NEVER, Observable, timer } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { GravityGift } from '@models/gravity';
-import { SunriseGift, SunriseGroupGift } from '@models/sunrise';
-import { ApolloGift, ApolloGroupGift } from '@models/apollo';
-import { GiftHistoryAntecedent } from '@shared/constants';
+import { SunriseGift } from '@models/sunrise';
+import { ApolloGift } from '@models/apollo';
 
 export type InventoryItem = {
   itemId: bigint;
@@ -28,11 +27,6 @@ export type InventoryItemGroup = {
   items: MasterInventoryItem[];
 };
 export type GiftUnion = GravityGift | SunriseGift | ApolloGift;
-export type FileDownload = {
-  name: string,
-  encodedUri: string,
-};
-
 export type GiftBasketModel = MasterInventoryItem & { edit: boolean };
 
 /** The base gift-basket component. */
@@ -50,8 +44,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   public giftBasket = new MatTableDataSource<GiftBasketModel>();
   /** Gifting response. */
   public giftResponse: GiftResponses<bigint | string>;
-  /** Gifting response file download. */
-  public giftResponseFileDownload: FileDownload;
   /** The gift basket display columns */
   public displayedColumns: string[] = ['itemId', 'description', 'itemType', 'quantity', 'remove'];
   /** Gift reasons */
@@ -187,7 +179,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
           }
 
           this.giftResponse = [response as GiftResponse<bigint>];
-          this.giftResponseFileDownload = this.createGiftResultsFileDownload();
           this.isLoading = false;
         }),
       )
@@ -210,7 +201,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
           switch (job.status) {
             case BackgroundJobStatus.Completed:
               this.giftResponse = job.parsedResult;
-              this.giftResponseFileDownload = this.createGiftResultsFileDownload();
               break;
             case BackgroundJobStatus.InProgress:
               throw 'still in progress';
@@ -226,12 +216,14 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   }
 
   /** Clears the gift basket state by reinitializing component variables. */
-  public clearGiftBasketState(): void {
-    this.sendGiftForm.reset();
-    this.giftResponse = undefined;
-    this.giftResponseFileDownload = undefined;
-    this.giftBasket.data = [];
+  public clearGiftBasketError(clearGiftBasket: boolean = false): void {
     this.loadError = undefined;
     this.isLoading = false;
+
+    if(clearGiftBasket) {
+      this.sendGiftForm.reset();
+      this.giftResponse = undefined;
+      this.giftBasket.data = [];
+    }
   }
 }
