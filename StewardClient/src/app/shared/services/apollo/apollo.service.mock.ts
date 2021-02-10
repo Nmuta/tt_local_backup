@@ -1,5 +1,7 @@
 import { Injectable, Provider } from '@angular/core';
 import { ApolloPlayersBanFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/ban';
+import { ApolloPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/identities';
+import { IdentityQueryAlpha, IdentityQueryAlphaBatch } from '@models/identity-query.model';
 import { defer, of } from 'rxjs';
 
 import { ApolloService } from './apollo.service';
@@ -18,6 +20,16 @@ export class MockApolloService {
   public postBanPlayers = jasmine
     .createSpy('postBanPlayers')
     .and.returnValue(defer(() => ApolloPlayersBanFakeApi.make()));
+  public getPlayerIdentity = jasmine
+    .createSpy('getPlayerIdentity')
+    .and.callFake((query: IdentityQueryAlpha) =>
+      defer(() => of(ApolloPlayersIdentitiesFakeApi.make([query]))),
+    );
+  public getPlayerIdentities = jasmine
+    .createSpy('getPlayerIdentities')
+    .and.callFake((query: IdentityQueryAlphaBatch) =>
+      defer(() => of(ApolloPlayersIdentitiesFakeApi.make(query))),
+    );
 }
 
 /** Creates an injectable mock for Apollo Service. */

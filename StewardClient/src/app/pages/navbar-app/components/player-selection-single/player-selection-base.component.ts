@@ -19,7 +19,7 @@ import { map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
 import { GravityService } from '@services/gravity';
 import { ApolloService } from '@services/apollo';
 import { OpusService } from '@services/opus';
-import { combineLatest, of, Subject } from 'rxjs';
+import { combineLatest, Observable, of, Subject } from 'rxjs';
 
 export interface AugmentedCompositeIdentity {
   query: IdentityQueryBeta & IdentityQueryAlpha;
@@ -165,7 +165,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     if (index >= 0) {
       this.foundIdentities.splice(index, 1);
       this.knownIdentities.delete(item.query[this.lookupType].toString());
-      this.lookupListChange.next();
+      this.lookupListChange.emit();
     }
   }
 
@@ -192,6 +192,8 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
    * 3. updates results with the query results, if possible
    */
   private handleNewQueries(newQueries: IdentityQueryBeta[], emit = true): void {
+    if (isEmpty(newQueries)) { return; }
+
     const tempResults = newQueries.map(q => <AugmentedCompositeIdentity>{ query: q });
     tempResults.forEach(v => {
       this.knownIdentities.add(v.query[this.lookupType].toString());
@@ -199,14 +201,18 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     });
 
     if (emit) {
-      this.lookupListChange.next(this.lookupList);
+      this.lookupListChange.emit(this.lookupList);
     }
 
     const queryIsAlphaCompatible = every(newQueries, q => isValidAlphaQuery(q));
     const queryIsBetaCompatible = every(newQueries, q => isValidBetaQuery(q));
 
-    // get the value and replace it in the source if it's still there
-    combineLatest([
+    const queries: [
+      a: Observable<IdentityResultAlpha[]>,
+      b: Observable<IdentityResultAlpha[]>,
+      c: Observable<IdentityResultAlpha[]>,
+      d: Observable<IdentityResultBeta[]>,
+    ] = [
       queryIsAlphaCompatible
         ? this.sunrise.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
         : of(undefined as IdentityResultAlpha[]),
@@ -219,7 +225,10 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       queryIsBetaCompatible
         ? this.gravity.getPlayerIdentities(newQueries as IdentityQueryBeta[])
         : of(undefined as IdentityResultBeta[]),
-    ])
+    ];
+
+    // get the value and replace it in the source if it's still there
+    combineLatest(queries)
       .pipe(takeUntil(this.onDestroy$), takeUntil(this.lookupTypeGroupChange))
       .subscribe(results => {
         // destructure
