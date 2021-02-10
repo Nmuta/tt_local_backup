@@ -297,14 +297,18 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             compositeIdentity.extra.hasGravity ? 'G' : undefined,
             compositeIdentity.extra.hasOpus ? 'O' : undefined,
             compositeIdentity.extra.hasSunrise ? 'S' : undefined,
-          ].filter(v => !!v).join('');
+          ]
+            .filter(v => !!v)
+            .join('');
 
           compositeIdentity.extra.labelTooltip = [
             compositeIdentity.extra.hasApollo ? 'Apollo' : undefined,
             compositeIdentity.extra.hasGravity ? 'Gravity' : undefined,
             compositeIdentity.extra.hasOpus ? 'Opus' : undefined,
             compositeIdentity.extra.hasSunrise ? 'Sunrise' : undefined,
-          ].filter(v => !!v).join(', ');
+          ]
+            .filter(v => !!v)
+            .join(', ');
 
           this.onFound();
         }

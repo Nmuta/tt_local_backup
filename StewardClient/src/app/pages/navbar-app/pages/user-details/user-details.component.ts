@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { IdentityQueryBetaIntersection } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection-single/player-selection-base.component';
@@ -35,10 +35,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     'gravity',
   ];
 
-  constructor(
-    private readonly store: Store,
-    private readonly route: ActivatedRoute,
-  ) {
+  constructor(private readonly store: Store, private readonly route: ActivatedRoute) {
     super();
   }
 

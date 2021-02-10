@@ -23,7 +23,11 @@
     >
       <span>{{ identity.query[this.lookupType] }}</span>
 
-      <error-spinner [isActive]="!identity.extra" [error]="identity.extra?.isInvalid ? identity : undefined" spinnerMessage="Finding user"></error-spinner>
+      <error-spinner
+        [isActive]="!identity.extra"
+        [error]="identity.extra?.isInvalid ? identity : undefined"
+        spinnerMessage="Finding user"
+      ></error-spinner>
 
       <span *ngIf="identity.extra?.label" [matTooltip]="identity.extra?.labelTooltip">
         ({{ identity.extra.label }})
