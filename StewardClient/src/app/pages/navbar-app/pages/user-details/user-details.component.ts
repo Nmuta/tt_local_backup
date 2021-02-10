@@ -37,29 +37,45 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
 
   /** Generates a nav tooltip */
   public get sunriseTooltip(): string {
-    if (!this.identity) { return null; }
-    if (this.identity.extra.hasSunrise) { return null; }
+    if (!this.identity) {
+      return null;
+    }
+    if (this.identity.extra.hasSunrise) {
+      return null;
+    }
     return `Player ${first(this.lookupList)} does not have a Sunrise account`;
   }
 
   /** Generates a nav tooltip */
   public get opusTooltip(): string {
-    if (!this.identity) { return null; }
-    if (this.identity.extra.hasOpus) { return null; }
+    if (!this.identity) {
+      return null;
+    }
+    if (this.identity.extra.hasOpus) {
+      return null;
+    }
     return `Player ${first(this.lookupList)} does not have an Opus account`;
   }
 
   /** Generates a nav tooltip */
   public get gravityTooltip(): string {
-    if (!this.identity) { return null; }
-    if (this.identity.extra.hasGravity) { return null; }
+    if (!this.identity) {
+      return null;
+    }
+    if (this.identity.extra.hasGravity) {
+      return null;
+    }
     return `Player ${first(this.lookupList)} does not have a Gravity account`;
   }
 
   /** Generates a nav tooltip */
   public get apolloTooltip(): string {
-    if (!this.identity) { return null; }
-    if (this.identity.extra.hasApollo) { return null; }
+    if (!this.identity) {
+      return null;
+    }
+    if (this.identity.extra.hasApollo) {
+      return null;
+    }
     return `Player ${first(this.lookupList)} does not have a Apollo account`;
   }
 

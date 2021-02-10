@@ -192,7 +192,9 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
    * 3. updates results with the query results, if possible
    */
   private handleNewQueries(newQueries: IdentityQueryBeta[], emit = true): void {
-    if (isEmpty(newQueries)) { return; }
+    if (isEmpty(newQueries)) {
+      return;
+    }
 
     const tempResults = newQueries.map(q => <AugmentedCompositeIdentity>{ query: q });
     tempResults.forEach(v => {
