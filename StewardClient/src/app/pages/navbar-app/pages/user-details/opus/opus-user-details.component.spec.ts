@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { UserDetailsComponent } from '../user-details.component';
 
-import { OpusComponent } from './opus.component';
+import { OpusComponent } from './opus-user-details.component';
 
 describe('OpusComponent', () => {
   let component: OpusComponent;

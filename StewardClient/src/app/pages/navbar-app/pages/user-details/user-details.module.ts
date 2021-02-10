@@ -11,10 +11,10 @@ import { PlayerSelectionSingleModule } from '@navbar-app/components/player-selec
 
 import { UserDetailsComponent } from './user-details.component';
 import { UserDetailsRouterModule } from './user-details.routing';
-import { OpusComponent } from './opus/opus.component';
-import { ApolloComponent } from './apollo/apollo.component';
-import { GravityComponent } from './gravity/gravity.component';
-import { SunriseComponent } from './sunrise/sunrise.component';
+import { OpusComponent } from './opus/opus-user-details.component';
+import { ApolloComponent } from './apollo/apollo-user-details.component';
+import { GravityComponent } from './gravity/gravity-user-details.component';
+import { SunriseComponent } from './sunrise/sunrise-user-details.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
@@ -26,6 +26,7 @@ import { OverviewModule } from '@shared/views/overview/overview.module';
 import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inventory.module';
 import { PlayerNotificationsModule } from '@shared/views/player-notifications/player-notifications.module';
 import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -60,6 +61,7 @@ import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
     PlayerNotificationsModule,
     PlayerInventoryModule,
     PlayerSelectionSingleModule,
+    MatTooltipModule,
   ],
 })
 export class UserDetailsModule {}

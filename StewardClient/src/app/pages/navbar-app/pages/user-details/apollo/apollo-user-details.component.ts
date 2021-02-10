@@ -6,8 +6,8 @@ import { UserDetailsComponent } from '../user-details.component';
 /** Component for displaying routed Apollo user details. */
 @Component({
   selector: 'app-apollo',
-  templateUrl: './apollo.component.html',
-  styleUrls: ['./apollo.component.scss'],
+  templateUrl: './apollo-user-details.component.html',
+  styleUrls: ['./apollo-user-details.component.scss'],
 })
 export class ApolloComponent {
   /** The lookup type. */

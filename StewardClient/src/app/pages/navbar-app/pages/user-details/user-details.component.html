@@ -1,6 +1,7 @@
 <mat-toolbar color="default">
   <a
     [class.mat-button-disabled]="!identity?.extra.hasSunrise"
+    [matTooltip]="sunriseTooltip"
     [routerLink]="sunriseRouterLink"
     [queryParams]="{ gamertag: gamertag }"
     mat-button
@@ -10,6 +11,7 @@
   >
   <a
     [class.mat-button-disabled]="!identity?.extra.hasOpus"
+    [matTooltip]="opusTooltip"
     [routerLink]="opusRouterLink"
     [queryParams]="{ gamertag: gamertag }"
     mat-button
@@ -19,6 +21,7 @@
   >
   <a
     [class.mat-button-disabled]="!identity?.extra.hasApollo"
+    [matTooltip]="apolloTooltip"
     [routerLink]="apolloRouterLink"
     [queryParams]="{ gamertag: gamertag }"
     mat-button
@@ -28,6 +31,7 @@
   >
   <a
     [class.mat-button-disabled]="!identity?.extra.hasGravity"
+    [matTooltip]="gravityTooltip"
     [routerLink]="gravityRouterLink"
     [queryParams]="{ gamertag: gamertag }"
     mat-button

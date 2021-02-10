@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { UserDetailsComponent } from '../user-details.component';
 
-import { ApolloComponent } from './apollo.component';
+import { ApolloComponent } from './apollo-user-details.component';
 
 describe('ApolloComponent', () => {
   let component: ApolloComponent;

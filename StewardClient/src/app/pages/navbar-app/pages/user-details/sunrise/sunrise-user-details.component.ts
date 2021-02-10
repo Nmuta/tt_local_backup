@@ -3,12 +3,12 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 
-/** Component for displaying routed Opus user details. */
+/** Component for displaying routed Sunrise user details. */
 @Component({
-  templateUrl: './opus.component.html',
-  styleUrls: ['./opus.component.scss'],
+  templateUrl: './sunrise-user-details.component.html',
+  styleUrls: ['./sunrise-user-details.component.scss'],
 })
-export class OpusComponent {
+export class SunriseComponent {
   /** The lookup type. */
   public get lookupType(): string {
     return this.parent.lookupType ?? '?';

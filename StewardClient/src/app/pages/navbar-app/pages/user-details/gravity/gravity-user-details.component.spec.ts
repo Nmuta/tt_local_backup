@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { UserDetailsComponent } from '../user-details.component';
 
-import { GravityComponent } from './gravity.component';
+import { GravityComponent } from './gravity-user-details.component';
 
 describe('GravityComponent', () => {
   let component: GravityComponent;

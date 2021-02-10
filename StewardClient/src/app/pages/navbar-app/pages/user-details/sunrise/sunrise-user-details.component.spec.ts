@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { UserDetailsComponent } from '../user-details.component';
 
-import { SunriseComponent } from './sunrise.component';
+import { SunriseComponent } from './sunrise-user-details.component';
 
 describe('SunriseComponent', () => {
   let component: SunriseComponent;

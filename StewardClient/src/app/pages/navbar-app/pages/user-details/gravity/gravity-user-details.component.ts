@@ -1,14 +1,15 @@
 import { Component, forwardRef, Inject } from '@angular/core';
-import { IdentityResultAlpha } from '@models/identity-query.model';
+import { IdentityResultBeta } from '@models/identity-query.model';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
 
-/** Component for displaying routed Sunrise user details. */
+/** Component for displaying routed Gravity user details. */
 @Component({
-  templateUrl: './sunrise.component.html',
-  styleUrls: ['./sunrise.component.scss'],
+  selector: 'app-gravity',
+  templateUrl: './gravity-user-details.component.html',
+  styleUrls: ['./gravity-user-details.component.scss'],
 })
-export class SunriseComponent {
+export class GravityComponent {
   /** The lookup type. */
   public get lookupType(): string {
     return this.parent.lookupType ?? '?';
@@ -20,7 +21,7 @@ export class SunriseComponent {
   }
 
   /** The specific relevant identity from the parent. */
-  public get identity(): IdentityResultAlpha {
+  public get identity(): IdentityResultBeta {
     return this.parent.identity?.sunrise;
   }
 

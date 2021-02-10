@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ApolloComponent } from './apollo/apollo.component';
-import { GravityComponent } from './gravity/gravity.component';
-import { OpusComponent } from './opus/opus.component';
+import { ApolloComponent } from './apollo/apollo-user-details.component';
+import { GravityComponent } from './gravity/gravity-user-details.component';
+import { OpusComponent } from './opus/opus-user-details.component';
 
-import { SunriseComponent } from './sunrise/sunrise.component';
+import { SunriseComponent } from './sunrise/sunrise-user-details.component';
 import { UserDetailsComponent } from './user-details.component';
 
 const routes: Routes = [
