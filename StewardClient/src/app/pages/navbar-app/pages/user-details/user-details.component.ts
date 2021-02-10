@@ -50,8 +50,9 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
         this.lookupType = params.get('lookupType') as keyof IdentityQueryBetaIntersection;
       }
       if (params.has('lookupName')) {
-        if (params.get('lookupName')) {
-          this.lookupList = [params.get('lookupName')];
+        const lookupName = params.get('lookupName');
+        if (!!lookupName.trim()) {
+          this.lookupList = [lookupName];
         }
       }
       if (!this.lookupType) {

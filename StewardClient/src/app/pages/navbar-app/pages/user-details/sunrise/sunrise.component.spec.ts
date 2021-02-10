@@ -1,6 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { UserDetailsComponent } from '../user-details.component';
 
@@ -12,9 +11,9 @@ describe('SunriseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PipesModule],
       declarations: [SunriseComponent],
-      providers: [createMockSunriseService(), { provide: UserDetailsComponent, useValue: {} }],
+      imports: [PipesModule],
+      providers: [{ provide: UserDetailsComponent, useValue: {} }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });

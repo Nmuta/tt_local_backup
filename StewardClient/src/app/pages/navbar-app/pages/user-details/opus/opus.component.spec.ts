@@ -1,4 +1,7 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PipesModule } from '@shared/pipes/pipes.module';
+import { UserDetailsComponent } from '../user-details.component';
 
 import { OpusComponent } from './opus.component';
 
@@ -9,6 +12,9 @@ describe('OpusComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [OpusComponent],
+      imports: [PipesModule],
+      providers: [{ provide: UserDetailsComponent, useValue: {} }],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

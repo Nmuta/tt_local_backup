@@ -37,10 +37,10 @@
 
 <ng-template #noIdentity>
   <h1>Finding {{ lookupName }} by {{ lookupType | humanize }}</h1>
-  <ng-container *ngIf="identity.error">
+  <ng-container *ngIf="identity?.error">
     <hr />
     <h2>Request failed</h2>
     <p>If this keeps happening, contact support.</p>
-    <json-dump [input]="identity.error">View error</json-dump>
+    <json-dump [input]="identity?.error">View error</json-dump>
   </ng-container>
 </ng-template>
