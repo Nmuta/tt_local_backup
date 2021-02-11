@@ -15,6 +15,7 @@ import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { GravityGift } from '@models/gravity';
 import { SunriseGift } from '@models/sunrise';
 import { ApolloGift } from '@models/apollo';
+import { GiftHistoryAntecedent } from '@shared/constants';
 
 export type InventoryItem = {
   itemId: bigint;
@@ -216,14 +217,42 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   }
 
   /** Clears the gift basket state by reinitializing component variables. */
-  public clearGiftBasketError(clearGiftBasket: boolean = false): void {
+  public resetGiftBasketUI(clearItemsInBasket: boolean = false): void {
+    this.giftResponse = undefined;
     this.loadError = undefined;
     this.isLoading = false;
 
-    if(clearGiftBasket) {
+    if(clearItemsInBasket) {
       this.sendGiftForm.reset();
-      this.giftResponse = undefined;
       this.giftBasket.data = [];
     }
+  }
+
+  /** Downloads the JSON results as a CSV file. */
+  public downloadResults(): void {
+    const csvRows = [
+      ['PlayerOrLspGroup', 'IdentityType', 'Error']
+    ];
+    
+    for(let i = 0; i < this.giftResponse.length; i++) {
+        const result = this.giftResponse[i];
+        csvRows[csvRows.length] = [
+            `'${result.playerOrLspGroup}`,
+            GiftHistoryAntecedent[result.identityAntecedent],
+            JSON.stringify(result?.error)
+        ];
+    }
+
+    const csvContent = 'data:text/csv;charset=utf-8,' 
+        + csvRows.map(row => row.join(',')).join('\n');
+    
+    const encodedUri = encodeURI(csvContent);
+    const fileName = `GiftingResults_${new Date().toISOString()}.csv`;
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   }
 }

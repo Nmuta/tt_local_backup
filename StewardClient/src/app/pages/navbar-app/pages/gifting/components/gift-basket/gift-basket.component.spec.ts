@@ -145,7 +145,7 @@ describe('GiftBasketBaseComponent', () => {
     });
   });
 
-  describe('Method: clearGiftBasketState', () => {
+  describe('Method: resetGiftBasketUI', () => {
     beforeEach(() => {
       component.sendGiftForm.controls['giftReason'].setValue('test value');
       component.isLoading = true;
@@ -171,12 +171,12 @@ describe('GiftBasketBaseComponent', () => {
 
     it('should empty gift basket data', () => {
       expect(component.giftBasket.data.length).toEqual(2);
-      component.clearGiftBasketState();
+      component.resetGiftBasketUI(true);
 
       expect(component.giftBasket.data.length).toEqual(0);
       expect(component.isLoading).toBeFalsy();
       expect(component.loadError).toBeUndefined();
-      expect(component.sendGiftForm.controls['giftReason'].value).toEqual('');
+      expect(component.sendGiftForm.controls['giftReason'].value).toBeNull();
     });
   });
 
