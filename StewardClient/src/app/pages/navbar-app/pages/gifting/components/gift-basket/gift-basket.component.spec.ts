@@ -7,6 +7,10 @@ import { IdentityResultBeta } from '@models/identity-query.model';
 import { GiftBasketBaseComponent, GiftBasketModel } from './gift-basket.base.component';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { of, throwError } from 'rxjs';
+import { BackgroundJob } from '@models/background-job';
+import { GiftResponse } from '@models/gift-response';
+import { GiftHistoryAntecedent } from '@shared/constants';
 
 describe('GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<GiftBasketBaseComponent<IdentityResultBeta>>;
@@ -306,6 +310,96 @@ describe('GiftBasketBaseComponent', () => {
         const response = component.isGiftBasketReady();
 
         expect(response).toBeFalsy();
+      });
+    });
+  });
+
+  describe('Method: sendGiftBasket', () => {
+    beforeEach(() => {
+      component.generateGiftInventoryFromGiftBasket = jasmine.createSpy('generateGiftInventoryFromGiftBasket').and.returnValue(of({}));
+      component.sendGiftToPlayers = jasmine.createSpy('sendGiftToPlayers').and.returnValue(of({}));
+      component.sendGiftToLspGroup = jasmine.createSpy('sendGiftToLspGroup').and.returnValue(of({}));
+
+      component.usingPlayerIdentities = true;
+    });
+
+    it('should call generateGiftInventoryFromGiftBasket', () => {
+      component.sendGiftBasket();
+
+      expect(component.generateGiftInventoryFromGiftBasket).toHaveBeenCalled();
+    });
+
+    describe('If usingPlayerIdentities is true', () => {
+      it('should call sendGiftToPlayers', () => {
+        component.usingPlayerIdentities = true;
+        component.sendGiftBasket();
+  
+        expect(component.sendGiftToPlayers).toHaveBeenCalled();
+      });
+    });
+
+    describe('If usingPlayerIdentities is false', () => {
+      it('should call sendGiftToLspGroup', () => {
+        component.usingPlayerIdentities = false;
+        component.sendGiftBasket();
+  
+        expect(component.sendGiftToLspGroup).toHaveBeenCalled();
+      });
+    });
+
+    describe('When subscribing to the send gift observable', () => {
+      describe('And an error is caught', () => {
+        const error = { message: 'error-message' };
+        beforeEach(() => {
+          component.sendGiftToPlayers = jasmine.createSpy('sendGiftToPlayers').and.returnValue(throwError(error));
+        });
+
+        it('should set loadError on component', () => {
+          component.sendGiftBasket();
+
+          expect(component.loadError).toEqual(error);
+          expect(component.isLoading).toBeFalsy();
+        });
+      });
+
+      describe('And a BackgoundTask is returned', () => {
+        const jobId = 'test-job-id';
+        beforeEach(() => {
+          component.sendGiftToPlayers = jasmine.createSpy('sendGiftToPlayers').and.returnValue(of({ jobId: jobId } as BackgroundJob<void>));
+          component.waitForBackgroundJobToComplete = jasmine.createSpy('waitForBackgroundJobToComplete');
+        });
+
+        it('should call waitForBackgroundJobToComplete', () => {
+          component.sendGiftBasket();
+
+          expect(component.waitForBackgroundJobToComplete).toHaveBeenCalled();
+        });
+
+        it('should not set giftResponse', () => {
+          component.sendGiftBasket();
+
+          expect(component.giftResponse).toBeUndefined();
+        });
+      });
+
+      describe('And a GiftResponse is returned', () => {
+        const testGiftResponse = { playerOrLspGroup: BigInt(11234567890), identityAntecedent: GiftHistoryAntecedent.LspGroupId } as GiftResponse<bigint>;
+        beforeEach(() => {
+          component.sendGiftToPlayers = jasmine.createSpy('sendGiftToPlayers').and.returnValue(of(testGiftResponse));
+          component.waitForBackgroundJobToComplete = jasmine.createSpy('waitForBackgroundJobToComplete');
+        });
+
+        it('should not call waitForBackgroundJobToComplete', () => {
+          component.sendGiftBasket();
+
+          expect(component.waitForBackgroundJobToComplete).not.toHaveBeenCalled();
+        });
+
+        it('should set giftResponse', () => {
+          component.sendGiftBasket();
+
+          expect(component.giftResponse).toEqual([testGiftResponse]);
+        });
       });
     });
   });
