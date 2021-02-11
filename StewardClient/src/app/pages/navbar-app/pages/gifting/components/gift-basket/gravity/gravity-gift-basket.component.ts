@@ -12,8 +12,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { GravityService } from '@services/gravity';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
-import { NEVER, Observable, throwError } from 'rxjs';
-import { catchError, take, takeUntil, tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
 /** Gravity gift basket. */
@@ -104,27 +103,5 @@ export class GravityGiftBasketComponent
   /** Sends a gravity gift to an LSP group. */
   public sendGiftToLspGroup(_gift: GravityGift): Observable<GiftResponse<bigint>> {
     return throwError('Gravity does not support LSP gifting.');
-  }
-
-  /** Sends the gift basket. */
-  public sendGiftBasket(): void {
-    this.isLoading = true;
-    const gift: GravityGift = this.generateGiftInventoryFromGiftBasket();
-
-    this.gravityService
-      .postGiftPlayerUsingBackgroundTask(this.playerIdentities[0].t10Id, gift)
-      .pipe(
-        takeUntil(this.onDestroy$),
-        catchError(error => {
-          this.loadError = error;
-          this.isLoading = false;
-          return NEVER;
-        }),
-        take(1),
-        tap(jobId => {
-          this.waitForBackgroundJobToComplete(jobId);
-        }),
-      )
-      .subscribe();
   }
 }
