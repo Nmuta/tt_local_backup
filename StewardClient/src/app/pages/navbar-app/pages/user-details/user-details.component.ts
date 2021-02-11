@@ -21,6 +21,9 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   public lookupList: string[] = [];
   public identity: AugmentedCompositeIdentity;
 
+  /** The only lookup name. */
+  public get lookupName(): string { return first(this.lookupList) ?? ''; }
+
   public sunriseRouterLink = [
     ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
     'sunrise',
@@ -107,12 +110,11 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
 
   /** Handles when the lookup list changes. */
   public lookupChange(replaceUrl: boolean = false): void {
-    const name = first(this.lookupList) ?? '';
     this.store.dispatch(
       new Navigate([...this.sunriseRouterLink], null, {
         queryParams: {
           lookupType: this.lookupType,
-          lookupName: name,
+          lookupName: this.lookupName,
         },
         replaceUrl: replaceUrl,
       }),

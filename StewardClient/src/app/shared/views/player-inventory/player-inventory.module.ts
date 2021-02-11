@@ -10,10 +10,17 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OpusPlayerInventoryComponent } from './opus/opus-player-inventory.component';
 import { ApolloPlayerInventoryComponent } from './apollo/apollo-player-inventory.component';
 import { GravityPlayerInventoryComponent } from './gravity/gravity-player-inventory.component';
+import { PlayerInventoryTablesComponent } from './player-inventory-tables/player-inventory-tables.component';
 
 /** Feature module containing cards that display player inventory. */
 @NgModule({
-  declarations: [SunrisePlayerInventoryComponent, OpusPlayerInventoryComponent, ApolloPlayerInventoryComponent, GravityPlayerInventoryComponent],
+  declarations: [
+    SunrisePlayerInventoryComponent,
+    OpusPlayerInventoryComponent,
+    ApolloPlayerInventoryComponent,
+    GravityPlayerInventoryComponent,
+    PlayerInventoryTablesComponent,
+  ],
   imports: [
     CommonModule,
     PipesModule,
@@ -23,6 +30,11 @@ import { GravityPlayerInventoryComponent } from './gravity/gravity-player-invent
     MatExpansionModule,
     MatProgressSpinnerModule,
   ],
-  exports: [SunrisePlayerInventoryComponent],
+  exports: [
+    SunrisePlayerInventoryComponent,
+    OpusPlayerInventoryComponent,
+    ApolloPlayerInventoryComponent,
+    GravityPlayerInventoryComponent,
+  ],
 })
 export class PlayerInventoryModule {}
