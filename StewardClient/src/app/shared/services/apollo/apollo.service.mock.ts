@@ -3,42 +3,43 @@ import { ApolloPlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/ti
 import { ApolloPlayersBanFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/ban';
 import { ApolloPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/identities';
 import { IdentityQueryAlpha, IdentityQueryAlphaBatch } from '@models/identity-query.model';
-import { defer, of } from 'rxjs';
+import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { ApolloService } from './apollo.service';
 
 /** Defines the mock for the API Service. */
 @Injectable()
 export class MockApolloService {
+  /** Override with a Subject to have all methods wait until the next emission to emit. */
+  public waitUntil$ = of();
+
   public getIdentity = jasmine
     .createSpy('getIdentity')
-    .and.returnValue(of({ xuid: BigInt(12345), gamertag: 'gamertag' }));
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({ xuid: BigInt(12345), gamertag: 'gamertag' }))));
 
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
-    .and.returnValue(of({ xuid: BigInt(12345) }));
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({ xuid: BigInt(12345) }))));
 
   public postBanPlayers = jasmine
     .createSpy('postBanPlayers')
-    .and.returnValue(defer(() => ApolloPlayersBanFakeApi.make()));
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(ApolloPlayersBanFakeApi.make()))));
   public getPlayerIdentity = jasmine
     .createSpy('getPlayerIdentity')
     .and.callFake((query: IdentityQueryAlpha) =>
-      defer(() => of(ApolloPlayersIdentitiesFakeApi.make([query]))),
-    );
+      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayersIdentitiesFakeApi.make([query])))));
   public getPlayerIdentities = jasmine
     .createSpy('getPlayerIdentities')
     .and.callFake((query: IdentityQueryAlphaBatch) =>
-      defer(() => of(ApolloPlayersIdentitiesFakeApi.make(query))),
-    );
+      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayersIdentitiesFakeApi.make(query)))));
 
-  public getMasterInventory = jasmine.createSpy('getMasterInventory').and.returnValue(of({}));
+  public getMasterInventory = jasmine.createSpy('getMasterInventory').and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({}))));
 
   public getPlayerInventoryByXuid = jasmine
     .createSpy('getPlayerInventoryByXuid')
-    .and.callFake(xuid => defer(() => of(ApolloPlayerXuidInventoryFakeApi.make(xuid))));
+    .and.callFake(xuid => this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidInventoryFakeApi.make(xuid)))));
 }
-
 /** Creates an injectable mock for Apollo Service. */
 export function createMockApolloService(): Provider {
   return {
