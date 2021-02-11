@@ -17,8 +17,8 @@ interface PropertyToExpandoData<T> {
 /** Displays the sunrise user's player inventory. */
 @Component({
   selector: 'sunrise-player-inventory',
-  templateUrl: './sunrise.component.html',
-  styleUrls: ['./sunrise.component.scss'],
+  templateUrl: './sunrise-player-inventory.component.html',
+  styleUrls: ['./sunrise-player-inventory.component.scss'],
 })
 export class SunrisePlayerInventoryComponent extends BaseComponent implements OnInit, OnChanges {
   @Input() public identity: IdentityResultAlpha;

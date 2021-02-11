@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SunrisePlayerInventoryComponent } from './sunrise/sunrise.component';
+import { SunrisePlayerInventoryComponent } from './sunrise/sunrise-player-inventory.component';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatTableModule } from '@angular/material/table';

@@ -2,9 +2,9 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createMockSunriseService } from '@services/sunrise';
 
-import { SunrisePlayerInventoryComponent } from './sunrise.component';
+import { SunrisePlayerInventoryComponent } from './sunrise-player-inventory.component';
 
-describe('SunriseComponent', () => {
+describe('SunrisePlayerInventoryComponent', () => {
   let component: SunrisePlayerInventoryComponent;
   let fixture: ComponentFixture<SunrisePlayerInventoryComponent>;
 
