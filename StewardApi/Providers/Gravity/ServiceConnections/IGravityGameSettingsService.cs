@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Forza.WebServices.FMG.Generated;
-using static Forza.WebServices.FMG.Generated.UserService;
+using static Forza.WebServices.FMG.Generated.GameSettingsService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 {
@@ -15,8 +15,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// </summary>
         /// <param name="gameSettingsId">The game settings ID.</param>
         /// <returns>
-        ///     An awaitable task.
+        ///     A <see cref="LiveOpsGetGameSettingsOutput"/>.
         /// </returns>
-        Task GetGameSettingsAsync(Guid gameSettingsId);
+        Task<LiveOpsGetGameSettingsOutput> GetGameSettingsAsync(Guid gameSettingsId);
     }
 }

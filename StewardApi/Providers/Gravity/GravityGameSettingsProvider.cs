@@ -9,6 +9,7 @@ using Turn10.Data.Common;
 using Turn10.FMG.ForzaClient;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
+using static Forza.WebServices.FMG.Generated.GameSettingsService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 {
@@ -35,18 +36,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task GetGameSettingsAsync(Guid gameSettingsId)
+        public async Task<GravityMasterInventory> GetGameSettingsAsync(Guid gameSettingsId)
         {
-            try
-            {
-                await this.gravityGameSettingsService.GetGameSettingsAsync(gameSettingsId).ConfigureAwait(false);
-            }
-            catch (ForzaClientException ex)
-            {
-                throw ex;
-            }
+            gameSettingsId.ToString().ShouldNotBeNull(nameof(gameSettingsId));
 
-            return;
+            var gameSettingsOutput = await this.gravityGameSettingsService.GetGameSettingsAsync(gameSettingsId).ConfigureAwait(false);
+            return this.mapper.Map<GravityMasterInventory>(gameSettingsOutput);
         }
     }
 }

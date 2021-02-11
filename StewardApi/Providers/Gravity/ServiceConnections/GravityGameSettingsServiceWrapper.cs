@@ -8,7 +8,7 @@ using Turn10.Contracts.STS;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
-using static Forza.WebServices.FMG.Generated.UserService;
+using static Forza.WebServices.FMG.Generated.GameSettingsService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 {
@@ -60,11 +60,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task GetGameSettingsAsync(Guid gameSettingsId)
+        public async Task<LiveOpsGetGameSettingsOutput> GetGameSettingsAsync(Guid gameSettingsId)
         {
-            // Validation
+            gameSettingsId.ToString().ShouldNotBeNull(nameof(gameSettingsId));
+
             var gameSettingsService = await this.PrepareGameSettingsServiceAsync().ConfigureAwait(false);
-            await gameSettingsService.GetGameSettings().ConfigureAwait(false);
+            return await gameSettingsService.LiveOpsGetGameSettings().ConfigureAwait(false);
         }
 
         private async Task<GameSettingsService> PrepareGameSettingsServiceAsync()

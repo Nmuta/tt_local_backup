@@ -4,6 +4,13 @@ using Forza.WebServices.FMG.Generated;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Legacy;
+using static Forza.WebServices.FMG.Generated.GameSettingsService;
+using Currency = Forza.WebServices.FMG.Generated.Currency;
+using EnergyRefill = Forza.WebServices.FMG.Generated.EnergyRefill;
+using GravityCar = Forza.WebServices.FMG.Generated.GravityCar;
+using MasteryKit = Forza.WebServices.FMG.Generated.MasteryKit;
+using RepairKit = Forza.WebServices.FMG.Generated.RepairKit;
+using UpgradeKit = Forza.WebServices.FMG.Generated.UpgradeKit;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
@@ -72,6 +79,32 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<PlayerInventory, GravityPlayerInventory>();
             this.CreateMap<LiveOpsUserDetails, IdentityResultBeta>()
                 .ForMember(des => des.T10Id, opt => opt.MapFrom(src => src.Turn10Id))
+                .ReverseMap();
+
+            this.CreateMap<Currency, MasterInventoryItem>();
+            this.CreateMap<GravityCar, MasterInventoryItem>()
+                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => source.CarName))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.CarId));
+            this.CreateMap<EnergyRefill, MasterInventoryItem>()
+                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => "TODO"))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.RefillId));
+            this.CreateMap<MasteryKit, MasterInventoryItem>()
+                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => source.Value))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.KitId));
+            this.CreateMap<RepairKit, MasterInventoryItem>()
+                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => source.RepairValue))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.KitId));
+            this.CreateMap<UpgradeKit, MasterInventoryItem>()
+                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => "TODO"))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.KitId));
+
+            this.CreateMap<LiveOpsGetGameSettingsOutput, GravityMasterInventory>()
+                .ForMember(dest => dest.CreditRewards, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.gameSettings.ForzaEconomyGameSettings.EconomyFeatureSettings.Currencies)))
+                .ForMember(dest => dest.Cars, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.gameSettings.ForzaEconomyGameSettings.EconomyFeatureSettings.Cars)))
+                .ForMember(dest => dest.EnergyRefills, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.gameSettings.MiscGiftItemGameSettings.EnergyRefills)))
+                .ForMember(dest => dest.MasteryKits, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.gameSettings.MiscGiftItemGameSettings.MasteryKits)))
+                .ForMember(dest => dest.RepairKits, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.gameSettings.MiscGiftItemGameSettings.RepairKits)))
+                .ForMember(dest => dest.UpgradeKits, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.gameSettings.MiscGiftItemGameSettings.UpgradeKits)))
                 .ReverseMap();
         }
     }

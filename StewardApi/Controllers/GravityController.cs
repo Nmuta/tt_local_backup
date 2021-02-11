@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IGravityPlayerDetailsProvider gravityPlayerDetailsProvider;
         private readonly IGravityPlayerInventoryProvider gravityPlayerInventoryProvider;
         private readonly IGravityGiftHistoryProvider giftHistoryProvider;
-        private readonly ISettingsProvider gravitySettingsProvider;
+        private readonly IGravityGameSettingsProvider gravityGameSettingsProvider;
         private readonly IJobTracker jobTracker;
         private readonly IScheduler scheduler;
         private readonly IRequestValidator<GravityGift> giftRequestValidator;
@@ -45,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="gravityPlayerDetailsProvider">The Gravity player details provider.</param>
         /// <param name="gravityPlayerInventoryProvider">The Gravity player inventory provider.</param>
         /// <param name="giftHistoryProvider">The gift history provider.</param>
-        /// <param name="gravitySettingsProvider">The Gravity settings provider.</param>
+        /// <param name="gravityGameSettingsProvider">The Gravity game settings provider.</param>
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="jobTracker">The job tracker.</param>
         /// <param name="giftRequestValidator">The gift request validator.</param>
@@ -53,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IGravityPlayerDetailsProvider gravityPlayerDetailsProvider,
             IGravityPlayerInventoryProvider gravityPlayerInventoryProvider,
             IGravityGiftHistoryProvider giftHistoryProvider,
-            ISettingsProvider gravitySettingsProvider,
+            IGravityGameSettingsProvider gravityGameSettingsProvider,
             IScheduler scheduler,
             IJobTracker jobTracker,
             IRequestValidator<GravityGift> giftRequestValidator)
@@ -61,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             gravityPlayerDetailsProvider.ShouldNotBeNull(nameof(gravityPlayerDetailsProvider));
             gravityPlayerInventoryProvider.ShouldNotBeNull(nameof(gravityPlayerInventoryProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
-            gravitySettingsProvider.ShouldNotBeNull(nameof(gravitySettingsProvider));
+            gravityGameSettingsProvider.ShouldNotBeNull(nameof(gravityGameSettingsProvider));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
@@ -69,7 +71,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.gravityPlayerDetailsProvider = gravityPlayerDetailsProvider;
             this.gravityPlayerInventoryProvider = gravityPlayerInventoryProvider;
             this.giftHistoryProvider = giftHistoryProvider;
-            this.gravitySettingsProvider = gravitySettingsProvider;
+            this.gravityGameSettingsProvider = gravityGameSettingsProvider;
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
             this.giftRequestValidator = giftRequestValidator;
@@ -361,7 +363,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.NotFound($"No inventory found for T10Id: {t10Id}");
                 }
 
-                // TODO: Add in item id verification
+                var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.GameSettingsId, gift.Inventory).ConfigureAwait(true);
+                if (invalidItems.Length > 0)
+                {
+                    return this.BadRequest($"Invalid items found. {invalidItems}");
+                }
+
                 if (!useBackgroundProcessing)
                 {
                     var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, gift, requestingAgent).ConfigureAwait(true);
@@ -406,14 +413,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("masterInventory/gameSettingsId({gameSettingsId})")]
         [SwaggerResponse(200, type: typeof(GravityMasterInventory))]
         [SwaggerResponse(404, type: typeof(string))]
-        public async Task<IActionResult> GetGameSettings(string gameSettingsId)
+        public async Task<IActionResult> GetMasterInventoryList(string gameSettingsId)
         {
             try
             {
                 gameSettingsId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gameSettingsId));
 
-                // TODO: Return GravityMasterInventory instead of GameSettings
-                var masterInventory = await this.gravitySettingsProvider.GetGameSettingAsync(new Guid(gameSettingsId)).ConfigureAwait(true);
+                if (!Guid.TryParse(gameSettingsId, out var gameSettingsIdGuid))
+                {
+                    this.BadRequest("Game settings ID provided is not a GUID.");
+                }
+
+                var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(gameSettingsIdGuid).ConfigureAwait(true);
 
                 return this.Ok(masterInventory);
             }
@@ -485,6 +496,58 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 throw;
             }
+        }
+
+        /// <summary>
+        ///     Verifies the gift inventory against the title master inventory list.
+        /// </summary>
+        /// <param name="gameSettingsId">The game settings Id.</param>
+        /// <param name="gift">The gravity gift.</param>
+        /// <returns>
+        ///     String of items that are invalid
+        /// </returns>
+        private async Task<string> VerifyGiftAgainstMasterInventory(Guid gameSettingsId, GravityMasterInventory gift)
+        {
+            var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(gameSettingsId).ConfigureAwait(true);
+            var error = string.Empty;
+
+            foreach (var reward in gift.CreditRewards)
+            {
+                var validItem = masterInventory.CreditRewards.Any(data => { return data.Id == reward.Id; });
+                error += validItem ? string.Empty : $"Car: {reward.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var car in gift.Cars)
+            {
+                var validItem = masterInventory.Cars.Any(data => { return data.Id == car.Id; });
+                error += validItem ? string.Empty : $"Car: {car.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var energyRefill in gift.EnergyRefills)
+            {
+                var validItem = masterInventory.EnergyRefills.Any(data => { return data.Id == energyRefill.Id; });
+                error += validItem ? string.Empty : $"EnergyRefills: {energyRefill.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var kit in gift.MasteryKits)
+            {
+                var validItem = masterInventory.MasteryKits.Any(data => { return data.Id == kit.Id; });
+                error += validItem ? string.Empty : $"MasteryKits: {kit.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var kit in gift.RepairKits)
+            {
+                var validItem = masterInventory.RepairKits.Any(data => { return data.Id == kit.Id; });
+                error += validItem ? string.Empty : $"RepairKits: {kit.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var kit in gift.UpgradeKits)
+            {
+                var validItem = masterInventory.UpgradeKits.Any(data => { return data.Id == kit.Id; });
+                error += validItem ? string.Empty : $"UpgradeKits: {kit.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            return error;
         }
     }
 }
