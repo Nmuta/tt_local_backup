@@ -8,9 +8,8 @@ describe('GravityPlayerInventoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GravityPlayerInventoryComponent ]
-    })
-    .compileComponents();
+      declarations: [GravityPlayerInventoryComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

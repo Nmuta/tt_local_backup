@@ -4,7 +4,10 @@ import { SunrisePlayerInventory } from '@models/sunrise';
 import { SunriseInventoryItem } from '@models/sunrise/inventory-items';
 import { SunriseService } from '@services/sunrise';
 import { Observable } from 'rxjs';
-import { PlayerInventoryBaseComponent, PropertyToExpandoData } from '../player-inventory.base.component';
+import {
+  PlayerInventoryBaseComponent,
+  PropertyToExpandoData,
+} from '../player-inventory.base.component';
 
 /** Displays a Sunrise player's inventory. */
 @Component({
@@ -12,18 +15,19 @@ import { PlayerInventoryBaseComponent, PropertyToExpandoData } from '../player-i
   templateUrl: './sunrise-player-inventory.component.html',
   styleUrls: ['./sunrise-player-inventory.component.scss'],
 })
-export class SunrisePlayerInventoryComponent
-extends PlayerInventoryBaseComponent<
+export class SunrisePlayerInventoryComponent extends PlayerInventoryBaseComponent<
   SunrisePlayerInventory,
   SunriseInventoryItem,
-  IdentityResultAlpha> {
-
+  IdentityResultAlpha
+> {
   constructor(private readonly sunrise: SunriseService) {
     super();
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerInventoryByIdentity(identity: IdentityResultAlpha): Observable<SunrisePlayerInventory> {
+  protected getPlayerInventoryByIdentity(
+    identity: IdentityResultAlpha,
+  ): Observable<SunrisePlayerInventory> {
     return this.sunrise.getPlayerInventoryByXuid(identity.xuid);
   }
 

@@ -8,9 +8,8 @@ describe('ApolloPlayerInventoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ApolloPlayerInventoryComponent ]
-    })
-    .compileComponents();
+      declarations: [ApolloPlayerInventoryComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

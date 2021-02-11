@@ -8,9 +8,8 @@ describe('OpusPlayerInventoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OpusPlayerInventoryComponent ]
-    })
-    .compileComponents();
+      declarations: [OpusPlayerInventoryComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

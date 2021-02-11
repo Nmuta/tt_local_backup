@@ -11,8 +11,15 @@ import { SunriseInventoryItem } from '@models/sunrise/inventory-items';
 import { NEVER, Observable, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 
-export type AcceptablePlayerInventoryTypeUnion = SunrisePlayerInventory | OpusPlayerInventory | ApolloPlayerInventory | GravityPlayerInventory;
-export type AcceptablePlayerInventoryItemTypeUnion = SunriseInventoryItem | ApolloInventoryItem | GravityInventoryItem;
+export type AcceptablePlayerInventoryTypeUnion =
+  | SunrisePlayerInventory
+  | OpusPlayerInventory
+  | ApolloPlayerInventory
+  | GravityPlayerInventory;
+export type AcceptablePlayerInventoryItemTypeUnion =
+  | SunriseInventoryItem
+  | ApolloInventoryItem
+  | GravityInventoryItem;
 
 /** A model for identifying a property of an object and mapping that to a title & description for a simple expando. */
 export interface PropertyToExpandoData<T> {
@@ -27,9 +34,10 @@ export interface PropertyToExpandoData<T> {
   template: '',
 })
 export abstract class PlayerInventoryBaseComponent<
-  PlayerInventoryType extends AcceptablePlayerInventoryTypeUnion,
-  InventoryItemType extends AcceptablePlayerInventoryItemTypeUnion,
-  IdentityResultType extends IdentityResultUnion>
+    PlayerInventoryType extends AcceptablePlayerInventoryTypeUnion,
+    InventoryItemType extends AcceptablePlayerInventoryItemTypeUnion,
+    IdentityResultType extends IdentityResultUnion
+  >
   extends BaseComponent
   implements OnInit, OnChanges {
   @Input() public identity: IdentityResultType;
@@ -52,7 +60,9 @@ export abstract class PlayerInventoryBaseComponent<
   private identity$ = new Subject<IdentityResultType>();
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected abstract getPlayerInventoryByIdentity(identity: IdentityResultType): Observable<PlayerInventoryType>;
+  protected abstract getPlayerInventoryByIdentity(
+    identity: IdentityResultType,
+  ): Observable<PlayerInventoryType>;
 
   /** Implement to specify the expando tables to show. */
   protected abstract makeWhatToShow(): PropertyToExpandoData<PlayerInventoryType>[];
@@ -84,13 +94,13 @@ export abstract class PlayerInventoryBaseComponent<
   public ngOnChanges(_changes: SimpleChanges): void {
     this.identity$.next(this.identity);
   }
-  
+
   /** Utility method for generating the expandos to show. */
   protected makeEntry(
     property: keyof PlayerInventoryType,
     title: string,
   ): PropertyToExpandoData<PlayerInventoryType> {
-    const count = (this.inventory[property] as unknown as InventoryItemType[]).reduce(
+    const count = ((this.inventory[property] as unknown) as InventoryItemType[]).reduce(
       (accumulator, entry) => accumulator + (entry.quantity ?? BigInt(1)),
       BigInt(0),
     );

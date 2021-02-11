@@ -8,9 +8,8 @@ describe('PlayerInventoryTablesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlayerInventoryTablesComponent ]
-    })
-    .compileComponents();
+      declarations: [PlayerInventoryTablesComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

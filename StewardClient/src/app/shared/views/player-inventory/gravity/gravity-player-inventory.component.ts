@@ -4,26 +4,30 @@ import { GravityInventoryItem } from '@models/gravity/inventory-items';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { GravityService } from '@services/gravity';
 import { Observable } from 'rxjs';
-import { PlayerInventoryBaseComponent, PropertyToExpandoData } from '../player-inventory.base.component';
+import {
+  PlayerInventoryBaseComponent,
+  PropertyToExpandoData,
+} from '../player-inventory.base.component';
 
 /** Displays a Gravity player's inventory. */
 @Component({
   selector: 'gravity-player-inventory',
   templateUrl: './gravity-player-inventory.component.html',
-  styleUrls: ['./gravity-player-inventory.component.scss']
+  styleUrls: ['./gravity-player-inventory.component.scss'],
 })
-export class GravityPlayerInventoryComponent
-extends PlayerInventoryBaseComponent<
+export class GravityPlayerInventoryComponent extends PlayerInventoryBaseComponent<
   GravityPlayerInventory,
   GravityInventoryItem,
-  IdentityResultBeta> {
-
+  IdentityResultBeta
+> {
   constructor(private readonly gravity: GravityService) {
     super();
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerInventoryByIdentity(identity: IdentityResultBeta): Observable<GravityPlayerInventory> {
+  protected getPlayerInventoryByIdentity(
+    identity: IdentityResultBeta,
+  ): Observable<GravityPlayerInventory> {
     return this.gravity.getPlayerInventoryByT10Id(identity.t10Id);
   }
 

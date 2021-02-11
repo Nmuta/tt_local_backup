@@ -22,7 +22,9 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   public identity: AugmentedCompositeIdentity;
 
   /** The only lookup name. */
-  public get lookupName(): string { return first(this.lookupList) ?? ''; }
+  public get lookupName(): string {
+    return first(this.lookupList) ?? '';
+  }
 
   public sunriseRouterLink = [
     ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
