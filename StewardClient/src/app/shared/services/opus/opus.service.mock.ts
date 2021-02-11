@@ -1,4 +1,5 @@
 import { Injectable, Provider } from '@angular/core';
+import { OpusPlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/title/opus/player/xuid/inventory';
 import { OpusPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/opus/players/identities';
 import { IdentityQueryAlpha, IdentityQueryAlphaBatch } from '@models/identity-query.model';
 import { defer, of } from 'rxjs';
@@ -26,6 +27,10 @@ export class MockOpusService {
     .and.callFake((query: IdentityQueryAlphaBatch) =>
       defer(() => of(OpusPlayersIdentitiesFakeApi.make(query))),
     );
+
+  public getPlayerInventoryByXuid = jasmine
+    .createSpy('getPlayerInventoryByXuid')
+    .and.callFake(_ => defer(() => of(OpusPlayerXuidInventoryFakeApi.make())));
 }
 
 /** Creates an injectable mock for Opus Service. */

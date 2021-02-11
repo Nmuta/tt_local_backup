@@ -1,4 +1,5 @@
 import { Injectable, Provider } from '@angular/core';
+import { GravityPlayerT10IdInventoryFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/t10Id/inventory';
 import { GravityPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/gravity/players/identities';
 import { IdentityQueryBeta, IdentityQueryBetaBatch } from '@models/identity-query.model';
 import { defer, of } from 'rxjs';
@@ -27,6 +28,10 @@ export class MockGravityService {
       defer(() => of(GravityPlayersIdentitiesFakeApi.make(query))),
     );
   public getGameSettings = jasmine.createSpy('getGameSettings').and.returnValue(of({}));
+
+  public getPlayerInventoryByT10Id = jasmine
+    .createSpy('getPlayerInventoryByT10Id')
+    .and.callFake(t10Id => defer(() => of(GravityPlayerT10IdInventoryFakeApi.make(t10Id))));
 }
 
 /** Creates an injectable mock for Gravity Service. */

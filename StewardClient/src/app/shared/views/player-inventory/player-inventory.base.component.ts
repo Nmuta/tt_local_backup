@@ -9,7 +9,7 @@ import { OpusPlayerInventory } from '@models/opus';
 import { SunrisePlayerInventory } from '@models/sunrise';
 import { SunriseInventoryItem } from '@models/sunrise/inventory-items';
 import { NEVER, Observable, Subject } from 'rxjs';
-import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 export type AcceptablePlayerInventoryTypeUnion =
   | SunrisePlayerInventory
@@ -76,6 +76,7 @@ export abstract class PlayerInventoryBaseComponent<
           this.inventory = null;
           this.error = null;
         }),
+        filter(i => !!i),
         switchMap(identity => this.getPlayerInventoryByIdentity(identity)),
         catchError((error, _observable) => {
           this.error = error;

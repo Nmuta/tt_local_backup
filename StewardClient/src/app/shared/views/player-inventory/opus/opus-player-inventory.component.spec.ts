@@ -1,4 +1,6 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { createMockOpusService } from '@services/opus';
 
 import { OpusPlayerInventoryComponent } from './opus-player-inventory.component';
 
@@ -9,6 +11,8 @@ describe('OpusPlayerInventoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [OpusPlayerInventoryComponent],
+      providers: [createMockOpusService()],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

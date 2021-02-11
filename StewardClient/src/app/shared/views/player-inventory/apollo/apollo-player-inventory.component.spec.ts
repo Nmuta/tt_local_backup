@@ -1,4 +1,6 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { createMockApolloService } from '@services/apollo';
 
 import { ApolloPlayerInventoryComponent } from './apollo-player-inventory.component';
 
@@ -9,6 +11,8 @@ describe('ApolloPlayerInventoryComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloPlayerInventoryComponent],
+      providers: [createMockApolloService()],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 

@@ -1,4 +1,5 @@
 import { Injectable, Provider } from '@angular/core';
+import { ApolloPlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/inventory';
 import { ApolloPlayersBanFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/ban';
 import { ApolloPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/identities';
 import { IdentityQueryAlpha, IdentityQueryAlphaBatch } from '@models/identity-query.model';
@@ -32,6 +33,10 @@ export class MockApolloService {
     );
 
   public getMasterInventory = jasmine.createSpy('getMasterInventory').and.returnValue(of({}));
+
+  public getPlayerInventoryByXuid = jasmine
+    .createSpy('getPlayerInventoryByXuid')
+    .and.callFake(xuid => defer(() => of(ApolloPlayerXuidInventoryFakeApi.make(xuid))));
 }
 
 /** Creates an injectable mock for Apollo Service. */

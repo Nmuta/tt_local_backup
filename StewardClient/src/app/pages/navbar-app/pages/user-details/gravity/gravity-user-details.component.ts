@@ -22,7 +22,7 @@ export class GravityUserDetailsComponent {
 
   /** The specific relevant identity from the parent. */
   public get identity(): IdentityResultBeta {
-    return this.parent.identity?.sunrise;
+    return this.parent.identity?.gravity;
   }
 
   constructor(
