@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             gameSettingsId.ToString().ShouldNotBeNull(nameof(gameSettingsId));
 
             var gameSettingsService = await this.PrepareGameSettingsServiceAsync().ConfigureAwait(false);
-            return await gameSettingsService.LiveOpsGetGameSettings().ConfigureAwait(false);
+            return await gameSettingsService.LiveOpsGetGameSettings(gameSettingsId).ConfigureAwait(false);
         }
 
         private async Task<GameSettingsService> PrepareGameSettingsServiceAsync()
