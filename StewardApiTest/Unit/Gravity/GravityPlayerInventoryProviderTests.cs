@@ -175,13 +175,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var provider = new Dependencies().Build();
             var t10Id = Fixture.Create<string>();
             var xuid = Fixture.Create<ulong>();
+            var gameSettingsId = Fixture.Create<Guid>();
             var gift = Fixture.Create<GravityGift>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gift, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, requestingAgent).ConfigureAwait(false)
             };
 
             // Assert.
@@ -198,14 +199,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Arrange.
             var provider = new Dependencies().Build();
             var gift = Fixture.Create<GravityGift>();
+            var gameSettingsId = Fixture.Create<Guid>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(null, gift, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.Empty, gift, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.WhiteSpace, gift, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(null, gameSettingsId, gift, requestingAgent).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.Empty, gameSettingsId, gift, requestingAgent).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.WhiteSpace, gameSettingsId, gift, requestingAgent).ConfigureAwait(false)
             };
             // Assert.
             foreach (var action in actions)
@@ -221,14 +223,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Arrange.
             var provider = new Dependencies().Build();
             var gift = Fixture.Create<GravityGift>();
+            var gameSettingsId = Fixture.Create<Guid>();
             var t10Id = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gift, null).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gift, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gift, TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, null).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, TestConstants.WhiteSpace).ConfigureAwait(false)
             };
             // Assert.
             foreach (var action in actions)
@@ -245,12 +248,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var t10Id = Fixture.Create<string>();
+            var gameSettingsId = Fixture.Create<Guid>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, null, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, null, requestingAgent).ConfigureAwait(false)
             };
             // Assert.
             foreach (var action in actions)

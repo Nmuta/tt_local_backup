@@ -558,7 +558,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
-                this.GravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(Arg.Any<string>(), Arg.Any<GravityGift>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<string>>()); ;
+                this.GravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(Arg.Any<string>(), Arg.Any<Guid>(), Arg.Any<GravityGift>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<string>>()); ;
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftHistoryAntecedent>()).Returns(Fixture.Create<IList<GravityGiftHistory>>());
             }
 

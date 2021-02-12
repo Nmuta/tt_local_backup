@@ -345,7 +345,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
                 gift.ShouldNotBeNull(nameof(gift));
                 gift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gift.GiftReason));
-                gift.GameSettingsId.ShouldNotBeNull(nameof(gift.GameSettingsId));
                 gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
@@ -358,12 +357,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.BadRequest(errorResponse);
                 }
 
-                if (!await this.gravityPlayerDetailsProvider.EnsurePlayerExistsByT10IdAsync(t10Id).ConfigureAwait(true))
+                GravityPlayerDetails playerDetails;
+                try
+                {
+                    playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(t10Id).ConfigureAwait(true);
+            }
+                catch (Exception)
+                {
+                    playerDetails = null;
+                }
+
+                if (playerDetails == null)
                 {
                     return this.NotFound($"No inventory found for T10Id: {t10Id}");
                 }
 
-                var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.GameSettingsId, gift.Inventory).ConfigureAwait(true);
+                var playerGameSettingsId = playerDetails.LastGameSettingsUsed;
+                var invalidItems = await this.VerifyGiftAgainstMasterInventory(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
                 if (invalidItems.Length > 0)
                 {
                     return this.BadRequest($"Invalid items found. {invalidItems}");
@@ -371,7 +381,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 if (!useBackgroundProcessing)
                 {
-                    var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, gift, requestingAgent).ConfigureAwait(true);
+                    var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
                     return this.Ok(response);
                 }
 
@@ -384,7 +394,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     // Do not throw.
                     try
                     {
-                        var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, gift, requestingAgent).ConfigureAwait(true);
+                        var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
                         await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response.ToJson()).ConfigureAwait(true);
                     }
                     catch (Exception)
