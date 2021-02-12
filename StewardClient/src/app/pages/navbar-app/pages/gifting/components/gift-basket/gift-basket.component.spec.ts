@@ -8,15 +8,18 @@ import { GiftBasketBaseComponent, GiftBasketModel } from './gift-basket.base.com
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { of, throwError } from 'rxjs';
-import { BackgroundJob } from '@models/background-job';
-import { GiftResponse } from '@models/gift-response';
+import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
+import { GiftResponse, GiftResponses } from '@models/gift-response';
 import { GiftHistoryAntecedent } from '@shared/constants';
+import { BackgroundJobService } from '@services/background-job/background-job.service';
 
 describe('GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<GiftBasketBaseComponent<IdentityResultBeta>>;
   let component: GiftBasketBaseComponent<IdentityResultBeta>;
 
   const formBuilder: FormBuilder = new FormBuilder();
+
+  let mockBackgroundJobService: BackgroundJobService;
 
   beforeEach(
     waitForAsync(() => {
@@ -36,6 +39,8 @@ describe('GiftBasketBaseComponent', () => {
         GiftBasketBaseComponent as Type<GiftBasketBaseComponent<IdentityResultBeta>>,
       );
       component = fixture.debugElement.componentInstance;
+
+      mockBackgroundJobService = TestBed.inject(BackgroundJobService);
     }),
   );
 
@@ -399,6 +404,56 @@ describe('GiftBasketBaseComponent', () => {
           component.sendGiftBasket();
 
           expect(component.giftResponse).toEqual([testGiftResponse]);
+        });
+      });
+    });
+  });
+
+  describe('Method: waitForBackgroundJobToComplete', () => {
+    const testJob: BackgroundJob<void> = { jobId: 'test=-job-id', status: BackgroundJobStatus.InProgress, result: undefined, parsedResult: undefined };
+
+    beforeEach(() => {
+      mockBackgroundJobService.getBackgroundJob = jasmine.createSpy('getBackgroundJob').and.returnValue(of({}));
+    });
+
+    it('should call BackgroundJobService.getBackgroundJob with correct job id', () => {
+      component.waitForBackgroundJobToComplete(testJob);
+
+      expect(mockBackgroundJobService.getBackgroundJob).toHaveBeenCalledWith(testJob.jobId);
+    });
+
+    describe('When subscribing to the send gift observable', () => {
+      describe('And an error is caught', () => {
+        const error = { message: 'error-message' };
+        beforeEach(() => {
+          mockBackgroundJobService.getBackgroundJob = jasmine.createSpy('getBackgroundJob').and.returnValue(throwError(error));
+        });
+
+        it('should set loadError on component', () => {
+          component.waitForBackgroundJobToComplete(testJob);
+
+          expect(component.loadError).toEqual(error);
+          expect(component.isLoading).toBeFalsy();
+        });
+      });
+
+      describe('And a BackgroundJob is returned', () => {
+        const testBackgroundJobResp: BackgroundJob<GiftResponses<string | bigint>> = { jobId: 'test=-job-id', status: BackgroundJobStatus.InProgress, result: 'result', parsedResult: [{
+          playerOrLspGroup: 'testing123',
+          identityAntecedent: GiftHistoryAntecedent.LspGroupId,
+          error: undefined
+        }] };
+        beforeEach(() => {
+          mockBackgroundJobService.getBackgroundJob = jasmine.createSpy('getBackgroundJob').and.returnValue(of(testBackgroundJobResp));
+        });
+
+        describe('with a status of complete', () => {
+          it('should set gift response', () => {
+            testBackgroundJobResp.status = BackgroundJobStatus.Completed;
+            component.waitForBackgroundJobToComplete(testJob);
+  
+            expect(component.giftResponse).toEqual(testBackgroundJobResp.parsedResult);
+          });
         });
       });
     });
