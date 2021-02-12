@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 
 namespace Turn10.LiveOps.StewardApi.Contracts
 {
@@ -21,6 +22,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         /// <summary>
         ///     Gets or sets the gifting error.
         /// </summary>
-        public object Error { get; set; }
+        public Exception Error { get; set; }
     }
 }
