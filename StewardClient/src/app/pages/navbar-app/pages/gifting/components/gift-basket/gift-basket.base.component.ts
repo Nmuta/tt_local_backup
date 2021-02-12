@@ -17,12 +17,6 @@ import { SunriseGift } from '@models/sunrise';
 import { ApolloGift } from '@models/apollo';
 import { GiftHistoryAntecedent } from '@shared/constants';
 
-export type InventoryItem = {
-  itemId: bigint;
-  description: string;
-  quantity: number;
-  itemType: string;
-};
 export type InventoryItemGroup = {
   category: string;
   items: MasterInventoryItem[];
