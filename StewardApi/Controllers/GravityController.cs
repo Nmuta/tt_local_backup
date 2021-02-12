@@ -369,7 +369,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 if (playerDetails == null)
                 {
-                    return this.NotFound($"No inventory found for T10Id: {t10Id}");
+                    return this.NotFound($"No player found for T10Id: {t10Id}");
                 }
 
                 var playerGameSettingsId = playerDetails.LastGameSettingsUsed;
