@@ -9,7 +9,7 @@ import { GiftHistoryAntecedent } from '@shared/constants';
   templateUrl: './gifting-result.component.html',
   styleUrls: ['./gifting-result.component.scss'],
 })
-export class GiftingResultComponent extends BaseComponent implements OnInit{
+export class GiftingResultComponent extends BaseComponent implements OnInit {
   @Input() public giftingResult: GiftResponse<bigint | string>[];
 
   public GiftHistoryAntecedent = GiftHistoryAntecedent;
@@ -17,7 +17,9 @@ export class GiftingResultComponent extends BaseComponent implements OnInit{
 
   /** Test */
   public ngOnInit(): void {
-    this.giftingResult = this.giftingResult.sort((a, b) => (a.error === b.error ? 0 : a.error ? -1 : 1));
+    this.giftingResult = this.giftingResult.sort((a, b) =>
+      a.error === b.error ? 0 : a.error ? -1 : 1,
+    );
     this.numGiftingError = this.giftingResult.filter(data => !!data.error).length;
   }
 }

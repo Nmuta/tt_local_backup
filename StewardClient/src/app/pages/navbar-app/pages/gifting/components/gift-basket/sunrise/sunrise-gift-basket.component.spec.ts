@@ -84,20 +84,50 @@ describe('SunriseGiftBasketComponent', () => {
       });
       component.sendGiftForm.controls['giftReason'].setValue(giftReason);
       component.giftBasket.data = [
-        { id: BigInt(123), description: 'fake-item-1', quantity: 0, itemType: 'creditRewards', edit: false},
-        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'cars', edit: false},
-        { id: BigInt(789), description: 'fake-item-3', quantity: 0, itemType: 'vanityItems', edit: false},
-        { id: BigInt(123), description: 'fake-item-4', quantity: 0, itemType: 'carHorns', edit: false},
-        { id: BigInt(456), description: 'fake-item-5', quantity: 0, itemType: 'quickChatLines', edit: false},
-        { id: BigInt(789), description: 'fake-item-6', quantity: 0, itemType: 'emotes', edit: false},
+        {
+          id: BigInt(123),
+          description: 'fake-item-1',
+          quantity: 0,
+          itemType: 'creditRewards',
+          edit: false,
+        },
+        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'cars', edit: false },
+        {
+          id: BigInt(789),
+          description: 'fake-item-3',
+          quantity: 0,
+          itemType: 'vanityItems',
+          edit: false,
+        },
+        {
+          id: BigInt(123),
+          description: 'fake-item-4',
+          quantity: 0,
+          itemType: 'carHorns',
+          edit: false,
+        },
+        {
+          id: BigInt(456),
+          description: 'fake-item-5',
+          quantity: 0,
+          itemType: 'quickChatLines',
+          edit: false,
+        },
+        {
+          id: BigInt(789),
+          description: 'fake-item-6',
+          quantity: 0,
+          itemType: 'emotes',
+          edit: false,
+        },
       ];
     });
 
     it('should set masterInventory', () => {
       const gift = component.generateGiftInventoryFromGiftBasket();
-      
+
       expect(gift.giftReason).toEqual(giftReason);
-      const apolloMasterInventory = (gift.inventory as SunriseMasterInventory);
+      const apolloMasterInventory = gift.inventory as SunriseMasterInventory;
       expect(apolloMasterInventory).not.toBeUndefined();
       expect(apolloMasterInventory.creditRewards.length).toEqual(1);
       expect(apolloMasterInventory.cars.length).toEqual(1);
@@ -110,12 +140,24 @@ describe('SunriseGiftBasketComponent', () => {
 
   describe('Method: sendGiftToPlayers', () => {
     beforeEach(() => {
-      mockSunriseService.postGiftPlayersUsingBackgroundTask = jasmine.createSpy('postGiftPlayersUsingBackgroundTask');
+      mockSunriseService.postGiftPlayersUsingBackgroundTask = jasmine.createSpy(
+        'postGiftPlayersUsingBackgroundTask',
+      );
       component.playerIdentities = [];
     });
-    
+
     it('should call postGiftPlayersUsingBackgroundTask', () => {
-      component.sendGiftToPlayers({ giftReason: 'fake gift reason', inventory: { creditRewards: [], cars: [], vanityItems: [], carHorns: [], quickChatLines: [], emotes: []} });
+      component.sendGiftToPlayers({
+        giftReason: 'fake gift reason',
+        inventory: {
+          creditRewards: [],
+          cars: [],
+          vanityItems: [],
+          carHorns: [],
+          quickChatLines: [],
+          emotes: [],
+        },
+      });
 
       expect(mockSunriseService.postGiftPlayersUsingBackgroundTask).toHaveBeenCalled();
     });
@@ -125,9 +167,19 @@ describe('SunriseGiftBasketComponent', () => {
     beforeEach(() => {
       mockSunriseService.postGiftLspGroup = jasmine.createSpy('postGiftLspGroup');
     });
-    
+
     it('should call sendGiftToLspGroup', () => {
-      component.sendGiftToLspGroup({ giftReason: 'fake gift reason', inventory: { creditRewards: [], cars: [], vanityItems: [], carHorns: [], quickChatLines: [], emotes: []} });
+      component.sendGiftToLspGroup({
+        giftReason: 'fake gift reason',
+        inventory: {
+          creditRewards: [],
+          cars: [],
+          vanityItems: [],
+          carHorns: [],
+          quickChatLines: [],
+          emotes: [],
+        },
+      });
 
       expect(mockSunriseService.postGiftLspGroup).toHaveBeenCalled();
     });

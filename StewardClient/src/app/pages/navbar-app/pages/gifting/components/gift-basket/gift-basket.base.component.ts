@@ -216,7 +216,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     this.loadError = undefined;
     this.isLoading = false;
 
-    if(clearItemsInBasket) {
+    if (clearItemsInBasket) {
       this.sendGiftForm.reset();
       this.giftBasket.data = [];
     }
@@ -224,22 +224,20 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
   /** Downloads the JSON results as a CSV file. */
   public downloadResults(): void {
-    const csvRows = [
-      ['PlayerOrLspGroup', 'IdentityType', 'Error']
-    ];
-    
-    for(let i = 0; i < this.giftResponse.length; i++) {
-        const result = this.giftResponse[i];
-        csvRows[csvRows.length] = [
-            `'${result.playerOrLspGroup}`,
-            GiftHistoryAntecedent[result.identityAntecedent],
-            JSON.stringify(result?.error)
-        ];
+    const csvRows = [['PlayerOrLspGroup', 'IdentityType', 'Error']];
+
+    for (let i = 0; i < this.giftResponse.length; i++) {
+      const result = this.giftResponse[i];
+      csvRows[csvRows.length] = [
+        `'${result.playerOrLspGroup}`,
+        GiftHistoryAntecedent[result.identityAntecedent],
+        JSON.stringify(result?.error),
+      ];
     }
 
-    const csvContent = 'data:text/csv;charset=utf-8,' 
-        + csvRows.map(row => row.join(',')).join('\n');
-    
+    const csvContent =
+      'data:text/csv;charset=utf-8,' + csvRows.map(row => row.join(',')).join('\n');
+
     const encodedUri = encodeURI(csvContent);
     const fileName = `GiftingResults_${new Date().toISOString()}.csv`;
     const link = document.createElement('a');

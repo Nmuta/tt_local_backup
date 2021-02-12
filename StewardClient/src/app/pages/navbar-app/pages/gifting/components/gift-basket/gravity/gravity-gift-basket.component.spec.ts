@@ -147,20 +147,50 @@ describe('GravityGiftBasketComponent', () => {
       });
       component.sendGiftForm.controls['giftReason'].setValue(giftReason);
       component.giftBasket.data = [
-        { id: BigInt(123), description: 'fake-item-1', quantity: 0, itemType: 'creditRewards', edit: false},
-        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'cars', edit: false},
-        { id: BigInt(789), description: 'fake-item-3', quantity: 0, itemType: 'repairKits', edit: false},
-        { id: BigInt(123), description: 'fake-item-1', quantity: 0, itemType: 'masteryKits', edit: false},
-        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'upgradeKits', edit: false},
-        { id: BigInt(789), description: 'fake-item-3', quantity: 0, itemType: 'energyRefills', edit: false},
+        {
+          id: BigInt(123),
+          description: 'fake-item-1',
+          quantity: 0,
+          itemType: 'creditRewards',
+          edit: false,
+        },
+        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'cars', edit: false },
+        {
+          id: BigInt(789),
+          description: 'fake-item-3',
+          quantity: 0,
+          itemType: 'repairKits',
+          edit: false,
+        },
+        {
+          id: BigInt(123),
+          description: 'fake-item-1',
+          quantity: 0,
+          itemType: 'masteryKits',
+          edit: false,
+        },
+        {
+          id: BigInt(456),
+          description: 'fake-item-2',
+          quantity: 0,
+          itemType: 'upgradeKits',
+          edit: false,
+        },
+        {
+          id: BigInt(789),
+          description: 'fake-item-3',
+          quantity: 0,
+          itemType: 'energyRefills',
+          edit: false,
+        },
       ];
     });
 
     it('should set masterInventory', () => {
       const gift = component.generateGiftInventoryFromGiftBasket();
-      
+
       expect(gift.giftReason).toEqual(giftReason);
-      const apolloMasterInventory = (gift.inventory as GravityMasterInventory);
+      const apolloMasterInventory = gift.inventory as GravityMasterInventory;
       expect(apolloMasterInventory).not.toBeUndefined();
       expect(apolloMasterInventory.creditRewards.length).toEqual(1);
       expect(apolloMasterInventory.cars.length).toEqual(1);
@@ -173,15 +203,29 @@ describe('GravityGiftBasketComponent', () => {
 
   describe('Method: sendGiftToPlayers', () => {
     beforeEach(() => {
-      mockGravityService.postGiftPlayerUsingBackgroundTask = jasmine.createSpy('postGiftPlayerUsingBackgroundTask');
-      component.playerIdentities = [{
-        query: { t10Id: 't10ID'},
-        xuid: BigInt(123456789)
-      }];
+      mockGravityService.postGiftPlayerUsingBackgroundTask = jasmine.createSpy(
+        'postGiftPlayerUsingBackgroundTask',
+      );
+      component.playerIdentities = [
+        {
+          query: { t10Id: 't10ID' },
+          xuid: BigInt(123456789),
+        },
+      ];
     });
-    
+
     it('should call postGiftPlayerUsingBackgroundTask', () => {
-      component.sendGiftToPlayers({ giftReason: 'fake gift reason', inventory: { creditRewards: [], cars: [], repairKits: [], masteryKits: [], upgradeKits: [], energyRefills: []} });
+      component.sendGiftToPlayers({
+        giftReason: 'fake gift reason',
+        inventory: {
+          creditRewards: [],
+          cars: [],
+          repairKits: [],
+          masteryKits: [],
+          upgradeKits: [],
+          energyRefills: [],
+        },
+      });
 
       expect(mockGravityService.postGiftPlayerUsingBackgroundTask).toHaveBeenCalled();
     });

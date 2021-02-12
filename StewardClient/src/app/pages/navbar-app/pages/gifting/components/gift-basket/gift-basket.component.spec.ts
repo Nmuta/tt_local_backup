@@ -321,9 +321,13 @@ describe('GiftBasketBaseComponent', () => {
 
   describe('Method: sendGiftBasket', () => {
     beforeEach(() => {
-      component.generateGiftInventoryFromGiftBasket = jasmine.createSpy('generateGiftInventoryFromGiftBasket').and.returnValue(of({}));
+      component.generateGiftInventoryFromGiftBasket = jasmine
+        .createSpy('generateGiftInventoryFromGiftBasket')
+        .and.returnValue(of({}));
       component.sendGiftToPlayers = jasmine.createSpy('sendGiftToPlayers').and.returnValue(of({}));
-      component.sendGiftToLspGroup = jasmine.createSpy('sendGiftToLspGroup').and.returnValue(of({}));
+      component.sendGiftToLspGroup = jasmine
+        .createSpy('sendGiftToLspGroup')
+        .and.returnValue(of({}));
 
       component.usingPlayerIdentities = true;
     });
@@ -338,7 +342,7 @@ describe('GiftBasketBaseComponent', () => {
       it('should call sendGiftToPlayers', () => {
         component.usingPlayerIdentities = true;
         component.sendGiftBasket();
-  
+
         expect(component.sendGiftToPlayers).toHaveBeenCalled();
       });
     });
@@ -347,7 +351,7 @@ describe('GiftBasketBaseComponent', () => {
       it('should call sendGiftToLspGroup', () => {
         component.usingPlayerIdentities = false;
         component.sendGiftBasket();
-  
+
         expect(component.sendGiftToLspGroup).toHaveBeenCalled();
       });
     });
@@ -356,7 +360,9 @@ describe('GiftBasketBaseComponent', () => {
       describe('And an error is caught', () => {
         const error = { message: 'error-message' };
         beforeEach(() => {
-          component.sendGiftToPlayers = jasmine.createSpy('sendGiftToPlayers').and.returnValue(throwError(error));
+          component.sendGiftToPlayers = jasmine
+            .createSpy('sendGiftToPlayers')
+            .and.returnValue(throwError(error));
         });
 
         it('should set loadError on component', () => {
@@ -370,8 +376,12 @@ describe('GiftBasketBaseComponent', () => {
       describe('And a BackgoundTask is returned', () => {
         const jobId = 'test-job-id';
         beforeEach(() => {
-          component.sendGiftToPlayers = jasmine.createSpy('sendGiftToPlayers').and.returnValue(of({ jobId: jobId } as BackgroundJob<void>));
-          component.waitForBackgroundJobToComplete = jasmine.createSpy('waitForBackgroundJobToComplete');
+          component.sendGiftToPlayers = jasmine
+            .createSpy('sendGiftToPlayers')
+            .and.returnValue(of({ jobId: jobId } as BackgroundJob<void>));
+          component.waitForBackgroundJobToComplete = jasmine.createSpy(
+            'waitForBackgroundJobToComplete',
+          );
         });
 
         it('should call waitForBackgroundJobToComplete', () => {
@@ -388,10 +398,17 @@ describe('GiftBasketBaseComponent', () => {
       });
 
       describe('And a GiftResponse is returned', () => {
-        const testGiftResponse = { playerOrLspGroup: BigInt(11234567890), identityAntecedent: GiftHistoryAntecedent.LspGroupId } as GiftResponse<bigint>;
+        const testGiftResponse = {
+          playerOrLspGroup: BigInt(11234567890),
+          identityAntecedent: GiftHistoryAntecedent.LspGroupId,
+        } as GiftResponse<bigint>;
         beforeEach(() => {
-          component.sendGiftToPlayers = jasmine.createSpy('sendGiftToPlayers').and.returnValue(of(testGiftResponse));
-          component.waitForBackgroundJobToComplete = jasmine.createSpy('waitForBackgroundJobToComplete');
+          component.sendGiftToPlayers = jasmine
+            .createSpy('sendGiftToPlayers')
+            .and.returnValue(of(testGiftResponse));
+          component.waitForBackgroundJobToComplete = jasmine.createSpy(
+            'waitForBackgroundJobToComplete',
+          );
         });
 
         it('should not call waitForBackgroundJobToComplete', () => {
@@ -410,10 +427,17 @@ describe('GiftBasketBaseComponent', () => {
   });
 
   describe('Method: waitForBackgroundJobToComplete', () => {
-    const testJob: BackgroundJob<void> = { jobId: 'test=-job-id', status: BackgroundJobStatus.InProgress, result: undefined, parsedResult: undefined };
+    const testJob: BackgroundJob<void> = {
+      jobId: 'test=-job-id',
+      status: BackgroundJobStatus.InProgress,
+      result: undefined,
+      parsedResult: undefined,
+    };
 
     beforeEach(() => {
-      mockBackgroundJobService.getBackgroundJob = jasmine.createSpy('getBackgroundJob').and.returnValue(of({}));
+      mockBackgroundJobService.getBackgroundJob = jasmine
+        .createSpy('getBackgroundJob')
+        .and.returnValue(of({}));
     });
 
     it('should call BackgroundJobService.getBackgroundJob with correct job id', () => {
@@ -426,7 +450,9 @@ describe('GiftBasketBaseComponent', () => {
       describe('And an error is caught', () => {
         const error = { message: 'error-message' };
         beforeEach(() => {
-          mockBackgroundJobService.getBackgroundJob = jasmine.createSpy('getBackgroundJob').and.returnValue(throwError(error));
+          mockBackgroundJobService.getBackgroundJob = jasmine
+            .createSpy('getBackgroundJob')
+            .and.returnValue(throwError(error));
         });
 
         it('should set loadError on component', () => {
@@ -438,20 +464,29 @@ describe('GiftBasketBaseComponent', () => {
       });
 
       describe('And a BackgroundJob is returned', () => {
-        const testBackgroundJobResp: BackgroundJob<GiftResponses<string | bigint>> = { jobId: 'test=-job-id', status: BackgroundJobStatus.InProgress, result: 'result', parsedResult: [{
-          playerOrLspGroup: 'testing123',
-          identityAntecedent: GiftHistoryAntecedent.LspGroupId,
-          error: undefined
-        }] };
+        const testBackgroundJobResp: BackgroundJob<GiftResponses<string | bigint>> = {
+          jobId: 'test=-job-id',
+          status: BackgroundJobStatus.InProgress,
+          result: 'result',
+          parsedResult: [
+            {
+              playerOrLspGroup: 'testing123',
+              identityAntecedent: GiftHistoryAntecedent.LspGroupId,
+              error: undefined,
+            },
+          ],
+        };
         beforeEach(() => {
-          mockBackgroundJobService.getBackgroundJob = jasmine.createSpy('getBackgroundJob').and.returnValue(of(testBackgroundJobResp));
+          mockBackgroundJobService.getBackgroundJob = jasmine
+            .createSpy('getBackgroundJob')
+            .and.returnValue(of(testBackgroundJobResp));
         });
 
         describe('with a status of complete', () => {
           it('should set gift response', () => {
             testBackgroundJobResp.status = BackgroundJobStatus.Completed;
             component.waitForBackgroundJobToComplete(testJob);
-  
+
             expect(component.giftResponse).toEqual(testBackgroundJobResp.parsedResult);
           });
         });

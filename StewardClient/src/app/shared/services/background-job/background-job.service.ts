@@ -40,8 +40,8 @@ export class BackgroundJobService {
     const objectWithLowercaseProps = {};
     for (const key in object) {
       if (object.hasOwnProperty(key)) {
-          const newKey = key.charAt(0).toLowerCase() + key.slice(1);
-          objectWithLowercaseProps[newKey] = object[key];
+        const newKey = key.charAt(0).toLowerCase() + key.slice(1);
+        objectWithLowercaseProps[newKey] = object[key];
       }
     }
     return objectWithLowercaseProps;

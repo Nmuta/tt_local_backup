@@ -81,17 +81,29 @@ describe('ApolloGiftBasketComponent', () => {
       });
       component.sendGiftForm.controls['giftReason'].setValue(giftReason);
       component.giftBasket.data = [
-        { id: BigInt(123), description: 'fake-item-1', quantity: 0, itemType: 'creditRewards', edit: false},
-        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'cars', edit: false},
-        { id: BigInt(789), description: 'fake-item-3', quantity: 0, itemType: 'vanityItems', edit: false},
+        {
+          id: BigInt(123),
+          description: 'fake-item-1',
+          quantity: 0,
+          itemType: 'creditRewards',
+          edit: false,
+        },
+        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'cars', edit: false },
+        {
+          id: BigInt(789),
+          description: 'fake-item-3',
+          quantity: 0,
+          itemType: 'vanityItems',
+          edit: false,
+        },
       ];
     });
 
     it('should set masterInventory', () => {
       const gift = component.generateGiftInventoryFromGiftBasket();
-      
+
       expect(gift.giftReason).toEqual(giftReason);
-      const apolloMasterInventory = (gift.inventory as ApolloMasterInventory);
+      const apolloMasterInventory = gift.inventory as ApolloMasterInventory;
       expect(apolloMasterInventory).not.toBeUndefined();
       expect(apolloMasterInventory.creditRewards.length).toEqual(1);
       expect(apolloMasterInventory.cars.length).toEqual(1);
@@ -104,12 +116,17 @@ describe('ApolloGiftBasketComponent', () => {
 
   describe('Method: sendGiftToPlayers', () => {
     beforeEach(() => {
-      mockApolloService.postGiftPlayersUsingBackgroundTask = jasmine.createSpy('postGiftPlayersUsingBackgroundTask');
+      mockApolloService.postGiftPlayersUsingBackgroundTask = jasmine.createSpy(
+        'postGiftPlayersUsingBackgroundTask',
+      );
       component.playerIdentities = [];
     });
-    
+
     it('should call postGiftPlayersUsingBackgroundTask', () => {
-      component.sendGiftToPlayers({ giftReason: 'fake gift reason', inventory: { creditRewards: [], cars: [], vanityItems: []} });
+      component.sendGiftToPlayers({
+        giftReason: 'fake gift reason',
+        inventory: { creditRewards: [], cars: [], vanityItems: [] },
+      });
 
       expect(mockApolloService.postGiftPlayersUsingBackgroundTask).toHaveBeenCalled();
     });
@@ -119,9 +136,12 @@ describe('ApolloGiftBasketComponent', () => {
     beforeEach(() => {
       mockApolloService.postGiftLspGroup = jasmine.createSpy('postGiftLspGroup');
     });
-    
+
     it('should call sendGiftToLspGroup', () => {
-      component.sendGiftToLspGroup({ giftReason: 'fake gift reason', inventory: { creditRewards: [], cars: [], vanityItems: []} });
+      component.sendGiftToLspGroup({
+        giftReason: 'fake gift reason',
+        inventory: { creditRewards: [], cars: [], vanityItems: [] },
+      });
 
       expect(mockApolloService.postGiftLspGroup).toHaveBeenCalled();
     });

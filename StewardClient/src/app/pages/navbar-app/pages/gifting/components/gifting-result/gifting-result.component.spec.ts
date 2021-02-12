@@ -9,7 +9,6 @@ describe('GiftingResultComponent', () => {
   let fixture: ComponentFixture<GiftingResultComponent>;
   let component: GiftingResultComponent;
 
-
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
