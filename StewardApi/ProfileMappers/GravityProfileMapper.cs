@@ -81,21 +81,22 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.T10Id, opt => opt.MapFrom(src => src.Turn10Id))
                 .ReverseMap();
 
-            this.CreateMap<Currency, MasterInventoryItem>();
+            this.CreateMap<Currency, MasterInventoryItem>()
+                 .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => source.Name));
             this.CreateMap<GravityCar, MasterInventoryItem>()
-                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => source.CarName))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => $"{source.CarClass} {source.CarName}"))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.CarId));
             this.CreateMap<EnergyRefill, MasterInventoryItem>()
-                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => "TODO"))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => $"{(source.IsFull ? "Full" : source.PartialValue + " Point")} Energy Refill"))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.RefillId));
             this.CreateMap<MasteryKit, MasterInventoryItem>()
-                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => source.Value))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => $"{source.CarClass} {source.Value} Mastery Kit"))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.KitId));
             this.CreateMap<RepairKit, MasterInventoryItem>()
-                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => source.RepairValue))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => $"{source.StarRatingRequirement} Star Repair Kit"))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.KitId));
             this.CreateMap<UpgradeKit, MasterInventoryItem>()
-                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => "TODO"))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => $"{source.UpgradeTier} {source.CarClass} Upgrade Kit"))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.KitId));
 
             this.CreateMap<LiveOpsGetGameSettingsOutput, GravityMasterInventory>()

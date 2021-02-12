@@ -160,8 +160,10 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IStsClient, StsClientWrapper>();
 
             services.AddSingleton<IGravityUserService, GravityUserServiceWrapper>();
+            services.AddSingleton<IGravityGameSettingsService, GravityGameSettingsServiceWrapper>();
             services.AddSingleton<IGravityUserInventoryService, GravityUserInventoryServiceWrapper>();
             services.AddSingleton<IGravityPlayerDetailsProvider, GravityPlayerDetailsProvider>();
+            services.AddSingleton<IGravityGameSettingsProvider, GravityGameSettingsProvider>();
             services.AddSingleton<IGravityPlayerInventoryProvider, GravityPlayerInventoryProvider>();
             services.AddSingleton<IRequestValidator<GravityPlayerInventory>, GravityPlayerInventoryRequestValidator>();
             services.AddSingleton<IRequestValidator<GravityMasterInventory>, GravityMasterInventoryRequestValidator>();

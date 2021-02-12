@@ -514,7 +514,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             foreach (var reward in gift.CreditRewards)
             {
                 var validItem = masterInventory.CreditRewards.Any(data => { return data.Id == reward.Id; });
-                error += validItem ? string.Empty : $"Car: {reward.Id.ToString(CultureInfo.InvariantCulture)}, ";
+                error += validItem ? string.Empty : $"CreditRewards: {reward.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var car in gift.Cars)
