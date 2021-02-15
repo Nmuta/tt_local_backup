@@ -169,10 +169,17 @@ export class SunriseService {
     );
   }
 
-  /** Gets the player's inventory */
+  /** Gets the latest version of a player's inventory */
   public getPlayerInventoryByXuid(xuid: bigint): Observable<SunrisePlayerInventory> {
     return this.apiService.getRequest<SunrisePlayerInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
+  }
+  
+  /** Gets a specific version of a player's inventory */
+  public getPlayerInventoryByXuidAndProfileId(xuid: bigint, profileId: bigint): Observable<SunrisePlayerInventory> {
+    return this.apiService.getRequest<SunrisePlayerInventory>(
+      `${this.basePath}/player/xuid(${xuid})/profileId(${profileId}/inventory`,
     );
   }
 }

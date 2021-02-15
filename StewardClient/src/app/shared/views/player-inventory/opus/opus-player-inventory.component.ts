@@ -30,6 +30,14 @@ export class OpusPlayerInventoryComponent extends PlayerInventoryBaseComponent<
     return this.opus.getPlayerInventoryByXuid(identity.xuid);
   }
 
+  /** Implement in order to retrieve concrete identity instance. */
+  protected getPlayerInventoryByIdentityAndProfileId(
+    _identity: IdentityResultAlpha,
+    profileId: bigint,
+  ): Observable<OpusPlayerInventory> {
+    return this.opus.getPlayerInventoryByProfileId(profileId);
+  }
+
   /** Implement to specify the expando tables to show. */
   protected makeWhatToShow(): PropertyToExpandoData<OpusPlayerInventory>[] {
     return [this.makeEntry('cars', 'Cars')];

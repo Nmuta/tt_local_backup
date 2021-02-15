@@ -74,14 +74,11 @@ export class GravityService {
       `${this.basePath}/player/t10Id(${t10Id})/inventory`,
     );
   }
-
-  /** Gets gravity player inventory with a profile ID. */
-  public getPlayerInventoryByProfileIdWithT10Id(
-    t10Id: string,
-    profileId: string,
-  ): Observable<GravityPlayerInventory> {
+  
+  /** Gets a specific version of a player's inventory */
+  public getPlayerInventoryByT10IdAndProfileId(t10Id: string, profileId: bigint): Observable<GravityPlayerInventory> {
     return this.apiService.getRequest<GravityPlayerInventory>(
-      `${this.basePath}/player/t10Id(${t10Id})/profileId(${profileId})/inventory`,
+      `${this.basePath}/player/t10Id(${t10Id})/profileId(${profileId}/inventory`,
     );
   }
 

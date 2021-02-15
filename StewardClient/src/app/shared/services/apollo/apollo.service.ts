@@ -99,10 +99,17 @@ export class ApolloService {
     return this.apiService.getRequest<ApolloMasterInventory>(`${this.basePath}/masterInventory`);
   }
 
-  /** Gets the apollo player's inventory */
+  /** Gets the apollo player's latest inventory */
   public getPlayerInventoryByXuid(xuid: bigint): Observable<ApolloPlayerInventory> {
     return this.apiService.getRequest<ApolloPlayerInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
+  }
+  
+  /** Gets a specific version of an apollo player's inventory */
+  public getPlayerInventoryByProfileId(profileId: bigint): Observable<ApolloPlayerInventory> {
+    return this.apiService.getRequest<ApolloPlayerInventory>(
+      `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }
 }

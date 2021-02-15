@@ -59,4 +59,11 @@ export class OpusService {
       `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
+  
+  /** Gets a specific version of an apollo player's inventory */
+  public getPlayerInventoryByProfileId(profileId: bigint): Observable<OpusPlayerInventory> {
+    return this.apiService.getRequest<OpusPlayerInventory>(
+      `${this.basePath}/player/profileId(${profileId})/inventory`,
+    );
+  }
 }
