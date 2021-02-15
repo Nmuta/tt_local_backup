@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
     /// <summary>
     ///     Represents an Apollo inventory item.
     /// </summary>
-    public class ApolloInventoryItem
+    public class ApolloInventoryItem : IInventoryItem
     {
         /// <summary>
         ///     Gets or sets the item ID.
@@ -15,7 +15,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         /// <summary>
         ///     Gets or sets the quantity.
         /// </summary>
-        public int Quantity { get; set; }
+        public long Quantity { get; set; }
 
         /// <summary>
         ///     Gets or sets the acquisition time.
