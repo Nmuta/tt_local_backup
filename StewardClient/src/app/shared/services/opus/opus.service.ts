@@ -5,7 +5,7 @@ import {
   IdentityResultAlpha,
   IdentityResultAlphaBatch,
 } from '@models/identity-query.model';
-import { OpusPlayerDetails, OpusPlayerInventory } from '@models/opus';
+import { OpusPlayerDetails, OpusPlayerInventory, OpusPlayerInventoryProfile } from '@models/opus';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -57,6 +57,13 @@ export class OpusService {
   public getPlayerInventoryByXuid(xuid: bigint): Observable<OpusPlayerInventory> {
     return this.apiService.getRequest<OpusPlayerInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
+  }
+
+  /** Gets a player's profile list  by XUID. */
+  public getPlayerInventoryProfilesByXuid(xuid: bigint): Observable<OpusPlayerInventoryProfile[]> {
+    return this.apiService.getRequest<OpusPlayerInventoryProfile[]>(
+      `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
     );
   }
   

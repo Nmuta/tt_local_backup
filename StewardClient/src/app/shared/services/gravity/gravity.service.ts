@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { T10IdString } from '@models/extended-types';
-import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory } from '@models/gravity';
+import { GuidLikeString, T10IdString } from '@models/extended-types';
+import { GravityGiftHistory, GravityPlayerDetails, GravityPlayerInventory, GravityPseudoPlayerInventoryProfile, gravitySaveStatesToPsuedoInventoryProfile } from '@models/gravity';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
   IdentityQueryBeta,
@@ -72,6 +72,13 @@ export class GravityService {
   public getPlayerInventoryByT10Id(t10Id: T10IdString): Observable<GravityPlayerInventory> {
     return this.apiService.getRequest<GravityPlayerInventory>(
       `${this.basePath}/player/t10Id(${t10Id})/inventory`,
+    );
+  }
+
+  /** Gets a player's profile list by T10Id. */
+  public getPlayerInventoryProfilesByXuid(t10Id: GuidLikeString): Observable<GravityPseudoPlayerInventoryProfile[]> {
+    return this.getPlayerDetailsByT10Id(t10Id).pipe(
+      map(details => gravitySaveStatesToPsuedoInventoryProfile(details)),
     );
   }
   

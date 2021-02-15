@@ -1,4 +1,4 @@
-import { GuidLikeString } from "@models/extended-types";
+import { GuidLikeString } from '@models/extended-types';
 
 export interface SunrisePlayerInventoryProfile {
   profileId: bigint;

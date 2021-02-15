@@ -4,6 +4,7 @@ import {
   ApolloMasterInventory,
   ApolloPlayerDetails,
   ApolloPlayerInventory,
+  ApolloPlayerInventoryProfile,
 } from '@models/apollo';
 import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
 import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
@@ -103,6 +104,13 @@ export class ApolloService {
   public getPlayerInventoryByXuid(xuid: bigint): Observable<ApolloPlayerInventory> {
     return this.apiService.getRequest<ApolloPlayerInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
+  }
+
+  /** Gets a player's profile list  by XUID. */
+  public getPlayerInventoryProfilesByXuid(xuid: bigint): Observable<ApolloPlayerInventoryProfile[]> {
+    return this.apiService.getRequest<ApolloPlayerInventoryProfile[]>(
+      `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
     );
   }
   
