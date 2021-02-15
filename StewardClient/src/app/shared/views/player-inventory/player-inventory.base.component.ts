@@ -114,8 +114,14 @@ export abstract class PlayerInventoryBaseComponent<
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(_changes: SimpleChanges): void {
-    this.identity$.next(this.identity);
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes['identity']) {
+      this.identity$.next(this.identity);
+    }
+
+    if (changes['profileId']) {
+      this.profileId$.next(this.profileId);
+    }
   }
 
   /** Utility method for generating the expandos to show. */
