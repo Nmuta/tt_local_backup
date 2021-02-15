@@ -185,9 +185,9 @@ export class SunriseService {
   }
   
   /** Gets a specific version of a player's inventory */
-  public getPlayerInventoryByXuidAndProfileId(xuid: bigint, profileId: bigint): Observable<SunrisePlayerInventory> {
+  public getPlayerInventoryByProfileId(profileId: bigint): Observable<SunrisePlayerInventory> {
     return this.apiService.getRequest<SunrisePlayerInventory>(
-      `${this.basePath}/player/xuid(${xuid})/profileId(${profileId}/inventory`,
+      `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }
 }

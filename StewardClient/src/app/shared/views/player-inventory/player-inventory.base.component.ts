@@ -8,7 +8,7 @@ import { IdentityResultUnion } from '@models/identity-query.model';
 import { OpusPlayerInventory } from '@models/opus';
 import { SunrisePlayerInventory } from '@models/sunrise';
 import { SunriseInventoryItem } from '@models/sunrise/inventory-items';
-import { NEVER, Observable, Subject, zip } from 'rxjs';
+import { combineLatest, NEVER, Observable, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 export type AcceptablePlayerInventoryTypeUnion =
@@ -79,7 +79,7 @@ export abstract class PlayerInventoryBaseComponent<
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
-    const identityOrProfile$ = zip(this.identity$, this.profileId$).pipe(
+    const identityOrProfile$ = combineLatest([this.identity$, this.profileId$]).pipe(
       takeUntil(this.onDestroy$),
       map(([identity, profileId]) => {
         return { identity: identity, profileId: profileId };
@@ -111,16 +111,21 @@ export abstract class PlayerInventoryBaseComponent<
       });
 
     this.identity$.next(this.identity);
+    this.profileId$.next(this.profileId);
   }
 
   /** Lifecycle hook. */
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes['identity']) {
-      this.identity$.next(this.identity);
+      if (changes.identity.currentValue !== changes.identity.previousValue) {
+        this.identity$.next(this.identity);
+      }
     }
 
     if (changes['profileId']) {
-      this.profileId$.next(this.profileId);
+      if (changes.profileId.currentValue !== changes.profileId.previousValue) {
+        this.profileId$.next(this.profileId);
+      }
     }
   }
 

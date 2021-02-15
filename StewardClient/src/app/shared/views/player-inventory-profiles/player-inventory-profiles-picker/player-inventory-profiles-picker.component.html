@@ -1,8 +1,10 @@
 <mat-chip-list aria-label="Profile selection" *ngIf="profiles; else failstate"
   selectable="true"
-  multiple="false">
+  multiple="false"
+  (change)="onSelectionChange($event)">
   <mat-chip *ngFor="let profile of profiles" color="primary"
   #chip="matChip"
+  [value]="profile"
   (click)="chip.toggleSelected(true)">
     <fa-icon [icon]="currentUserIcon" *ngIf="profile.isCurrent" matTooltip="User Active"></fa-icon>
     <fa-icon [icon]="unusedUserIcon" *ngIf="!profile.isCurrent" matTooltip="User Inactive"></fa-icon>
