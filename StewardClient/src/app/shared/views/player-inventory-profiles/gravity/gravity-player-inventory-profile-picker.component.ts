@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IdentityResultBeta } from '@models/identity-query.model';
-import { GravityPlayerInventoryProfile } from '@models/gravity';
+import { GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 import { GravityService } from '@services/gravity';
 import { Observable } from 'rxjs';
 import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-profiles-picker/player-inventory-profiles-picker.base.component';
@@ -13,7 +13,7 @@ import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-
 })
 export class GravityPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
   IdentityResultBeta,
-  GravityPlayerInventoryProfile
+  GravityPseudoPlayerInventoryProfile
 > {
   constructor(private readonly gravity: GravityService) {
     super();
@@ -22,7 +22,7 @@ export class GravityPlayerInventoryProfilePickerComponent extends PlayerInventor
   /** Implement in order to retrieve concrete identity instance. */
   protected getPlayerProfilesByIdentity(
     identity: IdentityResultBeta,
-  ): Observable<GravityPlayerInventoryProfile[]> {
+  ): Observable<GravityPseudoPlayerInventoryProfile[]> {
     return this.gravity.getPlayerInventoryProfilesByT10Id(identity.t10Id);
   }
 }

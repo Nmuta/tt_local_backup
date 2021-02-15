@@ -76,7 +76,7 @@ export class GravityService {
   }
 
   /** Gets a player's profile list by T10Id. */
-  public getPlayerInventoryProfilesByXuid(t10Id: GuidLikeString): Observable<GravityPseudoPlayerInventoryProfile[]> {
+  public getPlayerInventoryProfilesByT10Id(t10Id: GuidLikeString): Observable<GravityPseudoPlayerInventoryProfile[]> {
     return this.getPlayerDetailsByT10Id(t10Id).pipe(
       map(details => gravitySaveStatesToPsuedoInventoryProfile(details)),
     );

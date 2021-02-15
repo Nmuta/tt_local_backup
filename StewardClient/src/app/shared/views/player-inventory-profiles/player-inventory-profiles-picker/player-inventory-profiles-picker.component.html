@@ -10,7 +10,8 @@
     <fa-icon [icon]="unusedUserIcon" *ngIf="!profile.isCurrent" matTooltip="User Inactive"></fa-icon>
     <span class="id" [matTooltip]="'Profile ID: ' + profile.profileId">{{ profile.profileId }}</span>
     <span class="device-type" [matTooltip]="'Device Type: ' + profile.deviceType">{{ profile.deviceType }}</span>
-    <fa-icon class="external-id" [icon]="externalIdIcon" [matTooltip]="'External ID: ' + profile.externalProfileId"></fa-icon>
+    <fa-icon *ngIf="profile.lastLoginUtc" class="last-used" [icon]="lastUsedTimeIcon" [matTooltip]="'Last Used On: ' + (profile.lastLoginUtc | date: 'long')"></fa-icon>
+    <fa-icon *ngIf="profile.externalProfileId" class="external-id" [icon]="externalIdIcon" [matTooltip]="'External ID: ' + profile.externalProfileId"></fa-icon>
   </mat-chip>
 </mat-chip-list>
 

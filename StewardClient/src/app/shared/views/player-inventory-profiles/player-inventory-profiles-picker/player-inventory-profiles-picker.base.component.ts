@@ -1,15 +1,30 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { faPassport, faUserCheck, faUserSlash } from '@fortawesome/free-solid-svg-icons';
+import { faHistory, faPassport, faUserCheck, faUserSlash } from '@fortawesome/free-solid-svg-icons';
+import { ApolloPlayerInventoryProfile } from '@models/apollo';
+import { GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 import { IdentityResultUnion } from '@models/identity-query.model';
+import { OpusPlayerInventoryProfile } from '@models/opus';
 import { SunrisePlayerInventoryProfile } from '@models/sunrise';
 import { chain, isEmpty } from 'lodash';
 import { NEVER, Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 
-export type AcceptableInventoryProfileTypes = SunrisePlayerInventoryProfile;
+export type AcceptableInventoryProfileTypes =
+  | SunrisePlayerInventoryProfile
+  | OpusPlayerInventoryProfile
+  | GravityPseudoPlayerInventoryProfile
+  | ApolloPlayerInventoryProfile;
+
+type AcceptableInventoryProfileTypesIntersectionIntermediate =
+  & SunrisePlayerInventoryProfile
+  & OpusPlayerInventoryProfile
+  & GravityPseudoPlayerInventoryProfile
+  & ApolloPlayerInventoryProfile;
+
+type AcceptableInventoryProfileTypesIntersection = Partial<AcceptableInventoryProfileTypesIntersectionIntermediate> & AcceptableInventoryProfileTypes;
 
 /** Base component for picking player profiles. */
 @Component({
@@ -23,10 +38,10 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   implements OnInit, OnChanges {
 
   @Input() public identity: IdentityResultType;
-  @Input() public profileId: bigint;
-  @Output() public profileIdChange = new EventEmitter<bigint>();
+  @Input() public profileId: string | bigint;
+  @Output() public profileIdChange = new EventEmitter<string | bigint>();
 
-  public profiles: InventoryProfileType[] = [];
+  public profiles: AcceptableInventoryProfileTypesIntersection[] = [];
   /** True while loading. */
   public get isLoading(): boolean {
     return isEmpty(this.profiles);
@@ -36,6 +51,7 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   public currentUserIcon = faUserCheck;
   public unusedUserIcon = faUserSlash;
   public externalIdIcon = faPassport;
+  public lastUsedTimeIcon = faHistory;
 
   /** Intermediate event that is fired when @see identity changes. */
   private identity$ = new Subject<IdentityResultType>();
@@ -62,7 +78,7 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
         }),
       )
       .subscribe(profiles => {
-        this.profiles = profiles;
+        this.profiles = profiles as unknown as AcceptableInventoryProfileTypesIntersection[];
 
         // clear selected profile if the currently set ID does not exist
         if (chain(profiles).filter(p => p.profileId === this.profileId).isEmpty()) {

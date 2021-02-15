@@ -21,6 +21,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   public lookupList: string[] = [];
   public identity: AugmentedCompositeIdentity;
 
+
   /** The only lookup name. */
   public get lookupName(): string {
     return first(this.lookupList) ?? '';

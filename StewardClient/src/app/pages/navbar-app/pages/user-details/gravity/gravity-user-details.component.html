@@ -13,7 +13,8 @@
       </mat-tab>
       <mat-tab label="Inventory">
         <div class="tab-container">
-          <gravity-player-inventory [identity]="identity"></gravity-player-inventory>
+          <gravity-player-inventory-profile-picker [identity]="identity" [(profileId)]="profileId" (profileIdChange)="onProfileIdChange($event)"></gravity-player-inventory-profile-picker>
+          <gravity-player-inventory [identity]="identity" [profileId]="profileId"></gravity-player-inventory>
         </div>
       </mat-tab>
       <mat-tab label="JSON">

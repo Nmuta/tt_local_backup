@@ -9,7 +9,8 @@
       </mat-tab>
       <mat-tab label="Inventory">
         <div class="tab-container">
-          <opus-player-inventory [identity]="identity"></opus-player-inventory>
+          <opus-player-inventory-profile-picker [identity]="identity" [(profileId)]="profileId" (profileIdChange)="onProfileIdChange($event)"></opus-player-inventory-profile-picker>
+          <opus-player-inventory [identity]="identity" [profileId]="profileId"></opus-player-inventory>
         </div>
       </mat-tab>
       <mat-tab label="JSON">
