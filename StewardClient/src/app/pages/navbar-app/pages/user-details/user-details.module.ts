@@ -27,6 +27,7 @@ import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inv
 import { PlayerNotificationsModule } from '@shared/views/player-notifications/player-notifications.module';
 import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -60,6 +61,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     JsonDumpModule,
     PlayerNotificationsModule,
     PlayerInventoryModule,
+    PlayerInventoryProfilesModule,
     PlayerSelectionSingleModule,
     MatTooltipModule,
   ],

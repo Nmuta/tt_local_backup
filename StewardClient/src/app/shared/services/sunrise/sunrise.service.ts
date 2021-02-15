@@ -12,6 +12,7 @@ import {
   SunriseBanSummary,
   SunrisePlayerDetails,
   SunrisePlayerInventory,
+  SunrisePlayerInventoryProfile,
   SunrisePlayerNotifications,
   SunriseUserFlags,
 } from '@models/sunrise';
@@ -166,6 +167,13 @@ export class SunriseService {
   public getCreditHistoryByXuid(xuid: bigint): Observable<SunriseCreditHistory> {
     return this.apiService.getRequest<SunriseCreditHistory>(
       `${this.basePath}/player/xuid(${xuid})/creditUpdates`,
+    );
+  }
+
+  /** Gets a player's profile list  by XUID. */
+  public getPlayerInventoryProfilesByXuid(xuid: bigint): Observable<SunrisePlayerInventoryProfile[]> {
+    return this.apiService.getRequest<SunrisePlayerInventoryProfile[]>(
+      `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
     );
   }
 
