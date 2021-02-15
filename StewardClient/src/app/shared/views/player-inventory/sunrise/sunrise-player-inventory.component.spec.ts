@@ -21,10 +21,9 @@ describe('SunrisePlayerInventoryComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-
     service = TestBed.inject(SunriseService);
     waitUntil$ = new Subject<void>();
-    (service as unknown as MockSunriseService).waitUntil$ = waitUntil$;
+    ((service as unknown) as MockSunriseService).waitUntil$ = waitUntil$;
   });
 
   beforeEach(() => {
@@ -40,10 +39,12 @@ describe('SunrisePlayerInventoryComponent', () => {
   describe('when valid identity is received', () => {
     const testXuid = fakeXuid();
 
-    beforeEach(waitForAsync(() => {
-      component.identity = first(SunrisePlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
-      component.ngOnChanges(undefined);
-    }));
+    beforeEach(
+      waitForAsync(() => {
+        component.identity = first(SunrisePlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
+        component.ngOnChanges(undefined);
+      }),
+    );
 
     it('should call getPlayerInventoryByXuid', () => {
       expect(service.getPlayerInventoryByXuid).toHaveBeenCalledWith(testXuid);
@@ -55,21 +56,24 @@ describe('SunrisePlayerInventoryComponent', () => {
     });
 
     describe('when valid inventory is received', () => {
-      beforeEach(waitForAsync(() => {
-        waitUntil$.next();
-      }));
-      
+      beforeEach(
+        waitForAsync(() => {
+          waitUntil$.next();
+        }),
+      );
+
       it('should populate inventory', () => {
         expect(component.inventory).toBeTruthy();
         expect(component.whatToShow).toBeTruthy();
       });
-      
 
       describe('when null identity is set', () => {
-        beforeEach(waitForAsync(() => {
-          component.identity =  null;
-          component.ngOnChanges(undefined);
-        }));
+        beforeEach(
+          waitForAsync(() => {
+            component.identity = null;
+            component.ngOnChanges(undefined);
+          }),
+        );
 
         it('should reset', () => {
           expect(component.inventory).toBeFalsy();

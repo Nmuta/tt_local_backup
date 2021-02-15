@@ -16,7 +16,9 @@ export class MockApolloService {
 
   public getIdentity = jasmine
     .createSpy('getIdentity')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({ xuid: BigInt(12345), gamertag: 'gamertag' }))));
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of({ xuid: BigInt(12345), gamertag: 'gamertag' }))),
+    );
 
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
@@ -28,17 +30,23 @@ export class MockApolloService {
   public getPlayerIdentity = jasmine
     .createSpy('getPlayerIdentity')
     .and.callFake((query: IdentityQueryAlpha) =>
-      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayersIdentitiesFakeApi.make([query])))));
+      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayersIdentitiesFakeApi.make([query])))),
+    );
   public getPlayerIdentities = jasmine
     .createSpy('getPlayerIdentities')
     .and.callFake((query: IdentityQueryAlphaBatch) =>
-      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayersIdentitiesFakeApi.make(query)))));
+      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayersIdentitiesFakeApi.make(query)))),
+    );
 
-  public getMasterInventory = jasmine.createSpy('getMasterInventory').and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({}))));
+  public getMasterInventory = jasmine
+    .createSpy('getMasterInventory')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({}))));
 
   public getPlayerInventoryByXuid = jasmine
     .createSpy('getPlayerInventoryByXuid')
-    .and.callFake(xuid => this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidInventoryFakeApi.make(xuid)))));
+    .and.callFake(xuid =>
+      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidInventoryFakeApi.make(xuid)))),
+    );
 }
 /** Creates an injectable mock for Apollo Service. */
 export function createMockApolloService(): Provider {

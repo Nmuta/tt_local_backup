@@ -15,7 +15,9 @@ export class MockOpusService {
 
   public getIdentity = jasmine
     .createSpy('getIdentity')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({ xuid: BigInt(12345), gamertag: 'gamertag' }))));
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of({ xuid: BigInt(12345), gamertag: 'gamertag' }))),
+    );
 
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
@@ -24,15 +26,20 @@ export class MockOpusService {
   public getPlayerIdentity = jasmine
     .createSpy('getPlayerIdentity')
     .and.callFake((query: IdentityQueryAlpha) =>
-      this.waitUntil$.pipe(switchMap(() => of(OpusPlayersIdentitiesFakeApi.make([query])))));
+      this.waitUntil$.pipe(switchMap(() => of(OpusPlayersIdentitiesFakeApi.make([query])))),
+    );
   public getPlayerIdentities = jasmine
     .createSpy('getPlayerIdentities')
     .and.callFake((query: IdentityQueryAlphaBatch) =>
-      this.waitUntil$.pipe(switchMap(() => of(OpusPlayersIdentitiesFakeApi.make(query)))));
+      this.waitUntil$.pipe(switchMap(() => of(OpusPlayersIdentitiesFakeApi.make(query)))),
+    );
 
   public getPlayerInventoryByXuid = jasmine
     .createSpy('getPlayerInventoryByXuid')
-    .and.callFake(_ => this.waitUntil$.pipe(switchMap(() => of(OpusPlayerXuidInventoryFakeApi.make()))))}
+    .and.callFake(_ =>
+      this.waitUntil$.pipe(switchMap(() => of(OpusPlayerXuidInventoryFakeApi.make()))),
+    );
+}
 
 /** Creates an injectable mock for Opus Service. */
 export function createMockOpusService(): Provider {
