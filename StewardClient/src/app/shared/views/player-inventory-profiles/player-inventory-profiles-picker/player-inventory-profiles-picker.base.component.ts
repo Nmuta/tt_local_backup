@@ -4,7 +4,7 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { faPassport, faUserCheck, faUserSlash } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { SunrisePlayerInventoryProfile } from '@models/sunrise';
-import { chain, first, includes, isEmpty } from 'lodash';
+import { chain, isEmpty } from 'lodash';
 import { NEVER, Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
