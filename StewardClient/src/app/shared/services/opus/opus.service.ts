@@ -7,6 +7,7 @@ import {
 } from '@models/identity-query.model';
 import { OpusPlayerDetails, OpusPlayerInventory, OpusPlayerInventoryProfile } from '@models/opus';
 import { ApiService } from '@services/api';
+import { chain } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -64,7 +65,7 @@ export class OpusService {
   public getPlayerInventoryProfilesByXuid(xuid: bigint): Observable<OpusPlayerInventoryProfile[]> {
     return this.apiService.getRequest<OpusPlayerInventoryProfile[]>(
       `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
-    );
+    ).pipe(map(v => chain(v).sortBy(v => v.profileId).reverse().value()));
   }
   
   /** Gets a specific version of an apollo player's inventory */

@@ -25,7 +25,8 @@ import { SunriseGiftHistory } from '@models/sunrise/sunrise-gift-history.model';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+import { chain } from 'lodash';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -174,7 +175,7 @@ export class SunriseService {
   public getPlayerInventoryProfilesByXuid(xuid: bigint): Observable<SunrisePlayerInventoryProfile[]> {
     return this.apiService.getRequest<SunrisePlayerInventoryProfile[]>(
       `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
-    );
+    ).pipe(map(v => chain(v).sortBy(v => v.profileId).reverse().value()));
   }
 
   /** Gets the latest version of a player's inventory */
