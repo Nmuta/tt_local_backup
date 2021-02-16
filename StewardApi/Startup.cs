@@ -95,12 +95,21 @@ namespace Turn10.LiveOps.StewardApi
                     }
                 });
 
-                options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
+                options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme()
                 {
-                    Type = SecuritySchemeType.Http,
+                    Type = SecuritySchemeType.OAuth2,
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Scheme = "bearer"
+                    Scheme = "bearer",
+                    Flows = new OpenApiOAuthFlows()
+                    {
+                        Implicit = new OpenApiOAuthFlow()
+                        {
+                            TokenUrl = new Uri($"{this.configuration[ConfigurationKeyConstants.AzureInstance]}/{this.configuration[ConfigurationKeyConstants.AzureTenantId]}/oauth2/v2.0/token"),
+                            AuthorizationUrl = new Uri($"{this.configuration[ConfigurationKeyConstants.AzureInstance]}/{this.configuration[ConfigurationKeyConstants.AzureTenantId]}/oauth2/v2.0/authorize"),
+                            Scopes = { { $"api://{this.configuration[ConfigurationKeyConstants.AzureClientId]}/api_access", "API Access" } }
+                        }
+                    }
                 });
 
                 options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
@@ -151,8 +160,10 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IStsClient, StsClientWrapper>();
 
             services.AddSingleton<IGravityUserService, GravityUserServiceWrapper>();
+            services.AddSingleton<IGravityGameSettingsService, GravityGameSettingsServiceWrapper>();
             services.AddSingleton<IGravityUserInventoryService, GravityUserInventoryServiceWrapper>();
             services.AddSingleton<IGravityPlayerDetailsProvider, GravityPlayerDetailsProvider>();
+            services.AddSingleton<IGravityGameSettingsProvider, GravityGameSettingsProvider>();
             services.AddSingleton<IGravityPlayerInventoryProvider, GravityPlayerInventoryProvider>();
             services.AddSingleton<IRequestValidator<GravityPlayerInventory>, GravityPlayerInventoryRequestValidator>();
             services.AddSingleton<IRequestValidator<GravityMasterInventory>, GravityMasterInventoryRequestValidator>();
@@ -251,6 +262,8 @@ namespace Turn10.LiveOps.StewardApi
             applicationBuilder.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.OAuthClientId(this.configuration[ConfigurationKeyConstants.AzureClientId]);
+                c.OAuthScopeSeparator(" ");
             });
 
             applicationBuilder.UseHttpsRedirection();

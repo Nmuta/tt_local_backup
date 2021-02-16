@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Forza.WebServices.FMG.Generated;
 using static Forza.WebServices.FMG.Generated.UserInventoryService;
 
@@ -9,19 +10,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
     /// </summary>
     public interface IGravityUserInventoryService
     {
-        /// <summary>
-        ///     Gets the user inventory by T10Id.
-        /// </summary>
-        /// <param name="t10Id">The T10 ID.</param>
-        /// <param name="inventoryToApply">The inventory to apply.</param>
-        /// <param name="shouldResetFirst">A value indicating whether should reset first.</param>
-        /// <param name="grantStartingPackage">A value indicating whether to grant starting package.</param>
-        /// <param name="preserveBookingItems">A value indicating whether to preserved booking items.</param>
-        /// <returns>
-        ///     A task with a status.
-        /// </returns>
-        Task LiveOpsApplyUserInventoryByT10IdAsync(string t10Id, LiveOpsUserInventory inventoryToApply, bool shouldResetFirst, bool grantStartingPackage, bool preserveBookingItems);
-
         /// <summary>
         ///      Gets user inventory by profile ID.
         /// </summary>
@@ -51,19 +39,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         Task<LiveOpsGetUserInventoryByT10IdOutput> LiveOpsGetUserInventoryByT10IdAsync(string t10Id);
 
         /// <summary>
-        ///     Applies user inventory.
-        /// </summary>
-        /// <param name="t10Id">The T10 ID.</param>
-        /// <param name="inventoryToApply">The inventory to apply.</param>
-        /// <param name="shouldResetFirst">A value indicating whether should reset first.</param>
-        /// <param name="grantStartingPackage">A value indicating whether to grant starting package.</param>
-        /// <param name="preserveBookingItems">A value indicating whether to preserve booking items.</param>
-        /// <returns>
-        ///     A task with a status.
-        /// </returns>
-        Task LiveOpsApplyUserInventoryAsync(string t10Id, LiveOpsUserInventory inventoryToApply, bool shouldResetFirst, bool grantStartingPackage, bool preserveBookingItems);
-
-        /// <summary>
         ///      Resets user inventory.
         /// </summary>
         /// <param name="t10Id">The T10 ID.</param>
@@ -75,12 +50,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         ///     Grants an item to a player's inventory.
         /// </summary>
         /// <param name="t10Id">The player's T10 ID.</param>
+        /// <param name="gameSettingsId">The game settings ID.</param>
         /// <param name="type">The type of an inventory item.</param>
         /// <param name="id">The item ID.</param>
         /// <param name="quantity">The quantity of the item.</param>
         /// <returns>
-        ///     The <see cref="GrantItemOutput"/>.
+        ///      A task with a status.
         /// </returns>
-        Task<GrantItemOutput> GrantItem(string t10Id, ForzaUserInventoryItemType type, int id, int quantity);
+        Task LiveOpsGrantItem(string t10Id, Guid gameSettingsId, ForzaUserInventoryItemType type, int id, int quantity);
     }
 }
