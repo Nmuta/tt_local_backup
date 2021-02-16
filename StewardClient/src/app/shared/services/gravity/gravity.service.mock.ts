@@ -1,5 +1,7 @@
 import { Injectable, Provider } from '@angular/core';
-import { of } from 'rxjs';
+import { GravityPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/gravity/players/identities';
+import { IdentityQueryBeta, IdentityQueryBetaBatch } from '@models/identity-query.model';
+import { defer, of } from 'rxjs';
 
 import { GravityService } from './gravity.service';
 
@@ -14,6 +16,16 @@ export class MockGravityService {
     .createSpy('getPlayerDetailsByGamertag')
     .and.returnValue(of({}));
 
+  public getPlayerIdentity = jasmine
+    .createSpy('getPlayerIdentity')
+    .and.callFake((query: IdentityQueryBeta) =>
+      defer(() => of(GravityPlayersIdentitiesFakeApi.make([query]))),
+    );
+  public getPlayerIdentities = jasmine
+    .createSpy('getPlayerIdentities')
+    .and.callFake((query: IdentityQueryBetaBatch) =>
+      defer(() => of(GravityPlayersIdentitiesFakeApi.make(query))),
+    );
   public getGameSettings = jasmine.createSpy('getGameSettings').and.returnValue(of({}));
 }
 
