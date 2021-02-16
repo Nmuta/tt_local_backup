@@ -1,4 +1,6 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts
+﻿using System;
+
+namespace Turn10.LiveOps.StewardApi.Contracts
 {
     /// <summary>
     ///     Represents a master inventory item.
@@ -23,6 +25,6 @@
         /// <summary>
         ///     Gets or sets the item error.
         /// </summary>
-        public object Error { get; set; }
+        public Exception Error { get; set; }
     }
 }

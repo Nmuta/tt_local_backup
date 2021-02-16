@@ -85,13 +85,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         public void Ctor_WhenGravitySettingsProviderNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { GravitySettingsProvider = null };
+            var dependencies = new Dependencies { GravityGameSettingsProvider = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gravitySettingsProvider"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gravityGameSettingsProvider"));
         }
 
         [TestMethod]
@@ -349,7 +349,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var controller = new Dependencies().Build();
             var t10Id = Fixture.Create<string>();
             var gift = Fixture.Create<GravityGift>();
-            var requestingAgent = Fixture.Create<string>();
+
+            gift.Inventory.CreditRewards = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+            gift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+            gift.Inventory.EnergyRefills = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+            gift.Inventory.MasteryKits = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+            gift.Inventory.RepairKits = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+            gift.Inventory.UpgradeKits = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -431,18 +437,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var Id = Fixture.Create<string>();
+            var Id = Fixture.Create<Guid>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGameSettings(Id).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.GetMasterInventoryList(Id.ToString()).ConfigureAwait(false);
 
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();
             action().Should().NotBeNull();
             var result = await action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as GameSettings;
-            details.Should().NotBeNull();
-            details.Should().BeOfType<GameSettings>();
+            var masterInventory = result.Value as GravityMasterInventory;
+            masterInventory.Should().NotBeNull();
+            masterInventory.Should().BeOfType<GravityMasterInventory>();
         }
 
         [TestMethod]
@@ -455,9 +461,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.GetGameSettings(null).ConfigureAwait(false),
-                async () => await controller.GetGameSettings(TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.GetGameSettings(TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await controller.GetMasterInventoryList(null).ConfigureAwait(false),
+                async () => await controller.GetMasterInventoryList(TestConstants.Empty).ConfigureAwait(false),
+                async () => await controller.GetMasterInventoryList(TestConstants.WhiteSpace).ConfigureAwait(false)
             };
 
             // Assert.
@@ -531,6 +537,17 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
+
+                var validMasterInventory = Fixture.Create<GravityMasterInventory>();
+                validMasterInventory.CreditRewards = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+                validMasterInventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+                validMasterInventory.EnergyRefills = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+                validMasterInventory.MasteryKits = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+                validMasterInventory.RepairKits = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+                validMasterInventory.UpgradeKits = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+
+                this.GravityGameSettingsProvider.GetGameSettingsAsync(Arg.Any<Guid>()).Returns(validMasterInventory);
+
                 this.GravityPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryBeta>()).Returns(Fixture.Create<IdentityResultBeta>());
                 this.GravityPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GravityPlayerDetails>());
                 this.GravityPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerDetails>());
@@ -541,8 +558,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
                 this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
-                this.GravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(Arg.Any<string>(), Arg.Any<GravityGift>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<string>>()); ;
-                this.GravitySettingsProvider.GetGameSettingAsync(Arg.Any<Guid>()).Returns(Fixture.Create<GameSettings>());
+                this.GravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(Arg.Any<string>(), Arg.Any<Guid>(), Arg.Any<GravityGift>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<string>>()); ;
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftHistoryAntecedent>()).Returns(Fixture.Create<IList<GravityGiftHistory>>());
             }
 
@@ -552,7 +568,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
             public IGravityGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IGravityGiftHistoryProvider>();
 
-            public ISettingsProvider GravitySettingsProvider { get; set; } = Substitute.For<ISettingsProvider>();
+            public IGravityGameSettingsProvider GravityGameSettingsProvider { get; set; } = Substitute.For<IGravityGameSettingsProvider>();
 
             public IScheduler Scheduler { get; set; } = Substitute.For<IScheduler>();
 
@@ -564,7 +580,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 this.GravityPlayerDetailsProvider,
                 this.GravityPlayerInventoryProvider,
                 this.GiftHistoryProvider,
-                this.GravitySettingsProvider,
+                this.GravityGameSettingsProvider,
                 this.Scheduler,
                 this.JobTracker,
                 this.GiftRequestValidator)

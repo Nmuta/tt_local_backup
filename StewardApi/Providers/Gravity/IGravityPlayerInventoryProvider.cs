@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 
@@ -51,12 +52,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         ///     Sends inventory item gifts to a player.
         /// </summary>
         /// <param name="t10Id">The Turn 10 ID.</param>
+        /// <param name="gameSettingsId">The game settings ID.</param>
         /// <param name="gift">The gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
         ///     The <see cref="GiftResponse{T}"/>.
         /// </returns>
-        Task<GiftResponse<string>> UpdatePlayerInventoryAsync(string t10Id, GravityGift gift, string requestingAgent);
+        Task<GiftResponse<string>> UpdatePlayerInventoryAsync(string t10Id, Guid gameSettingsId, GravityGift gift, string requestingAgent);
 
         /// <summary>
         ///     Delete player inventory.
