@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { Action, State, StateContext, Selector } from '@ngxs/store';
 import { SunriseService } from '@services/sunrise';
-import { Observable, of, throwError } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { NEVER, Observable, of, throwError } from 'rxjs';
+import { catchError, take, tap } from 'rxjs/operators';
 import { GravityService } from '@services/gravity';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
@@ -64,8 +64,17 @@ export class MasterInventoryListMemoryState {
     // If not found in memory, make request
     const request$ = this.gravityService.getMasterInventory(gameSettingsId);
     return request$.pipe(
+      catchError(error => {
+        console.log(error);
+        return NEVER;
+      }),
+      take(1),
       tap(data => {
-        const gravityVal = state[GameTitleCodeName.Street];
+        console.log(data);
+        let gravityVal = state[GameTitleCodeName.Street];
+        if(Object.keys(gravityVal).length >= 3) {
+          gravityVal = {};
+        }
         gravityVal[gameSettingsId] = data;
         ctx.patchState({ [GameTitleCodeName.Street]: gravityVal });
       }),

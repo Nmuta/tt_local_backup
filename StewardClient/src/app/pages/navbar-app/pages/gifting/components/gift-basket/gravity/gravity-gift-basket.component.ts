@@ -1,9 +1,9 @@
-import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
-import { GravityGift, GravityPlayerInventory } from '@models/gravity';
+import { GravityGift } from '@models/gravity';
 import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
@@ -12,7 +12,8 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { GravityService } from '@services/gravity';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, NEVER, Observable, throwError } from 'rxjs';
+import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
 /** Gravity gift basket. */
@@ -30,9 +31,10 @@ import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 })
 export class GravityGiftBasketComponent
   extends GiftBasketBaseComponent<IdentityResultBeta>
-  implements OnChanges {
-  @Input() public playerInventory: GravityPlayerInventory;
-
+  implements OnInit, OnChanges {
+  
+  public newIdentitySelectedSubject = new BehaviorSubject<string>(null);
+  public currentGameSettings: string;
   public title = GameTitleCodeName.Street;
   public hasGameSettings: boolean = true;
 
@@ -46,23 +48,51 @@ export class GravityGiftBasketComponent
   }
 
   /** Angular lifecycle */
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (!!changes?.playerInventory?.currentValue) {
-      this.isLoading = true;
-      const gameSettings = this.playerInventory.previousGameSettingsId;
-      this.store.dispatch(new GetGravityMasterInventoryList(gameSettings)).subscribe(() => {
+  public ngOnInit(): void {
+    this.newIdentitySelectedSubject.pipe(
+      takeUntil(this.onDestroy$),
+      catchError(error => {
+        this.isLoading = false;
+        this.loadError = error;
+        return NEVER;
+      }),
+      tap(_t10Id => {
+        this.isLoading = false;
+        this.loadError = undefined;
+      }),
+      filter(t10Id => !!t10Id && t10Id !== ''),
+      switchMap(t10Id => {
+        this.isLoading = true;
+        return this.gravityService.getPlayerDetailsByT10Id(t10Id);
+      }),
+      switchMap(details => {
+        if(!details) {
+          return throwError('Invalid T10 Id');
+        }
+        this.currentGameSettings = details.lastGameSettingsUsed;
+        return this.store.dispatch(new GetGravityMasterInventoryList(this.currentGameSettings))
+      }),
+      tap(() => {
+        console.log('Got here');
         this.isLoading = false;
         const gravityMasterInventory = this.store.selectSnapshot<GravityMasterInventoryLists>(
           MasterInventoryListMemoryState.gravityMasterInventory,
         );
-        this.masterInventory = gravityMasterInventory[gameSettings];
+        this.masterInventory = gravityMasterInventory[this.currentGameSettings];
 
         // TODO: When a valid game settings updates the masterInventory, we need to verify the existing contents of a gift basket
         // in relation to the new master inventory (show item errors & disallow gift send while there are errors)
-      });
-    } else {
-      this.masterInventory = undefined;
-      // TODO:When no/ bad game settings, we need to show show errors for all items in the gift basket and disallow gift send
+
+        // TODO:When no/ bad game settings, we need to show show errors for all items in the gift basket and disallow gift send
+      })
+    ).subscribe();
+  }
+
+  /** Angular lifecycle */
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (!!changes?.playerIdentities?.currentValue && this.playerIdentities.length > 0) {
+      const playerT10Id = this.playerIdentities[0].t10Id;
+      this.newIdentitySelectedSubject.next(playerT10Id);
     }
   }
 

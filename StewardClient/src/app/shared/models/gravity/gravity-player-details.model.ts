@@ -16,6 +16,6 @@ export interface GravityPlayerDetails {
   firstLoginUtc: Date;
   ageGroup: unknown;
   timeOffsetInSeconds: bigint;
-  lastGameSettingsUsed: unknown;
+  lastGameSettingsUsed: string;
   saveStates: unknown[];
 }
