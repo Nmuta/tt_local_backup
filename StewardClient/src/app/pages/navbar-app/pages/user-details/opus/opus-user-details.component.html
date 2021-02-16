@@ -7,6 +7,11 @@
           <h2>TODO</h2>
         </div>
       </mat-tab>
+      <mat-tab label="Inventory">
+        <div class="tab-container">
+          <opus-player-inventory [identity]="identity"></opus-player-inventory>
+        </div>
+      </mat-tab>
       <mat-tab label="JSON">
         <div class="tab-container">
           <json-dump [input]="identity">Identity</json-dump>

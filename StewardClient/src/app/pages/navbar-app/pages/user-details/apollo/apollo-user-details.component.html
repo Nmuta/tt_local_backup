@@ -7,6 +7,11 @@
           <h2>TODO</h2>
         </div>
       </mat-tab>
+      <mat-tab label="Inventory">
+        <div class="tab-container">
+          <apollo-player-inventory [identity]="identity"></apollo-player-inventory>
+        </div>
+      </mat-tab>
       <mat-tab label="JSON">
         <div class="tab-container">
           <json-dump [input]="identity">Identity</json-dump>

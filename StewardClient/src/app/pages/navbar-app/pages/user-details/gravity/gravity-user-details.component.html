@@ -11,6 +11,11 @@
           <h2>TODO</h2>
         </div>
       </mat-tab>
+      <mat-tab label="Inventory">
+        <div class="tab-container">
+          <gravity-player-inventory [identity]="identity"></gravity-player-inventory>
+        </div>
+      </mat-tab>
       <mat-tab label="JSON">
         <div class="tab-container">
           <json-dump [input]="identity">Identity</json-dump>

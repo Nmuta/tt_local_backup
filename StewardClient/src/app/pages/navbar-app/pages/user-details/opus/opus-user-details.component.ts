@@ -21,7 +21,7 @@ export class OpusUserDetailsComponent {
 
   /** The specific relevant identity from the parent. */
   public get identity(): IdentityResultAlpha {
-    return this.parent.identity?.sunrise;
+    return this.parent.identity?.opus;
   }
 
   constructor(

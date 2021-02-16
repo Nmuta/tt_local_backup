@@ -3,7 +3,7 @@
     [class.mat-button-disabled]="!identity?.extra.hasSunrise"
     [matTooltip]="sunriseTooltip"
     [routerLink]="sunriseRouterLink"
-    [queryParams]="{ gamertag: gamertag }"
+    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
     [color]="identity?.extra.hasSunrise ? 'primary' : null"
     routerLinkActive="mat-stroked-button"
@@ -13,7 +13,7 @@
     [class.mat-button-disabled]="!identity?.extra.hasOpus"
     [matTooltip]="opusTooltip"
     [routerLink]="opusRouterLink"
-    [queryParams]="{ gamertag: gamertag }"
+    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
     [color]="identity?.extra.hasOpus ? 'primary' : null"
     routerLinkActive="mat-stroked-button"
@@ -23,7 +23,7 @@
     [class.mat-button-disabled]="!identity?.extra.hasApollo"
     [matTooltip]="apolloTooltip"
     [routerLink]="apolloRouterLink"
-    [queryParams]="{ gamertag: gamertag }"
+    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
     [color]="identity?.extra.hasApollo ? 'primary' : null"
     routerLinkActive="mat-stroked-button"
@@ -33,7 +33,7 @@
     [class.mat-button-disabled]="!identity?.extra.hasGravity"
     [matTooltip]="gravityTooltip"
     [routerLink]="gravityRouterLink"
-    [queryParams]="{ gamertag: gamertag }"
+    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
     [color]="identity?.extra.hasGravity ? 'primary' : null"
     routerLinkActive="mat-stroked-button"
