@@ -60,6 +60,8 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   public approveIcon = faCheck;
   public closeIcon = faTimes;
 
+  /** Game settings ID  */
+  public selectedGameSettingsId: string;
   /** If master inventory is based on game settings ids. */
   public hasGameSettings: boolean = false;
   /** True while waiting on a request. */
@@ -215,6 +217,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     this.giftResponse = undefined;
     this.loadError = undefined;
     this.isLoading = false;
+    this.selectedGameSettingsId = undefined;
 
     if (clearItemsInBasket) {
       this.sendGiftForm.reset();

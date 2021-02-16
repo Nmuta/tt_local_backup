@@ -12,7 +12,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { GravityService } from '@services/gravity';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
-import { BehaviorSubject, NEVER, Observable, throwError } from 'rxjs';
+import { NEVER, Observable, Subject, throwError } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
@@ -33,8 +33,7 @@ export class GravityGiftBasketComponent
   extends GiftBasketBaseComponent<IdentityResultBeta>
   implements OnInit, OnChanges {
   
-  public newIdentitySelectedSubject = new BehaviorSubject<string>(null);
-  public currentGameSettings: string;
+  public newIdentitySelectedSubject$ = new Subject<string>();
   public title = GameTitleCodeName.Street;
   public hasGameSettings: boolean = true;
 
@@ -49,36 +48,41 @@ export class GravityGiftBasketComponent
 
   /** Angular lifecycle */
   public ngOnInit(): void {
-    this.newIdentitySelectedSubject.pipe(
+    this.newIdentitySelectedSubject$.pipe(
       takeUntil(this.onDestroy$),
-      catchError(error => {
-        this.isLoading = false;
-        this.loadError = error;
-        return NEVER;
-      }),
-      tap(_t10Id => {
+      tap(() => {
         this.isLoading = false;
         this.loadError = undefined;
+        this.selectedGameSettingsId = undefined;
       }),
       filter(t10Id => !!t10Id && t10Id !== ''),
       switchMap(t10Id => {
         this.isLoading = true;
         return this.gravityService.getPlayerDetailsByT10Id(t10Id);
       }),
+      catchError(error => {
+        this.isLoading = false;
+        this.loadError = error;
+        return NEVER;
+      }),
       switchMap(details => {
         if(!details) {
           return throwError('Invalid T10 Id');
         }
-        this.currentGameSettings = details.lastGameSettingsUsed;
-        return this.store.dispatch(new GetGravityMasterInventoryList(this.currentGameSettings))
+        this.selectedGameSettingsId = details.lastGameSettingsUsed;
+        return this.store.dispatch(new GetGravityMasterInventoryList(this.selectedGameSettingsId))
+      }),
+      catchError(error => {
+        this.isLoading = false;
+        this.loadError = error;
+        return NEVER;
       }),
       tap(() => {
-        console.log('Got here');
         this.isLoading = false;
         const gravityMasterInventory = this.store.selectSnapshot<GravityMasterInventoryLists>(
           MasterInventoryListMemoryState.gravityMasterInventory,
         );
-        this.masterInventory = gravityMasterInventory[this.currentGameSettings];
+        this.masterInventory = gravityMasterInventory[this.selectedGameSettingsId];
 
         // TODO: When a valid game settings updates the masterInventory, we need to verify the existing contents of a gift basket
         // in relation to the new master inventory (show item errors & disallow gift send while there are errors)
@@ -89,11 +93,9 @@ export class GravityGiftBasketComponent
   }
 
   /** Angular lifecycle */
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (!!changes?.playerIdentities?.currentValue && this.playerIdentities.length > 0) {
-      const playerT10Id = this.playerIdentities[0].t10Id;
-      this.newIdentitySelectedSubject.next(playerT10Id);
-    }
+  public ngOnChanges(_changes: SimpleChanges): void {
+    const playerT10Id = this.playerIdentities.length > 0 ? this.playerIdentities[0].t10Id : null;
+    this.newIdentitySelectedSubject$.next(playerT10Id);
   }
 
   /** Generates a gravity gift from the gift basket. */

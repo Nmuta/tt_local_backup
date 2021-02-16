@@ -70,8 +70,6 @@ describe('GravityGiftBasketComponent', () => {
     };
 
     beforeEach(() => {
-      component.playerInventory = playerInventory;
-
       mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
       mockStore.selectSnapshot = jasmine
         .createSpy('selectSnapshot')

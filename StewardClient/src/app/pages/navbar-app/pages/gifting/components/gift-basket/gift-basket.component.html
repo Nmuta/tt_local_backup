@@ -5,7 +5,7 @@
     <!-- Gravity is unique, master inventory is based on player inventory game settings -->
     <ng-container
       *ngIf="
-        !hasGameSettings || (hasGameSettings && !!currentGameSettings);
+        !hasGameSettings || (hasGameSettings && !!selectedGameSettingsId);
         else waitingForGameSettings
       "
     >
