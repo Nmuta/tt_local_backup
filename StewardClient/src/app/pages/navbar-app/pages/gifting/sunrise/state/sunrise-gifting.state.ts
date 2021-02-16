@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
+import { GiftBasketModel } from '@models/master-inventory-item';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { clone } from 'lodash';
 import { Observable, of } from 'rxjs';
 import {
+  SetSunriseGiftBasket,
   SetSunriseGiftingMatTabIndex,
   SetSunriseGiftingSelectedPlayerIdentities,
 } from './sunrise-gifting.state.actions';
@@ -11,17 +14,19 @@ import {
 export class SunriseGiftingStateModel {
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   public selectedMatIndex: number;
+  public giftBasket: GiftBasketModel[];
 }
 
 /** Defines the sunrise gifting page state. */
 @Injectable({
   providedIn: 'root',
 })
-@State<Partial<SunriseGiftingStateModel>>({
+@State<SunriseGiftingStateModel>({
   name: 'sunriseGifting',
   defaults: {
     selectedPlayerIdentities: [],
     selectedMatIndex: 0,
+    giftBasket: [],
   },
 })
 export class SunriseGiftingState {
@@ -43,6 +48,16 @@ export class SunriseGiftingState {
     return of(ctx.patchState({ selectedMatIndex: action.selectedMatIndex }));
   }
 
+  /** Sets the gift basket. */
+  @Action(SetSunriseGiftBasket, { cancelUncompleted: true })
+  public setSunriseGiftBasket(
+    ctx: StateContext<SunriseGiftingStateModel>,
+    action: SetSunriseGiftBasket,
+  ): Observable<SunriseGiftingStateModel> {
+    return of(ctx.patchState({ giftBasket: clone(action.giftBasket) }));
+  }
+  
+
   /** Selector for state selected player identities. */
   @Selector()
   public static selectedPlayerIdentities(
@@ -55,5 +70,11 @@ export class SunriseGiftingState {
   @Selector()
   public static selectedMatTabIndex(state: SunriseGiftingStateModel): number {
     return state.selectedMatIndex;
+  }
+
+  /** Selector for state gift basket. */
+  @Selector()
+  public static giftBasket(state: SunriseGiftingStateModel): GiftBasketModel[] {
+    return state.giftBasket;
   }
 }

@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
+import { GiftBasketModel } from '@models/master-inventory-item';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Observable, of } from 'rxjs';
 import {
   SetApolloGiftingSelectedPlayerIdentities,
   SetApolloGiftingMatTabIndex,
+  SetApolloGiftBasket,
 } from './apollo-gifting.state.actions';
 
 /** Defines the apollo gifting state model. */
 export class ApolloGiftingStateModel {
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   public selectedMatIndex: number;
+  public giftBasket: GiftBasketModel[];
 }
 
 /** Defines the apollo gifting page state. */
@@ -22,6 +25,7 @@ export class ApolloGiftingStateModel {
   defaults: {
     selectedPlayerIdentities: [],
     selectedMatIndex: 0,
+    giftBasket: [],
   },
 })
 export class ApolloGiftingState {
@@ -43,6 +47,15 @@ export class ApolloGiftingState {
     return of(ctx.patchState({ selectedMatIndex: action.selectedMatIndex }));
   }
 
+  /** Sets the gift basket. */
+  @Action(SetApolloGiftBasket, { cancelUncompleted: true })
+  public setApolloGiftBasket(
+    ctx: StateContext<ApolloGiftingStateModel>,
+    action: SetApolloGiftBasket,
+  ): Observable<ApolloGiftingStateModel> {
+    return of(ctx.patchState({ giftBasket: action.giftBasket }));
+  }
+
   /** Selector for state selected player identities. */
   @Selector()
   public static selectedPlayerIdentities(state: ApolloGiftingStateModel): IdentityResultAlphaBatch {
@@ -53,5 +66,11 @@ export class ApolloGiftingState {
   @Selector()
   public static selectedMatTabIndex(state: ApolloGiftingStateModel): number {
     return state.selectedMatIndex;
+  }
+
+  /** Selector for state gift basket. */
+  @Selector()
+  public static giftBasket(state: ApolloGiftingStateModel): GiftBasketModel[] {
+    return state.giftBasket;
   }
 }

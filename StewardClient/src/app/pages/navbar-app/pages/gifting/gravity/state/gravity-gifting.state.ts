@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { IdentityResultBetaBatch } from '@models/identity-query.model';
+import { GiftBasketModel } from '@models/master-inventory-item';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Observable, of } from 'rxjs';
-import { SetGravitySelectedPlayerIdentities } from './gravity-gifting.state.actions';
+import { SetGravityGiftBasket, SetGravitySelectedPlayerIdentities } from './gravity-gifting.state.actions';
 
 /** Defines the user state model. */
 export class GravityGiftingStateModel {
   public selectedPlayerIdentities: IdentityResultBetaBatch;
+  public giftBasket: GiftBasketModel[];
 }
 
 /** Defines the gravity gifting page state. */
@@ -17,6 +19,7 @@ export class GravityGiftingStateModel {
   name: 'gravityGifting',
   defaults: {
     selectedPlayerIdentities: [],
+    giftBasket: [],
   },
 })
 export class GravityGiftingState {
@@ -29,9 +32,24 @@ export class GravityGiftingState {
     return of(ctx.patchState({ selectedPlayerIdentities: action.selectedPlayerIdentities }));
   }
 
+  /** Sets the gift basket. */
+  @Action(SetGravityGiftBasket, { cancelUncompleted: true })
+  public setApolloGiftBasket(
+    ctx: StateContext<GravityGiftingStateModel>,
+    action: SetGravityGiftBasket,
+  ): Observable<GravityGiftingStateModel> {
+    return of(ctx.patchState({ giftBasket: action.giftBasket }));
+  }
+
   /** Selector for state selected player identities. */
   @Selector()
   public static selectedPlayerIdentities(state: GravityGiftingStateModel): IdentityResultBetaBatch {
     return state.selectedPlayerIdentities;
+  }
+
+  /** Selector for state gift basket. */
+  @Selector()
+  public static giftBasket(state: GravityGiftingStateModel): GiftBasketModel[] {
+    return state.giftBasket;
   }
 }

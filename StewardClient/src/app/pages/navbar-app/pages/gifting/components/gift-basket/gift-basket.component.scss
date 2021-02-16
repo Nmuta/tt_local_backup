@@ -3,6 +3,10 @@
 mat-card {
   min-width: 450px;
 
+  h2 {
+    margin-bottom: 0;
+  }
+
   .hide-content {
     display: none;
   }

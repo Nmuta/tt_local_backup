@@ -6,14 +6,16 @@ import { GiftResponse } from '@models/gift-response';
 import { GravityGift } from '@models/gravity';
 import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
 import { IdentityResultBeta } from '@models/identity-query.model';
-import { MasterInventoryItem } from '@models/master-inventory-item';
-import { Store } from '@ngxs/store';
+import { GiftBasketModel, MasterInventoryItem } from '@models/master-inventory-item';
+import { GravityGiftingState } from '@navbar-app/pages/gifting/gravity/state/gravity-gifting.state';
+import { SetGravityGiftBasket } from '@navbar-app/pages/gifting/gravity/state/gravity-gifting.state.actions';
+import { Select, Store } from '@ngxs/store';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { GravityService } from '@services/gravity';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { NEVER, Observable, Subject, throwError } from 'rxjs';
-import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
 /** Gravity gift basket. */
@@ -32,7 +34,9 @@ import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 export class GravityGiftBasketComponent
   extends GiftBasketBaseComponent<IdentityResultBeta>
   implements OnInit, OnChanges {
-  
+  @Select(GravityGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
+
+
   public newIdentitySelectedSubject$ = new Subject<string>();
   public title = GameTitleCodeName.Street;
   public hasGameSettings: boolean = true;
@@ -58,24 +62,26 @@ export class GravityGiftBasketComponent
       filter(t10Id => !!t10Id && t10Id !== ''),
       switchMap(t10Id => {
         this.isLoading = true;
-        return this.gravityService.getPlayerDetailsByT10Id(t10Id);
-      }),
-      catchError(error => {
-        this.isLoading = false;
-        this.loadError = error;
-        return NEVER;
+        return this.gravityService.getPlayerDetailsByT10Id(t10Id).pipe(
+          catchError(error => {
+            this.isLoading = false;
+            this.loadError = error;
+            return NEVER;
+          }),
+        );
       }),
       switchMap(details => {
         if(!details) {
           return throwError('Invalid T10 Id');
         }
         this.selectedGameSettingsId = details.lastGameSettingsUsed;
-        return this.store.dispatch(new GetGravityMasterInventoryList(this.selectedGameSettingsId))
-      }),
-      catchError(error => {
-        this.isLoading = false;
-        this.loadError = error;
-        return NEVER;
+        return this.store.dispatch(new GetGravityMasterInventoryList(this.selectedGameSettingsId)).pipe(
+          catchError(error => {
+            this.isLoading = false;
+            this.loadError = error;
+            return NEVER;
+          }),
+        )
       }),
       tap(() => {
         this.isLoading = false;
@@ -90,10 +96,23 @@ export class GravityGiftBasketComponent
         // TODO:When no/ bad game settings, we need to show show errors for all items in the gift basket and disallow gift send
       })
     ).subscribe();
+
+    this.giftBasket$.pipe(
+      takeUntil(this.onDestroy$),
+      take(1),
+      tap(basket => {
+        this.giftBasket.data = basket;
+      })
+    ).subscribe();
+
+    if(this.playerIdentities.length > 0) {
+      this.newIdentitySelectedSubject$.next(this.playerIdentities[0].t10Id);
+    }
   }
 
   /** Angular lifecycle */
   public ngOnChanges(_changes: SimpleChanges): void {
+    // Add back in changes look
     const playerT10Id = this.playerIdentities.length > 0 ? this.playerIdentities[0].t10Id : null;
     this.newIdentitySelectedSubject$.next(playerT10Id);
   }
@@ -135,5 +154,17 @@ export class GravityGiftBasketComponent
   /** Sends a gravity gift to an LSP group. */
   public sendGiftToLspGroup(_gift: GravityGift): Observable<GiftResponse<bigint>> {
     return throwError('Gravity does not support LSP gifting.');
+  }
+
+  /** Sets the state gift basket. */
+  public setStateGiftBasket(giftBasket: GiftBasketModel[]): void {
+    this.store.dispatch(new SetGravityGiftBasket(giftBasket)).pipe(
+      takeUntil(this.onDestroy$),
+      take(1),
+      tap(() => {
+        const giftBasket = this.store.selectSnapshot(GravityGiftingState.giftBasket);
+        this.giftBasket.data = giftBasket;
+      })
+    ).subscribe();
   }
 }

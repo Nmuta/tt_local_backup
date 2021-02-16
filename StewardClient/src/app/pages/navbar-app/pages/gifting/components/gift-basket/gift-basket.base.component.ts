@@ -6,7 +6,7 @@ import { LspGroup } from '@models/lsp-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
+import { GiftBasketModel, MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
 import { GiftResponse, GiftResponses } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
@@ -22,7 +22,6 @@ export type InventoryItemGroup = {
   items: MasterInventoryItem[];
 };
 export type GiftUnion = GravityGift | SunriseGift | ApolloGift;
-export type GiftBasketModel = MasterInventoryItem & { edit: boolean };
 
 /** The base gift-basket component. */
 @Component({
@@ -95,26 +94,27 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   /** Sends a gift to an LSP group. */
   public abstract sendGiftToLspGroup(gift: GiftUnion): Observable<GiftResponse<bigint>>;
 
+  /** Sets the state gift basket. */
+  public abstract setStateGiftBasket(giftBasket: GiftBasketModel[]): void;
+
   /** Adds a new item to the gift basket. */
   public addItemtoBasket(item: GiftBasketModel): void {
-    const temporaryGiftBasket = this.giftBasket.data;
+    const tmpGiftBasket = this.giftBasket.data;
 
-    const existingItemIndex = temporaryGiftBasket.findIndex(data => {
-      return data.id === item.id && data.itemType === item.itemType;
+    const existingItemIndex = tmpGiftBasket.findIndex(data => {
+      return data.id === item.id && data.itemType === item.itemType && data.description === item.description;
     });
 
     if (existingItemIndex >= 0) {
-      this.giftBasket.data[existingItemIndex].quantity =
-        this.giftBasket.data[existingItemIndex].quantity + item.quantity;
-      return;
+      tmpGiftBasket[existingItemIndex].quantity = tmpGiftBasket[existingItemIndex].quantity + item.quantity;
+    } else {
+      tmpGiftBasket.push(item);
+      tmpGiftBasket.sort((a: GiftBasketModel, b: GiftBasketModel) => {
+        return a.itemType.localeCompare(b.itemType) || a.description.localeCompare(b.description);
+      });
     }
 
-    temporaryGiftBasket.push(item);
-    temporaryGiftBasket.sort((a: GiftBasketModel, b: GiftBasketModel) => {
-      return a.itemType.localeCompare(b.itemType) || a.description.localeCompare(b.description);
-    });
-
-    this.giftBasket.data = temporaryGiftBasket;
+    this.setStateGiftBasket(tmpGiftBasket);
   }
 
   /** Edit item quantity */
@@ -125,8 +125,10 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     const newQuantity = parseInt(newQuantityStr);
 
     if (newQuantity > 0) {
-      this.giftBasket.data[index].quantity = newQuantity;
-      this.giftBasket.data[index].edit = false;
+      const tmpGiftBasket = this.giftBasket.data;
+      tmpGiftBasket[index].quantity = newQuantity;
+      tmpGiftBasket[index].edit = false;
+      this.setStateGiftBasket(tmpGiftBasket);
     }
   }
 
@@ -134,7 +136,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   public removeItemFromGiftBasket(index: number): void {
     const tmpGiftBasket = this.giftBasket.data;
     tmpGiftBasket.splice(index, 1);
-    this.giftBasket.data = tmpGiftBasket;
+    this.setStateGiftBasket(tmpGiftBasket);
   }
 
   /** Returns whether the gift basket is okay to send to the API. */
@@ -221,7 +223,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
     if (clearItemsInBasket) {
       this.sendGiftForm.reset();
-      this.giftBasket.data = [];
+      this.setStateGiftBasket([]);
     }
   }
 
