@@ -3,7 +3,7 @@
     /// <summary>
     ///     Represents a Live Ops user.
     /// </summary>
-    public sealed class LiveOpsUser
+    public sealed class StewardUser
     {
         /// <summary>
         ///     Gets or sets the email address.
@@ -14,5 +14,15 @@
         ///     Gets or sets the role.
         /// </summary>
         public string Role { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the name.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the ID.
+        /// </summary>
+        public string Id { get; set; }
     }
 }

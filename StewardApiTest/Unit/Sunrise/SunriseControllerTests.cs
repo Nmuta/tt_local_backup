@@ -580,10 +580,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var banParameters = GenerateBanParameters();
             var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing).ConfigureAwait(false);
 
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -601,10 +600,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing).ConfigureAwait(false);
 
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -615,43 +613,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task BanPlayers_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
-            var useBackgroundProcessing = false;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task BanPlayers_WithValidParameters_UseBackgroundProcessing_DoesNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var banParameters = GenerateBanParameters();
             var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -664,10 +634,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing).ConfigureAwait(false);
 
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -32,37 +33,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <returns>
         ///     200 OK
-        ///     The <see cref="LiveOpsUser"/>.
+        ///     The <see cref="StewardUser"/>.
         /// </returns>
         [HttpGet("me")]
         public IActionResult GetLiveOpsUser()
         {
-            var userIdentity = this.User;
-            var role = "None";
-            if (this.User.IsInRole(UserRole.LiveOpsAdmin))
-            {
-                role = UserRole.LiveOpsAdmin;
-            }
-            else if (this.User.IsInRole(UserRole.SupportAgentAdmin))
-            {
-                role = UserRole.SupportAgentAdmin;
-            }
-            else if (this.User.IsInRole(UserRole.SupportAgent))
-            {
-                role = UserRole.SupportAgent;
-            }
-            else if (this.User.IsInRole(UserRole.SupportAgentNew))
-            {
-                role = UserRole.SupportAgentNew;
-            }
-
-            var user = new LiveOpsUser
-            {
-                EmailAddress = userIdentity.Identity.Name,
-                Role = role,
-            };
-
-            return this.Ok(user);
+            return this.Ok(this.User.UserModel());
         }
     }
 }

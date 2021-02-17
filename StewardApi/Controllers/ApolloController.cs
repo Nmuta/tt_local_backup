@@ -17,6 +17,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -236,17 +237,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="banInput">The list of ban parameters.</param>
         /// <param name="useBackgroundProcessing">A value that indicates whether to use background processing.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
         ///     The list of <see cref="ApolloBanResult"/>.
         /// </returns>
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<ApolloBanResult>))]
         [SwaggerResponse(202)]
-        public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput, [FromQuery] bool useBackgroundProcessing, [FromHeader] string requestingAgent)
+        public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput, [FromQuery] bool useBackgroundProcessing)
         {
             try
             {
+                var user = this.User.UserModel();
+                var requestingAgent = user.EmailAddress ?? user.Id;
+
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
                 banInput.ShouldNotBeNull(nameof(banInput));
 
@@ -735,6 +738,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <returns>
         ///     The <see cref="ApolloPlayerInventory"/>.
         /// </returns>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200)]
         public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] ApolloGift gift)

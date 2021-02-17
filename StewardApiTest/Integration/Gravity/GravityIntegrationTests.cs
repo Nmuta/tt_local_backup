@@ -461,12 +461,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         public async Task UpdatePlayerInventoryByXuid()
         {
             var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
 
             var resultBefore = await stewardClient.GetPlayerInventoryAsync(xuid).ConfigureAwait(false);
             var beforeModifiedUtc = resultBefore.Cars.Where(car => car.ItemId == 200289).FirstOrDefault()?.ModifiedUtc;
 
-            var result = await stewardClient.UpdatePlayerInventoryByXuidAsync(playerInventory, headers).ConfigureAwait(false);
+            var result = await stewardClient.UpdatePlayerInventoryByXuidAsync(playerInventory).ConfigureAwait(false);
             var afterModifiedUtc = result.Cars.Where(car => car.ItemId == 200289).FirstOrDefault().ModifiedUtc;
 
             Assert.IsNotNull(result);
@@ -495,11 +494,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         {
             var playerInventory = this.CreatePlayerInventory();
             playerInventory.Xuid = TestConstants.InvalidXuid;
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
 
             try
             {
-                await stewardClient.UpdatePlayerInventoryByXuidAsync(playerInventory, headers).ConfigureAwait(false);
+                await stewardClient.UpdatePlayerInventoryByXuidAsync(playerInventory).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -510,32 +508,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task UpdatePlayerInventoryByXuid_NoRequestingAgent()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend(null);
-
-            try
-            {
-                await stewardClient.UpdatePlayerInventoryByXuidAsync(playerInventory, headers).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
         public async Task UpdatePlayerInventoryByXuid_Unauthorized()
         {
             var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
 
             try
             {
-                await unauthorizedClient.UpdatePlayerInventoryByXuidAsync(playerInventory, headers).ConfigureAwait(false);
+                await unauthorizedClient.UpdatePlayerInventoryByXuidAsync(playerInventory).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -549,12 +528,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         public async Task UpdatePlayerInventoryByT10Id()
         {
             var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
 
             var resultBefore = await stewardClient.GetPlayerInventoryAsync(t10Id).ConfigureAwait(false);
             var beforeModifiedUtc = resultBefore.Cars.Where(car => car.ItemId == 200289).FirstOrDefault()?.ModifiedUtc;
 
-            var result = await stewardClient.UpdatePlayerInventoryByT10IdAsync(playerInventory, headers).ConfigureAwait(false);
+            var result = await stewardClient.UpdatePlayerInventoryByT10IdAsync(playerInventory).ConfigureAwait(false);
             var afterModifiedUtc = result.Cars.Where(car => car.ItemId == 200289).FirstOrDefault().ModifiedUtc;
 
             Assert.IsNotNull(result);
@@ -583,11 +561,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         {
             var playerInventory = this.CreatePlayerInventory();
             playerInventory.T10Id = TestConstants.InvalidT10Id;
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
 
             try
             {
-                await stewardClient.UpdatePlayerInventoryByT10IdAsync(playerInventory, headers).ConfigureAwait(false);
+                await stewardClient.UpdatePlayerInventoryByT10IdAsync(playerInventory).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -598,32 +575,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task UpdatePlayerInventoryByT10Id_NoRequestingAgent()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend(null);
-
-            try
-            {
-                await stewardClient.UpdatePlayerInventoryByT10IdAsync(playerInventory, headers).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
         public async Task UpdatePlayerInventoryByT10Id_Unauthorized()
         {
             var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
 
             try
             {
-                await unauthorizedClient.UpdatePlayerInventoryByT10IdAsync(playerInventory, headers).ConfigureAwait(false);
+                await unauthorizedClient.UpdatePlayerInventoryByT10IdAsync(playerInventory).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -676,9 +634,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         public async Task GetGiftHistory()
         {
             var playerInventory = this.CreatePlayerInventory();
-            var headers = this.GenerateHeadersToSend("IntegrationTest");
 
-            await stewardClient.UpdatePlayerInventoryByT10IdAsync(playerInventory, headers).ConfigureAwait(false);
+            await stewardClient.UpdatePlayerInventoryByT10IdAsync(playerInventory).ConfigureAwait(false);
 
             var result = await stewardClient.GetGiftHistoriesAsync(t10Id).ConfigureAwait(false);
             Assert.IsTrue(result.Any());
@@ -711,9 +668,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         private async Task<GravityPlayerInventory> UpdatePlayerInventoryByXuidWithHeaderResponseAsync(GravityStewardTestingClient stewardClient, GravityPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest");
 
-            var response = await stewardClient.UpdatePlayerInventoryByXuidWithHeaderResponseAsync(playerInventory, headersToValidate, headersToSend).ConfigureAwait(false);
+            var response = await stewardClient.UpdatePlayerInventoryByXuidWithHeaderResponseAsync(playerInventory, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -748,9 +704,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         private async Task<GravityPlayerInventory> UpdatePlayerInventoryByT10IdWithHeaderResponseAsync(GravityStewardTestingClient stewardClient, GravityPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest");
 
-            var response = await stewardClient.UpdatePlayerInventoryByT10IdWithHeaderResponseAsync(playerInventory, headersToValidate, headersToSend).ConfigureAwait(false);
+            var response = await stewardClient.UpdatePlayerInventoryByT10IdWithHeaderResponseAsync(playerInventory, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -780,18 +735,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             Assert.AreEqual(expectedStatus, status);
 
             return jobResult;
-        }
-
-        private Dictionary<string, string> GenerateHeadersToSend(string requestingAgent)
-        {
-            var result = new Dictionary<string, string>();
-
-            if (!string.IsNullOrWhiteSpace(requestingAgent))
-            {
-                result.Add("requestingAgent", requestingAgent);
-            }
-
-            return result;
         }
 
         private GravityPlayerInventory CreatePlayerInventory()

@@ -10,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity.Settings;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using Turn10.LiveOps.StewardApi.Providers.Gravity.Settings;
@@ -323,7 +324,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Update the player inventory.
         /// </summary>
         /// <param name="playerInventory">The player inventory.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
         /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
         /// <returns>
         ///     The updated <see cref="GravityPlayerInventory"/>.
@@ -331,10 +331,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("player/xuid/inventory")]
         [SwaggerResponse(201, type: typeof(GravityPlayerInventory))]
         [SwaggerResponse(202)]
-        public async Task<IActionResult> UpdatePlayerInventoryByXuid([FromBody] GravityPlayerInventory playerInventory, [FromHeader]string requestingAgent, [FromQuery] bool useBackgroundProcessing = false)
+        public async Task<IActionResult> UpdatePlayerInventoryByXuid([FromBody] GravityPlayerInventory playerInventory, [FromQuery] bool useBackgroundProcessing = false)
         {
             try
             {
+                var user = this.User.UserModel();
+                var requestingAgent = user.EmailAddress ?? user.Id;
+
                 playerInventory.ShouldNotBeNull(nameof(playerInventory));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
@@ -397,7 +400,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Update the player inventory.
         /// </summary>
         /// <param name="playerInventory">The player inventory.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
         /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
         /// <returns>
         ///     The updated <see cref="GravityPlayerInventory"/>.
@@ -405,10 +407,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("player/t10Id/inventory")]
         [SwaggerResponse(201, type: typeof(GravityPlayerInventory))]
         [SwaggerResponse(202)]
-        public async Task<IActionResult> UpdatePlayerInventoryByT10Id([FromBody] GravityPlayerInventory playerInventory, [FromHeader] string requestingAgent, [FromQuery] bool useBackgroundProcessing = false)
+        public async Task<IActionResult> UpdatePlayerInventoryByT10Id([FromBody] GravityPlayerInventory playerInventory, [FromQuery] bool useBackgroundProcessing = false)
         {
             try
             {
+                var user = this.User.UserModel();
+                var requestingAgent = user.EmailAddress ?? user.Id;
+
                 playerInventory.ShouldNotBeNull(nameof(playerInventory));
                 playerInventory.T10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerInventory.T10Id));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
