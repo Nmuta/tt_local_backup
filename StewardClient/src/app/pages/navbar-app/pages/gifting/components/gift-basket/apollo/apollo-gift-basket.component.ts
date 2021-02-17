@@ -56,13 +56,15 @@ export class ApolloGiftBasketComponent
       this.masterInventory = apolloMasterInventory;
     });
 
-    this.giftBasket$.pipe(
-      takeUntil(this.onDestroy$),
-      tap(basket => {
-        this.giftBasket.data = basket;
-        this.giftBasketErrors = basket.some(item => !!item.error && item.error != '');
-      })
-    ).subscribe();
+    this.giftBasket$
+      .pipe(
+        takeUntil(this.onDestroy$),
+        tap(basket => {
+          this.giftBasket.data = basket;
+          this.giftBasketErrors = basket.some(item => !!item.error && item.error != '');
+        }),
+      )
+      .subscribe();
   }
 
   /** Generates an apollo gift from the gift basket. */
@@ -106,17 +108,25 @@ export class ApolloGiftBasketComponent
   }
 
   /** Verifies gift basket and sets item.error if one is found. */
-  private setGiftBasketItemErrors(giftBasket: GiftBasketModel[]): GiftBasketModel[] {
+  public setGiftBasketItemErrors(giftBasket: GiftBasketModel[]): GiftBasketModel[] {
     // Check item ids & types to verify item is real
-    for(let i = 0; i < giftBasket.length; i++) {
+    for (let i = 0; i < giftBasket.length; i++) {
       const item = giftBasket[i];
-      const itemExists = this.masterInventory[item.itemType]?.some((masterItem: MasterInventoryItem) => masterItem.id === item.id && (masterItem.id >= BigInt(0) || (masterItem.id < BigInt(0) && masterItem.description === item.description)));
-      giftBasket[i].error = !itemExists ? 'Item is not a valid gift.' : undefined
+      const itemExists = this.masterInventory[item.itemType]?.some(
+        (masterItem: MasterInventoryItem) =>
+          masterItem.id === item.id &&
+          (masterItem.id >= BigInt(0) ||
+            (masterItem.id < BigInt(0) && masterItem.description === item.description)),
+      );
+      giftBasket[i].error = !itemExists ? 'Item is not a valid gift.' : undefined;
     }
 
     // Verify credit reward limits
-    const creditsAboveLimit = giftBasket.findIndex(item => item.id < 0 && item.description.toLowerCase() === 'credits' && item.quantity > 500_000_000);
-    if(creditsAboveLimit >= 0) {
+    const creditsAboveLimit = giftBasket.findIndex(
+      item =>
+        item.id < 0 && item.description.toLowerCase() === 'credits' && item.quantity > 500_000_000,
+    );
+    if (creditsAboveLimit >= 0) {
       giftBasket[creditsAboveLimit].error = 'Credit limit for a gift is 500,000,000.';
     }
 

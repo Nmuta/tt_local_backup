@@ -40,7 +40,7 @@
               <th id="quantity-table-header" mat-header-cell *matHeaderCellDef>Quantity</th>
               <td mat-cell *matCellDef="let element; let i = index">
                 <span *ngIf="!element.edit">
-                  {{ element.quantity | number:'1.0':'en-US' }}
+                  {{ element.quantity | number: '1.0':'en-US' }}
                   <fa-icon
                     [icon]="pencilIcon"
                     (click)="element.edit = true"
@@ -101,7 +101,11 @@
               </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'row-error': !!row.error }"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              [ngClass]="{ 'row-error': !!row.error }"
+            ></tr>
           </table>
         </div>
         <mat-error *ngIf="giftBasketErrors">There are item errors in the gift basket.</mat-error>

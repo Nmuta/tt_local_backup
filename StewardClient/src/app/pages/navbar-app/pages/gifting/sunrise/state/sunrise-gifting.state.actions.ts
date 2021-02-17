@@ -18,4 +18,3 @@ export class SetSunriseGiftBasket {
   public static readonly type = '[SunriseGifting] Set Sunrise Gift Basket';
   constructor(public readonly giftBasket: GiftBasketModel[]) {}
 }
-

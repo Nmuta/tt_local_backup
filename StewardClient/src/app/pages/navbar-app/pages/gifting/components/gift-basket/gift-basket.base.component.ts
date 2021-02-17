@@ -6,7 +6,11 @@ import { LspGroup } from '@models/lsp-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { GiftBasketModel, MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
+import {
+  GiftBasketModel,
+  MasterInventoryItem,
+  MasterInventoryUnion,
+} from '@models/master-inventory-item';
 import { GiftResponse, GiftResponses } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
@@ -104,11 +108,16 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     const tmpGiftBasket = this.giftBasket.data;
 
     const existingItemIndex = tmpGiftBasket.findIndex(data => {
-      return data.id === item.id && data.itemType === item.itemType && data.description === item.description;
+      return (
+        data.id === item.id &&
+        data.itemType === item.itemType &&
+        data.description === item.description
+      );
     });
 
     if (existingItemIndex >= 0) {
-      tmpGiftBasket[existingItemIndex].quantity = tmpGiftBasket[existingItemIndex].quantity + item.quantity;
+      tmpGiftBasket[existingItemIndex].quantity =
+        tmpGiftBasket[existingItemIndex].quantity + item.quantity;
     } else {
       tmpGiftBasket.push(item);
     }
@@ -139,7 +148,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   }
 
   /** Returns whether the gift basket is okay to send to the API. */
-  public isGiftBasketReady(): boolean {    
+  public isGiftBasketReady(): boolean {
     return (
       this.sendGiftForm.valid &&
       this.giftBasket?.data?.length > 0 &&
@@ -196,9 +205,9 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
         take(1),
         tap(job => {
           switch (job.status) {
-            case BackgroundJobStatus.Completed: 
+            case BackgroundJobStatus.Completed:
               const result = job.parsedResult;
-              this.giftResponse = (Array.isArray(result)) ? result : [ result ];
+              this.giftResponse = Array.isArray(result) ? result : [result];
               break;
             case BackgroundJobStatus.InProgress:
               throw 'still in progress';

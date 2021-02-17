@@ -9,6 +9,7 @@ import { ApolloMasterInventory } from '@models/apollo';
 import { of } from 'rxjs';
 import { GetApolloMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { ApolloService } from '@services/apollo';
+import { SetApolloGiftBasket } from '@navbar-app/pages/gifting/apollo/state/apollo-gifting.state.actions';
 
 describe('ApolloGiftBasketComponent', () => {
   let fixture: ComponentFixture<ApolloGiftBasketComponent>;
@@ -90,16 +91,23 @@ describe('ApolloGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'creditRewards',
           edit: false,
-          error: undefined
+          error: undefined,
         },
-        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'cars', edit: false, error: undefined },
+        {
+          id: BigInt(456),
+          description: 'fake-item-2',
+          quantity: 0,
+          itemType: 'cars',
+          edit: false,
+          error: undefined,
+        },
         {
           id: BigInt(789),
           description: 'fake-item-3',
           quantity: 0,
           itemType: 'vanityItems',
           edit: false,
-          error: undefined
+          error: undefined,
         },
       ];
     });
@@ -149,6 +157,137 @@ describe('ApolloGiftBasketComponent', () => {
       });
 
       expect(mockApolloService.postGiftLspGroup).toHaveBeenCalled();
+    });
+  });
+
+  describe('Method: setStateGiftBasket', () => {
+    beforeEach(() => {
+      component.setGiftBasketItemErrors = jasmine
+        .createSpy('setGiftBasketItemErrors')
+        .and.returnValue([]);
+    });
+
+    it('should call setGiftBasketItemErrors', () => {
+      component.setStateGiftBasket([]);
+
+      expect(component.setGiftBasketItemErrors).toHaveBeenCalled();
+    });
+
+    it('should call store.dispatch', () => {
+      const input = [];
+      component.setStateGiftBasket(input);
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetApolloGiftBasket(input));
+    });
+  });
+
+  describe('Method: setGiftBasketItemErrors', () => {
+    beforeEach(() => {
+      component.masterInventory = {
+        creditRewards: [{ id: BigInt(-1), description: 'Credits', quantity: 0 }],
+        cars: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
+        vanityItems: [{ id: BigInt(67890), description: 'Test vanity item', quantity: 0 }],
+      } as ApolloMasterInventory;
+    });
+
+    describe('When credit reward exists', () => {
+      it('should set item error to undefined', () => {
+        const input = [
+          {
+            itemType: 'creditRewards',
+            description: 'Credits',
+            quantity: 200,
+            id: BigInt(-1),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].error).toBeUndefined();
+      });
+    });
+
+    describe('When credit reward does not exist', () => {
+      it('should set item error', () => {
+        const input = [
+          {
+            itemType: 'creditRewards',
+            description: 'Bad Credits',
+            quantity: 200,
+            id: BigInt(-1),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].error).toEqual('Item is not a valid gift.');
+      });
+    });
+
+    describe('When car reward reward', () => {
+      it('should set item error to undefined', () => {
+        const input = [
+          {
+            itemType: 'cars',
+            description: 'Test Car',
+            quantity: 200,
+            id: BigInt(12345),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].error).toBeUndefined();
+      });
+    });
+
+    describe('When credit reward is over 500,000,000', () => {
+      it('should set item error ', () => {
+        const input = [
+          {
+            itemType: 'creditRewards',
+            description: 'Credits',
+            quantity: 500_000_001,
+            id: BigInt(-1),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].error).toEqual('Credit limit for a gift is 500,000,000.');
+      });
+    });
+
+    describe('When credit reward is over 500,000,000', () => {
+      it('should set item error ', () => {
+        const input = [
+          {
+            itemType: 'creditRewards',
+            description: 'Credits',
+            quantity: 400_000_000,
+            id: BigInt(-1),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].error).toBeUndefined();
+      });
     });
   });
 });

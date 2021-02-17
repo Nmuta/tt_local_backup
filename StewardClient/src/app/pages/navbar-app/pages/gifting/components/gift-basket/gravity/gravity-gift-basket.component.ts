@@ -36,7 +36,6 @@ export class GravityGiftBasketComponent
   implements OnInit, OnChanges {
   @Select(GravityGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
 
-
   public newIdentitySelectedSubject$ = new Subject<string>();
   public title = GameTitleCodeName.Street;
   public hasGameSettings: boolean = true;
@@ -52,64 +51,70 @@ export class GravityGiftBasketComponent
 
   /** Angular lifecycle */
   public ngOnInit(): void {
-    this.newIdentitySelectedSubject$.pipe(
-      takeUntil(this.onDestroy$),
-      tap(() => {
-        this.isLoading = false;
-        this.loadError = undefined;
-        this.selectedGameSettingsId = undefined;
-        this.masterInventory = undefined;
-      }),
-      filter(t10Id => !!t10Id && t10Id !== ''),
-      switchMap(t10Id => {
-        this.isLoading = true;
-        return this.gravityService.getPlayerDetailsByT10Id(t10Id).pipe(
-          catchError(error => {
-            this.isLoading = false;
-            this.loadError = error;
-            return NEVER;
-          }),
-        );
-      }),
-      switchMap(details => {
-        this.selectedGameSettingsId = details.lastGameSettingsUsed;
-        return this.store.dispatch(new GetGravityMasterInventoryList(this.selectedGameSettingsId)).pipe(
-          catchError(error => {
-            this.isLoading = false;
-            this.loadError = error;
-            return NEVER;
-          }),
-        )
-      }),
-      tap(() => {
-        this.isLoading = false;
-        const gravityMasterInventory = this.store.selectSnapshot<GravityMasterInventoryLists>(
-          MasterInventoryListMemoryState.gravityMasterInventory,
-        );
-        this.masterInventory = gravityMasterInventory[this.selectedGameSettingsId];
+    this.newIdentitySelectedSubject$
+      .pipe(
+        takeUntil(this.onDestroy$),
+        tap(() => {
+          this.isLoading = false;
+          this.loadError = undefined;
+          this.selectedGameSettingsId = undefined;
+          this.masterInventory = undefined;
+        }),
+        filter(t10Id => !!t10Id && t10Id !== ''),
+        switchMap(t10Id => {
+          this.isLoading = true;
+          return this.gravityService.getPlayerDetailsByT10Id(t10Id).pipe(
+            catchError(error => {
+              this.isLoading = false;
+              this.loadError = error;
+              return NEVER;
+            }),
+          );
+        }),
+        switchMap(details => {
+          this.selectedGameSettingsId = details.lastGameSettingsUsed;
+          return this.store
+            .dispatch(new GetGravityMasterInventoryList(this.selectedGameSettingsId))
+            .pipe(
+              catchError(error => {
+                this.isLoading = false;
+                this.loadError = error;
+                return NEVER;
+              }),
+            );
+        }),
+        tap(() => {
+          this.isLoading = false;
+          const gravityMasterInventory = this.store.selectSnapshot<GravityMasterInventoryLists>(
+            MasterInventoryListMemoryState.gravityMasterInventory,
+          );
+          this.masterInventory = gravityMasterInventory[this.selectedGameSettingsId];
 
-        // With a potentially new game gettings, we need to verify the gift basket contents against the
-        // master inventory and set errors.
-        this.setStateGiftBasket(this.giftBasket.data || []);
-      })
-    ).subscribe();
+          // With a potentially new game gettings, we need to verify the gift basket contents against the
+          // master inventory and set errors.
+          this.setStateGiftBasket(this.giftBasket.data || []);
+        }),
+      )
+      .subscribe();
 
-    this.giftBasket$.pipe(
-      takeUntil(this.onDestroy$),
-      tap(basket => {
-        this.giftBasket.data = basket;
-        this.giftBasketErrors = basket.some(item => !!item.error && item.error != '');
-      })
-    ).subscribe();
+    this.giftBasket$
+      .pipe(
+        takeUntil(this.onDestroy$),
+        tap(basket => {
+          this.giftBasket.data = basket;
+          this.giftBasketErrors = basket.some(item => !!item.error && item.error != '');
+        }),
+      )
+      .subscribe();
 
-    if(this.playerIdentities.length > 0) {
+    if (this.playerIdentities.length > 0) {
       this.newIdentitySelectedSubject$.next(this.playerIdentities[0].t10Id);
     }
   }
 
   /** Angular lifecycle */
   public ngOnChanges(changes: SimpleChanges): void {
-    if(!!changes?.playerIdentities) {
+    if (!!changes?.playerIdentities) {
       const playerT10Id = this.playerIdentities.length > 0 ? this.playerIdentities[0].t10Id : null;
       this.newIdentitySelectedSubject$.next(playerT10Id);
     }
@@ -161,21 +166,28 @@ export class GravityGiftBasketComponent
   }
 
   /** Verifies gift basket and sets item.error if one is found. */
-  private setGiftBasketItemErrors(giftBasket: GiftBasketModel[]): GiftBasketModel[] {
+  public setGiftBasketItemErrors(giftBasket: GiftBasketModel[]): GiftBasketModel[] {
     // Check item ids & types to verify item is real
-    for(let i = 0; i < giftBasket.length; i++) {
+    for (let i = 0; i < giftBasket.length; i++) {
       const item = giftBasket[i];
-      const itemExists = this.masterInventory[item.itemType]?.some((masterItem: MasterInventoryItem) => masterItem.id === item.id && (masterItem.id >= BigInt(0) || (masterItem.id < BigInt(0) && masterItem.description === item.description)));
-      giftBasket[i].error = !itemExists ? 'Item is not a valid gift.' : undefined
+      const itemExists = this.masterInventory[item.itemType]?.some(
+        (masterItem: MasterInventoryItem) => masterItem.id === item.id,
+      );
+      giftBasket[i].error = !itemExists ? 'Item is not a valid gift.' : undefined;
     }
 
     // Verify credit reward limits
     const creditRewardsItemType = 'creditrewards';
-    const softCurrencyAboveLimit = giftBasket.findIndex(item => item.itemType.toLowerCase() === creditRewardsItemType && item.id === BigInt(0) && item.quantity > 500_000_000);
-    if(softCurrencyAboveLimit >= 0) {
+    const softCurrencyAboveLimit = giftBasket.findIndex(
+      item =>
+        item.itemType.toLowerCase() === creditRewardsItemType &&
+        item.id === BigInt(0) &&
+        item.quantity > 500_000_000,
+    );
+    if (softCurrencyAboveLimit >= 0) {
       giftBasket[softCurrencyAboveLimit].error = 'Soft Currency limit for a gift is 500,000,000.';
     }
-    
+
     return giftBasket;
   }
 }

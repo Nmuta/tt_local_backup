@@ -61,7 +61,7 @@ describe('GiftBasketBaseComponent', () => {
         quantity: 10,
         itemType: 'test type',
         edit: false,
-        error: undefined
+        error: undefined,
       };
     });
 
@@ -87,7 +87,7 @@ describe('GiftBasketBaseComponent', () => {
             quantity: 50,
             itemType: 'test type',
             edit: false,
-            error: undefined
+            error: undefined,
           },
         ];
       });
@@ -117,7 +117,7 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 50,
           itemType: 'test type',
           edit: false,
-          error: undefined
+          error: undefined,
         },
       ];
     });
@@ -143,7 +143,7 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 50,
           itemType: 'test type 1',
           edit: false,
-          error: undefined
+          error: undefined,
         },
         {
           id: testid,
@@ -151,7 +151,7 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 10,
           itemType: 'test type 2',
           edit: false,
-          error: undefined
+          error: undefined,
         },
       ];
     });
@@ -179,7 +179,7 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 50,
           itemType: 'test type 1',
           edit: false,
-          error: undefined
+          error: undefined,
         },
         {
           id: BigInt(4321),
@@ -187,7 +187,7 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 10,
           itemType: 'test type 2',
           edit: false,
-          error: undefined
+          error: undefined,
         },
       ];
     });
@@ -196,7 +196,7 @@ describe('GiftBasketBaseComponent', () => {
       it('should empty gift basket data', () => {
         expect(component.giftBasket.data.length).toEqual(2);
         component.resetGiftBasketUI(false);
-  
+
         expect(component.isLoading).toBeFalsy();
         expect(component.loadError).toBeUndefined();
         expect(component.giftResponse).toBeUndefined();
@@ -209,14 +209,14 @@ describe('GiftBasketBaseComponent', () => {
       it('should empty gift basket data', () => {
         expect(component.giftBasket.data.length).toEqual(2);
         component.resetGiftBasketUI(true);
-  
+
         expect(component.isLoading).toBeFalsy();
         expect(component.loadError).toBeUndefined();
         expect(component.giftResponse).toBeUndefined();
         expect(component.setStateGiftBasket).toHaveBeenCalledWith([]);
         expect(component.sendGiftForm.controls['giftReason'].value).toBeNull();
       });
-    })
+    });
   });
 
   describe('Method: isGiftBasketReady', () => {
@@ -239,7 +239,7 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 50,
           itemType: 'test type 1',
           edit: false,
-          error: undefined
+          error: undefined,
         },
         {
           id: BigInt(4321),
@@ -247,7 +247,7 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 10,
           itemType: 'test type 2',
           edit: false,
-          error: undefined
+          error: undefined,
         },
       ];
 

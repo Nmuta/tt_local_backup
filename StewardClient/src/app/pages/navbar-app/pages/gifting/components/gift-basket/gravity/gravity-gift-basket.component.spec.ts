@@ -9,6 +9,7 @@ import { of, throwError } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { GravityService } from '@services/gravity';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
+import { SetGravityGiftBasket } from '@navbar-app/pages/gifting/gravity/state/gravity-gifting.state.actions';
 
 describe('GravityGiftBasketComponent', () => {
   let fixture: ComponentFixture<GravityGiftBasketComponent>;
@@ -93,8 +94,9 @@ describe('GravityGiftBasketComponent', () => {
         const error = { message: 'fake-error' };
 
         beforeEach(() => {
-          mockGravityService.getPlayerDetailsByT10Id = jasmine.createSpy('getPlayerDetailsByT10Id').and.returnValue(throwError(error));
-
+          mockGravityService.getPlayerDetailsByT10Id = jasmine
+            .createSpy('getPlayerDetailsByT10Id')
+            .and.returnValue(throwError(error));
         });
 
         it('should set loadError', () => {
@@ -103,72 +105,78 @@ describe('GravityGiftBasketComponent', () => {
 
           expect(component.isLoading).toBeFalsy();
           expect(component.loadError).toEqual(error);
-        })
+        });
       });
 
       describe('And getPlayerDetailsByT10Id returns valid game settings', () => {
         const gameSettingsId = 'game-settings-id';
-  
+
         beforeEach(() => {
-          mockGravityService.getPlayerDetailsByT10Id = jasmine.createSpy('getPlayerDetailsByT10Id').and.returnValue(of({ lastGameSettingsUsed: gameSettingsId }));
+          mockGravityService.getPlayerDetailsByT10Id = jasmine
+            .createSpy('getPlayerDetailsByT10Id')
+            .and.returnValue(of({ lastGameSettingsUsed: gameSettingsId }));
         });
-  
+
         it('should set component.selectedGameSettingsId', () => {
           component.ngOnInit();
           component.newIdentitySelectedSubject$.next(t10Id);
-  
+
           expect(component.selectedGameSettingsId).toEqual(gameSettingsId);
         });
 
         it('should call store.distach', () => {
           component.ngOnInit();
           component.newIdentitySelectedSubject$.next(t10Id);
-  
-          expect(mockStore.dispatch).toHaveBeenCalledWith(new GetGravityMasterInventoryList(gameSettingsId));
+
+          expect(mockStore.dispatch).toHaveBeenCalledWith(
+            new GetGravityMasterInventoryList(gameSettingsId),
+          );
         });
 
         describe('And GetGravityMasterInventoryList throws error', () => {
           const error = { message: 'fake-error' };
-  
+
           beforeEach(() => {
-            mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(throwError(error));  
+            mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(throwError(error));
           });
-  
+
           it('should set loadError', () => {
             component.ngOnInit();
             component.newIdentitySelectedSubject$.next(t10Id);
-  
+
             expect(component.isLoading).toBeFalsy();
             expect(component.loadError).toEqual(error);
-          })
+          });
         });
 
-        describe('And GetGravityMasterInventoryList returns valid master inventory', () => {    
+        describe('And GetGravityMasterInventoryList returns valid master inventory', () => {
           beforeEach(() => {
-            mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));  
-            mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue({[gameSettingsId]: testMasterInventory});
+            mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
+            mockStore.selectSnapshot = jasmine
+              .createSpy('selectSnapshot')
+              .and.returnValue({ [gameSettingsId]: testMasterInventory });
             component.setStateGiftBasket = jasmine.createSpy('setStateGiftBasket');
           });
-    
+
           it('should call mockStore.selectSnapshot', () => {
             component.ngOnInit();
             component.newIdentitySelectedSubject$.next(t10Id);
-    
+
             expect(mockStore.selectSnapshot).toHaveBeenCalled();
           });
-  
+
           it('should set component variables', () => {
             component.ngOnInit();
             component.newIdentitySelectedSubject$.next(t10Id);
-    
+
             expect(component.isLoading).toBeFalsy();
             expect(component.masterInventory).toEqual(testMasterInventory);
           });
-  
+
           it('should call component.setStateGiftBasket', () => {
             component.ngOnInit();
             component.newIdentitySelectedSubject$.next(t10Id);
-    
+
             expect(component.setStateGiftBasket).toHaveBeenCalled();
           });
         });
@@ -178,12 +186,16 @@ describe('GravityGiftBasketComponent', () => {
     describe('When player identity is set', () => {
       const t10Id = 't10-id';
       beforeEach(() => {
-        component.playerIdentities = [{
-          query: { gamertag: null },
-          xuid: BigInt(1234),
-          t10Id: t10Id
-        }];
-        component.newIdentitySelectedSubject$.next = jasmine.createSpy('newIdentitySelectedSubject$.next');
+        component.playerIdentities = [
+          {
+            query: { gamertag: null },
+            xuid: BigInt(1234),
+            t10Id: t10Id,
+          },
+        ];
+        component.newIdentitySelectedSubject$.next = jasmine.createSpy(
+          'newIdentitySelectedSubject$.next',
+        );
       });
 
       it('should call newIdentitySelectedSubject$.next', () => {
@@ -196,40 +208,52 @@ describe('GravityGiftBasketComponent', () => {
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {
-      component.newIdentitySelectedSubject$.next = jasmine.createSpy('newIdentitySelectedSubject$.next');
+      component.newIdentitySelectedSubject$.next = jasmine.createSpy(
+        'newIdentitySelectedSubject$.next',
+      );
     });
 
     describe('When player identites is changed', () => {
-      const changes: SimpleChanges = { playerIdentities: { previousValue: null, currentValue: null, firstChange: false, isFirstChange: () => { return false;}}};
+      const changes: SimpleChanges = {
+        playerIdentities: {
+          previousValue: null,
+          currentValue: null,
+          firstChange: false,
+          isFirstChange: () => {
+            return false;
+          },
+        },
+      };
 
       describe('and the identity is valid', () => {
         const t10Id = 't10-id';
 
         beforeEach(() => {
-          component.playerIdentities = [{
-            query: { gamertag: null },
-            xuid: BigInt(1234),
-            t10Id: t10Id
-          }];
+          component.playerIdentities = [
+            {
+              query: { gamertag: null },
+              xuid: BigInt(1234),
+              t10Id: t10Id,
+            },
+          ];
         });
 
         it('should call newIdentitySelectedSubject$.next', () => {
-          component.ngOnChanges(changes)
+          component.ngOnChanges(changes);
 
-          expect(component.newIdentitySelectedSubject$.next).toHaveBeenCalledWith(t10Id);;
+          expect(component.newIdentitySelectedSubject$.next).toHaveBeenCalledWith(t10Id);
         });
       });
 
       describe('and the identity is null', () => {
-
         beforeEach(() => {
           component.playerIdentities = [];
         });
 
         it('should call newIdentitySelectedSubject$.next', () => {
-          component.ngOnChanges(changes)
+          component.ngOnChanges(changes);
 
-          expect(component.newIdentitySelectedSubject$.next).toHaveBeenCalledWith(null);;
+          expect(component.newIdentitySelectedSubject$.next).toHaveBeenCalledWith(null);
         });
       });
     });
@@ -240,7 +264,7 @@ describe('GravityGiftBasketComponent', () => {
       it('should not call newIdentitySelectedSubject$.next', () => {
         component.ngOnChanges(changes);
 
-        expect(component.newIdentitySelectedSubject$.next).not.toHaveBeenCalled();;
+        expect(component.newIdentitySelectedSubject$.next).not.toHaveBeenCalled();
       });
     });
   });
@@ -259,16 +283,23 @@ describe('GravityGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'creditRewards',
           edit: false,
-          error: undefined
+          error: undefined,
         },
-        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'cars', edit: false, error: undefined },
+        {
+          id: BigInt(456),
+          description: 'fake-item-2',
+          quantity: 0,
+          itemType: 'cars',
+          edit: false,
+          error: undefined,
+        },
         {
           id: BigInt(789),
           description: 'fake-item-3',
           quantity: 0,
           itemType: 'repairKits',
           edit: false,
-          error: undefined
+          error: undefined,
         },
         {
           id: BigInt(123),
@@ -276,7 +307,7 @@ describe('GravityGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'masteryKits',
           edit: false,
-          error: undefined
+          error: undefined,
         },
         {
           id: BigInt(456),
@@ -284,7 +315,7 @@ describe('GravityGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'upgradeKits',
           edit: false,
-          error: undefined
+          error: undefined,
         },
         {
           id: BigInt(789),
@@ -292,7 +323,7 @@ describe('GravityGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'energyRefills',
           edit: false,
-          error: undefined
+          error: undefined,
         },
       ];
     });
@@ -339,6 +370,142 @@ describe('GravityGiftBasketComponent', () => {
       });
 
       expect(mockGravityService.postGiftPlayerUsingBackgroundTask).toHaveBeenCalled();
+    });
+  });
+
+  describe('Method: setStateGiftBasket', () => {
+    beforeEach(() => {
+      component.setGiftBasketItemErrors = jasmine
+        .createSpy('setGiftBasketItemErrors')
+        .and.returnValue([]);
+    });
+
+    it('should call setGiftBasketItemErrors', () => {
+      component.setStateGiftBasket([]);
+
+      expect(component.setGiftBasketItemErrors).toHaveBeenCalled();
+    });
+
+    it('should call store.dispatch', () => {
+      const input = [];
+      component.setStateGiftBasket(input);
+
+      expect(mockStore.dispatch).toHaveBeenCalledWith(new SetGravityGiftBasket(input));
+    });
+  });
+
+  describe('Method: setGiftBasketItemErrors', () => {
+    beforeEach(() => {
+      component.masterInventory = {
+        creditRewards: [{ id: BigInt(0), description: 'Credits', quantity: 0 }],
+        cars: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
+        repairKits: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
+        masteryKits: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
+        upgradeKits: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
+        energyRefills: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
+      } as GravityMasterInventory;
+    });
+
+    describe('When credit reward exists', () => {
+      it('should set item error to undefined', () => {
+        const input = [
+          {
+            itemType: 'creditRewards',
+            description: 'Credits',
+            quantity: 200,
+            id: BigInt(0),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].error).toBeUndefined();
+      });
+    });
+
+    describe('When credit reward does not exist', () => {
+      it('should set item error', () => {
+        const input = [
+          {
+            itemType: 'creditRewards',
+            description: 'Bad Credits',
+            quantity: 200,
+            id: BigInt(-1),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].error).toEqual('Item is not a valid gift.');
+      });
+    });
+
+    describe('When car reward reward', () => {
+      it('should set item error to undefined', () => {
+        const input = [
+          {
+            itemType: 'cars',
+            description: 'Test Car',
+            quantity: 200,
+            id: BigInt(12345),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].error).toBeUndefined();
+      });
+    });
+
+    describe('When soft current reward is over 500,000,000', () => {
+      it('should set item error ', () => {
+        // Soft currency ID=0
+        const input = [
+          {
+            itemType: 'creditRewards',
+            description: 'Soft Currency',
+            quantity: 500_000_001,
+            id: BigInt(0),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].error).toEqual('Soft Currency limit for a gift is 500,000,000.');
+      });
+    });
+
+    describe('When soft current reward is under 500,000,000', () => {
+      it('should set item error ', () => {
+        // Soft currency ID=0
+        const input = [
+          {
+            itemType: 'creditRewards',
+            description: 'Soft Currency',
+            quantity: 400_000_000,
+            id: BigInt(0),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].error).toBeUndefined();
+      });
     });
   });
 });

@@ -58,11 +58,10 @@ export class SunriseGiftingState {
       .sort((a, b) => {
         return a.itemType.localeCompare(b.itemType) || a.description.localeCompare(b.description);
       })
-      .sort((a, b) => a.error === b.error ? 0 : a.error ? -1 : 1);
-      
+      .sort((a, b) => (a.error === b.error ? 0 : a.error ? -1 : 1));
+
     return of(ctx.patchState({ giftBasket: clone(giftBasket) }));
   }
-  
 
   /** Selector for state selected player identities. */
   @Selector()

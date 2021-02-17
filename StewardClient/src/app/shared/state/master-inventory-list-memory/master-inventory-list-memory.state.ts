@@ -67,7 +67,7 @@ export class MasterInventoryListMemoryState {
       take(1),
       tap(data => {
         let gravityVal = state[GameTitleCodeName.Street];
-        if(Object.keys(gravityVal).length >= 3) {
+        if (Object.keys(gravityVal).length >= 3) {
           gravityVal = {};
         }
         gravityVal[gameSettingsId] = data;
