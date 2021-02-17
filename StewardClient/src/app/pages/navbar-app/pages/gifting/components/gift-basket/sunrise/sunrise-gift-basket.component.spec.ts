@@ -38,6 +38,9 @@ describe('SunriseGiftBasketComponent', () => {
 
       fixture = TestBed.createComponent(SunriseGiftBasketComponent);
       component = fixture.debugElement.componentInstance;
+
+      mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
+      mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
     }),
   );
 

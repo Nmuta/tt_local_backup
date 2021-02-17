@@ -5,10 +5,10 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { GravityGiftBasketComponent } from './gravity-gift-basket.component';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
-import { of } from 'rxjs';
-import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
+import { of, throwError } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { GravityService } from '@services/gravity';
+import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 
 describe('GravityGiftBasketComponent', () => {
   let fixture: ComponentFixture<GravityGiftBasketComponent>;
@@ -38,6 +38,9 @@ describe('GravityGiftBasketComponent', () => {
 
       fixture = TestBed.createComponent(GravityGiftBasketComponent);
       component = fixture.debugElement.componentInstance;
+
+      mockStore.select = jasmine.createSpy('select').and.returnValue(of([]));
+      mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
     }),
   );
 
@@ -45,21 +48,8 @@ describe('GravityGiftBasketComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Method: ngOnChanges', () => {
+  describe('Method: ngOnInit', () => {
     const previousGameSettingsId: string = 'test-previous-game-settings-id';
-    const playerInventory = {
-      xuid: BigInt(0),
-      t10Id: 'test-id',
-      previousGameSettingsId: previousGameSettingsId,
-      currentExternalProfileId: null,
-      cars: [],
-      masteryKits: [],
-      upgradeKits: [],
-      repairKits: [],
-      packs: [],
-      currencies: [],
-      energyRefills: [],
-    };
     const testMasterInventory: GravityMasterInventory = {
       creditRewards: [],
       repairKits: [],
@@ -70,69 +60,187 @@ describe('GravityGiftBasketComponent', () => {
     };
 
     beforeEach(() => {
-      mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
+      component.playerIdentities = [];
       mockStore.selectSnapshot = jasmine
         .createSpy('selectSnapshot')
         .and.returnValue({ [previousGameSettingsId]: testMasterInventory });
+
+      mockGravityService.getPlayerDetailsByT10Id = jasmine.createSpy('getPlayerDetailsByT10Id');
     });
 
-    describe('When changes include a valid playerInventory object', () => {
-      let changes: Partial<SimpleChanges>;
-      beforeEach(() => {
-        changes = {
-          playerInventory: {
-            currentValue: playerInventory,
-            previousValue: {},
-            firstChange: true,
-            isFirstChange: () => {
-              return true;
-            },
-          },
-        };
-      });
+    describe('When newIdentitySelectedSubject$ emits a null t10Id', () => {
+      it('should not call getPlayerDetailsByT10Id', () => {
+        component.ngOnInit();
+        component.newIdentitySelectedSubject$.next(null);
 
-      it('should dispatch GetGravityMasterInventoryList action', () => {
-        component.ngOnChanges(changes);
-
-        expect(mockStore.dispatch).toHaveBeenCalledWith(
-          new GetGravityMasterInventoryList(previousGameSettingsId),
-        );
-      });
-
-      it('should set masterInventory when dispatch is finished', () => {
-        component.ngOnChanges(changes);
-
-        expect(component.masterInventory).not.toBeUndefined();
-        expect(component.masterInventory).not.toBeNull();
-        expect(component.masterInventory).toEqual(testMasterInventory);
+        expect(mockGravityService.getPlayerDetailsByT10Id).not.toHaveBeenCalled();
       });
     });
 
-    describe('When changes includes a null playerInventory object', () => {
-      let changes: Partial<SimpleChanges>;
+    describe('When newIdentitySelectedSubject$ emits a empty string t10Id', () => {
+      it('should not call getPlayerDetailsByT10Id', () => {
+        component.ngOnInit();
+        component.newIdentitySelectedSubject$.next('');
+
+        expect(mockGravityService.getPlayerDetailsByT10Id).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('When newIdentitySelectedSubject$ emits a valid t10Id', () => {
+      const t10Id = 'fake-t10-id';
+
+      describe('And getPlayerDetailsByT10Id throws error', () => {
+        const error = { message: 'fake-error' };
+
+        beforeEach(() => {
+          mockGravityService.getPlayerDetailsByT10Id = jasmine.createSpy('getPlayerDetailsByT10Id').and.returnValue(throwError(error));
+
+        });
+
+        it('should set loadError', () => {
+          component.ngOnInit();
+          component.newIdentitySelectedSubject$.next(t10Id);
+
+          expect(component.isLoading).toBeFalsy();
+          expect(component.loadError).toEqual(error);
+        })
+      });
+
+      describe('And getPlayerDetailsByT10Id returns valid game settings', () => {
+        const gameSettingsId = 'game-settings-id';
+  
+        beforeEach(() => {
+          mockGravityService.getPlayerDetailsByT10Id = jasmine.createSpy('getPlayerDetailsByT10Id').and.returnValue(of({ lastGameSettingsUsed: gameSettingsId }));
+        });
+  
+        it('should set component.selectedGameSettingsId', () => {
+          component.ngOnInit();
+          component.newIdentitySelectedSubject$.next(t10Id);
+  
+          expect(component.selectedGameSettingsId).toEqual(gameSettingsId);
+        });
+
+        it('should call store.distach', () => {
+          component.ngOnInit();
+          component.newIdentitySelectedSubject$.next(t10Id);
+  
+          expect(mockStore.dispatch).toHaveBeenCalledWith(new GetGravityMasterInventoryList(gameSettingsId));
+        });
+
+        describe('And GetGravityMasterInventoryList throws error', () => {
+          const error = { message: 'fake-error' };
+  
+          beforeEach(() => {
+            mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(throwError(error));  
+          });
+  
+          it('should set loadError', () => {
+            component.ngOnInit();
+            component.newIdentitySelectedSubject$.next(t10Id);
+  
+            expect(component.isLoading).toBeFalsy();
+            expect(component.loadError).toEqual(error);
+          })
+        });
+
+        describe('And GetGravityMasterInventoryList returns valid master inventory', () => {    
+          beforeEach(() => {
+            mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));  
+            mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue({[gameSettingsId]: testMasterInventory});
+            component.setStateGiftBasket = jasmine.createSpy('setStateGiftBasket');
+          });
+    
+          it('should call mockStore.selectSnapshot', () => {
+            component.ngOnInit();
+            component.newIdentitySelectedSubject$.next(t10Id);
+    
+            expect(mockStore.selectSnapshot).toHaveBeenCalled();
+          });
+  
+          it('should set component variables', () => {
+            component.ngOnInit();
+            component.newIdentitySelectedSubject$.next(t10Id);
+    
+            expect(component.isLoading).toBeFalsy();
+            expect(component.masterInventory).toEqual(testMasterInventory);
+          });
+  
+          it('should call component.setStateGiftBasket', () => {
+            component.ngOnInit();
+            component.newIdentitySelectedSubject$.next(t10Id);
+    
+            expect(component.setStateGiftBasket).toHaveBeenCalled();
+          });
+        });
+      });
+    });
+
+    describe('When player identity is set', () => {
+      const t10Id = 't10-id';
       beforeEach(() => {
-        changes = {
-          testProperty: {
-            currentValue: {},
-            previousValue: {},
-            firstChange: true,
-            isFirstChange: () => {
-              return true;
-            },
-          },
-        };
+        component.playerIdentities = [{
+          query: { gamertag: null },
+          xuid: BigInt(1234),
+          t10Id: t10Id
+        }];
+        component.newIdentitySelectedSubject$.next = jasmine.createSpy('newIdentitySelectedSubject$.next');
       });
 
-      it('should not dispatch GetGravityMasterInventoryList action', () => {
-        component.ngOnChanges(changes);
+      it('should call newIdentitySelectedSubject$.next', () => {
+        component.ngOnInit();
 
-        expect(mockStore.dispatch).not.toHaveBeenCalled();
+        expect(component.newIdentitySelectedSubject$.next).toHaveBeenCalledWith(t10Id);
+      });
+    });
+  });
+
+  describe('Method: ngOnChanges', () => {
+    beforeEach(() => {
+      component.newIdentitySelectedSubject$.next = jasmine.createSpy('newIdentitySelectedSubject$.next');
+    });
+
+    describe('When player identites is changed', () => {
+      const changes: SimpleChanges = { playerIdentities: { previousValue: null, currentValue: null, firstChange: false, isFirstChange: () => { return false;}}};
+
+      describe('and the identity is valid', () => {
+        const t10Id = 't10-id';
+
+        beforeEach(() => {
+          component.playerIdentities = [{
+            query: { gamertag: null },
+            xuid: BigInt(1234),
+            t10Id: t10Id
+          }];
+        });
+
+        it('should call newIdentitySelectedSubject$.next', () => {
+          component.ngOnChanges(changes)
+
+          expect(component.newIdentitySelectedSubject$.next).toHaveBeenCalledWith(t10Id);;
+        });
       });
 
-      it('should set masterInventory to undefined', () => {
+      describe('and the identity is null', () => {
+
+        beforeEach(() => {
+          component.playerIdentities = [];
+        });
+
+        it('should call newIdentitySelectedSubject$.next', () => {
+          component.ngOnChanges(changes)
+
+          expect(component.newIdentitySelectedSubject$.next).toHaveBeenCalledWith(null);;
+        });
+      });
+    });
+
+    describe('When player identites is not changed', () => {
+      const changes: SimpleChanges = {};
+
+      it('should not call newIdentitySelectedSubject$.next', () => {
         component.ngOnChanges(changes);
 
-        expect(component.masterInventory).toBeUndefined();
+        expect(component.newIdentitySelectedSubject$.next).not.toHaveBeenCalled();;
       });
     });
   });

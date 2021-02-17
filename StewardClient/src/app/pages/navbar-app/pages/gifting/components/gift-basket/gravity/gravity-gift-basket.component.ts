@@ -72,9 +72,6 @@ export class GravityGiftBasketComponent
         );
       }),
       switchMap(details => {
-        if(!details) {
-          return throwError('Invalid T10 Id');
-        }
         this.selectedGameSettingsId = details.lastGameSettingsUsed;
         return this.store.dispatch(new GetGravityMasterInventoryList(this.selectedGameSettingsId)).pipe(
           catchError(error => {
@@ -111,10 +108,11 @@ export class GravityGiftBasketComponent
   }
 
   /** Angular lifecycle */
-  public ngOnChanges(_changes: SimpleChanges): void {
-    // Add back in changes look
-    const playerT10Id = this.playerIdentities.length > 0 ? this.playerIdentities[0].t10Id : null;
-    this.newIdentitySelectedSubject$.next(playerT10Id);
+  public ngOnChanges(changes: SimpleChanges): void {
+    if(!!changes?.playerIdentities) {
+      const playerT10Id = this.playerIdentities.length > 0 ? this.playerIdentities[0].t10Id : null;
+      this.newIdentitySelectedSubject$.next(playerT10Id);
+    }
   }
 
   /** Generates a gravity gift from the gift basket. */
