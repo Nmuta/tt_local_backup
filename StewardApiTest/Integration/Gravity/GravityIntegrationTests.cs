@@ -9,6 +9,7 @@ using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
+using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardTest.Utilities;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
@@ -548,7 +549,22 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         [TestCategory("Integration")]
         public async Task GetGiftHistory()
         {
-            var gift = this.CreateGift();
+            var gift = new GravityGift();
+            gift.GiftReason = "Integration Test";
+            gift.Inventory = new GravityMasterInventory();
+            gift.Inventory.CreditRewards = new List<MasterInventoryItem>();
+            gift.Inventory.Cars = new List<MasterInventoryItem>();
+            gift.Inventory.EnergyRefills = new List<MasterInventoryItem>();
+            gift.Inventory.RepairKits = new List<MasterInventoryItem>();
+            gift.Inventory.MasteryKits = new List<MasterInventoryItem>();
+            gift.Inventory.UpgradeKits = new List<MasterInventoryItem>();
+
+            gift.Inventory.CreditRewards.Add(new MasterInventoryItem()
+            {
+                Id = 0,
+                Description = "Credits",
+                Quantity = 1
+            });
 
             await stewardClient.UpdatePlayerInventoryByT10IdAsync(t10Id, gift).ConfigureAwait(false);
 
