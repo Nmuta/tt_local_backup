@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
-using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardTest.Utilities;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
@@ -458,113 +455,40 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task UpdatePlayerInventoryByXuid()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-
-            var resultBefore = await stewardClient.GetPlayerInventoryAsync(xuid).ConfigureAwait(false);
-            var beforeModifiedUtc = resultBefore.Cars.Where(car => car.ItemId == 200289).FirstOrDefault()?.ModifiedUtc;
-
-            var result = await stewardClient.UpdatePlayerInventoryByXuidAsync(playerInventory).ConfigureAwait(false);
-            var afterModifiedUtc = result.Cars.Where(car => car.ItemId == 200289).FirstOrDefault().ModifiedUtc;
-
-            Assert.IsNotNull(result);
-            Assert.AreNotEqual(beforeModifiedUtc, afterModifiedUtc);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdatePlayerInventoryByXuid_UseBackgroundProcessing()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-
-            var resultBefore = await stewardClient.GetPlayerInventoryAsync(xuid).ConfigureAwait(false);
-            var beforeModifiedUtc = resultBefore.Cars.Where(car => car.ItemId == 200289).FirstOrDefault()?.ModifiedUtc;
-
-            var result = await this.UpdatePlayerInventoryByXuidWithHeaderResponseAsync(stewardClient, playerInventory, BackgroundJobStatus.Completed).ConfigureAwait(false);
-            var afterModifiedUtc = result.Cars.Where(car => car.ItemId == 200289).FirstOrDefault().ModifiedUtc;
-
-            Assert.IsNotNull(result);
-            Assert.AreNotEqual(beforeModifiedUtc, afterModifiedUtc);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdatePlayerInventoryByXuid_InvalidXuid()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-            playerInventory.Xuid = TestConstants.InvalidXuid;
-
-            try
-            {
-                await stewardClient.UpdatePlayerInventoryByXuidAsync(playerInventory).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdatePlayerInventoryByXuid_Unauthorized()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-
-            try
-            {
-                await unauthorizedClient.UpdatePlayerInventoryByXuidAsync(playerInventory).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
         public async Task UpdatePlayerInventoryByT10Id()
         {
-            var playerInventory = this.CreatePlayerInventory();
+            var gift = new GravityGift();
+            gift.GiftReason = "Integration Test";
+            gift.Inventory = new GravityMasterInventory();
+            gift.Inventory.CreditRewards = new List<MasterInventoryItem>();
+            gift.Inventory.Cars = new List<MasterInventoryItem>();
+            gift.Inventory.EnergyRefills = new List<MasterInventoryItem>();
+            gift.Inventory.RepairKits = new List<MasterInventoryItem>();
+            gift.Inventory.MasteryKits = new List<MasterInventoryItem>();
+            gift.Inventory.UpgradeKits = new List<MasterInventoryItem>();
 
-            var resultBefore = await stewardClient.GetPlayerInventoryAsync(t10Id).ConfigureAwait(false);
-            var beforeModifiedUtc = resultBefore.Cars.Where(car => car.ItemId == 200289).FirstOrDefault()?.ModifiedUtc;
+            gift.Inventory.CreditRewards.Add(new MasterInventoryItem()
+            {
+                Id = 0,
+                Description = "Credits",
+                Quantity = 1
+            });
 
-            var result = await stewardClient.UpdatePlayerInventoryByT10IdAsync(playerInventory).ConfigureAwait(false);
-            var afterModifiedUtc = result.Cars.Where(car => car.ItemId == 200289).FirstOrDefault().ModifiedUtc;
+            var response = await stewardClient.UpdatePlayerInventoryByT10IdAsync(t10Id, gift).ConfigureAwait(false);
 
-            Assert.IsNotNull(result);
-            Assert.AreNotEqual(beforeModifiedUtc, afterModifiedUtc);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdatePlayerInventoryByT10Id_UseBackgroundProcessing()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-
-            var resultBefore = await stewardClient.GetPlayerInventoryAsync(t10Id).ConfigureAwait(false);
-            var beforeModifiedUtc = resultBefore.Cars.Where(car => car.ItemId == 200289).FirstOrDefault()?.ModifiedUtc;
-
-            var result = await this.UpdatePlayerInventoryByT10IdWithHeaderResponseAsync(stewardClient, playerInventory, BackgroundJobStatus.Completed).ConfigureAwait(false);
-            var afterModifiedUtc = result.Cars.Where(car => car.ItemId == 200289).FirstOrDefault().ModifiedUtc;
-
-            Assert.IsNotNull(result);
-            Assert.AreNotEqual(beforeModifiedUtc, afterModifiedUtc);
+            Assert.IsNotNull(response);
+            Assert.IsNull(response.Error);
         }
 
         [TestMethod]
         [TestCategory("Integration")]
         public async Task UpdatePlayerInventoryByT10Id_InvalidT10Id()
         {
-            var playerInventory = this.CreatePlayerInventory();
-            playerInventory.T10Id = TestConstants.InvalidT10Id;
+            var gift = this.CreateGift();
 
             try
             {
-                await stewardClient.UpdatePlayerInventoryByT10IdAsync(playerInventory).ConfigureAwait(false);
+                await stewardClient.UpdatePlayerInventoryByT10IdAsync(TestConstants.InvalidT10Id, gift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -577,11 +501,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         [TestCategory("Integration")]
         public async Task UpdatePlayerInventoryByT10Id_Unauthorized()
         {
-            var playerInventory = this.CreatePlayerInventory();
+            var gift = this.CreateGift();
 
             try
             {
-                await unauthorizedClient.UpdatePlayerInventoryByT10IdAsync(playerInventory).ConfigureAwait(false);
+                await unauthorizedClient.UpdatePlayerInventoryByT10IdAsync(t10Id, gift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -633,9 +557,24 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         [TestCategory("Integration")]
         public async Task GetGiftHistory()
         {
-            var playerInventory = this.CreatePlayerInventory();
+            var gift = new GravityGift();
+            gift.GiftReason = "Integration Test";
+            gift.Inventory = new GravityMasterInventory();
+            gift.Inventory.CreditRewards = new List<MasterInventoryItem>();
+            gift.Inventory.Cars = new List<MasterInventoryItem>();
+            gift.Inventory.EnergyRefills = new List<MasterInventoryItem>();
+            gift.Inventory.RepairKits = new List<MasterInventoryItem>();
+            gift.Inventory.MasteryKits = new List<MasterInventoryItem>();
+            gift.Inventory.UpgradeKits = new List<MasterInventoryItem>();
 
-            await stewardClient.UpdatePlayerInventoryByT10IdAsync(playerInventory).ConfigureAwait(false);
+            gift.Inventory.CreditRewards.Add(new MasterInventoryItem()
+            {
+                Id = 0,
+                Description = "Credits",
+                Quantity = 1
+            });
+
+            await stewardClient.UpdatePlayerInventoryByT10IdAsync(t10Id, gift).ConfigureAwait(false);
 
             var result = await stewardClient.GetGiftHistoriesAsync(t10Id).ConfigureAwait(false);
             Assert.IsTrue(result.Any());
@@ -665,76 +604,74 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             Assert.IsFalse(result.Any());
         }
 
-        private async Task<GravityPlayerInventory> UpdatePlayerInventoryByXuidWithHeaderResponseAsync(GravityStewardTestingClient stewardClient, GravityPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
+        private Dictionary<string, string> GenerateHeadersToSend(string requestingAgent)
         {
-            var headersToValidate = new List<string> { "jobId" };
+            var result = new Dictionary<string, string>();
 
-            var response = await stewardClient.UpdatePlayerInventoryByXuidWithHeaderResponseAsync(playerInventory, headersToValidate).ConfigureAwait(false);
-
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-
-            bool jobCompleted;
-            BackgroundJobStatus status;
-            GravityPlayerInventory jobResult;
-
-            do
+            if (!string.IsNullOrWhiteSpace(requestingAgent))
             {
-                var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"])
-                    .ConfigureAwait(false);
-
-                Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out status);
-
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
-
-                jobResult = backgroundJob.Result?.FromJson<GravityPlayerInventory>();
-
-                if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
-                {
-                    break;
-                }
+                result.Add("requestingAgent", requestingAgent);
             }
-            while (!jobCompleted);
 
-            Assert.AreEqual(expectedStatus, status);
-
-            return jobResult;
+            return result;
         }
 
-        private async Task<GravityPlayerInventory> UpdatePlayerInventoryByT10IdWithHeaderResponseAsync(GravityStewardTestingClient stewardClient, GravityPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
+        private GravityMasterInventory CreateGiftInventory()
         {
-            var headersToValidate = new List<string> { "jobId" };
+            var giftInventory = new GravityMasterInventory();
 
-            var response = await stewardClient.UpdatePlayerInventoryByT10IdWithHeaderResponseAsync(playerInventory, headersToValidate).ConfigureAwait(false);
-
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-
-            bool jobCompleted;
-            BackgroundJobStatus status;
-            GravityPlayerInventory jobResult;
-
-            do
+            giftInventory.CreditRewards = new List<MasterInventoryItem>()
             {
-                var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"])
-                    .ConfigureAwait(false);
+                new MasterInventoryItem() { Id = -1, Description = "Credits", Quantity = 1 },
+            };
 
-                Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out status);
 
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
-
-                jobResult = backgroundJob.Result?.FromJson<GravityPlayerInventory>();
-
-                if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
+            giftInventory.Cars = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
                 {
-                    break;
+                    Id = 2616,
+                    Quantity = 1
                 }
-            }
-            while (!jobCompleted);
+            };
 
-            Assert.AreEqual(expectedStatus, status);
+            giftInventory.EnergyRefills = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 16,
+                    Quantity = 1
+                }
+            };
 
-            return jobResult;
+            giftInventory.MasteryKits = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 310,
+                    Quantity = 1
+                }
+            };
+
+            giftInventory.RepairKits = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 2,
+                    Quantity = 1
+                }
+            };
+
+            giftInventory.UpgradeKits = new List<MasterInventoryItem>()
+            {
+                new MasterInventoryItem()
+                {
+                    Id = 84,
+                    Quantity = 1
+                }
+            };
+
+            return giftInventory;
         }
 
         private GravityPlayerInventory CreatePlayerInventory()
@@ -743,7 +680,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             {
                 Cars = new[]
                 {
-                    new GravityCar
+                    new StewardApi.Contracts.Gravity.GravityCar
                     {
                     Vin = new Guid("ffb44784-6af6-4bc6-9ff2-d21b91e5c657"),
                     PurchaseUtc = new DateTime(2019, 08, 01, 12, 10, 10),
@@ -822,6 +759,15 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
                 },
                 Xuid = xuid,
                 T10Id = t10Id
+            };
+        }
+
+        private GravityGift CreateGift()
+        {
+            return new GravityGift
+            {
+                GiftReason = "Integration Test",
+                Inventory = this.CreateGiftInventory()
             };
         }
     }

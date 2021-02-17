@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Turn10.Data.Common;
@@ -33,8 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Validation
         /// <inheritdoc />
         public void ValidateIds(ApolloMasterInventory model, ModelStateDictionary modelState)
         {
-            model.ShouldNotBeNull(nameof(model));
-            modelState.ShouldNotBeNull(nameof(modelState));
+            throw new NotImplementedException();
         }
 
         private void ValidateItems(IList<MasterInventoryItem> items, ModelStateDictionary modelState, string propertyName)

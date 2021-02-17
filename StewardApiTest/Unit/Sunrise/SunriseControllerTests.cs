@@ -882,7 +882,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeAssignableTo<OkResult>();
+                action().Should().BeAssignableTo<Task<IActionResult>>();
+                var result = await action().ConfigureAwait(false) as OkObjectResult;
+                result.Should().NotBeNull();
+                result.StatusCode.Should().Be(200);
+                result.Value.Should().NotBeNull();
             }
         }
 
@@ -981,7 +985,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, gift).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeAssignableTo<OkResult>();
+            action().Should().BeAssignableTo<Task<IActionResult>>();
+            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            result.Value.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -1151,6 +1159,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
                 this.SunrisePlayerInventoryProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseLspGroup>>());
+                this.SunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SunriseGift>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
+                this.SunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SunriseGroupGift>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftHistoryAntecedent>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());

@@ -4,17 +4,17 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
-using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 
 namespace Turn10.LiveOps.StewardApi.Validation
 {
     /// <summary>
-    ///     Validates a <see cref="SunriseMasterInventory"/> request.
+    ///     Validates a <see cref="GravityMasterInventory"/> request.
     /// </summary>
-    public sealed class SunriseMasterInventoryRequestValidator : RequestValidatorBase, IRequestValidator<SunriseMasterInventory>
+    public sealed class GravityMasterInventoryRequestValidator : RequestValidatorBase, IRequestValidator<GravityMasterInventory>
     {
         /// <inheritdoc />
-        public void Validate(SunriseMasterInventory model, ModelStateDictionary modelState)
+        public void Validate(GravityMasterInventory model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
@@ -32,29 +32,29 @@ namespace Turn10.LiveOps.StewardApi.Validation
                 this.ValidateItems(model.Cars.ToList<MasterInventoryItem>(), modelState, nameof(model.Cars));
             }
 
-            if (model.Emotes != null)
+            if (model.MasteryKits != null)
             {
-                this.ValidateItems(model.Emotes.ToList<MasterInventoryItem>(), modelState, nameof(model.Emotes));
+                this.ValidateItems(model.MasteryKits.ToList<MasterInventoryItem>(), modelState, nameof(model.MasteryKits));
             }
 
-            if (model.CarHorns != null)
+            if (model.UpgradeKits != null)
             {
-                this.ValidateItems(model.CarHorns.ToList<MasterInventoryItem>(), modelState, nameof(model.CarHorns));
+                this.ValidateItems(model.UpgradeKits.ToList<MasterInventoryItem>(), modelState, nameof(model.UpgradeKits));
             }
 
-            if (model.VanityItems != null)
+            if (model.RepairKits != null)
             {
-                this.ValidateItems(model.VanityItems.ToList<MasterInventoryItem>(), modelState, nameof(model.VanityItems));
+                this.ValidateItems(model.RepairKits.ToList<MasterInventoryItem>(), modelState, nameof(model.RepairKits));
             }
 
-            if (model.QuickChatLines != null)
+            if (model.EnergyRefills != null)
             {
-                this.ValidateItems(model.QuickChatLines.ToList<MasterInventoryItem>(), modelState, nameof(model.QuickChatLines));
+                this.ValidateItems(model.EnergyRefills.ToList<MasterInventoryItem>(), modelState, nameof(model.EnergyRefills));
             }
-        }
+    }
 
         /// <inheritdoc />
-        public void ValidateIds(SunriseMasterInventory model, ModelStateDictionary modelState)
+        public void ValidateIds(GravityMasterInventory model, ModelStateDictionary modelState)
         {
             throw new NotImplementedException();
         }

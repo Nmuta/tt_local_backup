@@ -26,7 +26,6 @@ using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
-using Turn10.LiveOps.StewardApi.Providers.Gravity.Settings;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -160,20 +159,14 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IStsClient, StsClientWrapper>();
 
             services.AddSingleton<IGravityUserService, GravityUserServiceWrapper>();
+            services.AddSingleton<IGravityGameSettingsService, GravityGameSettingsServiceWrapper>();
             services.AddSingleton<IGravityUserInventoryService, GravityUserInventoryServiceWrapper>();
             services.AddSingleton<IGravityPlayerDetailsProvider, GravityPlayerDetailsProvider>();
+            services.AddSingleton<IGravityGameSettingsProvider, GravityGameSettingsProvider>();
             services.AddSingleton<IGravityPlayerInventoryProvider, GravityPlayerInventoryProvider>();
-            services.AddSingleton<IRequestValidator<GravityPlayerInventory>, GravityPlayerInventoryRequestValidator>();
+            services.AddSingleton<IRequestValidator<GravityMasterInventory>, GravityMasterInventoryRequestValidator>();
+            services.AddSingleton<IRequestValidator<GravityGift>, GravityGiftRequestValidator>();
             services.AddSingleton<IGravityGiftHistoryProvider, GravityGiftHistoryProvider>();
-            if (this.configuration[ConfigurationKeyConstants.GravitySandbox]
-                .Equals("RETAIL", StringComparison.OrdinalIgnoreCase))
-            {
-                services.AddSingleton<ISettingsProvider, SettingsProviderProd>();
-            }
-            else
-            {
-                services.AddSingleton<ISettingsProvider, SettingsProviderDev>();
-            }
 
             services.AddSingleton<ISunriseUserService, SunriseUserServiceWrapper>();
             services.AddSingleton<ISunriseEnforcementService, SunriseEnforcementServiceWrapper>();

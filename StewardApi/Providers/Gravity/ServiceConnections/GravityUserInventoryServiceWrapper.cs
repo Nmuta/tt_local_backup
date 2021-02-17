@@ -60,17 +60,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task LiveOpsApplyUserInventoryByT10IdAsync(string t10Id, LiveOpsUserInventory inventoryToApply, bool shouldResetFirst, bool grantStartingPackage, bool preserveBookingItems)
-        {
-            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
-            inventoryToApply.ShouldNotBeNull(nameof(inventoryToApply));
-
-            var userInventoryService = await this.PrepareUserInventoryServiceAsync().ConfigureAwait(false);
-
-            await userInventoryService.LiveOpsApplyUserInventoryByT10Id(t10Id, inventoryToApply, shouldResetFirst, grantStartingPackage, preserveBookingItems).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
         public async Task<LiveOpsGetInventoryByProfileIdOutput> LiveOpsGetInventoryByProfileIdAsync(string t10Id, string profileId)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
@@ -102,17 +91,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task LiveOpsApplyUserInventoryAsync(string t10Id, LiveOpsUserInventory inventoryToApply, bool shouldResetFirst, bool grantStartingPackage, bool preserveBookingItems)
-        {
-            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
-            inventoryToApply.ShouldNotBeNull(nameof(inventoryToApply));
-
-            var userInventoryService = await this.PrepareUserInventoryServiceAsync().ConfigureAwait(false);
-
-            await userInventoryService.LiveOpsApplyUserInventory(t10Id, inventoryToApply, shouldResetFirst, grantStartingPackage, preserveBookingItems).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
         public async Task ResetUserInventoryAsync(string t10Id)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
@@ -120,6 +98,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             var userInventoryService = await this.PrepareUserInventoryServiceAsync().ConfigureAwait(false);
 
             await userInventoryService.ResetUserInventory(t10Id).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task LiveOpsGrantItem(string t10Id, Guid gameSettingsId, ForzaUserInventoryItemType type, int id, int quantity)
+        {
+            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
+            gameSettingsId.ToString().ShouldNotBeNullEmptyOrWhiteSpace(nameof(gameSettingsId));
+
+            if (type == ForzaUserInventoryItemType.Pack || type == ForzaUserInventoryItemType.ReviveKit || type == ForzaUserInventoryItemType.Chest || type == ForzaUserInventoryItemType.XBLSignInReward || type == ForzaUserInventoryItemType.EnumCount)
+            {
+                throw new ArgumentException($"Invalid ForzaUserInventoryItemType: {type}");
+            }
+
+            if (quantity <= 0)
+            {
+                throw new ArgumentException($"Quantity must be greater than zero. Quantity provided was: {quantity}");
+            }
+
+            var userInventoryService = await this.PrepareUserInventoryServiceAsync().ConfigureAwait(false);
+
+            await userInventoryService.LiveOpsGrantItem(t10Id, gameSettingsId, type, id, quantity).ConfigureAwait(false);
         }
 
         private async Task<UserInventoryService> PrepareUserInventoryServiceAsync()

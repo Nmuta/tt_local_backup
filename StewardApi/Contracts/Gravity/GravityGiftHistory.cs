@@ -19,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <param name="giftSendDateUtc">The gift send date.</param>
         /// <param name="giftInventory">The gift inventory.</param>
-        public GravityGiftHistory(GiftHistoryAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, GravityPlayerInventory giftInventory)
+        public GravityGiftHistory(GiftHistoryAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, GravityGift giftInventory)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -67,6 +67,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
         /// <summary>
         ///     Gets or sets gift inventory.
         /// </summary>
-        public GravityPlayerInventory GiftInventory { get; set; }
+        public GravityGift GiftInventory { get; set; }
     }
 }

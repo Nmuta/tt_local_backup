@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -13,8 +16,8 @@ using Turn10.LiveOps.StewardApi.Contracts.Gravity.Settings;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
-using Turn10.LiveOps.StewardApi.Providers.Gravity.Settings;
 using Turn10.LiveOps.StewardApi.Validation;
+using Turn10.Services.Authentication;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -33,10 +36,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IGravityPlayerDetailsProvider gravityPlayerDetailsProvider;
         private readonly IGravityPlayerInventoryProvider gravityPlayerInventoryProvider;
         private readonly IGravityGiftHistoryProvider giftHistoryProvider;
-        private readonly ISettingsProvider gravitySettingsProvider;
+        private readonly IGravityGameSettingsProvider gravityGameSettingsProvider;
         private readonly IJobTracker jobTracker;
         private readonly IScheduler scheduler;
-        private readonly IRequestValidator<GravityPlayerInventory> playerInventoryRequestValidator;
+        private readonly IRequestValidator<GravityGift> giftRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityController"/> class.
@@ -44,34 +47,34 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="gravityPlayerDetailsProvider">The Gravity player details provider.</param>
         /// <param name="gravityPlayerInventoryProvider">The Gravity player inventory provider.</param>
         /// <param name="giftHistoryProvider">The gift history provider.</param>
-        /// <param name="gravitySettingsProvider">The Gravity settings provider.</param>
+        /// <param name="gravityGameSettingsProvider">The Gravity game settings provider.</param>
         /// <param name="scheduler">The scheduler.</param>
         /// <param name="jobTracker">The job tracker.</param>
-        /// <param name="playerInventoryRequestValidator">The player inventory request validator.</param>
+        /// <param name="giftRequestValidator">The gift request validator.</param>
         public GravityController(
-                                 IGravityPlayerDetailsProvider gravityPlayerDetailsProvider,
-                                 IGravityPlayerInventoryProvider gravityPlayerInventoryProvider,
-                                 IGravityGiftHistoryProvider giftHistoryProvider,
-                                 ISettingsProvider gravitySettingsProvider,
-                                 IScheduler scheduler,
-                                 IJobTracker jobTracker,
-                                 IRequestValidator<GravityPlayerInventory> playerInventoryRequestValidator)
+            IGravityPlayerDetailsProvider gravityPlayerDetailsProvider,
+            IGravityPlayerInventoryProvider gravityPlayerInventoryProvider,
+            IGravityGiftHistoryProvider giftHistoryProvider,
+            IGravityGameSettingsProvider gravityGameSettingsProvider,
+            IScheduler scheduler,
+            IJobTracker jobTracker,
+            IRequestValidator<GravityGift> giftRequestValidator)
         {
             gravityPlayerDetailsProvider.ShouldNotBeNull(nameof(gravityPlayerDetailsProvider));
             gravityPlayerInventoryProvider.ShouldNotBeNull(nameof(gravityPlayerInventoryProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
-            gravitySettingsProvider.ShouldNotBeNull(nameof(gravitySettingsProvider));
+            gravityGameSettingsProvider.ShouldNotBeNull(nameof(gravityGameSettingsProvider));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
-            playerInventoryRequestValidator.ShouldNotBeNull(nameof(playerInventoryRequestValidator));
+            giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
 
             this.gravityPlayerDetailsProvider = gravityPlayerDetailsProvider;
             this.gravityPlayerInventoryProvider = gravityPlayerInventoryProvider;
             this.giftHistoryProvider = giftHistoryProvider;
-            this.gravitySettingsProvider = gravitySettingsProvider;
+            this.gravityGameSettingsProvider = gravityGameSettingsProvider;
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
-            this.playerInventoryRequestValidator = playerInventoryRequestValidator;
+            this.giftRequestValidator = giftRequestValidator;
         }
 
         /// <summary>
@@ -321,52 +324,68 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Update the player inventory.
+        ///     Gift player items to their inventory.
         /// </summary>
-        /// <param name="playerInventory">The player inventory.</param>
+        /// <param name="t10Id">The T10 Id.</param>
+        /// <param name="gift">The gift to send to the player.</param>
         /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
         /// <returns>
-        ///     The updated <see cref="GravityPlayerInventory"/>.
+        ///     A <see cref="GiftResponse{T}"/>.
         /// </returns>
-        [HttpPost("player/xuid/inventory")]
-        [SwaggerResponse(201, type: typeof(GravityPlayerInventory))]
-        [SwaggerResponse(202)]
-        public async Task<IActionResult> UpdatePlayerInventoryByXuid([FromBody] GravityPlayerInventory playerInventory, [FromQuery] bool useBackgroundProcessing = false)
+        [HttpPost("gifting/t10Id({t10Id})")]
+        [SwaggerResponse(200, type: typeof(GiftResponse<string>))]
+        public async Task<IActionResult> UpdatePlayerInventoryByT10Id(string t10Id, [FromBody] GravityGift gift, [FromQuery] bool useBackgroundProcessing = false)
         {
             try
             {
-                var user = this.User.UserModel();
-                var requestingAgent = user.EmailAddress ?? user.Id;
+                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
+                ? this.User.GetClaimValue(ClaimTypes.Email)
+                : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
 
-                playerInventory.ShouldNotBeNull(nameof(playerInventory));
+                t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
+                gift.ShouldNotBeNull(nameof(gift));
+                gift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gift.GiftReason));
+                gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-                this.playerInventoryRequestValidator.ValidateIds(playerInventory, this.ModelState);
-                this.playerInventoryRequestValidator.Validate(playerInventory, this.ModelState);
+                this.giftRequestValidator.Validate(gift, this.ModelState);
 
                 if (!this.ModelState.IsValid)
                 {
-                    var result = this.playerInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
-
-                    return this.BadRequest(result);
+                    var errorResponse = this.giftRequestValidator.GenerateErrorResponse(this.ModelState);
+                    return this.BadRequest(errorResponse);
                 }
 
-                if (!await this.gravityPlayerDetailsProvider.EnsurePlayerExistsAsync(playerInventory.Xuid)
-                    .ConfigureAwait(true))
+                GravityPlayerDetails playerDetails;
+                try
                 {
-                    return this.NotFound($"No inventory found for XUID: {playerInventory.Xuid}");
+                    playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(t10Id).ConfigureAwait(true);
+                }
+                catch (Exception)
+                {
+                    playerDetails = null;
+                }
+
+                if (playerDetails == null)
+                {
+                    return this.NotFound($"No player found for T10Id: {t10Id}");
+                }
+
+                var playerGameSettingsId = playerDetails.LastGameSettingsUsed;
+                var invalidItems = await this.VerifyGiftAgainstMasterInventory(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
+                if (invalidItems.Length > 0)
+                {
+                    return this.BadRequest($"Invalid items found. {invalidItems}");
                 }
 
                 if (!useBackgroundProcessing)
                 {
-                    await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.Xuid, playerInventory, requestingAgent).ConfigureAwait(true);
-                    var results = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(playerInventory.Xuid).ConfigureAwait(true);
-
-                    return this.Created(this.Request.Path, results);
+                    var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
+                    return this.Ok(response);
                 }
 
                 var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(playerInventory.ToJson(), username).ConfigureAwait(true);
+                var jobId = await this.AddJobIdToHeaderAsync(gift.ToJson(), username).ConfigureAwait(true);
 
                 async Task BackgroundProcessing(CancellationToken cancellationToken)
                 {
@@ -374,86 +393,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     // Do not throw.
                     try
                     {
-                        await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.Xuid, playerInventory, requestingAgent).ConfigureAwait(true);
-                        var result = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(playerInventory.Xuid).ConfigureAwait(true);
-
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, result.ToJson()).ConfigureAwait(true);
-                    }
-                    catch (Exception)
-                    {
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed)
-                            .ConfigureAwait(true);
-                    }
-                }
-
-                this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-                return this.Accepted();
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
-        }
-
-        /// <summary>
-        ///     Update the player inventory.
-        /// </summary>
-        /// <param name="playerInventory">The player inventory.</param>
-        /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
-        /// <returns>
-        ///     The updated <see cref="GravityPlayerInventory"/>.
-        /// </returns>
-        [HttpPost("player/t10Id/inventory")]
-        [SwaggerResponse(201, type: typeof(GravityPlayerInventory))]
-        [SwaggerResponse(202)]
-        public async Task<IActionResult> UpdatePlayerInventoryByT10Id([FromBody] GravityPlayerInventory playerInventory, [FromQuery] bool useBackgroundProcessing = false)
-        {
-            try
-            {
-                var user = this.User.UserModel();
-                var requestingAgent = user.EmailAddress ?? user.Id;
-
-                playerInventory.ShouldNotBeNull(nameof(playerInventory));
-                playerInventory.T10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerInventory.T10Id));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-                this.playerInventoryRequestValidator.ValidateIds(playerInventory, this.ModelState);
-                this.playerInventoryRequestValidator.Validate(playerInventory, this.ModelState);
-
-                if (!this.ModelState.IsValid)
-                {
-                    var result = this.playerInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
-
-                    return this.BadRequest(result);
-                }
-
-                if (!await this.gravityPlayerDetailsProvider.EnsurePlayerExistsByT10IdAsync(playerInventory.T10Id).ConfigureAwait(true))
-                {
-                    return this.NotFound($"No inventory found for T10Id: {playerInventory.T10Id}");
-                }
-
-                if (!useBackgroundProcessing)
-                {
-                    await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.T10Id, playerInventory, requestingAgent).ConfigureAwait(true);
-                    var results = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(playerInventory.T10Id).ConfigureAwait(true);
-
-                    return this.Created(this.Request.Path, results);
-                }
-
-                var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(playerInventory.ToJson(), username).ConfigureAwait(true);
-
-                async Task BackgroundProcessing(CancellationToken cancellationToken)
-                {
-                    // Throwing within the hosting environment background worker seems to have significant consequences.
-                    // Do not throw.
-                    try
-                    {
-                        await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(playerInventory.T10Id, playerInventory, requestingAgent).ConfigureAwait(true);
-                        var result = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(playerInventory.Xuid).ConfigureAwait(true);
-
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, result.ToJson()).ConfigureAwait(true);
+                        var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
+                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response.ToJson()).ConfigureAwait(true);
                     }
                     catch (Exception)
                     {
@@ -463,7 +404,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-                return this.Accepted();
+                return this.Ok();
             }
             catch (Exception ex)
             {
@@ -472,24 +413,29 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Get game settings.
+        ///     Get the master inventory list based on a game settings id.
         /// </summary>
         /// <param name="gameSettingsId">The game settings ID.</param>
         /// <returns>
-        ///     The <see cref="GameSettings"/>.
+        ///     The <see cref="GravityMasterInventory"/>.
         /// </returns>
-        [HttpGet("data/gameSettingsId({gameSettingsId})")]
-        [SwaggerResponse(200, type: typeof(GameSettings))]
+        [HttpGet("masterInventory/gameSettingsId({gameSettingsId})")]
+        [SwaggerResponse(200, type: typeof(GravityMasterInventory))]
         [SwaggerResponse(404, type: typeof(string))]
-        public async Task<IActionResult> GetGameSettings(string gameSettingsId)
+        public async Task<IActionResult> GetMasterInventoryList(string gameSettingsId)
         {
             try
             {
                 gameSettingsId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gameSettingsId));
 
-                var gameSettings = await this.gravitySettingsProvider.GetGameSettingAsync(new Guid(gameSettingsId)).ConfigureAwait(true);
+                if (!Guid.TryParse(gameSettingsId, out var gameSettingsIdGuid))
+                {
+                    this.BadRequest("Game settings ID provided is not a GUID.");
+                }
 
-                return this.Ok(gameSettings);
+                var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(gameSettingsIdGuid).ConfigureAwait(true);
+
+                return this.Ok(masterInventory);
             }
             catch (Exception ex)
             {
@@ -559,6 +505,58 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 throw;
             }
+        }
+
+        /// <summary>
+        ///     Verifies the gift inventory against the title master inventory list.
+        /// </summary>
+        /// <param name="gameSettingsId">The game settings Id.</param>
+        /// <param name="gift">The gravity gift.</param>
+        /// <returns>
+        ///     String of items that are invalid
+        /// </returns>
+        private async Task<string> VerifyGiftAgainstMasterInventory(Guid gameSettingsId, GravityMasterInventory gift)
+        {
+            var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(gameSettingsId).ConfigureAwait(true);
+            var error = string.Empty;
+
+            foreach (var reward in gift.CreditRewards)
+            {
+                var validItem = masterInventory.CreditRewards.Any(data => { return data.Id == reward.Id; });
+                error += validItem ? string.Empty : $"CreditRewards: {reward.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var car in gift.Cars)
+            {
+                var validItem = masterInventory.Cars.Any(data => { return data.Id == car.Id; });
+                error += validItem ? string.Empty : $"Car: {car.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var energyRefill in gift.EnergyRefills)
+            {
+                var validItem = masterInventory.EnergyRefills.Any(data => { return data.Id == energyRefill.Id; });
+                error += validItem ? string.Empty : $"EnergyRefills: {energyRefill.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var kit in gift.MasteryKits)
+            {
+                var validItem = masterInventory.MasteryKits.Any(data => { return data.Id == kit.Id; });
+                error += validItem ? string.Empty : $"MasteryKits: {kit.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var kit in gift.RepairKits)
+            {
+                var validItem = masterInventory.RepairKits.Any(data => { return data.Id == kit.Id; });
+                error += validItem ? string.Empty : $"RepairKits: {kit.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var kit in gift.UpgradeKits)
+            {
+                var validItem = masterInventory.UpgradeKits.Any(data => { return data.Id == kit.Id; });
+                error += validItem ? string.Empty : $"UpgradeKits: {kit.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            return error;
         }
     }
 }

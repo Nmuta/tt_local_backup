@@ -2,23 +2,22 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Apollo;
-using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 
 namespace Turn10.LiveOps.StewardApi.Validation
 {
     /// <summary>
-    ///     Validates a <see cref="ApolloGift"/> request.
+    ///     Validates a <see cref="GravityGift"/> request.
     /// </summary>
-    public sealed class ApolloGiftRequestValidator : RequestValidatorBase, IRequestValidator<ApolloGift>
+    public sealed class GravityGiftRequestValidator : RequestValidatorBase, IRequestValidator<GravityGift>
     {
-        private readonly IRequestValidator<ApolloMasterInventory> masterInventoryRequestValidator;
+        private readonly IRequestValidator<GravityMasterInventory> masterInventoryRequestValidator;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ApolloGiftRequestValidator"/> class.
+        ///     Initializes a new instance of the <see cref="GravityGiftRequestValidator"/> class.
         /// </summary>
         /// <param name="masterInventoryRequestValidator">The player inventory request validator.</param>
-        public ApolloGiftRequestValidator(IRequestValidator<ApolloMasterInventory> masterInventoryRequestValidator)
+        public GravityGiftRequestValidator(IRequestValidator<GravityMasterInventory> masterInventoryRequestValidator)
         {
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));
 
@@ -26,7 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Validation
         }
 
         /// <inheritdoc />
-        public void Validate(ApolloGift model, ModelStateDictionary modelState)
+        public void Validate(GravityGift model, ModelStateDictionary modelState)
         {
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
@@ -47,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Validation
         }
 
         /// <inheritdoc />
-        public void ValidateIds(ApolloGift model, ModelStateDictionary modelState)
+        public void ValidateIds(GravityGift model, ModelStateDictionary modelState)
         {
             throw new NotImplementedException();
         }

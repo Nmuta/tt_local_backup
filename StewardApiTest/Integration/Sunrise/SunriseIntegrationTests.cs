@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts;
@@ -1377,12 +1378,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
             try
             {
-                await stewardClient.GiftInventoryByLspGroupId(TestConstants.InvalidProfileId, gift).ConfigureAwait(false);
-                Assert.Fail();
+                var response = await stewardClient.GiftInventoryByLspGroupId(TestConstants.InvalidProfileId, gift).ConfigureAwait(false);
+                var error = response.Error as JObject;
+                Assert.AreEqual(error.GetValue("message"), "Exception of type 'Turn10.Services.ForzaClient.ForzaClientException' was thrown.");
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.Fail();
             }
         }
 
