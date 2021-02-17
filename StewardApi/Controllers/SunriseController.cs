@@ -17,10 +17,10 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation;
-using Turn10.Services.Authentication;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -436,7 +436,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="banInput">The ban parameter input.</param>
         /// <param name="useBackgroundProcessing">A value that indicates whether to use background processing.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
         ///     The list of <see cref="SunriseBanResult"/>.
         /// </returns>
@@ -445,9 +444,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(202)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<SunriseBanParametersInput> banInput,
-            [FromQuery] bool useBackgroundProcessing,
-            [FromHeader] string requestingAgent)
+            [FromQuery] bool useBackgroundProcessing)
         {
+            var user = this.User.UserModel();
+            var requestingAgent = user.EmailAddress ?? user.Id;
+
             async Task<List<SunriseBanResult>> BulkBanUsersAsync(List<SunriseBanParameters> groupedBanParameters)
             {
                 var tasks =
@@ -778,9 +779,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             try
             {
-                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-                    ? this.User.GetClaimValue(ClaimTypes.Email)
-                    : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+                var user = this.User.UserModel();
+                var requestingAgent = user.EmailAddress ?? user.Id;
 
                 groupGift.ShouldNotBeNull(nameof(groupGift));
                 groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
@@ -868,9 +868,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             try
             {
-                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-                    ? this.User.GetClaimValue(ClaimTypes.Email)
-                    : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+                var user = this.User.UserModel();
+                var requestingAgent = user.EmailAddress ?? user.Id;
 
                 gift.ShouldNotBeNull(nameof(gift));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));

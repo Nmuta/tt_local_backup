@@ -13,9 +13,9 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity.Settings;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
-using Turn10.LiveOps.StewardApi.Providers.Gravity.Settings;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.Authentication;
 
@@ -336,81 +336,73 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GiftResponse<string>))]
         public async Task<IActionResult> UpdatePlayerInventoryByT10Id(string t10Id, [FromBody] GravityGift gift, [FromQuery] bool useBackgroundProcessing = false)
         {
+            var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
+                ? this.User.GetClaimValue(ClaimTypes.Email)
+                : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+
+            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
+            gift.ShouldNotBeNull(nameof(gift));
+            gift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gift.GiftReason));
+            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+
+            this.giftRequestValidator.Validate(gift, this.ModelState);
+
+            if (!this.ModelState.IsValid)
+            {
+                var errorResponse = this.giftRequestValidator.GenerateErrorResponse(this.ModelState);
+                return this.BadRequest(errorResponse);
+            }
+
+            GravityPlayerDetails playerDetails;
             try
             {
-                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-                    ? this.User.GetClaimValue(ClaimTypes.Email)
-                    : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+                playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(t10Id).ConfigureAwait(true);
+            }
+            catch (Exception)
+            {
+                playerDetails = null;
+            }
 
-                t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
-                gift.ShouldNotBeNull(nameof(gift));
-                gift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gift.GiftReason));
-                gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            if (playerDetails == null)
+            {
+                return this.NotFound($"No player found for T10Id: {t10Id}");
+            }
 
-                this.giftRequestValidator.Validate(gift, this.ModelState);
-                this.giftRequestValidator.ValidateIds(gift, this.ModelState);
+            var playerGameSettingsId = playerDetails.LastGameSettingsUsed;
+            var invalidItems = await this.VerifyGiftAgainstMasterInventory(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
+            if (invalidItems.Length > 0)
+            {
+                return this.BadRequest($"Invalid items found. {invalidItems}");
+            }
 
-                if (!this.ModelState.IsValid)
-                {
-                    var errorResponse = this.giftRequestValidator.GenerateErrorResponse(this.ModelState);
-                    return this.BadRequest(errorResponse);
-                }
+            if (!useBackgroundProcessing)
+            {
+                var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
+                return this.Ok(response);
+            }
 
-                GravityPlayerDetails playerDetails;
+            var username = this.User.GetNameIdentifier();
+            var jobId = await this.AddJobIdToHeaderAsync(gift.ToJson(), username).ConfigureAwait(true);
+
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
+            {
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
                 try
                 {
-                    playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(t10Id).ConfigureAwait(true);
-            }
+                    var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response.ToJson()).ConfigureAwait(true);
+                }
                 catch (Exception)
                 {
-                    playerDetails = null;
+                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
-
-                if (playerDetails == null)
-                {
-                    return this.NotFound($"No player found for T10Id: {t10Id}");
-                }
-
-                var playerGameSettingsId = playerDetails.LastGameSettingsUsed;
-                var invalidItems = await this.VerifyGiftAgainstMasterInventory(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
-                if (invalidItems.Length > 0)
-                {
-                    return this.BadRequest($"Invalid items found. {invalidItems}");
-                }
-
-                if (!useBackgroundProcessing)
-                {
-                    var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
-                    return this.Ok(response);
-                }
-
-                var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(gift.ToJson(), username).ConfigureAwait(true);
-
-                async Task BackgroundProcessing(CancellationToken cancellationToken)
-                {
-                    // Throwing within the hosting environment background worker seems to have significant consequences.
-                    // Do not throw.
-                    try
-                    {
-                        var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response.ToJson()).ConfigureAwait(true);
-                    }
-                    catch (Exception)
-                    {
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
-                    }
-                }
-
-                this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-                return this.Ok();
             }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
+
+            return this.Ok();
         }
 
         /// <summary>

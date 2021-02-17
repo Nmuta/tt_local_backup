@@ -78,6 +78,13 @@ export class SunriseService {
     );
   }
 
+  /** Gets sunrise player details with a XUID. */
+  public getPlayerDetailsByXuid(xuid: BigInt): Observable<SunrisePlayerDetails> {
+    return this.apiService.getRequest<SunrisePlayerDetails>(
+      `${this.basePath}/player/xuid(${xuid})/details`,
+    );
+  }
+
   /** Gets user flags by a XUID. */
   public getFlagsByXuid(xuid: bigint): Observable<SunriseUserFlags> {
     return this.apiService.getRequest<SunriseUserFlags>(

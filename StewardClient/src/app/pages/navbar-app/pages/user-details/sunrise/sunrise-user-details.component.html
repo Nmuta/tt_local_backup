@@ -1,0 +1,46 @@
+<ng-container *ngIf="identity && !identity?.error; else noIdentity">
+  <h1>{{ identity.gamertag }} (xuid: {{ identity.xuid !== undefined ? identity.xuid : '?' }})</h1>
+  <section>
+    <mat-tab-group animationDuration="0ms">
+      <mat-tab label="User Details">
+        <div class="tab-container">
+          <sunrise-user-flags [xuid]="identity.xuid"></sunrise-user-flags>
+          <sunrise-ban-history [xuid]="identity.xuid"></sunrise-ban-history>
+          <sunrise-gamertags [xuid]="identity.xuid"></sunrise-gamertags>
+          <sunrise-consoles [xuid]="identity.xuid"></sunrise-consoles>
+        </div>
+      </mat-tab>
+      <mat-tab label="Deep Dive">
+        <div class="tab-container">
+          <sunrise-overview [xuid]="identity.xuid"></sunrise-overview>
+          <sunrise-credit-history [xuid]="identity.xuid"></sunrise-credit-history>
+        </div>
+      </mat-tab>
+      <mat-tab label="Inventory">
+        <div class="tab-container">
+          <sunrise-player-inventory [identity]="identity"></sunrise-player-inventory>
+        </div>
+      </mat-tab>
+      <mat-tab label="Notifications">
+        <div class="tab-container">
+          <sunrise-player-notifications [xuid]="identity.xuid"></sunrise-player-notifications>
+        </div>
+      </mat-tab>
+      <mat-tab label="JSON">
+        <div class="tab-container">
+          <json-dump [input]="identity">Identity</json-dump>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </section>
+</ng-container>
+
+<ng-template #noIdentity>
+  <h1>Finding {{ lookupName }} by {{ lookupType | humanize }}</h1>
+  <ng-container *ngIf="identity?.error">
+    <hr />
+    <h2>Request failed</h2>
+    <p>If this keeps happening, contact support.</p>
+    <json-dump [input]="identity?.error">View error</json-dump>
+  </ng-container>
+</ng-template>

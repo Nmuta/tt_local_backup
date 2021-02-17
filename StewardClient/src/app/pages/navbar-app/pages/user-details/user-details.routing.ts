@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ApolloUserDetailsComponent } from './apollo/apollo-user-details.component';
+import { GravityUserDetailsComponent } from './gravity/gravity-user-details.component';
+import { OpusUserDetailsComponent } from './opus/opus-user-details.component';
 
-import { SunriseComponent } from './sunrise/sunrise.component';
+import { SunriseUserDetailsComponent } from './sunrise/sunrise-user-details.component';
 import { UserDetailsComponent } from './user-details.component';
 
 const routes: Routes = [
@@ -16,7 +19,22 @@ const routes: Routes = [
       },
       {
         path: 'sunrise',
-        component: SunriseComponent,
+        component: SunriseUserDetailsComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'opus',
+        component: OpusUserDetailsComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'apollo',
+        component: ApolloUserDetailsComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'gravity',
+        component: GravityUserDetailsComponent,
         pathMatch: 'full',
       },
     ],

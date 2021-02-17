@@ -461,27 +461,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         public async Task UpdatePlayerInventoryByT10Id()
         {
             var gift = this.CreateGift();
-
             var resultBefore = await stewardClient.GetPlayerInventoryAsync(t10Id).ConfigureAwait(false);
             var beforeModifiedUtc = resultBefore.Cars.Where(car => car.ItemId == 200289).FirstOrDefault()?.ModifiedUtc;
 
             var result = await stewardClient.UpdatePlayerInventoryByT10IdAsync(t10Id, gift).ConfigureAwait(false);
-            var afterModifiedUtc = result.Cars.Where(car => car.ItemId == 200289).FirstOrDefault().ModifiedUtc;
-
-            Assert.IsNotNull(result);
-            Assert.AreNotEqual(beforeModifiedUtc, afterModifiedUtc);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task UpdatePlayerInventoryByT10Id_UseBackgroundProcessing()
-        {
-            var playerInventory = this.CreatePlayerInventory();
-
-            var resultBefore = await stewardClient.GetPlayerInventoryAsync(t10Id).ConfigureAwait(false);
-            var beforeModifiedUtc = resultBefore.Cars.Where(car => car.ItemId == 200289).FirstOrDefault()?.ModifiedUtc;
-
-            var result = await this.UpdatePlayerInventoryByT10IdWithHeaderResponseAsync(stewardClient, playerInventory, BackgroundJobStatus.Completed).ConfigureAwait(false);
             var afterModifiedUtc = result.Cars.Where(car => car.ItemId == 200289).FirstOrDefault().ModifiedUtc;
 
             Assert.IsNotNull(result);
@@ -595,80 +578,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             var result = await stewardClient.GetGiftHistoriesAsync(TestConstants.InvalidT10Id).ConfigureAwait(false);
 
             Assert.IsFalse(result.Any());
-        }
-
-        private async Task<GravityPlayerInventory> UpdatePlayerInventoryByXuidWithHeaderResponseAsync(GravityStewardTestingClient stewardClient, GravityPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
-        {
-            var headersToValidate = new List<string> { "jobId" };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest");
-
-            var response = await stewardClient.UpdatePlayerInventoryByXuidWithHeaderResponseAsync(playerInventory, headersToValidate, headersToSend).ConfigureAwait(false);
-
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-
-            bool jobCompleted;
-            BackgroundJobStatus status;
-            GravityPlayerInventory jobResult;
-
-            do
-            {
-                var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"])
-                    .ConfigureAwait(false);
-
-                Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out status);
-
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
-
-                jobResult = backgroundJob.Result?.FromJson<GravityPlayerInventory>();
-
-                if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
-                {
-                    break;
-                }
-            }
-            while (!jobCompleted);
-
-            Assert.AreEqual(expectedStatus, status);
-
-            return jobResult;
-        }
-
-        private async Task<GravityPlayerInventory> UpdatePlayerInventoryByT10IdWithHeaderResponseAsync(GravityStewardTestingClient stewardClient, GravityPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
-        {
-            var headersToValidate = new List<string> { "jobId" };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest");
-
-            var response = await stewardClient.UpdatePlayerInventoryByT10IdWithHeaderResponseAsync(playerInventory, headersToValidate, headersToSend).ConfigureAwait(false);
-
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-
-            bool jobCompleted;
-            BackgroundJobStatus status;
-            GravityPlayerInventory jobResult;
-
-            do
-            {
-                var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"])
-                    .ConfigureAwait(false);
-
-                Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out status);
-
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
-
-                jobResult = backgroundJob.Result?.FromJson<GravityPlayerInventory>();
-
-                if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
-                {
-                    break;
-                }
-            }
-            while (!jobCompleted);
-
-            Assert.AreEqual(expectedStatus, status);
-
-            return jobResult;
         }
 
         private Dictionary<string, string> GenerateHeadersToSend(string requestingAgent)
