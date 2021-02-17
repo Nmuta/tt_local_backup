@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Forza.WebServices.FMG.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
@@ -461,15 +462,27 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         [TestCategory("Integration")]
         public async Task UpdatePlayerInventoryByT10Id()
         {
-            var gift = this.CreateGift();
-            var resultBefore = await stewardClient.GetPlayerInventoryAsync(t10Id).ConfigureAwait(false);
-            var beforeModifiedUtc = resultBefore.Cars.Where(car => car.ItemId == 200289).FirstOrDefault()?.ModifiedUtc;
+            var gift = new GravityGift();
+            gift.GiftReason = "Integration Test";
+            gift.Inventory = new GravityMasterInventory();
+            gift.Inventory.CreditRewards = new List<MasterInventoryItem>();
+            gift.Inventory.Cars = new List<MasterInventoryItem>();
+            gift.Inventory.EnergyRefills = new List<MasterInventoryItem>();
+            gift.Inventory.RepairKits = new List<MasterInventoryItem>();
+            gift.Inventory.MasteryKits = new List<MasterInventoryItem>();
+            gift.Inventory.UpgradeKits = new List<MasterInventoryItem>();
 
-            var result = await stewardClient.UpdatePlayerInventoryByT10IdAsync(t10Id, gift).ConfigureAwait(false);
-            var afterModifiedUtc = result.Cars.Where(car => car.ItemId == 200289).FirstOrDefault().ModifiedUtc;
+            gift.Inventory.CreditRewards.Add(new MasterInventoryItem()
+            {
+                Id = 0,
+                Description = "Credits",
+                Quantity = 1
+            });
 
-            Assert.IsNotNull(result);
-            Assert.AreNotEqual(beforeModifiedUtc, afterModifiedUtc);
+            var response = await stewardClient.UpdatePlayerInventoryByT10IdAsync(t10Id, gift).ConfigureAwait(false);
+
+            Assert.IsNotNull(response);
+            Assert.IsNull(response.Error);
         }
 
         [TestMethod]
@@ -672,7 +685,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             {
                 Cars = new[]
                 {
-                    new GravityCar
+                    new StewardApi.Contracts.Gravity.GravityCar
                     {
                     Vin = new Guid("ffb44784-6af6-4bc6-9ff2-d21b91e5c657"),
                     PurchaseUtc = new DateTime(2019, 08, 01, 12, 10, 10),

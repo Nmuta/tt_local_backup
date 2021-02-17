@@ -77,11 +77,12 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.PreviousGameSettingsId, opt => opt.MapFrom(src => src.PreviousGameSettingsGuid))
                 .ReverseMap();
             this.CreateMap<PlayerInventory, GravityPlayerInventory>();
-            this.CreateMap<GravityPlayerInventory, GravityGift>();
             this.CreateMap<LiveOpsUserDetails, IdentityResultBeta>()
                 .ForMember(des => des.T10Id, opt => opt.MapFrom(src => src.Turn10Id))
                 .ReverseMap();
 
+            this.CreateMap<GravityInventoryItem, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.ItemId));
             this.CreateMap<Currency, MasterInventoryItem>()
                  .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => source.Name));
             this.CreateMap<GravityCar, MasterInventoryItem>()
@@ -107,6 +108,19 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.MasteryKits, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.gameSettings.MiscGiftItemGameSettings.MasteryKits)))
                 .ForMember(dest => dest.RepairKits, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.gameSettings.MiscGiftItemGameSettings.RepairKits)))
                 .ForMember(dest => dest.UpgradeKits, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.gameSettings.MiscGiftItemGameSettings.UpgradeKits)))
+                .ReverseMap();
+
+            this.CreateMap<GravityPlayerInventory, GravityGift>()
+                .ForMember(dest => dest.GiftReason, opt => opt.MapFrom(source => string.Empty))
+                .ForMember(dest => dest.Inventory, opt => opt.MapFrom((source, destObj, destMem, context) => new GravityMasterInventory()
+                {
+                    CreditRewards = context.Mapper.Map<IList<MasterInventoryItem>>(source.Currencies),
+                    Cars = context.Mapper.Map<IList<MasterInventoryItem>>(source.Cars),
+                    UpgradeKits = context.Mapper.Map<IList<MasterInventoryItem>>(source.UpgradeKits),
+                    MasteryKits = context.Mapper.Map<IList<MasterInventoryItem>>(source.MasteryKits),
+                    EnergyRefills = context.Mapper.Map<IList<MasterInventoryItem>>(source.EnergyRefills),
+                    RepairKits = context.Mapper.Map<IList<MasterInventoryItem>>(source.RepairKits),
+                }))
                 .ReverseMap();
         }
     }
