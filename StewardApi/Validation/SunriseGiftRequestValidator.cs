@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -47,8 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Validation
         /// <inheritdoc />
         public void ValidateIds(SunriseGift model, ModelStateDictionary modelState)
         {
-            model.ShouldNotBeNull(nameof(model));
-            modelState.ShouldNotBeNull(nameof(modelState));
+            throw new NotImplementedException();
         }
     }
 }

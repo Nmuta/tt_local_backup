@@ -755,7 +755,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
                 this.giftRequestValidator.Validate(gift, this.ModelState);
-                this.giftRequestValidator.ValidateIds(gift, this.ModelState);
 
                 if (!this.ModelState.IsValid)
                 {
