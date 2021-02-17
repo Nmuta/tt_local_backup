@@ -1,6 +1,6 @@
 <mat-card>
   <h2>{{ title }} Gift Basket</h2>
-  <p *ngIf="hasGameSettings">(Game Settings Id: {{ !!selectedGameSettingsId || 'None' }})</p>
+  <p *ngIf="hasGameSettings">(Game Settings: {{ selectedGameSettingsId || 'None' }})</p>
 
   <ng-container *ngIf="!isLoading && !loadError; else failState">
     <!-- Gravity is unique, master inventory is based on player inventory game settings -->
