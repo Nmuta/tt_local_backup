@@ -110,9 +110,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                             throw new InvalidOperationException("Not a GravityPlayerInventory model");
                         }
                     }
-#pragma warning disable CS0168 // Variable is declared but never used
-                    catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
+                    catch
                     {
                         var playerInventory = history.GiftInventory.FromJson<PlayerInventory>();
                         var gravityPlayerInventory = this.mapper.Map<GravityPlayerInventory>(playerInventory);
