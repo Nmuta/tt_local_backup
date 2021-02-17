@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -58,6 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IRequestValidator<SunriseGift> giftRequestValidator;
         private readonly IRequestValidator<SunriseGroupGift> groupGiftRequestValidator;
         private readonly IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator;
+        private readonly IRequestValidator<SunriseUserFlagsInput> userFlagsRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseController"/> class.
@@ -76,6 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="giftRequestValidator">The gift request validator.</param>
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
         /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
+        /// <param name="userFlagsRequestValidator">The user flags request validator.</param>
         public SunriseController(
             IKustoProvider kustoProvider,
             ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider,
@@ -90,7 +91,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<SunriseMasterInventory> masterInventoryRequestValidator,
             IRequestValidator<SunriseGift> giftRequestValidator,
             IRequestValidator<SunriseGroupGift> groupGiftRequestValidator,
-            IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator)
+            IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator,
+            IRequestValidator<SunriseUserFlagsInput> userFlagsRequestValidator)
         {
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             sunrisePlayerDetailsProvider.ShouldNotBeNull(nameof(sunrisePlayerDetailsProvider));
@@ -106,6 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
+            userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.kustoProvider = kustoProvider;
@@ -120,6 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.giftRequestValidator = giftRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
             this.banParametersRequestValidator = banParametersRequestValidator;
+            this.userFlagsRequestValidator = userFlagsRequestValidator;
         }
 
         /// <summary>
@@ -347,18 +351,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </returns>
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
-        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] SunriseUserFlags userFlags)
+        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] SunriseUserFlagsInput userFlags)
         {
             try
             {
                 userFlags.ShouldNotBeNull(nameof(userFlags));
+
+                this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
+                if (!this.ModelState.IsValid)
+                {
+                    var result = this.userFlagsRequestValidator.GenerateErrorResponse(this.ModelState);
+                    return this.BadRequest(result);
+                }
 
                 if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
                 {
                     return this.NotFound($"No profile found for XUID: {xuid}.");
                 }
 
-                await this.sunrisePlayerDetailsProvider.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(true);
+                var validatedFlags = this.mapper.Map<SunriseUserFlags>(userFlags);
+                await this.sunrisePlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags).ConfigureAwait(true);
 
                 var results = await this.sunrisePlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
 
@@ -784,6 +796,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 groupGift.ShouldNotBeNull(nameof(groupGift));
                 groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
+                groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
                 var stringBuilder = new StringBuilder();

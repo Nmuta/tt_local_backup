@@ -57,6 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IRequestValidator<ApolloBanParametersInput> banParametersRequestValidator;
         private readonly IRequestValidator<ApolloGift> giftRequestValidator;
         private readonly IRequestValidator<ApolloGroupGift> groupGiftRequestValidator;
+        private readonly IRequestValidator<ApolloUserFlagsInput> userFlagsRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloController"/> class.
@@ -74,6 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
         /// <param name="giftRequestValidator">The gift request validator.</param>
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
+        /// <param name="userFlagsRequestValidator">The user flags request validator.</param>
         public ApolloController(
             IKustoProvider kustoProvider,
             IApolloPlayerDetailsProvider apolloPlayerDetailsProvider,
@@ -87,7 +89,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IMapper mapper,
             IRequestValidator<ApolloBanParametersInput> banParametersRequestValidator,
             IRequestValidator<ApolloGift> giftRequestValidator,
-            IRequestValidator<ApolloGroupGift> groupGiftRequestValidator)
+            IRequestValidator<ApolloGroupGift> groupGiftRequestValidator,
+            IRequestValidator<ApolloUserFlagsInput> userFlagsRequestValidator)
         {
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             apolloPlayerDetailsProvider.ShouldNotBeNull(nameof(apolloPlayerDetailsProvider));
@@ -102,6 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
+            userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.kustoProvider = kustoProvider;
@@ -115,6 +119,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.banParametersRequestValidator = banParametersRequestValidator;
             this.giftRequestValidator = giftRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
+            this.userFlagsRequestValidator = userFlagsRequestValidator;
         }
 
         /// <summary>
@@ -536,18 +541,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </returns>
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(ApolloUserFlags))]
-        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] ApolloUserFlags userFlags)
+        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] ApolloUserFlagsInput userFlags)
         {
             try
             {
                 userFlags.ShouldNotBeNull(nameof(userFlags));
+
+                this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
+                if (!this.ModelState.IsValid)
+                {
+                    var result = this.userFlagsRequestValidator.GenerateErrorResponse(this.ModelState);
+                    return this.BadRequest(result);
+                }
 
                 if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
                 {
                     return this.NotFound($"No profile found for XUID: {xuid}.");
                 }
 
-                await this.apolloPlayerDetailsProvider.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(true);
+                var validatedFlags = this.mapper.Map<ApolloUserFlags>(userFlags);
+                await this.apolloPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags).ConfigureAwait(true);
 
                 var results = await this.apolloPlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
 
@@ -662,6 +675,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
 
                 groupGift.ShouldNotBeNull(nameof(groupGift));
+                groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
                 groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 

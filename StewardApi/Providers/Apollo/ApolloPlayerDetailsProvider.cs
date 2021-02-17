@@ -54,11 +54,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             var result = new ApolloPlayerDetails();
 
-            if (query.Xuid == default && string.IsNullOrWhiteSpace(query.Gamertag))
+            if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag))
             {
                 throw new ArgumentException("Gamertag or Xuid must be provided.");
             }
-            else if (query.Xuid != null)
+            else if (query.Xuid.HasValue)
             {
                 var playerDetails = await this.GetPlayerDetailsAsync(query.Xuid.Value).ConfigureAwait(false);
 

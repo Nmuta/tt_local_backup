@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <summary>
         ///     Gets or sets the xuid.
         /// </summary>
-        public ulong Xuid { get; set; }
+        public ulong? Xuid { get; set; }
 
         /// <summary>
         ///     Gets or sets the gamertag.
@@ -41,21 +41,21 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <summary>
         ///     Gets or sets a value indicating whether to ban all consoles.
         /// </summary>
-        public bool BanAllConsoles { get; set; }
+        public bool? BanAllConsoles { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether to ban all PCs.
         /// </summary>
-        public bool BanAllPcs { get; set; }
+        public bool? BanAllPcs { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether to delete leaderboard entries.
         /// </summary>
-        public bool DeleteLeaderboardEntries { get; set; }
+        public bool? DeleteLeaderboardEntries { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether to send reason notification.
         /// </summary>
-        public bool SendReasonNotification { get; set; }
+        public bool? SendReasonNotification { get; set; }
     }
 }

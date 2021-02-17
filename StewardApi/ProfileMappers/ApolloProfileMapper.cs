@@ -77,6 +77,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     VanityItems = context.Mapper.Map<IList<MasterInventoryItem>>(source.VanityItems),
                 }))
                 .ReverseMap();
+            this.CreateMap<ApolloUserFlagsInput, ApolloUserFlags>().ReverseMap();
         }
     }
 }

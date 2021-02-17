@@ -214,6 +214,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenUserFlagsRequestValidatorNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { UserFlagsRequestValidator = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "userFlagsRequestValidator"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -586,7 +600,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var userFlags = Fixture.Create<ApolloUserFlags>();
+            var userFlags = Fixture.Create<ApolloUserFlagsInput>();
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.SetUserFlags(xuid, userFlags).ConfigureAwait(false);
@@ -992,6 +1006,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
             public IRequestValidator<ApolloGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloGroupGift>>();
 
+            public IRequestValidator<ApolloUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloUserFlagsInput>>();
+
             public ApolloController Build() => new ApolloController(
                 this.KustoProvider,
                 this.ApolloPlayerDetailsProvider,
@@ -1005,7 +1021,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.Mapper,
                 this.BanParametersRequestValidator,
                 this.GiftRequestValidator,
-                this.GroupGiftRequestValidator)
+                this.GroupGiftRequestValidator,
+                this.UserFlagsRequestValidator)
             { ControllerContext = this.ControllerContext };
         }
     }

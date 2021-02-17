@@ -26,7 +26,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         private static int profileId;
         private static int lspGroupId;
         private static string lspGiftingPassword;
-        private static SunriseUserFlags userFlags;
         private static KeyVaultProvider KeyVaultProvider;
         private static SunriseStewardTestingClient stewardClient;
         private static SunriseStewardTestingClient unauthorizedClient;
@@ -65,16 +64,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             profileId = 18785266;
             consoleId = 18230637609444823812;
             lspGroupId = 88;
-
-            userFlags = new SunriseUserFlags
-            {
-                IsVip = true,
-                IsUltimateVip = true,
-                IsTurn10Employee = false,
-                IsCommunityManager = false,
-                IsUnderReview = false,
-                IsEarlyAccess = false
-            };
 
             stewardClient = new SunriseStewardTestingClient(new Uri(endpoint), authKey);
             unauthorizedClient = new SunriseStewardTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
@@ -387,6 +376,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags()
         {
+            var userFlags = CreateUserFlags();
             var result = await stewardClient.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
@@ -396,6 +386,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags_InvalidXuid()
         {
+            var userFlags = CreateUserFlags();
+
             try
             {
                 await stewardClient.SetUserFlagsAsync(TestConstants.InvalidXuid, userFlags).ConfigureAwait(false);
@@ -411,6 +403,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags_Unauthorized()
         {
+            var userFlags = CreateUserFlags();
+
             try
             {
                 await unauthorizedClient.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(false);
@@ -419,6 +413,24 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             catch (ServiceException e)
             {
                 Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SetUserFlags_InvalidFlags()
+        {
+            var userFlags = CreateUserFlags();
+            userFlags.IsCommunityManager = null;
+
+            try
+            {
+                await stewardClient.SetUserFlagsAsync(TestConstants.InvalidXuid, userFlags).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
 
@@ -695,6 +707,24 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var banParameters = GenerateBanParameters();
             banParameters[0].Duration= TimeSpan.FromMinutes(-10);
             banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-10);
+
+            try
+            {
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task BanPlayers_BanAllConsolesUndefined()
+        {
+            var banParameters = this.GenerateBanParameters();
+            banParameters[0].BanAllConsoles = null;
 
             try
             {
@@ -1699,6 +1729,19 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             {
                 GiftReason = "Integration Test",
                 Inventory = this.CreateGiftInventory()
+            };
+        }
+
+        private SunriseUserFlagsInput CreateUserFlags()
+        {
+            return new SunriseUserFlagsInput
+            {
+                IsVip = true,
+                IsUltimateVip = true,
+                IsTurn10Employee = false,
+                IsCommunityManager = false,
+                IsUnderReview = false,
+                IsEarlyAccess = false
             };
         }
     }

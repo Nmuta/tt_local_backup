@@ -123,7 +123,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<ApolloUserFlags>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<ApolloUserFlags> SetUserFlagsAsync(ulong xuid, ApolloUserFlags userFlags)
+        public async Task<ApolloUserFlags> SetUserFlagsAsync(ulong xuid, ApolloUserFlagsInput userFlags)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
 

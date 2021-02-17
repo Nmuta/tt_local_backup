@@ -228,6 +228,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenUserFlagsRequestValidatorNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { UserFlagsRequestValidator = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "userFlagsRequestValidator"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -458,7 +472,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var userFlags = Fixture.Create<SunriseUserFlags>();
+            var userFlags = Fixture.Create<SunriseUserFlagsInput>();
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.SetUserFlags(xuid, userFlags).ConfigureAwait(false);
@@ -1174,6 +1188,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public IRequestValidator<SunriseBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseBanParametersInput>>();
 
+            public IRequestValidator<SunriseUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseUserFlagsInput>>();
+
             public SunriseController Build() => new SunriseController(
                 this.KustoProvider,
                 this.SunrisePlayerDetailsProvider,
@@ -1188,7 +1204,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.MasterInventoryRequestValidator,
                 this.GiftRequestValidator,
                 this.GroupGiftRequestValidator,
-                this.BanParametersRequestValidator)
+                this.BanParametersRequestValidator,
+                this.UserFlagsRequestValidator)
             { ControllerContext = this.ControllerContext };
         }
     }

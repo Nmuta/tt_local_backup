@@ -75,7 +75,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<SunriseUserFlags>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<SunriseUserFlags> SetUserFlagsAsync(ulong xuid, SunriseUserFlags userFlags)
+        public async Task<SunriseUserFlags> SetUserFlagsAsync(ulong xuid, SunriseUserFlagsInput userFlags)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
 
