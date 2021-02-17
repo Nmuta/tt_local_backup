@@ -31,6 +31,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.T10Id, opt => opt.MapFrom(src => src.Turn10Id))
                 .ReverseMap();
             this.CreateMap<LiveOpsCar, Contracts.Gravity.GravityCar>()
+                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => 1))
                 .ForMember(des => des.PurchaseUtc, opt => opt.MapFrom(src => src.PurchaseTimestamp))
                 .ForMember(des => des.AcquisitionUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
                 .ForMember(des => des.ModifiedUtc, opt => opt.MapFrom(src => src.ModifiedTime))

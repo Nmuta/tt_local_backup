@@ -102,7 +102,7 @@ export abstract class PlayerInventoryBaseComponent<
     title: string,
   ): PropertyToExpandoData<PlayerInventoryType> {
     const count = ((this.inventory[property] as unknown) as InventoryItemType[]).reduce(
-      (accumulator, entry) => accumulator + (entry.quantity ?? BigInt(1)),
+      (accumulator, entry) => accumulator + entry.quantity,
       BigInt(0),
     );
     return {

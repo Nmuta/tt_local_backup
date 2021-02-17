@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
     /// <summary>
     ///     Represents a Gravity inventory item.
     /// </summary>
-    public class GravityInventoryItem
+    public class GravityInventoryItem : IInventoryItem
     {
         /// <summary>
         ///     Gets or sets the item ID.

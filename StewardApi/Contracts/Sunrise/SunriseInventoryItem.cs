@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
     /// <summary>
     ///     Represents a Sunrise inventory item.
     /// </summary>
-    public class SunriseInventoryItem
+    public class SunriseInventoryItem : IInventoryItem
     {
         /// <summary>
         ///     Gets or sets the item ID.
