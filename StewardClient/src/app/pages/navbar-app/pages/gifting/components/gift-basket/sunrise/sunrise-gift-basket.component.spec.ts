@@ -90,14 +90,16 @@ describe('SunriseGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'creditRewards',
           edit: false,
+          error: undefined
         },
-        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'cars', edit: false },
+        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'cars', edit: false, error: undefined },
         {
           id: BigInt(789),
           description: 'fake-item-3',
           quantity: 0,
           itemType: 'vanityItems',
           edit: false,
+          error: undefined
         },
         {
           id: BigInt(123),
@@ -105,6 +107,7 @@ describe('SunriseGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'carHorns',
           edit: false,
+          error: undefined
         },
         {
           id: BigInt(456),
@@ -112,6 +115,7 @@ describe('SunriseGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'quickChatLines',
           edit: false,
+          error: undefined
         },
         {
           id: BigInt(789),
@@ -119,6 +123,7 @@ describe('SunriseGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'emotes',
           edit: false,
+          error: undefined
         },
       ];
     });

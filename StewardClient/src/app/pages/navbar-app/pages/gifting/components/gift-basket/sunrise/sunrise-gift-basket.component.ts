@@ -62,6 +62,7 @@ export class SunriseGiftBasketComponent
       takeUntil(this.onDestroy$),
       tap(basket => {
         this.giftBasket.data = basket;
+        this.giftBasketErrors = basket.some(item => !!item.error && item.error != '');
       })
     ).subscribe();
   }
@@ -111,6 +112,35 @@ export class SunriseGiftBasketComponent
 
   /** Sets the state gift basket. */
   public setStateGiftBasket(giftBasket: GiftBasketModel[]): void {
+    giftBasket = this.setGiftBasketItemErrors(giftBasket);
     this.store.dispatch(new SetSunriseGiftBasket(giftBasket));
+  }
+
+  /** Verifies gift basket and sets item.error if one is found. */
+  private setGiftBasketItemErrors(giftBasket: GiftBasketModel[]): GiftBasketModel[] {
+    // Check item ids & types to verify item is real
+    for(let i = 0; i < giftBasket.length; i++) {
+      const item = giftBasket[i];
+      const itemExists = this.masterInventory[item.itemType]?.some((masterItem: MasterInventoryItem) => masterItem.id === item.id && (masterItem.id >= BigInt(0) || (masterItem.id < BigInt(0) && masterItem.description === item.description)));
+      giftBasket[i].error = !itemExists ? 'Item is not a valid gift.' : undefined
+    }
+
+    // Verify credit reward limits
+    const creditsAboveLimit = giftBasket.findIndex(item => item.id < 0 && item.description.toLowerCase() === 'credits' && item.quantity > 500_000_000);
+    if(creditsAboveLimit >= 0) {
+      giftBasket[creditsAboveLimit].error = 'Credit limit for a gift is 500,000,000.';
+    }
+
+    const wheelSpinsAboveLimit = giftBasket.findIndex(item => item.id < 0 && item.description.toLowerCase() === 'wheelspins' && item.quantity > 200);
+    if(wheelSpinsAboveLimit >= 0) {
+      giftBasket[wheelSpinsAboveLimit].error = 'Wheel Spin limit for a gift is 200.';
+    }
+
+    const superWheelSpinsAboveLimit = giftBasket.findIndex(item => item.id < 0 && item.description.toLowerCase() === 'superwheelspins' && item.quantity > 200);
+    if(superWheelSpinsAboveLimit >= 0) {
+      giftBasket[superWheelSpinsAboveLimit].error = 'Super Wheel Spin limit for a gift is 200.';
+    }
+
+    return giftBasket;
   }
 }

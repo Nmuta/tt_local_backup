@@ -16,7 +16,7 @@ import {
   IdentityResultBetaBatch,
 } from '@models/identity-query.model';
 import { ApiService } from '@services/api';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 /** Defines the gravity service. */
@@ -112,6 +112,7 @@ export class GravityService {
     gift: GravityGift,
   ): Observable<BackgroundJob<void>> {
     const params = new HttpParams().set('useBackgroundProcessing', 'true');
+    return throwError('testing');
     return this.apiService.postRequest<BackgroundJob<void>>(
       `${this.basePath}/gifting/t10Id(${t10Id})`,
       gift,

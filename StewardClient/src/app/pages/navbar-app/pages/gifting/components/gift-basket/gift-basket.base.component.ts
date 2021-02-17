@@ -36,10 +36,12 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   public masterInventory: MasterInventoryUnion;
   /** The gift basket of current items to be send. */
   public giftBasket = new MatTableDataSource<GiftBasketModel>();
+  /** The gift basket of current items to be send. */
+  public giftBasketErrors: boolean = false;
   /** Gifting response. */
   public giftResponse: GiftResponses<bigint | string>;
   /** The gift basket display columns */
-  public displayedColumns: string[] = ['itemId', 'description', 'itemType', 'quantity', 'remove'];
+  public displayedColumns: string[] = ['itemId', 'description', 'quantity', 'itemType', 'remove'];
   /** Gift reasons */
   public giftReasons: string[] = [
     'Lost Save',
@@ -109,9 +111,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
       tmpGiftBasket[existingItemIndex].quantity = tmpGiftBasket[existingItemIndex].quantity + item.quantity;
     } else {
       tmpGiftBasket.push(item);
-      tmpGiftBasket.sort((a: GiftBasketModel, b: GiftBasketModel) => {
-        return a.itemType.localeCompare(b.itemType) || a.description.localeCompare(b.description);
-      });
     }
 
     this.setStateGiftBasket(tmpGiftBasket);
@@ -140,12 +139,11 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   }
 
   /** Returns whether the gift basket is okay to send to the API. */
-  public isGiftBasketReady(): boolean {
-    // TODO: When we introduce item errors, add the errors check here
-    // Examples: quantity too high for specific item, game settings changed with existing items in basket that are no longer valid
+  public isGiftBasketReady(): boolean {    
     return (
       this.sendGiftForm.valid &&
       this.giftBasket?.data?.length > 0 &&
+      !this.giftBasketErrors &&
       ((this.usingPlayerIdentities && this.playerIdentities?.length > 0) ||
         (!this.usingPlayerIdentities && !!this.lspGroup))
     );
@@ -220,11 +218,11 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     this.giftResponse = undefined;
     this.loadError = undefined;
     this.isLoading = false;
-    this.selectedGameSettingsId = undefined;
 
     if (clearItemsInBasket) {
       this.sendGiftForm.reset();
       this.setStateGiftBasket([]);
+      this.giftBasketErrors = false;
     }
   }
 

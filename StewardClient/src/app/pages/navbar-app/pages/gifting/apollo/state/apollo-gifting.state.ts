@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { GiftBasketModel } from '@models/master-inventory-item';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { clone } from 'lodash';
 import { Observable, of } from 'rxjs';
 import {
   SetApolloGiftingSelectedPlayerIdentities,
@@ -53,7 +54,14 @@ export class ApolloGiftingState {
     ctx: StateContext<ApolloGiftingStateModel>,
     action: SetApolloGiftBasket,
   ): Observable<ApolloGiftingStateModel> {
-    return of(ctx.patchState({ giftBasket: action.giftBasket }));
+
+    const giftBasket = action.giftBasket
+      .sort((a, b) => {
+        return a.itemType.localeCompare(b.itemType) || a.description.localeCompare(b.description);
+      })
+      .sort((a, b) => a.error === b.error ? 0 : a.error ? -1 : 1);
+
+    return of(ctx.patchState({ giftBasket: clone(giftBasket) }));
   }
 
   /** Selector for state selected player identities. */

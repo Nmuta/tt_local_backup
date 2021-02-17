@@ -151,14 +151,16 @@ describe('GravityGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'creditRewards',
           edit: false,
+          error: undefined
         },
-        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'cars', edit: false },
+        { id: BigInt(456), description: 'fake-item-2', quantity: 0, itemType: 'cars', edit: false, error: undefined },
         {
           id: BigInt(789),
           description: 'fake-item-3',
           quantity: 0,
           itemType: 'repairKits',
           edit: false,
+          error: undefined
         },
         {
           id: BigInt(123),
@@ -166,6 +168,7 @@ describe('GravityGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'masteryKits',
           edit: false,
+          error: undefined
         },
         {
           id: BigInt(456),
@@ -173,6 +176,7 @@ describe('GravityGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'upgradeKits',
           edit: false,
+          error: undefined
         },
         {
           id: BigInt(789),
@@ -180,6 +184,7 @@ describe('GravityGiftBasketComponent', () => {
           quantity: 0,
           itemType: 'energyRefills',
           edit: false,
+          error: undefined
         },
       ];
     });

@@ -14,7 +14,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { GetApolloMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { Observable } from 'rxjs';
-import { take, takeUntil, tap } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
 /** Apollo gift basket. */
@@ -58,9 +58,9 @@ export class ApolloGiftBasketComponent
 
     this.giftBasket$.pipe(
       takeUntil(this.onDestroy$),
-      take(1),
       tap(basket => {
         this.giftBasket.data = basket;
+        this.giftBasketErrors = basket.some(item => !!item.error && item.error != '');
       })
     ).subscribe();
   }
@@ -101,13 +101,25 @@ export class ApolloGiftBasketComponent
 
   /** Sets the state gift basket. */
   public setStateGiftBasket(giftBasket: GiftBasketModel[]): void {
-    this.store.dispatch(new SetApolloGiftBasket(giftBasket)).pipe(
-      takeUntil(this.onDestroy$),
-      take(1),
-      tap(() => {
-        const giftBasket = this.store.selectSnapshot(ApolloGiftingState.giftBasket);
-        this.giftBasket.data = giftBasket;
-      })
-    ).subscribe();
+    giftBasket = this.setGiftBasketItemErrors(giftBasket);
+    this.store.dispatch(new SetApolloGiftBasket(giftBasket));
+  }
+
+  /** Verifies gift basket and sets item.error if one is found. */
+  private setGiftBasketItemErrors(giftBasket: GiftBasketModel[]): GiftBasketModel[] {
+    // Check item ids & types to verify item is real
+    for(let i = 0; i < giftBasket.length; i++) {
+      const item = giftBasket[i];
+      const itemExists = this.masterInventory[item.itemType]?.some((masterItem: MasterInventoryItem) => masterItem.id === item.id && (masterItem.id >= BigInt(0) || (masterItem.id < BigInt(0) && masterItem.description === item.description)));
+      giftBasket[i].error = !itemExists ? 'Item is not a valid gift.' : undefined
+    }
+
+    // Verify credit reward limits
+    const creditsAboveLimit = giftBasket.findIndex(item => item.id < 0 && item.description.toLowerCase() === 'credits' && item.quantity > 500_000_000);
+    if(creditsAboveLimit >= 0) {
+      giftBasket[creditsAboveLimit].error = 'Credit limit for a gift is 500,000,000.';
+    }
+
+    return giftBasket;
   }
 }

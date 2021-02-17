@@ -54,7 +54,13 @@ export class SunriseGiftingState {
     ctx: StateContext<SunriseGiftingStateModel>,
     action: SetSunriseGiftBasket,
   ): Observable<SunriseGiftingStateModel> {
-    return of(ctx.patchState({ giftBasket: clone(action.giftBasket) }));
+    const giftBasket = action.giftBasket
+      .sort((a, b) => {
+        return a.itemType.localeCompare(b.itemType) || a.description.localeCompare(b.description);
+      })
+      .sort((a, b) => a.error === b.error ? 0 : a.error ? -1 : 1);
+      
+    return of(ctx.patchState({ giftBasket: clone(giftBasket) }));
   }
   
 

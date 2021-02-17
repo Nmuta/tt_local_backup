@@ -15,7 +15,7 @@ import { GravityService } from '@services/gravity';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { NEVER, Observable, Subject, throwError } from 'rxjs';
-import { catchError, filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent } from '../gift-basket.base.component';
 
 /** Gravity gift basket. */
@@ -58,6 +58,7 @@ export class GravityGiftBasketComponent
         this.isLoading = false;
         this.loadError = undefined;
         this.selectedGameSettingsId = undefined;
+        this.masterInventory = undefined;
       }),
       filter(t10Id => !!t10Id && t10Id !== ''),
       switchMap(t10Id => {
@@ -90,18 +91,17 @@ export class GravityGiftBasketComponent
         );
         this.masterInventory = gravityMasterInventory[this.selectedGameSettingsId];
 
-        // TODO: When a valid game settings updates the masterInventory, we need to verify the existing contents of a gift basket
-        // in relation to the new master inventory (show item errors & disallow gift send while there are errors)
-
-        // TODO:When no/ bad game settings, we need to show show errors for all items in the gift basket and disallow gift send
+        // With a potentially new game gettings, we need to verify the gift basket contents against the
+        // master inventory and set errors.
+        this.setStateGiftBasket(this.giftBasket.data || []);
       })
     ).subscribe();
 
     this.giftBasket$.pipe(
       takeUntil(this.onDestroy$),
-      take(1),
       tap(basket => {
         this.giftBasket.data = basket;
+        this.giftBasketErrors = basket.some(item => !!item.error && item.error != '');
       })
     ).subscribe();
 
@@ -158,13 +158,26 @@ export class GravityGiftBasketComponent
 
   /** Sets the state gift basket. */
   public setStateGiftBasket(giftBasket: GiftBasketModel[]): void {
-    this.store.dispatch(new SetGravityGiftBasket(giftBasket)).pipe(
-      takeUntil(this.onDestroy$),
-      take(1),
-      tap(() => {
-        const giftBasket = this.store.selectSnapshot(GravityGiftingState.giftBasket);
-        this.giftBasket.data = giftBasket;
-      })
-    ).subscribe();
+    giftBasket = this.setGiftBasketItemErrors(giftBasket);
+    this.store.dispatch(new SetGravityGiftBasket(giftBasket));
+  }
+
+  /** Verifies gift basket and sets item.error if one is found. */
+  private setGiftBasketItemErrors(giftBasket: GiftBasketModel[]): GiftBasketModel[] {
+    // Check item ids & types to verify item is real
+    for(let i = 0; i < giftBasket.length; i++) {
+      const item = giftBasket[i];
+      const itemExists = this.masterInventory[item.itemType]?.some((masterItem: MasterInventoryItem) => masterItem.id === item.id && (masterItem.id >= BigInt(0) || (masterItem.id < BigInt(0) && masterItem.description === item.description)));
+      giftBasket[i].error = !itemExists ? 'Item is not a valid gift.' : undefined
+    }
+
+    // Verify credit reward limits
+    const creditRewardsItemType = 'creditrewards';
+    const softCurrencyAboveLimit = giftBasket.findIndex(item => item.itemType.toLowerCase() === creditRewardsItemType && item.id === BigInt(0) && item.quantity > 500_000_000);
+    if(softCurrencyAboveLimit >= 0) {
+      giftBasket[softCurrencyAboveLimit].error = 'Soft Currency limit for a gift is 500,000,000.';
+    }
+    
+    return giftBasket;
   }
 }
