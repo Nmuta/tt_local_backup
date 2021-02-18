@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Runtime.Serialization;
 
 namespace Turn10.LiveOps.StewardApi.Contracts
 {
@@ -21,7 +22,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts
 
         /// <summary>
         ///     Gets or sets the gifting error.
+        ///     NOTE: Cannot use Exception type due to serialization issue: https://github.com/JamesNK/Newtonsoft.Json/issues/1622.
         /// </summary>
-        public Exception Error { get; set; }
+        public object Error { get; set; }
     }
 }

@@ -34,6 +34,7 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
         .fill(0)
         .map(() => {
           return {
+            quantity: BigInt(1),
             vin: faker.random.uuid(),
             baseCost: fakeBigInt({ min: 4_000 }),
             collectorScore: fakeBigInt({ min: 4_000, max: 200_000 }),

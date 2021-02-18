@@ -214,6 +214,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenUserFlagsRequestValidatorNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { UserFlagsRequestValidator = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "userFlagsRequestValidator"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -320,10 +334,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing).ConfigureAwait(false);
 
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -334,43 +347,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task BanPlayers_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var banParameters = this.GenerateBanParametersInput();
-            var useBackgroundProcessing = false;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void BanPlayers_WithValidParameters_UseBackgroundProcessing_DoesNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var banParameters = this.GenerateBanParametersInput();
             var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -383,10 +368,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing).ConfigureAwait(false);
 
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -616,7 +600,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var userFlags = Fixture.Create<ApolloUserFlags>();
+            var userFlags = Fixture.Create<ApolloUserFlagsInput>();
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.SetUserFlags(xuid, userFlags).ConfigureAwait(false);
@@ -1032,6 +1016,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
             public IRequestValidator<ApolloGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloGroupGift>>();
 
+            public IRequestValidator<ApolloUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloUserFlagsInput>>();
+
             public ApolloController Build() => new ApolloController(
                 this.KustoProvider,
                 this.ApolloPlayerDetailsProvider,
@@ -1045,7 +1031,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.Mapper,
                 this.BanParametersRequestValidator,
                 this.GiftRequestValidator,
-                this.GroupGiftRequestValidator)
+                this.GroupGiftRequestValidator,
+                this.UserFlagsRequestValidator)
             { ControllerContext = this.ControllerContext };
         }
     }

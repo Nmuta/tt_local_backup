@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,10 +16,10 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation;
-using Turn10.Services.Authentication;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -58,6 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IRequestValidator<SunriseGift> giftRequestValidator;
         private readonly IRequestValidator<SunriseGroupGift> groupGiftRequestValidator;
         private readonly IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator;
+        private readonly IRequestValidator<SunriseUserFlagsInput> userFlagsRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseController"/> class.
@@ -76,6 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="giftRequestValidator">The gift request validator.</param>
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
         /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
+        /// <param name="userFlagsRequestValidator">The user flags request validator.</param>
         public SunriseController(
             IKustoProvider kustoProvider,
             ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider,
@@ -90,7 +91,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<SunriseMasterInventory> masterInventoryRequestValidator,
             IRequestValidator<SunriseGift> giftRequestValidator,
             IRequestValidator<SunriseGroupGift> groupGiftRequestValidator,
-            IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator)
+            IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator,
+            IRequestValidator<SunriseUserFlagsInput> userFlagsRequestValidator)
         {
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             sunrisePlayerDetailsProvider.ShouldNotBeNull(nameof(sunrisePlayerDetailsProvider));
@@ -106,6 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
+            userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.kustoProvider = kustoProvider;
@@ -120,6 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.giftRequestValidator = giftRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
             this.banParametersRequestValidator = banParametersRequestValidator;
+            this.userFlagsRequestValidator = userFlagsRequestValidator;
         }
 
         /// <summary>
@@ -347,18 +351,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </returns>
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
-        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] SunriseUserFlags userFlags)
+        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] SunriseUserFlagsInput userFlags)
         {
             try
             {
                 userFlags.ShouldNotBeNull(nameof(userFlags));
+
+                this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
+                if (!this.ModelState.IsValid)
+                {
+                    var result = this.userFlagsRequestValidator.GenerateErrorResponse(this.ModelState);
+                    return this.BadRequest(result);
+                }
 
                 if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
                 {
                     return this.NotFound($"No profile found for XUID: {xuid}.");
                 }
 
-                await this.sunrisePlayerDetailsProvider.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(true);
+                var validatedFlags = this.mapper.Map<SunriseUserFlags>(userFlags);
+                await this.sunrisePlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags).ConfigureAwait(true);
 
                 var results = await this.sunrisePlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
 
@@ -436,7 +448,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="banInput">The ban parameter input.</param>
         /// <param name="useBackgroundProcessing">A value that indicates whether to use background processing.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
         ///     The list of <see cref="SunriseBanResult"/>.
         /// </returns>
@@ -445,9 +456,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(202)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<SunriseBanParametersInput> banInput,
-            [FromQuery] bool useBackgroundProcessing,
-            [FromHeader] string requestingAgent)
+            [FromQuery] bool useBackgroundProcessing)
         {
+            var user = this.User.UserModel();
+            var requestingAgent = user.EmailAddress ?? user.Id;
+
             async Task<List<SunriseBanResult>> BulkBanUsersAsync(List<SunriseBanParameters> groupedBanParameters)
             {
                 var tasks =
@@ -778,13 +791,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             try
             {
-                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-                    ? this.User.GetClaimValue(ClaimTypes.Email)
-                    : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+                var user = this.User.UserModel();
+                var requestingAgent = user.EmailAddress ?? user.Id;
 
                 groupGift.ShouldNotBeNull(nameof(groupGift));
                 groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
                 groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
+                groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
                 var stringBuilder = new StringBuilder();
@@ -872,15 +885,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             try
             {
-                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-                    ? this.User.GetClaimValue(ClaimTypes.Email)
-                    : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+                var user = this.User.UserModel();
+                var requestingAgent = user.EmailAddress ?? user.Id;
 
                 gift.ShouldNotBeNull(nameof(gift));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
                 this.giftRequestValidator.Validate(gift, this.ModelState);
-                this.giftRequestValidator.ValidateIds(gift, this.ModelState);
 
                 if (!this.ModelState.IsValid)
                 {

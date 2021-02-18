@@ -1,26 +1,52 @@
 <mat-toolbar color="default">
   <a
+    [class.mat-button-disabled]="!identity?.extra.hasSunrise"
+    [matTooltip]="sunriseTooltip"
     [routerLink]="sunriseRouterLink"
-    [queryParams]="{ gamertag: gamertag }"
+    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
+    [color]="identity?.extra.hasSunrise ? 'primary' : null"
     routerLinkActive="mat-stroked-button"
     >Sunrise</a
   >
+  <a
+    [class.mat-button-disabled]="!identity?.extra.hasOpus"
+    [matTooltip]="opusTooltip"
+    [routerLink]="opusRouterLink"
+    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
+    mat-button
+    [color]="identity?.extra.hasOpus ? 'primary' : null"
+    routerLinkActive="mat-stroked-button"
+    >Opus</a
+  >
+  <a
+    [class.mat-button-disabled]="!identity?.extra.hasApollo"
+    [matTooltip]="apolloTooltip"
+    [routerLink]="apolloRouterLink"
+    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
+    mat-button
+    [color]="identity?.extra.hasApollo ? 'primary' : null"
+    routerLinkActive="mat-stroked-button"
+    >Apollo</a
+  >
+  <a
+    [class.mat-button-disabled]="!identity?.extra.hasGravity"
+    [matTooltip]="gravityTooltip"
+    [routerLink]="gravityRouterLink"
+    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
+    mat-button
+    [color]="identity?.extra.hasGravity ? 'primary' : null"
+    routerLinkActive="mat-stroked-button"
+    >Gravity</a
+  >
   <span class="icon-spacer"></span>
-  <mat-form-field>
-    <mat-label>Gamertag</mat-label>
-    <input matInput type="text" [(ngModel)]="gamertag" (keyup.enter)="navigate()" />
-    <button
-      mat-button
-      *ngIf="gamertag"
-      matSuffix
-      mat-icon-button
-      aria-label="Clear"
-      (click)="gamertag = ''"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
+  <player-selection-single
+    [(lookupType)]="lookupType"
+    [(lookupList)]="lookupList"
+    (lookupListChange)="lookupChange()"
+    (lookupTypeChange)="lookupChange()"
+    (found)="found($event)"
+  ></player-selection-single>
   <span class="spacer"></span>
 </mat-toolbar>
 <router-outlet></router-outlet>

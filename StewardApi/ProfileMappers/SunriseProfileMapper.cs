@@ -42,8 +42,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<IList<SunriseBanParametersInput>, SunriseBanParameters>()
                 .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.First().Reason))
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(src => src.First().FeatureArea))
-                .ForMember(dest => dest.Xuids, opt => opt.MapFrom(src => src.Select(v => v.Xuid).Where(xuid => xuid != default)))
-                .ForMember(dest => dest.Gamertags, opt => opt.MapFrom(src => src.Select(v => v.Gamertag).Where(gamertag => gamertag != default)))
+                .ForMember(dest => dest.Xuids, opt => opt.MapFrom(src => src.Select(v => v.Xuid).Where(xuid => xuid.HasValue)))
+                .ForMember(dest => dest.Gamertags, opt => opt.MapFrom(src => src.Select(v => v.Gamertag).Where(gamertag => gamertag != null)))
                 .ForMember(dest => dest.BanAllConsoles, opt => opt.MapFrom(src => src.First().BanAllConsoles))
                 .ForMember(dest => dest.BanAllPcs, opt => opt.MapFrom(src => src.First().BanAllPcs))
                 .ForMember(dest => dest.DeleteLeaderboardEntries, opt => opt.MapFrom(src => src.First().DeleteLeaderboardEntries))
@@ -98,6 +98,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.SendDateUtc, opt => opt.MapFrom(source => source.sentDate))
                 .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(source => source.expirationDate))
                 .ReverseMap();
+            this.CreateMap<SunriseUserFlagsInput, SunriseUserFlags>().ReverseMap();
         }
     }
 }

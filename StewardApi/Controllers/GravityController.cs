@@ -13,9 +13,9 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity.Settings;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
-using Turn10.LiveOps.StewardApi.Providers.Gravity.Settings;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.Services.Authentication;
 
@@ -339,8 +339,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             try
             {
                 var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-                    ? this.User.GetClaimValue(ClaimTypes.Email)
-                    : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+                ? this.User.GetClaimValue(ClaimTypes.Email)
+                : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
 
                 t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
                 gift.ShouldNotBeNull(nameof(gift));
@@ -349,7 +349,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
                 this.giftRequestValidator.Validate(gift, this.ModelState);
-                this.giftRequestValidator.ValidateIds(gift, this.ModelState);
 
                 if (!this.ModelState.IsValid)
                 {
@@ -361,7 +360,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 try
                 {
                     playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(t10Id).ConfigureAwait(true);
-            }
+                }
                 catch (Exception)
                 {
                     playerDetails = null;

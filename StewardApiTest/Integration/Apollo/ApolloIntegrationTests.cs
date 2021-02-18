@@ -27,7 +27,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         private static int profileId;
         private static int lspGroupId;
         private static string lspGiftingPassword;
-        private static ApolloUserFlags userFlags;
         private static KeyVaultProvider KeyVaultProvider;
         private static ApolloStewardTestingClient stewardClient;
         private static ApolloStewardTestingClient unauthorizedClient;
@@ -64,16 +63,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             profileId = 5167411;
             consoleId = 18230637609444823812;
             lspGroupId = 614;
-
-            userFlags = new ApolloUserFlags
-            {
-                IsUnderReview = false,
-                IsVip = false,
-                IsCommunityManager = false,
-                IsEarlyAccess = false,
-                IsTurn10Employee = false
-            };
-
+            
             stewardClient = new ApolloStewardTestingClient(new Uri(endpoint), authKey);
             unauthorizedClient = new ApolloStewardTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
         }
@@ -223,9 +213,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         public async Task BanPlayers()
         {
             var banParameters = this.GenerateBanParameters();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
-            var result = await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+            var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Any());
@@ -239,9 +228,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = default;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
-            var result = await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+            var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Any());
@@ -256,9 +244,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = TestConstants.InvalidXuid;
             banParameters[0].Gamertag = null;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
-            var result = await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+            var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsFalse(result[0].Success);
@@ -271,29 +258,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = default;
             banParameters[0].Gamertag = TestConstants.InvalidGamertag;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task BanPlayers_InvalidRequestingAgentHeader()
-        {
-            var banParameters = this.GenerateBanParameters();
-            var emptyHeaders = new Dictionary<string, string>();
-
-            try
-            {
-                await stewardClient.BanPlayersAsync(banParameters, emptyHeaders).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -307,11 +275,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         public async Task BanPlayers_Unauthorized()
         {
             var banParameters = this.GenerateBanParameters();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await unauthorizedClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await unauthorizedClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -326,11 +293,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             var banParameters = this.GenerateBanParameters();
             banParameters[0].FeatureArea = "invalidFeatureArea";
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -346,9 +312,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             var banParameters = this.GenerateBanParameters();
             banParameters[0].StartTimeUtc = default;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
-            var result = await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+            var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ToList()[0].Success);
@@ -363,11 +328,28 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var banParameters = this.GenerateBanParameters();
             banParameters[0].Xuid = default;
             banParameters[0].Gamertag = null;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task BanPlayers_BanAllConsolesUndefined()
+        {
+            var banParameters = this.GenerateBanParameters();
+            banParameters[0].BanAllConsoles = null;
+
+            try
+            {
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -382,11 +364,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             var banParameters = this.GenerateBanParameters();
             banParameters[0].Duration = null;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -401,11 +382,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             var banParameters = this.GenerateBanParameters();
             banParameters[0].Duration= TimeSpan.FromMinutes(-10);
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -420,11 +400,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             var banParameters = this.GenerateBanParameters();
             banParameters[0].Duration = TimeSpan.Zero;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -440,11 +419,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var banParameters = this.GenerateBanParameters();
             banParameters[0].SendReasonNotification = true;
             banParameters[0].Reason = string.Empty;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -820,6 +798,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task SetUserFlags()
         {
+            var userFlags = CreateUserFlags();
             var result = await stewardClient.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
@@ -829,6 +808,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task SetUserFlags_InvalidXuid()
         {
+            var userFlags = CreateUserFlags();
+
             try
             {
                 await stewardClient.SetUserFlagsAsync(TestConstants.InvalidXuid, userFlags).ConfigureAwait(false);
@@ -842,8 +823,28 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
+        public async Task SetUserFlags_InvalidFlags()
+        {
+            var userFlags = CreateUserFlags();
+            userFlags.IsCommunityManager = null;
+
+            try
+            {
+                await stewardClient.SetUserFlagsAsync(TestConstants.InvalidXuid, userFlags).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
         public async Task SetUserFlags_Unauthorized()
         {
+            var userFlags = CreateUserFlags();
+
             try
             {
                 await unauthorizedClient.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(false);
@@ -1254,9 +1255,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         private async Task<IList<ApolloBanResult>> BanPlayersWithHeaderResponseAsync(ApolloStewardTestingClient stewardClient, IList<ApolloBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
-            var response = await stewardClient.BanPlayersWithHeaderResponseAsync(banParameters, headersToValidate, headersToSend).ConfigureAwait(false);
+            var response = await stewardClient.BanPlayersWithHeaderResponseAsync(banParameters, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -1290,9 +1290,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         private async Task<ApolloPlayerInventory> UpdatePlayerInventoryWithHeaderResponseAsync(ApolloStewardTestingClient stewardClient, ApolloPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
-            var response = await stewardClient.UpdatePlayerInventoryWithHeaderResponseAsync(playerInventory, headersToValidate, headersToSend).ConfigureAwait(false);
+            var response = await stewardClient.UpdatePlayerInventoryWithHeaderResponseAsync(playerInventory, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -1426,21 +1425,16 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             };
         }
 
-        private Dictionary<string, string> GenerateHeadersToSend(string requestingAgent, string lspGiftingPassword)
+        private ApolloUserFlagsInput CreateUserFlags()
         {
-            var result = new Dictionary<string, string>();
-
-            if (!string.IsNullOrWhiteSpace(requestingAgent))
+            return new ApolloUserFlagsInput
             {
-                result.Add("requestingAgent", requestingAgent);
-            }
-
-            if (!string.IsNullOrWhiteSpace(lspGiftingPassword))
-            {
-                result.Add("adminAuth", lspGiftingPassword);
-            }
-
-            return result;
+                IsUnderReview = false,
+                IsVip = false,
+                IsCommunityManager = false,
+                IsEarlyAccess = false,
+                IsTurn10Employee = false
+            };
         }
     }
 }
