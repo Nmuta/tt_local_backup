@@ -1,10 +1,15 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { GuidLikeString } from '@models/extended-types';
 import { GravityPlayerInventory } from '@models/gravity';
 import { Unprocessed } from '@models/unprocessed';
+import { GravityPlayerT10IdInventoryFakeApi } from '../inventory';
 
 /** Fake API for gravity player inventory. */
 export class GravityPlayerT10IdProfileIdInventoryFakeApi extends FakeApiBase {
+  private t10Id: string;
+  private profileId: string;
+
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -14,18 +19,24 @@ export class GravityPlayerT10IdProfileIdInventoryFakeApi extends FakeApiBase {
 
     const url = new URL(this.request.url);
     const regex = /^\/?api\/v1\/title\/gravity\/player\/t10Id\((.+)\)\/profileId\((.+)\)\/inventory$/i;
-    return regex.test(url.pathname);
+    const isMatch = regex.test(url.pathname);
+    if (!isMatch) {
+      return false;
+    }
+
+    const match = url.pathname.match(regex);
+    this.t10Id = match[1];
+    this.profileId = match[2];
+    return true;
   }
 
   /** Produces a sample API response. */
   public handle(): Partial<Unprocessed<GravityPlayerInventory>> {
-    return GravityPlayerT10IdProfileIdInventoryFakeApi.make();
+    return GravityPlayerT10IdProfileIdInventoryFakeApi.make(this.t10Id, this.profileId);
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<GravityPlayerInventory>> {
-    return {
-      xuid: BigInt(2533275026603041),
-    };
+  public static make(t10Id: GuidLikeString, profileId: GuidLikeString): Partial<Unprocessed<GravityPlayerInventory>> {
+    return GravityPlayerT10IdInventoryFakeApi.make(t10Id, profileId)
   }
 }

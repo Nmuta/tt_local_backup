@@ -15,7 +15,7 @@ export interface GravityPlayerDetails {
   subscriptionTier: string;
   lastLoginUtc: Date;
   firstLoginUtc: Date;
-  ageGroup: unknown;
+  ageGroup: bigint;
   timeOffsetInSeconds: bigint;
   lastGameSettingsUsed: GuidLikeString;
   saveStates: GravitySaveState[];

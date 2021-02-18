@@ -2,6 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { OpusPlayerInventory } from '@models/opus';
 import { Unprocessed } from '@models/unprocessed';
+import { OpusPlayerXuidInventoryFakeApi } from '../xuid/inventory';
 
 /** Fake API for opus player inventory. */
 export class OpusPlayerProfileIdInventoryFakeApi extends FakeApiBase {
@@ -22,12 +23,12 @@ export class OpusPlayerProfileIdInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<OpusPlayerInventory>> {
+  public handle(): OpusPlayerInventory {
     return OpusPlayerProfileIdInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<OpusPlayerInventory>> {
-    return {};
+  public static make(): OpusPlayerInventory {
+    return OpusPlayerXuidInventoryFakeApi.make();
   }
 }
