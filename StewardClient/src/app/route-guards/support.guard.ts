@@ -13,7 +13,7 @@ import { UserState } from '@shared/state/user/user.state';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { RequestAccessToken } from '@shared/state/user/user.actions';
-import { UserRoles } from '@models/enums';
+import { UserRole } from '@models/enums';
 
 /** A guard for preventing unauthenticated access and directing users to the auth flow. */
 @Injectable({
@@ -43,10 +43,10 @@ export class SupportGuard implements CanActivate, CanActivateChild {
       map(profile => {
         const role = (profile as UserModel)?.role;
         switch(role) {
-          case UserRoles.LiveOpsAdmin:
-          case UserRoles.SupportAgentAdmin:
-          case UserRoles.SupportAgent:
-          case UserRoles.SupportAgentNew:
+          case UserRole.LiveOpsAdmin:
+          case UserRole.SupportAgentAdmin:
+          case UserRole.SupportAgent:
+          case UserRole.SupportAgentNew:
             return true;
           default:
             this.store.dispatch(redirectAction);

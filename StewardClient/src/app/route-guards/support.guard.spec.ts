@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { UserRoles } from '@models/enums';
+import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
@@ -13,7 +13,7 @@ import { SupportGuard } from './support.guard';
 describe('SupportGuard:', () => {
   let guard: SupportGuard;
   let store: Store;
-  const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com', role: UserRoles.LiveOpsAdmin };
+  const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com', role: UserRole.LiveOpsAdmin };
   const testRoute: Partial<ActivatedRouteSnapshot> = {};
   const testSnapshot: Partial<RouterStateSnapshot> = { url: '/i/am/a/route?with=query' };
 
@@ -38,7 +38,7 @@ describe('SupportGuard:', () => {
   describe('When profile has a valid role: ', () => {
     describe('LiveOpsAdmin', () => {
       beforeEach(() => {
-        testProfile.role = UserRoles.LiveOpsAdmin;
+        testProfile.role = UserRole.LiveOpsAdmin;
         guard.profile$ = of(testProfile);
       });
 
@@ -50,7 +50,7 @@ describe('SupportGuard:', () => {
 
     describe('SupportAgentAdmin', () => {
       beforeEach(() => {
-        testProfile.role = UserRoles.SupportAgentAdmin;
+        testProfile.role = UserRole.SupportAgentAdmin;
         guard.profile$ = of(testProfile);
       });
 
@@ -62,7 +62,7 @@ describe('SupportGuard:', () => {
 
     describe('SupportAgent', () => {
       beforeEach(() => {
-        testProfile.role = UserRoles.SupportAgent;
+        testProfile.role = UserRole.SupportAgent;
         guard.profile$ = of(testProfile);
       });
 
@@ -74,7 +74,7 @@ describe('SupportGuard:', () => {
 
     describe('SupportAgentNew', () => {
       beforeEach(() => {
-        testProfile.role = UserRoles.SupportAgentNew;
+        testProfile.role = UserRole.SupportAgentNew;
         guard.profile$ = of(testProfile);
       });
 
@@ -88,7 +88,7 @@ describe('SupportGuard:', () => {
   describe('When profile has an invalid role: ', () => {
     describe('DataPipelineAdmin', () => {
       beforeEach(() => {
-        testProfile.role = UserRoles.DataPipelineAdmin;
+        testProfile.role = UserRole.DataPipelineAdmin;
         guard.profile$ = of(testProfile);
       });
 
