@@ -10,4 +10,5 @@ export interface OpusCar {
   special: 'Unicorn' | '';
   versionedLiveryId: GuidLikeString;
   versionedTuneId: GuidLikeString;
+  quantity: bigint;
 }

@@ -46,6 +46,7 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
             dateCreatedUtc: faker.date.past(2 /*years*/),
             displayName: faker.lorem.words(3),
             special: faker.random.arrayElement(['Unicorn', '']),
+            quantity: BigInt(1),
           };
         }),
     };

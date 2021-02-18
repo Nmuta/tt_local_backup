@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
@@ -42,7 +42,9 @@ describe('SunrisePlayerInventoryComponent', () => {
     beforeEach(
       waitForAsync(() => {
         component.identity = first(SunrisePlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
-        component.ngOnChanges(undefined);
+        component.ngOnChanges({
+          identity: new SimpleChange(undefined, component.identity, true)
+        });
       }),
     );
 
@@ -71,7 +73,9 @@ describe('SunrisePlayerInventoryComponent', () => {
         beforeEach(
           waitForAsync(() => {
             component.identity = null;
-            component.ngOnChanges(undefined);
+            component.ngOnChanges({
+              identity: new SimpleChange(undefined, null, false)
+            });
           }),
         );
 
