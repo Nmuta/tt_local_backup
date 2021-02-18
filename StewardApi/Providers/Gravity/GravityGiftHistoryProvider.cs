@@ -89,8 +89,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 GravityGift convertedGift;
                 // TODO: Remove these conversions once KUSTO is only using the new SunriseGift model
                 // PlayerInventory model is from Scrutineer V1
-                // SunrisePlayerInventory is from Scrutineer V2 & Steward V1
-                // SunriseGift is the new model that uses a shared inventory model between all titles
+                // GravityPlayerInventory is from Scrutineer V2 & Steward V1
+                // GravityGift is the new model that uses a shared inventory model between all titles
                 try
                 {
                     convertedGift = history.GiftInventory.FromJson<GravityGift>();

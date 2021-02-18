@@ -1,0 +1,37 @@
+<div *ngIf="inventory; else failstate">
+  <h2>Summary</h2>
+  <table class="numbers">
+    <tr>
+      <th>Credits</th>
+      <td>{{ inventory.credits }}</td>
+    </tr>
+    <tr>
+      <th>Wheel Spins</th>
+      <td>{{ inventory.wheelSpins }}</td>
+    </tr>
+    <tr>
+      <th>Super Wheel Spins</th>
+      <td>{{ inventory.superWheelSpins }}</td>
+    </tr>
+    <tr>
+      <th>Skill Points</th>
+      <td>{{ inventory.skillPoints }}</td>
+    </tr>
+    <tr>
+      <th>Forzathon Points</th>
+      <td>{{ inventory.forzathonPoints }}</td>
+    </tr>
+  </table>
+
+  <player-inventory-tables
+    [inventory]="inventory"
+    [whatToShow]="whatToShow"
+  ></player-inventory-tables>
+</div>
+
+<json-dump [input]="inventory">Inventory Response</json-dump>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="error" [input]="error">Failed to load.</json-dump>
+</ng-template>

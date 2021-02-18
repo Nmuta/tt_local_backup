@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Opus
     /// <summary>
     ///     Represents an Opus car.
     /// </summary>
-    public sealed class OpusCar
+    public sealed class OpusCar : IInventoryItem
     {
         /// <summary>
         ///     Gets or sets the base cost.
@@ -46,5 +46,20 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Opus
         ///     Gets or sets the VIN.
         /// </summary>
         public Guid Vin { get; set; }
+
+        /// <inheritdoc/>
+        public int ItemId { get; set; } = -1;
+
+        /// <inheritdoc/>
+        public long Quantity { get; set; } = 1;
+
+        /// <inheritdoc/>
+        public DateTime AcquisitionUtc => this.DateCreatedUtc;
+
+        /// <inheritdoc/>
+        public DateTime LastUsedUtc => this.DateCreatedUtc;
+
+        /// <inheritdoc/>
+        public string Description => this.DisplayName;
     }
 }

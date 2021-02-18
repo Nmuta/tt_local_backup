@@ -54,22 +54,22 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<ApolloPlayerDetails>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<ApolloBanResult>> BanPlayersAsync(IList<ApolloBanParametersInput> banParameters, Dictionary<string, string> headersToSend)
+        public async Task<IList<ApolloBanResult>> BanPlayersAsync(IList<ApolloBanParametersInput> banParameters)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
             var path = new Uri(this.baseUri, $"{TitlePath}players/ban");
 
-            return await ServiceClient.SendRequestAsync<IList<ApolloBanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters, headersToSend).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<ApolloBanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<IList<ApolloBanResult>>> BanPlayersWithHeaderResponseAsync(IList<ApolloBanParametersInput> banParameters, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
+        public async Task<ResponseWithHeaders<IList<ApolloBanResult>>> BanPlayersWithHeaderResponseAsync(IList<ApolloBanParametersInput> banParameters, IList<string> headersToValidate)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
             var path = new Uri(this.baseUri, $"{TitlePath}players/ban?useBackgroundProcessing=true");
 
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<IList<ApolloBanResult>>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters, headersToSend).ConfigureAwait(false);
+            return await ServiceClient.SendRequestWithHeaderResponseAsync<IList<ApolloBanResult>>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters).ConfigureAwait(false);
         }
 
         public async Task<IList<ApolloBanSummary>> GetBanSummariesAsync(IList<ulong> xuids)
@@ -123,7 +123,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<ApolloUserFlags>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<ApolloUserFlags> SetUserFlagsAsync(ulong xuid, ApolloUserFlags userFlags)
+        public async Task<ApolloUserFlags> SetUserFlagsAsync(ulong xuid, ApolloUserFlagsInput userFlags)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
 
@@ -160,13 +160,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<IList<ApolloLspGroup>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<ApolloPlayerInventory>> UpdatePlayerInventoryWithHeaderResponseAsync(ApolloPlayerInventory playerInventory, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
+        public async Task<ResponseWithHeaders<ApolloPlayerInventory>> UpdatePlayerInventoryWithHeaderResponseAsync(ApolloPlayerInventory playerInventory, IList<string> headersToValidate)
         {
             playerInventory.ShouldNotBeNull(nameof(playerInventory));
 
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid/inventory?useBackgroundProcessing=true");
 
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, playerInventory, headersToSend).ConfigureAwait(false);
+            return await ServiceClient.SendRequestWithHeaderResponseAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, playerInventory).ConfigureAwait(false);
         }
 
         public async Task<ApolloPlayerInventory> UpdateGroupInventoriesByXuidAsync(ApolloGroupGift groupGift)

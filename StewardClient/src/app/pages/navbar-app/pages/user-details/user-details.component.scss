@@ -1,3 +1,5 @@
+@import '/src/variables.scss';
+
 .spacer {
   flex: 1 1 auto;
 }
@@ -6,8 +8,13 @@
   flex-basis: 16px;
 }
 
-mat-form-field {
-  font-size: 14px;
+:host ::ng-deep {
+  * {
+    font-size: 14px;
+  }
+  & .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: initial;
+  }
 }
 
 // TODO: This should probably be made into a function

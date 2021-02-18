@@ -1,0 +1,25 @@
+<div *ngIf="inventory; else failstate">
+  <h2>Summary</h2>
+  <table class="numbers">
+    <tr>
+      <th>Game Settings ID</th>
+      <td>{{ inventory.previousGameSettingsId }}</td>
+    </tr>
+    <tr>
+      <th>External Profile ID</th>
+      <td>{{ inventory.currentExternalProfileId }}</td>
+    </tr>
+  </table>
+
+  <player-inventory-tables
+    [inventory]="inventory"
+    [whatToShow]="whatToShow"
+  ></player-inventory-tables>
+</div>
+
+<json-dump [input]="inventory">Inventory Response</json-dump>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="error" [input]="error">Failed to load.</json-dump>
+</ng-template>

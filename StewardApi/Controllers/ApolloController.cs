@@ -17,6 +17,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -56,6 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IRequestValidator<ApolloBanParametersInput> banParametersRequestValidator;
         private readonly IRequestValidator<ApolloGift> giftRequestValidator;
         private readonly IRequestValidator<ApolloGroupGift> groupGiftRequestValidator;
+        private readonly IRequestValidator<ApolloUserFlagsInput> userFlagsRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloController"/> class.
@@ -73,6 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
         /// <param name="giftRequestValidator">The gift request validator.</param>
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
+        /// <param name="userFlagsRequestValidator">The user flags request validator.</param>
         public ApolloController(
             IKustoProvider kustoProvider,
             IApolloPlayerDetailsProvider apolloPlayerDetailsProvider,
@@ -86,7 +89,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IMapper mapper,
             IRequestValidator<ApolloBanParametersInput> banParametersRequestValidator,
             IRequestValidator<ApolloGift> giftRequestValidator,
-            IRequestValidator<ApolloGroupGift> groupGiftRequestValidator)
+            IRequestValidator<ApolloGroupGift> groupGiftRequestValidator,
+            IRequestValidator<ApolloUserFlagsInput> userFlagsRequestValidator)
         {
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             apolloPlayerDetailsProvider.ShouldNotBeNull(nameof(apolloPlayerDetailsProvider));
@@ -101,6 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
+            userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.kustoProvider = kustoProvider;
@@ -114,6 +119,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.banParametersRequestValidator = banParametersRequestValidator;
             this.giftRequestValidator = giftRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
+            this.userFlagsRequestValidator = userFlagsRequestValidator;
         }
 
         /// <summary>
@@ -236,17 +242,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="banInput">The list of ban parameters.</param>
         /// <param name="useBackgroundProcessing">A value that indicates whether to use background processing.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
         ///     The list of <see cref="ApolloBanResult"/>.
         /// </returns>
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<ApolloBanResult>))]
         [SwaggerResponse(202)]
-        public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput, [FromQuery] bool useBackgroundProcessing, [FromHeader] string requestingAgent)
+        public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput, [FromQuery] bool useBackgroundProcessing)
         {
             try
             {
+                var user = this.User.UserModel();
+                var requestingAgent = user.EmailAddress ?? user.Id;
+
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
                 banInput.ShouldNotBeNull(nameof(banInput));
 
@@ -533,18 +541,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </returns>
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(ApolloUserFlags))]
-        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] ApolloUserFlags userFlags)
+        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] ApolloUserFlagsInput userFlags)
         {
             try
             {
                 userFlags.ShouldNotBeNull(nameof(userFlags));
+
+                this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
+                if (!this.ModelState.IsValid)
+                {
+                    var result = this.userFlagsRequestValidator.GenerateErrorResponse(this.ModelState);
+                    return this.BadRequest(result);
+                }
 
                 if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
                 {
                     return this.NotFound($"No profile found for XUID: {xuid}.");
                 }
 
-                await this.apolloPlayerDetailsProvider.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(true);
+                var validatedFlags = this.mapper.Map<ApolloUserFlags>(userFlags);
+                await this.apolloPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags).ConfigureAwait(true);
 
                 var results = await this.apolloPlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
 
@@ -659,6 +675,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
 
                 groupGift.ShouldNotBeNull(nameof(groupGift));
+                groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
                 groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
@@ -738,6 +755,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <returns>
         ///     The <see cref="ApolloPlayerInventory"/>.
         /// </returns>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200)]
         public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] ApolloGift gift)
@@ -753,7 +773,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
                 this.giftRequestValidator.Validate(gift, this.ModelState);
-                this.giftRequestValidator.ValidateIds(gift, this.ModelState);
 
                 if (!this.ModelState.IsValid)
                 {

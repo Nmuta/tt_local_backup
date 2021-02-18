@@ -32,7 +32,27 @@ namespace Turn10.LiveOps.StewardApi.Validation
                 modelState.AddModelError("BanParameters.Duration", $"Duration must be positive. {nameof(model.Duration)} was {model.Duration}.");
             }
 
-            if (model.SendReasonNotification && string.IsNullOrWhiteSpace(model.Reason))
+            if (!model.BanAllConsoles.HasValue)
+            {
+                modelState.AddModelError("BanParameters.BanAllConsoles", $"{nameof(model.BanAllConsoles)} must not be null.");
+            }
+
+            if (!model.BanAllPcs.HasValue)
+            {
+                modelState.AddModelError("BanParameters.BanAllPcs", $"{nameof(model.BanAllPcs)} must not be null.");
+            }
+
+            if (!model.DeleteLeaderboardEntries.HasValue)
+            {
+                modelState.AddModelError("BanParameters.DeleteLeaderboardEntries", $"{nameof(model.DeleteLeaderboardEntries)} must not be null.");
+            }
+
+            if (!model.SendReasonNotification.HasValue)
+            {
+                modelState.AddModelError("BanParameters.SendReasonNotification", $"{nameof(model.SendReasonNotification)} must not be null.");
+            }
+
+            if (model.SendReasonNotification.Value && string.IsNullOrWhiteSpace(model.Reason))
             {
                 var reasonStatus = model.Reason == null ? "Null" : "Empty";
                 modelState.AddModelError("BanParameters.Reason", $"Property value cannot be null, empty, or whitespace when marked for send. {nameof(model.Reason)} was {reasonStatus}.");
@@ -51,7 +71,7 @@ namespace Turn10.LiveOps.StewardApi.Validation
             model.ShouldNotBeNull(nameof(model));
             modelState.ShouldNotBeNull(nameof(modelState));
 
-            if (model.Xuid == default && string.IsNullOrWhiteSpace(model.Gamertag))
+            if (!model.Xuid.HasValue && string.IsNullOrWhiteSpace(model.Gamertag))
             {
                 modelState.AddModelError(
                     "BanParameters.Xuid/BanParameters.Gamertag",

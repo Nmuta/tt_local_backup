@@ -38,6 +38,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.T10Id, opt => opt.MapFrom(src => src.Turn10Id))
                 .ReverseMap();
             this.CreateMap<LiveOpsCar, Contracts.Gravity.GravityCar>()
+                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => 1))
                 .ForMember(des => des.PurchaseUtc, opt => opt.MapFrom(src => src.PurchaseTimestamp))
                 .ForMember(des => des.AcquisitionUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
                 .ForMember(des => des.ModifiedUtc, opt => opt.MapFrom(src => src.ModifiedTime))
@@ -81,6 +82,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.T10Id, opt => opt.MapFrom(src => src.Turn10Id))
                 .ReverseMap();
 
+            this.CreateMap<GravityInventoryItem, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.ItemId));
             this.CreateMap<Currency, MasterInventoryItem>()
                  .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => source.Name));
             this.CreateMap<GravityCar, MasterInventoryItem>()
@@ -106,6 +109,19 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.MasteryKits, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.gameSettings.MiscGiftItemGameSettings.MasteryKits)))
                 .ForMember(dest => dest.RepairKits, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.gameSettings.MiscGiftItemGameSettings.RepairKits)))
                 .ForMember(dest => dest.UpgradeKits, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.gameSettings.MiscGiftItemGameSettings.UpgradeKits)))
+                .ReverseMap();
+
+            this.CreateMap<GravityPlayerInventory, GravityGift>()
+                .ForMember(dest => dest.GiftReason, opt => opt.MapFrom(source => string.Empty))
+                .ForMember(dest => dest.Inventory, opt => opt.MapFrom((source, destObj, destMem, context) => new GravityMasterInventory()
+                {
+                    CreditRewards = context.Mapper.Map<IList<MasterInventoryItem>>(source.Currencies),
+                    Cars = context.Mapper.Map<IList<MasterInventoryItem>>(source.Cars),
+                    UpgradeKits = context.Mapper.Map<IList<MasterInventoryItem>>(source.UpgradeKits),
+                    MasteryKits = context.Mapper.Map<IList<MasterInventoryItem>>(source.MasteryKits),
+                    EnergyRefills = context.Mapper.Map<IList<MasterInventoryItem>>(source.EnergyRefills),
+                    RepairKits = context.Mapper.Map<IList<MasterInventoryItem>>(source.RepairKits),
+                }))
                 .ReverseMap();
         }
     }

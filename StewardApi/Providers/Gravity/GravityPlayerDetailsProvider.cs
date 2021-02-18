@@ -39,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             var result = new IdentityResultBeta();
 
-            if (query.Xuid == default && string.IsNullOrWhiteSpace(query.Gamertag) && string.IsNullOrWhiteSpace(query.T10Id))
+            if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag) && string.IsNullOrWhiteSpace(query.T10Id))
             {
                 result.Error = new StewardError(StewardErrorCode.RequiredParameterMissing, "T10ID, Gamertag, or XUID must be provided.");
             }
