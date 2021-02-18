@@ -2,7 +2,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { GiftBasketModel } from '@models/master-inventory-item';
-import { SetSunriseGiftHistorySelectedPlayerIdentities } from '@navbar-app/pages/gift-history/sunrise/state/sunrise-gift-history.state.actions';
 import { NgxsModule, Store } from '@ngxs/store';
 import { SunriseGiftingState } from './sunrise-gifting.state';
 import {
