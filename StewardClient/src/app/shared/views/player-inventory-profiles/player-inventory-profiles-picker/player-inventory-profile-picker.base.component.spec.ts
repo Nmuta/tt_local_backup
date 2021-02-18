@@ -13,11 +13,15 @@ type AcceptableComponents =
   | OpusPlayerInventoryProfilePickerComponent;
 
 /** Performs common behavior testing for Player Inventory Profile Pickers. */
-export function baseTests<ComponentT extends AcceptableComponents, IdentityT extends IdentityResultUnion>(
+export function baseTests<
+  ComponentT extends AcceptableComponents,
+  IdentityT extends IdentityResultUnion
+>(
   fixtureFn: () => ComponentFixture<ComponentT>,
   makeIdentityFn: (_?: unknown) => IdentityT,
-  inventoryEndpointFn: () => ((_?: unknown) => unknown[]),
-  replaceInventoryEndpointFn: (fn: jasmine.Spy) => void): void {
+  inventoryEndpointFn: () => (_?: unknown) => unknown[],
+  replaceInventoryEndpointFn: (fn: jasmine.Spy) => void,
+): void {
   let fixture: ComponentFixture<ComponentT>;
   let component: ComponentT;
 
@@ -26,7 +30,7 @@ export function baseTests<ComponentT extends AcceptableComponents, IdentityT ext
       fixture = fixtureFn();
       component = fixture.componentInstance;
     });
-  
+
     it('should create', () => {
       expect(component).toBeTruthy();
     });
@@ -35,11 +39,13 @@ export function baseTests<ComponentT extends AcceptableComponents, IdentityT ext
       let inventoryEndpointSpy: jasmine.Spy;
 
       beforeEach(() => {
-        inventoryEndpointSpy = jasmine.createSpy('inventoryEndpoint').and.callFake(inventoryEndpointFn());
+        inventoryEndpointSpy = jasmine
+          .createSpy('inventoryEndpoint')
+          .and.callFake(inventoryEndpointFn());
         replaceInventoryEndpointFn(inventoryEndpointSpy);
 
         component.identity = makeIdentityFn();
-        component.ngOnChanges({identity: new SimpleChange(null, component.identity, true)});
+        component.ngOnChanges({ identity: new SimpleChange(null, component.identity, true) });
         fixture.detectChanges();
       });
 
@@ -48,11 +54,11 @@ export function baseTests<ComponentT extends AcceptableComponents, IdentityT ext
       });
 
       it('should have populated profiles', () => {
-        expect(component.profiles.length).toBeTruthy()
+        expect(component.profiles.length).toBeTruthy();
       });
 
       it('should have nulled out profileId', () => {
-        expect(component.profileId).toBeFalsy()
+        expect(component.profileId).toBeFalsy();
       });
     });
   });

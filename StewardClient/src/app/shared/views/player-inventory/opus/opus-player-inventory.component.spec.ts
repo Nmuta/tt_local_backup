@@ -43,7 +43,7 @@ describe('OpusPlayerInventoryComponent', () => {
       waitForAsync(() => {
         component.identity = first(OpusPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
         component.ngOnChanges({
-          identity: new SimpleChange(undefined, component.identity, true)
+          identity: new SimpleChange(undefined, component.identity, true),
         });
       }),
     );
@@ -74,7 +74,7 @@ describe('OpusPlayerInventoryComponent', () => {
           waitForAsync(() => {
             component.identity = null;
             component.ngOnChanges({
-              identity: new SimpleChange(undefined, null, false)
+              identity: new SimpleChange(undefined, null, false),
             });
           }),
         );

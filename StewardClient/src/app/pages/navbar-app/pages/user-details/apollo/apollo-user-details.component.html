@@ -9,8 +9,15 @@
       </mat-tab>
       <mat-tab label="Inventory">
         <div class="tab-container">
-          <apollo-player-inventory-profile-picker [identity]="identity" [(profileId)]="profileId" (profileIdChange)="onProfileIdChange($event)"></apollo-player-inventory-profile-picker>
-          <apollo-player-inventory [identity]="identity" [profileId]="profileId"></apollo-player-inventory>
+          <apollo-player-inventory-profile-picker
+            [identity]="identity"
+            [(profileId)]="profileId"
+            (profileIdChange)="onProfileIdChange($event)"
+          ></apollo-player-inventory-profile-picker>
+          <apollo-player-inventory
+            [identity]="identity"
+            [profileId]="profileId"
+          ></apollo-player-inventory>
         </div>
       </mat-tab>
       <mat-tab label="JSON">

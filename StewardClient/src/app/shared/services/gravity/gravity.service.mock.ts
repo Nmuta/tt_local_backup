@@ -26,11 +26,15 @@ export class MockGravityService {
 
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
-    .and.callFake(_gamertag => this.waitUntil$.pipe(switchMap(() => of(GravityPlayerGamertagDetailsFakeApi.make()))));
+    .and.callFake(_gamertag =>
+      this.waitUntil$.pipe(switchMap(() => of(GravityPlayerGamertagDetailsFakeApi.make()))),
+    );
 
   public getPlayerDetailsByT10Id = jasmine
     .createSpy('getPlayerDetailsByT10Id')
-    .and.callFake(t10Id => this.waitUntil$.pipe(switchMap(() => of(GravityPlayerT10IdDetailsFakeApi.make(t10Id)))));
+    .and.callFake(t10Id =>
+      this.waitUntil$.pipe(switchMap(() => of(GravityPlayerT10IdDetailsFakeApi.make(t10Id)))),
+    );
 
   public getPlayerIdentity = jasmine
     .createSpy('getPlayerIdentity')
@@ -49,7 +53,13 @@ export class MockGravityService {
   public getPlayerInventoryProfilesByT10Id = jasmine
     .createSpy('getPlayerInventoryProfilesByT10Id')
     .and.callFake(t10Id =>
-      this.waitUntil$.pipe(switchMap(() => of(gravitySaveStatesToPsuedoInventoryProfile((GravityPlayerT10IdDetailsFakeApi.make(t10Id)))))),
+      this.waitUntil$.pipe(
+        switchMap(() =>
+          of(
+            gravitySaveStatesToPsuedoInventoryProfile(GravityPlayerT10IdDetailsFakeApi.make(t10Id)),
+          ),
+        ),
+      ),
     );
 
   public getPlayerInventoryByT10Id = jasmine

@@ -8,8 +8,11 @@ import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-
 /** Displays a Gravity player's inventory. */
 @Component({
   selector: 'gravity-player-inventory-profile-picker',
-  templateUrl: '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
-  styleUrls: ['../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss'],
+  templateUrl:
+    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
+  styleUrls: [
+    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss',
+  ],
 })
 export class GravityPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
   IdentityResultBeta,

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { faHistory, faPassport, faUserCheck, faUserSlash } from '@fortawesome/free-solid-svg-icons';
@@ -18,13 +26,15 @@ export type AcceptableInventoryProfileTypes =
   | GravityPseudoPlayerInventoryProfile
   | ApolloPlayerInventoryProfile;
 
-type AcceptableInventoryProfileTypesIntersectionIntermediate =
-  & SunrisePlayerInventoryProfile
-  & OpusPlayerInventoryProfile
-  & GravityPseudoPlayerInventoryProfile
-  & ApolloPlayerInventoryProfile;
+type AcceptableInventoryProfileTypesIntersectionIntermediate = SunrisePlayerInventoryProfile &
+  OpusPlayerInventoryProfile &
+  GravityPseudoPlayerInventoryProfile &
+  ApolloPlayerInventoryProfile;
 
-type AcceptableInventoryProfileTypesIntersection = Partial<AcceptableInventoryProfileTypesIntersectionIntermediate> & AcceptableInventoryProfileTypes;
+type AcceptableInventoryProfileTypesIntersection = Partial<
+  AcceptableInventoryProfileTypesIntersectionIntermediate
+> &
+  AcceptableInventoryProfileTypes;
 
 /** Base component for picking player profiles. */
 @Component({
@@ -36,7 +46,6 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   >
   extends BaseComponent
   implements OnInit, OnChanges {
-
   @Input() public identity: IdentityResultType;
   @Input() public profileId: string | bigint;
   @Output() public profileIdChange = new EventEmitter<string | bigint>();
@@ -78,10 +87,14 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
         }),
       )
       .subscribe(profiles => {
-        this.profiles = profiles as unknown as AcceptableInventoryProfileTypesIntersection[];
+        this.profiles = (profiles as unknown) as AcceptableInventoryProfileTypesIntersection[];
 
         // clear selected profile if the currently set ID does not exist
-        if (chain(profiles).filter(p => p.profileId === this.profileId).isEmpty()) {
+        if (
+          chain(profiles)
+            .filter(p => p.profileId === this.profileId)
+            .isEmpty()
+        ) {
           this.profileId = null;
         }
       });

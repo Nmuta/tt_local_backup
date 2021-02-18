@@ -33,6 +33,6 @@ import { GravityPlayerInventoryProfilePickerComponent } from './gravity/gravity-
     OpusPlayerInventoryProfilePickerComponent,
     ApolloPlayerInventoryProfilePickerComponent,
     GravityPlayerInventoryProfilePickerComponent,
-  ]
+  ],
 })
-export class PlayerInventoryProfilesModule { }
+export class PlayerInventoryProfilesModule {}

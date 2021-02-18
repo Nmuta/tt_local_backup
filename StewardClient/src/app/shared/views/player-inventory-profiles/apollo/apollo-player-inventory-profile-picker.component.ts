@@ -8,8 +8,11 @@ import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-
 /** Displays a Apollo player's inventory. */
 @Component({
   selector: 'apollo-player-inventory-profile-picker',
-  templateUrl: '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
-  styleUrls: ['../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss'],
+  templateUrl:
+    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
+  styleUrls: [
+    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss',
+  ],
 })
 export class ApolloPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
   IdentityResultAlpha,

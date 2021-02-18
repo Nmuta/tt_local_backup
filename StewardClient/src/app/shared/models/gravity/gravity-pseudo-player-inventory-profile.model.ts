@@ -12,14 +12,20 @@ export interface GravityPseudoPlayerInventoryProfile {
 }
 
 /** Converts a gravity details object (with save state) into a value closely resembling other Inventory Profile formats. */
-export function gravitySaveStatesToPsuedoInventoryProfile(details: GravityPlayerDetails): GravityPseudoPlayerInventoryProfile[] {
-  return chain(details.saveStates).sortBy(profile => profile.lastLoginUtc).reverse().map(saveState => {
-    return {
-      profileId: saveState.userInventoryId,
-      isCurrent: saveState.userInventoryId === details.userInventoryId,
-      lastLoginUtc: saveState.lastLoginUtc,
-      userInventoryId: saveState.userInventoryId,
-      externalProfileId: saveState.userInventoryId,
-    }
-  }).value();
+export function gravitySaveStatesToPsuedoInventoryProfile(
+  details: GravityPlayerDetails,
+): GravityPseudoPlayerInventoryProfile[] {
+  return chain(details.saveStates)
+    .sortBy(profile => profile.lastLoginUtc)
+    .reverse()
+    .map(saveState => {
+      return {
+        profileId: saveState.userInventoryId,
+        isCurrent: saveState.userInventoryId === details.userInventoryId,
+        lastLoginUtc: saveState.lastLoginUtc,
+        userInventoryId: saveState.userInventoryId,
+        externalProfileId: saveState.userInventoryId,
+      };
+    })
+    .value();
 }

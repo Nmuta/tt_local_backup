@@ -15,14 +15,13 @@ describe('GravityPlayerInventoryProfilePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GravityPlayerInventoryProfilePickerComponent ],
+      declarations: [GravityPlayerInventoryProfilePickerComponent],
       providers: [createMockGravityService()],
       imports: [MatChipsModule],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
 
-    service = TestBed.inject(GravityService) as unknown as MockGravityService;
+    service = (TestBed.inject(GravityService) as unknown) as MockGravityService;
   });
 
   beforeEach(() => {
@@ -34,5 +33,6 @@ describe('GravityPlayerInventoryProfilePickerComponent', () => {
     () => fixture,
     () => first(GravityPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
     () => new MockGravityService().getPlayerInventoryProfilesByT10Id,
-    fn => service.getPlayerInventoryProfilesByT10Id = fn);
+    fn => (service.getPlayerInventoryProfilesByT10Id = fn),
+  );
 });

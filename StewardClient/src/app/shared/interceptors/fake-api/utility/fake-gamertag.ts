@@ -284,4 +284,8 @@ ego      fax      jet      job      rio      ski
 yes`;
 
 /** The above, in array format, with uppercased first letters. */
-const wordlist = wordlistBlob.split(/[ \n\r]+/).map(v => v.trim()).filter(v => !!v).map(v => v.charAt(0).toUpperCase() + v.slice(1));
+const wordlist = wordlistBlob
+  .split(/[ \n\r]+/)
+  .map(v => v.trim())
+  .filter(v => !!v)
+  .map(v => v.charAt(0).toUpperCase() + v.slice(1));

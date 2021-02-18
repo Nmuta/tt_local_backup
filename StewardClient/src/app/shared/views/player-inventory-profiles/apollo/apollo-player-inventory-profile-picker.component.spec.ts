@@ -15,14 +15,13 @@ describe('ApolloPlayerInventoryProfilePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ApolloPlayerInventoryProfilePickerComponent ],
+      declarations: [ApolloPlayerInventoryProfilePickerComponent],
       providers: [createMockApolloService()],
       imports: [MatChipsModule],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
 
-    service = TestBed.inject(ApolloService) as unknown as MockApolloService;
+    service = (TestBed.inject(ApolloService) as unknown) as MockApolloService;
   });
 
   beforeEach(() => {
@@ -34,5 +33,6 @@ describe('ApolloPlayerInventoryProfilePickerComponent', () => {
     () => fixture,
     () => first(ApolloPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
     () => new MockApolloService().getPlayerInventoryProfilesByXuid,
-    fn => service.getPlayerInventoryProfilesByXuid = fn);
+    fn => (service.getPlayerInventoryProfilesByXuid = fn),
+  );
 });

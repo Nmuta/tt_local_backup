@@ -25,13 +25,15 @@ export class ApolloPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(): ApolloPlayerInventoryProfile[] {
-    const items = Array(faker.random.number({min: 1, max: 5})).fill(undefined).map(() => {
-      return {
-        profileId: fakeBigInt(),
-        externalProfileId: faker.random.uuid(),
-        isCurrent: false,
-      }
-    });
+    const items = Array(faker.random.number({ min: 1, max: 5 }))
+      .fill(undefined)
+      .map(() => {
+        return {
+          profileId: fakeBigInt(),
+          externalProfileId: faker.random.uuid(),
+          isCurrent: false,
+        };
+      });
 
     faker.random.arrayElement(items).isCurrent = true;
 

@@ -29,12 +29,14 @@ export class OpusPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(): OpusPlayerInventoryProfile[] {
-    const items = Array(faker.random.number({min: 1, max: 5})).fill(undefined).map(() => {
-      return {
-        profileId: fakeBigInt(),
-        isCurrent: false,
-      }
-    });
+    const items = Array(faker.random.number({ min: 1, max: 5 }))
+      .fill(undefined)
+      .map(() => {
+        return {
+          profileId: fakeBigInt(),
+          isCurrent: false,
+        };
+      });
 
     faker.random.arrayElement(items).isCurrent = true;
 

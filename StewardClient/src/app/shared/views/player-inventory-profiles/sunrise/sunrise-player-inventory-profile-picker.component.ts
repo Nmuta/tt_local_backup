@@ -8,8 +8,11 @@ import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-
 /** Displays a Sunrise player's inventory. */
 @Component({
   selector: 'sunrise-player-inventory-profile-picker',
-  templateUrl: '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
-  styleUrls: ['../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss'],
+  templateUrl:
+    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
+  styleUrls: [
+    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss',
+  ],
 })
 export class SunrisePlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
   IdentityResultAlpha,

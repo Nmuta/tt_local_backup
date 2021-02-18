@@ -8,8 +8,11 @@ import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-
 /** Displays a Opus player's inventory. */
 @Component({
   selector: 'opus-player-inventory-profile-picker',
-  templateUrl: '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
-  styleUrls: ['../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss'],
+  templateUrl:
+    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.html',
+  styleUrls: [
+    '../player-inventory-profiles-picker/player-inventory-profiles-picker.component.scss',
+  ],
 })
 export class OpusPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
   IdentityResultAlpha,

@@ -15,14 +15,13 @@ describe('OpusPlayerInventoryProfilePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OpusPlayerInventoryProfilePickerComponent ],
+      declarations: [OpusPlayerInventoryProfilePickerComponent],
       providers: [createMockOpusService()],
       imports: [MatChipsModule],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
 
-    service = TestBed.inject(OpusService) as unknown as MockOpusService;
+    service = (TestBed.inject(OpusService) as unknown) as MockOpusService;
   });
 
   beforeEach(() => {
@@ -34,5 +33,6 @@ describe('OpusPlayerInventoryProfilePickerComponent', () => {
     () => fixture,
     () => first(OpusPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
     () => new MockOpusService().getPlayerInventoryProfilesByXuid,
-    fn => service.getPlayerInventoryProfilesByXuid = fn);
+    fn => (service.getPlayerInventoryProfilesByXuid = fn),
+  );
 });

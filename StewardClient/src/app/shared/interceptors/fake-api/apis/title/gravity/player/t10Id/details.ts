@@ -51,14 +51,20 @@ export class GravityPlayerT10IdDetailsFakeApi extends FakeApiBase {
       t10Id: t10id,
       timeOffsetInSeconds: fakeBigInt(),
       userInventoryId: faker.random.uuid(),
-      saveStates: Array(10).fill(undefined).map(() => {
-        return <GravitySaveState>{
-          lastLoginUtc: faker.date.recent(180),
-          userInventoryId: faker.random.uuid(),
-        }
-      }),
+      saveStates: Array(10)
+        .fill(undefined)
+        .map(() => {
+          return <GravitySaveState>{
+            lastLoginUtc: faker.date.recent(180),
+            userInventoryId: faker.random.uuid(),
+          };
+        }),
     };
-    model.userInventoryId = chain(model.saveStates).sortBy(v => v.lastLoginUtc).reverse().first().value().userInventoryId;
+    model.userInventoryId = chain(model.saveStates)
+      .sortBy(v => v.lastLoginUtc)
+      .reverse()
+      .first()
+      .value().userInventoryId;
     return model;
   }
 }

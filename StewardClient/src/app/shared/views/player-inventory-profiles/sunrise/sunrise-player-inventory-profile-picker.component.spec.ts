@@ -15,14 +15,13 @@ describe('SunrisePlayerInventoryProfilePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SunrisePlayerInventoryProfilePickerComponent ],
+      declarations: [SunrisePlayerInventoryProfilePickerComponent],
       providers: [createMockSunriseService()],
       imports: [MatChipsModule],
       schemas: [NO_ERRORS_SCHEMA],
-    })
-    .compileComponents();
+    }).compileComponents();
 
-    service = TestBed.inject(SunriseService) as unknown as MockSunriseService;
+    service = (TestBed.inject(SunriseService) as unknown) as MockSunriseService;
   });
 
   beforeEach(() => {
@@ -34,5 +33,6 @@ describe('SunrisePlayerInventoryProfilePickerComponent', () => {
     () => fixture,
     () => first(SunrisePlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
     () => new MockSunriseService(null).getPlayerInventoryProfilesByXuid,
-    fn => service.getPlayerInventoryProfilesByXuid = fn);
+    fn => (service.getPlayerInventoryProfilesByXuid = fn),
+  );
 });
