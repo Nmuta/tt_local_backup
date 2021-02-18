@@ -118,7 +118,7 @@ describe('service: GravityService', () => {
 
     it('should call API service getRequest with the expected params', done => {
       service
-        .getPlayerInventoryByProfileIdWithT10Id(expectedt10Id, expectedProfileId)
+        .getPlayerInventoryByT10IdAndProfileId(expectedt10Id, expectedProfileId)
         .subscribe(() => {
           expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
             `${service.basePath}/player/t10Id(${expectedt10Id})/profileId(${expectedProfileId})/inventory`,
