@@ -20,15 +20,17 @@ const routes: Routes = [
         path: 'navbar-app',
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
-        loadChildren: () => import('./pages/navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
+        loadChildren: () =>
+          import('./pages/navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
       },
       {
         path: 'ticket-app',
         canActivate: [AuthGuard, ZendeskGuard],
         canActivateChild: [AuthGuard],
-        loadChildren: () => import('./pages/ticket-app/ticket-app.module').then(m => m.TicketAppModule),
+        loadChildren: () =>
+          import('./pages/ticket-app/ticket-app.module').then(m => m.TicketAppModule),
       },
-    ]
+    ],
   },
   {
     path: 'auth',
@@ -36,7 +38,8 @@ const routes: Routes = [
   },
   {
     path: 'unauthorized',
-    loadChildren: () => import('./pages/unauthorized/unauthorized.module').then(m => m.UnauthroizedModule),
+    loadChildren: () =>
+      import('./pages/unauthorized/unauthorized.module').then(m => m.UnauthroizedModule),
   },
   {
     path: '**',

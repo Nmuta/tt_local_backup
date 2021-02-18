@@ -5,4 +5,3 @@ export interface UserModel {
   emailAddress?: string;
   role?: UserRole;
 }
-

@@ -25,9 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatProgressSpinnerModule,
     MatTooltipModule,
     FontAwesomeModule,
-],
-  declarations: [
-    HomeComponent,
   ],
+  declarations: [HomeComponent],
 })
 export class HomeModule {}

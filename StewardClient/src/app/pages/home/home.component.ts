@@ -23,7 +23,6 @@ export class HomeComponent extends BaseComponent implements OnInit {
   public appAvailableTooltip = 'App is available to your role.';
   public appUnavailableTooltip = 'App is unavailable to your role.';
 
-
   constructor(protected readonly store: Store) {
     super();
   }
@@ -33,7 +32,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
     this.userProfile = this.store.selectSnapshot<UserModel>(UserState.profile);
 
     if (!!this.userProfile) {
-      switch(this.userProfile.role) {
+      switch (this.userProfile.role) {
         case UserRole.LiveOpsAdmin:
           this.areSupportAppsAccessible = true;
           this.areDataAppsAccessible = true;

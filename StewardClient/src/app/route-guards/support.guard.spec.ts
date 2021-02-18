@@ -13,7 +13,10 @@ import { SupportGuard } from './support.guard';
 describe('SupportGuard:', () => {
   let guard: SupportGuard;
   let store: Store;
-  const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com', role: UserRole.LiveOpsAdmin };
+  const testProfile: UserModel = {
+    emailAddress: 'test.email@microsoft.com',
+    role: UserRole.LiveOpsAdmin,
+  };
   const testRoute: Partial<ActivatedRouteSnapshot> = {};
   const testSnapshot: Partial<RouterStateSnapshot> = { url: '/i/am/a/route?with=query' };
 
@@ -95,7 +98,7 @@ describe('SupportGuard:', () => {
       it('should call router.navigate correctly', fakeAsync(() => {
         const action = guard.canActivate(testRoute as never, testSnapshot as never);
         action.subscribe(result => expect(result).toBeFalsy());
-  
+
         expect(store.dispatch).toHaveBeenCalled();
         expect(store.dispatch).toHaveBeenCalledWith(
           new Navigate(['/unauthorized'], { app: 'Support' }),
@@ -103,7 +106,6 @@ describe('SupportGuard:', () => {
       }));
     });
   });
-
 
   describe('when profile is invalid:', () => {
     beforeEach(() => {

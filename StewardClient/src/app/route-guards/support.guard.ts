@@ -42,13 +42,13 @@ export class SupportGuard implements CanActivate, CanActivateChild {
         return of(false);
       }),
       map(profile => {
-        if(!profile) {
+        if (!profile) {
           this.store.dispatch(redirectAction);
           return false;
         }
 
         const role = (profile as UserModel)?.role;
-        switch(role) {
+        switch (role) {
           case UserRole.LiveOpsAdmin:
           case UserRole.SupportAgentAdmin:
           case UserRole.SupportAgent:

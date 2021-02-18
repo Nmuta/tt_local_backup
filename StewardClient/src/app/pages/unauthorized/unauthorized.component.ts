@@ -17,7 +17,7 @@ export class UnauthorizedComponent extends BaseComponent implements OnInit {
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-        this.appName = params['app'];
+      this.appName = params['app'];
     });
   }
 }

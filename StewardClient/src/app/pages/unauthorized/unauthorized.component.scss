@@ -5,10 +5,10 @@ mat-card {
   width: 100%;
   margin-top: 30px;
 
-  h1, h2 {
+  h1,
+  h2 {
     color: mat-color($app-primary);
   }
-
 
   a {
     display: block;

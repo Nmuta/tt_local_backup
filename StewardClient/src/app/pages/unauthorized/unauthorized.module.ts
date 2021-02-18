@@ -17,9 +17,7 @@ import { UnauthorizedComponent } from './unauthorized.component';
     MatButtonModule,
     CenterContentsModule,
     PipesModule,
-],
-  declarations: [
-    UnauthorizedComponent,
   ],
+  declarations: [UnauthorizedComponent],
 })
 export class UnauthroizedModule {}
