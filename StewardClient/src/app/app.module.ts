@@ -22,7 +22,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { ErrorComponent } from './pages/error/error.component';
 import { SidebarsModule } from './sidebars/sidebars.module';
-import { HomeComponent } from './pages/home/home.component';
 import { CenterContentsModule } from '@components/center-contents/center-contents.module';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { ZafClientService } from '@services/zendesk/zaf-client.service';
@@ -64,7 +63,7 @@ function fakeApiOrNothing(): Provider[] {
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent, HomeComponent],
+  declarations: [AppComponent, ErrorComponent],
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,

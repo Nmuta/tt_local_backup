@@ -32,6 +32,7 @@ export class SupportGuard implements CanActivate, CanActivateChild {
     // The query portion of the URL doesn't cleanly pass through the redirect process, resulting in 404s. We don't need it, anyway.
     const urlNoQuery = state.url.split('?')[0];
     const redirectAction = new Navigate(['/auth/login'], { from: urlNoQuery });
+    const unauthorizedAction = new Navigate(['/unauthorized'], { app: 'Support' });
 
     this.store.dispatch(new RequestAccessToken());
 
@@ -49,7 +50,7 @@ export class SupportGuard implements CanActivate, CanActivateChild {
           case UserRole.SupportAgentNew:
             return true;
           default:
-            this.store.dispatch(redirectAction);
+            this.store.dispatch(unauthorizedAction);
             return false;
         }
       }),
