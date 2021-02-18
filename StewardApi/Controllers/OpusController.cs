@@ -7,8 +7,8 @@ using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
-using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
@@ -55,29 +55,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
         public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
-            try
+            var results = new List<IdentityResultAlpha>();
+            var queries = new List<Task<IdentityResultAlpha>>();
+
+            foreach (var query in identityQueries)
             {
-                var results = new List<IdentityResultAlpha>();
-                var queries = new List<Task<IdentityResultAlpha>>();
-
-                foreach (var query in identityQueries)
-                {
-                    queries.Add(this.RetrieveIdentity(query));
-                }
-
-                await Task.WhenAll(queries).ConfigureAwait(true);
-
-                foreach (var query in queries)
-                {
-                    results.Add(await query.ConfigureAwait(true));
-                }
-
-                return this.Ok(results);
+                queries.Add(this.RetrieveIdentity(query));
             }
-            catch (Exception ex)
+
+            await Task.WhenAll(queries).ConfigureAwait(true);
+
+            foreach (var query in queries)
             {
-                return this.BadRequest(ex);
+                results.Add(await query.ConfigureAwait(true));
             }
+
+            return this.Ok(results);
         }
 
         /// <summary>
@@ -91,23 +84,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(OpusPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(string gamertag)
         {
-            try
-            {
-                gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
+            gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-                var playerDetails = await this.opusPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
+            var playerDetails = await this.opusPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
 
-                return this.Ok(playerDetails);
-            }
-            catch (Exception ex)
-            {
-                if (ex is ProfileNotFoundException)
-                {
-                    return this.NotFound(ex.Message);
-                }
-
-                return this.BadRequest(ex);
-            }
+            return this.Ok(playerDetails);
         }
 
         /// <summary>
@@ -121,21 +102,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(OpusPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(ulong xuid)
         {
-            try
-            {
-                var playerDetails = await this.opusPlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
+            var playerDetails = await this.opusPlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
 
-                return this.Ok(playerDetails);
-            }
-            catch (Exception ex)
-            {
-                if (ex is ProfileNotFoundException)
-                {
-                    return this.NotFound(ex.Message);
-                }
-
-                return this.BadRequest(ex);
-            }
+            return this.Ok(playerDetails);
         }
 
         /// <summary>
@@ -149,21 +118,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(OpusPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
-            try
-            {
-                var inventory = await this.opusPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
+            var inventory = await this.opusPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
 
-                if (inventory == null || !await this.opusPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
-                {
-                    return this.NotFound($"No inventory found for XUID: {xuid}");
-                }
-
-                return this.Ok(inventory);
-            }
-            catch (Exception ex)
+            if (inventory == null || !await this.opusPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
             {
-                return this.BadRequest(ex);
+                return this.NotFound($"No inventory found for XUID: {xuid}");
             }
+
+            return this.Ok(inventory);
         }
 
         /// <summary>
@@ -177,21 +139,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<OpusInventoryProfile>))]
         public async Task<IActionResult> GetPlayerInventoryProfiles(ulong xuid)
         {
-            try
-            {
-                var inventory = await this.opusPlayerInventoryProvider.GetInventoryProfilesAsync(xuid).ConfigureAwait(true);
+            var inventory = await this.opusPlayerInventoryProvider.GetInventoryProfilesAsync(xuid).ConfigureAwait(true);
 
-                if (inventory == null)
-                {
-                    return this.NotFound($"No profiles found for XUID: {xuid}");
-                }
-
-                return this.Ok(inventory);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(inventory);
         }
 
         /// <summary>
@@ -205,21 +155,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(OpusPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(int profileId)
         {
-            try
-            {
-                var inventory = await this.opusPlayerInventoryProvider.GetPlayerInventoryAsync(profileId).ConfigureAwait(true);
+            var inventory = await this.opusPlayerInventoryProvider.GetPlayerInventoryAsync(profileId).ConfigureAwait(true);
 
-                if (inventory == null || (!inventory.Cars.Any() && inventory.Credits <= 0))
-                {
-                    return this.NotFound($"No inventory found for Profile ID: {profileId}");
-                }
-
-                return this.Ok(inventory);
-            }
-            catch (Exception ex)
+            if (inventory == null || (!inventory.Cars.Any() && inventory.Credits <= 0))
             {
-                return this.BadRequest(ex);
+                return this.NotFound($"No inventory found for Profile ID: {profileId}");
             }
+
+            return this.Ok(inventory);
         }
 
         private async Task<IdentityResultAlpha> RetrieveIdentity(IdentityQueryAlpha query)
@@ -234,16 +177,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     return new IdentityResultAlpha
                     {
-                        Error = new StewardError(StewardErrorCode.RequiredParameterMissing, ex.Message),
+                        Error = new IdentityLookupError(StewardErrorCode.RequiredParameterMissing, ex.Message),
                         Query = query
                     };
                 }
 
-                if (ex is ProfileNotFoundException)
+                if (ex is NotFoundStewardException)
                 {
                     return new IdentityResultAlpha
                     {
-                        Error = new StewardError(StewardErrorCode.ProfileNotFound, ex.Message),
+                        Error = new IdentityLookupError(StewardErrorCode.DocumentNotFound, ex.Message),
                         Query = query
                     };
                 }

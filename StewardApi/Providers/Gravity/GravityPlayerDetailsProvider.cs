@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FMG.Generated;
 using Turn10.Data.Common;
-using Turn10.FMG.ForzaClient;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Gravity
@@ -37,52 +37,64 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         {
             query.ShouldNotBeNull(nameof(query));
 
-            var result = new IdentityResultBeta();
-
-            if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag) && string.IsNullOrWhiteSpace(query.T10Id))
+            try
             {
-                result.Error = new StewardError(StewardErrorCode.RequiredParameterMissing, "T10ID, Gamertag, or XUID must be provided.");
-            }
-            else if (!string.IsNullOrWhiteSpace(query.T10Id))
-            {
-                var details = await this.GetUserDetailsByT10Id(query.T10Id).ConfigureAwait(false);
+                var result = new IdentityResultBeta();
 
-                result = details == null
-                    ? throw new ProfileNotFoundException($"No profile found for Turn 10 ID: {query.T10Id}.")
-                    : this.mapper.Map<IdentityResultBeta>(details);
-            }
-            else if (query.Xuid != null)
-            {
-                var details = await this.GetUserDetailsByXuid(query.Xuid.Value).ConfigureAwait(false);
-
-                result.T10Ids = details ?? throw new ProfileNotFoundException($"No profile found for XUID: {query.Xuid}.");
-
-                var activePlayer = details.OrderByDescending(e => e.LastLogin).FirstOrDefault();
-                if (activePlayer != null)
+                if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag) && string.IsNullOrWhiteSpace(query.T10Id))
                 {
-                    result.Xuid = activePlayer.Xuid;
-                    result.Gamertag = activePlayer.GamerTag;
-                    result.T10Id = activePlayer.Turn10Id;
+                    result.Error = new IdentityLookupError(
+                        StewardErrorCode.RequiredParameterMissing,
+                        "T10ID, Gamertag, or XUID must be provided.");
                 }
-            }
-            else if (!string.IsNullOrWhiteSpace(query.Gamertag))
-            {
-                var details = await this.GetUserDetailsByGamertag(query.Gamertag).ConfigureAwait(false);
-
-                result.T10Ids = details ?? throw new ProfileNotFoundException($"No profile found for Gamertag: {query.Gamertag}.");
-
-                var activePlayer = details.OrderByDescending(e => e.LastLogin).FirstOrDefault();
-                if (activePlayer != null)
+                else if (!string.IsNullOrWhiteSpace(query.T10Id))
                 {
-                    result.Xuid = activePlayer.Xuid;
-                    result.Gamertag = activePlayer.GamerTag;
-                    result.T10Id = activePlayer.Turn10Id;
+                    var details = await this.GetUserDetailsByT10Id(query.T10Id).ConfigureAwait(false);
+
+                    result = this.mapper.Map<IdentityResultBeta>(details);
                 }
+                else if (query.Xuid != null)
+                {
+                    var details = await this.GetUserDetailsByXuid(query.Xuid.Value).ConfigureAwait(false);
+
+                    result.T10Ids = details;
+
+                    var activePlayer = details.OrderByDescending(e => e.LastLogin).FirstOrDefault();
+                    if (activePlayer != null)
+                    {
+                        result.Xuid = activePlayer.Xuid;
+                        result.Gamertag = activePlayer.GamerTag;
+                        result.T10Id = activePlayer.Turn10Id;
+                    }
+                }
+                else if (!string.IsNullOrWhiteSpace(query.Gamertag))
+                {
+                    var details = await this.GetUserDetailsByGamertag(query.Gamertag).ConfigureAwait(false);
+
+                    result.T10Ids = details;
+
+                    var activePlayer = details.OrderByDescending(e => e.LastLogin).FirstOrDefault();
+                    if (activePlayer != null)
+                    {
+                        result.Xuid = activePlayer.Xuid;
+                        result.Gamertag = activePlayer.GamerTag;
+                        result.T10Id = activePlayer.Turn10Id;
+                    }
+                }
+
+                result.Query = query;
+
+                return result;
             }
+            catch (Exception ex)
+            {
+                if (ex is StewardBaseException)
+                {
+                    throw;
+                }
 
-            result.Query = query;
-
-            return result;
+                throw new UnknownFailureStewardException("Identity lookup has failed for an unknown reason.", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -90,36 +102,50 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var response = await this.GetUserDetailsByGamertag(gamertag).ConfigureAwait(false);
-            if (response == null) { return null; }
+            try
+            {
+                var response = await this.GetUserDetailsByGamertag(gamertag).ConfigureAwait(false);
+                var details = response.OrderByDescending(e => e.LastLogin).FirstOrDefault();
 
-            var details = response.OrderByDescending(e => e.LastLogin).FirstOrDefault();
-            if (details == null) { return null; }
-
-            return this.mapper.Map<GravityPlayerDetails>(details);
+                return this.mapper.Map<GravityPlayerDetails>(details);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No player found for Gamertag: {gamertag}.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<GravityPlayerDetails> GetPlayerDetailsAsync(ulong xuid)
         {
-            var response = await this.GetUserDetailsByXuid(xuid).ConfigureAwait(false);
-            if (response == null) { return null; }
+            try
+            {
+                var response = await this.GetUserDetailsByXuid(xuid).ConfigureAwait(false);
+                var details = response.OrderByDescending(e => e.LastLogin).FirstOrDefault();
 
-            var details = response.OrderByDescending(e => e.LastLogin).FirstOrDefault();
-            if (details == null) { return null; }
-
-            return this.mapper.Map<GravityPlayerDetails>(details);
-        }
+                return this.mapper.Map<GravityPlayerDetails>(details);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
+            }
+}
 
         /// <inheritdoc />
         public async Task<GravityPlayerDetails> GetPlayerDetailsByT10IdAsync(string t10Id)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
-            var response = await this.GetUserDetailsByT10Id(t10Id).ConfigureAwait(false);
-            if (response == null) { return null; }
+            try
+            {
+                var response = await this.GetUserDetailsByT10Id(t10Id).ConfigureAwait(false);
 
-            return this.mapper.Map<GravityPlayerDetails>(response);
+                return this.mapper.Map<GravityPlayerDetails>(response);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No player found for Turn 10 ID: {t10Id}.", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -177,18 +203,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                var response = await this.gravityUserService.LiveOpsGetUserDetailsByT10IdAsync(t10Id).ConfigureAwait(false);
+                var response = await this.gravityUserService
+                    .LiveOpsGetUserDetailsByT10IdAsync(t10Id).ConfigureAwait(false);
 
                 return response.userDetails;
             }
-            catch (ForzaClientException ex)
+            catch (Exception ex)
             {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    throw new ProfileNotFoundException($"Player {t10Id} was not found.", ex);
-                }
-
-                throw;
+                throw new NotFoundStewardException($"No profile found for Turn 10 ID: {t10Id}.", ex);
             }
         }
 
@@ -196,18 +218,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         {
             try
             {
-                var response = await this.gravityUserService.LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
+                var response = await this.gravityUserService
+                    .LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
 
                 return response.userDetails;
             }
-            catch (ForzaClientException ex)
+            catch (Exception ex)
             {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    throw new ProfileNotFoundException($"Player {xuid} was not found.", ex);
-                }
-
-                throw;
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.", ex);
             }
         }
 
@@ -217,18 +235,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                var response = await this.gravityUserService.LiveOpsGetUserDetailsByGamerTagAsync(gamertag, MaxLookupResults).ConfigureAwait(false);
+                var response = await this.gravityUserService
+                .LiveOpsGetUserDetailsByGamerTagAsync(gamertag, MaxLookupResults).ConfigureAwait(false);
 
                 return response.userDetails;
             }
-            catch (ForzaClientException ex)
+            catch (Exception ex)
             {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    throw new ProfileNotFoundException($"Player {gamertag} was not found.", ex);
-                }
-
-                throw;
+                throw new NotFoundStewardException($"No profile found for Gamertag: {gamertag}.", ex);
             }
         }
     }

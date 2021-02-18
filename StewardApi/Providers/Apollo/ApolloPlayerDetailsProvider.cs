@@ -8,6 +8,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo
@@ -52,29 +53,43 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             query.ShouldNotBeNull(nameof(query));
 
-            var result = new ApolloPlayerDetails();
-
-            if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag))
+            try
             {
-                throw new ArgumentException("Gamertag or Xuid must be provided.");
+                var result = new ApolloPlayerDetails();
+
+                if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag))
+                {
+                    throw new ArgumentException("Gamertag or Xuid must be provided.");
+                }
+                else if (query.Xuid.HasValue)
+                {
+                    var playerDetails = await this.GetPlayerDetailsAsync(query.Xuid.Value).ConfigureAwait(false);
+
+                    result = playerDetails ??
+                             throw new NotFoundStewardException($"No player found for XUID: {query.Xuid}.");
+                }
+                else if (!string.IsNullOrWhiteSpace(query.Gamertag))
+                {
+                    var playerDetails = await this.GetPlayerDetailsAsync(query.Gamertag).ConfigureAwait(false);
+
+                    result = playerDetails ??
+                             throw new NotFoundStewardException($"No player found for Gamertag: {query.Gamertag}.");
+                }
+
+                var identity = this.mapper.Map<IdentityResultAlpha>(result);
+                identity.Query = query;
+
+                return identity;
             }
-            else if (query.Xuid.HasValue)
+            catch (Exception ex)
             {
-                var playerDetails = await this.GetPlayerDetailsAsync(query.Xuid.Value).ConfigureAwait(false);
+                if (ex is StewardBaseException)
+                {
+                    throw;
+                }
 
-                result = playerDetails ?? throw new ProfileNotFoundException($"No profile found for XUID: {query.Xuid}.");
+                throw new UnknownFailureStewardException("Identity lookup has failed for an unknown reason.", ex);
             }
-            else if (!string.IsNullOrWhiteSpace(query.Gamertag))
-            {
-                var playerDetails = await this.GetPlayerDetailsAsync(query.Gamertag).ConfigureAwait(false);
-
-                result = playerDetails ?? throw new ProfileNotFoundException($"No profile found for Gamertag: {query.Gamertag}.");
-            }
-
-            var identity = this.mapper.Map<IdentityResultAlpha>(result);
-            identity.Query = query;
-
-            return identity;
         }
 
         /// <inheritdoc />
@@ -90,7 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             }
             catch (Exception ex)
             {
-                throw new ProfileNotFoundException($"Player {gamertag} was not found.", ex);
+                throw new NotFoundStewardException($"No player found for Gamertag: {gamertag}.", ex);
             }
         }
 
@@ -105,7 +120,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             }
             catch (Exception ex)
             {
-                throw new ProfileNotFoundException($"Player {xuid} was not found.", ex);
+                throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
             }
         }
 
@@ -150,33 +165,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             {
                 param.FeatureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(param.FeatureArea));
 
-                if (param.Xuid == default)
+                if (param.Xuid == default && string.IsNullOrWhiteSpace(param.Gamertag))
                 {
-                    if (string.IsNullOrWhiteSpace(param.Gamertag))
-                    {
-                        throw new ArgumentException("No XUID or Gamertag provided.");
-                    }
+                    throw new InvalidArgumentsStewardException("No XUID or Gamertag provided.");
+                }
 
-                    try
-                    {
-                        var userResult = await this.apolloUserService.LiveOpsGetUserDataByGamertagAsync(param.Gamertag).ConfigureAwait(false);
+                try
+                {
+                    var userResult = await this.apolloUserService.LiveOpsGetUserDataByGamertagAsync(param.Gamertag).ConfigureAwait(false);
 
-                        param.Xuid = userResult.returnData.qwXuid;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ArgumentException($"Player lookup for {param.Gamertag} failed.", ex);
-                    }
+                    param.Xuid = userResult.returnData.qwXuid;
+                }
+                catch (Exception ex)
+                {
+                    throw new NotFoundStewardException($"No profile found for Gamertag: {param.Gamertag}.", ex);
                 }
             }
 
-            var banResults = new List<ApolloBanResult>();
-
-            for (var i = 0; i < banParameters.Count; i += maxXuidsPerRequest)
+            try
             {
-                var paramBatch = banParameters.ToList().GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
-                var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
-                var result = await this.apolloUserService.BanUsersAsync(mappedBanParameters.ToArray()).ConfigureAwait(false);
+                var banResults = new List<ApolloBanResult>();
+
+                for (var i = 0; i < banParameters.Count; i += maxXuidsPerRequest)
+                {
+                    var paramBatch = banParameters.ToList()
+                        .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
+                    var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
+                    var result = await this.apolloUserService.BanUsersAsync(mappedBanParameters.ToArray())
+                        .ConfigureAwait(false);
 
                 foreach (var param in paramBatch)
                 {
@@ -193,90 +209,148 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     }
                 }
 
-                banResults.AddRange(this.mapper.Map<IList<ApolloBanResult>>(result.banResults));
-            }
+                    banResults.AddRange(this.mapper.Map<IList<ApolloBanResult>>(result.banResults));
+                }
 
-            return banResults;
+                return banResults;
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException("User banning has failed.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid)
         {
-            var result = await this.apolloUserService.GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
-
-            if (result.availableCount > DefaultMaxResults)
+            try
             {
-                result = await this.apolloUserService.GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
+                var result = await this.apolloUserService
+                    .GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
+
+                if (result.availableCount > DefaultMaxResults)
+                {
+                    result = await this.apolloUserService
+                        .GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
+                }
+
+                var banResults = result.bans.Select(ban => { return LiveOpsBanHistoryMapper.Map(ban); }).ToList();
+                banResults.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+
+                return banResults;
             }
-
-            var banResults = result.bans.Select(ban => { return LiveOpsBanHistoryMapper.Map(ban); }).ToList();
-            banResults.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
-
-            return banResults;
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<IList<ApolloBanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)
         {
-            if (xuids.Count == 0)
+            try
             {
-                return new List<ApolloBanSummary>();
+                if (xuids.Count == 0)
+                {
+                    return new List<ApolloBanSummary>();
+                }
+
+                var result = await this.apolloUserService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
+
+                var banSummaryResults = this.mapper.Map<IList<ApolloBanSummary>>(result.banSummaries);
+
+                return banSummaryResults;
             }
-
-            var result = await this.apolloUserService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
-
-            var banSummaryResults = this.mapper.Map<IList<ApolloBanSummary>>(result.banSummaries);
-
-            return banSummaryResults;
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException($"User ban summary lookup has failed.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<IList<ApolloConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
         {
-            var response = await this.apolloUserService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+            try
+            {
+                var response = await this.apolloUserService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<ApolloConsoleDetails>>(response.consoles);
+                return this.mapper.Map<IList<ApolloConsoleDetails>>(response.consoles);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No consoles found for Xuid: {xuid}.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned)
         {
-            await this.apolloUserService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
+            try
+            {
+                await this.apolloUserService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No console found for Console ID: {consoleId}.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<IList<ApolloSharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
         {
-            var response = await this.apolloUserService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
+            try
+            {
+                var response = await this.apolloUserService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<ApolloSharedConsoleUser>>(response.sharedConsoleUsers);
+                return this.mapper.Map<IList<ApolloSharedConsoleUser>>(response.sharedConsoleUsers);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No shared console users found for XUID: {xuid}.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<IList<ApolloLspGroup>> GetLspGroupsAsync(int startIndex, int maxResults)
         {
-            var result = await this.apolloGroupingService.GetUserGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
-            var lspGroups = this.mapper.Map<IList<ApolloLspGroup>>(result.userGroups);
+            try
+            {
+                var result = await this.apolloGroupingService.GetUserGroupsAsync(startIndex, maxResults)
+                    .ConfigureAwait(false);
+                var lspGroups = this.mapper.Map<IList<ApolloLspGroup>>(result.userGroups);
 
-            return lspGroups;
+                return lspGroups;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No LSP groups found for {TitleConstants.ApolloFullName}", ex);
+            }
         }
 
         /// <inheritdoc/>
         public async Task<ApolloUserFlags> GetUserFlagsAsync(ulong xuid)
         {
-            var suspiciousResults = await this.apolloUserService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
-            var userGroupResults = await this.apolloGroupingService.GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(false);
-
-            userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
-
-            return new ApolloUserFlags
+            try
             {
-                IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
-                IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
-                IsCommunityManager = userGroupResults.userGroups.Any(r => r.Id == CommunityManagerUserGroupId),
-                IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
-                IsUnderReview = suspiciousResults.isUnderReview
-            };
+                var suspiciousResults = await this.apolloUserService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
+                var userGroupResults = await this.apolloGroupingService
+                    .GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(false);
+
+                userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
+
+                return new ApolloUserFlags
+                {
+                    IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
+                    IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
+                    IsCommunityManager = userGroupResults.userGroups.Any(r => r.Id == CommunityManagerUserGroupId),
+                    IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
+                    IsUnderReview = suspiciousResults.isUnderReview
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"User flags not found for XUID: {xuid}.", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -284,16 +358,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
 
-            await this.apolloUserService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview).ConfigureAwait(false);
+            try
+            {
+                await this.apolloUserService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview).ConfigureAwait(false);
 
-            userFlags.ShouldNotBeNull(nameof(userFlags));
+                userFlags.ShouldNotBeNull(nameof(userFlags));
 
-            var addGroupList = this.PrepareGroupIds(userFlags, true);
-            var removeGroupList = this.PrepareGroupIds(userFlags, false);
+                var addGroupList = this.PrepareGroupIds(userFlags, true);
+                var removeGroupList = this.PrepareGroupIds(userFlags, false);
 
-            await this.apolloGroupingService.AddToUserGroupsAsync(xuid, addGroupList.ToArray()).ConfigureAwait(false);
-            await this.apolloGroupingService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray()).ConfigureAwait(false);
-            await this.apolloUserService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview).ConfigureAwait(false);
+                await this.apolloGroupingService.AddToUserGroupsAsync(xuid, addGroupList.ToArray())
+                    .ConfigureAwait(false);
+                await this.apolloGroupingService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray())
+                    .ConfigureAwait(false);
+                await this.apolloUserService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException($"Update user flags failed for XUID: {xuid}.", ex);
+            }
         }
 
         private IList<int> PrepareGroupIds(ApolloUserFlags userFlags, bool toggleOn)

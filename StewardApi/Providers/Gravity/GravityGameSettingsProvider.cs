@@ -8,6 +8,7 @@ using Forza.WebServices.FMG.Generated;
 using Turn10.Data.Common;
 using Turn10.FMG.ForzaClient;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using static Forza.WebServices.FMG.Generated.GameSettingsService;
 
@@ -40,8 +41,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         {
             gameSettingsId.ToString().ShouldNotBeNull(nameof(gameSettingsId));
 
-            var gameSettingsOutput = await this.gravityGameSettingsService.GetGameSettingsAsync(gameSettingsId).ConfigureAwait(false);
-            return this.mapper.Map<GravityMasterInventory>(gameSettingsOutput);
+            try
+            {
+                var gameSettingsOutput = await this.gravityGameSettingsService.GetGameSettingsAsync(gameSettingsId)
+                    .ConfigureAwait(false);
+                return this.mapper.Map<GravityMasterInventory>(gameSettingsOutput);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"Failed to find Master Inventory List for Game Settings ID: {gameSettingsId}.", ex);
+            }
         }
     }
 }

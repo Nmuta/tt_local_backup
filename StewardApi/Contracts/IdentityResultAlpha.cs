@@ -1,4 +1,5 @@
 ﻿using System;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
 namespace Turn10.LiveOps.StewardApi.Contracts
 {
@@ -25,6 +26,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         /// <summary>
         ///     Gets or sets the error.
         /// </summary>
-        public StewardError Error { get; set; }
+        public IdentityLookupError Error { get; set; }
     }
 }

@@ -11,6 +11,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity.Settings;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -88,29 +89,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(List<IdentityResultBeta>))]
         public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryBeta> identityQueries)
         {
-            try
+            var results = new List<IdentityResultBeta>();
+            var queries = new List<Task<IdentityResultBeta>>();
+
+            foreach (var query in identityQueries)
             {
-                var results = new List<IdentityResultBeta>();
-                var queries = new List<Task<IdentityResultBeta>>();
-
-                foreach (var query in identityQueries)
-                {
-                    queries.Add(this.RetrieveIdentity(query));
-                }
-
-                await Task.WhenAll(queries).ConfigureAwait(true);
-
-                foreach (var query in queries)
-                {
-                    results.Add(await query.ConfigureAwait(true));
-                }
-
-                return this.Ok(results);
+                queries.Add(this.RetrieveIdentity(query));
             }
-            catch (Exception ex)
+
+            await Task.WhenAll(queries).ConfigureAwait(true);
+
+            foreach (var query in queries)
             {
-                return this.BadRequest(ex);
+                results.Add(await query.ConfigureAwait(true));
             }
+
+            return this.Ok(results);
         }
 
         /// <summary>
@@ -125,23 +119,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(404, type: typeof(string))]
         public async Task<IActionResult> GetPlayerDetails(string gamertag)
         {
-            try
-            {
-                gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
+            gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-                var playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
+            var playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
 
-                return this.Ok(playerDetails);
-            }
-            catch (Exception ex)
-            {
-                if (ex is ProfileNotFoundException)
-                {
-                    return this.NotFound(ex.Message);
-                }
-
-                return this.BadRequest(ex);
-            }
+            return this.Ok(playerDetails);
         }
 
         /// <summary>
@@ -155,21 +137,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GravityPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(ulong xuid)
         {
-            try
-            {
-                var playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
+            var playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
 
-                return this.Ok(playerDetails);
-            }
-            catch (Exception ex)
-            {
-                if (ex is ProfileNotFoundException)
-                {
-                    return this.NotFound(ex.Message);
-                }
-
-                return this.BadRequest(ex);
-            }
+            return this.Ok(playerDetails);
         }
 
         /// <summary>
@@ -183,23 +153,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GravityPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetailsByT10Id(string t10Id)
         {
-            try
-            {
-                t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
+            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
-                var playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(t10Id).ConfigureAwait(true);
+            var playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(t10Id).ConfigureAwait(true);
 
-                return this.Ok(playerDetails);
-            }
-            catch (Exception ex)
-            {
-                if (ex is ProfileNotFoundException)
-                {
-                    return this.NotFound(ex.Message);
-                }
-
-                return this.BadRequest(ex);
-            }
+            return this.Ok(playerDetails);
         }
 
         /// <summary>
@@ -213,21 +171,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
-            try
-            {
-                var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
+            var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
 
-                if (inventory == null)
-                {
-                    return this.NotFound($"No inventory found for XUID: {xuid}");
-                }
-
-                return this.Ok(inventory);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(inventory);
         }
 
         /// <summary>
@@ -241,23 +187,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(string t10Id)
         {
-            try
-            {
-                t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
+            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
-                var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id).ConfigureAwait(true);
+            var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id).ConfigureAwait(true);
 
-                if (inventory == null)
-                {
-                    return this.NotFound($"No inventory found for Turn 10 ID: {t10Id}");
-                }
-
-                return this.Ok(inventory);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(inventory);
         }
 
         /// <summary>
@@ -272,23 +206,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid, string profileId)
         {
-            try
+            profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
+
+            var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, profileId).ConfigureAwait(true);
+
+            if (inventory == null)
             {
-                profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
-
-                var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, profileId).ConfigureAwait(true);
-
-                if (inventory == null)
-                {
-                    return this.NotFound($"No inventory found for XUID: {xuid}");
-                }
-
-                return this.Ok(inventory);
+                return this.NotFound($"No inventory found for XUID: {xuid}");
             }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+
+            return this.Ok(inventory);
         }
 
         /// <summary>
@@ -303,24 +230,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(string t10Id, string profileId)
         {
-            try
+            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
+            profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
+
+            var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id, profileId).ConfigureAwait(true);
+
+            if (inventory == null)
             {
-                t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
-                profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
-
-                var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id, profileId).ConfigureAwait(true);
-
-                if (inventory == null)
-                {
-                    return this.NotFound($"No inventory found for Turn 10 ID: {t10Id}");
-                }
-
-                return this.Ok(inventory);
+                return this.NotFound($"No inventory found for Turn 10 ID: {t10Id}");
             }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+
+            return this.Ok(inventory);
         }
 
         /// <summary>
@@ -336,84 +256,77 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GiftResponse<string>))]
         public async Task<IActionResult> UpdatePlayerInventoryByT10Id(string t10Id, [FromBody] GravityGift gift, [FromQuery] bool useBackgroundProcessing = false)
         {
+            var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
+            ? this.User.GetClaimValue(ClaimTypes.Email)
+            : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+
+            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
+            gift.ShouldNotBeNull(nameof(gift));
+            gift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gift.GiftReason));
+            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+
+            this.giftRequestValidator.Validate(gift, this.ModelState);
+
+            if (!this.ModelState.IsValid)
+            {
+                var errorResponse = this.giftRequestValidator.GenerateErrorResponse(this.ModelState);
+                return this.BadRequest(errorResponse);
+            }
+
+            GravityPlayerDetails playerDetails;
             try
             {
-                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-                ? this.User.GetClaimValue(ClaimTypes.Email)
-                : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+                playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(t10Id).ConfigureAwait(true);
+            }
+            catch (Exception)
+            {
+                playerDetails = null;
+            }
 
-                t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
-                gift.ShouldNotBeNull(nameof(gift));
-                gift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gift.GiftReason));
-                gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            if (playerDetails == null)
+            {
+                return this.NotFound($"No player found for T10Id: {t10Id}");
+            }
 
-                this.giftRequestValidator.Validate(gift, this.ModelState);
+            var playerGameSettingsId = playerDetails.LastGameSettingsUsed;
+            var invalidItems = await this.VerifyGiftAgainstMasterInventory(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
+            if (invalidItems.Length > 0)
+            {
+                return this.BadRequest($"Invalid items found. {invalidItems}");
+            }
 
-                if (!this.ModelState.IsValid)
-                {
-                    var errorResponse = this.giftRequestValidator.GenerateErrorResponse(this.ModelState);
-                    return this.BadRequest(errorResponse);
-                }
+            if (!useBackgroundProcessing)
+            {
+                var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
+                return this.Ok(response);
+            }
 
-                GravityPlayerDetails playerDetails;
+            var username = this.User.GetNameIdentifier();
+            var jobId = await this.AddJobIdToHeaderAsync(gift.ToJson(), username).ConfigureAwait(true);
+
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
+            {
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
                 try
                 {
-                    playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(t10Id).ConfigureAwait(true);
+                    var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response.ToJson()).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    playerDetails = null;
+                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
-
-                if (playerDetails == null)
-                {
-                    return this.NotFound($"No player found for T10Id: {t10Id}");
-                }
-
-                var playerGameSettingsId = playerDetails.LastGameSettingsUsed;
-                var invalidItems = await this.VerifyGiftAgainstMasterInventory(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
-                if (invalidItems.Length > 0)
-                {
-                    return this.BadRequest($"Invalid items found. {invalidItems}");
-                }
-
-                if (!useBackgroundProcessing)
-                {
-                    var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
-                    return this.Ok(response);
-                }
-
-                var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(gift.ToJson(), username).ConfigureAwait(true);
-
-                async Task BackgroundProcessing(CancellationToken cancellationToken)
-                {
-                    // Throwing within the hosting environment background worker seems to have significant consequences.
-                    // Do not throw.
-                    try
-                    {
-                        var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response.ToJson()).ConfigureAwait(true);
-                    }
-                    catch (Exception)
-                    {
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
-                    }
-                }
-
-                this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-                return this.Ok(new BackgroundJob()
-                {
-                    JobId = jobId,
-                    Status = BackgroundJobStatus.InProgress.ToString(),
-                });
             }
-            catch (Exception ex)
+
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
+
+            return this.Accepted(new BackgroundJob()
             {
-                return this.BadRequest(ex);
-            }
+                JobId = jobId,
+                Status = BackgroundJobStatus.InProgress.ToString(),
+            });
         }
 
         /// <summary>
@@ -428,23 +341,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(404, type: typeof(string))]
         public async Task<IActionResult> GetMasterInventoryList(string gameSettingsId)
         {
-            try
+            gameSettingsId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gameSettingsId));
+
+            if (!Guid.TryParse(gameSettingsId, out var gameSettingsIdGuid))
             {
-                gameSettingsId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gameSettingsId));
-
-                if (!Guid.TryParse(gameSettingsId, out var gameSettingsIdGuid))
-                {
-                    this.BadRequest("Game settings ID provided is not a GUID.");
-                }
-
-                var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(gameSettingsIdGuid).ConfigureAwait(true);
-
-                return this.Ok(masterInventory);
+                this.BadRequest("Game settings ID provided is not a GUID.");
             }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+
+            var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(gameSettingsIdGuid).ConfigureAwait(true);
+
+            return this.Ok(masterInventory);
         }
 
         /// <summary>
@@ -458,18 +364,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<GravityGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(string t10Id)
         {
-            try
-            {
-                t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
+            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
-                var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(t10Id, TitleConstants.GravityCodeName, GiftHistoryAntecedent.T10Id).ConfigureAwait(true);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(t10Id, TitleConstants.GravityCodeName, GiftHistoryAntecedent.T10Id).ConfigureAwait(true);
 
-                return this.Ok(giftHistory);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(giftHistory);
         }
 
         private async Task<string> AddJobIdToHeaderAsync(string requestBody, string username)
@@ -493,16 +392,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     return new IdentityResultBeta
                     {
-                        Error = new StewardError(StewardErrorCode.RequiredParameterMissing, ex.Message),
+                        Error = new IdentityLookupError(StewardErrorCode.RequiredParameterMissing, ex.Message),
                         Query = query
                     };
                 }
 
-                if (ex is ProfileNotFoundException)
+                if (ex is NotFoundStewardException)
                 {
                     return new IdentityResultBeta
                     {
-                        Error = new StewardError(StewardErrorCode.ProfileNotFound, ex.Message),
+                        Error = new IdentityLookupError(StewardErrorCode.DocumentNotFound, ex.Message),
                         Query = query
                     };
                 }

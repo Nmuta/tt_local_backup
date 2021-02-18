@@ -140,10 +140,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
             foreach (var action in actions)
             {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gamertag"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gamertag"));
             }
         }
 

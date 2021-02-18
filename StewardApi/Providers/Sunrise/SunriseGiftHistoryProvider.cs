@@ -8,6 +8,7 @@ using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 
@@ -70,9 +71,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
 
-            var playerId = $"{giftHistoryAntecedent}:{id}";
+            try
+            {
+                var playerId = $"{giftHistoryAntecedent}:{id}";
 
-            return await this.GetGiftHistoriesAsync(playerId, title).ConfigureAwait(false);
+                return await this.GetGiftHistoriesAsync(playerId, title).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                if (ex is StewardBaseException)
+                {
+                    throw;
+                }
+
+                throw new NotFoundStewardException($"No history found for {giftHistoryAntecedent}: {id}.", ex);
+            }
         }
 
         private async Task<IList<SunriseGiftHistory>> GetGiftHistoriesAsync(string playerId, string title)
@@ -95,7 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     convertedGift = history.GiftInventory.FromJson<SunriseGift>();
                     if (convertedGift.Inventory == null)
                     {
-                        throw new InvalidOperationException("Not a SunriseGift model");
+                        throw new UnknownFailureStewardException("Not a SunriseGift model");
                     }
                 }
                 catch
@@ -106,7 +119,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                         convertedGift = this.mapper.Map<SunriseGift>(sunrisePlayerInventory);
                         if (convertedGift.Inventory == null)
                         {
-                            throw new InvalidOperationException("Not a SunrisePlayerInventory model");
+                            throw new UnknownFailureStewardException("Not a SunrisePlayerInventory model");
                         }
                     }
                     catch
