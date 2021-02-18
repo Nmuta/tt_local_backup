@@ -263,50 +263,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             }
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void DeletePlayerInventoryAsync_WithValidParameters_DoesNotThrow()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var t10Id = Fixture.Create<string>();
-            var xuid = Fixture.Create<ulong>();
-
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.DeletePlayerInventoryAsync(xuid).ConfigureAwait(false),
-                async () => await provider.DeletePlayerInventoryAsync(t10Id).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().NotThrow();
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void DeletePlayerInventoryAsync_WithNullEmptyWhitespaceT10Id_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await provider.DeletePlayerInventoryAsync(null).ConfigureAwait(false),
-                async () => await provider.DeletePlayerInventoryAsync(TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.DeletePlayerInventoryAsync(TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "t10Id"));
-            }
-        }
-
         private sealed class Dependencies
         {
             public Dependencies()

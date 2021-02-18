@@ -59,23 +59,5 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         ///     The <see cref="GiftResponse{T}"/>.
         /// </returns>
         Task<GiftResponse<string>> UpdatePlayerInventoryAsync(string t10Id, Guid gameSettingsId, GravityGift gift, string requestingAgent);
-
-        /// <summary>
-        ///     Delete player inventory.
-        /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     A task with a status.
-        /// </returns>
-        Task DeletePlayerInventoryAsync(ulong xuid);
-
-        /// <summary>
-        ///     Delete player inventory.
-        /// </summary>
-        /// <param name="t10Id">The Turn 10 ID.</param>
-        /// <returns>
-        ///     A task with a status.
-        /// </returns>
-        Task DeletePlayerInventoryAsync(string t10Id);
     }
 }

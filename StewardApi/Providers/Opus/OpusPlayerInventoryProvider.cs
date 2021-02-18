@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Opus
@@ -33,25 +35,47 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
-            var response = await this.opusInventoryService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
+            try
+            {
+                var response = await this.opusInventoryService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
 
-            return this.mapper.Map<OpusPlayerInventory>(response.summary);
+                return this.mapper.Map<OpusPlayerInventory>(response.summary);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No inventory found for XUID: {xuid}", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<IList<OpusInventoryProfile>> GetInventoryProfilesAsync(ulong xuid)
         {
-            var response = await this.opusInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+            try
+            {
+                var response = await this.opusInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults)
+                    .ConfigureAwait(false);
 
-            return this.mapper.Map<IList<OpusInventoryProfile>>(response.profiles);
+                return this.mapper.Map<IList<OpusInventoryProfile>>(response.profiles);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No inventory found for XUID: {xuid}", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<OpusPlayerInventory> GetPlayerInventoryAsync(int profileId)
         {
+            try
+            {
                 var response = await this.opusInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId).ConfigureAwait(false);
 
                 return this.mapper.Map<OpusPlayerInventory>(response.summary);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}", ex);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Opus
@@ -32,7 +33,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         {
             query.ShouldNotBeNull(nameof(query));
 
-            var result = new OpusPlayerDetails();
+            try
+            {
+                var result = new OpusPlayerDetails();
 
             if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag))
             {
@@ -42,19 +45,31 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
             {
                 var playerDetails = await this.GetPlayerDetailsAsync(query.Xuid.Value).ConfigureAwait(false);
 
-                result = playerDetails ?? throw new ProfileNotFoundException($"No profile found for XUID: {query.Xuid}.");
+                    result = playerDetails ??
+                             throw new NotFoundStewardException($"No profile found for XUID: {query.Xuid}.");
+                }
+                else if (!string.IsNullOrWhiteSpace(query.Gamertag))
+                {
+                    var playerDetails = await this.GetPlayerDetailsAsync(query.Gamertag).ConfigureAwait(false);
+
+                    result = playerDetails ??
+                             throw new NotFoundStewardException($"No profile found for Gamertag: {query.Gamertag}.");
+                }
+
+                var identity = this.mapper.Map<IdentityResultAlpha>(result);
+                identity.Query = query;
+
+                return identity;
             }
-            else if (!string.IsNullOrWhiteSpace(query.Gamertag))
+            catch (Exception ex)
             {
-                var playerDetails = await this.GetPlayerDetailsAsync(query.Gamertag).ConfigureAwait(false);
+                if (ex is StewardBaseException)
+                {
+                    throw;
+                }
 
-                result = playerDetails ?? throw new ProfileNotFoundException($"No profile found for Gamertag: {query.Gamertag}.");
+                throw new UnknownFailureStewardException("Identity lookup has failed for an unknown reason.", ex);
             }
-
-            var identity = this.mapper.Map<IdentityResultAlpha>(result);
-            identity.Query = query;
-
-            return identity;
         }
 
         /// <inheritdoc />
@@ -70,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
             }
             catch (Exception ex)
             {
-                throw new ProfileNotFoundException($"Player {gamertag} was not found.", ex);
+                throw new NotFoundStewardException($"No player found for Gamertag: {gamertag}.", ex);
             }
         }
 
@@ -85,7 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
             }
             catch (Exception ex)
             {
-                throw new ProfileNotFoundException($"Player {xuid} was not found.", ex);
+                throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
             }
         }
 

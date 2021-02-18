@@ -7,7 +7,7 @@ using AutoMapper;
 using Forza.UserInventory.FH4.master.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
-using Turn10.LiveOps.StewardApi.Contracts.Legacy;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
@@ -59,10 +59,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
-            var response = await this.sunriseUserInventoryService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
-            var playerInventoryDetails = this.mapper.Map<SunrisePlayerInventory>(response.summary);
+            try
+            {
+                var response = await this.sunriseUserInventoryService.GetAdminUserInventoryAsync(xuid)
+                    .ConfigureAwait(false);
+                var playerInventoryDetails = this.mapper.Map<SunrisePlayerInventory>(response.summary);
 
-            return playerInventoryDetails;
+                return playerInventoryDetails;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -70,28 +78,50 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
-            var response = await this.sunriseUserInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+            try
+            {
+                var response = await this.sunriseUserInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<SunriseInventoryProfile>>(response.profiles);
+                return this.mapper.Map<IList<SunriseInventoryProfile>>(response.profiles);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No inventory profiles found for XUID: {xuid}", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(int profileId)
         {
-            var response = await this.sunriseUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
-                .ConfigureAwait(false);
-            var inventoryProfile = this.mapper.Map<SunrisePlayerInventory>(response.summary);
+            try
+            {
+                var response = await this.sunriseUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                    .ConfigureAwait(false);
+                var inventoryProfile = this.mapper.Map<SunrisePlayerInventory>(response.summary);
 
-            return inventoryProfile;
+                return inventoryProfile;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<IList<SunriseLspGroup>> GetLspGroupsAsync(int startIndex, int maxResults)
         {
-            var result = await this.sunriseUserService.GetUserGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
-            var lspGroups = this.mapper.Map<IList<SunriseLspGroup>>(result.userGroups);
+            try
+            {
+                var result = await this.sunriseUserService.GetUserGroupsAsync(startIndex, maxResults)
+                    .ConfigureAwait(false);
+                var lspGroups = this.mapper.Map<IList<SunriseLspGroup>>(result.userGroups);
 
-            return lspGroups;
+                return lspGroups;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No LSP groups found for {TitleConstants.SunriseFullName}", ex);
+            }
         }
 
         /// <inheritdoc />

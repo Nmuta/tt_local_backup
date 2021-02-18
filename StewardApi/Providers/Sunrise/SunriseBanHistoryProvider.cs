@@ -7,6 +7,7 @@ using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
@@ -85,12 +86,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
 
-            var banHistoryResult = await this.kustoProvider.GetBanHistoryAsync(xuid, title).ConfigureAwait(false);
-            var results = banHistoryResult.ToList();
+            try
+            {
+                var banHistoryResult = await this.kustoProvider.GetBanHistoryAsync(xuid, title).ConfigureAwait(false);
+                var results = banHistoryResult.ToList();
 
-            results.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+                results.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
 
-            return results;
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No history found for XUID: {xuid} in Title: {title}.", ex);
+            }
         }
     }
 }
