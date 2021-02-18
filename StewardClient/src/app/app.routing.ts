@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ErrorComponent } from './pages/error/error.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AuthGuard } from './route-guards/auth.guard';
+import { SupportGuard } from './route-guards/support.guard';
 import { ZendeskGuard } from './route-guards/zendesk.guard';
 
 const routes: Routes = [
@@ -13,16 +14,22 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'navbar-app',
-    canActivate: [AuthGuard],
-    canActivateChild: [AuthGuard],
-    loadChildren: () => import('./pages/navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
-  },
-  {
-    path: 'ticket-app',
-    canActivate: [AuthGuard, ZendeskGuard],
-    canActivateChild: [AuthGuard],
-    loadChildren: () => import('./pages/ticket-app/ticket-app.module').then(m => m.TicketAppModule),
+    path: 'support',
+    canActivate: [AuthGuard, SupportGuard],
+    children: [
+      {
+        path: 'navbar-app',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        loadChildren: () => import('./pages/navbar-app/navbar-app.module').then(m => m.NavbarAppModule),
+      },
+      {
+        path: 'ticket-app',
+        canActivate: [AuthGuard, ZendeskGuard],
+        canActivateChild: [AuthGuard],
+        loadChildren: () => import('./pages/ticket-app/ticket-app.module').then(m => m.TicketAppModule),
+      },
+    ]
   },
   {
     path: 'auth',
