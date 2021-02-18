@@ -98,7 +98,7 @@ describe('SupportGuard:', () => {
   
         expect(store.dispatch).toHaveBeenCalled();
         expect(store.dispatch).toHaveBeenCalledWith(
-          new Navigate(['/auth/login'], { from: '/i/am/a/route' }),
+          new Navigate(['/unauthorized'], { app: 'Support' }),
         );
       }));
     });
