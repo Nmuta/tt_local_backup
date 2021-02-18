@@ -1,41 +1,10 @@
-:host {
-  display: flex;
-  flex-flow: row wrap;
-  > * {
-    margin: 10px;
-  }
-
-  ban-options {
-    flex-grow: 1;
-  }
+verify-action-button {
+  margin-top: 40px;
+  display: block;
 }
 
-.action-container {
-  display: flex;
-  flex-flow: column nowrap;
-  flex-grow: 1;
-  margin: 0;
-  > * {
-    margin: 10px;
-  }
-}
-
-.left {
-  display: flex;
-  flex-flow: column;
-  width: 400px;
-  > * {
-    margin-bottom: 10px;
-    &:not(:first-child) {
-      margin-top: 10px;
-    }
-  }
-
-  .bottom {
-    flex-grow: 1;
-
-    mat-card {
-      height: 100%;
-    }
+@media screen and (max-width: 1000px) {
+  .default-page-layout-left {
+    max-width: unset;
   }
 }

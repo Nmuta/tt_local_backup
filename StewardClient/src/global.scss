@@ -26,8 +26,27 @@ body {
   background: mat-color($app-theme, 800);
 }
 
+mat-drawer-container {
+  background-color: #e8e8e8 !important;
+}
+
+mat-toolbar.secondary {
+  background-color: #fff !important;
+}
+
+.mat-tab-labels {
+  background-color: #fff;
+
+  .mat-tab-label-active {
+    background-color: mat-color($app-primary);
+    color: #fff;
+    opacity: 1.0;
+  }
+}
+
 // Default page layout template
 .default-page-layout {
+  width: 100%;
   display: flex;
   flex-flow: row wrap;
   > * {
