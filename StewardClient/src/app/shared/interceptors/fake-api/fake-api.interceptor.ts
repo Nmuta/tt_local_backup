@@ -64,6 +64,7 @@ import { ApolloPlayersIdentitiesFakeApi } from './apis/title/apollo/players/iden
 import { OpusPlayersIdentitiesFakeApi } from './apis/title/opus/players/identities';
 import { SunrisePlayersIdentitiesFakeApi } from './apis/title/sunrise/players/identities';
 import { GravityPlayersIdentitiesFakeApi } from './apis/title/gravity/players/identities';
+import { GravityPlayerT10IdDetailsFakeApi } from './apis/title/gravity/player/t10Id/details';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -71,6 +72,7 @@ const fakeApiConstructors = [
   GravityPlayerGamertagDetailsFakeApi,
   GravityPlayerXuidInventoryFakeApi,
   GravityPlayerXuidProfileIdInventoryFakeApi,
+  GravityPlayerT10IdDetailsFakeApi,
   GravityPlayerT10IdInventoryFakeApi,
   GravityPlayerT10IdProfileIdInventoryFakeApi,
   GravityPlayerT10IdInventoryFakeApi,

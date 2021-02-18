@@ -1,8 +1,11 @@
 import { Injectable, Provider } from '@angular/core';
+import { GravityPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/gamertag/details';
+import { GravityPlayerT10IdDetailsFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/t10Id/details';
 import { GravityPlayerT10IdInventoryFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/t10Id/inventory';
 import { GravityPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/gravity/players/identities';
+import { gravitySaveStatesToPsuedoInventoryProfile } from '@models/gravity';
 import { IdentityQueryBeta, IdentityQueryBetaBatch } from '@models/identity-query.model';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { GravityService } from './gravity.service';
@@ -11,7 +14,7 @@ import { GravityService } from './gravity.service';
 @Injectable()
 export class MockGravityService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
-  public waitUntil$ = of();
+  public waitUntil$: Observable<unknown> = of(true);
 
   public getIdentity = jasmine
     .createSpy('getIdentity')
@@ -23,7 +26,11 @@ export class MockGravityService {
 
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({}))));
+    .and.callFake(_gamertag => this.waitUntil$.pipe(switchMap(() => of(GravityPlayerGamertagDetailsFakeApi.make()))));
+
+  public getPlayerDetailsByT10Id = jasmine
+    .createSpy('getPlayerDetailsByT10Id')
+    .and.callFake(t10Id => this.waitUntil$.pipe(switchMap(() => of(GravityPlayerT10IdDetailsFakeApi.make(t10Id)))));
 
   public getPlayerIdentity = jasmine
     .createSpy('getPlayerIdentity')
@@ -38,6 +45,12 @@ export class MockGravityService {
   public getGameSettings = jasmine
     .createSpy('getGameSettings')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({}))));
+
+  public getPlayerInventoryProfilesByT10Id = jasmine
+    .createSpy('getPlayerInventoryProfilesByT10Id')
+    .and.callFake(t10Id =>
+      this.waitUntil$.pipe(switchMap(() => of(gravitySaveStatesToPsuedoInventoryProfile((GravityPlayerT10IdDetailsFakeApi.make(t10Id)))))),
+    );
 
   public getPlayerInventoryByT10Id = jasmine
     .createSpy('getPlayerInventoryByT10Id')

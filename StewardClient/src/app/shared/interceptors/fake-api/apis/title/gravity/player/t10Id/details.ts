@@ -6,7 +6,7 @@ import { GravityPlayerDetails, GravitySaveState } from '@models/gravity';
 import { chain } from 'lodash';
 
 /** Fake API for finding User Flags. */
-export class GravityPlayerGamertagDetailsFakeApi extends FakeApiBase {
+export class GravityPlayerT10IdDetailsFakeApi extends FakeApiBase {
   private t10Id: GuidLikeString;
 
   /** True when this API is capable of handling the URL. */
@@ -30,7 +30,7 @@ export class GravityPlayerGamertagDetailsFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): GravityPlayerDetails {
-    return GravityPlayerGamertagDetailsFakeApi.make(this.t10Id);
+    return GravityPlayerT10IdDetailsFakeApi.make(this.t10Id);
   }
 
   /** Generates a sample object */
