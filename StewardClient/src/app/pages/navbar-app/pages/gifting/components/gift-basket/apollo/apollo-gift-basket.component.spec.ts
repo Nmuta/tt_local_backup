@@ -93,12 +93,12 @@ describe('ApolloGiftBasketComponent', () => {
           itemType: 'creditRewards',
           edit: false,
         },
-        { 
+        {
           id: testItem2Id,
           description: faker.random.words(3),
           quantity: faker.random.number(),
           itemType: 'cars',
-          edit: false
+          edit: false,
         },
         {
           id: testItem3Id,

@@ -72,7 +72,7 @@ import { SunriseGiftingPlayersFakeApi } from './apis/title/sunrise/gifting/playe
 import { ApolloMasterInventoryFakeApi } from './apis/title/apollo/masterInventory';
 import { ApolloGiftingPlayersFakeApi } from './apis/title/apollo/gifting/players';
 import { ApolloGiftingLspGroupFakeApi } from './apis/title/apollo/gifting/groupId';
-
+import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -140,6 +140,9 @@ const fakeApiConstructors = [
   OpusPlayerXuidInventoryFakeApi,
   OpusPlayerXuidInventoryProfilesFakeApi,
   OpusPlayersIdentitiesFakeApi,
+
+  // Other
+  JobsGetJobFakeApi,
 ];
 
 /** The URLs this interceptor will not block. */

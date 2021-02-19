@@ -162,12 +162,13 @@ describe('GravityGiftBasketComponent', () => {
           itemType: 'creditRewards',
           edit: false,
         },
-        { 
-          id: giftItem2Id, 
+        {
+          id: giftItem2Id,
           description: faker.random.words(10),
-          quantity: 0, 
-          itemType: 'cars', 
-          edit: false },
+          quantity: 0,
+          itemType: 'cars',
+          edit: false,
+        },
         {
           id: giftItem3Id,
           description: faker.random.words(10),

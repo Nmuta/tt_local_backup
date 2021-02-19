@@ -99,12 +99,12 @@ describe('SunriseGiftBasketComponent', () => {
           itemType: 'creditRewards',
           edit: false,
         },
-        { 
+        {
           id: giftItem2Id,
           description: faker.random.words(10),
           quantity: faker.random.number(),
-          itemType: 'cars', 
-          edit: false 
+          itemType: 'cars',
+          edit: false,
         },
         {
           id: giftItem3Id,
@@ -116,7 +116,7 @@ describe('SunriseGiftBasketComponent', () => {
         {
           id: giftItem4Id,
           description: faker.random.words(10),
-          quantity:faker.random.number(),
+          quantity: faker.random.number(),
           itemType: 'carHorns',
           edit: false,
         },

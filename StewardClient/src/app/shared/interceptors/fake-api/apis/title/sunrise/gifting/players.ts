@@ -35,7 +35,7 @@ export class SunriseGiftingPlayersFakeApi extends FakeApiBase {
         playerOrLspGroup: BigInt(5678),
         identityAntecedent: GiftHistoryAntecedent.Xuid,
         error: { message: 'fake api error' },
-      }
+      },
     ];
   }
 }
