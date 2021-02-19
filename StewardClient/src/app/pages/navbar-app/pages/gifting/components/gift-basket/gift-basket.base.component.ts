@@ -140,6 +140,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     // TODO: When we introduce item errors, add the errors check here
     // Examples: quantity too high for specific item, game settings changed with existing items in basket that are no longer valid
     return (
+      !this.isLoading &&
       this.sendGiftForm.valid &&
       this.giftBasket?.data?.length > 0 &&
       ((this.usingPlayerIdentities && this.playerIdentities?.length > 0) ||
@@ -199,7 +200,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
               break;
             case BackgroundJobStatus.InProgress:
               throw 'still in progress';
-              break;
             default:
               this.loadError = job.result;
           }
@@ -226,8 +226,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   public downloadResults(): void {
     const csvRows = [['PlayerOrLspGroup', 'IdentityType', 'Error']];
 
-    for (let i = 0; i < this.giftResponse.length; i++) {
-      const result = this.giftResponse[i];
+    for (const result of this.giftResponse) {
       csvRows[csvRows.length] = [
         `'${result.playerOrLspGroup}`,
         GiftHistoryAntecedent[result.identityAntecedent],

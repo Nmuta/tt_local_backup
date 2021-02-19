@@ -1,6 +1,6 @@
 <div>
-  <h4 *ngIf="numGiftingError <= 0">All Gifts Sent Successfully</h4>
-  <h4 *ngIf="numGiftingError > 0">{{ numGiftingError }} Gifting Errors</h4>
+  <h4 *ngIf="giftingErrorCount <= 0">All Gifts Sent Successfully</h4>
+  <h4 *ngIf="giftingErrorCount > 0">{{ giftingErrorCount }} Gifting Errors</h4>
   <mat-expansion-panel
     *ngFor="let result of giftingResult"
     [disabled]="!result.error"

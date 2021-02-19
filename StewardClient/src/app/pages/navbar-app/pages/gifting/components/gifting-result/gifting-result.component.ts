@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GiftResponse } from '@models/gift-response';
 import { GiftHistoryAntecedent } from '@shared/constants';
+import { sortBy } from 'lodash';
 
 /** The item-selection component. */
 @Component({
@@ -13,13 +14,11 @@ export class GiftingResultComponent extends BaseComponent implements OnInit {
   @Input() public giftingResult: GiftResponse<bigint | string>[];
 
   public GiftHistoryAntecedent = GiftHistoryAntecedent;
-  public numGiftingError: number = 0;
+  public giftingErrorCount: number = 0;
 
   /** Test */
   public ngOnInit(): void {
-    this.giftingResult = this.giftingResult.sort((a, b) =>
-      a.error === b.error ? 0 : a.error ? -1 : 1,
-    );
-    this.numGiftingError = this.giftingResult.filter(data => !!data.error).length;
+    this.giftingResult = sortBy(this.giftingResult, result => !!result.error);
+    this.giftingErrorCount = this.giftingResult.filter(data => !!data.error).length;
   }
 }

@@ -141,9 +141,16 @@
 <ng-template #failState>
   <div id="fail-state">
     <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-    <json-dump *ngIf="loadError" [input]="loadError" (resetStateEvent)="resetGiftBasketUI()"
-      >Failure occured.</json-dump
+    <json-dump *ngIf="loadError" [input]="loadError">Failure occured.</json-dump>
+    <button
+      class="reset-state"
+      mat-raised-button
+      color="accent"
+      matTooltip="Reset the failed tool."
+      (click)="resetGiftBasketUI()"
     >
+      Reset Tool
+    </button>
   </div>
 </ng-template>
 
