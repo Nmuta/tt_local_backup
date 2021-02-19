@@ -6,28 +6,42 @@
         <mat-expansion-panel-header>
           <mat-panel-title>
             <div>{{ history.requestingAgent }}</div>
-            <div [matTooltip]="history.giftSendDateUtc | date: 'long'">
+            <span>{{ history.giftInventory.giftReason }}</span>
+            <span [matTooltip]="history.giftSendDateUtc | date: 'long'">
               {{ history.giftSendDateUtc | date: 'short' }}
-            </div>
+            </span>
           </mat-panel-title>
-          <mat-panel-description *ngIf="history.giftInventory">
-            <span class="inventoryPreview" *ngIf="history.giftInventory.credits > 0"
-              ><span class="label">Credits</span
-              ><span class="data">{{ history.giftInventory.credits }}</span></span
+          <mat-panel-description *ngIf="history.giftInventory.inventory">
+            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.creditRewards?.length > 0"
+              ><span class="label">Currencies</span
+              ><span class="data">{{ history.giftInventory.inventory.creditRewards?.length }}</span></span
             >
-            <span class="inventoryPreview" *ngIf="history.giftInventory.cars?.length > 0"
+            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.cars?.length > 0"
               ><span class="label">Cars</span
-              ><span class="data">{{ history.giftInventory.cars.length }}</span></span
+              ><span class="data">{{ history.giftInventory.inventory.cars.length }}</span></span
+            >
+            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.vanityItems?.length > 0"
+              ><span class="label">Vanity Items</span
+              ><span class="data">{{ history.giftInventory.inventory.vanityItems.length }}</span></span
             >
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <div *ngIf="history.giftInventory.credits">
-          <h3>Credits: {{ history.giftInventory.credits }}</h3>
+        <div *ngIf="history.giftInventory.inventory.creditRewards?.length > 0">
+          <h3>Currencies: {{ history.giftInventory.inventory.creditRewards.length }}</h3>
+          <p *ngFor="let currency of history.giftInventory.inventory.creditRewards">
+            [{{ currency.quantity }}] {{ currency.description }} (Item Id: {{ currency.id }})
+          </p>
         </div>
-        <div *ngIf="history.giftInventory.cars">
-          <h3>Cars: {{ history.giftInventory.cars.length }}</h3>
-          <p *ngFor="let car of history.giftInventory.cars">
-            [{{ car.quantity }}] {{ car.description }} (Item Id: {{ car.itemId }})
+        <div *ngIf="history.giftInventory.inventory.cars?.length > 0">
+          <h3>Cars: {{ history.giftInventory.inventory.cars.length }}</h3>
+          <p *ngFor="let car of history.giftInventory.inventory.cars">
+            [{{ car.quantity }}] {{ car.description }} (Item Id: {{ car.id }})
+          </p>
+        </div>
+        <div *ngIf="history.giftInventory.inventory.vanityItems?.length > 0">
+          <h3>Vanity Items: {{ history.giftInventory.inventory.vanityItems.length }}</h3>
+          <p *ngFor="let item of history.giftInventory.inventory.vanityItems">
+            [{{ item.quantity }}] {{ item.description }} (Item Id: {{ item.id }})
           </p>
         </div>
       </mat-expansion-panel>
