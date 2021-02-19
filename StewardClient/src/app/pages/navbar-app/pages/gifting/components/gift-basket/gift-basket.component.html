@@ -143,6 +143,7 @@
     <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
     <json-dump *ngIf="loadError" [input]="loadError">Failure occured.</json-dump>
     <button
+      *ngIf="loadError"
       class="reset-state"
       mat-raised-button
       color="accent"
@@ -157,15 +158,6 @@
 <ng-template #giftResponseState>
   <div class="gift-response-template">
     <gifting-result [giftingResult]="giftResponse"></gifting-result>
-    <button
-      mat-raised-button
-      color="primary"
-      matTooltip="Download the gifting results."
-      (click)="downloadResults()"
-      clickStop
-    >
-      Download results
-    </button>
     <button
       class="reset-state"
       mat-raised-button

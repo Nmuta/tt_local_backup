@@ -13,6 +13,7 @@ import { sortBy } from 'lodash';
 export class GiftingResultComponent extends BaseComponent implements OnInit {
   @Input() public giftingResult: GiftResponse<bigint | string>[];
 
+  public giftingCsvData: string[][];
   public GiftHistoryAntecedent = GiftHistoryAntecedent;
   public giftingErrorCount: number = 0;
 
@@ -20,5 +21,22 @@ export class GiftingResultComponent extends BaseComponent implements OnInit {
   public ngOnInit(): void {
     this.giftingResult = sortBy(this.giftingResult, result => !!result.error);
     this.giftingErrorCount = this.giftingResult.filter(data => !!data.error).length;
+
+    this.buildCsvData();
+  }
+
+  /** Builds the gifting results into CSV data that can be downloaded. */
+  public buildCsvData(): void {
+    this.giftingCsvData = [['PlayerOrLspGroup', 'IdentityType', 'Error']];
+
+    for (const result of this.giftingResult) {
+      this.giftingCsvData[this.giftingCsvData.length] = [
+        `'${result.playerOrLspGroup}`,
+        GiftHistoryAntecedent[result.identityAntecedent],
+        JSON.stringify(result?.error),
+      ];
+    }
+
+    console.log(this.giftingCsvData);
   }
 }

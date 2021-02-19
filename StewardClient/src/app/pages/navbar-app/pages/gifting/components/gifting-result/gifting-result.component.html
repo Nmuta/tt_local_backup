@@ -18,3 +18,11 @@
     <p>{{ result.error | bigjson }}</p>
   </mat-expansion-panel>
 </div>
+<button
+  mat-raised-button
+  color="primary"
+  matTooltip="Download the gifting results."
+  [downloadCsv]="giftingCsvData"
+>
+  Download results
+</button>

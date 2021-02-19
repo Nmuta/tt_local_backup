@@ -8,6 +8,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { GiftingResultComponent } from './gifting-result.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** The  module for the gifting result component. */
 @NgModule({
@@ -21,6 +22,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     FontAwesomeModule,
     PipesModule,
     JsonDumpModule,
+    DirectivesModule,
   ],
   exports: [GiftingResultComponent],
 })

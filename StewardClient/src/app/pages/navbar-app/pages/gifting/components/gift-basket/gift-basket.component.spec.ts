@@ -376,6 +376,7 @@ describe('GiftBasketBaseComponent', () => {
       describe('And a BackgoundTask is returned', () => {
         const jobId = 'test-job-id';
         beforeEach(() => {
+          component.usingPlayerIdentities = true;
           component.sendGiftToPlayers = jasmine
             .createSpy('sendGiftToPlayers')
             .and.returnValue(of({ jobId: jobId } as BackgroundJob<void>));
@@ -390,7 +391,7 @@ describe('GiftBasketBaseComponent', () => {
           expect(component.waitForBackgroundJobToComplete).toHaveBeenCalled();
         });
 
-        it('should not set giftResponse', () => {
+        fit('should not set giftResponse', () => {
           component.sendGiftBasket();
 
           expect(component.giftResponse).toBeUndefined();
