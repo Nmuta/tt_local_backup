@@ -1,11 +1,11 @@
-import { GravityGameSettingsItem } from './inventory-items/gravity-game-settings-item.model';
+import { MasterInventoryItem } from '@models/master-inventory-item';
 
-/** Interface for gravity master inventory. */
+/** Interface for Gravity master inventory. */
 export interface GravityMasterInventory {
-  cars: GravityGameSettingsItem[];
-  currencies: GravityGameSettingsItem[];
-  repairKits: GravityGameSettingsItem[];
-  masteryKits: GravityGameSettingsItem[];
-  upgradeKits: GravityGameSettingsItem[];
-  energyRefills: GravityGameSettingsItem[];
+  creditRewards: MasterInventoryItem[];
+  cars: MasterInventoryItem[];
+  masteryKits: MasterInventoryItem[];
+  upgradeKits: MasterInventoryItem[];
+  repairKits: MasterInventoryItem[];
+  energyRefills: MasterInventoryItem[];
 }

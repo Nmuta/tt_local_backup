@@ -39,7 +39,7 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div *ngIf="history.giftInventory.inventory.creditRewards?.length > 0">
-          <h3>Currencies: {{ history.giftInventory.inventory.creditRewards[0].quantity }}</h3>
+          <h3>Currencies: {{ history.giftInventory.inventory.creditRewards.length }}</h3>
           <p *ngFor="let currency of history.giftInventory.inventory.creditRewards">
             [{{ currency.quantity }}] {{ currency.description }} (Item ID: {{ currency.id }})
           </p>

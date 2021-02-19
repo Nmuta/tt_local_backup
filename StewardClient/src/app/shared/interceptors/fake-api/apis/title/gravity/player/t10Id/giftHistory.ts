@@ -33,49 +33,51 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
         title: 'Gravity',
         giftSendDateUtc: faker.date.past(),
         giftInventory: {
-          t10Id: t10Id,
-          cars: [
-            {
-              itemId: fakeBigInt(),
-              description: faker.random.word(),
-              quantity: fakeBigInt(),
-            },
-          ],
-          currencies: [
-            {
-              itemId: fakeBigInt(),
-              description: faker.random.word(),
-              quantity: fakeBigInt(),
-            },
-          ],
-          energyRefills: [
-            {
-              itemId: fakeBigInt(),
-              description: faker.random.word(),
-              quantity: fakeBigInt(),
-            },
-          ],
-          upgradeKits: [
-            {
-              itemId: fakeBigInt(),
-              description: faker.random.word(),
-              quantity: fakeBigInt(),
-            },
-          ],
-          repairKits: [
-            {
-              itemId: fakeBigInt(),
-              description: faker.random.word(),
-              quantity: fakeBigInt(),
-            },
-          ],
-          masteryKits: [
-            {
-              itemId: fakeBigInt(),
-              description: faker.random.word(),
-              quantity: fakeBigInt(),
-            },
-          ],
+          giftReason: faker.random.word(),
+          inventory: {
+            creditRewards: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              }
+            ],
+            cars: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+            masteryKits: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+            upgradeKits: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+            repairKits: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+            energyRefills: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+          }
         },
       },
     ];

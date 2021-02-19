@@ -1,4 +1,4 @@
-import { GravityPlayerInventory } from './gravity-player-inventory.model';
+import { GravityGift } from './gravity-gift.model';
 
 /** Interface for gravity player details. */
 export interface GravityGiftHistory {
@@ -6,6 +6,6 @@ export interface GravityGiftHistory {
   id: string;
   title: string;
   giftSendDateUtc: Date;
-  giftInventory: GravityPlayerInventory;
+  giftInventory: GravityGift;
   requestingAgent: string;
 }

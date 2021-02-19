@@ -33,46 +33,51 @@ export class SunriseGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
         title: 'Sunrise',
         giftSendDateUtc: faker.date.past(),
         giftInventory: {
-          credits: fakeBigInt({ min: 0, max: 10000 }),
-          wheelSpins: fakeBigInt({ min: 0, max: 1000 }),
-          superWheelSpins: fakeBigInt({ min: 0, max: 200 }),
-          skillPoints: fakeBigInt({ min: 0, max: 1000 }),
-          forzathonPoints: fakeBigInt({ min: 0, max: 1000 }),
-          cars: [
-            {
-              itemId: fakeBigInt(),
-              description: faker.random.word(),
-              quantity: fakeBigInt(),
-            },
-          ],
-          carHorns: [
-            {
-              itemId: fakeBigInt(),
-              description: faker.random.word(),
-              quantity: fakeBigInt(),
-            },
-          ],
-          emotes: [
-            {
-              itemId: fakeBigInt(),
-              description: faker.random.word(),
-              quantity: fakeBigInt(),
-            },
-          ],
-          vanityItems: [
-            {
-              itemId: fakeBigInt(),
-              description: faker.random.word(),
-              quantity: fakeBigInt(),
-            },
-          ],
-          quickChatLines: [
-            {
-              itemId: fakeBigInt(),
-              description: faker.random.word(),
-              quantity: fakeBigInt(),
-            },
-          ],
+          giftReason: faker.random.word(),
+          inventory: {
+            creditRewards: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              }
+            ],
+            cars: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+            carHorns: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+            emotes: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+            vanityItems: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+            quickChatLines: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+          }
         },
       },
     ];
