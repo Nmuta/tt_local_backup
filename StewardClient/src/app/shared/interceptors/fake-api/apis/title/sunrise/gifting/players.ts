@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { GiftResponses } from '@models/gift-response';
+import { GiftResponse } from '@models/gift-response';
 import { Unprocessed } from '@models/unprocessed';
 import { GiftHistoryAntecedent } from '@shared/constants';
 
@@ -19,12 +19,12 @@ export class SunriseGiftingPlayersFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<GiftResponses<bigint>>> {
+  public handle(): Partial<Unprocessed<GiftResponse<bigint>[]>> {
     return SunriseGiftingPlayersFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<GiftResponses<bigint>>> {
+  public static make(): Partial<Unprocessed<GiftResponse<bigint>[]>> {
     return [
       {
         playerOrLspGroup: BigInt(1234),

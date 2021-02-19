@@ -6,5 +6,3 @@ export interface GiftResponse<T> {
   identityAntecedent: GiftHistoryAntecedent;
   error: unknown;
 }
-
-export type GiftResponses<T> = GiftResponse<T>[];

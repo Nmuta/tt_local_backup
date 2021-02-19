@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
-import { GiftResponse, GiftResponses } from '@models/gift-response';
+import { GiftResponse } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
 import { NEVER, Observable, timer } from 'rxjs';
@@ -38,7 +38,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   /** The gift basket of current items to be send. */
   public giftBasket = new MatTableDataSource<GiftBasketModel>();
   /** Gifting response. */
-  public giftResponse: GiftResponses<bigint | string>;
+  public giftResponse: GiftResponse<bigint | string>[];
   /** The gift basket display columns */
   public displayedColumns: string[] = ['itemId', 'description', 'itemType', 'quantity', 'remove'];
   /** Gift reasons */
@@ -183,7 +183,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   /** Waits for a background job to complete. */
   public waitForBackgroundJobToComplete(job: BackgroundJob<void>): void {
     this.backgroundJobService
-      .getBackgroundJob<GiftResponses<bigint | string>>(job.jobId)
+      .getBackgroundJob<GiftResponse<bigint | string>[]>(job.jobId)
       .pipe(
         takeUntil(this.onDestroy$),
         catchError(_error => {
