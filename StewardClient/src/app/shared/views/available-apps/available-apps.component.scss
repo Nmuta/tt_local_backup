@@ -1,0 +1,26 @@
+@import '/src/variables.scss';
+
+h1,
+h2 {
+  color: mat-color($app-primary);
+}
+
+p {
+  margin-bottom: 0;
+}
+
+a {
+  display: block;
+  max-width: 50%;
+  margin-top: 1.5em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.app-list {
+  margin-top: 3em;
+
+  p {
+    margin-top: 1.5em;
+  }
+}
