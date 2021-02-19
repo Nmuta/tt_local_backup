@@ -64,6 +64,15 @@ import { ApolloPlayersIdentitiesFakeApi } from './apis/title/apollo/players/iden
 import { OpusPlayersIdentitiesFakeApi } from './apis/title/opus/players/identities';
 import { SunrisePlayersIdentitiesFakeApi } from './apis/title/sunrise/players/identities';
 import { GravityPlayersIdentitiesFakeApi } from './apis/title/gravity/players/identities';
+import { GravityMasterInventoryFakeApi } from './apis/title/gravity/masterInventory';
+import { GravityGiftingPlayerFakeApi } from './apis/title/gravity/gifting/players';
+import { SunriseMasterInventoryFakeApi } from './apis/title/sunrise/masterInventory';
+import { SunriseGiftingLspGroupFakeApi } from './apis/title/sunrise/gifting/groupId';
+import { SunriseGiftingPlayersFakeApi } from './apis/title/sunrise/gifting/players';
+import { ApolloMasterInventoryFakeApi } from './apis/title/apollo/masterInventory';
+import { ApolloGiftingPlayersFakeApi } from './apis/title/apollo/gifting/players';
+import { ApolloGiftingLspGroupFakeApi } from './apis/title/apollo/gifting/groupId';
+
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -77,6 +86,8 @@ const fakeApiConstructors = [
   GravityPlayerXuidInventoryFakeApi,
   GravityPlayerT10IdGiftHistoryFakeApi,
   GravityPlayersIdentitiesFakeApi,
+  GravityMasterInventoryFakeApi,
+  GravityGiftingPlayerFakeApi,
 
   // Sunrise
   SunrisePlayerGamertagDetailsFakeApi,
@@ -100,6 +111,9 @@ const fakeApiConstructors = [
   SunriseGroupXuidsInventoryFakeApi,
   SunriseGroupGroupIdGiftHistoryFakeApi,
   SunrisePlayerXuidNotificationsFakeApi,
+  SunriseMasterInventoryFakeApi,
+  SunriseGiftingLspGroupFakeApi,
+  SunriseGiftingPlayersFakeApi,
 
   // Apollo
   ApolloPlayerGamertagDetailsFakeApi,
@@ -116,6 +130,9 @@ const fakeApiConstructors = [
   ApolloGroupXuidsInventoryFakeApi,
   ApolloGroupGroupIdGiftHistoryFakeApi,
   ApolloGroupsFakeApi,
+  ApolloMasterInventoryFakeApi,
+  ApolloGiftingPlayersFakeApi,
+  ApolloGiftingLspGroupFakeApi,
 
   // Opus
   OpusPlayerGamertagDetailsFakeApi,
