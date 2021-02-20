@@ -167,7 +167,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
         }),
         take(1),
         tap(response => {
-          console.log(response);
           // If response is a background job, we must wait for it to complete.
           if (!!(response as BackgroundJob<void>)?.jobId) {
             this.waitForBackgroundJobToComplete(response as BackgroundJob<void>);

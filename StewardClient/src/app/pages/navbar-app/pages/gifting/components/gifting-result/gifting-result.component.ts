@@ -36,7 +36,5 @@ export class GiftingResultComponent extends BaseComponent implements OnInit {
         JSON.stringify(result?.error),
       ];
     }
-
-    console.log(this.giftingCsvData);
   }
 }
