@@ -6,7 +6,7 @@ import { NEVER, Observable, Subject } from 'rxjs';
 import { GravityGiftHistory } from '@models/gravity';
 import { SunriseGiftHistory } from '@models/sunrise';
 import { ApolloGiftHistory } from '@models/apollo';
-import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 type GiftHistoryResultUnion = (GravityGiftHistory | SunriseGiftHistory | ApolloGiftHistory)[];
@@ -32,17 +32,30 @@ export abstract class GiftHistoryResultsBaseComponent<
   /** The gift history list to display. */
   public giftHistoryList: U;
 
-  private readonly intermediate = new Subject<Observable<U>>();
+  private readonly intermediate$ = new Subject<void>();
 
   public abstract retrieveHistoryByPlayer(): Observable<U>;
   public abstract retrieveHistoryByLspGroup(): Observable<U>;
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    this.intermediate
+    this.intermediate$
       .pipe(
-        switchMap(s => s),
         takeUntil(this.onDestroy$),
+        tap(() => {
+          this.giftHistoryList = undefined;
+        }),
+        filter( () => 
+          (this.usingPlayerIdentities && !!this.selectedPlayer) ||
+          (!this.usingPlayerIdentities && !!this.selectedGroup)
+        ),
+        switchMap( () => {
+          this.isLoading = true;
+
+          return this.usingPlayerIdentities
+          ? this.retrieveHistoryByPlayer()
+          : this.retrieveHistoryByLspGroup();
+        }),
         tap(() => {
           this.isLoading = false;
         }),
@@ -56,27 +69,14 @@ export abstract class GiftHistoryResultsBaseComponent<
         }),
       )
       .subscribe();
+
+      if (!!this.selectedGroup || !!this.selectedPlayer){
+        this.intermediate$.next();
+      }
   }
 
   /** Angular lifecycle hook. */
   public ngOnChanges(_changes: SimpleChanges): void {
-    if (
-      (this.usingPlayerIdentities && !this.selectedPlayer) ||
-      (!this.usingPlayerIdentities && !this.selectedGroup)
-    ) {
-      this.giftHistoryList = undefined;
-      this.isLoading = false;
-
-      this.intermediate.next(NEVER);
-      return;
-    }
-
-    this.isLoading = true;
-
-    const getGiftHistory$ = this.usingPlayerIdentities
-      ? this.retrieveHistoryByPlayer()
-      : this.retrieveHistoryByLspGroup();
-
-    this.intermediate.next(getGiftHistory$);
+    this.intermediate$.next();
   }
 }
