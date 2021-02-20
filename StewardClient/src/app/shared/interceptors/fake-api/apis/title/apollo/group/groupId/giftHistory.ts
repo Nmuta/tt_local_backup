@@ -40,7 +40,7 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
                 id: fakeBigInt(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
-              }
+              },
             ],
             cars: [
               {
@@ -56,7 +56,7 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
                 quantity: faker.random.number(),
               },
             ],
-          }
+          },
         },
       },
     ];

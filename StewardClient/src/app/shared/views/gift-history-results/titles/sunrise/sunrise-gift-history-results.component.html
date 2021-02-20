@@ -9,32 +9,48 @@
             <span>{{ history.giftInventory.giftReason }}</span>
             <span [matTooltip]="history.giftSendDateUtc | date: 'long'">
               {{ history.giftSendDateUtc | date: 'short' }}
-            </span>            
+            </span>
           </mat-panel-title>
           <mat-panel-description *ngIf="history.giftInventory.inventory">
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.creditRewards?.length > 0"
+            <span
+              class="inventoryPreview"
+              *ngIf="history.giftInventory.inventory.creditRewards?.length > 0"
               ><span class="label">Currencies</span
-              ><span class="data">{{ history.giftInventory.inventory.creditRewards.length }}</span></span
+              ><span class="data">{{
+                history.giftInventory.inventory.creditRewards.length
+              }}</span></span
             >
             <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.cars?.length > 0"
               ><span class="label">Cars</span
               ><span class="data">{{ history.giftInventory.inventory.cars.length }}</span></span
             >
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.carHorns?.length > 0"
+            <span
+              class="inventoryPreview"
+              *ngIf="history.giftInventory.inventory.carHorns?.length > 0"
               ><span class="label">Car Horns</span
               ><span class="data">{{ history.giftInventory.inventory.carHorns.length }}</span></span
             >
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.emotes?.length > 0"
+            <span
+              class="inventoryPreview"
+              *ngIf="history.giftInventory.inventory.emotes?.length > 0"
               ><span class="label">Emotes</span
               ><span class="data">{{ history.giftInventory.inventory.emotes.length }}</span></span
             >
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.quickChatLines?.length > 0"
+            <span
+              class="inventoryPreview"
+              *ngIf="history.giftInventory.inventory.quickChatLines?.length > 0"
               ><span class="label">Chat Lines</span
-              ><span class="data">{{ history.giftInventory.inventory.quickChatLines.length }}</span></span
+              ><span class="data">{{
+                history.giftInventory.inventory.quickChatLines.length
+              }}</span></span
             >
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.vanityItems?.length > 0"
+            <span
+              class="inventoryPreview"
+              *ngIf="history.giftInventory.inventory.vanityItems?.length > 0"
               ><span class="label">Vanity Items</span
-              ><span class="data">{{ history.giftInventory.inventory.vanityItems.length }}</span></span
+              ><span class="data">{{
+                history.giftInventory.inventory.vanityItems.length
+              }}</span></span
             >
           </mat-panel-description>
         </mat-expansion-panel-header>
@@ -71,8 +87,7 @@
         <div *ngIf="history.giftInventory.inventory.vanityItems?.length > 0">
           <h3>Vanity Items: {{ history.giftInventory.inventory.vanityItems.length }}</h3>
           <p *ngFor="let vanityItem of history.giftInventory.inventory.vanityItems">
-            [{{ vanityItem.quantity }}] {{ vanityItem.description }} (Item ID:
-            {{ vanityItem.id }})
+            [{{ vanityItem.quantity }}] {{ vanityItem.description }} (Item ID: {{ vanityItem.id }})
           </p>
         </div>
       </mat-expansion-panel>

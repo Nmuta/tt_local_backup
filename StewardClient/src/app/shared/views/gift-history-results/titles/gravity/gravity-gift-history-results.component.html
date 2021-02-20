@@ -12,29 +12,49 @@
             </span>
           </mat-panel-title>
           <mat-panel-description *ngIf="history.giftInventory">
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.creditRewards?.length > 0"
+            <span
+              class="inventoryPreview"
+              *ngIf="history.giftInventory.inventory.creditRewards?.length > 0"
               ><span class="label">Currencies</span
-              ><span class="data">{{ history.giftInventory.inventory.creditRewards.length }}</span></span
+              ><span class="data">{{
+                history.giftInventory.inventory.creditRewards.length
+              }}</span></span
             >
             <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.cars?.length > 0"
               ><span class="label">Cars</span
               ><span class="data">{{ history.giftInventory.inventory.cars.length }}</span></span
             >
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.energyRefills?.length > 0"
+            <span
+              class="inventoryPreview"
+              *ngIf="history.giftInventory.inventory.energyRefills?.length > 0"
               ><span class="label">Energy Refills</span
-              ><span class="data">{{ history.giftInventory.inventory.energyRefills.length }}</span></span
+              ><span class="data">{{
+                history.giftInventory.inventory.energyRefills.length
+              }}</span></span
             >
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.masteryKits?.length > 0"
+            <span
+              class="inventoryPreview"
+              *ngIf="history.giftInventory.inventory.masteryKits?.length > 0"
               ><span class="label">Mastery Kits</span
-              ><span class="data">{{ history.giftInventory.inventory.masteryKits.length }}</span></span
+              ><span class="data">{{
+                history.giftInventory.inventory.masteryKits.length
+              }}</span></span
             >
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.repairKits?.length > 0"
+            <span
+              class="inventoryPreview"
+              *ngIf="history.giftInventory.inventory.repairKits?.length > 0"
               ><span class="label">Repair Kits</span
-              ><span class="data">{{ history.giftInventory.inventory.repairKits.length }}</span></span
+              ><span class="data">{{
+                history.giftInventory.inventory.repairKits.length
+              }}</span></span
             >
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.upgradeKits?.length > 0"
+            <span
+              class="inventoryPreview"
+              *ngIf="history.giftInventory.inventory.upgradeKits?.length > 0"
               ><span class="label">Upgrade Kits</span
-              ><span class="data">{{ history.giftInventory.inventory.upgradeKits.length }}</span></span
+              ><span class="data">{{
+                history.giftInventory.inventory.upgradeKits.length
+              }}</span></span
             >
           </mat-panel-description>
         </mat-expansion-panel-header>
@@ -60,8 +80,7 @@
         <div *ngIf="history.giftInventory.inventory.masteryKits?.length > 0">
           <h3>Mastery Kits: {{ history.giftInventory.inventory.masteryKits.length }}</h3>
           <p *ngFor="let masteryKit of history.giftInventory.inventory.masteryKits">
-            [{{ masteryKit.quantity }}] {{ masteryKit.description }} (Item ID:
-            {{ masteryKit.id }})
+            [{{ masteryKit.quantity }}] {{ masteryKit.description }} (Item ID: {{ masteryKit.id }})
           </p>
         </div>
         <div *ngIf="history.giftInventory.inventory.repairKits?.length > 0">
@@ -73,8 +92,7 @@
         <div *ngIf="history.giftInventory.inventory.upgradeKits?.length > 0">
           <h3>Upgrade Kits: {{ history.giftInventory.inventory.upgradeKits.length }}</h3>
           <p *ngFor="let upgradeKit of history.giftInventory.inventory.upgradeKits">
-            [{{ upgradeKit.quantity }}] {{ upgradeKit.description }} (Item ID:
-            {{ upgradeKit.id }})
+            [{{ upgradeKit.quantity }}] {{ upgradeKit.description }} (Item ID: {{ upgradeKit.id }})
           </p>
         </div>
       </mat-expansion-panel>

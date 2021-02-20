@@ -45,16 +45,17 @@ export abstract class GiftHistoryResultsBaseComponent<
         tap(() => {
           this.giftHistoryList = undefined;
         }),
-        filter( () => 
-          (this.usingPlayerIdentities && !!this.selectedPlayer) ||
-          (!this.usingPlayerIdentities && !!this.selectedGroup)
+        filter(
+          () =>
+            (this.usingPlayerIdentities && !!this.selectedPlayer) ||
+            (!this.usingPlayerIdentities && !!this.selectedGroup),
         ),
-        switchMap( () => {
+        switchMap(() => {
           this.isLoading = true;
 
           return this.usingPlayerIdentities
-          ? this.retrieveHistoryByPlayer()
-          : this.retrieveHistoryByLspGroup();
+            ? this.retrieveHistoryByPlayer()
+            : this.retrieveHistoryByLspGroup();
         }),
         tap(() => {
           this.isLoading = false;
@@ -70,9 +71,9 @@ export abstract class GiftHistoryResultsBaseComponent<
       )
       .subscribe();
 
-      if (!!this.selectedGroup || !!this.selectedPlayer){
-        this.intermediate$.next();
-      }
+    if (!!this.selectedGroup || !!this.selectedPlayer) {
+      this.intermediate$.next();
+    }
   }
 
   /** Angular lifecycle hook. */

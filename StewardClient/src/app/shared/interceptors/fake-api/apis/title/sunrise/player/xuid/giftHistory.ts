@@ -40,7 +40,7 @@ export class SunrisePlayerXuidGiftHistoryFakeApi extends FakeApiBase {
                 id: fakeBigInt(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
-              }
+              },
             ],
             cars: [
               {
@@ -77,7 +77,7 @@ export class SunrisePlayerXuidGiftHistoryFakeApi extends FakeApiBase {
                 quantity: faker.random.number(),
               },
             ],
-          }
+          },
         },
       },
     ];

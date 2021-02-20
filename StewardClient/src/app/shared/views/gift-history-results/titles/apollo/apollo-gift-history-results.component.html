@@ -12,17 +12,25 @@
             </span>
           </mat-panel-title>
           <mat-panel-description *ngIf="history.giftInventory.inventory">
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.creditRewards?.length > 0"
+            <span
+              class="inventoryPreview"
+              *ngIf="history.giftInventory.inventory.creditRewards?.length > 0"
               ><span class="label">Currencies</span
-              ><span class="data">{{ history.giftInventory.inventory.creditRewards?.length }}</span></span
+              ><span class="data">{{
+                history.giftInventory.inventory.creditRewards?.length
+              }}</span></span
             >
             <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.cars?.length > 0"
               ><span class="label">Cars</span
               ><span class="data">{{ history.giftInventory.inventory.cars.length }}</span></span
             >
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.vanityItems?.length > 0"
+            <span
+              class="inventoryPreview"
+              *ngIf="history.giftInventory.inventory.vanityItems?.length > 0"
               ><span class="label">Vanity Items</span
-              ><span class="data">{{ history.giftInventory.inventory.vanityItems.length }}</span></span
+              ><span class="data">{{
+                history.giftInventory.inventory.vanityItems.length
+              }}</span></span
             >
           </mat-panel-description>
         </mat-expansion-panel-header>
