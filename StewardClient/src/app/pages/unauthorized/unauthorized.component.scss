@@ -1,0 +1,20 @@
+@import '/src/variables.scss';
+
+mat-card {
+  max-width: 500px;
+  width: 100%;
+  margin-top: 30px;
+
+  h1,
+  h2 {
+    color: mat-color($app-primary);
+  }
+
+  a {
+    display: block;
+    width: 200px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

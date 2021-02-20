@@ -4,7 +4,7 @@ import { SunriseMasterInventory } from './sunrise/sunrise-master-inventory.model
 
 /** Interface for a master inventory item. */
 export interface MasterInventoryItem {
-  id: BigInt;
+  id: bigint;
   description: string;
   quantity: number;
   itemType: string;

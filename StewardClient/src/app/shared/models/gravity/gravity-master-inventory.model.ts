@@ -4,8 +4,8 @@ import { MasterInventoryItem } from '@models/master-inventory-item';
 export interface GravityMasterInventory {
   creditRewards: MasterInventoryItem[];
   cars: MasterInventoryItem[];
+  repairKits: MasterInventoryItem[];
   masteryKits: MasterInventoryItem[];
   upgradeKits: MasterInventoryItem[];
-  repairKits: MasterInventoryItem[];
   energyRefills: MasterInventoryItem[];
 }

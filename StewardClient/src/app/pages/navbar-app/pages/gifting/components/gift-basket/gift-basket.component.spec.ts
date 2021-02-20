@@ -7,12 +7,19 @@ import { IdentityResultBeta } from '@models/identity-query.model';
 import { GiftBasketBaseComponent, GiftBasketModel } from './gift-basket.base.component';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { of, throwError } from 'rxjs';
+import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
+import { GiftResponse } from '@models/gift-response';
+import { GiftHistoryAntecedent } from '@shared/constants';
+import { BackgroundJobService } from '@services/background-job/background-job.service';
 
 describe('GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<GiftBasketBaseComponent<IdentityResultBeta>>;
   let component: GiftBasketBaseComponent<IdentityResultBeta>;
 
   const formBuilder: FormBuilder = new FormBuilder();
+
+  let mockBackgroundJobService: BackgroundJobService;
 
   beforeEach(
     waitForAsync(() => {
@@ -32,6 +39,8 @@ describe('GiftBasketBaseComponent', () => {
         GiftBasketBaseComponent as Type<GiftBasketBaseComponent<IdentityResultBeta>>,
       );
       component = fixture.debugElement.componentInstance;
+
+      mockBackgroundJobService = TestBed.inject(BackgroundJobService);
     }),
   );
 
@@ -145,8 +154,11 @@ describe('GiftBasketBaseComponent', () => {
     });
   });
 
-  describe('Method: clearGiftBasket', () => {
+  describe('Method: resetGiftBasketUI', () => {
     beforeEach(() => {
+      component.sendGiftForm.controls['giftReason'].setValue('test value');
+      component.isLoading = true;
+      component.loadError = { foo: 'bar' };
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       component.giftBasket.data = component.giftBasket.data = [
         {
@@ -168,9 +180,12 @@ describe('GiftBasketBaseComponent', () => {
 
     it('should empty gift basket data', () => {
       expect(component.giftBasket.data.length).toEqual(2);
-      component.clearGiftBasket();
+      component.resetGiftBasketUI(true);
 
       expect(component.giftBasket.data.length).toEqual(0);
+      expect(component.isLoading).toBeFalsy();
+      expect(component.loadError).toBeUndefined();
+      expect(component.sendGiftForm.controls['giftReason'].value).toBeNull();
     });
   });
 
@@ -300,6 +315,182 @@ describe('GiftBasketBaseComponent', () => {
         const response = component.isGiftBasketReady();
 
         expect(response).toBeFalsy();
+      });
+    });
+  });
+
+  describe('Method: sendGiftBasket', () => {
+    beforeEach(() => {
+      component.generateGiftInventoryFromGiftBasket = jasmine
+        .createSpy('generateGiftInventoryFromGiftBasket')
+        .and.returnValue(of({}));
+      component.sendGiftToPlayers = jasmine.createSpy('sendGiftToPlayers').and.returnValue(of({}));
+      component.sendGiftToLspGroup = jasmine
+        .createSpy('sendGiftToLspGroup')
+        .and.returnValue(of({}));
+
+      component.usingPlayerIdentities = true;
+    });
+
+    it('should call generateGiftInventoryFromGiftBasket', () => {
+      component.sendGiftBasket();
+
+      expect(component.generateGiftInventoryFromGiftBasket).toHaveBeenCalled();
+    });
+
+    describe('If usingPlayerIdentities is true', () => {
+      it('should call sendGiftToPlayers', () => {
+        component.usingPlayerIdentities = true;
+        component.sendGiftBasket();
+
+        expect(component.sendGiftToPlayers).toHaveBeenCalled();
+      });
+    });
+
+    describe('If usingPlayerIdentities is false', () => {
+      it('should call sendGiftToLspGroup', () => {
+        component.usingPlayerIdentities = false;
+        component.sendGiftBasket();
+
+        expect(component.sendGiftToLspGroup).toHaveBeenCalled();
+      });
+    });
+
+    describe('When subscribing to the send gift observable', () => {
+      describe('And an error is caught', () => {
+        const error = { message: 'error-message' };
+        beforeEach(() => {
+          component.sendGiftToPlayers = jasmine
+            .createSpy('sendGiftToPlayers')
+            .and.returnValue(throwError(error));
+        });
+
+        it('should set loadError on component', () => {
+          component.sendGiftBasket();
+
+          expect(component.loadError).toEqual(error);
+          expect(component.isLoading).toBeFalsy();
+        });
+      });
+
+      describe('And a BackgoundTask is returned', () => {
+        const jobId = 'test-job-id';
+        beforeEach(() => {
+          component.usingPlayerIdentities = true;
+          component.sendGiftToPlayers = jasmine
+            .createSpy('sendGiftToPlayers')
+            .and.returnValue(of({ jobId: jobId } as BackgroundJob<void>));
+          component.waitForBackgroundJobToComplete = jasmine.createSpy(
+            'waitForBackgroundJobToComplete',
+          );
+        });
+
+        it('should call waitForBackgroundJobToComplete', () => {
+          component.sendGiftBasket();
+
+          expect(component.waitForBackgroundJobToComplete).toHaveBeenCalled();
+        });
+
+        fit('should not set giftResponse', () => {
+          component.sendGiftBasket();
+
+          expect(component.giftResponse).toBeUndefined();
+        });
+      });
+
+      describe('And a GiftResponse is returned', () => {
+        const testGiftResponse = {
+          playerOrLspGroup: BigInt(11234567890),
+          identityAntecedent: GiftHistoryAntecedent.LspGroupId,
+        } as GiftResponse<bigint>;
+        beforeEach(() => {
+          component.sendGiftToPlayers = jasmine
+            .createSpy('sendGiftToPlayers')
+            .and.returnValue(of(testGiftResponse));
+          component.waitForBackgroundJobToComplete = jasmine.createSpy(
+            'waitForBackgroundJobToComplete',
+          );
+        });
+
+        it('should not call waitForBackgroundJobToComplete', () => {
+          component.sendGiftBasket();
+
+          expect(component.waitForBackgroundJobToComplete).not.toHaveBeenCalled();
+        });
+
+        it('should set giftResponse', () => {
+          component.sendGiftBasket();
+
+          expect(component.giftResponse).toEqual([testGiftResponse]);
+        });
+      });
+    });
+  });
+
+  describe('Method: waitForBackgroundJobToComplete', () => {
+    const testJob: BackgroundJob<void> = {
+      jobId: 'test=-job-id',
+      status: BackgroundJobStatus.InProgress,
+      result: undefined,
+      parsedResult: undefined,
+    };
+
+    beforeEach(() => {
+      mockBackgroundJobService.getBackgroundJob = jasmine
+        .createSpy('getBackgroundJob')
+        .and.returnValue(of({}));
+    });
+
+    it('should call BackgroundJobService.getBackgroundJob with correct job id', () => {
+      component.waitForBackgroundJobToComplete(testJob);
+
+      expect(mockBackgroundJobService.getBackgroundJob).toHaveBeenCalledWith(testJob.jobId);
+    });
+
+    describe('When subscribing to the send gift observable', () => {
+      describe('And an error is caught', () => {
+        const error = { message: 'error-message' };
+        beforeEach(() => {
+          mockBackgroundJobService.getBackgroundJob = jasmine
+            .createSpy('getBackgroundJob')
+            .and.returnValue(throwError(error));
+        });
+
+        it('should set loadError on component', () => {
+          component.waitForBackgroundJobToComplete(testJob);
+
+          expect(component.loadError).toEqual(error);
+          expect(component.isLoading).toBeFalsy();
+        });
+      });
+
+      describe('And a BackgroundJob is returned', () => {
+        const testBackgroundJobResp: BackgroundJob<GiftResponse<string | bigint>[]> = {
+          jobId: 'test=-job-id',
+          status: BackgroundJobStatus.InProgress,
+          result: 'result',
+          parsedResult: [
+            {
+              playerOrLspGroup: 'testing123',
+              identityAntecedent: GiftHistoryAntecedent.LspGroupId,
+              error: undefined,
+            },
+          ],
+        };
+        beforeEach(() => {
+          mockBackgroundJobService.getBackgroundJob = jasmine
+            .createSpy('getBackgroundJob')
+            .and.returnValue(of(testBackgroundJobResp));
+        });
+
+        describe('with a status of complete', () => {
+          it('should set gift response', () => {
+            testBackgroundJobResp.status = BackgroundJobStatus.Completed;
+            component.waitForBackgroundJobToComplete(testJob);
+
+            expect(component.giftResponse).toEqual(testBackgroundJobResp.parsedResult);
+          });
+        });
       });
     });
   });

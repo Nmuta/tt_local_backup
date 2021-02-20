@@ -1,6 +1,9 @@
+import { HttpParams } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { fakeXuid } from '@interceptors/fake-api/utility';
+import { ApolloGift, ApolloGroupGift } from '@models/apollo';
+import { LspGroup } from '@models/lsp-group';
 import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
 import { of } from 'rxjs';
@@ -132,6 +135,86 @@ describe('ApolloService', () => {
       service.getGiftHistoryByXuid(expectedLspGroupId).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: postGiftPlayers', () => {
+    const gift: ApolloGroupGift = {
+      xuids: [BigInt(123456789)],
+      giftReason: 'unit testing gift',
+      inventory: {
+        creditRewards: [],
+        cars: [],
+        vanityItems: [],
+      },
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service postRequest with the expected params', done => {
+      service.postGiftPlayers(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/players`,
+          gift,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: postGiftPlayersUsingBackgroundTask', () => {
+    const params = new HttpParams().set('useBackgroundProcessing', 'true');
+    const gift: ApolloGroupGift = {
+      xuids: [BigInt(123456789)],
+      giftReason: 'unit testing gift',
+      inventory: {
+        creditRewards: [],
+        cars: [],
+        vanityItems: [],
+      },
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service postRequest with the expected params', done => {
+      service.postGiftPlayersUsingBackgroundTask(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/players`,
+          gift,
+          params,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: postGiftLspGroup', () => {
+    const lspGroup: LspGroup = { id: BigInt(123), name: 'test-lsp-group' };
+    const gift: ApolloGift = {
+      giftReason: 'unit testing gift',
+      inventory: {
+        creditRewards: [],
+        cars: [],
+        vanityItems: [],
+      },
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service postRequest with the expected params', done => {
+      service.postGiftLspGroup(lspGroup, gift).subscribe(() => {
+        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/groupId(${lspGroup.id})`,
+          gift,
         );
         done();
       });

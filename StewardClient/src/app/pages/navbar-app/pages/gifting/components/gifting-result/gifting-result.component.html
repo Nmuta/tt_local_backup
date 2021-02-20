@@ -1,0 +1,28 @@
+<div>
+  <h4 *ngIf="giftingErrorCount <= 0">All Gifts Sent Successfully</h4>
+  <h4 *ngIf="giftingErrorCount > 0">{{ giftingErrorCount }} Gifting Errors</h4>
+  <mat-expansion-panel
+    *ngFor="let result of giftingResult"
+    [disabled]="!result.error"
+    [ngClass]="{ 'gift-result-error': !!result.error }"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ result.playerOrLspGroup }} ({{ GiftHistoryAntecedent[result.identityAntecedent] }})
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ !!result.error ? 'Click to see error' : 'Gift sent successfully' }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <p>{{ result.error | bigjson }}</p>
+  </mat-expansion-panel>
+</div>
+<button
+  mat-raised-button
+  color="primary"
+  matTooltip="Download the gifting results."
+  [downloadCsv]="giftingCsvData"
+>
+  Download results
+</button>

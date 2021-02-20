@@ -40,10 +40,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts
             backgroundJobStatus.ShouldNotBeNull(nameof(backgroundJobStatus));
 
             this.PartitionKey = jobId;
+            this.JobId = jobId;
             this.RowKey = username;
             this.Status = backgroundJobStatus.ToString();
             this.Result = result;
         }
+
+        /// <summary>
+        ///     Gets or sets the job Id.
+        /// </summary>
+        public string JobId { get; set; }
 
         /// <summary>
         ///     Gets or sets the status.

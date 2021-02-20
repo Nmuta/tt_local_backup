@@ -1,6 +1,9 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   ApolloBanResult,
+  ApolloGift,
+  ApolloGroupGift,
   ApolloMasterInventory,
   ApolloPlayerDetails,
   ApolloPlayerInventory,
@@ -8,13 +11,15 @@ import {
 import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
 import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
 import { ApolloGiftHistory } from '@models/apollo/apollo-gift-history.model';
+import { BackgroundJob } from '@models/background-job';
+import { GiftResponse } from '@models/gift-response';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,
   IdentityResultAlpha,
   IdentityResultAlphaBatch,
 } from '@models/identity-query.model';
-import { LspGroups } from '@models/lsp-group';
+import { LspGroup, LspGroups } from '@models/lsp-group';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -99,10 +104,38 @@ export class ApolloService {
     return this.apiService.getRequest<ApolloMasterInventory>(`${this.basePath}/masterInventory`);
   }
 
-  /** Gets the apollo player's inventory */
+  /** Gets the apollo player's inventory. */
   public getPlayerInventoryByXuid(xuid: bigint): Observable<ApolloPlayerInventory> {
     return this.apiService.getRequest<ApolloPlayerInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
+  }
+
+  /** Gift players inventory items. */
+  public postGiftPlayers(gift: ApolloGroupGift): Observable<GiftResponse<bigint>[]> {
+    return this.apiService.postRequest<GiftResponse<bigint>[]>(
+      `${this.basePath}/gifting/players`,
+      gift,
+    );
+  }
+
+  /** Gift players inventory items using a background task. */
+  public postGiftPlayersUsingBackgroundTask(
+    gift: ApolloGroupGift,
+  ): Observable<BackgroundJob<void>> {
+    const params = new HttpParams().set('useBackgroundProcessing', 'true');
+    return this.apiService.postRequest<BackgroundJob<void>>(
+      `${this.basePath}/gifting/players`,
+      gift,
+      params,
+    );
+  }
+
+  /** Gift lsp group inventory items. */
+  public postGiftLspGroup(lspGroup: LspGroup, gift: ApolloGift): Observable<GiftResponse<bigint>> {
+    return this.apiService.postRequest<GiftResponse<bigint>>(
+      `${this.basePath}/gifting/groupId(${lspGroup.id})`,
+      gift,
     );
   }
 }
