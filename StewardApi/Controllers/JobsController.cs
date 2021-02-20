@@ -12,7 +12,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     /// <summary>
     ///     Handles requests for jobs.
     /// </summary>
-    [Route("[controller]")]
+    [Route("api/v1/jobs")]
     [ApiController]
     [Authorize]
     public sealed class JobsController : ControllerBase
@@ -31,15 +31,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets the status.
+        ///     Gets the background job..
         /// </summary>
         /// <param name="jobId">The job ID.</param>
         /// <returns>
-        ///     200 OK if successful.
-        ///     The status.
+        ///     A <see cref="BackgroundJob"/>.
         /// </returns>
-        [HttpGet("{jobId}")]
-        [SwaggerResponse(200, type: typeof(BackgroundJobStatus))]
+        [HttpGet("jobId({jobId})")]
+        [SwaggerResponse(200, type: typeof(BackgroundJob))]
         public async Task<IActionResult> GetStatusAsync(string jobId)
         {
             try

@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -29,7 +29,7 @@ describe('ItemSelectionComponent', () => {
         providers: [{ provide: FormBuilder, useValue: formBuilder }],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(ItemSelectionComponent as Type<ItemSelectionComponent>);
+      fixture = TestBed.createComponent(ItemSelectionComponent);
       component = fixture.debugElement.componentInstance;
     }),
   );

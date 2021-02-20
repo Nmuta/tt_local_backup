@@ -597,7 +597,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Ok();
+            return this.Accepted(new BackgroundJob()
+            {
+                JobId = jobId,
+                Status = BackgroundJobStatus.InProgress.ToString(),
+            });
         }
 
         /// <summary>
@@ -640,7 +644,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var response = await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(true);
             return this.Ok(response);
-            }
+        }
 
         /// <summary>
         ///     Gets the gift histories.

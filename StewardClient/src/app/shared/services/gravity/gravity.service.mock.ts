@@ -1,4 +1,6 @@
 import { Injectable, Provider } from '@angular/core';
+import { GravityGiftingPlayerFakeApi } from '@interceptors/fake-api/apis/title/gravity/gifting/players';
+import { GravityMasterInventoryFakeApi } from '@interceptors/fake-api/apis/title/gravity/masterInventory';
 import { GravityPlayerT10IdInventoryFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/t10Id/inventory';
 import { GravityPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/gravity/players/identities';
 import { IdentityQueryBeta, IdentityQueryBetaBatch } from '@models/identity-query.model';
@@ -35,9 +37,18 @@ export class MockGravityService {
     .and.callFake((query: IdentityQueryBetaBatch) =>
       this.waitUntil$.pipe(switchMap(() => of(GravityPlayersIdentitiesFakeApi.make(query)))),
     );
-  public getGameSettings = jasmine
-    .createSpy('getGameSettings')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({}))));
+
+  public getMasterInventory = jasmine
+    .createSpy('getMasterInventory')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(GravityMasterInventoryFakeApi.make()))),
+    );
+
+  public postGiftPlayersUsingBackgroundTask = jasmine
+    .createSpy('postGiftPlayersUsingBackgroundTask')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(GravityGiftingPlayerFakeApi.make()))),
+    );
 
   public getPlayerInventoryByT10Id = jasmine
     .createSpy('getPlayerInventoryByT10Id')

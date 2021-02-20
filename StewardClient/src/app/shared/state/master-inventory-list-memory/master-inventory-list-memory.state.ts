@@ -62,7 +62,7 @@ export class MasterInventoryListMemoryState {
     }
 
     // If not found in memory, make request
-    const request$ = this.gravityService.getGameSettings(gameSettingsId);
+    const request$ = this.gravityService.getMasterInventory(gameSettingsId);
     return request$.pipe(
       tap(data => {
         const gravityVal = state[GameTitleCodeName.Street];

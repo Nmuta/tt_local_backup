@@ -98,7 +98,9 @@ describe('State: MasterInventoryListMemoryState', () => {
                 return NEVER;
               }),
               tap(() => {
-                expect(mockGravityService.getGameSettings).not.toHaveBeenCalledWith(gameSettingsId);
+                expect(mockGravityService.getMasterInventory).not.toHaveBeenCalledWith(
+                  gameSettingsId,
+                );
               }),
             )
             .subscribe();
@@ -115,7 +117,7 @@ describe('State: MasterInventoryListMemoryState', () => {
                 return NEVER;
               }),
               tap(() => {
-                expect(mockGravityService.getGameSettings).toHaveBeenCalledWith(gameSettingsId);
+                expect(mockGravityService.getMasterInventory).toHaveBeenCalledWith(gameSettingsId);
               }),
             )
             .subscribe();

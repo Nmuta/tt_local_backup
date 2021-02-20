@@ -780,7 +780,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             {
                 // To reset the context and prevent header key collision, rebuild the Dependencies.
                 controller = new Dependencies().Build();
-                action().Result.Should().BeAssignableTo<OkResult>();
+                action().Result.Should().BeAssignableTo<AcceptedResult>();
             }
         }
 
