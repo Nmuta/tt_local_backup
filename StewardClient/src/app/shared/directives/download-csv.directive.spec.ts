@@ -12,7 +12,9 @@ describe('DownloadCsvDirective', () => {
     beforeEach(() => {
       anchorEl = document.createElement('a') as HTMLAnchorElement;
       anchorEl.setAttribute = jasmine.createSpy('setAttribute');
-      anchorEl.click = jasmine.createSpy('click').and.callFake(() => { /** Empty */});
+      anchorEl.click = jasmine.createSpy('click').and.callFake(() => {
+        /** Empty */
+      });
       anchorEl.remove = jasmine.createSpy('remove');
       spyOn(document, 'createElement').and.returnValue(anchorEl);
       spyOn(document.body, 'appendChild').and.callThrough();
@@ -20,7 +22,10 @@ describe('DownloadCsvDirective', () => {
 
     it('should create an anchor tag to download the data and remove the tag after', () => {
       const directive = new DownloadCsvDirective();
-      directive.downloadCsv = [ ['col1', 'col2'], [ 'row1val1', 'row1val2' ]];
+      directive.downloadCsv = [
+        ['col1', 'col2'],
+        ['row1val1', 'row1val2'],
+      ];
       const event = new Event('click');
       directive.onClick(event);
 
