@@ -1,8 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
-import { ApolloPlayerInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
-import { Unprocessed } from '@models/unprocessed';
+import { ApolloPlayerInventoryProfile } from '@models/apollo';
 
 /** Fake API for apollo player inventory profiles. */
 export class ApolloPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {

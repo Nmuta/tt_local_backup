@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { OpusPlayerInventory } from '@models/opus';
-import { Unprocessed } from '@models/unprocessed';
 import { OpusPlayerXuidInventoryFakeApi } from '../xuid/inventory';
 
 /** Fake API for opus player inventory. */

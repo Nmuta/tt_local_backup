@@ -1,8 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
-import { OpusPlayerInventory, OpusPlayerInventoryProfile } from '@models/opus';
-import { Unprocessed } from '@models/unprocessed';
+import { OpusPlayerInventoryProfile } from '@models/opus';
 
 /** Fake API for apollo player inventory profiles. */
 export class OpusPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
