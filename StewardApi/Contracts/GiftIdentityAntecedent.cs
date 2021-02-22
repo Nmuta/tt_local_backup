@@ -1,9 +1,13 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace Turn10.LiveOps.StewardApi.Contracts
 {
     /// <summary>
     ///     Represents the available gift history types.
     /// </summary>
-    public enum GiftHistoryAntecedent
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum GiftIdentityAntecedent
     {
         /// <summary>
         ///     The xuid.

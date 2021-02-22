@@ -2,7 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GiftResponse } from '@models/gift-response';
 import { Unprocessed } from '@models/unprocessed';
-import { GiftHistoryAntecedent } from '@shared/constants';
+import { GiftIdentityAntecedent } from '@shared/constants';
 
 /** Fake API for gifting to lsp group. */
 export class SunriseGiftingLspGroupFakeApi extends FakeApiBase {
@@ -27,7 +27,7 @@ export class SunriseGiftingLspGroupFakeApi extends FakeApiBase {
   public static make(): Partial<Unprocessed<GiftResponse<number>>> {
     return {
       playerOrLspGroup: 123,
-      identityAntecedent: GiftHistoryAntecedent.LspGroupId,
+      identityAntecedent: GiftIdentityAntecedent.LspGroupId,
       error: undefined,
     };
   }
