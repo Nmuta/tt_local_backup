@@ -7,6 +7,6 @@ export interface ApolloGiftHistory {
   id: BigInt;
   title: string;
   giftSendDateUtc: Date;
-  giftInventory: ApolloPlayerInventory;
+  giftInventory: ApolloGift;
   requestingAgent: string;
 }

@@ -391,7 +391,7 @@ describe('GiftBasketBaseComponent', () => {
           expect(component.waitForBackgroundJobToComplete).toHaveBeenCalled();
         });
 
-        fit('should not set giftResponse', () => {
+        it('should not set giftResponse', () => {
           component.sendGiftBasket();
 
           expect(component.giftResponse).toBeUndefined();
