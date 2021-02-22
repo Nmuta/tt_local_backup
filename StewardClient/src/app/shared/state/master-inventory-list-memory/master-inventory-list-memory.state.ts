@@ -15,6 +15,7 @@ import {
 import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
 import { ApolloMasterInventory } from '@models/apollo';
 import { ApolloService } from '@services/apollo';
+import { clone } from 'lodash';
 
 /**
  * Defines the master inventory list memory model.
@@ -67,7 +68,7 @@ export class MasterInventoryListMemoryState {
       tap(data => {
         const gravityVal = state[GameTitleCodeName.Street];
         gravityVal[gameSettingsId] = data;
-        ctx.patchState({ [GameTitleCodeName.Street]: gravityVal });
+        ctx.patchState({ [GameTitleCodeName.Street]: clone(gravityVal) });
       }),
     );
   }
@@ -88,7 +89,7 @@ export class MasterInventoryListMemoryState {
     const request$ = this.sunriseService.getMasterInventory();
     return request$.pipe(
       tap(data => {
-        ctx.patchState({ [GameTitleCodeName.FH4]: data });
+        ctx.patchState({ [GameTitleCodeName.FH4]: clone(data) });
       }),
     );
   }
@@ -109,7 +110,7 @@ export class MasterInventoryListMemoryState {
     const request$ = this.apolloService.getMasterInventory();
     return request$.pipe(
       tap(data => {
-        ctx.patchState({ [GameTitleCodeName.FM7]: data });
+        ctx.patchState({ [GameTitleCodeName.FM7]: clone(data) });
       }),
     );
   }
