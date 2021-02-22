@@ -33,14 +33,30 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
         title: 'Apollo',
         giftSendDateUtc: faker.date.past(),
         giftInventory: {
-          credits: fakeBigInt({ min: 0, max: 10_000 }),
-          cars: [
-            {
-              itemId: fakeBigInt(),
-              description: faker.random.word(),
-              quantity: fakeBigInt(),
-            },
-          ],
+          giftReason: faker.random.word(),
+          inventory: {
+            creditRewards: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+            cars: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+            vanityItems: [
+              {
+                id: fakeBigInt(),
+                description: faker.random.word(),
+                quantity: faker.random.number(),
+              },
+            ],
+          },
         },
       },
     ];

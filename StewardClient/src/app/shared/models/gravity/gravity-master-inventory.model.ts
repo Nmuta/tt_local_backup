@@ -1,6 +1,6 @@
 import { MasterInventoryItem } from '@models/master-inventory-item';
 
-/** Interface for gravity master inventory. */
+/** Interface for Gravity master inventory. */
 export interface GravityMasterInventory {
   creditRewards: MasterInventoryItem[];
   cars: MasterInventoryItem[];
