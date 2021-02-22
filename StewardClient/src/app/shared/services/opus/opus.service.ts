@@ -43,14 +43,7 @@ export class OpusService {
   /** Gets opus player details with a gamertag. This can be used to retrieve a XUID. */
   public getPlayerDetailsByGamertag(gamertag: string): Observable<OpusPlayerDetails> {
     return this.apiService
-      .getRequest<OpusPlayerDetails>(`${this.basePath}/player/gamertag(${gamertag})/details`)
-      .pipe(
-        map(details => {
-          details.firstLoginUtc = !!details.firstLoginUtc ? new Date(details.firstLoginUtc) : null;
-          details.lastLoginUtc = !!details.lastLoginUtc ? new Date(details.lastLoginUtc) : null;
-          return details;
-        }),
-      );
+      .getRequest<OpusPlayerDetails>(`${this.basePath}/player/gamertag(${gamertag})/details`);
   }
 
   /** Gets the opus player's inventory */

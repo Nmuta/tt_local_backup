@@ -52,27 +52,13 @@ export class GravityService {
   /** Gets gravity player details with a gamertag. */
   public getPlayerDetailsByGamertag(gamertag: string): Observable<GravityPlayerDetails> {
     return this.apiService
-      .getRequest<GravityPlayerDetails>(`${this.basePath}/player/gamertag(${gamertag})/details`)
-      .pipe(
-        map(details => {
-          details.firstLoginUtc = !!details.firstLoginUtc ? new Date(details.firstLoginUtc) : null;
-          details.lastLoginUtc = !!details.lastLoginUtc ? new Date(details.lastLoginUtc) : null;
-          return details;
-        }),
-      );
+      .getRequest<GravityPlayerDetails>(`${this.basePath}/player/gamertag(${gamertag})/details`);
   }
 
   /** Gets gravity player details with a T10 ID. */
   public getPlayerDetailsByT10Id(t10Id: string): Observable<GravityPlayerDetails> {
     return this.apiService
-      .getRequest<GravityPlayerDetails>(`${this.basePath}/player/t10Id(${t10Id})/details`)
-      .pipe(
-        map(details => {
-          details.firstLoginUtc = !!details.firstLoginUtc ? new Date(details.firstLoginUtc) : null;
-          details.lastLoginUtc = !!details.lastLoginUtc ? new Date(details.lastLoginUtc) : null;
-          return details;
-        }),
-      );
+      .getRequest<GravityPlayerDetails>(`${this.basePath}/player/t10Id(${t10Id})/details`);
   }
 
   /** Gets the gravity player's inventory */
