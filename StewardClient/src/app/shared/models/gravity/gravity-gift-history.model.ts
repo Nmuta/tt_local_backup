@@ -1,8 +1,7 @@
 import { GiftIdentityAntecedent } from '@shared/constants';
-import { GravityPlayerInventory } from './gravity-player-inventory.model';
 import { GravityGift } from './gravity-gift.model';
 
-/** Interface for gravity player details. */
+/** Interface for Gravity gift history. */
 export interface GravityGiftHistory {
   idType: GiftIdentityAntecedent;
   id: string;

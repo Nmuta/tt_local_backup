@@ -1,5 +1,5 @@
 import { GiftIdentityAntecedent } from '@shared/constants';
-import { ApolloPlayerInventory } from './apollo-player-inventory.model';
+import { ApolloGift } from './apollo-gift.model';
 
 /** Interface for Apollo gift history. */
 export interface ApolloGiftHistory {

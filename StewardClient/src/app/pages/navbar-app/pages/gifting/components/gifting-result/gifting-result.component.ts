@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GiftResponse } from '@models/gift-response';
-import { GiftIdentityAntecedent } from '@shared/constants';
 import { sortBy } from 'lodash';
 
 /** The item-selection component. */

@@ -1,5 +1,4 @@
 import { GiftIdentityAntecedent } from '@shared/constants';
-import { SunrisePlayerInventory } from './sunrise-player-inventory.model';
 import { SunriseGift } from './sunrise-gift.model';
 
 /** Interface for Sunrise gift history. */
