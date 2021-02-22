@@ -32,14 +32,14 @@ export abstract class GiftHistoryResultsBaseComponent<
   /** The gift history list to display. */
   public giftHistoryList: U;
 
-  private readonly intermediate$ = new Subject<void>();
+  private readonly getGiftHistory$ = new Subject<void>();
 
   public abstract retrieveHistoryByPlayer(): Observable<U>;
   public abstract retrieveHistoryByLspGroup(): Observable<U>;
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    this.intermediate$
+    this.getGiftHistory$
       .pipe(
         takeUntil(this.onDestroy$),
         tap(() => {
@@ -72,12 +72,12 @@ export abstract class GiftHistoryResultsBaseComponent<
       .subscribe();
 
     if (!!this.selectedGroup || !!this.selectedPlayer) {
-      this.intermediate$.next();
+      this.getGiftHistory$.next();
     }
   }
 
   /** Angular lifecycle hook. */
   public ngOnChanges(_changes: SimpleChanges): void {
-    this.intermediate$.next();
+    this.getGiftHistory$.next();
   }
 }
