@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitleCodeName, UserRole } from '@models/enums';
 import { IdentityResultAlphaBatch, IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { UserModel } from '@models/user.model';
@@ -46,7 +46,7 @@ export class SunriseGiftingComponent
     if (!user) { throw new Error('Gifting component entered without user.'); }
     if (user === UserState.NOT_FOUND) { throw new Error('Gifting component entered with non-existing user.'); }
 
-    this.disableLspGroupSelection = user.role !== 'LiveOpsAdmin';
+    this.disableLspGroupSelection = user.role !== UserRole.LiveOpsAdmin;
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       SunriseGiftingState.selectedMatTabIndex,

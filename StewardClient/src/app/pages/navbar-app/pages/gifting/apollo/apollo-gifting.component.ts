@@ -7,7 +7,7 @@ import {
   SetApolloGiftingSelectedPlayerIdentities,
 } from './state/apollo-gifting.state.actions';
 import { ApolloGiftingState } from './state/apollo-gifting.state';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitleCodeName, UserRole } from '@models/enums';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { UserModel } from '@models/user.model';
@@ -42,7 +42,7 @@ export class ApolloGiftingComponent
     if (!user) { throw new Error('Gifting component entered without user.'); }
     if (user === UserState.NOT_FOUND) { throw new Error('Gifting component entered with non-existing user.'); }
 
-    this.disableLspGroupSelection = user.role !== 'LiveOpsAdmin';
+    this.disableLspGroupSelection = user.role !== UserRole.LiveOpsAdmin;
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       ApolloGiftingState.selectedMatTabIndex,
