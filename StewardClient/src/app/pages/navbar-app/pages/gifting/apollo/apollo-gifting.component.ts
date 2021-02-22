@@ -11,7 +11,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { UserModel } from '@models/user.model';
-import { UserState } from '@shared/state/user/user.state';
+import { UserState, USER_STATE_NOT_FOUND } from '@shared/state/user/user.state';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
 
 /** The gifting page for the Navbar app. */
@@ -38,7 +38,10 @@ export class ApolloGiftingComponent
 
   /** Initialization hook */
   public ngOnInit(): void {
-    const user = this.store.selectSnapshot<UserModel>(UserState.profile);
+    const user = this.store.selectSnapshot<UserModel | USER_STATE_NOT_FOUND>(UserState.profile);
+    if (!user) { throw new Error('Gifting component entered without user.'); }
+    if (user === UserState.NOT_FOUND) { throw new Error('Gifting component entered with non-existing user.'); }
+
     this.disableLspGroupSelection = user.role !== 'LiveOpsAdmin';
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
