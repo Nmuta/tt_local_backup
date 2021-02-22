@@ -77,7 +77,12 @@ export abstract class PlayerInventoryBaseComponent<
           this.error = null;
         }),
         filter(i => !!i),
-        switchMap(identity => this.getPlayerInventoryByIdentity(identity)),
+        switchMap(identity => this.getPlayerInventoryByIdentity(identity).pipe(
+          catchError((error, _observable) => {
+            this.error = error;
+            return NEVER;
+          }),
+        )),
         catchError((error, _observable) => {
           this.error = error;
           return NEVER;
