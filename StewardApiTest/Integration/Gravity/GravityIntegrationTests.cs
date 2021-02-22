@@ -55,11 +55,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             unauthorizedClient = new GravityStewardTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
         }
 
-        [ClassCleanup]
-        public static async Task TearDown()
-        {
-        }
-
         [TestMethod]
         [TestCategory("Integration")]
         public async Task GetPlayerIdentityByT10Id()

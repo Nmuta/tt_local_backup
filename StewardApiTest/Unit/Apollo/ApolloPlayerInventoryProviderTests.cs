@@ -251,7 +251,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventoriesAsync_WithNullXuids_Throws()
+        public void UpdatePlayerInventoriesAsync_WithNullXuids_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();

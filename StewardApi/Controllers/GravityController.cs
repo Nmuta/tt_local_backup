@@ -416,7 +416,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="gameSettingsId">The game settings Id.</param>
         /// <param name="gift">The gravity gift.</param>
         /// <returns>
-        ///     String of items that are invalid
+        ///     String of items that are invalid.
         /// </returns>
         private async Task<string> VerifyGiftAgainstMasterInventory(Guid gameSettingsId, GravityMasterInventory gift)
         {
