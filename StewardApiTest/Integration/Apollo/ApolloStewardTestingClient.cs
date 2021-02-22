@@ -63,13 +63,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<IList<ApolloBanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<IList<ApolloBanResult>>> BanPlayersWithHeaderResponseAsync(IList<ApolloBanParametersInput> banParameters, IList<string> headersToValidate)
+        public async Task<ResponseWithHeaders<BackgroundJob>> BanPlayersWithHeaderResponseAsync(IList<ApolloBanParametersInput> banParameters, IList<string> headersToValidate)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
             var path = new Uri(this.baseUri, $"{TitlePath}players/ban?useBackgroundProcessing=true");
 
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<IList<ApolloBanResult>>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters).ConfigureAwait(false);
+            return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJob>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters).ConfigureAwait(false);
         }
 
         public async Task<IList<ApolloBanSummary>> GetBanSummariesAsync(IList<ulong> xuids)
@@ -201,7 +201,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));
 
-            var path = new Uri(this.baseUri, $"Jobs/{jobId}");
+            var path = new Uri(this.baseUri, $"api/v1/jobs/jobId({jobId})");
 
             return await ServiceClient.SendRequestAsync<BackgroundJob>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
