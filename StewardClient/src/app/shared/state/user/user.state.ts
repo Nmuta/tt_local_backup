@@ -75,7 +75,7 @@ export class UserState {
           ctx.patchState({ profile: clone(data) });
         },
         () => {
-          ctx.patchState({ profile: undefined });
+          ctx.patchState({ profile: null });
         },
       ),
     );
@@ -91,7 +91,7 @@ export class UserState {
   /** Action thats sets state user profile to null. */
   @Action(SetNoUserProfile, { cancelUncompleted: true })
   public setNoUserProfile(ctx: StateContext<UserStateModel>): void {
-    ctx.patchState({ profile: undefined });
+    ctx.patchState({ profile: null });
   }
 
   /** Action that requests user access token from azure app. */
@@ -105,7 +105,7 @@ export class UserState {
 
     const isLoggedIn = !!this.authService.getAccount();
     if (!isLoggedIn) {
-      ctx.patchState({ accessToken: undefined });
+      ctx.patchState({ accessToken: null });
       return ctx.dispatch(new SetNoUserProfile());
     }
 
@@ -116,7 +116,7 @@ export class UserState {
     ).pipe(
       switchMap(data => {
         if (!data.accessToken) {
-          ctx.patchState({ accessToken: undefined });
+          ctx.patchState({ accessToken: null });
           return ctx.dispatch(new SetNoUserProfile());
         } else {
           ctx.patchState({ accessToken: clone(data.accessToken) });
@@ -124,7 +124,7 @@ export class UserState {
         }
       }),
       catchError(e => {
-        ctx.patchState({ accessToken: undefined });
+        ctx.patchState({ accessToken: null });
         return concat(ctx.dispatch(new SetNoUserProfile()), throwError(e));
       }),
     );
