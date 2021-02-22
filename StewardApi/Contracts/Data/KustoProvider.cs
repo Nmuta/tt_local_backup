@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
 {
@@ -41,100 +42,124 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <inheritdoc />
         public async Task<IList<MasterInventoryItem>> GetMasterInventoryList(string kustoQuery)
         {
-            async Task<IList<MasterInventoryItem>> MasterInventoryItems()
+            try
             {
-                var items = new List<MasterInventoryItem>();
+                async Task<IList<MasterInventoryItem>> MasterInventoryItems()
+                {
+                    var items = new List<MasterInventoryItem>();
 
-                using (var reader = await this.cslQueryProvider
+                    using (var reader = await this.cslQueryProvider
                     .ExecuteQueryAsync(GameDatabaseName, kustoQuery, new ClientRequestProperties())
                     .ConfigureAwait(false))
-                {
-                    while (reader.Read())
                     {
-                        items.Add(new MasterInventoryItem
+                        while (reader.Read())
                         {
-                            Id = (int)reader.GetInt64(0),
-                            Description = reader.GetString(1),
-                        });
+                            items.Add(new MasterInventoryItem
+                            {
+                                Id = (int)reader.GetInt64(0),
+                                Description = reader.GetString(1),
+                            });
+                        }
+
+                        reader.Close();
                     }
 
-                    reader.Close();
+                    this.refreshableCacheStore.PutItem(kustoQuery, TimeSpan.FromHours(24), items);
+
+                    return items;
                 }
 
-                this.refreshableCacheStore.PutItem(kustoQuery, TimeSpan.FromHours(24), items);
-
-                return items;
+                return this.refreshableCacheStore.GetItem<IList<MasterInventoryItem>>(kustoQuery)
+                       ?? await MasterInventoryItems().ConfigureAwait(false);
             }
-
-            return this.refreshableCacheStore.GetItem<IList<MasterInventoryItem>>(kustoQuery)
-                   ?? await MasterInventoryItems().ConfigureAwait(false);
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException("Failed to find Master Inventory List.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<IList<CreditReward>> GetCreditRewardsAsync(KustoGameDbSupportedTitle supportedTitle)
         {
-            var query = await this.BuildQuery(supportedTitle, KustoQueries.GetCreditRewards).ConfigureAwait(false);
-
-            async Task<IList<CreditReward>> CreditRewards()
+            try
             {
-                var creditRewards = new List<CreditReward>();
+                var query = await this.BuildQuery(supportedTitle, KustoQueries.GetCreditRewards).ConfigureAwait(false);
 
-                using (var reader = await this.cslQueryProvider
-                    .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
-                    .ConfigureAwait(false))
+                async Task<IList<CreditReward>> CreditRewards()
                 {
-                    while (reader.Read())
+                    var creditRewards = new List<CreditReward>();
+
+                    using (var reader = await this.cslQueryProvider
+                        .ExecuteQueryAsync(GameDatabaseName, query, new ClientRequestProperties())
+                        .ConfigureAwait(false))
                     {
-                        creditRewards.Add(new CreditReward
+                        while (reader.Read())
                         {
-                            Id = reader.GetInt64(0),
-                            Rarity = reader.GetString(1),
-                            Amount = reader.GetInt64(2)
-                        });
+                            creditRewards.Add(new CreditReward
+                            {
+                                Id = reader.GetInt64(0),
+                                Rarity = reader.GetString(1),
+                                Amount = reader.GetInt64(2)
+                            });
+                        }
+
+                        reader.Close();
                     }
 
-                    reader.Close();
+                    this.refreshableCacheStore.PutItem(query, TimeSpan.FromHours(24), creditRewards);
+
+                    return creditRewards;
                 }
 
-                this.refreshableCacheStore.PutItem(query, TimeSpan.FromHours(24), creditRewards);
-
-                return creditRewards;
+                return this.refreshableCacheStore.GetItem<IList<CreditReward>>(query)
+                       ?? await CreditRewards().ConfigureAwait(false);
             }
-
-            return this.refreshableCacheStore.GetItem<IList<CreditReward>>(query)
-                   ?? await CreditRewards().ConfigureAwait(false);
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No credit rewards found for Title: {supportedTitle}.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<IList<GiftHistory>> GetGiftHistoryAsync(string playerId, string title)
         {
-            var query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetGiftHistory, playerId, title);
+            playerId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerId));
+            title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
 
-            async Task<IList<GiftHistory>> GiftHistories()
+            try
             {
-                var giftHistories = new List<GiftHistory>();
+                var query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetGiftHistory, playerId, title);
 
-                using (var reader = await this.cslQueryProvider
-                    .ExecuteQueryAsync(this.telemetryDatabaseName, query, new ClientRequestProperties())
-                    .ConfigureAwait(false))
+                async Task<IList<GiftHistory>> GiftHistories()
                 {
-                    while (reader.Read())
+                    var giftHistories = new List<GiftHistory>();
+
+                    using (var reader = await this.cslQueryProvider
+                        .ExecuteQueryAsync(this.telemetryDatabaseName, query, new ClientRequestProperties())
+                        .ConfigureAwait(false))
                     {
-                        giftHistories.Add(new GiftHistory(
-                            reader.GetString(0),
-                            reader.GetString(1),
-                            reader.GetString(2),
-                            reader.GetDateTime(3),
-                            reader.GetString(4)));
+                        while (reader.Read())
+                        {
+                            giftHistories.Add(new GiftHistory(
+                                reader.GetString(0),
+                                reader.GetString(1),
+                                reader.GetString(2),
+                                reader.GetDateTime(3),
+                                reader.GetString(4)));
+                        }
+
+                        reader.Close();
                     }
 
-                    reader.Close();
+                    return giftHistories;
                 }
 
-                return giftHistories;
+                return await GiftHistories().ConfigureAwait(false);
             }
-
-            return await GiftHistories().ConfigureAwait(false);
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No gift history found for ID: {playerId} in Title: {title}.", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -142,36 +167,43 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         {
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
 
-            var query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetBanHistory, xuid, title);
-
-            async Task<IList<LiveOpsBanHistory>> BanHistories()
+            try
             {
-                var banHistories = new List<LiveOpsBanHistory>();
+                var query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetBanHistory, xuid, title);
 
-                using (var reader = await this.cslQueryProvider
-                    .ExecuteQueryAsync(this.telemetryDatabaseName, query, new ClientRequestProperties())
-                    .ConfigureAwait(false))
+                async Task<IList<LiveOpsBanHistory>> BanHistories()
                 {
-                    while (reader.Read())
+                    var banHistories = new List<LiveOpsBanHistory>();
+
+                    using (var reader = await this.cslQueryProvider
+                        .ExecuteQueryAsync(this.telemetryDatabaseName, query, new ClientRequestProperties())
+                        .ConfigureAwait(false))
                     {
-                        banHistories.Add(new LiveOpsBanHistory(
-                            reader.GetInt64(0),
-                            reader.GetString(1),
-                            reader.GetString(2),
-                            reader.GetDateTime(3),
-                            reader.GetDateTime(4),
-                            reader.GetString(5),
-                            reader.GetString(6),
-                            reader.GetString(7)));
+                        while (reader.Read())
+                        {
+                            banHistories.Add(new LiveOpsBanHistory(
+                                reader.GetInt64(0),
+                                reader.GetString(1),
+                                reader.GetString(2),
+                                reader.GetDateTime(3),
+                                reader.GetDateTime(4),
+                                reader.GetString(5),
+                                reader.GetString(6),
+                                reader.GetString(7)));
+                        }
+
+                        reader.Close();
                     }
 
-                    reader.Close();
+                    return banHistories;
                 }
 
-                return banHistories;
+                return await BanHistories().ConfigureAwait(false);
             }
-
-            return await BanHistories().ConfigureAwait(false);
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No ban history found for XUID: {xuid} in Title: {title}.", ex);
+            }
         }
 
         private async Task<string> BuildQuery(KustoGameDbSupportedTitle supportedTitle, string partialQuery)

@@ -8,7 +8,7 @@ export interface OpusCar {
   dateCreatedUtc: Date;
   displayName: string;
   special: 'Unicorn' | '';
+  quantity: bigint;
   versionedLiveryId: GuidLikeString;
   versionedTuneId: GuidLikeString;
-  quantity: bigint;
 }

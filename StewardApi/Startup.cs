@@ -26,7 +26,6 @@ using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
-using Turn10.LiveOps.StewardApi.Providers.Gravity.Settings;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -60,6 +59,8 @@ namespace Turn10.LiveOps.StewardApi
         /// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc(options => options.Filters.Add(new
+                ServiceExceptionFilter()));
             services.AddMicrosoftIdentityWebApiAuthentication(this.configuration);
             services.Configure<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
@@ -160,20 +161,14 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IStsClient, StsClientWrapper>();
 
             services.AddSingleton<IGravityUserService, GravityUserServiceWrapper>();
+            services.AddSingleton<IGravityGameSettingsService, GravityGameSettingsServiceWrapper>();
             services.AddSingleton<IGravityUserInventoryService, GravityUserInventoryServiceWrapper>();
             services.AddSingleton<IGravityPlayerDetailsProvider, GravityPlayerDetailsProvider>();
+            services.AddSingleton<IGravityGameSettingsProvider, GravityGameSettingsProvider>();
             services.AddSingleton<IGravityPlayerInventoryProvider, GravityPlayerInventoryProvider>();
-            services.AddSingleton<IRequestValidator<GravityPlayerInventory>, GravityPlayerInventoryRequestValidator>();
+            services.AddSingleton<IRequestValidator<GravityMasterInventory>, GravityMasterInventoryRequestValidator>();
+            services.AddSingleton<IRequestValidator<GravityGift>, GravityGiftRequestValidator>();
             services.AddSingleton<IGravityGiftHistoryProvider, GravityGiftHistoryProvider>();
-            if (this.configuration[ConfigurationKeyConstants.GravitySandbox]
-                .Equals("RETAIL", StringComparison.OrdinalIgnoreCase))
-            {
-                services.AddSingleton<ISettingsProvider, SettingsProviderProd>();
-            }
-            else
-            {
-                services.AddSingleton<ISettingsProvider, SettingsProviderDev>();
-            }
 
             services.AddSingleton<ISunriseUserService, SunriseUserServiceWrapper>();
             services.AddSingleton<ISunriseEnforcementService, SunriseEnforcementServiceWrapper>();
@@ -184,6 +179,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<ISunrisePlayerInventoryProvider, SunrisePlayerInventoryProvider>();
             services.AddSingleton<IRequestValidator<SunriseMasterInventory>, SunriseMasterInventoryRequestValidator>();
             services.AddSingleton<IRequestValidator<SunriseBanParametersInput>, SunriseBanParametersRequestValidator>();
+            services.AddSingleton<IRequestValidator<SunriseUserFlagsInput>, SunriseUserFlagsRequestValidator>();
             services.AddSingleton<IRequestValidator<SunriseGift>, SunriseGiftRequestValidator>();
             services.AddSingleton<IRequestValidator<SunriseGroupGift>, SunriseGroupGiftRequestValidator>();
             services.AddSingleton<ISunriseGiftHistoryProvider, SunriseGiftHistoryProvider>();
@@ -197,8 +193,8 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IApolloPlayerInventoryProvider, ApolloPlayerInventoryProvider>();
             services.AddSingleton<IApolloBanHistoryProvider, ApolloBanHistoryProvider>();
             services.AddSingleton<IRequestValidator<ApolloBanParametersInput>, ApolloBanParametersRequestValidator>();
-            services.AddSingleton<IRequestValidator<ApolloPlayerInventory>, ApolloPlayerInventoryRequestValidator>();
             services.AddSingleton<IRequestValidator<ApolloMasterInventory>, ApolloMasterInventoryRequestValidator>();
+            services.AddSingleton<IRequestValidator<ApolloUserFlagsInput>, ApolloUserFlagsRequestValidator>();
             services.AddSingleton<IRequestValidator<ApolloGift>, ApolloGiftRequestValidator>();
             services.AddSingleton<IRequestValidator<ApolloGroupGift>, ApolloGroupGiftRequestValidator>();
             services.AddSingleton<IApolloGiftHistoryProvider, ApolloGiftHistoryProvider>();

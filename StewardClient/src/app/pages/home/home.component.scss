@@ -1,3 +1,32 @@
+@import '/src/variables.scss';
+
 mat-card {
-  text-align: left;
+  max-width: 500px;
+  width: 100%;
+  margin-top: 30px;
+
+  h1,
+  h2 {
+    color: mat-color($app-primary);
+  }
+
+  p {
+    margin-bottom: 0px;
+  }
+
+  a {
+    display: block;
+    width: 200px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .app-list {
+    margin-top: 50px;
+
+    p {
+      margin-top: 20px;
+    }
+  }
 }

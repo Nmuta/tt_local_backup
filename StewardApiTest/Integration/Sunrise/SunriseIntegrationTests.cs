@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts;
@@ -26,7 +27,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         private static int profileId;
         private static int lspGroupId;
         private static string lspGiftingPassword;
-        private static SunriseUserFlags userFlags;
         private static KeyVaultProvider KeyVaultProvider;
         private static SunriseStewardTestingClient stewardClient;
         private static SunriseStewardTestingClient unauthorizedClient;
@@ -65,16 +65,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             profileId = 18785266;
             consoleId = 18230637609444823812;
             lspGroupId = 88;
-
-            userFlags = new SunriseUserFlags
-            {
-                IsVip = true,
-                IsUltimateVip = true,
-                IsTurn10Employee = false,
-                IsCommunityManager = false,
-                IsUnderReview = false,
-                IsEarlyAccess = false
-            };
 
             stewardClient = new SunriseStewardTestingClient(new Uri(endpoint), authKey);
             unauthorizedClient = new SunriseStewardTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
@@ -240,7 +230,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -295,7 +285,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -387,6 +377,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags()
         {
+            var userFlags = CreateUserFlags();
             var result = await stewardClient.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
@@ -396,6 +387,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags_InvalidXuid()
         {
+            var userFlags = CreateUserFlags();
+
             try
             {
                 await stewardClient.SetUserFlagsAsync(TestConstants.InvalidXuid, userFlags).ConfigureAwait(false);
@@ -411,6 +404,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SetUserFlags_Unauthorized()
         {
+            var userFlags = CreateUserFlags();
+
             try
             {
                 await unauthorizedClient.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(false);
@@ -419,6 +414,24 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             catch (ServiceException e)
             {
                 Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SetUserFlags_InvalidFlags()
+        {
+            var userFlags = CreateUserFlags();
+            userFlags.IsCommunityManager = null;
+
+            try
+            {
+                await stewardClient.SetUserFlagsAsync(TestConstants.InvalidXuid, userFlags).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
 
@@ -442,7 +455,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -483,7 +496,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -538,9 +551,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers()
         {
             var banParameters = this.GenerateBanParameters();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
-            var result = await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+            var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Any());
@@ -553,11 +565,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers_InvalidXuid()
         {
             var banParameters = this.GenerateBanParameters();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
             banParameters[0].Xuid = TestConstants.InvalidXuid;
             banParameters[0].Gamertag = null;
 
-            var result = await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+            var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Any());
@@ -571,34 +582,15 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var banParameters = GenerateBanParameters();
             banParameters[0].Xuid = default(ulong);
             banParameters[0].Gamertag = TestConstants.InvalidGamertag;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task BanPlayers_InvalidRequestingAgentHeader()
-        {
-            var banParameters = GenerateBanParameters();
-            var emptyHeaders = new Dictionary<string, string>();
-
-            try
-            {
-                await stewardClient.BanPlayersAsync(banParameters, emptyHeaders).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -607,11 +599,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers_Unauthorized()
         {
             var banParameters = GenerateBanParameters();
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await unauthorizedClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await unauthorizedClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -626,11 +617,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var banParameters = GenerateBanParameters();
             banParameters[0].FeatureArea = "invalidFeatureArea";
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -646,9 +636,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var banParameters = GenerateBanParameters();
             banParameters[0].StartTimeUtc = default;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
-            var result = await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+            var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ToList()[0].Success);
@@ -663,11 +652,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var banParameters = GenerateBanParameters();
             banParameters[0].Xuid = default;
             banParameters[0].Gamertag = null;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -682,11 +670,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var banParameters = GenerateBanParameters();
             banParameters[0].Duration = default;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -702,11 +689,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var banParameters = GenerateBanParameters();
             banParameters[0].Duration= TimeSpan.Zero;
             banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-15);
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -722,11 +708,28 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var banParameters = GenerateBanParameters();
             banParameters[0].Duration= TimeSpan.FromMinutes(-10);
             banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-10);
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task BanPlayers_BanAllConsolesUndefined()
+        {
+            var banParameters = this.GenerateBanParameters();
+            banParameters[0].BanAllConsoles = null;
+
+            try
+            {
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -742,11 +745,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var banParameters = GenerateBanParameters();
             banParameters[0].SendReasonNotification = true;
             banParameters[0].Reason = string.Empty;
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
             try
             {
-                await stewardClient.BanPlayersAsync(banParameters, headersToSend).ConfigureAwait(false);
+                await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -934,7 +936,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -974,7 +976,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -1014,7 +1016,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -1053,7 +1055,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -1370,19 +1372,19 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         [TestMethod]
         [TestCategory("Integration")]
-        [Ignore]
         public async Task UpdateGroupInventoriesByLspGroupId_InvalidGroupId()
         {
             var gift = this.CreateGift();
 
             try
             {
-                await stewardClient.GiftInventoryByLspGroupId(TestConstants.InvalidProfileId, gift).ConfigureAwait(false);
-                Assert.Fail();
+                var response = await stewardClient.GiftInventoryByLspGroupId(TestConstants.InvalidProfileId, gift).ConfigureAwait(false);
+                var error = response.Error as JObject;
+                Assert.AreEqual(error.GetValue("message"), "Exception of type 'Turn10.Services.ForzaClient.ForzaClientException' was thrown.");
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.Fail();
             }
         }
 
@@ -1473,7 +1475,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -1510,9 +1512,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         private async Task<SunrisePlayerInventory> UpdatePlayerInventoryWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, SunrisePlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
-            var response = await stewardClient.UpdatePlayerInventoryWithHeaderResponseAsync(playerInventory, headersToValidate, headersToSend).ConfigureAwait(false);
+            var response = await stewardClient.UpdatePlayerInventoryWithHeaderResponseAsync(playerInventory, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -1546,9 +1547,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         private async Task<IList<SunriseBanResult>> BanPlayersWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, IList<SunriseBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
-            var headersToSend = this.GenerateHeadersToSend("IntegrationTest", null);
 
-            var response = await stewardClient.BanPlayersWithHeaderResponseAsync(banParameters, headersToValidate, headersToSend).ConfigureAwait(false);
+            var response = await stewardClient.BanPlayersWithHeaderResponseAsync(banParameters, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -1710,23 +1710,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             };
         }
 
-        private Dictionary<string, string> GenerateHeadersToSend(string requestingAgent, string lspGiftingPassword)
-        {
-            var result = new Dictionary<string, string>();
-
-            if (!string.IsNullOrWhiteSpace(requestingAgent))
-            {
-                result.Add("requestingAgent", requestingAgent);
-            }
-
-            if (!string.IsNullOrWhiteSpace(lspGiftingPassword))
-            {
-                result.Add("adminAuth", lspGiftingPassword);
-            }
-
-            return result;
-        }
-
         private SunriseGroupGift CreateGroupGift()
         {
             return new SunriseGroupGift
@@ -1748,6 +1731,19 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             {
                 GiftReason = "Integration Test",
                 Inventory = this.CreateGiftInventory()
+            };
+        }
+
+        private SunriseUserFlagsInput CreateUserFlags()
+        {
+            return new SunriseUserFlagsInput
+            {
+                IsVip = true,
+                IsUltimateVip = true,
+                IsTurn10Employee = false,
+                IsCommunityManager = false,
+                IsUnderReview = false,
+                IsEarlyAccess = false
             };
         }
     }

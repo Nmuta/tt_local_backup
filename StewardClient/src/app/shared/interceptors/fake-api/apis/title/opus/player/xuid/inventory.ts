@@ -34,6 +34,7 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
         .fill(0)
         .map(() => {
           return {
+            quantity: BigInt(1),
             vin: faker.random.uuid(),
             baseCost: fakeBigInt({ min: 4_000 }),
             collectorScore: fakeBigInt({ min: 4_000, max: 200_000 }),
@@ -46,7 +47,6 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
             dateCreatedUtc: faker.date.past(2 /*years*/),
             displayName: faker.lorem.words(3),
             special: faker.random.arrayElement(['Unicorn', '']),
-            quantity: BigInt(1),
           };
         }),
     };

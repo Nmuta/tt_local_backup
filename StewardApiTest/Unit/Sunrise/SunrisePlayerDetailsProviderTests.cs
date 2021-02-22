@@ -408,14 +408,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var gamertag = Fixture.Create<string>();
             var xuid = Fixture.Create<ulong>();
 
             // Act.
             var actions = new List<Func<Task<IList<LiveOpsBanHistory>>>>
             {
-                async () => await provider.GetUserBanHistoryAsync(xuid).ConfigureAwait(false),
-                async () => await provider.GetUserBanHistoryAsync(gamertag).ConfigureAwait(false)
+                async () => await provider.GetUserBanHistoryAsync(xuid).ConfigureAwait(false)
             };
 
             // Assert.

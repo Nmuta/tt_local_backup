@@ -12,3 +12,5 @@ export * from './sunrise-player-notifications.model';
 export * from './sunrise-ban-summary.model';
 export * from './sunrise-ban-request.model';
 export * from './sunrise-player-inventory-profile.model';
+export * from './sunrise-gift.model';
+export * from './sunrise-group-gift.model';

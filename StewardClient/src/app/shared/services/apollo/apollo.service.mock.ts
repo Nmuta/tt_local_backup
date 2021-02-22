@@ -1,4 +1,6 @@
 import { Injectable, Provider } from '@angular/core';
+import { ApolloGiftingLspGroupFakeApi } from '@interceptors/fake-api/apis/title/apollo/gifting/groupId';
+import { ApolloGiftingPlayersFakeApi } from '@interceptors/fake-api/apis/title/apollo/gifting/players';
 import { ApolloPlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/inventory';
 import { ApolloPlayerXuidInventoryProfilesFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/inventoryProfiles';
 import { ApolloPlayersBanFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/ban';
@@ -47,6 +49,22 @@ export class MockApolloService {
     .createSpy('getPlayerInventoryProfilesByXuid')
     .and.callFake(_xuid =>
       this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidInventoryProfilesFakeApi.make()))),
+    );
+
+  public postGiftPlayers = jasmine
+    .createSpy('postGiftPlayers')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(ApolloGiftingPlayersFakeApi.make()))),
+    );
+
+  public postGiftPlayersUsingBackgroundTask = jasmine
+    .createSpy('postGiftPlayersUsingBackgroundTask')
+    .and.returnValue(of('fake-job-id'));
+
+  public postGiftLspGroup = jasmine
+    .createSpy('postGiftLspGroup')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(ApolloGiftingLspGroupFakeApi.make()))),
     );
 
   public getPlayerInventoryByXuid = jasmine

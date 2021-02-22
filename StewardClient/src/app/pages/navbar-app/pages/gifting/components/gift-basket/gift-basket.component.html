@@ -2,15 +2,15 @@
   <h2>{{ title }} Gift Basket</h2>
 
   <ng-container *ngIf="!isLoading && !loadError; else failState">
-    <!-- Verify card is not disabled. Set in game title components that extend base -->
-    <ng-container *ngIf="!disableCard; else giftingNotSupported">
-      <!-- Gravity is unique, master inventory is based on player inventory game settings -->
-      <ng-container
-        *ngIf="
-          !hasGameSettings || (hasGameSettings && !!playerInventory);
-          else waitingForGameSettings
-        "
-      >
+    <!-- Gravity is unique, master inventory is based on player inventory game settings -->
+    <ng-container
+      *ngIf="
+        !hasGameSettings || (hasGameSettings && !!playerInventory);
+        else waitingForGameSettings
+      "
+    >
+      <!-- Direct view to use gifting response state if component is waiting for response or has response -->
+      <ng-container *ngIf="!giftResponse; else giftResponseState">
         <!-- Item Selection -->
         <item-selection
           [masterInventory]="masterInventory"
@@ -127,7 +127,7 @@
           <button
             mat-raised-button
             color="accent"
-            (click)="clearGiftBasket()"
+            (click)="resetGiftBasketUI(true)"
             [disabled]="giftBasket?.data?.length <= 0"
           >
             Clear Gift Basket
@@ -141,13 +141,33 @@
 <ng-template #failState>
   <div id="fail-state">
     <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-    <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+    <json-dump *ngIf="loadError" [input]="loadError">Failure occured.</json-dump>
+    <button
+      *ngIf="loadError"
+      class="reset-state"
+      mat-raised-button
+      color="accent"
+      matTooltip="Reset the failed tool."
+      (click)="resetGiftBasketUI()"
+    >
+      Reset Tool
+    </button>
   </div>
 </ng-template>
 
-<ng-template #giftingNotSupported>
-  <div id="disable-card">
-    <p>This card is disabled for {{ title }}</p>
+<ng-template #giftResponseState>
+  <div class="gift-response-template">
+    <gifting-result [giftingResult]="giftResponse"></gifting-result>
+    <button
+      class="reset-state"
+      mat-raised-button
+      color="accent"
+      matTooltip="Reset the failed tool."
+      (click)="resetGiftBasketUI(true)"
+      clickStop
+    >
+      Send another gift
+    </button>
   </div>
 </ng-template>
 

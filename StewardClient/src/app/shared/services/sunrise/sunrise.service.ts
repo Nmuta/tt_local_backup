@@ -5,11 +5,13 @@ import {
   IdentityQueryAlpha,
   IdentityResultAlpha,
 } from '@models/identity-query.model';
-import { LspGroups } from '@models/lsp-group';
+import { LspGroup, LspGroups } from '@models/lsp-group';
 import {
   SunriseBanRequest,
   SunriseBanResult,
   SunriseBanSummary,
+  SunriseGift,
+  SunriseGroupGift,
   SunrisePlayerDetails,
   SunrisePlayerInventory,
   SunrisePlayerInventoryProfile,
@@ -27,6 +29,9 @@ import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { chain } from 'lodash';
+import { GiftResponse } from '@models/gift-response';
+import { HttpParams } from '@angular/common/http';
+import { BackgroundJob } from '@models/background-job';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -200,6 +205,34 @@ export class SunriseService {
   public getPlayerInventoryByProfileId(profileId: bigint): Observable<SunrisePlayerInventory> {
     return this.apiService.getRequest<SunrisePlayerInventory>(
       `${this.basePath}/player/profileId(${profileId})/inventory`,
+    );
+  }
+
+  /** Gift players inventory items. */
+  public postGiftPlayers(gift: SunriseGroupGift): Observable<GiftResponse<bigint>[]> {
+    return this.apiService.postRequest<GiftResponse<bigint>[]>(
+      `${this.basePath}/gifting/players`,
+      gift,
+    );
+  }
+
+  /** Gift players inventory items using a background task. */
+  public postGiftPlayersUsingBackgroundTask(
+    gift: SunriseGroupGift,
+  ): Observable<BackgroundJob<void>> {
+    const params = new HttpParams().set('useBackgroundProcessing', 'true');
+    return this.apiService.postRequest<BackgroundJob<void>>(
+      `${this.basePath}/gifting/players`,
+      gift,
+      params,
+    );
+  }
+
+  /** Gift lsp group inventory items. */
+  public postGiftLspGroup(lspGroup: LspGroup, gift: SunriseGift): Observable<GiftResponse<bigint>> {
+    return this.apiService.postRequest<GiftResponse<bigint>>(
+      `${this.basePath}/gifting/groupId(${lspGroup.id})`,
+      gift,
     );
   }
 }

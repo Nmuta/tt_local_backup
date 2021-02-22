@@ -7,6 +7,7 @@ using AutoMapper;
 using Forza.UserInventory.FH4.master.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
@@ -58,10 +59,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
-            var response = await this.sunriseUserInventoryService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
-            var playerInventoryDetails = this.mapper.Map<SunrisePlayerInventory>(response.summary);
+            try
+            {
+                var response = await this.sunriseUserInventoryService.GetAdminUserInventoryAsync(xuid)
+                    .ConfigureAwait(false);
+                var playerInventoryDetails = this.mapper.Map<SunrisePlayerInventory>(response.summary);
 
-            return playerInventoryDetails;
+                return playerInventoryDetails;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -69,89 +78,141 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
-            var response = await this.sunriseUserInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+            try
+            {
+                var response = await this.sunriseUserInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<SunriseInventoryProfile>>(response.profiles);
+                return this.mapper.Map<IList<SunriseInventoryProfile>>(response.profiles);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No inventory profiles found for XUID: {xuid}", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(int profileId)
         {
-            var response = await this.sunriseUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
-                .ConfigureAwait(false);
-            var inventoryProfile = this.mapper.Map<SunrisePlayerInventory>(response.summary);
+            try
+            {
+                var response = await this.sunriseUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                    .ConfigureAwait(false);
+                var inventoryProfile = this.mapper.Map<SunrisePlayerInventory>(response.summary);
 
-            return inventoryProfile;
+                return inventoryProfile;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<IList<SunriseLspGroup>> GetLspGroupsAsync(int startIndex, int maxResults)
         {
-            var result = await this.sunriseUserService.GetUserGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
-            var lspGroups = this.mapper.Map<IList<SunriseLspGroup>>(result.userGroups);
+            try
+            {
+                var result = await this.sunriseUserService.GetUserGroupsAsync(startIndex, maxResults)
+                    .ConfigureAwait(false);
+                var lspGroups = this.mapper.Map<IList<SunriseLspGroup>>(result.userGroups);
 
-            return lspGroups;
+                return lspGroups;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No LSP groups found for {TitleConstants.SunriseFullName}", ex);
+            }
         }
 
         /// <inheritdoc />
-        public async Task UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requestingAgent)
+        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requestingAgent)
         {
             gift.ShouldNotBeNull(nameof(gift));
+            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-            var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
-            var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
+            var giftResponse = new GiftResponse<ulong>();
+            giftResponse.PlayerOrLspGroup = xuid;
+            giftResponse.IdentityAntecedent = GiftHistoryAntecedent.Xuid;
 
-            currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
-            currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
-
-            async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
+            try
             {
-                await this.sunriseGiftingService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
+                var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
+                var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
+
+                currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
+                currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
+
+                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
+                {
+                    await this.sunriseGiftingService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
+                }
+
+                await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.Xuid, gift).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                giftResponse.Error = ex;
             }
 
-            await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
-
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.Xuid, gift).ConfigureAwait(false);
+            return giftResponse;
         }
 
         /// <inheritdoc />
-        public async Task UpdatePlayerInventoriesAsync(IList<ulong> xuids, SunriseGroupGift groupGift, string requestingAgent)
+        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SunriseGroupGift groupGift, string requestingAgent)
         {
-            xuids.ShouldNotBeNull(nameof(xuids));
             groupGift.ShouldNotBeNull(nameof(groupGift));
+            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
+            var response = new List<GiftResponse<ulong>>();
             var gift = this.mapper.Map<SunriseGift>(groupGift);
-            foreach (var xuid in xuids)
+            foreach (var xuid in groupGift.Xuids)
             {
-                await this.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent).ConfigureAwait(false);
+                response.Add(await this.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent).ConfigureAwait(false));
             }
+
+            return response;
         }
 
         /// <inheritdoc/>
-        public async Task UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requestingAgent)
+        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requestingAgent)
         {
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
-            var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
-            var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
+            var giftResponse = new GiftResponse<int>();
+            giftResponse.PlayerOrLspGroup = groupId;
+            giftResponse.IdentityAntecedent = GiftHistoryAntecedent.LspGroupId;
 
-            currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
-            currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
-
-            async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
+            try
             {
-                await this.sunriseGiftingService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
+                var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
+                var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
+
+                currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
+                currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
+
+                async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
+                {
+                    await this.sunriseGiftingService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
+                }
+
+                await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.LspGroupId, gift).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                giftResponse.Error = ex;
             }
 
-            await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
-
-            await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), Title, requestingAgent, GiftHistoryAntecedent.LspGroupId, gift).ConfigureAwait(false);
+            return giftResponse;
         }
 
         private async Task SendGifts(Func<InventoryItemType, int, Task> serviceCall, IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts, IDictionary<InventoryItemType, int> currencyGifts)

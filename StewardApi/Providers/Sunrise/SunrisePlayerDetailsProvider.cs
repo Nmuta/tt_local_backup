@@ -9,6 +9,7 @@ using Forza.WebServices.FH4.master.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 
@@ -64,29 +65,43 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             query.ShouldNotBeNull(nameof(query));
 
-            var result = new SunrisePlayerDetails();
-
-            if (query.Xuid == default && string.IsNullOrWhiteSpace(query.Gamertag))
+            try
             {
-                throw new ArgumentException("Gamertag or Xuid must be provided.");
+                var result = new SunrisePlayerDetails();
+
+                if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag))
+                {
+                    throw new ArgumentException("Gamertag or Xuid must be provided.");
+                }
+                else if (query.Xuid.HasValue)
+                {
+                    var playerDetails = await this.GetPlayerDetailsAsync(query.Xuid.Value).ConfigureAwait(false);
+
+                    result = playerDetails ??
+                             throw new NotFoundStewardException($"No profile found for XUID: {query.Xuid}.");
+                }
+                else if (!string.IsNullOrWhiteSpace(query.Gamertag))
+                {
+                    var playerDetails = await this.GetPlayerDetailsAsync(query.Gamertag).ConfigureAwait(false);
+
+                    result = playerDetails ??
+                             throw new NotFoundStewardException($"No profile found for Gamertag: {query.Gamertag}.");
+                }
+
+                var identity = this.mapper.Map<IdentityResultAlpha>(result);
+                identity.Query = query;
+
+                return identity;
             }
-            else if (query.Xuid != null)
+            catch (Exception ex)
             {
-                var playerDetails = await this.GetPlayerDetailsAsync(query.Xuid.Value).ConfigureAwait(false);
+                if (ex is StewardBaseException)
+                {
+                    throw;
+                }
 
-                result = playerDetails ?? throw new ProfileNotFoundException($"No profile found for XUID: {query.Xuid}.");
+                throw new UnknownFailureStewardException("Identity lookup has failed for an unknown reason.", ex);
             }
-            else if (!string.IsNullOrWhiteSpace(query.Gamertag))
-            {
-                var playerDetails = await this.GetPlayerDetailsAsync(query.Gamertag).ConfigureAwait(false);
-
-                result = playerDetails ?? throw new ProfileNotFoundException($"No profile found for Gamertag: {query.Gamertag}.");
-            }
-
-            var identity = this.mapper.Map<IdentityResultAlpha>(result);
-            identity.Query = query;
-
-            return identity;
         }
 
         /// <inheritdoc />
@@ -102,7 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
             catch (Exception ex)
             {
-                throw new ProfileNotFoundException($"Player {gamertag} was not found.", ex);
+                throw new NotFoundStewardException($"No player found for Gamertag: {gamertag}.", ex);
             }
         }
 
@@ -119,7 +134,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
             catch (Exception ex)
             {
-                throw new ProfileNotFoundException($"Player {xuid} was not found.", ex);
+                throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
             }
         }
 
@@ -151,36 +166,59 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <inheritdoc />
         public async Task<IList<SunriseConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
         {
-            var response = await this.sunriseUserService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+            try
+            {
+                var response = await this.sunriseUserService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
-            return this.mapper.Map<IList<SunriseConsoleDetails>>(response.consoles);
+                return this.mapper.Map<IList<SunriseConsoleDetails>>(response.consoles);
             }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No consoles found for Xuid: {xuid}.", ex);
+            }
+        }
 
         /// <inheritdoc />
         public async Task<IList<SunriseSharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
         {
-            var response = await this.sunriseUserService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
+            try
+            {
+                var response = await this.sunriseUserService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults)
+                    .ConfigureAwait(false);
 
-            return this.mapper.Map<IList<SunriseSharedConsoleUser>>(response.sharedConsoleUsers);
+                return this.mapper.Map<IList<SunriseSharedConsoleUser>>(response.sharedConsoleUsers);
             }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No shared console users found for XUID: {xuid}.", ex);
+            }
+        }
 
         /// <inheritdoc/>
         public async Task<SunriseUserFlags> GetUserFlagsAsync(ulong xuid)
         {
-            var userGroupResults = await this.sunriseUserService.GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(false);
-            var suspiciousResults = await this.sunriseUserService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
-
-            userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
-
-            return new SunriseUserFlags
+            try
             {
-                IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
-                IsUltimateVip = userGroupResults.userGroups.Any(r => r.Id == UltimateVipUserGroupId),
-                IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
-                IsCommunityManager = userGroupResults.userGroups.Any(r => r.Id == CommunityManagerUserGroupId),
-                IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
-                IsUnderReview = suspiciousResults.isUnderReview
-            };
+                var userGroupResults = await this.sunriseUserService
+                    .GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(false);
+                var suspiciousResults = await this.sunriseUserService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
+
+                userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
+
+                return new SunriseUserFlags
+                {
+                    IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
+                    IsUltimateVip = userGroupResults.userGroups.Any(r => r.Id == UltimateVipUserGroupId),
+                    IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
+                    IsCommunityManager = userGroupResults.userGroups.Any(r => r.Id == CommunityManagerUserGroupId),
+                    IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
+                    IsUnderReview = suspiciousResults.isUnderReview
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"User flags not found for XUID: {xuid}.", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -188,21 +226,37 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
 
-            var addGroupList = this.PrepareGroupIds(userFlags, true);
-            var removeGroupList = this.PrepareGroupIds(userFlags, false);
+            try
+            {
+                var addGroupList = this.PrepareGroupIds(userFlags, true);
+                var removeGroupList = this.PrepareGroupIds(userFlags, false);
 
-            await this.sunriseUserService.AddToUserGroupsAsync(xuid, addGroupList.ToArray()).ConfigureAwait(false);
-            await this.sunriseUserService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray()).ConfigureAwait(false);
-            await this.sunriseUserService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview).ConfigureAwait(false);
+                await this.sunriseUserService.AddToUserGroupsAsync(xuid, addGroupList.ToArray()).ConfigureAwait(false);
+                await this.sunriseUserService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray())
+                    .ConfigureAwait(false);
+                await this.sunriseUserService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview)
+                    .ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException($"Update user flags failed for XUID: {xuid}.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<SunriseProfileSummary> GetProfileSummaryAsync(ulong xuid)
         {
-            var result = await this.sunriseUserService.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
-            var profileSummary = this.mapper.Map<SunriseProfileSummary>(result.forzaProfileSummary);
+            try
+            {
+                var result = await this.sunriseUserService.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
+                var profileSummary = this.mapper.Map<SunriseProfileSummary>(result.forzaProfileSummary);
 
-            return profileSummary;
+                return profileSummary;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"Profile summary not found for XUID: {xuid}.", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -211,21 +265,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var creditUpdateId = string.Format(CultureInfo.InvariantCulture, CreditUpdatesIdTemplate, xuid, startIndex, maxResults);
-
-            async Task<IList<SunriseCreditUpdate>> CreditUpdates()
+            try
             {
-                var result = await this.sunriseUserService.GetCreditUpdateEntriesAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
-                var creditUpdates = this.mapper.Map<IList<SunriseCreditUpdate>>(result.credityUpdateEntries);
+                var creditUpdateId = string.Format(CultureInfo.InvariantCulture, CreditUpdatesIdTemplate, xuid, startIndex, maxResults);
 
-                this.refreshableCacheStore.PutItem(creditUpdateId, TimeSpan.FromHours(1), creditUpdates);
+                async Task<IList<SunriseCreditUpdate>> CreditUpdates()
+                {
+                    var result = await this.sunriseUserService.GetCreditUpdateEntriesAsync(xuid, startIndex, maxResults)
+                        .ConfigureAwait(false);
+                    var creditUpdates = this.mapper.Map<IList<SunriseCreditUpdate>>(result.credityUpdateEntries);
 
-                return creditUpdates;
+                    this.refreshableCacheStore.PutItem(creditUpdateId, TimeSpan.FromHours(1), creditUpdates);
+
+                    return creditUpdates;
+                }
+
+                var result = this.refreshableCacheStore.GetItem<IList<SunriseCreditUpdate>>(creditUpdateId) ??
+                             await CreditUpdates().ConfigureAwait(false);
+
+                return result;
             }
-
-            var result = this.refreshableCacheStore.GetItem<IList<SunriseCreditUpdate>>(creditUpdateId) ?? await CreditUpdates().ConfigureAwait(false);
-
-            return result;
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No credit updates found for XUID: {xuid}.", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -234,105 +297,131 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             banParameters.ShouldNotBeNull(nameof(banParameters));
             banParameters.FeatureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(banParameters.FeatureArea));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-            const int maxXuidsPerRequest = 10;
 
-            var mappedBanParameters = this.mapper.Map<ForzaUserBanParameters>(banParameters);
-
-            var xuids = new List<ulong>();
-            if (banParameters.Xuids != null && banParameters.Xuids.Any())
+            try
             {
-                xuids = banParameters.Xuids.ToList();
-            }
+                const int maxXuidsPerRequest = 10;
 
-            if (banParameters.Gamertags != null && banParameters.Gamertags.Any())
-            {
-                foreach (var gamertag in banParameters.Gamertags)
+                var mappedBanParameters = this.mapper.Map<ForzaUserBanParameters>(banParameters);
+
+                var xuids = new List<ulong>();
+                if (banParameters.Xuids != null && banParameters.Xuids.Any())
                 {
-                    var userResult = await this.sunriseUserService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
-                    if (userResult.userData.region <= 0)
-                    {
-                        throw new ArgumentException($"Player lookup for {gamertag} failed.");
-                    }
-
-                    xuids.Add(userResult.userData.qwXuid);
+                    xuids = banParameters.Xuids.ToList();
                 }
-            }
 
-            xuids = xuids.Distinct().ToList();
-
-            var banResults = new List<SunriseBanResult>();
-
-            for (var i = 0; i < xuids.Count; i += maxXuidsPerRequest)
-            {
-                var xuidBatch = xuids.GetRange(i, Math.Min(maxXuidsPerRequest, xuids.Count - i));
-                var result = await this.sunriseEnforcementService.BanUsersAsync(xuidBatch.ToArray(), xuidBatch.Count, mappedBanParameters).ConfigureAwait(false);
-
-                foreach (var xuid in xuidBatch)
+                if (banParameters.Gamertags != null && banParameters.Gamertags.Any())
                 {
-                    var successfulBan = result.banResults.Where(banAttempt => banAttempt.Xuid == xuid).FirstOrDefault()?.Success ?? false;
-                    if (successfulBan)
+                    foreach (var gamertag in banParameters.Gamertags)
                     {
-                        await this.banHistoryProvider
-                            .UpdateBanHistoryAsync(xuid, TitleConstants.SunriseCodeName, requestingAgent, banParameters).ConfigureAwait(false);
+                        try
+                        {
+                            var userResult = await this.sunriseUserService.GetLiveOpsUserDataByGamerTagAsync(gamertag)
+                            .ConfigureAwait(false);
+
+                            xuids.Add(userResult.userData.qwXuid);
+                        }
+                        catch
+                        {
+                            throw new NotFoundStewardException($"Profile not found for gamertag: {gamertag}.");
+                        }
                     }
                 }
 
-                banResults.AddRange(this.mapper.Map<IList<SunriseBanResult>>(result.banResults));
-            }
+                xuids = xuids.Distinct().ToList();
 
-            return banResults;
+                var banResults = new List<SunriseBanResult>();
+
+                for (var i = 0; i < xuids.Count; i += maxXuidsPerRequest)
+                {
+                    var xuidBatch = xuids.GetRange(i, Math.Min(maxXuidsPerRequest, xuids.Count - i));
+                    var result = await this.sunriseEnforcementService
+                        .BanUsersAsync(xuidBatch.ToArray(), xuidBatch.Count, mappedBanParameters).ConfigureAwait(false);
+
+                    foreach (var xuid in xuidBatch)
+                    {
+                        var successfulBan = result.banResults.Where(banAttempt => banAttempt.Xuid == xuid).FirstOrDefault()?.Success ?? false;
+                        if (successfulBan)
+                        {
+                            await this.banHistoryProvider
+                                .UpdateBanHistoryAsync(xuid, TitleConstants.SunriseCodeName, requestingAgent, banParameters).ConfigureAwait(false);
+                        }
+                    }
+
+                    banResults.AddRange(this.mapper.Map<IList<SunriseBanResult>>(result.banResults));
+                }
+
+                return banResults;
+            }
+            catch (Exception ex)
+            {
+                if (ex is StewardBaseException)
+                {
+                    throw;
+                }
+
+                throw new UnknownFailureStewardException("Banning has failed.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<IList<SunriseBanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)
         {
-            if (xuids.Count == 0)
+            try
             {
-                return new List<SunriseBanSummary>();
+                if (xuids.Count == 0)
+                {
+                    return new List<SunriseBanSummary>();
+                }
+
+                var result = await this.sunriseEnforcementService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
+
+                var banSummaryResults = this.mapper.Map<IList<SunriseBanSummary>>(result.banSummaries);
+
+                return banSummaryResults;
             }
-
-            var result = await this.sunriseEnforcementService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
-
-            var banSummaryResults = this.mapper.Map<IList<SunriseBanSummary>>(result.banSummaries);
-
-            return banSummaryResults;
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException("Ban Summary lookup has failed.", ex);
+            }
         }
 
         /// <inheritdoc />
         public async Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid)
         {
-            var result = await this.sunriseEnforcementService.GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
-
-            if (result.availableCount > DefaultMaxResults)
+            try
             {
-                result = await this.sunriseEnforcementService.GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
+                var result = await this.sunriseEnforcementService
+                    .GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
+
+                if (result.availableCount > DefaultMaxResults)
+                {
+                    result = await this.sunriseEnforcementService
+                        .GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
+                }
+
+                var banResults = result.bans.Select(ban => { return LiveOpsBanHistoryMapper.Map(ban); }).ToList();
+                banResults.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
+
+                return banResults;
             }
-
-            var banResults = result.bans.Select(ban => { return LiveOpsBanHistoryMapper.Map(ban); }).ToList();
-            banResults.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
-
-            return banResults;
-        }
-
-        /// <inheritdoc />
-        public async Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(string gamertag)
-        {
-            gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
-
-            var userResult = await this.sunriseUserService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
-
-            if (userResult.userData.region > 0)
+            catch (Exception ex)
             {
-                return await this.GetUserBanHistoryAsync(userResult.userData.qwXuid).ConfigureAwait(false);
+                throw new NotFoundStewardException($"No ban history found for XUID: {xuid}.", ex);
             }
-
-            throw new ArgumentException("Player lookup for ${banHistoryRequest.Gamertag} failed.");
         }
 
         /// <inheritdoc />
         public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned)
         {
-            await this.sunriseUserService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
+            try
+            {
+                await this.sunriseUserService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No console found for Console ID: {consoleId}.", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -348,7 +437,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
             catch (HttpRequestException ex)
             {
-                throw new ProfileNotFoundException($"Notifications for player with xuid: {xuid} could not be found.", ex);
+                throw new NotFoundStewardException($"Notifications for player with XUID: {xuid} could not be found.", ex);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo
@@ -43,9 +44,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <param name="gift">The gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
-        ///     A task with a status.
+        ///    A <see cref="GiftResponse{T}"/>.
         /// </returns>
-        Task UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requestingAgent);
+        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requestingAgent);
 
         /// <summary>
         ///     Update player inventories.
@@ -53,9 +54,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <param name="groupGift">The group gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
-        ///     A task with a status.
+        ///     A <see cref="IList{GiftResponse}"/>.
         /// </returns>
-        Task UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requestingAgent);
+        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requestingAgent);
 
         /// <summary>
         ///     Update group inventories.
@@ -64,8 +65,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <param name="gift">The gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
-        ///     A task with a status.
+        ///     A <see cref="GiftResponse{T}"/>.
         /// </returns>
-        Task UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requestingAgent);
+        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requestingAgent);
     }
 }

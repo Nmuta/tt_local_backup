@@ -228,6 +228,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenUserFlagsRequestValidatorNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { UserFlagsRequestValidator = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "userFlagsRequestValidator"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -322,10 +336,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             foreach (var action in actions)
             {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gamertag"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gamertag"));
             }
         }
 
@@ -363,10 +374,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Func<Task<IActionResult>> action = async () => await controller.GetConsoles(xuid, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentOutOfRangeException).Message.Should().Be(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
+            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
         }
 
         [TestMethod]
@@ -405,10 +413,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Func<Task<IActionResult>> action = async () => await controller.GetSharedConsoleUsers(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentOutOfRangeException).Message.Should().Be(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
+            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
         }
 
         [TestMethod]
@@ -425,10 +430,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Func<Task<IActionResult>> action = async () => await controller.GetSharedConsoleUsers(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentOutOfRangeException).Message.Should().Be(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
+
+            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
         }
 
         [TestMethod]
@@ -458,7 +461,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var userFlags = Fixture.Create<SunriseUserFlags>();
+            var userFlags = Fixture.Create<SunriseUserFlagsInput>();
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.SetUserFlags(xuid, userFlags).ConfigureAwait(false);
@@ -484,10 +487,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Func<Task<IActionResult>> action = async () => await controller.SetUserFlags(xuid, null).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "userFlags"));
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "userFlags"));
         }
 
         [TestMethod]
@@ -546,10 +546,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Func<Task<IActionResult>> action = async () => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentOutOfRangeException).Message.Should().Be(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
+            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
         }
 
         [TestMethod]
@@ -566,10 +563,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Func<Task<IActionResult>> action = async () => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentOutOfRangeException).Message.Should().Be(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
+            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
         }
 
         [TestMethod]
@@ -580,10 +574,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var banParameters = GenerateBanParameters();
             var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing).ConfigureAwait(false);
 
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -601,43 +594,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var useBackgroundProcessing = false;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public async Task BanPlayers_WithNullEmptyWhitespaceRequestingAgent_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var banParameters = GenerateBanParameters();
-            var useBackgroundProcessing = false;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, null).ConfigureAwait(false),
-                async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, TestConstants.WhiteSpace).ConfigureAwait(false)
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
-            }
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
         }
 
         [TestMethod]
@@ -648,10 +610,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var banParameters = GenerateBanParameters();
             var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -664,16 +625,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var useBackgroundProcessing = true;
-            var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing, requestingAgent).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
         }
 
         [TestMethod]
@@ -742,10 +699,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gamertag"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gamertag"));
             }
         }
 
@@ -850,10 +804,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Func<Task<IActionResult>> action = async () => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentOutOfRangeException).Message.Should().Be(string.Format(CultureInfo.InvariantCulture, TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
+            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
         }
 
         [TestMethod]
@@ -869,10 +820,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Func<Task<IActionResult>> action = async () => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentOutOfRangeException).Message.Should().Be(string.Format(CultureInfo.InvariantCulture, TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
+            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
         }
 
         [TestMethod]
@@ -899,7 +847,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeAssignableTo<OkResult>();
+                action().Should().BeAssignableTo<Task<IActionResult>>();
+                var result = await action().ConfigureAwait(false) as OkObjectResult;
+                result.Should().NotBeNull();
+                result.StatusCode.Should().Be(200);
+                result.Value.Should().NotBeNull();
             }
         }
 
@@ -920,10 +872,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
             }
         }
 
@@ -952,7 +901,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             {
                 // To reset the context and prevent header key collision, rebuild the Dependencies.
                 controller = new Dependencies().Build();
-                action().Result.Should().BeAssignableTo<OkResult>();
+                action().Result.Should().BeAssignableTo<AcceptedResult>();
             }
         }
 
@@ -973,10 +922,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
             }
         }
 
@@ -998,7 +944,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, gift).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeAssignableTo<OkResult>();
+            action().Should().BeAssignableTo<Task<IActionResult>>();
+            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200);
+            result.Value.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -1162,12 +1112,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerDetailsProvider.BanUsersAsync(Arg.Any<SunriseBanParameters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SunriseBanResult>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<SunriseBanSummary>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
-                this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<string>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
                 this.SunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseNotification>>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
                 this.SunrisePlayerInventoryProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseLspGroup>>());
+                this.SunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SunriseGift>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
+                this.SunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SunriseGroupGift>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftHistoryAntecedent>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());
@@ -1205,6 +1156,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public IRequestValidator<SunriseBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseBanParametersInput>>();
 
+            public IRequestValidator<SunriseUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseUserFlagsInput>>();
+
             public SunriseController Build() => new SunriseController(
                 this.KustoProvider,
                 this.SunrisePlayerDetailsProvider,
@@ -1219,7 +1172,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.MasterInventoryRequestValidator,
                 this.GiftRequestValidator,
                 this.GroupGiftRequestValidator,
-                this.BanParametersRequestValidator)
+                this.BanParametersRequestValidator,
+                this.UserFlagsRequestValidator)
             { ControllerContext = this.ControllerContext };
         }
     }

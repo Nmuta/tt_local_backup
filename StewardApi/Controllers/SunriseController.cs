@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,11 +15,12 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation;
-using Turn10.Services.Authentication;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -58,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IRequestValidator<SunriseGift> giftRequestValidator;
         private readonly IRequestValidator<SunriseGroupGift> groupGiftRequestValidator;
         private readonly IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator;
-        private readonly string giftingPassword;
+        private readonly IRequestValidator<SunriseUserFlagsInput> userFlagsRequestValidator;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseController"/> class.
@@ -77,6 +77,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="giftRequestValidator">The gift request validator.</param>
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
         /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
+        /// <param name="userFlagsRequestValidator">The user flags request validator.</param>
         public SunriseController(
             IKustoProvider kustoProvider,
             ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider,
@@ -91,7 +92,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<SunriseMasterInventory> masterInventoryRequestValidator,
             IRequestValidator<SunriseGift> giftRequestValidator,
             IRequestValidator<SunriseGroupGift> groupGiftRequestValidator,
-            IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator)
+            IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator,
+            IRequestValidator<SunriseUserFlagsInput> userFlagsRequestValidator)
         {
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             sunrisePlayerDetailsProvider.ShouldNotBeNull(nameof(sunrisePlayerDetailsProvider));
@@ -107,6 +109,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
             groupGiftRequestValidator.ShouldNotBeNull(nameof(groupGiftRequestValidator));
             banParametersRequestValidator.ShouldNotBeNull(nameof(banParametersRequestValidator));
+            userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.kustoProvider = kustoProvider;
@@ -121,10 +124,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.giftRequestValidator = giftRequestValidator;
             this.groupGiftRequestValidator = groupGiftRequestValidator;
             this.banParametersRequestValidator = banParametersRequestValidator;
-
-            this.giftingPassword = keyVaultProvider.GetSecretAsync(
-                configuration[ConfigurationKeyConstants.KeyVaultUrl],
-                configuration[ConfigurationKeyConstants.GroupGiftPasswordSecretName]).GetAwaiter().GetResult();
+            this.userFlagsRequestValidator = userFlagsRequestValidator;
         }
 
         /// <summary>
@@ -137,15 +137,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
         public async Task<IActionResult> GetMasterInventoryList()
         {
-            try
-            {
-                var masterInventory = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
-                return this.Ok(masterInventory);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            var masterInventory = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
+            return this.Ok(masterInventory);
         }
 
         /// <summary>
@@ -159,29 +152,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
         public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
-            try
+            var results = new List<IdentityResultAlpha>();
+            var queries = new List<Task<IdentityResultAlpha>>();
+
+            foreach (var query in identityQueries)
             {
-                var results = new List<IdentityResultAlpha>();
-                var queries = new List<Task<IdentityResultAlpha>>();
-
-                foreach (var query in identityQueries)
-                {
-                    queries.Add(this.RetrieveIdentity(query));
-                }
-
-                await Task.WhenAll(queries).ConfigureAwait(true);
-
-                foreach (var query in queries)
-                {
-                    results.Add(await query.ConfigureAwait(true));
-                }
-
-                return this.Ok(results);
+                queries.Add(this.RetrieveIdentity(query));
             }
-            catch (Exception ex)
+
+            await Task.WhenAll(queries).ConfigureAwait(true);
+
+            foreach (var query in queries)
             {
-                return this.BadRequest(ex);
+                results.Add(await query.ConfigureAwait(true));
             }
+
+            return this.Ok(results);
         }
 
         /// <summary>
@@ -195,27 +181,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(SunrisePlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(string gamertag)
         {
-            try
+            gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
+
+            var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
+            if (playerDetails == null)
             {
-                gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
-
-                var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
-                if (playerDetails == null)
-                {
-                    return this.NotFound($"Player {gamertag} was not found.");
-                }
-
-                return this.Ok(playerDetails);
+                return this.NotFound($"Player {gamertag} was not found.");
             }
-            catch (Exception ex)
-            {
-                if (ex is ProfileNotFoundException)
-                {
-                    return this.NotFound(ex.Message);
-                }
 
-                return this.BadRequest(ex);
-            }
+            return this.Ok(playerDetails);
         }
 
         /// <summary>
@@ -229,25 +203,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(SunrisePlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(ulong xuid)
         {
-            try
+            var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
+            if (playerDetails == null)
             {
-                var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
-                if (playerDetails == null)
-                {
-                    return this.NotFound($"Player {xuid} was not found.");
-                }
-
-                return this.Ok(playerDetails);
+                return this.NotFound($"Player {xuid} was not found.");
             }
-            catch (Exception ex)
-            {
-                if (ex is ProfileNotFoundException)
-                {
-                    return this.NotFound(ex.Message);
-                }
 
-                return this.BadRequest(ex);
-            }
+            return this.Ok(playerDetails);
         }
 
         /// <summary>
@@ -262,23 +224,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(List<SunriseConsoleDetails>))]
         public async Task<IActionResult> GetConsoles(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
         {
-            try
-            {
-                maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-                var result = await this.sunrisePlayerDetailsProvider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(true);
+            var result = await this.sunrisePlayerDetailsProvider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(true);
 
-                if (result == null)
-                {
-                    return this.NotFound($"No profile found for XUID: {xuid}.");
-                }
-
-                return this.Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -294,24 +244,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(List<SunriseSharedConsoleUser>))]
         public async Task<IActionResult> GetSharedConsoleUsers(ulong xuid, [FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
         {
-            try
-            {
-                startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
-                maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
+            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-                var result = await this.sunrisePlayerDetailsProvider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
+            var result = await this.sunrisePlayerDetailsProvider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
 
-                if (result == null)
-                {
-                    return this.NotFound($"No profile found for XUID: {xuid}.");
-                }
-
-                return this.Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -325,21 +263,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
         public async Task<IActionResult> GetUserFlags(ulong xuid)
         {
-            try
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
             {
-                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
-                {
-                    return this.NotFound($"No profile found for XUID: {xuid}.");
-                }
-
-                var result = await this.sunrisePlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
-
-                return this.Ok(result);
+                return this.NotFound($"No profile found for XUID: {xuid}.");
             }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+
+            var result = await this.sunrisePlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
+
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -352,27 +283,28 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </returns>
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
-        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] SunriseUserFlags userFlags)
+        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] SunriseUserFlagsInput userFlags)
         {
-            try
+            userFlags.ShouldNotBeNull(nameof(userFlags));
+
+            this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
+            if (!this.ModelState.IsValid)
             {
-                userFlags.ShouldNotBeNull(nameof(userFlags));
-
-                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
-                {
-                    return this.NotFound($"No profile found for XUID: {xuid}.");
-                }
-
-                await this.sunrisePlayerDetailsProvider.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(true);
-
-                var results = await this.sunrisePlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
-
-                return this.Ok(results);
+                var result = this.userFlagsRequestValidator.GenerateErrorResponse(this.ModelState);
+                return this.BadRequest(result);
             }
-            catch (Exception ex)
+
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
             {
-                return this.BadRequest(ex);
+                return this.NotFound($"No profile found for XUID: {xuid}.");
             }
+
+            var validatedFlags = this.mapper.Map<SunriseUserFlags>(userFlags);
+            await this.sunrisePlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags).ConfigureAwait(true);
+
+            var results = await this.sunrisePlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
+
+            return this.Ok(results);
         }
 
         /// <summary>
@@ -386,21 +318,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(SunriseProfileSummary))]
         public async Task<IActionResult> GetProfileSummary(ulong xuid)
         {
-            try
-            {
-                var result = await this.sunrisePlayerDetailsProvider.GetProfileSummaryAsync(xuid).ConfigureAwait(true);
+            var result = await this.sunrisePlayerDetailsProvider.GetProfileSummaryAsync(xuid).ConfigureAwait(true);
 
-                if (result == null)
-                {
-                    return this.NotFound($"No profile found for XUID: {xuid}.");
-                }
-
-                return this.Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -416,24 +336,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(List<SunriseCreditUpdate>))]
         public async Task<IActionResult> GetCreditUpdates(ulong xuid, [FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
         {
-            try
-            {
-                startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
-                maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
+            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-                var result = await this.sunrisePlayerDetailsProvider.GetCreditUpdatesAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
+            var result = await this.sunrisePlayerDetailsProvider.GetCreditUpdatesAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
 
-                if (result == null)
-                {
-                    return this.NotFound($"No profile found for XUID: {xuid}.");
-                }
-
-                return this.Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -441,7 +349,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="banInput">The ban parameter input.</param>
         /// <param name="useBackgroundProcessing">A value that indicates whether to use background processing.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
         /// <returns>
         ///     The list of <see cref="SunriseBanResult"/>.
         /// </returns>
@@ -450,9 +357,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(202)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<SunriseBanParametersInput> banInput,
-            [FromQuery] bool useBackgroundProcessing,
-            [FromHeader] string requestingAgent)
+            [FromQuery] bool useBackgroundProcessing)
         {
+            var user = this.User.UserModel();
+            var requestingAgent = user.EmailAddress ?? user.Id;
+
             async Task<List<SunriseBanResult>> BulkBanUsersAsync(List<SunriseBanParameters> groupedBanParameters)
             {
                 var tasks =
@@ -466,82 +375,75 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return results;
             }
 
-            try
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            banInput.ShouldNotBeNull(nameof(banInput));
+
+            foreach (var banParam in banInput)
             {
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-                banInput.ShouldNotBeNull(nameof(banInput));
+                this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
+                this.banParametersRequestValidator.Validate(banParam, this.ModelState);
+            }
 
-                foreach (var banParam in banInput)
+            if (!this.ModelState.IsValid)
+            {
+                var result = this.banParametersRequestValidator.GenerateErrorResponse(this.ModelState);
+                return this.BadRequest(result);
+            }
+
+            var groupedBanParameters = banInput.GroupBy(v =>
                 {
-                    this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
-                    this.banParametersRequestValidator.Validate(banParam, this.ModelState);
-                }
-
-                if (!this.ModelState.IsValid)
-                {
-                    var result = this.banParametersRequestValidator.GenerateErrorResponse(this.ModelState);
-                    return this.BadRequest(result);
-                }
-
-                var groupedBanParameters = banInput.GroupBy(v =>
+                    var compareUsingValues = new object[]
                     {
-                        var compareUsingValues = new object[]
-                        {
-                            v.BanAllConsoles,
-                            v.BanAllPcs,
-                            v.DeleteLeaderboardEntries,
-                            v.StartTimeUtc,
-                            v.Duration,
-                            v.SendReasonNotification,
-                            v.Reason,
-                        };
+                        v.BanAllConsoles,
+                        v.BanAllPcs,
+                        v.DeleteLeaderboardEntries,
+                        v.StartTimeUtc,
+                        v.Duration,
+                        v.SendReasonNotification,
+                        v.Reason,
+                    };
 
-                        var compareValue = string.Join('|', compareUsingValues);
-                        return compareValue;
-                    })
-                    .Select(group => this.mapper.Map<SunriseBanParameters>(group.ToList()))
-                    .ToList();
+                    var compareValue = string.Join('|', compareUsingValues);
+                    return compareValue;
+                })
+                .Select(group => this.mapper.Map<SunriseBanParameters>(group.ToList()))
+                .ToList();
 
-                if (!useBackgroundProcessing)
+            if (!useBackgroundProcessing)
+            {
+                var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
+
+                return this.Created(this.Request.Path, results);
+            }
+
+            var username = this.User.GetNameIdentifier();
+            var jobId = await this.AddJobIdToHeaderAsync(groupedBanParameters.ToJson(), username).ConfigureAwait(true);
+
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
+            {
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
+                try
                 {
                     var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
 
-                    return this.Created(this.Request.Path, results);
+                    await this.jobTracker
+                        .UpdateJobAsync(
+                            jobId,
+                            username,
+                            BackgroundJobStatus.Completed,
+                            results.ToJson())
+                        .ConfigureAwait(true);
                 }
-
-                var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(groupedBanParameters.ToJson(), username).ConfigureAwait(true);
-
-                async Task BackgroundProcessing(CancellationToken cancellationToken)
+                catch (Exception)
                 {
-                    // Throwing within the hosting environment background worker seems to have significant consequences.
-                    // Do not throw.
-                    try
-                    {
-                        var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
-
-                        await this.jobTracker
-                            .UpdateJobAsync(
-                                jobId,
-                                username,
-                                BackgroundJobStatus.Completed,
-                                results.ToJson())
-                            .ConfigureAwait(true);
-                    }
-                    catch (Exception)
-                    {
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
-                    }
+                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
-
-                this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-                return this.Accepted();
             }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
+
+            return this.Accepted();
         }
 
         /// <summary>
@@ -552,21 +454,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     The list of <see cref="SunriseBanSummary"/>.
         /// </returns>
         [HttpPost("players/banSummaries")]
-        [SwaggerResponse(200, type: typeof(List<SunriseBanSummary>))]
+        [SwaggerResponse(200, type: typeof(IList<SunriseBanSummary>))]
         public async Task<IActionResult> GetBanSummaries([FromBody] IList<ulong> xuids)
         {
-            try
-            {
-                xuids.ShouldNotBeNull(nameof(xuids));
+            xuids.ShouldNotBeNull(nameof(xuids));
 
-                var result = await this.sunrisePlayerDetailsProvider.GetUserBanSummariesAsync(xuids).ConfigureAwait(true);
+            var result = await this.sunrisePlayerDetailsProvider.GetUserBanSummariesAsync(xuids).ConfigureAwait(true);
 
-                return this.Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -580,21 +475,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
         public async Task<IActionResult> GetBanHistory(ulong xuid)
         {
-            try
-            {
-                var result = await this.GetBanHistoryAsync(xuid).ConfigureAwait(true);
+            var result = await this.GetBanHistoryAsync(xuid).ConfigureAwait(true);
 
-                return this.Ok(result);
-            }
-            catch (Exception ex)
-            {
-                if (ex is ProfileNotFoundException)
-                {
-                    return this.NotFound(ex.Message);
-                }
-
-                return this.BadRequest(ex);
-            }
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -608,30 +491,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
         public async Task<IActionResult> GetBanHistory(string gamertag)
         {
-            try
+            gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
+
+            var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
+
+            if (playerDetails == null)
             {
-                gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
-
-                var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
-
-                if (playerDetails == null)
-                {
-                    return this.NotFound($"Player {gamertag} was not found.");
-                }
-
-                var result = await this.GetBanHistoryAsync(playerDetails.Xuid).ConfigureAwait(true);
-
-                return this.Ok(result);
+                return this.NotFound($"Player {gamertag} was not found.");
             }
-            catch (Exception ex)
-            {
-                if (ex is ProfileNotFoundException)
-                {
-                    return this.NotFound(ex.Message);
-                }
 
-                return this.BadRequest(ex);
-            }
+            var result = await this.GetBanHistoryAsync(playerDetails.Xuid).ConfigureAwait(true);
+
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -646,16 +517,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, bool isBanned)
         {
-            try
-            {
-                await this.sunrisePlayerDetailsProvider.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(true);
+            await this.sunrisePlayerDetailsProvider.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(true);
 
-                return this.Ok();
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok();
         }
 
         /// <summary>
@@ -669,21 +533,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(SunrisePlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
-            try
-            {
-                var inventory = await this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
+            var inventory = await this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
 
-                if (inventory == null)
-                {
-                    return this.NotFound($"No inventory found for XUID: {xuid}.");
-                }
-
-                return this.Ok(inventory);
-            }
-            catch (Exception ex)
+            if (inventory == null)
             {
-                return this.BadRequest(ex);
+                return this.NotFound($"No inventory found for XUID: {xuid}.");
             }
+
+            return this.Ok(inventory);
         }
 
         /// <summary>
@@ -698,21 +555,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         public async Task<IActionResult> GetPlayerInventoryProfiles(ulong xuid)
         {
-            try
-            {
-                var inventoryProfileSummary = await this.sunrisePlayerInventoryProvider.GetInventoryProfilesAsync(xuid).ConfigureAwait(true);
+            var inventoryProfileSummary = await this.sunrisePlayerInventoryProvider.GetInventoryProfilesAsync(xuid).ConfigureAwait(true);
 
-                if (inventoryProfileSummary == null)
-                {
-                    return this.NotFound($"No inventory profiles found for XUID: {xuid}.");
-                }
-
-                return this.Ok(inventoryProfileSummary);
-            }
-            catch (Exception ex)
+            if (inventoryProfileSummary == null)
             {
-                return this.BadRequest(ex);
+                return this.NotFound($"No inventory profiles found for XUID: {xuid}.");
             }
+
+            return this.Ok(inventoryProfileSummary);
         }
 
         /// <summary>
@@ -726,21 +576,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(SunrisePlayerInventory))]
         public async Task<IActionResult> GetPlayerInventoryByProfileId(int profileId)
         {
-            try
-            {
-                var inventory = await this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(profileId).ConfigureAwait(true);
+            var inventory = await this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(profileId).ConfigureAwait(true);
 
-                if (inventory == null)
-                {
-                    return this.NotFound($"No inventory found for Profile ID: {profileId}.");
-                }
-
-                return this.Ok(inventory);
-            }
-            catch (Exception ex)
+            if (inventory == null)
             {
-                return this.BadRequest(ex);
+                return this.NotFound($"No inventory found for Profile ID: {profileId}.");
             }
+
+            return this.Ok(inventory);
         }
 
         /// <summary>
@@ -755,19 +598,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<SunriseLspGroup>))]
         public async Task<IActionResult> GetGroups([FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
         {
-            try
-            {
-                startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
-                maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
+            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-                var result = await this.sunrisePlayerInventoryProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
+            var result = await this.sunrisePlayerInventoryProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
 
-                return this.Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -776,86 +612,82 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="groupGift">The group gift.</param>
         /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
         /// <returns>
-        ///     The <see cref="SunrisePlayerInventory"/>.
+        ///     The <see cref="IList{GiftResponse}"/>.
         /// </returns>
         [HttpPost("gifting/players")]
-        [SwaggerResponse(200, type: typeof(SunrisePlayerInventory))]
+        [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
         public async Task<IActionResult> UpdateGroupInventories([FromBody] SunriseGroupGift groupGift, [FromQuery] bool useBackgroundProcessing)
         {
-            try
+            var user = this.User.UserModel();
+            var requestingAgent = user.EmailAddress ?? user.Id;
+
+            groupGift.ShouldNotBeNull(nameof(groupGift));
+            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
+            groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
+            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+
+            var stringBuilder = new StringBuilder();
+
+            this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
+            this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
+
+            if (!this.ModelState.IsValid)
             {
-                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-                    ? this.User.GetClaimValue(ClaimTypes.Email)
-                    : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
-
-                groupGift.ShouldNotBeNull(nameof(groupGift));
-                groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-                var stringBuilder = new StringBuilder();
-
-                this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
-                this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
-
-                if (!this.ModelState.IsValid)
-                {
-                    var errorResponse = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
-                    return this.BadRequest(errorResponse);
-                }
-
-                foreach (var xuid in groupGift.Xuids)
-                {
-                    if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
-                    {
-                        stringBuilder.Append($"{xuid} ");
-                    }
-                }
-
-                if (stringBuilder.Length > 0)
-                {
-                    return this.BadRequest($"Players with XUIDs: {stringBuilder} were not found.");
-                }
-
-                var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
-                if (invalidItems.Length > 0)
-                {
-                    return this.BadRequest($"Invalid items found. {invalidItems}");
-                }
-
-                if (!useBackgroundProcessing)
-                {
-                    await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift.Xuids, groupGift, requestingAgent).ConfigureAwait(true);
-
-                    return this.Ok();
-                }
-
-                var username = this.User.GetNameIdentifier();
-                var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), username).ConfigureAwait(true);
-
-                async Task BackgroundProcessing(CancellationToken cancellationToken)
-                {
-                    // Throwing within the hosting environment background worker seems to have significant consequences.
-                    // Do not throw.
-                    try
-                    {
-                        await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift.Xuids, groupGift, requestingAgent).ConfigureAwait(true);
-
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed).ConfigureAwait(true);
-                    }
-                    catch (Exception)
-                    {
-                        await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
-                    }
-                }
-
-                this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
-
-                return this.Ok();
+                var errorResponse = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
+                return this.BadRequest(errorResponse);
             }
-            catch (Exception ex)
+
+            foreach (var xuid in groupGift.Xuids)
             {
-                return this.BadRequest(ex);
+                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                {
+                    stringBuilder.Append($"{xuid} ");
+                }
             }
+
+            if (stringBuilder.Length > 0)
+            {
+                return this.BadRequest($"Players with XUIDs: {stringBuilder} were not found.");
+            }
+
+            var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
+            if (invalidItems.Length > 0)
+            {
+                return this.BadRequest($"Invalid items found. {invalidItems}");
+            }
+
+            if (!useBackgroundProcessing)
+            {
+                var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+                return this.Ok(response);
+            }
+
+            var username = this.User.GetNameIdentifier();
+            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), username).ConfigureAwait(true);
+
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
+            {
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
+                try
+                {
+                    var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response.ToJson()).ConfigureAwait(true);
+                }
+                catch (Exception)
+                {
+                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                }
+            }
+
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
+
+            return this.Accepted(new BackgroundJob()
+            {
+                JobId = jobId,
+                Status = BackgroundJobStatus.InProgress.ToString(),
+            });
         }
 
         /// <summary>
@@ -864,26 +696,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="groupId">The LSP group ID.</param>
         /// <param name="gift">The gift to send.</param>
         /// <returns>
-        ///     The <see cref="SunrisePlayerInventory"/>.
+        ///     The <see cref="GiftResponse{T}"/>.
         /// </returns>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin)]
         [HttpPost("gifting/groupId({groupId})")]
-        [SwaggerResponse(200, type: typeof(SunriseGift))]
+        [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] SunriseGift gift)
         {
             try
             {
-                var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-                    ? this.User.GetClaimValue(ClaimTypes.Email)
-                    : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+                var user = this.User.UserModel();
+                var requestingAgent = user.EmailAddress ?? user.Id;
 
                 gift.ShouldNotBeNull(nameof(gift));
                 requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
 
                 this.giftRequestValidator.Validate(gift, this.ModelState);
-                this.giftRequestValidator.ValidateIds(gift, this.ModelState);
 
                 if (!this.ModelState.IsValid)
                 {
@@ -898,9 +728,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.BadRequest($"Invalid items found. {invalidItems}");
                 }
 
-                await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(true);
-
-                return this.Ok();
+                var response = await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(true);
+                return this.Ok(response);
             }
             catch (Exception ex)
             {
@@ -919,16 +748,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<SunriseGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(ulong xuid)
         {
-            try
-            {
-                var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.SunriseCodeName, GiftHistoryAntecedent.Xuid).ConfigureAwait(true);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.SunriseCodeName, GiftHistoryAntecedent.Xuid).ConfigureAwait(true);
 
-                return this.Ok(giftHistory);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(giftHistory);
         }
 
         /// <summary>
@@ -942,16 +764,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<SunriseGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(int groupId)
         {
-            try
-            {
-                var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.SunriseCodeName, GiftHistoryAntecedent.LspGroupId).ConfigureAwait(true);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.SunriseCodeName, GiftHistoryAntecedent.LspGroupId).ConfigureAwait(true);
 
-                return this.Ok(giftHistory);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(giftHistory);
         }
 
         /// <summary>
@@ -966,18 +781,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<SunriseNotification>))]
         public async Task<IActionResult> GetPlayerNotifications(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
         {
-            try
-            {
-                maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-                var notifications = await this.sunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(xuid, maxResults).ConfigureAwait(true);
+            var notifications = await this.sunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(xuid, maxResults).ConfigureAwait(true);
 
-                return this.Ok(notifications);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            return this.Ok(notifications);
         }
 
         private async Task<string> AddJobIdToHeaderAsync(string requestBody, string username)
@@ -1023,16 +831,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     return new IdentityResultAlpha
                     {
-                        Error = new StewardError(StewardErrorCode.RequiredParameterMissing, ex.Message),
+                        Error = new IdentityLookupError(StewardErrorCode.RequiredParameterMissing, ex.Message),
                         Query = query
                     };
                 }
 
-                if (ex is ProfileNotFoundException)
+                if (ex is NotFoundStewardException)
                 {
                     return new IdentityResultAlpha
                     {
-                        Error = new StewardError(StewardErrorCode.ProfileNotFound, ex.Message),
+                        Error = new IdentityLookupError(StewardErrorCode.DocumentNotFound, ex.Message),
                         Query = query
                     };
                 }
@@ -1082,7 +890,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="gift">The sunrise gift.</param>
         /// <returns>
-        ///     String of items that are invalid
+        ///     String of items that are invalid.
         /// </returns>
         private async Task<string> VerifyGiftAgainstMasterInventory(SunriseMasterInventory gift)
         {

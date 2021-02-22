@@ -65,6 +65,17 @@ import { OpusPlayersIdentitiesFakeApi } from './apis/title/opus/players/identiti
 import { SunrisePlayersIdentitiesFakeApi } from './apis/title/sunrise/players/identities';
 import { GravityPlayersIdentitiesFakeApi } from './apis/title/gravity/players/identities';
 import { GravityPlayerT10IdDetailsFakeApi } from './apis/title/gravity/player/t10Id/details';
+import { GravityMasterInventoryFakeApi } from './apis/title/gravity/masterInventory';
+import { GravityGiftingPlayerFakeApi } from './apis/title/gravity/gifting/players';
+import { SunriseMasterInventoryFakeApi } from './apis/title/sunrise/masterInventory';
+import { SunriseGiftingLspGroupFakeApi } from './apis/title/sunrise/gifting/groupId';
+import { SunriseGiftingPlayersFakeApi } from './apis/title/sunrise/gifting/players';
+import { ApolloMasterInventoryFakeApi } from './apis/title/apollo/masterInventory';
+import { ApolloGiftingPlayersFakeApi } from './apis/title/apollo/gifting/players';
+import { ApolloGiftingLspGroupFakeApi } from './apis/title/apollo/gifting/groupId';
+import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
+import { SunriseGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/sunrise/gifting/players_returnsbackgroundjob';
+import { ApolloGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/apollo/gifting/players_returnsbackgroundjob';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -79,6 +90,8 @@ const fakeApiConstructors = [
   GravityPlayerXuidInventoryFakeApi,
   GravityPlayerT10IdGiftHistoryFakeApi,
   GravityPlayersIdentitiesFakeApi,
+  GravityMasterInventoryFakeApi,
+  GravityGiftingPlayerFakeApi,
 
   // Sunrise
   SunrisePlayerGamertagDetailsFakeApi,
@@ -102,6 +115,10 @@ const fakeApiConstructors = [
   SunriseGroupXuidsInventoryFakeApi,
   SunriseGroupGroupIdGiftHistoryFakeApi,
   SunrisePlayerXuidNotificationsFakeApi,
+  SunriseMasterInventoryFakeApi,
+  SunriseGiftingLspGroupFakeApi,
+  SunriseGiftingPlayersReturnsBackgroundJobFakeApi,
+  SunriseGiftingPlayersFakeApi,
 
   // Apollo
   ApolloPlayerGamertagDetailsFakeApi,
@@ -118,6 +135,10 @@ const fakeApiConstructors = [
   ApolloGroupXuidsInventoryFakeApi,
   ApolloGroupGroupIdGiftHistoryFakeApi,
   ApolloGroupsFakeApi,
+  ApolloMasterInventoryFakeApi,
+  ApolloGiftingPlayersReturnsBackgroundJobFakeApi,
+  ApolloGiftingPlayersFakeApi,
+  ApolloGiftingLspGroupFakeApi,
 
   // Opus
   OpusPlayerGamertagDetailsFakeApi,
@@ -125,6 +146,9 @@ const fakeApiConstructors = [
   OpusPlayerXuidInventoryFakeApi,
   OpusPlayerXuidInventoryProfilesFakeApi,
   OpusPlayersIdentitiesFakeApi,
+
+  // Other
+  JobsGetJobFakeApi,
 ];
 
 /** The URLs this interceptor will not block. */
