@@ -9,6 +9,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo
@@ -70,9 +71,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
 
-            var playerId = $"{giftHistoryAntecedent}:{id}";
+            try
+            {
+                var playerId = $"{giftHistoryAntecedent}:{id}";
 
-            return await this.GetGiftHistoriesAsync(playerId, title).ConfigureAwait(false);
+                return await this.GetGiftHistoriesAsync(playerId, title).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                if (ex is StewardBaseException)
+                {
+                    throw;
+                }
+
+                throw new NotFoundStewardException($"No history found for {giftHistoryAntecedent}: {id}.", ex);
+            }
         }
 
         private async Task<IList<ApolloGiftHistory>> GetGiftHistoriesAsync(string playerId, string title)
@@ -95,7 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     convertedGift = history.GiftInventory.FromJson<ApolloGift>();
                     if (convertedGift.Inventory == null)
                     {
-                        throw new InvalidOperationException("Not an ApolloGift model");
+                        throw new UnknownFailureStewardException("Not an ApolloGift model");
                     }
                 }
                 catch
@@ -106,7 +119,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                         convertedGift = this.mapper.Map<ApolloGift>(apolloPlayerInventory);
                         if (convertedGift.Inventory == null)
                         {
-                            throw new InvalidOperationException("Not an ApolloPlayerInventory model");
+                            throw new UnknownFailureStewardException("Not an ApolloPlayerInventory model");
                         }
                     }
                     catch

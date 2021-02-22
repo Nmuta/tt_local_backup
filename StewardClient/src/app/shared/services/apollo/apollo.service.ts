@@ -12,7 +12,7 @@ import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
 import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
 import { ApolloGiftHistory } from '@models/apollo/apollo-gift-history.model';
 import { BackgroundJob } from '@models/background-job';
-import { GiftResponse, GiftResponses } from '@models/gift-response';
+import { GiftResponse } from '@models/gift-response';
 import {
   IdentityQueryAlpha,
   IdentityQueryAlphaBatch,
@@ -112,8 +112,8 @@ export class ApolloService {
   }
 
   /** Gift players inventory items. */
-  public postGiftPlayers(gift: ApolloGroupGift): Observable<GiftResponses<bigint>> {
-    return this.apiService.postRequest<GiftResponses<bigint>>(
+  public postGiftPlayers(gift: ApolloGroupGift): Observable<GiftResponse<bigint>[]> {
+    return this.apiService.postRequest<GiftResponse<bigint>[]>(
       `${this.basePath}/gifting/players`,
       gift,
     );

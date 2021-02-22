@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.WebServices.FMG.Generated;
 using Turn10.Data.Common;
-using Turn10.FMG.ForzaClient;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Gravity
@@ -53,29 +52,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             try
             {
                 var identity = await this.gravityUserService.LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
-                if (identity.userDetails == null)
-                {
-                    throw new ProfileNotFoundException($"No profile found for Xuid: {xuid}.");
-                }
-
                 var profile = identity.userDetails.OrderByDescending(e => e.LastLogin).FirstOrDefault();
-                if (profile == null)
-                {
-                    throw new ProfileNotFoundException($"No profile found for Xuid: {xuid}.");
-                }
 
                 var response = await this.gravityUserInventoryService.LiveOpsGetUserInventoryByT10IdAsync(profile.Turn10Id).ConfigureAwait(false);
 
                 return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
             }
-            catch (ForzaClientException ex)
+            catch (Exception ex)
             {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
+                throw new NotFoundStewardException($"No inventory found for XUID: {xuid}.", ex);
             }
         }
 
@@ -91,14 +76,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
                 return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
             }
-            catch (ForzaClientException ex)
+            catch (Exception ex)
             {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
+                throw new NotFoundStewardException($"No inventory found for Turn 10 ID: {t10Id}.", ex);
             }
         }
 
@@ -110,29 +90,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             try
             {
                 var identity = await this.gravityUserService.LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
-                if (identity.userDetails == null)
-                {
-                    throw new ProfileNotFoundException($"No profile found for Xuid: {xuid}.");
-                }
-
                 var profile = identity.userDetails.OrderByDescending(e => e.LastLogin).FirstOrDefault();
-                if (profile == null)
-                {
-                    throw new ProfileNotFoundException($"No profile found for Xuid: {xuid}.");
-                }
 
                 var response = await this.gravityUserInventoryService.LiveOpsGetInventoryByProfileIdAsync(profile.Turn10Id, profileId).ConfigureAwait(false);
 
                 return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
             }
-            catch (ForzaClientException ex)
+            catch (Exception ex)
             {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
+                throw new NotFoundStewardException($"No inventory found for XUID: {xuid} and Profile ID: {profileId}.", ex);
             }
         }
 
@@ -149,14 +115,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
                 return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
             }
-            catch (ForzaClientException ex)
+            catch (Exception ex)
             {
-                if (ex.ResultCode == LspResponse.Error && ex.ErrorCode == LspResponse.PlayerNotFound)
-                {
-                    return null;
-                }
-
-                throw;
+                throw new NotFoundStewardException($"No inventory found for Turn 10 ID: {t10Id} and Profile ID: {profileId}.", ex);
             }
         }
 
@@ -189,32 +150,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             }
 
             return giftResponse;
-        }
-
-        /// <inheritdoc />
-        public async Task DeletePlayerInventoryAsync(ulong xuid)
-        {
-            var identity = await this.gravityUserService.LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
-            if (identity.userDetails == null)
-            {
-                throw new ProfileNotFoundException($"No profile found for Xuid: {xuid}.");
-            }
-
-            var profile = identity.userDetails.OrderByDescending(e => e.LastLogin).FirstOrDefault();
-            if (profile == null)
-            {
-                throw new ProfileNotFoundException($"No profile found for Xuid: {xuid}.");
-            }
-
-            await this.gravityUserInventoryService.ResetUserInventoryAsync(profile.Turn10Id).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc />
-        public async Task DeletePlayerInventoryAsync(string t10Id)
-        {
-            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
-
-            await this.gravityUserInventoryService.ResetUserInventoryAsync(t10Id).ConfigureAwait(false);
         }
 
         /// <summary>

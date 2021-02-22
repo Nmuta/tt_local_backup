@@ -235,7 +235,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task GetPlayerDetailsByT10Id_InvalidGamertag()
+        public async Task GetPlayerDetailsByT10Id_InvalidT10Id()
         {
             try
             {
@@ -379,7 +379,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -419,7 +419,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -434,7 +434,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 
@@ -534,7 +534,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 

@@ -21,7 +21,7 @@ export enum GameTitleCodeName {
   FH3 = 'Opus',
 }
 
-export enum UserRoles {
+export enum UserRole {
   LiveOpsAdmin = 'LiveOpsAdmin',
   SupportAgentAdmin = 'SupportAgentAdmin',
   SupportAgent = 'SupportAgent',

@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -22,7 +22,7 @@ describe('GiftingResultComponent', () => {
         providers: [],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(GiftingResultComponent as Type<GiftingResultComponent>);
+      fixture = TestBed.createComponent(GiftingResultComponent);
       component = fixture.debugElement.componentInstance;
     }),
   );

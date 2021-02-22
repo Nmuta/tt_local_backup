@@ -9,7 +9,7 @@ import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angu
 import { MatTableDataSource } from '@angular/material/table';
 import { of, throwError } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
-import { GiftResponse, GiftResponses } from '@models/gift-response';
+import { GiftResponse } from '@models/gift-response';
 import { GiftHistoryAntecedent } from '@shared/constants';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { GiftBasketModel } from '@models/master-inventory-item';
@@ -408,6 +408,7 @@ describe('GiftBasketBaseComponent', () => {
       describe('And a BackgoundTask is returned', () => {
         const jobId = 'test-job-id';
         beforeEach(() => {
+          component.usingPlayerIdentities = true;
           component.sendGiftToPlayers = jasmine
             .createSpy('sendGiftToPlayers')
             .and.returnValue(of({ jobId: jobId } as BackgroundJob<void>));
@@ -496,7 +497,7 @@ describe('GiftBasketBaseComponent', () => {
       });
 
       describe('And a BackgroundJob is returned', () => {
-        const testBackgroundJobResp: BackgroundJob<GiftResponses<string | bigint>> = {
+        const testBackgroundJobResp: BackgroundJob<GiftResponse<string | bigint>[]> = {
           jobId: 'test=-job-id',
           status: BackgroundJobStatus.InProgress,
           result: 'result',

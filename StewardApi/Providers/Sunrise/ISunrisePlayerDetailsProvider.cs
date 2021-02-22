@@ -155,15 +155,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid);
 
         /// <summary>
-        ///     Get user ban history.
-        /// </summary>
-        /// <param name="gamertag">The gamertag.</param>
-        /// <returns>
-        ///     The list of <see cref="SunriseBanDescription"/>.
-        /// </returns>
-        Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(string gamertag);
-
-        /// <summary>
         ///     Get player notifications.
         /// </summary>
         /// <param name="xuid">The xuid.</param>

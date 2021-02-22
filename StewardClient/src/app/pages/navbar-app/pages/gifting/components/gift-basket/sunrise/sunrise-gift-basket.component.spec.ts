@@ -10,6 +10,7 @@ import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SunriseService } from '@services/sunrise';
 import { SetSunriseGiftBasket } from '@navbar-app/pages/gifting/sunrise/state/sunrise-gifting.state.actions';
+import faker from 'faker';
 
 describe('SunriseGiftBasketComponent', () => {
   let fixture: ComponentFixture<SunriseGiftBasketComponent>;
@@ -82,6 +83,13 @@ describe('SunriseGiftBasketComponent', () => {
 
   describe('Method: generateGiftInventoryFromGiftBasket', () => {
     const giftReason: string = 'fake gift reason';
+    const giftItem1Id = BigInt(faker.random.number());
+    const giftItem2Id = BigInt(faker.random.number());
+    const giftItem3Id = BigInt(faker.random.number());
+    const giftItem4Id = BigInt(faker.random.number());
+    const giftItem5Id = BigInt(faker.random.number());
+    const giftItem6Id = BigInt(faker.random.number());
+
     beforeEach(() => {
       component.sendGiftForm = formBuilder.group({
         giftReason: [''],
@@ -89,49 +97,49 @@ describe('SunriseGiftBasketComponent', () => {
       component.sendGiftForm.controls['giftReason'].setValue(giftReason);
       component.giftBasket.data = [
         {
-          id: BigInt(123),
-          description: 'fake-item-1',
-          quantity: 0,
+          id: giftItem1Id,
+          description: faker.random.words(10),
+          quantity: faker.random.number(),
           itemType: 'creditRewards',
           edit: false,
           error: undefined,
         },
         {
-          id: BigInt(456),
-          description: 'fake-item-2',
-          quantity: 0,
+          id: giftItem2Id,
+          description: faker.random.words(10),
+          quantity: faker.random.number(),
           itemType: 'cars',
           edit: false,
           error: undefined,
         },
         {
-          id: BigInt(789),
-          description: 'fake-item-3',
-          quantity: 0,
+          id: giftItem3Id,
+          description: faker.random.words(10),
+          quantity: faker.random.number(),
           itemType: 'vanityItems',
           edit: false,
           error: undefined,
         },
         {
-          id: BigInt(123),
-          description: 'fake-item-4',
-          quantity: 0,
+          id: giftItem4Id,
+          description: faker.random.words(10),
+          quantity: faker.random.number(),
           itemType: 'carHorns',
           edit: false,
           error: undefined,
         },
         {
-          id: BigInt(456),
-          description: 'fake-item-5',
-          quantity: 0,
+          id: giftItem5Id,
+          description: faker.random.words(10),
+          quantity: faker.random.number(),
           itemType: 'quickChatLines',
           edit: false,
           error: undefined,
         },
         {
-          id: BigInt(789),
-          description: 'fake-item-6',
-          quantity: 0,
+          id: giftItem6Id,
+          description: faker.random.words(10),
+          quantity: faker.random.number(),
           itemType: 'emotes',
           edit: false,
           error: undefined,
@@ -145,12 +153,20 @@ describe('SunriseGiftBasketComponent', () => {
       expect(gift.giftReason).toEqual(giftReason);
       const apolloMasterInventory = gift.inventory as SunriseMasterInventory;
       expect(apolloMasterInventory).not.toBeUndefined();
+
       expect(apolloMasterInventory.creditRewards.length).toEqual(1);
       expect(apolloMasterInventory.cars.length).toEqual(1);
       expect(apolloMasterInventory.vanityItems.length).toEqual(1);
       expect(apolloMasterInventory.carHorns.length).toEqual(1);
       expect(apolloMasterInventory.quickChatLines.length).toEqual(1);
       expect(apolloMasterInventory.emotes.length).toEqual(1);
+
+      expect(apolloMasterInventory.creditRewards[0].id).toEqual(giftItem1Id);
+      expect(apolloMasterInventory.cars[0].id).toEqual(giftItem2Id);
+      expect(apolloMasterInventory.vanityItems[0].id).toEqual(giftItem3Id);
+      expect(apolloMasterInventory.carHorns[0].id).toEqual(giftItem4Id);
+      expect(apolloMasterInventory.quickChatLines[0].id).toEqual(giftItem5Id);
+      expect(apolloMasterInventory.emotes[0].id).toEqual(giftItem6Id);
     });
   });
 
@@ -164,7 +180,7 @@ describe('SunriseGiftBasketComponent', () => {
 
     it('should call postGiftPlayersUsingBackgroundTask', () => {
       component.sendGiftToPlayers({
-        giftReason: 'fake gift reason',
+        giftReason: faker.random.words(10),
         inventory: {
           creditRewards: [],
           cars: [],
@@ -186,7 +202,7 @@ describe('SunriseGiftBasketComponent', () => {
 
     it('should call sendGiftToLspGroup', () => {
       component.sendGiftToLspGroup({
-        giftReason: 'fake gift reason',
+        giftReason: faker.random.words(10),
         inventory: {
           creditRewards: [],
           cars: [],

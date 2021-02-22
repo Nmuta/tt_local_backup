@@ -27,7 +27,7 @@ import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-consol
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { GiftResponse, GiftResponses } from '@models/gift-response';
+import { GiftResponse } from '@models/gift-response';
 import { HttpParams } from '@angular/common/http';
 import { BackgroundJob } from '@models/background-job';
 
@@ -182,8 +182,8 @@ export class SunriseService {
   }
 
   /** Gift players inventory items. */
-  public postGiftPlayers(gift: SunriseGroupGift): Observable<GiftResponses<bigint>> {
-    return this.apiService.postRequest<GiftResponses<bigint>>(
+  public postGiftPlayers(gift: SunriseGroupGift): Observable<GiftResponse<bigint>[]> {
+    return this.apiService.postRequest<GiftResponse<bigint>[]>(
       `${this.basePath}/gifting/players`,
       gift,
     );

@@ -10,6 +10,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { GravityService } from '@services/gravity';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { SetGravityGiftBasket } from '@navbar-app/pages/gifting/gravity/state/gravity-gifting.state.actions';
+import faker from 'faker';
 
 describe('GravityGiftBasketComponent', () => {
   let fixture: ComponentFixture<GravityGiftBasketComponent>;
@@ -271,6 +272,13 @@ describe('GravityGiftBasketComponent', () => {
 
   describe('Method: generateGiftInventoryFromGiftBasket', () => {
     const giftReason: string = 'fake gift reason';
+    const giftItem1Id = BigInt(faker.random.number());
+    const giftItem2Id = BigInt(faker.random.number());
+    const giftItem3Id = BigInt(faker.random.number());
+    const giftItem4Id = BigInt(faker.random.number());
+    const giftItem5Id = BigInt(faker.random.number());
+    const giftItem6Id = BigInt(faker.random.number());
+
     beforeEach(() => {
       component.sendGiftForm = formBuilder.group({
         giftReason: [''],
@@ -278,48 +286,48 @@ describe('GravityGiftBasketComponent', () => {
       component.sendGiftForm.controls['giftReason'].setValue(giftReason);
       component.giftBasket.data = [
         {
-          id: BigInt(123),
-          description: 'fake-item-1',
+          id: giftItem1Id,
+          description: faker.random.words(10),
           quantity: 0,
           itemType: 'creditRewards',
           edit: false,
           error: undefined,
         },
         {
-          id: BigInt(456),
-          description: 'fake-item-2',
+          id: giftItem2Id,
+          description: faker.random.words(10),
           quantity: 0,
           itemType: 'cars',
           edit: false,
           error: undefined,
         },
         {
-          id: BigInt(789),
-          description: 'fake-item-3',
+          id: giftItem3Id,
+          description: faker.random.words(10),
           quantity: 0,
           itemType: 'repairKits',
           edit: false,
           error: undefined,
         },
         {
-          id: BigInt(123),
-          description: 'fake-item-1',
+          id: giftItem4Id,
+          description: faker.random.words(10),
           quantity: 0,
           itemType: 'masteryKits',
           edit: false,
           error: undefined,
         },
         {
-          id: BigInt(456),
-          description: 'fake-item-2',
+          id: giftItem5Id,
+          description: faker.random.words(10),
           quantity: 0,
           itemType: 'upgradeKits',
           edit: false,
           error: undefined,
         },
         {
-          id: BigInt(789),
-          description: 'fake-item-3',
+          id: giftItem6Id,
+          description: faker.random.words(10),
           quantity: 0,
           itemType: 'energyRefills',
           edit: false,
@@ -334,12 +342,20 @@ describe('GravityGiftBasketComponent', () => {
       expect(gift.giftReason).toEqual(giftReason);
       const apolloMasterInventory = gift.inventory as GravityMasterInventory;
       expect(apolloMasterInventory).not.toBeUndefined();
+
       expect(apolloMasterInventory.creditRewards.length).toEqual(1);
       expect(apolloMasterInventory.cars.length).toEqual(1);
       expect(apolloMasterInventory.repairKits.length).toEqual(1);
       expect(apolloMasterInventory.masteryKits.length).toEqual(1);
       expect(apolloMasterInventory.upgradeKits.length).toEqual(1);
       expect(apolloMasterInventory.energyRefills.length).toEqual(1);
+
+      expect(apolloMasterInventory.creditRewards[0].id).toEqual(giftItem1Id);
+      expect(apolloMasterInventory.cars[0].id).toEqual(giftItem2Id);
+      expect(apolloMasterInventory.repairKits[0].id).toEqual(giftItem3Id);
+      expect(apolloMasterInventory.masteryKits[0].id).toEqual(giftItem4Id);
+      expect(apolloMasterInventory.upgradeKits[0].id).toEqual(giftItem5Id);
+      expect(apolloMasterInventory.energyRefills[0].id).toEqual(giftItem6Id);
     });
   });
 
@@ -350,15 +366,15 @@ describe('GravityGiftBasketComponent', () => {
       );
       component.playerIdentities = [
         {
-          query: { t10Id: 't10ID' },
-          xuid: BigInt(123456789),
+          query: { t10Id: faker.random.uuid().toString() },
+          xuid: BigInt(faker.random.number()),
         },
       ];
     });
 
     it('should call postGiftPlayerUsingBackgroundTask', () => {
       component.sendGiftToPlayers({
-        giftReason: 'fake gift reason',
+        giftReason: faker.random.words(10),
         inventory: {
           creditRewards: [],
           cars: [],

@@ -8,6 +8,7 @@ using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 
@@ -71,9 +72,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
 
-            var playerId = $"{giftHistoryAntecedent}:{id}";
+            try
+            {
+                var playerId = $"{giftHistoryAntecedent}:{id}";
 
-            return await this.GetGiftHistoriesAsync(playerId, title).ConfigureAwait(false);
+                return await this.GetGiftHistoriesAsync(playerId, title).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                if (ex is StewardBaseException)
+                {
+                    throw;
+                }
+
+                throw new NotFoundStewardException($"No history found for {giftHistoryAntecedent}: {id}.", ex);
+            }
         }
 
         private async Task<IList<GravityGiftHistory>> GetGiftHistoriesAsync(string playerId, string title)
@@ -96,7 +109,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                     convertedGift = history.GiftInventory.FromJson<GravityGift>();
                     if (convertedGift.Inventory == null)
                     {
-                        throw new InvalidOperationException("Not a GravityGift model");
+                        throw new UnknownFailureStewardException("Not an GravityGift model");
                     }
                 }
                 catch
@@ -107,7 +120,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                         convertedGift = this.mapper.Map<GravityGift>(gravityPlayerInventory);
                         if (convertedGift.Inventory == null)
                         {
-                            throw new InvalidOperationException("Not a GravityPlayerInventory model");
+                            throw new UnknownFailureStewardException("Not an GravityPlayerInventory model");
                         }
                     }
                     catch

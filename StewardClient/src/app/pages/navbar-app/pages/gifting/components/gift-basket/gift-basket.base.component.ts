@@ -11,7 +11,7 @@ import {
   MasterInventoryItem,
   MasterInventoryUnion,
 } from '@models/master-inventory-item';
-import { GiftResponse, GiftResponses } from '@models/gift-response';
+import { GiftResponse } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
 import { NEVER, Observable, timer } from 'rxjs';
@@ -19,7 +19,6 @@ import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { GravityGift } from '@models/gravity';
 import { SunriseGift } from '@models/sunrise';
 import { ApolloGift } from '@models/apollo';
-import { GiftHistoryAntecedent } from '@shared/constants';
 
 export type InventoryItemGroup = {
   category: string;
@@ -43,7 +42,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   /** The gift basket of current items to be send. */
   public giftBasketErrors: boolean = false;
   /** Gifting response. */
-  public giftResponse: GiftResponses<bigint | string>;
+  public giftResponse: GiftResponse<bigint | string>[];
   /** The gift basket display columns */
   public displayedColumns: string[] = ['itemId', 'description', 'quantity', 'itemType', 'remove'];
   /** Gift reasons */
@@ -150,6 +149,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   /** Returns whether the gift basket is okay to send to the API. */
   public isGiftBasketReady(): boolean {
     return (
+      !this.isLoading &&
       this.sendGiftForm.valid &&
       this.giftBasket?.data?.length > 0 &&
       !this.giftBasketErrors &&
@@ -194,7 +194,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   /** Waits for a background job to complete. */
   public waitForBackgroundJobToComplete(job: BackgroundJob<void>): void {
     this.backgroundJobService
-      .getBackgroundJob<GiftResponses<bigint | string>>(job.jobId)
+      .getBackgroundJob<GiftResponse<bigint | string>[]>(job.jobId)
       .pipe(
         takeUntil(this.onDestroy$),
         catchError(_error => {
@@ -211,7 +211,6 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
               break;
             case BackgroundJobStatus.InProgress:
               throw 'still in progress';
-              break;
             default:
               this.loadError = job.result;
           }
@@ -233,31 +232,5 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
       this.setStateGiftBasket([]);
       this.giftBasketErrors = false;
     }
-  }
-
-  /** Downloads the JSON results as a CSV file. */
-  public downloadResults(): void {
-    const csvRows = [['PlayerOrLspGroup', 'IdentityType', 'Error']];
-
-    for (let i = 0; i < this.giftResponse.length; i++) {
-      const result = this.giftResponse[i];
-      csvRows[csvRows.length] = [
-        `'${result.playerOrLspGroup}`,
-        GiftHistoryAntecedent[result.identityAntecedent],
-        JSON.stringify(result?.error),
-      ];
-    }
-
-    const csvContent =
-      'data:text/csv;charset=utf-8,' + csvRows.map(row => row.join(',')).join('\n');
-
-    const encodedUri = encodeURI(csvContent);
-    const fileName = `GiftingResults_${new Date().toISOString()}.csv`;
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', fileName);
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
   }
 }
