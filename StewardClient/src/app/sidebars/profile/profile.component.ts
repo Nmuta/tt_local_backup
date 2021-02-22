@@ -23,7 +23,9 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   public profile: UserModel | USER_STATE_NOT_FOUND;
 
   /** Returns the found user or undefined. */
-  public get user(): UserModel { return this.profile === UserState.NOT_FOUND ? undefined : this.profile; }
+  public get user(): UserModel {
+    return this.profile === UserState.NOT_FOUND ? undefined : this.profile;
+  }
 
   public loading: boolean;
   public isDevEnvironment: boolean;

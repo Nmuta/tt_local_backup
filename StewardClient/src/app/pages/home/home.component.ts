@@ -14,7 +14,9 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 export class HomeComponent extends BaseComponent implements OnInit {
   public profile: UserModel | USER_STATE_NOT_FOUND;
   /** Returns the found user or undefined. */
-  public get user(): UserModel { return this.profile === UserState.NOT_FOUND ? undefined : this.profile; }
+  public get user(): UserModel {
+    return this.profile === UserState.NOT_FOUND ? undefined : this.profile;
+  }
 
   public areSupportAppsAccessible: boolean = false;
   public areDataAppsAccessible: boolean = false;
@@ -32,9 +34,13 @@ export class HomeComponent extends BaseComponent implements OnInit {
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.profile = this.store.selectSnapshot<UserModel | USER_STATE_NOT_FOUND>(UserState.profile);
-    
-    if (this.profile === UserState.NOT_FOUND) { return; }
-    if (!this.profile) { return; }
+
+    if (this.profile === UserState.NOT_FOUND) {
+      return;
+    }
+    if (!this.profile) {
+      return;
+    }
 
     switch (this.profile.role) {
       case UserRole.LiveOpsAdmin:

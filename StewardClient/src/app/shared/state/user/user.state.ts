@@ -141,7 +141,9 @@ export class UserState {
   }
 
   /** Helper function that timeouts state checks for user profile. */
-  public static latestValidProfile$(profile$: Observable<UserModel | USER_STATE_NOT_FOUND>): Observable<UserModel | USER_STATE_NOT_FOUND> {
+  public static latestValidProfile$(
+    profile$: Observable<UserModel | USER_STATE_NOT_FOUND>,
+  ): Observable<UserModel | USER_STATE_NOT_FOUND> {
     const obs = profile$.pipe(
       filter(x => x !== undefined),
       take(1),

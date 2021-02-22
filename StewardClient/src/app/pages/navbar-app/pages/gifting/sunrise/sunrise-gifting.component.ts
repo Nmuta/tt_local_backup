@@ -43,8 +43,12 @@ export class SunriseGiftingComponent
   /** Initialization hook */
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel | USER_STATE_NOT_FOUND>(UserState.profile);
-    if (!user) { throw new Error('Gifting component entered without user.'); }
-    if (user === UserState.NOT_FOUND) { throw new Error('Gifting component entered with non-existing user.'); }
+    if (!user) {
+      throw new Error('Gifting component entered without user.');
+    }
+    if (user === UserState.NOT_FOUND) {
+      throw new Error('Gifting component entered with non-existing user.');
+    }
 
     this.disableLspGroupSelection = user.role !== UserRole.LiveOpsAdmin;
 
