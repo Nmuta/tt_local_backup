@@ -14,7 +14,6 @@ export class GiftingResultComponent extends BaseComponent implements OnInit {
   @Input() public giftingResult: GiftResponse<bigint | string>[];
 
   public giftingCsvData: string[][];
-  public GiftHistoryAntecedent = GiftIdentityAntecedent;
   public giftingErrorCount: number = 0;
 
   /** Test */
@@ -32,7 +31,7 @@ export class GiftingResultComponent extends BaseComponent implements OnInit {
     for (const result of this.giftingResult) {
       this.giftingCsvData[this.giftingCsvData.length] = [
         `'${result.playerOrLspGroup}`,
-        GiftIdentityAntecedent[result.identityAntecedent],
+        result.identityAntecedent,
         JSON.stringify(result?.error),
       ];
     }
