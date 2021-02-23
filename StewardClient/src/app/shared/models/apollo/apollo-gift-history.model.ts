@@ -1,4 +1,4 @@
-import { ApolloPlayerInventory } from './apollo-player-inventory.model';
+import { ApolloGift } from './apollo-gift.model';
 
 /** Interface for Apollo gift history. */
 export interface ApolloGiftHistory {
@@ -6,6 +6,6 @@ export interface ApolloGiftHistory {
   id: BigInt;
   title: string;
   giftSendDateUtc: Date;
-  giftInventory: ApolloPlayerInventory;
+  giftInventory: ApolloGift;
   requestingAgent: string;
 }

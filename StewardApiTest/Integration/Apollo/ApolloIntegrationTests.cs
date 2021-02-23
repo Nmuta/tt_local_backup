@@ -68,11 +68,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             unauthorizedClient = new ApolloStewardTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
         }
 
-        [ClassCleanup]
-        public static async Task TearDown()
-        {
-        }
-
         [TestMethod]
         [TestCategory("Integration")]
         public async Task GetPlayerIdentityByXuid()
