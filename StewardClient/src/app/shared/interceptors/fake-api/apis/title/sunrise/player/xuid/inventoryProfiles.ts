@@ -1,7 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SunrisePlayerInventory } from '@models/sunrise';
-import { Unprocessed } from '@models/unprocessed';
+import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
+import { SunrisePlayerInventoryProfile } from '@models/sunrise';
 
 /** Fake API for sunrise player inventory profiles. */
 export class SunrisePlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
@@ -18,14 +18,25 @@ export class SunrisePlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<SunrisePlayerInventory>> {
+  public handle(): SunrisePlayerInventoryProfile[] {
     return SunrisePlayerXuidInventoryProfilesFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<SunrisePlayerInventory>> {
-    return {
-      xuid: BigInt(2533275026603041),
-    };
+  public static make(): SunrisePlayerInventoryProfile[] {
+    const items = Array(faker.random.number({ min: 1, max: 5 }))
+      .fill(undefined)
+      .map(() => {
+        return {
+          profileId: fakeBigInt(),
+          externalProfileId: faker.random.uuid(),
+          isCurrent: false,
+          deviceType: faker.random.arrayElement(['Invalid']),
+        };
+      });
+
+    faker.random.arrayElement(items).isCurrent = true;
+
+    return items;
   }
 }

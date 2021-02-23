@@ -3,7 +3,7 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
-import { UserState } from '@shared/state/user/user.state';
+import { UserState, USER_STATE_NOT_FOUND } from '@shared/state/user/user.state';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 /** Displays the home page splash page. */
@@ -12,7 +12,11 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent extends BaseComponent implements OnInit {
-  public userProfile: UserModel;
+  public profile: UserModel | USER_STATE_NOT_FOUND;
+  /** Returns the found user or undefined. */
+  public get user(): UserModel {
+    return this.profile === UserState.NOT_FOUND ? undefined : this.profile;
+  }
 
   public areSupportAppsAccessible: boolean = false;
   public areDataAppsAccessible: boolean = false;
@@ -29,25 +33,30 @@ export class HomeComponent extends BaseComponent implements OnInit {
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    this.userProfile = this.store.selectSnapshot<UserModel>(UserState.profile);
+    this.profile = this.store.selectSnapshot<UserModel | USER_STATE_NOT_FOUND>(UserState.profile);
 
-    if (!!this.userProfile) {
-      switch (this.userProfile.role) {
-        case UserRole.LiveOpsAdmin:
-          this.areSupportAppsAccessible = true;
-          this.areDataAppsAccessible = true;
-          break;
-        case UserRole.SupportAgentAdmin:
-        case UserRole.SupportAgent:
-        case UserRole.SupportAgentNew:
-          this.areSupportAppsAccessible = true;
-          break;
-        case UserRole.DataPipelineAdmin:
-        case UserRole.DataPipelineContributor:
-        case UserRole.DataPipelineRead:
-          this.areSupportAppsAccessible = false;
-          break;
-      }
+    if (this.profile === UserState.NOT_FOUND) {
+      return;
+    }
+    if (!this.profile) {
+      return;
+    }
+
+    switch (this.profile.role) {
+      case UserRole.LiveOpsAdmin:
+        this.areSupportAppsAccessible = true;
+        this.areDataAppsAccessible = true;
+        break;
+      case UserRole.SupportAgentAdmin:
+      case UserRole.SupportAgent:
+      case UserRole.SupportAgentNew:
+        this.areSupportAppsAccessible = true;
+        break;
+      case UserRole.DataPipelineAdmin:
+      case UserRole.DataPipelineContributor:
+      case UserRole.DataPipelineRead:
+        this.areSupportAppsAccessible = false;
+        break;
     }
   }
 }

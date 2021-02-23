@@ -6,6 +6,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
+import { clone } from 'lodash';
 import { concat, from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, switchMap, take, tap, timeout } from 'rxjs/operators';
 
@@ -19,12 +20,14 @@ import {
   SetNoUserProfile,
 } from './user.actions';
 
+export type USER_STATE_NOT_FOUND = 'user_state_not_found';
+
 /**
  * Defines the user state model.
  * Contains information about a user's identity and their roles.
  */
 export class UserStateModel {
-  public profile: UserModel;
+  public profile: UserModel | USER_STATE_NOT_FOUND;
   public accessToken: string;
 }
 
@@ -37,13 +40,15 @@ export class UserStateModel {
   name: 'user',
   defaults: {
     // undefined means profile hasn't been determined
-    // null means user not signed in
+    // UserState.NOT_FOUND means user not signed in
     // defined, means user is signed in
     profile: undefined,
     accessToken: undefined,
   },
 })
 export class UserState {
+  public static NOT_FOUND: USER_STATE_NOT_FOUND = 'user_state_not_found';
+
   constructor(
     private readonly userService: UserService,
     private readonly authService: MsalService,
@@ -67,14 +72,14 @@ export class UserState {
 
   /** Action that requests user profile and sets it to the state. */
   @Action(GetUser, { cancelUncompleted: true })
-  public getUser(ctx: StateContext<UserStateModel>): Observable<UserModel> {
+  public getUser(ctx: StateContext<UserStateModel>): Observable<UserModel | USER_STATE_NOT_FOUND> {
     return this.userService.getUserProfile().pipe(
       tap(
         data => {
-          ctx.patchState({ profile: data });
+          ctx.patchState({ profile: clone(data) });
         },
         () => {
-          ctx.patchState({ profile: null });
+          ctx.patchState({ profile: UserState.NOT_FOUND });
         },
       ),
     );
@@ -87,10 +92,10 @@ export class UserState {
     return ctx.dispatch(new ResetAccessToken());
   }
 
-  /** Action thats sets state user profile to null. */
+  /** Action thats sets state user profile to UserState.NOT_FOUND. */
   @Action(SetNoUserProfile, { cancelUncompleted: true })
   public setNoUserProfile(ctx: StateContext<UserStateModel>): void {
-    ctx.patchState({ profile: null });
+    ctx.patchState({ profile: UserState.NOT_FOUND });
   }
 
   /** Action that requests user access token from azure app. */
@@ -104,7 +109,7 @@ export class UserState {
 
     const isLoggedIn = !!this.authService.getAccount();
     if (!isLoggedIn) {
-      ctx.patchState({ accessToken: null });
+      ctx.patchState({ accessToken: UserState.NOT_FOUND });
       return ctx.dispatch(new SetNoUserProfile());
     }
 
@@ -115,15 +120,15 @@ export class UserState {
     ).pipe(
       switchMap(data => {
         if (!data.accessToken) {
-          ctx.patchState({ accessToken: null });
+          ctx.patchState({ accessToken: UserState.NOT_FOUND });
           return ctx.dispatch(new SetNoUserProfile());
         } else {
-          ctx.patchState({ accessToken: data.accessToken });
+          ctx.patchState({ accessToken: clone(data.accessToken) });
           return ctx.dispatch(new GetUser());
         }
       }),
       catchError(e => {
-        ctx.patchState({ accessToken: null });
+        ctx.patchState({ accessToken: UserState.NOT_FOUND });
         return concat(ctx.dispatch(new SetNoUserProfile()), throwError(e));
       }),
     );
@@ -136,7 +141,9 @@ export class UserState {
   }
 
   /** Helper function that timeouts state checks for user profile. */
-  public static latestValidProfile$(profile$: Observable<UserModel>): Observable<UserModel> {
+  public static latestValidProfile$(
+    profile$: Observable<UserModel | USER_STATE_NOT_FOUND>,
+  ): Observable<UserModel | USER_STATE_NOT_FOUND> {
     const obs = profile$.pipe(
       filter(x => x !== undefined),
       take(1),
@@ -148,7 +155,7 @@ export class UserState {
 
   /** Selector for state user profile. */
   @Selector()
-  public static profile(state: UserStateModel): UserModel {
+  public static profile(state: UserStateModel): UserModel | USER_STATE_NOT_FOUND {
     return state.profile;
   }
 

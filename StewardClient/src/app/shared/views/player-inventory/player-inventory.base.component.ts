@@ -8,8 +8,8 @@ import { IdentityResultUnion } from '@models/identity-query.model';
 import { OpusPlayerInventory } from '@models/opus';
 import { SunrisePlayerInventory } from '@models/sunrise';
 import { SunriseInventoryItem } from '@models/sunrise/inventory-items';
-import { NEVER, Observable, Subject } from 'rxjs';
-import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { combineLatest, NEVER, Observable, Subject } from 'rxjs';
+import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 export type AcceptablePlayerInventoryTypeUnion =
   | SunrisePlayerInventory
@@ -41,6 +41,7 @@ export abstract class PlayerInventoryBaseComponent<
   extends BaseComponent
   implements OnInit, OnChanges {
   @Input() public identity: IdentityResultType;
+  @Input() public profileId: bigint | undefined | null;
 
   /** The located inventory. */
   public inventory: PlayerInventoryType;
@@ -59,9 +60,18 @@ export abstract class PlayerInventoryBaseComponent<
   /** Intermediate event that is fired when @see identity changes. */
   private identity$ = new Subject<IdentityResultType>();
 
+  /** Intermediate event that is fired when @see profileId changes. */
+  private profileId$ = new Subject<bigint | undefined | null>();
+
   /** Implement in order to retrieve concrete identity instance. */
   protected abstract getPlayerInventoryByIdentity(
     identity: IdentityResultType,
+  ): Observable<PlayerInventoryType>;
+
+  /** Implement in order to retrieve concrete identity instance. */
+  protected abstract getPlayerInventoryByIdentityAndProfileId(
+    identity: IdentityResultType,
+    profileId: bigint,
   ): Observable<PlayerInventoryType>;
 
   /** Implement to specify the expando tables to show. */
@@ -69,15 +79,31 @@ export abstract class PlayerInventoryBaseComponent<
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
-    this.identity$
+    const identityOrProfile$ = combineLatest([this.identity$, this.profileId$]).pipe(
+      takeUntil(this.onDestroy$),
+      map(([identity, profileId]) => {
+        return { identity: identity, profileId: profileId };
+      }),
+    );
+
+    identityOrProfile$
       .pipe(
-        takeUntil(this.onDestroy$),
         tap(() => {
           this.inventory = null;
           this.error = null;
         }),
-        filter(i => !!i),
-        switchMap(identity => this.getPlayerInventoryByIdentity(identity)),
+        filter(v => !!v.identity),
+        switchMap(v => {
+          const request$ = v.profileId
+            ? this.getPlayerInventoryByIdentityAndProfileId(v.identity, v.profileId)
+            : this.getPlayerInventoryByIdentity(v.identity);
+          return request$.pipe(
+            catchError((error, _observable) => {
+              this.error = error;
+              return NEVER;
+            }),
+          );
+        }),
         catchError((error, _observable) => {
           this.error = error;
           return NEVER;
@@ -89,11 +115,22 @@ export abstract class PlayerInventoryBaseComponent<
       });
 
     this.identity$.next(this.identity);
+    this.profileId$.next(this.profileId);
   }
 
   /** Lifecycle hook. */
-  public ngOnChanges(_changes: SimpleChanges): void {
-    this.identity$.next(this.identity);
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes['identity']) {
+      if (changes.identity.currentValue !== changes.identity.previousValue) {
+        this.identity$.next(this.identity);
+      }
+    }
+
+    if (changes['profileId']) {
+      if (changes.profileId.currentValue !== changes.profileId.previousValue) {
+        this.profileId$.next(this.profileId);
+      }
+    }
   }
 
   /** Utility method for generating the expandos to show. */

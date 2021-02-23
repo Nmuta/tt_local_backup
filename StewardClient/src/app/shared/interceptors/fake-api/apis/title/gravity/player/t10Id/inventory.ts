@@ -1,6 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigInt, faker, fakeXuid } from '@interceptors/fake-api/utility';
+import { GuidLikeString } from '@models/extended-types';
 import { GravityPlayerInventory } from '@models/gravity';
 import { GravityCar, GravityInventoryItem, GravityKit } from '@models/gravity/inventory-items';
 
@@ -33,7 +34,7 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
   }
 
   /** Generates a sample object */
-  public static make(t10Id: string): GravityPlayerInventory {
+  public static make(t10Id: GuidLikeString, profileId?: GuidLikeString): GravityPlayerInventory {
     function makeFakeItems(count: number): GravityInventoryItem[] {
       return Array(faker.random.number(count))
         .fill(0)
@@ -80,7 +81,7 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
       xuid: fakeXuid(),
       t10Id: t10Id,
       previousGameSettingsId: faker.random.uuid(),
-      currentExternalProfileId: faker.random.uuid(),
+      currentExternalProfileId: profileId ?? faker.random.uuid(),
       cars: makeFakeCars(200),
       masteryKits: makeFakeItems(200),
       upgradeKits: makeFakeKits(200),

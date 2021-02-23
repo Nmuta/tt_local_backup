@@ -2,10 +2,11 @@ import { Injectable, Provider } from '@angular/core';
 import { ApolloGiftingLspGroupFakeApi } from '@interceptors/fake-api/apis/title/apollo/gifting/groupId';
 import { ApolloGiftingPlayersFakeApi } from '@interceptors/fake-api/apis/title/apollo/gifting/players';
 import { ApolloPlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/inventory';
+import { ApolloPlayerXuidInventoryProfilesFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/inventoryProfiles';
 import { ApolloPlayersBanFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/ban';
 import { ApolloPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/identities';
 import { IdentityQueryAlpha, IdentityQueryAlphaBatch } from '@models/identity-query.model';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ApolloService } from './apollo.service';
@@ -14,7 +15,7 @@ import { ApolloService } from './apollo.service';
 @Injectable()
 export class MockApolloService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
-  public waitUntil$ = of();
+  public waitUntil$: Observable<unknown> = of(true);
 
   public getIdentity = jasmine
     .createSpy('getIdentity')
@@ -43,6 +44,12 @@ export class MockApolloService {
   public getMasterInventory = jasmine
     .createSpy('getMasterInventory')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({}))));
+
+  public getPlayerInventoryProfilesByXuid = jasmine
+    .createSpy('getPlayerInventoryProfilesByXuid')
+    .and.callFake(_xuid =>
+      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidInventoryProfilesFakeApi.make()))),
+    );
 
   public postGiftPlayers = jasmine
     .createSpy('postGiftPlayers')

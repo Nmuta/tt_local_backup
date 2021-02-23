@@ -35,3 +35,13 @@ tr.element-row:not(.expanded-row):active {
     margin: $gap-table;
   }
 }
+
+.mat-column-expireTimeUtc,
+.mat-column-startTimeUtc {
+  min-width: 5em;
+  padding-left: 20px;
+}
+
+.mat-column-featureArea {
+  padding-left: 20px;
+}

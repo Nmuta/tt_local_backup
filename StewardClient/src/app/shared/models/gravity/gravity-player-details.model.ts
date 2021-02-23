@@ -1,4 +1,5 @@
-import { GamertagString, T10IdString } from '@models/extended-types';
+import { GamertagString, GuidLikeString, T10IdString } from '@models/extended-types';
+import { GravitySaveState } from './gravity-save-state.model';
 
 /** Interface for gravity player details. */
 export interface GravityPlayerDetails {
@@ -14,8 +15,8 @@ export interface GravityPlayerDetails {
   subscriptionTier: string;
   lastLoginUtc: Date;
   firstLoginUtc: Date;
-  ageGroup: unknown;
+  ageGroup: bigint;
   timeOffsetInSeconds: bigint;
-  lastGameSettingsUsed: string;
-  saveStates: unknown[];
+  lastGameSettingsUsed: GuidLikeString;
+  saveStates: GravitySaveState[];
 }

@@ -13,8 +13,6 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
-using Turn10.LiveOps.StewardApi.Contracts.Gravity.Settings;
-using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -416,7 +414,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="gameSettingsId">The game settings Id.</param>
         /// <param name="gift">The gravity gift.</param>
         /// <returns>
-        ///     String of items that are invalid
+        ///     String of items that are invalid.
         /// </returns>
         private async Task<string> VerifyGiftAgainstMasterInventory(Guid gameSettingsId, GravityMasterInventory gift)
         {

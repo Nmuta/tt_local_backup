@@ -1,13 +1,15 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BackgroundJob } from '@models/background-job';
-import { T10IdString } from '@models/extended-types';
+import { GuidLikeString, T10IdString } from '@models/extended-types';
 import {
-  GravityGift,
   GravityGiftHistory,
   GravityPlayerDetails,
   GravityPlayerInventory,
+  GravityPseudoPlayerInventoryProfile,
+  gravitySaveStatesToPsuedoInventoryProfile,
 } from '@models/gravity';
+import { GravityGift } from '@models/gravity/gravity-gift.model';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
   IdentityQueryBeta,
@@ -51,28 +53,16 @@ export class GravityService {
 
   /** Gets gravity player details with a gamertag. */
   public getPlayerDetailsByGamertag(gamertag: string): Observable<GravityPlayerDetails> {
-    return this.apiService
-      .getRequest<GravityPlayerDetails>(`${this.basePath}/player/gamertag(${gamertag})/details`)
-      .pipe(
-        map(details => {
-          details.firstLoginUtc = !!details.firstLoginUtc ? new Date(details.firstLoginUtc) : null;
-          details.lastLoginUtc = !!details.lastLoginUtc ? new Date(details.lastLoginUtc) : null;
-          return details;
-        }),
-      );
+    return this.apiService.getRequest<GravityPlayerDetails>(
+      `${this.basePath}/player/gamertag(${gamertag})/details`,
+    );
   }
 
   /** Gets gravity player details with a T10 ID. */
   public getPlayerDetailsByT10Id(t10Id: string): Observable<GravityPlayerDetails> {
-    return this.apiService
-      .getRequest<GravityPlayerDetails>(`${this.basePath}/player/t10Id(${t10Id})/details`)
-      .pipe(
-        map(details => {
-          details.firstLoginUtc = !!details.firstLoginUtc ? new Date(details.firstLoginUtc) : null;
-          details.lastLoginUtc = !!details.lastLoginUtc ? new Date(details.lastLoginUtc) : null;
-          return details;
-        }),
-      );
+    return this.apiService.getRequest<GravityPlayerDetails>(
+      `${this.basePath}/player/t10Id(${t10Id})/details`,
+    );
   }
 
   /** Gets the gravity player's inventory */
@@ -82,10 +72,19 @@ export class GravityService {
     );
   }
 
-  /** Gets gravity player inventory with a profile ID. */
-  public getPlayerInventoryByProfileIdWithT10Id(
+  /** Gets a player's profile list by T10Id. */
+  public getPlayerInventoryProfilesByT10Id(
+    t10Id: GuidLikeString,
+  ): Observable<GravityPseudoPlayerInventoryProfile[]> {
+    return this.getPlayerDetailsByT10Id(t10Id).pipe(
+      map(details => gravitySaveStatesToPsuedoInventoryProfile(details)),
+    );
+  }
+
+  /** Gets a specific version of a player's inventory */
+  public getPlayerInventoryByT10IdAndProfileId(
     t10Id: string,
-    profileId: string,
+    profileId: bigint,
   ): Observable<GravityPlayerInventory> {
     return this.apiService.getRequest<GravityPlayerInventory>(
       `${this.basePath}/player/t10Id(${t10Id})/profileId(${profileId})/inventory`,

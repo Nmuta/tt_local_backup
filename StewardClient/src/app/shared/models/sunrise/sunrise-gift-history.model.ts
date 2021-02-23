@@ -1,4 +1,4 @@
-import { SunrisePlayerInventory } from './sunrise-player-inventory.model';
+import { SunriseGift } from './sunrise-gift.model';
 
 /** Interface for Sunrise gift history. */
 export interface SunriseGiftHistory {
@@ -6,6 +6,6 @@ export interface SunriseGiftHistory {
   id: BigInt;
   title: string;
   giftSendDateUtc: Date;
-  giftInventory: SunrisePlayerInventory;
+  giftInventory: SunriseGift;
   requestingAgent: string;
 }

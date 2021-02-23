@@ -5,7 +5,7 @@ import { Select } from '@ngxs/store';
 import { WindowService } from '@services/window';
 import { UserModel } from '@shared/models/user.model';
 import { ZendeskService } from '@shared/services/zendesk';
-import { UserState } from '@shared/state/user/user.state';
+import { UserState, USER_STATE_NOT_FOUND } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -15,10 +15,10 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./ticket-app.component.scss'],
 })
 export class TicketAppComponent extends BaseComponent implements OnInit, AfterViewInit {
-  @Select(UserState.profile) public profile$: Observable<UserModel>;
+  @Select(UserState.profile) public profile$: Observable<UserModel | USER_STATE_NOT_FOUND>;
 
   public loading: boolean;
-  public profile: UserModel;
+  public profile: UserModel | USER_STATE_NOT_FOUND;
 
   constructor(
     private readonly zendesk: ZendeskService,
