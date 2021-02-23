@@ -5,7 +5,7 @@ import { GravityGift } from './gravity-gift.model';
 export interface GravityGiftHistory {
   idType: GiftIdentityAntecedent;
   id: string;
-  title: string;
+  title: 'gravity';
   giftSendDateUtc: Date;
   giftInventory: GravityGift;
   requestingAgent: string;

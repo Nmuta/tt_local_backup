@@ -5,7 +5,7 @@ import { ApolloGift } from './apollo-gift.model';
 export interface ApolloGiftHistory {
   idType: GiftIdentityAntecedent;
   id: BigInt;
-  title: string;
+  title: 'apollo';
   giftSendDateUtc: Date;
   giftInventory: ApolloGift;
   requestingAgent: string;

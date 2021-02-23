@@ -5,7 +5,7 @@ import { SunriseGift } from './sunrise-gift.model';
 export interface SunriseGiftHistory {
   idType: GiftIdentityAntecedent;
   id: BigInt;
-  title: string;
+  title: 'sunrise';
   giftSendDateUtc: Date;
   giftInventory: SunriseGift;
   requestingAgent: string;
