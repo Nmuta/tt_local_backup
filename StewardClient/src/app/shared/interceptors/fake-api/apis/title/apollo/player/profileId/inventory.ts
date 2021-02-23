@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { ApolloPlayerInventory } from '@models/apollo';
+import { ApolloMasterInventory } from '@models/apollo';
 import { Unprocessed } from '@models/unprocessed';
 import { ApolloPlayerXuidInventoryFakeApi } from '../xuid/inventory';
 
@@ -19,12 +19,12 @@ export class ApolloPlayerProfileIdInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<ApolloPlayerInventory>> {
+  public handle(): Partial<Unprocessed<ApolloMasterInventory>> {
     return ApolloPlayerProfileIdInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): ApolloPlayerInventory {
-    return ApolloPlayerXuidInventoryFakeApi.make(null);
+  public static make(): ApolloMasterInventory {
+    return ApolloPlayerXuidInventoryFakeApi.make();
   }
 }

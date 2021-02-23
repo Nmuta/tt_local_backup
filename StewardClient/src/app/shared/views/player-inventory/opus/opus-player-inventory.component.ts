@@ -33,7 +33,7 @@ export class OpusPlayerInventoryComponent extends PlayerInventoryBaseComponent<
   protected getPlayerInventoryByIdentityAndProfileId(
     _identity: IdentityResultAlpha,
     profileId: bigint,
-  ): Observable<OpusPlayerInventory> {
+  ): Observable<OpusMasterInventory> {
     return this.opus.getPlayerInventoryByProfileId(profileId);
   }
 

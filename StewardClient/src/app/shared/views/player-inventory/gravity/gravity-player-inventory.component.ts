@@ -33,7 +33,7 @@ export class GravityPlayerInventoryComponent extends PlayerInventoryBaseComponen
   protected getPlayerInventoryByIdentityAndProfileId(
     identity: IdentityResultBeta,
     profileId: bigint,
-  ): Observable<GravityPlayerInventory> {
+  ): Observable<GravityPlayerInventoryBeta> {
     return this.gravity.getPlayerInventoryByT10IdAndProfileId(identity.t10Id, profileId);
   }
 

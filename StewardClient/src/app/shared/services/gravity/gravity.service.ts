@@ -6,7 +6,6 @@ import {
   GravityGiftHistory,
   GravityPlayerDetails,
   GravityPlayerInventoryBeta,
-  GravityPlayerInventory,
   GravityPseudoPlayerInventoryProfile,
   gravitySaveStatesToPsuedoInventoryProfile,
 } from '@models/gravity';

@@ -6,7 +6,6 @@ import {
   ApolloGroupGift,
   ApolloMasterInventory,
   ApolloPlayerDetails,
-  ApolloPlayerInventory,
   ApolloPlayerInventoryProfile,
 } from '@models/apollo';
 import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
@@ -107,6 +106,13 @@ export class ApolloService {
     );
   }
 
+  /** Gets a specific version of an apollo player's inventory */
+  public getPlayerInventoryByProfileId(profileId: bigint): Observable<ApolloMasterInventory> {
+    return this.apiService.getRequest<ApolloMasterInventory>(
+      `${this.basePath}/player/profileId(${profileId})/inventory`,
+    );
+  }
+
   /** Gets a player's profile list  by XUID. */
   public getPlayerInventoryProfilesByXuid(
     xuid: bigint,
@@ -123,13 +129,6 @@ export class ApolloService {
             .value(),
         ),
       );
-  }
-
-  /** Gets a specific version of an apollo player's inventory */
-  public getPlayerInventoryByProfileId(profileId: bigint): Observable<ApolloPlayerInventory> {
-    return this.apiService.getRequest<ApolloPlayerInventory>(
-      `${this.basePath}/player/profileId(${profileId})/inventory`,
-    );
   }
 
   /** Gift players inventory items. */
