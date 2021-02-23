@@ -551,6 +551,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     The list of <see cref="SunriseInventoryProfile"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/inventoryProfiles")]
+        [SwaggerResponse(200, type: typeof(IList<SunriseInventoryProfile>))]
         [SwaggerResponse(200)]
         public async Task<IActionResult> GetPlayerInventoryProfiles(ulong xuid)
         {

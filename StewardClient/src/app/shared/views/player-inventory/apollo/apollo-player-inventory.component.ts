@@ -31,6 +31,14 @@ export class ApolloPlayerInventoryComponent extends PlayerInventoryBaseComponent
     return this.apollo.getPlayerInventoryByXuid(identity.xuid);
   }
 
+  /** Implement in order to retrieve concrete identity instance. */
+  protected getPlayerInventoryByIdentityAndProfileId(
+    _identity: IdentityResultAlpha,
+    profileId: bigint,
+  ): Observable<ApolloPlayerInventory> {
+    return this.apollo.getPlayerInventoryByProfileId(profileId);
+  }
+
   /** Implement to specify the expando tables to show. */
   protected makeWhatToShow(): PropertyToExpandoData<ApolloPlayerInventory>[] {
     return [

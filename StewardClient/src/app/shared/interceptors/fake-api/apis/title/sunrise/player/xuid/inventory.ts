@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
+import { fakeBigInt, faker, fakeXuid } from '@interceptors/fake-api/utility';
 import { SunrisePlayerInventory } from '@models/sunrise';
 import { SunriseCar, SunriseInventoryItem } from '@models/sunrise/inventory-items';
 
@@ -66,7 +66,7 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
     }
 
     return {
-      xuid: xuid,
+      xuid: xuid ?? fakeXuid(),
       credits: fakeBigInt({ min: 0 }),
       wheelSpins: fakeBigInt({ min: 0 }),
       superWheelSpins: fakeBigInt({ min: 0 }),
