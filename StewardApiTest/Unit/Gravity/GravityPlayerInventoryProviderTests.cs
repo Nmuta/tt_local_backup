@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var t10Id = Fixture.Create<string>();
 
             // Act.
-            var actions = new List<Func<Task<GravityPlayerInventory>>>
+            var actions = new List<Func<Task<GravityPlayerInventoryBeta>>>
             {
                 async () => await provider.GetPlayerInventoryAsync(xuid).ConfigureAwait(false),
                 async () => await provider.GetPlayerInventoryAsync(xuid, profileId).ConfigureAwait(false),
@@ -110,7 +110,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<GravityPlayerInventory>();
+                action().Result.Should().BeOfType<GravityPlayerInventoryBeta>();
             }
         }
 

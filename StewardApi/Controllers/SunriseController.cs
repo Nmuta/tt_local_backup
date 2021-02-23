@@ -527,20 +527,53 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="SunrisePlayerInventory"/>.
+        ///     The <see cref="SunriseMasterInventory"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(SunrisePlayerInventory))]
+        [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
-            var inventory = await this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
+            var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(xuid);
+            var getmasterInventory = this.RetrieveMasterInventoryList();
 
-            if (inventory == null)
+            await Task.WhenAll(getPlayerInventory, getmasterInventory).ConfigureAwait(true);
+
+            var playerInventory = await getPlayerInventory.ConfigureAwait(true);
+            var masterInventory = await getmasterInventory.ConfigureAwait(true);
+
+            if (playerInventory == null)
             {
                 return this.NotFound($"No inventory found for XUID: {xuid}.");
             }
 
-            return this.Ok(inventory);
+            return this.Ok(playerInventory);
+        }
+
+        /// <summary>
+        ///     Gets the player inventory.
+        /// </summary>
+        /// <param name="profileId">The profile ID.</param>
+        /// <returns>
+        ///     The <see cref="SunriseMasterInventory"/>.
+        /// </returns>
+        [HttpGet("player/profileId({profileId})/inventory")]
+        [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
+        public async Task<IActionResult> GetPlayerInventoryByProfileId(int profileId)
+        {
+            var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(profileId);
+            var getmasterInventory = this.RetrieveMasterInventoryList();
+
+            await Task.WhenAll(getPlayerInventory, getmasterInventory).ConfigureAwait(true);
+
+            var playerInventory = await getPlayerInventory.ConfigureAwait(true);
+            var masterInventory = await getmasterInventory.ConfigureAwait(true);
+
+            if (playerInventory == null)
+            {
+                return this.NotFound($"No inventory found for Profile ID: {profileId}.");
+            }
+
+            return this.Ok(playerInventory);
         }
 
         /// <summary>
@@ -562,27 +595,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             return this.Ok(inventoryProfileSummary);
-        }
-
-        /// <summary>
-        ///     Gets the player inventory.
-        /// </summary>
-        /// <param name="profileId">The profile ID.</param>
-        /// <returns>
-        ///     The <see cref="SunrisePlayerInventory"/>.
-        /// </returns>
-        [HttpGet("player/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(SunrisePlayerInventory))]
-        public async Task<IActionResult> GetPlayerInventoryByProfileId(int profileId)
-        {
-            var inventory = await this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(profileId).ConfigureAwait(true);
-
-            if (inventory == null)
-            {
-                return this.NotFound($"No inventory found for Profile ID: {profileId}.");
-            }
-
-            return this.Ok(inventory);
         }
 
         /// <summary>
@@ -927,6 +939,47 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             return error;
+        }
+
+        /// <summary>
+        ///     Verifies the gift inventory against the title master inventory list.
+        /// </summary>
+        /// <param name="playerInventory">The gravity player inventory.</param>
+        /// <param name="masterInventory">The gravity master inventory.</param>
+        /// <returns>
+        ///     String of items that are invalid.
+        /// </returns>
+        private SunriseMasterInventory SetItemDescriptions(SunriseMasterInventory playerInventory, SunriseMasterInventory masterInventory)
+        {
+            playerInventory.Cars = this.SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars);
+            playerInventory.CarHorns = this.SetPlayerInventoryItemDescription(playerInventory.CarHorns, masterInventory.CarHorns);
+            playerInventory.VanityItems = this.SetPlayerInventoryItemDescription(playerInventory.VanityItems, masterInventory.VanityItems);
+            playerInventory.Emotes = this.SetPlayerInventoryItemDescription(playerInventory.Emotes, masterInventory.Emotes);
+            playerInventory.QuickChatLines = this.SetPlayerInventoryItemDescription(playerInventory.QuickChatLines, masterInventory.QuickChatLines);
+
+            return playerInventory;
+        }
+
+        /// <summary>
+        ///     Sets player inventory item descriptions based on matching master inventory items.
+        /// </summary>
+        /// <param name="playerInventoryItems">The player inventory items.</param>
+        /// <param name="masterInventoryItems">The master inventory items</param>
+        private IList<MasterInventoryItem> SetPlayerInventoryItemDescription(IList<MasterInventoryItem> playerInventoryItems, IList<MasterInventoryItem> masterInventoryItems)
+        {
+            foreach (var item in playerInventoryItems)
+            {
+                try
+                {
+                    item.Description = masterInventoryItems.First(masterItem => masterItem.Id == item.Id).Description;
+                }
+                catch
+                {
+                    item.Description = string.Empty;
+                }
+            }
+
+            return playerInventoryItems;
         }
     }
 }

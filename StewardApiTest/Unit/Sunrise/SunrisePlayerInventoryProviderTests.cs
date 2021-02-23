@@ -114,7 +114,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            var actions = new List<Func<Task<SunrisePlayerInventory>>>
+            var actions = new List<Func<Task<SunriseMasterInventory>>>
             {
                 async () => await provider.GetPlayerInventoryAsync(xuid).ConfigureAwait(false),
                 async () => await provider.GetPlayerInventoryAsync(profileId).ConfigureAwait(false)
@@ -124,7 +124,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             foreach (var action in actions)
             {
                 var response = action();
-                response.Result.Should().BeOfType<SunrisePlayerInventory>();
+                response.Result.Should().BeOfType<SunriseMasterInventory>();
             }
         }
 

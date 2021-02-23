@@ -35,11 +35,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <param name="mapper">The mapper.</param>
         /// <param name="giftHistoryProvider">The gift history provider.</param>
         public SunrisePlayerInventoryProvider(
-                                              ISunriseUserInventoryService sunriseUserInventoryService,
-                                              ISunriseGiftingService sunriseGiftingService,
-                                              ISunriseUserService sunriseUserService,
-                                              IMapper mapper,
-                                              ISunriseGiftHistoryProvider giftHistoryProvider)
+            ISunriseUserInventoryService sunriseUserInventoryService,
+            ISunriseGiftingService sunriseGiftingService,
+            ISunriseUserService sunriseUserService,
+            IMapper mapper,
+            ISunriseGiftHistoryProvider giftHistoryProvider)
         {
             sunriseUserInventoryService.ShouldNotBeNull(nameof(sunriseUserInventoryService));
             sunriseGiftingService.ShouldNotBeNull(nameof(sunriseGiftingService));
@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<SunriseMasterInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
@@ -63,13 +63,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 var response = await this.sunriseUserInventoryService.GetAdminUserInventoryAsync(xuid)
                     .ConfigureAwait(false);
-                var playerInventoryDetails = this.mapper.Map<SunrisePlayerInventory>(response.summary);
+                var playerInventoryDetails = this.mapper.Map<SunriseMasterInventory>(response.summary);
 
                 return playerInventoryDetails;
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No player found for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<SunriseMasterInventory> GetPlayerInventoryAsync(int profileId)
+        {
+            try
+            {
+                var response = await this.sunriseUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                    .ConfigureAwait(false);
+                var inventoryProfile = this.mapper.Map<SunriseMasterInventory>(response.summary);
+
+                return inventoryProfile;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
             }
         }
 
@@ -87,23 +104,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory profiles found for XUID: {xuid}", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(int profileId)
-        {
-            try
-            {
-                var response = await this.sunriseUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
-                    .ConfigureAwait(false);
-                var inventoryProfile = this.mapper.Map<SunrisePlayerInventory>(response.summary);
-
-                return inventoryProfile;
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
             }
         }
 
