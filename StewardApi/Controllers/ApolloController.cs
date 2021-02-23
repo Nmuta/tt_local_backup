@@ -524,13 +524,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Update group inventories.
         /// </summary>
         /// <param name="groupGift">The group gift.</param>
-        /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
         /// <returns>
-        ///     A <see cref="IList{GiftResponse}"/>.
+        ///     A <see cref="BackgroundJob"/>.
         /// </returns>
-        [HttpPost("gifting/players")]
-        [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
-        public async Task<IActionResult> UpdateGroupInventories([FromBody] ApolloGroupGift groupGift, [FromQuery] bool useBackgroundProcessing)
+        [HttpPost("gifting/players/useBackgroundProcessing")]
+        [SwaggerResponse(200, type: typeof(BackgroundJob))]
+        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] ApolloGroupGift groupGift)
         {
             var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
                 ? this.User.GetClaimValue(ClaimTypes.Email)
@@ -571,12 +570,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            if (!useBackgroundProcessing)
-            {
-                var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
-                return this.Ok(response);
-            }
-
             var username = this.User.GetNameIdentifier();
             var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), username).ConfigureAwait(true);
 
@@ -602,6 +595,60 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 JobId = jobId,
                 Status = BackgroundJobStatus.InProgress.ToString(),
             });
+        }
+
+        /// <summary>
+        ///     Update group inventories.
+        /// </summary>
+        /// <param name="groupGift">The group gift.</param>
+        /// <returns>
+        ///     A <see cref="IList{GiftResponse}"/>.
+        /// </returns>
+        [HttpPost("gifting/players")]
+        [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
+        public async Task<IActionResult> UpdateGroupInventories([FromBody] ApolloGroupGift groupGift)
+        {
+            var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
+                ? this.User.GetClaimValue(ClaimTypes.Email)
+                : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+
+            groupGift.ShouldNotBeNull(nameof(groupGift));
+            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
+            groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+
+            var stringBuilder = new StringBuilder();
+
+            this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
+            this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
+
+            if (!this.ModelState.IsValid)
+            {
+                var result = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
+                return this.BadRequest(result);
+            }
+
+            foreach (var xuid in groupGift.Xuids)
+            {
+                if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                {
+                    stringBuilder.Append($"{xuid} ");
+                }
+            }
+
+            if (stringBuilder.Length > 0)
+            {
+                return this.NotFound($"Players with XUIDs: {stringBuilder} were not found.");
+            }
+
+            var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
+            if (invalidItems.Length > 0)
+            {
+                return this.BadRequest($"Invalid items found. {invalidItems}");
+            }
+
+            var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+            return this.Ok(response);
         }
 
         /// <summary>

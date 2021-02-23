@@ -716,14 +716,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<ApolloGroupGift>();
-            var useBackgroundProcessing = false;
             groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
             groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing).ConfigureAwait(false),
+                async () => await controller.UpdateGroupInventories(groupGift).ConfigureAwait(false),
+                async () => await controller.UpdateGroupInventoriesUseBackgroundProcessing(groupGift).ConfigureAwait(false)
             };
 
             // Assert.
@@ -743,59 +743,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var useBackgroundProcessing = false;
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing).ConfigureAwait(false),
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var groupGift = Fixture.Create<ApolloGroupGift>();
-            var useBackgroundProcessing = true;
-            groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing).ConfigureAwait(false),
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                // To reset the context and prevent header key collision, rebuild the Dependencies.
-                controller = new Dependencies().Build();
-                action().Result.Should().BeAssignableTo<AcceptedResult>();
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UpdatePlayerInventories_WithNullGroupGift_UseBackgroundProcessing_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var useBackgroundProcessing = true;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing).ConfigureAwait(false),
+                async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false),
+                async () => await controller.UpdateGroupInventoriesUseBackgroundProcessing(null).ConfigureAwait(false)
             };
 
             // Assert.

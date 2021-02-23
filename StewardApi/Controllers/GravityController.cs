@@ -246,13 +246,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="t10Id">The T10 Id.</param>
         /// <param name="gift">The gift to send to the player.</param>
-        /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
         /// <returns>
         ///     A <see cref="GiftResponse{T}"/>.
         /// </returns>
-        [HttpPost("gifting/t10Id({t10Id})")]
+        [HttpPost("gifting/t10Id({t10Id})/useBackgroundProcessing")]
         [SwaggerResponse(200, type: typeof(GiftResponse<string>))]
-        public async Task<IActionResult> UpdatePlayerInventoryByT10Id(string t10Id, [FromBody] GravityGift gift, [FromQuery] bool useBackgroundProcessing = false)
+        public async Task<IActionResult> UpdatePlayerInventoryByT10IdUseBackgroundProcessing(
+            string t10Id,
+            [FromBody] GravityGift gift)
         {
             var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
             ? this.User.GetClaimValue(ClaimTypes.Email)
@@ -279,11 +280,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
             catch (Exception)
             {
-                playerDetails = null;
-            }
-
-            if (playerDetails == null)
-            {
                 return this.NotFound($"No player found for T10Id: {t10Id}");
             }
 
@@ -292,12 +288,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             if (invalidItems.Length > 0)
             {
                 return this.BadRequest($"Invalid items found. {invalidItems}");
-            }
-
-            if (!useBackgroundProcessing)
-            {
-                var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
-                return this.Ok(response);
             }
 
             var username = this.User.GetNameIdentifier();
@@ -325,6 +315,57 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 JobId = jobId,
                 Status = BackgroundJobStatus.InProgress.ToString(),
             });
+        }
+
+        /// <summary>
+        ///     Gift player items to their inventory.
+        /// </summary>
+        /// <param name="t10Id">The T10 Id.</param>
+        /// <param name="gift">The gift to send to the player.</param>
+        /// <returns>
+        ///     A <see cref="GiftResponse{T}"/>.
+        /// </returns>
+        [HttpPost("gifting/t10Id({t10Id})")]
+        [SwaggerResponse(200, type: typeof(GiftResponse<string>))]
+        public async Task<IActionResult> UpdatePlayerInventoryByT10Id(string t10Id, [FromBody] GravityGift gift)
+        {
+            var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
+            ? this.User.GetClaimValue(ClaimTypes.Email)
+            : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+
+            t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
+            gift.ShouldNotBeNull(nameof(gift));
+            gift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gift.GiftReason));
+            gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+
+            this.giftRequestValidator.Validate(gift, this.ModelState);
+
+            if (!this.ModelState.IsValid)
+            {
+                var errorResponse = this.giftRequestValidator.GenerateErrorResponse(this.ModelState);
+                return this.BadRequest(errorResponse);
+            }
+
+            GravityPlayerDetails playerDetails;
+            try
+            {
+                playerDetails = await this.gravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(t10Id).ConfigureAwait(true);
+            }
+            catch (Exception)
+            {
+                return this.NotFound($"No player found for T10Id: {t10Id}");
+            }
+
+            var playerGameSettingsId = playerDetails.LastGameSettingsUsed;
+            var invalidItems = await this.VerifyGiftAgainstMasterInventory(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
+            if (invalidItems.Length > 0)
+            {
+                return this.BadRequest($"Invalid items found. {invalidItems}");
+            }
+
+            var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
+            return this.Ok(response);
         }
 
         /// <summary>
@@ -421,37 +462,37 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(gameSettingsId).ConfigureAwait(true);
             var error = string.Empty;
 
-            foreach (var reward in gift.CreditRewards)
+            foreach (var reward in gift.CreditRewards ?? Enumerable.Empty<MasterInventoryItem>())
             {
                 var validItem = masterInventory.CreditRewards.Any(data => { return data.Id == reward.Id; });
                 error += validItem ? string.Empty : $"CreditRewards: {reward.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
-            foreach (var car in gift.Cars)
+            foreach (var car in gift.Cars ?? Enumerable.Empty<MasterInventoryItem>())
             {
                 var validItem = masterInventory.Cars.Any(data => { return data.Id == car.Id; });
                 error += validItem ? string.Empty : $"Car: {car.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
-            foreach (var energyRefill in gift.EnergyRefills)
+            foreach (var energyRefill in gift.EnergyRefills ?? Enumerable.Empty<MasterInventoryItem>())
             {
                 var validItem = masterInventory.EnergyRefills.Any(data => { return data.Id == energyRefill.Id; });
                 error += validItem ? string.Empty : $"EnergyRefills: {energyRefill.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
-            foreach (var kit in gift.MasteryKits)
+            foreach (var kit in gift.MasteryKits ?? Enumerable.Empty<MasterInventoryItem>())
             {
                 var validItem = masterInventory.MasteryKits.Any(data => { return data.Id == kit.Id; });
                 error += validItem ? string.Empty : $"MasteryKits: {kit.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
-            foreach (var kit in gift.RepairKits)
+            foreach (var kit in gift.RepairKits ?? Enumerable.Empty<MasterInventoryItem>())
             {
                 var validItem = masterInventory.RepairKits.Any(data => { return data.Id == kit.Id; });
                 error += validItem ? string.Empty : $"RepairKits: {kit.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
-            foreach (var kit in gift.UpgradeKits)
+            foreach (var kit in gift.UpgradeKits ?? Enumerable.Empty<MasterInventoryItem>())
             {
                 var validItem = masterInventory.UpgradeKits.Any(data => { return data.Id == kit.Id; });
                 error += validItem ? string.Empty : $"UpgradeKits: {kit.Id.ToString(CultureInfo.InvariantCulture)}, ";
