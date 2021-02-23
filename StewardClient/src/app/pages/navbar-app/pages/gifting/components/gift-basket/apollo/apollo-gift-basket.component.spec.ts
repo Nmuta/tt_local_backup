@@ -233,7 +233,7 @@ describe('ApolloGiftBasketComponent', () => {
 
         expect(response.length).toEqual(1);
         expect(response[0]).not.toBeUndefined();
-        expect(response[0].error).toEqual('Item is not a valid gift.');
+        expect(response[0].error).toEqual('Item does not exist in the master inventory.');
       });
     });
 

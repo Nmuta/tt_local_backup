@@ -6,7 +6,7 @@ import { GiftResponse } from '@models/gift-response';
 import { GravityGift } from '@models/gravity';
 import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
 import { IdentityResultBeta } from '@models/identity-query.model';
-import { GiftBasketModel, MasterInventoryItem } from '@models/master-inventory-item';
+import { MasterInventoryItem } from '@models/master-inventory-item';
 import { GravityGiftingState } from '@navbar-app/pages/gifting/gravity/state/gravity-gifting.state';
 import { SetGravityGiftBasket } from '@navbar-app/pages/gifting/gravity/state/gravity-gifting.state.actions';
 import { Select, Store } from '@ngxs/store';
@@ -16,7 +16,7 @@ import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-li
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { NEVER, Observable, Subject, throwError } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { GiftBasketBaseComponent } from '../gift-basket.base.component';
+import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
 
 /** Gravity gift basket. */
 @Component({
@@ -60,7 +60,7 @@ export class GravityGiftBasketComponent
           this.selectedGameSettingsId = undefined;
           this.masterInventory = undefined;
         }),
-        filter(t10Id => !!t10Id && t10Id !== ''),
+        filter(t10Id => !!t10Id),
         switchMap(t10Id => {
           this.isLoading = true;
           return this.gravityService.getPlayerDetailsByT10Id(t10Id).pipe(
@@ -92,7 +92,7 @@ export class GravityGiftBasketComponent
 
           // With a potentially new game gettings, we need to verify the gift basket contents against the
           // master inventory and set errors.
-          this.setStateGiftBasket(this.giftBasket.data || []);
+          this.setStateGiftBasket(this.giftBasket.data ?? []);
         }),
       )
       .subscribe();
@@ -102,7 +102,7 @@ export class GravityGiftBasketComponent
         takeUntil(this.onDestroy$),
         tap(basket => {
           this.giftBasket.data = basket;
-          this.giftBasketErrors = basket.some(item => !!item.error && item.error != '');
+          this.giftBasketHasErrors = basket.some(item => !!item.error);
         }),
       )
       .subscribe();
@@ -173,7 +173,9 @@ export class GravityGiftBasketComponent
       const itemExists = this.masterInventory[item.itemType]?.some(
         (masterItem: MasterInventoryItem) => masterItem.id === item.id,
       );
-      giftBasket[i].error = !itemExists ? 'Item is not a valid gift.' : undefined;
+      giftBasket[i].error = !itemExists
+        ? 'Item does not exist in the master inventory.'
+        : undefined;
     }
 
     // Verify credit reward limits

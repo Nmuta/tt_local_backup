@@ -14,5 +14,3 @@ export type MasterInventoryUnion =
   | GravityMasterInventory
   | SunriseMasterInventory
   | ApolloMasterInventory;
-
-export type GiftBasketModel = MasterInventoryItem & { edit: boolean; error: string };

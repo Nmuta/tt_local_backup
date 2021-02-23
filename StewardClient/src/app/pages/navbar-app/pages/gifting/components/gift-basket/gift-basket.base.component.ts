@@ -6,11 +6,7 @@ import { LspGroup } from '@models/lsp-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faTrashAlt, faPencilAlt, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
-import {
-  GiftBasketModel,
-  MasterInventoryItem,
-  MasterInventoryUnion,
-} from '@models/master-inventory-item';
+import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-inventory-item';
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
@@ -25,6 +21,7 @@ export type InventoryItemGroup = {
   items: MasterInventoryItem[];
 };
 export type GiftUnion = GravityGift | SunriseGift | ApolloGift;
+export type GiftBasketModel = MasterInventoryItem & { edit: boolean; error: string };
 
 /** The base gift-basket component. */
 @Component({
@@ -39,8 +36,8 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   public masterInventory: MasterInventoryUnion;
   /** The gift basket of current items to be send. */
   public giftBasket = new MatTableDataSource<GiftBasketModel>();
-  /** The gift basket of current items to be send. */
-  public giftBasketErrors: boolean = false;
+  /** Whether the gift basket has errors in it. */
+  public giftBasketHasErrors: boolean = false;
   /** Gifting response. */
   public giftResponse: GiftResponse<bigint | string>[];
   /** The gift basket display columns */
@@ -152,7 +149,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
       !this.isLoading &&
       this.sendGiftForm.valid &&
       this.giftBasket?.data?.length > 0 &&
-      !this.giftBasketErrors &&
+      !this.giftBasketHasErrors &&
       ((this.usingPlayerIdentities && this.playerIdentities?.length > 0) ||
         (!this.usingPlayerIdentities && !!this.lspGroup))
     );
@@ -230,7 +227,7 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     if (clearItemsInBasket) {
       this.sendGiftForm.reset();
       this.setStateGiftBasket([]);
-      this.giftBasketErrors = false;
+      this.giftBasketHasErrors = false;
     }
   }
 }

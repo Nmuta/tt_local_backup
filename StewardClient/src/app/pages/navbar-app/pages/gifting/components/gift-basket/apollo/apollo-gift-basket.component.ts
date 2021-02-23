@@ -5,7 +5,7 @@ import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultBeta } from '@models/identity-query.model';
-import { GiftBasketModel, MasterInventoryItem } from '@models/master-inventory-item';
+import { MasterInventoryItem } from '@models/master-inventory-item';
 import { ApolloGiftingState } from '@navbar-app/pages/gifting/apollo/state/apollo-gifting.state';
 import { SetApolloGiftBasket } from '@navbar-app/pages/gifting/apollo/state/apollo-gifting.state.actions';
 import { Select, Store } from '@ngxs/store';
@@ -15,7 +15,7 @@ import { GetApolloMasterInventoryList } from '@shared/state/master-inventory-lis
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { Observable } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { GiftBasketBaseComponent } from '../gift-basket.base.component';
+import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
 
 /** Apollo gift basket. */
 @Component({
@@ -61,7 +61,7 @@ export class ApolloGiftBasketComponent
         takeUntil(this.onDestroy$),
         tap(basket => {
           this.giftBasket.data = basket;
-          this.giftBasketErrors = basket.some(item => !!item.error && item.error != '');
+          this.giftBasketHasErrors = basket.some(item => !!item.error);
         }),
       )
       .subscribe();
@@ -118,7 +118,9 @@ export class ApolloGiftBasketComponent
           (masterItem.id >= BigInt(0) ||
             (masterItem.id < BigInt(0) && masterItem.description === item.description)),
       );
-      giftBasket[i].error = !itemExists ? 'Item is not a valid gift.' : undefined;
+      giftBasket[i].error = !itemExists
+        ? 'Item does not exist in the master inventory.'
+        : undefined;
     }
 
     // Verify credit reward limits

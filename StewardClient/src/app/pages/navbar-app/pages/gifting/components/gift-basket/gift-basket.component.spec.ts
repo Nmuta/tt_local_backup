@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IdentityResultBeta } from '@models/identity-query.model';
-import { GiftBasketBaseComponent } from './gift-basket.base.component';
+import { GiftBasketBaseComponent, GiftBasketModel } from './gift-basket.base.component';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { of, throwError } from 'rxjs';
@@ -12,7 +12,6 @@ import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { GiftResponse } from '@models/gift-response';
 import { GiftHistoryAntecedent } from '@shared/constants';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
-import { GiftBasketModel } from '@models/master-inventory-item';
 
 describe('GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<GiftBasketBaseComponent<IdentityResultBeta>>;

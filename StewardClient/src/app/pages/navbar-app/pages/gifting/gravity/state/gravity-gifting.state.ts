@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { IdentityResultBetaBatch } from '@models/identity-query.model';
-import { GiftBasketModel } from '@models/master-inventory-item';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { clone } from 'lodash';
+import { clone, sortBy } from 'lodash';
 import { Observable, of } from 'rxjs';
+import { GiftBasketModel } from '../../components/gift-basket/gift-basket.base.component';
 import {
   SetGravityGiftBasket,
   SetGravitySelectedPlayerIdentities,
@@ -42,11 +42,12 @@ export class GravityGiftingState {
     ctx: StateContext<GravityGiftingStateModel>,
     action: SetGravityGiftBasket,
   ): Observable<GravityGiftingStateModel> {
-    const giftBasket = action.giftBasket
-      .sort((a, b) => {
-        return a.itemType.localeCompare(b.itemType) || a.description.localeCompare(b.description);
-      })
-      .sort((a, b) => (a.error === b.error ? 0 : a.error ? -1 : 1));
+    let giftBasket = sortBy(action.giftBasket, item => {
+      item.itemType;
+    });
+    giftBasket = sortBy(giftBasket, item => {
+      !item.error;
+    });
 
     return of(ctx.patchState({ giftBasket: clone(giftBasket) }));
   }

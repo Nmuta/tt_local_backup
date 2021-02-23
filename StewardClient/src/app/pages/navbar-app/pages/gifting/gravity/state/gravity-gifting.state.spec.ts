@@ -1,8 +1,8 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { IdentityResultBeta } from '@models/identity-query.model';
-import { GiftBasketModel } from '@models/master-inventory-item';
 import { NgxsModule, Store } from '@ngxs/store';
+import { GiftBasketModel } from '../../components/gift-basket/gift-basket.base.component';
 import { GravityGiftingState } from './gravity-gifting.state';
 import {
   SetGravityGiftBasket,

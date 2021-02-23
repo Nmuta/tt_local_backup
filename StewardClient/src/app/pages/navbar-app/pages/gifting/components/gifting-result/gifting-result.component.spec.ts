@@ -31,7 +31,7 @@ describe('GiftingResultComponent', () => {
 
   const result1Id = faker.random.uuid().toString();
   const result2Id = faker.random.uuid().toString();
-  const result2Error = { message: faker.random.words(5)};
+  const result2Error = { message: faker.random.words(5) };
   const result3Id = faker.random.uuid().toString();
 
   beforeEach(() => {
@@ -50,7 +50,7 @@ describe('GiftingResultComponent', () => {
         playerOrLspGroup: result3Id,
         identityAntecedent: GiftHistoryAntecedent.T10Id,
         error: undefined,
-      }
+      },
     ];
   });
 
@@ -101,6 +101,6 @@ describe('GiftingResultComponent', () => {
       expect(component.giftingCsvData[1][0]).toEqual(`'${result2Id}`);
       expect(component.giftingCsvData[2][0]).toEqual(`'${result1Id}`);
       expect(component.giftingCsvData[3][0]).toEqual(`'${result3Id}`);
-    })
+    });
   });
 });

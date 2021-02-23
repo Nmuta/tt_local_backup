@@ -1,5 +1,5 @@
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
-import { GiftBasketModel } from '@models/master-inventory-item';
+import { GiftBasketModel } from '../../components/gift-basket/gift-basket.base.component';
 
 /** Sets the gifting page's selected player identities. */
 export class SetSunriseGiftingSelectedPlayerIdentities {

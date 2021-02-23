@@ -4,7 +4,7 @@ import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultBeta } from '@models/identity-query.model';
-import { GiftBasketModel, MasterInventoryItem } from '@models/master-inventory-item';
+import { MasterInventoryItem } from '@models/master-inventory-item';
 import { SunriseGift, SunriseGroupGift } from '@models/sunrise';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { SunriseGiftingState } from '@navbar-app/pages/gifting/sunrise/state/sunrise-gifting.state';
@@ -16,7 +16,7 @@ import { GetSunriseMasterInventoryList } from '@shared/state/master-inventory-li
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { Observable } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { GiftBasketBaseComponent } from '../gift-basket.base.component';
+import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
 
 /** Sunrise gift basket. */
 @Component({
@@ -62,7 +62,7 @@ export class SunriseGiftBasketComponent
         takeUntil(this.onDestroy$),
         tap(basket => {
           this.giftBasket.data = basket;
-          this.giftBasketErrors = basket.some(item => !!item.error && item.error != '');
+          this.giftBasketHasErrors = basket.some(item => !!item.error);
         }),
       )
       .subscribe();
@@ -128,7 +128,9 @@ export class SunriseGiftBasketComponent
           (masterItem.id >= BigInt(0) ||
             (masterItem.id < BigInt(0) && masterItem.description === item.description)),
       );
-      giftBasket[i].error = !itemExists ? 'Item is not a valid gift.' : undefined;
+      giftBasket[i].error = !itemExists
+        ? 'Item does not exist in the master inventory.'
+        : undefined;
     }
 
     // Verify credit reward limits
