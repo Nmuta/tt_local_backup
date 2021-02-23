@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var inventory = await this.opusPlayerInventoryProvider.GetPlayerInventoryAsync(profileId).ConfigureAwait(true);
 
-            if (inventory == null)
+            if (inventory == null || (!inventory.Cars.Any() && (inventory.CreditRewards == null || inventory.CreditRewards[0].Quantity <= 0)))
             {
                 return this.NotFound($"No inventory found for Profile ID: {profileId}");
             }
