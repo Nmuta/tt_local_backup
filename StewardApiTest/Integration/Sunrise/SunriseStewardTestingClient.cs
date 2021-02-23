@@ -107,13 +107,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<SunriseBanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<IList<SunriseBanResult>>> BanPlayersWithHeaderResponseAsync(IList<SunriseBanParametersInput> banParameters, IList<string> headersToValidate)
+        public async Task<ResponseWithHeaders<BackgroundJob>> BanPlayersWithHeaderResponseAsync(IList<SunriseBanParametersInput> banParameters, IList<string> headersToValidate)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}players/ban?useBackgroundProcessing=true");
+            var path = new Uri(this.baseUri, $"{TitlePath}players/ban/useBackgroundProcessing");
 
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<IList<SunriseBanResult>>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters).ConfigureAwait(false);
+            return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJob>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters).ConfigureAwait(false);
         }
 
         public async Task<IList<SunriseBanSummary>> GetBanSummariesAsync(IList<ulong> xuids)

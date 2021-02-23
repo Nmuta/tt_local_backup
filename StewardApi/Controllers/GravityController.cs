@@ -247,10 +247,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="t10Id">The T10 Id.</param>
         /// <param name="gift">The gift to send to the player.</param>
         /// <returns>
-        ///     A <see cref="GiftResponse{T}"/>.
+        ///     A <see cref="BackgroundJob"/>.
         /// </returns>
         [HttpPost("gifting/t10Id({t10Id})/useBackgroundProcessing")]
-        [SwaggerResponse(200, type: typeof(GiftResponse<string>))]
+        [SwaggerResponse(200, type: typeof(BackgroundJob))]
         public async Task<IActionResult> UpdatePlayerInventoryByT10IdUseBackgroundProcessing(
             string t10Id,
             [FromBody] GravityGift gift)

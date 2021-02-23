@@ -211,14 +211,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Bans players.
         /// </summary>
         /// <param name="banInput">The list of ban parameters.</param>
-        /// <param name="useBackgroundProcessing">A value that indicates whether to use background processing.</param>
         /// <returns>
         ///     The list of <see cref="ApolloBanResult"/>.
         /// </returns>
-        [HttpPost("players/ban")]
-        [SwaggerResponse(201, type: typeof(List<ApolloBanResult>))]
-        [SwaggerResponse(202)]
-        public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput, [FromQuery] bool useBackgroundProcessing)
+        [HttpPost("players/ban/useBackgroundProcessing")]
+        [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        public async Task<IActionResult> BanPlayersUseBackgroundProcessing([FromBody] IList<ApolloBanParametersInput> banInput)
         {
             var user = this.User.UserModel();
             var requestingAgent = user.EmailAddress ?? user.Id;
@@ -238,13 +236,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             {
                 var result = this.banParametersRequestValidator.GenerateErrorResponse(this.ModelState);
                 return this.BadRequest(result);
-            }
-
-            if (!useBackgroundProcessing)
-            {
-                var results = await this.apolloPlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
-
-                return this.Created(this.Request.Path, results);
             }
 
             var username = this.User.GetNameIdentifier();
@@ -269,6 +260,42 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
             return this.Accepted();
+        }
+
+        /// <summary>
+        ///     Bans players.
+        /// </summary>
+        /// <param name="banInput">The list of ban parameters.</param>
+        /// <returns>
+        ///     The list of <see cref="ApolloBanResult"/>.
+        /// </returns>
+        [HttpPost("players/ban")]
+        [SwaggerResponse(201, type: typeof(List<ApolloBanResult>))]
+        public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput)
+        {
+            var user = this.User.UserModel();
+            var requestingAgent = user.EmailAddress ?? user.Id;
+
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            banInput.ShouldNotBeNull(nameof(banInput));
+
+            foreach (var banParam in banInput)
+            {
+                this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
+                this.banParametersRequestValidator.Validate(banParam, this.ModelState);
+            }
+
+            var banParameters = this.mapper.Map<IList<ApolloBanParameters>>(banInput);
+
+            if (!this.ModelState.IsValid)
+            {
+                var result = this.banParametersRequestValidator.GenerateErrorResponse(this.ModelState);
+                return this.BadRequest(result);
+            }
+
+            var results = await this.apolloPlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
+
+            return this.Created(this.Request.Path, results);
         }
 
         /// <summary>

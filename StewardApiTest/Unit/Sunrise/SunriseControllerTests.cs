@@ -573,10 +573,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var banParameters = GenerateBanParameters();
-            var useBackgroundProcessing = false;
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters).ConfigureAwait(false);
 
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -593,10 +592,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var useBackgroundProcessing = false;
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
@@ -609,10 +607,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var banParameters = GenerateBanParameters();
-            var useBackgroundProcessing = true;
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayersUseBackgroundProcessing(banParameters).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -624,10 +621,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var useBackgroundProcessing = true;
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
@@ -830,7 +826,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<SunriseGroupGift>();
-            var useBackgroundProcessing = false;
             var xuid = Fixture.Create<ulong>();
             groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
             groupGift.Inventory.CarHorns = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
@@ -841,7 +836,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing).ConfigureAwait(false),
+                async () => await controller.UpdateGroupInventories(groupGift).ConfigureAwait(false),
             };
 
             // Assert.
@@ -861,12 +856,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var useBackgroundProcessing = false;
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing).ConfigureAwait(false),
+                async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false),
             };
 
             // Assert.
@@ -883,7 +877,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<SunriseGroupGift>();
-            var useBackgroundProcessing = true;
             groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
             groupGift.Inventory.CarHorns = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
             groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
@@ -893,7 +886,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing).ConfigureAwait(false),
+                async () => await controller.UpdateGroupInventoriesUseBackgroundProcessing(groupGift).ConfigureAwait(false),
             };
 
             // Assert.
@@ -911,12 +904,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var useBackgroundProcessing = true;
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing).ConfigureAwait(false),
+                async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false),
             };
 
             // Assert.
