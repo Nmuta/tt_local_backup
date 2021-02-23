@@ -1,8 +1,8 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
+import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
 
 /** Fake API for sunrise player inventory. */
 export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {

@@ -29,6 +29,14 @@ export class SunrisePlayerInventoryComponent extends PlayerInventoryBaseComponen
     return this.sunrise.getPlayerInventoryByXuid(identity.xuid);
   }
 
+  /** Implement in order to retrieve concrete identity instance. */
+  protected getPlayerInventoryByIdentityAndProfileId(
+    _identity: IdentityResultAlpha,
+    profileId: bigint,
+  ): Observable<SunriseMasterInventory> {
+    return this.sunrise.getPlayerInventoryByProfileId(profileId);
+  }
+
   /** Implement to specify the expando tables to show. */
   protected makeWhatToShow(): PropertyToExpandoData<SunriseMasterInventory>[] {
     return [

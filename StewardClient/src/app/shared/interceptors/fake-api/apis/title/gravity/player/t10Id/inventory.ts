@@ -1,8 +1,8 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
 import { GravityPlayerInventoryBeta } from '@models/gravity';
 import { MasterInventoryItem } from '@models/master-inventory-item';
+import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
 
 /** Fake API for gravity player inventory. */
 export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {

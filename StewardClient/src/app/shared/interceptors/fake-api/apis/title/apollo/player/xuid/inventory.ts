@@ -1,8 +1,8 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt } from '@interceptors/fake-api/utility';
 import { ApolloMasterInventory } from '@models/apollo';
 import { MasterInventoryItem } from '@models/master-inventory-item';
+import { fakeBigInt } from '@interceptors/fake-api/utility';
 import faker from 'faker';
 
 /** Fake API for apollo player inventory. */

@@ -6,6 +6,8 @@ import {
   ApolloGroupGift,
   ApolloMasterInventory,
   ApolloPlayerDetails,
+  ApolloPlayerInventory,
+  ApolloPlayerInventoryProfile,
 } from '@models/apollo';
 import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
 import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
@@ -20,8 +22,9 @@ import {
 } from '@models/identity-query.model';
 import { LspGroup, LspGroups } from '@models/lsp-group';
 import { ApiService } from '@services/api';
+import { chain } from 'lodash';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -101,6 +104,31 @@ export class ApolloService {
   public getPlayerInventoryByXuid(xuid: bigint): Observable<ApolloMasterInventory> {
     return this.apiService.getRequest<ApolloMasterInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
+  }
+
+  /** Gets a player's profile list  by XUID. */
+  public getPlayerInventoryProfilesByXuid(
+    xuid: bigint,
+  ): Observable<ApolloPlayerInventoryProfile[]> {
+    return this.apiService
+      .getRequest<ApolloPlayerInventoryProfile[]>(
+        `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
+      )
+      .pipe(
+        map(v =>
+          chain(v)
+            .sortBy(v => v.profileId)
+            .reverse()
+            .value(),
+        ),
+      );
+  }
+
+  /** Gets a specific version of an apollo player's inventory */
+  public getPlayerInventoryByProfileId(profileId: bigint): Observable<ApolloPlayerInventory> {
+    return this.apiService.getRequest<ApolloPlayerInventory>(
+      `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }
 

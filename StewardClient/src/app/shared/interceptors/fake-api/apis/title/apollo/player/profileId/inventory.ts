@@ -2,6 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloPlayerInventory } from '@models/apollo';
 import { Unprocessed } from '@models/unprocessed';
+import { ApolloPlayerXuidInventoryFakeApi } from '../xuid/inventory';
 
 /** Fake API for apollo player inventory. */
 export class ApolloPlayerProfileIdInventoryFakeApi extends FakeApiBase {
@@ -23,9 +24,7 @@ export class ApolloPlayerProfileIdInventoryFakeApi extends FakeApiBase {
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<ApolloPlayerInventory>> {
-    return {
-      xuid: BigInt(2533275026603041),
-    };
+  public static make(): ApolloPlayerInventory {
+    return ApolloPlayerXuidInventoryFakeApi.make(null);
   }
 }

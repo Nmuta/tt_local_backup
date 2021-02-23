@@ -1,13 +1,16 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BackgroundJob } from '@models/background-job';
-import { T10IdString } from '@models/extended-types';
+import { GuidLikeString, T10IdString } from '@models/extended-types';
 import {
-  GravityGift,
   GravityGiftHistory,
   GravityPlayerDetails,
   GravityPlayerInventoryBeta,
+  GravityPlayerInventory,
+  GravityPseudoPlayerInventoryProfile,
+  gravitySaveStatesToPsuedoInventoryProfile,
 } from '@models/gravity';
+import { GravityGift } from '@models/gravity/gravity-gift.model';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
   IdentityQueryBeta,
@@ -17,7 +20,7 @@ import {
 } from '@models/identity-query.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 /** Defines the gravity service. */
 @Injectable({
@@ -70,10 +73,19 @@ export class GravityService {
     );
   }
 
-  /** Gets gravity player inventory with a profile ID. */
-  public getPlayerInventoryByProfileIdWithT10Id(
+  /** Gets a player's profile list by T10Id. */
+  public getPlayerInventoryProfilesByT10Id(
+    t10Id: GuidLikeString,
+  ): Observable<GravityPseudoPlayerInventoryProfile[]> {
+    return this.getPlayerDetailsByT10Id(t10Id).pipe(
+      map(details => gravitySaveStatesToPsuedoInventoryProfile(details)),
+    );
+  }
+
+  /** Gets a specific version of a player's inventory */
+  public getPlayerInventoryByT10IdAndProfileId(
     t10Id: string,
-    profileId: string,
+    profileId: bigint,
   ): Observable<GravityPlayerInventoryBeta> {
     return this.apiService.getRequest<GravityPlayerInventoryBeta>(
       `${this.basePath}/player/t10Id(${t10Id})/profileId(${profileId})/inventory`,

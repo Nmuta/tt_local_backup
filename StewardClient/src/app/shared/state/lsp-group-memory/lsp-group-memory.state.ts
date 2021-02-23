@@ -7,6 +7,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { GetLspGroups } from './lsp-group-memory.actions';
 import { LspGroup, LspGroups } from '@models/lsp-group';
 import { tap } from 'rxjs/operators';
+import { clone } from 'lodash';
 
 /**
  * Defines the lsp group memory model.
@@ -60,7 +61,7 @@ export class LspGroupMemoryState {
 
     return request$.pipe(
       tap(data => {
-        ctx.patchState({ [title]: data });
+        ctx.patchState({ [title]: clone(data) });
       }),
     );
   }
