@@ -75,13 +75,13 @@ describe('State: User', () => {
           .and.returnValue(throwError({ message: '401 Unauthorized' }));
       });
 
-      it('should patch profile with null', () => {
+      it('should patch profile with user_state_not_found', () => {
         store.dispatch(action);
 
         store
           .selectOnce(state => state.user.profile)
           .subscribe(profile => {
-            expect(profile).toBeNull();
+            expect(profile).toBe(UserState.NOT_FOUND);
           });
       });
 

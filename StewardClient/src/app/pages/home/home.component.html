@@ -2,7 +2,7 @@
   <mat-card>
     <h1>Welcome to Steward</h1>
 
-    <ng-container *ngIf="!userProfile">
+    <ng-container *ngIf="!user">
       <p>Login to see which Steward app are available to you.</p>
       <a
         mat-raised-button
@@ -13,9 +13,9 @@
       >
     </ng-container>
 
-    <ng-container *ngIf="!!userProfile">
-      <p>Hi, {{ userProfile.name }}.</p>
-      <p>Your role is: {{ userProfile.role }}.</p>
+    <ng-container *ngIf="!!user">
+      <p>Hi, {{ user.name }}.</p>
+      <p>Your role is: {{ user.role }}.</p>
       <a
         mat-raised-button
         color="accent"
