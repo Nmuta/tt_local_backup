@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { clone } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { UpdateTitleMemory } from './title-memory.actions';
 import { TitleMemoryModel } from './title-memory.model';
@@ -25,7 +26,7 @@ export class TitleMemoryState {
     const state = ctx.getState();
 
     if (state[action.tool] !== action.title) {
-      ctx.patchState({ [action.tool]: action.title });
+      ctx.patchState({ [action.tool]: clone(action.title) });
     }
     return of(ctx.getState());
   }

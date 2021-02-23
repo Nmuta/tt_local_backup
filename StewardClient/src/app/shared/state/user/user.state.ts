@@ -6,6 +6,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
+import { clone } from 'lodash';
 import { concat, from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, switchMap, take, tap, timeout } from 'rxjs/operators';
 
@@ -71,7 +72,7 @@ export class UserState {
     return this.userService.getUserProfile().pipe(
       tap(
         data => {
-          ctx.patchState({ profile: data });
+          ctx.patchState({ profile: clone(data) });
         },
         () => {
           ctx.patchState({ profile: null });
@@ -118,7 +119,7 @@ export class UserState {
           ctx.patchState({ accessToken: null });
           return ctx.dispatch(new SetNoUserProfile());
         } else {
-          ctx.patchState({ accessToken: data.accessToken });
+          ctx.patchState({ accessToken: clone(data.accessToken) });
           return ctx.dispatch(new GetUser());
         }
       }),
