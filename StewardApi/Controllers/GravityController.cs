@@ -163,15 +163,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="GravityPlayerInventory"/>.
+        ///     The <see cref="GravityPlayerInventoryBeta"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
+        [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
-            var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
+            var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
+            var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            return this.Ok(inventory);
+            playerInventory = this.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            return this.Ok(playerInventory);
         }
 
         /// <summary>
@@ -179,17 +181,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="t10Id">The Turn 10 ID.</param>
         /// <returns>
-        ///     The <see cref="GravityPlayerInventory"/>.
+        ///     The <see cref="GravityPlayerInventoryBeta"/>.
         /// </returns>
         [HttpGet("player/t10Id({t10Id})/inventory")]
-        [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
+        [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
         public async Task<IActionResult> GetPlayerInventory(string t10Id)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
-            var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id).ConfigureAwait(true);
+            var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id).ConfigureAwait(true);
+            var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            return this.Ok(inventory);
+            playerInventory = this.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            return this.Ok(playerInventory);
         }
 
         /// <summary>
@@ -198,22 +202,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="xuid">The xuid.</param>
         /// <param name="profileId">The profile ID.</param>
         /// <returns>
-        ///     The <see cref="GravityPlayerInventory"/>.
+        ///     The <see cref="GravityPlayerInventoryBeta"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
+        [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid, string profileId)
         {
             profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
 
-            var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, profileId).ConfigureAwait(true);
+            var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, profileId).ConfigureAwait(true);
+            var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            if (inventory == null)
+            if (playerInventory == null)
             {
                 return this.NotFound($"No inventory found for XUID: {xuid}");
             }
 
-            return this.Ok(inventory);
+            playerInventory = this.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            return this.Ok(playerInventory);
         }
 
         /// <summary>
@@ -222,23 +228,25 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="t10Id">The Turn 10 ID.</param>
         /// <param name="profileId">The profile ID.</param>
         /// <returns>
-        ///     The <see cref="GravityPlayerInventory"/>.
+        ///     The <see cref="GravityPlayerInventoryBeta"/>.
         /// </returns>
         [HttpGet("player/t10Id({t10Id})/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
+        [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
         public async Task<IActionResult> GetPlayerInventory(string t10Id, string profileId)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
 
-            var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id, profileId).ConfigureAwait(true);
+            var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id, profileId).ConfigureAwait(true);
+            var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            if (inventory == null)
+            if (playerInventory == null)
             {
                 return this.NotFound($"No inventory found for Turn 10 ID: {t10Id}");
             }
 
-            return this.Ok(inventory);
+            playerInventory = this.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            return this.Ok(playerInventory);
         }
 
         /// <summary>
@@ -458,6 +466,48 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             return error;
+        }
+
+        /// <summary>
+        ///     Verifies the gift inventory against the title master inventory list.
+        /// </summary>
+        /// <param name="playerInventory">The gravity player inventory.</param>
+        /// <param name="masterInventory">The gravity master inventory.</param>
+        /// <returns>
+        ///     String of items that are invalid.
+        /// </returns>
+        private GravityPlayerInventoryBeta SetPlayerInventoryItemDescriptions(GravityPlayerInventoryBeta playerInventory, GravityMasterInventory masterInventory)
+        {
+            playerInventory.CreditRewards = this.SetPlayerInventoryItemDescription(playerInventory.CreditRewards, masterInventory.CreditRewards);
+            playerInventory.Cars = this.SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars);
+            playerInventory.EnergyRefills = this.SetPlayerInventoryItemDescription(playerInventory.EnergyRefills, masterInventory.EnergyRefills);
+            playerInventory.MasteryKits = this.SetPlayerInventoryItemDescription(playerInventory.MasteryKits, masterInventory.MasteryKits);
+            playerInventory.RepairKits = this.SetPlayerInventoryItemDescription(playerInventory.RepairKits, masterInventory.RepairKits);
+            playerInventory.UpgradeKits = this.SetPlayerInventoryItemDescription(playerInventory.UpgradeKits, masterInventory.UpgradeKits);
+
+            return playerInventory;
+        }
+
+        /// <summary>
+        ///     Sets player inventory item descriptions based on matching master inventory items.
+        /// </summary>
+        /// <param name="playerInventoryItems">The player inventory items.</param>
+        /// <param name="masterInventoryItems">The master inventory items</param>
+        private IList<MasterInventoryItem> SetPlayerInventoryItemDescription(IList<MasterInventoryItem> playerInventoryItems, IList<MasterInventoryItem> masterInventoryItems)
+        {
+            foreach (var item in playerInventoryItems)
+            {
+                try
+                {
+                    item.Description = masterInventoryItems.First(masterItem => masterItem.Id == item.Id).Description;
+                }
+                catch
+                {
+                    item.Description = string.Empty;
+                }
+            }
+
+            return playerInventoryItems;
         }
     }
 }
