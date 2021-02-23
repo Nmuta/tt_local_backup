@@ -94,11 +94,13 @@ export abstract class PlayerInventoryBaseComponent<
         }),
         filter(v => !!v.identity),
         switchMap(v => {
-          if (v.profileId) {
-            return this.getPlayerInventoryByIdentityAndProfileId(v.identity, v.profileId);
-          } else {
-            return this.getPlayerInventoryByIdentity(v.identity);
-          }
+          const request$ = v.profileId ? this.getPlayerInventoryByIdentityAndProfileId(v.identity, v.profileId) : this.getPlayerInventoryByIdentity(v.identity);
+          return request$.pipe(
+            catchError((error, _observable) => {
+              this.error = error;
+              return NEVER;
+            }),
+          );
         }),
         catchError((error, _observable) => {
           this.error = error;

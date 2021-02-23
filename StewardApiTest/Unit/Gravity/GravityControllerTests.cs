@@ -156,7 +156,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
+        public void GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -201,7 +201,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetPlayerDetails_WithNullEmptyWhiteSpaceGamertag_Throws()
+        public void GetPlayerDetails_WithNullEmptyWhiteSpaceGamertag_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -222,7 +222,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetPlayerDetailsByT10Id_WithNullEmptyWhiteSpaceT10Id_Throws()
+        public void GetPlayerDetailsByT10Id_WithNullEmptyWhiteSpaceT10Id_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -276,7 +276,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetPlayerInventory_WithNullEmptyWhitespaceT10Id_Throws()
+        public void GetPlayerInventory_WithNullEmptyWhitespaceT10Id_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -302,7 +302,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetPlayerInventory_WithNullEmptyWhitespaceProfileId_Throws()
+        public void GetPlayerInventory_WithNullEmptyWhitespaceProfileId_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -362,7 +362,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullPlayerInventory_Throws()
+        public void UpdatePlayerInventory_WithNullPlayerInventory_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -384,7 +384,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventory_WithNullEmptyWhitespaceT10Id_ReturnsCorrectType()
+        public void UpdatePlayerInventory_WithNullEmptyWhitespaceT10Id_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -431,7 +431,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetGameSettings_WithNullEmptyWhitespaceId_Throws()
+        public void GetGameSettings_WithNullEmptyWhitespaceId_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -473,7 +473,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetGiftHistory_WithNullEmptyWhitespaceT10Id_Throws()
+        public void GetGiftHistory_WithNullEmptyWhitespaceT10Id_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();

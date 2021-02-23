@@ -194,20 +194,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     var result = await this.apolloUserService.BanUsersAsync(mappedBanParameters.ToArray())
                         .ConfigureAwait(false);
 
-                foreach (var param in paramBatch)
-                {
-                    var successfulBan = result.banResults.Where(banAttempt => banAttempt.Xuid == param.Xuid).FirstOrDefault()?.Success ?? false;
-                    if (successfulBan)
+                    foreach (var param in paramBatch)
                     {
-                        await
-                            this.banHistoryProvider.UpdateBanHistoryAsync(
-                                param.Xuid,
-                                TitleConstants.ApolloCodeName,
-                                requestingAgent,
-                                param)
-                            .ConfigureAwait(false);
+                        var successfulBan = result.banResults.Where(banAttempt => banAttempt.Xuid == param.Xuid).FirstOrDefault()?.Success ?? false;
+                        if (successfulBan)
+                        {
+                            await
+                                this.banHistoryProvider.UpdateBanHistoryAsync(
+                                    param.Xuid,
+                                    TitleConstants.ApolloCodeName,
+                                    requestingAgent,
+                                    param)
+                                .ConfigureAwait(false);
+                        }
                     }
-                }
 
                     banResults.AddRange(this.mapper.Map<IList<ApolloBanResult>>(result.banResults));
                 }

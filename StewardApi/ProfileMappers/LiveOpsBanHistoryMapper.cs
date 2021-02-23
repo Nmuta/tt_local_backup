@@ -25,6 +25,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// <returns>A live ops ban history.</returns>
         public static LiveOpsBanHistory Map(FH4WebServices.ForzaUserBanDescription banDescription)
         {
+            var extendedReason = banDescription.ExtendTimes > 0
+                ? $" [Extended {banDescription.ExtendTimes} times. Last extended on {banDescription.LastExtendTime} by {banDescription.LastExtendReason}.]"
+                : string.Empty;
+
             var liveOpsBanHistory = new LiveOpsBanHistory(
                 (long)banDescription.Xuid,
                 TitleConstants.SunriseCodeName,
@@ -32,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 banDescription.StartTime,
                 banDescription.ExpireTime,
                 Enum.GetName(typeof(FH4Security.FeatureAreas), banDescription.FeatureAreas),
-                banDescription.Reason,
+                banDescription.Reason + extendedReason,
                 "{}");
 
             liveOpsBanHistory.LastExtendedTimeUtc = banDescription.LastExtendTime;
