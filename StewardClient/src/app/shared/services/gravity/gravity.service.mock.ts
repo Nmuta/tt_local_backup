@@ -52,8 +52,8 @@ export class MockGravityService {
 
   public getPlayerInventoryByT10Id = jasmine
     .createSpy('getPlayerInventoryByT10Id')
-    .and.callFake(t10Id =>
-      this.waitUntil$.pipe(switchMap(() => of(GravityPlayerT10IdInventoryFakeApi.make(t10Id)))),
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(GravityPlayerT10IdInventoryFakeApi.make()))),
     );
 }
 

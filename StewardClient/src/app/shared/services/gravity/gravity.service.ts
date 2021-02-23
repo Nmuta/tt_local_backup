@@ -6,7 +6,7 @@ import {
   GravityGift,
   GravityGiftHistory,
   GravityPlayerDetails,
-  GravityPlayerInventory,
+  GravityPlayerInventoryBeta,
 } from '@models/gravity';
 import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
@@ -64,8 +64,8 @@ export class GravityService {
   }
 
   /** Gets the gravity player's inventory */
-  public getPlayerInventoryByT10Id(t10Id: T10IdString): Observable<GravityPlayerInventory> {
-    return this.apiService.getRequest<GravityPlayerInventory>(
+  public getPlayerInventoryByT10Id(t10Id: T10IdString): Observable<GravityPlayerInventoryBeta> {
+    return this.apiService.getRequest<GravityPlayerInventoryBeta>(
       `${this.basePath}/player/t10Id(${t10Id})/inventory`,
     );
   }
@@ -74,8 +74,8 @@ export class GravityService {
   public getPlayerInventoryByProfileIdWithT10Id(
     t10Id: string,
     profileId: string,
-  ): Observable<GravityPlayerInventory> {
-    return this.apiService.getRequest<GravityPlayerInventory>(
+  ): Observable<GravityPlayerInventoryBeta> {
+    return this.apiService.getRequest<GravityPlayerInventoryBeta>(
       `${this.basePath}/player/t10Id(${t10Id})/profileId(${profileId})/inventory`,
     );
   }

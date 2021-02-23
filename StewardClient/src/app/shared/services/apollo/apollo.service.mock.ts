@@ -62,8 +62,8 @@ export class MockApolloService {
 
   public getPlayerInventoryByXuid = jasmine
     .createSpy('getPlayerInventoryByXuid')
-    .and.callFake(xuid =>
-      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidInventoryFakeApi.make(xuid)))),
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidInventoryFakeApi.make()))),
     );
 }
 /** Creates an injectable mock for Apollo Service. */

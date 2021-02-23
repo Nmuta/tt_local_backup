@@ -13,7 +13,6 @@ import {
   SunriseGift,
   SunriseGroupGift,
   SunrisePlayerDetails,
-  SunrisePlayerInventory,
   SunrisePlayerNotifications,
   SunriseUserFlags,
 } from '@models/sunrise';
@@ -175,8 +174,8 @@ export class SunriseService {
   }
 
   /** Gets the player's inventory */
-  public getPlayerInventoryByXuid(xuid: bigint): Observable<SunrisePlayerInventory> {
-    return this.apiService.getRequest<SunrisePlayerInventory>(
+  public getPlayerInventoryByXuid(xuid: bigint): Observable<SunriseMasterInventory> {
+    return this.apiService.getRequest<SunriseMasterInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
