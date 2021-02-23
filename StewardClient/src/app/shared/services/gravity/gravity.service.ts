@@ -19,7 +19,7 @@ import {
 } from '@models/identity-query.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 /** Defines the gravity service. */
 @Injectable({
