@@ -55,7 +55,7 @@ describe('State: User', () => {
         store
           .selectOnce((state: AppState) => state.user.profile)
           .subscribe(profile => {
-            expect(profile).toBe(expectedProfile);
+            expect(profile).toEqual(expectedProfile);
           });
       });
 
