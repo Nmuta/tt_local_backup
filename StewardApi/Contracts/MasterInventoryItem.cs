@@ -25,6 +25,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         /// <summary>
         ///     Gets or sets the item error.
         /// </summary>
-        public Exception Error { get; set; }
+        public object Error { get; set; }
     }
 }

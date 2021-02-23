@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -172,7 +173,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
             var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            playerInventory = this.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
             return this.Ok(playerInventory);
         }
 
@@ -192,7 +193,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id).ConfigureAwait(true);
             var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            playerInventory = this.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
             return this.Ok(playerInventory);
         }
 
@@ -218,7 +219,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.NotFound($"No inventory found for XUID: {xuid}");
             }
 
-            playerInventory = this.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
             return this.Ok(playerInventory);
         }
 
@@ -245,7 +246,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.NotFound($"No inventory found for Turn 10 ID: {t10Id}");
             }
 
-            playerInventory = this.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
             return this.Ok(playerInventory);
         }
 
@@ -466,48 +467,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             return error;
-        }
-
-        /// <summary>
-        ///     Verifies the gift inventory against the title master inventory list.
-        /// </summary>
-        /// <param name="playerInventory">The gravity player inventory.</param>
-        /// <param name="masterInventory">The gravity master inventory.</param>
-        /// <returns>
-        ///     String of items that are invalid.
-        /// </returns>
-        private GravityPlayerInventoryBeta SetPlayerInventoryItemDescriptions(GravityPlayerInventoryBeta playerInventory, GravityMasterInventory masterInventory)
-        {
-            playerInventory.CreditRewards = this.SetPlayerInventoryItemDescription(playerInventory.CreditRewards, masterInventory.CreditRewards);
-            playerInventory.Cars = this.SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars);
-            playerInventory.EnergyRefills = this.SetPlayerInventoryItemDescription(playerInventory.EnergyRefills, masterInventory.EnergyRefills);
-            playerInventory.MasteryKits = this.SetPlayerInventoryItemDescription(playerInventory.MasteryKits, masterInventory.MasteryKits);
-            playerInventory.RepairKits = this.SetPlayerInventoryItemDescription(playerInventory.RepairKits, masterInventory.RepairKits);
-            playerInventory.UpgradeKits = this.SetPlayerInventoryItemDescription(playerInventory.UpgradeKits, masterInventory.UpgradeKits);
-
-            return playerInventory;
-        }
-
-        /// <summary>
-        ///     Sets player inventory item descriptions based on matching master inventory items.
-        /// </summary>
-        /// <param name="playerInventoryItems">The player inventory items.</param>
-        /// <param name="masterInventoryItems">The master inventory items</param>
-        private IList<MasterInventoryItem> SetPlayerInventoryItemDescription(IList<MasterInventoryItem> playerInventoryItems, IList<MasterInventoryItem> masterInventoryItems)
-        {
-            foreach (var item in playerInventoryItems)
-            {
-                try
-                {
-                    item.Description = masterInventoryItems.First(masterItem => masterItem.Id == item.Id).Description;
-                }
-                catch
-                {
-                    item.Description = string.Empty;
-                }
-            }
-
-            return playerInventoryItems;
         }
     }
 }

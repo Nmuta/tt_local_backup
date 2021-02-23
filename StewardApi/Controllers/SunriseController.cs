@@ -533,6 +533,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            {
+                return this.NotFound($"No profile found for XUID: {xuid}.");
+            }
+
             var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(xuid);
             var getmasterInventory = this.RetrieveMasterInventoryList();
 
@@ -546,6 +551,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.NotFound($"No inventory found for XUID: {xuid}.");
             }
 
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory);
             return this.Ok(playerInventory);
         }
 
@@ -573,6 +579,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.NotFound($"No inventory found for Profile ID: {profileId}.");
             }
 
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory);
             return this.Ok(playerInventory);
         }
 
@@ -939,47 +946,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             return error;
-        }
-
-        /// <summary>
-        ///     Verifies the gift inventory against the title master inventory list.
-        /// </summary>
-        /// <param name="playerInventory">The gravity player inventory.</param>
-        /// <param name="masterInventory">The gravity master inventory.</param>
-        /// <returns>
-        ///     String of items that are invalid.
-        /// </returns>
-        private SunriseMasterInventory SetItemDescriptions(SunriseMasterInventory playerInventory, SunriseMasterInventory masterInventory)
-        {
-            playerInventory.Cars = this.SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars);
-            playerInventory.CarHorns = this.SetPlayerInventoryItemDescription(playerInventory.CarHorns, masterInventory.CarHorns);
-            playerInventory.VanityItems = this.SetPlayerInventoryItemDescription(playerInventory.VanityItems, masterInventory.VanityItems);
-            playerInventory.Emotes = this.SetPlayerInventoryItemDescription(playerInventory.Emotes, masterInventory.Emotes);
-            playerInventory.QuickChatLines = this.SetPlayerInventoryItemDescription(playerInventory.QuickChatLines, masterInventory.QuickChatLines);
-
-            return playerInventory;
-        }
-
-        /// <summary>
-        ///     Sets player inventory item descriptions based on matching master inventory items.
-        /// </summary>
-        /// <param name="playerInventoryItems">The player inventory items.</param>
-        /// <param name="masterInventoryItems">The master inventory items</param>
-        private IList<MasterInventoryItem> SetPlayerInventoryItemDescription(IList<MasterInventoryItem> playerInventoryItems, IList<MasterInventoryItem> masterInventoryItems)
-        {
-            foreach (var item in playerInventoryItems)
-            {
-                try
-                {
-                    item.Description = masterInventoryItems.First(masterItem => masterItem.Id == item.Id).Description;
-                }
-                catch
-                {
-                    item.Description = string.Empty;
-                }
-            }
-
-            return playerInventoryItems;
         }
     }
 }
