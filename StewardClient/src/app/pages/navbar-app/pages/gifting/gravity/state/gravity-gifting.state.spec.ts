@@ -2,8 +2,12 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
-import { GravityGiftingState } from '../gravity-gifting.state';
-import { SetGravitySelectedPlayerIdentities } from '../gravity-gifting.state.actions';
+import { GiftBasketModel } from '../../components/gift-basket/gift-basket.base.component';
+import { GravityGiftingState } from './gravity-gifting.state';
+import {
+  SetGravityGiftBasket,
+  SetGravitySelectedPlayerIdentities,
+} from './gravity-gifting.state.actions';
 
 describe('GravityGiftingState', () => {
   let service: GravityGiftingState;
@@ -44,6 +48,39 @@ describe('GravityGiftingState', () => {
         .subscribe(data => {
           expect(data.length).toEqual(1);
           expect(data[0]).toEqual(selectedPlayerIdentities);
+        });
+    });
+  });
+
+  describe('[SetGravityGiftBasket] Action', () => {
+    const testItemId = BigInt(12345);
+    const giftBasket: GiftBasketModel[] = [
+      {
+        id: testItemId,
+        description: 'test item',
+        quantity: 20,
+        itemType: 'test item type',
+        edit: false,
+        error: undefined,
+      },
+    ];
+    let action;
+    beforeEach(() => {
+      action = new SetGravityGiftBasket(giftBasket);
+      store.reset({
+        gravityGifting: {
+          giftBasket: [],
+        },
+      });
+    });
+    it('should patch gift basket', () => {
+      store.dispatch(action);
+
+      store
+        .selectOnce(state => state.gravityGifting.giftBasket)
+        .subscribe(data => {
+          expect(data.length).toEqual(1);
+          expect(data[0].id).toEqual(testItemId);
         });
     });
   });

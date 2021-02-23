@@ -9,6 +9,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { isEqual } from 'lodash';
 import { MatChipListChange } from '@angular/material/chips';
 import { IdentityResultIntersection, IdentityResultUnion } from '@models/identity-query.model';
+import { sortBy } from 'lodash';
 
 /** The shared top-level navbar. */
 @Component({
@@ -145,15 +146,13 @@ export abstract class PlayerSelectionBaseComponent<T extends IdentityResultUnion
       response => {
         this.isLoading = false;
         // Sort bad lookups to top of list
-        this.playerIdentities = response
-          .sort((a, b) => (a['error'] === b['error'] ? 0 : a['error'] ? -1 : 1))
-          .map(data => {
-            // If bad lookup, use query to populate the lookup string to show on ui
-            if (!!data.error) {
-              data[this.playerIdType] = data.query[this.playerIdType];
-            }
-            return data;
-          });
+        this.playerIdentities = sortBy(response, result => !result.error).map(data => {
+          // If bad lookup, use query to populate the lookup string to show on ui
+          if (!!data.error) {
+            data[this.playerIdType] = data.query[this.playerIdType];
+          }
+          return data;
+        });
         this.emitPlayerIdentities();
       },
       error => {
