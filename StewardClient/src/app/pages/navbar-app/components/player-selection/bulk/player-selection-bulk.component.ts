@@ -7,20 +7,20 @@ import { first } from 'lodash';
 import {
   AugmentedCompositeIdentity,
   PlayerSelectionBaseComponent,
-} from './player-selection-base.component';
+} from '../player-selection-base.component';
 
-/** An inline user-picker with a single output. */
+/** An inline user-picker with a bulk output. */
 @Component({
-  selector: 'player-selection-single',
-  templateUrl: './player-selection-single.component.html',
-  styleUrls: ['./player-selection-single.component.scss'],
+  selector: 'player-selection-bulk',
+  templateUrl: './player-selection-bulk.component.html',
+  styleUrls: ['./player-selection-bulk.component.scss'],
 })
-export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent {
+export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
   @Output() public found = new EventEmitter<AugmentedCompositeIdentity>();
 
   /** True when the input should be disabled */
   public get disable(): boolean {
-    return this.knownIdentities.size > 0;
+    return this.knownIdentities.size >= 100;
   }
 
   constructor(

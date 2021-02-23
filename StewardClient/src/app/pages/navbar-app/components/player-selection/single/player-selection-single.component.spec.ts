@@ -13,7 +13,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { first } from 'lodash';
 import { of, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { AugmentedCompositeIdentity } from './player-selection-base.component';
+import { AugmentedCompositeIdentity } from '../player-selection-base.component';
 
 import { PlayerSelectionSingleComponent } from './player-selection-single.component';
 
