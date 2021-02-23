@@ -744,9 +744,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as SunrisePlayerInventory;
+                var details = result.Value as SunriseMasterInventory;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<SunrisePlayerInventory>();
+                details.Should().BeOfType<SunriseMasterInventory>();
             }
         }
 

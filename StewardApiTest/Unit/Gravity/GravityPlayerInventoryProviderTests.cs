@@ -271,7 +271,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 this.GravityUserService.LiveOpsGetUserDetailsByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByT10IdOutput>());
                 this.GravityUserInventoryService.LiveOpsGetUserInventoryByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<UserInventoryService.LiveOpsGetUserInventoryByT10IdOutput>());
                 this.GravityUserInventoryService.LiveOpsGetInventoryByProfileIdAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<UserInventoryService.LiveOpsGetInventoryByProfileIdOutput>());
-                this.Mapper.Map<GravityPlayerInventory>(Arg.Any<LiveOpsUserInventory>()).Returns(Fixture.Create<GravityPlayerInventory>());
+                this.Mapper.Map<GravityPlayerInventoryBeta>(Arg.Any<LiveOpsUserInventory>()).Returns(Fixture.Create<GravityPlayerInventoryBeta>());
             }
 
             public IGravityUserService GravityUserService { get; set; } = Substitute.For<IGravityUserService>();

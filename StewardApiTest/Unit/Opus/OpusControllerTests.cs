@@ -166,9 +166,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as OpusPlayerInventory;
+                var details = result.Value as OpusMasterInventory;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<OpusPlayerInventory>();
+                details.Should().BeOfType<OpusMasterInventory>();
             }
         }
 
@@ -200,8 +200,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
                 this.OpusPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<OpusPlayerDetails>());
                 this.OpusPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<OpusPlayerDetails>());
                 this.OpusPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
-                this.OpusPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<OpusPlayerInventory>());
-                this.OpusPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<OpusPlayerInventory>());
+                this.OpusPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<OpusMasterInventory>());
+                this.OpusPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<OpusMasterInventory>());
                 this.OpusPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<OpusInventoryProfile>>());
             }
 

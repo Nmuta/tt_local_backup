@@ -268,9 +268,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as GravityPlayerInventory;
+                var details = result.Value as GravityPlayerInventoryBeta;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<GravityPlayerInventory>();
+                details.Should().BeOfType<GravityPlayerInventoryBeta>();
             }
         }
 
