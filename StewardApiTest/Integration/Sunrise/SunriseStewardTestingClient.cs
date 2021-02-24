@@ -174,13 +174,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<SunriseLspGroup>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<SunrisePlayerInventory>> UpdatePlayerInventoriesWithHeaderResponseAsync(SunrisePlayerInventory playerInventory, IList<string> headersToValidate)
+        public async Task<ResponseWithHeaders<SunrisePlayerInventory>> UpdatePlayerInventoriesWithHeaderResponseAsync(SunriseGroupGift groupGift, IList<string> headersToValidate)
         {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            groupGift.ShouldNotBeNull(nameof(groupGift));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid/inventory?useBackgroundProcessing=true");
+            var path = new Uri(this.baseUri, $"{TitlePath}gifting/players/useBackgroundProcessing");
 
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<SunrisePlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, playerInventory).ConfigureAwait(false);
+            return await ServiceClient.SendRequestWithHeaderResponseAsync<SunrisePlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, groupGift).ConfigureAwait(false);
         }
 
         public async Task<SunrisePlayerInventory> UpdatePlayerInventoriesAsync(SunriseGroupGift groupGift)

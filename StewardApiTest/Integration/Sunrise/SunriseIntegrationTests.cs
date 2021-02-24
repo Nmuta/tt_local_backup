@@ -1276,9 +1276,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [Ignore]
         public async Task UpdatePlayerInventories_UseBackgroundProcessing()
         {
-            var playerInventory = this.CreatePlayerInventory();
+            var groupGift = this.CreateGroupGift();
 
-            var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, playerInventory, BackgroundJobStatus.Completed).ConfigureAwait(false);
+            var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.WheelSpins);
@@ -1450,11 +1450,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
         }
 
-        private async Task<SunrisePlayerInventory> UpdatePlayerInventoriesWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, SunrisePlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
+        private async Task<SunrisePlayerInventory> UpdatePlayerInventoriesWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, SunriseGroupGift groupGift, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
-            var response = await stewardClient.UpdatePlayerInventoriesWithHeaderResponseAsync(playerInventory, headersToValidate).ConfigureAwait(false);
+            var response = await stewardClient.UpdatePlayerInventoriesWithHeaderResponseAsync(groupGift, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
