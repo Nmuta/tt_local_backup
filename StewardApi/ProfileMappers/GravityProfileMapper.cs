@@ -112,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<Currency, MasterInventoryItem>()
                  .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => source.Name));
             this.CreateMap<GravityCar, MasterInventoryItem>()
-                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => $"{source.CarClass} {source.CarName}"))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => $"{source.CarClass} {source.CarName} ({source.StarRating}-Star)"))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.CarId));
             this.CreateMap<EnergyRefill, MasterInventoryItem>()
                 .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => $"{(source.IsFull ? "Full" : source.PartialValue + " Point")} Energy Refill"))
