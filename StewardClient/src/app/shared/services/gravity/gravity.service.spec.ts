@@ -3,6 +3,8 @@ import { ApiService, createMockApiService } from '@shared/services/api';
 import { of } from 'rxjs';
 import { GravityService } from './gravity.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { HttpParams } from '@angular/common/http';
+import { GravityGift } from '@models/gravity';
 
 describe('service: GravityService', () => {
   let injector: TestBed;
@@ -118,7 +120,7 @@ describe('service: GravityService', () => {
 
     it('should call API service getRequest with the expected params', done => {
       service
-        .getPlayerInventoryByProfileIdWithT10Id(expectedt10Id, expectedProfileId)
+        .getPlayerInventoryByT10IdAndProfileId(expectedt10Id, expectedProfileId)
         .subscribe(() => {
           expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
             `${service.basePath}/player/t10Id(${expectedt10Id})/profileId(${expectedProfileId})/inventory`,
@@ -128,7 +130,7 @@ describe('service: GravityService', () => {
     });
   });
 
-  describe('Method: getGameSettings', () => {
+  describe('Method: getMasterInventory', () => {
     let expectedGameSettingsId;
 
     beforeEach(() => {
@@ -137,9 +139,9 @@ describe('service: GravityService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getGameSettings(expectedGameSettingsId).subscribe(() => {
+      service.getMasterInventory(expectedGameSettingsId).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
-          `${service.basePath}/data/gameSettingsId(${expectedGameSettingsId})`,
+          `${service.basePath}/masterInventory/gameSettingsId(${expectedGameSettingsId})`,
         );
         done();
       });
@@ -158,6 +160,37 @@ describe('service: GravityService', () => {
       service.getGiftHistoryByT10Id(expectedGiftT10Id).subscribe(() => {
         expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
           `${service.basePath}/player/t10Id(${expectedGiftT10Id})/giftHistory`,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: postGiftPlayersUsingBackgroundTask', () => {
+    const t10Id = 'fake-to10-id';
+    const param = new HttpParams().set('useBackgroundProcessing', 'true');
+    const gift: GravityGift = {
+      giftReason: 'unit testing gift',
+      inventory: {
+        creditRewards: [],
+        cars: [],
+        masteryKits: [],
+        upgradeKits: [],
+        repairKits: [],
+        energyRefills: [],
+      },
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service postRequest with the expected params', done => {
+      service.postGiftPlayerUsingBackgroundTask(t10Id, gift).subscribe(() => {
+        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/t10Id(${t10Id})`,
+          gift,
+          param,
         );
         done();
       });

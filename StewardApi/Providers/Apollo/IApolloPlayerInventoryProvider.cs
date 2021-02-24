@@ -15,9 +15,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="ApolloPlayerInventory"/>.
+        ///     The <see cref="ApolloMasterInventory"/>.
         /// </returns>
-        Task<ApolloPlayerInventory> GetPlayerInventoryAsync(ulong xuid);
+        Task<ApolloMasterInventory> GetPlayerInventoryAsync(ulong xuid);
+
+        /// <summary>
+        ///     Get player inventory.
+        /// </summary>
+        /// <param name="profileId">The Profile ID.</param>
+        /// <returns>
+        ///     The <see cref="ApolloMasterInventory"/>.
+        /// </returns>
+        Task<ApolloMasterInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
         ///     Get player inventory.
@@ -27,15 +36,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         ///     A list of <see cref="ApolloInventoryProfile"/>.
         /// </returns>
         Task<IList<ApolloInventoryProfile>> GetInventoryProfilesAsync(ulong xuid);
-
-        /// <summary>
-        ///     Get player inventory.
-        /// </summary>
-        /// <param name="profileId">The Profile ID.</param>
-        /// <returns>
-        ///     The <see cref="ApolloPlayerInventory"/>.
-        /// </returns>
-        Task<ApolloPlayerInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
         ///     Update player inventory.

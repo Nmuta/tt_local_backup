@@ -5,8 +5,7 @@
     [routerLink]="sunriseRouterLink"
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
-    [color]="identity?.extra.hasSunrise ? 'primary' : null"
-    routerLinkActive="mat-stroked-button"
+    routerLinkActive="navbar-button-active"
     >Sunrise</a
   >
   <a
@@ -15,8 +14,7 @@
     [routerLink]="opusRouterLink"
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
-    [color]="identity?.extra.hasOpus ? 'primary' : null"
-    routerLinkActive="mat-stroked-button"
+    routerLinkActive="navbar-button-active"
     >Opus</a
   >
   <a
@@ -25,8 +23,7 @@
     [routerLink]="apolloRouterLink"
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
-    [color]="identity?.extra.hasApollo ? 'primary' : null"
-    routerLinkActive="mat-stroked-button"
+    routerLinkActive="navbar-button-active"
     >Apollo</a
   >
   <a
@@ -35,8 +32,7 @@
     [routerLink]="gravityRouterLink"
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
-    [color]="identity?.extra.hasGravity ? 'primary' : null"
-    routerLinkActive="mat-stroked-button"
+    routerLinkActive="navbar-button-active"
     >Gravity</a
   >
   <span class="icon-spacer"></span>

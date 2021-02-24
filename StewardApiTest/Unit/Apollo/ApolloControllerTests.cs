@@ -262,7 +262,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
+        public void GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -305,7 +305,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetPlayerDetails_WithNullEmptyWhiteSpaceGamertag_Throws()
+        public void GetPlayerDetails_WithNullEmptyWhiteSpaceGamertag_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -326,7 +326,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task BanPlayers_WithNullBanParameters_Throws()
+        public void BanPlayers_WithNullBanParameters_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -357,7 +357,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task BanPlayers_WithNullBanParameters_UseBackgroundProcessing_Throws()
+        public void BanPlayers_WithNullBanParameters_UseBackgroundProcessing_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -420,7 +420,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetBanHistory_WithNullEmptyWhitespaceGamertag_Throws()
+        public void GetBanHistory_WithNullEmptyWhitespaceGamertag_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -463,7 +463,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetConsoles_WithNegativeMaxResults_Throws()
+        public void GetConsoles_WithNegativeMaxResults_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -520,7 +520,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetSharedConsoleUsers_WithNegativeStartIndex_Throws()
+        public void GetSharedConsoleUsers_WithNegativeStartIndex_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -537,7 +537,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetSharedConsoleUsers_WithNegativeMaxResults_Throws()
+        public void GetSharedConsoleUsers_WithNegativeMaxResults_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -595,7 +595,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task SetUserFlags_WithNullUserFlags_Throws()
+        public void SetUserFlags_WithNullUserFlags_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -630,9 +630,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as ApolloPlayerInventory;
+                var details = result.Value as ApolloMasterInventory;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<ApolloPlayerInventory>();
+                details.Should().BeOfType<ApolloMasterInventory>();
             }
         }
 
@@ -679,7 +679,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetGroups_WithNegativeStartIndex_Throws()
+        public void GetGroups_WithNegativeStartIndex_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -695,7 +695,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetGroups_WithNegativeMaxResults_Throws()
+        public void GetGroups_WithNegativeMaxResults_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -739,7 +739,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventories_WithNullGroupGift_Throws()
+        public void UpdatePlayerInventories_WithNullGroupGift_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -780,13 +780,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             {
                 // To reset the context and prevent header key collision, rebuild the Dependencies.
                 controller = new Dependencies().Build();
-                action().Result.Should().BeAssignableTo<OkResult>();
+                action().Result.Should().BeAssignableTo<AcceptedResult>();
             }
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventories_WithNullGroupGift_UseBackgroundProcessing_Throws()
+        public void UpdatePlayerInventories_WithNullGroupGift_UseBackgroundProcessing_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -829,7 +829,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdateGroupInventories_WithNullGift_Throws()
+        public void UpdateGroupInventories_WithNullGift_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -937,13 +937,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloPlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloUserFlags>());
                 this.ApolloPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
                 this.ApolloPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>()).Returns(true);
-                this.ApolloPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloPlayerInventory>());
-                this.ApolloPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<ApolloPlayerInventory>());
+                this.ApolloPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloMasterInventory>());
+                this.ApolloPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<ApolloMasterInventory>());
                 this.ApolloPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<ApolloInventoryProfile>>());
                 this.ApolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<ApolloGift>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.ApolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<ApolloGroupGift>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.ApolloPlayerDetailsProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ApolloLspGroup>>());
-                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftHistoryAntecedent>()).Returns(Fixture.Create<IList<ApolloGiftHistory>>());
+                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<ApolloGiftHistory>>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
             }
 

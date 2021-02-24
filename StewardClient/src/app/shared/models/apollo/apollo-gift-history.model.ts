@@ -1,11 +1,12 @@
-import { ApolloPlayerInventory } from './apollo-player-inventory.model';
+import { GiftIdentityAntecedent } from '@shared/constants';
+import { ApolloGift } from './apollo-gift.model';
 
 /** Interface for Apollo gift history. */
 export interface ApolloGiftHistory {
-  idType: string;
+  idType: GiftIdentityAntecedent;
   id: BigInt;
-  title: string;
+  title: 'apollo';
   giftSendDateUtc: Date;
-  giftInventory: ApolloPlayerInventory;
+  giftInventory: ApolloGift;
   requestingAgent: string;
 }

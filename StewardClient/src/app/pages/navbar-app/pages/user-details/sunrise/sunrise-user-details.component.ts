@@ -9,6 +9,8 @@ import { UserDetailsComponent } from '../user-details.component';
   styleUrls: ['./sunrise-user-details.component.scss'],
 })
 export class SunriseUserDetailsComponent {
+  public profileId: bigint;
+
   /** The lookup type. */
   public get lookupType(): string {
     return this.parent.lookupType ?? '?';
@@ -27,4 +29,10 @@ export class SunriseUserDetailsComponent {
   constructor(
     @Inject(forwardRef(() => UserDetailsComponent)) private parent: UserDetailsComponent,
   ) {}
+
+  /** Called when a new profile ID is picked. */
+  public onProfileIdChange(_newId: bigint): void {
+    // debugger;
+    // TODO: Handle routing to this with the URL https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/652013
+  }
 }

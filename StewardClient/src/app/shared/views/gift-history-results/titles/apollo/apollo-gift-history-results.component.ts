@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ApolloGiftHistory } from '@models/apollo/apollo-gift-history.model';
+import { ApolloGiftHistory } from '@models/apollo';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { ApolloService } from '@services/apollo/apollo.service';
 import { Observable } from 'rxjs';

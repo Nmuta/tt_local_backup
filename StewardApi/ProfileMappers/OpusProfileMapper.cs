@@ -24,6 +24,19 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<AdminForzaUserInventorySummary, OpusPlayerInventory>()
                 .ForMember(des => des.Credits, opt => opt.MapFrom(src => src.creditUpdateEntries.OrderByDescending(e => e.eventTime).FirstOrDefault().currentCredits))
                 .ReverseMap();
+
+            this.CreateMap<AdminForzaGarageCar, MasterInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.carId))
+                .ForMember(des => des.Description, opt => opt.MapFrom(src => src.displayName))
+                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => 1))
+                .ReverseMap();
+            this.CreateMap<AdminForzaUserInventorySummary, OpusMasterInventory>()
+                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>()
+                {
+                    new MasterInventoryItem { Id = -1, Description = "Credits", Quantity = src.creditUpdateEntries.OrderByDescending(e => e.eventTime).FirstOrDefault().currentCredits }
+                }))
+                .ReverseMap();
+
             this.CreateMap<UserMaster, OpusPlayerDetails>()
                 .ForMember(des => des.FirstLoginUtc, opt => opt.MapFrom(src => src.FirstLogInTime))
                 .ForMember(des => des.LastLoginUtc, opt => opt.MapFrom(src => src.LastLogInTime))

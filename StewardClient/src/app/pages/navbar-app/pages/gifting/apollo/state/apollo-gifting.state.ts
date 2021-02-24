@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { clone, sortBy } from 'lodash';
 import { Observable, of } from 'rxjs';
+import { GiftBasketModel } from '../../components/gift-basket/gift-basket.base.component';
 import {
   SetApolloGiftingSelectedPlayerIdentities,
   SetApolloGiftingMatTabIndex,
+  SetApolloGiftBasket,
 } from './apollo-gifting.state.actions';
 
 /** Defines the apollo gifting state model. */
 export class ApolloGiftingStateModel {
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   public selectedMatIndex: number;
+  public giftBasket: GiftBasketModel[];
 }
 
 /** Defines the apollo gifting page state. */
@@ -22,6 +26,7 @@ export class ApolloGiftingStateModel {
   defaults: {
     selectedPlayerIdentities: [],
     selectedMatIndex: 0,
+    giftBasket: [],
   },
 })
 export class ApolloGiftingState {
@@ -31,7 +36,7 @@ export class ApolloGiftingState {
     ctx: StateContext<ApolloGiftingStateModel>,
     action: SetApolloGiftingSelectedPlayerIdentities,
   ): Observable<ApolloGiftingStateModel> {
-    return of(ctx.patchState({ selectedPlayerIdentities: action.selectedPlayerIdentities }));
+    return of(ctx.patchState({ selectedPlayerIdentities: clone(action.selectedPlayerIdentities) }));
   }
 
   /** Sets the gifting page's selected mat tab index. */
@@ -40,7 +45,23 @@ export class ApolloGiftingState {
     ctx: StateContext<ApolloGiftingStateModel>,
     action: SetApolloGiftingMatTabIndex,
   ): Observable<ApolloGiftingStateModel> {
-    return of(ctx.patchState({ selectedMatIndex: action.selectedMatIndex }));
+    return of(ctx.patchState({ selectedMatIndex: clone(action.selectedMatIndex) }));
+  }
+
+  /** Sets the gift basket. */
+  @Action(SetApolloGiftBasket, { cancelUncompleted: true })
+  public setApolloGiftBasket(
+    ctx: StateContext<ApolloGiftingStateModel>,
+    action: SetApolloGiftBasket,
+  ): Observable<ApolloGiftingStateModel> {
+    let giftBasket = sortBy(action.giftBasket, item => {
+      item.itemType;
+    });
+    giftBasket = sortBy(giftBasket, item => {
+      !item.error;
+    });
+
+    return of(ctx.patchState({ giftBasket: clone(giftBasket) }));
   }
 
   /** Selector for state selected player identities. */
@@ -53,5 +74,11 @@ export class ApolloGiftingState {
   @Selector()
   public static selectedMatTabIndex(state: ApolloGiftingStateModel): number {
     return state.selectedMatIndex;
+  }
+
+  /** Selector for state gift basket. */
+  @Selector()
+  public static giftBasket(state: ApolloGiftingStateModel): GiftBasketModel[] {
+    return state.giftBasket;
   }
 }

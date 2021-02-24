@@ -1,11 +1,12 @@
-import { SunrisePlayerInventory } from './sunrise-player-inventory.model';
+import { GiftIdentityAntecedent } from '@shared/constants';
+import { SunriseGift } from './sunrise-gift.model';
 
 /** Interface for Sunrise gift history. */
 export interface SunriseGiftHistory {
-  idType: string;
+  idType: GiftIdentityAntecedent;
   id: BigInt;
-  title: string;
+  title: 'sunrise';
   giftSendDateUtc: Date;
-  giftInventory: SunrisePlayerInventory;
+  giftInventory: SunriseGift;
   requestingAgent: string;
 }

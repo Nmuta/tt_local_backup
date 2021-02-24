@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, ApolloGift gift);
+        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftIdentityAntecedent giftHistoryAntecedent, ApolloGift gift);
 
         /// <summary>
         ///     Gets gift histories.
@@ -33,6 +33,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <returns>
         ///     The list of <see cref="GiftHistory"/>.
         /// </returns>
-        Task<IList<ApolloGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftHistoryAntecedent giftHistoryAntecedent);
+        Task<IList<ApolloGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftIdentityAntecedent giftHistoryAntecedent);
     }
 }

@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { SunriseConsoleIsBannedFakeApi } from '@interceptors/fake-api/apis/title/sunrise/console/isBanned';
@@ -7,7 +8,8 @@ import { SunrisePlayerXuidProfileSummaryFakeApi } from '@interceptors/fake-api/a
 import { SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/sharedConsoleUsers';
 import { SunrisePlayerXuidUserFlagsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/userFlags';
 import { fakeXuid } from '@interceptors/fake-api/utility';
-import { SunriseUserFlags } from '@models/sunrise';
+import { LspGroup } from '@models/lsp-group';
+import { SunriseGift, SunriseGroupGift, SunriseUserFlags } from '@models/sunrise';
 import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
 
@@ -253,6 +255,95 @@ describe('SunriseService', () => {
         'fields should not be modified',
       );
       done();
+    });
+  });
+
+  describe('Method: postGiftPlayers', () => {
+    const gift: SunriseGroupGift = {
+      xuids: [BigInt(123456789)],
+      giftReason: 'unit testing gift',
+      inventory: {
+        creditRewards: [],
+        cars: [],
+        vanityItems: [],
+        carHorns: [],
+        quickChatLines: [],
+        emotes: [],
+      },
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service postRequest with the expected params', done => {
+      service.postGiftPlayers(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/players`,
+          gift,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: postGiftPlayersUsingBackgroundTask', () => {
+    const param = new HttpParams().set('useBackgroundProcessing', 'true');
+    const gift: SunriseGroupGift = {
+      xuids: [BigInt(123456789)],
+      giftReason: 'unit testing gift',
+      inventory: {
+        creditRewards: [],
+        cars: [],
+        vanityItems: [],
+        carHorns: [],
+        quickChatLines: [],
+        emotes: [],
+      },
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service postRequest with the expected params', done => {
+      service.postGiftPlayersUsingBackgroundTask(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/players`,
+          gift,
+          param,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: postGiftLspGroup', () => {
+    const lspGroup: LspGroup = { id: BigInt(123), name: 'test-lsp-group' };
+    const gift: SunriseGift = {
+      giftReason: 'unit testing gift',
+      inventory: {
+        creditRewards: [],
+        cars: [],
+        vanityItems: [],
+        carHorns: [],
+        quickChatLines: [],
+        emotes: [],
+      },
+    };
+
+    beforeEach(() => {
+      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service postRequest with the expected params', done => {
+      service.postGiftLspGroup(lspGroup, gift).subscribe(() => {
+        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+          `${service.basePath}/gifting/groupId(${lspGroup.id})`,
+          gift,
+        );
+        done();
+      });
     });
   });
 });

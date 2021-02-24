@@ -3,18 +3,18 @@ import { GameTitleCodeName } from '@models/enums';
 import { Action, State, StateContext, Selector } from '@ngxs/store';
 import { SunriseService } from '@services/sunrise';
 import { Observable, of, throwError } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { GravityService } from '@services/gravity';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
-import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
   GetApolloMasterInventoryList,
   GetGravityMasterInventoryList,
   GetSunriseMasterInventoryList,
 } from './master-inventory-list-memory.actions';
-import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
 import { ApolloMasterInventory } from '@models/apollo';
 import { ApolloService } from '@services/apollo';
+import { clone } from 'lodash';
+import { GravityMasterInventory, GravityMasterInventoryLists } from '@models/gravity';
+import { SunriseMasterInventory } from '@models/sunrise';
 
 /**
  * Defines the master inventory list memory model.
@@ -62,12 +62,16 @@ export class MasterInventoryListMemoryState {
     }
 
     // If not found in memory, make request
-    const request$ = this.gravityService.getGameSettings(gameSettingsId);
+    const request$ = this.gravityService.getMasterInventory(gameSettingsId);
     return request$.pipe(
+      take(1),
       tap(data => {
-        const gravityVal = state[GameTitleCodeName.Street];
+        let gravityVal = state[GameTitleCodeName.Street];
+        if (Object.keys(gravityVal).length >= 3) {
+          gravityVal = {};
+        }
         gravityVal[gameSettingsId] = data;
-        ctx.patchState({ [GameTitleCodeName.Street]: gravityVal });
+        ctx.patchState({ [GameTitleCodeName.Street]: clone(gravityVal) });
       }),
     );
   }
@@ -88,7 +92,7 @@ export class MasterInventoryListMemoryState {
     const request$ = this.sunriseService.getMasterInventory();
     return request$.pipe(
       tap(data => {
-        ctx.patchState({ [GameTitleCodeName.FH4]: data });
+        ctx.patchState({ [GameTitleCodeName.FH4]: clone(data) });
       }),
     );
   }
@@ -109,7 +113,7 @@ export class MasterInventoryListMemoryState {
     const request$ = this.apolloService.getMasterInventory();
     return request$.pipe(
       tap(data => {
-        ctx.patchState({ [GameTitleCodeName.FM7]: data });
+        ctx.patchState({ [GameTitleCodeName.FM7]: clone(data) });
       }),
     );
   }

@@ -8,6 +8,10 @@ pre {
   overflow: hidden;
 }
 
+button.reset-state {
+  margin-top: 20px;
+}
+
 @media (max-width: 500px) {
   mat-panel-description {
     display: none;

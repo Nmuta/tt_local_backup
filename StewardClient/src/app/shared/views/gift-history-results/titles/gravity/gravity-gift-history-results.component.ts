@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GravityGiftHistory } from '@models/gravity/gravity-gift-history.model';
+import { GravityGiftHistory } from '@models/gravity';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { GravityService } from '@services/gravity';
 import { Observable, throwError } from 'rxjs';

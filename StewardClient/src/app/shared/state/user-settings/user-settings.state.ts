@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Action, State, StateContext } from '@ngxs/store';
+import { clone } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { SetFakeApi } from './user-settings.actions';
 
@@ -26,6 +27,6 @@ export class UserSettingsState {
     ctx: StateContext<UserSettingsStateModel>,
     action: SetFakeApi,
   ): Observable<UserSettingsStateModel> {
-    return of(ctx.patchState({ enableFakeApi: action.enabled }));
+    return of(ctx.patchState({ enableFakeApi: clone(action.enabled) }));
   }
 }

@@ -112,17 +112,43 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="OpusPlayerInventory"/>.
+        ///     A <see cref="OpusMasterInventory"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(OpusPlayerInventory))]
+        [SwaggerResponse(200, type: typeof(OpusMasterInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
+            if (!await this.opusPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            {
+                return this.NotFound($"No profile found for XUID: {xuid}.");
+            }
+
             var inventory = await this.opusPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
 
-            if (inventory == null || !await this.opusPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            if (inventory == null)
             {
                 return this.NotFound($"No inventory found for XUID: {xuid}");
+            }
+
+            return this.Ok(inventory);
+        }
+
+        /// <summary>
+        ///     Get the player inventory.
+        /// </summary>
+        /// <param name="profileId">The profile ID.</param>
+        /// <returns>
+        ///     A <see cref="OpusMasterInventory"/>.
+        /// </returns>
+        [HttpGet("player/profileId({profileId})/inventory")]
+        [SwaggerResponse(200, type: typeof(OpusMasterInventory))]
+        public async Task<IActionResult> GetPlayerInventory(int profileId)
+        {
+            var inventory = await this.opusPlayerInventoryProvider.GetPlayerInventoryAsync(profileId).ConfigureAwait(true);
+
+            if (inventory == null || (!inventory.Cars.Any() && (inventory.CreditRewards == null || inventory.CreditRewards[0].Quantity <= 0)))
+            {
+                return this.NotFound($"No inventory found for Profile ID: {profileId}");
             }
 
             return this.Ok(inventory);
@@ -140,27 +166,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerInventoryProfiles(ulong xuid)
         {
             var inventory = await this.opusPlayerInventoryProvider.GetInventoryProfilesAsync(xuid).ConfigureAwait(true);
-
-            return this.Ok(inventory);
-        }
-
-        /// <summary>
-        ///     Get the player inventory.
-        /// </summary>
-        /// <param name="profileId">The profile ID.</param>
-        /// <returns>
-        ///     The <see cref="OpusPlayerInventory"/>.
-        /// </returns>
-        [HttpGet("player/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(OpusPlayerInventory))]
-        public async Task<IActionResult> GetPlayerInventory(int profileId)
-        {
-            var inventory = await this.opusPlayerInventoryProvider.GetPlayerInventoryAsync(profileId).ConfigureAwait(true);
-
-            if (inventory == null || (!inventory.Cars.Any() && inventory.Credits <= 0))
-            {
-                return this.NotFound($"No inventory found for Profile ID: {profileId}");
-            }
 
             return this.Ok(inventory);
         }

@@ -5,26 +5,32 @@ import {
   IdentityQueryAlpha,
   IdentityResultAlpha,
 } from '@models/identity-query.model';
-import { LspGroups } from '@models/lsp-group';
+import { LspGroup, LspGroups } from '@models/lsp-group';
 import {
+  LiveOpsBanDescriptions,
   SunriseBanRequest,
   SunriseBanResult,
   SunriseBanSummary,
+  SunriseConsoleDetails,
+  SunriseCreditHistory,
+  SunriseGift,
+  SunriseGiftHistory,
+  SunriseGroupGift,
+  SunriseMasterInventory,
   SunrisePlayerDetails,
-  SunrisePlayerInventory,
+  SunrisePlayerInventoryProfile,
   SunrisePlayerNotifications,
+  SunriseProfileSummary,
+  SunriseSharedConsoleUsers,
   SunriseUserFlags,
 } from '@models/sunrise';
-import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.model';
-import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
-import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
-import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
-import { SunriseGiftHistory } from '@models/sunrise/sunrise-gift-history.model';
-import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+import { chain } from 'lodash';
+import { GiftResponse } from '@models/gift-response';
+import { HttpParams } from '@angular/common/http';
+import { BackgroundJob } from '@models/background-job';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -169,10 +175,63 @@ export class SunriseService {
     );
   }
 
-  /** Gets the player's inventory */
-  public getPlayerInventoryByXuid(xuid: bigint): Observable<SunrisePlayerInventory> {
-    return this.apiService.getRequest<SunrisePlayerInventory>(
+  /** Gets a player's profile list  by XUID. */
+  public getPlayerInventoryProfilesByXuid(
+    xuid: bigint,
+  ): Observable<SunrisePlayerInventoryProfile[]> {
+    return this.apiService
+      .getRequest<SunrisePlayerInventoryProfile[]>(
+        `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
+      )
+      .pipe(
+        map(v =>
+          chain(v)
+            .sortBy(v => v.profileId)
+            .reverse()
+            .value(),
+        ),
+      );
+  }
+
+  /** Gets the latest version of a player's inventory */
+  public getPlayerInventoryByXuid(xuid: bigint): Observable<SunriseMasterInventory> {
+    return this.apiService.getRequest<SunriseMasterInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
+  }
+
+  /** Gets a specific version of a player's inventory */
+  public getPlayerInventoryByProfileId(profileId: bigint): Observable<SunriseMasterInventory> {
+    return this.apiService.getRequest<SunriseMasterInventory>(
+      `${this.basePath}/player/profileId(${profileId})/inventory`,
+    );
+  }
+
+  /** Gift players inventory items. */
+  public postGiftPlayers(gift: SunriseGroupGift): Observable<GiftResponse<bigint>[]> {
+    return this.apiService.postRequest<GiftResponse<bigint>[]>(
+      `${this.basePath}/gifting/players`,
+      gift,
+    );
+  }
+
+  /** Gift players inventory items using a background task. */
+  public postGiftPlayersUsingBackgroundTask(
+    gift: SunriseGroupGift,
+  ): Observable<BackgroundJob<void>> {
+    const params = new HttpParams().set('useBackgroundProcessing', 'true');
+    return this.apiService.postRequest<BackgroundJob<void>>(
+      `${this.basePath}/gifting/players`,
+      gift,
+      params,
+    );
+  }
+
+  /** Gift lsp group inventory items. */
+  public postGiftLspGroup(lspGroup: LspGroup, gift: SunriseGift): Observable<GiftResponse<bigint>> {
+    return this.apiService.postRequest<GiftResponse<bigint>>(
+      `${this.basePath}/gifting/groupId(${lspGroup.id})`,
+      gift,
     );
   }
 }

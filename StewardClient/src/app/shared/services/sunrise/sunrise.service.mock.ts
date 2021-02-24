@@ -1,13 +1,17 @@
 import { Injectable, Provider } from '@angular/core';
+import { SunriseGiftingLspGroupFakeApi } from '@interceptors/fake-api/apis/title/sunrise/gifting/groupId';
+import { SunriseGiftingPlayersFakeApi } from '@interceptors/fake-api/apis/title/sunrise/gifting/players';
+import { SunriseMasterInventoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/masterInventory';
 import { SunrisePlayerXuidBanHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/banHistory';
 import { SunrisePlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/inventory';
+import { SunrisePlayerXuidInventoryProfilesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/inventoryProfiles';
 import { SunrisePlayersBanFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/ban';
 import { SunrisePlayersBanSummariesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/ban-summaries';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { IdentityQueryAlpha, IdentityQueryAlphaBatch } from '@models/identity-query.model';
 import { SunriseBanHistory } from '@models/sunrise';
 import _ from 'lodash';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { SunriseService } from './sunrise.service';
@@ -16,7 +20,7 @@ import { SunriseService } from './sunrise.service';
 @Injectable()
 export class MockSunriseService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
-  public waitUntil$ = of();
+  public waitUntil$: Observable<unknown> = of(true);
 
   public getIdentity = jasmine
     .createSpy('getIdentity')
@@ -68,7 +72,9 @@ export class MockSunriseService {
     );
   public getMasterInventory = jasmine
     .createSpy('getMasterInventory')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({}))));
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(SunriseMasterInventoryFakeApi.make()))),
+    );
 
   public getPlayerIdentity = jasmine
     .createSpy('getPlayerIdentity')
@@ -81,10 +87,32 @@ export class MockSunriseService {
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayersIdentitiesFakeApi.make(query)))),
     );
 
+  public getPlayerInventoryProfilesByXuid = jasmine
+    .createSpy('getPlayerInventoryProfilesByXuid')
+    .and.callFake(_xuid =>
+      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidInventoryProfilesFakeApi.make()))),
+    );
+
   public getPlayerInventoryByXuid = jasmine
     .createSpy('getPlayerInventoryByXuid')
     .and.callFake(xuid =>
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidInventoryFakeApi.make(xuid)))),
+    );
+
+  public postGiftPlayers = jasmine
+    .createSpy('postGiftPlayers')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(SunriseGiftingPlayersFakeApi.make()))),
+    );
+
+  public postGiftPlayersUsingBackgroundTask = jasmine
+    .createSpy('postGiftPlayersUsingBackgroundTask')
+    .and.returnValue(of('fake-job-id'));
+
+  public postGiftLspGroup = jasmine
+    .createSpy('postGiftLspGroup')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(SunriseGiftingLspGroupFakeApi.make()))),
     );
 
   constructor(private readonly generator: () => unknown) {}

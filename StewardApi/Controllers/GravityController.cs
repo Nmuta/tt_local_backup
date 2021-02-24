@@ -13,7 +13,6 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
-using Turn10.LiveOps.StewardApi.Contracts.Gravity.Settings;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
@@ -165,15 +164,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="GravityPlayerInventory"/>.
+        ///     The <see cref="GravityPlayerInventoryBeta"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
+        [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
-            var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
+            var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
+            var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            return this.Ok(inventory);
+            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            return this.Ok(playerInventory);
         }
 
         /// <summary>
@@ -181,17 +182,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="t10Id">The Turn 10 ID.</param>
         /// <returns>
-        ///     The <see cref="GravityPlayerInventory"/>.
+        ///     The <see cref="GravityPlayerInventoryBeta"/>.
         /// </returns>
         [HttpGet("player/t10Id({t10Id})/inventory")]
-        [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
+        [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
         public async Task<IActionResult> GetPlayerInventory(string t10Id)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
-            var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id).ConfigureAwait(true);
+            var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id).ConfigureAwait(true);
+            var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            return this.Ok(inventory);
+            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            return this.Ok(playerInventory);
         }
 
         /// <summary>
@@ -200,22 +203,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="xuid">The xuid.</param>
         /// <param name="profileId">The profile ID.</param>
         /// <returns>
-        ///     The <see cref="GravityPlayerInventory"/>.
+        ///     The <see cref="GravityPlayerInventoryBeta"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
+        [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid, string profileId)
         {
             profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
 
-            var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, profileId).ConfigureAwait(true);
+            var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, profileId).ConfigureAwait(true);
+            var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            if (inventory == null)
+            if (playerInventory == null)
             {
                 return this.NotFound($"No inventory found for XUID: {xuid}");
             }
 
-            return this.Ok(inventory);
+            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            return this.Ok(playerInventory);
         }
 
         /// <summary>
@@ -224,23 +229,25 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="t10Id">The Turn 10 ID.</param>
         /// <param name="profileId">The profile ID.</param>
         /// <returns>
-        ///     The <see cref="GravityPlayerInventory"/>.
+        ///     The <see cref="GravityPlayerInventoryBeta"/>.
         /// </returns>
         [HttpGet("player/t10Id({t10Id})/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
+        [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
         public async Task<IActionResult> GetPlayerInventory(string t10Id, string profileId)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
 
-            var inventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id, profileId).ConfigureAwait(true);
+            var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id, profileId).ConfigureAwait(true);
+            var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            if (inventory == null)
+            if (playerInventory == null)
             {
                 return this.NotFound($"No inventory found for Turn 10 ID: {t10Id}");
             }
 
-            return this.Ok(inventory);
+            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            return this.Ok(playerInventory);
         }
 
         /// <summary>
@@ -322,7 +329,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Ok();
+            return this.Accepted(new BackgroundJob()
+            {
+                JobId = jobId,
+                Status = BackgroundJobStatus.InProgress.ToString(),
+            });
         }
 
         /// <summary>
@@ -362,7 +373,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(t10Id, TitleConstants.GravityCodeName, GiftHistoryAntecedent.T10Id).ConfigureAwait(true);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(t10Id, TitleConstants.GravityCodeName, GiftIdentityAntecedent.T10Id).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }
@@ -412,7 +423,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="gameSettingsId">The game settings Id.</param>
         /// <param name="gift">The gravity gift.</param>
         /// <returns>
-        ///     String of items that are invalid
+        ///     String of items that are invalid.
         /// </returns>
         private async Task<string> VerifyGiftAgainstMasterInventory(Guid gameSettingsId, GravityMasterInventory gift)
         {
