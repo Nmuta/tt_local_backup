@@ -55,12 +55,12 @@ export class OpusService {
     );
   }
 
-    /** Gets a specific version of an apollo player's inventory */
-    public getPlayerInventoryByProfileId(profileId: bigint): Observable<OpusMasterInventory> {
-      return this.apiService.getRequest<OpusMasterInventory>(
-        `${this.basePath}/player/profileId(${profileId})/inventory`,
-      );
-    }
+  /** Gets a specific version of an apollo player's inventory */
+  public getPlayerInventoryByProfileId(profileId: bigint): Observable<OpusMasterInventory> {
+    return this.apiService.getRequest<OpusMasterInventory>(
+      `${this.basePath}/player/profileId(${profileId})/inventory`,
+    );
+  }
 
   /** Gets a player's profile list  by XUID. */
   public getPlayerInventoryProfilesByXuid(xuid: bigint): Observable<OpusPlayerInventoryProfile[]> {
