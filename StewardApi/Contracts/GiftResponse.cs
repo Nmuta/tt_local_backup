@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Runtime.Serialization;
-
-namespace Turn10.LiveOps.StewardApi.Contracts
+﻿namespace Turn10.LiveOps.StewardApi.Contracts
 {
     /// <summary>
     /// Represents a gift response.
@@ -18,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         /// <summary>
         ///     Gets or sets the gift identifier antecedent.
         /// </summary>
-        public GiftHistoryAntecedent IdentityAntecedent { get; set; }
+        public GiftIdentityAntecedent IdentityAntecedent { get; set; }
 
         /// <summary>
         ///     Gets or sets the gifting error.

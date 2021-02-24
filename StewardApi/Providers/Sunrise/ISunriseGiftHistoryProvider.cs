@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, SunriseGift gift);
+        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftIdentityAntecedent giftHistoryAntecedent, SunriseGift gift);
 
         /// <summary>
         ///     Gets gift histories.
@@ -33,6 +33,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <returns>
         ///     The list of <see cref="SunriseGiftHistory"/>.
         /// </returns>
-        Task<IList<SunriseGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftHistoryAntecedent giftHistoryAntecedent);
+        Task<IList<SunriseGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftIdentityAntecedent giftHistoryAntecedent);
     }
 }

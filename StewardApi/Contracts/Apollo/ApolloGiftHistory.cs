@@ -1,6 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
@@ -19,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         /// <param name="requestingAgent">The requesting agent.</param>
         /// <param name="giftSendDateUtc">The gift send date.</param>
         /// <param name="giftInventory">The gift inventory.</param>
-        public ApolloGiftHistory(GiftHistoryAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, ApolloGift giftInventory)
+        public ApolloGiftHistory(GiftIdentityAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, ApolloGift giftInventory)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -37,12 +35,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         /// <summary>
         ///     Gets or sets the ID type.
         /// </summary>
-        /// <remarks>
-        ///     We make use of the JsonConverter to return the IdType string names instead of their integer values.
-        ///     Xuid is a much more understandable ID type than 0.
-        /// </remarks>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public GiftHistoryAntecedent IdType { get; set; }
+        public GiftIdentityAntecedent IdType { get; set; }
 
         /// <summary>
         ///     Gets or sets the ID.

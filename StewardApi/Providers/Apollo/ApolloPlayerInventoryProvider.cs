@@ -112,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             var giftResponse = new GiftResponse<ulong>();
             giftResponse.PlayerOrLspGroup = xuid;
-            giftResponse.IdentityAntecedent = GiftHistoryAntecedent.Xuid;
+            giftResponse.IdentityAntecedent = GiftIdentityAntecedent.Xuid;
 
             try
             {
@@ -126,7 +126,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftHistoryAntecedent.Xuid, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftIdentityAntecedent.Xuid, gift).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -164,7 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             var giftResponse = new GiftResponse<int>();
             giftResponse.PlayerOrLspGroup = groupId;
-            giftResponse.IdentityAntecedent = GiftHistoryAntecedent.LspGroupId;
+            giftResponse.IdentityAntecedent = GiftIdentityAntecedent.LspGroupId;
 
             try
             {
@@ -178,7 +178,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftHistoryAntecedent.LspGroupId, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftIdentityAntecedent.LspGroupId, gift).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

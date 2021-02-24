@@ -101,7 +101,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var id = Fixture.Create<string>();
             var title = Fixture.Create<string>();
             var requestingAgent = Fixture.Create<string>();
-            var antecedent = Fixture.Create<GiftHistoryAntecedent>();
+            var antecedent = Fixture.Create<GiftIdentityAntecedent>();
             var gift = Fixture.Create<ApolloGift>();
 
             // Act.
@@ -120,7 +120,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var provider = new Dependencies().Build();
             var title = Fixture.Create<string>();
             var requestingAgent = Fixture.Create<string>();
-            var antecedent = Fixture.Create<GiftHistoryAntecedent>();
+            var antecedent = Fixture.Create<GiftIdentityAntecedent>();
             var gift = Fixture.Create<ApolloGift>();
 
             // Act.
@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var provider = new Dependencies().Build();
             var id = Fixture.Create<string>();
             var requestingAgent = Fixture.Create<string>();
-            var antecedent = Fixture.Create<GiftHistoryAntecedent>();
+            var antecedent = Fixture.Create<GiftIdentityAntecedent>();
             var gift = Fixture.Create<ApolloGift>();
 
             // Act.
@@ -172,7 +172,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var provider = new Dependencies().Build();
             var id = Fixture.Create<string>();
             var title = Fixture.Create<string>();
-            var antecedent = Fixture.Create<GiftHistoryAntecedent>();
+            var antecedent = Fixture.Create<GiftIdentityAntecedent>();
             var gift = Fixture.Create<ApolloGift>();
 
             // Act.
@@ -199,7 +199,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var id = Fixture.Create<string>();
             var title = Fixture.Create<string>();
             var requestingAgent = Fixture.Create<string>();
-            var antecedent = Fixture.Create<GiftHistoryAntecedent>();
+            var antecedent = Fixture.Create<GiftIdentityAntecedent>();
 
             // Act.
             Func<Task> action = async () => await provider.UpdateGiftHistoryAsync(id, title, requestingAgent, antecedent, null).ConfigureAwait(false);
@@ -216,7 +216,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var provider = new Dependencies().Build();
             var id = Fixture.Create<string>();
             var title = Fixture.Create<string>();
-            var antecedent = Fixture.Create<GiftHistoryAntecedent>();
+            var antecedent = Fixture.Create<GiftIdentityAntecedent>();
 
             // Act.
             Func<Task<IList<ApolloGiftHistory>>> act = async () =>
@@ -233,7 +233,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var title = Fixture.Create<string>();
-            var antecedent = Fixture.Create<GiftHistoryAntecedent>();
+            var antecedent = Fixture.Create<GiftIdentityAntecedent>();
 
             // Act.
             var actions = new List<Func<Task>>
@@ -257,7 +257,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var id = Fixture.Create<string>();
-            var antecedent = Fixture.Create<GiftHistoryAntecedent>();
+            var antecedent = Fixture.Create<GiftIdentityAntecedent>();
 
             // Act.
             var actions = new List<Func<Task>>

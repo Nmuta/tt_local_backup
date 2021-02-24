@@ -2,7 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GiftResponse } from '@models/gift-response';
 import { Unprocessed } from '@models/unprocessed';
-import { GiftHistoryAntecedent } from '@shared/constants';
+import { GiftIdentityAntecedent } from '@shared/constants';
 
 /** Fake API for gifting to player. */
 export class GravityGiftingPlayerFakeApi extends FakeApiBase {
@@ -27,7 +27,7 @@ export class GravityGiftingPlayerFakeApi extends FakeApiBase {
   public static make(): Partial<Unprocessed<GiftResponse<string>>> {
     return {
       playerOrLspGroup: 'Fake T10 ID',
-      identityAntecedent: GiftHistoryAntecedent.T10Id,
+      identityAntecedent: GiftIdentityAntecedent.T10Id,
       error: undefined,
     };
   }
