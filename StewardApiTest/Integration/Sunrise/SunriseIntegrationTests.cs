@@ -1104,7 +1104,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var result = await stewardClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Credits);
+            Assert.IsNull(result[0].Error);
         }
 
         [TestMethod]
@@ -1267,7 +1267,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
             }
         }
 
@@ -1281,7 +1281,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.WheelSpins);
+            Assert.IsNull(result[0].Error);
         }
 
         [TestMethod]
@@ -1450,7 +1450,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
         }
 
-        private async Task<SunrisePlayerInventory> UpdatePlayerInventoriesWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, SunriseGroupGift groupGift, BackgroundJobStatus expectedStatus)
+        private async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, SunriseGroupGift groupGift, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
@@ -1461,7 +1461,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
             bool jobCompleted;
             BackgroundJobStatus status;
-            SunrisePlayerInventory jobResult;
+            IList<GiftResponse<ulong>> jobResult;
 
             do
             {
@@ -1472,7 +1472,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
-                jobResult = backgroundJob.Result?.FromJson<SunrisePlayerInventory>();
+                jobResult = backgroundJob.Result?.FromJson<IList<GiftResponse<ulong>>>();
 
                 if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
                 {
