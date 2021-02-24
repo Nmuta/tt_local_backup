@@ -9,13 +9,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 /** Module for displaying the available apps, or a login button. */
 @NgModule({
   declarations: [AvailableAppsComponent],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    FontAwesomeModule,
-    RouterModule,
-    MatTooltipModule,
-  ],
+  imports: [CommonModule, MatButtonModule, FontAwesomeModule, RouterModule, MatTooltipModule],
   exports: [AvailableAppsComponent],
 })
-export class AvailableAppsModule { }
+export class AvailableAppsModule {}

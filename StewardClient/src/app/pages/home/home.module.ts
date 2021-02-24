@@ -26,7 +26,7 @@ import { AvailableAppsModule } from '@shared/views/available-apps/available-apps
     MatProgressSpinnerModule,
     MatTooltipModule,
     FontAwesomeModule,
-    AvailableAppsModule
+    AvailableAppsModule,
   ],
   declarations: [HomeComponent],
 })

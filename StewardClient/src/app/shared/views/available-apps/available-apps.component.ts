@@ -10,7 +10,7 @@ import { UserState } from '@shared/state/user/user.state';
 @Component({
   selector: 'available-apps',
   templateUrl: './available-apps.component.html',
-  styleUrls: ['./available-apps.component.scss']
+  styleUrls: ['./available-apps.component.scss'],
 })
 export class AvailableAppsComponent extends BaseComponent implements OnInit {
   public userProfile: UserModel;
