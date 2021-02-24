@@ -3,7 +3,6 @@ import { ApiService, createMockApiService } from '@shared/services/api';
 import { of } from 'rxjs';
 import { GravityService } from './gravity.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
 import { GravityGift } from '@models/gravity';
 
 describe('service: GravityService', () => {

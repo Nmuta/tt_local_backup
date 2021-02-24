@@ -29,7 +29,6 @@ import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { chain } from 'lodash';
 import { GiftResponse } from '@models/gift-response';
-import { HttpParams } from '@angular/common/http';
 import { BackgroundJob } from '@models/background-job';
 
 /** Handles calls to Sunrise API routes. */

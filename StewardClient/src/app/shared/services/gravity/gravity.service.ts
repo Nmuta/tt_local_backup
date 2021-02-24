@@ -1,4 +1,3 @@
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BackgroundJob } from '@models/background-job';
 import { GuidLikeString, T10IdString } from '@models/extended-types';
