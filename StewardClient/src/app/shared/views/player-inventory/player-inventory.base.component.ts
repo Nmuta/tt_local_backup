@@ -1,25 +1,19 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { ApolloPlayerInventory } from '@models/apollo';
-import { ApolloInventoryItem } from '@models/apollo/inventory-items';
-import { GravityPlayerInventory } from '@models/gravity';
-import { GravityInventoryItem } from '@models/gravity/inventory-items';
+import { ApolloMasterInventory } from '@models/apollo';
+import { GravityPlayerInventoryBeta } from '@models/gravity';
 import { IdentityResultUnion } from '@models/identity-query.model';
-import { OpusPlayerInventory } from '@models/opus';
-import { SunrisePlayerInventory } from '@models/sunrise';
-import { SunriseInventoryItem } from '@models/sunrise/inventory-items';
+import { MasterInventoryItem } from '@models/master-inventory-item';
+import { OpusMasterInventory } from '@models/opus';
+import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { combineLatest, NEVER, Observable, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 export type AcceptablePlayerInventoryTypeUnion =
-  | SunrisePlayerInventory
-  | OpusPlayerInventory
-  | ApolloPlayerInventory
-  | GravityPlayerInventory;
-export type AcceptablePlayerInventoryItemTypeUnion =
-  | SunriseInventoryItem
-  | ApolloInventoryItem
-  | GravityInventoryItem;
+  | GravityPlayerInventoryBeta
+  | SunriseMasterInventory
+  | ApolloMasterInventory
+  | OpusMasterInventory;
 
 /** A model for identifying a property of an object and mapping that to a title & description for a simple expando. */
 export interface PropertyToExpandoData<T> {
@@ -30,12 +24,10 @@ export interface PropertyToExpandoData<T> {
 
 /** Displays the sunrise user's player inventory. */
 @Component({
-  selector: 'sunrise-player-inventory',
   template: '',
 })
 export abstract class PlayerInventoryBaseComponent<
     PlayerInventoryType extends AcceptablePlayerInventoryTypeUnion,
-    InventoryItemType extends AcceptablePlayerInventoryItemTypeUnion,
     IdentityResultType extends IdentityResultUnion
   >
   extends BaseComponent
@@ -138,14 +130,19 @@ export abstract class PlayerInventoryBaseComponent<
     property: keyof PlayerInventoryType,
     title: string,
   ): PropertyToExpandoData<PlayerInventoryType> {
-    const count = ((this.inventory[property] as unknown) as InventoryItemType[]).reduce(
-      (accumulator, entry) => accumulator + entry.quantity,
-      BigInt(0),
-    );
+    let description = '';
+    if (property !== 'creditRewards') {
+      const count = ((this.inventory[property] as unknown) as MasterInventoryItem[]).reduce(
+        (accumulator, entry) => accumulator + BigInt(entry.quantity),
+        BigInt(0),
+      );
+      description = `${count} Total`;
+    }
+
     return {
       property: property,
       title: title,
-      description: `${count} Total`,
+      description: description,
     };
   }
 }

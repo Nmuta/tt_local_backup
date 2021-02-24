@@ -6,7 +6,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
     /// <summary>
     ///     Represents a Gravity player inventory.
     /// </summary>
-    public sealed class GravityMasterInventory
+    public class GravityMasterInventory
     {
         /// <summary>
         ///     Gets or sets the credit rewards.

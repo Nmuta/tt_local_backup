@@ -31,6 +31,25 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.LastUsedUtc, opt => opt.MapFrom(src => src.lastUsedTime))
                 .ReverseMap();
             this.CreateMap<SunrisePlayerInventory, AdminForzaUserInventorySummary>().ReverseMap();
+
+            this.CreateMap<AdminForzaUserInventoryItem, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.itemId))
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.quantity))
+                .ReverseMap();
+            this.CreateMap<AdminForzaCarUserInventoryItem, MasterInventoryItem>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.itemId))
+                .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.quantity))
+                .ReverseMap();
+            this.CreateMap<AdminForzaUserInventorySummary, SunriseMasterInventory>()
+                .ForMember(dest => dest.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>()
+                {
+                    new MasterInventoryItem() { Id = -1, Description = "Credits", Quantity = src.credits },
+                    new MasterInventoryItem() { Id = -1, Description = "WheelSpins", Quantity = src.wheelSpins },
+                    new MasterInventoryItem() { Id = -1, Description = "SuperWheelSpins", Quantity = src.superWheelSpins },
+                    new MasterInventoryItem() { Id = -1, Description = "SkillPoints", Quantity = src.skillPoints }
+                }))
+                .ReverseMap();
+
             this.CreateMap<UserData, SunrisePlayerDetails>()
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.qwXuid))
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.wzGamerTag))

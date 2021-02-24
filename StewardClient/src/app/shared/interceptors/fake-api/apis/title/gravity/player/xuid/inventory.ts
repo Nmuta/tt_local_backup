@@ -1,7 +1,10 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { GravityPlayerInventory } from '@models/gravity';
+import { fakeBigInt } from '@interceptors/fake-api/utility';
+import { GravityPlayerInventoryBeta } from '@models/gravity';
+import { MasterInventoryItem } from '@models/master-inventory-item';
 import { Unprocessed } from '@models/unprocessed';
+import faker from 'faker';
 
 /** Fake API for gravity player inventory. */
 export class GravityPlayerXuidInventoryFakeApi extends FakeApiBase {
@@ -18,14 +21,41 @@ export class GravityPlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<GravityPlayerInventory>> {
+  public handle(): Partial<Unprocessed<GravityPlayerInventoryBeta>> {
     return GravityPlayerXuidInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<GravityPlayerInventory>> {
+  public static make(): GravityPlayerInventoryBeta {
+    function makeFakeItems(count: number): MasterInventoryItem[] {
+      return Array(faker.random.number(count))
+        .fill(0)
+        .map(() => {
+          return {
+            id: fakeBigInt(),
+            quantity: faker.random.number(5),
+            description: faker.lorem.sentences(2),
+            itemType: undefined,
+          };
+        });
+    }
+
     return {
-      xuid: BigInt(2533275026603041),
+      gameSettingsId: faker.random.uuid(),
+      externalProfileId: faker.random.uuid(),
+      creditRewards: [
+        {
+          id: BigInt(0),
+          description: 'Soft Currency',
+          quantity: faker.random.number(100_000),
+          itemType: undefined,
+        },
+      ],
+      cars: makeFakeItems(200),
+      masteryKits: makeFakeItems(200),
+      upgradeKits: makeFakeItems(200),
+      repairKits: makeFakeItems(200),
+      energyRefills: makeFakeItems(200),
     };
   }
 }

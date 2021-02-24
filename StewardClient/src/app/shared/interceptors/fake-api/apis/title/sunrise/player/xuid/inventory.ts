@@ -1,8 +1,8 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt, faker, fakeXuid } from '@interceptors/fake-api/utility';
-import { SunrisePlayerInventory } from '@models/sunrise';
-import { SunriseCar, SunriseInventoryItem } from '@models/sunrise/inventory-items';
+import { MasterInventoryItem } from '@models/master-inventory-item';
+import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
+import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
 
 /** Fake API for sunrise player inventory. */
 export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
@@ -28,60 +28,63 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): SunrisePlayerInventory {
+  public handle(): SunriseMasterInventory {
     return SunrisePlayerXuidInventoryFakeApi.make(this.xuid);
   }
 
   /** Generates a sample object */
-  public static make(xuid: bigint): SunrisePlayerInventory {
-    function makeFakeItems(count: number): SunriseInventoryItem[] {
+  public static make(_xuid: bigint): SunriseMasterInventory {
+    function makeFakeItems(count: number): MasterInventoryItem[] {
       return Array(faker.random.number(count))
         .fill(0)
         .map(() => {
           return {
-            itemId: fakeBigInt(),
-            quantity: fakeBigInt({ min: 1, max: 20 }),
-            acquisitionUtc: faker.date.past(),
-            modifiedUtc: faker.date.recent(),
-            lastUsedUtc: faker.date.recent(),
+            id: fakeBigInt(),
+            quantity: faker.random.number(5),
             description: faker.lorem.sentences(2),
+            itemType: undefined,
           };
         });
     }
 
-    function makeFakeCars(count: number): SunriseCar[] {
-      return makeFakeItems(count).map(i => {
-        return {
-          ...i,
-          vin: faker.random.uuid(),
-          baseCost: fakeBigInt({ min: 4_000 }),
-          collectorScore: fakeBigInt({ min: 4_000, max: 200_000 }),
-          isOnlineOnly: faker.random.boolean(),
-          productionNumber: fakeBigInt({ min: 4_000, max: 200_000 }),
-          purchaseUtc: faker.date.past(),
-          versionedLiveryId: faker.random.uuid(),
-          versionedTuneId: faker.random.uuid(),
-        };
-      });
-    }
-
     return {
-      xuid: xuid ?? fakeXuid(),
-      credits: fakeBigInt({ min: 0 }),
-      wheelSpins: fakeBigInt({ min: 0 }),
-      superWheelSpins: fakeBigInt({ min: 0 }),
-      skillPoints: fakeBigInt({ min: 0 }),
-      forzathonPoints: fakeBigInt({ min: 0 }),
-      cars: makeFakeCars(200),
-      rebuilds: makeFakeItems(200),
+      creditRewards: [
+        {
+          id: BigInt(-1),
+          description: 'Credits',
+          quantity: faker.random.number(400_000_000),
+          itemType: undefined,
+        },
+        {
+          id: BigInt(-1),
+          description: 'WheelSpins',
+          quantity: faker.random.number(400_000_000),
+          itemType: undefined,
+        },
+        {
+          id: BigInt(-1),
+          description: 'SuperWheelSpins',
+          quantity: faker.random.number(400_000_000),
+          itemType: undefined,
+        },
+        {
+          id: BigInt(-1),
+          description: 'SkillPoints',
+          quantity: faker.random.number(400_000_000),
+          itemType: undefined,
+        },
+        {
+          id: BigInt(-1),
+          description: 'ForzathonPoints',
+          quantity: faker.random.number(400_000_000),
+          itemType: undefined,
+        },
+      ],
+      cars: makeFakeItems(200),
       vanityItems: makeFakeItems(200),
       carHorns: makeFakeItems(200),
       quickChatLines: makeFakeItems(200),
-      creditRewards: makeFakeItems(200),
       emotes: makeFakeItems(200),
-      barnFindRumors: makeFakeItems(200),
-      perks: makeFakeItems(200),
-      giftReason: faker.lorem.paragraph(),
     };
   }
 }

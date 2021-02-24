@@ -531,20 +531,60 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="SunrisePlayerInventory"/>.
+        ///     The <see cref="SunriseMasterInventory"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(SunrisePlayerInventory))]
+        [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
-            var inventory = await this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            {
+                return this.NotFound($"No profile found for XUID: {xuid}.");
+            }
 
-            if (inventory == null)
+            var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(xuid);
+            var getmasterInventory = this.RetrieveMasterInventoryList();
+
+            await Task.WhenAll(getPlayerInventory, getmasterInventory).ConfigureAwait(true);
+
+            var playerInventory = await getPlayerInventory.ConfigureAwait(true);
+            var masterInventory = await getmasterInventory.ConfigureAwait(true);
+
+            if (playerInventory == null)
             {
                 return this.NotFound($"No inventory found for XUID: {xuid}.");
             }
 
-            return this.Ok(inventory);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory);
+            return this.Ok(playerInventory);
+        }
+
+        /// <summary>
+        ///     Gets the player inventory.
+        /// </summary>
+        /// <param name="profileId">The profile ID.</param>
+        /// <returns>
+        ///     The <see cref="SunriseMasterInventory"/>.
+        /// </returns>
+        [HttpGet("player/profileId({profileId})/inventory")]
+        [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
+        public async Task<IActionResult> GetPlayerInventoryByProfileId(int profileId)
+        {
+            var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(profileId);
+            var getmasterInventory = this.RetrieveMasterInventoryList();
+
+            await Task.WhenAll(getPlayerInventory, getmasterInventory).ConfigureAwait(true);
+
+            var playerInventory = await getPlayerInventory.ConfigureAwait(true);
+            var masterInventory = await getmasterInventory.ConfigureAwait(true);
+
+            if (playerInventory == null)
+            {
+                return this.NotFound($"No inventory found for Profile ID: {profileId}.");
+            }
+
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory);
+            return this.Ok(playerInventory);
         }
 
         /// <summary>
@@ -552,7 +592,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The list of <see cref="SunriseInventoryProfile"/>.
+        ///     A <see cref="IList{SunriseInventoryProfile}"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/inventoryProfiles")]
         [SwaggerResponse(200, type: typeof(IList<SunriseInventoryProfile>))]
@@ -567,27 +607,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             return this.Ok(inventoryProfileSummary);
-        }
-
-        /// <summary>
-        ///     Gets the player inventory.
-        /// </summary>
-        /// <param name="profileId">The profile ID.</param>
-        /// <returns>
-        ///     The <see cref="SunrisePlayerInventory"/>.
-        /// </returns>
-        [HttpGet("player/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(SunrisePlayerInventory))]
-        public async Task<IActionResult> GetPlayerInventoryByProfileId(int profileId)
-        {
-            var inventory = await this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(profileId).ConfigureAwait(true);
-
-            if (inventory == null)
-            {
-                return this.NotFound($"No inventory found for Profile ID: {profileId}.");
-            }
-
-            return this.Ok(inventory);
         }
 
         /// <summary>
