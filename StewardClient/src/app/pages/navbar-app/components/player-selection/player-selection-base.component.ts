@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatButtonToggleGroup } from '@angular/material/button-toggle';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { MatChipInputEvent, MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import {
   IdentityQueryAlpha,
@@ -53,6 +53,9 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   /** The chosen type of lookup. */
   @Input() public lookupType: keyof IdentityQueryBetaIntersection = 'gamertag';
 
+  /** When set to true, allows chips to be selected. */
+  @Input() public allowSelection: boolean = false;
+
   /** The chosen type of lookup (two way bindings). */
   @Output() public lookupTypeChange = new EventEmitter<keyof IdentityQueryBetaIntersection>();
 
@@ -97,6 +100,9 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
 
   /** Called when a new set of results is found and populated into @see foundIdentities */
   public abstract onFound(): void;
+
+  /** Called when a new set of results is selected. */
+  public abstract onSelect(change: MatChipListChange): void;
 
   /** Lifecycle hook. */
   public ngAfterViewInit(): void {

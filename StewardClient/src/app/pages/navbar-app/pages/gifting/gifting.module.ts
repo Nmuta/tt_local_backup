@@ -19,6 +19,7 @@ import { LspGroupSelectionModule } from '@navbar-app/components/lsp-group-select
 import { MatTabsModule } from '@angular/material/tabs';
 import { GiftBasketModule } from './components/gift-basket/gift-basket.module';
 import { ItemSelectionModule } from './components/item-selection/item-selection.module';
+import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -44,6 +45,7 @@ import { ItemSelectionModule } from './components/item-selection/item-selection.
     MatTabsModule,
     GiftBasketModule,
     ItemSelectionModule,
+    PlayerSelectionModule,
   ],
 })
 export class GiftingsModule {}
