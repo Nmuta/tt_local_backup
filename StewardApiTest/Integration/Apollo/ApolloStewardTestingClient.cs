@@ -160,27 +160,27 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<IList<ApolloLspGroup>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<ApolloPlayerInventory>> UpdatePlayerInventoriesWithHeaderResponseAsync(ApolloPlayerInventory playerInventory, IList<string> headersToValidate)
+        public async Task<ResponseWithHeaders<BackgroundJob>> UpdatePlayerInventoriesWithHeaderResponseAsync(ApolloGroupGift groupGift, IList<string> headersToValidate)
         {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            groupGift.ShouldNotBeNull(nameof(groupGift));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid/inventory/useBackgroundProcessing");
+            var path = new Uri(this.baseUri, $"{TitlePath}gifting/players/useBackgroundProcessing");
 
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, playerInventory).ConfigureAwait(false);
+            return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJob>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, groupGift).ConfigureAwait(false);
         }
 
-        public async Task<ApolloPlayerInventory> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift)
+        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}gifting/players");
 
-            return await ServiceClient.SendRequestAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, groupGift).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<GiftResponse<ulong>>>(HttpMethod.Post, path, this.authKey, Version, groupGift).ConfigureAwait(false);
         }
 
-        public async Task<ApolloPlayerInventory> UpdateGroupInventoriesByLspGroupId(int groupId, ApolloGift gift)
+        public async Task<GiftResponse<int>> UpdateGroupInventoriesByLspGroupId(int groupId, ApolloGift gift)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}gifting/groupId({groupId})");
 
-            return await ServiceClient.SendRequestAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, gift).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<GiftResponse<int>>(HttpMethod.Post, path, this.authKey, Version, gift).ConfigureAwait(false);
         }
 
         public async Task<IList<ApolloGiftHistory>> GetGiftHistoriesAsync(ulong xuid)

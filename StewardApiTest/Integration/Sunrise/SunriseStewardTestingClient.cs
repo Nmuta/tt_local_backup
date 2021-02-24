@@ -190,13 +190,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<GiftResponse<ulong>>>(HttpMethod.Post, path, this.authKey, Version, groupGift).ConfigureAwait(false);
         }
 
-        public async Task<SunrisePlayerInventory> UpdateGroupInventoriesByGamertagAsync(SunriseGroupGift groupGift, Dictionary<string, string> headersToSend)
-        {
-            var path = new Uri(this.baseUri, $"{TitlePath}group/gamertags/inventory");
-
-            return await ServiceClient.SendRequestAsync<SunrisePlayerInventory>(HttpMethod.Post, path, this.authKey, Version, groupGift, headersToSend).ConfigureAwait(false);
-        }
-
         public async Task<GiftResponse<int>> GiftInventoryByLspGroupId(int groupId, SunriseGift gift)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}gifting/groupId({groupId})");

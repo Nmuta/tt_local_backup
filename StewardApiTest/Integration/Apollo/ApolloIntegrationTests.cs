@@ -993,12 +993,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task UpdatePlayerInventory_UseBackgroundProcessing()
         {
-            var playerInventory = this.CreatePlayerInventory();
+            var groupGift = this.CreateGroupGift();
 
-            var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, playerInventory, BackgroundJobStatus.Completed).ConfigureAwait(false);
+            var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Cars.Any());
+            Assert.IsNull(result[0].Error);
         }
 
         [TestMethod]
@@ -1011,7 +1011,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var result = await stewardClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Credits);
+            Assert.IsNull(result[0].Error);
         }
 
         [TestMethod]
@@ -1125,7 +1125,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var result = await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, gift).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Credits);
+            Assert.IsNull(result.Error);
         }
 
         [TestMethod]
@@ -1170,16 +1170,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         public async Task UpdateGroupInventoriesByLspGroupId_InvalidGroupId()
         {
             var gift = this.CreateGift();
+            var result = await stewardClient.UpdateGroupInventoriesByLspGroupId(TestConstants.InvalidProfileId, gift).ConfigureAwait(false);
 
-            try
-            {
-                await stewardClient.UpdateGroupInventoriesByLspGroupId(TestConstants.InvalidProfileId, gift).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
+            Assert.IsNotNull(result.Error);
         }
 
         [TestMethod]
@@ -1280,18 +1273,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return jobResults;
         }
 
-        private async Task<ApolloPlayerInventory> UpdatePlayerInventoriesWithHeaderResponseAsync(ApolloStewardTestingClient stewardClient, ApolloPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
+        private async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesWithHeaderResponseAsync(ApolloStewardTestingClient stewardClient, ApolloGroupGift groupGift, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
-            var response = await stewardClient.UpdatePlayerInventoriesWithHeaderResponseAsync(playerInventory, headersToValidate).ConfigureAwait(false);
+            var response = await stewardClient.UpdatePlayerInventoriesWithHeaderResponseAsync(groupGift, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
 
             bool jobCompleted;
             BackgroundJobStatus status;
-            ApolloPlayerInventory jobResult;
+            IList<GiftResponse<ulong>> jobResult;
 
             do
             {
@@ -1302,7 +1295,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
-                jobResult = backgroundJob.Result?.FromJson<ApolloPlayerInventory>();
+                jobResult = backgroundJob.Result?.FromJson<IList<GiftResponse<ulong>>>();
 
                 if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
                 {
@@ -1358,7 +1351,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             {
                 new MasterInventoryItem()
                 {
-                    Id = 3,
+                    Id = 455548411,
                     Quantity = 1
                 }
             };
