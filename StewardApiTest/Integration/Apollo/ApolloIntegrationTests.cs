@@ -997,7 +997,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             var playerInventory = this.CreatePlayerInventory();
 
-            var result = await UpdatePlayerInventoryWithHeaderResponseAsync(stewardClient, playerInventory, BackgroundJobStatus.Completed).ConfigureAwait(false);
+            var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, playerInventory, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Cars.Any());
@@ -1006,11 +1006,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestMethod]
         [TestCategory("Integration")]
         [Ignore]
-        public async Task UpdateGroupInventoriesByXuid()
+        public async Task UpdatePlayerInventories()
         {
             var groupGift = this.CreateGroupGift();
 
-            var result = await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
+            var result = await stewardClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Credits);
@@ -1025,7 +1025,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
             try
             {
-                await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
+                await stewardClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1052,7 +1052,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
             try
             {
-                await stewardClient.UpdateGroupInventoriesByXuidAsync(playerGift).ConfigureAwait(false);
+                await stewardClient.UpdatePlayerInventoriesAsync(playerGift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1071,7 +1071,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
             try
             {
-                await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
+                await stewardClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1090,7 +1090,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
             try
             {
-                await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
+                await stewardClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1108,7 +1108,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
             try
             {
-                await unauthorizedClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
+                await unauthorizedClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1190,7 +1190,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         public async Task GetGiftHistory()
         {
             var groupGift = this.CreateGroupGift();
-            await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
+            await stewardClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
 
             var result = await stewardClient.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
             Assert.IsTrue(result.Any());
@@ -1202,7 +1202,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         public async Task GetGiftHistoryForGroupGift()
         {
             var groupGift = this.CreateGroupGift();
-            await stewardClient.UpdateGroupInventoriesByXuidAsync(groupGift).ConfigureAwait(false);
+            await stewardClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
 
             var result = await stewardClient.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
 
@@ -1282,11 +1282,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return jobResults;
         }
 
-        private async Task<ApolloPlayerInventory> UpdatePlayerInventoryWithHeaderResponseAsync(ApolloStewardTestingClient stewardClient, ApolloPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
+        private async Task<ApolloPlayerInventory> UpdatePlayerInventoriesWithHeaderResponseAsync(ApolloStewardTestingClient stewardClient, ApolloPlayerInventory playerInventory, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
-            var response = await stewardClient.UpdatePlayerInventoryWithHeaderResponseAsync(playerInventory, headersToValidate).ConfigureAwait(false);
+            var response = await stewardClient.UpdatePlayerInventoriesWithHeaderResponseAsync(playerInventory, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();

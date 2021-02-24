@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}players/ban?useBackgroundProcessing=true");
+            var path = new Uri(this.baseUri, $"{TitlePath}players/ban/useBackgroundProcessing");
 
             return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJob>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters).ConfigureAwait(false);
         }
@@ -160,16 +160,16 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<IList<ApolloLspGroup>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<ApolloPlayerInventory>> UpdatePlayerInventoryWithHeaderResponseAsync(ApolloPlayerInventory playerInventory, IList<string> headersToValidate)
+        public async Task<ResponseWithHeaders<ApolloPlayerInventory>> UpdatePlayerInventoriesWithHeaderResponseAsync(ApolloPlayerInventory playerInventory, IList<string> headersToValidate)
         {
             playerInventory.ShouldNotBeNull(nameof(playerInventory));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid/inventory?useBackgroundProcessing=true");
+            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid/inventory/useBackgroundProcessing");
 
             return await ServiceClient.SendRequestWithHeaderResponseAsync<ApolloPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, playerInventory).ConfigureAwait(false);
         }
 
-        public async Task<ApolloPlayerInventory> UpdateGroupInventoriesByXuidAsync(ApolloGroupGift groupGift)
+        public async Task<ApolloPlayerInventory> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}gifting/players");
 
