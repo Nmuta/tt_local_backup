@@ -6,7 +6,7 @@ import { UserBanningRoutingModule } from './user-banning.routing';
 import { ApolloBanningComponent } from './pages/apollo/apollo-banning.component';
 import { SunriseBanningComponent } from './pages/sunrise/sunrise-banning.component';
 import { MatButtonModule } from '@angular/material/button';
-import { PlayerSelectionModule } from '../../components/player-selection-old/player-selection.module';
+import { OldPlayerSelectionModule } from '../../components/player-selection-old/player-selection.module';
 import { BanOptionsComponent } from './components/ban-options/ban-options.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
@@ -46,7 +46,7 @@ import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
     FormsModule,
     ReactiveFormsModule,
     UserBanningRoutingModule,
-    PlayerSelectionModule,
+    OldPlayerSelectionModule,
     VerifyActionButtonModule,
     MatCheckboxModule,
     MatDatepickerModule,

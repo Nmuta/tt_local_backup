@@ -66,4 +66,4 @@ import { PlayerSelectionChipListComponent } from './player-selection-chip-list/p
     PlayerSelectionChipListComponent,
   ],
 })
-export class PlayerSelectionModule {}
+export class OldPlayerSelectionModule {}

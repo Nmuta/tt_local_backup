@@ -10,7 +10,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { GiftHistoryComponent } from './gift-history.component';
 import { GiftHistoryRouterModule } from './gift-history.routing';
-import { PlayerSelectionModule } from '../../components/player-selection-old/player-selection.module';
+import { OldPlayerSelectionModule } from '../../components/player-selection-old/player-selection.module';
 import { GravityGiftHistoryComponent } from './gravity/gravity-gift-history.component';
 import { GiftHistoryResultsModule } from '@shared/views/gift-history-results/gift-history-results.module';
 import { SunriseGiftHistoryComponent } from './sunrise/sunrise-gift-history.component';
@@ -39,7 +39,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatCardModule,
     FontAwesomeModule,
     FormsModule,
-    PlayerSelectionModule,
+    OldPlayerSelectionModule,
     LspGroupSelectionModule,
     MatTabsModule,
   ],
