@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, GravityGift gift);
+        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftIdentityAntecedent giftHistoryAntecedent, GravityGift gift);
 
         /// <summary>
         ///     Gets gift histories.
@@ -33,6 +33,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <returns>
         ///     The <see cref="GiftHistory"/>.
         /// </returns>
-        Task<IList<GravityGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftHistoryAntecedent giftHistoryAntecedent);
+        Task<IList<GravityGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftIdentityAntecedent giftHistoryAntecedent);
     }
 }

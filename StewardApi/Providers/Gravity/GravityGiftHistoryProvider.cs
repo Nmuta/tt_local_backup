@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftHistoryAntecedent giftHistoryAntecedent, GravityGift gift)
+        public async Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftIdentityAntecedent giftHistoryAntecedent, GravityGift gift)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<IList<GravityGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftHistoryAntecedent giftHistoryAntecedent)
+        public async Task<IList<GravityGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftIdentityAntecedent giftHistoryAntecedent)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -134,7 +134,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 // The below logic is in place to separate out ID and it's antecedent. Once V1 Zendesk stops uploading
                 // this will be removed and the playerId column in Kusto will be broken out into two columns.
                 var splitId = history.PlayerId.Split(':');
-                var antecedent = Enum.Parse<GiftHistoryAntecedent>(splitId[0]);
+                var antecedent = Enum.Parse<GiftIdentityAntecedent>(splitId[0]);
                 var id = splitId[1];
 
                 results.Add(new GravityGiftHistory(antecedent, id, history.Title, history.RequestingAgent, history.GiftSendDateUtc, convertedGift));

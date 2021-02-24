@@ -21,7 +21,7 @@ export type InventoryItemGroup = {
   items: MasterInventoryItem[];
 };
 export type GiftUnion = GravityGift | SunriseGift | ApolloGift;
-export type GiftBasketModel = MasterInventoryItem & { edit: boolean };
+export type GiftBasketModel = MasterInventoryItem & { edit: boolean; error: string };
 
 /** The base gift-basket component. */
 @Component({
@@ -36,10 +36,12 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   public masterInventory: MasterInventoryUnion;
   /** The gift basket of current items to be send. */
   public giftBasket = new MatTableDataSource<GiftBasketModel>();
+  /** Whether the gift basket has errors in it. */
+  public giftBasketHasErrors: boolean = false;
   /** Gifting response. */
   public giftResponse: GiftResponse<bigint | string>[];
   /** The gift basket display columns */
-  public displayedColumns: string[] = ['itemId', 'description', 'itemType', 'quantity', 'remove'];
+  public displayedColumns: string[] = ['itemId', 'description', 'quantity', 'itemType', 'remove'];
   /** Gift reasons */
   public giftReasons: string[] = [
     'Lost Save',
@@ -59,6 +61,8 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   public approveIcon = faCheck;
   public closeIcon = faTimes;
 
+  /** Game settings ID  */
+  public selectedGameSettingsId: string;
   /** If master inventory is based on game settings ids. */
   public hasGameSettings: boolean = false;
   /** True while waiting on a request. */
@@ -92,26 +96,29 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   /** Sends a gift to an LSP group. */
   public abstract sendGiftToLspGroup(gift: GiftUnion): Observable<GiftResponse<bigint>>;
 
+  /** Sets the state gift basket. */
+  public abstract setStateGiftBasket(giftBasket: GiftBasketModel[]): void;
+
   /** Adds a new item to the gift basket. */
   public addItemtoBasket(item: GiftBasketModel): void {
-    const temporaryGiftBasket = this.giftBasket.data;
+    const tmpGiftBasket = this.giftBasket.data;
 
-    const existingItemIndex = temporaryGiftBasket.findIndex(data => {
-      return data.id === item.id && data.itemType === item.itemType;
+    const existingItemIndex = tmpGiftBasket.findIndex(data => {
+      return (
+        data.id === item.id &&
+        data.itemType === item.itemType &&
+        data.description === item.description
+      );
     });
 
     if (existingItemIndex >= 0) {
-      this.giftBasket.data[existingItemIndex].quantity =
-        this.giftBasket.data[existingItemIndex].quantity + item.quantity;
-      return;
+      tmpGiftBasket[existingItemIndex].quantity =
+        tmpGiftBasket[existingItemIndex].quantity + item.quantity;
+    } else {
+      tmpGiftBasket.push(item);
     }
 
-    temporaryGiftBasket.push(item);
-    temporaryGiftBasket.sort((a: GiftBasketModel, b: GiftBasketModel) => {
-      return a.itemType.localeCompare(b.itemType) || a.description.localeCompare(b.description);
-    });
-
-    this.giftBasket.data = temporaryGiftBasket;
+    this.setStateGiftBasket(tmpGiftBasket);
   }
 
   /** Edit item quantity */
@@ -122,8 +129,10 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
     const newQuantity = parseInt(newQuantityStr);
 
     if (newQuantity > 0) {
-      this.giftBasket.data[index].quantity = newQuantity;
-      this.giftBasket.data[index].edit = false;
+      const tmpGiftBasket = this.giftBasket.data;
+      tmpGiftBasket[index].quantity = newQuantity;
+      tmpGiftBasket[index].edit = false;
+      this.setStateGiftBasket(tmpGiftBasket);
     }
   }
 
@@ -131,17 +140,16 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
   public removeItemFromGiftBasket(index: number): void {
     const tmpGiftBasket = this.giftBasket.data;
     tmpGiftBasket.splice(index, 1);
-    this.giftBasket.data = tmpGiftBasket;
+    this.setStateGiftBasket(tmpGiftBasket);
   }
 
   /** Returns whether the gift basket is okay to send to the API. */
   public isGiftBasketReady(): boolean {
-    // TODO: When we introduce item errors, add the errors check here
-    // Examples: quantity too high for specific item, game settings changed with existing items in basket that are no longer valid
     return (
       !this.isLoading &&
       this.sendGiftForm.valid &&
       this.giftBasket?.data?.length > 0 &&
+      !this.giftBasketHasErrors &&
       ((this.usingPlayerIdentities && this.playerIdentities?.length > 0) ||
         (!this.usingPlayerIdentities && !!this.lspGroup))
     );
@@ -195,7 +203,8 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
         tap(job => {
           switch (job.status) {
             case BackgroundJobStatus.Completed:
-              this.giftResponse = job.parsedResult;
+              const result = job.parsedResult;
+              this.giftResponse = Array.isArray(result) ? result : [result];
               break;
             case BackgroundJobStatus.InProgress:
               throw 'still in progress';
@@ -217,7 +226,8 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
     if (clearItemsInBasket) {
       this.sendGiftForm.reset();
-      this.giftBasket.data = [];
+      this.setStateGiftBasket([]);
+      this.giftBasketHasErrors = false;
     }
   }
 }

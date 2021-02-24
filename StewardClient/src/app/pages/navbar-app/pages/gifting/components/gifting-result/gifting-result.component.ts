@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GiftResponse } from '@models/gift-response';
-import { GiftHistoryAntecedent } from '@shared/constants';
 import { sortBy } from 'lodash';
 
 /** The item-selection component. */
@@ -14,12 +13,11 @@ export class GiftingResultComponent extends BaseComponent implements OnInit {
   @Input() public giftingResult: GiftResponse<bigint | string>[];
 
   public giftingCsvData: string[][];
-  public GiftHistoryAntecedent = GiftHistoryAntecedent;
   public giftingErrorCount: number = 0;
 
   /** Test */
   public ngOnInit(): void {
-    this.giftingResult = sortBy(this.giftingResult, result => !!result.error);
+    this.giftingResult = sortBy(this.giftingResult, result => !result.error);
     this.giftingErrorCount = this.giftingResult.filter(data => !!data.error).length;
 
     this.buildCsvData();
@@ -32,7 +30,7 @@ export class GiftingResultComponent extends BaseComponent implements OnInit {
     for (const result of this.giftingResult) {
       this.giftingCsvData[this.giftingCsvData.length] = [
         `'${result.playerOrLspGroup}`,
-        GiftHistoryAntecedent[result.identityAntecedent],
+        result.identityAntecedent,
         JSON.stringify(result?.error),
       ];
     }

@@ -405,7 +405,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(t10Id, TitleConstants.GravityCodeName, GiftHistoryAntecedent.T10Id).ConfigureAwait(true);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(t10Id, TitleConstants.GravityCodeName, GiftIdentityAntecedent.T10Id).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }

@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { of, throwError } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { GiftResponse } from '@models/gift-response';
-import { GiftHistoryAntecedent } from '@shared/constants';
+import { GiftIdentityAntecedent } from '@shared/constants';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 
 describe('GiftBasketBaseComponent', () => {
@@ -41,6 +41,8 @@ describe('GiftBasketBaseComponent', () => {
       component = fixture.debugElement.componentInstance;
 
       mockBackgroundJobService = TestBed.inject(BackgroundJobService);
+
+      component.setStateGiftBasket = jasmine.createSpy('setStateGiftBasket');
     }),
   );
 
@@ -58,6 +60,7 @@ describe('GiftBasketBaseComponent', () => {
         quantity: 10,
         itemType: 'test type',
         edit: false,
+        error: undefined,
       };
     });
 
@@ -66,11 +69,10 @@ describe('GiftBasketBaseComponent', () => {
         component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       });
 
-      it('should increase the quantity of the existing item in the gift basket', () => {
+      it('should add the item to the gift basket', () => {
         component.addItemtoBasket(testItemNew);
 
-        expect(component.giftBasket.data.length).toEqual(1);
-        expect(component.giftBasket.data[0].quantity).toEqual(10);
+        expect(component.setStateGiftBasket).toHaveBeenCalledWith([testItemNew]);
       });
     });
 
@@ -84,15 +86,17 @@ describe('GiftBasketBaseComponent', () => {
             quantity: 50,
             itemType: 'test type',
             edit: false,
+            error: undefined,
           },
         ];
       });
 
-      it('should add the item to the gift basket', () => {
+      it('should update the existing gift basket item with the new quantity + old quantity', () => {
         component.addItemtoBasket(testItemNew);
 
-        expect(component.giftBasket.data.length).toEqual(1);
-        expect(component.giftBasket.data[0].quantity).toEqual(60);
+        const expectedObject = component.giftBasket.data;
+        expectedObject[0].quantity += testItemNew.quantity;
+        expect(component.setStateGiftBasket).toHaveBeenCalledWith(expectedObject);
       });
     });
   });
@@ -112,15 +116,18 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 50,
           itemType: 'test type',
           edit: false,
+          error: undefined,
         },
       ];
     });
 
     it('should set the item quantity to the new value', () => {
+      const expectedObject = component.giftBasket.data;
+      expectedObject[0].quantity = testItemQuantity;
+
       component.editItemQuantity(0);
 
-      expect(component.giftBasket.data[0].quantity).toEqual(testItemQuantity);
-      expect(component.giftBasket.data[0].edit).toBeFalsy();
+      expect(component.setStateGiftBasket).toHaveBeenCalledWith(expectedObject);
     });
   });
 
@@ -135,6 +142,7 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 50,
           itemType: 'test type 1',
           edit: false,
+          error: undefined,
         },
         {
           id: testid,
@@ -142,21 +150,24 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 10,
           itemType: 'test type 2',
           edit: false,
+          error: undefined,
         },
       ];
     });
 
     it('should remove the given index from the gift basket', () => {
+      const expectedObject = component.giftBasket.data;
+      expectedObject.splice(0, 1);
       component.removeItemFromGiftBasket(0);
 
-      expect(component.giftBasket.data.length).toEqual(1);
-      expect(component.giftBasket.data[0].id).toEqual(testid);
+      expect(component.setStateGiftBasket).toHaveBeenCalledWith(expectedObject);
     });
   });
 
   describe('Method: resetGiftBasketUI', () => {
     beforeEach(() => {
       component.sendGiftForm.controls['giftReason'].setValue('test value');
+      component.giftResponse = [];
       component.isLoading = true;
       component.loadError = { foo: 'bar' };
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
@@ -167,6 +178,7 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 50,
           itemType: 'test type 1',
           edit: false,
+          error: undefined,
         },
         {
           id: BigInt(4321),
@@ -174,18 +186,35 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 10,
           itemType: 'test type 2',
           edit: false,
+          error: undefined,
         },
       ];
     });
 
-    it('should empty gift basket data', () => {
-      expect(component.giftBasket.data.length).toEqual(2);
-      component.resetGiftBasketUI(true);
+    describe('When clearItemsInBasket is set to false', () => {
+      it('should empty gift basket data', () => {
+        expect(component.giftBasket.data.length).toEqual(2);
+        component.resetGiftBasketUI(false);
 
-      expect(component.giftBasket.data.length).toEqual(0);
-      expect(component.isLoading).toBeFalsy();
-      expect(component.loadError).toBeUndefined();
-      expect(component.sendGiftForm.controls['giftReason'].value).toBeNull();
+        expect(component.isLoading).toBeFalsy();
+        expect(component.loadError).toBeUndefined();
+        expect(component.giftResponse).toBeUndefined();
+        expect(component.setStateGiftBasket).not.toHaveBeenCalledWith([]);
+        expect(component.sendGiftForm.controls['giftReason'].value).not.toBeNull();
+      });
+    });
+
+    describe('When clearItemsInBasket is set to true', () => {
+      it('should empty gift basket data', () => {
+        expect(component.giftBasket.data.length).toEqual(2);
+        component.resetGiftBasketUI(true);
+
+        expect(component.isLoading).toBeFalsy();
+        expect(component.loadError).toBeUndefined();
+        expect(component.giftResponse).toBeUndefined();
+        expect(component.setStateGiftBasket).toHaveBeenCalledWith([]);
+        expect(component.sendGiftForm.controls['giftReason'].value).toBeNull();
+      });
     });
   });
 
@@ -209,6 +238,7 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 50,
           itemType: 'test type 1',
           edit: false,
+          error: undefined,
         },
         {
           id: BigInt(4321),
@@ -216,6 +246,7 @@ describe('GiftBasketBaseComponent', () => {
           quantity: 10,
           itemType: 'test type 2',
           edit: false,
+          error: undefined,
         },
       ];
 
@@ -401,7 +432,7 @@ describe('GiftBasketBaseComponent', () => {
       describe('And a GiftResponse is returned', () => {
         const testGiftResponse = {
           playerOrLspGroup: BigInt(11234567890),
-          identityAntecedent: GiftHistoryAntecedent.LspGroupId,
+          identityAntecedent: GiftIdentityAntecedent.LspGroupId,
         } as GiftResponse<bigint>;
         beforeEach(() => {
           component.sendGiftToPlayers = jasmine
@@ -472,7 +503,7 @@ describe('GiftBasketBaseComponent', () => {
           parsedResult: [
             {
               playerOrLspGroup: 'testing123',
-              identityAntecedent: GiftHistoryAntecedent.LspGroupId,
+              identityAntecedent: GiftIdentityAntecedent.LspGroupId,
               error: undefined,
             },
           ],

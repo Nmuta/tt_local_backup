@@ -235,7 +235,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));
 
-            var path = new Uri(this.baseUri, $"Jobs/{jobId}");
+            var path = new Uri(this.baseUri, $"api/v1/jobs/jobId({jobId})");
 
             return await ServiceClient.SendRequestAsync<BackgroundJob>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }

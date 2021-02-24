@@ -2,7 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GiftResponse } from '@models/gift-response';
 import { Unprocessed } from '@models/unprocessed';
-import { GiftHistoryAntecedent } from '@shared/constants';
+import { GiftIdentityAntecedent } from '@shared/constants';
 
 /** Fake API for gifting to players. */
 export class ApolloGiftingPlayersFakeApi extends FakeApiBase {
@@ -28,12 +28,12 @@ export class ApolloGiftingPlayersFakeApi extends FakeApiBase {
     return [
       {
         playerOrLspGroup: BigInt(1234),
-        identityAntecedent: GiftHistoryAntecedent.Xuid,
+        identityAntecedent: GiftIdentityAntecedent.Xuid,
         error: undefined,
       },
       {
         playerOrLspGroup: BigInt(5678),
-        identityAntecedent: GiftHistoryAntecedent.Xuid,
+        identityAntecedent: GiftIdentityAntecedent.Xuid,
         error: { message: 'fake api error' },
       },
     ];

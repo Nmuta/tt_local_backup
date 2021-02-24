@@ -3,6 +3,10 @@
 mat-card {
   min-width: 450px;
 
+  h2 {
+    margin-bottom: 0;
+  }
+
   .hide-content {
     display: none;
   }
@@ -23,20 +27,32 @@ mat-card {
     overflow: auto;
     margin-top: 30px;
 
+    .row-error {
+      background-color: #fff5ad;
+    }
+
     table {
       width: 100%;
 
+      .mat-column-itemId {
+        width: 150px !important;
+      }
+
       .mat-column-quantity {
-        width: 160px !important;
+        width: 180px !important;
 
         mat-form-field {
-          width: 80px !important;
+          width: 100px !important;
         }
 
         fa-icon {
           margin-left: 0.6em;
           margin-right: 0.6em;
         }
+      }
+
+      .mat-column-itemType {
+        width: 150px !important;
       }
 
       .mat-column-remove {
