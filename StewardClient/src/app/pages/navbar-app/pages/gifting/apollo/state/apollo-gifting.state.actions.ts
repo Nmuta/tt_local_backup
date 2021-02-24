@@ -1,4 +1,5 @@
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
+import { GiftBasketModel } from '../../components/gift-basket/gift-basket.base.component';
 
 /** Sets the gifting page's selected player identities. */
 export class SetApolloGiftingSelectedPlayerIdentities {
@@ -10,4 +11,10 @@ export class SetApolloGiftingSelectedPlayerIdentities {
 export class SetApolloGiftingMatTabIndex {
   public static readonly type = '[ApolloGifting] Set Apollo Gifting Mat TabIndex';
   constructor(public readonly selectedMatIndex: number) {}
+}
+
+/** Sets the apollo gift basket. */
+export class SetApolloGiftBasket {
+  public static readonly type = '[ApolloGifting] Set Apollo Gift Basket';
+  constructor(public readonly giftBasket: GiftBasketModel[]) {}
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IdentityResultBetaBatch } from '@models/identity-query.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { clone } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { SetGravitySelectedPlayerIdentities } from './gravity-gift-history.state.actions';
 
@@ -26,7 +27,7 @@ export class GravityGiftHistoryState {
     ctx: StateContext<GravityGiftHistoryStateModel>,
     action: SetGravitySelectedPlayerIdentities,
   ): Observable<GravityGiftHistoryStateModel> {
-    return of(ctx.patchState({ selectedPlayerIdentities: action.selectedPlayerIdentities }));
+    return of(ctx.patchState({ selectedPlayerIdentities: clone(action.selectedPlayerIdentities) }));
   }
 
   /** Selector for state selected player identities. */

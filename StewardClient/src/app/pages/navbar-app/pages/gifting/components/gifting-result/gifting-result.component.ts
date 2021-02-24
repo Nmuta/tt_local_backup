@@ -17,7 +17,7 @@ export class GiftingResultComponent extends BaseComponent implements OnInit {
 
   /** Test */
   public ngOnInit(): void {
-    this.giftingResult = sortBy(this.giftingResult, result => !!result.error);
+    this.giftingResult = sortBy(this.giftingResult, result => !result.error);
     this.giftingErrorCount = this.giftingResult.filter(data => !!data.error).length;
 
     this.buildCsvData();

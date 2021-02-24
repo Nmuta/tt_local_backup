@@ -14,6 +14,7 @@ import {
   SunriseGroupGift,
   SunrisePlayerDetails,
   SunrisePlayerInventory,
+  SunrisePlayerInventoryProfile,
   SunrisePlayerNotifications,
   SunriseUserFlags,
 } from '@models/sunrise';
@@ -26,7 +27,8 @@ import { SunriseGiftHistory } from '@models/sunrise/sunrise-gift-history.model';
 import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+import { chain } from 'lodash';
 import { GiftResponse } from '@models/gift-response';
 import { HttpParams } from '@angular/common/http';
 import { BackgroundJob } from '@models/background-job';
@@ -174,10 +176,35 @@ export class SunriseService {
     );
   }
 
-  /** Gets the player's inventory */
+  /** Gets a player's profile list  by XUID. */
+  public getPlayerInventoryProfilesByXuid(
+    xuid: bigint,
+  ): Observable<SunrisePlayerInventoryProfile[]> {
+    return this.apiService
+      .getRequest<SunrisePlayerInventoryProfile[]>(
+        `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
+      )
+      .pipe(
+        map(v =>
+          chain(v)
+            .sortBy(v => v.profileId)
+            .reverse()
+            .value(),
+        ),
+      );
+  }
+
+  /** Gets the latest version of a player's inventory */
   public getPlayerInventoryByXuid(xuid: bigint): Observable<SunrisePlayerInventory> {
     return this.apiService.getRequest<SunrisePlayerInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
+    );
+  }
+
+  /** Gets a specific version of a player's inventory */
+  public getPlayerInventoryByProfileId(profileId: bigint): Observable<SunrisePlayerInventory> {
+    return this.apiService.getRequest<SunrisePlayerInventory>(
+      `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }
 

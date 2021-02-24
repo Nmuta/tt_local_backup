@@ -1,5 +1,4 @@
 import * as faker from 'faker';
-
 interface FakeBigIntParams {
   min: bigint | number;
   max?: bigint | number;

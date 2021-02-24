@@ -64,6 +64,7 @@ import { ApolloPlayersIdentitiesFakeApi } from './apis/title/apollo/players/iden
 import { OpusPlayersIdentitiesFakeApi } from './apis/title/opus/players/identities';
 import { SunrisePlayersIdentitiesFakeApi } from './apis/title/sunrise/players/identities';
 import { GravityPlayersIdentitiesFakeApi } from './apis/title/gravity/players/identities';
+import { GravityPlayerT10IdDetailsFakeApi } from './apis/title/gravity/player/t10Id/details';
 import { GravityMasterInventoryFakeApi } from './apis/title/gravity/masterInventory';
 import { GravityGiftingPlayerFakeApi } from './apis/title/gravity/gifting/players';
 import { SunriseMasterInventoryFakeApi } from './apis/title/sunrise/masterInventory';
@@ -82,6 +83,7 @@ const fakeApiConstructors = [
   GravityPlayerGamertagDetailsFakeApi,
   GravityPlayerXuidInventoryFakeApi,
   GravityPlayerXuidProfileIdInventoryFakeApi,
+  GravityPlayerT10IdDetailsFakeApi,
   GravityPlayerT10IdInventoryFakeApi,
   GravityPlayerT10IdProfileIdInventoryFakeApi,
   GravityPlayerT10IdInventoryFakeApi,

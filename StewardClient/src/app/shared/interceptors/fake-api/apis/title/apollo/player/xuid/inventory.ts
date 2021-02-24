@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt } from '@interceptors/fake-api/utility';
+import { fakeBigInt, fakeXuid } from '@interceptors/fake-api/utility';
 import { ApolloPlayerInventory } from '@models/apollo';
 import { ApolloCar, ApolloInventoryItem } from '@models/apollo/inventory-items';
 import faker from 'faker';
@@ -67,7 +67,7 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
     }
 
     return {
-      xuid: xuid,
+      xuid: xuid ?? fakeXuid(),
       giftReason: faker.lorem.paragraph(),
       credits: fakeBigInt({ min: 0 }),
       cars: makeFakeCars(200),

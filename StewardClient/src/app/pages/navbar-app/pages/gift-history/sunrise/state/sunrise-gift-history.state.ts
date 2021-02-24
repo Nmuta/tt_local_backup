@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { clone } from 'lodash';
 import { Observable, of } from 'rxjs';
 import {
   SetSunriseGiftHistorySelectedPlayerIdentities,
@@ -31,7 +32,7 @@ export class SunriseGiftHistoryState {
     ctx: StateContext<SunriseGiftHistoryStateModel>,
     action: SetSunriseGiftHistorySelectedPlayerIdentities,
   ): Observable<SunriseGiftHistoryStateModel> {
-    return of(ctx.patchState({ selectedPlayerIdentities: action.selectedPlayerIdentities }));
+    return of(ctx.patchState({ selectedPlayerIdentities: clone(action.selectedPlayerIdentities) }));
   }
 
   /** Sets the gift history page's selected mat tab index. */
@@ -40,7 +41,7 @@ export class SunriseGiftHistoryState {
     ctx: StateContext<SunriseGiftHistoryStateModel>,
     action: SetSunriseGiftHistoryMatTabIndex,
   ): Observable<SunriseGiftHistoryStateModel> {
-    return of(ctx.patchState({ selectedMatIndex: action.selectedMatIndex }));
+    return of(ctx.patchState({ selectedMatIndex: clone(action.selectedMatIndex) }));
   }
 
   /** Selector for state selected player identities. */
