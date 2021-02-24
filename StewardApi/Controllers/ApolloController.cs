@@ -496,7 +496,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.NotFound($"No inventory found for XUID: {xuid}.");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -524,7 +524,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.NotFound($"No inventory found for Profile ID: {profileId}");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
             return this.Ok(playerInventory);
         }
 

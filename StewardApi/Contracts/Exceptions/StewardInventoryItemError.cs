@@ -7,29 +7,33 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
     /// <summary>
     ///     Represents an error with an inventory item.
     /// </summary>`
-    public sealed class StewardInventoryItemError
+    public sealed class StewardInventoryItemError : StewardBaseException
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardInventoryItemError"/> class.
         /// </summary>
         public StewardInventoryItemError()
+            : base()
         {
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardInventoryItemError"/> class.
         /// </summary>
-        /// <param name="item">The message.</param>
-        public StewardInventoryItemError(MasterInventoryItem item)
+        /// <param name="message">The exception message.</param>
+        public StewardInventoryItemError(string message)
+            : base(message)
         {
-            item.ShouldNotBeNull(nameof(item));
-
-            this.Item = item;
         }
 
         /// <summary>
-        ///     Gets or sets the item.
+        ///     Initializes a new instance of the <see cref="StewardInventoryItemError"/> class.
         /// </summary>
-        public MasterInventoryItem Item { get; set; }
+        /// <param name="message">The exception message.</param>
+        /// <param name="innerException">The inner exception</param>
+        public StewardInventoryItemError(string message, System.Exception innerException)
+            : base(message, innerException)
+        {
+        }
     }
 }

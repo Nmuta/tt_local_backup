@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -98,11 +100,15 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 try
                 {
                     item.Description = masterInventoryItems.First(masterItem => masterItem.Id == item.Id).Description;
+                    if (string.IsNullOrWhiteSpace(item.Description))
+                    {
+                        throw new InvalidOperationException();
+                    }
                 }
                 catch
                 {
                     item.Description = "No item name";
-                    loggingService.LogCustomEvent($"StewardInventoryItemError: Missing Description on {logName}")
+                    loggingService.LogException(new StewardInventoryItemError($"Missing Description for {logName}. Item ID: {item.Id}"));
                 }
             }
 

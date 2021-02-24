@@ -18,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -46,6 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ConfigurationKeyConstants.GroupGiftPasswordSecretName
         };
 
+        private readonly ILoggingService loggingService;
         private readonly IKustoProvider kustoProvider;
         private readonly ISunrisePlayerInventoryProvider sunrisePlayerInventoryProvider;
         private readonly ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider;
@@ -63,6 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseController"/> class.
         /// </summary>
+        /// <param name="loggingService">The logging service.</param>
         /// <param name="kustoProvider">The Kusto provider.</param>
         /// <param name="sunrisePlayerInventoryProvider">The Sunrise player inventory provider.</param>
         /// <param name="sunrisePlayerDetailsProvider">The Sunrise player details provider.</param>
@@ -79,6 +82,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
         /// <param name="userFlagsRequestValidator">The user flags request validator.</param>
         public SunriseController(
+            ILoggingService loggingService,
             IKustoProvider kustoProvider,
             ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider,
             ISunrisePlayerInventoryProvider sunrisePlayerInventoryProvider,
@@ -95,6 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator,
             IRequestValidator<SunriseUserFlagsInput> userFlagsRequestValidator)
         {
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             sunrisePlayerDetailsProvider.ShouldNotBeNull(nameof(sunrisePlayerDetailsProvider));
             sunrisePlayerInventoryProvider.ShouldNotBeNull(nameof(sunrisePlayerInventoryProvider));
@@ -112,6 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
+            this.loggingService = loggingService;
             this.kustoProvider = kustoProvider;
             this.sunrisePlayerDetailsProvider = sunrisePlayerDetailsProvider;
             this.sunrisePlayerInventoryProvider = sunrisePlayerInventoryProvider;
@@ -555,7 +561,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.NotFound($"No inventory found for XUID: {xuid}.");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -583,7 +589,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.NotFound($"No inventory found for Profile ID: {profileId}.");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
             return this.Ok(playerInventory);
         }
 
