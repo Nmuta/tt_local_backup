@@ -47,6 +47,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         /// <summary>
         ///     Gets or sets the inner exception.
         /// </summary>
-        public Exception InnerException { get; set; }
+        public object InnerException { get; set; }
     }
 }

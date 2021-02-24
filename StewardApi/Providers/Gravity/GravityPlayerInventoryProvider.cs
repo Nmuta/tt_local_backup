@@ -30,10 +30,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <param name="mapper">The mapper.</param>
         /// <param name="giftHistoryProvider">The gift history provider.</param>
         public GravityPlayerInventoryProvider(
-                                              IGravityUserService gravityUserService,
-                                              IGravityUserInventoryService gravityUserInventoryService,
-                                              IMapper mapper,
-                                              IGravityGiftHistoryProvider giftHistoryProvider)
+            IGravityUserService gravityUserService,
+            IGravityUserInventoryService gravityUserInventoryService,
+            IMapper mapper,
+            IGravityGiftHistoryProvider giftHistoryProvider)
         {
             gravityUserService.ShouldNotBeNull(nameof(gravityUserService));
             gravityUserInventoryService.ShouldNotBeNull(nameof(gravityUserInventoryService));
@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<GravityPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<GravityPlayerInventoryBeta> GetPlayerInventoryAsync(ulong xuid)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
                 var response = await this.gravityUserInventoryService.LiveOpsGetUserInventoryByT10IdAsync(profile.Turn10Id).ConfigureAwait(false);
 
-                return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
+                return this.mapper.Map<GravityPlayerInventoryBeta>(response.userInventory);
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<GravityPlayerInventory> GetPlayerInventoryAsync(string t10Id)
+        public async Task<GravityPlayerInventoryBeta> GetPlayerInventoryAsync(string t10Id)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
@@ -74,7 +74,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 var response = await this.gravityUserInventoryService.LiveOpsGetUserInventoryByT10IdAsync(t10Id)
                     .ConfigureAwait(false);
 
-                return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
+                return this.mapper.Map<GravityPlayerInventoryBeta>(response.userInventory);
             }
             catch (Exception ex)
             {
@@ -83,7 +83,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<GravityPlayerInventory> GetPlayerInventoryAsync(ulong xuid, string profileId)
+        public async Task<GravityPlayerInventoryBeta> GetPlayerInventoryAsync(ulong xuid, string profileId)
         {
             profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
 
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
                 var response = await this.gravityUserInventoryService.LiveOpsGetInventoryByProfileIdAsync(profile.Turn10Id, profileId).ConfigureAwait(false);
 
-                return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
+                return this.mapper.Map<GravityPlayerInventoryBeta>(response.userInventory);
             }
             catch (Exception ex)
             {
@@ -103,7 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<GravityPlayerInventory> GetPlayerInventoryAsync(string t10Id, string profileId)
+        public async Task<GravityPlayerInventoryBeta> GetPlayerInventoryAsync(string t10Id, string profileId)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
@@ -113,7 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 var response = await this.gravityUserInventoryService.LiveOpsGetInventoryByProfileIdAsync(t10Id, profileId)
                     .ConfigureAwait(false);
 
-                return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
+                return this.mapper.Map<GravityPlayerInventoryBeta>(response.userInventory);
             }
             catch (Exception ex)
             {

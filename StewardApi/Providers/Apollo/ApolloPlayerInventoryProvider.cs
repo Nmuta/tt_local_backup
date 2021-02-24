@@ -53,7 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc/>
-        public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<ApolloMasterInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
@@ -62,11 +62,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 var response = await this.apolloUserInventoryService.GetAdminUserInventoryAsync(xuid)
                     .ConfigureAwait(false);
 
-                return this.mapper.Map<ApolloPlayerInventory>(response.summary);
+                return this.mapper.Map<ApolloMasterInventory>(response.summary);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<ApolloMasterInventory> GetPlayerInventoryAsync(int profileId)
+        {
+            try
+            {
+                var response = await this.apolloUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                    .ConfigureAwait(false);
+
+                return this.mapper.Map<ApolloMasterInventory>(response.summary);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
             }
         }
 
@@ -84,22 +100,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory profiles found for XUID: {xuid}", ex);
-            }
-        }
-
-        /// <inheritdoc/>
-        public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(int profileId)
-        {
-            try
-            {
-                var response = await this.apolloUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
-                    .ConfigureAwait(false);
-
-                return this.mapper.Map<ApolloPlayerInventory>(response.summary);
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
             }
         }
 

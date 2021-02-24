@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts
     /// <summary>
     ///     Represents a master inventory item.
     /// </summary>
-    public sealed class MasterInventoryItem
+    public class MasterInventoryItem
     {
         /// <summary>
         ///     Gets or sets the item ID.
@@ -25,6 +25,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         /// <summary>
         ///     Gets or sets the item error.
         /// </summary>
-        public Exception Error { get; set; }
+        public object Error { get; set; }
     }
 }

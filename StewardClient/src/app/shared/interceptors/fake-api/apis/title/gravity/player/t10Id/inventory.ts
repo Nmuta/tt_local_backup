@@ -1,9 +1,8 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt, faker, fakeXuid } from '@interceptors/fake-api/utility';
-import { GuidLikeString } from '@models/extended-types';
-import { GravityPlayerInventory } from '@models/gravity';
-import { GravityCar, GravityInventoryItem, GravityKit } from '@models/gravity/inventory-items';
+import { GravityPlayerInventoryBeta } from '@models/gravity';
+import { MasterInventoryItem } from '@models/master-inventory-item';
+import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
 
 /** Fake API for gravity player inventory. */
 export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
@@ -29,65 +28,40 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): GravityPlayerInventory {
+  public handle(): GravityPlayerInventoryBeta {
     return GravityPlayerT10IdInventoryFakeApi.make(this.t10Id);
   }
 
   /** Generates a sample object */
-  public static make(t10Id: GuidLikeString, profileId?: GuidLikeString): GravityPlayerInventory {
-    function makeFakeItems(count: number): GravityInventoryItem[] {
+  public static make(_t10Id: string): GravityPlayerInventoryBeta {
+    function makeFakeItems(count: number): MasterInventoryItem[] {
       return Array(faker.random.number(count))
         .fill(0)
         .map(() => {
           return {
-            itemId: fakeBigInt(),
-            quantity: fakeBigInt({ min: 1, max: 20 }),
-            acquisitionUtc: faker.date.past(),
-            modifiedUtc: faker.date.recent(),
-            lastUsedUtc: faker.date.recent(),
+            id: fakeBigInt(),
+            quantity: faker.random.number(5),
             description: faker.lorem.sentences(2),
+            itemType: undefined,
           };
         });
     }
 
-    function makeFakeKits(count: number): GravityKit[] {
-      return makeFakeItems(count).map(i => {
-        return {
-          ...i,
-          partialQuantity: fakeBigInt({ min: 0, max: 100 }),
-        };
-      });
-    }
-
-    function makeFakeCars(count: number): GravityCar[] {
-      return makeFakeItems(count).map(i => {
-        return {
-          ...i,
-          vin: faker.random.uuid(),
-          purchaseUtc: faker.date.past(),
-          currentMasteryRank: fakeBigInt({ min: 0, max: 20 }),
-          cumulativeMastery: fakeBigInt({ min: 0, max: 20 }),
-          repairState: fakeBigInt({ min: 0 }),
-          starPoints: fakeBigInt({ min: 0 }),
-          color: fakeBigInt({ min: 0 }),
-          livery: fakeBigInt({ min: 0 }),
-          clientPr: fakeBigInt({ min: 0 }),
-          advancedCarCustomization: fakeBigInt({ min: 0 }),
-        };
-      });
-    }
-
     return {
-      xuid: fakeXuid(),
-      t10Id: t10Id,
-      previousGameSettingsId: faker.random.uuid(),
-      currentExternalProfileId: profileId ?? faker.random.uuid(),
-      cars: makeFakeCars(200),
+      gameSettingsId: faker.random.uuid(),
+      externalProfileId: faker.random.uuid(),
+      creditRewards: [
+        {
+          id: BigInt(0),
+          description: 'Soft Currency',
+          quantity: faker.random.number(100_000),
+          itemType: undefined,
+        },
+      ],
+      cars: makeFakeItems(200),
       masteryKits: makeFakeItems(200),
-      upgradeKits: makeFakeKits(200),
-      repairKits: makeFakeKits(200),
-      packs: makeFakeItems(200),
-      currencies: makeFakeItems(200),
+      upgradeKits: makeFakeItems(200),
+      repairKits: makeFakeItems(200),
       energyRefills: makeFakeItems(200),
     };
   }

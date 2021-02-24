@@ -1,12 +1,4 @@
 <div *ngIf="inventory; else failstate">
-  <h2>Summary</h2>
-  <table class="numbers">
-    <tr>
-      <th>Credits</th>
-      <td>{{ inventory.credits }}</td>
-    </tr>
-  </table>
-
   <player-inventory-tables
     [inventory]="inventory"
     [whatToShow]="whatToShow"

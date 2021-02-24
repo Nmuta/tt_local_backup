@@ -16,7 +16,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         /// <returns>
         ///     The <see cref="OpusPlayerInventory"/>.
         /// </returns>
-        Task<OpusPlayerInventory> GetPlayerInventoryAsync(ulong xuid);
+        Task<OpusMasterInventory> GetPlayerInventoryAsync(ulong xuid);
+
+        /// <summary>
+        ///     Get player inventory details.
+        /// </summary>
+        /// <param name="profileId">The profile ID.</param>
+        /// <returns>
+        ///     The <see cref="OpusPlayerInventory"/>.
+        /// </returns>
+        Task<OpusMasterInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
         ///     Gets an inventory profile summary.
@@ -26,14 +35,5 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         ///     The list of <see cref="OpusInventoryProfile"/>.
         /// </returns>
         Task<IList<OpusInventoryProfile>> GetInventoryProfilesAsync(ulong xuid);
-
-        /// <summary>
-        ///     Get player inventory details.
-        /// </summary>
-        /// <param name="profileId">The profile ID.</param>
-        /// <returns>
-        ///     The <see cref="OpusPlayerInventory"/>.
-        /// </returns>
-        Task<OpusPlayerInventory> GetPlayerInventoryAsync(int profileId);
     }
 }

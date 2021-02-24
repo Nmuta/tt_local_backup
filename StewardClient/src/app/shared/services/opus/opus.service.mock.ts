@@ -43,8 +43,8 @@ export class MockOpusService {
 
   public getPlayerInventoryByXuid = jasmine
     .createSpy('getPlayerInventoryByXuid')
-    .and.callFake(_ =>
-      this.waitUntil$.pipe(switchMap(() => of(OpusPlayerXuidInventoryFakeApi.make()))),
+    .and.callFake(xuid =>
+      this.waitUntil$.pipe(switchMap(() => of(OpusPlayerXuidInventoryFakeApi.make(xuid)))),
     );
 }
 

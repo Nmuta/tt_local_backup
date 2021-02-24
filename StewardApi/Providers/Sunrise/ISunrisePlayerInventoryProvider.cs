@@ -15,9 +15,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="SunrisePlayerInventory"/>.
+        ///     The <see cref="SunriseMasterInventory"/>.
         /// </returns>
-        Task<SunrisePlayerInventory> GetPlayerInventoryAsync(ulong xuid);
+        Task<SunriseMasterInventory> GetPlayerInventoryAsync(ulong xuid);
+
+        /// <summary>
+        ///     Get player inventory.
+        /// </summary>
+        /// <param name="profileId">The profile ID.</param>
+        /// <returns>
+        ///     The <see cref="SunriseMasterInventory"/>.
+        /// </returns>
+        Task<SunriseMasterInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
         ///     Get inventory profiles.
@@ -27,15 +36,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         ///     The list of <see cref="SunriseInventoryProfile"/>.
         /// </returns>
         Task<IList<SunriseInventoryProfile>> GetInventoryProfilesAsync(ulong xuid);
-
-        /// <summary>
-        ///     Get player inventory.
-        /// </summary>
-        /// <param name="profileId">The profile ID.</param>
-        /// <returns>
-        ///     The <see cref="SunrisePlayerInventory"/>.
-        /// </returns>
-        Task<SunrisePlayerInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
         ///     Get LSP groups.

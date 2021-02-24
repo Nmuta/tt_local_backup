@@ -53,18 +53,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Opus
             return await ServiceClient.SendRequestAsync<OpusPlayerDetails>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<OpusPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<OpusMasterInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/inventory");
 
-            return await ServiceClient.SendRequestAsync<OpusPlayerInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<OpusMasterInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<OpusPlayerInventory> GetPlayerInventoryAsync(int profileId)
+        public async Task<OpusMasterInventory> GetPlayerInventoryAsync(int profileId)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/profileId({profileId})/inventory");
 
-            return await ServiceClient.SendRequestAsync<OpusPlayerInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<OpusMasterInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task<IList<OpusInventoryProfile>> GetInventoryProfilesAsync(ulong xuid)
