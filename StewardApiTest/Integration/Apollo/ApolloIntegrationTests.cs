@@ -1018,7 +1018,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByXuid_InvalidGiftInventory()
+        public async Task UpdatePlayerInventories_InvalidGiftInventory()
         {
             var groupGift = this.CreateGroupGift();
             groupGift.Inventory = null;
@@ -1036,7 +1036,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByXuid_InvalidItemId()
+        public async Task UpdatePlayerInventories_InvalidItemId()
         {
             var playerGift = this.CreateGroupGift();
             playerGift.Inventory.VanityItems = new List<MasterInventoryItem>();
@@ -1064,7 +1064,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByXuid_NoRecipient()
+        public async Task UpdatePlayerInventories_NoRecipient()
         {
             var groupGift = this.CreateGroupGift();
             groupGift.Xuids = new List<ulong>();
@@ -1083,7 +1083,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestMethod]
         [TestCategory("Integration")]
         [Ignore]
-        public async Task UpdateGroupInventoriesByXuid_InvalidRecipient()
+        public async Task UpdatePlayerInventories_InvalidRecipient()
         {
             var groupGift = this.CreateGroupGift();
             groupGift.Xuids = new List<ulong> { TestConstants.InvalidXuid };
@@ -1101,7 +1101,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
         [TestMethod]
         [TestCategory("Integration")]
-        public async Task UpdateGroupInventoriesByXuid_Unauthorized()
+        public async Task UpdatePlayerInventories_Unauthorized()
         {
             var groupGift = this.CreateGroupGift();
             groupGift.Xuids = new List<ulong> { TestConstants.InvalidXuid };
