@@ -2,10 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GameTitleCodeName } from '@models/enums';
 import { SunriseBanArea } from '@models/sunrise';
-import {
-  LiveOpsBanDescription,
-  LiveOpsBanDescriptions,
-} from '@models/sunrise';
+import { LiveOpsBanDescription, LiveOpsBanDescriptions } from '@models/sunrise';
 import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
 
