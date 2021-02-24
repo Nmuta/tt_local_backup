@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { GiftingResultComponent } from './gifting-result.component';
 import faker from 'faker';
-import { GiftHistoryAntecedent } from '@shared/constants';
+import { GiftIdentityAntecedent } from '@shared/constants';
 
 describe('GiftingResultComponent', () => {
   let fixture: ComponentFixture<GiftingResultComponent>;
@@ -38,17 +38,17 @@ describe('GiftingResultComponent', () => {
     component.giftingResult = [
       {
         playerOrLspGroup: result1Id,
-        identityAntecedent: GiftHistoryAntecedent.T10Id,
+        identityAntecedent: GiftIdentityAntecedent.T10Id,
         error: undefined,
       },
       {
         playerOrLspGroup: result2Id,
-        identityAntecedent: GiftHistoryAntecedent.T10Id,
+        identityAntecedent: GiftIdentityAntecedent.T10Id,
         error: result2Error,
       },
       {
         playerOrLspGroup: result3Id,
-        identityAntecedent: GiftHistoryAntecedent.T10Id,
+        identityAntecedent: GiftIdentityAntecedent.T10Id,
         error: undefined,
       },
     ];
