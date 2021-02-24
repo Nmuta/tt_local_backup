@@ -30,9 +30,9 @@ import { UtcInterceptor } from '@interceptors/utc.interceptor';
 // States
 import { UserState } from '@shared/state/user/user.state';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
-import { GravityGiftingState } from './pages/navbar-app/pages/gifting/gravity/state/gravity-gifting.state';
-import { SunriseGiftingState } from './pages/navbar-app/pages/gifting/sunrise/state/sunrise-gifting.state';
-import { ApolloGiftingState } from './pages/navbar-app/pages/gifting/apollo/state/apollo-gifting.state';
+import { GravityGiftingState } from '@navbar-app/pages/gifting/gravity/state/gravity-gifting.state';
+import { SunriseGiftingState } from '@navbar-app/pages/gifting/sunrise/state/sunrise-gifting.state';
+import { ApolloGiftingState } from '@navbar-app/pages/gifting/apollo/state/apollo-gifting.state';
 import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state';
 import { MatNativeDateModule } from '@angular/material/core';
 import { LspGroupMemoryState } from '@shared/state/lsp-group-memory/lsp-group-memory.state';

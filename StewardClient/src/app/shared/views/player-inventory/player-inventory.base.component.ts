@@ -5,7 +5,7 @@ import { GravityPlayerInventoryBeta } from '@models/gravity';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { OpusMasterInventory } from '@models/opus';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
+import { SunriseMasterInventory } from '@models/sunrise';
 import { combineLatest, NEVER, Observable, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 

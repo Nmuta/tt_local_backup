@@ -1,16 +1,16 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
+  ApolloBanRequest,
   ApolloBanResult,
+  ApolloBanSummary,
   ApolloGift,
+  ApolloGiftHistory,
   ApolloGroupGift,
   ApolloMasterInventory,
   ApolloPlayerDetails,
   ApolloPlayerInventoryProfile,
 } from '@models/apollo';
-import { ApolloBanRequest } from '@models/apollo/apollo-ban-request.model';
-import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
-import { ApolloGiftHistory } from '@models/apollo/apollo-gift-history.model';
 import { BackgroundJob } from '@models/background-job';
 import { GiftResponse } from '@models/gift-response';
 import {
