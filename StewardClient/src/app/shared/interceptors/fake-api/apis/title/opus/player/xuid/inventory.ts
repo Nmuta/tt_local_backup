@@ -23,11 +23,11 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): OpusMasterInventory {
-    return OpusPlayerXuidInventoryFakeApi.make();
+    return OpusPlayerXuidInventoryFakeApi.make(null);
   }
 
   /** Generates a sample object */
-  public static make(): OpusMasterInventory {
+  public static make(_xuid: bigint): OpusMasterInventory {
     return {
       creditRewards: [
         {

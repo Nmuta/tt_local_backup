@@ -29,11 +29,11 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): SunriseMasterInventory {
-    return SunrisePlayerXuidInventoryFakeApi.make();
+    return SunrisePlayerXuidInventoryFakeApi.make(this.xuid);
   }
 
   /** Generates a sample object */
-  public static make(): SunriseMasterInventory {
+  public static make(_xuid: bigint): SunriseMasterInventory {
     function makeFakeItems(count: number): MasterInventoryItem[] {
       return Array(faker.random.number(count))
         .fill(0)

@@ -95,8 +95,8 @@ export class MockSunriseService {
 
   public getPlayerInventoryByXuid = jasmine
     .createSpy('getPlayerInventoryByXuid')
-    .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidInventoryFakeApi.make()))),
+    .and.callFake(xuid =>
+      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidInventoryFakeApi.make(xuid)))),
     );
 
   public postGiftPlayers = jasmine

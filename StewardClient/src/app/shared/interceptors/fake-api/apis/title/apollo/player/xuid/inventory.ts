@@ -30,11 +30,11 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): ApolloMasterInventory {
-    return ApolloPlayerXuidInventoryFakeApi.make();
+    return ApolloPlayerXuidInventoryFakeApi.make(this.xuid);
   }
 
   /** Generates a sample object */
-  public static make(): ApolloMasterInventory {
+  public static make(_xuid: bigint): ApolloMasterInventory {
     function makeFakeItems(count: number): MasterInventoryItem[] {
       return Array(faker.random.number(count))
         .fill(0)

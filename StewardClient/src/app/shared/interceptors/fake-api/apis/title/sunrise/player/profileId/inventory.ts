@@ -24,6 +24,6 @@ export class SunrisePlayerProfileIdInventoryFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(): SunriseMasterInventory {
-    return SunrisePlayerXuidInventoryFakeApi.make();
+    return SunrisePlayerXuidInventoryFakeApi.make(null);
   }
 }

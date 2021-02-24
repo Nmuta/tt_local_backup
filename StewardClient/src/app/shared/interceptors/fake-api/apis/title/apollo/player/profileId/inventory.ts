@@ -25,6 +25,6 @@ export class ApolloPlayerProfileIdInventoryFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(): ApolloMasterInventory {
-    return ApolloPlayerXuidInventoryFakeApi.make();
+    return ApolloPlayerXuidInventoryFakeApi.make(null);
   }
 }

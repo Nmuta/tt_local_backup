@@ -36,6 +36,6 @@ export class GravityPlayerT10IdProfileIdInventoryFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<GravityPlayerInventoryBeta>> {
-    return GravityPlayerT10IdInventoryFakeApi.make();
+    return GravityPlayerT10IdInventoryFakeApi.make(null);
   }
 }

@@ -29,11 +29,11 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): GravityPlayerInventoryBeta {
-    return GravityPlayerT10IdInventoryFakeApi.make();
+    return GravityPlayerT10IdInventoryFakeApi.make(this.t10Id);
   }
 
   /** Generates a sample object */
-  public static make(): GravityPlayerInventoryBeta {
+  public static make(_t10Id: string): GravityPlayerInventoryBeta {
     function makeFakeItems(count: number): MasterInventoryItem[] {
       return Array(faker.random.number(count))
         .fill(0)

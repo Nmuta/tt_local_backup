@@ -28,6 +28,6 @@ export class OpusPlayerProfileIdInventoryFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(): OpusMasterInventory {
-    return OpusPlayerXuidInventoryFakeApi.make();
+    return OpusPlayerXuidInventoryFakeApi.make(null);
   }
 }
