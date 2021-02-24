@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
+import { SunriseMasterInventory } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise';
 import { Observable } from 'rxjs';
 import {

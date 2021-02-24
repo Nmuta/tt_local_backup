@@ -2,9 +2,9 @@
 import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
+import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { UserModel } from '@shared/models/user.model';
 import { UserService } from '@shared/services/user';
 import { clone } from 'lodash';
 import { concat, from, Observable, of, throwError } from 'rxjs';

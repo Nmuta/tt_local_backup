@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
+import { SunriseMasterInventory } from '@models/sunrise';
 import { SunrisePlayerXuidInventoryFakeApi } from '../xuid/inventory';
 
 /** Fake API for sunrise player inventory. */

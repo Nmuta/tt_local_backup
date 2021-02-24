@@ -8,6 +8,11 @@
   flex-basis: 16px;
 }
 
+.navbar-button-active {
+  background-color: mat-color($app-accent);
+  color: #fff !important;
+}
+
 :host ::ng-deep {
   * {
     font-size: 14px;

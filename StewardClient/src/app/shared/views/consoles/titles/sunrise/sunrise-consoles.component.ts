@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
-import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
+import { SunriseConsoleDetails } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import _ from 'lodash';
 import { Observable } from 'rxjs';

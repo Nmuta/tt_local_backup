@@ -1,8 +1,8 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
-import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
+import { SunriseSharedConsoleUsers } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
-import { createNavbarPath, NavbarTools } from 'app/pages/navbar-app/navbar-tool-list';
+import { createNavbarPath, NavbarTools } from '@navbar-app/navbar-tool-list';
 
 /** Retreives and displays related Sunrise accounts by XUID. */
 @Component({

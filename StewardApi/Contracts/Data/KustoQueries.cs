@@ -32,7 +32,7 @@
         ///     Basic query for getting the FH4 Car data.
         /// </summary>
         public const string GetFH4Cars =
-            "FH4_DataCars | join kind = leftouter(FH4_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, Description = strcat_delim(' ', MakeDisplayName, DisplayName)";
+            "FH4_DataCars | join kind = leftouter(FH4_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, Description = strcat_delim(' ', MakeDisplayName, DisplayName, strcat(\"(\", Year, \")\"))";
 
         /// <summary>
         ///     Basic query for getting the FH4 CarHorn data.
@@ -57,7 +57,7 @@
         /// <summary>
         ///     Basic query for getting the FM7 Car data.
         /// </summary>
-        public const string GetFM7Cars = "FM7_DataCars | join kind=leftouter (database('T10Analytics').FM7_ListCarMake | project MakeDisplayName=DisplayName, MakeID=ID) on MakeID | project Id=Id, Description=strcat_delim(' ', MakeDisplayName, DisplayName)";
+        public const string GetFM7Cars = "FM7_DataCars | join kind=leftouter (database('T10Analytics').FM7_ListCarMake | project MakeDisplayName=DisplayName, MakeID=ID) on MakeID | project Id=Id, Description=strcat_delim(' ', MakeDisplayName, DisplayName, strcat(\"(\", Year, \")\"))";
 
         /// <summary>
         ///     Basic query for getting the FM7 VanityItem data.

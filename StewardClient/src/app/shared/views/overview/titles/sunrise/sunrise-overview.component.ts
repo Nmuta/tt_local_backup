@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
+import { SunriseProfileSummary } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 
 /** Retrieves and displays Sunrise Overview by XUID. */

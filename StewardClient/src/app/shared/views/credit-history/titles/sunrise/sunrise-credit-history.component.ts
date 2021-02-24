@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
+import { SunriseCreditHistory } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 
 /** Retreives and displays Sunrise credit history by XUID. */

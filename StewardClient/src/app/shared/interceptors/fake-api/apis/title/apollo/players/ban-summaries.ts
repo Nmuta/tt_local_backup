@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { ApolloBanArea } from '@models/apollo/apollo-ban-request.model';
-import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
+import { ApolloBanArea, ApolloBanSummary } from '@models/apollo';
 import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
 

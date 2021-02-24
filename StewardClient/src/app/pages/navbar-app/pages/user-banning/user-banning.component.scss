@@ -1,0 +1,6 @@
+@import '/src/variables.scss';
+
+.navbar-button-active {
+  background-color: mat-color($app-accent);
+  color: #fff;
+}
