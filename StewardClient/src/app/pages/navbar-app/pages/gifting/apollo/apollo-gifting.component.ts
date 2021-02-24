@@ -72,7 +72,8 @@ export class ApolloGiftingComponent
   /** Player identity selected */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public playerIdentitySelected(identity: IdentityResultAlpha): void {
-    // Empty
+    debugger;
+    this.selectedPlayerIdentity = identity;
   }
 
   /** Logic when lspgroup selection outputs new value. */

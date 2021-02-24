@@ -11,13 +11,14 @@
 
 <mat-form-field class="example-chip-list">
   <mat-label>{{ lookupType | humanize }}</mat-label>
-  <mat-chip-list #chipList aria-label="Fruit selection" [selectable]="allowSelection">
+  <mat-chip-list #chipList aria-label="Fruit selection" [selectable]="allowSelection" (change)="onSelect($event)">
     <mat-chip
       *ngFor="let identity of foundIdentities"
       #chip="matChip"
       (click)="chip.toggleSelected(true)"
       [selectable]="allowSelection"
       [removable]="true"
+      [value]="identity"
       [class.identity-valid]="identity.extra?.isValid"
       [class.identity-invalid]="identity.extra?.isInvalid"
       [color]="identity.extra?.theme"

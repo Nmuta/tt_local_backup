@@ -46,11 +46,8 @@ export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent
 
   /** Called when a new set of results is selected. */
   public onSelect(change: MatChipListChange): void {
-    const values = change.value as AugmentedCompositeIdentity[];
-    if (values.length > 1) {
-      throw new Error(`${this.constructor.name} was allowed to select multiple identities.`);
-    }
+    const values = change.value as AugmentedCompositeIdentity;
 
-    this.selected.next(first(values));
+    this.selected.next(values);
   }
 }

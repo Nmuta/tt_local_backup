@@ -18,6 +18,7 @@
       (click)="chip.toggleSelected(true)"
       [selectable]="allowSelection"
       [removable]="true"
+      [value]="identity"
       [class.identity-valid]="identity.extra?.isValid"
       [class.identity-invalid]="identity.extra?.isInvalid"
       [color]="identity.extra?.theme"
