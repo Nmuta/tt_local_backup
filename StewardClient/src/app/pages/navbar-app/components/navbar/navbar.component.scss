@@ -23,3 +23,9 @@ fa-icon {
 .location {
   overflow: hidden;
 }
+
+// Make selected navbar option more visible
+.navbar-button-active {
+  background-color: #fff;
+  color: mat-color($app-primary);
+}

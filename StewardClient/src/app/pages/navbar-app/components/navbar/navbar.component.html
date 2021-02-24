@@ -1,17 +1,16 @@
 <!-- Useful example https://stackblitz.com/edit/angular-v6xwte?file=src%2Fapp%2Fapp.component.html -->
 <mat-toolbar color="primary">
-  <a [routerLink]="homeRouterLink" mat-icon-button routerLinkActive="mat-stroked-button">
+  <a [routerLink]="homeRouterLink" mat-icon-button routerLinkActive="navbar-button-active">
     <mat-icon>home</mat-icon>
   </a>
   <a
     *ngFor="let item of items"
     mat-button
     [routerLink]="item.routerLink"
-    routerLinkActive="mat-stroked-button"
+    routerLinkActive="navbar-button-active"
   >
     {{ item.title }}
   </a>
-  <a mat-button [routerLink]="['/missing-no']">404</a>
   <span class="spacer"></span>
   <span *ngIf="missingZendesk$ | async" class="warnings">
     <fa-icon [icon]="warningIcon" title="Zendesk API missing"></fa-icon>
@@ -26,7 +25,8 @@
       [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
       queryParamsHandling="preserve"
       mat-icon-button
-      routerLinkActive="mat-stroked-button"
+      routerLinkActive="navbar-button-active"
+      matTooltip="Settings"
       aria-label="Settings"
     >
       <fa-icon [icon]="settingsIcon"></fa-icon>
@@ -37,7 +37,8 @@
       [routerLink]="[{ outlets: { sidebar: 'profile' } }]"
       queryParamsHandling="preserve"
       mat-icon-button
-      routerLinkActive="mat-stroked-button"
+      routerLinkActive="navbar-button-active"
+      matTooltip="Profile"
       aria-label="Profile"
     >
       <fa-icon [icon]="profileIcon"></fa-icon>

@@ -54,21 +54,21 @@ export class NavbarTools {
 
   /** The user details tool page. */
   public static readonly UserDetailsPage: RouteParams = {
-    title: 'User Details',
+    title: 'Player Details',
     path: 'user-details',
   };
 
   /** The user banning tool page. */
   public static readonly UserBanningPage: RouteParams = {
-    title: 'User Banning',
+    title: 'Banning',
     path: 'user-banning',
   };
 }
 
 /** The list of tools to display in the navbar. */
 export const navbarToolList: RouterLinkPath[] = [
-  createNavbarPath(NavbarTools.GiftingPage),
-  createNavbarPath(NavbarTools.GiftHistoryPage),
-  createNavbarPath(NavbarTools.UserBanningPage),
   createNavbarPath(NavbarTools.UserDetailsPage),
+  createNavbarPath(NavbarTools.GiftingPage),
+  createNavbarPath(NavbarTools.UserBanningPage),
+  createNavbarPath(NavbarTools.GiftHistoryPage),
 ];
