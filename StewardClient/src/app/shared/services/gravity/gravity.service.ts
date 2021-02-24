@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { BackgroundJob } from '@models/background-job';
 import { GuidLikeString, T10IdString } from '@models/extended-types';
 import {
+  GravityGift,
   GravityGiftHistory,
+  GravityMasterInventory,
   GravityPlayerDetails,
   GravityPlayerInventoryBeta,
   GravityPseudoPlayerInventoryProfile,
   gravitySaveStatesToPsuedoInventoryProfile,
 } from '@models/gravity';
-import { GravityGift } from '@models/gravity/gravity-gift.model';
-import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
   IdentityQueryBeta,
   IdentityQueryBetaBatch,

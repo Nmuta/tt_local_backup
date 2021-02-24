@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserModel } from '@shared/models/user.model';
+import { UserModel } from '@models/user.model';
 import { ApiService } from '@shared/services/api';
 import { Observable } from 'rxjs';
 

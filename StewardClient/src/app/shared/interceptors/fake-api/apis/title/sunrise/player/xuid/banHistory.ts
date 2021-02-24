@@ -5,7 +5,7 @@ import { SunriseBanArea } from '@models/sunrise';
 import {
   LiveOpsBanDescription,
   LiveOpsBanDescriptions,
-} from '@models/sunrise/sunrise-ban-history.model';
+} from '@models/sunrise';
 import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
 

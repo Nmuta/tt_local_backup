@@ -2,7 +2,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { LiveOpsBanDescription } from '@models/sunrise/sunrise-ban-history.model';
+import { LiveOpsBanDescription } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 
 /** Retreives and displays Sunrise Ban history by XUID. */

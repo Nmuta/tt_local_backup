@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ApolloBanRequest, ApolloBanArea } from '@models/apollo/apollo-ban-request.model';
-import { ApolloBanSummary } from '@models/apollo/apollo-ban-summary.model';
+import { ApolloBanArea, ApolloBanRequest, ApolloBanSummary } from '@models/apollo';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { ApolloService } from '@services/apollo';
 import { Dictionary, filter, keyBy } from 'lodash';

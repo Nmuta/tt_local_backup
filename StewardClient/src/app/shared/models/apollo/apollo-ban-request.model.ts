@@ -28,16 +28,3 @@ export interface ApolloBanRequest {
   featureArea: ApolloBanArea;
   duration: moment.Duration;
 }
-
-/** Services model for bans. */
-export interface ApolloBanDescription {
-  xuid: bigint;
-  startTimeUtc: Date;
-  expireTimeUtc: Date;
-  isActive: boolean;
-  countOfTimesExtended: bigint;
-  lastExtendedTimeUtc: Date;
-  lastExtendedReason: string;
-  reason: string;
-  featureArea: ApolloBanArea;
-}

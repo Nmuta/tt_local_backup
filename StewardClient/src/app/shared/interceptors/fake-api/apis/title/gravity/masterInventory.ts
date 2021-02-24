@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
+import { GravityMasterInventory } from '@models/gravity';
 import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for getting master inventory. */
