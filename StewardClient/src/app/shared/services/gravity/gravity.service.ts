@@ -110,11 +110,9 @@ export class GravityService {
     t10Id: string,
     gift: GravityGift,
   ): Observable<BackgroundJob<void>> {
-    const params = new HttpParams().set('useBackgroundProcessing', 'true');
     return this.apiService.postRequest<BackgroundJob<void>>(
-      `${this.basePath}/gifting/t10Id(${t10Id})`,
+      `${this.basePath}/gifting/t10Id(${t10Id})/useBackgroundProcessing`,
       gift,
-      params,
     );
   }
 }

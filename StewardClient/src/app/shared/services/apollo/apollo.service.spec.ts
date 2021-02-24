@@ -168,7 +168,6 @@ describe('ApolloService', () => {
   });
 
   describe('Method: postGiftPlayersUsingBackgroundTask', () => {
-    const params = new HttpParams().set('useBackgroundProcessing', 'true');
     const gift: ApolloGroupGift = {
       xuids: [BigInt(123456789)],
       giftReason: 'unit testing gift',
@@ -186,9 +185,8 @@ describe('ApolloService', () => {
     it('should call API service postRequest with the expected params', done => {
       service.postGiftPlayersUsingBackgroundTask(gift).subscribe(() => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
-          `${service.basePath}/gifting/players`,
+          `${service.basePath}/gifting/players/useBackgroundProcessing`,
           gift,
-          params,
         );
         done();
       });

@@ -219,11 +219,9 @@ export class SunriseService {
   public postGiftPlayersUsingBackgroundTask(
     gift: SunriseGroupGift,
   ): Observable<BackgroundJob<void>> {
-    const params = new HttpParams().set('useBackgroundProcessing', 'true');
     return this.apiService.postRequest<BackgroundJob<void>>(
-      `${this.basePath}/gifting/players`,
+      `${this.basePath}/gifting/players/useBackgroundProcessing`,
       gift,
-      params,
     );
   }
 

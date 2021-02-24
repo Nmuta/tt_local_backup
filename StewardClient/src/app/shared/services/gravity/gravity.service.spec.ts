@@ -168,7 +168,6 @@ describe('service: GravityService', () => {
 
   describe('Method: postGiftPlayersUsingBackgroundTask', () => {
     const t10Id = 'fake-to10-id';
-    const param = new HttpParams().set('useBackgroundProcessing', 'true');
     const gift: GravityGift = {
       giftReason: 'unit testing gift',
       inventory: {
@@ -188,9 +187,8 @@ describe('service: GravityService', () => {
     it('should call API service postRequest with the expected params', done => {
       service.postGiftPlayerUsingBackgroundTask(t10Id, gift).subscribe(() => {
         expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
-          `${service.basePath}/gifting/t10Id(${t10Id})`,
+          `${service.basePath}/gifting/t10Id(${t10Id})/useBackgroundProcessing`,
           gift,
-          param,
         );
         done();
       });
