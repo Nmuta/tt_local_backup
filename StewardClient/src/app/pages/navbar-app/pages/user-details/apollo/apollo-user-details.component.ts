@@ -33,7 +33,6 @@ export class ApolloUserDetailsComponent {
 
   /** Called when a new profile ID is picked. */
   public onProfileIdChange(_newId: bigint): void {
-    // debugger;
     // TODO: Handle routing to this with the URL https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/652013
   }
 }

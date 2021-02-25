@@ -113,7 +113,6 @@ export class GravityGiftBasketComponent
 
   /** Angular lifecycle */
   public ngOnChanges(changes: SimpleChanges): void {
-    debugger;
     if (!!changes?.playerIdentities) {
       const playerT10Id = this.playerIdentities.length > 0 ? this.playerIdentities[0].t10Id : null;
       this.newIdentitySelectedSubject$.next(playerT10Id);

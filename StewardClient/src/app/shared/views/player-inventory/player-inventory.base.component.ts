@@ -87,7 +87,6 @@ export abstract class PlayerInventoryBaseComponent<
         }),
         filter(v => !!v.identity),
         switchMap(v => {
-          debugger;
           const request$ = v.profileId
             ? this.getPlayerInventoryByIdentityAndProfileId(v.identity, v.profileId)
             : this.getPlayerInventoryByIdentity(v.identity);
