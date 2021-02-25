@@ -10,8 +10,8 @@ import { UserState } from '@shared/state/user/user.state';
 import { GiftingBaseComponent } from './gifting.base.component';
 
 describe('GiftingBaseComponent', () => {
-  let component: GiftingBaseComponent<IdentityResultAlpha>;
-  let fixture: ComponentFixture<GiftingBaseComponent<IdentityResultAlpha>>;
+  let component: GiftingBaseComponent;
+  let fixture: ComponentFixture<GiftingBaseComponent>;
 
   let mockStore: Store;
 
@@ -29,7 +29,7 @@ describe('GiftingBaseComponent', () => {
       }).compileComponents();
 
       fixture = TestBed.createComponent(
-        GiftingBaseComponent as Type<GiftingBaseComponent<IdentityResultAlpha>>,
+        GiftingBaseComponent as Type<GiftingBaseComponent>,
       );
       component = fixture.debugElement.componentInstance;
 
