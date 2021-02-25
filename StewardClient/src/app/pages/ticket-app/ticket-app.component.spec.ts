@@ -66,7 +66,11 @@ describe('TicketAppComponent', () => {
   });
 
   describe('Method: ngOnInit', () => {
-    const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com', role: UserRole.LiveOpsAdmin, name: `${faker.name.firstName()} ${faker.name.lastName()}` };
+    const testProfile: UserModel = {
+      emailAddress: 'test.email@microsoft.com',
+      role: UserRole.LiveOpsAdmin,
+      name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+    };
 
     describe('When subscribing to profile returns a value', () => {
       beforeEach(() => {

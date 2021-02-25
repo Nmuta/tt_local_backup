@@ -47,7 +47,7 @@ describe('State: User', () => {
         expectedProfile = {
           emailAddress: 'test.email@microsoft.com',
           name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-          role: UserRole.LiveOpsAdmin
+          role: UserRole.LiveOpsAdmin,
         };
         mockUserService.getUserProfile = jasmine
           .createSpy('getUserProfile')

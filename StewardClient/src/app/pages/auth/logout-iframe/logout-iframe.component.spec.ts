@@ -14,7 +14,11 @@ describe('LogoutIframeComponent:', () => {
   let component: LogoutIframeComponent;
   let fixture: ComponentFixture<LogoutIframeComponent>;
   let store: Store;
-  const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com', role: UserRole.LiveOpsAdmin, name: `${faker.name.firstName()} ${faker.name.lastName()}` };
+  const testProfile: UserModel = {
+    emailAddress: 'test.email@microsoft.com',
+    role: UserRole.LiveOpsAdmin,
+    name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

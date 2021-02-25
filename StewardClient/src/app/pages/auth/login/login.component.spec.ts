@@ -21,7 +21,11 @@ describe('LoginComponent', () => {
   let activatedRoute: ActivatedRoute;
   let store: Store;
   const sampleRoute = '/i/am/a/route';
-  const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com', role: UserRole.LiveOpsAdmin, name: `${faker.name.firstName()} ${faker.name.lastName()}` };
+  const testProfile: UserModel = {
+    emailAddress: 'test.email@microsoft.com',
+    role: UserRole.LiveOpsAdmin,
+    name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

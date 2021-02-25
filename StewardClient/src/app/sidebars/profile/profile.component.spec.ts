@@ -22,7 +22,6 @@ import { delay } from 'rxjs/operators';
 import { UserRole } from '@models/enums';
 import faker from 'faker';
 
-
 describe('ProfileComponent', () => {
   let mockRouter: Router;
   let mockStore: Store;
@@ -89,10 +88,10 @@ describe('ProfileComponent', () => {
   });
 
   describe('Method: ngOnInit', () => {
-    const testProfile: UserModel = { 
+    const testProfile: UserModel = {
       emailAddress: 'test.email@microsoft.com',
-          name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-          role: UserRole.LiveOpsAdmin
+      name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      role: UserRole.LiveOpsAdmin,
     };
 
     describe('When subscribing to profile returns a value', () => {
