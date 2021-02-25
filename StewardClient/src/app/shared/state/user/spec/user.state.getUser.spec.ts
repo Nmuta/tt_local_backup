@@ -86,7 +86,7 @@ describe('State: User', () => {
         store
           .selectOnce(state => state.user.profile)
           .subscribe(profile => {
-            expect(profile).toBe(UserState.NOT_FOUND);
+            expect(profile).toBe(null);
           });
       });
 
