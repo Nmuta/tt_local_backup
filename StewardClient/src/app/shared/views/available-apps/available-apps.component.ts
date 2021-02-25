@@ -4,7 +4,7 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
-import { UserState } from '@shared/state/user/user.state';
+import { UserState, USER_STATE_NOT_FOUND } from '@shared/state/user/user.state';
 
 /** Displays the apps available to the user, or a login button. */
 @Component({
@@ -13,7 +13,7 @@ import { UserState } from '@shared/state/user/user.state';
   styleUrls: ['./available-apps.component.scss'],
 })
 export class AvailableAppsComponent extends BaseComponent implements OnInit {
-  public userProfile: UserModel;
+  public userProfile: UserModel | USER_STATE_NOT_FOUND;
 
   public areSupportAppsAccessible: boolean = false;
   public areDataAppsAccessible: boolean = false;
@@ -30,10 +30,11 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    this.userProfile = this.store.selectSnapshot<UserModel>(UserState.profile);
-
-    if (!!this.userProfile) {
-      switch (this.userProfile.role) {
+    this.userProfile = this.store.selectSnapshot<UserModel | USER_STATE_NOT_FOUND>(UserState.profile);
+    
+    if (!!(this.userProfile as UserModel)?.role) {
+      const role = (this.userProfile as UserModel).role;
+      switch (role) {
         case UserRole.LiveOpsAdmin:
           this.areSupportAppsAccessible = true;
           this.areDataAppsAccessible = true;
