@@ -6,13 +6,15 @@ import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import faker from 'faker';
 
 import { AuthGuard } from './auth.guard';
+import { UserRole } from '@models/enums';
 
 describe('AuthGuard:', () => {
   let guard: AuthGuard;
   let store: Store;
-  const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
+  const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com', role: UserRole.LiveOpsAdmin, name: `${faker.name.firstName()} ${faker.name.lastName()}` };
   const testRoute: Partial<ActivatedRouteSnapshot> = {};
   const testSnapshot: Partial<RouterStateSnapshot> = { url: '/i/am/a/route?with=query' };
 

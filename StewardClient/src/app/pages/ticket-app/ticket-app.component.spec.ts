@@ -11,6 +11,7 @@ import {
 import { NgxsModule } from '@ngxs/store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import faker from 'faker';
 
 // Helpers
 import { createMockClipboard } from '@shared/helpers/clipboard';
@@ -27,6 +28,7 @@ import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { UserModel } from '@shared/models/user.model';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { UserRole } from '@models/enums';
 
 describe('TicketAppComponent', () => {
   let fixture: ComponentFixture<TicketAppComponent>;
@@ -64,7 +66,7 @@ describe('TicketAppComponent', () => {
   });
 
   describe('Method: ngOnInit', () => {
-    const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
+    const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com', role: UserRole.LiveOpsAdmin, name: `${faker.name.firstName()} ${faker.name.lastName()}` };
 
     describe('When subscribing to profile returns a value', () => {
       beforeEach(() => {
