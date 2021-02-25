@@ -6,9 +6,7 @@ import { createMockMsalService } from '@mocks/msal.service.mock';
 import { NgxsModule, Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { SunriseGiftingState } from './state/sunrise-gifting.state';
-import {
-  SetSunriseGiftingMatTabIndex,
-} from './state/sunrise-gifting.state.actions';
+import { SetSunriseGiftingMatTabIndex } from './state/sunrise-gifting.state.actions';
 import { SunriseGiftingComponent } from './sunrise-gifting.component';
 
 describe('SunriseGiftingComponent', () => {

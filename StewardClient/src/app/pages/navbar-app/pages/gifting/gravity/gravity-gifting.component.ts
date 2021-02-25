@@ -15,9 +15,7 @@ import { SetGravitySelectedPlayerIdentities } from './state/gravity-gifting.stat
   templateUrl: './gravity-gifting.component.html',
   styleUrls: ['./gravity-gifting.component.scss'],
 })
-export class GravityGiftingComponent
-  extends GiftingBaseComponent
-  implements OnInit {
+export class GravityGiftingComponent extends GiftingBaseComponent implements OnInit {
   @Select(GravityGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultBetaBatch>;
 

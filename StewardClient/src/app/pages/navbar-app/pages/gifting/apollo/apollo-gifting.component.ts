@@ -21,9 +21,7 @@ import { AugmentedCompositeIdentity } from '@navbar-app/components/player-select
   templateUrl: './apollo-gifting.component.html',
   styleUrls: ['./apollo-gifting.component.scss'],
 })
-export class ApolloGiftingComponent
-  extends GiftingBaseComponent
-  implements OnInit {
+export class ApolloGiftingComponent extends GiftingBaseComponent implements OnInit {
   @Select(ApolloGiftingState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<
     IdentityResultAlphaBatch
   >;
@@ -70,7 +68,7 @@ export class ApolloGiftingComponent
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentitiesChange(identity: AugmentedCompositeIdentity): void {
-    const newIdentity = identity.extra.hasApollo ? identity.apollo : null
+    const newIdentity = identity.extra.hasApollo ? identity.apollo : null;
     this.store.dispatch(new SetApolloGiftingSelectedPlayerIdentities([newIdentity]));
   }
 

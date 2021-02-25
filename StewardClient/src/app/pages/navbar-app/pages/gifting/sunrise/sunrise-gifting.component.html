@@ -13,9 +13,7 @@
         ></player-selection-bulk>
       </mat-tab>
       <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
-        <sunrise-lsp-group-selection
-          [(ngModel)]="selectedLspGroup"
-        ></sunrise-lsp-group-selection>
+        <sunrise-lsp-group-selection [(ngModel)]="selectedLspGroup"></sunrise-lsp-group-selection>
       </mat-tab>
     </mat-tab-group>
 

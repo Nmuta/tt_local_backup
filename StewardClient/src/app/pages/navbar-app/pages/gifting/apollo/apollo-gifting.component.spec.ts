@@ -7,9 +7,7 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { ApolloGiftingComponent } from './apollo-gifting.component';
 import { ApolloGiftingState } from './state/apollo-gifting.state';
-import {
-  SetApolloGiftingMatTabIndex,
-} from './state/apollo-gifting.state.actions';
+import { SetApolloGiftingMatTabIndex } from './state/apollo-gifting.state.actions';
 
 describe('ApolloGiftingComponent', () => {
   let component: ApolloGiftingComponent;

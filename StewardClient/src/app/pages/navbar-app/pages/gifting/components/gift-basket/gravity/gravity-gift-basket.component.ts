@@ -149,7 +149,9 @@ export class GravityGiftBasketComponent
 
   /** Populates the gift basket from the set reference inventory. */
   public populateGiftBasketFromReference(): void {
-    if (!this.referenceInventory) { return; }
+    if (!this.referenceInventory) {
+      return;
+    }
     const referenceInventory = this.referenceInventory;
     function mapKey(key: keyof GravityMasterInventory): GiftBasketModel[] {
       return referenceInventory[key].map(i => {

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { ApolloMasterInventory } from '@models/apollo';
 import { GravityPlayerInventoryBeta } from '@models/gravity';

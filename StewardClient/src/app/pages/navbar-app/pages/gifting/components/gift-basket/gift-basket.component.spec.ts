@@ -15,7 +15,10 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { SunriseMasterInventory } from '@models/sunrise';
 
 describe('GiftBasketBaseComponent', () => {
-  let fixture: ComponentFixture<GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>>;
+  let fixture: ComponentFixture<GiftBasketBaseComponent<
+    IdentityResultBeta,
+    SunriseMasterInventory
+  >>;
   let component: GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>;
 
   const formBuilder: FormBuilder = new FormBuilder();
@@ -37,7 +40,9 @@ describe('GiftBasketBaseComponent', () => {
       }).compileComponents();
 
       fixture = TestBed.createComponent(
-        GiftBasketBaseComponent as Type<GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>>,
+        GiftBasketBaseComponent as Type<
+          GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>
+        >,
       );
       component = fixture.debugElement.componentInstance;
 

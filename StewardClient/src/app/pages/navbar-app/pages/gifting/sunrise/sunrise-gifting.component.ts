@@ -21,9 +21,7 @@ import {
   templateUrl: './sunrise-gifting.component.html',
   styleUrls: ['./sunrise-gifting.component.scss'],
 })
-export class SunriseGiftingComponent
-  extends GiftingBaseComponent
-  implements OnInit {
+export class SunriseGiftingComponent extends GiftingBaseComponent implements OnInit {
   @Select(SunriseGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 

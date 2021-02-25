@@ -28,9 +28,7 @@ describe('GiftingBaseComponent', () => {
         providers: [createMockMsalService()],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(
-        GiftingBaseComponent as Type<GiftingBaseComponent>,
-      );
+      fixture = TestBed.createComponent(GiftingBaseComponent as Type<GiftingBaseComponent>);
       component = fixture.debugElement.componentInstance;
 
       mockStore = TestBed.inject(Store);

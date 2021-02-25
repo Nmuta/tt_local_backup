@@ -30,7 +30,7 @@ export type GiftBasketModel = MasterInventoryItem & { edit: boolean; error: stri
 export abstract class GiftBasketBaseComponent<
   IdentityT extends IdentityResultUnion,
   MasterInventoryT extends MasterInventoryUnion
-  > extends BaseComponent {
+> extends BaseComponent {
   @Input() public playerIdentities: IdentityT[];
   @Input() public lspGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
