@@ -55,6 +55,8 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
 
   /** When set to true, allows chips to be selected. */
   @Input() public allowSelection: boolean = false;
+  /** When set to true, displays in a single line suitable for a navbar. */
+  @Input() public displayInSingleLine: boolean = false;
 
   /** The chosen type of lookup (two way bindings). */
   @Output() public lookupTypeChange = new EventEmitter<keyof IdentityQueryBetaIntersection>();

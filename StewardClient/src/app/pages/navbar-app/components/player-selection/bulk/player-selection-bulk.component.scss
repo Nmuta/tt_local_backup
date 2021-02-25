@@ -1,8 +1,10 @@
 @import '/src/styles/mixins/variables.scss';
 
 mat-form-field {
-  display: block;
   max-width: 95%; // TODO: This is a hack to avoid the negative margin hiding in here from generating horizontal scroll bars.
+  &:not(.display-in-single-line) {
+    display: block;
+  }
 }
 
 // the chip is clickable

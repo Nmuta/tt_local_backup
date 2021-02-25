@@ -9,7 +9,7 @@
   <mat-button-toggle value="t10Id">T10</mat-button-toggle>
 </mat-button-toggle-group>
 
-<mat-form-field class="example-chip-list">
+<mat-form-field class="player-chip-list" [class.display-in-single-line]="displayInSingleLine">
   <mat-label>{{ lookupType | humanize }}</mat-label>
   <mat-chip-list
     #chipList
