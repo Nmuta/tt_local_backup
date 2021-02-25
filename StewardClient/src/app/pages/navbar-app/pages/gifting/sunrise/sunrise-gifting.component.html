@@ -6,29 +6,35 @@
       (selectedTabChange)="matTabSelectionChange($event.index)"
     >
       <mat-tab label="Player Selection">
-        <!-- Player selection -->
-        <sunrise-player-selection
-          [allowGroup]="true"
-          [allowT10Id]="false"
-          [allowGroup]="true"
-          [(ngModel)]="selectedPlayerIdentities"
-          (ngModelChange)="onPlayerIdentitiesChange($event)"
-          (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
-        ></sunrise-player-selection>
+        <player-selection-bulk
+          [allowSelection]="true"
+          (found)="onPlayerIdentitiesChange($event)"
+          (selected)="playerIdentitySelected($event)"
+        ></player-selection-bulk>
       </mat-tab>
       <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
-        <!-- LSP Group Selection -->
         <sunrise-lsp-group-selection
           [(ngModel)]="selectedLspGroup"
-          (ngModelChange)="onLspGroupChange($event)"
         ></sunrise-lsp-group-selection>
       </mat-tab>
     </mat-tab-group>
+
+    <div class="reference-inventory" *ngIf="selectedPlayerIdentity">
+      <sunrise-player-inventory-profile-picker
+        [identity]="selectedPlayerIdentity"
+        [(profileId)]="selectedPlayerInventoryProfile"
+      ></sunrise-player-inventory-profile-picker>
+      <sunrise-player-inventory
+        [identity]="selectedPlayerIdentity"
+        [profileId]="selectedPlayerInventoryProfile"
+        (inventoryFound)="onInventoryFound($event)"
+      ></sunrise-player-inventory>
+    </div>
   </div>
 
   <div class="default-page-layout-right">
-    <!-- Page tool -->
     <sunrise-gift-basket
+      [referenceInventory]="selectedPlayerInventory"
       [playerIdentities]="selectedPlayerIdentities"
       [lspGroup]="selectedLspGroup"
       [usingPlayerIdentities]="isUsingPlayerIdentities()"

@@ -1,17 +1,28 @@
 <div class="default-page-layout">
   <div class="default-page-layout-left">
-    <gravity-player-selection
-      [allowT10Id]="true"
-      [allowGroup]="true"
-      [(ngModel)]="selectedPlayerIdentities"
-      (ngModelChange)="onPlayerIdentitiesChange($event)"
-      (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
-    ></gravity-player-selection>
+    <player-selection-single
+      [allowSelection]="true"
+      (found)="onPlayerIdentityChange($event)"
+      (selected)="playerIdentitySelected($event)"
+    ></player-selection-single>
+
+    <div class="reference-inventory" *ngIf="selectedPlayerIdentity">
+      <gravity-player-inventory-profile-picker
+        [identity]="selectedPlayerIdentity"
+        [(profileId)]="selectedPlayerInventoryProfile"
+      ></gravity-player-inventory-profile-picker>
+      <gravity-player-inventory
+        [identity]="selectedPlayerIdentity"
+        [profileId]="selectedPlayerInventoryProfile"
+        (inventoryFound)="onInventoryFound($event)"
+      ></gravity-player-inventory>
+    </div>
   </div>
 
   <div class="default-page-layout-right">
     <!-- Page tool -->
     <gravity-gift-basket
+      [referenceInventory]="selectedPlayerInventory"
       [playerIdentities]="selectedPlayerIdentities"
       [lspGroup]="undefined"
       [usingPlayerIdentities]="true"

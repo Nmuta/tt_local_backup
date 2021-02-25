@@ -12,9 +12,9 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
 import { NEVER, Observable, timer } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
-import { GravityGift, GravityPlayerInventory } from '@models/gravity';
-import { SunriseGift, SunrisePlayerInventory } from '@models/sunrise';
-import { ApolloGift, ApolloPlayerInventory } from '@models/apollo';
+import { GravityGift } from '@models/gravity';
+import { SunriseGift } from '@models/sunrise';
+import { ApolloGift } from '@models/apollo';
 
 export type InventoryItemGroup = {
   category: string;
@@ -22,7 +22,6 @@ export type InventoryItemGroup = {
 };
 export type GiftUnion = GravityGift | SunriseGift | ApolloGift;
 export type GiftBasketModel = MasterInventoryItem & { edit: boolean; error: string };
-export type AcceptablePlayerInventoryTypeUnion = ApolloPlayerInventory | SunrisePlayerInventory | GravityPlayerInventory;
 
 /** The base gift-basket component. */
 @Component({
@@ -30,15 +29,15 @@ export type AcceptablePlayerInventoryTypeUnion = ApolloPlayerInventory | Sunrise
 })
 export abstract class GiftBasketBaseComponent<
   IdentityT extends IdentityResultUnion,
-  InventoryT extends AcceptablePlayerInventoryTypeUnion
+  MasterInventoryT extends MasterInventoryUnion
   > extends BaseComponent {
   @Input() public playerIdentities: IdentityT[];
   @Input() public lspGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
-  @Input() public referenceInventory: InventoryT;
+  @Input() public referenceInventory: MasterInventoryT;
 
   /** Master inventory list. */
-  public masterInventory: MasterInventoryUnion;
+  public masterInventory: MasterInventoryT;
   /** The gift basket of current items to be send. */
   public giftBasket = new MatTableDataSource<GiftBasketModel>();
   /** Whether the gift basket has errors in it. */
@@ -94,6 +93,9 @@ export abstract class GiftBasketBaseComponent<
 
   /** Generates a title specific gift. */
   public abstract generateGiftInventoryFromGiftBasket(): GiftUnion;
+
+  /** Populates the gift basket from the set reference inventory. */
+  public abstract populateGiftBasketFromReference(): void;
 
   /** Sends a gift to players. */
   public abstract sendGiftToPlayers(gift: GiftUnion): Observable<BackgroundJob<void>>;

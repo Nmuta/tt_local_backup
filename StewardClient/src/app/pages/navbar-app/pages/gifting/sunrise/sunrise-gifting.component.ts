@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { GameTitleCodeName, UserRole } from '@models/enums';
 import { IdentityResultAlphaBatch, IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
+import { SunriseMasterInventory, SunrisePlayerInventoryProfile } from '@models/sunrise';
 import { UserModel } from '@models/user.model';
+import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 import { Select, Store } from '@ngxs/store';
 import { UserState, USER_STATE_NOT_FOUND } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
@@ -33,6 +35,8 @@ export class SunriseGiftingComponent
   public selectedLspGroup: LspGroup;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
+  public selectedPlayerInventoryProfile: SunrisePlayerInventoryProfile;
+  public selectedPlayerInventory: SunriseMasterInventory;
 
   public disableLspGroupSelection: boolean = true;
 
@@ -68,19 +72,18 @@ export class SunriseGiftingComponent
   }
 
   /** Logic when player selection outputs identities. */
-  public onPlayerIdentitiesChange(event: IdentityResultAlphaBatch): void {
-    this.store.dispatch(new SetSunriseGiftingSelectedPlayerIdentities(event));
+  public onPlayerIdentitiesChange(identity: AugmentedCompositeIdentity[]): void {
+    const newIdentities = identity.filter(i => i.extra.hasSunrise);
+    this.store.dispatch(new SetSunriseGiftingSelectedPlayerIdentities(newIdentities));
   }
 
   /** Player identity selected */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public playerIdentitySelected(identity: IdentityResultAlpha): void {
-    // Empty
+  public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
+    this.selectedPlayerIdentity = identity.extra.hasSunrise ? identity.sunrise : null;
   }
 
-  /** Logic when lspgroup selection outputs new value. */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public onLspGroupChange(event: LspGroup): void {
-    // Empty
+  /** Called when a player inventory is selected and found. */
+  public onInventoryFound(inventory: SunriseMasterInventory): void {
+    this.selectedPlayerInventory = inventory;
   }
 }

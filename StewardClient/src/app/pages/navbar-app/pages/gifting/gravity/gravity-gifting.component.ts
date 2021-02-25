@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
+import { GravityPlayerInventoryBeta, GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 import { IdentityResultBeta, IdentityResultBetaBatch } from '@models/identity-query.model';
+import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -25,6 +27,8 @@ export class GravityGiftingComponent
   public selectedPlayerIdentities: IdentityResultBetaBatch;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultBeta;
+  public selectedPlayerInventoryProfile: GravityPseudoPlayerInventoryProfile;
+  public selectedPlayerInventory: GravityPlayerInventoryBeta;
 
   constructor(protected readonly store: Store) {
     super();
@@ -40,13 +44,19 @@ export class GravityGiftingComponent
   }
 
   /** Logic when player selection outputs identities. */
-  public onPlayerIdentitiesChange(event: IdentityResultBetaBatch): void {
-    this.store.dispatch(new SetGravitySelectedPlayerIdentities(event));
+  public onPlayerIdentityChange(identity: AugmentedCompositeIdentity): void {
+    const newIdentity = identity.extra.hasGravity ? identity.gravity : null;
+    this.selectedPlayerIdentities = [newIdentity];
+    this.store.dispatch(new SetGravitySelectedPlayerIdentities([newIdentity]));
   }
 
   /** Player identity selected */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public playerIdentitySelected(identity: IdentityResultBeta): void {
-    // Empty
+  public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
+    this.selectedPlayerIdentity = identity.extra.hasGravity ? identity.gravity : null;
+  }
+
+  /** Called when a player inventory is selected and found. */
+  public onInventoryFound(inventory: GravityPlayerInventoryBeta): void {
+    this.selectedPlayerInventory = inventory;
   }
 }

@@ -1,6 +1,6 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, forwardRef, OnInit } from '@angular/core';
 import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ApolloGift, ApolloGroupGift, ApolloMasterInventory, ApolloPlayerInventory } from '@models/apollo';
+import { ApolloGift, ApolloGroupGift, ApolloMasterInventory } from '@models/apollo';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
@@ -31,7 +31,7 @@ import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.co
   ],
 })
 export class ApolloGiftBasketComponent
-  extends GiftBasketBaseComponent<IdentityResultBeta, ApolloPlayerInventory>
+  extends GiftBasketBaseComponent<IdentityResultBeta, ApolloMasterInventory>
   implements OnInit {
   @Select(ApolloGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
   public title = GameTitleCodeName.FM7;
@@ -84,6 +84,30 @@ export class ApolloGiftBasketComponent
           .map(item => item as MasterInventoryItem),
       },
     };
+  }
+
+  /** Populates the gift basket from the set reference inventory. */
+  public populateGiftBasketFromReference(): void {
+    if (!this.referenceInventory) { return; }
+    const referenceInventory = this.referenceInventory;
+    function mapKey(key: keyof ApolloMasterInventory): GiftBasketModel[] {
+      return referenceInventory[key].map(i => {
+        return <GiftBasketModel>{
+          description: i.description,
+          id: i.id,
+          itemType: key,
+          quantity: Number(i.quantity),
+          edit: undefined,
+          error: undefined,
+        };
+      });
+    }
+
+    this.setStateGiftBasket([
+      ...mapKey('cars'),
+      ...mapKey('creditRewards'),
+      ...mapKey('vanityItems'),
+    ]);
   }
 
   /** Sends an apollo gift to players. */

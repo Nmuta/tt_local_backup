@@ -144,9 +144,9 @@
           <button
             mat-raised-button
             color="accent"
-            (click)="resetGiftBasketUI(true)"
+            (click)="populateGiftBasketFromReference()"
             [disabled]="!referenceInventory"
-            [matTooltip]="referenceInventory && 'No reference inventory selected'"
+            [matTooltip]="referenceInventory ? null : 'No reference inventory selected'"
           >
             Set Inventory from Reference
           </button>

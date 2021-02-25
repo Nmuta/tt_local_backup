@@ -1,7 +1,8 @@
 @import '/src/variables.scss';
 
 mat-form-field {
-  width: 100%;
+  display: block;
+  max-width: 95%; // TODO: This is a hack to avoid the negative margin hiding in here from generating horizontal scroll bars.
 }
 
 // the chip is clickable

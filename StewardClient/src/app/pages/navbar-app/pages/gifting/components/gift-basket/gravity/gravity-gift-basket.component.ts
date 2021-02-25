@@ -3,7 +3,7 @@ import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
-import { GravityGift, GravityPlayerInventory, GravityMasterInventoryLists } from '@models/gravity';
+import { GravityGift, GravityMasterInventoryLists, GravityMasterInventory } from '@models/gravity';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { GravityGiftingState } from '@navbar-app/pages/gifting/gravity/state/gravity-gifting.state';
@@ -31,7 +31,7 @@ import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.co
   ],
 })
 export class GravityGiftBasketComponent
-  extends GiftBasketBaseComponent<IdentityResultBeta, GravityPlayerInventory>
+  extends GiftBasketBaseComponent<IdentityResultBeta, GravityMasterInventory>
   implements OnInit, OnChanges {
   @Select(GravityGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
 
@@ -113,6 +113,7 @@ export class GravityGiftBasketComponent
 
   /** Angular lifecycle */
   public ngOnChanges(changes: SimpleChanges): void {
+    debugger;
     if (!!changes?.playerIdentities) {
       const playerT10Id = this.playerIdentities.length > 0 ? this.playerIdentities[0].t10Id : null;
       this.newIdentitySelectedSubject$.next(playerT10Id);
@@ -145,6 +146,33 @@ export class GravityGiftBasketComponent
           .map(item => item as MasterInventoryItem),
       },
     };
+  }
+
+  /** Populates the gift basket from the set reference inventory. */
+  public populateGiftBasketFromReference(): void {
+    if (!this.referenceInventory) { return; }
+    const referenceInventory = this.referenceInventory;
+    function mapKey(key: keyof GravityMasterInventory): GiftBasketModel[] {
+      return referenceInventory[key].map(i => {
+        return <GiftBasketModel>{
+          description: i.description,
+          id: i.id,
+          itemType: key,
+          quantity: Number(i.quantity),
+          edit: undefined,
+          error: undefined,
+        };
+      });
+    }
+
+    this.setStateGiftBasket([
+      ...mapKey('cars'),
+      ...mapKey('creditRewards'),
+      ...mapKey('repairKits'),
+      ...mapKey('masteryKits'),
+      ...mapKey('energyRefills'),
+      ...mapKey('upgradeKits'),
+    ]);
   }
 
   /** Sends a gravity gift to players. */

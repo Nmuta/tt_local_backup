@@ -13,7 +13,7 @@ import { LspGroup } from '@models/lsp-group';
 import { UserModel } from '@models/user.model';
 import { UserState, USER_STATE_NOT_FOUND } from '@shared/state/user/user.state';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
-import { ApolloPlayerInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
+import { ApolloMasterInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 
 /** The gifting page for the Navbar app. */
@@ -34,7 +34,7 @@ export class ApolloGiftingComponent
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
   public selectedPlayerInventoryProfile: ApolloPlayerInventoryProfile;
-  public selectedPlayerInventory: ApolloPlayerInventory;
+  public selectedPlayerInventory: ApolloMasterInventory;
 
   constructor(protected readonly store: Store) {
     super();
@@ -80,7 +80,7 @@ export class ApolloGiftingComponent
   }
 
   /** Called when a player inventory is selected and found. */
-  public onInventoryFound(inventory: ApolloPlayerInventory): void {
+  public onInventoryFound(inventory: ApolloMasterInventory): void {
     this.selectedPlayerInventory = inventory;
   }
 }
