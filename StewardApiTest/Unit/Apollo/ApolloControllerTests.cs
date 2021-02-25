@@ -18,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Controllers;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
@@ -42,6 +43,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
             // Assert.
             act.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenLoggingServiceNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { LoggingService = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "loggingService"));
         }
 
         [TestMethod]
@@ -947,6 +962,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
             }
 
+            public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
+
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
 
             public IApolloPlayerDetailsProvider ApolloPlayerDetailsProvider { get; set; } = Substitute.For<IApolloPlayerDetailsProvider>();
@@ -980,6 +997,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             public IRequestValidator<ApolloUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<ApolloUserFlagsInput>>();
 
             public ApolloController Build() => new ApolloController(
+                this.LoggingService,
                 this.KustoProvider,
                 this.ApolloPlayerDetailsProvider,
                 this.ApolloPlayerInventoryProvider,
