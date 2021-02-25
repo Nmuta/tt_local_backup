@@ -98,7 +98,6 @@ export class UserState {
   public requestAccessToken(ctx: StateContext<UserStateModel>): Observable<void> {
     // If access token exists, exit logic
     const currentState = ctx.getState();
-    debugger;
     if (currentState.accessToken) {
       return of();
     }
