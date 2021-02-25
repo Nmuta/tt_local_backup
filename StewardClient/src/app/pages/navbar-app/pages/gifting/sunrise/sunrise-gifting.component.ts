@@ -20,7 +20,7 @@ import {
   styleUrls: ['./sunrise-gifting.component.scss'],
 })
 export class SunriseGiftingComponent
-  extends GiftingBaseComponent<IdentityResultAlpha>
+  extends GiftingBaseComponent
   implements OnInit {
   @Select(SunriseGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;

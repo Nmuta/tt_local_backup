@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -14,7 +14,6 @@ import { UserModel } from '@models/user.model';
 import { UserState, USER_STATE_NOT_FOUND } from '@shared/state/user/user.state';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { ApolloPlayerInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
-import { ApolloGiftBasketComponent } from '../components/gift-basket/apollo/apollo-gift-basket.component';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 
 /** The gifting page for the Navbar app. */
@@ -23,7 +22,7 @@ import { AugmentedCompositeIdentity } from '@navbar-app/components/player-select
   styleUrls: ['./apollo-gifting.component.scss'],
 })
 export class ApolloGiftingComponent
-  extends GiftingBaseComponent<IdentityResultAlpha>
+  extends GiftingBaseComponent
   implements OnInit {
   @Select(ApolloGiftingState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<
     IdentityResultAlphaBatch
@@ -70,20 +69,14 @@ export class ApolloGiftingComponent
   }
 
   /** Logic when player selection outputs identities. */
-  public onPlayerIdentitiesChange(event: IdentityResultAlphaBatch): void {
-    this.store.dispatch(new SetApolloGiftingSelectedPlayerIdentities(event));
+  public onPlayerIdentitiesChange(identity: AugmentedCompositeIdentity): void {
+    const newIdentity = identity.extra.hasApollo ? identity.apollo : null
+    this.store.dispatch(new SetApolloGiftingSelectedPlayerIdentities([newIdentity]));
   }
 
   /** Player identity selected */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
-    this.selectedPlayerIdentity = identity.apollo;
-  }
-
-  /** Logic when lspgroup selection outputs new value. */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public onLspGroupChange(event: LspGroup): void {
-    // Empty
+    this.selectedPlayerIdentity = identity.extra.hasApollo ? identity.apollo : null;
   }
 
   /** Called when a player inventory is selected and found. */
