@@ -5,14 +5,17 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
+import { Store } from '@ngxs/store';
+import { RecheckAuth } from '@shared/state/user/user.actions';
 import { Observable } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
 /** Defines the api service. */
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private store: Store) {}
 
   /** Sends a GET request. */
   public getRequest<T>(url: string, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
@@ -20,7 +23,15 @@ export class ApiService {
     const get = this.http.get<T>(apiUrl, {
       params,
       headers,
-    });
+    }).pipe(
+      tap(v => { debugger; }),
+      catchError((error, caught) => {
+        if (error.status === 401) {
+          return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
+        }
+
+        return caught;
+      }));
 
     return get;
   }
@@ -33,7 +44,15 @@ export class ApiService {
     const post = this.http.post<T>(apiUrl, object, {
       headers,
       params,
-    });
+    }).pipe(
+      tap(v => { debugger; }),
+      catchError((error, caught) => {
+        if (error.status === 401) {
+          return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
+        }
+
+        return caught;
+      }));
 
     return post;
   }
@@ -46,7 +65,15 @@ export class ApiService {
     const put = this.http.put<T>(apiUrl, object, {
       headers,
       params,
-    });
+    }).pipe(
+      tap(v => { debugger; }),
+      catchError((error, caught) => {
+        if (error.status === 401) {
+          return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
+        }
+
+        return caught;
+      }));
 
     return put;
   }
@@ -59,7 +86,15 @@ export class ApiService {
     const del = this.http.delete<T>(apiUrl, {
       headers,
       params,
-    });
+    }).pipe(
+      tap(v => { debugger; }),
+      catchError((error, caught) => {
+        if (error.status === 401) {
+          return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
+        }
+
+        return caught;
+      }));
 
     return del;
   }
