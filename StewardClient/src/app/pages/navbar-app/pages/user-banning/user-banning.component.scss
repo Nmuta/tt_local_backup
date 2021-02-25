@@ -1,6 +1,5 @@
 @import '/src/styles/mixins/variables.scss';
 
-.navbar-button-active {
-  background-color: mat-color($app-accent);
-  color: #fff;
+.mat-stroked-button {
+  border-color: rgba(mat-color($app-background, default-contrast), .333);
 }
