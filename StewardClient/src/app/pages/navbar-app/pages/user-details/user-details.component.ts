@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { IdentityQueryBetaIntersection } from '@models/identity-query.model';
-import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection-single/player-selection-base.component';
+import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { first } from 'lodash';

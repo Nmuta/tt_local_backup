@@ -13,13 +13,13 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { first } from 'lodash';
 import { of, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { AugmentedCompositeIdentity } from './player-selection-base.component';
+import { AugmentedCompositeIdentity } from '../player-selection-base.component';
 
-import { PlayerSelectionSingleComponent } from './player-selection-single.component';
+import { PlayerSelectionBulkComponent } from './player-selection-bulk.component';
 
-describe('PlayerSelectionSingleComponent', () => {
-  let component: PlayerSelectionSingleComponent;
-  let fixture: ComponentFixture<PlayerSelectionSingleComponent>;
+describe('PlayerSelectionBulkComponent', () => {
+  let component: PlayerSelectionBulkComponent;
+  let fixture: ComponentFixture<PlayerSelectionBulkComponent>;
   let sunrise: SunriseService;
   let opus: OpusService;
   let gravity: GravityService;
@@ -28,7 +28,7 @@ describe('PlayerSelectionSingleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PlayerSelectionSingleComponent],
+      declarations: [PlayerSelectionBulkComponent],
       imports: [MatButtonToggleModule, PipesModule],
       providers: [
         createMockSunriseService(),
@@ -69,7 +69,7 @@ describe('PlayerSelectionSingleComponent', () => {
 
   beforeEach(
     waitForAsync(() => {
-      fixture = TestBed.createComponent(PlayerSelectionSingleComponent);
+      fixture = TestBed.createComponent(PlayerSelectionBulkComponent);
       component = fixture.componentInstance;
       component.lookupListChange.emit = jasmine.createSpy('emit').and.callThrough();
       component.lookupTypeChange.emit = jasmine.createSpy('emit').and.callThrough();
@@ -160,7 +160,7 @@ describe('PlayerSelectionSingleComponent', () => {
       });
     });
 
-    describe('when single-line data pasted', () => {
+    describe('when bulk-line data pasted', () => {
       let pasteEvent: ClipboardEvent;
       const fakeGamertag = 'FakeGamertag';
 

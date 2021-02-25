@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { MatChipListChange } from '@angular/material/chips';
 import { ApolloService } from '@services/apollo';
 import { GravityService } from '@services/gravity';
 import { OpusService } from '@services/opus';
@@ -7,7 +8,7 @@ import { first } from 'lodash';
 import {
   AugmentedCompositeIdentity,
   PlayerSelectionBaseComponent,
-} from './player-selection-base.component';
+} from '../player-selection-base.component';
 
 /** An inline user-picker with a single output. */
 @Component({
@@ -17,6 +18,7 @@ import {
 })
 export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent {
   @Output() public found = new EventEmitter<AugmentedCompositeIdentity>();
+  @Output() public selected = new EventEmitter<AugmentedCompositeIdentity>();
 
   /** True when the input should be disabled */
   public get disable(): boolean {
@@ -36,9 +38,16 @@ export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent
   /** Called when a new set of results is found and populated into @see foundIdentities */
   public onFound(): void {
     if (this.foundIdentities.length > 1) {
-      throw new Error(`${this.constructor.name} was allowed to select multiple identities.`);
+      throw new Error(`${this.constructor.name} was allowed to find multiple identities.`);
     }
 
     this.found.emit(first(this.foundIdentities));
+  }
+
+  /** Called when a new set of results is selected. */
+  public onSelect(change: MatChipListChange): void {
+    const values = change.value as AugmentedCompositeIdentity;
+
+    this.selected.next(values);
   }
 }

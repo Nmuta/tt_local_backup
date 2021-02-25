@@ -31,7 +31,7 @@ import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.co
   ],
 })
 export class SunriseGiftBasketComponent
-  extends GiftBasketBaseComponent<IdentityResultBeta>
+  extends GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>
   implements OnInit {
   @Select(SunriseGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
   public title = GameTitleCodeName.FH4;
@@ -93,6 +93,35 @@ export class SunriseGiftBasketComponent
           .map(item => item as MasterInventoryItem),
       },
     };
+  }
+
+  /** Populates the gift basket from the set reference inventory. */
+  public populateGiftBasketFromReference(): void {
+    if (!this.referenceInventory) {
+      return;
+    }
+    const referenceInventory = this.referenceInventory;
+    function mapKey(key: keyof SunriseMasterInventory): GiftBasketModel[] {
+      return referenceInventory[key].map(i => {
+        return <GiftBasketModel>{
+          description: i.description,
+          id: i.id,
+          itemType: key,
+          quantity: Number(i.quantity),
+          edit: undefined,
+          error: undefined,
+        };
+      });
+    }
+
+    this.setStateGiftBasket([
+      ...mapKey('cars'),
+      ...mapKey('creditRewards'),
+      ...mapKey('vanityItems'),
+      ...mapKey('carHorns'),
+      ...mapKey('quickChatLines'),
+      ...mapKey('emotes'),
+    ]);
   }
 
   /** Sends a sunrise gift to players. */

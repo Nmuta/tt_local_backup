@@ -1,4 +1,12 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { ApolloMasterInventory } from '@models/apollo';
 import { GravityPlayerInventoryBeta } from '@models/gravity';
@@ -34,6 +42,7 @@ export abstract class PlayerInventoryBaseComponent<
   implements OnInit, OnChanges {
   @Input() public identity: IdentityResultType;
   @Input() public profileId: bigint | undefined | null;
+  @Output() public inventoryFound = new EventEmitter<PlayerInventoryType>();
 
   /** The located inventory. */
   public inventory: PlayerInventoryType;
@@ -103,6 +112,7 @@ export abstract class PlayerInventoryBaseComponent<
       )
       .subscribe(inventory => {
         this.inventory = inventory;
+        this.inventoryFound.emit(inventory);
         this.whatToShow = this.makeWhatToShow();
       });
 

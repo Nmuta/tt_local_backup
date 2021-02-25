@@ -1,0 +1,56 @@
+<mat-button-toggle-group
+  [class.fill-button-toggle-group]="!displayInSingleLine"
+  aria-label="ID Type"
+  name="lookupType"
+  #lookupTypeGroup="matButtonToggleGroup"
+  [(ngModel)]="lookupType"
+>
+  <mat-button-toggle value="gamertag">GTAG</mat-button-toggle>
+  <mat-button-toggle value="xuid">XUID</mat-button-toggle>
+  <mat-button-toggle value="t10Id">T10</mat-button-toggle>
+</mat-button-toggle-group>
+
+<mat-form-field class="player-chip-list" [class.display-in-single-line]="displayInSingleLine">
+  <mat-label>{{ lookupType | humanize }}</mat-label>
+  <mat-chip-list
+    #chipList
+    aria-label="Fruit selection"
+    [selectable]="allowSelection"
+    (change)="onSelect($event)"
+  >
+    <mat-chip
+      *ngFor="let identity of foundIdentities"
+      #chip="matChip"
+      (click)="chip.toggleSelected(true)"
+      [selectable]="allowSelection"
+      [removable]="true"
+      [value]="identity"
+      [class.identity-valid]="identity.extra?.isValid"
+      [class.identity-invalid]="identity.extra?.isInvalid"
+      [color]="identity.extra?.theme"
+      (removed)="remove(identity)"
+    >
+      <span>{{ identity.query[this.lookupType] }}</span>
+
+      <error-spinner
+        [isActive]="!identity.extra"
+        [error]="identity.extra?.isInvalid ? identity : undefined"
+        spinnerMessage="Finding user"
+      ></error-spinner>
+
+      <span *ngIf="identity.extra?.label" [matTooltip]="identity.extra?.labelTooltip">
+        ({{ identity.extra.label }})
+      </span>
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+    <input
+      [disabled]="this.disable"
+      [placeholder]="this.disable ? '' : 'New ' + (this.lookupType | humanize)"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [matChipInputAddOnBlur]="true"
+      (paste)="paste($event)"
+      (matChipInputTokenEnd)="add($event)"
+    />
+  </mat-chip-list>
+</mat-form-field>

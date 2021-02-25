@@ -36,6 +36,7 @@ import { GiftingResultModule } from '../gifting-result/gifting-result.module';
     MatOptionModule,
     MatSelectModule,
     MatTableModule,
+    MatTooltipModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,

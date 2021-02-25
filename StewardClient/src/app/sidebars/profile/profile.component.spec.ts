@@ -103,7 +103,7 @@ describe('ProfileComponent', () => {
 
       it('Should set profile', () => {
         component.ngOnInit();
-        expect(component.profile).toEqual(testProfile);
+        expect(component.user).toEqual(testProfile);
       });
 
       it('Should set loading to false', () => {

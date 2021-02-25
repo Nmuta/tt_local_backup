@@ -1,5 +1,9 @@
 @import '/src/styles/mixins/variables.scss';
 
+mat-form-field {
+  width: 100%;
+}
+
 // the chip is clickable
 mat-chip {
   cursor: pointer;
