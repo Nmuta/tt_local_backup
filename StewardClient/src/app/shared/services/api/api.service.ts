@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Store } from '@ngxs/store';
+import { LoggerService, LogTopic } from '@services/logger';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { Logger } from 'msal';
 import { Observable } from 'rxjs';
@@ -19,7 +20,7 @@ export class ApiService {
   constructor(
     private readonly http: HttpClient,
     private readonly store: Store,
-    private readonly logger: Logger,
+    private readonly logger: LoggerService,
   ) {}
 
   /** Sends a GET request. */
@@ -33,7 +34,7 @@ export class ApiService {
       .pipe(
         catchError((error, caught) => {
           if (error.status === 401) {
-            this.logger.warning('Received 401; attempting silent reauth and retry');
+            this.logger.warn([LogTopic.Auth], 'Received 401; attempting silent reauth and retry');
             return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
           }
 
@@ -57,7 +58,7 @@ export class ApiService {
       .pipe(
         catchError((error, caught) => {
           if (error.status === 401) {
-            this.logger.warning('Received 401; attempting silent reauth and retry');
+            this.logger.warn([LogTopic.Auth], 'Received 401; attempting silent reauth and retry');
             return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
           }
 
@@ -81,7 +82,7 @@ export class ApiService {
       .pipe(
         catchError((error, caught) => {
           if (error.status === 401) {
-            this.logger.warning('Received 401; attempting silent reauth and retry');
+            this.logger.warn([LogTopic.Auth], 'Received 401; attempting silent reauth and retry');
             return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
           }
 
@@ -105,7 +106,7 @@ export class ApiService {
       .pipe(
         catchError((error, caught) => {
           if (error.status === 401) {
-            this.logger.warning('Received 401; attempting silent reauth and retry');
+            this.logger.warn([LogTopic.Auth], 'Received 401; attempting silent reauth and retry');
             return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
           }
 
