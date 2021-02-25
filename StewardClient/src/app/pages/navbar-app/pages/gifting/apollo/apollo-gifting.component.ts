@@ -7,7 +7,7 @@ import {
   SetApolloGiftingSelectedPlayerIdentities,
 } from './state/apollo-gifting.state.actions';
 import { ApolloGiftingState } from './state/apollo-gifting.state';
-import { GameTitleCodeName, UserRole } from '@models/enums';
+import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { UserModel } from '@models/user.model';

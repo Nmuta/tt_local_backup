@@ -30,9 +30,7 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
-    this.userProfile = this.store.selectSnapshot<UserModel>(
-      UserState.profile,
-    );
+    this.userProfile = this.store.selectSnapshot<UserModel>(UserState.profile);
 
     if (!!(this.userProfile as UserModel)?.role) {
       const role = (this.userProfile as UserModel).role;
