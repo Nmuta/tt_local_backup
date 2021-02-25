@@ -2,6 +2,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 
+// TODO: Temporary while we're figuring out how to properly retry these
+/* eslint-disable no-debugger */
+
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
@@ -20,18 +23,23 @@ export class ApiService {
   /** Sends a GET request. */
   public getRequest<T>(url: string, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
-    const get = this.http.get<T>(apiUrl, {
-      params,
-      headers,
-    }).pipe(
-      tap(v => { debugger; }),
-      catchError((error, caught) => {
-        if (error.status === 401) {
-          return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
-        }
+    const get = this.http
+      .get<T>(apiUrl, {
+        params,
+        headers,
+      })
+      .pipe(
+        tap(_v => {
+          debugger;
+        }),
+        catchError((error, caught) => {
+          if (error.status === 401) {
+            return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
+          }
 
-        return caught;
-      }));
+          return caught;
+        }),
+      );
 
     return get;
   }
@@ -41,18 +49,23 @@ export class ApiService {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    const post = this.http.post<T>(apiUrl, object, {
-      headers,
-      params,
-    }).pipe(
-      tap(v => { debugger; }),
-      catchError((error, caught) => {
-        if (error.status === 401) {
-          return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
-        }
+    const post = this.http
+      .post<T>(apiUrl, object, {
+        headers,
+        params,
+      })
+      .pipe(
+        tap(_v => {
+          debugger;
+        }),
+        catchError((error, caught) => {
+          if (error.status === 401) {
+            return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
+          }
 
-        return caught;
-      }));
+          return caught;
+        }),
+      );
 
     return post;
   }
@@ -62,18 +75,23 @@ export class ApiService {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    const put = this.http.put<T>(apiUrl, object, {
-      headers,
-      params,
-    }).pipe(
-      tap(v => { debugger; }),
-      catchError((error, caught) => {
-        if (error.status === 401) {
-          return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
-        }
+    const put = this.http
+      .put<T>(apiUrl, object, {
+        headers,
+        params,
+      })
+      .pipe(
+        tap(_v => {
+          debugger;
+        }),
+        catchError((error, caught) => {
+          if (error.status === 401) {
+            return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
+          }
 
-        return caught;
-      }));
+          return caught;
+        }),
+      );
 
     return put;
   }
@@ -83,18 +101,23 @@ export class ApiService {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    const del = this.http.delete<T>(apiUrl, {
-      headers,
-      params,
-    }).pipe(
-      tap(v => { debugger; }),
-      catchError((error, caught) => {
-        if (error.status === 401) {
-          return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
-        }
+    const del = this.http
+      .delete<T>(apiUrl, {
+        headers,
+        params,
+      })
+      .pipe(
+        tap(_v => {
+          debugger;
+        }),
+        catchError((error, caught) => {
+          if (error.status === 401) {
+            return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
+          }
 
-        return caught;
-      }));
+          return caught;
+        }),
+      );
 
     return del;
   }
