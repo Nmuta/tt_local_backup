@@ -12,9 +12,9 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
 import { NEVER, Observable, timer } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
-import { GravityGift } from '@models/gravity';
-import { SunriseGift } from '@models/sunrise';
-import { ApolloGift } from '@models/apollo';
+import { GravityGift, GravityPlayerInventory } from '@models/gravity';
+import { SunriseGift, SunrisePlayerInventory } from '@models/sunrise';
+import { ApolloGift, ApolloPlayerInventory } from '@models/apollo';
 
 export type InventoryItemGroup = {
   category: string;
@@ -22,15 +22,20 @@ export type InventoryItemGroup = {
 };
 export type GiftUnion = GravityGift | SunriseGift | ApolloGift;
 export type GiftBasketModel = MasterInventoryItem & { edit: boolean; error: string };
+export type AcceptablePlayerInventoryTypeUnion = ApolloPlayerInventory | SunrisePlayerInventory | GravityPlayerInventory;
 
 /** The base gift-basket component. */
 @Component({
   template: '',
 })
-export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> extends BaseComponent {
-  @Input() public playerIdentities: T[];
+export abstract class GiftBasketBaseComponent<
+  IdentityT extends IdentityResultUnion,
+  InventoryT extends AcceptablePlayerInventoryTypeUnion
+  > extends BaseComponent {
+  @Input() public playerIdentities: IdentityT[];
   @Input() public lspGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
+  @Input() public referenceInventory: InventoryT;
 
   /** Master inventory list. */
   public masterInventory: MasterInventoryUnion;

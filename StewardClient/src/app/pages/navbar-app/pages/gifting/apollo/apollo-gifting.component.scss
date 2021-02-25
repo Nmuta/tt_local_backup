@@ -1,1 +1,10 @@
 @import '/src/variables.scss';
+
+.default-page-layout-left {
+  display: flex;
+  flex-flow: row wrap;
+
+  .reference-inventory {
+    flex-grow: 1;
+  }
+}

@@ -20,6 +20,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { GiftBasketModule } from './components/gift-basket/gift-basket.module';
 import { ItemSelectionModule } from './components/item-selection/item-selection.module';
 import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
+import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
+import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inventory.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -46,6 +48,8 @@ import { PlayerSelectionModule } from '@navbar-app/components/player-selection/p
     GiftBasketModule,
     ItemSelectionModule,
     PlayerSelectionModule,
+    PlayerInventoryProfilesModule,
+    PlayerInventoryModule,
   ],
 })
 export class GiftingsModule {}

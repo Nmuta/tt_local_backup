@@ -5,7 +5,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
-import { SunriseGift, SunriseGroupGift } from '@models/sunrise';
+import { SunriseGift, SunriseGroupGift, SunrisePlayerInventory } from '@models/sunrise';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { SunriseGiftingState } from '@navbar-app/pages/gifting/sunrise/state/sunrise-gifting.state';
 import { SetSunriseGiftBasket } from '@navbar-app/pages/gifting/sunrise/state/sunrise-gifting.state.actions';
@@ -32,7 +32,7 @@ import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.co
   ],
 })
 export class SunriseGiftBasketComponent
-  extends GiftBasketBaseComponent<IdentityResultBeta>
+  extends GiftBasketBaseComponent<IdentityResultBeta, SunrisePlayerInventory>
   implements OnInit {
   @Select(SunriseGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
   public title = GameTitleCodeName.FH4;

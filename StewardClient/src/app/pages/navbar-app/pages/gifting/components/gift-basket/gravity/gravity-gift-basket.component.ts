@@ -3,7 +3,7 @@ import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
-import { GravityGift } from '@models/gravity';
+import { GravityGift, GravityPlayerInventory } from '@models/gravity';
 import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
@@ -32,7 +32,7 @@ import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.co
   ],
 })
 export class GravityGiftBasketComponent
-  extends GiftBasketBaseComponent<IdentityResultBeta>
+  extends GiftBasketBaseComponent<IdentityResultBeta, GravityPlayerInventory>
   implements OnInit, OnChanges {
   @Select(GravityGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
 

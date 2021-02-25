@@ -141,6 +141,15 @@
           >
             Clear Gift Basket
           </button>
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="resetGiftBasketUI(true)"
+            [disabled]="!referenceInventory"
+            [matTooltip]="referenceInventory && 'No reference inventory selected'"
+          >
+            Set Inventory from Reference
+          </button>
         </div>
       </ng-container>
     </ng-container>

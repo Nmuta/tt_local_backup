@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { ApolloPlayerInventory } from '@models/apollo';
 import { ApolloInventoryItem } from '@models/apollo/inventory-items';
@@ -42,6 +42,7 @@ export abstract class PlayerInventoryBaseComponent<
   implements OnInit, OnChanges {
   @Input() public identity: IdentityResultType;
   @Input() public profileId: bigint | undefined | null;
+  @Output() public inventoryFound = new EventEmitter<PlayerInventoryType>();
 
   /** The located inventory. */
   public inventory: PlayerInventoryType;
@@ -94,6 +95,7 @@ export abstract class PlayerInventoryBaseComponent<
         }),
         filter(v => !!v.identity),
         switchMap(v => {
+          debugger;
           const request$ = v.profileId
             ? this.getPlayerInventoryByIdentityAndProfileId(v.identity, v.profileId)
             : this.getPlayerInventoryByIdentity(v.identity);
@@ -111,6 +113,7 @@ export abstract class PlayerInventoryBaseComponent<
       )
       .subscribe(inventory => {
         this.inventory = inventory;
+        this.inventoryFound.emit(inventory);
         this.whatToShow = this.makeWhatToShow();
       });
 
