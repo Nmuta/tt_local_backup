@@ -1,0 +1,13 @@
+@import '/src/styles/mixins/variables.scss';
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: mat-color($app-theme, 50);
+}
+
+::-webkit-scrollbar-thumb {
+  background: mat-color($app-theme, 800);
+}

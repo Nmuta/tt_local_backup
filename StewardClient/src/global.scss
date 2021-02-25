@@ -1,49 +1,7 @@
-@import '/src/variables.scss';
-@import '/src/variables-introspection.scss';
-
-@include mat-core();
-@include angular-material-theme($app-theme);
-
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
-}
-
-::-webkit-scrollbar {
-  width: 3px;
-}
-
-::-webkit-scrollbar-track {
-  background: mat-color($app-theme, 50);
-}
-
-::-webkit-scrollbar-thumb {
-  background: mat-color($app-theme, 800);
-}
-
-// Default page layout template
-.default-page-layout {
-  display: flex;
-  flex-flow: row wrap;
-  > * {
-    margin: 10px;
-  }
-
-  .default-page-layout-left {
-  }
-
-  .default-page-layout-right {
-    display: flex;
-    flex-flow: column nowrap;
-    flex-grow: 1;
-    margin: 0;
-    > * {
-      margin: 10px;
-    }
-  }
-}
+@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins/variables-introspection.scss';
+@import '/src/styles/global/angular-material.scss';
+@import '/src/styles/global/body.scss';
+@import '/src/styles/global/angular-material-drawer.scss';
+@import '/src/styles/global/angular-material-tabs.scss';
+@import '/src/styles/global/default-page-layout.scss';

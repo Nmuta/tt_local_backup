@@ -19,6 +19,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -47,6 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ConfigurationKeyConstants.GroupGiftPasswordSecretName
         };
 
+        private readonly ILoggingService loggingService;
         private readonly IKustoProvider kustoProvider;
         private readonly IApolloPlayerDetailsProvider apolloPlayerDetailsProvider;
         private readonly IApolloPlayerInventoryProvider apolloPlayerInventoryProvider;
@@ -63,6 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloController"/> class.
         /// </summary>
+        /// <param name="loggingService">The logging service.</param>
         /// <param name="kustoProvider">The Kusto provider.</param>
         /// <param name="apolloPlayerDetailsProvider">The Apollo player details provider.</param>
         /// <param name="apolloPlayerInventoryProvider">The Apollo player inventory provider.</param>
@@ -78,6 +81,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
         /// <param name="userFlagsRequestValidator">The user flags request validator.</param>
         public ApolloController(
+            ILoggingService loggingService,
             IKustoProvider kustoProvider,
             IApolloPlayerDetailsProvider apolloPlayerDetailsProvider,
             IApolloPlayerInventoryProvider apolloPlayerInventoryProvider,
@@ -93,6 +97,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<ApolloGroupGift> groupGiftRequestValidator,
             IRequestValidator<ApolloUserFlagsInput> userFlagsRequestValidator)
         {
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             apolloPlayerDetailsProvider.ShouldNotBeNull(nameof(apolloPlayerDetailsProvider));
             apolloPlayerInventoryProvider.ShouldNotBeNull(nameof(apolloPlayerInventoryProvider));
@@ -109,6 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
+            this.loggingService = loggingService;
             this.kustoProvider = kustoProvider;
             this.apolloPlayerDetailsProvider = apolloPlayerDetailsProvider;
             this.apolloPlayerInventoryProvider = apolloPlayerInventoryProvider;
@@ -490,7 +496,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.NotFound($"No inventory found for XUID: {xuid}.");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -518,7 +524,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.NotFound($"No inventory found for Profile ID: {profileId}");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
             return this.Ok(playerInventory);
         }
 

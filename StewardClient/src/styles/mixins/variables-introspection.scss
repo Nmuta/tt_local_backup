@@ -1,6 +1,6 @@
 // This file contains some build-time print statements for introspection and some samples of their output.
 // Do not import this file outside global.scss
-@import '/src/variables.scss';
+@import '/src/styles/mixins/variables.scss';
 
 @debug '$app-background: ' $app-background; // this is a of background-relevant colors. uncomment this line to see what's available on build.
 // $--app-background-sample: $mat-light-theme-background;
