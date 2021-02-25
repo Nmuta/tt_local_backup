@@ -7,6 +7,14 @@ mat-form-field {
   }
 }
 
+.fill-button-toggle-group {
+  width: 100%;
+
+  > * {
+    width: 100%;
+  }
+}
+
 // the chip is clickable
 mat-chip {
   cursor: pointer;
