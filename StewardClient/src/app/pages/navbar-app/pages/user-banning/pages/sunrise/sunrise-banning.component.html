@@ -1,5 +1,5 @@
-<form [formGroup]="formGroup">
-  <div class="left">
+<div class="default-page-layout">
+  <div class="default-page-layout-left">
     <sunrise-player-selection
       #playerSelection
       [allowT10Id]="false"
@@ -31,26 +31,23 @@
     </div>
   </div>
 
-  <div class="action-container">
+  <div class="default-page-layout-right">
     <mat-card>
       <mat-card-content>
-        <ban-options [formControl]="formControls.banOptions"></ban-options>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card>
-      <mat-card-content>
-        <verify-action-button
-          #submitButton
-          [action]="submit"
-          [alwaysShow]="true"
-          [canSubmit]="formGroup.valid"
-          [canSubmitDisabledReason]="'Form is invalid'"
-          checkboxText="Check to verify ban"
-        >
-          Submit ban
-        </verify-action-button>
+        <form [formGroup]="formGroup">
+          <ban-options [formControl]="formControls.banOptions"></ban-options>
+          <verify-action-button
+            #submitButton
+            [action]="submit"
+            [alwaysShow]="true"
+            [canSubmit]="formGroup.valid"
+            [canSubmitDisabledReason]="'Form is invalid'"
+            checkboxText="Check to verify ban"
+          >
+            Submit ban
+          </verify-action-button>
+        </form>
       </mat-card-content>
     </mat-card>
   </div>
-</form>
+</div>

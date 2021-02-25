@@ -1,10 +1,12 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { of } from 'rxjs';
 import { delay, startWith } from 'rxjs/operators';
+import faker from 'faker';
 
 import { LogoutIframeComponent } from './logout-iframe.component';
 
@@ -12,7 +14,11 @@ describe('LogoutIframeComponent:', () => {
   let component: LogoutIframeComponent;
   let fixture: ComponentFixture<LogoutIframeComponent>;
   let store: Store;
-  const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
+  const testProfile: UserModel = {
+    emailAddress: 'test.email@microsoft.com',
+    role: UserRole.LiveOpsAdmin,
+    name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

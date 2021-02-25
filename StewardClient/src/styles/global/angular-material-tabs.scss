@@ -1,0 +1,11 @@
+@import '/src/styles/mixins/variables.scss';
+
+.mat-tab-labels {
+  background-color: #fff;
+
+  .mat-tab-label-active {
+    background-color: mat-color($app-primary);
+    color: #fff;
+    opacity: 1;
+  }
+}

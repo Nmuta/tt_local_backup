@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { RequestAccessToken } from '@shared/state/user/user.actions';
 
 /** Defines the app component. */
 @Component({
@@ -7,7 +9,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor() {
-    // Empty
+  constructor(private readonly store: Store) {
+    this.store.dispatch(new RequestAccessToken());
   }
 }
