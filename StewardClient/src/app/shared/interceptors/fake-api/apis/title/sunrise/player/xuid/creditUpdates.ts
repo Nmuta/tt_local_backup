@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
+import { SunriseCreditHistory } from '@models/sunrise';
 import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */

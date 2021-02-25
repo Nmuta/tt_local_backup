@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { BackgroundJob } from '@models/background-job';
 import { GuidLikeString, T10IdString } from '@models/extended-types';
 import {
+  GravityGift,
   GravityGiftHistory,
+  GravityMasterInventory,
   GravityPlayerDetails,
-  GravityPlayerInventory,
+  GravityPlayerInventoryBeta,
   GravityPseudoPlayerInventoryProfile,
   gravitySaveStatesToPsuedoInventoryProfile,
 } from '@models/gravity';
-import { GravityGift } from '@models/gravity/gravity-gift.model';
-import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
   IdentityQueryBeta,
   IdentityQueryBetaBatch,
@@ -66,8 +66,8 @@ export class GravityService {
   }
 
   /** Gets the gravity player's inventory */
-  public getPlayerInventoryByT10Id(t10Id: T10IdString): Observable<GravityPlayerInventory> {
-    return this.apiService.getRequest<GravityPlayerInventory>(
+  public getPlayerInventoryByT10Id(t10Id: T10IdString): Observable<GravityPlayerInventoryBeta> {
+    return this.apiService.getRequest<GravityPlayerInventoryBeta>(
       `${this.basePath}/player/t10Id(${t10Id})/inventory`,
     );
   }
@@ -85,8 +85,8 @@ export class GravityService {
   public getPlayerInventoryByT10IdAndProfileId(
     t10Id: string,
     profileId: bigint,
-  ): Observable<GravityPlayerInventory> {
-    return this.apiService.getRequest<GravityPlayerInventory>(
+  ): Observable<GravityPlayerInventoryBeta> {
+    return this.apiService.getRequest<GravityPlayerInventoryBeta>(
       `${this.basePath}/player/t10Id(${t10Id})/profileId(${profileId})/inventory`,
     );
   }

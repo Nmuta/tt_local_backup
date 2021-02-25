@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
+import { UserModel } from '@models/user.model';
 import { Select } from '@ngxs/store';
 import { WindowService } from '@services/window';
-import { UserModel } from '@shared/models/user.model';
 import { ZendeskService } from '@shared/services/zendesk';
 import { UserState, USER_STATE_NOT_FOUND } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';

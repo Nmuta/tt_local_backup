@@ -35,7 +35,7 @@ mat-card {
       width: 100%;
 
       .mat-column-itemId {
-        width: 150px !important;
+        width: 100px !important;
       }
 
       .mat-column-quantity {
@@ -51,8 +51,12 @@ mat-card {
         }
       }
 
+      .mat-column-description {
+        padding-right: 30px !important;
+      }
+
       .mat-column-itemType {
-        width: 150px !important;
+        width: 120px !important;
       }
 
       .mat-column-remove {

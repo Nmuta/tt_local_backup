@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SunriseBanArea } from '@models/sunrise/sunrise-ban-request.model';
-import { SunriseBanSummary } from '@models/sunrise/sunrise-ban-summary.model';
+import { SunriseBanSummary, SunriseBanArea } from '@models/sunrise';
 import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
 

@@ -53,7 +53,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc/>
-        public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<ApolloMasterInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
@@ -62,11 +62,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 var response = await this.apolloUserInventoryService.GetAdminUserInventoryAsync(xuid)
                     .ConfigureAwait(false);
 
-                return this.mapper.Map<ApolloPlayerInventory>(response.summary);
+                return this.mapper.Map<ApolloMasterInventory>(response.summary);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<ApolloMasterInventory> GetPlayerInventoryAsync(int profileId)
+        {
+            try
+            {
+                var response = await this.apolloUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                    .ConfigureAwait(false);
+
+                return this.mapper.Map<ApolloMasterInventory>(response.summary);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
             }
         }
 
@@ -87,22 +103,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             }
         }
 
-        /// <inheritdoc/>
-        public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(int profileId)
-        {
-            try
-            {
-                var response = await this.apolloUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
-                    .ConfigureAwait(false);
-
-                return this.mapper.Map<ApolloPlayerInventory>(response.summary);
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.", ex);
-            }
-        }
-
         /// <inheritdoc />
         public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requestingAgent)
         {
@@ -112,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             var giftResponse = new GiftResponse<ulong>();
             giftResponse.PlayerOrLspGroup = xuid;
-            giftResponse.IdentityAntecedent = GiftHistoryAntecedent.Xuid;
+            giftResponse.IdentityAntecedent = GiftIdentityAntecedent.Xuid;
 
             try
             {
@@ -126,7 +126,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftHistoryAntecedent.Xuid, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftIdentityAntecedent.Xuid, gift).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -164,7 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             var giftResponse = new GiftResponse<int>();
             giftResponse.PlayerOrLspGroup = groupId;
-            giftResponse.IdentityAntecedent = GiftHistoryAntecedent.LspGroupId;
+            giftResponse.IdentityAntecedent = GiftIdentityAntecedent.LspGroupId;
 
             try
             {
@@ -178,7 +178,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftHistoryAntecedent.LspGroupId, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftIdentityAntecedent.LspGroupId, gift).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

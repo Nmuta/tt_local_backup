@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         }
 
         /// <inheritdoc/>
-        public async Task<OpusPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<OpusMasterInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
@@ -39,11 +39,26 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
             {
                 var response = await this.opusInventoryService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
 
-                return this.mapper.Map<OpusPlayerInventory>(response.summary);
+                return this.mapper.Map<OpusMasterInventory>(response.summary);
             }
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<OpusMasterInventory> GetPlayerInventoryAsync(int profileId)
+        {
+            try
+            {
+                var response = await this.opusInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId).ConfigureAwait(false);
+
+                return this.mapper.Map<OpusMasterInventory>(response.summary);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}", ex);
             }
         }
 
@@ -60,21 +75,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task<OpusPlayerInventory> GetPlayerInventoryAsync(int profileId)
-        {
-            try
-            {
-                var response = await this.opusInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId).ConfigureAwait(false);
-
-                return this.mapper.Map<OpusPlayerInventory>(response.summary);
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}", ex);
             }
         }
     }

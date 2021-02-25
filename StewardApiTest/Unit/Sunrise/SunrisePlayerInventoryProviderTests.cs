@@ -114,7 +114,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            var actions = new List<Func<Task<SunrisePlayerInventory>>>
+            var actions = new List<Func<Task<SunriseMasterInventory>>>
             {
                 async () => await provider.GetPlayerInventoryAsync(xuid).ConfigureAwait(false),
                 async () => await provider.GetPlayerInventoryAsync(profileId).ConfigureAwait(false)
@@ -124,7 +124,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             foreach (var action in actions)
             {
                 var response = action();
-                response.Result.Should().BeOfType<SunrisePlayerInventory>();
+                response.Result.Should().BeOfType<SunriseMasterInventory>();
             }
         }
 
@@ -311,7 +311,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseUserInventoryService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
                 this.SunriseUserService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupsOutput>());
                 this.SunriseUserService.GetLiveOpsUserDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
-                this.Mapper.Map<SunrisePlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<SunrisePlayerInventory>());
+                this.Mapper.Map<SunriseMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<SunriseMasterInventory>());
                 this.Mapper.Map<IList<SunriseInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
                 this.Mapper.Map<IList<SunriseLspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<SunriseLspGroup>>());
                 this.Mapper.Map<SunriseGift>(Arg.Any<SunriseGroupGift>()).Returns(Fixture.Create<SunriseGift>());

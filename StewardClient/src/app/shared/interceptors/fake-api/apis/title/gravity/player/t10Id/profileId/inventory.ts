@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { GuidLikeString } from '@models/extended-types';
-import { GravityPlayerInventory } from '@models/gravity';
+import { GravityPlayerInventoryBeta } from '@models/gravity';
 import { Unprocessed } from '@models/unprocessed';
 import { GravityPlayerT10IdInventoryFakeApi } from '../inventory';
 
@@ -31,15 +30,12 @@ export class GravityPlayerT10IdProfileIdInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<GravityPlayerInventory>> {
-    return GravityPlayerT10IdProfileIdInventoryFakeApi.make(this.t10Id, this.profileId);
+  public handle(): Partial<Unprocessed<GravityPlayerInventoryBeta>> {
+    return GravityPlayerT10IdProfileIdInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(
-    t10Id: GuidLikeString,
-    profileId: GuidLikeString,
-  ): Partial<Unprocessed<GravityPlayerInventory>> {
-    return GravityPlayerT10IdInventoryFakeApi.make(t10Id, profileId);
+  public static make(): Partial<Unprocessed<GravityPlayerInventoryBeta>> {
+    return GravityPlayerT10IdInventoryFakeApi.make(null);
   }
 }

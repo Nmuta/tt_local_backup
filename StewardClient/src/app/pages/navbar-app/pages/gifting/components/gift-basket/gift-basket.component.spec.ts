@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { of, throwError } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { GiftResponse } from '@models/gift-response';
-import { GiftHistoryAntecedent } from '@shared/constants';
+import { GiftIdentityAntecedent } from '@shared/constants';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 
 describe('GiftBasketBaseComponent', () => {
@@ -432,7 +432,7 @@ describe('GiftBasketBaseComponent', () => {
       describe('And a GiftResponse is returned', () => {
         const testGiftResponse = {
           playerOrLspGroup: BigInt(11234567890),
-          identityAntecedent: GiftHistoryAntecedent.LspGroupId,
+          identityAntecedent: GiftIdentityAntecedent.LspGroupId,
         } as GiftResponse<bigint>;
         beforeEach(() => {
           component.sendGiftToPlayers = jasmine
@@ -503,7 +503,7 @@ describe('GiftBasketBaseComponent', () => {
           parsedResult: [
             {
               playerOrLspGroup: 'testing123',
-              identityAntecedent: GiftHistoryAntecedent.LspGroupId,
+              identityAntecedent: GiftIdentityAntecedent.LspGroupId,
               error: undefined,
             },
           ],

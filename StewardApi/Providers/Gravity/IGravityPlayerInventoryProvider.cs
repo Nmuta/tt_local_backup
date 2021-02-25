@@ -15,18 +15,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="GravityPlayerInventory"/>.
+        ///     The <see cref="GravityPlayerInventoryBeta"/>.
         /// </returns>
-        Task<GravityPlayerInventory> GetPlayerInventoryAsync(ulong xuid);
+        Task<GravityPlayerInventoryBeta> GetPlayerInventoryAsync(ulong xuid);
 
         /// <summary>
         ///     Get player inventory.
         /// </summary>
         /// <param name="t10Id">The Turn 10 ID.</param>
         /// <returns>
-        ///     The <see cref="GravityPlayerInventory"/>.
+        ///     The <see cref="GravityPlayerInventoryBeta"/>.
         /// </returns>
-        Task<GravityPlayerInventory> GetPlayerInventoryAsync(string t10Id);
+        Task<GravityPlayerInventoryBeta> GetPlayerInventoryAsync(string t10Id);
 
         /// <summary>
         ///     Get player inventory by profile ID.
@@ -34,9 +34,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <param name="xuid">The xuid.</param>
         /// <param name="profileId">The profile ID.</param>
         /// <returns>
-        ///     The <see cref="GravityPlayerInventory"/>.
+        ///     The <see cref="GravityPlayerInventoryBeta"/>.
         /// </returns>
-        Task<GravityPlayerInventory> GetPlayerInventoryAsync(ulong xuid, string profileId);
+        Task<GravityPlayerInventoryBeta> GetPlayerInventoryAsync(ulong xuid, string profileId);
 
         /// <summary>
         ///     Get player inventory by profile ID.
@@ -44,9 +44,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <param name="t10Id">The Turn 10 ID.</param>
         /// <param name="profileId">The profile ID.</param>
         /// <returns>
-        ///     The <see cref="GravityPlayerInventory"/>.
+        ///     The <see cref="GravityPlayerInventoryBeta"/>.
         /// </returns>
-        Task<GravityPlayerInventory> GetPlayerInventoryAsync(string t10Id, string profileId);
+        Task<GravityPlayerInventoryBeta> GetPlayerInventoryAsync(string t10Id, string profileId);
 
         /// <summary>
         ///     Sends inventory item gifts to a player.

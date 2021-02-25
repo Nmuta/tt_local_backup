@@ -1,8 +1,8 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt, fakeXuid } from '@interceptors/fake-api/utility';
-import { ApolloPlayerInventory } from '@models/apollo';
-import { ApolloCar, ApolloInventoryItem } from '@models/apollo/inventory-items';
+import { ApolloMasterInventory } from '@models/apollo';
+import { MasterInventoryItem } from '@models/master-inventory-item';
+import { fakeBigInt } from '@interceptors/fake-api/utility';
 import faker from 'faker';
 
 /** Fake API for apollo player inventory. */
@@ -29,52 +29,36 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): ApolloPlayerInventory {
+  public handle(): ApolloMasterInventory {
     return ApolloPlayerXuidInventoryFakeApi.make(this.xuid);
   }
 
   /** Generates a sample object */
-  public static make(xuid: bigint): ApolloPlayerInventory {
-    function makeFakeItems(count: number): ApolloInventoryItem[] {
+  public static make(_xuid: bigint): ApolloMasterInventory {
+    function makeFakeItems(count: number): MasterInventoryItem[] {
       return Array(faker.random.number(count))
         .fill(0)
         .map(() => {
           return {
-            itemId: fakeBigInt(),
-            quantity: fakeBigInt({ min: 1, max: 20 }),
-            acquisitionUtc: faker.date.past(),
-            lastUsedUtc: faker.date.recent(),
+            id: fakeBigInt(),
+            quantity: faker.random.number(1_000),
             description: faker.lorem.sentences(2),
-            special: faker.random.arrayElement(['Unicorn', '']),
+            itemType: undefined,
           };
         });
     }
 
-    function makeFakeCars(count: number): ApolloCar[] {
-      return makeFakeItems(count).map(i => {
-        return {
-          ...i,
-          vin: faker.random.uuid(),
-          baseCost: fakeBigInt({ min: 4_000 }),
-          collectorScore: fakeBigInt({ min: 4_000, max: 200_000 }),
-          isOnlineOnly: faker.random.boolean(),
-          productionNumber: fakeBigInt({ min: 4_000, max: 200_000 }),
-          purchaseUtc: faker.date.past(),
-          versionedLiveryId: faker.random.uuid(),
-          versionedTuneId: faker.random.uuid(),
-        };
-      });
-    }
-
     return {
-      xuid: xuid ?? fakeXuid(),
-      giftReason: faker.lorem.paragraph(),
-      credits: fakeBigInt({ min: 0 }),
-      cars: makeFakeCars(200),
-      mods: makeFakeItems(200),
+      creditRewards: [
+        {
+          id: BigInt(-1),
+          description: 'Credits',
+          quantity: faker.random.number(100_000_000),
+          itemType: undefined,
+        },
+      ],
+      cars: makeFakeItems(200),
       vanityItems: makeFakeItems(200),
-      packs: makeFakeItems(200),
-      badges: makeFakeItems(200),
     };
   }
 }

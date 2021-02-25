@@ -268,7 +268,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Accepted();
+            return this.Accepted(new BackgroundJob()
+            {
+                JobId = jobId,
+                Status = BackgroundJobStatus.InProgress.ToString(),
+            });
         }
 
         /// <summary>
@@ -462,21 +466,61 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         /// <param name="xuid">The xuid.</param>
         /// <returns>
-        ///     The <see cref="ApolloPlayerInventory"/>.
+        ///     The <see cref="ApolloMasterInventory"/>.
         /// </returns>
         [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(ApolloPlayerInventory))]
+        [SwaggerResponse(200, type: typeof(ApolloMasterInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
-            var inventory = await this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
+            if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            {
+                return this.NotFound($"No profile found for XUID: {xuid}.");
+            }
 
-            if (inventory == null || !await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            var getPlayerInventory = this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(xuid);
+            var getmasterInventory = this.RetrieveMasterInventoryList();
+
+            await Task.WhenAll(getPlayerInventory, getmasterInventory).ConfigureAwait(true);
+
+            var playerInventory = await getPlayerInventory.ConfigureAwait(true);
+            var masterInventory = await getmasterInventory.ConfigureAwait(true);
+
+            if (playerInventory == null)
             {
                 return this.NotFound($"No inventory found for XUID: {xuid}.");
             }
 
-            return this.Ok(inventory);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory);
+            return this.Ok(playerInventory);
+        }
+
+        /// <summary>
+        ///     Gets the player inventory.
+        /// </summary>
+        /// <param name="profileId">The profile ID.</param>
+        /// <returns>
+        ///     The <see cref="ApolloMasterInventory"/>.
+        /// </returns>
+        [HttpGet("player/profileId({profileId})/inventory")]
+        [SwaggerResponse(200, type: typeof(ApolloMasterInventory))]
+        public async Task<IActionResult> GetPlayerInventory(int profileId)
+        {
+            var getPlayerInventory = this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(profileId);
+            var getmasterInventory = this.RetrieveMasterInventoryList();
+
+            await Task.WhenAll(getPlayerInventory, getmasterInventory).ConfigureAwait(true);
+
+            var playerInventory = await getPlayerInventory.ConfigureAwait(true);
+            var masterInventory = await getmasterInventory.ConfigureAwait(true);
+
+            if (playerInventory == null)
+            {
+                return this.NotFound($"No inventory found for Profile ID: {profileId}");
             }
+
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory);
+            return this.Ok(playerInventory);
+        }
 
         /// <summary>
         ///     Gets the player inventory profiles.
@@ -497,27 +541,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             return this.Ok(profiles);
-        }
-
-        /// <summary>
-        ///     Gets the player inventory.
-        /// </summary>
-        /// <param name="profileId">The profile ID.</param>
-        /// <returns>
-        ///     The <see cref="ApolloPlayerInventory"/>.
-        /// </returns>
-        [HttpGet("player/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(ApolloPlayerInventory))]
-        public async Task<IActionResult> GetPlayerInventory(int profileId)
-        {
-            var inventory = await this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(profileId).ConfigureAwait(true);
-
-            if (inventory == null)
-            {
-                return this.NotFound($"No inventory found for Profile ID: {profileId}");
-            }
-
-            return this.Ok(inventory);
         }
 
         /// <summary>
@@ -610,7 +633,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="groupId">The group ID.</param>
         /// <param name="gift">The player inventory.</param>
         /// <returns>
-        ///     The <see cref="ApolloPlayerInventory"/>.
+        ///     The <see cref="GiftResponse{T}"/>.
         /// </returns>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
@@ -644,7 +667,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var response = await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(true);
             return this.Ok(response);
-        }
+            }
 
         /// <summary>
         ///     Gets the gift histories.
@@ -657,7 +680,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<ApolloGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(ulong xuid)
         {
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, GiftHistoryAntecedent.Xuid).ConfigureAwait(true);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, GiftIdentityAntecedent.Xuid).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }
@@ -673,7 +696,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<ApolloGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(int groupId)
         {
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, GiftHistoryAntecedent.LspGroupId).ConfigureAwait(true);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, GiftIdentityAntecedent.LspGroupId).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }

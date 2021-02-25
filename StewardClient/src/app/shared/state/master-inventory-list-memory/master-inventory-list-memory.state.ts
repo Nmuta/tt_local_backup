@@ -5,17 +5,16 @@ import { SunriseService } from '@services/sunrise';
 import { Observable, of, throwError } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { GravityService } from '@services/gravity';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
-import { GravityMasterInventory } from '@models/gravity/gravity-master-inventory.model';
 import {
   GetApolloMasterInventoryList,
   GetGravityMasterInventoryList,
   GetSunriseMasterInventoryList,
 } from './master-inventory-list-memory.actions';
-import { GravityMasterInventoryLists } from '@models/gravity/gravity-master-inventory-list.model';
 import { ApolloMasterInventory } from '@models/apollo';
 import { ApolloService } from '@services/apollo';
 import { clone } from 'lodash';
+import { GravityMasterInventory, GravityMasterInventoryLists } from '@models/gravity';
+import { SunriseMasterInventory } from '@models/sunrise';
 
 /**
  * Defines the master inventory list memory model.

@@ -7,24 +7,23 @@ import {
 } from '@models/identity-query.model';
 import { LspGroup, LspGroups } from '@models/lsp-group';
 import {
+  LiveOpsBanDescriptions,
   SunriseBanRequest,
   SunriseBanResult,
   SunriseBanSummary,
+  SunriseConsoleDetails,
+  SunriseCreditHistory,
   SunriseGift,
+  SunriseGiftHistory,
   SunriseGroupGift,
+  SunriseMasterInventory,
   SunrisePlayerDetails,
-  SunrisePlayerInventory,
   SunrisePlayerInventoryProfile,
   SunrisePlayerNotifications,
+  SunriseProfileSummary,
+  SunriseSharedConsoleUsers,
   SunriseUserFlags,
 } from '@models/sunrise';
-import { LiveOpsBanDescriptions } from '@models/sunrise/sunrise-ban-history.model';
-import { SunriseConsoleDetails } from '@models/sunrise/sunrise-console-details.model';
-import { SunriseCreditHistory } from '@models/sunrise/sunrise-credit-history.model';
-import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
-import { SunriseProfileSummary } from '@models/sunrise/sunrise-profile-summary.model';
-import { SunriseGiftHistory } from '@models/sunrise/sunrise-gift-history.model';
-import { SunriseSharedConsoleUsers } from '@models/sunrise/sunrise-shared-console-users.model';
 import { ApiService } from '@services/api';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -195,15 +194,15 @@ export class SunriseService {
   }
 
   /** Gets the latest version of a player's inventory */
-  public getPlayerInventoryByXuid(xuid: bigint): Observable<SunrisePlayerInventory> {
-    return this.apiService.getRequest<SunrisePlayerInventory>(
+  public getPlayerInventoryByXuid(xuid: bigint): Observable<SunriseMasterInventory> {
+    return this.apiService.getRequest<SunriseMasterInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
 
   /** Gets a specific version of a player's inventory */
-  public getPlayerInventoryByProfileId(profileId: bigint): Observable<SunrisePlayerInventory> {
-    return this.apiService.getRequest<SunrisePlayerInventory>(
+  public getPlayerInventoryByProfileId(profileId: bigint): Observable<SunriseMasterInventory> {
+    return this.apiService.getRequest<SunriseMasterInventory>(
       `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }

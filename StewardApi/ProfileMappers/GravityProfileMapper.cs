@@ -78,16 +78,41 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.PreviousGameSettingsId, opt => opt.MapFrom(src => src.PreviousGameSettingsGuid))
                 .ReverseMap();
             this.CreateMap<PlayerInventory, GravityPlayerInventory>();
+
+            this.CreateMap<LiveOpsCar, MasterInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
+                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => 1))
+                .ReverseMap();
+            this.CreateMap<LiveOpsMasteryKit, MasterInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
+                .ReverseMap();
+            this.CreateMap<LiveOpsUpgradeKit, MasterInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
+                .ReverseMap();
+            this.CreateMap<LiveOpsRepairKit, MasterInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
+                .ReverseMap();
+            this.CreateMap<LiveOpsCurrency, MasterInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
+                .ReverseMap();
+            this.CreateMap<LiveOpsEnergyRefill, MasterInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
+                .ReverseMap();
+            this.CreateMap<LiveOpsUserInventory, GravityPlayerInventoryBeta>()
+                .ForMember(des => des.CreditRewards, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.Currencies)))
+                .ForMember(des => des.GameSettingsId, opt => opt.MapFrom(src => src.PreviousGameSettingsGuid))
+                .ForMember(des => des.ExternalProfileId, opt => opt.MapFrom(src => src.CurrentExternalProfileId))
+                .ReverseMap();
+
             this.CreateMap<LiveOpsUserDetails, IdentityResultBeta>()
                 .ForMember(des => des.T10Id, opt => opt.MapFrom(src => src.Turn10Id))
                 .ReverseMap();
-
             this.CreateMap<GravityInventoryItem, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.ItemId));
             this.CreateMap<Currency, MasterInventoryItem>()
                  .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => source.Name));
             this.CreateMap<GravityCar, MasterInventoryItem>()
-                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => $"{source.CarClass} {source.CarName}"))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => $"{source.CarClass} {source.CarName} ({source.StarRating}-Star)"))
                 .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.CarId));
             this.CreateMap<EnergyRefill, MasterInventoryItem>()
                 .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => $"{(source.IsFull ? "Full" : source.PartialValue + " Point")} Energy Refill"))

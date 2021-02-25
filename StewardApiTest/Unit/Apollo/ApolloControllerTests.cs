@@ -630,9 +630,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as ApolloPlayerInventory;
+                var details = result.Value as ApolloMasterInventory;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<ApolloPlayerInventory>();
+                details.Should().BeOfType<ApolloMasterInventory>();
             }
         }
 
@@ -937,13 +937,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloPlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloUserFlags>());
                 this.ApolloPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
                 this.ApolloPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>()).Returns(true);
-                this.ApolloPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloPlayerInventory>());
-                this.ApolloPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<ApolloPlayerInventory>());
+                this.ApolloPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloMasterInventory>());
+                this.ApolloPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<ApolloMasterInventory>());
                 this.ApolloPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<ApolloInventoryProfile>>());
                 this.ApolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<ApolloGift>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.ApolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<ApolloGroupGift>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.ApolloPlayerDetailsProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ApolloLspGroup>>());
-                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftHistoryAntecedent>()).Returns(Fixture.Create<IList<ApolloGiftHistory>>());
+                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<ApolloGiftHistory>>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
             }
 

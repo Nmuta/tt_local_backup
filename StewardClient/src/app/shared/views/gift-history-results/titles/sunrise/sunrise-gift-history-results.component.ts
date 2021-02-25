@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SunriseGiftHistory } from '@models/sunrise/sunrise-gift-history.model';
+import { SunriseGiftHistory } from '@models/sunrise';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { Observable } from 'rxjs';
