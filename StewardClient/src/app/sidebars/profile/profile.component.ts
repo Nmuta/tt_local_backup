@@ -7,7 +7,7 @@ import { Select, Store } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { WindowService } from '@shared/services/window';
 import { LogoutUser } from '@shared/state/user/user.actions';
-import { UserState, USER_STATE_NOT_FOUND } from '@shared/state/user/user.state';
+import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -18,15 +18,9 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent extends BaseComponent implements OnInit {
-  @Select(UserState.profile) public profile$: Observable<UserModel | USER_STATE_NOT_FOUND>;
+  @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  public profile: UserModel | USER_STATE_NOT_FOUND;
-
-  /** Returns the found user or undefined. */
-  public get user(): UserModel {
-    return this.profile === UserState.NOT_FOUND ? undefined : this.profile;
-  }
-
+  public user: UserModel;
   public loading: boolean;
   public isDevEnvironment: boolean;
   public accessToken: string;
@@ -53,7 +47,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
       .subscribe(
         profile => {
           this.loading = false;
-          this.profile = profile;
+          this.user = profile;
         },
         _error => {
           this.loading = false;

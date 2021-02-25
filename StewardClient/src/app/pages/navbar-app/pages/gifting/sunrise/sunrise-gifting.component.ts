@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { GameTitleCodeName, UserRole } from '@models/enums';
+import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultAlphaBatch, IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { SunriseMasterInventory, SunrisePlayerInventoryProfile } from '@models/sunrise';
 import { UserModel } from '@models/user.model';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 import { Select, Store } from '@ngxs/store';
-import { UserState, USER_STATE_NOT_FOUND } from '@shared/state/user/user.state';
+import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
@@ -44,15 +44,8 @@ export class SunriseGiftingComponent extends GiftingBaseComponent implements OnI
 
   /** Initialization hook */
   public ngOnInit(): void {
-    const user = this.store.selectSnapshot<UserModel | USER_STATE_NOT_FOUND>(UserState.profile);
-    if (!user) {
-      throw new Error('Gifting component entered without user.');
-    }
-    if (user === UserState.NOT_FOUND) {
-      throw new Error('Gifting component entered with non-existing user.');
-    }
-
-    this.disableLspGroupSelection = user.role !== UserRole.LiveOpsAdmin;
+    const user = this.store.selectSnapshot<UserModel>(UserState.profile);
+    this.disableLspGroupSelection = user.role !== 'LiveOpsAdmin';
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       SunriseGiftingState.selectedMatTabIndex,

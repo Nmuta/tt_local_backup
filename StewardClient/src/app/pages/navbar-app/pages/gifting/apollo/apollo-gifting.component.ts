@@ -11,7 +11,7 @@ import { GameTitleCodeName, UserRole } from '@models/enums';
 import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { UserModel } from '@models/user.model';
-import { UserState, USER_STATE_NOT_FOUND } from '@shared/state/user/user.state';
+import { UserState } from '@shared/state/user/user.state';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { ApolloMasterInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
@@ -40,15 +40,8 @@ export class ApolloGiftingComponent extends GiftingBaseComponent implements OnIn
 
   /** Initialization hook */
   public ngOnInit(): void {
-    const user = this.store.selectSnapshot<UserModel | USER_STATE_NOT_FOUND>(UserState.profile);
-    if (!user) {
-      throw new Error('Gifting component entered without user.');
-    }
-    if (user === UserState.NOT_FOUND) {
-      throw new Error('Gifting component entered with non-existing user.');
-    }
-
-    this.disableLspGroupSelection = user.role !== UserRole.LiveOpsAdmin;
+    const user = this.store.selectSnapshot<UserModel>(UserState.profile);
+    this.disableLspGroupSelection = user.role !== 'LiveOpsAdmin';
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       ApolloGiftingState.selectedMatTabIndex,
