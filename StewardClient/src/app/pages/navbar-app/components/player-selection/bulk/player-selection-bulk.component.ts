@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { MatChip, MatChipList, MatChipListChange } from '@angular/material/chips';
+import { MatChipList, MatChipListChange } from '@angular/material/chips';
 import { ApolloService } from '@services/apollo';
 import { GravityService } from '@services/gravity';
 import { OpusService } from '@services/opus';
