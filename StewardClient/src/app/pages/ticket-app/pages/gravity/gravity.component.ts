@@ -6,7 +6,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { GravityService } from '@services/gravity';
 import { TicketService } from '@services/zendesk/ticket.service';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil, tap } from 'rxjs/operators';
 
 /** Routed component for displaying Gravity Ticket information. */
 @Component({
@@ -36,7 +36,9 @@ export class GravityComponent extends BaseComponent implements OnInit {
       .subscribe(title => {
         this.gameTitle = title;
         if (title !== GameTitleCodeName.Street) {
-          this.store.dispatch(new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }));
+          this.store.dispatch(
+            new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
+          );
         }
       });
 
@@ -45,13 +47,13 @@ export class GravityComponent extends BaseComponent implements OnInit {
       .pipe(
         takeUntil(this.onDestroy$),
         switchMap(gamertag => this.gravity.getPlayerIdentity({ gamertag })),
+        tap(identity => {
+          this.gamertag = identity.gamertag;
+          this.xuid = identity.xuid;
+          this.t10Id = identity.t10Id;
+          this.t10Ids = identity.t10Ids;
+        }),
       )
-      .subscribe(identity => {
-        this.gamertag = identity.gamertag;
-        this.xuid = identity.xuid;
-        this.t10Id = identity.t10Id;
-        this.t10Ids = identity.t10Ids;
-        // TODO: Handle identity.error
-      });
+      .subscribe();
   }
 }
