@@ -1,34 +1,41 @@
 <div class="default-page-layout">
   <div class="default-page-layout-left">
-    <mat-tab-group
-      mat-stretch-tabs
-      [(selectedIndex)]="matTabSelectedIndex"
-      (selectedTabChange)="matTabSelectionChange($event.index)"
-    >
-      <mat-tab label="Player Selection">
-        <mat-card>
-          <player-selection-single
-            [allowSelection]="true"
-            (found)="onPlayerIdentitiesChange([$event])"
-            (selected)="playerIdentitySelected($event)"
-          ></player-selection-single>
-        </mat-card>
-      </mat-tab>
-      <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
-        <apollo-lsp-group-selection [(ngModel)]="selectedLspGroup"></apollo-lsp-group-selection>
-      </mat-tab>
-    </mat-tab-group>
+    <div class="player-selection-div">
+      <mat-tab-group
+        mat-stretch-tabs
+        [(selectedIndex)]="matTabSelectedIndex"
+        (selectedTabChange)="matTabSelectionChange($event.index)"
+      >
+        <mat-tab label="Player Selection">
+          <mat-card>
+            <player-selection-single
+              [allowSelection]="true"
+              (found)="onPlayerIdentitiesChange([$event])"
+              (selected)="playerIdentitySelected($event)"
+            ></player-selection-single>
+          </mat-card>
+        </mat-tab>
+        <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
+          <apollo-lsp-group-selection [(ngModel)]="selectedLspGroup"></apollo-lsp-group-selection>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
 
     <div class="reference-inventory" *ngIf="selectedPlayerIdentity">
-      <apollo-player-inventory-profile-picker
-        [identity]="selectedPlayerIdentity"
-        [(profileId)]="selectedPlayerInventoryProfile"
-      ></apollo-player-inventory-profile-picker>
-      <apollo-player-inventory
-        [identity]="selectedPlayerIdentity"
-        [profileId]="selectedPlayerInventoryProfile"
-        (inventoryFound)="onInventoryFound($event)"
-      ></apollo-player-inventory>
+      <mat-card>
+        <apollo-player-inventory-profile-picker
+          [identity]="selectedPlayerIdentity"
+          [(profileId)]="selectedPlayerInventoryProfile"
+        ></apollo-player-inventory-profile-picker>
+
+        <div class="inventory-div">
+          <apollo-player-inventory
+            [identity]="selectedPlayerIdentity"
+            [profileId]="selectedPlayerInventoryProfile"
+            (inventoryFound)="onInventoryFound($event)"
+          ></apollo-player-inventory>
+        </div>
+      </mat-card>
     </div>
   </div>
 

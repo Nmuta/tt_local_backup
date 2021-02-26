@@ -1,7 +1,13 @@
 @import '/src/styles/mixins/variables.scss';
 
-@media screen and (max-width: 1000px) {
-  .default-page-layout-left {
-    max-width: unset;
+.player-selection-div {
+  margin-bottom: 20px;
+}
+
+.reference-inventory {
+  flex-grow: 1;
+
+  .inventory-div {
+    margin-top: 20px;
   }
 }

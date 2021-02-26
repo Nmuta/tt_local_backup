@@ -1,34 +1,41 @@
 <div class="default-page-layout">
   <div class="default-page-layout-left">
-    <mat-tab-group
-      mat-stretch-tabs
-      [(selectedIndex)]="matTabSelectedIndex"
-      (selectedTabChange)="matTabSelectionChange($event.index)"
-    >
-      <mat-tab label="Player Selection">
-        <mat-card>
-          <player-selection-bulk
-            [allowSelection]="true"
-            (found)="onPlayerIdentitiesChange($event)"
-            (selected)="playerIdentitySelected($event)"
-          ></player-selection-bulk>
-        </mat-card>
-      </mat-tab>
-      <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
-        <sunrise-lsp-group-selection [(ngModel)]="selectedLspGroup"></sunrise-lsp-group-selection>
-      </mat-tab>
-    </mat-tab-group>
+    <div class="player-selection-div">
+      <mat-tab-group
+        mat-stretch-tabs
+        [(selectedIndex)]="matTabSelectedIndex"
+        (selectedTabChange)="matTabSelectionChange($event.index)"
+      >
+        <mat-tab label="Player Selection">
+          <mat-card>
+            <player-selection-bulk
+              [allowSelection]="true"
+              (found)="onPlayerIdentitiesChange($event)"
+              (selected)="playerIdentitySelected($event)"
+            ></player-selection-bulk>
+          </mat-card>
+        </mat-tab>
+        <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
+          <sunrise-lsp-group-selection [(ngModel)]="selectedLspGroup"></sunrise-lsp-group-selection>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
 
     <div class="reference-inventory" *ngIf="selectedPlayerIdentity">
-      <sunrise-player-inventory-profile-picker
-        [identity]="selectedPlayerIdentity"
-        [(profileId)]="selectedPlayerInventoryProfile"
-      ></sunrise-player-inventory-profile-picker>
-      <sunrise-player-inventory
-        [identity]="selectedPlayerIdentity"
-        [profileId]="selectedPlayerInventoryProfile"
-        (inventoryFound)="onInventoryFound($event)"
-      ></sunrise-player-inventory>
+      <mat-card>
+        <sunrise-player-inventory-profile-picker
+          [identity]="selectedPlayerIdentity"
+          [(profileId)]="selectedPlayerInventoryProfile"
+        ></sunrise-player-inventory-profile-picker>
+
+        <div class="inventory-div">
+          <sunrise-player-inventory
+            [identity]="selectedPlayerIdentity"
+            [profileId]="selectedPlayerInventoryProfile"
+            (inventoryFound)="onInventoryFound($event)"
+          ></sunrise-player-inventory>
+        </div>
+      </mat-card>
     </div>
   </div>
 
