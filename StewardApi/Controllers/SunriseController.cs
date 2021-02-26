@@ -504,7 +504,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 .ToList();
 
             var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
-            return this.Created(this.Request.Path, results);
+            return this.Ok(results);
         }
 
         /// <summary>

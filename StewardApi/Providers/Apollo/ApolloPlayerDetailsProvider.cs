@@ -165,13 +165,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             {
                 param.FeatureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(param.FeatureArea));
 
-                if (param.Xuid == default && string.IsNullOrWhiteSpace(param.Gamertag))
+                if (param.Xuid == default)
                 {
-                    throw new InvalidArgumentsStewardException("No XUID or Gamertag provided.");
-                }
+                    if (string.IsNullOrWhiteSpace(param.Gamertag))
+                    {
+                        throw new InvalidArgumentsStewardException("No XUID or Gamertag provided.");
+                    }
 
-                if (param.Xuid == default && !string.IsNullOrWhiteSpace(param.Gamertag))
-                {
                     try
                     {
                         var userResult = await this.apolloUserService.LiveOpsGetUserDataByGamertagAsync(param.Gamertag)

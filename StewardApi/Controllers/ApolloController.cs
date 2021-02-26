@@ -299,7 +299,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var results = await this.apolloPlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
 
-            return this.Created(this.Request.Path, results);
+            return this.Ok(results);
         }
 
         /// <summary>

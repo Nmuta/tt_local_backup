@@ -580,7 +580,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             action().Should().BeAssignableTo<Task<IActionResult>>();
             action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as CreatedResult;
+            var result = await action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<SunriseBanResult>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<SunriseBanResult>>();
