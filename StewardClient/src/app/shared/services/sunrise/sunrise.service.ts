@@ -30,6 +30,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { chain } from 'lodash';
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJob } from '@models/background-job';
+import { HttpParams } from '@angular/common/http';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
