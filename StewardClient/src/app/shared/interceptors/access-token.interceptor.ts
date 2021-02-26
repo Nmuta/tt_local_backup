@@ -1,12 +1,18 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Store } from '@ngxs/store';
-import { LoggerService, LogTopic } from '@services/logger';
+import { LoggerService } from '@services/logger';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
-import { NEVER, Observable } from 'rxjs';
-import { catchError, switchMap, tap, timeout } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { catchError, switchMap, timeout } from 'rxjs/operators';
 
 /** Defines the access token interceptor. */
 @Injectable()
@@ -28,7 +34,7 @@ export class AccessTokenInterceptor implements HttpInterceptor {
     request = this.setAccessTokenHeader(request);
 
     return next.handle(request).pipe(
-      catchError((error) => {
+      catchError(error => {
         if (this.isAuthError(error) && !this.hasAlreadyRetried(request)) {
           return this.store.dispatch(new RecheckAuth()).pipe(
             timeout(3_000),
@@ -40,7 +46,7 @@ export class AccessTokenInterceptor implements HttpInterceptor {
                 },
               });
               return next.handle(request);
-            })
+            }),
           );
         }
 
