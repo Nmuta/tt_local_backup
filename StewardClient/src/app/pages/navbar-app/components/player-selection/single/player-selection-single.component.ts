@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { MatChipListChange } from '@angular/material/chips';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { MatChipList, MatChipListChange } from '@angular/material/chips';
 import { ApolloService } from '@services/apollo';
 import { GravityService } from '@services/gravity';
 import { OpusService } from '@services/opus';
@@ -19,6 +19,9 @@ import {
 export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent {
   @Output() public found = new EventEmitter<AugmentedCompositeIdentity>();
   @Output() public selected = new EventEmitter<AugmentedCompositeIdentity>();
+  @ViewChild('chipList') public chipList: MatChipList;
+
+  protected selectedValue: AugmentedCompositeIdentity = null;
 
   /** True when the input should be disabled */
   public get disable(): boolean {
@@ -41,13 +44,18 @@ export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent
       throw new Error(`${this.constructor.name} was allowed to find multiple identities.`);
     }
 
-    this.found.emit(first(this.foundIdentities));
+    const foundIdentity = first(this.foundIdentities);
+    this.found.emit(foundIdentity);
+
+    const selectedItemInFoundIdentities = this.foundIdentities.includes(this.selectedValue);
+    if (!selectedItemInFoundIdentities) {
+      this.selected.next(null);
+    }
   }
 
   /** Called when a new set of results is selected. */
   public onSelect(change: MatChipListChange): void {
-    const values = change.value as AugmentedCompositeIdentity;
-
-    this.selected.next(values);
+    this.selectedValue = change.value as AugmentedCompositeIdentity;
+    this.selected.next(this.selectedValue);
   }
 }
