@@ -8,11 +8,11 @@ import {
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Store } from '@ngxs/store';
-import { LoggerService } from '@services/logger';
+import { LoggerService, LogTopic } from '@services/logger';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap, timeout } from 'rxjs/operators';
+import { catchError, switchMap, timeout, tap } from 'rxjs/operators';
 
 /** Defines the access token interceptor. */
 @Injectable()
@@ -32,18 +32,16 @@ export class AccessTokenInterceptor implements HttpInterceptor {
     }
 
     request = this.setAccessTokenHeader(request);
-    let retryCount = 0;
     return next.handle(request).pipe(
-      catchError(error => {
-        if (this.isAuthError(error) && retryCount <= 3) {
-          const retryDuration = 500 * (retryCount*retryCount);
-          retryCount++;
+      catchError((error, _source) => {
+        if (this.isAuthError(error)) {
+          this.logger.warn([LogTopic.Auth], 'Authentication error encountered. Retrying.')
           return this.store.dispatch(new RecheckAuth()).pipe(
-            timeout(retryDuration),
+            timeout(3_000),
             switchMap(() => {
               request = this.setAccessTokenHeader(request);
               return next.handle(request);
-            }),
+            })
           );
         }
 
