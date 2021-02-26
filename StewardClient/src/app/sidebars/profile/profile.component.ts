@@ -6,7 +6,7 @@ import { Clipboard } from '@helpers/clipboard';
 import { Select, Store } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { WindowService } from '@shared/services/window';
-import { LogoutUser } from '@shared/state/user/user.actions';
+import { BreakAccessToken, LogoutUser } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -63,6 +63,11 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   /** Opens the auth page in a new tab. */
   public logout(): void {
     this.store.dispatch(new LogoutUser(this.router.routerState.snapshot.url));
+  }
+
+  /** Breaks the user's access token. */
+  public break(): void {
+    this.store.dispatch(new BreakAccessToken());
   }
 
   /** Changes the profile tab visiblity. */
