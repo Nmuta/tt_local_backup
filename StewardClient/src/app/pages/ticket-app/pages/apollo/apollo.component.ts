@@ -5,7 +5,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { ApolloService } from '@services/apollo';
 import { TicketService } from '@services/zendesk/ticket.service';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil, tap } from 'rxjs/operators';
 
 /** Routed component for displaying Apollo Ticket information. */
 @Component({
@@ -33,7 +33,9 @@ export class ApolloComponent extends BaseComponent implements OnInit {
       .subscribe(title => {
         this.gameTitle = title;
         if (title !== GameTitleCodeName.FM7) {
-          this.store.dispatch(new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }));
+          this.store.dispatch(
+            new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
+          );
         }
       });
 
@@ -42,11 +44,11 @@ export class ApolloComponent extends BaseComponent implements OnInit {
       .pipe(
         takeUntil(this.onDestroy$),
         switchMap(gamertag => this.apollo.getPlayerIdentity({ gamertag })),
+        tap(identity => {
+          this.gamertag = identity.gamertag;
+          this.xuid = identity.xuid;
+        }),
       )
-      .subscribe(identity => {
-        this.gamertag = identity.gamertag;
-        this.xuid = identity.xuid;
-        // TODO: Handle identity.error
-      });
+      .subscribe();
   }
 }
