@@ -11,7 +11,7 @@ import { Store } from '@ngxs/store';
 import { LoggerService } from '@services/logger';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap, timeout } from 'rxjs/operators';
 
 /** Defines the access token interceptor. */
@@ -32,36 +32,28 @@ export class AccessTokenInterceptor implements HttpInterceptor {
     }
 
     request = this.setAccessTokenHeader(request);
-
+    let retryCount = 0;
     return next.handle(request).pipe(
       catchError(error => {
-        if (this.isAuthError(error) && !this.hasAlreadyRetried(request)) {
+        if (this.isAuthError(error) && retryCount <= 3) {
+          const retryDuration = 500 * (retryCount*retryCount);
+          retryCount++;
           return this.store.dispatch(new RecheckAuth()).pipe(
-            timeout(3_000),
+            timeout(retryDuration),
             switchMap(() => {
               request = this.setAccessTokenHeader(request);
-              request = request.clone({
-                setParams: {
-                  [this.tokenRetryParam]: 'true',
-                },
-              });
               return next.handle(request);
             }),
           );
         }
 
-        throw error;
+        return throwError(error);
       }),
     );
   }
 
   private isAuthError(error: unknown): boolean {
     return error instanceof HttpErrorResponse && error.status === 401;
-  }
-
-  private hasAlreadyRetried(request: HttpRequest<unknown>): boolean {
-    const retried = request.params.get(this.tokenRetryParam);
-    return !!retried;
   }
 
   private setAccessTokenHeader(request: HttpRequest<unknown>): HttpRequest<unknown> {
