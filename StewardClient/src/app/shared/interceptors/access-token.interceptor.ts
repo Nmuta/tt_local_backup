@@ -12,7 +12,7 @@ import { LoggerService, LogTopic } from '@services/logger';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap, timeout, tap } from 'rxjs/operators';
+import { catchError, switchMap, delay } from 'rxjs/operators';
 
 /** Defines the access token interceptor. */
 @Injectable()
@@ -37,7 +37,7 @@ export class AccessTokenInterceptor implements HttpInterceptor {
         if (this.isAuthError(error)) {
           this.logger.warn([LogTopic.Auth], 'Authentication error encountered. Retrying.')
           return this.store.dispatch(new RecheckAuth()).pipe(
-            timeout(3_000),
+            delay(3_000),
             switchMap(() => {
               request = this.setAccessTokenHeader(request);
               return next.handle(request);
