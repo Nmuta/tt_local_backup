@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
-import { ZendeskService } from '@services/zendesk';
 
 /** A button that routes the user to an inventory app. */
 @Component({
@@ -12,13 +12,14 @@ export class GoToInventoryButtonComponent {
   @Input() public gameTitle: GameTitleCodeName = null;
   @Input() public xuid: BigInt = null;
 
-  constructor(private readonly zendesk: ZendeskService) {}
-
   /** Routes to the inventory app. */
   public goToInventory(): void {
     if (!!this.gameTitle && !!this.xuid) {
-      const appSection = this.gameTitle + '/' + this.xuid;
-      this.zendesk.goToApp$('nav_bar', 'forza-inventory-support', appSection).subscribe();
+      const domain = environment.stewardUiUrl;
+      const userDetailsLink = `${domain}/support/navbar-app/tools/user-details/${this.gameTitle.toLowerCase()}?lookupType=xuid&lookupName=${
+        this.xuid
+      }`;
+      window.open(userDetailsLink, '_blank');
     }
   }
 }

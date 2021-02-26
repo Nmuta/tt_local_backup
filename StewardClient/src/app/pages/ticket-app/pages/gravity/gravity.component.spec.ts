@@ -75,7 +75,7 @@ describe('GravityComponent - Ticket App', () => {
     it('it should navigate to the routing page', () => {
       fixture.detectChanges();
       expect(store.dispatch).toHaveBeenCalledWith(
-        new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }),
+        new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
       );
     });
   });
