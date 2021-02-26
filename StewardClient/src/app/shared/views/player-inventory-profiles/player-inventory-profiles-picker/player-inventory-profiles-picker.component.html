@@ -11,6 +11,7 @@
     #chip="matChip"
     [value]="profile"
     (click)="chip.toggleSelected(true)"
+    [selected]="profile?.isCurrent"
   >
     <fa-icon [icon]="currentUserIcon" *ngIf="profile.isCurrent" matTooltip="User Active"></fa-icon>
     <fa-icon

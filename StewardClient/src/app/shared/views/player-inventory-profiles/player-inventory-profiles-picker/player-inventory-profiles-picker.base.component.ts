@@ -1,11 +1,13 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base-component.component';
@@ -49,6 +51,7 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   @Input() public identity: IdentityResultType;
   @Input() public profileId: string | bigint;
   @Output() public profileIdChange = new EventEmitter<string | bigint>();
+  @ViewChild('activeProfile') activeProfileChip: ElementRef<HTMLElement>;
 
   public profiles: AcceptableInventoryProfileTypesIntersection[] = [];
   /** True while loading. */
