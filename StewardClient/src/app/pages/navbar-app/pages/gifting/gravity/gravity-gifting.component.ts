@@ -50,7 +50,7 @@ export class GravityGiftingComponent extends GiftingBaseComponent implements OnI
 
   /** Player identity selected */
   public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
-    this.selectedPlayerIdentity = identity.extra.hasGravity ? identity.gravity : null;
+    this.selectedPlayerIdentity = identity?.extra?.hasGravity ? identity.gravity : null;
   }
 
   /** Called when a player inventory is selected and found. */
