@@ -7,6 +7,7 @@ using FluentAssertions;
 using Forza.WebServices.FMG.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using static Forza.WebServices.FMG.Generated.GameSettingsService;
@@ -63,6 +64,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenRefreshableCacheStoreNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { RefreshableCacheStore = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "refreshableCacheStore"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void GetGameSettingsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -87,6 +102,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             public Dependencies()
             {
                 this.GravityGameSettingsService.GetGameSettingsAsync(Arg.Any<Guid>()).Returns(Fixture.Create<LiveOpsGetGameSettingsOutput>());
+                this.RefreshableCacheStore.GetItem<LiveOpsGetGameSettingsOutput>(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetGameSettingsOutput>());
                 this.Mapper.Map<GravityMasterInventory>(Arg.Any<LiveOpsGetGameSettingsOutput>()).Returns(Fixture.Create<GravityMasterInventory>());
             }
 
@@ -94,7 +110,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-            public GravityGameSettingsProvider Build() => new GravityGameSettingsProvider(this.GravityGameSettingsService, this.Mapper);
+            public IRefreshableCacheStore RefreshableCacheStore { get; set; } = Substitute.For<IRefreshableCacheStore>();
+
+            public GravityGameSettingsProvider Build() => new GravityGameSettingsProvider(this.GravityGameSettingsService, this.Mapper, this.RefreshableCacheStore);
         }
     }
 }
