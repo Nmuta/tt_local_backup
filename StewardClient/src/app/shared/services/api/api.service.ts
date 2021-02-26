@@ -12,18 +12,15 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(
-    private readonly http: HttpClient
-  ) {}
+  constructor(private readonly http: HttpClient) {}
 
   /** Sends a GET request. */
   public getRequest<T>(url: string, params?: HttpParams, headers?: HttpHeaders): Observable<T> {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
-    const get = this.http
-      .get<T>(apiUrl, {
-        params,
-        headers,
-      });
+    const get = this.http.get<T>(apiUrl, {
+      params,
+      headers,
+    });
 
     return get;
   }
@@ -33,11 +30,10 @@ export class ApiService {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    const post = this.http
-      .post<T>(apiUrl, object, {
-        headers,
-        params,
-      });
+    const post = this.http.post<T>(apiUrl, object, {
+      headers,
+      params,
+    });
 
     return post;
   }
@@ -47,11 +43,10 @@ export class ApiService {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    const put = this.http
-      .put<T>(apiUrl, object, {
-        headers,
-        params,
-      });
+    const put = this.http.put<T>(apiUrl, object, {
+      headers,
+      params,
+    });
 
     return put;
   }
@@ -61,11 +56,10 @@ export class ApiService {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    const del = this.http
-      .delete<T>(apiUrl, {
-        headers,
-        params,
-      });
+    const del = this.http.delete<T>(apiUrl, {
+      headers,
+      params,
+    });
 
     return del;
   }

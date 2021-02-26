@@ -31,16 +31,15 @@ export class AccessTokenInterceptor implements HttpInterceptor {
       },
     });
 
-    return next.handle(request)
-      .pipe(
-        catchError((error, caught) => {
-          if (error.status === 401) {
-            this.logger.warn([LogTopic.Auth], 'Received 401; attempting silent reauth and retry');
-            return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
-          }
+    return next.handle(request).pipe(
+      catchError((error, caught) => {
+        if (error.status === 401) {
+          this.logger.warn([LogTopic.Auth], 'Received 401; attempting silent reauth and retry');
+          return this.store.dispatch(new RecheckAuth()).pipe(switchMap(() => caught));
+        }
 
-          return caught;
-        }),
-      );;
+        return caught;
+      }),
+    );
   }
 }
