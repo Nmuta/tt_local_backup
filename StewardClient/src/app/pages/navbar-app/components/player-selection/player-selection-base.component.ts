@@ -217,10 +217,14 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     }
 
     const tempResults = newQueries.map(q => <AugmentedCompositeIdentity>{ query: q });
-    tempResults.forEach(v => {
-      this.knownIdentities.add(v.query[this.lookupType].toString());
-      this.foundIdentities.push(v);
-    });
+
+    for (const result of tempResults) {
+      this.knownIdentities.add(result.query[this.lookupType].toString());
+      this.foundIdentities.push(result);
+      if (this.disable) {
+        break;
+      }
+    }
 
     if (emit) {
       this.lookupListChange.emit(this.lookupList);
