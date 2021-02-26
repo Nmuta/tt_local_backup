@@ -1,4 +1,13 @@
 @import '/src/styles/mixins/variables.scss';
+
+.player-selection-div {
+  margin-bottom: 20px;
+}
+
 .reference-inventory {
   flex-grow: 1;
+
+  .inventory-div {
+    margin-top: 20px;
+  }
 }
