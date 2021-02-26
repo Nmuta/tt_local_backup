@@ -8,11 +8,11 @@ import {
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Store } from '@ngxs/store';
-import { LoggerService } from '@services/logger';
+import { LoggerService, LogTopic } from '@services/logger';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
-import { Observable } from 'rxjs';
-import { catchError, switchMap, timeout } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, switchMap, timeout, tap } from 'rxjs/operators';
 
 /** Defines the access token interceptor. */
 @Injectable()
@@ -32,36 +32,26 @@ export class AccessTokenInterceptor implements HttpInterceptor {
     }
 
     request = this.setAccessTokenHeader(request);
-
     return next.handle(request).pipe(
-      catchError(error => {
-        if (this.isAuthError(error) && !this.hasAlreadyRetried(request)) {
+      catchError((error, _source) => {
+        if (this.isAuthError(error)) {
+          this.logger.warn([LogTopic.Auth], 'Authentication error encountered. Retrying.')
           return this.store.dispatch(new RecheckAuth()).pipe(
             timeout(3_000),
             switchMap(() => {
               request = this.setAccessTokenHeader(request);
-              request = request.clone({
-                setParams: {
-                  [this.tokenRetryParam]: 'true',
-                },
-              });
               return next.handle(request);
-            }),
+            })
           );
         }
 
-        throw error;
+        return throwError(error);
       }),
     );
   }
 
   private isAuthError(error: unknown): boolean {
     return error instanceof HttpErrorResponse && error.status === 401;
-  }
-
-  private hasAlreadyRetried(request: HttpRequest<unknown>): boolean {
-    const retried = request.params.get(this.tokenRetryParam);
-    return !!retried;
   }
 
   private setAccessTokenHeader(request: HttpRequest<unknown>): HttpRequest<unknown> {
