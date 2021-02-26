@@ -1,9 +1,9 @@
-<mat-toolbar color="default">
+<mat-toolbar>
   <a
     *ngFor="let link of navbarRouterLinks"
     [routerLink]="link.route"
     mat-button
-    routerLinkActive="navbar-button-active"
+    routerLinkActive="mat-stroked-button"
     >{{ link.name }}</a
   >
   <span class="spacer"></span>

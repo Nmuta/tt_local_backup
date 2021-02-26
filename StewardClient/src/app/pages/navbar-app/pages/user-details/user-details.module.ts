@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { PlayerSelectionSingleModule } from '@navbar-app/components/player-selection-single/player-selection-single.module';
+import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
 
 import { UserDetailsComponent } from './user-details.component';
 import { UserDetailsRouterModule } from './user-details.routing';
@@ -48,7 +48,7 @@ import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-pr
     MatInputModule,
     FontAwesomeModule,
     FormsModule,
-    PlayerSelectionSingleModule,
+    PlayerSelectionModule,
     CommonModule,
     MatTabsModule,
     PipesModule,
@@ -62,7 +62,7 @@ import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-pr
     PlayerNotificationsModule,
     PlayerInventoryModule,
     PlayerInventoryProfilesModule,
-    PlayerSelectionSingleModule,
+    PlayerSelectionModule,
     MatTooltipModule,
   ],
 })

@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   /** Sends a GET request. */
   public getRequest<T>(url: string, params?: HttpParams, headers?: HttpHeaders): Observable<T> {

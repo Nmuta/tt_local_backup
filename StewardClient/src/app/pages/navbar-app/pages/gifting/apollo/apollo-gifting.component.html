@@ -6,28 +6,35 @@
       (selectedTabChange)="matTabSelectionChange($event.index)"
     >
       <mat-tab label="Player Selection">
-        <!-- Player selection -->
-        <apollo-player-selection
-          [allowT10Id]="false"
-          [allowGroup]="false"
-          [(ngModel)]="selectedPlayerIdentities"
-          (ngModelChange)="onPlayerIdentitiesChange($event)"
-          (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
-        ></apollo-player-selection>
+        <mat-card>
+          <player-selection-single
+            [allowSelection]="true"
+            (found)="onPlayerIdentitiesChange([$event])"
+            (selected)="playerIdentitySelected($event)"
+          ></player-selection-single>
+        </mat-card>
       </mat-tab>
       <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
-        <!-- LSP Group Selection -->
-        <apollo-lsp-group-selection
-          [(ngModel)]="selectedLspGroup"
-          (ngModelChange)="onLspGroupChange($event)"
-        ></apollo-lsp-group-selection>
+        <apollo-lsp-group-selection [(ngModel)]="selectedLspGroup"></apollo-lsp-group-selection>
       </mat-tab>
     </mat-tab-group>
+
+    <div class="reference-inventory" *ngIf="selectedPlayerIdentity">
+      <apollo-player-inventory-profile-picker
+        [identity]="selectedPlayerIdentity"
+        [(profileId)]="selectedPlayerInventoryProfile"
+      ></apollo-player-inventory-profile-picker>
+      <apollo-player-inventory
+        [identity]="selectedPlayerIdentity"
+        [profileId]="selectedPlayerInventoryProfile"
+        (inventoryFound)="onInventoryFound($event)"
+      ></apollo-player-inventory>
+    </div>
   </div>
 
   <div class="default-page-layout-right">
-    <!-- Page tool -->
     <apollo-gift-basket
+      [referenceInventory]="selectedPlayerInventory"
       [playerIdentities]="selectedPlayerIdentities"
       [lspGroup]="undefined"
       [usingPlayerIdentities]="true"

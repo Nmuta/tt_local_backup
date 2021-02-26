@@ -1,0 +1,47 @@
+<ng-container *ngIf="!userProfile">
+  <p>Login to see which Steward app are available to you.</p>
+  <a mat-raised-button color="primary" [routerLink]="['/auth/login']" [queryParams]="{ from: '' }"
+    >Login</a
+  >
+</ng-container>
+
+<ng-container *ngIf="!!userProfile">
+  <p>Hi, {{ userProfile.name || userProfile.emailAddress }}.</p>
+  <p>Your role is: {{ userProfile.role }}.</p>
+  <a mat-raised-button color="accent" [routerLink]="['/auth/logout']" [queryParams]="{ from: '' }"
+    >Logout</a
+  >
+
+  <div class="app-list">
+    <h2>Steward App List</h2>
+
+    <a
+      [disabled]="!areSupportAppsAccessible"
+      mat-raised-button
+      color="primary"
+      routerLink="/support/navbar-app/tools/home"
+    >
+      Support App
+
+      <fa-icon
+        [icon]="areSupportAppsAccessible ? availableIcon : unavailableIcon"
+        [matTooltip]="areSupportAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
+      ></fa-icon>
+    </a>
+    <a
+      [disabled]="!areSupportAppsAccessible"
+      mat-raised-button
+      color="primary"
+      routerLink="/support/ticket-app/title"
+    >
+      Support Ticket App
+
+      <fa-icon
+        [icon]="areSupportAppsAccessible ? availableIcon : unavailableIcon"
+        [matTooltip]="areSupportAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
+      ></fa-icon>
+    </a>
+
+    <p>More coming soon...</p>
+  </div>
+</ng-container>

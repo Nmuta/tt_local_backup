@@ -11,6 +11,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AvailableAppsModule } from '@shared/views/available-apps/available-apps.module';
 
 /** Defines the auth module. */
 @NgModule({
@@ -25,6 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatProgressSpinnerModule,
     MatTooltipModule,
     FontAwesomeModule,
+    AvailableAppsModule,
   ],
   declarations: [HomeComponent],
 })

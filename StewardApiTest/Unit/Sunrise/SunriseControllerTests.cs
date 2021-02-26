@@ -18,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Controllers;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
@@ -42,6 +43,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             // Assert.
             act.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenLoggingServiceNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { LoggingService = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "loggingService"));
         }
 
         [TestMethod]
@@ -1115,6 +1130,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());
             }
+            public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
 
@@ -1151,6 +1167,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public IRequestValidator<SunriseUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseUserFlagsInput>>();
 
             public SunriseController Build() => new SunriseController(
+                this.LoggingService,
                 this.KustoProvider,
                 this.SunrisePlayerDetailsProvider,
                 this.SunrisePlayerInventoryProvider,

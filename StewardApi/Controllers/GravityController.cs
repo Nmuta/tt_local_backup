@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Helpers;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -33,6 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgentNew)]
     public sealed class GravityController : ControllerBase
     {
+        private readonly ILoggingService loggingService;
         private readonly IGravityPlayerDetailsProvider gravityPlayerDetailsProvider;
         private readonly IGravityPlayerInventoryProvider gravityPlayerInventoryProvider;
         private readonly IGravityGiftHistoryProvider giftHistoryProvider;
@@ -44,6 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityController"/> class.
         /// </summary>
+        /// <param name="loggingService">The logging service.</param>
         /// <param name="gravityPlayerDetailsProvider">The Gravity player details provider.</param>
         /// <param name="gravityPlayerInventoryProvider">The Gravity player inventory provider.</param>
         /// <param name="giftHistoryProvider">The gift history provider.</param>
@@ -52,6 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="jobTracker">The job tracker.</param>
         /// <param name="giftRequestValidator">The gift request validator.</param>
         public GravityController(
+            ILoggingService loggingService,
             IGravityPlayerDetailsProvider gravityPlayerDetailsProvider,
             IGravityPlayerInventoryProvider gravityPlayerInventoryProvider,
             IGravityGiftHistoryProvider giftHistoryProvider,
@@ -60,6 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IJobTracker jobTracker,
             IRequestValidator<GravityGift> giftRequestValidator)
         {
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             gravityPlayerDetailsProvider.ShouldNotBeNull(nameof(gravityPlayerDetailsProvider));
             gravityPlayerInventoryProvider.ShouldNotBeNull(nameof(gravityPlayerInventoryProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
@@ -68,6 +73,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
 
+            this.loggingService = loggingService;
             this.gravityPlayerDetailsProvider = gravityPlayerDetailsProvider;
             this.gravityPlayerInventoryProvider = gravityPlayerInventoryProvider;
             this.giftHistoryProvider = giftHistoryProvider;
@@ -173,7 +179,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
             var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory, this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -193,7 +199,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(t10Id).ConfigureAwait(true);
             var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(playerInventory.GameSettingsId).ConfigureAwait(true);
 
-            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory, this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -219,7 +225,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.NotFound($"No inventory found for XUID: {xuid}");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory, this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -246,7 +252,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.NotFound($"No inventory found for Turn 10 ID: {t10Id}");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory);
+            playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory, this.loggingService);
             return this.Ok(playerInventory);
         }
 

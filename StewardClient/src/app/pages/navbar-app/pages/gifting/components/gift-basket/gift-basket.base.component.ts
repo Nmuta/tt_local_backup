@@ -27,13 +27,17 @@ export type GiftBasketModel = MasterInventoryItem & { edit: boolean; error: stri
 @Component({
   template: '',
 })
-export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> extends BaseComponent {
-  @Input() public playerIdentities: T[];
+export abstract class GiftBasketBaseComponent<
+  IdentityT extends IdentityResultUnion,
+  MasterInventoryT extends MasterInventoryUnion
+> extends BaseComponent {
+  @Input() public playerIdentities: IdentityT[];
   @Input() public lspGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
+  @Input() public referenceInventory: MasterInventoryT;
 
   /** Master inventory list. */
-  public masterInventory: MasterInventoryUnion;
+  public masterInventory: MasterInventoryT;
   /** The gift basket of current items to be send. */
   public giftBasket = new MatTableDataSource<GiftBasketModel>();
   /** Whether the gift basket has errors in it. */
@@ -89,6 +93,9 @@ export abstract class GiftBasketBaseComponent<T extends IdentityResultUnion> ext
 
   /** Generates a title specific gift. */
   public abstract generateGiftInventoryFromGiftBasket(): GiftUnion;
+
+  /** Populates the gift basket from the set reference inventory. */
+  public abstract populateGiftBasketFromReference(): void;
 
   /** Sends a gift to players. */
   public abstract sendGiftToPlayers(gift: GiftUnion): Observable<BackgroundJob<void>>;

@@ -11,6 +11,7 @@ using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Controllers;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -34,6 +35,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
             // Assert.
             act.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenLoggingServiceNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { LoggingService = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "loggingService"));
         }
 
         [TestMethod]
@@ -533,6 +548,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<GravityGiftHistory>>());
             }
 
+            public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
+
             public IGravityPlayerDetailsProvider GravityPlayerDetailsProvider { get; set; } = Substitute.For<IGravityPlayerDetailsProvider>();
 
             public IGravityPlayerInventoryProvider GravityPlayerInventoryProvider { get; set; } = Substitute.For<IGravityPlayerInventoryProvider>();
@@ -548,6 +565,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             public IRequestValidator<GravityGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<GravityGift>>();
 
             public GravityController Build() => new GravityController(
+                this.LoggingService,
                 this.GravityPlayerDetailsProvider,
                 this.GravityPlayerInventoryProvider,
                 this.GiftHistoryProvider,

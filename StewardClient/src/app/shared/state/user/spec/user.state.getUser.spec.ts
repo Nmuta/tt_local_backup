@@ -8,6 +8,9 @@ import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AppState } from '@shared/state/app-state';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { UserModel } from '@models/user.model';
+import faker from 'faker';
+import { UserRole } from '@models/enums';
 
 describe('State: User', () => {
   let store: Store;
@@ -38,11 +41,13 @@ describe('State: User', () => {
     });
 
     describe('when UserService returns a valid profile', () => {
-      let expectedProfile: unknown;
+      let expectedProfile: UserModel;
 
       beforeEach(() => {
         expectedProfile = {
-          name: 'Luke G',
+          emailAddress: 'test.email@microsoft.com',
+          name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+          role: UserRole.LiveOpsAdmin,
         };
         mockUserService.getUserProfile = jasmine
           .createSpy('getUserProfile')
@@ -81,7 +86,7 @@ describe('State: User', () => {
         store
           .selectOnce(state => state.user.profile)
           .subscribe(profile => {
-            expect(profile).toBe(UserState.NOT_FOUND);
+            expect(profile).toBe(null);
           });
       });
 

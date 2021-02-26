@@ -1,0 +1,33 @@
+@import '/src/styles/mixins/variables.scss';
+
+mat-form-field {
+  max-width: 95%; // TODO: This is a hack to avoid the negative margin hiding in here from generating horizontal scroll bars.
+  &:not(.display-in-single-line) {
+    display: block;
+  }
+}
+
+.fill-button-toggle-group {
+  width: 100%;
+
+  > * {
+    width: 100%;
+  }
+}
+
+// the chip is clickable
+mat-chip {
+  cursor: pointer;
+}
+
+.identity-valid {
+  background-color: mat-color($app-primary, 'lighter');
+}
+
+.identity-invalid {
+  background-color: mat-color($app-warn, 'lighter');
+}
+
+:host ::ng-deep .mat-chip-list-wrapper {
+  flex-wrap: nowrap;
+}

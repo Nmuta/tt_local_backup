@@ -168,9 +168,17 @@ export class SunriseService {
   }
 
   /** Gets a player's Profile Summary by XUID. */
-  public getCreditHistoryByXuid(xuid: bigint): Observable<SunriseCreditHistory> {
+  public getCreditHistoryByXuid(
+    xuid: bigint,
+    startIndex: number = 0,
+    maxResults: number = 100,
+  ): Observable<SunriseCreditHistory> {
+    const httpParams = new HttpParams()
+      .set('startIndex', startIndex.toString())
+      .set('maxResults', maxResults.toString());
     return this.apiService.getRequest<SunriseCreditHistory>(
       `${this.basePath}/player/xuid(${xuid})/creditUpdates`,
+      httpParams,
     );
   }
 

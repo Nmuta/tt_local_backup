@@ -7,6 +7,7 @@ import { MatTableModule } from '@angular/material/table';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
+import { MatButtonModule } from '@angular/material/button';
 
 /** A domain module for displaying credit histories. */
 @NgModule({
@@ -19,6 +20,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
     PipesModule,
     ErrorSpinnerModule,
     JsonDumpModule,
+    MatButtonModule,
   ],
   exports: [SunriseCreditHistoryComponent],
 })

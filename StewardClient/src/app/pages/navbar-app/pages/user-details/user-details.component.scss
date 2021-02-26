@@ -1,4 +1,4 @@
-@import '/src/variables.scss';
+@import '/src/styles/mixins/variables.scss';
 
 .spacer {
   flex: 1 1 auto;
@@ -22,9 +22,6 @@
   }
 }
 
-// TODO: This should probably be made into a function
-// add some tasteful padding around our final routed component
-:host ::ng-deep router-outlet + * {
-  padding: 10px;
-  display: block;
+.mat-stroked-button {
+  border-color: rgba(mat-color($app-background, default-contrast), 0.333);
 }

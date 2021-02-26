@@ -20,6 +20,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Filters;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Middleware;
 using Turn10.LiveOps.StewardApi.Obligation;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
@@ -81,6 +82,8 @@ namespace Turn10.LiveOps.StewardApi
             });
 
             services.AddControllers().AddNewtonsoftJson();
+
+            services.AddApplicationInsightsTelemetry();
 
             services.AddSwaggerGen(options =>
             {
@@ -159,6 +162,8 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton(this.configuration);
 
             services.AddSingleton<IStsClient, StsClientWrapper>();
+
+            services.AddSingleton<ILoggingService, LoggingService>();
 
             services.AddSingleton<IGravityUserService, GravityUserServiceWrapper>();
             services.AddSingleton<IGravityGameSettingsService, GravityGameSettingsServiceWrapper>();

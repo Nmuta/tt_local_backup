@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute, ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalService } from '@mocks/msal.service.mock';
+import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
@@ -10,6 +11,7 @@ import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { of } from 'rxjs';
 import { delay, startWith } from 'rxjs/operators';
+import faker from 'faker';
 
 import { LoginComponent } from './login.component';
 
@@ -19,7 +21,11 @@ describe('LoginComponent', () => {
   let activatedRoute: ActivatedRoute;
   let store: Store;
   const sampleRoute = '/i/am/a/route';
-  const testProfile: UserModel = { emailAddress: 'test.email@microsoft.com' };
+  const testProfile: UserModel = {
+    emailAddress: 'test.email@microsoft.com',
+    role: UserRole.LiveOpsAdmin,
+    name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

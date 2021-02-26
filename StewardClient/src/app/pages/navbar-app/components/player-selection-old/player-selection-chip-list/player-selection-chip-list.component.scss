@@ -1,4 +1,4 @@
-@import '/src/variables.scss';
+@import '/src/styles/mixins/variables.scss';
 
 mat-form-field {
   width: 100%;
@@ -15,8 +15,4 @@ mat-chip {
 
 .identity-invalid {
   background-color: mat-color($app-warn, 'lighter');
-}
-
-:host ::ng-deep .mat-chip-list-wrapper {
-  flex-wrap: nowrap;
 }

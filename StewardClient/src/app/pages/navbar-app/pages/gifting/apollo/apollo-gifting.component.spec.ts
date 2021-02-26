@@ -3,15 +3,11 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalService } from '@mocks/msal.service.mock';
-import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { ApolloGiftingComponent } from './apollo-gifting.component';
 import { ApolloGiftingState } from './state/apollo-gifting.state';
-import {
-  SetApolloGiftingMatTabIndex,
-  SetApolloGiftingSelectedPlayerIdentities,
-} from './state/apollo-gifting.state.actions';
+import { SetApolloGiftingMatTabIndex } from './state/apollo-gifting.state.actions';
 
 describe('ApolloGiftingComponent', () => {
   let component: ApolloGiftingComponent;
@@ -53,22 +49,22 @@ describe('ApolloGiftingComponent', () => {
     });
   });
 
-  describe('Method: onPlayerIdentitiesChange', () => {
-    let event: IdentityResultAlphaBatch;
-    beforeEach(() => {
-      event = [
-        {
-          query: undefined,
-          xuid: BigInt(123456789),
-        },
-      ];
-    });
-    it('should displatch SetApolloGiftingSelectedPlayerIdentities with correct data', () => {
-      component.onPlayerIdentitiesChange(event);
+  // describe('Method: onPlayerIdentitiesChange', () => {
+  //   let event: IdentityResultAlphaBatch;
+  //   beforeEach(() => {
+  //     event = [
+  //       {
+  //         query: undefined,
+  //         xuid: BigInt(123456789),
+  //       },
+  //     ];
+  //   });
+  //   it('should displatch SetApolloGiftingSelectedPlayerIdentities with correct data', () => {
+  //     component.onPlayerIdentitiesChange(event);
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(
-        new SetApolloGiftingSelectedPlayerIdentities(event),
-      );
-    });
-  });
+  //     expect(mockStore.dispatch).toHaveBeenCalledWith(
+  //       new SetApolloGiftingSelectedPlayerIdentities(event),
+  //     );
+  //   });
+  // });
 });

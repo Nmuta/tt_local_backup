@@ -12,10 +12,14 @@ import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { GiftResponse } from '@models/gift-response';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
+import { SunriseMasterInventory } from '@models/sunrise';
 
 describe('GiftBasketBaseComponent', () => {
-  let fixture: ComponentFixture<GiftBasketBaseComponent<IdentityResultBeta>>;
-  let component: GiftBasketBaseComponent<IdentityResultBeta>;
+  let fixture: ComponentFixture<GiftBasketBaseComponent<
+    IdentityResultBeta,
+    SunriseMasterInventory
+  >>;
+  let component: GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>;
 
   const formBuilder: FormBuilder = new FormBuilder();
 
@@ -36,7 +40,9 @@ describe('GiftBasketBaseComponent', () => {
       }).compileComponents();
 
       fixture = TestBed.createComponent(
-        GiftBasketBaseComponent as Type<GiftBasketBaseComponent<IdentityResultBeta>>,
+        GiftBasketBaseComponent as Type<
+          GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>
+        >,
       );
       component = fixture.debugElement.componentInstance;
 

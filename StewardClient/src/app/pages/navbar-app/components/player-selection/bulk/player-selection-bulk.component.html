@@ -1,4 +1,5 @@
 <mat-button-toggle-group
+  [class.fill-button-toggle-group]="!displayInSingleLine"
   aria-label="ID Type"
   name="lookupType"
   #lookupTypeGroup="matButtonToggleGroup"
@@ -9,13 +10,21 @@
   <mat-button-toggle value="t10Id">T10</mat-button-toggle>
 </mat-button-toggle-group>
 
-<mat-form-field class="example-chip-list">
+<mat-form-field class="player-chip-list" [class.display-in-single-line]="displayInSingleLine">
   <mat-label>{{ lookupType | humanize }}</mat-label>
-  <mat-chip-list #chipList aria-label="Fruit selection">
+  <mat-chip-list
+    #chipList
+    aria-label="Fruit selection"
+    [selectable]="allowSelection"
+    (change)="onSelect($event)"
+  >
     <mat-chip
       *ngFor="let identity of foundIdentities"
-      [selectable]="false"
+      #chip="matChip"
+      (click)="chip.toggleSelected(true)"
+      [selectable]="allowSelection"
       [removable]="true"
+      [value]="identity"
       [class.identity-valid]="identity.extra?.isValid"
       [class.identity-invalid]="identity.extra?.isInvalid"
       [color]="identity.extra?.theme"

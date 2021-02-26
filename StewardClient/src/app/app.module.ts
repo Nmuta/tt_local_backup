@@ -40,6 +40,7 @@ import { GravityGiftHistoryState } from '@navbar-app/pages/gift-history/gravity/
 import { SunriseGiftHistoryState } from '@navbar-app/pages/gift-history/sunrise/state/sunrise-gift-history.state';
 import { ApolloGiftHistoryState } from '@navbar-app/pages/gift-history/apollo/state/apollo-gift-history.state';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
+import { AvailableAppsModule } from '@shared/views/available-apps/available-apps.module';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -75,6 +76,7 @@ function fakeApiOrNothing(): Provider[] {
     MatNativeDateModule,
     CenterContentsModule,
     FlexLayoutModule,
+    AvailableAppsModule,
     NgxsModule.forRoot([
       UserState,
       UserSettingsState,
@@ -90,7 +92,7 @@ function fakeApiOrNothing(): Provider[] {
       SunriseGiftHistoryState,
       ApolloGiftHistoryState,
     ]),
-    NgxsStoragePluginModule.forRoot({ key: [UserSettingsState] }),
+    NgxsStoragePluginModule.forRoot({ key: [UserSettingsState, UserState] }),
     NgxsRouterPluginModule.forRoot(),
     MsalModule.forRoot(
       {
