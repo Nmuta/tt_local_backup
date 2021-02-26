@@ -64,13 +64,13 @@ export class SunriseGiftingComponent extends GiftingBaseComponent implements OnI
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentitiesChange(identity: AugmentedCompositeIdentity[]): void {
-    const newIdentities = identity.filter(i => i.extra.hasSunrise);
+    const newIdentities = identity.filter(i => i.extra?.hasSunrise);
     this.store.dispatch(new SetSunriseGiftingSelectedPlayerIdentities(newIdentities));
   }
 
   /** Player identity selected */
   public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
-    this.selectedPlayerIdentity = identity.extra.hasSunrise ? identity.sunrise : null;
+    this.selectedPlayerIdentity = identity?.extra?.hasSunrise ? identity.sunrise : null;
   }
 
   /** Called when a player inventory is selected and found. */

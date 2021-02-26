@@ -119,9 +119,17 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       )
       .subscribe(v => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const [previous, _current] = v;
+        const [previousType, currentType] = v;
 
-        const values = this.foundIdentities.map(i => i.query[previous]);
+        const values = this.foundIdentities.map(i =>
+          chain(i)
+            .values()
+            .map(v => v[currentType])
+            .filter(v => !!v)
+            .uniq()
+            .first()
+            .value(),
+        );
         this.foundIdentities = [];
 
         this.handleNewValues(values, false);
@@ -201,6 +209,10 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
    */
   private handleNewQueries(newQueries: IdentityQueryBeta[], emit = true): void {
     if (isEmpty(newQueries)) {
+      if (emit) {
+        this.lookupListChange.emit(this.lookupList);
+      }
+      this.onFound();
       return;
     }
 
