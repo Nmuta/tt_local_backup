@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.WebServices.FMG.Generated;
 using Turn10.Data.Common;
-using Turn10.FMG.ForzaClient;
-using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using static Forza.WebServices.FMG.Generated.GameSettingsService;
@@ -19,21 +13,26 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
     {
         private readonly IGravityGameSettingsService gravityGameSettingsService;
         private readonly IMapper mapper;
+        private readonly IRefreshableCacheStore refreshableCacheStore;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityGameSettingsProvider"/> class.
         /// </summary>
         /// <param name="gravityGameSettingsService">The Gravity game settings service.</param>
         /// <param name="mapper">The mapper.</param>
+        /// <param name="refreshableCacheStore">The refreshable cache store.</param>
         public GravityGameSettingsProvider(
             IGravityGameSettingsService gravityGameSettingsService,
-            IMapper mapper)
+            IMapper mapper,
+            IRefreshableCacheStore refreshableCacheStore)
         {
             gravityGameSettingsService.ShouldNotBeNull(nameof(gravityGameSettingsService));
             mapper.ShouldNotBeNull(nameof(mapper));
+            refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
 
             this.gravityGameSettingsService = gravityGameSettingsService;
             this.mapper = mapper;
+            this.refreshableCacheStore = refreshableCacheStore;
         }
 
         /// <inheritdoc />
@@ -43,8 +42,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                var gameSettingsOutput = await this.gravityGameSettingsService.GetGameSettingsAsync(gameSettingsId)
-                    .ConfigureAwait(false);
+                var gameSettingsOutput = this.refreshableCacheStore.GetItem<LiveOpsGetGameSettingsOutput>(gameSettingsId.ToString())
+                                         ?? await this.gravityGameSettingsService.GetGameSettingsAsync(gameSettingsId).ConfigureAwait(false);
+                this.refreshableCacheStore.PutItem(gameSettingsId.ToString(), TimeSpan.FromDays(3), gameSettingsOutput);
+
                 return this.mapper.Map<GravityMasterInventory>(gameSettingsOutput);
             }
             catch (Exception ex)
