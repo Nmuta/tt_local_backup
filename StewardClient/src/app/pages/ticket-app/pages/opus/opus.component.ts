@@ -5,7 +5,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { OpusService } from '@services/opus';
 import { TicketService } from '@services/zendesk/ticket.service';
-import { takeUntil, switchMap } from 'rxjs/operators';
+import { takeUntil, switchMap, tap } from 'rxjs/operators';
 
 /** Routed component for displaying Opus Ticket information. */
 @Component({
@@ -33,7 +33,9 @@ export class OpusComponent extends BaseComponent implements OnInit {
       .subscribe(title => {
         this.gameTitle = title;
         if (title !== GameTitleCodeName.FH3) {
-          this.store.dispatch(new Navigate(['/ticket-app/title/'], null, { replaceUrl: true }));
+          this.store.dispatch(
+            new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
+          );
         }
       });
 
@@ -42,11 +44,11 @@ export class OpusComponent extends BaseComponent implements OnInit {
       .pipe(
         takeUntil(this.onDestroy$),
         switchMap(gamertag => this.opus.getPlayerIdentity({ gamertag })),
+        tap(identity => {
+          this.gamertag = identity.gamertag;
+          this.xuid = identity.xuid;
+        }),
       )
-      .subscribe(identity => {
-        this.gamertag = identity.gamertag;
-        this.xuid = identity.xuid;
-        // TODO: Handle identity.error
-      });
+      .subscribe();
   }
 }

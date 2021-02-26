@@ -33,19 +33,19 @@ export class UnknownComponent extends BaseComponent implements OnInit {
     switch (title) {
       case GameTitleCodeName.Street:
         return this.store.dispatch(
-          new Navigate(['/ticket-app/title/gravity'], null, { replaceUrl: true }),
+          new Navigate(['/support/ticket-app/title/gravity'], null, { replaceUrl: true }),
         );
       case GameTitleCodeName.FH4:
         return this.store.dispatch(
-          new Navigate(['/ticket-app/title/sunrise'], null, { replaceUrl: true }),
+          new Navigate(['/support/ticket-app/title/sunrise'], null, { replaceUrl: true }),
         );
       case GameTitleCodeName.FM7:
         return this.store.dispatch(
-          new Navigate(['/ticket-app/title/apollo'], null, { replaceUrl: true }),
+          new Navigate(['/support/ticket-app/title/apollo'], null, { replaceUrl: true }),
         );
       case GameTitleCodeName.FH3:
         return this.store.dispatch(
-          new Navigate(['/ticket-app/title/opus'], null, { replaceUrl: true }),
+          new Navigate(['/support/ticket-app/title/opus'], null, { replaceUrl: true }),
         );
     }
   }

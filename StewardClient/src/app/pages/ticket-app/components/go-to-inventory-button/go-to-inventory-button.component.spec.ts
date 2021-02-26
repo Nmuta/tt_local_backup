@@ -1,22 +1,21 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
-import { createMockZendeskService, ZendeskService } from '@services/zendesk';
+import { createMockZendeskService } from '@services/zendesk';
+import faker from 'faker';
 
 import { GoToInventoryButtonComponent } from './go-to-inventory-button.component';
 
 describe('GoToInventoryButtonComponent', () => {
   let component: GoToInventoryButtonComponent;
   let fixture: ComponentFixture<GoToInventoryButtonComponent>;
-  let zendesk: ZendeskService;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [GoToInventoryButtonComponent],
       providers: [createMockZendeskService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-
-    zendesk = TestBed.inject(ZendeskService);
   });
 
   beforeEach(() => {
@@ -29,14 +28,26 @@ describe('GoToInventoryButtonComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should goToInventory()', () => {
-    component.xuid = BigInt(123456);
-    component.gameTitle = GameTitleCodeName.Street;
-    component.goToInventory();
-    expect(zendesk.goToApp$).toHaveBeenCalledWith(
-      'nav_bar',
-      'forza-inventory-support',
-      `${component.gameTitle}/${component.xuid}`,
-    );
+  beforeEach(() => {
+    window.open = jasmine.createSpy('open').and.callThrough();
+  });
+
+  describe('Method goToInventory:', () => {
+    const xuid = BigInt(faker.random.number());
+    const gameTitle = GameTitleCodeName.Street;
+    beforeEach(() => {
+      component.xuid = xuid;
+      component.gameTitle = gameTitle;
+    });
+
+    it('should call window.open with correct link', () => {
+      component.goToInventory();
+
+      const expectedUrl = `${
+        environment.stewardUiUrl
+      }/support/navbar-app/tools/user-details/${gameTitle.toLowerCase()}?lookupType=xuid&lookupName=${xuid}`;
+
+      expect(window.open).toHaveBeenCalledWith(expectedUrl, '_blank');
+    });
   });
 });
