@@ -13,7 +13,7 @@ import { LoggerService, LogTopic } from '@services/logger';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { concat, defer, Observable, throwError } from 'rxjs';
-import { catchError, switchMap, delay, tap } from 'rxjs/operators';
+import { catchError, switchMap, delay, tap, first } from 'rxjs/operators';
 
 let requestCounter = 0;
 /** Defines the access token interceptor. */
@@ -47,10 +47,10 @@ export class AccessTokenInterceptor implements HttpInterceptor {
 
           this.store.dispatch(new RecheckAuth());
           return UserState.latestValidProfile$(this.profile$).pipe(
+            first(),
             tap(() => this.logger.log([LogTopic.AuthInterception], `[${requestId}] [rechecked auth]`, request.url)),
             tap(() => this.logger.log([LogTopic.AuthInterception], `[${requestId}] [retrying request]`, request.url)),
-            switchMap(profile => {
-              debugger;
+            switchMap(_profile => {
               request = this.setAccessTokenHeader(request);
               return next.handle(request).pipe(
                 tap(() => this.logger.log([LogTopic.AuthInterception], `[${requestId}] [retry successful]`, request.url)),
@@ -63,7 +63,6 @@ export class AccessTokenInterceptor implements HttpInterceptor {
         }
 
         this.logger.log([LogTopic.AuthInterception], `[${requestId}] [request failed]`, request.url);
-        debugger;
         return throwError(error);
       }),
     );
