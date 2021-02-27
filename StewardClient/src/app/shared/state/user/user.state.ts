@@ -30,8 +30,6 @@ export class UserStateModel {
   public accessToken: string;
 }
 
-let isAuthing = false;
-
 /**
  * Defines the user state.
  * Manages information about a user's identity and their roles.
@@ -68,16 +66,11 @@ export class UserState {
   /** Logs out the current user and directs them to the auth page. */
   @Action(RecheckAuth, { cancelUncompleted: true })
   public recheckAuth(ctx: StateContext<UserStateModel>, _action: RecheckAuth): Observable<void> {
-    if (isAuthing) {
-      this.logger.warn([LogTopic.AuthInterception], `[user.state] recheckAuth skipped`);
-      return;
-    }
-    isAuthing = true;
     this.logger.log([LogTopic.AuthInterception], `[user.state] recheckAuth`);
     return concat(
       ctx.dispatch(new ResetUserProfile()),
       ctx.dispatch(new RequestAccessToken()),
-    ).pipe(tap(undefined, undefined, () => isAuthing = false));
+    );
   }
 
   /** Action that requests user profile and sets it to the state. */
