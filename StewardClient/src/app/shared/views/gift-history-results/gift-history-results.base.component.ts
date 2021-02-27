@@ -31,6 +31,8 @@ export abstract class GiftHistoryResultsBaseComponent<
   public isLoading = false;
   /** The gift history list to display. */
   public giftHistoryList: U;
+  /** The warning message to display. */
+  public giftHistoryDelay = 'Gift history data can take 5-10 minutes to appear after gifting.'
 
   private readonly getGiftHistory$ = new Subject<void>();
 
