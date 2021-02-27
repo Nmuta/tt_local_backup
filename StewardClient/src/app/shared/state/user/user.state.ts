@@ -7,7 +7,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
 import { UserService } from '@shared/services/user';
 import { clone } from 'lodash';
-import { concat, from, Observable, of, throwError } from 'rxjs';
+import { concat, defer, from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, switchMap, take, tap, timeout } from 'rxjs/operators';
 
 import {
@@ -29,6 +29,8 @@ export class UserStateModel {
   public profile: UserModel;
   public accessToken: string;
 }
+
+let isAuthing = false;
 
 /**
  * Defines the user state.
@@ -66,8 +68,16 @@ export class UserState {
   /** Logs out the current user and directs them to the auth page. */
   @Action(RecheckAuth, { cancelUncompleted: true })
   public recheckAuth(ctx: StateContext<UserStateModel>, _action: RecheckAuth): Observable<void> {
+    if (isAuthing) {
+      this.logger.warn([LogTopic.AuthInterception], `[user.state] recheckAuth skipped`);
+      return;
+    }
+    isAuthing = true;
     this.logger.log([LogTopic.AuthInterception], `[user.state] recheckAuth`);
-    return concat(ctx.dispatch(new ResetUserProfile()), ctx.dispatch(new RequestAccessToken()));
+    return concat(
+      ctx.dispatch(new ResetUserProfile()),
+      ctx.dispatch(new RequestAccessToken()),
+    ).pipe(tap(undefined, undefined, () => isAuthing = false));
   }
 
   /** Action that requests user profile and sets it to the state. */

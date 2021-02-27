@@ -7,17 +7,19 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { Store } from '@ngxs/store';
+import { UserModel } from '@models/user.model';
+import { Select, Store } from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
-import { Observable, throwError } from 'rxjs';
+import { concat, defer, Observable, throwError } from 'rxjs';
 import { catchError, switchMap, delay, tap } from 'rxjs/operators';
 
 let requestCounter = 0;
 /** Defines the access token interceptor. */
 @Injectable()
 export class AccessTokenInterceptor implements HttpInterceptor {
+  @Select(UserState.profile) public profile$: Observable<UserModel>;
   public tokenRetryParam: string = 'tokenRetry';
 
   constructor(private readonly store: Store, private readonly logger: LoggerService) {}
@@ -42,19 +44,21 @@ export class AccessTokenInterceptor implements HttpInterceptor {
         if (this.isAuthError(error)) {
           this.logger.log([LogTopic.AuthInterception], `[${requestId}] [rechecking auth]`, request.url);
           this.logger.warn([LogTopic.Auth], 'Authentication error encountered. Retrying.');
-          return this.store.dispatch(new RecheckAuth()).pipe(
+
+          this.store.dispatch(new RecheckAuth());
+          return UserState.latestValidProfile$(this.profile$).pipe(
             tap(() => this.logger.log([LogTopic.AuthInterception], `[${requestId}] [rechecked auth]`, request.url)),
             tap(() => this.logger.log([LogTopic.AuthInterception], `[${requestId}] [retrying request]`, request.url)),
-            switchMap(() => {
+            switchMap(profile => {
+              debugger;
               request = this.setAccessTokenHeader(request);
               return next.handle(request).pipe(
                 tap(() => this.logger.log([LogTopic.AuthInterception], `[${requestId}] [retry successful]`, request.url)),
                 catchError(error2 => {
                   this.logger.log([LogTopic.AuthInterception], `[${requestId}] [retry failed]`, request.url);
-                  debugger;
                   return throwError(error2);
                 }));
-            }),
+            })
           );
         }
 
