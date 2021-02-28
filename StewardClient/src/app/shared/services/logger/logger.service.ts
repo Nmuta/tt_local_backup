@@ -8,13 +8,20 @@ import { LogTopic } from './log-topic';
 /* eslint-disable no-console */
 /* eslint-disable no-debugger */
 
+const logTopicsToIgnoreInConsole = [];
+const logTopicsToIgnoreInAppInsights = [LogTopic.AuthInterception];
+
 /** A logger service that acts as a configurable proxy for console.log and app insights. */
 @Injectable({ providedIn: 'root' })
 export class LoggerService {
   public consoleLevel: LogLevel = LogLevel.Everything;
   public appInsightsLevel: LogLevel = LogLevel.Everything;
-  public consoleTopics: LogTopic[] = Object.keys(LogTopic).map(k => LogTopic[k]);
-  public appInsightsTopics: LogTopic[] = Object.keys(LogTopic).map(k => LogTopic[k]);
+  public consoleTopics: LogTopic[] = Object.keys(LogTopic)
+    .map(k => LogTopic[k])
+    .filter(v => !logTopicsToIgnoreInConsole.includes(v));
+  public appInsightsTopics: LogTopic[] = Object.keys(LogTopic)
+    .map(k => LogTopic[k])
+    .filter(v => !logTopicsToIgnoreInAppInsights.includes(v));
 
   private console = window.console;
 
