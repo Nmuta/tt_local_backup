@@ -13,6 +13,8 @@ import { LogTopic } from './log-topic';
 export class LoggerService {
   public consoleLevel: LogLevel = LogLevel.Everything;
   public appInsightsLevel: LogLevel = LogLevel.Everything;
+  public consoleTopics: LogTopic[] = Object.keys(LogTopic).map(k => LogTopic[k]);
+  public appInsightsTopics: LogTopic[] = Object.keys(LogTopic).map(k => LogTopic[k]);
 
   private console = window.console;
 
@@ -23,44 +25,44 @@ export class LoggerService {
 
   /** Proxy for console.log */
   public log(topics: LogTopic[], ...data: unknown[]): void {
-    if (this.consoleLevel >= LogLevel.Log) {
+    if (this.consoleLevel >= LogLevel.Log && this.shouldLogTopicToConsole(topics)) {
       this.console.log(`[${topics.join(',')}]`, ...data);
     }
 
-    if (this.appInsightsLevel >= LogLevel.Log) {
+    if (this.appInsightsLevel >= LogLevel.Log && this.shouldLogTopicToAppInsights(topics)) {
       this.trackTrace('log', topics, ...data);
     }
   }
 
   /** Proxy for console.warn */
   public warn(topics: LogTopic[], ...data: unknown[]): void {
-    if (this.consoleLevel >= LogLevel.Warn) {
+    if (this.consoleLevel >= LogLevel.Warn && this.shouldLogTopicToConsole(topics)) {
       this.console.warn(`[${topics.join(',')}]`, ...data);
     }
 
-    if (this.appInsightsLevel >= LogLevel.Warn) {
+    if (this.appInsightsLevel >= LogLevel.Warn && this.shouldLogTopicToAppInsights(topics)) {
       this.trackTrace('warn', topics, ...data);
     }
   }
 
   /** Proxy for console.error */
   public error(topics: LogTopic[], error: Error, ...data: unknown[]): void {
-    if (this.consoleLevel >= LogLevel.Error) {
+    if (this.consoleLevel >= LogLevel.Error && this.shouldLogTopicToConsole(topics)) {
       this.console.error(`[${topics.join(',')}]`, error, ...data);
     }
 
-    if (this.appInsightsLevel >= LogLevel.Error) {
+    if (this.appInsightsLevel >= LogLevel.Error && this.shouldLogTopicToAppInsights(topics)) {
       this.trackError('error', topics, error, ...data);
     }
   }
 
   /** Proxy for console.debug */
   public debug(topics: LogTopic[], ...data: unknown[]): void {
-    if (this.consoleLevel >= LogLevel.Debug) {
+    if (this.consoleLevel >= LogLevel.Debug && this.shouldLogTopicToConsole(topics)) {
       this.console.debug(`[${topics.join(',')}]`, ...data);
     }
 
-    if (this.appInsightsLevel >= LogLevel.Debug) {
+    if (this.appInsightsLevel >= LogLevel.Debug && this.shouldLogTopicToAppInsights(topics)) {
       this.trackTrace('debug', topics, ...data);
     }
   }
@@ -109,5 +111,13 @@ export class LoggerService {
         }
       }
     }
+  }
+
+  private shouldLogTopicToConsole(topics: LogTopic[]): boolean {
+    return topics.some(t => this.consoleTopics.includes(t));
+  }
+
+  private shouldLogTopicToAppInsights(topics: LogTopic[]): boolean {
+    return topics.some(t => this.appInsightsTopics.includes(t));
   }
 }
