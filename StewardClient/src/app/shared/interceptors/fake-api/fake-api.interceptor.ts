@@ -76,6 +76,7 @@ import { ApolloGiftingLspGroupFakeApi } from './apis/title/apollo/gifting/groupI
 import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
 import { SunriseGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/sunrise/gifting/players_returnsbackgroundjob';
 import { ApolloGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/apollo/gifting/players_returnsbackgroundjob';
+import { ApolloPlayerXuidBanHistoryFakeApi } from './apis/title/apollo/player/xuid/banHistory';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -129,6 +130,7 @@ const fakeApiConstructors = [
   ApolloPlayerXuidGiftHistoryFakeApi,
   ApolloPlayersBanFakeApi,
   ApolloPlayersBanSummariesFakeApi,
+  ApolloPlayerXuidBanHistoryFakeApi,
   ApolloPlayersIdentitiesFakeApi,
   ApolloGroupGamertagsInventoryFakeApi,
   ApolloGroupGroupIdInventoryFakeApi,

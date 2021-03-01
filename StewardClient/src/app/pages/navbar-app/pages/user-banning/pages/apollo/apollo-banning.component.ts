@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApolloBanArea, ApolloBanRequest, ApolloBanSummary } from '@models/apollo';
-import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
+import { IdentityResultAlpha } from '@models/identity-query.model';
+import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 import { ApolloService } from '@services/apollo';
 import { Dictionary, filter, keyBy } from 'lodash';
 import { Observable, Subject } from 'rxjs';
@@ -15,25 +16,27 @@ import { BanOptions } from '../../components/ban-options/ban-options.component';
 })
 export class ApolloBanningComponent {
   public formControls = {
-    playerIdentities: new FormControl([], [Validators.required, Validators.minLength(1)]),
     banOptions: new FormControl('', [Validators.required]),
   };
 
   public formGroup = new FormGroup({
     banOptions: this.formControls.banOptions,
-    playerIdentities: this.formControls.playerIdentities,
   });
 
+  public playerIdentities$ = new Subject<IdentityResultAlpha[]>();
+  public playerIdentities: IdentityResultAlpha[] = [];
+  public selectedPlayerIdentity: AugmentedCompositeIdentity = null;
+
   public summaryLookup: Dictionary<ApolloBanSummary> = {};
-  public bannedXuids: BigInt[] = [];
+  public bannedXuids: bigint[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
 
   constructor(private readonly apollo: ApolloService) {
     const summaries = new Subject<ApolloBanSummary[]>();
-    this.formControls.playerIdentities.valueChanges
+    this.playerIdentities$
       .pipe(
-        map((identities: IdentityResultAlpha[]) => identities.map(v => v.xuid)), // to xuid list
-        switchMap(xuids => this.apollo.getBanSummariesByXuids(xuids)), // make requests
+        map(identities => identities.map(i => i.xuid)), // to xuid list
+        switchMap(xuids => this.apollo.getBanSummariesByXuids(xuids)), // make request
       )
       .subscribe(summaries);
     summaries
@@ -56,7 +59,7 @@ export class ApolloBanningComponent {
 
   /** Submit the form. */
   public submitInternal(): Observable<unknown> {
-    const identities = this.formControls.playerIdentities.value as IdentityResultAlphaBatch;
+    const identities = this.playerIdentities;
     const banOptions = this.formControls.banOptions.value as BanOptions;
     const bans: ApolloBanRequest[] = identities.map(identity => {
       return <ApolloBanRequest>{
@@ -72,5 +75,17 @@ export class ApolloBanningComponent {
     });
 
     return this.apollo.postBanPlayers(bans);
+  }
+
+  /** Logic when player selection outputs identities. */
+  public onPlayerIdentitiesChange(identities: AugmentedCompositeIdentity[]): void {
+    const newIdentities = identities.filter(i => i?.extra?.hasApollo).map(i => i.apollo);
+    this.playerIdentities = newIdentities;
+    this.playerIdentities$.next(this.playerIdentities);
+  }
+
+  /** Player identity selected */
+  public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
+    this.selectedPlayer = identity?.extra?.hasApollo ? identity.apollo : null;
   }
 }
