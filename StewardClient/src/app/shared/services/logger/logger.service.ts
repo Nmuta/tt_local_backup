@@ -121,10 +121,12 @@ export class LoggerService {
   }
 
   private shouldLogTopicToConsole(topics: LogTopic[]): boolean {
+    if (!topics || topics.length == 0) { return true; }
     return topics.some(t => this.consoleTopics.includes(t));
   }
 
   private shouldLogTopicToAppInsights(topics: LogTopic[]): boolean {
+    if (!topics || topics.length == 0) { return true; }
     return topics.some(t => this.appInsightsTopics.includes(t));
   }
 }
