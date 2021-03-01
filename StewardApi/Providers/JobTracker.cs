@@ -133,7 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
 
         private void AddFinalStatusToCache(BackgroundJob backgroundJob, string jobId)
         {
-            var success = Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out var status);
+            _ = Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out var status);
 
             if (status != BackgroundJobStatus.InProgress)
             {

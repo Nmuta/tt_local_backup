@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => 1))
                 .ReverseMap();
             this.CreateMap<AdminForzaUserInventorySummary, OpusMasterInventory>()
-                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>()
+                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>
                 {
                     new MasterInventoryItem { Id = -1, Description = "Credits", Quantity = src.creditUpdateEntries.OrderByDescending(e => e.eventTime).FirstOrDefault().currentCredits }
                 }))

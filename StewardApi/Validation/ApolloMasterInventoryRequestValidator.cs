@@ -22,12 +22,12 @@ namespace Turn10.LiveOps.StewardApi.Validation
 
             if (model.Cars != null)
             {
-                this.ValidateItems(model.Cars.ToList<MasterInventoryItem>(), modelState, nameof(model.Cars));
+                this.ValidateItems(model.Cars.ToList(), modelState, nameof(model.Cars));
             }
 
             if (model.VanityItems != null)
             {
-                this.ValidateItems(model.VanityItems.ToList<MasterInventoryItem>(), modelState, nameof(model.VanityItems));
+                this.ValidateItems(model.VanityItems.ToList(), modelState, nameof(model.VanityItems));
             }
         }
 

@@ -454,17 +454,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         [TestCategory("Integration")]
         public async Task UpdatePlayerInventoryByT10Id()
         {
-            var gift = new GravityGift();
-            gift.GiftReason = "Integration Test";
-            gift.Inventory = new GravityMasterInventory();
-            gift.Inventory.CreditRewards = new List<MasterInventoryItem>();
-            gift.Inventory.Cars = new List<MasterInventoryItem>();
-            gift.Inventory.EnergyRefills = new List<MasterInventoryItem>();
-            gift.Inventory.RepairKits = new List<MasterInventoryItem>();
-            gift.Inventory.MasteryKits = new List<MasterInventoryItem>();
-            gift.Inventory.UpgradeKits = new List<MasterInventoryItem>();
+            var gift = new GravityGift
+            {
+                GiftReason = "Integration Test",
+                Inventory = new GravityMasterInventory
+                {
+                    CreditRewards = new List<MasterInventoryItem>(),
+                    Cars = new List<MasterInventoryItem>(),
+                    EnergyRefills = new List<MasterInventoryItem>(),
+                    RepairKits = new List<MasterInventoryItem>(),
+                    MasteryKits = new List<MasterInventoryItem>(),
+                    UpgradeKits = new List<MasterInventoryItem>()
+                }
+            };
 
-            gift.Inventory.CreditRewards.Add(new MasterInventoryItem()
+            gift.Inventory.CreditRewards.Add(new MasterInventoryItem
             {
                 Id = 0,
                 Description = "Credits",
@@ -481,7 +485,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         [TestCategory("Integration")]
         public async Task UpdatePlayerInventoryByT10Id_InvalidT10Id()
         {
-            var gift = this.CreateGift();
+            var gift = CreateGift();
 
             try
             {
@@ -498,7 +502,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         [TestCategory("Integration")]
         public async Task UpdatePlayerInventoryByT10Id_Unauthorized()
         {
-            var gift = this.CreateGift();
+            var gift = CreateGift();
 
             try
             {
@@ -515,17 +519,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         [TestCategory("Integration")]
         public async Task UpdatePlayerInventoryByT10Id_UseBackgroundProcessing()
         {
-            var gift = new GravityGift();
-            gift.GiftReason = "Integration Test";
-            gift.Inventory = new GravityMasterInventory();
-            gift.Inventory.CreditRewards = new List<MasterInventoryItem>();
-            gift.Inventory.Cars = new List<MasterInventoryItem>();
-            gift.Inventory.EnergyRefills = new List<MasterInventoryItem>();
-            gift.Inventory.RepairKits = new List<MasterInventoryItem>();
-            gift.Inventory.MasteryKits = new List<MasterInventoryItem>();
-            gift.Inventory.UpgradeKits = new List<MasterInventoryItem>();
+            var gift = new GravityGift
+            {
+                GiftReason = "Integration Test",
+                Inventory = new GravityMasterInventory
+                {
+                    CreditRewards = new List<MasterInventoryItem>(),
+                    Cars = new List<MasterInventoryItem>(),
+                    EnergyRefills = new List<MasterInventoryItem>(),
+                    RepairKits = new List<MasterInventoryItem>(),
+                    MasteryKits = new List<MasterInventoryItem>(),
+                    UpgradeKits = new List<MasterInventoryItem>()
+                }
+            };
 
-            gift.Inventory.CreditRewards.Add(new MasterInventoryItem()
+            gift.Inventory.CreditRewards.Add(new MasterInventoryItem
             {
                 Id = 0,
                 Description = "Credits",
@@ -581,17 +589,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         [TestCategory("Integration")]
         public async Task GetGiftHistory()
         {
-            var gift = new GravityGift();
-            gift.GiftReason = "Integration Test";
-            gift.Inventory = new GravityMasterInventory();
-            gift.Inventory.CreditRewards = new List<MasterInventoryItem>();
-            gift.Inventory.Cars = new List<MasterInventoryItem>();
-            gift.Inventory.EnergyRefills = new List<MasterInventoryItem>();
-            gift.Inventory.RepairKits = new List<MasterInventoryItem>();
-            gift.Inventory.MasteryKits = new List<MasterInventoryItem>();
-            gift.Inventory.UpgradeKits = new List<MasterInventoryItem>();
+            var gift = new GravityGift
+            {
+                GiftReason = "Integration Test",
+                Inventory = new GravityMasterInventory
+                {
+                    CreditRewards = new List<MasterInventoryItem>(),
+                    Cars = new List<MasterInventoryItem>(),
+                    EnergyRefills = new List<MasterInventoryItem>(),
+                    RepairKits = new List<MasterInventoryItem>(),
+                    MasteryKits = new List<MasterInventoryItem>(),
+                    UpgradeKits = new List<MasterInventoryItem>()
+                }
+            };
 
-            gift.Inventory.CreditRewards.Add(new MasterInventoryItem()
+            gift.Inventory.CreditRewards.Add(new MasterInventoryItem
             {
                 Id = 0,
                 Description = "Credits",
@@ -646,7 +658,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
                 var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"])
                     .ConfigureAwait(false);
 
-                Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out status);
+                Enum.TryParse(backgroundJob.Status, out status);
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
@@ -664,83 +676,31 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             return jobResult;
         }
 
-
-        private Dictionary<string, string> GenerateHeadersToSend(string requestingAgent)
+        private static GravityMasterInventory CreateGiftInventory()
         {
-            var result = new Dictionary<string, string>();
-
-            if (!string.IsNullOrWhiteSpace(requestingAgent))
+            var giftInventory = new GravityMasterInventory
             {
-                result.Add("requestingAgent", requestingAgent);
-            }
-
-            return result;
-        }
-
-        private GravityMasterInventory CreateGiftInventory()
-        {
-            var giftInventory = new GravityMasterInventory();
-
-            giftInventory.CreditRewards = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem() { Id = -1, Description = "Credits", Quantity = 1 },
-            };
-
-
-            giftInventory.Cars = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem()
-                {
-                    Id = 2616,
-                    Quantity = 1
-                }
-            };
-
-            giftInventory.EnergyRefills = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem()
-                {
-                    Id = 16,
-                    Quantity = 1
-                }
-            };
-
-            giftInventory.MasteryKits = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem()
-                {
-                    Id = 310,
-                    Quantity = 1
-                }
-            };
-
-            giftInventory.RepairKits = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem()
-                {
-                    Id = 2,
-                    Quantity = 1
-                }
-            };
-
-            giftInventory.UpgradeKits = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem()
-                {
-                    Id = 84,
-                    Quantity = 1
-                }
+                CreditRewards =
+                    new List<MasterInventoryItem>
+                    {
+                        new MasterInventoryItem {Id = -1, Description = "Credits", Quantity = 1},
+                    },
+                Cars = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 2616, Quantity = 1}},
+                EnergyRefills = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 16, Quantity = 1}},
+                MasteryKits = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 310, Quantity = 1}},
+                RepairKits = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 2, Quantity = 1}},
+                UpgradeKits = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 84, Quantity = 1}}
             };
 
             return giftInventory;
         }
 
-        private GravityGift CreateGift()
+        private static GravityGift CreateGift()
         {
             return new GravityGift
             {
                 GiftReason = "Integration Test",
-                Inventory = this.CreateGiftInventory()
+                Inventory = CreateGiftInventory()
             };
         }
     }

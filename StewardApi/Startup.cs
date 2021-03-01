@@ -99,15 +99,15 @@ namespace Turn10.LiveOps.StewardApi
                     }
                 });
 
-                options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme()
+                options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.OAuth2,
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
                     Scheme = "bearer",
-                    Flows = new OpenApiOAuthFlows()
+                    Flows = new OpenApiOAuthFlows
                     {
-                        Implicit = new OpenApiOAuthFlow()
+                        Implicit = new OpenApiOAuthFlow
                         {
                             TokenUrl = new Uri($"{this.configuration[ConfigurationKeyConstants.AzureInstance]}/{this.configuration[ConfigurationKeyConstants.AzureTenantId]}/oauth2/v2.0/token"),
                             AuthorizationUrl = new Uri($"{this.configuration[ConfigurationKeyConstants.AzureInstance]}/{this.configuration[ConfigurationKeyConstants.AzureTenantId]}/oauth2/v2.0/authorize"),

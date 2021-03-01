@@ -29,27 +29,27 @@ namespace Turn10.LiveOps.StewardApi.Validation
 
             if (model.Cars != null)
             {
-                this.ValidateItems(model.Cars.ToList<MasterInventoryItem>(), modelState, nameof(model.Cars));
+                this.ValidateItems(model.Cars.ToList(), modelState, nameof(model.Cars));
             }
 
             if (model.Emotes != null)
             {
-                this.ValidateItems(model.Emotes.ToList<MasterInventoryItem>(), modelState, nameof(model.Emotes));
+                this.ValidateItems(model.Emotes.ToList(), modelState, nameof(model.Emotes));
             }
 
             if (model.CarHorns != null)
             {
-                this.ValidateItems(model.CarHorns.ToList<MasterInventoryItem>(), modelState, nameof(model.CarHorns));
+                this.ValidateItems(model.CarHorns.ToList(), modelState, nameof(model.CarHorns));
             }
 
             if (model.VanityItems != null)
             {
-                this.ValidateItems(model.VanityItems.ToList<MasterInventoryItem>(), modelState, nameof(model.VanityItems));
+                this.ValidateItems(model.VanityItems.ToList(), modelState, nameof(model.VanityItems));
             }
 
             if (model.QuickChatLines != null)
             {
-                this.ValidateItems(model.QuickChatLines.ToList<MasterInventoryItem>(), modelState, nameof(model.QuickChatLines));
+                this.ValidateItems(model.QuickChatLines.ToList(), modelState, nameof(model.QuickChatLines));
             }
         }
 

@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ReverseMap();
             this.CreateMap<AdminForzaUserInventorySummary, ApolloMasterInventory>()
-                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>()
+                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>
                 {
                     new MasterInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits }
                 }))
@@ -83,11 +83,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.ItemId));
             this.CreateMap<ApolloPlayerInventory, ApolloGift>()
                 .ForMember(dest => dest.GiftReason, opt => opt.MapFrom(source => source.GiftReason))
-                .ForMember(dest => dest.Inventory, opt => opt.MapFrom((source, destObj, destMem, context) => new ApolloMasterInventory()
+                .ForMember(dest => dest.Inventory, opt => opt.MapFrom((source, destObj, destMem, context) => new ApolloMasterInventory
                 {
-                    CreditRewards = new List<MasterInventoryItem>()
+                    CreditRewards = new List<MasterInventoryItem>
                     {
-                        new MasterInventoryItem() { Description = "Credits", Quantity = source.Credits, Id = -1 },
+                        new MasterInventoryItem { Description = "Credits", Quantity = source.Credits, Id = -1 },
                     },
                     Cars = context.Mapper.Map<IList<MasterInventoryItem>>(source.Cars),
                     VanityItems = context.Mapper.Map<IList<MasterInventoryItem>>(source.VanityItems),

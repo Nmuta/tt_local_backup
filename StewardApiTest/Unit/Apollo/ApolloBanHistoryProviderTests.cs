@@ -171,10 +171,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var title = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<LiveOpsBanHistory>>> act = async () => await provider.GetBanHistoriesAsync(xuid, title).ConfigureAwait(false);
+            async Task<IList<LiveOpsBanHistory>> Action() => await provider.GetBanHistoriesAsync(xuid, title).ConfigureAwait(false);
 
             // Assert.
-            act().Result.Should().BeOfType<List<LiveOpsBanHistory>>();
+            Action().Result.Should().BeOfType<List<LiveOpsBanHistory>>();
         }
 
         [TestMethod]
