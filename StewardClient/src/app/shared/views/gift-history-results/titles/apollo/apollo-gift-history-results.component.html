@@ -1,6 +1,7 @@
 <mat-card>
   <mat-card-content>
     <h2>Apollo Gift History</h2>
+    <span class="notification">{{ giftHistoryDelay }}</span>
     <div class="scrollable" *ngIf="!isLoading && !loadError; else failState">
       <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
         <mat-expansion-panel-header>

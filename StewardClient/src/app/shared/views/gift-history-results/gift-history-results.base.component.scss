@@ -1,7 +1,11 @@
 @import '/src/styles/mixins/variables.scss';
 
+h2 {
+  margin-bottom: 8px;
+}
+
 h3 {
-  margin-bottom: 0;
+  margin-bottom: 0px;
   font-weight: bold;
 }
 
