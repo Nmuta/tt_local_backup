@@ -34,7 +34,8 @@ describe('PlayerDetailsComponent', () => {
           createMockGravityService(),
           createMockSunriseService(),
           createMockApolloService(),
-          createMockOpusService(), createMockLoggerService()
+          createMockOpusService(),
+          createMockLoggerService(),
         ],
       }).compileComponents();
 

@@ -28,7 +28,12 @@ describe('OpusPlayerDetailsComponent', () => {
         ],
         declarations: [OpusPlayerDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWindowService(), createMockMsalService(), createMockOpusService(), createMockLoggerService()],
+        providers: [
+          createMockWindowService(),
+          createMockMsalService(),
+          createMockOpusService(),
+          createMockLoggerService(),
+        ],
       }).compileComponents();
 
       const injector = getTestBed();

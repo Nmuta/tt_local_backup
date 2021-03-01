@@ -50,7 +50,8 @@ describe('TicketAppComponent', () => {
           createMockZendeskService(),
           createMockScrutineerDataParser(),
           createMockClipboard(),
-          createMockMsalService(), createMockLoggerService()
+          createMockMsalService(),
+          createMockLoggerService(),
         ],
       }).compileComponents();
 

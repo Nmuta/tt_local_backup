@@ -28,7 +28,12 @@ describe('SunrisePlayerDetailsComponent', () => {
         ],
         declarations: [SunrisePlayerDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWindowService(), createMockMsalService(), createMockSunriseService(), createMockLoggerService()],
+        providers: [
+          createMockWindowService(),
+          createMockMsalService(),
+          createMockSunriseService(),
+          createMockLoggerService(),
+        ],
       }).compileComponents();
 
       const injector = getTestBed();

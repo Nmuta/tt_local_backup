@@ -28,7 +28,12 @@ describe('GravityPlayerDetailsComponent', () => {
         ],
         declarations: [GravityPlayerDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWindowService(), createMockMsalService(), createMockGravityService(), createMockLoggerService()],
+        providers: [
+          createMockWindowService(),
+          createMockMsalService(),
+          createMockGravityService(),
+          createMockLoggerService(),
+        ],
       }).compileComponents();
 
       const injector = getTestBed();

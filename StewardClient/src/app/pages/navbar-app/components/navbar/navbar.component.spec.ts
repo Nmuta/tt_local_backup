@@ -25,7 +25,12 @@ describe('NavbarComponent', () => {
         ],
         declarations: [NavbarComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWindowService(), createMockMsalService(), createMockZendeskService(), createMockLoggerService()],
+        providers: [
+          createMockWindowService(),
+          createMockMsalService(),
+          createMockZendeskService(),
+          createMockLoggerService(),
+        ],
       }).compileComponents();
 
       fixture = TestBed.createComponent(NavbarComponent);
