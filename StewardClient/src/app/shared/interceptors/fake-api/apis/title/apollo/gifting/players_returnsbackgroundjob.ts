@@ -14,7 +14,7 @@ export class ApolloGiftingPlayersReturnsBackgroundJobFakeApi extends FakeApiBase
     }
 
     const url = new URL(this.request.url);
-    const regex = /^\/?api\/v1\/title\/apollo\/gifting\/players\?useBackgroundProcessing=true$/i;
+    const regex = /^\/?api\/v1\/title\/apollo\/gifting\/players\/useBackgroundProcessing$/i;
     return regex.test(url.pathname);
   }
 
