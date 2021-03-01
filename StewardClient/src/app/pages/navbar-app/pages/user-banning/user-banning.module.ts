@@ -23,6 +23,7 @@ import { BanChipsComponent } from './components/ban-chips/ban-chips.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BanChipIconModule } from './components/ban-chip-icon/ban-chip-icon.module';
 import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
+import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -47,6 +48,7 @@ import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
     ReactiveFormsModule,
     UserBanningRoutingModule,
     OldPlayerSelectionModule,
+    PlayerSelectionModule,
     VerifyActionButtonModule,
     MatCheckboxModule,
     MatDatepickerModule,

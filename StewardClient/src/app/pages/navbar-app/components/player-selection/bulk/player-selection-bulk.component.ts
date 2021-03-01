@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, ContentChild, EventEmitter, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatChipList, MatChipListChange } from '@angular/material/chips';
 import { ApolloService } from '@services/apollo';
 import { GravityService } from '@services/gravity';
@@ -18,6 +18,7 @@ import {
 export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
   @Output() public found = new EventEmitter<AugmentedCompositeIdentity[]>();
   @Output() public selected = new EventEmitter<AugmentedCompositeIdentity>();
+  @ContentChild(TemplateRef) templateRef: TemplateRef<AugmentedCompositeIdentity>;
   @ViewChild('chipList') public chipList: MatChipList;
 
   protected selectedValue: AugmentedCompositeIdentity = null;

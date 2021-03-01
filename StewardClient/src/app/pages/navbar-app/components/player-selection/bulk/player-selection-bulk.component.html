@@ -32,6 +32,8 @@
     >
       <span>{{ identity.query[this.lookupType] }}</span>
 
+      <ng-template [ngTemplateOutlet]="templateRef" [ngTemplateOutletContext]="{ $implicit: identity, identity: identity }"></ng-template>
+
       <error-spinner
         [isActive]="!identity.extra"
         [error]="identity.extra?.isInvalid ? identity : undefined"

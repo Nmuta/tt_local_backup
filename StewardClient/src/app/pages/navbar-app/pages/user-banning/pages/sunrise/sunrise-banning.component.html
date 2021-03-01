@@ -1,26 +1,17 @@
 <div class="default-page-layout">
   <div class="default-page-layout-left">
-    <sunrise-player-selection
-      #playerSelection
-      [allowT10Id]="false"
-      [allowGroup]="true"
-      [formControl]="formControls.playerIdentities"
-    >
-      <player-selection-chip-list
-        [playerSelection]="playerSelection"
-        [identities]="playerSelection.playerIdentitiesFull"
-        (selectionChange)="selectPlayer($event)"
-      >
-        <ng-template let-identity>
-          <player-selection-chip [playerSelection]="playerSelection" [identity]="identity">
-            <ban-chip-icon
-              [identity]="identity"
-              [banSummary]="summaryLookup[identity.xuid]"
-            ></ban-chip-icon>
-          </player-selection-chip>
-        </ng-template>
-      </player-selection-chip-list>
-    </sunrise-player-selection>
+    <player-selection-bulk
+      [allowSelection]="true"
+      (found)="onPlayerIdentitiesChange($event)"
+      (selected)="playerIdentitySelected($event)">
+      <ng-template let-identity>
+        <ban-chip-icon
+          *ngIf="identity?.extra?.hasSunrise"
+          [identity]="identity.sunrise"
+          [banSummary]="summaryLookup[identity.sunrise.xuid]"
+        ></ban-chip-icon>
+      </ng-template>
+    </player-selection-bulk>
     <div class="bottom">
       <ng-container *ngFor="let xuid of bannedXuids">
         <sunrise-ban-history
