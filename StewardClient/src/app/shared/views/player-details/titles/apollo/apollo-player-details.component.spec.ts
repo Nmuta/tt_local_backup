@@ -10,6 +10,7 @@ import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { of } from 'rxjs';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { ApolloPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/gamertag/details';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('ApolloPlayerDetailsComponent', () => {
   let mockApolloService: ApolloService;
@@ -27,7 +28,12 @@ describe('ApolloPlayerDetailsComponent', () => {
         ],
         declarations: [ApolloPlayerDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWindowService(), createMockMsalService(), createMockApolloService()],
+        providers: [
+          createMockWindowService(),
+          createMockMsalService(),
+          createMockApolloService(),
+          createMockLoggerService(),
+        ],
       }).compileComponents();
 
       const injector = getTestBed();

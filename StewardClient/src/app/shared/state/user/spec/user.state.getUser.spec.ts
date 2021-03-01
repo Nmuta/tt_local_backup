@@ -11,6 +11,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserModel } from '@models/user.model';
 import faker from 'faker';
 import { UserRole } from '@models/enums';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('State: User', () => {
   let store: Store;
@@ -21,7 +22,7 @@ describe('State: User', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
-        providers: [createMockUserService(), createMockMsalService()],
+        providers: [createMockUserService(), createMockMsalService(), createMockLoggerService()],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
 

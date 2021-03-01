@@ -29,6 +29,7 @@ import { UserModel } from '@shared/models/user.model';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { UserRole } from '@models/enums';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('TicketAppComponent', () => {
   let fixture: ComponentFixture<TicketAppComponent>;
@@ -50,6 +51,7 @@ describe('TicketAppComponent', () => {
           createMockScrutineerDataParser(),
           createMockClipboard(),
           createMockMsalService(),
+          createMockLoggerService(),
         ],
       }).compileComponents();
 

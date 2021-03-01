@@ -10,6 +10,7 @@ import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { of } from 'rxjs';
 import { createMockOpusService, OpusService } from '@services/opus';
 import { OpusPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/opus/player/gamertag/details';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('OpusPlayerDetailsComponent', () => {
   let mockOpusService: OpusService;
@@ -27,7 +28,12 @@ describe('OpusPlayerDetailsComponent', () => {
         ],
         declarations: [OpusPlayerDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWindowService(), createMockMsalService(), createMockOpusService()],
+        providers: [
+          createMockWindowService(),
+          createMockMsalService(),
+          createMockOpusService(),
+          createMockLoggerService(),
+        ],
       }).compileComponents();
 
       const injector = getTestBed();

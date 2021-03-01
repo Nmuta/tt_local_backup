@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalService } from '@mocks/msal.service.mock';
 import { NgxsModule, Store } from '@ngxs/store';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
 import { SunriseGiftingState } from './state/sunrise-gifting.state';
 import { SetSunriseGiftingMatTabIndex } from './state/sunrise-gifting.state.actions';
@@ -25,7 +26,7 @@ describe('SunriseGiftingComponent', () => {
         ],
         declarations: [SunriseGiftingComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockMsalService()],
+        providers: [createMockMsalService(), createMockLoggerService()],
       }).compileComponents();
 
       fixture = TestBed.createComponent(SunriseGiftingComponent);

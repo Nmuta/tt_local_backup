@@ -9,6 +9,7 @@ import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { NavbarComponent } from './navbar.component';
 import { createMockWindowService } from '@services/window';
 import { createMockZendeskService } from '@services/zendesk';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('NavbarComponent', () => {
   let fixture: ComponentFixture<NavbarComponent>;
@@ -24,7 +25,12 @@ describe('NavbarComponent', () => {
         ],
         declarations: [NavbarComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWindowService(), createMockMsalService(), createMockZendeskService()],
+        providers: [
+          createMockWindowService(),
+          createMockMsalService(),
+          createMockZendeskService(),
+          createMockLoggerService(),
+        ],
       }).compileComponents();
 
       fixture = TestBed.createComponent(NavbarComponent);

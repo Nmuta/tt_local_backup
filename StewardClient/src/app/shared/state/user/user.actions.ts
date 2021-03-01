@@ -53,3 +53,11 @@ export class RecheckAuth {
     // Empty
   }
 }
+
+/** Break the access token. */
+export class BreakAccessToken {
+  public static readonly type = '[User] Break Access Token';
+  constructor() {
+    // Empty
+  }
+}

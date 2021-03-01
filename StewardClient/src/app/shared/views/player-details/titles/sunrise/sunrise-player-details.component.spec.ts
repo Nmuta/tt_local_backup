@@ -10,6 +10,7 @@ import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { of } from 'rxjs';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { SunrisePlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/gamertag/details';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('SunrisePlayerDetailsComponent', () => {
   let mockSunriseService: SunriseService;
@@ -27,7 +28,12 @@ describe('SunrisePlayerDetailsComponent', () => {
         ],
         declarations: [SunrisePlayerDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWindowService(), createMockMsalService(), createMockSunriseService()],
+        providers: [
+          createMockWindowService(),
+          createMockMsalService(),
+          createMockSunriseService(),
+          createMockLoggerService(),
+        ],
       }).compileComponents();
 
       const injector = getTestBed();

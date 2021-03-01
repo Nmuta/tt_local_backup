@@ -21,6 +21,7 @@ import { UserModel } from '@models/user.model';
 import { delay } from 'rxjs/operators';
 import { UserRole } from '@models/enums';
 import faker from 'faker';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('ProfileComponent', () => {
   let mockRouter: Router;
@@ -39,7 +40,7 @@ describe('ProfileComponent', () => {
         ],
         declarations: [ProfileComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWindowService(), createMockMsalService()],
+        providers: [createMockWindowService(), createMockMsalService(), createMockLoggerService()],
       }).compileComponents();
 
       const injector = getTestBed();
