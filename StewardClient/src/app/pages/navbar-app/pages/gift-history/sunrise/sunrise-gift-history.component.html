@@ -6,18 +6,15 @@
       (selectedTabChange)="matTabSelectionChange($event.index)"
     >
       <mat-tab label="Player Selection">
-        <sunrise-player-selection
-          [allowT10Id]="false"
-          [allowGroup]="false"
-          [(ngModel)]="selectedPlayerIdentities"
-          (ngModelChange)="onPlayerIdentitiesChange($event)"
-          (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
-        ></sunrise-player-selection>
+        <player-selection-single
+          [allowSelection]="true"
+          (found)="onPlayerIdentitiesChange([$event])"
+          (selected)="playerIdentitySelected($event)"
+        ></player-selection-single>
       </mat-tab>
       <mat-tab label="LSP Group Selection">
         <sunrise-lsp-group-selection
           [(ngModel)]="selectedLspGroup"
-          (ngModelChange)="onLspGroupChange($event)"
         ></sunrise-lsp-group-selection>
       </mat-tab>
     </mat-tab-group>

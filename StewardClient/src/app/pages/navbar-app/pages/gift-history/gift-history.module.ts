@@ -18,6 +18,7 @@ import { ApolloGiftHistoryComponent } from './apollo/apollo-gift-history.compone
 import { MatCardModule } from '@angular/material/card';
 import { LspGroupSelectionModule } from '@navbar-app/components/lsp-group-selection/lsp-group-selection.module';
 import { MatTabsModule } from '@angular/material/tabs';
+import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -40,6 +41,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     FontAwesomeModule,
     FormsModule,
     OldPlayerSelectionModule,
+    PlayerSelectionModule,
     LspGroupSelectionModule,
     MatTabsModule,
   ],

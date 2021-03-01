@@ -8,6 +8,7 @@ import { GiftHistoryBaseComponent } from '../base/gift-history.base.component';
 import { GravityGiftHistoryState } from './state/gravity-gift-history.state';
 import { SetGravitySelectedPlayerIdentities } from './state/gravity-gift-history.state.actions';
 import { first } from 'lodash';
+import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 
 /** The gravity gift history page for the Navbar app. */
 @Component({
@@ -15,13 +16,15 @@ import { first } from 'lodash';
   styleUrls: ['./gravity-gift-history.component.scss'],
 })
 export class GravityGiftHistoryComponent
-  extends GiftHistoryBaseComponent<IdentityResultBeta>
+  extends GiftHistoryBaseComponent
   implements OnInit {
   @Select(GravityGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultBetaBatch>;
 
   public title: GameTitleCodeName = GameTitleCodeName.Street;
   public selectedPlayerIdentities: IdentityResultBetaBatch;
+  /** Selected player identity when user clicks on identity chip. */
+  public selectedPlayerIdentity: IdentityResultBeta;
   public selectedPlayer: IdentityResultBeta;
 
   constructor(protected readonly store: Store) {
@@ -39,13 +42,14 @@ export class GravityGiftHistoryComponent
   }
 
   /** Logic when player selection outputs identities. */
-  public onPlayerIdentitiesChange(event: IdentityResultBetaBatch): void {
-    this.store.dispatch(new SetGravitySelectedPlayerIdentities(event));
+  public onPlayerIdentityChange(identity: AugmentedCompositeIdentity): void {
+    const newIdentity = identity?.extra?.hasGravity ? identity.gravity : null;
+    this.selectedPlayerIdentities = [newIdentity];
+    this.store.dispatch(new SetGravitySelectedPlayerIdentities([newIdentity]));
   }
 
   /** Player identity selected */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public playerIdentitySelected(identity: IdentityResultBeta): void {
-    // Empty
+  public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
+    this.selectedPlayerIdentity = identity?.extra?.hasGravity ? identity.gravity : null;
   }
 }
