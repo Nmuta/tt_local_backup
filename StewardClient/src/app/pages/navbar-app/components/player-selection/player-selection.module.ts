@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlayerSelectionBulkComponent } from './bulk/player-selection-bulk.component';
+import { MatButtonModule } from '@angular/material/button';
 
 /** Feature module for selecting a single player. */
 @NgModule({
@@ -24,6 +25,7 @@ import { PlayerSelectionBulkComponent } from './bulk/player-selection-bulk.compo
     FormsModule,
     ErrorSpinnerModule,
     MatTooltipModule,
+    MatButtonModule,
   ],
   exports: [PlayerSelectionSingleComponent, PlayerSelectionBulkComponent],
 })

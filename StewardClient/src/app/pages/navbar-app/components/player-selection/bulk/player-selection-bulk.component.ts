@@ -51,4 +51,12 @@ export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
     this.selectedValue = change.value as AugmentedCompositeIdentity;
     this.selected.next(this.selectedValue);
   }
+
+  /** Called when the "Clear" button is pressed */
+  public onClear(): void {
+    this.knownIdentities.clear();
+    this.foundIdentities = [];
+    this.selectedValue = null;
+    this.onFound();
+  }
 }
