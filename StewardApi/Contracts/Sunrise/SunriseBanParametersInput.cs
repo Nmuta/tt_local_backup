@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
 {
@@ -26,6 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <summary>
         ///     Gets or sets the duration.
         /// </summary>
+        [JsonConverter(typeof(TimeSpanConverter))]
         public TimeSpan? Duration { get; set; }
 
         /// <summary>
