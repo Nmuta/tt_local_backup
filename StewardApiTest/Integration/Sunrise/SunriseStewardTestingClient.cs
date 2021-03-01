@@ -111,7 +111,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}players/ban?useBackgroundProcessing=true");
+            var path = new Uri(this.baseUri, $"{TitlePath}players/ban/useBackgroundProcessing");
 
             return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJob>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters).ConfigureAwait(false);
         }
@@ -174,27 +174,20 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<SunriseLspGroup>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<SunrisePlayerInventory>> UpdatePlayerInventoryWithHeaderResponseAsync(SunrisePlayerInventory playerInventory, IList<string> headersToValidate)
+        public async Task<ResponseWithHeaders<BackgroundJob>> UpdatePlayerInventoriesWithHeaderResponseAsync(SunriseGroupGift groupGift, IList<string> headersToValidate)
         {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            groupGift.ShouldNotBeNull(nameof(groupGift));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid/inventory?useBackgroundProcessing=true");
+            var path = new Uri(this.baseUri, $"{TitlePath}gifting/players/useBackgroundProcessing");
 
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<SunrisePlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, playerInventory).ConfigureAwait(false);
+            return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJob>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, groupGift).ConfigureAwait(false);
         }
 
-        public async Task<SunrisePlayerInventory> UpdateGroupInventoriesByXuidAsync(SunriseGroupGift groupGift)
+        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SunriseGroupGift groupGift)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}gifting/players");
 
-            return await ServiceClient.SendRequestAsync<SunrisePlayerInventory>(HttpMethod.Post, path, this.authKey, Version, groupGift).ConfigureAwait(false);
-        }
-
-        public async Task<SunrisePlayerInventory> UpdateGroupInventoriesByGamertagAsync(SunriseGroupGift groupGift, Dictionary<string, string> headersToSend)
-        {
-            var path = new Uri(this.baseUri, $"{TitlePath}group/gamertags/inventory");
-
-            return await ServiceClient.SendRequestAsync<SunrisePlayerInventory>(HttpMethod.Post, path, this.authKey, Version, groupGift, headersToSend).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<GiftResponse<ulong>>>(HttpMethod.Post, path, this.authKey, Version, groupGift).ConfigureAwait(false);
         }
 
         public async Task<GiftResponse<int>> GiftInventoryByLspGroupId(int groupId, SunriseGift gift)

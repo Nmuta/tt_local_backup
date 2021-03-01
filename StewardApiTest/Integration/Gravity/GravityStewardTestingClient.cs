@@ -91,15 +91,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             return await ServiceClient.SendRequestAsync<GravityPlayerInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<GravityPlayerInventory>> UpdatePlayerInventoryByXuidWithHeaderResponseAsync(GravityPlayerInventory playerInventory, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
-        {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
-
-            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid/inventory?useBackgroundProcessing=true");
-
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<GravityPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, playerInventory, headersToSend).ConfigureAwait(false);
-        }
-
         public async Task<GiftResponse<string>> UpdatePlayerInventoryByT10IdAsync(string t10Id, GravityGift gift)
         {
             t10Id.ShouldNotBeNull(nameof(t10Id));
@@ -110,13 +101,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             return await ServiceClient.SendRequestAsync<GiftResponse<string>>(HttpMethod.Post, path, this.authKey, Version, gift).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<GravityPlayerInventory>> UpdatePlayerInventoryByT10IdWithHeaderResponseAsync(GravityPlayerInventory playerInventory, IList<string> headersToValidate, Dictionary<string, string> headersToSend)
+        public async Task<ResponseWithHeaders<BackgroundJob>> UpdatePlayerInventoryWithHeaderResponseAsync(string t10Id, GravityGift giftInventory, IList<string> headersToValidate)
         {
-            playerInventory.ShouldNotBeNull(nameof(playerInventory));
+            giftInventory.ShouldNotBeNull(nameof(giftInventory));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}player/t10Id/inventory?useBackgroundProcessing=true");
+            var path = new Uri(this.baseUri, $"{TitlePath}gifting/t10Id({t10Id})/useBackgroundProcessing");
 
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<GravityPlayerInventory>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, playerInventory, headersToSend).ConfigureAwait(false);
+            return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJob>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, giftInventory).ConfigureAwait(false);
         }
 
         public async Task<GameSettings> GetGameSettingsAsync(string gameSettingsId)
@@ -139,7 +130,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
         {
             jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));
 
-            var path = new Uri(this.baseUri, $"Jobs/{jobId}");
+            var path = new Uri(this.baseUri, $"api/v1/jobs/jobId({jobId})");
 
             return await ServiceClient.SendRequestAsync<BackgroundJob>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }

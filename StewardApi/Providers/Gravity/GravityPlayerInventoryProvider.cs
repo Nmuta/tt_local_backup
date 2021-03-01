@@ -164,7 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// </returns>
         private async Task UpdatePlayerInventoryHelperAsync(string t10Id, Guid gameSettingsId, IList<MasterInventoryItem> items, ForzaUserInventoryItemType itemType)
         {
-            foreach (var item in items)
+            foreach (var item in items ?? Enumerable.Empty<MasterInventoryItem>())
             {
                 await this.gravityUserInventoryService.LiveOpsGrantItem(t10Id, gameSettingsId, itemType, item.Id, item.Quantity).ConfigureAwait(true);
             }

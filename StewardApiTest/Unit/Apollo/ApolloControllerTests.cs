@@ -341,30 +341,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void BanPlayers_WithNullBanParameters_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var useBackgroundProcessing = false;
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void BanPlayers_WithValidParameters_UseBackgroundProcessing_DoesNotThrow()
+        public void BanPlayers_WithValidParameters_DoesNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var banParameters = this.GenerateBanParametersInput();
-            var useBackgroundProcessing = true;
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters, useBackgroundProcessing).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -372,14 +356,42 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void BanPlayers_WithNullBanParameters_UseBackgroundProcessing_Throws()
+        public void BanPlayers_WithNullBanParameters_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var useBackgroundProcessing = true;
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null, useBackgroundProcessing).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(null).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void BanPlayersUseBackgroundProcessing_WithValidParameters_DoesNotThrow()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var banParameters = this.GenerateBanParametersInput();
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayersUseBackgroundProcessing(banParameters).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void BanPlayersUseBackgroundProcessing_WithNullBanParameters_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.BanPlayersUseBackgroundProcessing(null).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banInput"));
@@ -731,14 +743,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<ApolloGroupGift>();
-            var useBackgroundProcessing = false;
             groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
             groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing).ConfigureAwait(false),
+                async () => await controller.UpdateGroupInventories(groupGift).ConfigureAwait(false)
             };
 
             // Assert.
@@ -754,63 +765,42 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void UpdatePlayerInventories_WithNullGroupGift_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var useBackgroundProcessing = false;
-
-            // Act.
-            var actions = new List<Func<Task<IActionResult>>>
-            {
-                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing).ConfigureAwait(false),
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "groupGift"));
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
+        public async Task UpdatePlayerInventoriesUseBackgroundProcessing_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<ApolloGroupGift>();
-            var useBackgroundProcessing = true;
             groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
             groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(groupGift, useBackgroundProcessing).ConfigureAwait(false),
+                async () => await controller.UpdateGroupInventoriesUseBackgroundProcessing(groupGift).ConfigureAwait(false)
             };
 
             // Assert.
             foreach (var action in actions)
             {
-                // To reset the context and prevent header key collision, rebuild the Dependencies.
-                controller = new Dependencies().Build();
-                action().Result.Should().BeAssignableTo<AcceptedResult>();
+                var result = await action().ConfigureAwait(false) as AcceptedResult;
+                result.Should().NotBeNull();
+                result.StatusCode.Should().Be(202);
+                result.Value.Should().NotBeNull();
             }
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void UpdatePlayerInventories_WithNullGroupGift_UseBackgroundProcessing_Throws()
+        public void UpdatePlayerInventories_WithNullGroupGift_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var useBackgroundProcessing = true;
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.UpdateGroupInventories(null, useBackgroundProcessing).ConfigureAwait(false),
+                async () => await controller.UpdateGroupInventories(null).ConfigureAwait(false),
+                async () => await controller.UpdateGroupInventoriesUseBackgroundProcessing(null).ConfigureAwait(false)
             };
 
             // Assert.
