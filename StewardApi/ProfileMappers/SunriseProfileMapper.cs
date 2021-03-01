@@ -82,7 +82,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaProfileSummary, SunriseProfileSummary>()
                 .ForMember(dest => dest.HackFlags, opt => opt.MapFrom(src => src.HackFlags.Select(t => t.Name)));
             this.CreateMap<ForzaCredityUpdateEntry, SunriseCreditUpdate>().ReverseMap();
-            this.CreateMap<AdminForzaProfile, SunriseInventoryProfile>().ReverseMap();
+            this.CreateMap<AdminForzaProfile, SunriseInventoryProfile>()
+                .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => src.deviceType == "Invalid" ? "Legacy" : src.deviceType))
+                .ReverseMap();
             this.CreateMap<ForzaUserGroup, SunriseLspGroup>();
             this.CreateMap<InventoryItem, SunriseInventoryItem>();
             this.CreateMap<Car, SunriseCar>();
