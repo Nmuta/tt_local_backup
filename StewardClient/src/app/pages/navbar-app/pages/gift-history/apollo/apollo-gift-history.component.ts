@@ -55,7 +55,7 @@ export class ApolloGiftHistoryComponent
   }
 
   /** Logic when player selection outputs identities. */
-  public onPlayerIdentitiesChange(identity: AugmentedCompositeIdentity): void {
+  public onPlayerIdentityChange(identity: AugmentedCompositeIdentity): void {
     const newIdentity = identity?.extra?.hasApollo ? identity.apollo : null;
     this.store.dispatch(new SetApolloGiftHistorySelectedPlayerIdentities([newIdentity]));
   }

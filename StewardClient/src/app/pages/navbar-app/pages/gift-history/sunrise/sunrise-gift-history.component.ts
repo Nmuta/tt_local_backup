@@ -45,6 +45,7 @@ export class SunriseGiftHistoryComponent
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultAlphaBatch) => {
+        debugger;
         this.selectedPlayerIdentities = playerIdentities;
         this.selectedPlayer = first(this.selectedPlayerIdentities);
       });
@@ -56,13 +57,13 @@ export class SunriseGiftHistoryComponent
   }
 
   /** Logic when player selection outputs identities. */
-  public onPlayerIdentitiesChange(identity: AugmentedCompositeIdentity): void {
-    const newIdentity = identity.extra?.hasApollo ? identity.apollo : null;
+  public onPlayerIdentityChange(identity: AugmentedCompositeIdentity): void {
+    const newIdentity = identity?.extra?.hasSunrise ? identity.sunrise : null;
     this.store.dispatch(new SetSunriseGiftHistorySelectedPlayerIdentities([newIdentity]));
   }
 
   /** Player identity selected */
   public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
-    this.selectedPlayerIdentity = identity?.extra?.hasApollo ? identity.apollo : null;
+    this.selectedPlayerIdentity = identity?.extra?.hasSunrise ? identity.sunrise : null;
   }
 }
