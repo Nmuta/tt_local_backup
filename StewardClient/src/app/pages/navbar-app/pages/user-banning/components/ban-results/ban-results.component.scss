@@ -1,0 +1,10 @@
+@import '/src/styles/mixins/variables.scss';
+
+div {
+  max-height: 500px;
+  overflow: auto;
+
+  .ban-result-error {
+    background-color: mat-color($app-warn, 200);
+  }
+}
