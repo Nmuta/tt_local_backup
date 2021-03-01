@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
@@ -511,6 +513,33 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 
         [TestMethod]
         [TestCategory("Integration")]
+        public async Task UpdatePlayerInventoryByT10Id_UseBackgroundProcessing()
+        {
+            var gift = new GravityGift();
+            gift.GiftReason = "Integration Test";
+            gift.Inventory = new GravityMasterInventory();
+            gift.Inventory.CreditRewards = new List<MasterInventoryItem>();
+            gift.Inventory.Cars = new List<MasterInventoryItem>();
+            gift.Inventory.EnergyRefills = new List<MasterInventoryItem>();
+            gift.Inventory.RepairKits = new List<MasterInventoryItem>();
+            gift.Inventory.MasteryKits = new List<MasterInventoryItem>();
+            gift.Inventory.UpgradeKits = new List<MasterInventoryItem>();
+
+            gift.Inventory.CreditRewards.Add(new MasterInventoryItem()
+            {
+                Id = 0,
+                Description = "Credits",
+                Quantity = 1
+            });
+
+            var response = await this.UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, t10Id, gift, BackgroundJobStatus.Completed).ConfigureAwait(false);
+
+            Assert.IsNotNull(response);
+            Assert.IsNull(response.Error);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
         public async Task GetGameSettings()
         {
             var result = await stewardClient.GetGameSettingsAsync(gameSettingsId.ToString()).ConfigureAwait(false);
@@ -599,6 +628,43 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             Assert.IsFalse(result.Any());
         }
 
+        private async Task<GiftResponse<string>> UpdatePlayerInventoriesWithHeaderResponseAsync(GravityStewardTestingClient stewardClient, string t10Id, GravityGift groupGift, BackgroundJobStatus expectedStatus)
+        {
+            var headersToValidate = new List<string> { "jobId" };
+
+            var response = await stewardClient.UpdatePlayerInventoryWithHeaderResponseAsync(t10Id, groupGift, headersToValidate).ConfigureAwait(false);
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+
+            bool jobCompleted;
+            BackgroundJobStatus status;
+            GiftResponse<string> jobResult;
+
+            do
+            {
+                var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"])
+                    .ConfigureAwait(false);
+
+                Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out status);
+
+                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
+
+                jobResult = backgroundJob.Result?.FromJson<GiftResponse<string>>();
+
+                if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
+                {
+                    break;
+                }
+            }
+            while (!jobCompleted);
+
+            Assert.AreEqual(expectedStatus, status);
+
+            return jobResult;
+        }
+
+
         private Dictionary<string, string> GenerateHeadersToSend(string requestingAgent)
         {
             var result = new Dictionary<string, string>();
@@ -667,94 +733,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
             };
 
             return giftInventory;
-        }
-
-        private GravityPlayerInventory CreatePlayerInventory()
-        {
-            return new GravityPlayerInventory
-            {
-                Cars = new[]
-                {
-                    new StewardApi.Contracts.Gravity.GravityCar
-                    {
-                    Vin = new Guid("ffb44784-6af6-4bc6-9ff2-d21b91e5c657"),
-                    PurchaseUtc = new DateTime(2019, 08, 01, 12, 10, 10),
-                    CurrentMasteryRank = 1,
-                    CumulativeMastery = 0,
-                    RepairState = 3,
-                    StarPoints = 20,
-                    Color = 0,
-                    Livery = 0,
-                    ClientPr = 415,
-                    AdvancedCarCustomization = 0,
-                    ItemId = 200289,
-                    Quantity = 7,
-                    AcquisitionUtc = new DateTime(2019, 08, 01, 12, 10, 10),
-                    ModifiedUtc = DateTime.Now,
-                    LastUsedUtc = new DateTime(2019, 08, 01, 12, 10, 10)
-                    }
-                },
-                MasteryKits = new[]
-                {
-                    new GravityInventoryItem
-                    {
-                    ItemId = 26,
-                    Quantity = 11,
-                    AcquisitionUtc = new DateTime(2019, 08, 01, 12, 10, 10),
-                    ModifiedUtc = new DateTime(2019, 08, 01, 12, 10, 10),
-                    LastUsedUtc = new DateTime(2019, 08, 01, 12, 10, 10)
-                    }
-                },
-                UpgradeKits = new[]
-                {
-                    new GravityUpgradeKit
-                    {
-                    PartialQuantity = 0,
-                    ItemId = 29,
-                    Quantity = 2,
-                    AcquisitionUtc = new DateTime(2019, 08, 01, 12, 10, 10),
-                    ModifiedUtc = new DateTime(2019, 08, 01, 12, 10, 10),
-                    LastUsedUtc = new DateTime(2019, 08, 01, 12, 10, 10)
-                    }
-                },
-                RepairKits = new[]
-                {
-                    new GravityRepairKit
-                    {
-                    PartialQuantity = 0,
-                    ItemId = 103,
-                    Quantity = 100,
-                    AcquisitionUtc = new DateTime(2019, 08, 01, 12, 10, 10),
-                    ModifiedUtc = new DateTime(2019, 08, 01, 12, 10, 10),
-                    LastUsedUtc = new DateTime(2019, 08, 01, 12, 10, 10)
-                    }
-                },
-                Packs = new List<GravityInventoryItem>(),
-                Currencies = new[]
-                {
-                    new GravityInventoryItem
-                    {
-                    ItemId = 1,
-                    Quantity = 10,
-                    AcquisitionUtc = new DateTime(2019, 08, 01, 12, 10, 10),
-                    ModifiedUtc = new DateTime(2019, 08, 01, 12, 10, 10),
-                    LastUsedUtc = new DateTime(2019, 08, 01, 12, 10, 10)
-                    }
-                },
-                EnergyRefills = new[]
-                {
-                    new GravityInventoryItem()
-                    {
-                    ItemId = 60,
-                    Quantity = 52,
-                    AcquisitionUtc = new DateTime(2019, 08, 01, 12, 10, 10),
-                    ModifiedUtc = new DateTime(2019, 08, 01, 12, 10, 10),
-                    LastUsedUtc = new DateTime(2019, 08, 01, 12, 10, 10)
-                    }
-                },
-                Xuid = xuid,
-                T10Id = t10Id
-            };
         }
 
         private GravityGift CreateGift()

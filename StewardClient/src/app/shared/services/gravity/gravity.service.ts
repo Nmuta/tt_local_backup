@@ -1,4 +1,3 @@
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BackgroundJob } from '@models/background-job';
 import { GuidLikeString, T10IdString } from '@models/extended-types';
@@ -110,11 +109,9 @@ export class GravityService {
     t10Id: string,
     gift: GravityGift,
   ): Observable<BackgroundJob<void>> {
-    const params = new HttpParams().set('useBackgroundProcessing', 'true');
     return this.apiService.postRequest<BackgroundJob<void>>(
-      `${this.basePath}/gifting/t10Id(${t10Id})`,
+      `${this.basePath}/gifting/t10Id(${t10Id})/useBackgroundProcessing`,
       gift,
-      params,
     );
   }
 }

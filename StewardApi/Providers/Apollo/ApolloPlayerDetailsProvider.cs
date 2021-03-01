@@ -165,20 +165,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             {
                 param.FeatureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(param.FeatureArea));
 
-                if (param.Xuid == default && string.IsNullOrWhiteSpace(param.Gamertag))
+                if (param.Xuid == default)
                 {
-                    throw new InvalidArgumentsStewardException("No XUID or Gamertag provided.");
-                }
+                    if (string.IsNullOrWhiteSpace(param.Gamertag))
+                    {
+                        throw new InvalidArgumentsStewardException("No XUID or Gamertag provided.");
+                    }
 
-                try
-                {
-                    var userResult = await this.apolloUserService.LiveOpsGetUserDataByGamertagAsync(param.Gamertag).ConfigureAwait(false);
+                    try
+                    {
+                        var userResult = await this.apolloUserService.LiveOpsGetUserDataByGamertagAsync(param.Gamertag)
+                            .ConfigureAwait(false);
 
-                    param.Xuid = userResult.returnData.qwXuid;
-                }
-                catch (Exception ex)
-                {
-                    throw new NotFoundStewardException($"No profile found for Gamertag: {param.Gamertag}.", ex);
+                        param.Xuid = userResult.returnData.qwXuid;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new NotFoundStewardException($"No profile found for Gamertag: {param.Gamertag}.", ex);
+                    }
                 }
             }
 
