@@ -66,7 +66,7 @@ export class ApolloService {
   /** Gets ban history by a XUID. */
   public getBanHistoryByXuid(xuid: bigint): Observable<ApolloBanHistoryEntry[]> {
     return this.apiService.getRequest<ApolloBanHistoryEntry[]>(
-      `${this.basePath}/player/xuid(${xuid})/banHistory`
+      `${this.basePath}/player/xuid(${xuid})/banHistory`,
     );
   }
 

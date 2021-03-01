@@ -1,8 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { GameTitleCodeName } from '@models/enums';
 import { ApolloBanArea, ApolloBanHistoryEntry } from '@models/apollo';
-import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
 import { fakeBigInt } from '@interceptors/fake-api/utility';
 
@@ -50,7 +48,6 @@ export class ApolloPlayerXuidBanHistoryFakeApi extends FakeApiBase {
           xuid: xuid,
           countOfTimesExtended: fakeBigInt(),
           lastExtendedTimeUtc: faker.date.recent(),
-
         },
     );
   }

@@ -3,7 +3,8 @@
     <player-selection-bulk
       [allowSelection]="true"
       (found)="onPlayerIdentitiesChange($event)"
-      (selected)="playerIdentitySelected($event)">
+      (selected)="playerIdentitySelected($event)"
+    >
       <ng-template let-identity>
         <ban-chip-icon
           *ngIf="identity?.extra?.hasApollo"
