@@ -45,7 +45,6 @@ export class SunriseGiftHistoryComponent
     this.selectedPlayerIdentities$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((playerIdentities: IdentityResultAlphaBatch) => {
-        debugger;
         this.selectedPlayerIdentities = playerIdentities;
         this.selectedPlayer = first(this.selectedPlayerIdentities);
       });
