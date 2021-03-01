@@ -14,7 +14,7 @@ export class SunriseGiftingPlayersReturnsBackgroundJobFakeApi extends FakeApiBas
     }
 
     const url = new URL(this.request.url);
-    const regex = /^\/?api\/v1\/title\/sunrise\/gifting\/players\?useBackgroundProcessing=true$/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/gifting\/players\/useBackgroundProcessing$/i;
     return regex.test(url.pathname);
   }
 

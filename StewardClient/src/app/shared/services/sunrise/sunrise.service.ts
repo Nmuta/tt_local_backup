@@ -29,8 +29,8 @@ import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { chain } from 'lodash';
 import { GiftResponse } from '@models/gift-response';
-import { HttpParams } from '@angular/common/http';
 import { BackgroundJob } from '@models/background-job';
+import { HttpParams } from '@angular/common/http';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -239,11 +239,9 @@ export class SunriseService {
   public postGiftPlayersUsingBackgroundTask(
     gift: SunriseGroupGift,
   ): Observable<BackgroundJob<void>> {
-    const params = new HttpParams().set('useBackgroundProcessing', 'true');
     return this.apiService.postRequest<BackgroundJob<void>>(
-      `${this.basePath}/gifting/players`,
+      `${this.basePath}/gifting/players/useBackgroundProcessing`,
       gift,
-      params,
     );
   }
 

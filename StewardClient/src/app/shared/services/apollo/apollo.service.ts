@@ -1,4 +1,3 @@
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   ApolloBanRequest,
@@ -155,11 +154,9 @@ export class ApolloService {
   public postGiftPlayersUsingBackgroundTask(
     gift: ApolloGroupGift,
   ): Observable<BackgroundJob<void>> {
-    const params = new HttpParams().set('useBackgroundProcessing', 'true');
     return this.apiService.postRequest<BackgroundJob<void>>(
-      `${this.basePath}/gifting/players`,
+      `${this.basePath}/gifting/players/useBackgroundProcessing`,
       gift,
-      params,
     );
   }
 

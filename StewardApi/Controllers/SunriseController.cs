@@ -354,16 +354,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Bans players.
         /// </summary>
         /// <param name="banInput">The ban parameter input.</param>
-        /// <param name="useBackgroundProcessing">A value that indicates whether to use background processing.</param>
         /// <returns>
         ///     The list of <see cref="SunriseBanResult"/>.
         /// </returns>
-        [HttpPost("players/ban")]
-        [SwaggerResponse(201, type: typeof(List<SunriseBanResult>))]
-        [SwaggerResponse(202)]
-        public async Task<IActionResult> BanPlayers(
-            [FromBody] IList<SunriseBanParametersInput> banInput,
-            [FromQuery] bool useBackgroundProcessing)
+        [HttpPost("players/ban/useBackgroundProcessing")]
+        [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
+            [FromBody] IList<SunriseBanParametersInput> banInput)
         {
             var user = this.User.UserModel();
             var requestingAgent = user.EmailAddress ?? user.Id;
@@ -415,13 +412,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 .Select(group => this.mapper.Map<SunriseBanParameters>(group.ToList()))
                 .ToList();
 
-            if (!useBackgroundProcessing)
-            {
-                var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
-
-                return this.Created(this.Request.Path, results);
-            }
-
             var username = this.User.GetNameIdentifier();
             var jobId = await this.AddJobIdToHeaderAsync(groupedBanParameters.ToJson(), username).ConfigureAwait(true);
 
@@ -454,6 +444,73 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 JobId = jobId,
                 Status = BackgroundJobStatus.InProgress.ToString(),
             });
+        }
+
+        /// <summary>
+        ///     Bans players.
+        /// </summary>
+        /// <param name="banInput">The ban parameter input.</param>
+        /// <returns>
+        ///     The list of <see cref="SunriseBanResult"/>.
+        /// </returns>
+        [HttpPost("players/ban")]
+        [SwaggerResponse(201, type: typeof(List<SunriseBanResult>))]
+        [SwaggerResponse(202)]
+        public async Task<IActionResult> BanPlayers(
+            [FromBody] IList<SunriseBanParametersInput> banInput)
+        {
+            var user = this.User.UserModel();
+            var requestingAgent = user.EmailAddress ?? user.Id;
+
+            async Task<List<SunriseBanResult>> BulkBanUsersAsync(List<SunriseBanParameters> groupedBanParameters)
+            {
+                var tasks =
+                    groupedBanParameters.Select(
+                        banParameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent))
+                    .ToList();
+
+                var nestedResults = await Task.WhenAll(tasks).ConfigureAwait(false);
+                var results = nestedResults.SelectMany(v => v).ToList();
+
+                return results;
+            }
+
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            banInput.ShouldNotBeNull(nameof(banInput));
+
+            foreach (var banParam in banInput)
+            {
+                this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
+                this.banParametersRequestValidator.Validate(banParam, this.ModelState);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                var result = this.banParametersRequestValidator.GenerateErrorResponse(this.ModelState);
+                return this.BadRequest(result);
+            }
+
+            var groupedBanParameters = banInput.GroupBy(v =>
+            {
+                var compareUsingValues = new object[]
+                {
+                        v.BanAllConsoles,
+                        v.BanAllPcs,
+                        v.DeleteLeaderboardEntries,
+                        v.StartTimeUtc,
+                        v.Duration,
+                        v.SendReasonNotification,
+                        v.Reason,
+                };
+
+                var compareValue = string.Join('|', compareUsingValues);
+                return compareValue;
+            })
+                .Select(group => this.mapper.Map<SunriseBanParameters>(group.ToList()))
+                .ToList();
+
+            var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
+            return this.Ok(results);
         }
 
         /// <summary>
@@ -639,13 +696,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Update player inventories with given items.
         /// </summary>
         /// <param name="groupGift">The group gift.</param>
-        /// <param name="useBackgroundProcessing">Indicates whether to use background processing.</param>
         /// <returns>
         ///     The <see cref="IList{GiftResponse}"/>.
         /// </returns>
-        [HttpPost("gifting/players")]
-        [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
-        public async Task<IActionResult> UpdateGroupInventories([FromBody] SunriseGroupGift groupGift, [FromQuery] bool useBackgroundProcessing)
+        [HttpPost("gifting/players/useBackgroundProcessing")]
+        [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] SunriseGroupGift groupGift)
         {
             var user = this.User.UserModel();
             var requestingAgent = user.EmailAddress ?? user.Id;
@@ -686,12 +742,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            if (!useBackgroundProcessing)
-            {
-                var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
-                return this.Ok(response);
-            }
-
             var username = this.User.GetNameIdentifier();
             var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), username).ConfigureAwait(true);
 
@@ -717,6 +767,60 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 JobId = jobId,
                 Status = BackgroundJobStatus.InProgress.ToString(),
             });
+        }
+
+        /// <summary>
+        ///     Update player inventories with given items.
+        /// </summary>
+        /// <param name="groupGift">The group gift.</param>
+        /// <returns>
+        ///     The <see cref="IList{GiftResponse}"/>.
+        /// </returns>
+        [HttpPost("gifting/players")]
+        [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
+        public async Task<IActionResult> UpdateGroupInventories([FromBody] SunriseGroupGift groupGift)
+        {
+            var user = this.User.UserModel();
+            var requestingAgent = user.EmailAddress ?? user.Id;
+
+            groupGift.ShouldNotBeNull(nameof(groupGift));
+            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
+            groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
+            groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+
+            var stringBuilder = new StringBuilder();
+
+            this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
+            this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
+
+            if (!this.ModelState.IsValid)
+            {
+                var errorResponse = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
+                return this.BadRequest(errorResponse);
+            }
+
+            foreach (var xuid in groupGift.Xuids)
+            {
+                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                {
+                    stringBuilder.Append($"{xuid} ");
+                }
+            }
+
+            if (stringBuilder.Length > 0)
+            {
+                return this.BadRequest($"Players with XUIDs: {stringBuilder} were not found.");
+            }
+
+            var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
+            if (invalidItems.Length > 0)
+            {
+                return this.BadRequest($"Invalid items found. {invalidItems}");
+            }
+
+            var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+            return this.Ok(response);
         }
 
         /// <summary>
