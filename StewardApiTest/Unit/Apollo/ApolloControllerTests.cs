@@ -264,12 +264,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var query = Fixture.Create<IdentityQueryAlpha>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> {query}).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<IdentityResultAlpha>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<IdentityResultAlpha>>();
@@ -277,7 +277,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
+        public void GetPlayerIdentities_WithInvalidInputs_DoesNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -345,7 +345,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var banParameters = this.GenerateBanParametersInput();
+            var banParameters = GenerateBanParametersInput();
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters).ConfigureAwait(false);
@@ -374,7 +374,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var banParameters = this.GenerateBanParametersInput();
+            var banParameters = GenerateBanParametersInput();
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.BanPlayersUseBackgroundProcessing(banParameters).ConfigureAwait(false);
@@ -406,12 +406,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var xuids = Fixture.Create<IList<ulong>>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetBanSummaries(xuids).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetBanSummaries(xuids).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<ApolloBanSummary>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<ApolloBanSummary>>();
@@ -477,12 +477,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetConsoles(xuid, maxResults).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetConsoles(xuid, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<ApolloConsoleDetails>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<ApolloConsoleDetails>>();
@@ -514,12 +514,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var isBanned = true;
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.SetConsoleBanStatus(consoleId, isBanned).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.SetConsoleBanStatus(consoleId, isBanned).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false);
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
             result.Should().BeOfType<OkResult>();
         }
 
@@ -534,12 +534,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetSharedConsoleUsers(xuid, startIndex, maxResults).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetSharedConsoleUsers(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<ApolloSharedConsoleUser>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<ApolloSharedConsoleUser>>();
@@ -552,7 +552,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var startIndex = -1;
+            const int startIndex = -1;
             var maxResults = Fixture.Create<int>();
 
             // Act.
@@ -588,12 +588,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetUserFlags(xuid).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetUserFlags(xuid).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as ApolloUserFlags;
             details.Should().NotBeNull();
             details.Should().BeOfType<ApolloUserFlags>();
@@ -609,12 +609,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var userFlags = Fixture.Create<ApolloUserFlagsInput>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.SetUserFlags(xuid, userFlags).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.SetUserFlags(xuid, userFlags).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as ApolloUserFlags;
             details.Should().NotBeNull();
             details.Should().BeOfType<ApolloUserFlags>();
@@ -693,12 +693,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<ApolloLspGroup>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<ApolloLspGroup>>();
@@ -743,8 +743,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<ApolloGroupGift>();
-            groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -770,8 +770,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<ApolloGroupGift>();
-            groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -818,15 +818,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
             var gift = Fixture.Create<ApolloGift>();
-            gift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            gift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            gift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            gift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, gift).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.UpdateGroupInventories(groupId, gift).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
             result.Value.Should().NotBeNull();
@@ -856,12 +856,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<ApolloGiftHistory>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<ApolloGiftHistory>>();
@@ -876,18 +876,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var groupId = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGiftHistoriesAsync(groupId).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(groupId).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<ApolloGiftHistory>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<ApolloGiftHistory>>();
         }
 
-        private List<ApolloBanParametersInput> GenerateBanParametersInput()
+        private static List<ApolloBanParametersInput> GenerateBanParametersInput()
         {
             var newParams = new ApolloBanParametersInput
             {
@@ -924,13 +924,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 var httpContext = new DefaultHttpContext();
                 httpContext.Request.Path = TestConstants.TestRequestPath;
 
-                var claims = new List<Claim>() { new Claim(ClaimTypes.Email, "requesting-agent-email") };
-                var claimsIdentities = new List<ClaimsIdentity>() { new ClaimsIdentity(claims) };
+                var claims = new List<Claim> { new Claim(ClaimTypes.Email, "requesting-agent-email") };
+                var claimsIdentities = new List<ClaimsIdentity> { new ClaimsIdentity(claims) };
                 httpContext.User = new ClaimsPrincipal(claimsIdentities);
 
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
-                this.KustoProvider.GetMasterInventoryList(Arg.Any<string>()).Returns(new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } });
+                this.KustoProvider.GetMasterInventoryList(Arg.Any<string>()).Returns(new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } });
                 this.ApolloPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.ApolloPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<ApolloPlayerDetails>());
                 this.ApolloPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloPlayerDetails>());

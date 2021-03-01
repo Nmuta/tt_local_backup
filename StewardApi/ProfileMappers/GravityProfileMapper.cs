@@ -138,7 +138,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
 
             this.CreateMap<GravityPlayerInventory, GravityGift>()
                 .ForMember(dest => dest.GiftReason, opt => opt.MapFrom(source => string.Empty))
-                .ForMember(dest => dest.Inventory, opt => opt.MapFrom((source, destObj, destMem, context) => new GravityMasterInventory()
+                .ForMember(dest => dest.Inventory, opt => opt.MapFrom((source, destObj, destMem, context) => new GravityMasterInventory
                 {
                     CreditRewards = context.Mapper.Map<IList<MasterInventoryItem>>(source.Currencies),
                     Cars = context.Mapper.Map<IList<MasterInventoryItem>>(source.Cars),

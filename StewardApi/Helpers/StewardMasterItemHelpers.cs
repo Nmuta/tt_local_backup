@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         ///     Sets player inventory item descriptions based on matching master inventory items.
         /// </summary>
         /// <param name="playerInventoryItems">The player inventory items.</param>
-        /// <param name="masterInventoryItems">The master inventory items</param>
+        /// <param name="masterInventoryItems">The master inventory items.</param>
         /// <param name="logName">The title and item type to be logged in case of an error.</param>
         /// <param name="loggingService">The logging service.</param>
         /// <returns>

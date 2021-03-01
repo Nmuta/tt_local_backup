@@ -59,6 +59,8 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         internal string Etag { get; set; }
 
         [JsonProperty("status")]
+#pragma warning disable IDE0051 // Remove unused private members. emersonf this needs to be on the model I guess. Not our code.
         private string Status => "active";
+#pragma warning restore IDE0051 // Remove unused private members
     }
 }

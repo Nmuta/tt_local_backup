@@ -117,10 +117,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var query = Fixture.Create<IdentityQueryAlpha>();
 
             // Act.
-            Func<Task<IdentityResultAlpha>> action = async () => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+            async Task<IdentityResultAlpha> Action() => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<IdentityResultAlpha>();
+            Action().Result.Should().BeOfType<IdentityResultAlpha>();
         }
 
         [TestMethod]
@@ -214,10 +214,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IList<SunriseConsoleDetails>>> action = async () => await provider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+            async Task<IList<SunriseConsoleDetails>> Action() => await provider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<SunriseConsoleDetails>>();
+            Action().Result.Should().BeOfType<List<SunriseConsoleDetails>>();
         }
 
         [TestMethod]
@@ -247,10 +247,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IList<SunriseSharedConsoleUser>>> action = async () => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
+            async Task<IList<SunriseSharedConsoleUser>> Action() => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<SunriseSharedConsoleUser>>();
+            Action().Result.Should().BeOfType<List<SunriseSharedConsoleUser>>();
         }
 
         [TestMethod]
@@ -262,12 +262,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<SunriseUserFlags>> action = async () => await provider.GetUserFlagsAsync(xuid).ConfigureAwait(false);
+            async Task<SunriseUserFlags> Action() => await provider.GetUserFlagsAsync(xuid).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<SunriseUserFlags>();
-            action().Result.ShouldNotBeNull();
-            action().Result.IsCommunityManager.Should().Be(false);
+            Action().Result.Should().BeOfType<SunriseUserFlags>();
+            Action().Result.ShouldNotBeNull();
+            Action().Result.IsCommunityManager.Should().Be(false);
         }
 
         [TestMethod]
@@ -310,10 +310,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<SunriseProfileSummary>> action = async () => await provider.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
+            async Task<SunriseProfileSummary> Action() => await provider.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<SunriseProfileSummary>();
+            Action().Result.Should().BeOfType<SunriseProfileSummary>();
         }
 
         [TestMethod]
@@ -327,10 +327,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IList<SunriseCreditUpdate>>> action = async () => await provider.GetCreditUpdatesAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
+            async Task<IList<SunriseCreditUpdate>> Action() => await provider.GetCreditUpdatesAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<SunriseCreditUpdate>>();
+            Action().Result.Should().BeOfType<List<SunriseCreditUpdate>>();
         }
 
         [TestMethod]
@@ -343,10 +343,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<SunriseBanResult>>> action = async () => await provider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(false);
+            async Task<IList<SunriseBanResult>> Action() => await provider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<SunriseBanResult>>();
+            Action().Result.Should().BeOfType<List<SunriseBanResult>>();
         }
 
         [TestMethod]
@@ -396,10 +396,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuids = Fixture.Create<List<ulong>>();
 
             // Act.
-            Func<Task<IList<SunriseBanSummary>>> action = async () => await provider.GetUserBanSummariesAsync(xuids).ConfigureAwait(false);
+            async Task<IList<SunriseBanSummary>> Action() => await provider.GetUserBanSummariesAsync(xuids).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<SunriseBanSummary>>();
+            Action().Result.Should().BeOfType<List<SunriseBanSummary>>();
         }
 
         [TestMethod]
@@ -433,11 +433,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IList<SunriseNotification>>> action = async () => await provider.GetPlayerNotificationsAsync(xuid, maxResults).ConfigureAwait(false);
+            async Task<IList<SunriseNotification>> Action() => await provider.GetPlayerNotificationsAsync(xuid, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<SunriseNotification>>();
-            action().Result.ShouldNotBeNull();
+            Action().Result.Should().BeOfType<List<SunriseNotification>>();
+            Action().Result.ShouldNotBeNull();
         }
 
         private SunriseBanParameters GenerateBanParameters()
@@ -462,7 +462,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public Dependencies()
             {
                 this.SunriseUserService.GetLiveOpsUserDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
-                this.SunriseUserService.GetLiveOpsUserDataByGamerTagAsync("gamerT1").Returns(this.GenerateGetLiveOpsUserDataByGamerTagOutPut());
+                this.SunriseUserService.GetLiveOpsUserDataByGamerTagAsync("gamerT1").Returns(GenerateGetLiveOpsUserDataByGamerTagOutPut());
                 this.SunriseUserService.GetLiveOpsUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetLiveOpsUserDataByXuidOutput>());
                 this.SunriseUserService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
                 this.SunriseUserService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
@@ -471,9 +471,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseUserService.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetProfileSummaryOutput>());
                 this.SunriseUserService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
                 this.RefreshableCacheStore.GetItem<IList<SunriseCreditUpdate>>(Arg.Any<string>()).Returns((IList<SunriseCreditUpdate>)null);
-                this.SunriseEnforcementService.BanUsersAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<ForzaUserBanParameters>()).Returns(this.GenerateBanUsersOutput());
+                this.SunriseEnforcementService.BanUsersAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<ForzaUserBanParameters>()).Returns(GenerateBanUsersOutput());
                 this.SunriseEnforcementService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
-                this.SunriseEnforcementService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(this.GenerateGetUserBanHistoryOutput());
+                this.SunriseEnforcementService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.SunriseNotificationsService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<NotificationsService.LiveOpsRetrieveForUserOutput>());
                 this.Mapper.Map<SunrisePlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.Mapper.Map<IList<SunriseConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<SunriseConsoleDetails>>());
@@ -507,10 +507,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                                                                                             this.Mapper,
                                                                                             this.RefreshableCacheStore);
 
-            private GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
+            private static GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
             {
                 // Cannot use random uint value for feature area, we must build our own valid fake data
-                Random rnd = new Random();
+                var rnd = new Random();
                 var fakeBanHistories = new List<ForzaUserBanDescription>();
                 var numberOfFakeBanHistories = rnd.Next(1, 10);
                 for (var i = 0; i < numberOfFakeBanHistories; i++)
@@ -521,15 +521,17 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 return Fixture.Build<GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
             }
 
-            private BanUsersOutput GenerateBanUsersOutput()
+            private static BanUsersOutput GenerateBanUsersOutput()
             {
-                var fakeBanResults = new List<ForzaUserBanResult>();
-                fakeBanResults.Add(Fixture.Build<ForzaUserBanResult>().With(x => x.Xuid, (ulong)111).Create());
+                var fakeBanResults = new List<ForzaUserBanResult>
+                {
+                    Fixture.Build<ForzaUserBanResult>().With(x => x.Xuid, (ulong) 111).Create()
+                };
 
                 return Fixture.Build<BanUsersOutput>().With(x => x.banResults, fakeBanResults.ToArray()).Create();
             }
 
-            private GetLiveOpsUserDataByGamerTagOutput GenerateGetLiveOpsUserDataByGamerTagOutPut()
+            private static GetLiveOpsUserDataByGamerTagOutput GenerateGetLiveOpsUserDataByGamerTagOutPut()
             {
                 var fakeUser = Fixture.Build<UserData>().With(x => x.qwXuid, (ulong) 111).Create();
 

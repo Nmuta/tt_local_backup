@@ -439,7 +439,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Accepted(new BackgroundJob()
+            return this.Accepted(new BackgroundJob
             {
                 JobId = jobId,
                 Status = BackgroundJobStatus.InProgress.ToString(),
@@ -762,7 +762,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Accepted(new BackgroundJob()
+            return this.Accepted(new BackgroundJob
             {
                 JobId = jobId,
                 Status = BackgroundJobStatus.InProgress.ToString(),
@@ -1000,14 +1000,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var masterInventory = new SunriseMasterInventory
             {
-                CreditRewards = new List<MasterInventoryItem>()
-                    {
-                        new MasterInventoryItem() { Id = -1, Description = "Credits" },
-                        new MasterInventoryItem() { Id = -1, Description = "ForzathonPoints" },
-                        new MasterInventoryItem() { Id = -1, Description = "SkillPoints" },
-                        new MasterInventoryItem() { Id = -1, Description = "WheelSpins" },
-                        new MasterInventoryItem() { Id = -1, Description = "SuperWheelSpins" },
-                    },
+                CreditRewards = new List<MasterInventoryItem>
+                {
+                        new MasterInventoryItem { Id = -1, Description = "Credits" },
+                        new MasterInventoryItem { Id = -1, Description = "ForzathonPoints" },
+                        new MasterInventoryItem { Id = -1, Description = "SkillPoints" },
+                        new MasterInventoryItem { Id = -1, Description = "WheelSpins" },
+                        new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" }
+                },
                 Cars = await cars.ConfigureAwait(true),
                 CarHorns = await carHorns.ConfigureAwait(true),
                 VanityItems = await vanityItems.ConfigureAwait(true),

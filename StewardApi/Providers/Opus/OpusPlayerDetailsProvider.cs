@@ -37,13 +37,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
             {
                 var result = new OpusPlayerDetails();
 
-            if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag))
-            {
-                throw new ArgumentException("Gamertag or Xuid must be provided.");
-            }
-            else if (query.Xuid.HasValue)
-            {
-                var playerDetails = await this.GetPlayerDetailsAsync(query.Xuid.Value).ConfigureAwait(false);
+                if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag))
+                {
+                    throw new ArgumentException("Gamertag or Xuid must be provided.");
+                }
+
+                if (query.Xuid.HasValue)
+                {
+                    var playerDetails = await this.GetPlayerDetailsAsync(query.Xuid.Value).ConfigureAwait(false);
 
                     result = playerDetails ??
                              throw new NotFoundStewardException($"No profile found for XUID: {query.Xuid}.");

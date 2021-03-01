@@ -219,11 +219,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
 
             // Act.
-            Func<Task<IList<ApolloGiftHistory>>> act = async () =>
-                await provider.GetGiftHistoriesAsync(id, title, antecedent).ConfigureAwait(false);
+            async Task<IList<ApolloGiftHistory>> Action() => await provider.GetGiftHistoriesAsync(id, title, antecedent).ConfigureAwait(false);
 
             // Assert.
-            act().Result.Should().BeOfType<List<ApolloGiftHistory>>();
+            Action().Result.Should().BeOfType<List<ApolloGiftHistory>>();
         }
 
         [TestMethod]

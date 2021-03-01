@@ -158,12 +158,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var query = Fixture.Create<IdentityQueryBeta>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetPlayerIdentity(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<IdentityResultBeta>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<IdentityResultBeta>>();
@@ -171,11 +171,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
+        public void GetPlayerIdentities_WithInvalidInputs_DoesNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var query = new IdentityQueryBeta { Xuid = default, Gamertag = null, T10Id = null};
+            var query = new IdentityQueryBeta { Xuid = default, Gamertag = null, T10Id = null };
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
@@ -249,7 +249,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 async () => await controller.GetPlayerDetailsByT10Id(TestConstants.Empty).ConfigureAwait(false),
                 async () => await controller.GetPlayerDetailsByT10Id(TestConstants.WhiteSpace).ConfigureAwait(false),
             };
-
 
             // Assert.
             foreach (var action in actions)
@@ -351,12 +350,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var t10Id = Fixture.Create<string>();
             var gift = Fixture.Create<GravityGift>();
 
-            gift.Inventory.CreditRewards = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
-            gift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
-            gift.Inventory.EnergyRefills = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
-            gift.Inventory.MasteryKits = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
-            gift.Inventory.RepairKits = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
-            gift.Inventory.UpgradeKits = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+            gift.Inventory.CreditRewards = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, } };
+            gift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, } };
+            gift.Inventory.EnergyRefills = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, } };
+            gift.Inventory.MasteryKits = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, } };
+            gift.Inventory.RepairKits = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, } };
+            gift.Inventory.UpgradeKits = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -433,12 +432,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var Id = Fixture.Create<Guid>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetMasterInventoryList(Id.ToString()).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetMasterInventoryList(Id.ToString()).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var masterInventory = result.Value as GravityMasterInventory;
             masterInventory.Should().NotBeNull();
             masterInventory.Should().BeOfType<GravityMasterInventory>();
@@ -475,12 +474,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var t10Id = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGiftHistoriesAsync(t10Id).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(t10Id).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<GravityGiftHistory>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<GravityGiftHistory>>();
@@ -517,20 +516,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 var httpContext = new DefaultHttpContext();
                 httpContext.Request.Path = TestConstants.TestRequestPath;
 
-                var claims = new List<Claim>() { new Claim(ClaimTypes.Email, "requesting-agent-email") };
-                var claimsIdentities = new List<ClaimsIdentity>() { new ClaimsIdentity(claims) };
+                var claims = new List<Claim> { new Claim(ClaimTypes.Email, "requesting-agent-email") };
+                var claimsIdentities = new List<ClaimsIdentity> { new ClaimsIdentity(claims) };
                 httpContext.User = new ClaimsPrincipal(claimsIdentities);
 
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
 
                 var validMasterInventory = Fixture.Create<GravityMasterInventory>();
-                validMasterInventory.CreditRewards = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
-                validMasterInventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
-                validMasterInventory.EnergyRefills = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
-                validMasterInventory.MasteryKits = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
-                validMasterInventory.RepairKits = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
-                validMasterInventory.UpgradeKits = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, } };
+                validMasterInventory.CreditRewards = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, } };
+                validMasterInventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, } };
+                validMasterInventory.EnergyRefills = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, } };
+                validMasterInventory.MasteryKits = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, } };
+                validMasterInventory.RepairKits = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, } };
+                validMasterInventory.UpgradeKits = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, } };
 
                 this.GravityGameSettingsProvider.GetGameSettingsAsync(Arg.Any<Guid>()).Returns(validMasterInventory);
 

@@ -74,9 +74,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task GetPlayerIdentityByXuid()
         {
-            var query = new IdentityQueryAlpha {Xuid = xuid};
+            var query = new IdentityQueryAlpha { Xuid = xuid };
 
-            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha>{query}).ConfigureAwait(false);
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(xuid, result[0].Xuid);
@@ -682,7 +682,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers_DurationZero()
         {
             var banParameters = GenerateBanParameters();
-            banParameters[0].Duration= TimeSpan.Zero;
+            banParameters[0].Duration = TimeSpan.Zero;
             banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-15);
 
             try
@@ -701,7 +701,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task BanPlayers_DurationNegative()
         {
             var banParameters = GenerateBanParameters();
-            banParameters[0].Duration= TimeSpan.FromMinutes(-10);
+            banParameters[0].Duration = TimeSpan.FromMinutes(-10);
             banParameters[0].StartTimeUtc = DateTime.UtcNow.AddMinutes(-10);
 
             try
@@ -1112,7 +1112,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task UpdatePlayerInventories_NoXuid()
         {
             var playerGift = this.CreateGroupGift();
-            playerGift.Xuids = new List<ulong>()
+            playerGift.Xuids = new List<ulong>
             {
                 default
             };
@@ -1151,16 +1151,16 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task UpdatePlayerInventories_NegativeCurrency()
         {
             var playerGift = this.CreateGroupGift();
-            playerGift.Inventory.CreditRewards = new List<MasterInventoryItem>()
+            playerGift.Inventory.CreditRewards = new List<MasterInventoryItem>
             {
-                new MasterInventoryItem()
+                new MasterInventoryItem
                 {
                     Id = -1,
                     Description = "WheelSpins",
                     Quantity = -1,
                 }
             };
-                
+
             try
             {
                 await stewardClient.UpdatePlayerInventoriesAsync(playerGift).ConfigureAwait(false);
@@ -1177,9 +1177,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task UpdatePlayerInventories_InvalidItemId()
         {
             var playerGift = this.CreateGroupGift();
-            playerGift.Inventory.VanityItems = new List<MasterInventoryItem>()
+            playerGift.Inventory.VanityItems = new List<MasterInventoryItem>
             {
-                new MasterInventoryItem()
+                new MasterInventoryItem
                 {
                     Id = 700,
                     Description = "Bad Item",
@@ -1323,7 +1323,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
                 var error = response.Error as JObject;
                 Assert.AreEqual(error.GetValue("message"), "Exception of type 'Turn10.Services.ForzaClient.ForzaClientException' was thrown.");
             }
-            catch (ServiceException e)
+            catch
             {
                 Assert.Fail();
             }
@@ -1468,7 +1468,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
                 var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"])
                     .ConfigureAwait(false);
 
-                Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out status);
+                Enum.TryParse(backgroundJob.Status, out status);
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
@@ -1502,7 +1502,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             {
                 var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"]).ConfigureAwait(false);
 
-                Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out status);
+                Enum.TryParse(backgroundJob.Status, out status);
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
@@ -1541,114 +1541,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         private SunriseMasterInventory CreateGiftInventory()
         {
-            var giftInventory = new SunriseMasterInventory();
-
-            giftInventory.CreditRewards = new List<MasterInventoryItem>()
+            var giftInventory = new SunriseMasterInventory
             {
-                new MasterInventoryItem() { Id = -1, Description = "Credits", Quantity = 1 },
-            };
-
-
-            giftInventory.Cars = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem()
-                {
-                    Id = 2616,
-                    Quantity = 1
-                }
-            };
-
-            giftInventory.CarHorns = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem()
-                {
-                    Id = 22,
-                    Quantity = 1
-                }
-            };
-
-            giftInventory.VanityItems = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem()
-                {
-                    Id = 3,
-                    Quantity = 1
-                }
-            };
-
-            giftInventory.Emotes = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem()
-                {
-                    Id = 6,
-                    Quantity = 1
-                }
-            };
-
-            giftInventory.QuickChatLines = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem()
-                {
-                    Id = 190,
-                    Quantity = 1
-                }
+                CreditRewards =
+                    new List<MasterInventoryItem>
+                    {
+                        new MasterInventoryItem {Id = -1, Description = "Credits", Quantity = 1},
+                    },
+                Cars = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 2616, Quantity = 1}},
+                CarHorns = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 22, Quantity = 1}},
+                VanityItems = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 3, Quantity = 1}},
+                Emotes = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 6, Quantity = 1}},
+                QuickChatLines = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 190, Quantity = 1}}
             };
 
             return giftInventory;
-        }
-
-        private SunrisePlayerInventory CreatePlayerInventory()
-        {
-            return new SunrisePlayerInventory
-            {
-                Xuid = xuid,
-                Credits = 1,
-                WheelSpins = 1,
-                SuperWheelSpins = 1,
-                SkillPoints = 1,
-                ForzathonPoints = 1,
-                Cars = new[]
-                {
-                    new SunriseCar
-                    {
-                        ItemId = 2616,
-                        Quantity = 1
-                    }
-                },
-                Emotes = new[]
-                {
-                    new SunriseInventoryItem
-                    {
-                        ItemId = 6,
-                        Quantity = 1
-                    }
-                },
-                CarHorns = new[]
-                {
-                    new SunriseInventoryItem
-                    {
-                        ItemId = 22,
-                        Quantity = 1
-                    }
-                },
-                VanityItems = new[]
-                {
-                    new SunriseInventoryItem
-                    {
-                        ItemId = 3,
-                        Quantity = 1
-                    }
-                },
-                QuickChatLines = new[]
-                {
-                    new SunriseInventoryItem
-                    {
-                        ItemId = 190,
-                        Quantity = 1
-                    }
-                },
-                GiftReason = "Integration Test Run"
-            };
         }
 
         private SunriseGroupGift CreateGroupGift()
