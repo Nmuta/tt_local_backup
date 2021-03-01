@@ -7,7 +7,7 @@ import { SunriseService } from '@services/sunrise';
 import { SunriseBanHistoryComponent } from '@shared/views/ban-history/titles/sunrise/sunrise-ban-history.component';
 import { Dictionary, filter, keyBy } from 'lodash';
 import { Observable, Subject } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 
 /** Routed Component; Sunrise Banning Tool. */
