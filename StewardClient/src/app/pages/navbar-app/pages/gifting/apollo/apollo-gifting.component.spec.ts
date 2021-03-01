@@ -4,6 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalService } from '@mocks/msal.service.mock';
 import { NgxsModule, Store } from '@ngxs/store';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
 import { ApolloGiftingComponent } from './apollo-gifting.component';
 import { ApolloGiftingState } from './state/apollo-gifting.state';
@@ -25,7 +26,7 @@ describe('ApolloGiftingComponent', () => {
         ],
         declarations: [ApolloGiftingComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockMsalService()],
+        providers: [createMockMsalService(), createMockLoggerService()],
       }).compileComponents();
 
       fixture = TestBed.createComponent(ApolloGiftingComponent);

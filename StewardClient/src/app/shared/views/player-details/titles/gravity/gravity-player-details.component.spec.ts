@@ -10,6 +10,7 @@ import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { createMockGravityService, GravityService } from '@services/gravity';
 import { of } from 'rxjs';
 import { GravityPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/gamertag/details';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('GravityPlayerDetailsComponent', () => {
   let mockGravityService: GravityService;
@@ -27,7 +28,7 @@ describe('GravityPlayerDetailsComponent', () => {
         ],
         declarations: [GravityPlayerDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWindowService(), createMockMsalService(), createMockGravityService()],
+        providers: [createMockWindowService(), createMockMsalService(), createMockGravityService(), createMockLoggerService()],
       }).compileComponents();
 
       const injector = getTestBed();

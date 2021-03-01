@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalService } from '@mocks/msal.service.mock';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
 import { ApolloGiftHistoryComponent } from './apollo-gift-history.component';
 import { ApolloGiftHistoryState } from './state/apollo-gift-history.state';
@@ -29,7 +30,7 @@ describe('ApolloGiftHistoryComponent', () => {
         ],
         declarations: [ApolloGiftHistoryComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockMsalService()],
+        providers: [createMockMsalService(), createMockLoggerService()],
       }).compileComponents();
 
       fixture = TestBed.createComponent(ApolloGiftHistoryComponent);

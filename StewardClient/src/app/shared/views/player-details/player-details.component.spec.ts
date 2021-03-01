@@ -12,6 +12,7 @@ import { createMockSunriseService } from '@services/sunrise';
 import { of, throwError } from 'rxjs';
 import { createMockOpusService } from '@services/opus';
 import { createMockApolloService } from '@services/apollo';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('PlayerDetailsComponent', () => {
   let fixture: ComponentFixture<PlayerDetailsBaseComponent<never>>;
@@ -33,7 +34,7 @@ describe('PlayerDetailsComponent', () => {
           createMockGravityService(),
           createMockSunriseService(),
           createMockApolloService(),
-          createMockOpusService(),
+          createMockOpusService(), createMockLoggerService()
         ],
       }).compileComponents();
 

@@ -7,6 +7,7 @@ import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { MsalService } from '@azure/msal-angular';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
 describe('State: User', () => {
   let store: Store;
@@ -17,7 +18,7 @@ describe('State: User', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
-        providers: [createMockMsalService()],
+        providers: [createMockMsalService(), createMockLoggerService()],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
 
