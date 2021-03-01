@@ -8,7 +8,8 @@ import { Select, Store } from '@ngxs/store';
 import { GiftHistoryBaseComponent } from '../base/gift-history.base.component';
 import { ApolloGiftHistoryState } from './state/apollo-gift-history.state';
 import {
-  SetApolloGiftHistoryMatTabIndex, SetApolloGiftHistorySelectedPlayerIdentities,
+  SetApolloGiftHistoryMatTabIndex,
+  SetApolloGiftHistorySelectedPlayerIdentities,
 } from './state/apollo-gift-history.state.actions';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
@@ -18,9 +19,7 @@ import { AugmentedCompositeIdentity } from '@navbar-app/components/player-select
   templateUrl: './apollo-gift-history.component.html',
   styleUrls: ['./apollo-gift-history.component.scss'],
 })
-export class ApolloGiftHistoryComponent
-  extends GiftHistoryBaseComponent
-  implements OnInit {
+export class ApolloGiftHistoryComponent extends GiftHistoryBaseComponent implements OnInit {
   @Select(ApolloGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 

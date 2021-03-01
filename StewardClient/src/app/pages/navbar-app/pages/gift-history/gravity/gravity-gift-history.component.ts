@@ -15,9 +15,7 @@ import { AugmentedCompositeIdentity } from '@navbar-app/components/player-select
   templateUrl: './gravity-gift-history.component.html',
   styleUrls: ['./gravity-gift-history.component.scss'],
 })
-export class GravityGiftHistoryComponent
-  extends GiftHistoryBaseComponent
-  implements OnInit {
+export class GravityGiftHistoryComponent extends GiftHistoryBaseComponent implements OnInit {
   @Select(GravityGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultBetaBatch>;
 

@@ -19,9 +19,7 @@ import { AugmentedCompositeIdentity } from '@navbar-app/components/player-select
   templateUrl: './sunrise-gift-history.component.html',
   styleUrls: ['./sunrise-gift-history.component.scss'],
 })
-export class SunriseGiftHistoryComponent
-  extends GiftHistoryBaseComponent
-  implements OnInit {
+export class SunriseGiftHistoryComponent extends GiftHistoryBaseComponent implements OnInit {
   @Select(SunriseGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
