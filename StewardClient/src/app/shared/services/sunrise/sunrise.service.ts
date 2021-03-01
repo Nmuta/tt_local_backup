@@ -130,11 +130,9 @@ export class SunriseService {
   public postBanPlayersWithBackgroundProcessing(
     bans: SunriseBanRequest[],
   ): Observable<BackgroundJob<void>> {
-    const params = new HttpParams().set('useBackgroundProcessing', 'true');
     return this.apiService.postRequest<BackgroundJob<void>>(
-      `${this.basePath}/players/ban`,
+      `${this.basePath}/players/ban/useBackgroundProcessing`,
       bans,
-      params,
     );
   }
 

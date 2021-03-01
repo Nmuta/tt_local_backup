@@ -14,7 +14,7 @@ export class ApolloPlayersBanWithBackgroundProcessingFakeApi extends FakeApiBase
     }
 
     const url = new URL(this.request.url);
-    const regex = /^\/?api\/v1\/title\/apollo\/players\/ban\?useBackgroundProcessing=true$/i;
+    const regex = /^\/?api\/v1\/title\/apollo\/players\/ban\/useBackgroundProcessing$/i;
     return regex.test(url.pathname);
   }
 

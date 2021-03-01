@@ -14,7 +14,7 @@ export class SunrisePlayersBanWithBackgroundProcessingFakeApi extends FakeApiBas
     }
 
     const url = new URL(this.request.url);
-    const regex = /^\/?api\/v1\/title\/sunrise\/players\/ban\?useBackgroundProcessing=true$/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/players\/ban\/useBackgroundProcessing$/i;
     return regex.test(url.pathname);
   }
 
