@@ -22,8 +22,6 @@ import { ItemSelectionModule } from './components/item-selection/item-selection.
 import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
 import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inventory.module';
-import { RouteReuseStrategy } from '@angular/router';
-import { StoreForeverStrategy } from '@helpers/route-reuse-strategy/store-forever-strategy';
 
 /** The feature module for the User Details route. */
 @NgModule({
