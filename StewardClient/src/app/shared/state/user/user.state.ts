@@ -7,7 +7,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
 import { UserService } from '@shared/services/user';
 import { clone } from 'lodash';
-import { concat, defer, from, Observable, of, throwError } from 'rxjs';
+import { concat, from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, switchMap, take, tap, timeout } from 'rxjs/operators';
 
 import {
@@ -67,10 +67,7 @@ export class UserState {
   @Action(RecheckAuth, { cancelUncompleted: true })
   public recheckAuth(ctx: StateContext<UserStateModel>, _action: RecheckAuth): Observable<void> {
     this.logger.log([LogTopic.AuthInterception], `[user.state] recheckAuth`);
-    return concat(
-      ctx.dispatch(new ResetUserProfile()),
-      ctx.dispatch(new RequestAccessToken()),
-    );
+    return concat(ctx.dispatch(new ResetUserProfile()), ctx.dispatch(new RequestAccessToken()));
   }
 
   /** Action that requests user profile and sets it to the state. */
@@ -111,37 +108,61 @@ export class UserState {
     // If access token exists, exit logic
     const currentState = ctx.getState();
     if (currentState.accessToken) {
-      this.logger.log([LogTopic.AuthInterception], `[user.state] [requestAccessToken] token exists`);
+      this.logger.log(
+        [LogTopic.AuthInterception],
+        `[user.state] [requestAccessToken] token exists`,
+      );
       return of();
     }
 
     const isLoggedIn = !!this.authService.getAccount();
     if (!isLoggedIn) {
-      this.logger.log([LogTopic.AuthInterception], `[user.state] [requestAccessToken] not logged in`);
+      this.logger.log(
+        [LogTopic.AuthInterception],
+        `[user.state] [requestAccessToken] not logged in`,
+      );
       ctx.patchState({ accessToken: null });
       return ctx.dispatch(new SetNoUserProfile());
     }
 
-    this.logger.log([LogTopic.AuthInterception], `[user.state] [requestAccessToken] acquireTokenSilent`);
+    this.logger.log(
+      [LogTopic.AuthInterception],
+      `[user.state] [requestAccessToken] acquireTokenSilent`,
+    );
     return from(
       this.authService.acquireTokenSilent({
         scopes: [environment.azureAppScope],
       }),
     ).pipe(
-      tap(() => this.logger.log([LogTopic.AuthInterception], `[user.state] [requestAccessToken] [acquireTokenSilent] completed`)),
+      tap(() =>
+        this.logger.log(
+          [LogTopic.AuthInterception],
+          `[user.state] [requestAccessToken] [acquireTokenSilent] completed`,
+        ),
+      ),
       switchMap(data => {
         if (!data.accessToken) {
-          this.logger.log([LogTopic.AuthInterception], `[user.state] [requestAccessToken] [acquireTokenSilent] no access token`);
+          this.logger.log(
+            [LogTopic.AuthInterception],
+            `[user.state] [requestAccessToken] [acquireTokenSilent] no access token`,
+          );
           ctx.patchState({ accessToken: null });
           return ctx.dispatch(new SetNoUserProfile());
         } else {
-          this.logger.log([LogTopic.AuthInterception], `[user.state] [requestAccessToken] [acquireTokenSilent] has access token`);
+          this.logger.log(
+            [LogTopic.AuthInterception],
+            `[user.state] [requestAccessToken] [acquireTokenSilent] has access token`,
+          );
           ctx.patchState({ accessToken: clone(data.accessToken) });
           return ctx.dispatch(new GetUser());
         }
       }),
       catchError(e => {
-        this.logger.log([LogTopic.AuthInterception], `[user.state] [requestAccessToken] [acquireTokenSilent] error`, e);
+        this.logger.log(
+          [LogTopic.AuthInterception],
+          `[user.state] [requestAccessToken] [acquireTokenSilent] error`,
+          e,
+        );
         ctx.patchState({ accessToken: null });
         return concat(ctx.dispatch(new SetNoUserProfile()), throwError(e));
       }),
