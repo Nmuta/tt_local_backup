@@ -108,4 +108,9 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
   public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
     this.selectedPlayer = identity?.extra?.hasApollo ? identity.apollo : null;
   }
+
+  /** True when the form can be submitted. */
+  public canBan(): boolean {
+    return this.formGroup.valid && this.playerIdentities.length > 0;
+  }
 }
