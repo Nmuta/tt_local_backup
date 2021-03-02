@@ -33,7 +33,9 @@ export class MockApolloService {
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(ApolloPlayersBanFakeApi.make()))));
   public getBanHistoryByXuid = jasmine
     .createSpy('getBanHistoryByXuid')
-    .and.callFake(xuid => this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidBanHistoryFakeApi.make(xuid)))));
+    .and.callFake(xuid =>
+      this.waitUntil$.pipe(switchMap(() => of(ApolloPlayerXuidBanHistoryFakeApi.make(xuid)))),
+    );
   public getPlayerIdentity = jasmine
     .createSpy('getPlayerIdentity')
     .and.callFake((query: IdentityQueryAlpha) =>
