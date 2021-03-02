@@ -67,6 +67,16 @@ export class ApolloService {
     return this.apiService.postRequest<ApolloBanResult[]>(`${this.basePath}/players/ban`, bans);
   }
 
+  /** Bans players by a list of XUIDs using background processing. */
+  public postBanPlayersWithBackgroundProcessing(
+    bans: ApolloBanRequest[],
+  ): Observable<BackgroundJob<void>> {
+    return this.apiService.postRequest<BackgroundJob<void>>(
+      `${this.basePath}/players/ban/useBackgroundProcessing`,
+      bans,
+    );
+  }
+
   /** Gets apollo player details with a gamertag. This can be used to retrieve a XUID. */
   public getPlayerDetailsByGamertag(gamertag: string): Observable<ApolloPlayerDetails> {
     return this.apiService.getRequest<ApolloPlayerDetails>(

@@ -2,9 +2,7 @@ import { Component } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { createNavbarPath, NavbarTools } from '../../navbar-tool-list';
 
-/**
- *
- */
+/** The user banning component. */
 @Component({
   selector: 'app-user-banning',
   templateUrl: './user-banning.component.html',

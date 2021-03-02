@@ -21,6 +21,7 @@
         </ng-template>
       </player-selection-chip-list>
     </sunrise-player-selection>
+
     <div class="bottom">
       <ng-container *ngFor="let xuid of bannedXuids">
         <sunrise-ban-history
@@ -34,20 +35,54 @@
   <div class="default-page-layout-right">
     <mat-card>
       <mat-card-content>
-        <form [formGroup]="formGroup">
-          <ban-options [formControl]="formControls.banOptions"></ban-options>
-          <verify-action-button
-            #submitButton
-            [action]="submit"
-            [alwaysShow]="true"
-            [canSubmit]="formGroup.valid"
-            [canSubmitDisabledReason]="'Form is invalid'"
-            checkboxText="Check to verify ban"
-          >
-            Submit ban
-          </verify-action-button>
-        </form>
+        <ng-container *ngIf="!isLoading && !loadError; else failState">
+          <ng-container *ngIf="!banResults; else banResultsState">
+            <form [formGroup]="formGroup">
+              <ban-options [formControl]="formControls.banOptions"></ban-options>
+              <verify-action-button
+                #submitButton
+                [action]="submit"
+                [alwaysShow]="true"
+                [canSubmit]="formGroup.valid"
+                [canSubmitDisabledReason]="'Form is invalid'"
+                checkboxText="Check to verify ban"
+              >
+                Submit ban
+              </verify-action-button>
+            </form>
+          </ng-container>
+        </ng-container>
       </mat-card-content>
     </mat-card>
   </div>
 </div>
+
+<ng-template #failState>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="loadError" [input]="loadError">Failure occured.</json-dump>
+  <button
+    *ngIf="loadError"
+    class="reset-state"
+    mat-raised-button
+    color="accent"
+    matTooltip="Reset the failed tool."
+    (click)="resetBanningToolUI()"
+    clickStop
+  >
+    Reset Tool
+  </button>
+</ng-template>
+
+<ng-template #banResultsState>
+  <ban-results [banResults]="banResults"></ban-results>
+  <button
+    class="reset-state"
+    mat-raised-button
+    color="accent"
+    matTooltip="Send another ban."
+    (click)="resetBanningToolUI()"
+    clickStop
+  >
+    Send another ban
+  </button>
+</ng-template>

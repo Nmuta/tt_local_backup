@@ -15,6 +15,6 @@ export class MockBackgroundJobService {
 }
 
 /** Creates an injectable mock for Background Job Service. */
-export function createMockUserService(): Provider {
+export function createMockBackgroundJobService(): Provider {
   return { provide: BackgroundJobService, useValue: new MockBackgroundJobService() };
 }
