@@ -218,6 +218,16 @@ export class GravityGiftBasketComponent
       giftBasket[softCurrencyAboveLimit].error = 'Soft Currency limit for a gift is 500,000,000.';
     }
 
+    const hardCurrencyAboveLimit = giftBasket.findIndex(
+      item =>
+        item.itemType.toLowerCase() === creditRewardsItemType &&
+        item.id === BigInt(1) &&
+        item.quantity > 15_000,
+    );
+    if (hardCurrencyAboveLimit >= 0) {
+      giftBasket[hardCurrencyAboveLimit].error = 'Hard Currency limit for a gift is 15,000.';
+    }
+
     return giftBasket;
   }
 }
