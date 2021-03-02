@@ -55,8 +55,8 @@ export class ApolloGiftHistoryComponent extends GiftHistoryBaseComponent impleme
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentityChange(identity: AugmentedCompositeIdentity): void {
-    const newIdentity = identity?.extra?.hasApollo ? identity.apollo : null;
-    this.store.dispatch(new SetApolloGiftHistorySelectedPlayerIdentities([newIdentity]));
+    const newIdentities = [identity].filter(i => i?.extra?.hasApollo).map(i => i.apollo);
+    this.store.dispatch(new SetApolloGiftHistorySelectedPlayerIdentities(newIdentities));
   }
 
   /** Player identity selected */
