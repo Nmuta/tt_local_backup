@@ -54,12 +54,16 @@ export class ApolloGiftingState {
     ctx: StateContext<ApolloGiftingStateModel>,
     action: SetApolloGiftBasket,
   ): Observable<ApolloGiftingStateModel> {
-    let giftBasket = sortBy(action.giftBasket, item => {
-      item.itemType;
-    });
-    giftBasket = sortBy(giftBasket, item => {
-      !item.error;
-    });
+    const giftBasket = sortBy(action.giftBasket, [
+      item => {
+        return !item.error;
+      }, 
+      item => {
+        return item.itemType !== 'creditRewards';
+      },
+      item => {
+        return item.itemType;
+      }]);
 
     return of(ctx.patchState({ giftBasket: clone(giftBasket) }));
   }

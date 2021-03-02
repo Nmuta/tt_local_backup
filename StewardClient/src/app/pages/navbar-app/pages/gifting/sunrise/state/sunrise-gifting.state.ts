@@ -54,12 +54,16 @@ export class SunriseGiftingState {
     ctx: StateContext<SunriseGiftingStateModel>,
     action: SetSunriseGiftBasket,
   ): Observable<SunriseGiftingStateModel> {
-    let giftBasket = sortBy(action.giftBasket, item => {
-      item.itemType;
-    });
-    giftBasket = sortBy(giftBasket, item => {
-      !item.error;
-    });
+    const giftBasket = sortBy(action.giftBasket, [
+      item => {
+        return !item.error;
+      }, 
+      item => {
+        return item.itemType !== 'creditRewards';
+      },
+      item => {
+        return item.itemType;
+      }]);
 
     return of(ctx.patchState({ giftBasket: clone(giftBasket) }));
   }
