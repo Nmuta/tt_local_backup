@@ -1,21 +1,23 @@
 <div class="default-page-layout">
   <div class="default-page-layout-left">
-    <mat-tab-group
-      mat-stretch-tabs
-      [(selectedIndex)]="matTabSelectedIndex"
-      (selectedTabChange)="matTabSelectionChange($event.index)"
-    >
-      <mat-tab label="Player Selection">
-        <player-selection-single
-          [allowSelection]="true"
-          (found)="onPlayerIdentityChange($event)"
-          (selected)="playerIdentitySelected($event)"
-        ></player-selection-single>
-      </mat-tab>
-      <mat-tab label="LSP Group Selection">
-        <sunrise-lsp-group-selection [(ngModel)]="selectedLspGroup"></sunrise-lsp-group-selection>
-      </mat-tab>
-    </mat-tab-group>
+    <mat-card>
+      <mat-tab-group
+        mat-stretch-tabs
+        [(selectedIndex)]="matTabSelectedIndex"
+        (selectedTabChange)="matTabSelectionChange($event.index)"
+      >
+        <mat-tab label="Player Selection">
+          <player-selection-single
+            [allowSelection]="true"
+            (found)="onPlayerIdentityChange($event)"
+            (selected)="playerIdentitySelected($event)"
+          ></player-selection-single>
+        </mat-tab>
+        <mat-tab label="LSP Group Selection">
+          <sunrise-lsp-group-selection [(ngModel)]="selectedLspGroup"></sunrise-lsp-group-selection>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
   </div>
 
   <div class="default-page-layout-right">

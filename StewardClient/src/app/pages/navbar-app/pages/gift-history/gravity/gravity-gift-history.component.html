@@ -1,10 +1,12 @@
 <div class="default-page-layout">
   <div class="default-page-layout-left">
-    <player-selection-single
-      [allowSelection]="true"
-      (found)="onPlayerIdentityChange($event)"
-      (selected)="playerIdentitySelected($event)"
-    ></player-selection-single>
+    <mat-card>
+      <player-selection-single
+        [allowSelection]="true"
+        (found)="onPlayerIdentityChange($event)"
+        (selected)="playerIdentitySelected($event)"
+      ></player-selection-single>
+    </mat-card>
   </div>
 
   <div class="default-page-layout-right">
