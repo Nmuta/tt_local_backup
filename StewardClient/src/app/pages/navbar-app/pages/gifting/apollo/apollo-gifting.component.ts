@@ -74,4 +74,13 @@ export class ApolloGiftingComponent extends GiftingBaseComponent implements OnIn
   public onInventoryFound(inventory: ApolloMasterInventory): void {
     this.selectedPlayerInventory = inventory;
   }
+
+  /** Produces a rejection message from a given identity, if it is rejected. */
+  public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
+    if (!identity?.extra?.hasApollo) {
+      return 'Player does not have an apollo account. Player will be ignored.';
+    }
+
+    return null;
+  }
 }

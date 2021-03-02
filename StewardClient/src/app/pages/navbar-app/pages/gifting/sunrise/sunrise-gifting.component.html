@@ -10,6 +10,7 @@
           <mat-card>
             <player-selection-bulk
               [allowSelection]="true"
+              [rejectionFn]="identityRejectionFn"
               (found)="onPlayerIdentitiesChange($event)"
               (selected)="playerIdentitySelected($event)"
             ></player-selection-bulk>

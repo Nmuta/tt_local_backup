@@ -56,4 +56,13 @@ export class GravityGiftingComponent extends GiftingBaseComponent implements OnI
   public onInventoryFound(inventory: GravityPlayerInventoryBeta): void {
     this.selectedPlayerInventory = inventory;
   }
+
+  /** Produces a rejection message from a given identity, if it is rejected. */
+  public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
+    if (!identity?.extra?.hasGravity) {
+      return 'Player does not have a gravity account. Player will be ignored.';
+    }
+
+    return null;
+  }
 }

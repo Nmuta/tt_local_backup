@@ -38,7 +38,7 @@
       ></ng-template>
 
       <fa-icon
-        *ngIf="!identity.extra?.isAcceptable"
+        *ngIf="identity.extra ? !identity.extra?.isAcceptable : false"
         [icon]="unacceptableIcon"
         [matTooltip]="identity.extra?.rejectionReason"
         class="unacceptable-icon"
