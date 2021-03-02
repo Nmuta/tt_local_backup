@@ -10,7 +10,7 @@
           <mat-card>
             <player-selection-single
               [allowSelection]="true"
-              (found)="onPlayerIdentitiesChange([$event])"
+              (found)="onPlayerIdentityChange($event)"
               (selected)="playerIdentitySelected($event)"
             ></player-selection-single>
           </mat-card>
