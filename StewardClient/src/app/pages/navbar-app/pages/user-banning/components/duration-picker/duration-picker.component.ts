@@ -10,7 +10,6 @@ interface DurationOption {
 }
 
 export const DurationPickerOptions: DurationOption[] = [
-  { duration: moment.duration(1, 'minute'), humanized: '1 minute' },
   { duration: moment.duration(1, 'week'), humanized: '1 week' },
   { duration: moment.duration(1, 'month'), humanized: '1 month' },
   { duration: moment.duration(20, 'years'), humanized: '20 years' },
