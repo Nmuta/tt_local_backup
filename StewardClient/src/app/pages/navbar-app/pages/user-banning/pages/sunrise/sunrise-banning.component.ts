@@ -87,4 +87,9 @@ export class SunriseBanningComponent {
   public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
     this.selectedPlayer = identity?.extra?.hasSunrise ? identity.sunrise : null;
   }
+
+  /** True when the form can be submitted. */
+  public canBan(): boolean {
+    return this.formGroup.valid && this.playerIdentities.length > 0;
+  }
 }

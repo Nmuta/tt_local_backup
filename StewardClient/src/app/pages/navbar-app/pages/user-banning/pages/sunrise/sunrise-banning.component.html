@@ -34,7 +34,7 @@
             #submitButton
             [action]="submit"
             [alwaysShow]="true"
-            [canSubmit]="formGroup.valid"
+            [canSubmit]="canBan()"
             [canSubmitDisabledReason]="'Form is invalid'"
             checkboxText="Check to verify ban"
           >
