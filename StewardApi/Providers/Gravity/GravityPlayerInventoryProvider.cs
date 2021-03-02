@@ -16,6 +16,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
     {
         private const string Title = "Gravity";
         private const int MaxLookupResults = 5;
+        private const int HardCurrencyLimit = 15000;
+        private const int HardCurrencyId = 1;
 
         private readonly IGravityUserService gravityUserService;
         private readonly IGravityUserInventoryService gravityUserInventoryService;
@@ -132,6 +134,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             var giftResponse = new GiftResponse<string>();
             giftResponse.PlayerOrLspGroup = t10Id;
             giftResponse.IdentityAntecedent = GiftIdentityAntecedent.T10Id;
+
+            var hardCurrency = gift.Inventory.CreditRewards.Where(x => x.Id == HardCurrencyId).FirstOrDefault();
+            if (hardCurrency != null)
+            {
+                hardCurrency.Quantity = hardCurrency.Quantity > HardCurrencyLimit ? HardCurrencyLimit : hardCurrency.Quantity;
+            }
 
             try
             {

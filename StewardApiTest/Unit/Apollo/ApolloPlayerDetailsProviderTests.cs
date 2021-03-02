@@ -101,10 +101,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var query = Fixture.Create<IdentityQueryAlpha>();
 
             // Act.
-            Func<Task<IdentityResultAlpha>> action = async () => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+            async Task<IdentityResultAlpha> Action() => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<IdentityResultAlpha>();
+            Action().Result.Should().BeOfType<IdentityResultAlpha>();
         }
 
         [TestMethod]
@@ -195,14 +195,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<ApolloBanResult>>> action = async () => await provider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(false);
+            async Task<IList<ApolloBanResult>> Action() => await provider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<ApolloBanResult>>();
+            Action().Result.Should().BeOfType<List<ApolloBanResult>>();
         }
 
         [TestMethod]
@@ -211,7 +211,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
 
             // Act.
             var actions = new List<Func<Task<IList<ApolloBanResult>>>>
@@ -274,10 +274,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var xuids = Fixture.Create<List<ulong>>();
 
             // Act.
-            Func<Task<IList<ApolloBanSummary>>> action = async () => await provider.GetUserBanSummariesAsync(xuids).ConfigureAwait(false);
+            async Task<IList<ApolloBanSummary>> Action() => await provider.GetUserBanSummariesAsync(xuids).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<ApolloBanSummary>>();
+            Action().Result.Should().BeOfType<List<ApolloBanSummary>>();
         }
 
         [TestMethod]
@@ -290,10 +290,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IList<ApolloConsoleDetails>>> action = async () => await provider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+            async Task<IList<ApolloConsoleDetails>> Action() => await provider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<ApolloConsoleDetails>>();
+            Action().Result.Should().BeOfType<List<ApolloConsoleDetails>>();
         }
 
         [TestMethod]
@@ -323,10 +323,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IList<ApolloSharedConsoleUser>>> action = async () => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
+            async Task<IList<ApolloSharedConsoleUser>> Action() => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<ApolloSharedConsoleUser>>();
+            Action().Result.Should().BeOfType<List<ApolloSharedConsoleUser>>();
         }
 
         [TestMethod]
@@ -339,10 +339,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IList<ApolloLspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
+            async Task<IList<ApolloLspGroup>> Action() => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<ApolloLspGroup>>();
+            Action().Result.Should().BeOfType<List<ApolloLspGroup>>();
         }
 
         [TestMethod]
@@ -354,10 +354,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<ApolloUserFlags>> action = async () => await provider.GetUserFlagsAsync(xuid).ConfigureAwait(false);
+            async Task<ApolloUserFlags> Action() => await provider.GetUserFlagsAsync(xuid).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<ApolloUserFlags>();
+            Action().Result.Should().BeOfType<ApolloUserFlags>();
         }
 
         [TestMethod]
@@ -391,7 +391,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "userFlags"));
         }
 
-        private List<ApolloBanParameters> GenerateBanParameters()
+        private static List<ApolloBanParameters> GenerateBanParameters()
         {
             var newParams = new ApolloBanParameters
             {
@@ -416,7 +416,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             {
                 this.ApolloUserService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDataByGamertagOutput>());
                 this.ApolloUserService.LiveOpsGetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<LiveOpsGetUserDataByXuidOutput>());
-                this.ApolloUserService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>()).Returns(this.GenerateBanUsersOutput());
+                this.ApolloUserService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>()).Returns(GenerateBanUsersOutput());
                 this.ApolloUserService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.ApolloUserService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(this.GenerateGetUserBanHistoryOutput());
                 this.ApolloUserService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
@@ -447,7 +447,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             private GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
             {
                 // Cannot use random uint value for feature area, we must build our own valid fake data
-                Random rnd = new Random();
+                var rnd = new Random();
                 var fakeBanHistories = new List<ForzaUserBanDescription>();
                 var numberOfFakeBanHistories = rnd.Next(1, 10);
                 for (var i = 0; i < numberOfFakeBanHistories; i++)
@@ -458,10 +458,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 return Fixture.Build<GetUserBanHistoryOutput>().With(x => x.bans, fakeBanHistories.ToArray()).Create();
             }
 
-            private BanUsersOutput GenerateBanUsersOutput()
+            private static BanUsersOutput GenerateBanUsersOutput()
             {
-                var fakeBanResults = new List<ForzaUserBanResult>();
-                fakeBanResults.Add(Fixture.Build<ForzaUserBanResult>().With(x => x.Xuid, (ulong)111).Create());
+                var fakeBanResults = new List<ForzaUserBanResult>
+                {
+                    Fixture.Build<ForzaUserBanResult>().With(x => x.Xuid, (ulong) 111).Create()
+                };
 
                 return Fixture.Build<BanUsersOutput>().With(x => x.banResults, fakeBanResults.ToArray()).Create();
             }

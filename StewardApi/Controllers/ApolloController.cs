@@ -265,7 +265,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Accepted(new BackgroundJob()
+            return this.Accepted(new BackgroundJob
             {
                 JobId = jobId,
                 Status = BackgroundJobStatus.InProgress.ToString(),
@@ -511,12 +511,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var getPlayerInventory = this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(xuid);
-            var getmasterInventory = this.RetrieveMasterInventoryList();
+            var getMasterInventory = this.RetrieveMasterInventoryList();
 
-            await Task.WhenAll(getPlayerInventory, getmasterInventory).ConfigureAwait(true);
+            await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
             var playerInventory = await getPlayerInventory.ConfigureAwait(true);
-            var masterInventory = await getmasterInventory.ConfigureAwait(true);
+            var masterInventory = await getMasterInventory.ConfigureAwait(true);
 
             if (playerInventory == null)
             {
@@ -539,12 +539,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerInventory(int profileId)
         {
             var getPlayerInventory = this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(profileId);
-            var getmasterInventory = this.RetrieveMasterInventoryList();
+            var getMasterInventory = this.RetrieveMasterInventoryList();
 
-            await Task.WhenAll(getPlayerInventory, getmasterInventory).ConfigureAwait(true);
+            await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
             var playerInventory = await getPlayerInventory.ConfigureAwait(true);
-            var masterInventory = await getmasterInventory.ConfigureAwait(true);
+            var masterInventory = await getMasterInventory.ConfigureAwait(true);
 
             if (playerInventory == null)
             {
@@ -646,7 +646,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Accepted(new BackgroundJob()
+            return this.Accepted(new BackgroundJob
             {
                 JobId = jobId,
                 Status = BackgroundJobStatus.InProgress.ToString(),
@@ -855,12 +855,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(cars, vanityItems).ConfigureAwait(true);
 
-            var masterInventory = new ApolloMasterInventory()
+            var masterInventory = new ApolloMasterInventory
             {
-                CreditRewards = new List<MasterInventoryItem>()
-                    {
-                        new MasterInventoryItem() { Id = -1, Description = "Credits" },
-                    },
+                CreditRewards = new List<MasterInventoryItem>
+                {
+                        new MasterInventoryItem { Id = -1, Description = "Credits" }
+                },
                 Cars = await cars.ConfigureAwait(true),
                 VanityItems = await vanityItems.ConfigureAwait(true),
             };
@@ -882,13 +882,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var car in gift.Cars)
             {
-                var validItem = masterInventoryItem.Cars.Any(data => { return data.Id == car.Id; });
+                var validItem = masterInventoryItem.Cars.Any(data => data.Id == car.Id);
                 error += validItem ? string.Empty : $"Car: {car.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var vanityItem in gift.VanityItems)
             {
-                var validItem = masterInventoryItem.VanityItems.Any(data => { return data.Id == vanityItem.Id; });
+                var validItem = masterInventoryItem.VanityItems.Any(data => data.Id == vanityItem.Id);
                 error += validItem ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 

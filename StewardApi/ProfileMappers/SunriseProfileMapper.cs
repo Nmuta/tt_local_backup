@@ -41,12 +41,12 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ReverseMap();
             this.CreateMap<AdminForzaUserInventorySummary, SunriseMasterInventory>()
-                .ForMember(dest => dest.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>()
+                .ForMember(dest => dest.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>
                 {
-                    new MasterInventoryItem() { Id = -1, Description = "Credits", Quantity = src.credits },
-                    new MasterInventoryItem() { Id = -1, Description = "WheelSpins", Quantity = src.wheelSpins },
-                    new MasterInventoryItem() { Id = -1, Description = "SuperWheelSpins", Quantity = src.superWheelSpins },
-                    new MasterInventoryItem() { Id = -1, Description = "SkillPoints", Quantity = src.skillPoints }
+                    new MasterInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
+                    new MasterInventoryItem { Id = -1, Description = "WheelSpins", Quantity = src.wheelSpins },
+                    new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins", Quantity = src.superWheelSpins },
+                    new MasterInventoryItem { Id = -1, Description = "SkillPoints", Quantity = src.skillPoints }
                 }))
                 .ReverseMap();
 
@@ -82,7 +82,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaProfileSummary, SunriseProfileSummary>()
                 .ForMember(dest => dest.HackFlags, opt => opt.MapFrom(src => src.HackFlags.Select(t => t.Name)));
             this.CreateMap<ForzaCredityUpdateEntry, SunriseCreditUpdate>().ReverseMap();
-            this.CreateMap<AdminForzaProfile, SunriseInventoryProfile>().ReverseMap();
+            this.CreateMap<AdminForzaProfile, SunriseInventoryProfile>()
+                .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => src.deviceType == "Invalid" ? "Legacy" : src.deviceType))
+                .ReverseMap();
             this.CreateMap<ForzaUserGroup, SunriseLspGroup>();
             this.CreateMap<InventoryItem, SunriseInventoryItem>();
             this.CreateMap<Car, SunriseCar>();
@@ -95,15 +97,15 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.ItemId));
             this.CreateMap<SunrisePlayerInventory, SunriseGift>()
                 .ForMember(dest => dest.GiftReason, opt => opt.MapFrom(source => source.GiftReason))
-                .ForMember(dest => dest.Inventory, opt => opt.MapFrom((source, destObj, destMem, context) => new SunriseMasterInventory()
+                .ForMember(dest => dest.Inventory, opt => opt.MapFrom((source, destObj, destMem, context) => new SunriseMasterInventory
                 {
-                    CreditRewards = new List<MasterInventoryItem>()
+                    CreditRewards = new List<MasterInventoryItem>
                     {
-                        new MasterInventoryItem() { Description = "Credits", Quantity = source.Credits, Id = -1 },
-                        new MasterInventoryItem() { Description = "ForzathonPoints", Quantity = source.ForzathonPoints, Id = -1 },
-                        new MasterInventoryItem() { Description = "SkillPoints", Quantity = source.SkillPoints, Id = -1 },
-                        new MasterInventoryItem() { Description = "WheelSpins", Quantity = source.WheelSpins, Id = -1 },
-                        new MasterInventoryItem() { Description = "SuperWheelSpins", Quantity = source.SuperWheelSpins, Id = -1 },
+                        new MasterInventoryItem { Description = "Credits", Quantity = source.Credits, Id = -1 },
+                        new MasterInventoryItem { Description = "ForzathonPoints", Quantity = source.ForzathonPoints, Id = -1 },
+                        new MasterInventoryItem { Description = "SkillPoints", Quantity = source.SkillPoints, Id = -1 },
+                        new MasterInventoryItem { Description = "WheelSpins", Quantity = source.WheelSpins, Id = -1 },
+                        new MasterInventoryItem { Description = "SuperWheelSpins", Quantity = source.SuperWheelSpins, Id = -1 },
                     },
                     Cars = context.Mapper.Map<IList<MasterInventoryItem>>(source.Cars),
                     CarHorns = context.Mapper.Map<IList<MasterInventoryItem>>(source.CarHorns),

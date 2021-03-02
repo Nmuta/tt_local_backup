@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         ///     Initializes a new instance of the <see cref="StewardInventoryItemError"/> class.
         /// </summary>
         /// <param name="message">The exception message.</param>
-        /// <param name="innerException">The inner exception</param>
+        /// <param name="innerException">The inner exception.</param>
         public StewardInventoryItemError(string message, System.Exception innerException)
             : base(message, innerException)
         {
