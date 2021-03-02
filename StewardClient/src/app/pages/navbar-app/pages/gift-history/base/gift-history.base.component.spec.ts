@@ -3,7 +3,6 @@ import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalService } from '@mocks/msal.service.mock';
-import { IdentityResultAlpha } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
@@ -11,8 +10,8 @@ import { UserState } from '@shared/state/user/user.state';
 import { GiftHistoryBaseComponent } from './gift-history.base.component';
 
 describe('GiftHistoryBaseComponent', () => {
-  let component: GiftHistoryBaseComponent<IdentityResultAlpha>;
-  let fixture: ComponentFixture<GiftHistoryBaseComponent<IdentityResultAlpha>>;
+  let component: GiftHistoryBaseComponent;
+  let fixture: ComponentFixture<GiftHistoryBaseComponent>;
 
   let mockStore: Store;
 
@@ -29,9 +28,7 @@ describe('GiftHistoryBaseComponent', () => {
         providers: [createMockMsalService(), createMockLoggerService()],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(
-        GiftHistoryBaseComponent as Type<GiftHistoryBaseComponent<IdentityResultAlpha>>,
-      );
+      fixture = TestBed.createComponent(GiftHistoryBaseComponent as Type<GiftHistoryBaseComponent>);
       component = fixture.debugElement.componentInstance;
 
       mockStore = TestBed.inject(Store);

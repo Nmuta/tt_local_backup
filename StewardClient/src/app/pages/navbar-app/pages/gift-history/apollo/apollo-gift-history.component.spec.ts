@@ -3,16 +3,12 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createMockMsalService } from '@mocks/msal.service.mock';
-import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
 import { ApolloGiftHistoryComponent } from './apollo-gift-history.component';
 import { ApolloGiftHistoryState } from './state/apollo-gift-history.state';
-import {
-  SetApolloGiftHistoryMatTabIndex,
-  SetApolloGiftHistorySelectedPlayerIdentities,
-} from './state/apollo-gift-history.state.actions';
+import { SetApolloGiftHistoryMatTabIndex } from './state/apollo-gift-history.state.actions';
 
 describe('ApolloGiftHistoryComponent', () => {
   let component: ApolloGiftHistoryComponent;
@@ -56,22 +52,22 @@ describe('ApolloGiftHistoryComponent', () => {
     });
   });
 
-  describe('Method: onPlayerIdentitiesChange', () => {
-    let event: IdentityResultAlphaBatch;
-    beforeEach(() => {
-      event = [
-        {
-          query: undefined,
-          xuid: BigInt(123456789),
-        },
-      ];
-    });
-    it('should displatch SetApolloGiftHistorySelectedPlayerIdentities with correct data', () => {
-      component.onPlayerIdentitiesChange(event);
+  // describe('Method: onPlayerIdentitiesChange', () => {
+  //   let event: IdentityResultAlphaBatch;
+  //   beforeEach(() => {
+  //     event = [
+  //       {
+  //         query: undefined,
+  //         xuid: BigInt(123456789),
+  //       },
+  //     ];
+  //   });
+  //   it('should displatch SetApolloGiftHistorySelectedPlayerIdentities with correct data', () => {
+  //     component.onPlayerIdentitiesChange(event);
 
-      expect(mockStore.dispatch).toHaveBeenCalledWith(
-        new SetApolloGiftHistorySelectedPlayerIdentities(event),
-      );
-    });
-  });
+  //     expect(mockStore.dispatch).toHaveBeenCalledWith(
+  //       new SetApolloGiftHistorySelectedPlayerIdentities(event),
+  //     );
+  //   });
+  // });
 });

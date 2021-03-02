@@ -12,20 +12,21 @@ import {
   SetSunriseGiftHistorySelectedPlayerIdentities,
 } from './state/sunrise-gift-history.state.actions';
 import { first } from 'lodash';
+import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 
 /** The gift history page for the Navbar app. */
 @Component({
   templateUrl: './sunrise-gift-history.component.html',
   styleUrls: ['./sunrise-gift-history.component.scss'],
 })
-export class SunriseGiftHistoryComponent
-  extends GiftHistoryBaseComponent<IdentityResultAlpha>
-  implements OnInit {
+export class SunriseGiftHistoryComponent extends GiftHistoryBaseComponent implements OnInit {
   @Select(SunriseGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
   public title: GameTitleCodeName = GameTitleCodeName.FH4;
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
+  /** Selected player identity when user clicks on identity chip. */
+  public selectedPlayerIdentity: IdentityResultAlpha;
   public selectedLspGroup: LspGroup;
   public selectedPlayer: IdentityResultAlpha;
 
@@ -53,19 +54,13 @@ export class SunriseGiftHistoryComponent
   }
 
   /** Logic when player selection outputs identities. */
-  public onPlayerIdentitiesChange(event: IdentityResultAlphaBatch): void {
-    this.store.dispatch(new SetSunriseGiftHistorySelectedPlayerIdentities(event));
+  public onPlayerIdentityChange(identity: AugmentedCompositeIdentity): void {
+    const newIdentity = identity?.extra?.hasSunrise ? identity.sunrise : null;
+    this.store.dispatch(new SetSunriseGiftHistorySelectedPlayerIdentities([newIdentity]));
   }
 
   /** Player identity selected */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public playerIdentitySelected(identity: IdentityResultAlpha): void {
-    // Empty
-  }
-
-  /** Logic when lspgroup selection outputs new value. */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public onLspGroupChange(event: LspGroup): void {
-    // Empty
+  public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
+    this.selectedPlayerIdentity = identity?.extra?.hasSunrise ? identity.sunrise : null;
   }
 }

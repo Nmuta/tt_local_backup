@@ -6,19 +6,14 @@
       (selectedTabChange)="matTabSelectionChange($event.index)"
     >
       <mat-tab label="Player Selection">
-        <apollo-player-selection
-          [allowT10Id]="false"
-          [allowGroup]="false"
-          [(ngModel)]="selectedPlayerIdentities"
-          (ngModelChange)="onPlayerIdentitiesChange($event)"
-          (playerIdentitySelectedEvent)="playerIdentitySelected($event)"
-        ></apollo-player-selection>
+        <player-selection-single
+          [allowSelection]="true"
+          (found)="onPlayerIdentityChange($event)"
+          (selected)="playerIdentitySelected($event)"
+        ></player-selection-single>
       </mat-tab>
       <mat-tab label="LSP Group Selection">
-        <apollo-lsp-group-selection
-          [(ngModel)]="selectedLspGroup"
-          (ngModelChange)="onLspGroupChange($event)"
-        ></apollo-lsp-group-selection>
+        <apollo-lsp-group-selection [(ngModel)]="selectedLspGroup"></apollo-lsp-group-selection>
       </mat-tab>
     </mat-tab-group>
   </div>

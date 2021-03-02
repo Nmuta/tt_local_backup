@@ -61,7 +61,7 @@ export class ApolloGiftingComponent extends GiftingBaseComponent implements OnIn
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentitiesChange(identity: AugmentedCompositeIdentity): void {
-    const newIdentity = identity.extra.hasApollo ? identity.apollo : null;
+    const newIdentity = identity?.extra?.hasApollo ? identity.apollo : null;
     this.store.dispatch(new SetApolloGiftingSelectedPlayerIdentities([newIdentity]));
   }
 
