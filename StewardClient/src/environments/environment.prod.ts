@@ -12,7 +12,7 @@ export const environment: StewardEnvironment = {
   oldScrutineerApiUrl: 'https://prod-scrutineer.azurewebsites.net',
   enableFakeApi: true,
   appInsightsConfig: {
-    instrumentationKey: '-- unable to create except for classic --',
+    instrumentationKey: 'bbbacd1f-d95e-451f-819a-97c787edc628',
     enableAutoRouteTracking: true, // option to log all route changes (do we want this?)
   },
   loggerConfig: {

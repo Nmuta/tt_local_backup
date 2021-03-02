@@ -3,19 +3,22 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SunriseBanArea, SunriseBanRequest, SunriseBanSummary } from '@models/sunrise';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { BackgroundJob } from '@models/background-job';
+import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { SunriseService } from '@services/sunrise';
 import { SunriseBanHistoryComponent } from '@shared/views/ban-history/titles/sunrise/sunrise-ban-history.component';
 import { Dictionary, filter, keyBy } from 'lodash';
-import { Observable, Subject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { NEVER, Observable, Subject } from 'rxjs';
+import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
+import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 
 /** Routed Component; Sunrise Banning Tool. */
 @Component({
   templateUrl: './sunrise-banning.component.html',
   styleUrls: ['./sunrise-banning.component.scss'],
 })
-export class SunriseBanningComponent {
+export class SunriseBanningComponent extends UserBanningBaseComponent {
   @ViewChildren('sunrise-ban-history')
   public banHistoryComponents: SunriseBanHistoryComponent[] = [];
 
@@ -35,7 +38,12 @@ export class SunriseBanningComponent {
   public bannedXuids: bigint[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
 
-  constructor(private readonly sunrise: SunriseService) {
+  constructor(
+    protected readonly backgroundJobService: BackgroundJobService,
+    private readonly sunrise: SunriseService,
+  ) {
+    super(backgroundJobService);
+
     const summaries = new Subject<SunriseBanSummary[]>();
     this.playerIdentities$
       .pipe(
@@ -58,6 +66,7 @@ export class SunriseBanningComponent {
 
   /** Submit the form. */
   public submitInternal(): Observable<unknown> {
+    this.isLoading = true;
     const identities = this.playerIdentities;
     const banOptions = this.formControls.banOptions.value as BanOptions;
     const bans: SunriseBanRequest[] = identities.map(identity => {
@@ -73,7 +82,18 @@ export class SunriseBanningComponent {
       };
     });
 
-    return this.sunrise.postBanPlayers(bans);
+    return this.sunrise.postBanPlayersWithBackgroundProcessing(bans).pipe(
+      takeUntil(this.onDestroy$),
+      catchError(error => {
+        this.loadError = error;
+        this.isLoading = false;
+        return NEVER;
+      }),
+      take(1),
+      tap((backgroundJob: BackgroundJob<void>) => {
+        this.waitForBackgroundJobToComplete(backgroundJob);
+      }),
+    );
   }
 
   /** Logic when player selection outputs identities. */
@@ -86,5 +106,10 @@ export class SunriseBanningComponent {
   /** Player identity selected */
   public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
     this.selectedPlayer = identity?.extra?.hasSunrise ? identity.sunrise : null;
+  }
+
+  /** True when the form can be submitted. */
+  public canBan(): boolean {
+    return this.formGroup.valid && this.playerIdentities.length > 0;
   }
 }

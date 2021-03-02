@@ -55,8 +55,8 @@ export class SunriseGiftHistoryComponent extends GiftHistoryBaseComponent implem
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentityChange(identity: AugmentedCompositeIdentity): void {
-    const newIdentity = identity?.extra?.hasSunrise ? identity.sunrise : null;
-    this.store.dispatch(new SetSunriseGiftHistorySelectedPlayerIdentities([newIdentity]));
+    const newIdentities = [identity].filter(i => i?.extra?.hasSunrise).map(i => i.sunrise);
+    this.store.dispatch(new SetSunriseGiftHistorySelectedPlayerIdentities(newIdentities));
   }
 
   /** Player identity selected */
