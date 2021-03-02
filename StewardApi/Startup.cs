@@ -88,14 +88,7 @@ namespace Turn10.LiveOps.StewardApi
                 options.SerializerSettings.Converters = new List<JsonConverter> { new TimeSpanConverter() };
             });
 
-            // Single line comments should begin with single space
-            //JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            //{
-            //    Converters = new List<JsonConverter> { new TimeSpanConverter() }
-            //};
-
             services.AddApplicationInsightsTelemetry();
-#pragma warning restore SA1005 // Single line comments should begin with single space
 
             services.AddSwaggerGen(options =>
             {
