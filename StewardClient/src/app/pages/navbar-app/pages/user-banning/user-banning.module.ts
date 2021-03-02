@@ -27,6 +27,7 @@ import { BanResultsModule } from './components/ban-results/ban-results.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -62,6 +63,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
     BanResultsModule,
     PipesModule,
     JsonDumpModule,
+    DirectivesModule,
   ],
 })
 export class UserBanningModule {}

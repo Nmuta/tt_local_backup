@@ -44,7 +44,7 @@ export class UserBanningBaseComponent extends BaseComponent {
               this.banResults = Array.isArray(result) ? result : [result];
               break;
             case BackgroundJobStatus.InProgress:
-              throw 'still in progress';
+              throw new Error('still in progress');
             default:
               this.loadError = job.result;
           }
