@@ -1,26 +1,28 @@
 <div class="default-page-layout">
   <div class="default-page-layout-left">
-    <player-selection-bulk
-      [allowSelection]="true"
-      (found)="onPlayerIdentitiesChange($event)"
-      (selected)="playerIdentitySelected($event)"
-    >
-      <ng-template let-identity>
-        <ban-chip-icon
-          *ngIf="identity?.extra?.hasApollo"
-          [identity]="identity.apollo"
-          [banSummary]="summaryLookup[identity.apollo.xuid]"
-        ></ban-chip-icon>
-      </ng-template>
-    </player-selection-bulk>
-    <div class="bottom">
-      <ng-container *ngFor="let xuid of bannedXuids">
-        <apollo-ban-history
-          [xuid]="xuid"
-          [hidden]="xuid !== selectedPlayer?.xuid"
-        ></apollo-ban-history>
-      </ng-container>
-    </div>
+    <mat-card>
+      <player-selection-bulk
+        [allowSelection]="true"
+        (found)="onPlayerIdentitiesChange($event)"
+        (selected)="playerIdentitySelected($event)"
+      >
+        <ng-template let-identity>
+          <ban-chip-icon
+            *ngIf="identity?.extra?.hasApollo"
+            [identity]="identity.apollo"
+            [banSummary]="summaryLookup[identity.apollo.xuid]"
+          ></ban-chip-icon>
+        </ng-template>
+      </player-selection-bulk>
+      <div class="bottom">
+        <ng-container *ngFor="let xuid of bannedXuids">
+          <apollo-ban-history
+            [xuid]="xuid"
+            [hidden]="xuid !== selectedPlayer?.xuid"
+          ></apollo-ban-history>
+        </ng-container>
+      </div>
+    </mat-card>
   </div>
 
   <div class="default-page-layout-right">

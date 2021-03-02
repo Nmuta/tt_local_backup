@@ -1,26 +1,28 @@
 <div class="default-page-layout">
   <div class="default-page-layout-left">
-    <player-selection-bulk
-      [allowSelection]="true"
-      (found)="onPlayerIdentitiesChange($event)"
-      (selected)="playerIdentitySelected($event)"
-    >
-      <ng-template let-identity>
-        <ban-chip-icon
-          *ngIf="identity?.extra?.hasSunrise"
-          [identity]="identity.sunrise"
-          [banSummary]="summaryLookup[identity.sunrise.xuid]"
-        ></ban-chip-icon>
-      </ng-template>
-    </player-selection-bulk>
-    <div class="bottom">
-      <ng-container *ngFor="let xuid of bannedXuids">
-        <sunrise-ban-history
-          [xuid]="xuid"
-          [hidden]="xuid !== selectedPlayer?.xuid"
-        ></sunrise-ban-history>
-      </ng-container>
-    </div>
+    <mat-card>
+      <player-selection-bulk
+        [allowSelection]="true"
+        (found)="onPlayerIdentitiesChange($event)"
+        (selected)="playerIdentitySelected($event)"
+      >
+        <ng-template let-identity>
+          <ban-chip-icon
+            *ngIf="identity?.extra?.hasSunrise"
+            [identity]="identity.sunrise"
+            [banSummary]="summaryLookup[identity.sunrise.xuid]"
+          ></ban-chip-icon>
+        </ng-template>
+      </player-selection-bulk>
+      <div class="bottom">
+        <ng-container *ngFor="let xuid of bannedXuids">
+          <sunrise-ban-history
+            [xuid]="xuid"
+            [hidden]="xuid !== selectedPlayer?.xuid"
+          ></sunrise-ban-history>
+        </ng-container>
+      </div>
+    </mat-card>
   </div>
 
   <div class="default-page-layout-right">
