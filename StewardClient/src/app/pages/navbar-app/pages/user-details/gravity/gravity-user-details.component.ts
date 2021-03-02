@@ -19,7 +19,7 @@ export class GravityUserDetailsComponent {
 
   /** The lookup value. */
   public get lookupName(): string {
-    return first(this.parent.lookupList) ?? '?';
+    return first(this.parent.lookupList);
   }
 
   /** The specific relevant identity from the parent. */

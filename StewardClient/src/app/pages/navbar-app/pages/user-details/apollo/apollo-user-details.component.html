@@ -25,7 +25,8 @@
 </ng-container>
 
 <ng-template #noIdentity>
-  <h1>Finding {{ lookupName }} by {{ lookupType | humanize }}</h1>
+  <h1 *ngIf="lookupName">Finding {{ lookupName }} by {{ lookupType | humanize }}</h1>
+  <h1 *ngIf="!lookupName">Waiting for {{ lookupType | humanize }}</h1>
   <ng-container *ngIf="identity?.error">
     <hr />
     <h2>Request failed</h2>
