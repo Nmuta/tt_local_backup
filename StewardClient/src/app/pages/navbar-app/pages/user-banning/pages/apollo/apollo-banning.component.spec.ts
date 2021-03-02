@@ -55,7 +55,8 @@ describe('ApolloBanningComponent', () => {
     const fakeIdentities = testXuids.map(
       xuid => <IdentityResultAlpha>{ gamertag: faker.name.firstName(), xuid: xuid },
     );
-    component.formControls.playerIdentities.setValue(fakeIdentities, { emitEvent: true });
+    component.playerIdentities = fakeIdentities;
+    component.playerIdentities$.next(fakeIdentities);
     fixture.detectChanges();
 
     expect(apollo.getBanSummariesByXuids).toHaveBeenCalledTimes(1);

@@ -182,6 +182,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       this.foundIdentities.splice(index, 1);
       this.knownIdentities.delete(item.query[this.lookupType].toString());
       this.lookupListChange.emit();
+      this.onFound();
     }
   }
 

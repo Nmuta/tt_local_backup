@@ -23,6 +23,7 @@ import { BanChipsComponent } from './components/ban-chips/ban-chips.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BanChipIconModule } from './components/ban-chip-icon/ban-chip-icon.module';
 import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
+import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
 import { BanResultsModule } from './components/ban-results/ban-results.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -52,6 +53,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     ReactiveFormsModule,
     UserBanningRoutingModule,
     OldPlayerSelectionModule,
+    PlayerSelectionModule,
     VerifyActionButtonModule,
     MatCheckboxModule,
     MatDatepickerModule,

@@ -53,7 +53,8 @@ describe('SunriseBanningComponent', () => {
     const fakeIdentities = testXuids.map(
       xuid => <IdentityResultAlpha>{ gamertag: faker.name.firstName(), xuid: xuid },
     );
-    component.formControls.playerIdentities.setValue(fakeIdentities, { emitEvent: true });
+    component.playerIdentities = fakeIdentities;
+    component.playerIdentities$.next(fakeIdentities);
     fixture.detectChanges();
 
     expect(sunrise.getBanSummariesByXuids).toHaveBeenCalledTimes(1);

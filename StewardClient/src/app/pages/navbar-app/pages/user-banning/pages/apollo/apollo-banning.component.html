@@ -1,25 +1,28 @@
 <div class="default-page-layout">
   <div class="default-page-layout-left">
-    <apollo-player-selection
-      #playerSelection
-      [allowT10Id]="false"
-      [allowGroup]="false"
-      [formControl]="formControls.playerIdentities"
-    >
-      <player-selection-chip-list
-        [playerSelection]="playerSelection"
-        [identities]="playerSelection.playerIdentitiesFull"
+    <mat-card>
+      <player-selection-bulk
+        [allowSelection]="true"
+        (found)="onPlayerIdentitiesChange($event)"
+        (selected)="playerIdentitySelected($event)"
       >
         <ng-template let-identity>
-          <player-selection-chip [playerSelection]="playerSelection" [identity]="identity">
-            <ban-chip-icon
-              [identity]="identity"
-              [banSummary]="summaryLookup[identity.xuid]"
-            ></ban-chip-icon>
-          </player-selection-chip>
+          <ban-chip-icon
+            *ngIf="identity?.extra?.hasApollo"
+            [identity]="identity.apollo"
+            [banSummary]="summaryLookup[identity.apollo.xuid]"
+          ></ban-chip-icon>
         </ng-template>
-      </player-selection-chip-list>
-    </apollo-player-selection>
+      </player-selection-bulk>
+      <div class="bottom">
+        <ng-container *ngFor="let xuid of bannedXuids">
+          <apollo-ban-history
+            [xuid]="xuid"
+            [hidden]="xuid !== selectedPlayer?.xuid"
+          ></apollo-ban-history>
+        </ng-container>
+      </div>
+    </mat-card>
   </div>
 
   <div class="default-page-layout-right">
@@ -33,7 +36,7 @@
                 #submitButton
                 [action]="submit || 'testing'"
                 [alwaysShow]="true"
-                [canSubmit]="formGroup.valid"
+                [canSubmit]="canBan()"
                 [canSubmitDisabledReason]="'Form is invalid'"
                 checkboxText="Check to verify ban"
               >

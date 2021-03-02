@@ -41,9 +41,8 @@ export class GravityGiftHistoryComponent extends GiftHistoryBaseComponent implem
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentityChange(identity: AugmentedCompositeIdentity): void {
-    const newIdentity = identity?.extra?.hasGravity ? identity.gravity : null;
-    this.selectedPlayerIdentities = [newIdentity];
-    this.store.dispatch(new SetGravitySelectedPlayerIdentities([newIdentity]));
+    const newIdentities = [identity].filter(i => i?.extra?.hasGravity).map(i => i.gravity);
+    this.store.dispatch(new SetGravitySelectedPlayerIdentities(newIdentities));
   }
 
   /** Player identity selected */
