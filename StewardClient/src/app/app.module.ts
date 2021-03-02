@@ -41,6 +41,8 @@ import { SunriseGiftHistoryState } from '@navbar-app/pages/gift-history/sunrise/
 import { ApolloGiftHistoryState } from '@navbar-app/pages/gift-history/apollo/state/apollo-gift-history.state';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
 import { AvailableAppsModule } from '@shared/views/available-apps/available-apps.module';
+import { StoreForeverStrategy } from '@helpers/route-reuse-strategy/store-forever-strategy';
+import { RouteReuseStrategy } from '@angular/router';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -131,6 +133,7 @@ function fakeApiOrNothing(): Provider[] {
       multi: false,
     },
     LoggerService,
+    { provide: RouteReuseStrategy, useClass: StoreForeverStrategy },
     Clipboard,
     ...fakeApiOrNothing(),
     {

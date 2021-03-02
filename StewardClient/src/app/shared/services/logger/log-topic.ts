@@ -4,4 +4,5 @@ export enum LogTopic {
   AuthInterception = 'AuthInterception',
   ZAF = 'ZAF',
   FakeApi = 'FakeApi',
+  RouteReuse = 'RouteReuse',
 }
