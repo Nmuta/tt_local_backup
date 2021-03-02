@@ -325,7 +325,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Accepted(new BackgroundJob()
+            return this.Accepted(new BackgroundJob
             {
                 JobId = jobId,
                 Status = BackgroundJobStatus.InProgress.ToString(),

@@ -278,12 +278,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var query = Fixture.Create<IdentityQueryAlpha>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> {query} ).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> {query}).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<IdentityResultAlpha>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<IdentityResultAlpha>>();
@@ -291,7 +291,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetPlayerIdentites_WithInvalidInputs_DoesNotThrow()
+        public void GetPlayerIdentities_WithInvalidInputs_DoesNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -336,7 +336,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetPlayerDetails_WithNullEmptyWhiteSpaceGamertag_Throws()
+        public void GetPlayerDetails_WithNullEmptyWhiteSpaceGamertag_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -365,12 +365,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetConsoles(xuid, maxResults).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetConsoles(xuid, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<SunriseConsoleDetails>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<SunriseConsoleDetails>>();
@@ -378,7 +378,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetConsoles_WithNegativeMaxResults_Throws()
+        public void GetConsoles_WithNegativeMaxResults_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -403,12 +403,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetSharedConsoleUsers(xuid, startIndex, maxResults).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetSharedConsoleUsers(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<SunriseSharedConsoleUser>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<SunriseSharedConsoleUser>>();
@@ -416,7 +416,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetSharedConsoleUsers_WithNegativeStartIndex_Throws()
+        public void GetSharedConsoleUsers_WithNegativeStartIndex_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -433,7 +433,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetSharedConsoleUsers_WithNegativeMaxResults_Throws()
+        public void GetSharedConsoleUsers_WithNegativeMaxResults_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -458,12 +458,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetUserFlags(xuid).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetUserFlags(xuid).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as SunriseUserFlags;
             details.Should().NotBeNull();
             details.Should().BeOfType<SunriseUserFlags>();
@@ -479,12 +479,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var userFlags = Fixture.Create<SunriseUserFlagsInput>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.SetUserFlags(xuid, userFlags).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.SetUserFlags(xuid, userFlags).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as SunriseUserFlags;
             details.Should().NotBeNull();
             details.Should().BeOfType<SunriseUserFlags>();
@@ -492,7 +492,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task SetUserFlags_WithNullUserFlags_Throws()
+        public void SetUserFlags_WithNullUserFlags_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -514,12 +514,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetProfileSummary(xuid).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetProfileSummary(xuid).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as SunriseProfileSummary;
             details.Should().NotBeNull();
             details.Should().BeOfType<SunriseProfileSummary>();
@@ -536,12 +536,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<SunriseCreditUpdate>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<SunriseCreditUpdate>>();
@@ -549,7 +549,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetCreditUpdates_WithNegativeStartIndex_Throws()
+        public void GetCreditUpdates_WithNegativeStartIndex_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -566,7 +566,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetCreditUpdates_WithNegativeMaxResults_Throws()
+        public void GetCreditUpdates_WithNegativeMaxResults_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -590,12 +590,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var banParameters = GenerateBanParameters();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.BanPlayers(banParameters).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.BanPlayers(banParameters).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<SunriseBanResult>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<SunriseBanResult>>();
@@ -603,7 +603,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task BanPlayers_WithNullBanParameters_Throws()
+        public void BanPlayers_WithNullBanParameters_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -617,7 +617,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task BanPlayers_WithValidParameters_UseBackgroundProcessing_DoesNotThrow()
+        public void BanPlayers_WithValidParameters_UseBackgroundProcessing_DoesNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -632,7 +632,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task BanPlayers_WithNullBanParameters_UseBackgroundProcessing_Throws()
+        public void BanPlayers_WithNullBanParameters_UseBackgroundProcessing_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -653,12 +653,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuids = Fixture.Create<IList<ulong>>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetBanSummaries(xuids).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetBanSummaries(xuids).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<SunriseBanSummary>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<SunriseBanSummary>>();
@@ -694,7 +694,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetBanHistory_WithNullEmptyWhitespaceGamertag_Throws()
+        public void GetBanHistory_WithNullEmptyWhitespaceGamertag_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -724,12 +724,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var isBanned = true;
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.SetConsoleBanStatus(consoleId, isBanned).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.SetConsoleBanStatus(consoleId, isBanned).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false);
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
             result.Should().BeOfType<OkResult>();
         }
 
@@ -770,12 +770,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetPlayerInventoryProfiles(xuid).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetPlayerInventoryProfiles(xuid).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<SunriseInventoryProfile>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<SunriseInventoryProfile>>();
@@ -791,12 +791,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<SunriseLspGroup>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<SunriseLspGroup>>();
@@ -804,11 +804,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetGroups_WithNegativeStartIndex_Throws()
+        public void GetGroups_WithNegativeStartIndex_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var startIndex = -1;
+            const int startIndex = -1;
             var maxResults = Fixture.Create<int>();
 
             // Act.
@@ -820,12 +820,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetGroups_WithNegativeMaxResults_Throws()
+        public void GetGroups_WithNegativeMaxResults_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var startIndex = Fixture.Create<int>();
-            var maxResults = -1;
+            const int maxResults = -1;
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
@@ -841,12 +841,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<SunriseGroupGift>();
-            var xuid = Fixture.Create<ulong>();
-            groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            groupGift.Inventory.CarHorns = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            groupGift.Inventory.Emotes = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.Emotes = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -867,7 +866,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventories_WithNullGroupGift_Throws()
+        public void UpdatePlayerInventories_WithNullGroupGift_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -887,16 +886,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
+        public void UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupGift = Fixture.Create<SunriseGroupGift>();
-            groupGift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            groupGift.Inventory.CarHorns = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            groupGift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            groupGift.Inventory.Emotes = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.Emotes = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -915,7 +914,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdatePlayerInventories_WithNullGroupGift_UseBackgroundProcessing_Throws()
+        public void UpdatePlayerInventories_WithNullGroupGift_UseBackgroundProcessing_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -941,18 +940,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
             var gift = Fixture.Create<SunriseGift>();
-            gift.Inventory.Cars = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            gift.Inventory.CarHorns = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            gift.Inventory.VanityItems = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            gift.Inventory.Emotes = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
-            gift.Inventory.QuickChatLines = new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } };
+            gift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            gift.Inventory.CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            gift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            gift.Inventory.Emotes = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            gift.Inventory.QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, gift).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.UpdateGroupInventories(groupId, gift).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             result.Should().NotBeNull();
             result.StatusCode.Should().Be(200);
             result.Value.Should().NotBeNull();
@@ -967,11 +966,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var groupId = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, null).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.UpdateGroupInventories(groupId, null).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            var result = await Action().ConfigureAwait(false) as BadRequestObjectResult;
             result.StatusCode.Should().Be(400);
             (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
@@ -986,12 +985,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<SunriseGiftHistory>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<SunriseGiftHistory>>();
@@ -1006,12 +1005,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var groupId = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGiftHistoriesAsync(groupId).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGiftHistoriesAsync(groupId).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<SunriseGiftHistory>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<SunriseGiftHistory>>();
@@ -1026,12 +1025,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetPlayerNotifications(xuid).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetPlayerNotifications(xuid).ConfigureAwait(false);
 
             // Assert.
-            action().Should().BeAssignableTo<Task<IActionResult>>();
-            action().Should().NotBeNull();
-            var result = await action().ConfigureAwait(false) as OkObjectResult;
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
             var details = result.Value as IList<SunriseNotification>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<SunriseNotification>>();
@@ -1098,13 +1097,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 var httpContext = new DefaultHttpContext();
                 httpContext.Request.Path = TestConstants.TestRequestPath;
 
-                var claims = new List<Claim>() { new Claim(ClaimTypes.Email, "requesting-agent-email") };
-                var claimsIdentities = new List<ClaimsIdentity>() { new ClaimsIdentity(claims) };
+                var claims = new List<Claim> { new Claim(ClaimTypes.Email, "requesting-agent-email") };
+                var claimsIdentities = new List<ClaimsIdentity> { new ClaimsIdentity(claims) };
                 httpContext.User = new ClaimsPrincipal(claimsIdentities);
 
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
-                this.KustoProvider.GetMasterInventoryList(Arg.Any<string>()).Returns(new List<MasterInventoryItem>() { new MasterInventoryItem() { Id = 1, Quantity = 1 } });
+                this.KustoProvider.GetMasterInventoryList(Arg.Any<string>()).Returns(new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } });
                 this.SunrisePlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.SunrisePlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.SunrisePlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunrisePlayerDetails>());

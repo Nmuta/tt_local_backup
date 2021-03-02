@@ -205,7 +205,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task BanPlayers()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
 
             var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
 
@@ -219,7 +219,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task BanPlayers_GamertagOnly()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].Xuid = default;
 
             var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
@@ -234,7 +234,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task BanPlayers_InvalidXuid()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].Xuid = TestConstants.InvalidXuid;
             banParameters[0].Gamertag = null;
 
@@ -248,7 +248,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task BanPlayers_InvalidGamertag()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].Xuid = default;
             banParameters[0].Gamertag = TestConstants.InvalidGamertag;
 
@@ -267,7 +267,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task BanPlayers_Unauthorized()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
 
             try
             {
@@ -284,7 +284,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task BanPlayers_InvalidFeatureArea()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].FeatureArea = "invalidFeatureArea";
 
             try
@@ -303,7 +303,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task BanPlayers_UndefinedStartTimeUtc()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].StartTimeUtc = default;
 
             var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
@@ -318,7 +318,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task BanPlayers_NoXuidsOrGamertagsProvided()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].Xuid = default;
             banParameters[0].Gamertag = null;
 
@@ -337,7 +337,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task BanPlayers_BanAllConsolesUndefined()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].BanAllConsoles = null;
 
             try
@@ -355,7 +355,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task BanPlayers_DurationTimeNotProvided()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].Duration = null;
 
             try
@@ -373,7 +373,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task BanPlayers_DurationNegative()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].Duration= TimeSpan.FromMinutes(-10);
 
             try
@@ -391,7 +391,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task BanPlayers_DurationZero()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].Duration = TimeSpan.Zero;
 
             try
@@ -409,7 +409,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task BanPlayers_SendNotificationWithoutReason()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].SendReasonNotification = true;
             banParameters[0].Reason = string.Empty;
 
@@ -429,7 +429,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task BanPlayers_UseBackgroundProcessing()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
 
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
@@ -442,7 +442,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task BanPlayers_UseBackgroundProcessing_InvalidXuid()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].Xuid = TestConstants.InvalidXuid;
 
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Completed).ConfigureAwait(false);
@@ -455,7 +455,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task BanPlayers_UseBackgroundProcessing_InvalidGamertag()
         {
-            var banParameters = this.GenerateBanParameters();
+            var banParameters = GenerateBanParameters();
             banParameters[0].Xuid = default;
             banParameters[0].Gamertag = TestConstants.InvalidGamertag;
 
@@ -479,7 +479,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task GetBanSummaries_NoXuids()
         {
-            var result = await stewardClient.GetBanSummariesAsync(new List<ulong> { }).ConfigureAwait(false);
+            var result = await stewardClient.GetBanSummariesAsync(new List<ulong>()).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count);
@@ -993,7 +993,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task UpdatePlayerInventory_UseBackgroundProcessing()
         {
-            var groupGift = this.CreateGroupGift();
+            var groupGift = CreateGroupGift();
 
             var result = await UpdatePlayerInventoriesWithHeaderResponseAsync(stewardClient, groupGift, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
@@ -1006,7 +1006,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task UpdatePlayerInventories()
         {
-            var groupGift = this.CreateGroupGift();
+            var groupGift = CreateGroupGift();
 
             var result = await stewardClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
 
@@ -1018,7 +1018,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task UpdatePlayerInventories_InvalidGiftInventory()
         {
-            var groupGift = this.CreateGroupGift();
+            var groupGift = CreateGroupGift();
             groupGift.Inventory = null;
 
             try
@@ -1036,11 +1036,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task UpdatePlayerInventories_InvalidItemId()
         {
-            var playerGift = this.CreateGroupGift();
+            var playerGift = CreateGroupGift();
             playerGift.Inventory.VanityItems = new List<MasterInventoryItem>();
-            playerGift.Inventory.Cars = new List<MasterInventoryItem>()
+            playerGift.Inventory.Cars = new List<MasterInventoryItem>
             {
-                new MasterInventoryItem()
+                new MasterInventoryItem
                 {
                     Id = 10000,
                     Description = "Bad Item",
@@ -1064,7 +1064,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task UpdatePlayerInventories_NoRecipient()
         {
-            var groupGift = this.CreateGroupGift();
+            var groupGift = CreateGroupGift();
             groupGift.Xuids = new List<ulong>();
 
             try
@@ -1083,7 +1083,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task UpdatePlayerInventories_InvalidRecipient()
         {
-            var groupGift = this.CreateGroupGift();
+            var groupGift = CreateGroupGift();
             groupGift.Xuids = new List<ulong> { TestConstants.InvalidXuid };
 
             try
@@ -1101,7 +1101,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task UpdatePlayerInventories_Unauthorized()
         {
-            var groupGift = this.CreateGroupGift();
+            var groupGift = CreateGroupGift();
             groupGift.Xuids = new List<ulong> { TestConstants.InvalidXuid };
 
             try
@@ -1120,7 +1120,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task UpdateGroupInventoriesByLspGroupId()
         {
-            var gift = this.CreateGift();
+            var gift = CreateGift();
 
             var result = await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, gift).ConfigureAwait(false);
 
@@ -1132,7 +1132,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task UpdateGroupInventoriesByLspGroupId_InvalidGiftInventory()
         {
-            var gift = this.CreateGift();
+            var gift = CreateGift();
             gift.Inventory = null;
 
             try
@@ -1151,7 +1151,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [TestCategory("Integration")]
         public async Task UpdateGroupInventoriesByLspGroupId_Unauthorized()
         {
-            var gift = this.CreateGift();
+            var gift = CreateGift();
 
             try
             {
@@ -1169,7 +1169,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task UpdateGroupInventoriesByLspGroupId_InvalidGroupId()
         {
-            var gift = this.CreateGift();
+            var gift = CreateGift();
             var result = await stewardClient.UpdateGroupInventoriesByLspGroupId(TestConstants.InvalidProfileId, gift).ConfigureAwait(false);
 
             Assert.IsNotNull(result.Error);
@@ -1180,7 +1180,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task GetGiftHistory()
         {
-            var groupGift = this.CreateGroupGift();
+            var groupGift = CreateGroupGift();
             await stewardClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
 
             var result = await stewardClient.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
@@ -1192,7 +1192,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task GetGiftHistoryForGroupGift()
         {
-            var groupGift = this.CreateGroupGift();
+            var groupGift = CreateGroupGift();
             await stewardClient.UpdatePlayerInventoriesAsync(groupGift).ConfigureAwait(false);
 
             var result = await stewardClient.GetGiftHistoriesAsync(xuid).ConfigureAwait(false);
@@ -1205,7 +1205,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         [Ignore]
         public async Task GetGiftHistoryForLspGroupGift()
         {
-            var gift = this.CreateGift();
+            var gift = CreateGift();
             await stewardClient.UpdateGroupInventoriesByLspGroupId(lspGroupId, gift).ConfigureAwait(false);
 
             var result = await stewardClient.GetGiftHistoriesAsync(lspGroupId).ConfigureAwait(false);
@@ -1238,11 +1238,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             Assert.IsFalse(result.Any());
         }
 
-        private async Task<IList<ApolloBanResult>> BanPlayersWithHeaderResponseAsync(ApolloStewardTestingClient stewardClient, IList<ApolloBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
+        private async Task<IList<ApolloBanResult>> BanPlayersWithHeaderResponseAsync(ApolloStewardTestingClient apolloStewardTestingClient, IList<ApolloBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
-            var response = await stewardClient.BanPlayersWithHeaderResponseAsync(banParameters, headersToValidate).ConfigureAwait(false);
+            var response = await apolloStewardTestingClient.BanPlayersWithHeaderResponseAsync(banParameters, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -1253,9 +1253,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
             do
             {
-                var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"]).ConfigureAwait(false);
+                var backgroundJob = await apolloStewardTestingClient.GetJobStatusAsync(response.Headers["jobId"]).ConfigureAwait(false);
 
-                Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out status);
+                Enum.TryParse(backgroundJob.Status, out status);
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
@@ -1273,11 +1273,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return jobResults;
         }
 
-        private async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesWithHeaderResponseAsync(ApolloStewardTestingClient stewardClient, ApolloGroupGift groupGift, BackgroundJobStatus expectedStatus)
+        private async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesWithHeaderResponseAsync(ApolloStewardTestingClient apolloStewardTestingClient, ApolloGroupGift groupGift, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
-            var response = await stewardClient.UpdatePlayerInventoriesWithHeaderResponseAsync(groupGift, headersToValidate).ConfigureAwait(false);
+            var response = await apolloStewardTestingClient.UpdatePlayerInventoriesWithHeaderResponseAsync(groupGift, headersToValidate).ConfigureAwait(false);
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -1288,10 +1288,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
             do
             {
-                var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"])
+                var backgroundJob = await apolloStewardTestingClient.GetJobStatusAsync(response.Headers["jobId"])
                     .ConfigureAwait(false);
 
-                Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out status);
+                Enum.TryParse(backgroundJob.Status, out status);
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
@@ -1309,7 +1309,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return jobResult;
         }
 
-        private List<ApolloBanParametersInput> GenerateBanParameters()
+        private static List<ApolloBanParametersInput> GenerateBanParameters()
         {
             var newParams = new ApolloBanParametersInput
             {
@@ -1328,75 +1328,35 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return new List<ApolloBanParametersInput> { newParams };
         }
 
-        private ApolloMasterInventory CreateGiftInventory()
+        private static ApolloMasterInventory CreateGiftInventory()
         {
-            var giftInventory = new ApolloMasterInventory();
-
-            giftInventory.CreditRewards = new List<MasterInventoryItem>()
+            var giftInventory = new ApolloMasterInventory
             {
-                new MasterInventoryItem() { Id = -1, Description = "Credits", Quantity = 1 },
-            };
-
-
-            giftInventory.Cars = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem()
+                CreditRewards =
+                    new List<MasterInventoryItem>
+                    {
+                        new MasterInventoryItem {Id = -1, Description = "Credits", Quantity = 1},
+                    },
+                Cars = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 2616, Quantity = 1}},
+                VanityItems = new List<MasterInventoryItem>
                 {
-                    Id = 2616,
-                    Quantity = 1
-                }
-            };
-
-            giftInventory.VanityItems = new List<MasterInventoryItem>()
-            {
-                new MasterInventoryItem()
-                {
-                    Id = 455548411,
-                    Quantity = 1
+                    new MasterInventoryItem {Id = 455548411, Quantity = 1}
                 }
             };
 
             return giftInventory;
         }
 
-        private ApolloPlayerInventory CreatePlayerInventory()
-        {
-            return new ApolloPlayerInventory
-            {
-                Xuid = xuid,
-                Credits = 1,
-                Cars = new[]
-                {
-                    new ApolloCar
-                    {
-                        ItemId = 1551,
-                        Description = "1989 #18 Aston Martin AMR1",
-                        Quantity = 1
-                    }
-                },
-                VanityItems = new[]
-                {
-                    new ApolloInventoryItem
-                    {
-                        ItemId = 1762461437,
-                        Description = "Snowman",
-                        Quantity = 1
-                    }
-                },
-                GiftReason = "Integration Test Run"
-            };
-        }
-
-        private ApolloGift CreateGift()
+        private static ApolloGift CreateGift()
         {
             return new ApolloGift
             {
                 GiftReason = "Integration Test",
-                Inventory = this.CreateGiftInventory()
+                Inventory = CreateGiftInventory()
             };
         }
 
-        private ApolloGroupGift CreateGroupGift()
+        private static ApolloGroupGift CreateGroupGift()
         {
             return new ApolloGroupGift
             {
@@ -1407,11 +1367,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
                     xuid
                 },
                 GiftReason = "Integration Test",
-                Inventory = this.CreateGiftInventory()
+                Inventory = CreateGiftInventory()
             };
         }
 
-        private ApolloUserFlagsInput CreateUserFlags()
+        private static ApolloUserFlagsInput CreateUserFlags()
         {
             return new ApolloUserFlagsInput
             {
