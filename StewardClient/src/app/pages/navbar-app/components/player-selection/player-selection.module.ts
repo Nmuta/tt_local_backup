@@ -11,6 +11,7 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlayerSelectionBulkComponent } from './bulk/player-selection-bulk.component';
 import { MatButtonModule } from '@angular/material/button';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 /** Feature module for selecting a single player. */
 @NgModule({
@@ -26,6 +27,7 @@ import { MatButtonModule } from '@angular/material/button';
     ErrorSpinnerModule,
     MatTooltipModule,
     MatButtonModule,
+    FontAwesomeModule,
   ],
   exports: [PlayerSelectionSingleComponent, PlayerSelectionBulkComponent],
 })

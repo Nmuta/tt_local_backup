@@ -20,6 +20,7 @@ import { GravityService } from '@services/gravity';
 import { ApolloService } from '@services/apollo';
 import { OpusService } from '@services/opus';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 export interface AugmentedCompositeIdentity {
   query: IdentityQueryBeta & IdentityQueryAlpha;
@@ -31,6 +32,8 @@ export interface AugmentedCompositeIdentity {
   extra?: {
     lookupType: keyof IdentityQueryBetaIntersection;
     theme: 'warn' | 'primary' | 'accent';
+    isAcceptable: boolean;
+    rejectionReason: string;
     isValid: boolean;
     isInvalid: boolean;
     hasSunrise: boolean;
@@ -57,6 +60,12 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   @Input() public allowSelection: boolean = false;
   /** When set to true, displays in a single line suitable for a navbar. */
   @Input() public displayInSingleLine: boolean = false;
+
+  /**
+   * When set, used to determine if a given identity is acceptable.
+   * @returns The error message to display.
+   */
+  @Input() public rejectionFn: (identity: AugmentedCompositeIdentity) => string | null;
 
   /** The chosen type of lookup (two way bindings). */
   @Output() public lookupTypeChange = new EventEmitter<keyof IdentityQueryBetaIntersection>();
@@ -87,6 +96,8 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
 
   /** Separators that trigger a lookup. */
   public readonly separatorKeysCodes: number[] = [ENTER, COMMA, SEMICOLON];
+
+  public readonly unacceptableIcon = faExclamationCircle;
 
   // this has to be its own value because we don't have the actual thing until ngAfterViewInit, and lookupList is called before that
   private lookupTypeGroupChange = new Subject<void>();
@@ -327,6 +338,8 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             hasGravity: compositeIdentity.gravity ? !compositeIdentity.gravity?.error : false,
             label: '',
             labelTooltip: '',
+            isAcceptable: undefined,
+            rejectionReason: undefined,
           };
 
           compositeIdentity.extra.label = [
@@ -347,6 +360,9 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             .filter(v => !!v)
             .join(', ');
 
+          const rejectionReason = this.rejectionFn ? this.rejectionFn(compositeIdentity) : null;
+          compositeIdentity.extra.isAcceptable = !rejectionReason;
+          compositeIdentity.extra.rejectionReason = rejectionReason;
           this.onFound();
         }
       });

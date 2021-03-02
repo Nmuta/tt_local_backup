@@ -25,8 +25,8 @@
       [selectable]="allowSelection"
       [removable]="true"
       [value]="identity"
-      [class.identity-valid]="identity.extra?.isValid"
-      [class.identity-invalid]="identity.extra?.isInvalid"
+      [class.identity-valid]="identity.extra?.isValid && identity.extra?.isAcceptable"
+      [class.identity-invalid]="identity.extra?.isInvalid || !identity.extra?.isAcceptable"
       [color]="identity.extra?.theme"
       (removed)="remove(identity)"
     >
@@ -36,6 +36,13 @@
         [ngTemplateOutlet]="templateRef"
         [ngTemplateOutletContext]="{ $implicit: identity, identity: identity }"
       ></ng-template>
+
+      <fa-icon
+        *ngIf="!identity.extra?.isAcceptable"
+        [icon]="unacceptableIcon"
+        [matTooltip]="identity.extra?.rejectionReason"
+        class="unacceptable-icon"
+      ></fa-icon>
 
       <error-spinner
         [isActive]="!identity.extra"
