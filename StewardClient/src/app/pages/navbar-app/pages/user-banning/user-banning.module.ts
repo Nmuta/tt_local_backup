@@ -24,6 +24,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BanChipIconModule } from './components/ban-chip-icon/ban-chip-icon.module';
 import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
 import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
+import { BanResultsModule } from './components/ban-results/ban-results.module';
+import { PipesModule } from '@shared/pipes/pipes.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -52,10 +57,15 @@ import { PlayerSelectionModule } from '@navbar-app/components/player-selection/p
     VerifyActionButtonModule,
     MatCheckboxModule,
     MatDatepickerModule,
+    MatProgressSpinnerModule,
     FontAwesomeModule,
     MatChipsModule,
     BanChipIconModule,
     BanHistoryModule,
+    BanResultsModule,
+    PipesModule,
+    JsonDumpModule,
+    DirectivesModule,
   ],
 })
 export class UserBanningModule {}

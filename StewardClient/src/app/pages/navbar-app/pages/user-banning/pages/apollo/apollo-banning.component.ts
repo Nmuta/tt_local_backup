@@ -3,18 +3,21 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApolloBanArea, ApolloBanRequest, ApolloBanSummary } from '@models/apollo';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { BackgroundJob } from '@models/background-job';
 import { ApolloService } from '@services/apollo';
+import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { Dictionary, filter, keyBy } from 'lodash';
-import { Observable, Subject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { NEVER, Observable, Subject } from 'rxjs';
+import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
+import { UserBanningBaseComponent } from '../base/user-banning.base.component';
 
 /** Routed Component; Apollo Banning Tool. */
 @Component({
   templateUrl: './apollo-banning.component.html',
   styleUrls: ['./apollo-banning.component.scss'],
 })
-export class ApolloBanningComponent {
+export class ApolloBanningComponent extends UserBanningBaseComponent {
   public formControls = {
     banOptions: new FormControl('', [Validators.required]),
   };
@@ -31,7 +34,12 @@ export class ApolloBanningComponent {
   public bannedXuids: bigint[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
 
-  constructor(private readonly apollo: ApolloService) {
+  constructor(
+    protected readonly backgroundJobService: BackgroundJobService,
+    protected readonly apollo: ApolloService,
+  ) {
+    super(backgroundJobService);
+
     const summaries = new Subject<ApolloBanSummary[]>();
     this.playerIdentities$
       .pipe(
@@ -59,6 +67,7 @@ export class ApolloBanningComponent {
 
   /** Submit the form. */
   public submitInternal(): Observable<unknown> {
+    this.isLoading = true;
     const identities = this.playerIdentities;
     const banOptions = this.formControls.banOptions.value as BanOptions;
     const bans: ApolloBanRequest[] = identities.map(identity => {
@@ -74,7 +83,18 @@ export class ApolloBanningComponent {
       };
     });
 
-    return this.apollo.postBanPlayers(bans);
+    return this.apollo.postBanPlayersWithBackgroundProcessing(bans).pipe(
+      takeUntil(this.onDestroy$),
+      catchError(error => {
+        this.loadError = error;
+        this.isLoading = false;
+        return NEVER;
+      }),
+      take(1),
+      tap((backgroundJob: BackgroundJob<void>) => {
+        this.waitForBackgroundJobToComplete(backgroundJob);
+      }),
+    );
   }
 
   /** Logic when player selection outputs identities. */
