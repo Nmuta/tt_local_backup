@@ -43,6 +43,8 @@ import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-l
 import { AvailableAppsModule } from '@shared/views/available-apps/available-apps.module';
 import { StoreForeverStrategy } from '@helpers/route-reuse-strategy/store-forever-strategy';
 import { RouteReuseStrategy } from '@angular/router';
+import { PlayerLookupResultsComponent } from './shared/views/player-lookup-results/player-lookup-results.component';
+import { CopyToClipboardComponent } from './shared/components/copy-to-clipboard/copy-to-clipboard.component';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -66,7 +68,7 @@ function fakeApiOrNothing(): Provider[] {
 
 /** Defines the app module. */
 @NgModule({
-  declarations: [AppComponent, ErrorComponent],
+  declarations: [AppComponent, ErrorComponent, PlayerLookupResultsComponent, CopyToClipboardComponent],
   imports: [
     BrowserAnimationsModule,
     AppRoutingModule,
