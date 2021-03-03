@@ -1,0 +1,46 @@
+@font-face {
+  font-family: 'turn10-icons';
+  src:  url('fonts/turn10-icons.eot?p76da0');
+  src:  url('fonts/turn10-icons.eot?p76da0#iefix') format('embedded-opentype'),
+    url('fonts/turn10-icons.ttf?p76da0') format('truetype'),
+    url('fonts/turn10-icons.woff?p76da0') format('woff'),
+    url('fonts/turn10-icons.svg?p76da0#turn10-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.icon {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'turn10-icons' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.t10-error:before {
+  content: "\e900";
+}
+.t10-gtag:before {
+  content: "\e901";
+}
+.t10-logo-black:before {
+  content: "\e902";
+}
+.t10-logo-white:before {
+  content: "\e903";
+  color: #fff;
+}
+.t10-t10id:before {
+  content: "\e904";
+}
+.t10-xuid:before {
+  content: "\e905";
+}
