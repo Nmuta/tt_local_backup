@@ -12,7 +12,7 @@
 
   <mat-form-field class="ban-reason" appearance="fill">
     <mat-label>Ban Reason</mat-label>
-    <textarea matInput placeholder="ʕ•́ᴥ•̀ʔっ" [formControl]="formControls.banReason"></textarea>
+    <textarea matInput [formControl]="formControls.banReason"></textarea>
     <mat-hint>This reason will be shown to the player.</mat-hint>
     <mat-error *ngIf="formControls.banReason.hasError('required')"> Missing ban reason </mat-error>
   </mat-form-field>
