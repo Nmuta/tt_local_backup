@@ -54,6 +54,7 @@
                   <mat-form-field>
                     <mat-label>New Quantity</mat-label>
                     <input
+                      (keyup.enter)="editItemQuantity(i)"
                       [id]="'new-item-quantity-' + i"
                       type="number"
                       matInput

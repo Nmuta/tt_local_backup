@@ -2,7 +2,6 @@
   "recommendations": [
     "bpruitt-goddard.mermaid-markdown-syntax-highlighting",
     "esbenp.prettier-vscode",
-    "ms-vscode.vscode-typescript-tslint-plugin",
     "eamodio.gitlens",
     "ms-vscode.vscode-node-azure-pack",
     "hbenl.vscode-test-explorer",

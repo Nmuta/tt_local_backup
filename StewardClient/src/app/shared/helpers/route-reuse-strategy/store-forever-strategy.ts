@@ -19,12 +19,12 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
   /** Route Reuse hook. */
   public store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
     // console.log('[RouteReuse] store', route, handle);
-    this.handles[route.routeConfig.path] = handle;
+    this.handles[this.makeKey(route)] = handle;
   }
 
   /** Route Reuse hook. */
   public shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    const shouldAttach = !!route.routeConfig && !!this.handles[route.routeConfig.path];
+    const shouldAttach = !!route.routeConfig && !!this.handles[this.makeKey(route)];
     // console.log('[RouteReuse] shouldAttach', route, shouldAttach);
     return shouldAttach;
   }
@@ -32,7 +32,7 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
   /** Route Reuse hook. */
   public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
     const shouldRetrieve = !!route.routeConfig;
-    const handle = this.handles[route.routeConfig.path];
+    const handle = this.handles[this.makeKey(route)];
 
     // console.log('[RouteReuse] retrieve', route, shouldRetrieve, handle);
 
@@ -47,5 +47,9 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
     const shouldReuseRoute = future.routeConfig === curr.routeConfig;
     // console.log('[RouteReuse] shouldReuseRoute', shouldReuseRoute, future, curr);
     return shouldReuseRoute;
+  }
+
+  private makeKey(route: ActivatedRouteSnapshot): string {
+    return route.pathFromRoot.map(r => r.url).join('/');
   }
 }

@@ -20,6 +20,7 @@ import { ApolloPlayerXuidInventoryFakeApi } from './apis/title/apollo/player/xui
 import { ApolloPlayerXuidInventoryProfilesFakeApi } from './apis/title/apollo/player/xuid/inventoryProfiles';
 import { ApolloPlayerXuidGiftHistoryFakeApi } from './apis/title/apollo/player/xuid/giftHistory';
 import { ApolloPlayersBanFakeApi } from './apis/title/apollo/players/ban';
+import { ApolloPlayersBanWithBackgroundProcessingFakeApi } from './apis/title/apollo/players/ban_backgroundProcessing';
 import { ApolloGroupGamertagsInventoryFakeApi } from './apis/title/apollo/group/gamertags/inventory';
 import { ApolloGroupGroupIdInventoryFakeApi } from './apis/title/apollo/group/groupId/inventory';
 import { ApolloGroupXuidsInventoryFakeApi } from './apis/title/apollo/group/xuids/inventory';
@@ -48,6 +49,7 @@ import { SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/
 import { SunrisePlayerXuidUserFlagsFakeApi } from './apis/title/sunrise/player/xuid/userFlags';
 import { SunrisePlayerXuidGiftHistoryFakeApi } from './apis/title/sunrise/player/xuid/giftHistory';
 import { SunrisePlayersBanFakeApi } from './apis/title/sunrise/players/ban';
+import { SunrisePlayersBanWithBackgroundProcessingFakeApi } from './apis/title/sunrise/players/ban_backgroundProcessing';
 import { SunrisePlayerXuidInventoryFakeApi } from './apis/title/sunrise/player/xuid/inventory';
 import { SunrisePlayerXuidInventoryProfilesFakeApi } from './apis/title/sunrise/player/xuid/inventoryProfiles';
 import { SunrisePlayerProfileIdInventoryFakeApi } from './apis/title/sunrise/player/profileId/inventory';
@@ -76,6 +78,7 @@ import { ApolloGiftingLspGroupFakeApi } from './apis/title/apollo/gifting/groupI
 import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
 import { SunriseGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/sunrise/gifting/players_returnsbackgroundjob';
 import { ApolloGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/apollo/gifting/players_returnsbackgroundjob';
+import { ApolloPlayerXuidBanHistoryFakeApi } from './apis/title/apollo/player/xuid/banHistory';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -107,6 +110,7 @@ const fakeApiConstructors = [
   SunrisePlayerXuidInventoryFakeApi,
   SunrisePlayerXuidInventoryProfilesFakeApi,
   SunrisePlayerProfileIdInventoryFakeApi,
+  SunrisePlayersBanWithBackgroundProcessingFakeApi,
   SunrisePlayersBanFakeApi,
   SunrisePlayersBanSummariesFakeApi,
   SunrisePlayersIdentitiesFakeApi,
@@ -127,8 +131,10 @@ const fakeApiConstructors = [
   ApolloPlayerXuidInventoryProfilesFakeApi,
   ApolloPlayerXuidInventoryFakeApi,
   ApolloPlayerXuidGiftHistoryFakeApi,
+  ApolloPlayersBanWithBackgroundProcessingFakeApi,
   ApolloPlayersBanFakeApi,
   ApolloPlayersBanSummariesFakeApi,
+  ApolloPlayerXuidBanHistoryFakeApi,
   ApolloPlayersIdentitiesFakeApi,
   ApolloGroupGamertagsInventoryFakeApi,
   ApolloGroupGroupIdInventoryFakeApi,

@@ -49,7 +49,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   /** Master Inventory autocomplete varsiables */
   public itemSelectionForm: FormGroup = this.formBuilder.group({
     itemInput: new FormControl('', Validators.required),
-    quantity: new FormControl(undefined, [
+    quantity: new FormControl(1, [
       Validators.required,
       Validators.min(1),
       Validators.pattern('^(0|[1-9][0-9]*)$'),

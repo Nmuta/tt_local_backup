@@ -126,5 +126,6 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   /** Handles the identity-found */
   public found(compositeIdentity: AugmentedCompositeIdentity): void {
     this.identity = compositeIdentity;
+    this.lookupChange(false);
   }
 }

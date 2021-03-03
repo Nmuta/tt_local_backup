@@ -58,7 +58,6 @@ export class UserState {
     this.logger.log([LogTopic.AuthInterception], `[user.state] logoutUser`);
     return ctx.dispatch([
       new ResetUserProfile(),
-      new ResetAccessToken(),
       new Navigate([`/auth/logout`], { from: action.returnRoute }),
     ]);
   }

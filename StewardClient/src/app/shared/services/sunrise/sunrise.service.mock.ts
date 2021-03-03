@@ -7,6 +7,7 @@ import { SunrisePlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/t
 import { SunrisePlayerXuidInventoryProfilesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/inventoryProfiles';
 import { SunrisePlayersBanFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/ban';
 import { SunrisePlayersBanSummariesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/ban-summaries';
+import { SunrisePlayersBanWithBackgroundProcessingFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/ban_backgroundProcessing';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { IdentityQueryAlpha, IdentityQueryAlphaBatch } from '@models/identity-query.model';
 import { SunriseBanHistory } from '@models/sunrise';
@@ -65,6 +66,13 @@ export class MockSunriseService {
   public postBanPlayers = jasmine
     .createSpy('postBanPlayers')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(SunrisePlayersBanFakeApi.make()))));
+  public postBanPlayersWithBackgroundProcessing = jasmine
+    .createSpy('postBanPlayersWithBackgroundProcessing')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(
+        switchMap(() => of(SunrisePlayersBanWithBackgroundProcessingFakeApi.make())),
+      ),
+    );
   public getBanSummariesByXuids = jasmine
     .createSpy('getBanSummariesByXuids')
     .and.callFake((xuids: BigInt[]) =>

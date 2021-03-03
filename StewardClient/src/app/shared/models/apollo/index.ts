@@ -8,3 +8,4 @@ export * from './apollo-group-gift.model';
 export * from './apollo-ban-request.model';
 export * from './apollo-ban-result.model';
 export * from './apollo-ban-summary.model';
+export * from './apollo-ban-history.model';

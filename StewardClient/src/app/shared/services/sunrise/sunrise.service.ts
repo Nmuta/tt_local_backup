@@ -126,6 +126,16 @@ export class SunriseService {
     return this.apiService.postRequest<SunriseBanResult[]>(`${this.basePath}/players/ban`, bans);
   }
 
+  /** Bans players by a list of XUIDs using background processing. */
+  public postBanPlayersWithBackgroundProcessing(
+    bans: SunriseBanRequest[],
+  ): Observable<BackgroundJob<void>> {
+    return this.apiService.postRequest<BackgroundJob<void>>(
+      `${this.basePath}/players/ban/useBackgroundProcessing`,
+      bans,
+    );
+  }
+
   /** Gets Gift history by a XUID. */
   public getGiftHistoryByXuid(xuid: BigInt): Observable<SunriseGiftHistory[]> {
     return this.apiService.getRequest<SunriseGiftHistory[]>(

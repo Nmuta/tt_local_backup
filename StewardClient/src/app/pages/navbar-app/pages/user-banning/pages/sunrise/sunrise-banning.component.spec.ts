@@ -6,6 +6,7 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { keys } from 'lodash';
 import { defer, of } from 'rxjs';
+import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 
 import { SunriseBanningComponent } from './sunrise-banning.component';
 
@@ -17,7 +18,7 @@ describe('SunriseBanningComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseBanningComponent],
-      providers: [createMockSunriseService()],
+      providers: [createMockSunriseService(), createMockBackgroundJobService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
@@ -52,7 +53,8 @@ describe('SunriseBanningComponent', () => {
     const fakeIdentities = testXuids.map(
       xuid => <IdentityResultAlpha>{ gamertag: faker.name.firstName(), xuid: xuid },
     );
-    component.formControls.playerIdentities.setValue(fakeIdentities, { emitEvent: true });
+    component.playerIdentities = fakeIdentities;
+    component.playerIdentities$.next(fakeIdentities);
     fixture.detectChanges();
 
     expect(sunrise.getBanSummariesByXuids).toHaveBeenCalledTimes(1);

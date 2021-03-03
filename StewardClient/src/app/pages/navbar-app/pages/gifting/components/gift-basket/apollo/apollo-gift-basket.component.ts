@@ -4,7 +4,7 @@ import { ApolloGift, ApolloGroupGift, ApolloMasterInventory } from '@models/apol
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
-import { IdentityResultBeta } from '@models/identity-query.model';
+import { IdentityResultAlpha } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { ApolloGiftingState } from '@navbar-app/pages/gifting/apollo/state/apollo-gifting.state';
 import { SetApolloGiftBasket } from '@navbar-app/pages/gifting/apollo/state/apollo-gifting.state.actions';
@@ -31,7 +31,7 @@ import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.co
   ],
 })
 export class ApolloGiftBasketComponent
-  extends GiftBasketBaseComponent<IdentityResultBeta, ApolloMasterInventory>
+  extends GiftBasketBaseComponent<IdentityResultAlpha, ApolloMasterInventory>
   implements OnInit {
   @Select(ApolloGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
   public title = GameTitleCodeName.FM7;

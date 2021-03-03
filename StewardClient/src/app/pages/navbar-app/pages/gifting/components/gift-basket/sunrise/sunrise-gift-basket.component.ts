@@ -3,7 +3,7 @@ import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BackgroundJob } from '@models/background-job';
 import { GameTitleCodeName } from '@models/enums';
 import { GiftResponse } from '@models/gift-response';
-import { IdentityResultBeta } from '@models/identity-query.model';
+import { IdentityResultAlpha } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { SunriseGift, SunriseGroupGift, SunriseMasterInventory } from '@models/sunrise';
 import { SunriseGiftingState } from '@navbar-app/pages/gifting/sunrise/state/sunrise-gifting.state';
@@ -31,7 +31,7 @@ import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.co
   ],
 })
 export class SunriseGiftBasketComponent
-  extends GiftBasketBaseComponent<IdentityResultBeta, SunriseMasterInventory>
+  extends GiftBasketBaseComponent<IdentityResultAlpha, SunriseMasterInventory>
   implements OnInit {
   @Select(SunriseGiftingState.giftBasket) giftBasket$: Observable<GiftBasketModel[]>;
   public title = GameTitleCodeName.FH4;

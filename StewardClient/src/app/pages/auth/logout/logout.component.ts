@@ -5,6 +5,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { WindowService } from '@services/window';
 import { WindowOpen } from '@services/window/window.actions';
+import { ResetUserProfile } from '@shared/state/user/user.actions';
 
 /** Handles the logout auth action. */
 @Component({
@@ -27,6 +28,7 @@ export class LogoutComponent implements OnInit {
   public logout(): void {
     if (!this.windowService.isInIframe) {
       this.msalService.logout();
+      this.store.dispatch(new ResetUserProfile());
     } else {
       this.store.dispatch([
         new WindowOpen(`${environment.stewardUiUrl}/auth/logout`, '_blank'),

@@ -8,6 +8,7 @@ import faker from 'faker';
 import { keys } from 'lodash';
 import { of } from 'rxjs';
 import { defer } from 'rxjs';
+import { createMockBackgroundJobService } from '@services/background-job/background-job.service.mock';
 
 import { ApolloBanningComponent } from './apollo-banning.component';
 
@@ -19,7 +20,7 @@ describe('ApolloBanningComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloBanningComponent],
-      providers: [createMockApolloService()],
+      providers: [createMockApolloService(), createMockBackgroundJobService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
@@ -54,7 +55,8 @@ describe('ApolloBanningComponent', () => {
     const fakeIdentities = testXuids.map(
       xuid => <IdentityResultAlpha>{ gamertag: faker.name.firstName(), xuid: xuid },
     );
-    component.formControls.playerIdentities.setValue(fakeIdentities, { emitEvent: true });
+    component.playerIdentities = fakeIdentities;
+    component.playerIdentities$.next(fakeIdentities);
     fixture.detectChanges();
 
     expect(apollo.getBanSummariesByXuids).toHaveBeenCalledTimes(1);

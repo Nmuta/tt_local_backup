@@ -1,53 +1,81 @@
 <div class="default-page-layout">
   <div class="default-page-layout-left">
-    <sunrise-player-selection
-      #playerSelection
-      [allowT10Id]="false"
-      [allowGroup]="true"
-      [formControl]="formControls.playerIdentities"
-    >
-      <player-selection-chip-list
-        [playerSelection]="playerSelection"
-        [identities]="playerSelection.playerIdentitiesFull"
-        (selectionChange)="selectPlayer($event)"
+    <mat-card>
+      <player-selection-bulk
+        [allowSelection]="true"
+        (found)="onPlayerIdentitiesChange($event)"
+        (selected)="playerIdentitySelected($event)"
       >
         <ng-template let-identity>
-          <player-selection-chip [playerSelection]="playerSelection" [identity]="identity">
-            <ban-chip-icon
-              [identity]="identity"
-              [banSummary]="summaryLookup[identity.xuid]"
-            ></ban-chip-icon>
-          </player-selection-chip>
+          <ban-chip-icon
+            *ngIf="identity?.extra?.hasSunrise"
+            [identity]="identity.sunrise"
+            [banSummary]="summaryLookup[identity.sunrise.xuid]"
+          ></ban-chip-icon>
         </ng-template>
-      </player-selection-chip-list>
-    </sunrise-player-selection>
-    <div class="bottom">
-      <ng-container *ngFor="let xuid of bannedXuids">
-        <sunrise-ban-history
-          [xuid]="xuid"
-          [hidden]="xuid !== selectedPlayer?.xuid"
-        ></sunrise-ban-history>
-      </ng-container>
-    </div>
+      </player-selection-bulk>
+      <div class="bottom">
+        <ng-container *ngFor="let xuid of bannedXuids">
+          <sunrise-ban-history
+            [xuid]="xuid"
+            [hidden]="xuid !== selectedPlayer?.xuid"
+          ></sunrise-ban-history>
+        </ng-container>
+      </div>
+    </mat-card>
   </div>
 
   <div class="default-page-layout-right">
     <mat-card>
       <mat-card-content>
-        <form [formGroup]="formGroup">
-          <ban-options [formControl]="formControls.banOptions"></ban-options>
-          <verify-action-button
-            #submitButton
-            [action]="submit"
-            [alwaysShow]="true"
-            [canSubmit]="formGroup.valid"
-            [canSubmitDisabledReason]="'Form is invalid'"
-            checkboxText="Check to verify ban"
-          >
-            Submit ban
-          </verify-action-button>
-        </form>
+        <ng-container *ngIf="!isLoading && !loadError; else failState">
+          <ng-container *ngIf="!banResults; else banResultsState">
+            <form [formGroup]="formGroup">
+              <ban-options [formControl]="formControls.banOptions"></ban-options>
+              <verify-action-button
+                #submitButton
+                [action]="submit"
+                [alwaysShow]="true"
+                [canSubmit]="canBan()"
+                [canSubmitDisabledReason]="'Form is invalid'"
+                checkboxText="Check to verify ban"
+              >
+                Submit ban
+              </verify-action-button>
+            </form>
+          </ng-container>
+        </ng-container>
       </mat-card-content>
     </mat-card>
   </div>
 </div>
+
+<ng-template #failState>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="loadError" [input]="loadError">Failure occured.</json-dump>
+  <button
+    *ngIf="loadError"
+    class="reset-state"
+    mat-raised-button
+    color="accent"
+    matTooltip="Reset the failed tool."
+    (click)="resetBanningToolUI()"
+    clickStop
+  >
+    Reset Tool
+  </button>
+</ng-template>
+
+<ng-template #banResultsState>
+  <ban-results [banResults]="banResults"></ban-results>
+  <button
+    class="reset-state"
+    mat-raised-button
+    color="accent"
+    matTooltip="Send another ban."
+    (click)="resetBanningToolUI()"
+    clickStop
+  >
+    Send another ban
+  </button>
+</ng-template>

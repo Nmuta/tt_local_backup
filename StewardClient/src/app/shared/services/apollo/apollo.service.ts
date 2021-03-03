@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  ApolloBanHistoryEntry,
   ApolloBanRequest,
   ApolloBanResult,
   ApolloBanSummary,
@@ -55,16 +56,33 @@ export class ApolloService {
   }
 
   /** Gets ban summaries by a list of XUIDs. */
-  public getBanSummariesByXuids(xuids: BigInt[]): Observable<ApolloBanSummary[]> {
+  public getBanSummariesByXuids(xuids: bigint[]): Observable<ApolloBanSummary[]> {
     return this.apiService.postRequest<ApolloBanSummary[]>(
       `${this.basePath}/players/banSummaries`,
       xuids,
     );
   }
 
+  /** Gets ban history by a XUID. */
+  public getBanHistoryByXuid(xuid: bigint): Observable<ApolloBanHistoryEntry[]> {
+    return this.apiService.getRequest<ApolloBanHistoryEntry[]>(
+      `${this.basePath}/player/xuid(${xuid})/banHistory`,
+    );
+  }
+
   /** Bans players by a list of XUIDs. */
   public postBanPlayers(bans: ApolloBanRequest[]): Observable<ApolloBanResult[]> {
     return this.apiService.postRequest<ApolloBanResult[]>(`${this.basePath}/players/ban`, bans);
+  }
+
+  /** Bans players by a list of XUIDs using background processing. */
+  public postBanPlayersWithBackgroundProcessing(
+    bans: ApolloBanRequest[],
+  ): Observable<BackgroundJob<void>> {
+    return this.apiService.postRequest<BackgroundJob<void>>(
+      `${this.basePath}/players/ban/useBackgroundProcessing`,
+      bans,
+    );
   }
 
   /** Gets apollo player details with a gamertag. This can be used to retrieve a XUID. */
@@ -75,14 +93,14 @@ export class ApolloService {
   }
 
   /** Gets Gift history by a XUID. */
-  public getGiftHistoryByXuid(xuid: BigInt): Observable<ApolloGiftHistory[]> {
+  public getGiftHistoryByXuid(xuid: bigint): Observable<ApolloGiftHistory[]> {
     return this.apiService.getRequest<ApolloGiftHistory[]>(
       `${this.basePath}/player/xuid(${xuid})/giftHistory`,
     );
   }
 
   /** Gets Gift history by a LSP Group. */
-  public getGiftHistoryByLspGroup(lspGroupId: BigInt): Observable<ApolloGiftHistory[]> {
+  public getGiftHistoryByLspGroup(lspGroupId: bigint): Observable<ApolloGiftHistory[]> {
     return this.apiService.getRequest<ApolloGiftHistory[]>(
       `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
     );

@@ -8,10 +8,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
+import { ApolloBanHistoryComponent } from './titles/apollo/apollo-ban-history.component';
 
 /** A domain module for displaying player ban histories. */
 @NgModule({
-  declarations: [SunriseBanHistoryComponent],
+  declarations: [SunriseBanHistoryComponent, ApolloBanHistoryComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -22,6 +23,6 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
     PipesModule,
     JsonDumpModule,
   ],
-  exports: [SunriseBanHistoryComponent],
+  exports: [SunriseBanHistoryComponent, ApolloBanHistoryComponent],
 })
 export class BanHistoryModule {}
