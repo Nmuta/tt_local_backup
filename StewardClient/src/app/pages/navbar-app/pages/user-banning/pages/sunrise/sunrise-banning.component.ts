@@ -112,4 +112,13 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
   public canBan(): boolean {
     return this.formGroup.valid && this.playerIdentities.length > 0;
   }
+
+  /** Produces a rejection message from a given identity, if it is rejected. */
+  public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
+    if (!identity?.extra?.hasSunrise) {
+      return 'Player does not have a sunrise account. Player will be ignored.';
+    }
+
+    return null;
+  }
 }
