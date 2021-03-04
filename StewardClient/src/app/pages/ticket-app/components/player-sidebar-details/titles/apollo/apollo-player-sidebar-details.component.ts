@@ -10,7 +10,9 @@ import { PlayerSidebarDetailsBaseComponent } from '../../player-sidebar-details.
   templateUrl: '../../player-sidebar-details.component.html',
   styleUrls: ['../../player-sidebar-details.component.scss'],
 })
-export class ApolloPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<ApolloPlayerDetails> {
+export class ApolloPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
+  ApolloPlayerDetails
+> {
   constructor(public readonly apolloService: ApolloService) {
     super();
   }

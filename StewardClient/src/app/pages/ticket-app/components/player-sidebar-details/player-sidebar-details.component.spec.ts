@@ -15,7 +15,6 @@ import { createMockApolloService } from '@services/apollo';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import faker from 'faker';
 
-
 describe('PlayerSidebarDetailsBaseComponent', () => {
   let fixture: ComponentFixture<PlayerSidebarDetailsBaseComponent<never>>;
   let component: PlayerSidebarDetailsBaseComponent<never>;
@@ -61,7 +60,7 @@ describe('PlayerSidebarDetailsBaseComponent', () => {
 
       it('Should not call service for player details', () => {
         component.ngOnChanges();
-  
+
         expect(component.makeRequest$).not.toHaveBeenCalled();
       });
     });
@@ -73,7 +72,7 @@ describe('PlayerSidebarDetailsBaseComponent', () => {
 
       it('Should call service for player details', () => {
         component.ngOnChanges();
-  
+
         expect(component.makeRequest$).toHaveBeenCalled();
       });
       it(
