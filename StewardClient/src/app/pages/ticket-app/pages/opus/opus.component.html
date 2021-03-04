@@ -1,4 +1,15 @@
-<opus-player-sidebar-details [gamertag]="gamertag"></opus-player-sidebar-details>
-<quick-actions class="top-spacing">
-  <go-to-inventory-button [gameTitle]="gameTitle" [xuid]="xuid"></go-to-inventory-button>
-</quick-actions>
+<ng-container *ngIf="!identityError; else identityErrorState">
+  <opus-player-sidebar-details [gamertag]="gamertag"></opus-player-sidebar-details>
+  <quick-actions class="top-spacing">
+    <go-to-inventory-button [gameTitle]="gameTitle" [xuid]="xuid"></go-to-inventory-button>
+  </quick-actions>
+</ng-container>
+
+<ng-template #identityErrorState>
+  <mat-card class="lookup-failed-card">
+    <mat-card-title>Opus Lookup Failed</mat-card-title>
+    <mat-card-content>
+      <p>"{{ lookupGamertag }}"" does not exist.</p>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

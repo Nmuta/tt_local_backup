@@ -1,62 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { Component } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
-import { MSError } from '@models/error.model';
-import { Navigate } from '@ngxs/router-plugin';
+import { IdentityResultAlpha } from '@models/identity-query.model';
 import { Store } from '@ngxs/store';
 import { ApolloService } from '@services/apollo';
 import { TicketService } from '@services/zendesk/ticket.service';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
 
 /** Routed component for displaying Apollo Ticket information. */
 @Component({
   templateUrl: './apollo.component.html',
   styleUrls: ['./apollo.component.scss'],
 })
-export class ApolloComponent extends BaseComponent implements OnInit {
-  public lookupGamertag: string;
-  public identityError: MSError;
-
-  public gameTitle: GameTitleCodeName;
-  public gamertag: string;
-  public xuid: bigint;
-
+export class ApolloComponent extends TicketAppBaseComponent {
   constructor(
-    private readonly apollo: ApolloService,
-    private readonly store: Store,
-    private readonly ticket: TicketService,
+    protected readonly apolloService: ApolloService,
+    protected readonly store: Store,
+    protected readonly ticketService: TicketService,
   ) {
-    super();
+    super(ticketService, store);
   }
 
-  /** Init hook. */
-  public ngOnInit(): void {
-    this.ticket
-      .getForzaTitle$()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(title => {
-        this.gameTitle = title;
-        if (title !== GameTitleCodeName.FM7) {
-          this.store.dispatch(
-            new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
-          );
-        }
-      });
+  /** Checks whether the zendesk title matches the title component. */
+  public isInCorrectTitleRoute(gameTitle: GameTitleCodeName): boolean {
+    return gameTitle === GameTitleCodeName.FM7;
+  }
 
-    this.ticket
-      .getTicketRequestorGamertag$()
-      .pipe(
-        takeUntil(this.onDestroy$),
-        switchMap(gamertag => {
-          this.lookupGamertag = gamertag;
-          return this.apollo.getPlayerIdentity({ gamertag });
-        }),
-        tap(identity => {
-          this.gamertag = identity.gamertag;
-          this.xuid = identity.xuid;
-          this.identityError = identity.error;
-        }),
-      )
-      .subscribe();
+  /** Requests player identity. */
+  public requestPlayerIdentity(gamertag: string): Observable<IdentityResultAlpha> {
+    return this.apolloService.getPlayerIdentity({ gamertag });
   }
 }

@@ -73,18 +73,20 @@ export abstract class PlayerSidebarDetailsBaseComponent<T extends PlayerDetailsU
     this.loadError = undefined;
 
     const details$ = this.makeRequest$();
-    details$.pipe(
-      takeUntil(this.onDestroy$),
-      catchError(error => {
-        this.isLoading = false;
-        this.loadError = error;
-        return NEVER;
-      }),
-      take(1),
-      tap(details => {
-        this.isLoading = false;
-        this.playerDetails = details;
-      })
-    ).subscribe();
+    details$
+      .pipe(
+        takeUntil(this.onDestroy$),
+        catchError(error => {
+          this.isLoading = false;
+          this.loadError = error;
+          return NEVER;
+        }),
+        take(1),
+        tap(details => {
+          this.isLoading = false;
+          this.playerDetails = details;
+        }),
+      )
+      .subscribe();
   }
 }

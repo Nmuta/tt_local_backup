@@ -1,20 +1,20 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameTitleCodeName } from '@models/enums';
-import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
-import { GravityService, createMockGravityService } from '@services/gravity';
-import { createMockTicketService, MockTicketService, TicketService } from '@services/zendesk';
+import { createMockTicketService } from '@services/zendesk';
 import { of } from 'rxjs';
+import faker from 'faker';
 
 import { GravityComponent } from './gravity.component';
+import { createMockGravityService, GravityService } from '@services/gravity';
 
 describe('GravityComponent - Ticket App', () => {
   let component: GravityComponent;
   let fixture: ComponentFixture<GravityComponent>;
-  let store: Store;
-  let ticketService: MockTicketService;
-  let service: GravityService;
+
+  let mockStore: Store;
+  let mockGravityService: GravityService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,59 +24,47 @@ describe('GravityComponent - Ticket App', () => {
       providers: [createMockGravityService(), createMockTicketService()],
     }).compileComponents();
 
-    ticketService = (TestBed.inject(TicketService) as unknown) as MockTicketService;
-
-    store = TestBed.inject(Store);
-    store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of());
-
-    service = TestBed.inject(GravityService);
-
     fixture = TestBed.createComponent(GravityComponent);
     component = fixture.componentInstance;
 
-    ticketService.activeTitle = GameTitleCodeName.Street;
-    service.getPlayerIdentity = jasmine
-      .createSpy('getPlayerIdentity')
-      .and.returnValue(of({ gamertag: 'test', xuid: BigInt('0123456789'), t10Id: 'test' }));
+    mockStore = TestBed.inject(Store);
+    mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of());
+
+    mockGravityService = TestBed.inject(GravityService);
   });
 
-  it('should collect title', () => {
-    fixture.detectChanges();
-    expect(ticketService.getForzaTitle$).toHaveBeenCalledTimes(1);
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
-  it('should collect gamertag', () => {
-    fixture.detectChanges();
-    expect(ticketService.getTicketRequestorGamertag$).toHaveBeenCalledTimes(1);
-    expect(service.getPlayerIdentity).toHaveBeenCalledWith({
-      gamertag: ticketService.activeGamertag,
+  describe('Method: isInCorrectTitleRoute', () => {
+    describe('When gameTitle matches Gravity', () => {
+      it('should return true', () => {
+        const result = component.isInCorrectTitleRoute(GameTitleCodeName.Street);
+
+        expect(result).toBeTruthy();
+      });
     });
-    expect(component.xuid).toBeTruthy();
-    expect(component.t10Id).toBeTruthy();
-  });
+    describe('When gameTitle does not match Gravity', () => {
+      it('should return true', () => {
+        const result = component.isInCorrectTitleRoute(GameTitleCodeName.FH4);
 
-  describe('when right title', () => {
-    it('should create', () => {
-      fixture.detectChanges();
-      expect(component).toBeTruthy();
-    });
-
-    it('should not navigate away', () => {
-      fixture.detectChanges();
-      expect(store.dispatch).toHaveBeenCalledTimes(0);
+        expect(result).toBeFalsy();
+      });
     });
   });
 
-  describe('when wrong title', () => {
+  describe('Method: requestPlayerIdentity', () => {
+    const gamertag = faker.name.firstName();
+
     beforeEach(() => {
-      ticketService.activeTitle = GameTitleCodeName.FM7;
+      mockGravityService.getPlayerIdentity = jasmine.createSpy('getPlayerIdentity');
     });
 
-    it('it should navigate to the routing page', () => {
-      fixture.detectChanges();
-      expect(store.dispatch).toHaveBeenCalledWith(
-        new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
-      );
+    it('should send request to mockGravityService.getPlayerIdentity ', () => {
+      component.requestPlayerIdentity(gamertag);
+
+      expect(mockGravityService.getPlayerIdentity).toHaveBeenCalledWith({ gamertag: gamertag });
     });
   });
 });

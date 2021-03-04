@@ -1,59 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { Component } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
-import { T10IdInfo } from '@models/identity-query.model';
-import { Navigate } from '@ngxs/router-plugin';
+import { IdentityResultBeta } from '@models/identity-query.model';
 import { Store } from '@ngxs/store';
 import { GravityService } from '@services/gravity';
 import { TicketService } from '@services/zendesk/ticket.service';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
 
 /** Routed component for displaying Gravity Ticket information. */
 @Component({
   templateUrl: './gravity.component.html',
   styleUrls: ['./gravity.component.scss'],
 })
-export class GravityComponent extends BaseComponent implements OnInit {
-  public gamertag: string;
-  public xuid: bigint;
-  public t10Id: string;
-  public t10Ids: T10IdInfo[];
-  public gameTitle: GameTitleCodeName;
-
+export class GravityComponent extends TicketAppBaseComponent {
   constructor(
-    private readonly gravity: GravityService,
-    private readonly store: Store,
-    private readonly ticket: TicketService,
+    protected readonly gravityService: GravityService,
+    protected readonly store: Store,
+    protected readonly ticketService: TicketService,
   ) {
-    super();
+    super(ticketService, store);
   }
 
-  /** Init hook. */
-  public ngOnInit(): void {
-    this.ticket
-      .getForzaTitle$()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(title => {
-        this.gameTitle = title;
-        if (title !== GameTitleCodeName.Street) {
-          this.store.dispatch(
-            new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
-          );
-        }
-      });
+  /** Checks whether the zendesk title matches the title component. */
+  public isInCorrectTitleRoute(gameTitle: GameTitleCodeName): boolean {
+    return gameTitle === GameTitleCodeName.Street;
+  }
 
-    this.ticket
-      .getTicketRequestorGamertag$()
-      .pipe(
-        takeUntil(this.onDestroy$),
-        switchMap(gamertag => this.gravity.getPlayerIdentity({ gamertag })),
-        tap(identity => {
-          this.gamertag = identity.gamertag;
-          this.xuid = identity.xuid;
-          this.t10Id = identity.t10Id;
-          this.t10Ids = identity.t10Ids;
-        }),
-      )
-      .subscribe();
+  /** Requests player identity. */
+  public requestPlayerIdentity(gamertag: string): Observable<IdentityResultBeta> {
+    return this.gravityService.getPlayerIdentity({ gamertag });
   }
 }
