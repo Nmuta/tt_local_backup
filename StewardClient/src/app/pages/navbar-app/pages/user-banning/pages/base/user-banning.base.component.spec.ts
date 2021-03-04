@@ -39,7 +39,7 @@ describe('UserBanningBaseComponent', () => {
       jobId: 'test=-job-id',
       status: BackgroundJobStatus.InProgress,
       result: undefined,
-      parsedResult: undefined,
+      rawResult: undefined,
     };
 
     beforeEach(() => {
@@ -75,14 +75,18 @@ describe('UserBanningBaseComponent', () => {
         const testBackgroundJobResp: BackgroundJob<BanResultsUnion[]> = {
           jobId: 'test=-job-id',
           status: BackgroundJobStatus.InProgress,
-          result: 'result',
-          parsedResult: [
+          result: [
             {
               xuid: BigInt(faker.random.number()),
               success: true,
               banDescription: undefined,
             },
           ],
+          rawResult: {
+            xuid: BigInt(faker.random.number()),
+            success: true,
+            banDescription: undefined,
+          },
         };
         beforeEach(() => {
           mockBackgroundJobService.getBackgroundJob = jasmine
@@ -95,7 +99,7 @@ describe('UserBanningBaseComponent', () => {
             testBackgroundJobResp.status = BackgroundJobStatus.Completed;
             component.waitForBackgroundJobToComplete(testJob);
 
-            expect(component.banResults).toEqual(testBackgroundJobResp.parsedResult);
+            expect(component.banResults).toEqual(testBackgroundJobResp.result);
           });
         });
       });

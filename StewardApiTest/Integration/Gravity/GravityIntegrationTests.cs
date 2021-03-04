@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts;
@@ -662,7 +663,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
-                jobResult = backgroundJob.Result?.FromJson<GiftResponse<string>>();
+                jobResult = JsonConvert.DeserializeObject<GiftResponse<string>>(
+                    JsonConvert.SerializeObject(backgroundJob.RawResult));
 
                 if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
                 {

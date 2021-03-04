@@ -468,8 +468,8 @@ describe('GiftBasketBaseComponent', () => {
     const testJob: BackgroundJob<void> = {
       jobId: 'test=-job-id',
       status: BackgroundJobStatus.InProgress,
+      rawResult: undefined,
       result: undefined,
-      parsedResult: undefined,
     };
 
     beforeEach(() => {
@@ -505,8 +505,12 @@ describe('GiftBasketBaseComponent', () => {
         const testBackgroundJobResp: BackgroundJob<GiftResponse<string | bigint>[]> = {
           jobId: 'test=-job-id',
           status: BackgroundJobStatus.InProgress,
-          result: 'result',
-          parsedResult: [
+          rawResult: {
+            PlayerOrLspGroup: 'testing123',
+            identityAntecedent: GiftIdentityAntecedent.LspGroupId,
+            error: undefined,
+          },
+          result: [
             {
               playerOrLspGroup: 'testing123',
               identityAntecedent: GiftIdentityAntecedent.LspGroupId,
@@ -525,7 +529,7 @@ describe('GiftBasketBaseComponent', () => {
             testBackgroundJobResp.status = BackgroundJobStatus.Completed;
             component.waitForBackgroundJobToComplete(testJob);
 
-            expect(component.giftResponse).toEqual(testBackgroundJobResp.parsedResult);
+            expect(component.giftResponse).toEqual(testBackgroundJobResp.result);
           });
         });
       });

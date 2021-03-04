@@ -210,8 +210,7 @@ export abstract class GiftBasketBaseComponent<
         tap(job => {
           switch (job.status) {
             case BackgroundJobStatus.Completed:
-              const result = job.parsedResult;
-              this.giftResponse = Array.isArray(result) ? result : [result];
+              this.giftResponse = Array.isArray(job.result) ? job.result : [job.result];
               break;
             case BackgroundJobStatus.InProgress:
               throw 'still in progress';

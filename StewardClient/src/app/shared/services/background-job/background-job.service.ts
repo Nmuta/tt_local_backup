@@ -18,15 +18,7 @@ export class BackgroundJobService {
     return this.apiService.getRequest<BackgroundJob<T>>(`${this.basePath}/jobId(${jobId})`).pipe(
       tap(job => {
         try {
-          const parsedResult = JSON.parse(job.result) as T;
-          if (Array.isArray(parsedResult)) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            job.parsedResult = (parsedResult as any).map(data => {
-              return this.lowercaseProperties(data);
-            });
-          } else {
-            job.parsedResult = this.lowercaseProperties(parsedResult);
-          }
+          job.result = (job.rawResult as unknown) as T;
         } catch (err) {
           /** Do nothing, just try to parse */
         }

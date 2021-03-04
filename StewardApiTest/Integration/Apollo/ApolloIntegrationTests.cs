@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts;
@@ -1259,7 +1260,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
-                jobResults = backgroundJob.Result?.FromJson<IList<ApolloBanResult>>();
+                jobResults = JsonConvert.DeserializeObject<IList<ApolloBanResult>>(
+                    JsonConvert.SerializeObject(backgroundJob.RawResult));
 
                 if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
                 {
@@ -1295,7 +1297,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
-                jobResult = backgroundJob.Result?.FromJson<IList<GiftResponse<ulong>>>();
+                jobResult = JsonConvert.DeserializeObject<IList<GiftResponse<ulong>>>(
+                    JsonConvert.SerializeObject(backgroundJob.RawResult));
 
                 if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
                 {

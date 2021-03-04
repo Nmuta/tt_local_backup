@@ -2,8 +2,8 @@
 export interface BackgroundJob<T> {
   jobId: string;
   status: string;
-  result: string;
-  parsedResult: T;
+  rawResult: Record<string, unknown>;
+  result: T;
 }
 
 export enum BackgroundJobStatus {

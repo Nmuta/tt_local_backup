@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// </summary>
         /// <param name="jobId">The job ID.</param>
         /// <returns>The background job status.</returns>
-        Task<BackgroundJob> GetJobStatusAsync(string jobId);
+        Task<BackgroundJobInternal> GetJobStatusAsync(string jobId);
 
         /// <summary>
         ///     Updates the job status.
@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <param name="backgroundJobStatus">The background job status.</param>
         /// <param name="jobResult">The job result.</param>
         /// <returns>A task with the status of the operation.</returns>
-        Task UpdateJobAsync(string jobId, string username, BackgroundJobStatus backgroundJobStatus, string jobResult);
+        Task UpdateJobAsync(string jobId, string username, BackgroundJobStatus backgroundJobStatus, object jobResult);
 
         /// <summary>
         ///     Updates the job status.
