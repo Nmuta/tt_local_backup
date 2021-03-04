@@ -45,6 +45,7 @@ export class SunriseComponent extends BaseComponent implements OnInit {
         takeUntil(this.onDestroy$),
         switchMap(gamertag => this.sunrise.getPlayerIdentity({ gamertag })),
         tap(identity => {
+          console.log(identity);
           this.gamertag = identity.gamertag;
           this.xuid = identity.xuid;
         }),

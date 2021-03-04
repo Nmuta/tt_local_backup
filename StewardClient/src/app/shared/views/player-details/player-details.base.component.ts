@@ -65,6 +65,10 @@ export abstract class PlayerDetailsBaseComponent<T extends PlayerDetailsUnion>
 
   /** Initialization hook. */
   public ngOnChanges(): void {
+    if (!this.gamertag) {
+      return;
+    }
+
     this.isLoading = true;
     this.loadError = undefined;
 
