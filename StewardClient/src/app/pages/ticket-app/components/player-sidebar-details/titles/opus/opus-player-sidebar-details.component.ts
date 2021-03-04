@@ -2,15 +2,15 @@ import { Component } from '@angular/core';
 import { OpusPlayerDetails } from '@models/opus';
 import { OpusService } from '@services/opus';
 import { Observable } from 'rxjs';
-import { PlayerDetailsBaseComponent } from '../../player-details.base.component';
+import { PlayerSidebarDetailsBaseComponent } from '../../player-sidebar-details.base.component';
 
 /** Gravity Player Details */
 @Component({
-  selector: 'opus-player-details',
-  templateUrl: '../../player-details.component.html',
-  styleUrls: ['../../player-details.component.scss'],
+  selector: 'opus-player-sidebar-details',
+  templateUrl: '../../player-sidebar-details.component.html',
+  styleUrls: ['../../player-sidebar-details.component.scss'],
 })
-export class OpusPlayerDetailsComponent extends PlayerDetailsBaseComponent<OpusPlayerDetails> {
+export class OpusPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<OpusPlayerDetails> {
   constructor(public readonly opusService: OpusService) {
     super();
   }

@@ -1,22 +1,22 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
-import { ApolloPlayerDetailsComponent } from './apollo-player-details.component';
+import { GravityPlayerSidebarDetailsComponent } from './gravity-player-sidebar-details.component';
 import { createMockWindowService } from '@shared/services/window';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { createMockGravityService, GravityService } from '@services/gravity';
 import { of } from 'rxjs';
-import { ApolloService, createMockApolloService } from '@services/apollo';
-import { ApolloPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/gamertag/details';
+import { GravityPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/gamertag/details';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
-describe('ApolloPlayerDetailsComponent', () => {
-  let mockApolloService: ApolloService;
+describe('GravityPlayerSidebarDetailsComponent', () => {
+  let mockGravityService: GravityService;
 
-  let fixture: ComponentFixture<ApolloPlayerDetailsComponent>;
-  let component: ApolloPlayerDetailsComponent;
+  let fixture: ComponentFixture<GravityPlayerSidebarDetailsComponent>;
+  let component: GravityPlayerSidebarDetailsComponent;
 
   beforeEach(
     waitForAsync(() => {
@@ -26,20 +26,20 @@ describe('ApolloPlayerDetailsComponent', () => {
           HttpClientTestingModule,
           NgxsModule.forRoot([UserState]),
         ],
-        declarations: [ApolloPlayerDetailsComponent],
+        declarations: [GravityPlayerSidebarDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           createMockWindowService(),
           createMockMsalService(),
-          createMockApolloService(),
+          createMockGravityService(),
           createMockLoggerService(),
         ],
       }).compileComponents();
 
       const injector = getTestBed();
-      mockApolloService = injector.inject(ApolloService);
+      mockGravityService = injector.inject(GravityService);
 
-      fixture = TestBed.createComponent(ApolloPlayerDetailsComponent);
+      fixture = TestBed.createComponent(GravityPlayerSidebarDetailsComponent);
       component = fixture.debugElement.componentInstance;
     }),
   );
@@ -52,9 +52,9 @@ describe('ApolloPlayerDetailsComponent', () => {
     const expectedGamertag = 'test-gamertag';
     beforeEach(() => {
       component.gamertag = expectedGamertag;
-      mockApolloService.getPlayerDetailsByGamertag = jasmine
+      mockGravityService.getPlayerDetailsByGamertag = jasmine
         .createSpy('getPlayerDetailsByGamertag')
-        .and.returnValue(of(ApolloPlayerGamertagDetailsFakeApi.make()));
+        .and.returnValue(of(GravityPlayerGamertagDetailsFakeApi.make()));
     });
     it('should return apollo player details request observable', () => {
       const apolloPlayerDetailsObs = component.makeRequest$();
@@ -62,7 +62,7 @@ describe('ApolloPlayerDetailsComponent', () => {
         /* nothing */
       });
 
-      expect(mockApolloService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
+      expect(mockGravityService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
     });
   });
 });

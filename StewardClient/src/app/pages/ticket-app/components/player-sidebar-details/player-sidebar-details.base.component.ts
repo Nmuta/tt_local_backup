@@ -39,7 +39,7 @@ type PlayerDetailsIntersection = PlayerDetailsUnion & Partial<PlayerDetailsTitle
 @Component({
   template: '',
 })
-export abstract class PlayerDetailsBaseComponent<T extends PlayerDetailsUnion>
+export abstract class PlayerSidebarDetailsBaseComponent<T extends PlayerDetailsUnion>
   extends BaseComponent
   implements OnChanges {
   /** Gamertag to lookup for player details. */

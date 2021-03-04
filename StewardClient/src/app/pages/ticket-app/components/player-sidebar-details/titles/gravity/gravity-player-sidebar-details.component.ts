@@ -2,15 +2,15 @@ import { Component } from '@angular/core';
 import { GravityPlayerDetails } from '@models/gravity';
 import { GravityService } from '@services/gravity';
 import { Observable } from 'rxjs';
-import { PlayerDetailsBaseComponent } from '../../player-details.base.component';
+import { PlayerSidebarDetailsBaseComponent } from '../../player-sidebar-details.base.component';
 
 /** Gravity Player Details */
 @Component({
-  selector: 'gravity-player-details',
-  templateUrl: '../../player-details.component.html',
-  styleUrls: ['../../player-details.component.scss'],
+  selector: 'gravity-player-sidebar-details',
+  templateUrl: '../../player-sidebar-details.component.html',
+  styleUrls: ['../../player-sidebar-details.component.scss'],
 })
-export class GravityPlayerDetailsComponent extends PlayerDetailsBaseComponent<
+export class GravityPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   GravityPlayerDetails
 > {
   constructor(public readonly gravityService: GravityService) {

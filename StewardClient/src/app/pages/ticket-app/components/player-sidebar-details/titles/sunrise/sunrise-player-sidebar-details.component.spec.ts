@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
-import { OpusPlayerDetailsComponent } from './opus-player-details.component';
+import { SunrisePlayerSidebarDetailsComponent } from './sunrise-player-sidebar-details.component';
 import { createMockWindowService } from '@shared/services/window';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
@@ -8,15 +8,15 @@ import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createMockMsalService } from '@shared/mocks/msal.service.mock';
 import { of } from 'rxjs';
-import { createMockOpusService, OpusService } from '@services/opus';
-import { OpusPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/opus/player/gamertag/details';
+import { createMockSunriseService, SunriseService } from '@services/sunrise';
+import { SunrisePlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/gamertag/details';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 
-describe('OpusPlayerDetailsComponent', () => {
-  let mockOpusService: OpusService;
+describe('SunrisePlayerSidebarDetailsComponent', () => {
+  let mockSunriseService: SunriseService;
 
-  let fixture: ComponentFixture<OpusPlayerDetailsComponent>;
-  let component: OpusPlayerDetailsComponent;
+  let fixture: ComponentFixture<SunrisePlayerSidebarDetailsComponent>;
+  let component: SunrisePlayerSidebarDetailsComponent;
 
   beforeEach(
     waitForAsync(() => {
@@ -26,20 +26,20 @@ describe('OpusPlayerDetailsComponent', () => {
           HttpClientTestingModule,
           NgxsModule.forRoot([UserState]),
         ],
-        declarations: [OpusPlayerDetailsComponent],
+        declarations: [SunrisePlayerSidebarDetailsComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           createMockWindowService(),
           createMockMsalService(),
-          createMockOpusService(),
+          createMockSunriseService(),
           createMockLoggerService(),
         ],
       }).compileComponents();
 
       const injector = getTestBed();
-      mockOpusService = injector.inject(OpusService);
+      mockSunriseService = injector.inject(SunriseService);
 
-      fixture = TestBed.createComponent(OpusPlayerDetailsComponent);
+      fixture = TestBed.createComponent(SunrisePlayerSidebarDetailsComponent);
       component = fixture.debugElement.componentInstance;
     }),
   );
@@ -52,17 +52,17 @@ describe('OpusPlayerDetailsComponent', () => {
     const expectedGamertag = 'test-gamertag';
     beforeEach(() => {
       component.gamertag = expectedGamertag;
-      mockOpusService.getPlayerDetailsByGamertag = jasmine
+      mockSunriseService.getPlayerDetailsByGamertag = jasmine
         .createSpy('getPlayerDetailsByGamertag')
-        .and.returnValue(of(OpusPlayerGamertagDetailsFakeApi.make()));
+        .and.returnValue(of(SunrisePlayerGamertagDetailsFakeApi.make()));
     });
     it('should return apollo player details request observable', () => {
       const apolloPlayerDetailsObs = component.makeRequest$();
-      apolloPlayerDetailsObs.subscribe(_data => {
+      apolloPlayerDetailsObs.subscribe(() => {
         /* nothing */
       });
 
-      expect(mockOpusService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
+      expect(mockSunriseService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
     });
   });
 });
