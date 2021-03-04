@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { ContentCollapseModule } from '@components/content-collapse/content-collapse.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { PlayerDetailsModule } from '@shared/views/player-details/player-details.module';
+import { PlayerSidebarDetailsModule } from './components/player-sidebar-details/player-sidebar-details.module';
 
 import { TicketAppComponent } from './ticket-app.component';
 import { TicketAppRouterModule } from './ticket-app.routing';
@@ -27,7 +27,7 @@ import { OverlayComponent } from './components/overlay/overlay.component';
     CommonModule,
     TicketAppRouterModule,
     FontAwesomeModule,
-    PlayerDetailsModule,
+    PlayerSidebarDetailsModule,
     UserFlagsModule,
     BanHistoryModule,
     MatButtonModule,

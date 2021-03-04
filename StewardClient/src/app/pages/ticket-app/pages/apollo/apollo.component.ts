@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GameTitleCodeName } from '@models/enums';
+import { MSError } from '@models/error.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { ApolloService } from '@services/apollo';
@@ -13,9 +14,12 @@ import { switchMap, takeUntil, tap } from 'rxjs/operators';
   styleUrls: ['./apollo.component.scss'],
 })
 export class ApolloComponent extends BaseComponent implements OnInit {
+  public lookupGamertag: string;
+  public identityError: MSError;
+
+  public gameTitle: GameTitleCodeName;
   public gamertag: string;
   public xuid: bigint;
-  public gameTitle: GameTitleCodeName;
 
   constructor(
     private readonly apollo: ApolloService,
@@ -43,10 +47,14 @@ export class ApolloComponent extends BaseComponent implements OnInit {
       .getTicketRequestorGamertag$()
       .pipe(
         takeUntil(this.onDestroy$),
-        switchMap(gamertag => this.apollo.getPlayerIdentity({ gamertag })),
+        switchMap(gamertag => {
+          this.lookupGamertag = gamertag;
+          return this.apollo.getPlayerIdentity({ gamertag });
+        }),
         tap(identity => {
           this.gamertag = identity.gamertag;
           this.xuid = identity.xuid;
+          this.identityError = identity.error;
         }),
       )
       .subscribe();
