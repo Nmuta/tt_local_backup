@@ -8,11 +8,6 @@ import { CenterContentsModule } from '@components/center-contents/center-content
 /** Demonstration and style testing pages. */
 @NgModule({
   declarations: [DemoComponent],
-  imports: [
-    DemoRouterModule,
-    CommonModule,
-    MatCardModule,
-    CenterContentsModule,
-  ]
+  imports: [DemoRouterModule, CommonModule, MatCardModule, CenterContentsModule],
 })
-export class DemoModule { }
+export class DemoModule {}
