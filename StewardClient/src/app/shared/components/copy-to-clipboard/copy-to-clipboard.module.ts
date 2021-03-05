@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { CopyToClipboardComponent } from './copy-to-clipboard.component';
 
@@ -15,9 +13,7 @@ import { CopyToClipboardComponent } from './copy-to-clipboard.component';
     CommonModule,
     FontAwesomeModule,
     ClipboardModule,
-    MatProgressSpinnerModule,
     MatTooltipModule,
-    PipesModule,
   ],
   exports: [CopyToClipboardComponent],
 })

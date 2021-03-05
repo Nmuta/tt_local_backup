@@ -1,0 +1,6 @@
+@import '/src/styles/mixins/variables.scss';
+
+.copy {
+  color: mat-color($app-warn);
+  cursor: pointer;
+}

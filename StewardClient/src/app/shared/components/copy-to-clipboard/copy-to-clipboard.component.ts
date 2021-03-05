@@ -8,7 +8,7 @@ import { faCopy } from '@fortawesome/free-solid-svg-icons';
 })
 export class CopyToClipboardComponent{
   /** The content to copy. */
-  @Input() public content: unknown = undefined;
+  @Input() public content: string = "";
 
   public readonly copyIcon = faCopy;
 }
