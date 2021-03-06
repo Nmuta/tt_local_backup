@@ -37,6 +37,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
   },
   {
+    path: 'demo',
+    loadChildren: () => import('./pages/demo/demo.module').then(m => m.DemoModule),
+  },
+  {
     path: 'unauthorized',
     loadChildren: () =>
       import('./pages/unauthorized/unauthorized.module').then(m => m.UnauthroizedModule),

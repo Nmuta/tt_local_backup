@@ -63,13 +63,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<IList<ApolloBanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<BackgroundJob>> BanPlayersWithHeaderResponseAsync(IList<ApolloBanParametersInput> banParameters, IList<string> headersToValidate)
+        public async Task<ResponseWithHeaders<BackgroundJobInternal>> BanPlayersWithHeaderResponseAsync(IList<ApolloBanParametersInput> banParameters, IList<string> headersToValidate)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
             var path = new Uri(this.baseUri, $"{TitlePath}players/ban/useBackgroundProcessing");
 
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJob>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters).ConfigureAwait(false);
+            return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJobInternal>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters).ConfigureAwait(false);
         }
 
         public async Task<IList<ApolloBanSummary>> GetBanSummariesAsync(IList<ulong> xuids)
@@ -160,13 +160,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<IList<ApolloLspGroup>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<ResponseWithHeaders<BackgroundJob>> UpdatePlayerInventoriesWithHeaderResponseAsync(ApolloGroupGift groupGift, IList<string> headersToValidate)
+        public async Task<ResponseWithHeaders<BackgroundJobInternal>> UpdatePlayerInventoriesWithHeaderResponseAsync(ApolloGroupGift groupGift, IList<string> headersToValidate)
         {
             groupGift.ShouldNotBeNull(nameof(groupGift));
 
             var path = new Uri(this.baseUri, $"{TitlePath}gifting/players/useBackgroundProcessing");
 
-            return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJob>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, groupGift).ConfigureAwait(false);
+            return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJobInternal>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, groupGift).ConfigureAwait(false);
         }
 
         public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift)

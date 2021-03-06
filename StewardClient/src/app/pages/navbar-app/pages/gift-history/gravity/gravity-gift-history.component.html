@@ -3,6 +3,7 @@
     <mat-card>
       <player-selection-single
         [allowSelection]="true"
+        [rejectionFn]="identityRejectionFn"
         (found)="onPlayerIdentityChange($event)"
         (selected)="playerIdentitySelected($event)"
       ></player-selection-single>

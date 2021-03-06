@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
@@ -61,7 +63,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
             username.ShouldNotBeNullEmptyOrWhiteSpace(nameof(username));
 
             var jobId = Guid.NewGuid().ToString();
-            var backgroundJob = new BackgroundJob(jobId, username, BackgroundJobStatus.InProgress);
+            var backgroundJob = new BackgroundJobInternal(jobId, username, BackgroundJobStatus.InProgress);
 
             await this.blobRepository
                 .AddOrReplaceFromBytesExclusiveAsync(string.Empty, jobId, JobContainerName, Encoding.ASCII.GetBytes(requestBody))
@@ -87,20 +89,25 @@ namespace Turn10.LiveOps.StewardApi.Providers
         }
 
         /// <inheritdoc />
-        public async Task UpdateJobAsync(string jobId, string username, BackgroundJobStatus backgroundJobStatus, string jobResult)
+        public async Task UpdateJobAsync(string jobId, string username, BackgroundJobStatus backgroundJobStatus, object jobResult)
         {
             jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));
             username.ShouldNotBeNullEmptyOrWhiteSpace(nameof(username));
 
-            async Task<BackgroundJob> UpdateTable()
+            async Task<BackgroundJobInternal> UpdateTable()
             {
-                var backgroundJob = new BackgroundJob(jobId, username, backgroundJobStatus, jobResult);
+                var serializedResults = JsonConvert.SerializeObject(jobResult, new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
+
+                var backgroundJob = new BackgroundJobInternal(jobId, username, backgroundJobStatus, serializedResults);
 
                 var command = TableOperation.InsertOrMerge(backgroundJob);
 
                 var operationResponse = await this.tableStorageClient.ExecuteAsync(command).ConfigureAwait(false);
 
-                var result = operationResponse.Result as BackgroundJob;
+                var result = operationResponse.Result as BackgroundJobInternal;
 
                 this.AddFinalStatusToCache(result, jobId);
 
@@ -111,13 +118,13 @@ namespace Turn10.LiveOps.StewardApi.Providers
         }
 
         /// <inheritdoc />
-        public async Task<BackgroundJob> GetJobStatusAsync(string jobId)
+        public async Task<BackgroundJobInternal> GetJobStatusAsync(string jobId)
         {
             jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));
 
-            async Task<BackgroundJob> QueryStatus()
+            async Task<BackgroundJobInternal> QueryStatus()
             {
-                var tableQuery = new TableQuery<BackgroundJob>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, jobId));
+                var tableQuery = new TableQuery<BackgroundJobInternal>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, jobId));
 
                 var result = (await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false)).First();
 
@@ -126,12 +133,12 @@ namespace Turn10.LiveOps.StewardApi.Providers
                 return result;
             }
 
-            var backgroundJob = this.refreshableCacheStore.GetItem<BackgroundJob>(jobId) ?? await QueryStatus().ConfigureAwait(false);
+            var backgroundJob = this.refreshableCacheStore.GetItem<BackgroundJobInternal>(jobId) ?? await QueryStatus().ConfigureAwait(false);
 
             return backgroundJob;
         }
 
-        private void AddFinalStatusToCache(BackgroundJob backgroundJob, string jobId)
+        private void AddFinalStatusToCache(BackgroundJobInternal backgroundJob, string jobId)
         {
             _ = Enum.TryParse<BackgroundJobStatus>(backgroundJob.Status, out var status);
 

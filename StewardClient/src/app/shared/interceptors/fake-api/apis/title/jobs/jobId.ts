@@ -28,8 +28,10 @@ export class JobsGetJobFakeApi extends FakeApiBase {
     return {
       jobId: faker.random.uuid().toString(),
       status: 'InProgress',
-      result: faker.random.objectElement(),
-      parsedResult: undefined,
+      rawResult: {
+        key: 'value',
+      },
+      result: undefined,
     };
   }
 }

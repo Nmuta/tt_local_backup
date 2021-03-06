@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -18,16 +19,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     public sealed class JobsController : ControllerBase
     {
         private readonly IJobTracker jobTracker;
+        private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="JobsController"/> class.
         /// </summary>
         /// <param name="jobTracker">The job tracker.</param>
-        public JobsController(IJobTracker jobTracker)
+        /// <param name="mapper">The mapper.</param>
+        public JobsController(IJobTracker jobTracker, IMapper mapper)
         {
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
+            mapper.ShouldNotBeNull(nameof(mapper));
 
             this.jobTracker = jobTracker;
+            this.mapper = mapper;
         }
 
         /// <summary>
@@ -47,7 +52,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
                 var status = await this.jobTracker.GetJobStatusAsync(jobId).ConfigureAwait(true);
 
-                return this.Ok(status);
+                var output = this.mapper.Map<BackgroundJob>(status);
+
+                return this.Ok(output);
             }
             catch (Exception ex)
             {

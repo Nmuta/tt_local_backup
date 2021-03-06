@@ -28,8 +28,10 @@ export class ApolloGiftingPlayersReturnsBackgroundJobFakeApi extends FakeApiBase
     return {
       jobId: faker.random.uuid().toString(),
       status: 'InProgess',
-      result: faker.random.objectElement(),
-      parsedResult: undefined,
+      rawResult: {
+        key: 'value',
+      },
+      result: undefined,
     };
   }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
@@ -1472,7 +1473,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
-                jobResult = backgroundJob.Result?.FromJson<IList<GiftResponse<ulong>>>();
+                jobResult = JsonConvert.DeserializeObject<IList<GiftResponse<ulong>>>(
+                    JsonConvert.SerializeObject(backgroundJob.RawResult));
 
                 if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
                 {
@@ -1506,7 +1508,8 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
-                jobResults = backgroundJob.Result?.FromJson<IList<SunriseBanResult>>();
+                jobResults = JsonConvert.DeserializeObject<IList<SunriseBanResult>>(
+                    JsonConvert.SerializeObject(backgroundJob.RawResult));
 
                 if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)
                 {

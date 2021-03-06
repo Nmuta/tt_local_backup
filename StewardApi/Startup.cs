@@ -156,6 +156,7 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new SunriseProfileMapper());
                 mc.AddProfile(new GravityProfileMapper());
                 mc.AddProfile(new ApolloProfileMapper());
+                mc.AddProfile(new JobsProfileMapper());
                 mc.AllowNullCollections = true;
             });
 

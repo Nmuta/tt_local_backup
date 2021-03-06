@@ -1,0 +1,13 @@
+@import '/src/styles/mixins/variables.scss';
+
+mat-card {
+  margin-top: 20px;
+
+  max-width: 500px;
+  width: 100%;
+
+  h1,
+  h2 {
+    color: mat-color($app-primary);
+  }
+}

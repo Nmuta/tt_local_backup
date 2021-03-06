@@ -255,7 +255,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     var results = await this.apolloPlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
 
-                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, results.ToJson()).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, results).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -636,7 +636,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 try
                 {
                     var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
-                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response.ToJson()).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {

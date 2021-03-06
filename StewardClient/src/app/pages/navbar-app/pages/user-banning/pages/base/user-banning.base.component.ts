@@ -40,7 +40,7 @@ export class UserBanningBaseComponent extends BaseComponent {
         tap(job => {
           switch (job.status) {
             case BackgroundJobStatus.Completed:
-              const result = job.parsedResult;
+              const result = job.result;
               this.banResults = Array.isArray(result) ? result : [result];
               break;
             case BackgroundJobStatus.InProgress:

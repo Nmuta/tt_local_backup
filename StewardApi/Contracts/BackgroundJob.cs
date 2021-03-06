@@ -6,7 +6,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts
     /// <summary>
     ///     Represents a background job.
     /// </summary>
-    public sealed class BackgroundJob : TableEntity
+    public sealed class BackgroundJob
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="BackgroundJob"/> class.
@@ -19,10 +19,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         ///     Initializes a new instance of the <see cref="BackgroundJob"/> class.
         /// </summary>
         /// <param name="jobId">The job ID.</param>
-        /// <param name="username">The username.</param>
         /// <param name="backgroundJobStatus">The background job status.</param>
-        public BackgroundJob(string jobId, string username, BackgroundJobStatus backgroundJobStatus)
-            : this(jobId, username, backgroundJobStatus, string.Empty)
+        public BackgroundJob(string jobId, BackgroundJobStatus backgroundJobStatus)
+            : this(jobId, backgroundJobStatus, string.Empty)
         {
         }
 
@@ -30,20 +29,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         ///     Initializes a new instance of the <see cref="BackgroundJob"/> class.
         /// </summary>
         /// <param name="jobId">The job ID.</param>
-        /// <param name="username">The username.</param>
         /// <param name="backgroundJobStatus">The background job status.</param>
-        /// <param name="result">The result.</param>
-        public BackgroundJob(string jobId, string username, BackgroundJobStatus backgroundJobStatus, string result)
+        /// <param name="rawResult">The result.</param>
+        public BackgroundJob(string jobId, BackgroundJobStatus backgroundJobStatus, object rawResult)
         {
             jobId.ShouldNotBeNull(nameof(jobId));
-            username.ShouldNotBeNullEmptyOrWhiteSpace(nameof(username));
             backgroundJobStatus.ShouldNotBeNull(nameof(backgroundJobStatus));
 
-            this.PartitionKey = jobId;
             this.JobId = jobId;
-            this.RowKey = username;
             this.Status = backgroundJobStatus.ToString();
-            this.Result = result;
+            this.RawResult = rawResult;
         }
 
         /// <summary>
@@ -57,8 +52,8 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         public string Status { get; set; }
 
         /// <summary>
-        ///     Gets or sets the status.
+        ///     Gets or sets the raw result.
         /// </summary>
-        public string Result { get; set; }
+        public object RawResult { get; set; }
     }
 }

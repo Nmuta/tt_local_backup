@@ -63,4 +63,13 @@ export class ApolloGiftHistoryComponent extends GiftHistoryBaseComponent impleme
   public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
     this.selectedPlayerIdentity = identity?.extra?.hasApollo ? identity.apollo : null;
   }
+
+  /** Produces a rejection message from a given identity, if it is rejected. */
+  public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
+    if (!identity?.extra?.hasApollo) {
+      return 'Player does not have an apollo account. Player will be ignored.';
+    }
+
+    return null;
+  }
 }
