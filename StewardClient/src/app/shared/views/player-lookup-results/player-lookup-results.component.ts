@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { IdentityResultUnion } from '@models/identity-query.model';
 
 @Component({
-  selector: 'app-player-lookup-results',
+  selector: 'player-lookup-results',
   templateUrl: './player-lookup-results.component.html',
   styleUrls: ['./player-lookup-results.component.scss']
 })
-export class PlayerLookupResultsComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+export class PlayerLookupResultsComponent{
+@Input() identity: IdentityResultUnion;
 
 }
