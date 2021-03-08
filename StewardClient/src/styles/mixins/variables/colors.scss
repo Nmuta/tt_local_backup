@@ -1,7 +1,4 @@
-// TODO: These seem to still work implicitly despite not being explicitly imported?
-// TODO: Importing this causes any scss file including it to be horribly large (despite the files only containing variables and mixins)
-// TODO: Verify that compilation works when we standardize the colors to be based on the theme.
-// @import '../autocomplete-patch.scss';
+
 @import '~@angular/material/theming';
 
 $icomoon-font-path: '/assets/icon-font/fonts';
@@ -37,19 +34,3 @@ $app-background: mat-palette($mat-grey);
 
 $table-tr-hover: mat-color($app-background, 100);
 $table-tr-active: mat-color($app-background, 200);
-
-$gap-side-gutter: 16px;
-$gap-vertical-layout: 8px;
-$gap-inner-container: 10px;
-$gap-table: 5px;
-
-$width-mediaquery-sidebar-break: 250px;
-
-@mixin screenreader-only() {
-  position: absolute;
-  left: -10000px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
