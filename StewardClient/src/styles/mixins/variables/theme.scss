@@ -80,3 +80,11 @@ $app-theme: mat-light-theme(
 @function app-color-darker-contrast($theme, $opacity: null) {
   @return mat-color($theme, darker-contrast, $opacity);
 }
+
+/// Gets a color from a theme palette (the output of mat-palette).
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-text-contrast($palette, $opacity: null) {
+  @return mat-color($palette, text-contrast, $opacity);
+}

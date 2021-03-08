@@ -1,0 +1,167 @@
+@import '/src/styles/mixins';
+
+h1,
+h2 {
+  color: app-color-default($app-primary);
+}
+
+ul li {
+  list-style: none;
+  padding: 0;
+}
+
+.foreground-first {
+  .background {
+    .default {
+      color: app-color-default($app-background);
+      background-color: app-color-default-contrast($app-background);
+    }
+    .darker {
+      color: app-color-darker($app-background);
+      background-color: app-color-darker-contrast($app-background);
+    }
+    .lighter {
+      color: app-color-lighter($app-background);
+      background-color: app-color-lighter-contrast($app-background);
+    }
+    .text {
+      color: app-color-text($app-background);
+      background-color: app-color-text-contrast($app-background);
+    }
+  }
+
+  .primary {
+    .default {
+      color: app-color-default($app-primary);
+      background-color: app-color-default-contrast($app-primary);
+    }
+    .darker {
+      color: app-color-darker($app-primary);
+      background-color: app-color-darker-contrast($app-primary);
+    }
+    .lighter {
+      color: app-color-lighter($app-primary);
+      background-color: app-color-lighter-contrast($app-primary);
+    }
+    .text {
+      color: app-color-text($app-primary);
+      background-color: app-color-text-contrast($app-primary);
+    }
+  }
+
+  .accent {
+    .default {
+      color: app-color-default($app-accent);
+      background-color: app-color-default-contrast($app-accent);
+    }
+    .darker {
+      color: app-color-darker($app-accent);
+      background-color: app-color-darker-contrast($app-accent);
+    }
+    .lighter {
+      color: app-color-lighter($app-accent);
+      background-color: app-color-lighter-contrast($app-accent);
+    }
+    .text {
+      color: app-color-text($app-accent);
+      background-color: app-color-text-contrast($app-accent);
+    }
+  }
+
+  .warn {
+    .default {
+      color: app-color-default($app-warn);
+      background-color: app-color-default-contrast($app-warn);
+    }
+    .darker {
+      color: app-color-darker($app-warn);
+      background-color: app-color-darker-contrast($app-warn);
+    }
+    .lighter {
+      color: app-color-lighter($app-warn);
+      background-color: app-color-lighter-contrast($app-warn);
+    }
+    .text {
+      color: app-color-text($app-warn);
+      background-color: app-color-text-contrast($app-warn);
+    }
+  }
+}
+
+.background-first {
+  .background {
+    .default {
+      background-color: app-color-default($app-background);
+      color: app-color-default-contrast($app-background);
+    }
+    .darker {
+      background-color: app-color-darker($app-background);
+      color: app-color-darker-contrast($app-background);
+    }
+    .lighter {
+      background-color: app-color-lighter($app-background);
+      color: app-color-lighter-contrast($app-background);
+    }
+    .text {
+      background-color: app-color-text($app-background);
+      color: app-color-text-contrast($app-background);
+    }
+  }
+
+  .primary {
+    .default {
+      background-color: app-color-default($app-primary);
+      color: app-color-default-contrast($app-primary);
+    }
+    .darker {
+      background-color: app-color-darker($app-primary);
+      color: app-color-darker-contrast($app-primary);
+    }
+    .lighter {
+      background-color: app-color-lighter($app-primary);
+      color: app-color-lighter-contrast($app-primary);
+    }
+    .text {
+      background-color: app-color-text($app-primary);
+      color: app-color-text-contrast($app-primary);
+    }
+  }
+
+  .accent {
+    .default {
+      background-color: app-color-default($app-accent);
+      color: app-color-default-contrast($app-accent);
+    }
+    .darker {
+      background-color: app-color-darker($app-accent);
+      color: app-color-darker-contrast($app-accent);
+    }
+    .lighter {
+      background-color: app-color-lighter($app-accent);
+      color: app-color-lighter-contrast($app-accent);
+    }
+    .text {
+      background-color: app-color-text($app-accent);
+      color: app-color-text-contrast($app-accent);
+    }
+  }
+
+  .warn {
+    .default {
+      color: app-color-default($app-warn);
+    }
+      color: app-color-default-contrast($app-warn);
+    .darker {
+      color: app-color-darker($app-warn);
+    }
+      color: app-color-darker-contrast($app-warn);
+    .lighter {
+      color: app-color-lighter($app-warn);
+    }
+      color: app-color-lighter-contrast($app-warn);
+    .text {
+      color: app-color-text($app-warn);
+    }
+      color: app-color-text-contrast($app-warn);
+  }
+}

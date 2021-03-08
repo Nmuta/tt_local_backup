@@ -11,3 +11,15 @@ mat-card {
     color: app-color-default($app-primary);
   }
 }
+
+ul {
+  display: flex;
+  flex-flow: row wrap;
+  li {
+    list-style-type: none;
+    padding: 0;
+    a {
+      padding: 10px;
+    }
+  }
+}
