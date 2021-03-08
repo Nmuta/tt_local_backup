@@ -142,6 +142,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             .value(),
         );
         this.foundIdentities = [];
+        this.knownIdentities.clear();
 
         this.handleNewValues(values, false);
       });
