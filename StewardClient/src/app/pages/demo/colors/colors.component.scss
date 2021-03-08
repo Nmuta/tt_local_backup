@@ -5,10 +5,15 @@ h2 {
   color: app-color-default($app-primary);
 }
 
-ul, li {
+ul,
+li {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+ul {
+  margin-top: 10px;
 }
 
 .background-first {
@@ -71,21 +76,21 @@ ul, li {
 
   .warn {
     .default {
-      color: app-color-default($app-warn);
-    }
+      background-color: app-color-default($app-warn);
       color: app-color-default-contrast($app-warn);
+    }
     .darker {
-      color: app-color-darker($app-warn);
-    }
+      background-color: app-color-darker($app-warn);
       color: app-color-darker-contrast($app-warn);
+    }
     .lighter {
-      color: app-color-lighter($app-warn);
-    }
+      background-color: app-color-lighter($app-warn);
       color: app-color-lighter-contrast($app-warn);
-    .text {
-      color: app-color-text($app-warn);
     }
+    .text {
+      background-color: app-color-text($app-warn);
       color: app-color-text-contrast($app-warn);
+    }
   }
 }
 
