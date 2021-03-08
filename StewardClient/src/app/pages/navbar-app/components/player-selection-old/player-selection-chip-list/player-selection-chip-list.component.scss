@@ -10,9 +10,9 @@ mat-chip {
 }
 
 .identity-valid {
-  background-color: mat-color($app-primary, 'lighter');
+  background-color: app-color-lighter($app-primary);
 }
 
 .identity-invalid {
-  background-color: mat-color($app-warn, 'lighter');
+  background-color: app-color-lighter($app-warn);
 }

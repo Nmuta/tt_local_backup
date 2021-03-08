@@ -5,6 +5,6 @@ div {
   overflow: auto;
 
   .gift-result-error {
-    background-color: mat-color($app-warn, 200);
+    background-color: app-color-lighter($app-warn);
   }
 }

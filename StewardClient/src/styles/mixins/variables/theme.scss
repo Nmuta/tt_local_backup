@@ -25,34 +25,58 @@ $app-theme: mat-light-theme(
   )
 );
 
-@function app-color-default($palette) {
-  @return mat-color($palette, default);
+/// Gets a color from a theme palette (the output of mat-palette).
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-default($palette, $opacity: null) {
+  @return mat-color($palette, default, $opacity);
 }
 
-@function app-color-lighter($palette) {
-  @return mat-color($palette, lighter);
+/// Gets a color from a theme palette (the output of mat-palette).
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-lighter($palette, $opacity: null) {
+  @return mat-color($palette, lighter, $opacity);
 }
 
-@function app-color-darker($palette) {
-  @return mat-color($palette, darker);
+/// Gets a color from a theme palette (the output of mat-palette).
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-darker($palette, $opacity: null) {
+  @return mat-color($palette, darker, $opacity);
 }
 
-@function app-color-text($palette) {
-  @return mat-color($palette, text);
+/// Gets a color from a theme palette (the output of mat-palette).
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-text($palette, $opacity: null) {
+  @return mat-color($palette, text, $opacity);
 }
 
-@function app-color-default-contrast($theme) {
-  @return mat-color($theme, default-contrast);
+/// Gets a color from a theme palette (the output of mat-palette).
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-default-contrast($theme, $opacity: null) {
+  @return mat-color($theme, default-contrast, $opacity);
 }
 
-@function app-color-lighter-contrast($theme) {
-  @return mat-color($theme, lighter-contrast);
+/// Gets a color from a theme palette (the output of mat-palette).
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-lighter-contrast($theme, $opacity: null) {
+  @return mat-color($theme, lighter-contrast, $opacity);
 }
 
-@function app-color-darker-contrast($theme) {
-  @return mat-color($theme, darker-contrast);
-}
-
-.test {
-  color: app-color-default($app-background);
+/// Gets a color from a theme palette (the output of mat-palette).
+///
+/// @param $color-map The theme palette (output of mat-palette).
+/// @param $opacity The alpha channel value for the color.
+@function app-color-darker-contrast($theme, $opacity: null) {
+  @return mat-color($theme, darker-contrast, $opacity);
 }

@@ -52,7 +52,7 @@ div {
   margin-right: 10px;
 
   &:hover {
-    color: mat-color($app-primary);
+    color: app-color-default($app-primary);
   }
 
   &:focus {
@@ -61,7 +61,7 @@ div {
 }
 
 .header-selected {
-  color: mat-color($app-primary);
+  color: app-color-default($app-primary);
 }
 
 :host ::ng-deep mat-drawer > * {
