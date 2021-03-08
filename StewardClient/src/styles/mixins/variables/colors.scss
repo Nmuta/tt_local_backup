@@ -1,22 +1,5 @@
-
-@import '~@angular/material/theming';
-
-$icomoon-font-path: '/assets/icon-font/fonts';
-@import '/src/assets/icon-font/variables.scss';
-
-$app-primary: mat-palette($mat-indigo);
-$app-accent: mat-palette($mat-pink, A200, A100, A400);
-$app-warn: mat-palette($mat-red);
-
-$app-theme: mat-light-theme(
-  (
-    color: (
-      primary: $app-primary,
-      accent: $app-accent,
-      warn: $app-warn,
-    ),
-  )
-);
+// file of standardized color aliases
+@import './theme.scss';
 
 //// This is a sample of how angular-material does $app-background internally.
 //// It didn't map well to things like table hover, so I did not use it.
@@ -25,7 +8,6 @@ $app-theme: mat-light-theme(
 // $app-foreground: map-get($app-config, 'foreground');
 // $app-sample-hover: map-get($app-background, 'hover')
 // $app-sample-active: map-get($app-background, 'selected-button')
-$app-background: mat-palette($mat-grey);
 
 // see the end of [0] for notes on using palette colors
 // [0]: https://material.angular.io/guide/theming-your-components#note-using-the-mat-color-function-to-extract-colors-from-a-palette

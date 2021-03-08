@@ -1,0 +1,58 @@
+
+// theme initialization and helper aliases
+@import '~@angular/material/theming';
+
+/// use for primary nagivation and "primary action" buttons that (1) are the default, and (2) perform irrevocable actions
+$app-primary: mat-palette($mat-indigo);
+
+/// use for "secondary action" buttons that (1) are not the default, and (2) perform irrevocable actions
+$app-accent: mat-palette($mat-pink, A200, A100, A400);
+
+/// use for "error state" warnings
+$app-warn: mat-palette($mat-red);
+
+/// use as a default, especially for local action buttons that do not perform irrevocable actions
+$app-background: mat-palette($mat-grey);
+
+/// the theme
+$app-theme: mat-light-theme(
+  (
+    color: (
+      primary: $app-primary,
+      accent: $app-accent,
+      warn: $app-warn,
+    ),
+  )
+);
+
+@function app-color-default($palette) {
+  @return mat-color($palette, default);
+}
+
+@function app-color-lighter($palette) {
+  @return mat-color($palette, lighter);
+}
+
+@function app-color-darker($palette) {
+  @return mat-color($palette, darker);
+}
+
+@function app-color-text($palette) {
+  @return mat-color($palette, text);
+}
+
+@function app-color-default-contrast($theme) {
+  @return mat-color($theme, default-contrast);
+}
+
+@function app-color-lighter-contrast($theme) {
+  @return mat-color($theme, lighter-contrast);
+}
+
+@function app-color-darker-contrast($theme) {
+  @return mat-color($theme, darker-contrast);
+}
+
+.test {
+  color: app-color-default($app-background);
+}
