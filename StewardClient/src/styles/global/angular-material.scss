@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 @include mat-core();
 @include angular-material-theme($app-theme);
