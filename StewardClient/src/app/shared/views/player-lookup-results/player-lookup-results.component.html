@@ -1,9 +1,12 @@
-<mat-card>
-  <mat-card-content>
-    <span class="icon t10-gtag"></span>&nbsp;
-    <span>{{ identity.gamertag }}</span>
-
-    <span class="icon t10-xuid"></span>&nbsp;
-    <span>{{ identity.xuid }}</span>
-  </mat-card-content>
-</mat-card>
+<span *ngIf="t10Id">
+  <span class="icon t10-t10id"></span>&nbsp;
+  <span class="identifier">{{ t10Id }}</span>
+</span>
+<span *ngIf="gamertag">
+  <span class="icon t10-gtag"></span>&nbsp;
+  <span class="identifier">{{ gamertag }}</span>
+</span>
+<span *ngIf="xuid">
+  <span class="icon t10-xuid"></span>&nbsp;
+  <span class="identifier">{{ xuid }}</span>
+</span>
