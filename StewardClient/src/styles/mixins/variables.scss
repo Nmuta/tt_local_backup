@@ -4,6 +4,9 @@
 // @import '../autocomplete-patch.scss';
 @import '~@angular/material/theming';
 
+$icomoon-font-path: '/assets/icon-font/fonts';
+@import '/src/assets/icon-font/variables.scss';
+
 $app-primary: mat-palette($mat-indigo);
 $app-accent: mat-palette($mat-pink, A200, A100, A400);
 $app-warn: mat-palette($mat-red);
