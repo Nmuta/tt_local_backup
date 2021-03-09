@@ -10,6 +10,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlayerLookupResultsComponent } from './player-lookup-results.component';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** A domain module for displaying player lookup results. */
 @NgModule({
@@ -27,6 +28,7 @@ import { PlayerLookupResultsComponent } from './player-lookup-results.component'
     PipesModule,
     JsonDumpModule,
     MatTooltipModule,
+    DirectivesModule
   ],
   exports: [
     PlayerLookupResultsComponent

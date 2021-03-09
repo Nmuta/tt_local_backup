@@ -1,12 +1,12 @@
-<span *ngIf="t10Id">
+<span *ngIf="t10Id" [hoverToCopy]="t10Id">
   <span class="icon t10-t10id"></span>&nbsp;
   <span class="identifier">{{ t10Id }}</span>
 </span>
-<span *ngIf="gamertag">
+<span *ngIf="gamertag" [hoverToCopy]="gamertag">
   <span class="icon t10-gtag"></span>&nbsp;
   <span class="identifier">{{ gamertag }}</span>
 </span>
-<span *ngIf="xuid">
+<span *ngIf="xuid" [hoverToCopy]="xuid">
   <span class="icon t10-xuid"></span>&nbsp;
   <span class="identifier">{{ xuid }}</span>
 </span>
