@@ -4,8 +4,8 @@ import { ApolloPlayerDetails } from '@models/apollo';
 import { GravityPlayerDetails } from '@models/gravity';
 import { OpusPlayerDetails } from '@models/opus';
 import { SunrisePlayerDetails } from '@models/sunrise';
-import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { NEVER, Observable } from 'rxjs';
+import { catchError, take, takeUntil, tap } from 'rxjs/operators';
 
 type PlayerDetailsTitleUnion =
   | OpusPlayerDetails
@@ -39,7 +39,7 @@ type PlayerDetailsIntersection = PlayerDetailsUnion & Partial<PlayerDetailsTitle
 @Component({
   template: '',
 })
-export abstract class PlayerDetailsBaseComponent<T extends PlayerDetailsUnion>
+export abstract class PlayerSidebarDetailsBaseComponent<T extends PlayerDetailsUnion>
   extends BaseComponent
   implements OnChanges {
   /** Gamertag to lookup for player details. */
@@ -65,19 +65,28 @@ export abstract class PlayerDetailsBaseComponent<T extends PlayerDetailsUnion>
 
   /** Initialization hook. */
   public ngOnChanges(): void {
+    if (!this.gamertag) {
+      return;
+    }
+
     this.isLoading = true;
     this.loadError = undefined;
 
     const details$ = this.makeRequest$();
-    details$.pipe(takeUntil(this.onDestroy$)).subscribe(
-      details => {
-        this.isLoading = false;
-        this.playerDetails = details;
-      },
-      error => {
-        this.isLoading = false;
-        this.loadError = error;
-      },
-    );
+    details$
+      .pipe(
+        takeUntil(this.onDestroy$),
+        catchError(error => {
+          this.isLoading = false;
+          this.loadError = error;
+          return NEVER;
+        }),
+        take(1),
+        tap(details => {
+          this.isLoading = false;
+          this.playerDetails = details;
+        }),
+      )
+      .subscribe();
   }
 }

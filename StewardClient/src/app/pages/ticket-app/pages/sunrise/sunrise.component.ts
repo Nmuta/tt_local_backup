@@ -1,54 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { Component } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
-import { Navigate } from '@ngxs/router-plugin';
+import { IdentityResultAlpha } from '@models/identity-query.model';
 import { Store } from '@ngxs/store';
 import { SunriseService } from '@services/sunrise';
 import { TicketService } from '@services/zendesk/ticket.service';
-import { takeUntil, switchMap, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
 
 /** Routed component for displaying Sunrise Ticket information. */
 @Component({
   templateUrl: './sunrise.component.html',
   styleUrls: ['./sunrise.component.scss'],
 })
-export class SunriseComponent extends BaseComponent implements OnInit {
-  public gamertag: string;
-  public xuid: bigint;
-  public gameTitle: GameTitleCodeName;
-
+export class SunriseComponent extends TicketAppBaseComponent {
   constructor(
-    private readonly sunrise: SunriseService,
-    private readonly store: Store,
-    private readonly ticket: TicketService,
+    protected readonly sunriseService: SunriseService,
+    protected readonly store: Store,
+    protected readonly ticketService: TicketService,
   ) {
-    super();
+    super(ticketService, store);
   }
 
-  /** Init hook. */
-  public ngOnInit(): void {
-    this.ticket
-      .getForzaTitle$()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(title => {
-        this.gameTitle = title;
-        if (title !== GameTitleCodeName.FH4) {
-          this.store.dispatch(
-            new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
-          );
-        }
-      });
+  /** Checks whether the zendesk title matches the title component. */
+  public isInCorrectTitleRoute(gameTitle: GameTitleCodeName): boolean {
+    return gameTitle === GameTitleCodeName.FH4;
+  }
 
-    this.ticket
-      .getTicketRequestorGamertag$()
-      .pipe(
-        takeUntil(this.onDestroy$),
-        switchMap(gamertag => this.sunrise.getPlayerIdentity({ gamertag })),
-        tap(identity => {
-          this.gamertag = identity.gamertag;
-          this.xuid = identity.xuid;
-        }),
-      )
-      .subscribe();
+  /** Requests player identity. */
+  public requestPlayerIdentity(gamertag: string): Observable<IdentityResultAlpha> {
+    return this.sunriseService.getPlayerIdentity({ gamertag });
   }
 }

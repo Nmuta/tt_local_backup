@@ -2,15 +2,17 @@ import { Component } from '@angular/core';
 import { ApolloPlayerDetails } from '@models/apollo';
 import { ApolloService } from '@services/apollo';
 import { Observable } from 'rxjs';
-import { PlayerDetailsBaseComponent } from '../../player-details.base.component';
+import { PlayerSidebarDetailsBaseComponent } from '../../player-sidebar-details.base.component';
 
 /** Gravity Player Details */
 @Component({
-  selector: 'apollo-player-details',
-  templateUrl: '../../player-details.component.html',
-  styleUrls: ['../../player-details.component.scss'],
+  selector: 'apollo-player-sidebar-details',
+  templateUrl: '../../player-sidebar-details.component.html',
+  styleUrls: ['../../player-sidebar-details.component.scss'],
 })
-export class ApolloPlayerDetailsComponent extends PlayerDetailsBaseComponent<ApolloPlayerDetails> {
+export class ApolloPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
+  ApolloPlayerDetails
+> {
   constructor(public readonly apolloService: ApolloService) {
     super();
   }

@@ -10,10 +10,10 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { PlayerDetailsItemModule } from './player-details-item/player-details-item.module';
-import { ApolloPlayerDetailsComponent } from './titles/apollo/apollo-player-details.component';
-import { GravityPlayerDetailsComponent } from './titles/gravity/gravity-player-details.component';
-import { OpusPlayerDetailsComponent } from './titles/opus/opus-player-details.component';
-import { SunrisePlayerDetailsComponent } from './titles/sunrise/sunrise-player-details.component';
+import { ApolloPlayerSidebarDetailsComponent } from './titles/apollo/apollo-player-sidebar-details.component';
+import { GravityPlayerSidebarDetailsComponent } from './titles/gravity/gravity-player-sidebar-details.component';
+import { OpusPlayerSidebarDetailsComponent } from './titles/opus/opus-player-sidebar-details.component';
+import { SunrisePlayerSidebarDetailsComponent } from './titles/sunrise/sunrise-player-sidebar-details.component';
 
 /** A domain module for displaying player details (designed for ticket-app). */
 @NgModule({
@@ -30,16 +30,16 @@ import { SunrisePlayerDetailsComponent } from './titles/sunrise/sunrise-player-d
     JsonDumpModule,
   ],
   exports: [
-    GravityPlayerDetailsComponent,
-    SunrisePlayerDetailsComponent,
-    ApolloPlayerDetailsComponent,
-    OpusPlayerDetailsComponent,
+    GravityPlayerSidebarDetailsComponent,
+    SunrisePlayerSidebarDetailsComponent,
+    ApolloPlayerSidebarDetailsComponent,
+    OpusPlayerSidebarDetailsComponent,
   ],
   declarations: [
-    GravityPlayerDetailsComponent,
-    SunrisePlayerDetailsComponent,
-    ApolloPlayerDetailsComponent,
-    OpusPlayerDetailsComponent,
+    GravityPlayerSidebarDetailsComponent,
+    SunrisePlayerSidebarDetailsComponent,
+    ApolloPlayerSidebarDetailsComponent,
+    OpusPlayerSidebarDetailsComponent,
   ],
 })
-export class PlayerDetailsModule {}
+export class PlayerSidebarDetailsModule {}

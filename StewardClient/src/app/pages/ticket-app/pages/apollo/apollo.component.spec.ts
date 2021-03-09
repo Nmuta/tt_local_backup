@@ -1,20 +1,20 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameTitleCodeName } from '@models/enums';
-import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import { ApolloService, createMockApolloService } from '@services/apollo';
-import { createMockTicketService, MockTicketService, TicketService } from '@services/zendesk';
+import { createMockTicketService } from '@services/zendesk';
 import { of } from 'rxjs';
+import faker from 'faker';
 
 import { ApolloComponent } from './apollo.component';
 
 describe('ApolloComponent - Ticket App', () => {
   let component: ApolloComponent;
   let fixture: ComponentFixture<ApolloComponent>;
-  let store: Store;
-  let ticketService: MockTicketService;
-  let service: ApolloService;
+
+  let mockStore: Store;
+  let mockApolloService: ApolloService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,58 +24,43 @@ describe('ApolloComponent - Ticket App', () => {
       providers: [createMockApolloService(), createMockTicketService()],
     }).compileComponents();
 
-    ticketService = (TestBed.inject(TicketService) as unknown) as MockTicketService;
-
-    store = TestBed.inject(Store);
-    store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of());
-
-    service = TestBed.inject(ApolloService);
-
     fixture = TestBed.createComponent(ApolloComponent);
     component = fixture.componentInstance;
 
-    ticketService.activeTitle = GameTitleCodeName.FM7;
-    service.getPlayerIdentity = jasmine
-      .createSpy('getPlayerIdentity')
-      .and.returnValue(of({ gamertag: 'test', xuid: BigInt('0123456789') }));
+    mockStore = TestBed.inject(Store);
+    mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of());
+
+    mockApolloService = TestBed.inject(ApolloService);
   });
 
-  it('should collect title', () => {
-    fixture.detectChanges();
-    expect(ticketService.getForzaTitle$).toHaveBeenCalledTimes(1);
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
-  it('should collect gamertag', () => {
-    fixture.detectChanges();
-    expect(ticketService.getTicketRequestorGamertag$).toHaveBeenCalledTimes(1);
-    expect(service.getPlayerIdentity).toHaveBeenCalledWith({
-      gamertag: ticketService.activeGamertag,
+  describe('Method: isInCorrectTitleRoute', () => {
+    describe('When gameTitle matches Apollo', () => {
+      it('should return true', () => {
+        const result = component.isInCorrectTitleRoute(GameTitleCodeName.FM7);
+
+        expect(result).toBeTruthy();
+      });
     });
-    expect(component.xuid).toBeTruthy();
-  });
+    describe('When gameTitle does not match Apollo', () => {
+      it('should return true', () => {
+        const result = component.isInCorrectTitleRoute(GameTitleCodeName.FH4);
 
-  describe('when right title', () => {
-    it('should create', () => {
-      fixture.detectChanges();
-      expect(component).toBeTruthy();
-    });
-
-    it('should not navigate away', () => {
-      fixture.detectChanges();
-      expect(store.dispatch).toHaveBeenCalledTimes(0);
+        expect(result).toBeFalsy();
+      });
     });
   });
 
-  describe('when wrong title', () => {
-    beforeEach(() => {
-      ticketService.activeTitle = GameTitleCodeName.Street;
-    });
+  describe('Method: requestPlayerIdentity', () => {
+    const gamertag = faker.name.firstName();
 
-    it('it should navigate to the routing page', () => {
-      fixture.detectChanges();
-      expect(store.dispatch).toHaveBeenCalledWith(
-        new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
-      );
+    it('should send request to apolloService.getPlayerIdentity ', () => {
+      component.requestPlayerIdentity(gamertag);
+
+      expect(mockApolloService.getPlayerIdentity).toHaveBeenCalledWith({ gamertag: gamertag });
     });
   });
 });

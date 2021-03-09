@@ -1,4 +1,16 @@
-<apollo-player-details [gamertag]="gamertag"></apollo-player-details>
-<quick-actions class="top-spacing">
-  <go-to-inventory-button [gameTitle]="gameTitle" [xuid]="xuid"></go-to-inventory-button>
-</quick-actions>
+<ng-container *ngIf="!identityError; else identityErrorState">
+  <apollo-player-sidebar-details [gamertag]="gamertag"></apollo-player-sidebar-details>
+  <quick-actions class="top-spacing">
+    <go-to-inventory-button [gameTitle]="gameTitle" [xuid]="xuid"></go-to-inventory-button>
+  </quick-actions>
+</ng-container>
+
+<ng-template #identityErrorState>
+  <mat-card class="lookup-failed-card">
+    <mat-card-title>Apollo Lookup Failed</mat-card-title>
+    <mat-card-content>
+      <p>"{{ lookupGamertag }}" does not exist.</p>
+      <json-dump [input]="identityError">Lookup Error</json-dump>
+    </mat-card-content>
+  </mat-card>
+</ng-template>
