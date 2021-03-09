@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Security.Claims;
 using System.Xml;
 using Newtonsoft.Json;
@@ -35,7 +36,18 @@ namespace Turn10.LiveOps.StewardApi.Helpers.JsonConverters
             }
 
             var value = serializer.Deserialize<string>(reader);
-            return XmlConvert.ToTimeSpan(value);
+            TimeSpan result;
+
+            try
+            {
+                result = XmlConvert.ToTimeSpan(value);
+            }
+            catch
+            {
+                result = TimeSpan.Parse(value, CultureInfo.InvariantCulture);
+            }
+
+            return result;
         }
 
         /// <inheritdoc />
