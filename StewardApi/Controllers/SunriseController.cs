@@ -174,11 +174,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 results.Add(await query.ConfigureAwait(true));
             }
 
-            results[0].Error = new IdentityLookupError()
-            {
-                Message = "Testing Error",
-            };
-
             return this.Ok(results);
         }
 
