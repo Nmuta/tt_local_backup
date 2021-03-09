@@ -57,10 +57,6 @@ describe('GravityComponent - Ticket App', () => {
   describe('Method: requestPlayerIdentity', () => {
     const gamertag = faker.name.firstName();
 
-    beforeEach(() => {
-      mockGravityService.getPlayerIdentity = jasmine.createSpy('getPlayerIdentity');
-    });
-
     it('should send request to mockGravityService.getPlayerIdentity ', () => {
       component.requestPlayerIdentity(gamertag);
 

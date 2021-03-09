@@ -57,10 +57,6 @@ describe('OpusComponent - Ticket App', () => {
   describe('Method: requestPlayerIdentity', () => {
     const gamertag = faker.name.firstName();
 
-    beforeEach(() => {
-      mockOpusService.getPlayerIdentity = jasmine.createSpy('getPlayerIdentity');
-    });
-
     it('should send request to mockOpusService.getPlayerIdentity ', () => {
       component.requestPlayerIdentity(gamertag);
 

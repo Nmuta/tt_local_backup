@@ -57,10 +57,6 @@ describe('ApolloComponent - Ticket App', () => {
   describe('Method: requestPlayerIdentity', () => {
     const gamertag = faker.name.firstName();
 
-    beforeEach(() => {
-      mockApolloService.getPlayerIdentity = jasmine.createSpy('getPlayerIdentity');
-    });
-
     it('should send request to apolloService.getPlayerIdentity ', () => {
       component.requestPlayerIdentity(gamertag);
 
