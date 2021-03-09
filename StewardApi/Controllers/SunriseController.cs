@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents.SystemFunctions;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -172,6 +173,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             {
                 results.Add(await query.ConfigureAwait(true));
             }
+
+            results[0].Error = new IdentityLookupError()
+            {
+                Message = "Testing Error",
+            };
 
             return this.Ok(results);
         }

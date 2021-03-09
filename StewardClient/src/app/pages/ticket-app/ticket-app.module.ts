@@ -20,6 +20,7 @@ import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { OverlayComponent } from './components/overlay/overlay.component';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 
 /** Defines the ticket sidebar module. */
 @NgModule({
@@ -35,6 +36,7 @@ import { OverlayComponent } from './components/overlay/overlay.component';
     ContentCollapseModule,
     MatProgressSpinnerModule,
     MatSidenavModule,
+    JsonDumpModule,
   ],
   providers: [],
   declarations: [

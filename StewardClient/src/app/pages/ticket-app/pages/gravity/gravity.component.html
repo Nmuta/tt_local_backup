@@ -9,7 +9,8 @@
   <mat-card class="lookup-failed-card">
     <mat-card-title>Gravity Lookup Failed</mat-card-title>
     <mat-card-content>
-      <p>"{{ lookupGamertag }}"" does not exist.</p>
+      <p>"{{ lookupGamertag }}" does not exist.</p>
+      <json-dump [input]="identityError">Lookup Error</json-dump>
     </mat-card-content>
   </mat-card>
 </ng-template>
