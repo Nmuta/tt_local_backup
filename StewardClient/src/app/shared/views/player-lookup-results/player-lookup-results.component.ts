@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { IdentityResultBeta, IdentityResultUnion } from '@models/identity-query.model';
 
 /**
- *
+  Displays player identity lookup results.
  */
 @Component({
   selector: 'player-lookup-results',

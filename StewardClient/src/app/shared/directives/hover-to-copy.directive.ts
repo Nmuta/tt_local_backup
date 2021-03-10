@@ -56,7 +56,7 @@ export class HoverToCopyDirective {
   /**
     Show the copy button.
    */
-  show(): void {
+  private show(): void {
     this.create();
     this.setPosition();
   }
@@ -64,7 +64,7 @@ export class HoverToCopyDirective {
   /**
     Hide the copy button.
    */
-  hide(): void {
+  private hide(): void {
     this.renderer.removeChild(document.body, this.tooltip);
     this.tooltip = null;
   }
@@ -72,7 +72,7 @@ export class HoverToCopyDirective {
   /**
    Create the copy button.
    */
-  create(): void {
+  private create(): void {
     this.tooltip = this.renderer.createElement('span');
 
     this.renderer.appendChild(this.tooltip, this.renderer.createText(this.tooltipTitle));
@@ -85,7 +85,7 @@ export class HoverToCopyDirective {
   /**
    Set the position.
    */
-  setPosition(): void {
+  private setPosition(): void {
     const hostPos = this.elementRef.nativeElement.getBoundingClientRect();
     const tooltipPos = this.tooltip.getBoundingClientRect();
 
