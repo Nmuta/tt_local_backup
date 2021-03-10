@@ -7,10 +7,12 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
+using Turn10.LiveOps.StewardApi.Common;
 
 namespace Turn10.LiveOps.StewardApi.Obligation
 {
@@ -31,9 +33,15 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         ///     Initializes a new instance of the <see cref="ObligationAuthoringClient"/> class.
         /// </summary>
         /// <param name="keyVaultProvider">The key vault provider.</param>
-        public ObligationAuthoringClient(IKeyVaultProvider keyVaultProvider)
+        /// <param name="configuration">The configuration.</param>
+        public ObligationAuthoringClient(IKeyVaultProvider keyVaultProvider, IConfiguration configuration)
         {
-            var secret = keyVaultProvider.GetSecretAsync("steward-keyvault-dev", "obligation-aad-client-secret").GetAwaiter().GetResult();
+            keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
+            configuration.ShouldNotBeNull(nameof(configuration));
+
+            var keyVaultName = configuration[ConfigurationKeyConstants.KeyVaultUrl];
+
+            var secret = keyVaultProvider.GetSecretAsync(keyVaultName, "obligation-aad-client-secret").GetAwaiter().GetResult();
 
             this.confidentialClientApplication = ConfidentialClientApplicationBuilder
                                                     .Create(T10ObligationClientId)

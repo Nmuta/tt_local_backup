@@ -2,3 +2,18 @@
   margin-top: 20px;
   display: block;
 }
+
+.lookup-failed-card {
+  margin-top: 40px;
+  padding: 30px 0px;
+  text-align: center;
+
+  mat-card-content {
+    margin-top: 20px;
+  }
+}
+
+json-dump {
+  width: 100%;
+  margin: 0px;
+}

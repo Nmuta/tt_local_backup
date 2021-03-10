@@ -2,15 +2,15 @@ import { Component } from '@angular/core';
 import { SunrisePlayerDetails } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise';
 import { Observable } from 'rxjs';
-import { PlayerDetailsBaseComponent } from '../../player-details.base.component';
+import { PlayerSidebarDetailsBaseComponent } from '../../player-sidebar-details.base.component';
 
 /** Gravity Player Details */
 @Component({
-  selector: 'sunrise-player-details',
-  templateUrl: '../../player-details.component.html',
-  styleUrls: ['../../player-details.component.scss'],
+  selector: 'sunrise-player-sidebar-details',
+  templateUrl: '../../player-sidebar-details.component.html',
+  styleUrls: ['../../player-sidebar-details.component.scss'],
 })
-export class SunrisePlayerDetailsComponent extends PlayerDetailsBaseComponent<
+export class SunrisePlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   SunrisePlayerDetails
 > {
   constructor(public readonly sunriseService: SunriseService) {

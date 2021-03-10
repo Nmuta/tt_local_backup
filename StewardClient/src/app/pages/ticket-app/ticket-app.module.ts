@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { ContentCollapseModule } from '@components/content-collapse/content-collapse.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { PlayerDetailsModule } from '@shared/views/player-details/player-details.module';
+import { PlayerSidebarDetailsModule } from './components/player-sidebar-details/player-sidebar-details.module';
 
 import { TicketAppComponent } from './ticket-app.component';
 import { TicketAppRouterModule } from './ticket-app.routing';
@@ -20,6 +20,7 @@ import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { OverlayComponent } from './components/overlay/overlay.component';
+import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 
 /** Defines the ticket sidebar module. */
 @NgModule({
@@ -27,7 +28,7 @@ import { OverlayComponent } from './components/overlay/overlay.component';
     CommonModule,
     TicketAppRouterModule,
     FontAwesomeModule,
-    PlayerDetailsModule,
+    PlayerSidebarDetailsModule,
     UserFlagsModule,
     BanHistoryModule,
     MatButtonModule,
@@ -35,6 +36,7 @@ import { OverlayComponent } from './components/overlay/overlay.component';
     ContentCollapseModule,
     MatProgressSpinnerModule,
     MatSidenavModule,
+    JsonDumpModule,
   ],
   providers: [],
   declarations: [

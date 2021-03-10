@@ -1,20 +1,20 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GameTitleCodeName } from '@models/enums';
-import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
-import { SunriseService, createMockSunriseService } from '@services/sunrise';
-import { createMockTicketService, MockTicketService, TicketService } from '@services/zendesk';
+import { createMockTicketService } from '@services/zendesk';
 import { of } from 'rxjs';
+import faker from 'faker';
 
 import { SunriseComponent } from './sunrise.component';
+import { createMockSunriseService, SunriseService } from '@services/sunrise';
 
 describe('SunriseComponent - Ticket App', () => {
   let component: SunriseComponent;
   let fixture: ComponentFixture<SunriseComponent>;
-  let store: Store;
-  let ticketService: MockTicketService;
-  let service: SunriseService;
+
+  let mockStore: Store;
+  let mockSunriseService: SunriseService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,58 +24,43 @@ describe('SunriseComponent - Ticket App', () => {
       providers: [createMockSunriseService(), createMockTicketService()],
     }).compileComponents();
 
-    ticketService = (TestBed.inject(TicketService) as unknown) as MockTicketService;
-
-    store = TestBed.inject(Store);
-    store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of());
-
-    service = TestBed.inject(SunriseService);
-
     fixture = TestBed.createComponent(SunriseComponent);
     component = fixture.componentInstance;
 
-    ticketService.activeTitle = GameTitleCodeName.FH4;
-    service.getPlayerIdentity = jasmine
-      .createSpy('getPlayerIdentity')
-      .and.returnValue(of({ gamertag: 'test', xuid: BigInt('0123456789') }));
+    mockStore = TestBed.inject(Store);
+    mockStore.dispatch = jasmine.createSpy('dispatch').and.returnValue(of());
+
+    mockSunriseService = TestBed.inject(SunriseService);
   });
 
-  it('should collect title', () => {
-    fixture.detectChanges();
-    expect(ticketService.getForzaTitle$).toHaveBeenCalledTimes(1);
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
-  it('should collect gamertag', () => {
-    fixture.detectChanges();
-    expect(ticketService.getTicketRequestorGamertag$).toHaveBeenCalledTimes(1);
-    expect(service.getPlayerIdentity).toHaveBeenCalledWith({
-      gamertag: ticketService.activeGamertag,
+  describe('Method: isInCorrectTitleRoute', () => {
+    describe('When gameTitle matches Sunrise', () => {
+      it('should return true', () => {
+        const result = component.isInCorrectTitleRoute(GameTitleCodeName.FH4);
+
+        expect(result).toBeTruthy();
+      });
     });
-    expect(component.xuid).toBeTruthy();
-  });
+    describe('When gameTitle does not match Gravity', () => {
+      it('should return true', () => {
+        const result = component.isInCorrectTitleRoute(GameTitleCodeName.Street);
 
-  describe('when right title', () => {
-    it('should create', () => {
-      fixture.detectChanges();
-      expect(component).toBeTruthy();
-    });
-
-    it('should not navigate away', () => {
-      fixture.detectChanges();
-      expect(store.dispatch).toHaveBeenCalledTimes(0);
+        expect(result).toBeFalsy();
+      });
     });
   });
 
-  describe('when wrong title', () => {
-    beforeEach(() => {
-      ticketService.activeTitle = GameTitleCodeName.FM7;
-    });
+  describe('Method: requestPlayerIdentity', () => {
+    const gamertag = faker.name.firstName();
 
-    it('it should navigate to the routing page', () => {
-      fixture.detectChanges();
-      expect(store.dispatch).toHaveBeenCalledWith(
-        new Navigate(['/support/ticket-app/title/'], null, { replaceUrl: true }),
-      );
+    it('should send request to mockGravityService.getPlayerIdentity ', () => {
+      component.requestPlayerIdentity(gamertag);
+
+      expect(mockSunriseService.getPlayerIdentity).toHaveBeenCalledWith({ gamertag: gamertag });
     });
   });
 });
