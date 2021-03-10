@@ -8,9 +8,8 @@ describe('PlayerLookupResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlayerLookupResultsComponent ]
-    })
-    .compileComponents();
+      declarations: [PlayerLookupResultsComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

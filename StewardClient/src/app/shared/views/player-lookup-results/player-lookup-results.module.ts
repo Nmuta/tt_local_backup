@@ -14,9 +14,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** A domain module for displaying player lookup results. */
 @NgModule({
-  declarations: [
-    PlayerLookupResultsComponent
-  ],
+  declarations: [PlayerLookupResultsComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -28,10 +26,8 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     PipesModule,
     JsonDumpModule,
     MatTooltipModule,
-    DirectivesModule
+    DirectivesModule,
   ],
-  exports: [
-    PlayerLookupResultsComponent
-  ],
+  exports: [PlayerLookupResultsComponent],
 })
 export class PlayerLookupResultsModule {}

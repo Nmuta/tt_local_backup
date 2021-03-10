@@ -65,7 +65,7 @@ import { PlayerLookupResultsModule } from '@shared/views/player-lookup-results/p
     PlayerInventoryProfilesModule,
     PlayerSelectionModule,
     MatTooltipModule,
-    PlayerLookupResultsModule
+    PlayerLookupResultsModule,
   ],
 })
 export class UserDetailsModule {}
