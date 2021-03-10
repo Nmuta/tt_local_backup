@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ComponentFixture, ComponentFixtureAutoDetect, TestBed} from '@angular/core/testing';
+import { ComponentFixture, ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { HoverToCopyDirective } from './hover-to-copy.directive';
 
 @Component({
