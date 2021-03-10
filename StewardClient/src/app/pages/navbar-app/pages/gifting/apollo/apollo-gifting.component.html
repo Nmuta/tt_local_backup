@@ -9,6 +9,7 @@
         <mat-tab label="Player Selection">
           <mat-card>
             <player-selection-single
+              [disableLookupTypes]="['t10Id']"
               [allowSelection]="true"
               [rejectionFn]="identityRejectionFn"
               (found)="onPlayerIdentityChange($event)"
