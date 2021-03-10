@@ -1,4 +1,4 @@
-import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from '@angular/router';
+import { ActivatedRouteSnapshot, DetachedRouteHandle, Route, RouteReuseStrategy } from '@angular/router';
 import { faker } from '@interceptors/fake-api/utility';
 
 /**
@@ -8,7 +8,7 @@ import { faker } from '@interceptors/fake-api/utility';
  * - https://itnext.io/cache-components-with-angular-routereusestrategy-3e4c8b174d5f
  */
 export class StoreForeverStrategy implements RouteReuseStrategy {
-  protected handles: { [key: string]: DetachedRouteHandle } = {};
+  protected safeHandles = new Map<string, DetachedRouteHandle>()
   private readonly instanceId = faker.random.number();
 
   constructor() {
@@ -18,23 +18,28 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
   /** Route Reuse hook. */
   public shouldDetach(_route: ActivatedRouteSnapshot): boolean {
     const shouldDetach = true;
-    console.log(`[RouteReuse|${this.instanceId}] shouldDetach(${shouldDetach}) | ${this.makeKey(_route)}`);
+    console.log(`[RouteReuse|${this.instanceId}] shouldDetach(${shouldDetach}) | ${this.makeId(_route)}`);
     return shouldDetach;
   }
 
   /** Route Reuse hook. */
   public store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
     const key = this.makeKey(route);
-    console.log(`[RouteReuse|${this.instanceId}] store() ${key}`, handle);
-    this.handles[key] = handle;
+    if (handle !== null) {
+      console.warn(`[RouteReuse|${this.instanceId}] store() ${this.makeId(route)}`, handle);
+      this.safeHandles.set(key, handle);
+    } else {
+      console.log(`[RouteReuse|${this.instanceId}] store() ${this.makeId(route)}`, handle);
+      this.safeHandles.delete(key);
+    }
   }
 
   /** Route Reuse hook. */
   public shouldAttach(route: ActivatedRouteSnapshot): boolean {
     const key = this.makeKey(route);
-    const handle = this.handles[key]
-    const shouldAttach = !!route.routeConfig && !!handle;
-    console.log(`[RouteReuse|${this.instanceId}] shouldAttach(${shouldAttach}) | ${key}`, route, handle);
+    const shouldAttach = !!route.routeConfig && this.safeHandles.has(key);
+    const handle = this.safeHandles.get(key);
+    console.warn(`[RouteReuse|${this.instanceId}] shouldAttach(${shouldAttach}) | ${this.makeId(route)}`, route, handle);
     return shouldAttach;
   }
 
@@ -42,9 +47,9 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
   public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
     const key = this.makeKey(route);
     const shouldRetrieve = !!route.routeConfig;
-    const handle = this.handles[key];
+    const handle = this.safeHandles.get(key);
 
-    console.log(`[RouteReuse|${this.instanceId}] retrieve(${shouldRetrieve}) | ${key}`, route, handle);
+    console.warn(`[RouteReuse|${this.instanceId}] retrieve(${shouldRetrieve}) | ${this.makeId(route)}`, route, handle);
 
     if (!shouldRetrieve) {
       return null;
@@ -59,11 +64,17 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
    */
   public shouldReuseRoute(leaving: ActivatedRouteSnapshot, landing: ActivatedRouteSnapshot): boolean {
     const shouldReuseRoute = leaving.routeConfig === landing.routeConfig;
-    console.log(`[RouteReuse|${this.instanceId}] shouldReuseRoute(${shouldReuseRoute}) | ${this.makeKey(leaving)} -> ${this.makeKey(landing)}`, leaving, landing);
+    console.log(`[RouteReuse|${this.instanceId}] shouldReuseRoute(${shouldReuseRoute}) | ${this.makeId(leaving)} -> ${this.makeId(landing)}`, leaving, landing);
     return shouldReuseRoute;
   }
 
   private makeKey(route: ActivatedRouteSnapshot): string {
-    return route.pathFromRoot.map(r => r.url).filter(v => !!(v.toString().trim())).join('/');
+    const normalizedPath = route.pathFromRoot.map(r => r.url).filter(v => !!(v.toString().trim())).join('/');
+    return `(${route.outlet})${normalizedPath}`;
+  }
+
+  private makeId(route: ActivatedRouteSnapshot): string {
+    const normalizedPath = route.pathFromRoot.map(r => r.url).filter(v => !!(v.toString().trim())).join('/');
+    return `${route.outlet}:${normalizedPath}`;
   }
 }
