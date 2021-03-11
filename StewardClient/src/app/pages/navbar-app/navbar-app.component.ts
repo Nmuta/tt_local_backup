@@ -1,7 +1,5 @@
-import { ViewChild } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
-import { MatDrawer } from '@angular/material/sidenav';
 import { ActivatedRouteSnapshot, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
