@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, NgxsModule } from '@ngxs/store';
 import { TitleMemoryState } from '@shared/state/title-memory/title-memory.state';
@@ -16,6 +16,9 @@ describe('TitleMemoryRedirectGuard', () => {
   };
   const testRoute: Partial<ActivatedRouteSnapshot> = {
     parent: (testRouteParent as unknown) as ActivatedRouteSnapshot,
+    pathFromRoot: [{
+      url: [new UrlSegment('hello', {}), new UrlSegment('world', {})],
+    }] as unknown as ActivatedRouteSnapshot[],
   };
   const testSnapshot: Partial<RouterStateSnapshot> = {};
 
