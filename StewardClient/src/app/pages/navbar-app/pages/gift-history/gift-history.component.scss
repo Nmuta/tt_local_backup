@@ -1,5 +1,5 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 .mat-stroked-button {
-  border-color: rgba(mat-color($app-background, default-contrast), 0.333);
+  border-color: app-color-default-contrast($app-background, 0.333);
 }

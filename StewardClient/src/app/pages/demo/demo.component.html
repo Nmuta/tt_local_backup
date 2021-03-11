@@ -1,28 +1,14 @@
 <center-contents>
   <mat-card>
-    <h1>Demo page</h1>
+    <h1>Demos</h1>
     <p>For testing out and demonstrating styles.</p>
+    <ul>
+      <li *ngFor="let child of children">
+        <a [routerLink]="['/demo', child.path]">{{ child.path }}</a>
+      </li>
+    </ul>
   </mat-card>
   <mat-card>
-    <h2>Font Icons</h2>
-    <a href="/assets/icon-font/demo.html">Icon Font demo page</a>
-    <p style="font-size: 32px; background-color: lightgrey">
-      <span class="icon t10-t10id"></span>&nbsp; <span class="icon t10-gtag"></span>&nbsp;
-      <span class="icon t10-xuid"></span>&nbsp; <span class="icon t10-error"></span>&nbsp;
-      <span class="icon t10-logo-black"></span>&nbsp;
-      <span class="icon t10-logo-white"></span>&nbsp;
-    </p>
-    <p style="font-size: 32px; background-color: white">
-      <span class="icon t10-t10id"></span>&nbsp; <span class="icon t10-gtag"></span>&nbsp;
-      <span class="icon t10-xuid"></span>&nbsp; <span class="icon t10-error"></span>&nbsp;
-      <span class="icon t10-logo-black"></span>&nbsp;
-      <span class="icon t10-logo-white"></span>&nbsp;
-    </p>
-    <p style="font-size: 32px; background-color: black; color: white">
-      <span class="icon t10-t10id"></span>&nbsp; <span class="icon t10-gtag"></span>&nbsp;
-      <span class="icon t10-xuid"></span>&nbsp; <span class="icon t10-error"></span>&nbsp;
-      <span class="icon t10-logo-black"></span>&nbsp;
-      <span class="icon t10-logo-white"></span>&nbsp;
-    </p>
+    <router-outlet></router-outlet>
   </mat-card>
 </center-contents>

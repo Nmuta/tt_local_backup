@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 :host {
   display: block;
@@ -33,7 +33,7 @@
 
   // TODO: This style should probably be global? Or a mixin.
   a {
-    color: mat-color($app-primary);
+    color: app-color-default($app-primary);
     text-decoration: none;
 
     &:hover {

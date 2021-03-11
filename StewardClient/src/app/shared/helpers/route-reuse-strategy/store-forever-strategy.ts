@@ -1,4 +1,5 @@
 import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from '@angular/router';
+import { faker } from '@interceptors/fake-api/utility';
 
 /**
  * A route re-use strategy that stores the routed path for the session.
@@ -7,49 +8,81 @@ import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from 
  * - https://itnext.io/cache-components-with-angular-routereusestrategy-3e4c8b174d5f
  */
 export class StoreForeverStrategy implements RouteReuseStrategy {
-  protected handles: { [key: string]: DetachedRouteHandle } = {};
+  protected safeHandles = new Map<string, DetachedRouteHandle>();
+  private readonly instanceId = faker.random.number();
+
+  constructor() {
+    // console.log(`[RouteReuse|${this.instanceId}] constructor(${this.instanceId})`);
+  }
 
   /** Route Reuse hook. */
   public shouldDetach(_route: ActivatedRouteSnapshot): boolean {
     const shouldDetach = true;
-    // console.log('[RouteReuse] shouldDetach', _route, shouldDetach);
+    // console.log(`[RouteReuse|${this.instanceId}] shouldDetach(${shouldDetach}) | ${this.makeId(_route)}`);
     return shouldDetach;
   }
 
   /** Route Reuse hook. */
   public store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
-    // console.log('[RouteReuse] store', route, handle);
-    this.handles[this.makeKey(route)] = handle;
+    const key = this.makeKey(route);
+    if (handle !== null) {
+      // console.warn(`[RouteReuse|${this.instanceId}] store() ${this.makeId(route)}`, handle);
+      this.safeHandles.set(key, handle);
+    } else {
+      // console.log(`[RouteReuse|${this.instanceId}] store() ${this.makeId(route)}`, handle);
+      this.safeHandles.delete(key);
+    }
   }
 
   /** Route Reuse hook. */
   public shouldAttach(route: ActivatedRouteSnapshot): boolean {
-    const shouldAttach = !!route.routeConfig && !!this.handles[this.makeKey(route)];
-    // console.log('[RouteReuse] shouldAttach', route, shouldAttach);
+    const key = this.makeKey(route);
+    const shouldAttach = !!route.routeConfig && this.safeHandles.has(key);
+    // console.warn(`[RouteReuse|${this.instanceId}] shouldAttach(${shouldAttach}) | ${this.makeId(route)}`, route, this.safeHandles.get(key));
     return shouldAttach;
   }
 
   /** Route Reuse hook. */
   public retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
+    const key = this.makeKey(route);
     const shouldRetrieve = !!route.routeConfig;
-    const handle = this.handles[this.makeKey(route)];
+    const handle = this.safeHandles.get(key);
 
-    // console.log('[RouteReuse] retrieve', route, shouldRetrieve, handle);
+    // console.warn(`[RouteReuse|${this.instanceId}] retrieve(${shouldRetrieve}) | ${this.makeId(route)}`, route, handle);
 
     if (!shouldRetrieve) {
       return null;
     }
+
     return handle;
   }
 
-  /** Route Reuse hook. */
-  public shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-    const shouldReuseRoute = future.routeConfig === curr.routeConfig;
-    // console.log('[RouteReuse] shouldReuseRoute', shouldReuseRoute, future, curr);
+  /**
+   * Route Reuse hook.
+   * True if routing should not happen and we should remain on the same component.
+   */
+  public shouldReuseRoute(
+    leaving: ActivatedRouteSnapshot,
+    landing: ActivatedRouteSnapshot,
+  ): boolean {
+    const shouldReuseRoute = leaving.routeConfig === landing.routeConfig;
+    // console.log(`[RouteReuse|${this.instanceId}] shouldReuseRoute(${shouldReuseRoute}) | ${this.makeId(leaving)} -> ${this.makeId(landing)}`, leaving, landing);
     return shouldReuseRoute;
   }
 
   private makeKey(route: ActivatedRouteSnapshot): string {
-    return route.pathFromRoot.map(r => r.url).join('/');
+    const normalizedPath = route.pathFromRoot
+      .map(r => r.url)
+      .filter(v => !!v.toString().trim())
+      .join('/');
+    return `(${route.outlet})${normalizedPath}`;
+  }
+
+  private makeId(route: ActivatedRouteSnapshot): string {
+    const normalizedPath = route.pathFromRoot
+      .map(r => r.url)
+      .filter(v => !!v.toString().trim())
+      .join('/');
+    return `${route.outlet}:${normalizedPath}`;
   }
 }

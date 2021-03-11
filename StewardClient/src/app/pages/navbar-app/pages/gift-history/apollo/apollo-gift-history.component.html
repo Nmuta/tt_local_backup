@@ -1,24 +1,25 @@
 <div class="default-page-layout">
   <div class="default-page-layout-left">
-    <mat-card>
-      <mat-tab-group
-        mat-stretch-tabs
-        [(selectedIndex)]="matTabSelectedIndex"
-        (selectedTabChange)="matTabSelectionChange($event.index)"
-      >
-        <mat-tab label="Player Selection">
+    <mat-tab-group
+      mat-stretch-tabs
+      [(selectedIndex)]="matTabSelectedIndex"
+      (selectedTabChange)="matTabSelectionChange($event.index)"
+    >
+      <mat-tab label="Player Selection">
+        <mat-card>
           <player-selection-single
+            [disableLookupTypes]="['t10Id']"
             [allowSelection]="true"
             [rejectionFn]="identityRejectionFn"
             (found)="onPlayerIdentityChange($event)"
             (selected)="playerIdentitySelected($event)"
           ></player-selection-single>
-        </mat-tab>
-        <mat-tab label="LSP Group Selection">
-          <apollo-lsp-group-selection [(ngModel)]="selectedLspGroup"></apollo-lsp-group-selection>
-        </mat-tab>
-      </mat-tab-group>
-    </mat-card>
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="LSP Group Selection">
+        <apollo-lsp-group-selection [(ngModel)]="selectedLspGroup"></apollo-lsp-group-selection>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 
   <div class="default-page-layout-right">

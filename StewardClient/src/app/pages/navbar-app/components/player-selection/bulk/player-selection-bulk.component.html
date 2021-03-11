@@ -5,9 +5,15 @@
   #lookupTypeGroup="matButtonToggleGroup"
   [(ngModel)]="lookupType"
 >
-  <mat-button-toggle value="gamertag">GTAG</mat-button-toggle>
-  <mat-button-toggle value="xuid">XUID</mat-button-toggle>
-  <mat-button-toggle value="t10Id">T10</mat-button-toggle>
+  <mat-button-toggle *ngIf="!disableLookupTypes.includes('gamertag')" value="gamertag"
+    >GTAG</mat-button-toggle
+  >
+  <mat-button-toggle *ngIf="!disableLookupTypes.includes('xuid')" value="xuid"
+    >XUID</mat-button-toggle
+  >
+  <mat-button-toggle *ngIf="!disableLookupTypes.includes('t10Id')" value="t10Id"
+    >T10</mat-button-toggle
+  >
 </mat-button-toggle-group>
 
 <mat-form-field class="player-chip-list" [class.display-in-single-line]="displayInSingleLine">

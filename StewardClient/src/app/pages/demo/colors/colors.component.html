@@ -1,0 +1,33 @@
+<h2>app-color-*</h2>
+
+<section class="background-first">
+  <h3>
+    background: app-color-*
+    <br />
+    foreground: app-color-*-contrast
+  </h3>
+  <div *ngFor="let theme of ['background', 'primary', 'accent', 'warn']" [class]="theme">
+    <ul>
+      <li *ngFor="let style of ['darker', 'default', 'text', 'lighter']" [class]="style">
+        {{ theme }} - {{ style }}
+      </li>
+    </ul>
+  </div>
+</section>
+
+<hr />
+
+<section class="foreground-first">
+  <h3>
+    foreground: app-color-*
+    <br />
+    background: app-color-*-contrast
+  </h3>
+  <div *ngFor="let theme of ['background', 'primary', 'accent', 'warn']" [class]="theme">
+    <ul>
+      <li *ngFor="let style of ['darker', 'default', 'text', 'lighter']" [class]="style">
+        {{ theme }} - {{ style }}
+      </li>
+    </ul>
+  </div>
+</section>

@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 mat-form-field {
   max-width: 95%; // TODO: This is a hack to avoid the negative margin hiding in here from generating horizontal scroll bars.
@@ -22,11 +22,11 @@ mat-chip {
 }
 
 .identity-valid {
-  background-color: mat-color($app-primary, 'lighter');
+  background-color: app-color-lighter($app-primary);
 }
 
 .identity-invalid {
-  background-color: mat-color($app-warn, 'lighter');
+  background-color: app-color-lighter($app-warn);
 }
 
 :host ::ng-deep .mat-chip-list-wrapper {

@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 mat-card {
   margin-top: 20px;
@@ -8,6 +8,18 @@ mat-card {
 
   h1,
   h2 {
-    color: mat-color($app-primary);
+    color: app-color-default($app-primary);
+  }
+}
+
+ul {
+  display: flex;
+  flex-flow: row wrap;
+  li {
+    list-style-type: none;
+    padding: 0;
+    a {
+      padding: 10px;
+    }
   }
 }

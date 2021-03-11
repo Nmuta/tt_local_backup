@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 mat-card {
   max-width: 500px;
@@ -7,7 +7,7 @@ mat-card {
 
   h1,
   h2 {
-    color: mat-color($app-primary);
+    color: app-color-default($app-primary);
   }
 
   a {
