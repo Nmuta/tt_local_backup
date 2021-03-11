@@ -5,11 +5,11 @@ import { IdentityResultBeta, IdentityResultUnion } from '@models/identity-query.
   Displays player identity lookup results.
  */
 @Component({
-  selector: 'player-lookup-results',
-  templateUrl: './player-lookup-results.component.html',
-  styleUrls: ['./player-lookup-results.component.scss'],
+  selector: 'player-identity-results',
+  templateUrl: './player-identity-results.component.html',
+  styleUrls: ['./player-identity-results.component.scss'],
 })
-export class PlayerLookupResultsComponent {
+export class PlayerIdentityResultsComponent {
   @Input() identity: IdentityResultUnion;
 
   /** The players Turn 10 ID. */

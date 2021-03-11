@@ -9,12 +9,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PlayerLookupResultsComponent } from './player-lookup-results.component';
+import { PlayerIdentityResultsComponent } from './player-identity-results.component';
 import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** A domain module for displaying player lookup results. */
 @NgModule({
-  declarations: [PlayerLookupResultsComponent],
+  declarations: [PlayerIdentityResultsComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -28,6 +28,6 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     MatTooltipModule,
     DirectivesModule,
   ],
-  exports: [PlayerLookupResultsComponent],
+  exports: [PlayerIdentityResultsComponent],
 })
-export class PlayerLookupResultsModule {}
+export class PlayerIdentityResultsModule {}

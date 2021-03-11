@@ -28,7 +28,7 @@ import { PlayerNotificationsModule } from '@shared/views/player-notifications/pl
 import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
-import { PlayerLookupResultsModule } from '@shared/views/player-lookup-results/player-lookup-results.module';
+import { PlayerIdentityResultsModule } from '@shared/views/player-identity-results/player-identity-results.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -65,7 +65,7 @@ import { PlayerLookupResultsModule } from '@shared/views/player-lookup-results/p
     PlayerInventoryProfilesModule,
     PlayerSelectionModule,
     MatTooltipModule,
-    PlayerLookupResultsModule,
+    PlayerIdentityResultsModule,
   ],
 })
 export class UserDetailsModule {}
