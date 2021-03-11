@@ -1,8 +1,12 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
 {
     /// <summary>
     ///     Represents commonly usd error codes for Steward.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum StewardErrorCode
     {
         /// <summary>
