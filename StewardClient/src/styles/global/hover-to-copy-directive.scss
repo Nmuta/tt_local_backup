@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 .ng-tooltip {
   position: absolute;
@@ -7,7 +7,7 @@
   text-align: center;
   color: #ffffff;
   padding: 3px 8px;
-  background: mat-color($app-background);
+  background: app-color-default($app-background);
   border-radius: 4px;
   z-index: 1000;
   cursor: pointer;
