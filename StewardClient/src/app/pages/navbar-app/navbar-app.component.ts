@@ -16,7 +16,6 @@ import { filter, takeUntil } from 'rxjs/operators';
   styleUrls: ['./navbar-app.component.scss'],
 })
 export class NavbarAppComponent extends BaseComponent implements OnInit {
-  @ViewChild('drawer') public drawer: MatDrawer;
   public drawerOpened = false;
   private lastSidebarRoute = null;
 
