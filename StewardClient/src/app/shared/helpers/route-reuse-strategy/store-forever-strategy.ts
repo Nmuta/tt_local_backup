@@ -1,4 +1,4 @@
-import { ActivatedRouteSnapshot, DetachedRouteHandle, Route, RouteReuseStrategy } from '@angular/router';
+import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from '@angular/router';
 import { faker } from '@interceptors/fake-api/utility';
 
 /**
@@ -12,13 +12,13 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
   private readonly instanceId = faker.random.number();
 
   constructor() {
-    console.log(`[RouteReuse|${this.instanceId}] constructor(${this.instanceId})`);
+    // console.log(`[RouteReuse|${this.instanceId}] constructor(${this.instanceId})`);
   }
 
   /** Route Reuse hook. */
   public shouldDetach(_route: ActivatedRouteSnapshot): boolean {
     const shouldDetach = true;
-    console.log(`[RouteReuse|${this.instanceId}] shouldDetach(${shouldDetach}) | ${this.makeId(_route)}`);
+    // console.log(`[RouteReuse|${this.instanceId}] shouldDetach(${shouldDetach}) | ${this.makeId(_route)}`);
     return shouldDetach;
   }
 
@@ -26,10 +26,10 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
   public store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
     const key = this.makeKey(route);
     if (handle !== null) {
-      console.warn(`[RouteReuse|${this.instanceId}] store() ${this.makeId(route)}`, handle);
+      // console.warn(`[RouteReuse|${this.instanceId}] store() ${this.makeId(route)}`, handle);
       this.safeHandles.set(key, handle);
     } else {
-      console.log(`[RouteReuse|${this.instanceId}] store() ${this.makeId(route)}`, handle);
+      // console.log(`[RouteReuse|${this.instanceId}] store() ${this.makeId(route)}`, handle);
       this.safeHandles.delete(key);
     }
   }
@@ -38,8 +38,7 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
   public shouldAttach(route: ActivatedRouteSnapshot): boolean {
     const key = this.makeKey(route);
     const shouldAttach = !!route.routeConfig && this.safeHandles.has(key);
-    const handle = this.safeHandles.get(key);
-    console.warn(`[RouteReuse|${this.instanceId}] shouldAttach(${shouldAttach}) | ${this.makeId(route)}`, route, handle);
+    // console.warn(`[RouteReuse|${this.instanceId}] shouldAttach(${shouldAttach}) | ${this.makeId(route)}`, route, this.safeHandles.get(key));
     return shouldAttach;
   }
 
@@ -49,7 +48,7 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
     const shouldRetrieve = !!route.routeConfig;
     const handle = this.safeHandles.get(key);
 
-    console.warn(`[RouteReuse|${this.instanceId}] retrieve(${shouldRetrieve}) | ${this.makeId(route)}`, route, handle);
+    // console.warn(`[RouteReuse|${this.instanceId}] retrieve(${shouldRetrieve}) | ${this.makeId(route)}`, route, handle);
 
     if (!shouldRetrieve) {
       return null;
@@ -60,11 +59,11 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
 
   /**
    * Route Reuse hook.
-   * @returns True if routing should not happen and we should remain on the same component.
+   * True if routing should not happen and we should remain on the same component.
    */
   public shouldReuseRoute(leaving: ActivatedRouteSnapshot, landing: ActivatedRouteSnapshot): boolean {
     const shouldReuseRoute = leaving.routeConfig === landing.routeConfig;
-    console.log(`[RouteReuse|${this.instanceId}] shouldReuseRoute(${shouldReuseRoute}) | ${this.makeId(leaving)} -> ${this.makeId(landing)}`, leaving, landing);
+    // console.log(`[RouteReuse|${this.instanceId}] shouldReuseRoute(${shouldReuseRoute}) | ${this.makeId(leaving)} -> ${this.makeId(landing)}`, leaving, landing);
     return shouldReuseRoute;
   }
 
