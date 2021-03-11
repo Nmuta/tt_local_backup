@@ -29,7 +29,7 @@ export class TitleMemoryRedirectGuard implements CanActivate {
   /** The guard hook. */
   public canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
+    _state: RouterStateSnapshot,
   ): Observable<UrlTree> {
     const toolName: keyof TitleMemoryModel = firstFromParent(
       route,
@@ -40,7 +40,8 @@ export class TitleMemoryRedirectGuard implements CanActivate {
       map(model => {
         const targetSubroute = model[toolName]?.toLowerCase();
         if (targetSubroute) {
-          return this.router.parseUrl(`${state.url}/${targetSubroute}`);
+          const basePath = route.pathFromRoot.map(r => r.url).filter(f => !!(f?.toString()?.trim())).join('/');
+          return this.router.parseUrl(`${basePath}/${targetSubroute}`);
         }
 
         throw new Error(`no remembered route for ${route.url}`);
