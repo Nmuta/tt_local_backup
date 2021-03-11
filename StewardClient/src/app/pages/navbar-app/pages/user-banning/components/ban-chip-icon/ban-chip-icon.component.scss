@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 .multiline-tooltip {
   white-space: pre-line;
@@ -6,5 +6,5 @@
 
 span {
   margin: 0 0.125rem;
-  color: mat-color($app-warn);
+  color: app-color-default($app-warn);
 }

@@ -1,0 +1,18 @@
+// file of standardized color aliases
+@import './theme.scss';
+
+//// This is a sample of how angular-material does $app-background internally.
+//// It didn't map well to things like table hover, so I did not use it.
+// $app-config: mat-get-color-config($app-theme);
+// $app-background: map-get($app-config, 'background');
+// $app-foreground: map-get($app-config, 'foreground');
+// $app-sample-hover: map-get($app-background, 'hover')
+// $app-sample-active: map-get($app-background, 'selected-button')
+
+// see the end of [0] for notes on using palette colors
+// [0]: https://material.angular.io/guide/theming-your-components#note-using-the-mat-color-function-to-extract-colors-from-a-palette
+// $primaryBlue: mat-color($app-primary);
+// $developerRed: mat-color($app-warn);
+
+$table-tr-hover: mat-color($app-background, 100);
+$table-tr-active: mat-color($app-background, 200);

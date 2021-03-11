@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 div.player-details-item {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
@@ -28,7 +28,7 @@ div.player-details-item {
 
 .copied-data-message {
   position: absolute;
-  background-color: mat-color($app-primary);
+  background-color: app-color-default($app-primary);
   padding: 10px 15px;
   border-radius: 5px;
   color: #fff;

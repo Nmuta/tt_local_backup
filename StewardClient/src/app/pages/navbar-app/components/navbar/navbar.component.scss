@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 .spacer {
   flex: 1 1 auto;
@@ -13,11 +13,11 @@ fa-icon {
 }
 
 .warnings fa-icon {
-  color: mat-color($app-warn);
+  color: app-color-default($app-warn);
 }
 
 .info fa-icon {
-  color: mat-color($app-primary, lighter);
+  color: app-color-lighter($app-primary);
 }
 
 .location {
@@ -25,5 +25,5 @@ fa-icon {
 }
 
 .mat-stroked-button {
-  border-color: rgba(mat-color($app-primary, default-contrast), 0.333);
+  border-color: app-color-default-contrast($app-primary, 0.333);
 }

@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 mat-card {
   position: absolute;
@@ -11,6 +11,6 @@ mat-card {
 
   h1,
   h2 {
-    color: mat-color($app-primary);
+    color: app-color-default($app-primary);
   }
 }

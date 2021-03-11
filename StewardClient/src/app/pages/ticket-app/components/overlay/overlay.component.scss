@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 nav {
   display: flex;
@@ -18,11 +18,11 @@ nav > span {
 }
 
 .warnings fa-icon {
-  color: mat-color($app-warn);
+  color: app-color-default($app-warn);
 }
 
 .info fa-icon {
-  color: mat-color($app-primary, lighter);
+  color: app-color-lighter($app-primary);
 }
 
 .location {

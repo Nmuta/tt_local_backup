@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Route } from '@angular/router';
+import { demoRoutes } from './demo.routes';
 
 /**
  * A routed component for displaying demos.
@@ -8,4 +10,6 @@ import { Component } from '@angular/core';
   templateUrl: './demo.component.html',
   styleUrls: ['./demo.component.scss'],
 })
-export class DemoComponent {}
+export class DemoComponent {
+  public children: Route[] = demoRoutes;
+}

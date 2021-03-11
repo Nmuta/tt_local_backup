@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 .item-selection-form-field {
   max-width: 400px;
@@ -12,5 +12,5 @@
 }
 
 .item-id-text {
-  color: mat-color($app-primary);
+  color: app-color-default($app-primary);
 }

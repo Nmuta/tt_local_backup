@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 table {
   width: 100%;
@@ -10,7 +10,7 @@ mat-panel-title {
 }
 
 .item-id-text {
-  color: mat-color($app-primary);
+  color: app-color-default($app-primary);
 }
 
 .mat-column-quantity {

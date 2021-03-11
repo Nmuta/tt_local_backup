@@ -1,8 +1,8 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 h1,
 h2 {
-  color: mat-color($app-primary);
+  color: app-color-default($app-primary);
 }
 
 p {

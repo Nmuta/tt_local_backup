@@ -1,4 +1,4 @@
-@import '/src/styles/mixins/variables.scss';
+@import '/src/styles/mixins';
 
 mat-card {
   h2 {
@@ -29,7 +29,7 @@ mat-card {
   }
 
   .mat-button-toggle-checked {
-    background-color: mat-color($app-primary);
+    background-color: app-color-default($app-primary);
     color: #fff;
   }
 
@@ -71,12 +71,12 @@ mat-card {
     }
 
     .validIdentity {
-      background-color: mat-color($app-primary);
+      background-color: app-color-default($app-primary);
       color: #fff;
     }
 
     .invalidIdentity {
-      background-color: mat-color($app-warn);
+      background-color: app-color-default($app-warn);
       color: #fff;
     }
 
@@ -105,7 +105,7 @@ mat-card {
       }
 
       fa-icon {
-        color: mat-color($app-primary);
+        color: app-color-default($app-primary);
       }
     }
 
