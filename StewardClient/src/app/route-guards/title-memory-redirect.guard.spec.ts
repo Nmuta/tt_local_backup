@@ -16,9 +16,11 @@ describe('TitleMemoryRedirectGuard', () => {
   };
   const testRoute: Partial<ActivatedRouteSnapshot> = {
     parent: (testRouteParent as unknown) as ActivatedRouteSnapshot,
-    pathFromRoot: [{
-      url: [new UrlSegment('hello', {}), new UrlSegment('world', {})],
-    }] as unknown as ActivatedRouteSnapshot[],
+    pathFromRoot: ([
+      {
+        url: [new UrlSegment('hello', {}), new UrlSegment('world', {})],
+      },
+    ] as unknown) as ActivatedRouteSnapshot[],
   };
   const testSnapshot: Partial<RouterStateSnapshot> = {};
 
