@@ -5,7 +5,6 @@ using Forza.WebServices.FH4.master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
-using Turn10.LiveOps.StewardApi.Providers;
 using Xls.Security.FH4.master.Generated;
 using Xls.WebServices.FH4.master.Generated;
 
@@ -83,7 +82,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.HackFlags, opt => opt.MapFrom(src => src.HackFlags.Select(t => t.Name)));
             this.CreateMap<ForzaCredityUpdateEntry, SunriseCreditUpdate>().ReverseMap();
             this.CreateMap<AdminForzaProfile, SunriseInventoryProfile>()
-                .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => src.deviceType == "Invalid" ? "Legacy" : src.deviceType))
+                .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(
+                    src => src.deviceType == "Invalid" ? "Legacy" : src.deviceType == "Win32" ? "Steam" : src.deviceType))
                 .ReverseMap();
             this.CreateMap<ForzaUserGroup, SunriseLspGroup>();
             this.CreateMap<InventoryItem, SunriseInventoryItem>();
