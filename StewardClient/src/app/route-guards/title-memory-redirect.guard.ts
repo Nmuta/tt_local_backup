@@ -40,7 +40,10 @@ export class TitleMemoryRedirectGuard implements CanActivate {
       map(model => {
         const targetSubroute = model[toolName]?.toLowerCase();
         if (targetSubroute) {
-          const basePath = route.pathFromRoot.map(r => r.url).filter(f => !!(f?.toString()?.trim())).join('/');
+          const basePath = route.pathFromRoot
+            .map(r => r.url)
+            .filter(f => !!f?.toString()?.trim())
+            .join('/');
           return this.router.parseUrl(`${basePath}/${targetSubroute}`);
         }
 

@@ -8,7 +8,7 @@ import { faker } from '@interceptors/fake-api/utility';
  * - https://itnext.io/cache-components-with-angular-routereusestrategy-3e4c8b174d5f
  */
 export class StoreForeverStrategy implements RouteReuseStrategy {
-  protected safeHandles = new Map<string, DetachedRouteHandle>()
+  protected safeHandles = new Map<string, DetachedRouteHandle>();
   private readonly instanceId = faker.random.number();
 
   constructor() {
@@ -61,19 +61,28 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
    * Route Reuse hook.
    * True if routing should not happen and we should remain on the same component.
    */
-  public shouldReuseRoute(leaving: ActivatedRouteSnapshot, landing: ActivatedRouteSnapshot): boolean {
+  public shouldReuseRoute(
+    leaving: ActivatedRouteSnapshot,
+    landing: ActivatedRouteSnapshot,
+  ): boolean {
     const shouldReuseRoute = leaving.routeConfig === landing.routeConfig;
     // console.log(`[RouteReuse|${this.instanceId}] shouldReuseRoute(${shouldReuseRoute}) | ${this.makeId(leaving)} -> ${this.makeId(landing)}`, leaving, landing);
     return shouldReuseRoute;
   }
 
   private makeKey(route: ActivatedRouteSnapshot): string {
-    const normalizedPath = route.pathFromRoot.map(r => r.url).filter(v => !!(v.toString().trim())).join('/');
+    const normalizedPath = route.pathFromRoot
+      .map(r => r.url)
+      .filter(v => !!v.toString().trim())
+      .join('/');
     return `(${route.outlet})${normalizedPath}`;
   }
 
   private makeId(route: ActivatedRouteSnapshot): string {
-    const normalizedPath = route.pathFromRoot.map(r => r.url).filter(v => !!(v.toString().trim())).join('/');
+    const normalizedPath = route.pathFromRoot
+      .map(r => r.url)
+      .filter(v => !!v.toString().trim())
+      .join('/');
     return `${route.outlet}:${normalizedPath}`;
   }
 }

@@ -49,28 +49,37 @@ export class NavbarAppComponent extends BaseComponent implements OnInit {
   }
 
   private registerSidebarStateMachine() {
-    this.router.events.pipe(
-      takeUntil(this.onDestroy$),
-      filter(e => e instanceof RoutesRecognized),
-    ).subscribe((e: RoutesRecognized) => this.setSidebarState(e.state.root));
+    this.router.events
+      .pipe(
+        takeUntil(this.onDestroy$),
+        filter(e => e instanceof RoutesRecognized),
+      )
+      .subscribe((e: RoutesRecognized) => this.setSidebarState(e.state.root));
   }
 
   private setSidebarState(routeSnapshot: ActivatedRouteSnapshot): void {
-    const recognizedSidebarRoute = chain(flattenRouteChildren(routeSnapshot)).filter(child => child.outlet === 'sidebar').first().value();
+    const recognizedSidebarRoute = chain(flattenRouteChildren(routeSnapshot))
+      .filter(child => child.outlet === 'sidebar')
+      .first()
+      .value();
     if (!recognizedSidebarRoute) {
       this.drawerOpened = false;
       this.lastSidebarRoute = null;
       return;
     }
 
-    const recognizedSidebarPath = chain(recognizedSidebarRoute.pathFromRoot).filter(p => p.outlet === 'sidebar').flatMap(p => p.url).value().join('/');
+    const recognizedSidebarPath = chain(recognizedSidebarRoute.pathFromRoot)
+      .filter(p => p.outlet === 'sidebar')
+      .flatMap(p => p.url)
+      .value()
+      .join('/');
     const newRouteMatchesOldRoute = this.lastSidebarRoute === recognizedSidebarPath;
 
     if (newRouteMatchesOldRoute) {
       this.drawerOpened = false;
       this.lastSidebarRoute = null;
     } else {
-      this.drawerOpened = !!recognizedSidebarRoute
+      this.drawerOpened = !!recognizedSidebarRoute;
       this.lastSidebarRoute = recognizedSidebarPath;
     }
   }
