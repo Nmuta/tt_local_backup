@@ -53,9 +53,10 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   /** The lookup toggle. */
   @ViewChild(MatButtonToggleGroup) public lookupTypeGroup: MatButtonToggleGroup;
 
+  /** Disables the lookup types provided in array. */
+  @Input() public disableLookupTypes: string[] = [];
   /** The chosen type of lookup. */
   @Input() public lookupType: keyof IdentityQueryBetaIntersection = 'gamertag';
-
   /** When set to true, allows chips to be selected. */
   @Input() public allowSelection: boolean = false;
   /** When set to true, displays in a single line suitable for a navbar. */
@@ -131,12 +132,12 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       .subscribe(v => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [previousType, currentType] = v;
-
         const values = this.foundIdentities.map(i =>
           chain(i)
             .values()
+            .filter(v => !!v) // Filter here to handle T10Id not available in Alpha identities
             .map(v => v[currentType])
-            .filter(v => !!v)
+            .filter(v => !!v) // Filter again to verify the new type lookup is a valid object
             .uniq()
             .first()
             .value(),
@@ -255,16 +256,16 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     ] = [
       queryIsAlphaCompatible
         ? this.sunrise.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
-        : of(undefined as IdentityResultAlpha[]),
+        : of([] as IdentityResultAlpha[]),
       queryIsAlphaCompatible
         ? this.opus.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
-        : of(undefined as IdentityResultAlpha[]),
+        : of([] as IdentityResultAlpha[]),
       queryIsAlphaCompatible
         ? this.apollo.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
-        : of(undefined as IdentityResultAlpha[]),
+        : of([] as IdentityResultAlpha[]),
       queryIsBetaCompatible
         ? this.gravity.getPlayerIdentities(newQueries as IdentityQueryBeta[])
-        : of(undefined as IdentityResultBeta[]),
+        : of([] as IdentityResultBeta[]),
     ];
 
     // get the value and replace it in the source if it's still there
