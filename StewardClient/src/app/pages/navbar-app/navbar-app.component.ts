@@ -2,9 +2,10 @@ import { ViewChild } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
-import { ActivationEnd, NavigationEnd, NavigationStart } from '@angular/router';
+import { ActivationEnd, NavigationEnd, NavigationStart, ResolveEnd, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
+import { flattenRouteChildren } from '@helpers/flatten-route';
 import { WindowService } from '@services/window';
 import { filter, takeUntil } from 'rxjs/operators';
 
@@ -13,7 +14,7 @@ import { filter, takeUntil } from 'rxjs/operators';
   templateUrl: './navbar-app.component.html',
   styleUrls: ['./navbar-app.component.scss'],
 })
-export class NavbarAppComponent extends BaseComponent {
+export class NavbarAppComponent extends BaseComponent implements OnInit {
   @ViewChild('drawer') public drawer: MatDrawer;
   public drawerOpened = false;
 
@@ -23,7 +24,14 @@ export class NavbarAppComponent extends BaseComponent {
     private readonly windowService: WindowService,
   ) {
     super();
+  }
+
+  /** Angular lifecycle hook. */
+  public ngOnInit(): void {
     this.registerSidebarStateMachine();
+    if (flattenRouteChildren(this.route.snapshot).some(child => child.outlet === 'sidebar')) {
+      this.drawerOpened = true;
+    }
   }
 
   /** Clears the current sidebar outlet path. */
@@ -41,40 +49,12 @@ export class NavbarAppComponent extends BaseComponent {
   }
 
   private registerSidebarStateMachine() {
-    let isNavigating = true;
-    let routedToSidebar = false;
-
-    // initialize state on each navigation request.
     this.router.events.pipe(
       takeUntil(this.onDestroy$),
-      filter(e => e instanceof NavigationStart),
-    ).subscribe(() => {
-      isNavigating = true;
-      routedToSidebar = false;
-    });
-
-    // mark state to incidate we have navigated to a sidebar when one is loaded
-    this.router.events.pipe(
-      takeUntil(this.onDestroy$),
-      filter(e => e instanceof ActivationEnd),
-      filter((e: ActivationEnd) => e.snapshot.outlet === 'sidebar')
-    ).subscribe(() => routedToSidebar = true);
-    
-    // clear and resolve the sidebar navigation state
-    this.router.events.pipe(
-      takeUntil(this.onDestroy$),
-      filter(e => e instanceof NavigationEnd),
-    ).subscribe(() => {
-      if (isNavigating) {
-        if (routedToSidebar) {
-          this.drawerOpened = true;
-        } else {
-          this.drawerOpened = false;
-        }
-
-        routedToSidebar = false;
-        isNavigating = false;
-      }
+      filter(e => e instanceof RoutesRecognized),
+    ).subscribe((e: RoutesRecognized) => {
+      const recognizedSidebarRoute = flattenRouteChildren(e.state.root).some(child => child.outlet === 'sidebar');
+      this.drawerOpened = recognizedSidebarRoute;
     });
   }
 }
