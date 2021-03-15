@@ -20,6 +20,8 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
 })
 export class SunriseBanHistoryComponent extends BaseComponent implements OnChanges {
   @Input() public xuid?: bigint;
+  /** Boolean determining if the view should be compacted. */
+  @Input() public compactView: boolean = false;
 
   /** True while waiting on a request. */
   public isLoading = true;
@@ -33,6 +35,8 @@ export class SunriseBanHistoryComponent extends BaseComponent implements OnChang
 
   /** The columns + order to display. */
   public columnsToDisplay = ['isActive', 'reason', 'featureArea', 'startTimeUtc', 'expireTimeUtc'];
+  /** The columns + order to display for compact view. */
+  public compactColumnsToDisplay = ['isActive', 'description'];
 
   constructor(public readonly sunrise: SunriseService) {
     super();

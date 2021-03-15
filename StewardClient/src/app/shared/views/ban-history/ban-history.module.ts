@@ -9,6 +9,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { ApolloBanHistoryComponent } from './titles/apollo/apollo-ban-history.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 /** A domain module for displaying player ban histories. */
 @NgModule({
@@ -22,6 +23,7 @@ import { ApolloBanHistoryComponent } from './titles/apollo/apollo-ban-history.co
     FontAwesomeModule,
     PipesModule,
     JsonDumpModule,
+    MatDividerModule,
   ],
   exports: [SunriseBanHistoryComponent, ApolloBanHistoryComponent],
 })
