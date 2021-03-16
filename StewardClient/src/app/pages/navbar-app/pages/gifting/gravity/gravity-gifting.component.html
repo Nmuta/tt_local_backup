@@ -1,36 +1,45 @@
-<div class="default-page-layout">
-  <div class="default-page-layout-left">
-    <div class="player-selection-div">
-      <mat-card>
-        <player-selection-single
-          [allowSelection]="true"
-          [rejectionFn]="identityRejectionFn"
-          (found)="onPlayerIdentityChange($event)"
-          (selected)="playerIdentitySelected($event)"
-        ></player-selection-single>
-      </mat-card>
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane player-selection-div steward-layout-vertical-fill">
+      <mat-tab-group
+        mat-stretch-tabs
+        class="steward-layout-vertical-fill"
+        [(selectedIndex)]="matTabSelectedIndex"
+      >
+        <mat-tab label="Player Selection">
+          <mat-card class="steward-layout-vertical-fill">
+            <player-selection-single
+              [allowSelection]="true"
+              [rejectionFn]="identityRejectionFn"
+              (found)="onPlayerIdentityChange($event)"
+              (selected)="playerIdentitySelected($event)"
+            ></player-selection-single>
+          </mat-card>
+        </mat-tab>
+      </mat-tab-group>
     </div>
 
-    <div class="reference-inventory" *ngIf="selectedPlayerIdentity">
+    <div class="steward-layout-pane steward-layout-fill reference-inventory">
       <mat-card>
-        <gravity-player-inventory-profile-picker
-          [identity]="selectedPlayerIdentity"
-          [(profileId)]="selectedPlayerInventoryProfile"
-        ></gravity-player-inventory-profile-picker>
-
-        <div class="inventory-div">
-          <gravity-player-inventory
+        <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
+          <gravity-player-inventory-profile-picker
             [identity]="selectedPlayerIdentity"
-            [profileId]="selectedPlayerInventoryProfile"
-            (inventoryFound)="onInventoryFound($event)"
-          ></gravity-player-inventory>
-        </div>
+            [(profileId)]="selectedPlayerInventoryProfile"
+          ></gravity-player-inventory-profile-picker>
+
+          <div class="inventory-div">
+            <gravity-player-inventory
+              [identity]="selectedPlayerIdentity"
+              [profileId]="selectedPlayerInventoryProfile"
+              (inventoryFound)="onInventoryFound($event)"
+            ></gravity-player-inventory>
+          </div>
+        </ng-container>
       </mat-card>
     </div>
   </div>
 
-  <div class="default-page-layout-right">
-    <!-- Page tool -->
+  <div class="steward-layout-pane steward-layout-main-group">
     <gravity-gift-basket
       [referenceInventory]="selectedPlayerInventory"
       [playerIdentities]="selectedPlayerIdentities"
@@ -39,3 +48,7 @@
     ></gravity-gift-basket>
   </div>
 </div>
+
+<ng-template #selectPlayerExplanation>
+  <p>Select a player chip to view inventory</p>
+</ng-template>

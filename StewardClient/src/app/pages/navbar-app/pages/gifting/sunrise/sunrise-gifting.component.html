@@ -1,13 +1,14 @@
-<div class="default-page-layout">
-  <div class="default-page-layout-left">
-    <div class="player-selection-div">
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane player-selection-div steward-layout-vertical-fill">
       <mat-tab-group
         mat-stretch-tabs
+        class="steward-layout-vertical-fill"
         [(selectedIndex)]="matTabSelectedIndex"
         (selectedTabChange)="matTabSelectionChange($event.index)"
       >
         <mat-tab label="Player Selection">
-          <mat-card>
+          <mat-card class="steward-layout-vertical-fill">
             <player-selection-bulk
               [disableLookupTypes]="['t10Id']"
               [allowSelection]="true"
@@ -17,31 +18,40 @@
             ></player-selection-bulk>
           </mat-card>
         </mat-tab>
-        <mat-tab *ngIf="!disableLspGroupSelection" label="LSP Group Selection">
-          <sunrise-lsp-group-selection [(ngModel)]="selectedLspGroup"></sunrise-lsp-group-selection>
+        <mat-tab
+          *ngIf="!disableLspGroupSelection"
+          label="LSP Group Selection"
+          class="steward-layout-vertical-fill"
+        >
+          <sunrise-lsp-group-selection
+            class="steward-layout-vertical-fill"
+            [(ngModel)]="selectedLspGroup"
+          ></sunrise-lsp-group-selection>
         </mat-tab>
       </mat-tab-group>
     </div>
 
-    <div class="reference-inventory" *ngIf="selectedPlayerIdentity">
+    <div class="steward-layout-pane steward-layout-fill reference-inventory">
       <mat-card>
-        <sunrise-player-inventory-profile-picker
-          [identity]="selectedPlayerIdentity"
-          [(profileId)]="selectedPlayerInventoryProfile"
-        ></sunrise-player-inventory-profile-picker>
-
-        <div class="inventory-div">
-          <sunrise-player-inventory
+        <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
+          <sunrise-player-inventory-profile-picker
             [identity]="selectedPlayerIdentity"
-            [profileId]="selectedPlayerInventoryProfile"
-            (inventoryFound)="onInventoryFound($event)"
-          ></sunrise-player-inventory>
-        </div>
+            [(profileId)]="selectedPlayerInventoryProfile"
+          ></sunrise-player-inventory-profile-picker>
+
+          <div class="inventory-div">
+            <sunrise-player-inventory
+              [identity]="selectedPlayerIdentity"
+              [profileId]="selectedPlayerInventoryProfile"
+              (inventoryFound)="onInventoryFound($event)"
+            ></sunrise-player-inventory>
+          </div>
+        </ng-container>
       </mat-card>
     </div>
   </div>
 
-  <div class="default-page-layout-right">
+  <div class="steward-layout-pane steward-layout-main-group">
     <sunrise-gift-basket
       [referenceInventory]="selectedPlayerInventory"
       [playerIdentities]="selectedPlayerIdentities"
@@ -50,3 +60,7 @@
     ></sunrise-gift-basket>
   </div>
 </div>
+
+<ng-template #selectPlayerExplanation>
+  <p>Select a player chip to view inventory</p>
+</ng-template>

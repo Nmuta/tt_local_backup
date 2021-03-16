@@ -1,0 +1,31 @@
+@import '/src/styles/mixins/variables';
+
+.steward-layout-vertical-fill {
+  // special case: mat-tab-group
+  &:is(mat-tab-group) {
+    display: flex;
+    flex-flow: column nowrap;
+    > .mat-tab-body-wrapper {
+      flex-grow: 1;
+      > mat-tab-body > .mat-tab-body-content {
+        display: flex;
+        flex-flow: column nowrap;
+        > * {
+          flex-grow: 1;
+        }
+      }
+    }
+  }
+
+  // standard case
+  &:not(mat-tab-group) {
+    display: flex;
+    flex-flow: column nowrap;
+
+    > * {
+      &:not(mat-tab-header) {
+        flex-grow: 1;
+      }
+    }
+  }
+}

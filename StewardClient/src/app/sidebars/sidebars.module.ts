@@ -11,6 +11,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-privacy-notice.module';
 import { LocationDetailsModule } from '@shared/views/location-details/location-details.module';
 import { MatCardModule } from '@angular/material/card';
 
@@ -41,6 +42,7 @@ export const sidebarRoutes = [
     MatExpansionModule,
     MatTooltipModule,
     MatIconModule,
+    DataPrivacyNoticeModule,
     MatCardModule,
     LocationDetailsModule,
     RouterModule.forChild(sidebarRoutes),

@@ -29,6 +29,6 @@ mat-chip {
   background-color: app-color-lighter($app-warn);
 }
 
-:host ::ng-deep .mat-chip-list-wrapper {
+:host ::ng-deep .display-in-single-line .mat-chip-list-wrapper {
   flex-wrap: nowrap;
 }

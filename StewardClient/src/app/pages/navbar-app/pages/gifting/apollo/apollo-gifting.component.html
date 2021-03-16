@@ -1,6 +1,6 @@
-<div class="default-page-layout">
-  <div class="default-page-layout-left">
-    <div class="player-selection-div">
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane player-selection-div steward-layout-vertical-fill">
       <mat-tab-group
         mat-stretch-tabs
         [(selectedIndex)]="matTabSelectedIndex"
@@ -23,25 +23,27 @@
       </mat-tab-group>
     </div>
 
-    <div class="reference-inventory" *ngIf="selectedPlayerIdentity">
+    <div class="steward-layout-pane steward-layout-fill reference-inventory">
       <mat-card>
-        <apollo-player-inventory-profile-picker
-          [identity]="selectedPlayerIdentity"
-          [(profileId)]="selectedPlayerInventoryProfile"
-        ></apollo-player-inventory-profile-picker>
-
-        <div class="inventory-div">
-          <apollo-player-inventory
+        <ng-container *ngIf="selectedPlayerIdentity">
+          <apollo-player-inventory-profile-picker
             [identity]="selectedPlayerIdentity"
-            [profileId]="selectedPlayerInventoryProfile"
-            (inventoryFound)="onInventoryFound($event)"
-          ></apollo-player-inventory>
-        </div>
+            [(profileId)]="selectedPlayerInventoryProfile"
+          ></apollo-player-inventory-profile-picker>
+
+          <div class="inventory-div">
+            <apollo-player-inventory
+              [identity]="selectedPlayerIdentity"
+              [profileId]="selectedPlayerInventoryProfile"
+              (inventoryFound)="onInventoryFound($event)"
+            ></apollo-player-inventory>
+          </div>
+        </ng-container>
       </mat-card>
     </div>
   </div>
 
-  <div class="default-page-layout-right">
+  <div class="steward-layout-pane steward-layout-main-group">
     <apollo-gift-basket
       [referenceInventory]="selectedPlayerInventory"
       [playerIdentities]="selectedPlayerIdentities"

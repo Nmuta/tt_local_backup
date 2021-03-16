@@ -2,3 +2,20 @@ mat-chip * {
   padding: 0 0.125em;
   cursor: pointer;
 }
+
+mat-chip-list {
+  display: block;
+  margin-bottom: 1em;
+}
+
+// TODO: should this be a global style?
+mat-chip {
+  max-width: 100%;
+
+  .id {
+    flex: 1 1 0; // grow / shrink to fill
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

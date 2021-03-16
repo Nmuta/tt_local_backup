@@ -1,0 +1,7 @@
+$full-screen-height-calc: calc(
+  100vh - 64px /*navbar*/ - 64px /*navbar*/ - 20px /*tasteful margin*/ - 32px
+    /*standard card padding*/
+);
+$full-screen-height-calc-basic: calc(
+  100vh - 64px /*navbar*/ - 64px /*navbar*/ - 20px /*tasteful margin*/
+);
