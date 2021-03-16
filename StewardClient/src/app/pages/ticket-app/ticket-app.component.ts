@@ -66,12 +66,6 @@ export class TicketAppComponent extends BaseComponent implements OnInit, AfterVi
       queryParamsHandling: 'preserve',
     });
   }
-
-  /** Produces the current location, for reference when in iframe. */
-  public get location(): string {
-    return `${this.windowService.location().pathname}${this.windowService.location().search}`;
-  }
-
   private registerSidebarStateMachine() {
     this.router.events
       .pipe(

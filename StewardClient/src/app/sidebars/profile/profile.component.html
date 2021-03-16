@@ -1,7 +1,18 @@
-<button *ngIf="isDevEnvironment" (click)="copyAccessToken()">Copy Access Token</button>
-<pre>
-Email: {{ user?.emailAddress }}
-Role: {{ user?.role }}
-</pre>
-<button (click)="break()">Break Auth</button>
-<button (click)="logout()">Logout</button>
+<section>
+  <mat-card>
+    <h2>User Profile</h2>
+    <pre>
+<b>Email:</b> {{ user?.emailAddress }}
+<b>Role:</b> {{ user?.role }}
+    </pre>
+    <button mat-raised-button color="accent" (click)="logout()">Logout</button>
+  </mat-card>
+  <mat-card>
+    <location-details></location-details>
+  </mat-card>
+  <mat-card *ngIf="showDevTools">
+    <h2>Dev Tools</h2>
+    <button mat-raised-button color="primary" (click)="copyAccessToken()">Copy Access Token</button>
+    <button mat-raised-button color="primary" (click)="break()">Break Access Token</button>
+  </mat-card>
+</section>

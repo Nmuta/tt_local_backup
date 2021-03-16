@@ -1,7 +1,6 @@
 <navbar></navbar>
 <mat-drawer-container autosize>
   <mat-drawer mode="over" position="end" [opened]="drawerOpened" (closed)="clearSidebar()">
-    <pre>{{ location }}</pre>
     <router-outlet name="sidebar"></router-outlet>
   </mat-drawer>
   <div class="content">

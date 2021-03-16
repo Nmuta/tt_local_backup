@@ -11,6 +11,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { LocationDetailsModule } from '@shared/views/location-details/location-details.module';
+import { MatCardModule } from '@angular/material/card';
 
 /** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
 export const sidebarRoutes = [
@@ -39,6 +41,8 @@ export const sidebarRoutes = [
     MatExpansionModule,
     MatTooltipModule,
     MatIconModule,
+    MatCardModule,
+    LocationDetailsModule,
     RouterModule.forChild(sidebarRoutes),
   ],
   exports: [RouterModule],

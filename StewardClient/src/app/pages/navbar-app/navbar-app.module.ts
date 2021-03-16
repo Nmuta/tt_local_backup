@@ -15,6 +15,7 @@ import { NavbarComponent } from '@navbar-app/components/navbar/navbar.component'
 import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
 import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-privacy-notice.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCardModule } from '@angular/material/card';
 
 /** Defines the sidebar module. */
 @NgModule({
@@ -32,6 +33,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTooltipModule,
     FontAwesomeModule,
     FourOhFourModule,
+    MatCardModule,
   ],
   providers: [],
   declarations: [NavbarAppComponent, HomeComponent, NavbarComponent],

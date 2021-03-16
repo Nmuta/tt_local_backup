@@ -15,6 +15,7 @@ mat-drawer-container {
 
 mat-drawer {
   max-width: 75%;
+  background: $sidebar-background;
 }
 
 // this is an implicit element, so we have to use ::ng-deep

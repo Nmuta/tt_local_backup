@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { environment } from '@environments/environment';
 import { Clipboard } from '@helpers/clipboard';
+import { UserRole } from '@models/enums';
 import { Select, Store } from '@ngxs/store';
 import { UserModel } from '@shared/models/user.model';
 import { WindowService } from '@shared/services/window';
@@ -22,10 +22,10 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
   public user: UserModel;
   public loading: boolean;
-  public isDevEnvironment: boolean;
   public accessToken: string;
 
   public profileTabVisible = false;
+  public showDevTools: boolean;
 
   constructor(
     protected router: Router,
@@ -38,7 +38,6 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
   /** Logic for the OnInit component lifecycle. */
   public ngOnInit(): void {
-    this.isDevEnvironment = !environment.production;
     this.accessToken = this.store.selectSnapshot<string | null | undefined>(UserState.accessToken);
     this.loading = true;
 
@@ -48,6 +47,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         profile => {
           this.loading = false;
           this.user = profile;
+          this.showDevTools = profile.role === UserRole.LiveOpsAdmin;
         },
         _error => {
           this.loading = false;
