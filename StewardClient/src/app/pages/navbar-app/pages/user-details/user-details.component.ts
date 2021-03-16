@@ -6,7 +6,7 @@ import { AugmentedCompositeIdentity } from '@navbar-app/components/player-select
 import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { first } from 'lodash';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { createNavbarPath, NavbarTools } from '../../navbar-tool-list';
 
 /** User Details page. */
@@ -45,7 +45,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     if (!this.identity) {
       return null;
     }
-    if (this.identity.extra.hasSunrise) {
+    if (this.identity?.extra?.hasSunrise) {
       return null;
     }
     return `Player ${first(this.lookupList)} does not have a Sunrise account`;
@@ -56,7 +56,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     if (!this.identity) {
       return null;
     }
-    if (this.identity.extra.hasOpus) {
+    if (this.identity?.extra?.hasOpus) {
       return null;
     }
     return `Player ${first(this.lookupList)} does not have an Opus account`;
@@ -67,7 +67,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     if (!this.identity) {
       return null;
     }
-    if (this.identity.extra.hasGravity) {
+    if (this.identity?.extra?.hasGravity) {
       return null;
     }
     return `Player ${first(this.lookupList)} does not have a Gravity account`;
@@ -78,7 +78,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     if (!this.identity) {
       return null;
     }
-    if (this.identity.extra.hasApollo) {
+    if (this.identity?.extra?.hasApollo) {
       return null;
     }
     return `Player ${first(this.lookupList)} does not have a Apollo account`;
@@ -90,21 +90,33 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
 
   /** Initialization hook. */
   public ngOnInit(): void {
-    this.route.queryParamMap.pipe(takeUntil(this.onDestroy$)).subscribe(params => {
-      if (params.has('lookupType')) {
-        this.lookupType = params.get('lookupType') as keyof IdentityQueryBetaIntersection;
-      }
-      if (params.has('lookupName')) {
-        const lookupName = params.get('lookupName');
-        if (!!lookupName.trim()) {
-          this.lookupList = [lookupName];
+    this.route.queryParamMap
+      .pipe(
+        takeUntil(this.onDestroy$),
+        filter(params => {
+          const lookupName = params.get('lookupName');
+          if (this.lookupList?.length > 0) {
+            return lookupName.trim() !== this.lookupList[0].toString();
+          }
+          return true;
+        }),
+      )
+      .subscribe(params => {
+        if (params.has('lookupType')) {
+          this.lookupType = params.get('lookupType') as keyof IdentityQueryBetaIntersection;
         }
-      }
-      if (!this.lookupType) {
-        this.lookupType = 'gamertag';
-        this.lookupChange(true);
-      }
-    });
+        if (params.has('lookupName')) {
+          const lookupName = params.get('lookupName');
+          if (!!lookupName.trim()) {
+            this.lookupList = [lookupName];
+          }
+        }
+        if (!this.lookupType) {
+          this.lookupType = 'gamertag';
+          this.lookupChange(true);
+        }
+      });
+
     this.route.queryParamMap.pipe(takeUntil(this.onDestroy$)).subscribe(params => {
       this.gamertag = params.get('gamertag');
     });

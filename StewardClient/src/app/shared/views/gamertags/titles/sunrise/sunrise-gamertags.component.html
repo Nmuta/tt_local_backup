@@ -20,7 +20,10 @@
         <ng-container matColumnDef="gamertag">
           <th mat-header-cell *matHeaderCellDef>Gamertag</th>
           <td mat-cell *matCellDef="let entry">
-            <a [routerLink]="sunriseRouterLink" [queryParams]="{ gamertag: entry.gamertag }">
+            <a
+              [routerLink]="sunriseRouterLink"
+              [queryParams]="{ lookupType: 'gamertag', lookupName: entry.gamertag }"
+            >
               {{ entry.gamertag }}
             </a>
           </td>

@@ -1,6 +1,6 @@
 <mat-toolbar>
   <a
-    [class.mat-button-disabled]="!identity?.extra.hasSunrise"
+    [class.mat-button-disabled]="!identity?.extra?.hasSunrise"
     [matTooltip]="sunriseTooltip"
     [routerLink]="sunriseRouterLink"
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
@@ -9,7 +9,7 @@
     >Sunrise</a
   >
   <a
-    [class.mat-button-disabled]="!identity?.extra.hasOpus"
+    [class.mat-button-disabled]="!identity?.extra?.hasOpus"
     [matTooltip]="opusTooltip"
     [routerLink]="opusRouterLink"
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
@@ -18,7 +18,7 @@
     >Opus</a
   >
   <a
-    [class.mat-button-disabled]="!identity?.extra.hasApollo"
+    [class.mat-button-disabled]="!identity?.extra?.hasApollo"
     [matTooltip]="apolloTooltip"
     [routerLink]="apolloRouterLink"
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
@@ -27,7 +27,7 @@
     >Apollo</a
   >
   <a
-    [class.mat-button-disabled]="!identity?.extra.hasGravity"
+    [class.mat-button-disabled]="!identity?.extra?.hasGravity"
     [matTooltip]="gravityTooltip"
     [routerLink]="gravityRouterLink"
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"

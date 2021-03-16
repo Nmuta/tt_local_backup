@@ -145,7 +145,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
         this.foundIdentities = [];
         this.knownIdentities.clear();
 
-        this.handleNewValues(values, false);
+        this.handleNewValues(values);
       });
   }
 
@@ -211,6 +211,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     const uniqueValues = chain(values)
       .uniq()
       .filter(v => !this.knownIdentities.has(v));
+
     const newQueries = uniqueValues.map(v => makeBetaQuery(this.lookupType, v)).value();
     this.handleNewQueries(newQueries, emit);
   }
