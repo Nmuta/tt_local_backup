@@ -29,6 +29,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { DirectivesModule } from '@shared/directives/directives.module';
+import { MatTabsModule } from '@angular/material/tabs';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -66,6 +67,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     PipesModule,
     JsonDumpModule,
     DirectivesModule,
+    MatTabsModule,
   ],
 })
 export class UserBanningModule {}

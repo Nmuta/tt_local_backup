@@ -1,0 +1,22 @@
+@import '/src/styles/mixins/variables/colors.scss';
+
+// usage:
+// @include flex-navbar-fill;
+@mixin flex-navbar-fill {
+  :host {
+    display: flex;
+    flex-grow: 1;
+    flex-flow: column nowrap;
+    height: 100%;
+  }
+
+  .content {
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column nowrap;
+  }
+
+  .mat-stroked-button {
+    border-color: app-color-default-contrast($app-background, 0.333);
+  }
+}

@@ -1,32 +1,43 @@
-<div class="default-page-layout">
-  <div class="default-page-layout-left">
-    <mat-card>
-      <player-selection-bulk
-        [disableLookupTypes]="['t10Id']"
-        [allowSelection]="true"
-        [rejectionFn]="identityRejectionFn"
-        (found)="onPlayerIdentitiesChange($event)"
-        (selected)="playerIdentitySelected($event)"
-      >
-        <ng-template let-identity>
-          <ban-chip-icon
-            *ngIf="identity?.extra?.hasSunrise"
-            [identity]="identity.sunrise"
-            [banSummary]="summaryLookup[identity.sunrise.xuid]"
-          ></ban-chip-icon>
-        </ng-template>
-      </player-selection-bulk>
-      <div class="bottom">
-        <ng-container *ngFor="let xuid of bannedXuids">
-          <sunrise-ban-history
-            [xuid]="xuid"
-            [hidden]="xuid !== selectedPlayer?.xuid"
-          ></sunrise-ban-history>
-        </ng-container>
-      </div>
-    </mat-card>
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane player-selection-div steward-layout-vertical-fill">
+      <mat-tab-group mat-stretch-tabs class="steward-layout-vertical-fill">
+        <mat-tab label="Player Selection">
+          <mat-card>
+            <player-selection-bulk
+              [disableLookupTypes]="['t10Id']"
+              [allowSelection]="true"
+              [rejectionFn]="identityRejectionFn"
+              (found)="onPlayerIdentitiesChange($event)"
+              (selected)="playerIdentitySelected($event)"
+            >
+              <ng-template let-identity>
+                <ban-chip-icon
+                  *ngIf="identity?.extra?.hasSunrise"
+                  [identity]="identity.sunrise"
+                  [banSummary]="summaryLookup[identity.sunrise.xuid]"
+                ></ban-chip-icon>
+              </ng-template>
+            </player-selection-bulk>
+          </mat-card>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+    <div class="steward-layout-pane steward-layout-fill ban-history">
+      <mat-card>
+        <div class="bottom">
+          <ng-container *ngFor="let xuid of bannedXuids">
+            <sunrise-ban-history
+              [xuid]="xuid"
+              [hidden]="xuid !== selectedPlayer?.xuid"
+            ></sunrise-ban-history>
+          </ng-container>
+        </div>
+      </mat-card>
+    </div>
   </div>
-  <div class="default-page-layout-right">
+
+  <div class="steward-layout-pane steward-layout-main-group">
     <mat-card>
       <mat-card-content>
         <ng-container *ngIf="!isLoading && !loadError; else failState">

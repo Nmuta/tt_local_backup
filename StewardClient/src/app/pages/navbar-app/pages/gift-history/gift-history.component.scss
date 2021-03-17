@@ -1,5 +1,3 @@
 @import '/src/styles/mixins';
 
-.mat-stroked-button {
-  border-color: app-color-default-contrast($app-background, 0.333);
-}
+@include flex-navbar-fill;

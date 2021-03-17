@@ -1,5 +1,9 @@
 @import '/src/styles/mixins';
 
+:host {
+  @include flex-column-fill();
+}
+
 h2 {
   margin-bottom: 8px;
 }

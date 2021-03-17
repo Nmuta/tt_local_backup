@@ -1,10 +1,10 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+}
+
 verify-action-button {
   margin-top: 40px;
   display: block;
-}
-
-@media screen and (max-width: 1000px) {
-  .default-page-layout-left {
-    max-width: unset;
-  }
 }

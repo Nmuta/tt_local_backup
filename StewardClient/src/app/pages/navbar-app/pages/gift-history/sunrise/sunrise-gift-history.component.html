@@ -1,28 +1,30 @@
-<div class="default-page-layout">
-  <div class="default-page-layout-left">
-    <mat-tab-group
-      mat-stretch-tabs
-      [(selectedIndex)]="matTabSelectedIndex"
-      (selectedTabChange)="matTabSelectionChange($event.index)"
-    >
-      <mat-tab label="Player Selection">
-        <mat-card>
-          <player-selection-single
-            [disableLookupTypes]="['t10Id']"
-            [allowSelection]="true"
-            [rejectionFn]="identityRejectionFn"
-            (found)="onPlayerIdentityChange($event)"
-            (selected)="playerIdentitySelected($event)"
-          ></player-selection-single>
-        </mat-card>
-      </mat-tab>
-      <mat-tab label="LSP Group Selection">
-        <sunrise-lsp-group-selection [(ngModel)]="selectedLspGroup"></sunrise-lsp-group-selection>
-      </mat-tab>
-    </mat-tab-group>
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane player-selection-div steward-layout-vertical-fill">
+      <mat-tab-group
+        mat-stretch-tabs
+        [(selectedIndex)]="matTabSelectedIndex"
+        (selectedTabChange)="matTabSelectionChange($event.index)"
+      >
+        <mat-tab label="Player Selection">
+          <mat-card>
+            <player-selection-single
+              [disableLookupTypes]="['t10Id']"
+              [allowSelection]="true"
+              [rejectionFn]="identityRejectionFn"
+              (found)="onPlayerIdentityChange($event)"
+              (selected)="playerIdentitySelected($event)"
+            ></player-selection-single>
+          </mat-card>
+        </mat-tab>
+        <mat-tab label="LSP Group Selection">
+          <sunrise-lsp-group-selection [(ngModel)]="selectedLspGroup"></sunrise-lsp-group-selection>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
   </div>
 
-  <div class="default-page-layout-right">
+  <div class="steward-layout-pane steward-layout-fill reference-inventory">
     <sunrise-gift-history-results
       [selectedPlayer]="selectedPlayer"
       [selectedGroup]="selectedLspGroup"

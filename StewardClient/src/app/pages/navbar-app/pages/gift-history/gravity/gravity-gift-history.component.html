@@ -1,19 +1,27 @@
-<div class="default-page-layout">
-  <div class="default-page-layout-left">
-    <mat-card>
-      <player-selection-single
-        [allowSelection]="true"
-        [rejectionFn]="identityRejectionFn"
-        (found)="onPlayerIdentityChange($event)"
-        (selected)="playerIdentitySelected($event)"
-      ></player-selection-single>
-    </mat-card>
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane player-selection-div steward-layout-vertical-fill">
+      <mat-tab-group mat-stretch-tabs [(selectedIndex)]="matTabSelectedIndex">
+        <mat-tab label="Player Selection">
+          <mat-card>
+            <player-selection-single
+              [allowSelection]="true"
+              [rejectionFn]="identityRejectionFn"
+              (found)="onPlayerIdentityChange($event)"
+              (selected)="playerIdentitySelected($event)"
+            >
+            </player-selection-single>
+          </mat-card>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
   </div>
 
-  <div class="default-page-layout-right">
+  <div class="steward-layout-pane steward-layout-fill reference-inventory">
     <gravity-gift-history-results
       [selectedPlayer]="selectedPlayer"
       [usingPlayerIdentities]="matTabSelectedIndex === 0"
-    ></gravity-gift-history-results>
+    >
+    </gravity-gift-history-results>
   </div>
 </div>
