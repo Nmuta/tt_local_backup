@@ -19,6 +19,8 @@ import { MatCardModule } from '@angular/material/card';
 import { LspGroupSelectionModule } from '@navbar-app/components/lsp-group-selection/lsp-group-selection.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
+import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inventory.module';
+import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -44,6 +46,8 @@ import { PlayerSelectionModule } from '@navbar-app/components/player-selection/p
     PlayerSelectionModule,
     LspGroupSelectionModule,
     MatTabsModule,
+    PlayerInventoryModule,
+    PlayerInventoryProfilesModule,
   ],
 })
 export class GiftHistoryModule {}

@@ -13,6 +13,7 @@ import {
 } from './state/apollo-gift-history.state.actions';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { ApolloMasterInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
 
 /** The gift history page for the Navbar app. */
 @Component({
@@ -27,6 +28,8 @@ export class ApolloGiftHistoryComponent extends GiftHistoryBaseComponent impleme
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
+  public selectedPlayerInventoryProfile: ApolloPlayerInventoryProfile;
+  public selectedPlayerInventory: ApolloMasterInventory;
   public selectedLspGroup: LspGroup;
   public selectedPlayer: IdentityResultAlpha;
 
@@ -62,6 +65,11 @@ export class ApolloGiftHistoryComponent extends GiftHistoryBaseComponent impleme
   /** Player identity selected */
   public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
     this.selectedPlayerIdentity = identity?.extra?.hasApollo ? identity.apollo : null;
+  }
+
+  /** Called when a player inventory is selected and found. */
+  public onInventoryFound(inventory: ApolloMasterInventory): void {
+    this.selectedPlayerInventory = inventory;
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */

@@ -9,6 +9,7 @@ import { GravityGiftHistoryState } from './state/gravity-gift-history.state';
 import { SetGravitySelectedPlayerIdentities } from './state/gravity-gift-history.state.actions';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { GravityPlayerInventoryBeta, GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 
 /** The gravity gift history page for the Navbar app. */
 @Component({
@@ -23,6 +24,8 @@ export class GravityGiftHistoryComponent extends GiftHistoryBaseComponent implem
   public selectedPlayerIdentities: IdentityResultBetaBatch;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultBeta;
+  public selectedPlayerInventoryProfile: GravityPseudoPlayerInventoryProfile;
+  public selectedPlayerInventory: GravityPlayerInventoryBeta;
   public selectedPlayer: IdentityResultBeta;
 
   constructor(protected readonly store: Store) {
@@ -48,6 +51,11 @@ export class GravityGiftHistoryComponent extends GiftHistoryBaseComponent implem
   /** Player identity selected */
   public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
     this.selectedPlayerIdentity = identity?.extra?.hasGravity ? identity.gravity : null;
+  }
+
+  /** Called when a player inventory is selected and found. */
+  public onInventoryFound(inventory: GravityPlayerInventoryBeta): void {
+    this.selectedPlayerInventory = inventory;
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */

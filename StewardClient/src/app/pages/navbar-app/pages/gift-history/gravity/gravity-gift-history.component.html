@@ -15,6 +15,25 @@
         </mat-tab>
       </mat-tab-group>
     </div>
+
+    <div class="steward-layout-pane steward-layout-fill reference-inventory">
+      <mat-card>
+        <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
+          <gravity-player-inventory-profile-picker
+            [identity]="selectedPlayerIdentity"
+            [(profileId)]="selectedPlayerInventoryProfile"
+          ></gravity-player-inventory-profile-picker>
+
+          <div class="inventory-div">
+            <gravity-player-inventory
+              [identity]="selectedPlayerIdentity"
+              [profileId]="selectedPlayerInventoryProfile"
+              (inventoryFound)="onInventoryFound($event)"
+            ></gravity-player-inventory>
+          </div>
+        </ng-container>
+      </mat-card>
+    </div>
   </div>
 
   <div class="steward-layout-pane steward-layout-fill reference-inventory">
@@ -25,3 +44,7 @@
     </gravity-gift-history-results>
   </div>
 </div>
+
+<ng-template #selectPlayerExplanation>
+  <p>Select a player chip to view inventory</p>
+</ng-template>

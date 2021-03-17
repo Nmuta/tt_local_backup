@@ -13,6 +13,7 @@ import {
 } from './state/sunrise-gift-history.state.actions';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { SunriseMasterInventory, SunrisePlayerInventoryProfile } from '@models/sunrise';
 
 /** The gift history page for the Navbar app. */
 @Component({
@@ -27,6 +28,8 @@ export class SunriseGiftHistoryComponent extends GiftHistoryBaseComponent implem
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
+  public selectedPlayerInventoryProfile: SunrisePlayerInventoryProfile;
+  public selectedPlayerInventory: SunriseMasterInventory;
   public selectedLspGroup: LspGroup;
   public selectedPlayer: IdentityResultAlpha;
 
@@ -62,6 +65,11 @@ export class SunriseGiftHistoryComponent extends GiftHistoryBaseComponent implem
   /** Player identity selected */
   public playerIdentitySelected(identity: AugmentedCompositeIdentity): void {
     this.selectedPlayerIdentity = identity?.extra?.hasSunrise ? identity.sunrise : null;
+  }
+
+  /** Called when a player inventory is selected and found. */
+  public onInventoryFound(inventory: SunriseMasterInventory): void {
+    this.selectedPlayerInventory = inventory;
   }
 
   /** Produces a rejection message from a given identity, if it is rejected. */
