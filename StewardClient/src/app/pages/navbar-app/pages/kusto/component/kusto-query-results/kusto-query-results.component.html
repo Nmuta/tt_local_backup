@@ -1,0 +1,29 @@
+<section>
+  <ng-container *ngIf="results?.length > 0; else noResultsState">
+    <div class="table-container">
+      <table mat-table [dataSource]="results" class="mat-elevation-z8">
+        <ng-container *ngFor="let column of resultKeys; let i = index" matColumnDef="{{ column }}">
+          <mat-header-cell *matHeaderCellDef>
+            <fa-icon
+              *ngIf="i === 0"
+              class="fa-2x"
+              [icon]="downloadIcon"
+              [downloadCsv]="downloadResults"
+              filname="KustoQueryResults"
+              matTooltip="Download Kusto results."
+            ></fa-icon>
+            {{ column | humanize }}
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element[column] }} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="resultKeys; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: resultKeys"></mat-row>
+      </table>
+    </div>
+  </ng-container>
+</section>
+
+<ng-template #noResultsState>
+  <p>No results were found.</p>
+</ng-template>

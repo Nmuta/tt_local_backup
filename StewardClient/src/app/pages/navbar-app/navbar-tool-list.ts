@@ -63,6 +63,12 @@ export class NavbarTools {
     title: 'Banning',
     path: 'user-banning',
   };
+
+  /** The Kusto tool page. */
+  public static readonly KustoPage: RouteParams = {
+    title: 'Kusto',
+    path: 'kusto',
+  };
 }
 
 /** The list of tools to display in the navbar. */
@@ -71,4 +77,5 @@ export const navbarToolList: RouterLinkPath[] = [
   createNavbarPath(NavbarTools.GiftingPage),
   createNavbarPath(NavbarTools.UserBanningPage),
   createNavbarPath(NavbarTools.GiftHistoryPage),
+  createNavbarPath(NavbarTools.KustoPage),
 ];

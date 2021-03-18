@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   faCog,
   faExclamationTriangle,
@@ -19,6 +19,7 @@ import {
   NavbarTools,
   RouterLinkPath,
 } from '@navbar-app/navbar-tool-list';
+import { environment } from '@environments/environment';
 
 /** The shared top-level navbar. */
 @Component({
@@ -26,7 +27,7 @@ import {
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public warningIcon = faExclamationTriangle;
@@ -42,6 +43,17 @@ export class NavbarComponent {
     private readonly windowService: WindowService,
     public readonly zendeskService: ZendeskService,
   ) {}
+
+  /**
+   * Lifecycle hook.
+   * TODO: Remove when Kusto feature is ready.
+   */
+  public ngOnInit(): void {
+    // Kusto feature not ready for prod, only uses FakeAPI at this point
+    if (environment.production) {
+      this.items = this.items.filter(routeLink => routeLink.title.toLowerCase() !== 'kusto');
+    }
+  }
 
   /** A string representing the current location */
   public get location(): string {

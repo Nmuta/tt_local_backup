@@ -1,0 +1,50 @@
+<section>
+  <mat-card>
+    <h2>
+      Query Selection
+      <button mat-stroked-button matTooltip="Clears the query input box" (click)="clearInput()">
+        Clear Input
+      </button>
+    </h2>
+    <form [formGroup]="kustoQueryForm" (ngSubmit)="runQuery()">
+      <textarea
+        cdkTextareaAutosize
+        placeholder="Select a query from below to get started..."
+        type="text"
+        formControlName="queryInput"
+        spellcheck="false"
+        required
+      ></textarea>
+
+      <div class="query-selection-actions">
+        <kusto-query-selection
+          (selectedKustoQueryEvent)="setQueryToInput($event)"
+        ></kusto-query-selection>
+        <button
+          class="run-query"
+          mat-raised-button
+          color="primary"
+          [disabled]="isLoading || !kustoQueryForm.valid"
+          [matTooltip]="isLoading || !kustoQueryForm.valid ? 'No query has been selected' : null"
+        >
+          Run Query
+        </button>
+      </div>
+    </form>
+  </mat-card>
+  <mat-card>
+    <h2>Query Results</h2>
+    <ng-container *ngIf="!isLoading && !loadError; else failState">
+      <kusto-query-results *ngIf="queryResponse" [results]="queryResponse"
+        >Click to view results.</kusto-query-results
+      >
+    </ng-container>
+  </mat-card>
+</section>
+
+<ng-template #failState>
+  <div id="fail-state">
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+    <json-dump *ngIf="loadError" [input]="loadError">Failure occured.</json-dump>
+  </div>
+</ng-template>

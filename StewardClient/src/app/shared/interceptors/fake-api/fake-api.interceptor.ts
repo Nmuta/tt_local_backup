@@ -14,6 +14,9 @@ import _ from 'lodash';
 import { Observable, of as ObservableOf, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
+import { KustoGetQueriesFakeApi } from './apis/kusto/queries';
+import { KustoRunQueryFakeApi } from './apis/kusto/run';
+
 import { ApolloPlayerGamertagDetailsFakeApi } from './apis/title/apollo/player/gamertag/details';
 import { ApolloPlayerProfileIdInventoryFakeApi } from './apis/title/apollo/player/profileId/inventory';
 import { ApolloPlayerXuidInventoryFakeApi } from './apis/title/apollo/player/xuid/inventory';
@@ -152,6 +155,10 @@ const fakeApiConstructors = [
   OpusPlayerXuidInventoryFakeApi,
   OpusPlayerXuidInventoryProfilesFakeApi,
   OpusPlayersIdentitiesFakeApi,
+
+  // Kusto
+  KustoGetQueriesFakeApi,
+  KustoRunQueryFakeApi,
 
   // Other
   JobsGetJobFakeApi,

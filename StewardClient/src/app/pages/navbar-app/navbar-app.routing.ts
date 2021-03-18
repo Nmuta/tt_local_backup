@@ -43,6 +43,10 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/user-banning/user-banning.module').then(m => m.UserBanningModule),
       },
+      {
+        path: NavbarTools.KustoPage.path,
+        loadChildren: () => import('./pages/kusto/kusto.module').then(m => m.KustoModule),
+      },
       ...sidebarRoutes,
       {
         path: '**',

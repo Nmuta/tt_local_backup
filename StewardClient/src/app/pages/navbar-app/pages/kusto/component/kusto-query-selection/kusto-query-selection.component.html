@@ -1,0 +1,32 @@
+<form
+  [formGroup]="querySelectionForm"
+  #formDirective="ngForm"
+  (ngSubmit)="selectedQueryEmitter(formDirective)"
+>
+  <mat-form-field class="query-selection-form-field">
+    <input
+      type="text"
+      matInput
+      placeholder="Search for a Kusto query"
+      formControlName="queryInput"
+      required
+      [matAutocomplete]="autoGroup"
+      [(ngModel)]="queryInputValue"
+    />
+    <mat-autocomplete
+      #autoGroup="matAutocomplete"
+      (optionSelected)="newQuerySelected($event.option.value)"
+      [displayWith]="queryAutoCompleteDisplayFn"
+    >
+      <mat-option [disabled]="true">Showing queries related to their game titles</mat-option>
+      <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.category">
+        <mat-option *ngFor="let item of group.items" [value]="item">
+          {{ item.name }}
+        </mat-option>
+      </mat-optgroup>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button mat-raised-button color="accent" type="submit" [disabled]="!querySelectionForm.valid">
+    Use Kusto Query
+  </button>
+</form>
