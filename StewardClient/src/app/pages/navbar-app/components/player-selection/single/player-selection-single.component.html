@@ -16,7 +16,11 @@
   >
 </mat-button-toggle-group>
 
-<mat-form-field class="player-chip-list" [class.display-in-single-line]="displayInSingleLine">
+<mat-form-field
+  class="player-chip-list"
+  [class.display-in-single-line]="displayInSingleLine"
+  [class.has-result]="foundIdentities.length > 0"
+>
   <mat-label>{{ lookupType | humanize }}</mat-label>
   <mat-chip-list
     #chipList

@@ -28,3 +28,7 @@ mat-chip {
 .identity-invalid {
   background-color: app-color-lighter($app-warn);
 }
+
+:host ::ng-deep .display-in-single-line.has-result .mat-form-field-label-wrapper {
+  display: none;
+}
