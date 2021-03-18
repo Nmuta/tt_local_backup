@@ -58,6 +58,8 @@ export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent
     const selectedItemInFoundIdentities = this.foundIdentities.includes(this.selectedValue);
     if (!selectedItemInFoundIdentities) {
       this.selected.next(null);
+    } else {
+      this.selected.next(this.selectedValue);
     }
   }
 
