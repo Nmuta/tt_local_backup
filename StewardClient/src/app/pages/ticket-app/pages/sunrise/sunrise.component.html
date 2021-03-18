@@ -1,7 +1,7 @@
 <ng-container *ngIf="!identityError; else identityErrorState">
   <sunrise-player-sidebar-details [gamertag]="gamertag"></sunrise-player-sidebar-details>
   <sunrise-user-flags [xuid]="xuid" [disabled]="true" class="top-spacing"></sunrise-user-flags>
-  <sunrise-ban-history [xuid]="xuid" [compactView]="true" class="top-spacing"></sunrise-ban-history>
+  <sunrise-ban-history-compact [xuid]="xuid" class="top-spacing"></sunrise-ban-history-compact>
   <quick-actions class="top-spacing">
     <go-to-inventory-button [gameTitle]="gameTitle" [xuid]="xuid"></go-to-inventory-button>
   </quick-actions>

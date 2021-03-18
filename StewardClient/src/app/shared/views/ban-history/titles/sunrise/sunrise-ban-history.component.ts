@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faHistory } from '@fortawesome/free-solid-svg-icons';
 import { LiveOpsBanDescription } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 
@@ -20,8 +20,6 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
 })
 export class SunriseBanHistoryComponent extends BaseComponent implements OnChanges {
   @Input() public xuid?: bigint;
-  /** Boolean determining if the view should be compacted. */
-  @Input() public compactView: boolean = false;
 
   /** True while waiting on a request. */
   public isLoading = true;
@@ -32,11 +30,10 @@ export class SunriseBanHistoryComponent extends BaseComponent implements OnChang
   public banList: LiveOpsBanDescription[];
 
   public isActiveIcon = faCheck;
+  public isInactiveIcon = faHistory;
 
   /** The columns + order to display. */
   public columnsToDisplay = ['isActive', 'reason', 'featureArea', 'startTimeUtc', 'expireTimeUtc'];
-  /** The columns + order to display for compact view. */
-  public compactColumnsToDisplay = ['isActive', 'description'];
 
   constructor(public readonly sunrise: SunriseService) {
     super();

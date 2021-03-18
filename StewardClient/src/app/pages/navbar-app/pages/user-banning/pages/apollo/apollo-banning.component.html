@@ -25,12 +25,11 @@
     </div>
     <div class="steward-layout-pane steward-layout-fill ban-history">
       <mat-card>
-        <ng-container *ngFor="let xuid of bannedXuids">
-          <apollo-ban-history
-            [xuid]="xuid"
-            [hidden]="xuid !== selectedPlayer?.xuid"
-          ></apollo-ban-history>
-        </ng-container>
+        <apollo-ban-history-compact
+          *ngFor="let xuid of bannedXuids"
+          [xuid]="xuid"
+          [hidden]="xuid !== selectedPlayer?.xuid"
+        ></apollo-ban-history-compact>
       </mat-card>
     </div>
   </div>

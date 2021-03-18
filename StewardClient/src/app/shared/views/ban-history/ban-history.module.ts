@@ -10,10 +10,19 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { ApolloBanHistoryComponent } from './titles/apollo/apollo-ban-history.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { ApolloBanHistoryCompactComponent } from './titles/apollo/compact/apollo-ban-history-compact.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { SunriseBanHistoryCompactComponent } from './titles/sunrise/compact/sunrise-ban-history-compact.component';
 
 /** A domain module for displaying player ban histories. */
 @NgModule({
-  declarations: [SunriseBanHistoryComponent, ApolloBanHistoryComponent],
+  declarations: [
+    SunriseBanHistoryComponent,
+    SunriseBanHistoryCompactComponent,
+    ApolloBanHistoryComponent,
+    ApolloBanHistoryCompactComponent,
+  ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -24,7 +33,14 @@ import { MatDividerModule } from '@angular/material/divider';
     PipesModule,
     JsonDumpModule,
     MatDividerModule,
+    MatExpansionModule,
+    MatTooltipModule,
   ],
-  exports: [SunriseBanHistoryComponent, ApolloBanHistoryComponent],
+  exports: [
+    SunriseBanHistoryComponent,
+    SunriseBanHistoryCompactComponent,
+    ApolloBanHistoryComponent,
+    ApolloBanHistoryCompactComponent,
+  ],
 })
 export class BanHistoryModule {}

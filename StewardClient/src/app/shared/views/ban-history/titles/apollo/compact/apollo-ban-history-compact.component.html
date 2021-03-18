@@ -1,0 +1,43 @@
+<h2>
+  Apollo Ban History
+  <error-spinner
+    [isActive]="false"
+    [error]="loadError"
+    spinnerMessage="Loading"
+    errorMessage="Failed to load"
+  >
+  </error-spinner>
+</h2>
+<mat-accordion *ngIf="!isLoading && !loadError; else failstate">
+  <mat-expansion-panel *ngFor="let entry of banList">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <fa-icon
+          *ngIf="entry.isActive"
+          [icon]="isActiveIcon"
+          matTooltip="Currently active"
+        ></fa-icon>
+        <fa-icon *ngIf="!entry.isActive" [icon]="isInactiveIcon" matTooltip="Old Ban"></fa-icon>
+        <span>{{ entry.featureArea | humanize }}</span>
+      </mat-panel-title>
+      <mat-panel-description>
+        <span class="timespan"
+          >{{ entry.startTimeUtc | date: 'shortDate' }} -
+          {{ entry.expireTimeUtc | date: 'shortDate' }}</span
+        >
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="compact">
+      <span><b>Start Time:</b> {{ entry.startTimeUtc | date: 'short' }}</span>
+      <span><b>Expire Time:</b> {{ entry.expireTimeUtc | date: 'short' }}</span>
+      <span><b>Feature Area:</b> {{ entry.featureArea | humanize }}</span>
+      <span><b>Banned By:</b> {{ entry.requestingAgent }}</span>
+      <span><b>Ban Reason:</b> {{ entry.reason }}</span>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+</ng-template>

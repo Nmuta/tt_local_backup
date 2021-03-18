@@ -10,42 +10,38 @@
       ></error-spinner>
     </h2>
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
-      <ng-container *ngIf="!compactView; else compactViewState">
-        <table mat-table [dataSource]="banList" multiTemplateDataRows>
-          <ng-container matColumnDef="reason">
-            <th mat-header-cell *matHeaderCellDef>Reason</th>
-            <td mat-cell *matCellDef="let entry">
-              {{ entry.requestingAgent }}: {{ entry.reason }}
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="isActive">
-            <th mat-header-cell *matHeaderCellDef>Active</th>
-            <td mat-cell *matCellDef="let entry">
-              <fa-icon *ngIf="entry.isActive" [icon]="isActiveIcon" class="active"></fa-icon>
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="featureArea">
-            <th mat-header-cell *matHeaderCellDef>Feature Area</th>
-            <td mat-cell *matCellDef="let entry">
-              {{ entry.featureArea | humanize }}
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="startTimeUtc">
-            <th mat-header-cell *matHeaderCellDef>Starts</th>
-            <td mat-cell *matCellDef="let entry">
-              {{ entry.startTimeUtc | date: 'short' }}
-            </td>
-          </ng-container>
-          <ng-container matColumnDef="expireTimeUtc">
-            <th mat-header-cell *matHeaderCellDef>Expires</th>
-            <td mat-cell *matCellDef="let entry">
-              {{ entry.expireTimeUtc | date: 'short' }}
-            </td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-          <tr mat-row *matRowDef="let element; columns: columnsToDisplay" class="element-row"></tr>
-        </table>
-      </ng-container>
+      <table mat-table [dataSource]="banList" multiTemplateDataRows>
+        <ng-container matColumnDef="reason">
+          <th mat-header-cell *matHeaderCellDef>Reason</th>
+          <td mat-cell *matCellDef="let entry">{{ entry.requestingAgent }}: {{ entry.reason }}</td>
+        </ng-container>
+        <ng-container matColumnDef="isActive">
+          <th mat-header-cell *matHeaderCellDef>Active</th>
+          <td mat-cell *matCellDef="let entry">
+            <fa-icon *ngIf="entry.isActive" [icon]="isActiveIcon" class="active"></fa-icon>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="featureArea">
+          <th mat-header-cell *matHeaderCellDef>Feature Area</th>
+          <td mat-cell *matCellDef="let entry">
+            {{ entry.featureArea | humanize }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="startTimeUtc">
+          <th mat-header-cell *matHeaderCellDef>Starts</th>
+          <td mat-cell *matCellDef="let entry">
+            {{ entry.startTimeUtc | date: 'short' }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="expireTimeUtc">
+          <th mat-header-cell *matHeaderCellDef>Expires</th>
+          <td mat-cell *matCellDef="let entry">
+            {{ entry.expireTimeUtc | date: 'short' }}
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplay" class="element-row"></tr>
+      </table>
     </ng-container>
   </mat-card-content>
 </mat-card>
@@ -53,30 +49,4 @@
 <ng-template #failstate>
   <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
   <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
-</ng-template>
-
-<ng-template #compactViewState>
-  <table mat-table [dataSource]="banList" multiTemplateDataRows>
-    <ng-container matColumnDef="isActive">
-      <th mat-header-cell *matHeaderCellDef>Active</th>
-      <td mat-cell *matCellDef="let entry">
-        <fa-icon *ngIf="entry.isActive" [icon]="isActiveIcon" class="active"></fa-icon>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef>Description</th>
-      <td mat-cell *matCellDef="let entry">
-        <pre>
-<b>Start Time:</b> {{ entry.startTimeUtc | date: 'short' }}
-<b>Expire Time:</b> {{ entry.expireTimeUtc | date: 'short' }}
-<b>Feature Area:</b> {{ entry.featureArea | humanize }}
-<b>Ban Reason:</b>
-{{ entry.requestingAgent }}: {{ entry.reason }}
-        </pre>
-        <mat-divider></mat-divider>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="compactColumnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let element; columns: compactColumnsToDisplay" class="element-row"></tr>
-  </table>
 </ng-template>
