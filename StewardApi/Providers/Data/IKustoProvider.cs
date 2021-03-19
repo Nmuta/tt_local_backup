@@ -1,13 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Data
+namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
     /// <summary>
     ///     Exposes methods for interacting with Kusto.
     /// </summary>
     public interface IKustoProvider
     {
+        /// <summary>
+        ///     Runs a Kusto query.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="dbName">The database name.</param>
+        /// <returns>
+        ///     A list of <see cref="JObject"/>.
+        /// </returns>
+        Task<IList<JObject>> RunKustoQuery(string query, string dbName);
+
         /// <summary>
         ///     Gets master inventory item list.
         /// </summary>

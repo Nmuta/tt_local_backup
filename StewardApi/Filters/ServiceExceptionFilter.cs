@@ -69,6 +69,16 @@ namespace Turn10.LiveOps.StewardApi.Filters
                 status = HttpStatusCode.InternalServerError;
                 errorCode = StewardErrorCode.FailedToSend;
             }
+            else if (context.Exception is QueryFailedStewardException)
+            {
+                status = HttpStatusCode.InternalServerError;
+                errorCode = StewardErrorCode.QueryFailed;
+            }
+            else if (context.Exception is ConversionFailedStewardException)
+            {
+                status = HttpStatusCode.InternalServerError;
+                errorCode = StewardErrorCode.ConversionFailed;
+            }
             else
             {
                 status = HttpStatusCode.InternalServerError;

@@ -17,7 +17,6 @@ using Turn10.Data.Kusto;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Filters;
@@ -28,6 +27,7 @@ using Turn10.LiveOps.StewardApi.Obligation;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
@@ -156,7 +156,7 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new SunriseProfileMapper());
                 mc.AddProfile(new GravityProfileMapper());
                 mc.AddProfile(new ApolloProfileMapper());
-                mc.AddProfile(new JobsProfileMapper());
+                mc.AddProfile(new DataProfileMapper());
                 mc.AllowNullCollections = true;
             });
 
@@ -245,6 +245,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IBlobRepository>(blobRepo);
 
             services.AddSingleton<IJobTracker, JobTracker>();
+            services.AddSingleton<IKustoQueryProvider, KustoQueryProvider>();
         }
 
         /// <summary>

@@ -5,12 +5,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kusto.Data.Common;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Data
+namespace Turn10.LiveOps.StewardApi.Providers.Data
 {
     /// <inheritdoc />
     public sealed class KustoProvider : IKustoProvider
@@ -37,6 +41,60 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             this.telemetryDatabaseName = configuration[ConfigurationKeyConstants.KustoLoggerDatabase];
             this.cslQueryProvider = kustoFactory.CreateCslQueryProvider();
             this.refreshableCacheStore = refreshableCacheStore;
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<JObject>> RunKustoQuery(string query, string dbName)
+        {
+            var items = new List<JObject>();
+            var columns = new List<KustoColumn>();
+
+            try
+            {
+                using (var schemaReader = await this.cslQueryProvider
+                    .ExecuteQueryAsync(dbName, query + "| getschema", new ClientRequestProperties())
+                    .ConfigureAwait(false))
+                {
+                    while (schemaReader.Read())
+                    {
+                        columns.Add(new KustoColumn
+                        {
+                            ColumnName = schemaReader.GetString(0),
+                            Ordinal = schemaReader.GetInt32(1),
+                            DataType = schemaReader.GetString(2)
+                        });
+                    }
+                }
+
+                using (var reader = await this.cslQueryProvider
+                    .ExecuteQueryAsync(dbName, query, new ClientRequestProperties())
+                    .ConfigureAwait(false))
+                {
+                    while (reader.Read())
+                    {
+                        JObject item = new JObject();
+                        for (int i = 0; i < columns.Count; i++)
+                        {
+                            columns[i].ReadValue(item, reader);
+                        }
+
+                        items.Add(item);
+                    }
+
+                    reader.Close();
+                }
+
+                return items;
+            }
+            catch (Exception ex)
+            {
+                if (ex is StewardBaseException)
+                {
+                    throw;
+                }
+
+                throw new QueryFailedStewardException("Kusto Query failed.", ex);
+            }
         }
 
         /// <inheritdoc />

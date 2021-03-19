@@ -27,6 +27,16 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         /// <summary>
         ///     The failed to send error code.
         /// </summary>
-        FailedToSend
+        FailedToSend,
+
+        /// <summary>
+        ///     The conversion failed error code.
+        /// </summary>
+        ConversionFailed,
+
+        /// <summary>
+        ///     The query failed error code.
+        /// </summary>
+        QueryFailed
     }
 }
