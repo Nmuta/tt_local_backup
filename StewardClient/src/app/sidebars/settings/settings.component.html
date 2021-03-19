@@ -2,6 +2,7 @@
   <mat-card>
     <h2>Settings</h2>
     <mat-slide-toggle
+      *ngIf="showFakeApiToggle"
       [(ngModel)]="enableFakeApi"
       (ngModelChange)="syncSettings()"
       matTooltip="The Fake API overrides calls to the backing service with fake data. User Authentication is not overridden."
@@ -9,6 +10,7 @@
     >
       Fake API</mat-slide-toggle
     >
+    <p>No settings available</p>
   </mat-card>
   <mat-card>
     <location-details></location-details>

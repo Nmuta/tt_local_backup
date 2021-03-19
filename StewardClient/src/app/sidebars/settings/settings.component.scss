@@ -1,3 +1,10 @@
 :host ::ng-deep mat-card {
   margin-bottom: 20px;
 }
+
+p {
+  display: none;
+}
+h2 + p {
+  display: unset;
+}
