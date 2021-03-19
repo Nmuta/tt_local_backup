@@ -2,99 +2,134 @@
   <mat-card-content>
     <h2>Sunrise Gift History</h2>
     <span class="notification">{{ giftHistoryDelay }}</span>
-    <div class="scrollable" *ngIf="!isLoading && !loadError; else failState">
-      <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <div>{{ history.requestingAgent }}</div>
-            <span>{{ history.giftInventory.giftReason }}</span>
-            <span [matTooltip]="history.giftSendDateUtc | date: 'long'">
-              {{ history.giftSendDateUtc | date: 'short' }}
-            </span>
-          </mat-panel-title>
-          <mat-panel-description *ngIf="history.giftInventory.inventory">
-            <span
-              class="inventoryPreview"
-              *ngIf="history.giftInventory.inventory.creditRewards?.length > 0"
-              ><span class="label">Currencies</span
-              ><span class="data">{{
-                history.giftInventory.inventory.creditRewards.length
-              }}</span></span
-            >
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.cars?.length > 0"
-              ><span class="label">Cars</span
-              ><span class="data">{{ history.giftInventory.inventory.cars.length }}</span></span
-            >
-            <span
-              class="inventoryPreview"
-              *ngIf="history.giftInventory.inventory.carHorns?.length > 0"
-              ><span class="label">Car Horns</span
-              ><span class="data">{{ history.giftInventory.inventory.carHorns.length }}</span></span
-            >
-            <span
-              class="inventoryPreview"
-              *ngIf="history.giftInventory.inventory.emotes?.length > 0"
-              ><span class="label">Emotes</span
-              ><span class="data">{{ history.giftInventory.inventory.emotes.length }}</span></span
-            >
-            <span
-              class="inventoryPreview"
-              *ngIf="history.giftInventory.inventory.quickChatLines?.length > 0"
-              ><span class="label">Chat Lines</span
-              ><span class="data">{{
-                history.giftInventory.inventory.quickChatLines.length
-              }}</span></span
-            >
-            <span
-              class="inventoryPreview"
-              *ngIf="history.giftInventory.inventory.vanityItems?.length > 0"
-              ><span class="label">Vanity Items</span
-              ><span class="data">{{
-                history.giftInventory.inventory.vanityItems.length
-              }}</span></span
-            >
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div *ngIf="history.giftInventory.inventory.creditRewards?.length > 0">
-          <h3>Currencies: {{ history.giftInventory.inventory.creditRewards.length }}</h3>
-          <p *ngFor="let currency of history.giftInventory.inventory.creditRewards">
-            [{{ currency.quantity }}] {{ currency.description }} (Item ID: {{ currency.id }})
-          </p>
-        </div>
-        <div *ngIf="history.giftInventory.inventory.cars?.length > 0">
-          <h3>Cars: {{ history.giftInventory.inventory.cars.length }}</h3>
-          <p *ngFor="let car of history.giftInventory.inventory.cars">
-            [{{ car.quantity }}] {{ car.description }} (Item ID: {{ car.id }})
-          </p>
-        </div>
-        <div *ngIf="history.giftInventory.inventory.carHorns?.length > 0">
-          <h3>Car Horns: {{ history.giftInventory.inventory.carHorns.length }}</h3>
-          <p *ngFor="let carHorn of history.giftInventory.inventory.carHorns">
-            [{{ carHorn.quantity }}] {{ carHorn.description }} (Item ID: {{ carHorn.id }})
-          </p>
-        </div>
-        <div *ngIf="history.giftInventory.inventory.emotes?.length > 0">
-          <h3>Emotes: {{ history.giftInventory.inventory.emotes.length }}</h3>
-          <p *ngFor="let emote of history.giftInventory.inventory.emotes">
-            [{{ emote.quantity }}] {{ emote.description }} (Item ID: {{ emote.id }})
-          </p>
-        </div>
-        <div *ngIf="history.giftInventory.inventory.quickChatLines?.length > 0">
-          <h3>Quick Chat Lines: {{ history.giftInventory.inventory.quickChatLines.length }}</h3>
-          <p *ngFor="let chatLine of history.giftInventory.inventory.quickChatLines">
-            [{{ chatLine.quantity }}] {{ chatLine.description }} (Item ID: {{ chatLine.id }})
-          </p>
-        </div>
-        <div *ngIf="history.giftInventory.inventory.vanityItems?.length > 0">
-          <h3>Vanity Items: {{ history.giftInventory.inventory.vanityItems.length }}</h3>
-          <p *ngFor="let vanityItem of history.giftInventory.inventory.vanityItems">
-            [{{ vanityItem.quantity }}] {{ vanityItem.description }} (Item ID: {{ vanityItem.id }})
-          </p>
-        </div>
-      </mat-expansion-panel>
+    <div *ngIf="!isLoading && !loadError; else failState">
+      <mat-accordion>
+        <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="requesting-agent">{{ history.requestingAgent }}</div>
+              <span class="gift-reason">{{ history.giftInventory.giftReason }}</span>
+              <span class="gift-date" [matTooltip]="history.giftSendDateUtc | date: 'long'">
+                {{ history.giftSendDateUtc | date: 'short' }}
+              </span>
+            </mat-panel-title>
+            <mat-panel-description *ngIf="history.giftInventory.inventory">
+              <span
+                class="inventoryPreview"
+                *ngIf="history.giftInventory.inventory.creditRewards?.length > 0"
+                ><span class="label">Currencies</span
+                ><span class="data">{{
+                  history.giftInventory.inventory.creditRewards.length
+                }}</span></span
+              >
+              <span
+                class="inventoryPreview"
+                *ngIf="history.giftInventory.inventory.cars?.length > 0"
+                ><span class="label">Cars</span
+                ><span class="data">{{ history.giftInventory.inventory.cars.length }}</span></span
+              >
+              <span
+                class="inventoryPreview"
+                *ngIf="history.giftInventory.inventory.carHorns?.length > 0"
+                ><span class="label">Car Horns</span
+                ><span class="data">{{
+                  history.giftInventory.inventory.carHorns.length
+                }}</span></span
+              >
+              <span
+                class="inventoryPreview"
+                *ngIf="history.giftInventory.inventory.emotes?.length > 0"
+                ><span class="label">Emotes</span
+                ><span class="data">{{ history.giftInventory.inventory.emotes.length }}</span></span
+              >
+              <span
+                class="inventoryPreview"
+                *ngIf="history.giftInventory.inventory.quickChatLines?.length > 0"
+                ><span class="label">Chat Lines</span
+                ><span class="data">{{
+                  history.giftInventory.inventory.quickChatLines.length
+                }}</span></span
+              >
+              <span
+                class="inventoryPreview"
+                *ngIf="history.giftInventory.inventory.vanityItems?.length > 0"
+                ><span class="label">Vanity Items</span
+                ><span class="data">{{
+                  history.giftInventory.inventory.vanityItems.length
+                }}</span></span
+              >
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div *ngIf="history.giftInventory.inventory.creditRewards?.length > 0">
+            <h3>Currencies: {{ history.giftInventory.inventory.creditRewards.length }}</h3>
+            <ng-container
+              *ngTemplateOutlet="
+                itemsTemplate;
+                context: { $implicit: history.giftInventory.inventory.creditRewards }
+              "
+            ></ng-container>
+          </div>
+          <div *ngIf="history.giftInventory.inventory.cars?.length > 0">
+            <h3>Cars: {{ history.giftInventory.inventory.cars.length }}</h3>
+            <ng-container
+              *ngTemplateOutlet="
+                itemsTemplate;
+                context: { $implicit: history.giftInventory.inventory.cars }
+              "
+            ></ng-container>
+          </div>
+          <div *ngIf="history.giftInventory.inventory.carHorns?.length > 0">
+            <h3>Car Horns: {{ history.giftInventory.inventory.carHorns.length }}</h3>
+            <ng-container
+              *ngTemplateOutlet="
+                itemsTemplate;
+                context: { $implicit: history.giftInventory.inventory.carHorns }
+              "
+            ></ng-container>
+          </div>
+          <div *ngIf="history.giftInventory.inventory.emotes?.length > 0">
+            <h3>Emotes: {{ history.giftInventory.inventory.emotes.length }}</h3>
+            <ng-container
+              *ngTemplateOutlet="
+                itemsTemplate;
+                context: { $implicit: history.giftInventory.inventory.emotes }
+              "
+            ></ng-container>
+          </div>
+          <div *ngIf="history.giftInventory.inventory.quickChatLines?.length > 0">
+            <h3>Quick Chat Lines: {{ history.giftInventory.inventory.quickChatLines.length }}</h3>
+            <ng-container
+              *ngTemplateOutlet="
+                itemsTemplate;
+                context: { $implicit: history.giftInventory.inventory.quickChatLines }
+              "
+            ></ng-container>
+          </div>
+          <div *ngIf="history.giftInventory.inventory.vanityItems?.length > 0">
+            <h3>Vanity Items: {{ history.giftInventory.inventory.vanityItems.length }}</h3>
+            <ng-container
+              *ngTemplateOutlet="
+                itemsTemplate;
+                context: { $implicit: history.giftInventory.inventory.vanityItems }
+              "
+            ></ng-container>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
   </mat-card-content>
 </mat-card>
+
+<ng-template #itemsTemplate let-items>
+  <ul class="items">
+    <li *ngFor="let item of items">
+      <span class="quantity">{{ item.quantity }}</span>
+      <span class="description">{{ item.description }}</span>
+      <span class="item-id" *ngIf="item.id !== SENTINEL_VALUE">{{ item.id }}</span>
+    </li>
+  </ul>
+</ng-template>
+
 <ng-template #failState>
   <div id="fail-state">
     <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>

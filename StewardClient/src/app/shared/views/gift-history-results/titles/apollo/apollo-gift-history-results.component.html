@@ -6,9 +6,9 @@
       <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <div>{{ history.requestingAgent }}</div>
-            <span>{{ history.giftInventory.giftReason }}</span>
-            <span [matTooltip]="history.giftSendDateUtc | date: 'long'">
+            <div class="requesting-agent">{{ history.requestingAgent }}</div>
+            <span class="gift-reason">{{ history.giftInventory.giftReason }}</span>
+            <span class="gift-date" [matTooltip]="history.giftSendDateUtc | date: 'long'">
               {{ history.giftSendDateUtc | date: 'short' }}
             </span>
           </mat-panel-title>
@@ -37,26 +37,45 @@
         </mat-expansion-panel-header>
         <div *ngIf="history.giftInventory.inventory.creditRewards?.length > 0">
           <h3>Currencies: {{ history.giftInventory.inventory.creditRewards.length }}</h3>
-          <p *ngFor="let currency of history.giftInventory.inventory.creditRewards">
-            [{{ currency.quantity }}] {{ currency.description }} (Item Id: {{ currency.id }})
-          </p>
+          <ng-container
+            *ngTemplateOutlet="
+              itemsTemplate;
+              context: { $implicit: history.giftInventory.inventory.creditRewards }
+            "
+          ></ng-container>
         </div>
         <div *ngIf="history.giftInventory.inventory.cars?.length > 0">
           <h3>Cars: {{ history.giftInventory.inventory.cars.length }}</h3>
-          <p *ngFor="let car of history.giftInventory.inventory.cars">
-            [{{ car.quantity }}] {{ car.description }} (Item Id: {{ car.id }})
-          </p>
+          <ng-container
+            *ngTemplateOutlet="
+              itemsTemplate;
+              context: { $implicit: history.giftInventory.inventory.cars }
+            "
+          ></ng-container>
         </div>
         <div *ngIf="history.giftInventory.inventory.vanityItems?.length > 0">
           <h3>Vanity Items: {{ history.giftInventory.inventory.vanityItems.length }}</h3>
-          <p *ngFor="let item of history.giftInventory.inventory.vanityItems">
-            [{{ item.quantity }}] {{ item.description }} (Item Id: {{ item.id }})
-          </p>
+          <ng-container
+            *ngTemplateOutlet="
+              itemsTemplate;
+              context: { $implicit: history.giftInventory.inventory.vanityItems }
+            "
+          ></ng-container>
         </div>
       </mat-expansion-panel>
     </div>
   </mat-card-content>
 </mat-card>
+
+<ng-template #itemsTemplate let-items>
+  <ul class="items">
+    <li *ngFor="let item of items">
+      <span class="quantity">{{ item.quantity }}</span>
+      <span class="description">{{ item.description }}</span>
+      <span class="item-id" *ngIf="item.id !== SENTINEL_VALUE">{{ item.id }}</span>
+    </li>
+  </ul>
+</ng-template>
 
 <ng-template #failState>
   <div id="fail-state">

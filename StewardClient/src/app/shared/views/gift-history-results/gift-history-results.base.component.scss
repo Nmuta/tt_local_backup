@@ -13,28 +13,31 @@ h3 {
   font-weight: bold;
 }
 
-p {
-  margin-bottom: 0;
-}
-
 mat-panel-title {
-  display: inline;
   &,
   & > * {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    padding-right: 0.5em;
   }
 
   min-width: 150px;
   flex-basis: auto;
+
+  .gift-reason {
+    font-weight: bold;
+  }
 }
 
 mat-panel-description {
+  text-align: right;
   overflow: hidden;
   text-overflow: ellipsis;
   display: flex;
   flex-flow: row wrap;
+  align-items: flex-end;
+  flex-grow: 0;
   max-height: 2.5em;
 }
 
@@ -50,7 +53,29 @@ mat-panel-description {
   }
 }
 
-.scrollable {
-  max-height: 80vh;
-  overflow: auto;
+ul.items {
+  > li > * {
+    padding-right: 1em;
+  }
+
+  .quantity {
+    display: inline-block;
+    width: 3em;
+    &:before {
+      content: '[';
+    }
+    &:after {
+      content: 'x]';
+    }
+  }
+
+  .description {
+    font-weight: bold;
+  }
+
+  .item-id {
+    &:before {
+      content: '#';
+    }
+  }
 }

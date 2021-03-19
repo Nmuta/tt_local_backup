@@ -3,103 +3,135 @@
     <h2>Gravity Gift History</h2>
     <span class="notification">{{ giftHistoryDelay }}</span>
     <div class="scrollable" *ngIf="!isLoading && !loadError; else failState">
-      <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <div>{{ history.requestingAgent }}</div>
-            <span>{{ history.giftInventory.giftReason }}</span>
-            <span [matTooltip]="history.giftSendDateUtc | date: 'long'">
-              {{ history.giftSendDateUtc | date: 'short' }}
-            </span>
-          </mat-panel-title>
-          <mat-panel-description *ngIf="history.giftInventory">
-            <span
-              class="inventoryPreview"
-              *ngIf="history.giftInventory.inventory.creditRewards?.length > 0"
-              ><span class="label">Currencies</span
-              ><span class="data">{{
-                history.giftInventory.inventory.creditRewards.length
-              }}</span></span
-            >
-            <span class="inventoryPreview" *ngIf="history.giftInventory.inventory.cars?.length > 0"
-              ><span class="label">Cars</span
-              ><span class="data">{{ history.giftInventory.inventory.cars.length }}</span></span
-            >
-            <span
-              class="inventoryPreview"
-              *ngIf="history.giftInventory.inventory.energyRefills?.length > 0"
-              ><span class="label">Energy Refills</span
-              ><span class="data">{{
-                history.giftInventory.inventory.energyRefills.length
-              }}</span></span
-            >
-            <span
-              class="inventoryPreview"
-              *ngIf="history.giftInventory.inventory.masteryKits?.length > 0"
-              ><span class="label">Mastery Kits</span
-              ><span class="data">{{
-                history.giftInventory.inventory.masteryKits.length
-              }}</span></span
-            >
-            <span
-              class="inventoryPreview"
-              *ngIf="history.giftInventory.inventory.repairKits?.length > 0"
-              ><span class="label">Repair Kits</span
-              ><span class="data">{{
-                history.giftInventory.inventory.repairKits.length
-              }}</span></span
-            >
-            <span
-              class="inventoryPreview"
-              *ngIf="history.giftInventory.inventory.upgradeKits?.length > 0"
-              ><span class="label">Upgrade Kits</span
-              ><span class="data">{{
-                history.giftInventory.inventory.upgradeKits.length
-              }}</span></span
-            >
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div *ngIf="history.giftInventory.inventory.creditRewards?.length > 0">
-          <h3>Currencies: {{ history.giftInventory.inventory.creditRewards.length }}</h3>
-          <p *ngFor="let currency of history.giftInventory.inventory.creditRewards">
-            [{{ currency.quantity }}] {{ currency.description }} (Item ID: {{ currency.id }})
-          </p>
-        </div>
-        <div *ngIf="history.giftInventory.inventory.cars?.length > 0">
-          <h3>Cars: {{ history.giftInventory.inventory.cars.length }}</h3>
-          <p *ngFor="let car of history.giftInventory.inventory.cars">
-            [{{ car.quantity }}] {{ car.description }} (Item ID: {{ car.id }})
-          </p>
-        </div>
-        <div *ngIf="history.giftInventory.inventory.energyRefills?.length > 0">
-          <h3>Energy Refills: {{ history.giftInventory.inventory.energyRefills.length }}</h3>
-          <p *ngFor="let energyRefill of history.giftInventory.inventory.energyRefills">
-            [{{ energyRefill.quantity }}] {{ energyRefill.description }} (Item ID:
-            {{ energyRefill.id }})
-          </p>
-        </div>
-        <div *ngIf="history.giftInventory.inventory.masteryKits?.length > 0">
-          <h3>Mastery Kits: {{ history.giftInventory.inventory.masteryKits.length }}</h3>
-          <p *ngFor="let masteryKit of history.giftInventory.inventory.masteryKits">
-            [{{ masteryKit.quantity }}] {{ masteryKit.description }} (Item ID: {{ masteryKit.id }})
-          </p>
-        </div>
-        <div *ngIf="history.giftInventory.inventory.repairKits?.length > 0">
-          <h3>Repair Kits: {{ history.giftInventory.inventory.repairKits.length }}</h3>
-          <p *ngFor="let repairKit of history.giftInventory.inventory.repairKits">
-            [{{ repairKit.quantity }}] {{ repairKit.description }} (Item ID: {{ repairKit.id }})
-          </p>
-        </div>
-        <div *ngIf="history.giftInventory.inventory.upgradeKits?.length > 0">
-          <h3>Upgrade Kits: {{ history.giftInventory.inventory.upgradeKits.length }}</h3>
-          <p *ngFor="let upgradeKit of history.giftInventory.inventory.upgradeKits">
-            [{{ upgradeKit.quantity }}] {{ upgradeKit.description }} (Item ID: {{ upgradeKit.id }})
-          </p>
-        </div>
-      </mat-expansion-panel>
+      <mat-accordion>
+        <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="requesting-agent">{{ history.requestingAgent }}</div>
+              <span class="gift-reason">{{ history.giftInventory.giftReason }}</span>
+              <span class="gift-date" [matTooltip]="history.giftSendDateUtc | date: 'long'">
+                {{ history.giftSendDateUtc | date: 'short' }}
+              </span>
+            </mat-panel-title>
+            <mat-panel-description *ngIf="history.giftInventory">
+              <span
+                class="inventoryPreview"
+                *ngIf="history.giftInventory.inventory.creditRewards?.length > 0"
+                ><span class="label">Currencies</span
+                ><span class="data">{{
+                  history.giftInventory.inventory.creditRewards.length
+                }}</span></span
+              >
+              <span
+                class="inventoryPreview"
+                *ngIf="history.giftInventory.inventory.cars?.length > 0"
+                ><span class="label">Cars</span
+                ><span class="data">{{ history.giftInventory.inventory.cars.length }}</span></span
+              >
+              <span
+                class="inventoryPreview"
+                *ngIf="history.giftInventory.inventory.energyRefills?.length > 0"
+                ><span class="label">Energy Refills</span
+                ><span class="data">{{
+                  history.giftInventory.inventory.energyRefills.length
+                }}</span></span
+              >
+              <span
+                class="inventoryPreview"
+                *ngIf="history.giftInventory.inventory.masteryKits?.length > 0"
+                ><span class="label">Mastery Kits</span
+                ><span class="data">{{
+                  history.giftInventory.inventory.masteryKits.length
+                }}</span></span
+              >
+              <span
+                class="inventoryPreview"
+                *ngIf="history.giftInventory.inventory.repairKits?.length > 0"
+                ><span class="label">Repair Kits</span
+                ><span class="data">{{
+                  history.giftInventory.inventory.repairKits.length
+                }}</span></span
+              >
+              <span
+                class="inventoryPreview"
+                *ngIf="history.giftInventory.inventory.upgradeKits?.length > 0"
+                ><span class="label">Upgrade Kits</span
+                ><span class="data">{{
+                  history.giftInventory.inventory.upgradeKits.length
+                }}</span></span
+              >
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div *ngIf="history.giftInventory.inventory.creditRewards?.length > 0">
+            <h3>Currencies: {{ history.giftInventory.inventory.creditRewards.length }}</h3>
+            <ng-container
+              *ngTemplateOutlet="
+                itemsTemplate;
+                context: { $implicit: history.giftInventory.inventory.creditRewards }
+              "
+            ></ng-container>
+          </div>
+          <div *ngIf="history.giftInventory.inventory.cars?.length > 0">
+            <h3>Cars: {{ history.giftInventory.inventory.cars.length }}</h3>
+            <ng-container
+              *ngTemplateOutlet="
+                itemsTemplate;
+                context: { $implicit: history.giftInventory.inventory.cars }
+              "
+            ></ng-container>
+          </div>
+          <div *ngIf="history.giftInventory.inventory.energyRefills?.length > 0">
+            <h3>Energy Refills: {{ history.giftInventory.inventory.energyRefills.length }}</h3>
+            <ng-container
+              *ngTemplateOutlet="
+                itemsTemplate;
+                context: { $implicit: history.giftInventory.inventory.energyRefills }
+              "
+            ></ng-container>
+          </div>
+          <div *ngIf="history.giftInventory.inventory.masteryKits?.length > 0">
+            <h3>Mastery Kits: {{ history.giftInventory.inventory.masteryKits.length }}</h3>
+            <ng-container
+              *ngTemplateOutlet="
+                itemsTemplate;
+                context: { $implicit: history.giftInventory.inventory.masteryKits }
+              "
+            ></ng-container>
+          </div>
+          <div *ngIf="history.giftInventory.inventory.repairKits?.length > 0">
+            <h3>Repair Kits: {{ history.giftInventory.inventory.repairKits.length }}</h3>
+            <ng-container
+              *ngTemplateOutlet="
+                itemsTemplate;
+                context: { $implicit: history.giftInventory.inventory.repairKits }
+              "
+            ></ng-container>
+          </div>
+          <div *ngIf="history.giftInventory.inventory.upgradeKits?.length > 0">
+            <h3>Upgrade Kits: {{ history.giftInventory.inventory.upgradeKits.length }}</h3>
+            <ng-container
+              *ngTemplateOutlet="
+                itemsTemplate;
+                context: { $implicit: history.giftInventory.inventory.upgradeKits }
+              "
+            ></ng-container>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
   </mat-card-content>
 </mat-card>
+
+<ng-template #itemsTemplate let-items>
+  <ul class="items">
+    <li *ngFor="let item of items">
+      <span class="quantity">{{ item.quantity }}</span>
+      <span class="description">{{ item.description }}</span>
+      <span class="item-id" *ngIf="item.id !== SENTINEL_VALUE">{{ item.id }}</span>
+    </li>
+  </ul>
+</ng-template>
+
 <ng-template #failState>
   <div id="fail-state">
     <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>

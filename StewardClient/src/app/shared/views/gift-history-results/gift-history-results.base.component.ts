@@ -25,6 +25,8 @@ export abstract class GiftHistoryResultsBaseComponent<
   @Input() public selectedGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
 
+  public SENTINEL_VALUE = BigInt(-1);
+
   /** The error received while loading. */
   public loadError: unknown;
   /** True while waiting on request. */
