@@ -16,69 +16,71 @@
   >
 </mat-button-toggle-group>
 
-<mat-form-field
-  class="player-chip-list"
-  [class.display-in-single-line]="displayInSingleLine"
-  [class.has-result]="foundIdentities.length > 0"
->
-  <mat-label>{{ lookupType | humanize }}</mat-label>
-  <mat-chip-list
-    #chipList
-    aria-label="Fruit selection"
-    [selectable]="allowSelection"
-    (change)="onSelect($event)"
+<div class="player-chip-list-constraint">
+  <mat-form-field
+    class="player-chip-list"
+    [class.display-in-single-line]="displayInSingleLine"
+    [class.has-result]="foundIdentities.length > 0"
   >
-    <mat-chip
-      *ngFor="let identity of foundIdentities"
-      #chip="matChip"
-      (click)="chip.toggleSelected(true)"
+    <mat-label>{{ lookupType | humanize }}</mat-label>
+    <mat-chip-list
+      #chipList
+      aria-label="Fruit selection"
       [selectable]="allowSelection"
-      [removable]="true"
-      [value]="identity"
-      [class.identity-valid]="
-        identity.extra && identity.extra?.isValid && identity.extra?.isAcceptable
-      "
-      [class.identity-invalid]="
-        identity.extra && (identity.extra?.isInvalid || !identity.extra?.isAcceptable)
-      "
-      [color]="identity.extra?.theme"
-      (removed)="remove(identity)"
+      (change)="onSelect($event)"
     >
-      <span>{{ identity.query[this.lookupType] }}</span>
+      <mat-chip
+        *ngFor="let identity of foundIdentities"
+        #chip="matChip"
+        (click)="chip.toggleSelected(true)"
+        [selectable]="allowSelection"
+        [removable]="true"
+        [value]="identity"
+        [class.identity-valid]="
+          identity.extra && identity.extra?.isValid && identity.extra?.isAcceptable
+        "
+        [class.identity-invalid]="
+          identity.extra && (identity.extra?.isInvalid || !identity.extra?.isAcceptable)
+        "
+        [color]="identity.extra?.theme"
+        (removed)="remove(identity)"
+      >
+        <span>{{ identity.query[this.lookupType] }}</span>
 
-      <ng-template
-        [ngTemplateOutlet]="templateRef"
-        [ngTemplateOutletContext]="{ $implicit: identity, identity: identity }"
-      ></ng-template>
+        <ng-template
+          [ngTemplateOutlet]="templateRef"
+          [ngTemplateOutletContext]="{ $implicit: identity, identity: identity }"
+        ></ng-template>
 
-      <fa-icon
-        *ngIf="identity.extra ? !identity.extra?.isAcceptable : false"
-        [icon]="unacceptableIcon"
-        [matTooltip]="identity.extra?.rejectionReason"
-        class="unacceptable-icon"
-      ></fa-icon>
+        <fa-icon
+          *ngIf="identity.extra ? !identity.extra?.isAcceptable : false"
+          [icon]="unacceptableIcon"
+          [matTooltip]="identity.extra?.rejectionReason"
+          class="unacceptable-icon"
+        ></fa-icon>
 
-      <error-spinner
-        [isActive]="!identity.extra"
-        [error]="identity.extra?.isInvalid ? identity : undefined"
-        spinnerMessage="Finding user"
-      ></error-spinner>
+        <error-spinner
+          [isActive]="!identity.extra"
+          [error]="identity.extra?.isInvalid ? identity : undefined"
+          spinnerMessage="Finding user"
+        ></error-spinner>
 
-      <span *ngIf="identity.extra?.label" [matTooltip]="identity.extra?.labelTooltip">
-        ({{ identity.extra.label }})
-      </span>
-      <mat-icon matChipRemove>cancel</mat-icon>
-    </mat-chip>
-    <input
-      [disabled]="this.disable"
-      [placeholder]="this.disable ? '' : 'New ' + (this.lookupType | humanize)"
-      [matChipInputFor]="chipList"
-      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-      [matChipInputAddOnBlur]="true"
-      (paste)="paste($event)"
-      (matChipInputTokenEnd)="add($event)"
-    />
-  </mat-chip-list>
-</mat-form-field>
+        <span *ngIf="identity.extra?.label" [matTooltip]="identity.extra?.labelTooltip">
+          ({{ identity.extra.label }})
+        </span>
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input
+        [disabled]="this.disable"
+        [placeholder]="this.disable ? '' : 'New ' + (this.lookupType | humanize)"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="true"
+        (paste)="paste($event)"
+        (matChipInputTokenEnd)="add($event)"
+      />
+    </mat-chip-list>
+  </mat-form-field>
 
-<button mat-stroked-button (click)="onClear()" clickStop>Clear All</button>
+  <button mat-stroked-button (click)="onClear()" clickStop>Clear All</button>
+</div>
