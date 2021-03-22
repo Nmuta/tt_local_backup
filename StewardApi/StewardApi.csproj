@@ -12,6 +12,7 @@
     <CodeAnalysisAdditionalOptions>/assemblyCompareMode:StrongNameIgnoringVersion</CodeAnalysisAdditionalOptions>
     <StartupObject>Turn10.LiveOps.StewardApi.Program</StartupObject>
     <UserSecretsId>69aa9e39-2604-4e97-b974-f3707268e684</UserSecretsId>
+    <InformationalVersion>Localhost</InformationalVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>

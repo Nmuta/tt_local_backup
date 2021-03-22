@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Reflection;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -95,7 +96,7 @@ namespace Turn10.LiveOps.StewardApi
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Turn 10 Steward API",
-                    Version = "v1",
+                    Version = this.GetType().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion,
                     Description = "Turn 10 Steward",
                     Contact = new OpenApiContact
                     {
