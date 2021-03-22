@@ -1317,16 +1317,9 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var gift = this.CreateGift();
 
-            try
-            {
-                var response = await stewardClient.GiftInventoryByLspGroupId(TestConstants.InvalidProfileId, gift).ConfigureAwait(false);
-                var error = response.Error as JObject;
-                Assert.AreEqual(error.GetValue("message"), "Exception of type 'Turn10.Services.ForzaClient.ForzaClientException' was thrown.");
-            }
-            catch
-            {
-                Assert.Fail();
-            }
+            var response = await stewardClient.GiftInventoryByLspGroupId(TestConstants.InvalidProfileId, gift).ConfigureAwait(false);
+            Assert.IsTrue(response.Error.Message.Contains(TestConstants.InvalidProfileId.ToString()));
+
         }
 
         [TestMethod]

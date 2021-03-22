@@ -1,12 +1,10 @@
-﻿using System.Text.Json.Serialization;
-using Newtonsoft.Json.Converters;
-using Turn10.Data.Common;
+﻿using System;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
 {
     /// <summary>
     ///     Represents an error with an inventory item.
-    /// </summary>`
+    /// </summary>
     public sealed class StewardInventoryItemError : StewardBaseException
     {
         /// <summary>

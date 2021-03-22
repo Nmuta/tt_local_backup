@@ -154,7 +154,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             }
             catch (Exception ex)
             {
-                giftResponse.Error = ex;
+                giftResponse.Error = new StewardError(StewardErrorCode.FailedToSend, $"Failed to send gift to Turn 10 Id: {t10Id}.", ex);
             }
 
             return giftResponse;

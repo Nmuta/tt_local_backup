@@ -1,4 +1,6 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts
+﻿using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+
+namespace Turn10.LiveOps.StewardApi.Contracts
 {
     /// <summary>
     /// Represents a gift response.
@@ -18,8 +20,7 @@
 
         /// <summary>
         ///     Gets or sets the gifting error.
-        ///     NOTE: Cannot use Exception type due to serialization issue: https://github.com/JamesNK/Newtonsoft.Json/issues/1622.
         /// </summary>
-        public object Error { get; set; }
+        public StewardError Error { get; set; }
     }
 }

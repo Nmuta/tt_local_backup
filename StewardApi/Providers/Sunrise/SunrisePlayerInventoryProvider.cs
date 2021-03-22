@@ -154,7 +154,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
             catch (Exception ex)
             {
-                giftResponse.Error = ex;
+                giftResponse.Error = new StewardError(StewardErrorCode.FailedToSend, $"Failed to send gift to XUID: {xuid}.", ex);
             }
 
             return giftResponse;
@@ -209,7 +209,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
             catch (Exception ex)
             {
-                giftResponse.Error = ex;
+                giftResponse.Error = new StewardError(StewardErrorCode.FailedToSend, $"Failed to send gift to group ID: {groupId}.", ex);
             }
 
             return giftResponse;
