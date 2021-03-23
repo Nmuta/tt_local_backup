@@ -1,9 +1,12 @@
 <section>
+  <mat-chip-list>
+    <mat-chip color="accent" matTooltip="ADO Build Number" selected>{{ adoVersion }}</mat-chip>
+  </mat-chip-list>
   <h2>Route Location</h2>
   <pre>{{ pathname }}</pre>
   <ng-container *ngIf="queryParams?.length > 0">
     <h2 class="query-params">Query Params</h2>
-    <pre>
+    <pre id="query-param-pre">
       <span *ngFor="let param of queryParams">
 {{ param }}
       </span>

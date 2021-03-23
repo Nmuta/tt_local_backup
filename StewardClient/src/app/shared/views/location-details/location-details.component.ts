@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '@environments/environment';
 import { WindowService } from '@services/window';
 
 /** Displays the apps current routed location. */
@@ -17,6 +18,11 @@ export class LocationDetailsComponent {
   /** Produces the current location, for reference when in iframe. */
   public get pathname(): string {
     return this.windowService.location().pathname;
+  }
+
+  /** Gets the ado version from the environment. */
+  public get adoVersion(): string {
+    return environment.adoVersion;
   }
 
   /** Produces the current location, for reference when in iframe. */

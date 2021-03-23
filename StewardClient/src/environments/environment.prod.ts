@@ -10,6 +10,7 @@ export const environment: StewardEnvironment = {
   stewardUiUrl: 'https://steward-ui-prod.azurewebsites.net',
   stewardApiUrl: 'https://steward-api-prod.azurewebsites.net',
   oldScrutineerApiUrl: 'https://prod-scrutineer.azurewebsites.net',
+  adoVersion: 'ADO_VERSION_TO_REPLACE',
   enableFakeApi: true,
   appInsightsConfig: {
     instrumentationKey: 'bbbacd1f-d95e-451f-819a-97c787edc628',

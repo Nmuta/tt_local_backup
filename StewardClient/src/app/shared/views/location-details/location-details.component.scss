@@ -14,3 +14,19 @@ pre {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+
+button {
+  margin-top: 20px;
+}
+
+#query-param-pre + button {
+  margin-top: 0px;
+}
+
+mat-chip-list {
+  float: right;
+
+  mat-chip {
+    font-size: 10px;
+  }
+}

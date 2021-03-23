@@ -9,6 +9,8 @@ export interface StewardEnvironment {
   stewardUiUrl: string;
   stewardApiUrl: string;
   oldScrutineerApiUrl: string;
+  /** Placeholder value replaced in ADO pipeline. */
+  adoVersion: string;
 
   /** When true, FakeAPI will be lazy-loaded at launch time. */
   enableFakeApi: boolean;
