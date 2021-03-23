@@ -2,7 +2,14 @@
   <mat-card-header>
     <h2>{{ title }} Gift Basket</h2>
     <p *ngIf="hasGameSettings">(Game Settings: {{ selectedGameSettingsId || 'None' }})</p>
-    <ng-container *ngIf="!isLoading && !loadError && !giftResponse">
+    <ng-container
+      *ngIf="
+        !isLoading &&
+        !loadError &&
+        !giftResponse &&
+        (!hasGameSettings || (hasGameSettings && !!selectedGameSettingsId))
+      "
+    >
       <item-selection
         [masterInventory]="masterInventory"
         (addItemEvent)="addItemtoBasket($event)"
