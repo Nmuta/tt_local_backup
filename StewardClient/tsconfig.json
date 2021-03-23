@@ -22,7 +22,9 @@
       "@models/*": ["app/shared/models/*"],
       "@services/*": ["app/shared/services/*"],
       "@shared/*": ["app/shared/*"],
-      "@navbar-app/*": ["app/pages/navbar-app/*"]
+      "@navbar-app/*": ["app/pages/navbar-app/*"],
+      "@community-app/*": ["app/pages/community-app/*"],
+      "@data-pipeline-app/*": ["app/pages/data-pipeline-app/*"]
     },
     "allowSyntheticDefaultImports": true
   }

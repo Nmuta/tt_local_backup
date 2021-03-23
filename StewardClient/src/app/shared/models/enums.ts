@@ -29,4 +29,5 @@ export enum UserRole {
   DataPipelineAdmin = 'DataPipelineAdmin',
   DataPipelineContributor = 'DataPipelineContributor',
   DataPipelineRead = 'DataPipelineRead',
+  CommunityManager = 'CommunityManager',
 }

@@ -17,6 +17,7 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
 
   public areSupportAppsAccessible: boolean = false;
   public areDataAppsAccessible: boolean = false;
+  public areCommunityAppsAccessible: boolean = false;
 
   public availableIcon = faCheckCircle;
   public unavailableIcon = faTimesCircle;
@@ -38,6 +39,7 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
         case UserRole.LiveOpsAdmin:
           this.areSupportAppsAccessible = true;
           this.areDataAppsAccessible = true;
+          this.areCommunityAppsAccessible = true;
           break;
         case UserRole.SupportAgentAdmin:
         case UserRole.SupportAgent:
@@ -47,7 +49,10 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
         case UserRole.DataPipelineAdmin:
         case UserRole.DataPipelineContributor:
         case UserRole.DataPipelineRead:
-          this.areSupportAppsAccessible = false;
+          this.areDataAppsAccessible = true;
+          break;
+        case UserRole.CommunityManager:
+          this.areCommunityAppsAccessible = true;
           break;
       }
     }

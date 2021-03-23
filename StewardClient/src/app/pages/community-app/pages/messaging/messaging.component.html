@@ -1,0 +1,13 @@
+<section>
+  <mat-card>
+    <h2>Messaging App</h2>
+    <p>Not Implemented</p>
+  </mat-card>
+</section>
+
+<ng-template #failState>
+  <div id="fail-state">
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+    <json-dump *ngIf="loadError" [input]="loadError">Failure occured.</json-dump>
+  </div>
+</ng-template>

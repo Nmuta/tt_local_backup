@@ -41,6 +41,33 @@
         [matTooltip]="areSupportAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
       ></fa-icon>
     </a>
+    <a
+      [disabled]="!areCommunityAppsAccessible"
+      mat-raised-button
+      color="primary"
+      routerLink="/community/community-app/tools/home"
+    >
+      Community Manager App
+
+      <fa-icon
+        [icon]="areCommunityAppsAccessible ? availableIcon : unavailableIcon"
+        [matTooltip]="areCommunityAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
+      ></fa-icon>
+    </a>
+
+    <a
+      [disabled]="!areDataAppsAccessible"
+      mat-raised-button
+      color="primary"
+      routerLink="/data-pipeline/data-pipeline-app/tools/home"
+    >
+      Data Pipeline App
+
+      <fa-icon
+        [icon]="areDataAppsAccessible ? availableIcon : unavailableIcon"
+        [matTooltip]="areDataAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
+      ></fa-icon>
+    </a>
 
     <p>More coming soon...</p>
   </div>

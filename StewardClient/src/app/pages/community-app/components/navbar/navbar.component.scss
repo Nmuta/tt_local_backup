@@ -1,0 +1,29 @@
+@import '/src/styles/mixins';
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.short-spacer {
+  flex: 0 1 2em;
+}
+
+fa-icon {
+  margin: 0 0.5em;
+}
+
+.warnings fa-icon {
+  color: app-color-default($app-warn);
+}
+
+.info fa-icon {
+  color: app-color-lighter($app-primary);
+}
+
+.location {
+  overflow: hidden;
+}
+
+.mat-stroked-button {
+  border-color: app-color-default-contrast($app-primary, 0.333);
+}

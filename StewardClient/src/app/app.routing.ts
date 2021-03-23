@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ErrorComponent } from './pages/error/error.component';
 import { AuthGuard } from './route-guards/auth.guard';
+import { CommunityGuard } from './route-guards/community.guard';
+import { DataPipelineGuard } from './route-guards/data-pipeline.guard';
 import { SupportGuard } from './route-guards/support.guard';
 import { ZendeskGuard } from './route-guards/zendesk.guard';
 
@@ -29,6 +31,34 @@ const routes: Routes = [
         canActivateChild: [AuthGuard],
         loadChildren: () =>
           import('./pages/ticket-app/ticket-app.module').then(m => m.TicketAppModule),
+      },
+    ],
+  },
+  {
+    path: 'community',
+    canActivate: [AuthGuard, CommunityGuard],
+    children: [
+      {
+        path: 'community-app',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        loadChildren: () =>
+          import('./pages/community-app/community-app.module').then(m => m.CommunityAppModule),
+      },
+    ],
+  },
+  {
+    path: 'data-pipeline',
+    canActivate: [AuthGuard, DataPipelineGuard],
+    children: [
+      {
+        path: 'data-pipeline-app',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        loadChildren: () =>
+          import('./pages/data-pipeline-app/data-pipeline-app.module').then(
+            m => m.DataPipelineAppModule,
+          ),
       },
     ],
   },

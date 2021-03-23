@@ -1,0 +1,69 @@
+@import '/src/styles/mixins';
+
+:host {
+  display: flex;
+  flex-grow: 1;
+  flex-flow: column nowrap;
+  height: 100%;
+}
+
+mat-drawer-container {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+mat-drawer {
+  max-width: 75%;
+  background: $sidebar-background;
+}
+
+// this is an implicit element, so we have to use ::ng-deep
+:host ::ng-deep mat-drawer-content {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 100%;
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+// grow only the transcluded content
+:host ::ng-deep .content > router-outlet + * {
+  flex-grow: 1;
+}
+
+// This makes the footer look a bit better, and gets rid of an unncessary scroll bar.
+data-privacy-notice {
+  padding: 10px 0;
+}
+
+.header-buttons {
+  border: 0px;
+  font-size: 16px;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 500;
+  margin-right: 10px;
+
+  &:hover {
+    color: app-color-default($app-primary);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.header-selected {
+  color: app-color-default($app-primary);
+}
+
+:host ::ng-deep mat-drawer > * {
+  box-sizing: border-box;
+  padding: 1rem 2rem;
+}

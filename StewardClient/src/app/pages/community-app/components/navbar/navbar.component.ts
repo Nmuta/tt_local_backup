@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   faCog,
   faExclamationTriangle,
@@ -12,25 +12,27 @@ import { WindowService } from '@services/window';
 import { ZendeskService } from '@services/zendesk';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
-
-import { createNavbarPath, navbarToolList, NavbarTools } from '@navbar-app/navbar-tool-list';
-import { environment } from '@environments/environment';
 import { RouterLinkPath } from '@models/routing';
+import {
+  communityAppToolList,
+  CommunityAppTools,
+  createCommunityNavbarPath,
+} from '@community-app/community-tool-list';
 
 /** The shared top-level navbar. */
 @Component({
-  selector: 'navbar',
+  selector: 'community-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnInit {
+export class CommunityNavbarComponent {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public warningIcon = faExclamationTriangle;
   public refreshIcon = faSyncAlt;
   public infoIcon = faInfoCircle;
-  public items: RouterLinkPath[] = navbarToolList;
-  public homeRouterLink = createNavbarPath(NavbarTools.HomePage).routerLink;
+  public items: RouterLinkPath[] = communityAppToolList;
+  public homeRouterLink = createCommunityNavbarPath(CommunityAppTools.HomePage).routerLink;
 
   public readonly profileIcon = faUser;
   public readonly settingsIcon = faCog;
@@ -39,17 +41,6 @@ export class NavbarComponent implements OnInit {
     private readonly windowService: WindowService,
     public readonly zendeskService: ZendeskService,
   ) {}
-
-  /**
-   * Lifecycle hook.
-   * TODO: Remove when Kusto feature is ready.
-   */
-  public ngOnInit(): void {
-    // Kusto feature not ready for prod, only uses FakeAPI at this point
-    if (environment.production) {
-      this.items = this.items.filter(routeLink => routeLink.title.toLowerCase() !== 'kusto');
-    }
-  }
 
   /** A string representing the current location */
   public get location(): string {
