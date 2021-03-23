@@ -24,7 +24,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             new ObligationPrincipal("emersonf@microsoft.com", PrincipalTypes.User, Roles.Admin),
             new ObligationPrincipal("mharri@microsoft.com", PrincipalTypes.User, Roles.Reader),
             new ObligationPrincipal("miahern@microsoft.com", PrincipalTypes.User, Roles.Reader),
-            new ObligationPrincipal("t10data@microsoft.com", PrincipalTypes.Group, Roles.Reader)
+            new ObligationPrincipal("t10data@microsoft.com", PrincipalTypes.Group, Roles.Admin)
         };
 
         /// <summary>
