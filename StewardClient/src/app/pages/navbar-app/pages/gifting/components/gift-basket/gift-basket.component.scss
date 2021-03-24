@@ -1,16 +1,10 @@
 @import '/src/styles/mixins';
 
 :host {
-  display: flex;
-  flex-flow: column nowrap;
-  > * {
-    flex-grow: 1;
-  }
+  @include flex-column-fill;
 }
 
 mat-card {
-  min-width: 450px;
-
   h2 {
     margin-bottom: 0;
   }
@@ -20,14 +14,12 @@ mat-card {
   }
 
   .item-selection-form-field {
-    max-width: 400px;
     width: 100%;
-    margin-right: 10px;
+    margin-right: $gap-small;
   }
 
   .quantity-form-field {
-    width: 100px;
-    margin-right: 10px;
+    margin-right: $gap-small;
   }
 
   .table-container {
@@ -39,14 +31,21 @@ mat-card {
       width: 100%;
 
       .mat-column-itemId {
-        width: 100px !important;
+        @include table-width(100);
       }
 
       .mat-column-quantity {
-        width: 180px !important;
+        @include table-width(180);
 
-        mat-form-field {
-          width: 100px !important;
+        .edit {
+          width: 100%;
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+        }
+
+        ::ng-deep .mat-form-field-infix {
+          width: 100%;
         }
 
         fa-icon {
@@ -56,21 +55,21 @@ mat-card {
       }
 
       .mat-column-description {
-        padding-right: 30px !important;
+        padding-right: $gap-large;
       }
 
       .mat-column-itemType {
-        width: 120px !important;
+        @include table-width(120);
       }
 
       .mat-column-remove {
-        width: 50px !important;
+        @include table-width(50);
       }
 
       .mat-row {
         td {
-          padding-top: 10px !important;
-          padding-bottom: 10px !important;
+          margin-top: $gap-small;
+          margin-bottom: $gap-small;
         }
 
         fa-icon {
@@ -82,22 +81,14 @@ mat-card {
 
   .send-gift-basket-container {
     .send-gift-basket {
-      padding: 7px 20px;
-      position: relative;
-      top: -7px;
+      @include align-button-with-input;
     }
   }
 
   .gift-response-template {
     button {
-      margin-right: 20px;
-      margin-top: 20px;
+      margin-right: $gap-medium;
+      margin-top: $gap-medium;
     }
-  }
-}
-
-@media screen and (max-width: 500px) {
-  mat-card {
-    min-width: unset;
   }
 }

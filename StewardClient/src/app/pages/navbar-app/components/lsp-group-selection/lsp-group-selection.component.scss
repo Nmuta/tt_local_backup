@@ -1,18 +1,19 @@
 @import '/src/styles/mixins';
 
 mat-card {
-  min-height: 200px;
+  form {
+    display: flex;
+    flex-flow: row nowrap;
+  }
 
   mat-form-field {
-    max-width: 300px;
     width: 100%;
   }
 
   .clear-selection-button {
-    position: relative;
-    top: -0.4em;
-    left: 1em;
-    display: inline-block;
+    line-height: 100%;
+    margin-left: 1em;
+    @include align-mat-fab-button-with-input();
 
     fa-icon {
       color: #fff;

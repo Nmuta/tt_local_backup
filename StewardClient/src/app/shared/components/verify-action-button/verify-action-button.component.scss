@@ -1,9 +1,11 @@
+@import '/src/styles/mixins';
+
 error-spinner {
   font-size: 2em;
 }
 
 .apply {
   > * {
-    margin: 0 5px;
+    margin: 0 $gap-micro;
   }
 }

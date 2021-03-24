@@ -3,9 +3,9 @@
 :host {
   display: block;
   width: 100%;
-  margin-top: 30px;
-  bottom: 0px;
-  left: 0px;
+  margin-top: $gap-large;
+  bottom: 0;
+  left: 0;
   position: relative;
 
   ul {
@@ -23,11 +23,7 @@
       line-height: 1em;
       text-align: center;
 
-      // tuned to avoid taking up a bunch of space in the ticket sidebar
-      font-size: 12px;
-      @media screen and (min-width: 400px) {
-        font-size: 14px;
-      }
+      font-size: small;
     }
   }
 

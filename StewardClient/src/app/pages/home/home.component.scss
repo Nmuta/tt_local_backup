@@ -6,7 +6,7 @@ mat-card {
   top: 50%;
   transform: translateY(-50%);
 
-  max-width: 500px;
+  max-width: $intro-card-width;
   width: 100%;
 
   h1,

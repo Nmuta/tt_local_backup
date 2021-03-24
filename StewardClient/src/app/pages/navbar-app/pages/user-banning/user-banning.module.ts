@@ -6,7 +6,6 @@ import { UserBanningRoutingModule } from './user-banning.routing';
 import { ApolloBanningComponent } from './pages/apollo/apollo-banning.component';
 import { SunriseBanningComponent } from './pages/sunrise/sunrise-banning.component';
 import { MatButtonModule } from '@angular/material/button';
-import { OldPlayerSelectionModule } from '../../components/player-selection-old/player-selection.module';
 import { BanOptionsComponent } from './components/ban-options/ban-options.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
@@ -19,7 +18,6 @@ import { VerifyActionButtonModule } from '@components/verify-action-button/verif
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatChipsModule } from '@angular/material/chips';
-import { BanChipsComponent } from './components/ban-chips/ban-chips.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BanChipIconModule } from './components/ban-chip-icon/ban-chip-icon.module';
 import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
@@ -39,7 +37,6 @@ import { MatTabsModule } from '@angular/material/tabs';
     SunriseBanningComponent,
     BanOptionsComponent,
     DurationPickerComponent,
-    BanChipsComponent,
   ],
   imports: [
     CommonModule,
@@ -53,7 +50,6 @@ import { MatTabsModule } from '@angular/material/tabs';
     FormsModule,
     ReactiveFormsModule,
     UserBanningRoutingModule,
-    OldPlayerSelectionModule,
     PlayerSelectionModule,
     VerifyActionButtonModule,
     MatCheckboxModule,

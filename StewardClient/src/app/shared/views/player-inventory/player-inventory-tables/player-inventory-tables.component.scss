@@ -4,22 +4,16 @@ table {
   width: 100%;
 }
 
-mat-panel-title {
-  max-width: 150px;
-  width: 100%;
-}
-
 .item-id-text {
   color: app-color-default($app-primary);
 }
 
-.mat-column-quantity {
-  padding-left: 0px !important;
-  padding-right: 2em !important;
+mat-panel-description {
+  flex-grow: 0;
+  text-align: right;
 }
 
-@media screen and (max-width: 400px) {
-  mat-panel-description {
-    display: none;
-  }
+.mat-column-quantity {
+  padding-left: 0;
+  padding-right: 2em;
 }

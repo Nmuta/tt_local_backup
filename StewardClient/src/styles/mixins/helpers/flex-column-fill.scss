@@ -1,3 +1,5 @@
+// usage:
+// :host { @include flex-column-fill; }
 @mixin flex-column-fill {
   display: flex;
   flex-grow: 1;

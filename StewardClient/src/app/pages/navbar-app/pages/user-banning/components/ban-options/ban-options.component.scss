@@ -3,7 +3,7 @@
 .wrapper {
   > *:not(:first-child) {
     display: block;
-    padding-top: 30px;
+    padding-top: $gap-large;
   }
 }
 

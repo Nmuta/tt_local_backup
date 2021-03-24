@@ -1,7 +1,6 @@
 @import '/src/styles/mixins';
 
 div {
-  max-height: 500px;
   overflow: auto;
 
   .ban-result-error {

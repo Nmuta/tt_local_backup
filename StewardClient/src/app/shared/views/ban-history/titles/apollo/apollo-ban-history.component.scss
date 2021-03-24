@@ -39,9 +39,9 @@ tr.element-row:not(.expanded-row):active {
 .mat-column-expireTimeUtc,
 .mat-column-startTimeUtc {
   min-width: 5em;
-  padding-left: 20px;
+  padding-left: $gap-medium;
 }
 
 .mat-column-featureArea {
-  padding-left: 20px;
+  padding-left: $gap-medium;
 }

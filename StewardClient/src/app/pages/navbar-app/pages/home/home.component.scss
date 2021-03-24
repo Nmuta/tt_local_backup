@@ -1,4 +1,6 @@
+@import '/src/styles/mixins';
+
 :host {
   display: block;
-  margin: 16px;
+  margin: $gap-medium;
 }

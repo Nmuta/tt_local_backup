@@ -39,27 +39,23 @@ tr.element-row:not(.expanded-row):active {
 .mat-column-expireTimeUtc,
 .mat-column-startTimeUtc {
   min-width: 5em;
-  padding-left: 20px;
+  padding-left: $gap-medium;
 }
 
 .mat-column-featureArea {
-  padding-left: 20px;
+  padding-left: $gap-medium;
 }
 
 .mat-column-isActive {
-  padding-left: 0px !important;
-  padding-right: 2em !important;
+  padding-left: 0;
+  padding-right: 2em;
 }
 
 fa-icon.active {
-  margin-left: 10px;
+  margin-left: 1em;
 }
 
 pre {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
-  white-space: pre-wrap; /* css-3 */
-  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-  white-space: -pre-wrap; /* Opera 4-6 */
-  white-space: -o-pre-wrap; /* Opera 7 */
-  word-wrap: break-word; /* Internet Explorer 5.5+ */
+  white-space: pre-wrap;
 }

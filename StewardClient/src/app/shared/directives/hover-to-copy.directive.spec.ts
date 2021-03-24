@@ -40,14 +40,14 @@ describe('HoverToCopyDirective', () => {
     element = fixture.nativeElement;
   });
 
-  it('should set container opacity to 0.1 when mouse enters and back to 1 when mouse leaves', () => {
+  it('should set container opacity to 0.1 when mouse enters and unset when mouse leaves', () => {
     const targetElement = <HTMLSpanElement>element.querySelector('#copyContent');
 
     targetElement.dispatchEvent(mouseEvents.enter);
     expect(targetElement.style.opacity).toEqual('0.1');
 
     targetElement.dispatchEvent(mouseEvents.leave);
-    expect(targetElement.style.opacity).toEqual('1');
+    expect(targetElement.style.opacity).toEqual('');
   });
 
   it('should create a tooltip', () => {

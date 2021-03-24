@@ -1,19 +1,21 @@
+@import '/src/styles/mixins';
+
 .top-spacing {
-  margin-top: 20px;
+  margin-top: $gap-medium;
   display: block;
 }
 
 .lookup-failed-card {
-  margin-top: 40px;
-  padding: 30px 0px;
+  margin-top: $gap-large;
+  padding: $gap-large 0;
   text-align: center;
 
   mat-card-content {
-    margin-top: 20px;
+    margin-top: $gap-medium;
   }
 }
 
 json-dump {
   width: 100%;
-  margin: 0px;
+  margin: 0;
 }

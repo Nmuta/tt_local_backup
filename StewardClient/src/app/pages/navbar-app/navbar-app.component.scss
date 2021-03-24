@@ -37,32 +37,6 @@ mat-drawer {
   flex-grow: 1;
 }
 
-// This makes the footer look a bit better, and gets rid of an unncessary scroll bar.
-data-privacy-notice {
-  padding: 10px 0;
-}
-
-.header-buttons {
-  border: 0px;
-  font-size: 16px;
-  background-color: transparent;
-  cursor: pointer;
-  font-weight: 500;
-  margin-right: 10px;
-
-  &:hover {
-    color: app-color-default($app-primary);
-  }
-
-  &:focus {
-    outline: none;
-  }
-}
-
-.header-selected {
-  color: app-color-default($app-primary);
-}
-
 :host ::ng-deep mat-drawer > * {
   box-sizing: border-box;
   padding: 1rem 2rem;

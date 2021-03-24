@@ -1,7 +1,15 @@
 @import '/src/styles/mixins';
 
 .query-selection-form-field {
-  max-width: 400px;
-  width: 100%;
-  margin-right: 10px;
+  margin-right: $gap-small;
+}
+
+form {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+mat-form-field {
+  flex-grow: 1;
 }

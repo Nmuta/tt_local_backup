@@ -1,10 +1,12 @@
+@import '/src/styles/mixins';
+
 :host ::ng-deep mat-card {
-  margin-bottom: 20px;
+  margin-bottom: $gap-medium;
 }
 
 button {
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: $gap-medium;
 }
 
 pre {

@@ -11,14 +11,17 @@ section.checkboxes {
 }
 
 h2 {
-  height: 36px;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  height: 1.5em;
   verify-action-button {
-    font-size: 12px;
+    font-size: $font-size-subnavbar;
   }
 }
 
 .reset-button {
-  margin: 0 5px;
+  margin: 0 0.5em;
 
   .reset-icon {
     color: #ffffff;

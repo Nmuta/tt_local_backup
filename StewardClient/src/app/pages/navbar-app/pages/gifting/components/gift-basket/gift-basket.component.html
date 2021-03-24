@@ -46,7 +46,7 @@
               <ng-container matColumnDef="quantity">
                 <th id="quantity-table-header" mat-header-cell *matHeaderCellDef>Quantity</th>
                 <td mat-cell *matCellDef="let element; let i = index">
-                  <span *ngIf="!element.edit">
+                  <span class="editable" *ngIf="!element.edit">
                     {{ element.quantity | number: '1.0':'en-US' }}
                     <fa-icon
                       [icon]="pencilIcon"
@@ -57,7 +57,7 @@
                       [attr.aria-label]="'Edit quantity for ' + element.description"
                     ></fa-icon
                   ></span>
-                  <span *ngIf="element.edit">
+                  <span class="edit" *ngIf="element.edit">
                     <mat-form-field>
                       <mat-label>New Quantity</mat-label>
                       <input

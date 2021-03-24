@@ -41,16 +41,16 @@ mat-drawer {
 }
 
 div {
-  padding: 5px;
+  padding: $gap-micro;
 }
 
 .header-buttons {
-  border: 0px;
-  font-size: 16px;
+  border: 0;
+  font-size: $font-size-navbar;
   background-color: transparent;
   cursor: pointer;
-  font-weight: 500;
-  margin-right: 10px;
+  font-weight: $font-weight-navbar;
+  margin-right: $gap-small;
 
   &:hover {
     color: app-color-default($app-primary);

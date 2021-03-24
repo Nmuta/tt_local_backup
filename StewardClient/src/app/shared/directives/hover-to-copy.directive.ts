@@ -46,7 +46,7 @@ export class HoverToCopyDirective {
     Event for mouse leave.
    */
   @HostListener('mouseleave') mouseleave(): void {
-    this.renderer.setStyle(this.elementRef.nativeElement, 'opacity', '1');
+    this.renderer.removeStyle(this.elementRef.nativeElement, 'opacity');
 
     if (this.tooltip) {
       this.hide();

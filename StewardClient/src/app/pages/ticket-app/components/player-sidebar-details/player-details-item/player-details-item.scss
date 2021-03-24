@@ -1,7 +1,7 @@
 @import '/src/styles/mixins';
 
 div.player-details-item {
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: $border-standard solid rgba(0, 0, 0, 0.12);
   overflow: hidden;
 
   &:hover {
@@ -11,13 +11,12 @@ div.player-details-item {
 
   .player-details-item-title,
   .player-details-item-value {
-    font-size: 16px;
-    padding: 15px 5px;
+    padding: $gap-small $gap-micro;
     margin: 0;
   }
 
   .player-details-item-title {
-    font-weight: 600;
+    font-weight: bold;
     float: left;
   }
 
@@ -29,9 +28,8 @@ div.player-details-item {
 .copied-data-message {
   position: absolute;
   background-color: app-color-default($app-primary);
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: $gap-small;
+  border-radius: $border-radius-button;
   color: #fff;
-  right: 30px;
-  margin-top: 5px;
+  right: $gap-medium;
 }

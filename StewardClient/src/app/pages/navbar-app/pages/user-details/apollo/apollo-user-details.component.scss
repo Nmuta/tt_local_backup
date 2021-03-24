@@ -1,15 +1,17 @@
+@import '/src/styles/mixins';
+
 section {
-  margin: 16px;
+  margin: 2em;
 }
 
 .tab-container {
-  margin: 5px;
+  margin: $gap-micro;
   > * {
-    margin: 10px;
+    margin: $gap-small;
   }
 }
 
 h1 {
-  padding: 0 16px;
-  padding-top: 8px;
+  padding: 0 2em;
+  padding-top: 1em;
 }
