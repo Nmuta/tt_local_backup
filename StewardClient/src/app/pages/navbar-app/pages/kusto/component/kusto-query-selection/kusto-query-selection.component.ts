@@ -7,11 +7,12 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { NEVER, Observable } from 'rxjs';
 import _ from 'lodash';
-import { AllKustoQueries, KustoQuery } from '@models/kusto';
+import { KustoQuery } from '@models/kusto';
 import { KustoService } from '@services/kusto';
-import { map, startWith, take, takeUntil } from 'rxjs/operators';
+import { catchError, map, startWith, take, takeUntil } from 'rxjs/operators';
+import { KustoQueries } from '@models/kusto/kusto-queries';
 
 export type KustoQueryGroup = {
   category: string;
@@ -51,11 +52,24 @@ export class KustoQuerySelectionComponent extends BaseComponent implements OnIni
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
+    this.isLoading = true;
+    this.loadError = undefined;
+
     // Request kusto queries
     this.kustoService
       .getKustoQueries()
-      .pipe(takeUntil(this.onDestroy$), take(1))
+      .pipe(
+        takeUntil(this.onDestroy$),
+        take(1),
+        catchError(error => {
+          this.isLoading = false;
+          this.loadError = error;
+          this.querySelectionForm.markAllAsTouched();
+          return NEVER;
+        }),
+      )
       .subscribe(response => {
+        this.isLoading = false;
         this.queryGroups = this.buildMatAutocompleteState(response);
         this.stateGroupOptions = this.querySelectionForm.get('queryInput')?.valueChanges.pipe(
           takeUntil(this.onDestroy$),
@@ -71,21 +85,17 @@ export class KustoQuerySelectionComponent extends BaseComponent implements OnIni
   }
 
   /** Sets up the stateGroups variable used with the autocomplete */
-  public buildMatAutocompleteState(kustoQueries: AllKustoQueries): KustoQueryGroup[] {
+  public buildMatAutocompleteState(kustoQueries: KustoQueries): KustoQueryGroup[] {
     const queryGroups: KustoQueryGroup[] = [];
-    for (const prop in kustoQueries) {
-      if (kustoQueries.hasOwnProperty(prop)) {
-        const inventoryGroup = {
-          category: prop,
-          items: [],
-        } as KustoQueryGroup;
-
-        const kustoQueriesByTitle = kustoQueries[prop] as KustoQuery[];
-        for (const query of kustoQueriesByTitle) {
-          inventoryGroup.items.push(query);
-        }
-
-        queryGroups.push(inventoryGroup);
+    for (const query of kustoQueries) {
+      const queryGroupIndex = queryGroups.findIndex(group => group.category === query.title);
+      if (queryGroupIndex >= 0) {
+        queryGroups[queryGroupIndex].items.push(query);
+      } else {
+        queryGroups.push({
+          category: query.title,
+          items: [query],
+        });
       }
     }
 

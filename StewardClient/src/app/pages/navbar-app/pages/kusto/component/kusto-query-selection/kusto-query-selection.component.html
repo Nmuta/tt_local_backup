@@ -13,6 +13,7 @@
       [matAutocomplete]="autoGroup"
       [(ngModel)]="queryInputValue"
     />
+    <mat-spinner *ngIf="isLoading" [diameter]="20"></mat-spinner>
     <mat-autocomplete
       #autoGroup="matAutocomplete"
       (optionSelected)="newQuerySelected($event.option.value)"
@@ -25,6 +26,9 @@
         </mat-option>
       </mat-optgroup>
     </mat-autocomplete>
+    <mat-error *ngIf="!!loadError"
+      >There was an error retrieving predefined Kusto queries.</mat-error
+    >
   </mat-form-field>
   <button mat-raised-button color="accent" type="submit" [disabled]="!querySelectionForm.valid">
     Use Kusto Query

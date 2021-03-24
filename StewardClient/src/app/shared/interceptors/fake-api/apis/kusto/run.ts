@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { KustoQueryResponse } from '@models/kusto';
-import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
 
 /** Fake API for running a kusto query. */
@@ -14,17 +13,17 @@ export class KustoRunQueryFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /^\/?api\/v1\/kusto\/run$/i;
+    const regex = /^\/?api\/v1\/kusto\/query\/run$/i;
     return regex.test(url.pathname);
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<KustoQueryResponse>> {
+  public handle(): KustoQueryResponse {
     return KustoRunQueryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<KustoQueryResponse>> {
+  public static make(): KustoQueryResponse {
     const fakeResponse = [];
     for (let i = 0; i < 100; i++) {
       fakeResponse[i] = {

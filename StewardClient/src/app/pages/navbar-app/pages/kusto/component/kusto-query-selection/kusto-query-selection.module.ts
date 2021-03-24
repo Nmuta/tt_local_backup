@@ -13,6 +13,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { KustoQuerySelectionComponent } from './kusto-query-selection.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 /** The feature module for the kusto query selection component. */
 @NgModule({
@@ -26,10 +27,11 @@ import { KustoQuerySelectionComponent } from './kusto-query-selection.component'
     MatAutocompleteModule,
     MatOptionModule,
     MatSelectModule,
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
     PipesModule,
     JsonDumpModule,
   ],

@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
+import { GameTitleCodeName } from '@models/enums';
 import { KustoQuery } from '@models/kusto';
 import { NgxsModule } from '@ngxs/store';
 import { createMockKustoService, KustoService } from '@services/kusto';
@@ -47,7 +48,11 @@ describe('KustoComponent', () => {
   });
 
   describe('Method: setQueryToInput', () => {
-    const kustoQuery: KustoQuery = { name: 'Test Query Name', query: 'Test Query' };
+    const kustoQuery: KustoQuery = {
+      name: 'Test Query Name',
+      query: 'Test Query',
+      title: GameTitleCodeName.FH4,
+    };
 
     beforeEach(() => {
       component.kustoQueryForm = formBuilder.group({

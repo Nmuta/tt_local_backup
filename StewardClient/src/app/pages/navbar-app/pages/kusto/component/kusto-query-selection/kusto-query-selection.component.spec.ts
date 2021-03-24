@@ -8,6 +8,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { KustoQuerySelectionComponent } from './kusto-query-selection.component';
 import faker from 'faker';
 import { KustoQuery } from '@models/kusto';
+import { GameTitleCodeName } from '@models/enums';
 
 describe('KustoQuerySelectionComponent', () => {
   let fixture: ComponentFixture<KustoQuerySelectionComponent>;
@@ -62,6 +63,7 @@ describe('KustoQuerySelectionComponent', () => {
       const testKustoQuery: KustoQuery = {
         name: faker.random.word(),
         query: faker.random.words(50),
+        title: GameTitleCodeName.FH4,
       };
       beforeEach(() => {
         component.selectedItem = testKustoQuery;
@@ -99,6 +101,7 @@ describe('KustoQuerySelectionComponent', () => {
     const testKustoQuery: KustoQuery = {
       name: faker.random.word(),
       query: faker.random.words(50),
+      title: GameTitleCodeName.FH4,
     };
     beforeEach(() => {
       component.selectedItem = undefined;

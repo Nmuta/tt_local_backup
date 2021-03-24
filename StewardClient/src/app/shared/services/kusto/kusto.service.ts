@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AllKustoQueries, KustoQueryResponse } from '@models/kusto';
+import { KustoQueryResponse } from '@models/kusto';
+import { KustoQueries } from '@models/kusto/kusto-queries';
 import { ApiService } from '@services/api';
 import { Observable } from 'rxjs';
 
@@ -13,12 +14,12 @@ export class KustoService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets identities within this service. */
-  public getKustoQueries(): Observable<AllKustoQueries> {
-    return this.apiService.getRequest<AllKustoQueries>(`${this.basePath}/queries`);
+  public getKustoQueries(): Observable<KustoQueries> {
+    return this.apiService.getRequest<KustoQueries>(`${this.basePath}/queries`);
   }
 
   /** Runs a query against Kusto. */
   public postRunKustoQuery(query: string): Observable<KustoQueryResponse> {
-    return this.apiService.postRequest<KustoQueryResponse>(`${this.basePath}/run`, query);
+    return this.apiService.postRequest<KustoQueryResponse>(`${this.basePath}/query/run`, query);
   }
 }
