@@ -8,6 +8,7 @@
               [disableLookupTypes]="['t10Id']"
               [allowSelection]="true"
               [rejectionFn]="identityRejectionFn"
+              [sortFn]="identitySortFn"
               (found)="onPlayerIdentitiesChange($event)"
               (selected)="playerIdentitySelected($event)"
             >

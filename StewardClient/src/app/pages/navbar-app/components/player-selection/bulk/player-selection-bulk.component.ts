@@ -32,7 +32,7 @@ export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
 
   /** True when the input should be disabled */
   public get disable(): boolean {
-    return this.knownIdentities.size >= 100;
+    return this.knownIdentities.size >= 500;
   }
 
   constructor(
@@ -67,6 +67,7 @@ export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
     this.knownIdentities.clear();
     this.foundIdentities = [];
     this.selectedValue = null;
+    this.foundIdentities$.next(this.foundIdentities);
     this.onFound();
   }
 }

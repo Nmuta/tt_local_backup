@@ -15,7 +15,7 @@ import {
 import { COMMA, ENTER, SEMICOLON } from '@angular/cdk/keycodes';
 import { SunriseService } from '@services/sunrise';
 import { chain, every, find, isEmpty, isEqual, keyBy, uniqBy } from 'lodash';
-import { map, pairwise, startWith, takeUntil, tap } from 'rxjs/operators';
+import { map, pairwise, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { GravityService } from '@services/gravity';
 import { ApolloService } from '@services/apollo';
 import { OpusService } from '@services/opus';
@@ -100,6 +100,9 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
 
   public readonly unacceptableIcon = faExclamationCircle;
 
+  /** Emitted when the foundIdentities list changes. */
+  protected foundIdentities$ = new Subject<AugmentedCompositeIdentity[]>();
+
   // this has to be its own value because we don't have the actual thing until ngAfterViewInit, and lookupList is called before that
   private lookupTypeGroupChange = new Subject<void>();
 
@@ -110,6 +113,9 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     private readonly opus: OpusService,
   ) {
     super();
+    this.foundIdentities$
+      .pipe(switchMap(i => this.sortFn(i)))
+      .subscribe(i => (this.foundIdentities = i));
   }
 
   /** Called when a new set of results is found and populated into @see foundIdentities */
@@ -117,6 +123,11 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
 
   /** Called when a new set of results is selected. */
   public abstract onSelect(change: MatChipListChange): void;
+
+  /** A processing function that may re-order, but not add or remove, identitites. */
+  @Input() public sortFn: (
+    identities: AugmentedCompositeIdentity[],
+  ) => Observable<AugmentedCompositeIdentity[]> = identities => of(identities);
 
   /** Lifecycle hook. */
   public ngAfterViewInit(): void {
@@ -246,6 +257,8 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       this.lookupListChange.emit(this.lookupList);
     }
 
+    this.foundIdentities$.next(this.foundIdentities);
+
     const queryIsAlphaCompatible = every(newQueries, q => isValidAlphaQuery(q));
     const queryIsBetaCompatible = every(newQueries, q => isValidBetaQuery(q));
 
@@ -366,6 +379,8 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
           const rejectionReason = this.rejectionFn ? this.rejectionFn(compositeIdentity) : null;
           compositeIdentity.extra.isAcceptable = !rejectionReason;
           compositeIdentity.extra.rejectionReason = rejectionReason;
+
+          this.foundIdentities$.next(this.foundIdentities);
           this.onFound();
         }
       });

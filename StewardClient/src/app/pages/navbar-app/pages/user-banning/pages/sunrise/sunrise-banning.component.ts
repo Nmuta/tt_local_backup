@@ -7,8 +7,8 @@ import { BackgroundJob } from '@models/background-job';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { SunriseService } from '@services/sunrise';
 import { SunriseBanHistoryComponent } from '@shared/views/ban-history/titles/sunrise/sunrise-ban-history.component';
-import { Dictionary, filter, keyBy } from 'lodash';
-import { NEVER, Observable, Subject } from 'rxjs';
+import { chain, Dictionary, filter, keyBy } from 'lodash';
+import { NEVER, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
@@ -38,28 +38,48 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
   public bannedXuids: bigint[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
 
+  public identitySortFn = null;
+
   constructor(
     protected readonly backgroundJobService: BackgroundJobService,
     private readonly sunrise: SunriseService,
   ) {
     super(backgroundJobService);
 
-    const summaries = new Subject<SunriseBanSummary[]>();
+    const summaries$ = new ReplaySubject<SunriseBanSummary[]>(1);
+    const summaryLookup$ = new ReplaySubject<Dictionary<SunriseBanSummary>>(1);
     this.playerIdentities$
       .pipe(
         map(identities => identities.map(i => i.xuid)), // to xuid list
         switchMap(xuids => this.sunrise.getBanSummariesByXuids(xuids)), // make request
       )
-      .subscribe(summaries);
-    summaries
+      .subscribe(summaries$);
+    summaries$
       .pipe(map(summaries => keyBy(summaries, e => e.xuid) as Dictionary<SunriseBanSummary>))
-      .subscribe(summaryLookup => (this.summaryLookup = summaryLookup));
-    summaries
+      .subscribe(summaryLookup$);
+    summaryLookup$.subscribe(summaryLookup => (this.summaryLookup = summaryLookup));
+    summaries$
       .pipe(
         map(summaries => filter(summaries, summary => summary.banCount > BigInt(0))), // only banned identities
         map(summaries => summaries.map(summary => summary.xuid)), // map to xuids
       )
       .subscribe(bannedXuids => (this.bannedXuids = bannedXuids));
+
+    this.identitySortFn = identities => {
+      return summaryLookup$.pipe(
+        switchMap(summaryLookup => {
+          return of(
+            chain(identities)
+              .sortBy(i => {
+                const banCount = summaryLookup[i?.sunrise?.xuid?.toString()]?.banCount;
+                return banCount;
+              })
+              .reverse()
+              .value(),
+          );
+        }),
+      );
+    };
   }
 
   public submit = (): Observable<unknown> => this.submitInternal();
