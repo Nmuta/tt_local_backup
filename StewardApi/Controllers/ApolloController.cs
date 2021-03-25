@@ -588,9 +588,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(BackgroundJob))]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] ApolloGroupGift groupGift)
         {
-            var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-                ? this.User.GetClaimValue(ClaimTypes.Email)
-                : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+            var user = this.User.UserModel();
+            var requestingAgent = user.EmailAddress ?? user.Id;
 
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
@@ -636,7 +635,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+                    var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+                    var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
                     await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
                 }
                 catch (Exception)
@@ -665,9 +665,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
         public async Task<IActionResult> UpdateGroupInventories([FromBody] ApolloGroupGift groupGift)
         {
-            var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-                ? this.User.GetClaimValue(ClaimTypes.Email)
-                : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+            var user = this.User.UserModel();
+            var requestingAgent = user.EmailAddress ?? user.Id;
 
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
@@ -704,7 +703,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+            var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+            var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
         }
 
@@ -723,9 +723,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] ApolloGift gift)
         {
-            var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-                ? this.User.GetClaimValue(ClaimTypes.Email)
-                : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+            var user = this.User.UserModel();
+            var requestingAgent = user.EmailAddress ?? user.Id;
 
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
@@ -746,7 +745,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var response = await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(true);
+            var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+            var response = await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
             }
 

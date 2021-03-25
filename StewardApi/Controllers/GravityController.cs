@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -270,9 +269,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             string t10Id,
             [FromBody] GravityGift gift)
         {
-            var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-            ? this.User.GetClaimValue(ClaimTypes.Email)
-            : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+            var user = this.User.UserModel();
+            var requestingAgent = user.EmailAddress ?? user.Id;
 
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             gift.ShouldNotBeNull(nameof(gift));
@@ -314,7 +312,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
+                    var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+                    var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
                     await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
                 }
                 catch (Exception)
@@ -344,9 +343,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GiftResponse<string>))]
         public async Task<IActionResult> UpdatePlayerInventoryByT10Id(string t10Id, [FromBody] GravityGift gift)
         {
-            var requestingAgent = this.User.HasClaimType(ClaimTypes.Email)
-            ? this.User.GetClaimValue(ClaimTypes.Email)
-            : this.User.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier");
+            var user = this.User.UserModel();
+            var requestingAgent = user.EmailAddress ?? user.Id;
 
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             gift.ShouldNotBeNull(nameof(gift));
@@ -379,7 +377,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent).ConfigureAwait(true);
+            var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+            var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
         }
 

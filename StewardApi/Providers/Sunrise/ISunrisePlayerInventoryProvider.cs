@@ -53,20 +53,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <param name="xuid">The xuid.</param>
         /// <param name="gift">The gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
+        /// <param name="useAdminCreditLimit">Determines whether to use admin credit limit.</param>
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requestingAgent);
+        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requestingAgent, bool useAdminCreditLimit);
 
         /// <summary>
         ///     Update player inventories.
         /// </summary>
         /// <param name="groupGift">The group gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
+        /// <param name="useAdminCreditLimit">Determines whether to use admin credit limit.</param>
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SunriseGroupGift groupGift, string requestingAgent);
+        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SunriseGroupGift groupGift, string requestingAgent, bool useAdminCreditLimit);
 
         /// <summary>
         ///     Updates LSP group inventories.
@@ -74,9 +76,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <param name="groupId">The group ID.</param>
         /// <param name="gift">The gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
+        /// <param name="useAdminCreditLimit">Determines whether to use admin credit limit.</param>
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requestingAgent);
+        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requestingAgent, bool useAdminCreditLimit);
     }
 }

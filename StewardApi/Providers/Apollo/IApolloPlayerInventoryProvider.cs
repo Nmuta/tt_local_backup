@@ -43,20 +43,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <param name="xuid">The xuid.</param>
         /// <param name="gift">The gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
+        /// <param name="useAdminCreditLimit">Determines whether to use admin credit limit.</param>
         /// <returns>
         ///    A <see cref="GiftResponse{T}"/>.
         /// </returns>
-        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requestingAgent);
+        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requestingAgent, bool useAdminCreditLimit);
 
         /// <summary>
         ///     Update player inventories.
         /// </summary>
         /// <param name="groupGift">The group gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
+        /// <param name="useAdminCreditLimit">Determines whether to use admin credit limit.</param>
         /// <returns>
         ///     A <see cref="IList{GiftResponse}"/>.
         /// </returns>
-        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requestingAgent);
+        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requestingAgent, bool useAdminCreditLimit);
 
         /// <summary>
         ///     Update group inventories.
@@ -64,9 +66,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <param name="groupId">The group ID.</param>
         /// <param name="gift">The gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
+        /// <param name="useAdminCreditLimit">Determines whether to use admin credit limit.</param>
         /// <returns>
         ///     A <see cref="GiftResponse{T}"/>.
         /// </returns>
-        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requestingAgent);
+        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requestingAgent, bool useAdminCreditLimit);
     }
 }

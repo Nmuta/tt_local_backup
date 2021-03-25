@@ -147,6 +147,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
+            var useAdminCreditLimit = Fixture.Create<bool>();
             var groupId = Fixture.Create<int>();
             var gift = Fixture.Create<ApolloGift>();
             var groupGift = Fixture.Create<ApolloGroupGift>();
@@ -156,9 +157,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent, useAdminCreditLimit).ConfigureAwait(false)
             };
 
             // Assert.
@@ -174,15 +175,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var xuids = Fixture.Create<List<ulong>>();
+            var useAdminCreditLimit = Fixture.Create<bool>();
             var groupId = Fixture.Create<int>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, null, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, null, requestingAgent, useAdminCreditLimit).ConfigureAwait(false)
             };
 
             // Assert.
@@ -198,15 +198,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
-            var xuids = Fixture.Create<List<ulong>>();
-            var groupId = Fixture.Create<int>();
+            var useAdminCreditLimit = Fixture.Create<bool>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoriesAsync(null, requestingAgent).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(null, requestingAgent, useAdminCreditLimit).ConfigureAwait(false),
             };
 
             // Assert.
@@ -222,6 +220,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var provider = new Dependencies().Build();
+            var useAdminCreditLimit = Fixture.Create<bool>();
             var xuid = Fixture.Create<ulong>();
             var groupId = Fixture.Create<int>();
             var gift = Fixture.Create<ApolloGift>();
@@ -231,15 +230,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, null).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, null).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, null).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, null, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.Empty, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.WhiteSpace, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, null, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.Empty, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.WhiteSpace, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, null, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.Empty, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.WhiteSpace, useAdminCreditLimit).ConfigureAwait(false)
             };
 
             // Assert.
@@ -255,12 +254,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var provider = new Dependencies().Build();
+            var useAdminCreditLimit = Fixture.Create<bool>();
             var groupGift = Fixture.Create<ApolloGroupGift>();
             groupGift.Xuids = null;
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, useAdminCreditLimit).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));

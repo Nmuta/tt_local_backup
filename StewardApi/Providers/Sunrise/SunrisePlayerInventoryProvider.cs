@@ -17,7 +17,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
     {
         private const string Title = "Sunrise";
         private const int MaxProfileResults = 50;
-        private const int MaxCreditSendAmount = 500000000;
+        private const int AgentCreditSendAmount = 500_000_000;
+        private const int AdminCreditSendAmmount = 999_999_999;
         private const int MaxWheelSpinAmount = 200;
 
         private readonly ISunriseUserInventoryService sunriseUserInventoryService;
@@ -125,7 +126,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requestingAgent)
+        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requestingAgent, bool useAdminCreditLimit)
         {
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
@@ -140,6 +141,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
+                var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmmount : AgentCreditSendAmount;
+                currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
                 currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
                 currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
 
@@ -161,7 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SunriseGroupGift groupGift, string requestingAgent)
+        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SunriseGroupGift groupGift, string requestingAgent, bool useAdminCreditLimit)
         {
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
@@ -172,14 +175,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             var gift = this.mapper.Map<SunriseGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
-                response.Add(await this.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent).ConfigureAwait(false));
+                response.Add(await this.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent, useAdminCreditLimit).ConfigureAwait(false));
             }
 
             return response;
         }
 
         /// <inheritdoc/>
-        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requestingAgent)
+        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requestingAgent, bool useAdminCreditLimit)
         {
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
             gift.ShouldNotBeNull(nameof(gift));
@@ -195,6 +198,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
+                var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmmount : AgentCreditSendAmount;
+                currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
                 currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
                 currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
 
@@ -230,17 +235,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             foreach (var (key, value) in currencyGifts)
             {
-                var maxLimit = MaxCreditSendAmount;
-
                 if (value <= 0)
                 {
                     continue;
                 }
 
+                var batchLimit = AgentCreditSendAmount;
                 var playerCurrency = value;
+
                 while (playerCurrency > 0)
                 {
-                    var creditsToSend = playerCurrency >= maxLimit ? maxLimit : playerCurrency;
+                    var creditsToSend = playerCurrency >= batchLimit ? batchLimit : playerCurrency;
                     await serviceCall(key, creditsToSend).ConfigureAwait(false);
 
                     playerCurrency -= creditsToSend;

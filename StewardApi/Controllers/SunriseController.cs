@@ -366,11 +366,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var user = this.User.UserModel();
             var requestingAgent = user.EmailAddress ?? user.Id;
 
-            async Task<List<SunriseBanResult>> BulkBanUsersAsync(List<SunriseBanParameters> groupedBanParameters)
+            async Task<List<SunriseBanResult>> BulkBanUsersAsync(List<SunriseBanParameters> banParameters)
             {
                 var tasks =
-                    groupedBanParameters.Select(
-                        banParameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent))
+                    banParameters.Select(
+                        parameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(parameters, requestingAgent))
                     .ToList();
 
                 var nestedResults = await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -463,17 +463,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var user = this.User.UserModel();
             var requestingAgent = user.EmailAddress ?? user.Id;
 
-            async Task<List<SunriseBanResult>> BulkBanUsersAsync(List<SunriseBanParameters> groupedBanParameters)
+            async Task<List<SunriseBanResult>> BulkBanUsersAsync(List<SunriseBanParameters> banParameters)
             {
                 var tasks =
-                    groupedBanParameters.Select(
-                        banParameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent))
+                    banParameters.Select(
+                        parameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(parameters, requestingAgent))
                     .ToList();
 
                 var nestedResults = await Task.WhenAll(tasks).ConfigureAwait(false);
-                var results = nestedResults.SelectMany(v => v).ToList();
+                var resultList = nestedResults.SelectMany(v => v).ToList();
 
-                return results;
+                return resultList;
             }
 
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
@@ -607,12 +607,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(xuid);
-            var getmasterInventory = this.RetrieveMasterInventoryList();
+            var getMasterInventory = this.RetrieveMasterInventoryList();
 
-            await Task.WhenAll(getPlayerInventory, getmasterInventory).ConfigureAwait(true);
+            await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
             var playerInventory = await getPlayerInventory.ConfigureAwait(true);
-            var masterInventory = await getmasterInventory.ConfigureAwait(true);
+            var masterInventory = await getMasterInventory.ConfigureAwait(true);
 
             if (playerInventory == null)
             {
@@ -635,12 +635,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> GetPlayerInventoryByProfileId(int profileId)
         {
             var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(profileId);
-            var getmasterInventory = this.RetrieveMasterInventoryList();
+            var getMasterInventory = this.RetrieveMasterInventoryList();
 
-            await Task.WhenAll(getPlayerInventory, getmasterInventory).ConfigureAwait(true);
+            await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
             var playerInventory = await getPlayerInventory.ConfigureAwait(true);
-            var masterInventory = await getmasterInventory.ConfigureAwait(true);
+            var masterInventory = await getMasterInventory.ConfigureAwait(true);
 
             if (playerInventory == null)
             {
@@ -752,7 +752,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+                    var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+                    var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
                     await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
                 }
                 catch (Exception)
@@ -820,7 +821,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent).ConfigureAwait(true);
+            var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+            var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
         }
 
@@ -862,7 +864,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.BadRequest($"Invalid items found. {invalidItems}");
                 }
 
-                var response = await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent).ConfigureAwait(true);
+                var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+                var response = await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
                 return this.Ok(response);
             }
             catch (Exception ex)
@@ -1040,7 +1043,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             foreach (var carHorn in gift.CarHorns)
             {
                 var validItem = masterInventoryItem.CarHorns.Any(data => { return data.Id == carHorn.Id; });
-                error += validItem ? string.Empty : $"CarHarn: {carHorn.Id.ToString(CultureInfo.InvariantCulture)}, ";
+                error += validItem ? string.Empty : $"CarHorn: {carHorn.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var vanityItem in gift.VanityItems)

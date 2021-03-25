@@ -174,7 +174,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Arrange.
             var provider = new Dependencies().Build();
             var t10Id = Fixture.Create<string>();
-            var xuid = Fixture.Create<ulong>();
+            var useAdminCurrencyLimit = Fixture.Create<bool>();
             var gameSettingsId = Fixture.Create<Guid>();
             var gift = Fixture.Create<GravityGift>();
             var requestingAgent = Fixture.Create<string>();
@@ -182,7 +182,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, requestingAgent, useAdminCurrencyLimit).ConfigureAwait(false)
             };
 
             // Assert.
@@ -201,13 +201,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var gift = Fixture.Create<GravityGift>();
             var gameSettingsId = Fixture.Create<Guid>();
             var requestingAgent = Fixture.Create<string>();
+            var useAdminCurrencyLimit = Fixture.Create<bool>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(null, gameSettingsId, gift, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.Empty, gameSettingsId, gift, requestingAgent).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.WhiteSpace, gameSettingsId, gift, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(null, gameSettingsId, gift, requestingAgent, useAdminCurrencyLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.Empty, gameSettingsId, gift, requestingAgent, useAdminCurrencyLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.WhiteSpace, gameSettingsId, gift, requestingAgent, useAdminCurrencyLimit).ConfigureAwait(false)
             };
             // Assert.
             foreach (var action in actions)
@@ -225,13 +226,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var gift = Fixture.Create<GravityGift>();
             var gameSettingsId = Fixture.Create<Guid>();
             var t10Id = Fixture.Create<string>();
+            var useAdminCurrencyLimit = Fixture.Create<bool>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, null).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, null, useAdminCurrencyLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, TestConstants.Empty, useAdminCurrencyLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, TestConstants.WhiteSpace, useAdminCurrencyLimit).ConfigureAwait(false)
             };
             // Assert.
             foreach (var action in actions)
@@ -246,7 +248,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var xuid = Fixture.Create<ulong>();
+            var useAdminCurrencyLimit = Fixture.Create<bool>();
             var t10Id = Fixture.Create<string>();
             var gameSettingsId = Fixture.Create<Guid>();
             var requestingAgent = Fixture.Create<string>();
@@ -254,7 +256,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, null, requestingAgent).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, null, requestingAgent, useAdminCurrencyLimit).ConfigureAwait(false)
             };
             // Assert.
             foreach (var action in actions)

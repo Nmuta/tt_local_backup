@@ -17,7 +17,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         private const string Title = "Gravity";
         private const int MaxLookupResults = 5;
         private const int HardCurrencyLimit = 15000;
+        private const int AgentSoftCurrencyLimit = 500_000_000;
+        private const int AdminSoftCurrencyLimit = 999_999_999;
         private const int HardCurrencyId = 1;
+        private const int SoftCurrencyId = 0;
 
         private readonly IGravityUserService gravityUserService;
         private readonly IGravityUserInventoryService gravityUserInventoryService;
@@ -124,7 +127,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<GiftResponse<string>> UpdatePlayerInventoryAsync(string t10Id, Guid gameSettingsId, GravityGift gift, string requestingAgent)
+        public async Task<GiftResponse<string>> UpdatePlayerInventoryAsync(string t10Id, Guid gameSettingsId, GravityGift gift, string requestingAgent, bool useAdminCurrencyLimit)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             gift.ShouldNotBeNull(nameof(gift));
@@ -139,6 +142,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             if (hardCurrency != null)
             {
                 hardCurrency.Quantity = hardCurrency.Quantity > HardCurrencyLimit ? HardCurrencyLimit : hardCurrency.Quantity;
+            }
+
+            var softCurrency = gift.Inventory.CreditRewards.Where(x => x.Id == SoftCurrencyId).FirstOrDefault();
+            if (softCurrency != null)
+            {
+                var softCurrencyLimit = useAdminCurrencyLimit ? AdminSoftCurrencyLimit : AgentSoftCurrencyLimit;
+                softCurrency.Quantity = softCurrency.Quantity > softCurrencyLimit ? softCurrencyLimit : softCurrency.Quantity;
             }
 
             try

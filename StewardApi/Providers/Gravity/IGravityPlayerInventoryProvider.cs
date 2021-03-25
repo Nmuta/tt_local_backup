@@ -55,9 +55,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <param name="gameSettingsId">The game settings ID.</param>
         /// <param name="gift">The gift to send.</param>
         /// <param name="requestingAgent">The requesting agent.</param>
+        /// <param name="useAdminCurrencyLimit">Determines whether to use the admin currency limit.</param>
         /// <returns>
         ///     The <see cref="GiftResponse{T}"/>.
         /// </returns>
-        Task<GiftResponse<string>> UpdatePlayerInventoryAsync(string t10Id, Guid gameSettingsId, GravityGift gift, string requestingAgent);
+        Task<GiftResponse<string>> UpdatePlayerInventoryAsync(string t10Id, Guid gameSettingsId, GravityGift gift, string requestingAgent, bool useAdminCurrencyLimit);
     }
 }

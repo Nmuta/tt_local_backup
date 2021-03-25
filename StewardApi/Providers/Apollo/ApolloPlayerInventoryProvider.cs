@@ -16,7 +16,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
     public sealed class ApolloPlayerInventoryProvider : IApolloPlayerInventoryProvider
     {
         private const int MaxProfileResults = 50;
-        private const int MaxCreditSendAmount = 500000000;
+        private const int AgentCreditSendAmount = 500_000_000;
+        private const int AdminCreditSendAmount = 999_999_999;
 
         private readonly IApolloUserInventoryService apolloUserInventoryService;
         private readonly IApolloGiftingService apolloGiftingService;
@@ -104,7 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requestingAgent)
+        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requestingAgent, bool useAdminCreditLimit)
         {
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
@@ -118,6 +119,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             {
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
+
+                var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
+                currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
@@ -137,7 +141,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requestingAgent)
+        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requestingAgent, bool useAdminCreditLimit)
         {
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
@@ -148,14 +152,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             var gift = this.mapper.Map<ApolloGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
-                response.Add(await this.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent).ConfigureAwait(false));
+                response.Add(await this.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent, useAdminCreditLimit).ConfigureAwait(false));
             }
 
             return response;
         }
 
         /// <inheritdoc/>
-        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requestingAgent)
+        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requestingAgent, bool useAdminCreditLimit)
         {
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
@@ -170,6 +174,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             {
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
+
+                var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
+                currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
@@ -211,7 +218,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 var playerCurrency = value;
                 while (playerCurrency > 0)
                 {
-                    var creditsToSend = playerCurrency >= MaxCreditSendAmount ? MaxCreditSendAmount : playerCurrency;
+                    var creditsToSend = playerCurrency >= AgentCreditSendAmount ? AgentCreditSendAmount : playerCurrency;
                     await serviceCall(key, creditsToSend).ConfigureAwait(false);
 
                     playerCurrency -= creditsToSend;
