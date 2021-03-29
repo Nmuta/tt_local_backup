@@ -2,6 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GameTitleCodeName } from '@models/enums';
 import { KustoQueries } from '@models/kusto/kusto-queries';
+import faker from 'faker';
 
 /** Fake API for getting kusto predefined queries. */
 export class KustoGetQueriesFakeApi extends FakeApiBase {
@@ -26,6 +27,7 @@ export class KustoGetQueriesFakeApi extends FakeApiBase {
   public static make(): KustoQueries {
     return [
       {
+        id: faker.random.uuid(),
         name: 'Lorem Ipsum',
         title: GameTitleCodeName.Street,
         query: `
@@ -48,14 +50,54 @@ export class KustoGetQueriesFakeApi extends FakeApiBase {
           In hac habitasse platea dictumst. Sed quis semper ligula. Vivamus scelerisque tortor accumsan neque lacinia, nec ullamcorper nunc ultricies. Maecenas hendrerit ligula sed interdum posuere. Fusce vitae eros vitae nulla efficitur viverra. Ut ut mauris eu eros iaculis tempus sit amet sit amet mauris. Vivamus ut nunc at lectus rhoncus rhoncus eu at ligula. Phasellus placerat elit magna, at consectetur mauris sagittis vel. Donec eget ultricies quam. Morbi pellentesque nibh lorem, ut sagittis erat convallis quis. Donec ultricies luctus quam in laoreet.
       `,
       },
-      { name: 'Test Query 1', query: 'Test Query 1', title: GameTitleCodeName.Street },
-      { name: 'Test Query 2', query: 'Test Query 2', title: GameTitleCodeName.FH4 },
-      { name: 'Test Query 3', query: 'Test Query 3', title: GameTitleCodeName.FH4 },
-      { name: 'Test Query 6', query: 'Test Query 6', title: GameTitleCodeName.FH4 },
-      { name: 'Test Query 9', query: 'Test Query 9', title: GameTitleCodeName.FM7 },
-      { name: 'Test Query 10', query: 'Test Query 10', title: GameTitleCodeName.FM7 },
-      { name: 'Test Query 7', query: 'Test Query 7', title: GameTitleCodeName.FH3 },
-      { name: 'Test Query 8', query: 'Test Query 8', title: GameTitleCodeName.FH3 },
+      {
+        id: faker.random.uuid(),
+        name: 'Test Query 1',
+        query: 'Test Query 1',
+        title: GameTitleCodeName.Street,
+      },
+      {
+        id: faker.random.uuid(),
+        name: 'Test Query 2',
+        query: 'Test Query 2',
+        title: GameTitleCodeName.FH4,
+      },
+      {
+        id: faker.random.uuid(),
+        name: 'Test Query 3',
+        query: 'Test Query 3',
+        title: GameTitleCodeName.FH4,
+      },
+      {
+        id: faker.random.uuid(),
+        name: 'Test Query 6',
+        query: 'Test Query 6',
+        title: GameTitleCodeName.FH4,
+      },
+      {
+        id: faker.random.uuid(),
+        name: 'Test Query 9',
+        query: 'Test Query 9',
+        title: GameTitleCodeName.FM7,
+      },
+      {
+        id: faker.random.uuid(),
+        name: 'Test Query 10',
+        query: 'Test Query 10',
+        title: GameTitleCodeName.FM7,
+      },
+      {
+        id: faker.random.uuid(),
+        name: 'Test Query 7',
+        query: 'Test Query 7',
+        title: GameTitleCodeName.FH3,
+      },
+      {
+        id: faker.random.uuid(),
+        name: 'Test Query 8',
+        query: 'Test Query 8',
+        title: GameTitleCodeName.FH3,
+      },
     ];
   }
 }

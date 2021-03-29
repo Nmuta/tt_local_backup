@@ -14,7 +14,19 @@
 
   <div class="app-list">
     <h2>Steward App List</h2>
+    <a
+      [disabled]="!areLiveOpsAppsAccessible"
+      mat-raised-button
+      color="primary"
+      routerLink="/live-ops/live-ops-app/tools/home"
+    >
+      Live Ops App
 
+      <fa-icon
+        [icon]="areLiveOpsAppsAccessible ? availableIcon : unavailableIcon"
+        [matTooltip]="areLiveOpsAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
+      ></fa-icon>
+    </a>
     <a
       [disabled]="!areSupportAppsAccessible"
       mat-raised-button

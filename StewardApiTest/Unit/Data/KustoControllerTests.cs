@@ -174,7 +174,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
             var name = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IActionResult>> action = async () => await controller.DeleteQueries(name).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.DeleteQuery(name).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -182,7 +182,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void DeleteQuery_WithNullEmptyWhitespaceName_DoesNotThrow()
+        public void DeleteQuery_WithNullEmptyWhitespaceQueryId_DoesNotThrow()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -192,15 +192,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.DeleteQueries(null).ConfigureAwait(false),
-                async () => await controller.DeleteQueries(TestConstants.Empty).ConfigureAwait(false),
-                async () => await controller.DeleteQueries(TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await controller.DeleteQuery(null).ConfigureAwait(false),
+                async () => await controller.DeleteQuery(TestConstants.Empty).ConfigureAwait(false),
+                async () => await controller.DeleteQuery(TestConstants.WhiteSpace).ConfigureAwait(false)
             };
 
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "name"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "queryId"));
             }
         }
 

@@ -38,6 +38,9 @@ export class BigintInterceptor implements HttpInterceptor {
     return next.handle(newRequest).pipe(
       filter(event => event instanceof HttpResponse),
       map((event: HttpResponse<string>) => {
+        if (!event.body) {
+          return event.clone({ body: event.body });
+        }
         const newBody = JSONBigInt.parse(event.body);
         return event.clone({
           body: newBody,

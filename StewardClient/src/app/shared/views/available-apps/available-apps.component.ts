@@ -15,6 +15,7 @@ import { UserState } from '@shared/state/user/user.state';
 export class AvailableAppsComponent extends BaseComponent implements OnInit {
   public userProfile: UserModel;
 
+  public areLiveOpsAppsAccessible: boolean = false;
   public areSupportAppsAccessible: boolean = false;
   public areDataAppsAccessible: boolean = false;
   public areCommunityAppsAccessible: boolean = false;
@@ -37,6 +38,7 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
       const role = (this.userProfile as UserModel).role;
       switch (role) {
         case UserRole.LiveOpsAdmin:
+          this.areLiveOpsAppsAccessible = true;
           this.areSupportAppsAccessible = true;
           this.areDataAppsAccessible = true;
           this.areCommunityAppsAccessible = true;

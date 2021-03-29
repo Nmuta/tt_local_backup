@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -85,6 +86,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Edit a Kusto query.
+        /// </summary>
+        /// <param name="queryId">The query id.</param>
+        /// <param name="query">The new query.</param>
+        /// <returns>
+        ///     A list of <see cref="JObject"/>.
+        /// </returns>
+        [HttpPut("queries/id({queryId})")]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> ReplaceQuery(string queryId, [FromBody] KustoQuery query)
+        {
+            queryId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(queryId));
+
+            await this.kustoQueryProvider.ReplaceKustoQueryAsync(queryId, query).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
         ///     Retrieves a list of Kusto query.
         /// </summary>
         /// <returns>
@@ -102,18 +123,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Deletes a Kusto query.
         /// </summary>
-        /// <param name="name">The query name.</param>
+        /// <param name="queryId">The query id.</param>
         /// <returns>
         ///     A list of <see cref="JObject"/>.
         /// </returns>
-        [HttpDelete("queries/name({name})")]
+        [HttpDelete("queries/id({queryId})")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
-        [SwaggerResponse(200, type: typeof(List<KustoQuery>))]
-        public async Task<IActionResult> DeleteQueries(string name)
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> DeleteQuery(string queryId)
         {
-            name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));
+            queryId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(queryId));
 
-            await this.kustoQueryProvider.DeleteKustoQueriesAsync(name).ConfigureAwait(true);
+            await this.kustoQueryProvider.DeleteKustoQueryAsync(queryId).ConfigureAwait(true);
 
             return this.Ok();
         }

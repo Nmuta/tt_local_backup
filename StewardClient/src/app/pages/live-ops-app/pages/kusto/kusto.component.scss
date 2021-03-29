@@ -1,0 +1,39 @@
+:host ::ng-deep button:not(.icon-button) {
+  max-width: 12em;
+  width: 100%;
+}
+
+section {
+  padding: 0 2em;
+  padding-bottom: 4em;
+
+  mat-card {
+    margin-top: 2em;
+  }
+
+  mat-form-field {
+    display: block;
+    max-width: 20em;
+    width: 100%;
+  }
+
+  mat-form-field.query-string {
+    max-width: unset;
+    width: auto;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 4em;
+    max-height: 30vh;
+  }
+
+  button.clear-input {
+    margin-left: 2em;
+  }
+
+  button.delete {
+    display: block;
+    margin-top: 2em;
+  }
+}

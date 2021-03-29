@@ -38,12 +38,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         Task<IList<KustoQuery>> GetKustoQueriesAsync();
 
         /// <summary>
-        ///     Deletes a Kusto query.
+        ///     Replaces a Kusto query.
         /// </summary>
-        /// <param name="name">The name.</param>
+        /// <param name="queryId">The query id.</param>
+        /// <param name="query">The new query.</param>
         /// <returns>
         ///     A task with a status.
         /// </returns>
-        Task DeleteKustoQueriesAsync(string name);
+        Task ReplaceKustoQueryAsync(string queryId, KustoQuery query);
+
+        /// <summary>
+        ///     Deletes a Kusto query.
+        /// </summary>
+        /// <param name="queryId">The query id.</param>
+        /// <returns>
+        ///     A task with a status.
+        /// </returns>
+        Task DeleteKustoQueryAsync(string queryId);
     }
 }

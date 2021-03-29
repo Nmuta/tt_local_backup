@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import {
   FormBuilder,
@@ -8,11 +8,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { NEVER, Observable } from 'rxjs';
-import _ from 'lodash';
 import { KustoQuery } from '@models/kusto';
 import { KustoService } from '@services/kusto';
 import { catchError, map, startWith, take, takeUntil } from 'rxjs/operators';
 import { KustoQueries } from '@models/kusto/kusto-queries';
+import { faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import _ from 'lodash';
 
 export type KustoQueryGroup = {
   category: string;
@@ -25,11 +26,15 @@ export type KustoQueryGroup = {
   styleUrls: ['./kusto-query-selection.component.scss'],
 })
 export class KustoQuerySelectionComponent extends BaseComponent implements OnInit {
+  @Input() public showReloadButton: boolean = false;
+  @Input() public selectQueryText: string = 'Use Kusto Query';
   @Output() public selectedKustoQueryEvent = new EventEmitter<KustoQuery>();
 
   public queryGroups: KustoQueryGroup[];
   public selectedItem: KustoQuery;
   public queryInputValue: string = '';
+
+  public reloadIcon = faSyncAlt;
 
   /** True while waiting on a request. */
   public isLoading = false;

@@ -8,6 +8,7 @@ import { KustoQuery } from '@models/kusto';
 import { NgxsModule } from '@ngxs/store';
 import { createMockKustoService, KustoService } from '@services/kusto';
 import { of, throwError } from 'rxjs';
+import faker from 'faker';
 
 import { KustoComponent } from './kusto.component';
 
@@ -49,6 +50,7 @@ describe('KustoComponent', () => {
 
   describe('Method: setQueryToInput', () => {
     const kustoQuery: KustoQuery = {
+      id: faker.random.uuid(),
       name: 'Test Query Name',
       query: 'Test Query',
       title: GameTitleCodeName.FH4,

@@ -5,6 +5,7 @@ import { ErrorComponent } from './pages/error/error.component';
 import { AuthGuard } from './route-guards/auth.guard';
 import { CommunityGuard } from './route-guards/community.guard';
 import { DataPipelineGuard } from './route-guards/data-pipeline.guard';
+import { LiveOpsGuard } from './route-guards/live-ops.guard';
 import { SupportGuard } from './route-guards/support.guard';
 import { ZendeskGuard } from './route-guards/zendesk.guard';
 
@@ -13,6 +14,19 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule),
+  },
+  {
+    path: 'live-ops',
+    canActivate: [AuthGuard, LiveOpsGuard],
+    children: [
+      {
+        path: 'live-ops-app',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        loadChildren: () =>
+          import('./pages/live-ops-app/live-ops-app.module').then(m => m.LiveOpsAppModule),
+      },
+    ],
   },
   {
     path: 'support',

@@ -61,6 +61,7 @@ describe('KustoQuerySelectionComponent', () => {
 
     describe('If there is a selection item', () => {
       const testKustoQuery: KustoQuery = {
+        id: faker.random.uuid(),
         name: faker.random.word(),
         query: faker.random.words(50),
         title: GameTitleCodeName.FH4,
@@ -99,6 +100,7 @@ describe('KustoQuerySelectionComponent', () => {
 
   describe('Method: newQuerySelected', () => {
     const testKustoQuery: KustoQuery = {
+      id: faker.random.uuid(),
       name: faker.random.word(),
       query: faker.random.words(50),
       title: GameTitleCodeName.FH4,

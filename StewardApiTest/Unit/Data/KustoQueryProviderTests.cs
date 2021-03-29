@@ -224,7 +224,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
             var name = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.DeleteKustoQueriesAsync(name).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.DeleteKustoQueryAsync(name).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -232,7 +232,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void DeleteKustoQueryAsync_WithNullEmptyWhitespaceName_Throws()
+        public void DeleteKustoQueryAsync_WithNullEmptyWhitespaceQueryId_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -240,15 +240,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.DeleteKustoQueriesAsync(null).ConfigureAwait(false),
-                async () => await provider.DeleteKustoQueriesAsync(TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.DeleteKustoQueriesAsync(TestConstants.WhiteSpace).ConfigureAwait(false),
+                async () => await provider.DeleteKustoQueryAsync(null).ConfigureAwait(false),
+                async () => await provider.DeleteKustoQueryAsync(TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.DeleteKustoQueryAsync(TestConstants.WhiteSpace).ConfigureAwait(false),
             };
 
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "name"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "queryId"));
             }
         }
 

@@ -22,6 +22,7 @@
       "@models/*": ["app/shared/models/*"],
       "@services/*": ["app/shared/services/*"],
       "@shared/*": ["app/shared/*"],
+      "@live-ops-app/*": ["app/pages/live-ops-app/*"],
       "@navbar-app/*": ["app/pages/navbar-app/*"],
       "@community-app/*": ["app/pages/community-app/*"],
       "@data-pipeline-app/*": ["app/pages/data-pipeline-app/*"]

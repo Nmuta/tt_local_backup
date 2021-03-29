@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
@@ -27,6 +28,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             this.Title = title;
             this.Query = query;
         }
+
+        /// <summary>
+        ///     Gets or sets the Id.
+        /// </summary>
+        public Guid Id { get; set; }
 
         /// <summary>
         ///     Gets or sets the name.

@@ -13,30 +13,30 @@ import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 import { RouterLinkPath } from '@models/routing';
 import {
-  communityAppToolList,
-  CommunityAppTools,
-  createCommunityNavbarPath,
-} from '@community-app/community-tool-list';
+  createLiveOpsNavbarPath,
+  liveOpsAppToolList,
+  LiveOpsAppTools,
+} from '@live-ops-app/live-ops-tool-list';
 
 /** The shared top-level navbar. */
 @Component({
-  selector: 'community-navbar',
+  selector: 'live-ops-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class CommunityNavbarComponent {
+export class LiveOpsNavbarComponent {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
   public warningIcon = faExclamationTriangle;
   public refreshIcon = faSyncAlt;
   public infoIcon = faInfoCircle;
-  public items: RouterLinkPath[] = communityAppToolList;
-  public homeRouterLink = createCommunityNavbarPath(CommunityAppTools.HomePage).routerLink;
+  public items: RouterLinkPath[] = liveOpsAppToolList;
+  public homeRouterLink = createLiveOpsNavbarPath(LiveOpsAppTools.HomePage).routerLink;
 
   public readonly profileIcon = faUser;
   public readonly settingsIcon = faCog;
 
-  constructor(private readonly windowService: WindowService) {}
+  constructor(protected readonly windowService: WindowService) {}
 
   /** A string representing the current location */
   public get location(): string {

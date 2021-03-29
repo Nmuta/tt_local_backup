@@ -94,13 +94,42 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task DeleteKustoQueriesAsync(string name)
+        public async Task ReplaceKustoQueryAsync(string queryId, KustoQuery query)
         {
-            name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));
+            queryId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(queryId));
 
             try
             {
-                var tableQuery = new TableQuery<KustoQueryInternal>().Where(TableQuery.GenerateFilterCondition("Name", QueryComparisons.Equal, name));
+                var tableQuery = new TableQuery<KustoQueryInternal>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, queryId));
+
+                var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
+                if (results.Count <= 0)
+                {
+                    throw new NotFoundStewardException($"Query failed with queryId: {queryId}");
+                }
+
+                var result = results[0];
+                result.Name = query.Name;
+                result.Title = query.Title;
+                result.Query = query.Query;
+
+                var replaceOperation = TableOperation.Replace(result);
+                await this.tableStorageClient.ExecuteAsync(replaceOperation).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException("Failed to find query to edit.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteKustoQueryAsync(string queryId)
+        {
+            queryId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(queryId));
+
+            try
+            {
+                var tableQuery = new TableQuery<KustoQueryInternal>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, queryId));
 
                 var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
 
