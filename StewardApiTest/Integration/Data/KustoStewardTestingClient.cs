@@ -53,11 +53,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Data
             return await ServiceClient.SendRequestAsync<IList<KustoQuery>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task DeleteQueriesAsync(string name)
+        public async Task DeleteQueriesAsync(string id)
         {
-            name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));
+            id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
 
-            var path = new Uri(this.baseUri, $"{TitlePath}queries/name({name})");
+            var path = new Uri(this.baseUri, $"{TitlePath}queries/id({id})");
 
             await ServiceClient.SendRequestAsync(HttpMethod.Delete, path, this.authKey, Version).ConfigureAwait(false);
         }

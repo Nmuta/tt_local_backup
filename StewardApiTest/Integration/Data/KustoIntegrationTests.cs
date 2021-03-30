@@ -139,9 +139,10 @@ namespace Turn10.LiveOps.StewardTest.Integration.Data
         {
             await stewardClient.SaveQueryAsync(new List<KustoQuery>{validKustoQuery}).ConfigureAwait(false);
             var createResults = await stewardClient.RetrieveQueriesAsync().ConfigureAwait(false);
-            Assert.IsTrue(createResults.Where(query => query.Name == validKustoQuery.Name).Any());
+            var result = createResults.Where(query => query.Name == validKustoQuery.Name).First();
+            Assert.IsNotNull(result);
 
-            await stewardClient.DeleteQueriesAsync(validKustoQuery.Name).ConfigureAwait(false);
+            await stewardClient.DeleteQueriesAsync(result.Id.ToString()).ConfigureAwait(false);
             var deleteResults = await stewardClient.RetrieveQueriesAsync().ConfigureAwait(false);
             Assert.IsFalse(deleteResults.Where(query => query.Name == validKustoQuery.Name).Any());
         }
