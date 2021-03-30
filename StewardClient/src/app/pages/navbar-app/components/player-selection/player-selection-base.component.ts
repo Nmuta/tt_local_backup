@@ -114,12 +114,12 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   ) {
     super();
     this.foundIdentities$
-      .pipe(switchMap(i => this.sortFn(i)))
+      .pipe(
+        takeUntil(this.onDestroy$),
+        switchMap(i => this.sortFn(i)),
+      )
       .subscribe(i => (this.foundIdentities = i));
   }
-
-  /** Called when a new set of results is found and populated into @see foundIdentities */
-  public abstract onFound(): void;
 
   /** Called when a new set of results is selected. */
   public abstract onSelect(change: MatChipListChange): void;
@@ -205,8 +205,8 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     if (index >= 0) {
       this.foundIdentities.splice(index, 1);
       this.knownIdentities.delete(item.query[this.lookupType].toString());
-      this.lookupListChange.emit();
-      this.onFound();
+      this.lookupListChange.emit(this.lookupList);
+      this.foundIdentities$.next(this.foundIdentities);
     }
   }
 
@@ -238,7 +238,9 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       if (emit) {
         this.lookupListChange.emit(this.lookupList);
       }
-      this.onFound();
+
+      this.foundIdentities$.next(this.foundIdentities);
+
       return;
     }
 
@@ -381,7 +383,6 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
           compositeIdentity.extra.rejectionReason = rejectionReason;
 
           this.foundIdentities$.next(this.foundIdentities);
-          this.onFound();
         }
       });
   }

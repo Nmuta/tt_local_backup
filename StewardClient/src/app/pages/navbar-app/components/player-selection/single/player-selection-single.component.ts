@@ -12,6 +12,7 @@ import { GravityService } from '@services/gravity';
 import { OpusService } from '@services/opus';
 import { SunriseService } from '@services/sunrise';
 import { first } from 'lodash';
+import { takeUntil } from 'rxjs/operators';
 import {
   AugmentedCompositeIdentity,
   PlayerSelectionBaseComponent,
@@ -44,23 +45,21 @@ export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent
   ) {
     // normally, this could be deleted. but this fails to inject to the base class during code coverage checks. https://github.com/angular/angular-cli/issues/14860
     super(sunrise, gravity, apollo, opus);
-  }
+    this.foundIdentities$.pipe(takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
+      if (foundIdentities.length > 1) {
+        throw new Error(`${this.constructor.name} was allowed to find multiple identities.`);
+      }
 
-  /** Called when a new set of results is found and populated into @see foundIdentities */
-  public onFound(): void {
-    if (this.foundIdentities.length > 1) {
-      throw new Error(`${this.constructor.name} was allowed to find multiple identities.`);
-    }
+      const foundIdentity = first(foundIdentities);
+      this.found.emit(foundIdentity);
 
-    const foundIdentity = first(this.foundIdentities);
-    this.found.emit(foundIdentity);
-
-    const selectedItemInFoundIdentities = this.foundIdentities.includes(this.selectedValue);
-    if (!selectedItemInFoundIdentities) {
-      this.selected.next(null);
-    } else {
-      this.selected.next(this.selectedValue);
-    }
+      const selectedItemInFoundIdentities = foundIdentities.includes(this.selectedValue);
+      if (!selectedItemInFoundIdentities) {
+        this.selected.next(null);
+      } else {
+        this.selected.next(this.selectedValue);
+      }
+    });
   }
 
   /** Called when a new set of results is selected. */
