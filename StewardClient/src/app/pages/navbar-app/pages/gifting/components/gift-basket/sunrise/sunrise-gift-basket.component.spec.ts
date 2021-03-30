@@ -354,6 +354,26 @@ describe('SunriseGiftBasketComponent', () => {
       });
     });
 
+    describe('When credit reward is over 999,999,999', () => {
+      it('should set item error ', () => {
+        const input = [
+          {
+            itemType: 'creditRewards',
+            description: 'Credits',
+            quantity: 1_000_000_000,
+            id: BigInt(-1),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].error).toEqual('Credit max is 999,999,999.');
+      });
+    });
+
     describe('When wheel spin reward is over 200', () => {
       it('should set item error ', () => {
         const input = [

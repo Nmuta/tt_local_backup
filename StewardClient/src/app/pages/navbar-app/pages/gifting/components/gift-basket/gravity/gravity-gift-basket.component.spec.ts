@@ -523,5 +523,26 @@ describe('GravityGiftBasketComponent', () => {
         expect(response[0].error).toBeUndefined();
       });
     });
+
+    describe('When soft current reward is over 999,999,999', () => {
+      it('should set item error ', () => {
+        // Soft currency ID=0
+        const input = [
+          {
+            itemType: 'creditRewards',
+            description: 'Soft Currency',
+            quantity: 1_000_000_000,
+            id: BigInt(0),
+            edit: false,
+            error: undefined,
+          },
+        ];
+        const response = component.setGiftBasketItemErrors(input);
+
+        expect(response.length).toEqual(1);
+        expect(response[0]).not.toBeUndefined();
+        expect(response[0].error).toEqual('Soft Currency max is 999,999,999.');
+      });
+    });
   });
 });

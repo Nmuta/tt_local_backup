@@ -42,7 +42,7 @@ export class ApolloGiftBasketComponent
     protected readonly store: Store,
     protected readonly formBuilder: FormBuilder,
   ) {
-    super(backgroundJobService, formBuilder);
+    super(backgroundJobService, formBuilder, store);
   }
 
   /** Angular lifecycle hook. */
@@ -150,12 +150,25 @@ export class ApolloGiftBasketComponent
     }
 
     // Verify credit reward limits
-    const creditsAboveLimit = giftBasket.findIndex(
+    if (!this.ignoreMaxCreditLimit) {
+      const creditsAboveLimit = giftBasket.findIndex(
+        item =>
+          item.id < 0 &&
+          item.description.toLowerCase() === 'credits' &&
+          item.quantity > 500_000_000,
+      );
+      if (creditsAboveLimit >= 0) {
+        giftBasket[creditsAboveLimit].error = 'Credit limit for a gift is 500,000,000.';
+      }
+    }
+
+    // Verify credit reward is under max
+    const creditsAboveMax = giftBasket.findIndex(
       item =>
-        item.id < 0 && item.description.toLowerCase() === 'credits' && item.quantity > 500_000_000,
+        item.id < 0 && item.description.toLowerCase() === 'credits' && item.quantity > 999_999_999,
     );
-    if (creditsAboveLimit >= 0) {
-      giftBasket[creditsAboveLimit].error = 'Credit limit for a gift is 500,000,000.';
+    if (creditsAboveMax >= 0) {
+      giftBasket[creditsAboveMax].error = 'Credit max is 999,999,999.';
     }
 
     return giftBasket;

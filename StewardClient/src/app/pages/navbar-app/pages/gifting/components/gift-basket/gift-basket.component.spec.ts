@@ -1,10 +1,10 @@
 import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
-import { NgxsModule } from '@ngxs/store';
+import { NgxsModule, Store } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IdentityResultBeta } from '@models/identity-query.model';
-import { GiftBasketBaseComponent, GiftBasketModel } from './gift-basket.base.component';
+import { GiftBasketBaseComponent, GiftBasketModel, GiftReason } from './gift-basket.base.component';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { of, throwError } from 'rxjs';
@@ -13,6 +13,10 @@ import { GiftResponse } from '@models/gift-response';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { SunriseMasterInventory } from '@models/sunrise';
+import { MatSelectChange } from '@angular/material/select';
+import faker from 'faker';
+import { UserRole } from '@models/enums';
+import { UserModel } from '@models/user.model';
 
 describe('GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<GiftBasketBaseComponent<
@@ -24,6 +28,7 @@ describe('GiftBasketBaseComponent', () => {
   const formBuilder: FormBuilder = new FormBuilder();
 
   let mockBackgroundJobService: BackgroundJobService;
+  let mockStore: Store;
 
   beforeEach(
     waitForAsync(() => {
@@ -47,6 +52,7 @@ describe('GiftBasketBaseComponent', () => {
       component = fixture.debugElement.componentInstance;
 
       mockBackgroundJobService = TestBed.inject(BackgroundJobService);
+      mockStore = TestBed.inject(Store);
 
       component.setStateGiftBasket = jasmine.createSpy('setStateGiftBasket');
     }),
@@ -54,6 +60,140 @@ describe('GiftBasketBaseComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Method: giftReasonChanged', () => {
+    const testUserModel: UserModel = {
+      name: faker.name.firstName(),
+      emailAddress: 'fakeemail@microsoft.com',
+      role: UserRole.LiveOpsAdmin,
+    };
+
+    beforeEach(() => {
+      mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue(testUserModel);
+      component.setStateGiftBasket = jasmine.createSpy('setStateGiftBasket');
+      component.ignoreMaxCreditLimit = false;
+      component.profile = undefined;
+    });
+
+    describe('When event param is null', () => {
+      it('should do nothing', () => {
+        component.giftReasonChanged(null);
+
+        expect(component.ignoreMaxCreditLimit).toBeFalsy();
+        expect(component.profile).toBeUndefined();
+        expect(mockStore.selectSnapshot).not.toHaveBeenCalled();
+        expect(component.setStateGiftBasket).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('When event param is valid', () => {
+      const giftReasonEvent: MatSelectChange = { source: undefined, value: GiftReason.LostSave };
+
+      describe('When profile is undefined', () => {
+        beforeEach(() => {
+          component.profile = undefined;
+        });
+
+        it('should get and set profile', () => {
+          component.giftReasonChanged(giftReasonEvent);
+
+          expect(component.profile).not.toBeUndefined();
+          expect(component.profile).toEqual(testUserModel);
+          expect(mockStore.selectSnapshot).toHaveBeenCalled();
+        });
+
+        it('should call setStateGiftBasket', () => {
+          component.giftReasonChanged(giftReasonEvent);
+
+          expect(component.setStateGiftBasket).toHaveBeenCalled();
+        });
+      });
+
+      describe('When profile is defined', () => {
+        const testUserModel2: UserModel = {
+          name: faker.name.firstName(),
+          emailAddress: 'fakeemail2@microsoft.com',
+          role: UserRole.SupportAgentAdmin,
+        };
+
+        beforeEach(() => {
+          component.profile = testUserModel2;
+        });
+
+        it('should not call and set profile', () => {
+          component.giftReasonChanged(giftReasonEvent);
+
+          expect(component.profile).not.toBeUndefined();
+          expect(component.profile).toEqual(testUserModel2);
+          expect(mockStore.selectSnapshot).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('When gift reason is "Lost Save"', () => {
+        beforeEach(() => {
+          giftReasonEvent.value = GiftReason.LostSave;
+          component.profile = {
+            name: faker.name.firstName(),
+            emailAddress: 'fakeemail@microsoft.com',
+            role: UserRole.LiveOpsAdmin,
+          };
+        });
+
+        describe('And when user role is LiveOpsAdmin', () => {
+          beforeEach(() => {
+            component.profile.role = UserRole.LiveOpsAdmin;
+          });
+
+          it('should set ignoreMaxCreditLimit to true', () => {
+            component.giftReasonChanged(giftReasonEvent);
+
+            expect(component.ignoreMaxCreditLimit).toBeTruthy();
+          });
+        });
+
+        describe('And when user role is SupportAgentAdmin', () => {
+          beforeEach(() => {
+            component.profile.role = UserRole.SupportAgentAdmin;
+          });
+
+          it('should set ignoreMaxCreditLimit to true', () => {
+            component.giftReasonChanged(giftReasonEvent);
+
+            expect(component.ignoreMaxCreditLimit).toBeTruthy();
+          });
+        });
+
+        describe('And when user role is SupportAgent', () => {
+          beforeEach(() => {
+            component.profile.role = UserRole.SupportAgent;
+          });
+
+          it('should set ignoreMaxCreditLimit to false', () => {
+            component.giftReasonChanged(giftReasonEvent);
+
+            expect(component.ignoreMaxCreditLimit).toBeFalsy();
+          });
+        });
+      });
+
+      describe('When gift reason is not "Lost Save"', () => {
+        beforeEach(() => {
+          giftReasonEvent.value = GiftReason.CommunityGift;
+          component.profile = {
+            name: faker.name.firstName(),
+            emailAddress: 'fakeemail@microsoft.com',
+            role: UserRole.LiveOpsAdmin,
+          };
+        });
+
+        it('should set ignoreMaxCreditLimit to false', () => {
+          component.giftReasonChanged(giftReasonEvent);
+
+          expect(component.ignoreMaxCreditLimit).toBeFalsy();
+        });
+      });
+    });
   });
 
   describe('Method: addItemtoBasket', () => {

@@ -66,6 +66,8 @@
                         type="number"
                         matInput
                         placeholder="1"
+                        min="1"
+                        max="999999999"
                         [value]="element.quantity"
                       />
                     </mat-form-field>
@@ -125,10 +127,13 @@
   </mat-card-content>
   <mat-card-actions *ngIf="!isLoading && !loadError && !giftResponse">
     <div class="send-gift-basket-container">
+      <p *ngIf="ignoreMaxCreditLimit">
+        <b>Notice: </b>You are exceeding the typical maximum of 500,000,000.
+      </p>
       <form [formGroup]="sendGiftForm" (ngSubmit)="sendGiftBasket()">
         <mat-form-field appearance="fill">
           <mat-label>Gift Reason</mat-label>
-          <mat-select formControlName="giftReason">
+          <mat-select formControlName="giftReason" (selectionChange)="giftReasonChanged($event)">
             <mat-option *ngFor="let reason of giftReasons" [value]="reason">
               {{ reason }}
             </mat-option>

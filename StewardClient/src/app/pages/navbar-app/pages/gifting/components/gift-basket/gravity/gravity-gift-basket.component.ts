@@ -45,7 +45,7 @@ export class GravityGiftBasketComponent
     protected readonly store: Store,
     protected readonly formBuilder: FormBuilder,
   ) {
-    super(backgroundJobService, formBuilder);
+    super(backgroundJobService, formBuilder, store);
   }
 
   /** Angular lifecycle */
@@ -206,16 +206,30 @@ export class GravityGiftBasketComponent
         : undefined;
     }
 
-    // Verify credit reward limits
     const creditRewardsItemType = 'creditrewards';
-    const softCurrencyAboveLimit = giftBasket.findIndex(
+
+    // Verify credit reward limits
+    if (!this.ignoreMaxCreditLimit) {
+      const softCurrencyAboveLimit = giftBasket.findIndex(
+        item =>
+          item.itemType.toLowerCase() === creditRewardsItemType &&
+          item.id === BigInt(0) &&
+          item.quantity > 500_000_000,
+      );
+      if (softCurrencyAboveLimit >= 0) {
+        giftBasket[softCurrencyAboveLimit].error = 'Soft Currency limit for a gift is 500,000,000.';
+      }
+    }
+
+    // Verify credit reward is under max
+    const softCurrencyAboveMax = giftBasket.findIndex(
       item =>
         item.itemType.toLowerCase() === creditRewardsItemType &&
         item.id === BigInt(0) &&
-        item.quantity > 500_000_000,
+        item.quantity > 999_999_999,
     );
-    if (softCurrencyAboveLimit >= 0) {
-      giftBasket[softCurrencyAboveLimit].error = 'Soft Currency limit for a gift is 500,000,000.';
+    if (softCurrencyAboveMax >= 0) {
+      giftBasket[softCurrencyAboveMax].error = 'Soft Currency max is 999,999,999.';
     }
 
     const hardCurrencyAboveLimit = giftBasket.findIndex(

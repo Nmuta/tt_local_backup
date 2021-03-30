@@ -52,6 +52,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
     quantity: new FormControl(1, [
       Validators.required,
       Validators.min(1),
+      Validators.max(999_999_999),
       Validators.pattern('^(0|[1-9][0-9]*)$'),
     ]),
   });

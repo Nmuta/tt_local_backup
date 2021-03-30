@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitleCodeName, UserRole } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,6 +15,10 @@ import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { GravityGift } from '@models/gravity';
 import { SunriseGift } from '@models/sunrise';
 import { ApolloGift } from '@models/apollo';
+import { Store } from '@ngxs/store';
+import { UserModel } from '@models/user.model';
+import { UserState } from '@shared/state/user/user.state';
+import { MatSelectChange } from '@angular/material/select';
 
 export type InventoryItemGroup = {
   category: string;
@@ -22,6 +26,13 @@ export type InventoryItemGroup = {
 };
 export type GiftUnion = GravityGift | SunriseGift | ApolloGift;
 export type GiftBasketModel = MasterInventoryItem & { edit: boolean; error: string };
+export enum GiftReason {
+  LostSave = 'Lost Save',
+  AuctionHouse = 'Auction House',
+  CommunityGift = 'Community Gift',
+  GameError = 'Game Error',
+  SaveRollback = 'Save Rollback',
+}
 
 /** The base gift-basket component. */
 @Component({
@@ -36,6 +47,11 @@ export abstract class GiftBasketBaseComponent<
   @Input() public usingPlayerIdentities: boolean;
   @Input() public referenceInventory: MasterInventoryT;
 
+  /** User profile. */
+  public profile: UserModel;
+  /** True if max credit limit should be ignored. */
+  public ignoreMaxCreditLimit: boolean = false;
+
   /** Master inventory list. */
   public masterInventory: MasterInventoryT;
   /** The gift basket of current items to be send. */
@@ -48,11 +64,11 @@ export abstract class GiftBasketBaseComponent<
   public displayedColumns: string[] = ['itemId', 'description', 'quantity', 'itemType', 'remove'];
   /** Gift reasons */
   public giftReasons: string[] = [
-    'Lost Save',
-    'Auction House',
-    'Community Gift',
-    'Game Error',
-    'Save Rollback',
+    GiftReason.LostSave,
+    GiftReason.AuctionHouse,
+    GiftReason.CommunityGift,
+    GiftReason.GameError,
+    GiftReason.SaveRollback,
   ];
   /** Send form gift */
   public sendGiftForm: FormGroup = this.formBuilder.group({
@@ -87,6 +103,7 @@ export abstract class GiftBasketBaseComponent<
   constructor(
     protected readonly backgroundJobService: BackgroundJobService,
     protected readonly formBuilder: FormBuilder,
+    protected readonly store: Store,
   ) {
     super();
   }
@@ -105,6 +122,23 @@ export abstract class GiftBasketBaseComponent<
 
   /** Sets the state gift basket. */
   public abstract setStateGiftBasket(giftBasket: GiftBasketModel[]): void;
+
+  /** On gift reason chaged */
+  public giftReasonChanged(event: MatSelectChange): void {
+    if (!event) {
+      return;
+    }
+
+    if (!this.profile) {
+      this.profile = this.store.selectSnapshot<UserModel>(UserState.profile);
+    }
+
+    this.ignoreMaxCreditLimit =
+      event?.value === GiftReason.LostSave &&
+      (this.profile.role === UserRole.LiveOpsAdmin ||
+        this.profile.role === UserRole.SupportAgentAdmin);
+    this.setStateGiftBasket(this.giftBasket.data);
+  }
 
   /** Adds a new item to the gift basket. */
   public addItemtoBasket(item: GiftBasketModel): void {
