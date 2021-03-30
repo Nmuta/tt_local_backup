@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -49,6 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ConfigurationKeyConstants.GroupGiftPasswordSecretName
         };
 
+        private readonly IMemoryCache memoryCache;
         private readonly ILoggingService loggingService;
         private readonly IKustoProvider kustoProvider;
         private readonly IApolloPlayerDetailsProvider apolloPlayerDetailsProvider;
@@ -66,6 +68,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloController"/> class.
         /// </summary>
+        /// <param name="memoryCache">The memory cache.</param>
         /// <param name="loggingService">The logging service.</param>
         /// <param name="kustoProvider">The Kusto provider.</param>
         /// <param name="apolloPlayerDetailsProvider">The Apollo player details provider.</param>
@@ -82,6 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
         /// <param name="userFlagsRequestValidator">The user flags request validator.</param>
         public ApolloController(
+            IMemoryCache memoryCache,
             ILoggingService loggingService,
             IKustoProvider kustoProvider,
             IApolloPlayerDetailsProvider apolloPlayerDetailsProvider,
@@ -98,6 +102,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<ApolloGroupGift> groupGiftRequestValidator,
             IRequestValidator<ApolloUserFlagsInput> userFlagsRequestValidator)
         {
+            memoryCache.ShouldNotBeNull(nameof(memoryCache));
             loggingService.ShouldNotBeNull(nameof(loggingService));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             apolloPlayerDetailsProvider.ShouldNotBeNull(nameof(apolloPlayerDetailsProvider));
@@ -115,6 +120,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
+            this.memoryCache = memoryCache;
             this.loggingService = loggingService;
             this.kustoProvider = kustoProvider;
             this.apolloPlayerDetailsProvider = apolloPlayerDetailsProvider;
@@ -160,14 +166,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </returns>
         [HttpPost("players/identities")]
         [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
+        [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
+            string MakeKey(IdentityQueryAlpha identityQuery)
+            {
+                return $"apollo:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
+            }
+
             var results = new List<IdentityResultAlpha>();
             var queries = new List<Task<IdentityResultAlpha>>();
 
             foreach (var query in identityQueries)
             {
-                queries.Add(this.RetrieveIdentity(query));
+                queries.Add(
+                    this.memoryCache.GetOrCreateAsync(
+                        MakeKey(query),
+                        (entry) =>
+                        {
+                            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
+                            return this.RetrieveIdentity(query);
+                        }));
             }
 
             await Task.WhenAll(queries).ConfigureAwait(true);

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts;
@@ -209,7 +210,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
             public IOpusPlayerInventoryProvider OpusPlayerInventoryProvider { get; set; } = Substitute.For<IOpusPlayerInventoryProvider>();
 
-            public OpusController Build() => new OpusController(this.OpusPlayerDetailsProvider, this.OpusPlayerInventoryProvider);
+            public OpusController Build() => new OpusController(new MemoryCache(new MemoryCacheOptions()), this.OpusPlayerDetailsProvider, this.OpusPlayerInventoryProvider);
         }
     }
 }

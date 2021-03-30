@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
@@ -33,6 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgentNew)]
     public sealed class GravityController : ControllerBase
     {
+        private readonly IMemoryCache memoryCache;
         private readonly ILoggingService loggingService;
         private readonly IGravityPlayerDetailsProvider gravityPlayerDetailsProvider;
         private readonly IGravityPlayerInventoryProvider gravityPlayerInventoryProvider;
@@ -45,6 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityController"/> class.
         /// </summary>
+        /// <param name="memoryCache">The memory cache.</param>
         /// <param name="loggingService">The logging service.</param>
         /// <param name="gravityPlayerDetailsProvider">The Gravity player details provider.</param>
         /// <param name="gravityPlayerInventoryProvider">The Gravity player inventory provider.</param>
@@ -54,6 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="jobTracker">The job tracker.</param>
         /// <param name="giftRequestValidator">The gift request validator.</param>
         public GravityController(
+            IMemoryCache memoryCache,
             ILoggingService loggingService,
             IGravityPlayerDetailsProvider gravityPlayerDetailsProvider,
             IGravityPlayerInventoryProvider gravityPlayerInventoryProvider,
@@ -63,6 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IJobTracker jobTracker,
             IRequestValidator<GravityGift> giftRequestValidator)
         {
+            memoryCache.ShouldNotBeNull(nameof(memoryCache));
             loggingService.ShouldNotBeNull(nameof(loggingService));
             gravityPlayerDetailsProvider.ShouldNotBeNull(nameof(gravityPlayerDetailsProvider));
             gravityPlayerInventoryProvider.ShouldNotBeNull(nameof(gravityPlayerInventoryProvider));
@@ -72,6 +77,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
             giftRequestValidator.ShouldNotBeNull(nameof(giftRequestValidator));
 
+            this.memoryCache = memoryCache;
             this.loggingService = loggingService;
             this.gravityPlayerDetailsProvider = gravityPlayerDetailsProvider;
             this.gravityPlayerInventoryProvider = gravityPlayerInventoryProvider;
@@ -91,14 +97,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </returns>
         [HttpPost("players/identities")]
         [SwaggerResponse(200, type: typeof(List<IdentityResultBeta>))]
+        [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryBeta> identityQueries)
         {
+            string MakeKey(IdentityQueryBeta identityQuery)
+            {
+                return $"gravity:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid},t:{identityQuery.T10Id})";
+            }
+
             var results = new List<IdentityResultBeta>();
             var queries = new List<Task<IdentityResultBeta>>();
 
             foreach (var query in identityQueries)
             {
-                queries.Add(this.RetrieveIdentity(query));
+                queries.Add(
+                    this.memoryCache.GetOrCreateAsync(
+                        MakeKey(query),
+                        (entry) =>
+                        {
+                            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
+                            return this.RetrieveIdentity(query);
+                        }));
             }
 
             await Task.WhenAll(queries).ConfigureAwait(true);

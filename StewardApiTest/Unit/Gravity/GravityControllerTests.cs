@@ -6,6 +6,7 @@ using AutoFixture;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts;
@@ -564,6 +565,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             public IRequestValidator<GravityGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<GravityGift>>();
 
             public GravityController Build() => new GravityController(
+                new MemoryCache(new MemoryCacheOptions()),
                 this.LoggingService,
                 this.GravityPlayerDetailsProvider,
                 this.GravityPlayerInventoryProvider,

@@ -65,6 +65,7 @@ namespace Turn10.LiveOps.StewardApi
         {
             services.AddMvc(options => options.Filters.Add(new
                 ServiceExceptionFilter()));
+            services.AddMemoryCache();
             services.AddMicrosoftIdentityWebApiAuthentication(this.configuration);
             services.Configure<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {

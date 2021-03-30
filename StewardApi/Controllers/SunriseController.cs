@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
@@ -36,6 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
         UserRole.SupportAgentNew)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This can't be avoided.")]
     public sealed class SunriseController : ControllerBase
     {
         private const int DefaultStartIndex = 0;
@@ -48,6 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             ConfigurationKeyConstants.GroupGiftPasswordSecretName
         };
 
+        private readonly IMemoryCache memoryCache;
         private readonly ILoggingService loggingService;
         private readonly IKustoProvider kustoProvider;
         private readonly ISunrisePlayerInventoryProvider sunrisePlayerInventoryProvider;
@@ -66,6 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseController"/> class.
         /// </summary>
+        /// <param name="memoryCache">The memory cache.</param>
         /// <param name="loggingService">The logging service.</param>
         /// <param name="kustoProvider">The Kusto provider.</param>
         /// <param name="sunrisePlayerInventoryProvider">The Sunrise player inventory provider.</param>
@@ -83,6 +87,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
         /// <param name="userFlagsRequestValidator">The user flags request validator.</param>
         public SunriseController(
+            IMemoryCache memoryCache,
             ILoggingService loggingService,
             IKustoProvider kustoProvider,
             ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider,
@@ -100,6 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IRequestValidator<SunriseBanParametersInput> banParametersRequestValidator,
             IRequestValidator<SunriseUserFlagsInput> userFlagsRequestValidator)
         {
+            memoryCache.ShouldNotBeNull(nameof(memoryCache));
             loggingService.ShouldNotBeNull(nameof(loggingService));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             sunrisePlayerDetailsProvider.ShouldNotBeNull(nameof(sunrisePlayerDetailsProvider));
@@ -118,6 +124,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             userFlagsRequestValidator.ShouldNotBeNull(nameof(userFlagsRequestValidator));
             configuration.ShouldContainSettings(RequiredSettings);
 
+            this.memoryCache = memoryCache;
             this.loggingService = loggingService;
             this.kustoProvider = kustoProvider;
             this.sunrisePlayerDetailsProvider = sunrisePlayerDetailsProvider;
@@ -157,14 +164,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </returns>
         [HttpPost("players/identities")]
         [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
+        [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
+            string MakeKey(IdentityQueryAlpha identityQuery)
+            {
+                return $"sunrise:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
+            }
+
             var results = new List<IdentityResultAlpha>();
             var queries = new List<Task<IdentityResultAlpha>>();
 
             foreach (var query in identityQueries)
             {
-                queries.Add(this.RetrieveIdentity(query));
+                queries.Add(
+                    this.memoryCache.GetOrCreateAsync(
+                        MakeKey(query),
+                        (entry) =>
+                        {
+                            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
+                            return this.RetrieveIdentity(query);
+                        }));
             }
 
             await Task.WhenAll(queries).ConfigureAwait(true);

@@ -7,6 +7,7 @@ using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
@@ -1166,6 +1167,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public IRequestValidator<SunriseUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<SunriseUserFlagsInput>>();
 
             public SunriseController Build() => new SunriseController(
+                new MemoryCache(new MemoryCacheOptions()),
                 this.LoggingService,
                 this.KustoProvider,
                 this.SunrisePlayerDetailsProvider,

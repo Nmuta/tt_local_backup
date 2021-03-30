@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
@@ -25,21 +27,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgentNew)]
     public sealed class OpusController : ControllerBase
     {
+        private readonly IMemoryCache memoryCache;
         private readonly IOpusPlayerDetailsProvider opusPlayerDetailsProvider;
         private readonly IOpusPlayerInventoryProvider opusPlayerInventoryProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="OpusController"/> class.
         /// </summary>
+        /// <param name="memoryCache">The memory cache.</param>
         /// <param name="opusPlayerDetailsProvider">The Opus player details provider.</param>
         /// <param name="opusPlayerInventoryProvider">The Opus player inventory provider.</param>
         public OpusController(
-                              IOpusPlayerDetailsProvider opusPlayerDetailsProvider,
-                              IOpusPlayerInventoryProvider opusPlayerInventoryProvider)
+            IMemoryCache memoryCache,
+            IOpusPlayerDetailsProvider opusPlayerDetailsProvider,
+            IOpusPlayerInventoryProvider opusPlayerInventoryProvider)
         {
+            memoryCache.ShouldNotBeNull(nameof(memoryCache));
             opusPlayerDetailsProvider.ShouldNotBeNull(nameof(opusPlayerDetailsProvider));
             opusPlayerInventoryProvider.ShouldNotBeNull(nameof(opusPlayerInventoryProvider));
 
+            this.memoryCache = memoryCache;
             this.opusPlayerDetailsProvider = opusPlayerDetailsProvider;
             this.opusPlayerInventoryProvider = opusPlayerInventoryProvider;
         }
@@ -53,14 +60,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </returns>
         [HttpPost("players/identities")]
         [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
+        [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
+            string MakeKey(IdentityQueryAlpha identityQuery)
+            {
+                return $"opus:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
+            }
+
             var results = new List<IdentityResultAlpha>();
             var queries = new List<Task<IdentityResultAlpha>>();
 
             foreach (var query in identityQueries)
             {
-                queries.Add(this.RetrieveIdentity(query));
+                queries.Add(
+                    this.memoryCache.GetOrCreateAsync(
+                        MakeKey(query),
+                        (entry) =>
+                        {
+                            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
+                            return this.RetrieveIdentity(query);
+                        }));
             }
 
             await Task.WhenAll(queries).ConfigureAwait(true);
