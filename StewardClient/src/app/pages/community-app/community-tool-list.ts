@@ -12,7 +12,7 @@ export const communityAppRootPath = ['/community/community-app', 'tools'];
 export class CommunityAppTools {
   /** The home page for the community app. */
   public static readonly HomePage: RouteParams = {
-    title: 'Home',
+    title: 'Community App',
     path: 'home',
   };
 

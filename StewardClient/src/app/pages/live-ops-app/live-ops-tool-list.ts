@@ -12,7 +12,7 @@ export const liveOpsAppRootPath = ['/live-ops/live-ops-app', 'tools'];
 export class LiveOpsAppTools {
   /** The home page for the live ops app. */
   public static readonly HomePage: RouteParams = {
-    title: 'Home',
+    title: 'Live Ops App',
     path: 'home',
   };
 

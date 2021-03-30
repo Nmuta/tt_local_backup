@@ -1,6 +1,10 @@
-import { ChangeDetectorRef, Component, forwardRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, forwardRef, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { UserRole } from '@models/enums';
+import { UserModel } from '@models/user.model';
+import { Store } from '@ngxs/store';
+import { UserState } from '@shared/state/user/user.state';
 import { first } from 'lodash';
 import * as moment from 'moment';
 
@@ -28,7 +32,7 @@ export const DurationPickerOptions: DurationOption[] = [
     },
   ],
 })
-export class DurationPickerComponent implements ControlValueAccessor {
+export class DurationPickerComponent implements OnInit, ControlValueAccessor {
   @ViewChild('datePicker') public datePicker: MatDatepicker<Date>;
 
   public options: DurationOption[] = DurationPickerOptions;
@@ -37,8 +41,19 @@ export class DurationPickerComponent implements ControlValueAccessor {
 
   public targetDate: Date = null;
 
-  constructor(private ref: ChangeDetectorRef) {
+  constructor(protected readonly store: Store, private readonly ref: ChangeDetectorRef) {
     this.formControl.valueChanges.subscribe(value => this.updateDate(value));
+  }
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
+    if (profile && profile.role === UserRole.LiveOpsAdmin) {
+      this.options.unshift({
+        duration: moment.duration(1, 'minute'),
+        humanized: '1 minute',
+      } as DurationOption);
+    }
   }
 
   /** Updates the displayed date. */

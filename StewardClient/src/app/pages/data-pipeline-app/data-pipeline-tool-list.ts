@@ -12,7 +12,7 @@ export const dataPipelineAppRootPath = ['/data-pipeline/data-pipeline-app', 'too
 export class DataPipelineAppTools {
   /** The home page for the data pipeline app. */
   public static readonly HomePage: RouteParams = {
-    title: 'Home',
+    title: 'Data Pipeline App',
     path: 'home',
   };
 

@@ -15,6 +15,7 @@ import { LiveOpsAppRouterModule } from './live-ops-app.routing';
 import { LiveOpsAppComponent } from './live-ops-app.component';
 import { LiveOpsHomeComponent } from './pages/home/home.component';
 import { LiveOpsNavbarComponent } from './components/navbar/navbar.component';
+import { AllAppsDropdownModule } from '@shared/views/all-apps-dropdown/all-apps-dropdown.module';
 
 /** Defines the sidebar module. */
 @NgModule({
@@ -32,6 +33,7 @@ import { LiveOpsNavbarComponent } from './components/navbar/navbar.component';
     FontAwesomeModule,
     FourOhFourModule,
     MatCardModule,
+    AllAppsDropdownModule,
   ],
   providers: [],
   declarations: [LiveOpsAppComponent, LiveOpsHomeComponent, LiveOpsNavbarComponent],

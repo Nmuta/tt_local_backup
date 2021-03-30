@@ -1,31 +1,87 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { last } from 'lodash';
+import { NgxsModule, Store } from '@ngxs/store';
+import { UserState } from '@shared/state/user/user.state';
+import faker from 'faker';
 
 import { DurationPickerComponent } from './duration-picker.component';
+import { UserRole } from '@models/enums';
+import { UserModel } from '@models/user.model';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { createMockMsalService } from '@mocks/msal.service.mock';
+import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { last } from 'lodash';
 
 describe('DurationPickerComponent', () => {
   let component: DurationPickerComponent;
   let fixture: ComponentFixture<DurationPickerComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [DurationPickerComponent],
-      imports: [MatDatepickerModule, MatNativeDateModule],
-      schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents();
-  });
+  let mockStore: Store;
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DurationPickerComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          MatDatepickerModule,
+          MatNativeDateModule,
+          HttpClientTestingModule,
+          NgxsModule.forRoot([UserState]),
+        ],
+        declarations: [DurationPickerComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+        providers: [createMockMsalService(), createMockLoggerService()],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(DurationPickerComponent);
+      component = fixture.debugElement.componentInstance;
+
+      mockStore = TestBed.inject(Store);
+    }),
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Method: ngOnInit', () => {
+    beforeEach(() => {
+      component.options = [];
+    });
+
+    describe('If profile role is LiveOpsAdmin', () => {
+      beforeEach(() => {
+        mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue({
+          emailAddress: `${faker.name.firstName()}@microsofttest.fake`,
+          role: UserRole.LiveOpsAdmin,
+          name: faker.name.firstName(),
+        } as UserModel);
+      });
+
+      it('should set 1 minute option duration options', () => {
+        component.ngOnInit();
+
+        expect(component.options.length).toEqual(1);
+        expect(component.options[0].humanized).toEqual('1 minute');
+      });
+    });
+
+    describe('If profile role is not LiveOpsAdmin', () => {
+      beforeEach(() => {
+        mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue({
+          emailAddress: `${faker.name.firstName()}@microsofttest.fake`,
+          role: UserRole.SupportAgent,
+          name: faker.name.firstName(),
+        } as UserModel);
+      });
+
+      it('should not set 1 minute duration options', () => {
+        component.ngOnInit();
+
+        expect(component.options.length).toEqual(0);
+      });
+    });
   });
 
   describe('Form Control Contract', () => {

@@ -15,6 +15,7 @@ import { CommunityAppComponent } from './community-app.component';
 import { CommunityAppRouterModule } from './community-app.routing';
 import { CommunityHomeComponent } from './pages/home/home.component';
 import { CommunityNavbarComponent } from './components/navbar/navbar.component';
+import { AllAppsDropdownModule } from '@shared/views/all-apps-dropdown/all-apps-dropdown.module';
 
 /** Defines the sidebar module. */
 @NgModule({
@@ -32,6 +33,7 @@ import { CommunityNavbarComponent } from './components/navbar/navbar.component';
     FontAwesomeModule,
     FourOhFourModule,
     MatCardModule,
+    AllAppsDropdownModule,
   ],
   providers: [],
   declarations: [CommunityAppComponent, CommunityHomeComponent, CommunityNavbarComponent],

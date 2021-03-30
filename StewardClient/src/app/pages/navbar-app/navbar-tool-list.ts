@@ -12,7 +12,7 @@ export const navbarAppRootPath = ['/support/navbar-app', 'tools'];
 export class NavbarTools {
   /** The home page for the navbar app. */
   public static readonly HomePage: RouteParams = {
-    title: 'Home',
+    title: 'Support App',
     path: 'home',
   };
 

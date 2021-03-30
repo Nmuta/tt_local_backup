@@ -16,6 +16,7 @@ import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module
 import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-privacy-notice.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
+import { AllAppsDropdownModule } from '@shared/views/all-apps-dropdown/all-apps-dropdown.module';
 
 /** Defines the sidebar module. */
 @NgModule({
@@ -34,6 +35,7 @@ import { MatCardModule } from '@angular/material/card';
     FontAwesomeModule,
     FourOhFourModule,
     MatCardModule,
+    AllAppsDropdownModule,
   ],
   providers: [],
   declarations: [NavbarAppComponent, HomeComponent, NavbarComponent],

@@ -15,6 +15,7 @@ import { DataPipelineAppRouterModule } from './data-pipeline-app.routing';
 import { DataPipelineAppComponent } from './data-pipeline-app.component';
 import { DataPipelineNavbarComponent } from './components/navbar/navbar.component';
 import { DataPipelineHomeComponent } from './pages/home/home.component';
+import { AllAppsDropdownModule } from '@shared/views/all-apps-dropdown/all-apps-dropdown.module';
 
 /** Defines the sidebar module. */
 @NgModule({
@@ -32,6 +33,7 @@ import { DataPipelineHomeComponent } from './pages/home/home.component';
     FontAwesomeModule,
     FourOhFourModule,
     MatCardModule,
+    AllAppsDropdownModule,
   ],
   providers: [],
   declarations: [DataPipelineAppComponent, DataPipelineHomeComponent, DataPipelineNavbarComponent],
