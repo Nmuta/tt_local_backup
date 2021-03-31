@@ -42,7 +42,7 @@
         /// <summary>
         ///     Basic query for getting the FH4 VanityItem data.
         /// </summary>
-        public const string GetFH4VanityItems = "FH4_VanityItems | project Id=['id'], column_ifexists('DisplayNameEnglish', '')";
+        public const string GetFH4VanityItems = "FH4_VanityItems | project Id=['id'], DisplayNameEnglish=coalesce(DisplayNameEnglish, ItemID)";
 
         /// <summary>
         ///     Basic query for getting the FH4 Emote data.
