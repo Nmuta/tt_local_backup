@@ -34,8 +34,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         /// <summary>
         ///      Initializes a new instance of the <see cref="OpusUserServiceWrapper"/> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="keyVaultProvider">The key vault provider.</param>
         public OpusUserServiceWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider)
         {
             configuration.ShouldNotBeNull(nameof(configuration));

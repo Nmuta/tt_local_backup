@@ -8,7 +8,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <CodeAnalysisRuleSet>$(SolutionDir)\Data-BuildModule\CodeAnalysis\Level3.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(SolutionDir)\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisAdditionalOptions>/assemblyCompareMode:StrongNameIgnoringVersion</CodeAnalysisAdditionalOptions>
     <StartupObject>Turn10.LiveOps.StewardApi.Program</StartupObject>
     <UserSecretsId>69aa9e39-2604-4e97-b974-f3707268e684</UserSecretsId>
@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <RunCodeAnalysis>false</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

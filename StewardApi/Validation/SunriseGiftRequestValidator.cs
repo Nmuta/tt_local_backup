@@ -16,7 +16,6 @@ namespace Turn10.LiveOps.StewardApi.Validation
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseGiftRequestValidator"/> class.
         /// </summary>
-        /// <param name="masterInventoryRequestValidator">The player inventory request validator.</param>
         public SunriseGiftRequestValidator(IRequestValidator<SunriseMasterInventory> masterInventoryRequestValidator)
         {
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));

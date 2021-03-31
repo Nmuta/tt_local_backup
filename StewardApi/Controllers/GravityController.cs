@@ -47,15 +47,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityController"/> class.
         /// </summary>
-        /// <param name="memoryCache">The memory cache.</param>
-        /// <param name="loggingService">The logging service.</param>
-        /// <param name="gravityPlayerDetailsProvider">The Gravity player details provider.</param>
-        /// <param name="gravityPlayerInventoryProvider">The Gravity player inventory provider.</param>
-        /// <param name="giftHistoryProvider">The gift history provider.</param>
-        /// <param name="gravityGameSettingsProvider">The Gravity game settings provider.</param>
-        /// <param name="scheduler">The scheduler.</param>
-        /// <param name="jobTracker">The job tracker.</param>
-        /// <param name="giftRequestValidator">The gift request validator.</param>
         public GravityController(
             IMemoryCache memoryCache,
             ILoggingService loggingService,
@@ -91,10 +82,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player identity.
         /// </summary>
-        /// <param name="identityQueries">The identity queries.</param>
-        /// <returns>
-        ///     The list of <see cref="IdentityResultBeta"/>.
-        /// </returns>
         [HttpPost("players/identities")]
         [SwaggerResponse(200, type: typeof(List<IdentityResultBeta>))]
         [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
@@ -133,10 +120,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player details.
         /// </summary>
-        /// <param name="gamertag">The gamertag.</param>
-        /// <returns>
-        ///     The <see cref="GravityPlayerDetails"/>.
-        /// </returns>
         [HttpGet("player/gamertag({gamertag})/details")]
         [SwaggerResponse(200, type: typeof(GravityPlayerDetails))]
         [SwaggerResponse(404, type: typeof(string))]
@@ -152,10 +135,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player details.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The <see cref="GravityPlayerDetails"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/details")]
         [SwaggerResponse(200, type: typeof(GravityPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(ulong xuid)
@@ -168,10 +147,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player details.
         /// </summary>
-        /// <param name="t10Id">The Turn 10 ID.</param>
-        /// <returns>
-        ///     The <see cref="GravityPlayerDetails"/>.
-        /// </returns>
         [HttpGet("player/t10Id({t10Id})/details")]
         [SwaggerResponse(200, type: typeof(GravityPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetailsByT10Id(string t10Id)
@@ -186,10 +161,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player inventory.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The <see cref="GravityPlayerInventoryBeta"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/inventory")]
         [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
@@ -204,10 +175,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player inventory.
         /// </summary>
-        /// <param name="t10Id">The Turn 10 ID.</param>
-        /// <returns>
-        ///     The <see cref="GravityPlayerInventoryBeta"/>.
-        /// </returns>
         [HttpGet("player/t10Id({t10Id})/inventory")]
         [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
         public async Task<IActionResult> GetPlayerInventory(string t10Id)
@@ -224,11 +191,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player inventory.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <param name="profileId">The profile ID.</param>
-        /// <returns>
-        ///     The <see cref="GravityPlayerInventoryBeta"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/profileId({profileId})/inventory")]
         [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid, string profileId)
@@ -250,11 +212,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player inventory.
         /// </summary>
-        /// <param name="t10Id">The Turn 10 ID.</param>
-        /// <param name="profileId">The profile ID.</param>
-        /// <returns>
-        ///     The <see cref="GravityPlayerInventoryBeta"/>.
-        /// </returns>
         [HttpGet("player/t10Id({t10Id})/profileId({profileId})/inventory")]
         [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
         public async Task<IActionResult> GetPlayerInventory(string t10Id, string profileId)
@@ -277,11 +234,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gift player items to their inventory.
         /// </summary>
-        /// <param name="t10Id">The T10 Id.</param>
-        /// <param name="gift">The gift to send to the player.</param>
-        /// <returns>
-        ///     A <see cref="BackgroundJob"/>.
-        /// </returns>
         [HttpPost("gifting/t10Id({t10Id})/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         public async Task<IActionResult> UpdatePlayerInventoryByT10IdUseBackgroundProcessing(
@@ -353,11 +305,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gift player items to their inventory.
         /// </summary>
-        /// <param name="t10Id">The T10 Id.</param>
-        /// <param name="gift">The gift to send to the player.</param>
-        /// <returns>
-        ///     A <see cref="GiftResponse{T}"/>.
-        /// </returns>
         [HttpPost("gifting/t10Id({t10Id})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<string>))]
         public async Task<IActionResult> UpdatePlayerInventoryByT10Id(string t10Id, [FromBody] GravityGift gift)
@@ -404,10 +351,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Get the master inventory list based on a game settings id.
         /// </summary>
-        /// <param name="gameSettingsId">The game settings ID.</param>
-        /// <returns>
-        ///     The <see cref="GravityMasterInventory"/>.
-        /// </returns>
         [HttpGet("masterInventory/gameSettingsId({gameSettingsId})")]
         [SwaggerResponse(200, type: typeof(GravityMasterInventory))]
         [SwaggerResponse(404, type: typeof(string))]
@@ -428,10 +371,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the gift histories.
         /// </summary>
-        /// <param name="t10Id">The Turn 10 ID.</param>
-        /// <returns>
-        ///     The list of <see cref="GravityGiftHistory"/>.
-        /// </returns>
         [HttpGet("player/t10Id({t10Id})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<GravityGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(string t10Id)
@@ -485,11 +424,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        /// <param name="gameSettingsId">The game settings Id.</param>
-        /// <param name="gift">The gravity gift.</param>
-        /// <returns>
-        ///     String of items that are invalid.
-        /// </returns>
         private async Task<string> VerifyGiftAgainstMasterInventory(Guid gameSettingsId, GravityMasterInventory gift)
         {
             var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(gameSettingsId).ConfigureAwait(true);

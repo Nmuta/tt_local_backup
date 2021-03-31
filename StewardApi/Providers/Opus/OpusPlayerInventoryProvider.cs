@@ -19,8 +19,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         /// <summary>
         ///     Initializes a new instance of the <see cref="OpusPlayerInventoryProvider"/> class.
         /// </summary>
-        /// <param name="opusOnlineProfileService">The Opus online profile service.</param>
-        /// <param name="mapper">The mapper.</param>
         public OpusPlayerInventoryProvider(IOpusOnlineProfileService opusOnlineProfileService, IMapper mapper)
         {
             opusOnlineProfileService.ShouldNotBeNull(nameof(opusOnlineProfileService));

@@ -21,8 +21,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityPlayerDetailsProvider"/> class.
         /// </summary>
-        /// <param name="gravityUserService">The Gravity user service.</param>
-        /// <param name="mapper">The mapper.</param>
         public GravityPlayerDetailsProvider(IGravityUserService gravityUserService, IMapper mapper)
         {
             gravityUserService.ShouldNotBeNull(nameof(gravityUserService));

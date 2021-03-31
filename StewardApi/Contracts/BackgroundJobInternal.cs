@@ -18,9 +18,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         /// <summary>
         ///     Initializes a new instance of the <see cref="BackgroundJobInternal"/> class.
         /// </summary>
-        /// <param name="jobId">The job ID.</param>
-        /// <param name="username">The username.</param>
-        /// <param name="backgroundJobStatus">The background job status.</param>
         public BackgroundJobInternal(string jobId, string username, BackgroundJobStatus backgroundJobStatus)
             : this(jobId, username, backgroundJobStatus, string.Empty)
         {
@@ -29,10 +26,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         /// <summary>
         ///     Initializes a new instance of the <see cref="BackgroundJobInternal"/> class.
         /// </summary>
-        /// <param name="jobId">The job ID.</param>
-        /// <param name="username">The username.</param>
-        /// <param name="backgroundJobStatus">The background job status.</param>
-        /// <param name="result">The result.</param>
         public BackgroundJobInternal(string jobId, string username, BackgroundJobStatus backgroundJobStatus, string result)
         {
             jobId.ShouldNotBeNull(nameof(jobId));

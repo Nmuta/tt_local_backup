@@ -16,10 +16,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the user.
         /// </summary>
-        /// <returns>
-        ///     200 OK
-        ///     The <see cref="StewardUser"/>.
-        /// </returns>
         [HttpGet("me")]
         public IActionResult GetLiveOpsUser()
         {

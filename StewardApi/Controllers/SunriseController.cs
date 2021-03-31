@@ -69,23 +69,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseController"/> class.
         /// </summary>
-        /// <param name="memoryCache">The memory cache.</param>
-        /// <param name="loggingService">The logging service.</param>
-        /// <param name="kustoProvider">The Kusto provider.</param>
-        /// <param name="sunrisePlayerInventoryProvider">The Sunrise player inventory provider.</param>
-        /// <param name="sunrisePlayerDetailsProvider">The Sunrise player details provider.</param>
-        /// <param name="keyVaultProvider">The key vault provider.</param>
-        /// <param name="giftHistoryProvider">The gift history provider.</param>
-        /// <param name="banHistoryProvider">The ban history provider.</param>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="scheduler">The scheduler.</param>
-        /// <param name="jobTracker">The job tracker.</param>
-        /// <param name="mapper">The mapper.</param>
-        /// <param name="masterInventoryRequestValidator">The player inventory request validator.</param>
-        /// <param name="giftRequestValidator">The gift request validator.</param>
-        /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
-        /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
-        /// <param name="userFlagsRequestValidator">The user flags request validator.</param>
         public SunriseController(
             IMemoryCache memoryCache,
             ILoggingService loggingService,
@@ -144,9 +127,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the master inventory data.
         /// </summary>
-        /// <returns>
-        ///     <see cref="SunriseMasterInventory"/>.
-        /// </returns>
         [HttpGet("masterInventory")]
         [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
         public async Task<IActionResult> GetMasterInventoryList()
@@ -158,10 +138,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player identity.
         /// </summary>
-        /// <param name="identityQueries">The identity queries.</param>
-        /// <returns>
-        ///     The list of <see cref="IdentityResultAlpha"/>.
-        /// </returns>
         [HttpPost("players/identities")]
         [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
         [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
@@ -200,10 +176,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player details.
         /// </summary>
-        /// <param name="gamertag">The gamertag.</param>
-        /// <returns>
-        ///     The <see cref="SunrisePlayerDetails"/>.
-        /// </returns>
         [HttpGet("player/gamertag({gamertag})/details")]
         [SwaggerResponse(200, type: typeof(SunrisePlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(string gamertag)
@@ -222,10 +194,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player details.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The <see cref="SunrisePlayerDetails"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/details")]
         [SwaggerResponse(200, type: typeof(SunrisePlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(ulong xuid)
@@ -242,11 +210,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the console details.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <param name="maxResults">A value that specifies how many consoles to return.</param>
-        /// <returns>
-        ///     A <see cref="List{SunriseConsoleDetails}"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/consoleDetails")]
         [SwaggerResponse(200, type: typeof(List<SunriseConsoleDetails>))]
         public async Task<IActionResult> GetConsoles(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
@@ -261,12 +224,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets shared console users.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <param name="startIndex">The start index.</param>
-        /// <param name="maxResults">The max results.</param>
-        /// <returns>
-        ///     The list of <see cref="SunriseSharedConsoleUser"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/sharedConsoleUsers")]
         [SwaggerResponse(200, type: typeof(List<SunriseSharedConsoleUser>))]
         public async Task<IActionResult> GetSharedConsoleUsers(ulong xuid, [FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
@@ -282,10 +239,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets user flags.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The <see cref="SunriseUserFlags"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
         public async Task<IActionResult> GetUserFlags(ulong xuid)
@@ -303,11 +256,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Sets user flags.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <param name="userFlags">The user flags.</param>
-        /// <returns>
-        ///     The updated <see cref="SunriseUserFlags"/>.
-        /// </returns>
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
         public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] SunriseUserFlagsInput userFlags)
@@ -337,10 +285,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the profile summary.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The <see cref="SunriseProfileSummary"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/profileSummary")]
         [SwaggerResponse(200, type: typeof(SunriseProfileSummary))]
         public async Task<IActionResult> GetProfileSummary(ulong xuid)
@@ -353,12 +297,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets credit updates.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <param name="startIndex">The start index.</param>
-        /// <param name="maxResults">The max results.</param>
-        /// <returns>
-        ///     The list of <see cref="SunriseCreditUpdate"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/creditUpdates")]
         [SwaggerResponse(200, type: typeof(List<SunriseCreditUpdate>))]
         public async Task<IActionResult> GetCreditUpdates(ulong xuid, [FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
@@ -374,10 +312,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Bans players.
         /// </summary>
-        /// <param name="banInput">The ban parameter input.</param>
-        /// <returns>
-        ///     The list of <see cref="SunriseBanResult"/>.
-        /// </returns>
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
@@ -470,10 +404,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Bans players.
         /// </summary>
-        /// <param name="banInput">The ban parameter input.</param>
-        /// <returns>
-        ///     The list of <see cref="SunriseBanResult"/>.
-        /// </returns>
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<SunriseBanResult>))]
         [SwaggerResponse(202)]
@@ -537,10 +467,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets ban summaries.
         /// </summary>
-        /// <param name="xuids">The xuids.</param>
-        /// <returns>
-        ///     The list of <see cref="SunriseBanSummary"/>.
-        /// </returns>
         [HttpPost("players/banSummaries")]
         [SwaggerResponse(200, type: typeof(IList<SunriseBanSummary>))]
         public async Task<IActionResult> GetBanSummaries([FromBody] IList<ulong> xuids)
@@ -555,10 +481,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets ban history.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     A list of <see cref="LiveOpsBanHistory"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
         public async Task<IActionResult> GetBanHistory(ulong xuid)
@@ -571,10 +493,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets ban history.
         /// </summary>
-        /// <param name="gamertag">The gamertag.</param>
-        /// <returns>
-        ///     A list of <see cref="LiveOpsBanHistory"/>.
-        /// </returns>
         [HttpGet("player/gamertag({gamertag})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
         public async Task<IActionResult> GetBanHistory(string gamertag)
@@ -596,11 +514,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Sets consoles ban status.
         /// </summary>
-        /// <param name="consoleId">The console ID.</param>
-        /// <param name="isBanned">A value indicating whether the console is banned.</param>
-        /// <returns>
-        ///     A task with a status.
-        /// </returns>
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
         public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, bool isBanned)
@@ -613,10 +526,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player inventory.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The <see cref="SunriseMasterInventory"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/inventory")]
         [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
@@ -646,10 +555,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player inventory.
         /// </summary>
-        /// <param name="profileId">The profile ID.</param>
-        /// <returns>
-        ///     The <see cref="SunriseMasterInventory"/>.
-        /// </returns>
         [HttpGet("player/profileId({profileId})/inventory")]
         [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
         public async Task<IActionResult> GetPlayerInventoryByProfileId(int profileId)
@@ -674,10 +579,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player inventory profiles.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     A <see cref="IList{SunriseInventoryProfile}"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/inventoryProfiles")]
         [SwaggerResponse(200, type: typeof(IList<SunriseInventoryProfile>))]
         [SwaggerResponse(200)]
@@ -696,11 +597,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Get groups.
         /// </summary>
-        /// <param name="startIndex">The start index.</param>
-        /// <param name="maxResults">The max results.</param>
-        /// <returns>
-        ///     The list of <see cref="SunriseLspGroup"/>.
-        /// </returns>
         [HttpGet("groups")]
         [SwaggerResponse(200, type: typeof(IList<SunriseLspGroup>))]
         public async Task<IActionResult> GetGroups([FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
@@ -716,10 +612,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Update player inventories with given items.
         /// </summary>
-        /// <param name="groupGift">The group gift.</param>
-        /// <returns>
-        ///     The <see cref="IList{GiftResponse}"/>.
-        /// </returns>
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] SunriseGroupGift groupGift)
@@ -794,10 +686,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Update player inventories with given items.
         /// </summary>
-        /// <param name="groupGift">The group gift.</param>
-        /// <returns>
-        ///     The <see cref="IList{GiftResponse}"/>.
-        /// </returns>
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
         public async Task<IActionResult> UpdateGroupInventories([FromBody] SunriseGroupGift groupGift)
@@ -849,11 +737,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Update inventories for an LSP group.
         /// </summary>
-        /// <param name="groupId">The LSP group ID.</param>
-        /// <param name="gift">The gift to send.</param>
-        /// <returns>
-        ///     The <see cref="GiftResponse{T}"/>.
-        /// </returns>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin)]
@@ -897,10 +780,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the gift histories.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The list of <see cref="SunriseGiftHistory"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<SunriseGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(ulong xuid)
@@ -913,10 +792,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the gift histories.
         /// </summary>
-        /// <param name="groupId">The group ID.</param>
-        /// <returns>
-        ///     The list of <see cref="SunriseGiftHistory"/>.
-        /// </returns>
         [HttpGet("group/groupId({groupId})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<SunriseGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(int groupId)
@@ -929,11 +804,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player notifications.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <param name="maxResults">The max results.</param>
-        /// <returns>
-        ///     The list of <see cref="SunriseNotification"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/notifications")]
         [SwaggerResponse(200, type: typeof(IList<SunriseNotification>))]
         public async Task<IActionResult> GetPlayerNotifications(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
@@ -1009,9 +879,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the master inventory list.
         /// </summary>
-        /// <returns>
-        ///     <see cref="SunriseMasterInventory"/>.
-        /// </returns>
         private async Task<SunriseMasterInventory> RetrieveMasterInventoryList()
         {
             var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH4Cars);
@@ -1045,10 +912,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        /// <param name="gift">The sunrise gift.</param>
-        /// <returns>
-        ///     String of items that are invalid.
-        /// </returns>
         private async Task<string> VerifyGiftAgainstMasterInventory(SunriseMasterInventory gift)
         {
             var masterInventoryItem = await this.RetrieveMasterInventoryList().ConfigureAwait(true);

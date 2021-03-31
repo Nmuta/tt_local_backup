@@ -10,10 +10,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Determines whether the status code corresponds to a transient error.
         /// </summary>
-        /// <param name="statusCode">The status Code.</param>
-        /// <returns>
-        ///     <c>true</c> if the status code corresponds to a transient error; otherwise, <c>false</c>.
-        /// </returns>
         public static bool IsTransientHttpStatusCode(HttpStatusCode? statusCode)
         {
             return statusCode != null && IsTransientHttpStatusCode((int)statusCode);
@@ -22,10 +18,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Determines whether the status code corresponds to a transient error.
         /// </summary>
-        /// <param name="statusCode">The status Code.</param>
-        /// <returns>
-        ///     <c>true</c> if the status code corresponds to a transient error; otherwise, <c>false</c>.
-        /// </returns>
         public static bool IsTransientHttpStatusCode(int statusCode)
         {
             // ReSharper disable ArrangeRedundantParentheses

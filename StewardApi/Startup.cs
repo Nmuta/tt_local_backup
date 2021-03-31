@@ -51,7 +51,6 @@ namespace Turn10.LiveOps.StewardApi
         /// <summary>
         ///     Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
         public Startup(IConfiguration configuration)
         {
             this.configuration = configuration;
@@ -60,7 +59,6 @@ namespace Turn10.LiveOps.StewardApi
         /// <summary>
         ///     Configures the services.
         /// </summary>
-        /// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(options => options.Filters.Add(new
@@ -253,8 +251,6 @@ namespace Turn10.LiveOps.StewardApi
         /// <summary>
         ///     Configures the app.
         /// </summary>
-        /// <param name="applicationBuilder">The application builder.</param>
-        /// <param name="webHostEnvironment">The web host environment.</param>
         public void Configure(IApplicationBuilder applicationBuilder, IWebHostEnvironment webHostEnvironment)
         {
             if (webHostEnvironment.IsDevelopment())

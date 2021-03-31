@@ -13,7 +13,6 @@ namespace Turn10.LiveOps.StewardApi.Logging
         /// <summary>
         ///     Initializes a new instance of the <see cref="LoggingService"/> class.
         /// </summary>
-        /// <param name="telemetryClient">The Application Insights telemetry client.</param>
         public LoggingService(TelemetryClient telemetryClient)
         {
             telemetryClient.ShouldNotBeNull(nameof(telemetryClient));

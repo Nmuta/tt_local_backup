@@ -11,7 +11,6 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         /// <summary>
         ///     Initializes a new instance of the <see cref="ObligationTimeSpan"/> class.
         /// </summary>
-        /// <param name="timeSpan">The time span.</param>
         public ObligationTimeSpan(TimeSpan timeSpan)
         {
             this.Days = timeSpan.Days;
@@ -37,7 +36,6 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         /// <summary>
         ///     Outputs a time span.
         /// </summary>
-        /// <returns>A <see cref="TimeSpan"/>.</returns>
         public TimeSpan ToTimeSpan()
         {
             return TimeSpan.Parse($"{this.Days}:{this.Hours}:{this.Minutes}:00", DateTimeFormatInfo.InvariantInfo);

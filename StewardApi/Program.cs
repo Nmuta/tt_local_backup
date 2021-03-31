@@ -11,7 +11,6 @@ namespace Turn10.LiveOps.StewardApi
         /// <summary>
         ///     The required main method.
         /// </summary>
-        /// <param name="arguments">The arguments.</param>
         public static void Main(string[] arguments)
         {
             CreateHostBuilder(arguments).Build().Run();
@@ -20,8 +19,6 @@ namespace Turn10.LiveOps.StewardApi
         /// <summary>
         ///     Creates an instance of <see cref="IHostBuilder"/>.
         /// </summary>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns>A new instance of <see cref="IHostBuilder"/>.</returns>
         public static IHostBuilder CreateHostBuilder(string[] arguments) =>
             Host.CreateDefaultBuilder(arguments)
                 .ConfigureWebHostDefaults(webBuilder =>

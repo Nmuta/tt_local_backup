@@ -10,8 +10,6 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         /// <summary>
         ///     Initializes a new instance of the <see cref="Dependency"/> class.
         /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="name">The name.</param>
         public Dependency(string type, string name)
         {
             this.Type = type;

@@ -37,12 +37,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunrisePlayerDetailsProvider"/> class.
         /// </summary>
-        /// <param name="sunriseUserService">The Sunrise user service.</param>
-        /// <param name="sunriseEnforcementService">The Sunrise enforcement service.</param>
-        /// <param name="sunriseNotificationsService">The Sunrise notifications service.</param>
-        /// <param name="banHistoryProvider">The ban history provider.</param>
-        /// <param name="mapper">The mapper.</param>
-        /// <param name="refreshableCacheStore">The refreshable cache store.</param>
         public SunrisePlayerDetailsProvider(ISunriseUserService sunriseUserService, ISunriseEnforcementService sunriseEnforcementService, ISunriseNotificationsService sunriseNotificationsService, ISunriseBanHistoryProvider banHistoryProvider, IMapper mapper, IRefreshableCacheStore refreshableCacheStore)
         {
             sunriseUserService.ShouldNotBeNull(nameof(sunriseUserService));

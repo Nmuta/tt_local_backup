@@ -20,9 +20,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardError"/> class.
         /// </summary>
-        /// <param name="code">The code.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="innerException">The inner exception.</param>
         public StewardError(StewardErrorCode code, string message, Exception innerException)
         {
             code.ShouldNotBeNull(nameof(code));

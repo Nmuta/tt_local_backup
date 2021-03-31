@@ -22,10 +22,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="KustoQueryProvider"/> class.
         /// </summary>
-        /// <param name="tableStorageClientFactory">The table storage client factory.</param>
-        /// <param name="mapper">The mapper.</param>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="keyVaultProvider">The key vault provider.</param>
         public KustoQueryProvider(
             ITableStorageClientFactory tableStorageClientFactory,
             IMapper mapper,

@@ -12,8 +12,6 @@ namespace Turn10.LiveOps.StewardApi.Filters
         /// <summary>
         ///     Apply the operation.
         /// </summary>
-        /// <param name="operation">The operation.</param>
-        /// <param name="context">The context.</param>
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             if (operation.Security == null)

@@ -30,11 +30,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunrisePlayerInventoryProvider"/> class.
         /// </summary>
-        /// <param name="sunriseUserInventoryService">The Sunrise inventory service.</param>
-        /// <param name="sunriseGiftingService">The Sunrise gifting service.</param>
-        /// <param name="sunriseUserService">The Sunrise user service.</param>
-        /// <param name="mapper">The mapper.</param>
-        /// <param name="giftHistoryProvider">The gift history provider.</param>
         public SunrisePlayerInventoryProvider(
             ISunriseUserInventoryService sunriseUserInventoryService,
             ISunriseGiftingService sunriseGiftingService,

@@ -21,8 +21,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// <summary>
         ///     Maps FH4 forza user ban description to live ops ban history.
         /// </summary>
-        /// <param name="banDescription">The FH4 ban description to map.</param>
-        /// <returns>A live ops ban history.</returns>
         public static LiveOpsBanHistory Map(FH4WebServices.ForzaUserBanDescription banDescription)
         {
             var extendedReason = banDescription.ExtendTimes > 0
@@ -48,8 +46,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// <summary>
         ///     Maps FM7 forza user ban description to live ops ban history.
         /// </summary>
-        /// <param name="banDescription">The FM7 ban description to map.</param>
-        /// <returns>A live ops ban history.</returns>
         public static LiveOpsBanHistory Map(FM7WebServices.ForzaUserBanDescription banDescription)
         {
             var liveOpsBanHistory = new LiveOpsBanHistory(

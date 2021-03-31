@@ -24,7 +24,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="PipelinesController"/> class.
         /// </summary>
-        /// <param name="obligationProvider">The obligation authoring client.</param>
         public PipelinesController(IObligationProvider obligationProvider)
         {
             obligationProvider.ShouldNotBeNull(nameof(obligationProvider));
@@ -35,11 +34,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Delete a pipeline.
         /// </summary>
-        /// <param name="pipelineName">The pipeline name.</param>
-        /// <returns>
-        ///     2OO OK.
-        ///     An ID that can be used to track the request.
-        /// </returns>
         [HttpDelete("pipeline/{pipelineName}")]
         public async Task<IActionResult> DeletePipeline([FromRoute] string pipelineName)
         {
@@ -60,11 +54,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Get a pipeline.
         /// </summary>
-        /// <param name="pipelineName">The pipeline name.</param>
-        /// <returns>
-        ///     200 OK.
-        ///     An instance of <see cref="SimplifiedObligationPipeline"/>.
-        /// </returns>
         [HttpGet("pipeline/{pipelineName}")]
         public async Task<IActionResult> GetPipeline([FromRoute] string pipelineName)
         {
@@ -76,11 +65,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Updates a pipeline.
         /// </summary>
-        /// <param name="obligationPipeline">The obligation pipeline.</param>
-        /// <returns>
-        ///     201 Created.
-        ///     An instance of <see cref="SimplifiedObligationPipeline"/>.
-        /// </returns>
         [HttpPut("pipeline")]
         public async Task<IActionResult> UpdatePipeline([FromBody] SimplifiedObligationPipeline obligationPipeline)
         {
@@ -92,11 +76,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Create a pipeline.
         /// </summary>
-        /// <param name="obligationPipeline">The obligation pipeline.</param>
-        /// <returns>
-        ///     201 Created.
-        ///     An instance of <see cref="SimplifiedObligationPipeline"/>.
-        /// </returns>
         [HttpPost("pipeline")]
         public async Task<IActionResult> CreatePipeline([FromBody] SimplifiedObligationPipeline obligationPipeline)
         {
@@ -108,11 +87,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Renames a pipeline.
         /// </summary>
-        /// <param name="patchOperation">The patch operation.</param>
-        /// <returns>
-        ///     202 Accepted.
-        ///     An ID that can be used to track the request.
-        /// </returns>
         [HttpPatch("pipeline")]
         public async Task<IActionResult> RenamePipeline([FromBody] PatchOperation patchOperation)
         {

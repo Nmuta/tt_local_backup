@@ -31,10 +31,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloPlayerDetailsProvider"/> class.
         /// </summary>
-        /// <param name="apolloUserService">The Apollo user service.</param>
-        /// <param name="apolloGroupingService">The Apollo grouping service.</param>
-        /// <param name="mapper">The mapper.</param>
-        /// <param name="banHistoryProvider">The ban history provider.</param>
         public ApolloPlayerDetailsProvider(IApolloUserService apolloUserService, IApolloGroupingService apolloGroupingService, IMapper mapper, IApolloBanHistoryProvider banHistoryProvider)
         {
             apolloUserService.ShouldNotBeNull(nameof(apolloUserService));

@@ -14,8 +14,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Converts the object to JSON column mappings.
         /// </summary>
-        /// <param name="self">The self.</param>
-        /// <returns>A list of JSON column mappings.</returns>
         /// <typeparam name="T">The type.</typeparam>
         public static IList<JsonColumnMapping> ToJsonColumnMappings<T>(this T self)
         {

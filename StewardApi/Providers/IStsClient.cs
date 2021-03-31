@@ -12,10 +12,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Forges a user token.
         /// </summary>
-        /// <param name="tokenForgeryRequest">The token forgery request.</param>
-        /// <returns>
-        ///     The <see cref="GetUserTokenResponse"/>.
-        /// </returns>
         /// <remarks>
         ///     The token returned is used to authenticate to an LSP.
         /// </remarks>

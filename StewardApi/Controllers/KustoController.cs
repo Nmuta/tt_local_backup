@@ -31,8 +31,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="KustoController"/> class.
         /// </summary>
-        /// <param name="kustoProvider">The Kusto provider.</param>
-        /// <param name="kustoQueryProvider">The Kusto Query provider.</param>
         public KustoController(IKustoProvider kustoProvider, IKustoQueryProvider kustoQueryProvider)
         {
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
@@ -45,10 +43,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Runs a Kusto query.
         /// </summary>
-        /// <param name="query">The query.</param>
-        /// <returns>
-        ///     A list of <see cref="JObject"/>.
-        /// </returns>
         [HttpPost("query/run")]
         [SwaggerResponse(200, type: typeof(List<JObject>))]
         public async Task<IActionResult> RunQuery([FromBody] string query)
@@ -66,10 +60,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Saves a Kusto query.
         /// </summary>
-        /// <param name="queries">The queries.</param>
-        /// <returns>
-        ///     A list of <see cref="JObject"/>.
-        /// </returns>
         [HttpPost("queries")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
@@ -88,11 +78,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Edit a Kusto query.
         /// </summary>
-        /// <param name="queryId">The query id.</param>
-        /// <param name="query">The new query.</param>
-        /// <returns>
-        ///     A list of <see cref="JObject"/>.
-        /// </returns>
         [HttpPut("queries/id({queryId})")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]
@@ -108,9 +93,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Retrieves a list of Kusto query.
         /// </summary>
-        /// <returns>
-        ///     A <see cref="List{JObject}"/>.
-        /// </returns>
         [HttpGet("queries")]
         [SwaggerResponse(200, type: typeof(List<KustoQuery>))]
         public async Task<IActionResult> RetrieveQueries()
@@ -123,10 +105,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Deletes a Kusto query.
         /// </summary>
-        /// <param name="queryId">The query id.</param>
-        /// <returns>
-        ///     A list of <see cref="JObject"/>.
-        /// </returns>
         [HttpDelete("queries/id({queryId})")]
         [AuthorizeRoles(UserRole.LiveOpsAdmin)]
         [SwaggerResponse(200)]

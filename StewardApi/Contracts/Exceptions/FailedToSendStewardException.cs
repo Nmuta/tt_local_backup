@@ -18,7 +18,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         /// <summary>
         ///     Initializes a new instance of the <see cref="FailedToSendStewardException"/> class.
         /// </summary>
-        /// <param name="message">The message.</param>
         public FailedToSendStewardException(string message)
             : base(message)
         {
@@ -27,8 +26,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         /// <summary>
         ///     Initializes a new instance of the <see cref="FailedToSendStewardException"/> class.
         /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="innerException">The inner exception.</param>
         public FailedToSendStewardException(string message, Exception innerException)
             : base(message, innerException)
         {

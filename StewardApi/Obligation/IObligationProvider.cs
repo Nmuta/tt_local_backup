@@ -18,37 +18,27 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         ///     Given a pipeline, check that the pipeline exists and that all existing data activities are
         ///     represented in the given pipeline. If those checks are passed, then update the pipeline.
         /// </summary>
-        /// <param name="obligationPipeline">The obligation pipeline.</param>
-        /// <returns>A GUID to track the operation.</returns>
         Task<Guid> SafeUpdatePipelineAsync(SimplifiedObligationPipeline obligationPipeline);
 
         /// <summary>
         ///     Given a pipeline, upserts the pipeline regardless of safety checks.
         ///     This needs to be used to create a pipeline or remove a data activity from a pipeline.
         /// </summary>
-        /// <param name="obligationPipeline">The obligation pipeline.</param>
-        /// <returns>A GUID to track the operation.</returns>
         Task<Guid> UpsertPipelineAsync(SimplifiedObligationPipeline obligationPipeline);
 
         /// <summary>
         ///     Deletes a pipeline.
         /// </summary>
-        /// <param name="pipelineName">The pipeline name.</param>
-        /// <returns>A GUID to track the operation.</returns>
         Task<Guid> DeletePipelineAsync(string pipelineName);
 
         /// <summary>
         ///     Gets a pipeline.
         /// </summary>
-        /// <param name="pipelineName">The pipeline name.</param>
-        /// <returns>A new instance of <see cref="SimplifiedObligationPipeline"/>.</returns>
         Task<SimplifiedObligationPipeline> GetPipelineAsync(string pipelineName);
 
         /// <summary>
         ///     Renames a pipeline.
         /// </summary>
-        /// <param name="patchOperation">The patch operation.</param>
-        /// <returns>A GUID to track the operation.</returns>
         Task<Guid> RenamePipelineAsync(PatchOperation patchOperation);
     }
 }

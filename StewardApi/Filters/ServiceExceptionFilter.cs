@@ -15,10 +15,6 @@ namespace Turn10.LiveOps.StewardApi.Filters
         /// <summary>
         ///     The on exception async.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///     A task with a status.
-        /// </returns>
         public Task OnExceptionAsync(ExceptionContext context)
         {
             HttpStatusCode status;

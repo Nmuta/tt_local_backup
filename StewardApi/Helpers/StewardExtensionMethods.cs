@@ -16,10 +16,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Generates a user model from claims principal.
         /// </summary>
-        /// <param name="user">The user to generate the model for.</param>
-        /// <returns>
-        ///     The <see cref="StewardUser"/>.
-        /// </returns>
         public static StewardUser UserModel(this ClaimsPrincipal user)
         {
             var stewardUser = new StewardUser
@@ -44,9 +40,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///    Puts a column's value into a JObject.
         /// </summary>
-        /// <param name="column">The column we're reading.</param>
-        /// <param name="jObj">The item which represents a row.</param>
-        /// <param name="reader">Data reader from which values are extracted.</param>
         public static void ReadValue(this KustoColumn column, JObject jObj, IDataReader reader)
         {
             switch (column.DataType)

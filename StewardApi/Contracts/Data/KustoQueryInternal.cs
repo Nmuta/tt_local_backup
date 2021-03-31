@@ -21,9 +21,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="KustoQueryInternal"/> class.
         /// </summary>
-        /// <param name="name">The query name.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="query">The query.</param>
         public KustoQueryInternal(string name, string title, string query)
         {
             name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));

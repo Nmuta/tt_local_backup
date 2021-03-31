@@ -30,10 +30,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityPlayerInventoryProvider"/> class.
         /// </summary>
-        /// <param name="gravityUserService">The Gravity user service.</param>
-        /// <param name="gravityUserInventoryService">The Gravity user inventory service.</param>
-        /// <param name="mapper">The mapper.</param>
-        /// <param name="giftHistoryProvider">The gift history provider.</param>
         public GravityPlayerInventoryProvider(
             IGravityUserService gravityUserService,
             IGravityUserInventoryService gravityUserInventoryService,
@@ -173,13 +169,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <summary>
         ///     UpdatePlayerInventoryAsync Helper to process each item type in the GravityMasterInventory.
         /// </summary>
-        /// <param name="t10Id">The T10 ID.</param>
-        /// <param name="gameSettingsId">The game settings ID.</param>
-        /// <param name="items">The inventory items to add.</param>
-        /// <param name="itemType">The inventory item type.</param>
-        /// <returns>
-        ///     An awaitable task.
-        /// </returns>
         private async Task UpdatePlayerInventoryHelperAsync(string t10Id, Guid gameSettingsId, IList<MasterInventoryItem> items, ForzaUserInventoryItemType itemType)
         {
             foreach (var item in items ?? Enumerable.Empty<MasterInventoryItem>())

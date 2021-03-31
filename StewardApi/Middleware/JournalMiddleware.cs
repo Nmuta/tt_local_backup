@@ -24,9 +24,6 @@ namespace Turn10.LiveOps.StewardApi.Middleware
         /// <summary>
         ///     Initializes a new instance of the <see cref="JournalMiddleware"/> class.
         /// </summary>
-        /// <param name="requestDelegate">The request delegate.</param>
-        /// <param name="kustoStreamingLogger">The Kusto streaming logger.</param>
-        /// <param name="configuration">The configuration.</param>
         public JournalMiddleware(RequestDelegate requestDelegate, IKustoStreamingLogger kustoStreamingLogger, IConfiguration configuration)
         {
             requestDelegate.ShouldNotBeNull(nameof(requestDelegate));
@@ -45,10 +42,6 @@ namespace Turn10.LiveOps.StewardApi.Middleware
         /// <summary>
         ///     Invoke the middleware.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>
-        ///     A task with a status.
-        /// </returns>
         public async Task Invoke(HttpContext context)
         {
             context.ShouldNotBeNull(nameof(context));
@@ -93,12 +86,6 @@ namespace Turn10.LiveOps.StewardApi.Middleware
         /// <summary>
         ///     Handles a request.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="requestBody">The request body.</param>
-        /// <param name="responseBody">The response body.</param>
-        /// <returns>
-        ///     A task with a status.
-        /// </returns>
         public async Task HandleRequest(HttpContext context, string requestBody, string responseBody)
         {
             context.ShouldNotBeNull(nameof(context));

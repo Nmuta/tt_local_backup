@@ -12,8 +12,6 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         /// <summary>
         ///     Initializes a new instance of the <see cref="TimeRange"/> struct.
         /// </summary>
-        /// <param name="start">The start.</param>
-        /// <param name="end">The end.</param>
         public TimeRange(DateTimeOffset start, DateTimeOffset end)
             : this()
         {

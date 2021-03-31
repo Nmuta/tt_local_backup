@@ -31,10 +31,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityGiftHistoryProvider"/> class.
         /// </summary>
-        /// <param name="kustoStreamingLogger">The Kusto streaming logger.</param>
-        /// <param name="kustoProvider">The Kusto provider.</param>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="mapper">The mapper.</param>
         public GravityGiftHistoryProvider(IKustoStreamingLogger kustoStreamingLogger, IKustoProvider kustoProvider, IConfiguration configuration, IMapper mapper)
         {
             kustoStreamingLogger.ShouldNotBeNull(nameof(kustoStreamingLogger));

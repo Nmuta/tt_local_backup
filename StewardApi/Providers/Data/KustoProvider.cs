@@ -28,9 +28,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="KustoProvider"/> class.
         /// </summary>
-        /// <param name="kustoFactory">The Kusto factory.</param>
-        /// <param name="refreshableCacheStore">The refreshable cache store.</param>
-        /// <param name="configuration">The configuration.</param>
         public KustoProvider(IKustoFactory kustoFactory, IRefreshableCacheStore refreshableCacheStore, IConfiguration configuration)
         {
             kustoFactory.ShouldNotBeNull(nameof(kustoFactory));

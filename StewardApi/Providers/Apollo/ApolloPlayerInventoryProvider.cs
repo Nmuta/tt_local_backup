@@ -28,11 +28,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloPlayerInventoryProvider"/> class.
         /// </summary>
-        /// <param name="apolloUserInventoryService">The Apollo user inventory service.</param>
-        /// <param name="apolloGiftingService">The Apollo gifting service.</param>
-        /// <param name="apolloUserService">The Apollo user service.</param>
-        /// <param name="giftHistoryProvider">The gift history provider.</param>
-        /// <param name="mapper">The mapper.</param>
         public ApolloPlayerInventoryProvider(
                                              IApolloUserInventoryService apolloUserInventoryService,
                                              IApolloGiftingService apolloGiftingService,

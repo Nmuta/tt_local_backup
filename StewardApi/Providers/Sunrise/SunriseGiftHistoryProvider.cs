@@ -31,10 +31,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseGiftHistoryProvider"/> class.
         /// </summary>
-        /// <param name="kustoStreamingLogger">The Kusto streaming logger.</param>
-        /// <param name="kustoProvider">The Kusto provider.</param>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="mapper">The mapper.</param>
         public SunriseGiftHistoryProvider(IKustoStreamingLogger kustoStreamingLogger, IKustoProvider kustoProvider, IConfiguration configuration, IMapper mapper)
         {
             kustoStreamingLogger.ShouldNotBeNull(nameof(kustoStreamingLogger));

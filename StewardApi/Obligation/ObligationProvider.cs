@@ -30,7 +30,6 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         /// <summary>
         ///     Initializes a new instance of the <see cref="ObligationProvider"/> class.
         /// </summary>
-        /// <param name="obligationAuthoringClient">The obligation authoring client.</param>
         public ObligationProvider(IObligationAuthoringClient obligationAuthoringClient)
         {
             obligationAuthoringClient.ShouldNotBeNull(nameof(obligationAuthoringClient));

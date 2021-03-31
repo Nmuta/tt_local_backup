@@ -14,8 +14,6 @@ namespace Turn10.LiveOps.StewardApi.Validation
         /// <summary>
         ///     Generate error response.
         /// </summary>
-        /// <param name="modelState">The model state.</param>
-        /// <returns>An error response.</returns>
         public string GenerateErrorResponse(ModelStateDictionary modelState)
         {
             var modelStateErrors = new List<string>();
@@ -38,8 +36,6 @@ namespace Turn10.LiveOps.StewardApi.Validation
         /// <summary>
         ///     Validates title value.
         /// </summary>
-        /// <param name="modelState">The model state.</param>
-        /// <returns>The title value.</returns>
         public string ValidateTitleValue(ModelStateDictionary modelState)
         {
             var title = modelState["title"]?.AttemptedValue;

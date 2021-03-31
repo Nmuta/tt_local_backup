@@ -17,7 +17,6 @@ namespace Turn10.LiveOps.StewardApi.Validation
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloGiftRequestValidator"/> class.
         /// </summary>
-        /// <param name="masterInventoryRequestValidator">The player inventory request validator.</param>
         public ApolloGiftRequestValidator(IRequestValidator<ApolloMasterInventory> masterInventoryRequestValidator)
         {
             masterInventoryRequestValidator.ShouldNotBeNull(nameof(masterInventoryRequestValidator));

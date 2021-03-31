@@ -10,9 +10,6 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         /// <summary>
         ///     Initializes a new instance of the <see cref="ObligationPrincipal"/> class.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="type">The type.</param>
-        /// <param name="role">The role.</param>
         public ObligationPrincipal(string value, string type, string role)
         {
             this.Value = value;

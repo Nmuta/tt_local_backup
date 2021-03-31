@@ -34,9 +34,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="OpusController"/> class.
         /// </summary>
-        /// <param name="memoryCache">The memory cache.</param>
-        /// <param name="opusPlayerDetailsProvider">The Opus player details provider.</param>
-        /// <param name="opusPlayerInventoryProvider">The Opus player inventory provider.</param>
         public OpusController(
             IMemoryCache memoryCache,
             IOpusPlayerDetailsProvider opusPlayerDetailsProvider,
@@ -54,10 +51,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player identity.
         /// </summary>
-        /// <param name="identityQueries">The identity queries.</param>
-        /// <returns>
-        ///     The list of <see cref="IdentityResultAlpha"/>.
-        /// </returns>
         [HttpPost("players/identities")]
         [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
         [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
@@ -96,10 +89,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Get the player details.
         /// </summary>
-        /// <param name="gamertag">The gamertag.</param>
-        /// <returns>
-        ///     The <see cref="OpusPlayerDetails"/>.
-        /// </returns>
         [HttpGet("player/gamertag({gamertag})/details")]
         [SwaggerResponse(200, type: typeof(OpusPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(string gamertag)
@@ -114,10 +103,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Get the player details.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The <see cref="OpusPlayerDetails"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/details")]
         [SwaggerResponse(200, type: typeof(OpusPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(ulong xuid)
@@ -130,10 +115,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Get the player inventory.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     A <see cref="OpusMasterInventory"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/inventory")]
         [SwaggerResponse(200, type: typeof(OpusMasterInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
@@ -156,10 +137,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Get the player inventory.
         /// </summary>
-        /// <param name="profileId">The profile ID.</param>
-        /// <returns>
-        ///     A <see cref="OpusMasterInventory"/>.
-        /// </returns>
         [HttpGet("player/profileId({profileId})/inventory")]
         [SwaggerResponse(200, type: typeof(OpusMasterInventory))]
         public async Task<IActionResult> GetPlayerInventory(int profileId)
@@ -177,10 +154,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player inventory profiles.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The list of <see cref="OpusInventoryProfile"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/inventoryProfiles")]
         [SwaggerResponse(200, type: typeof(IList<OpusInventoryProfile>))]
         public async Task<IActionResult> GetPlayerInventoryProfiles(ulong xuid)

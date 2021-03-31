@@ -11,11 +11,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="GiftHistory"/> class.
         /// </summary>
-        /// <param name="playerId">The player ID.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
-        /// <param name="giftSendDateUtc">The gift send date.</param>
-        /// <param name="giftInventory">The gift inventory.</param>
         public GiftHistory(string playerId, string title, string requestingAgent, DateTime giftSendDateUtc, string giftInventory)
         {
             playerId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerId));

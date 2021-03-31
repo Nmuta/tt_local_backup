@@ -15,7 +15,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Queues the specified function to be run in the background.
         /// </summary>
-        /// <param name="workItem">The workItem.</param>
         public void QueueBackgroundWorkItem(Func<CancellationToken, Task> workItem)
         {
             workItem.ShouldNotBeNull(nameof(workItem));
@@ -26,7 +25,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Queues the specified action to be run in the background.
         /// </summary>
-        /// <param name="workItem">The workItem.</param>
         public void QueueBackgroundWorkItem(Action<CancellationToken> workItem)
         {
             workItem.ShouldNotBeNull(nameof(workItem));

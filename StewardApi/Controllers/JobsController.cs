@@ -24,8 +24,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="JobsController"/> class.
         /// </summary>
-        /// <param name="jobTracker">The job tracker.</param>
-        /// <param name="mapper">The mapper.</param>
         public JobsController(IJobTracker jobTracker, IMapper mapper)
         {
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
@@ -38,10 +36,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the background job..
         /// </summary>
-        /// <param name="jobId">The job ID.</param>
-        /// <returns>
-        ///     A <see cref="BackgroundJob"/>.
-        /// </returns>
         [HttpGet("jobId({jobId})")]
         [SwaggerResponse(200, type: typeof(BackgroundJob))]
         public async Task<IActionResult> GetStatusAsync(string jobId)

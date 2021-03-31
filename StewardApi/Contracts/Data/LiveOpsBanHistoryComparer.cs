@@ -11,9 +11,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Compares two <see cref="LiveOpsBanHistory"/> models.
         /// </summary>
-        /// <param name="x">First ban history to compare against.</param>
-        /// <param name="y">Second ban history to compare against.</param>
-        /// <returns>True if ban histories are the same.</returns>
         public bool Equals(LiveOpsBanHistory x, LiveOpsBanHistory y)
         {
             var liveOpsBanHistoryOne = x;
@@ -41,8 +38,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Creates a hash code for <see cref="LiveOpsBanHistory"/> object.
         /// </summary>
-        /// <param name="obj">The live ops ban history.</param>
-        /// <returns>A hash code of the live ops ban history.</returns>
         public int GetHashCode(LiveOpsBanHistory obj)
         {
             return (obj.Xuid, obj.Title, obj.FeatureArea).GetHashCode();

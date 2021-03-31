@@ -40,10 +40,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///      Initializes a new instance of the <see cref="SunriseEnforcementServiceWrapper"/> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="keyVaultProvider">The key vault provider.</param>
-        /// <param name="refreshableCacheStore">The refreshable cache store.</param>
-        /// <param name="stsClient">The STS client.</param>
         public SunriseEnforcementServiceWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider, IRefreshableCacheStore refreshableCacheStore, IStsClient stsClient)
         {
             configuration.ShouldNotBeNull(nameof(configuration));

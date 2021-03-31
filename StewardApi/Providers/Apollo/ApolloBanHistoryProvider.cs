@@ -28,9 +28,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloBanHistoryProvider"/> class.
         /// </summary>
-        /// <param name="kustoStreamingLogger">The Kusto streaming logger.</param>
-        /// <param name="kustoProvider">The Kusto provider.</param>
-        /// <param name="configuration">The configuration.</param>
         public ApolloBanHistoryProvider(
           IKustoStreamingLogger kustoStreamingLogger,
           IKustoProvider kustoProvider,

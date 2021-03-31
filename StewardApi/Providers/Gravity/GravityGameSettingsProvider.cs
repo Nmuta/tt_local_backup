@@ -18,9 +18,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityGameSettingsProvider"/> class.
         /// </summary>
-        /// <param name="gravityGameSettingsService">The Gravity game settings service.</param>
-        /// <param name="mapper">The mapper.</param>
-        /// <param name="refreshableCacheStore">The refreshable cache store.</param>
         public GravityGameSettingsProvider(
             IGravityGameSettingsService gravityGameSettingsService,
             IMapper mapper,

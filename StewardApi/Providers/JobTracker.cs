@@ -28,11 +28,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Initializes a new instance of the <see cref="JobTracker"/> class.
         /// </summary>
-        /// <param name="tableStorageClientFactory">The table storage client factory.</param>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="blobRepository">The blob repository.</param>
-        /// <param name="refreshableCacheStore">The refreshable cache store.</param>
-        /// <param name="keyVaultProvider">The key vault provider.</param>
         public JobTracker(
                           ITableStorageClientFactory tableStorageClientFactory,
                           IConfiguration configuration,

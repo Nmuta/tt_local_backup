@@ -14,10 +14,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <summary>
         ///     Get the the game settings.
         /// </summary>
-        /// <param name="gameSettingsId">The game settings ID.</param>
-        /// <returns>
-        ///      A <see cref="GravityMasterInventory"/>.
-        /// </returns>
         Task<GravityMasterInventory> GetGameSettingsAsync(Guid gameSettingsId);
     }
 }

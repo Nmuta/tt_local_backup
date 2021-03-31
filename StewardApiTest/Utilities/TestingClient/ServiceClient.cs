@@ -36,8 +36,6 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
         /// <summary>
         ///     Initializes a new instance of the <see cref="ServiceClient"/> class.
         /// </summary>
-        /// <param name="httpClientLifetimeSeconds">The http client lifetime in seconds.</param>
-        /// <param name="requestTimeoutSeconds">The request timeout in seconds.</param>
         public ServiceClient(int httpClientLifetimeSeconds = DefaultHttpClientLifetimeSeconds, int requestTimeoutSeconds = DefaultRequestTimeoutSeconds)
         {
             this.httpClientLifetimeSeconds = httpClientLifetimeSeconds;
@@ -100,7 +98,6 @@ namespace Turn10.LiveOps.StewardTest.Utilities.TestingClient
         /// <summary>
         ///     Creates the HttpClient to use.
         /// </summary>
-        /// <returns>A HttpClient instance</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         private HttpClient CreateClient()
         {

@@ -12,14 +12,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="LiveOpsBanHistory"/> class.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
-        /// <param name="startTimeUtc">The start time in UTC.</param>
-        /// <param name="expireTimeUtc">The expire time in UTC.</param>
-        /// <param name="featureArea">The feature area.</param>
-        /// <param name="reason">The reason.</param>
-        /// <param name="banParameters">The ban parameters.</param>
         public LiveOpsBanHistory(long xuid, string title, string requestingAgent, DateTime startTimeUtc, DateTime expireTimeUtc, string featureArea, string reason, string banParameters)
         {
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));

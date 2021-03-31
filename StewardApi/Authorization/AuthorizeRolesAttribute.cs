@@ -10,7 +10,6 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         /// <summary>
         ///     Initializes a new instance of the <see cref="AuthorizeRolesAttribute"/> class.
         /// </summary>
-        /// <param name="roles">Array of roles.</param>
         public AuthorizeRolesAttribute(params string[] roles)
             : base()
         {

@@ -11,12 +11,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseGiftHistory"/> class.
         /// </summary>
-        /// <param name="idType">The ID type.</param>
-        /// <param name="id">The ID.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
-        /// <param name="giftSendDateUtc">The gift send date.</param>
-        /// <param name="giftInventory">The gift inventory.</param>
         public SunriseGiftHistory(GiftIdentityAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, SunriseGift giftInventory)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));

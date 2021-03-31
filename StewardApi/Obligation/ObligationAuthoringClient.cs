@@ -32,8 +32,6 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         /// <summary>
         ///     Initializes a new instance of the <see cref="ObligationAuthoringClient"/> class.
         /// </summary>
-        /// <param name="keyVaultProvider">The key vault provider.</param>
-        /// <param name="configuration">The configuration.</param>
         public ObligationAuthoringClient(IKeyVaultProvider keyVaultProvider, IConfiguration configuration)
         {
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));

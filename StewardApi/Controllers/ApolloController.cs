@@ -68,22 +68,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloController"/> class.
         /// </summary>
-        /// <param name="memoryCache">The memory cache.</param>
-        /// <param name="loggingService">The logging service.</param>
-        /// <param name="kustoProvider">The Kusto provider.</param>
-        /// <param name="apolloPlayerDetailsProvider">The Apollo player details provider.</param>
-        /// <param name="apolloPlayerInventoryProvider">The Apollo player inventory provider.</param>
-        /// <param name="keyVaultProvider">The key vault provider.</param>
-        /// <param name="giftHistoryProvider">The gift history provider.</param>
-        /// <param name="banHistoryProvider">The ban history provider.</param>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="scheduler">The scheduler.</param>
-        /// <param name="jobTracker">The job tracker.</param>
-        /// <param name="mapper">The mapper.</param>
-        /// <param name="banParametersRequestValidator">The ban parameters request validator.</param>
-        /// <param name="giftRequestValidator">The gift request validator.</param>
-        /// <param name="groupGiftRequestValidator">The group gift request validator.</param>
-        /// <param name="userFlagsRequestValidator">The user flags request validator.</param>
         public ApolloController(
             IMemoryCache memoryCache,
             ILoggingService loggingService,
@@ -139,9 +123,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the master inventory data.
         /// </summary>
-        /// <returns>
-        ///     <see cref="ApolloMasterInventory"/>.
-        /// </returns>
         [HttpGet("masterInventory")]
         [SwaggerResponse(200, type: typeof(ApolloMasterInventory))]
         public async Task<IActionResult> GetMasterInventoryList()
@@ -160,10 +141,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player identity.
         /// </summary>
-        /// <param name="identityQueries">The identity queries.</param>
-        /// <returns>
-        ///     The list of <see cref="IdentityResultAlpha"/>.
-        /// </returns>
         [HttpPost("players/identities")]
         [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
         [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
@@ -202,10 +179,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player details.
         /// </summary>
-        /// <param name="gamertag">The gamertag.</param>
-        /// <returns>
-        ///     The <see cref="ApolloPlayerDetails"/>.
-        /// </returns>
         [HttpGet("player/gamertag({gamertag})/details")]
         [SwaggerResponse(200, type: typeof(ApolloPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(string gamertag)
@@ -220,10 +193,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player details.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The <see cref="ApolloPlayerDetails"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/details")]
         [SwaggerResponse(200, type: typeof(ApolloPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(ulong xuid)
@@ -236,10 +205,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Bans players.
         /// </summary>
-        /// <param name="banInput">The list of ban parameters.</param>
-        /// <returns>
-        ///     The list of <see cref="ApolloBanResult"/>.
-        /// </returns>
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing([FromBody] IList<ApolloBanParametersInput> banInput)
@@ -295,10 +260,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Bans players.
         /// </summary>
-        /// <param name="banInput">The list of ban parameters.</param>
-        /// <returns>
-        ///     The list of <see cref="ApolloBanResult"/>.
-        /// </returns>
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<ApolloBanResult>))]
         public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput)
@@ -331,10 +292,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets ban history.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The list of <see cref="LiveOpsBanHistory"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
         public async Task<IActionResult> GetBanHistory(ulong xuid)
@@ -347,10 +304,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets ban history.
         /// </summary>
-        /// <param name="gamertag">The gamertag.</param>
-        /// <returns>
-        ///     A list of <see cref="LiveOpsBanHistory"/>.
-        /// </returns>
         [HttpGet("player/gamertag({gamertag})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
         public async Task<IActionResult> GetBanHistory(string gamertag)
@@ -367,10 +320,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets ban summaries.
         /// </summary>
-        /// <param name="xuids">The xuids.</param>
-        /// <returns>
-        ///     The list of <see cref="ApolloBanSummary"/>.
-        /// </returns>
         [HttpPost("players/banSummaries")]
         [SwaggerResponse(200, type: typeof(List<ApolloBanSummary>))]
         public async Task<IActionResult> GetBanSummaries([FromBody] IList<ulong> xuids)
@@ -385,11 +334,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the console details.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <param name="maxResults">A value that specifies how many consoles to return.</param>
-        /// <returns>
-        ///     The list of <see cref="ApolloConsoleDetails"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/consoleDetails")]
         [SwaggerResponse(200, type: typeof(List<ApolloConsoleDetails>))]
         public async Task<IActionResult> GetConsoles(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
@@ -404,11 +348,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Sets consoles ban status.
         /// </summary>
-        /// <param name="consoleId">The console ID.</param>
-        /// <param name="isBanned">A value indicating whether the console is banned.</param>
-        /// <returns>
-        ///     A task with a status.
-        /// </returns>
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
         public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, bool isBanned)
@@ -421,12 +360,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets shared console users.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <param name="startIndex">The start index.</param>
-        /// <param name="maxResults">The max results.</param>
-        /// <returns>
-        ///     The list of <see cref="ApolloSharedConsoleUser"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/sharedConsoleUsers")]
         [SwaggerResponse(200, type: typeof(List<ApolloSharedConsoleUser>))]
         public async Task<IActionResult> GetSharedConsoleUsers(ulong xuid, [FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
@@ -442,11 +375,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Get groups.
         /// </summary>
-        /// <param name="startIndex">The start index.</param>
-        /// <param name="maxResults">The max results.</param>
-        /// <returns>
-        ///     The list of <see cref="ApolloLspGroup"/>.
-        /// </returns>
         [HttpGet("groups")]
         [SwaggerResponse(200, type: typeof(IList<ApolloLspGroup>))]
         public async Task<IActionResult> GetGroups([FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
@@ -462,10 +390,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets user flags.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The <see cref="ApolloUserFlags"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(ApolloUserFlags))]
         public async Task<IActionResult> GetUserFlags(ulong xuid)
@@ -483,11 +407,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Sets user flags.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <param name="userFlags">The user flags.</param>
-        /// <returns>
-        ///     The updated <see cref="ApolloUserFlags"/>.
-        /// </returns>
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(ApolloUserFlags))]
         public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] ApolloUserFlagsInput userFlags)
@@ -517,10 +436,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player inventory.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The <see cref="ApolloMasterInventory"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/inventory")]
         [SwaggerResponse(200, type: typeof(ApolloMasterInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
@@ -550,10 +465,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player inventory.
         /// </summary>
-        /// <param name="profileId">The profile ID.</param>
-        /// <returns>
-        ///     The <see cref="ApolloMasterInventory"/>.
-        /// </returns>
         [HttpGet("player/profileId({profileId})/inventory")]
         [SwaggerResponse(200, type: typeof(ApolloMasterInventory))]
         public async Task<IActionResult> GetPlayerInventory(int profileId)
@@ -578,10 +489,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the player inventory profiles.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The list of <see cref="ApolloInventoryProfile"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/inventoryProfiles")]
         [SwaggerResponse(200, type: typeof(IList<ApolloInventoryProfile>))]
         public async Task<IActionResult> GetPlayerInventoryProfiles(ulong xuid)
@@ -599,10 +506,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Update group inventories.
         /// </summary>
-        /// <param name="groupGift">The group gift.</param>
-        /// <returns>
-        ///     A <see cref="BackgroundJob"/>.
-        /// </returns>
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(200, type: typeof(BackgroundJob))]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] ApolloGroupGift groupGift)
@@ -676,10 +579,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Update group inventories.
         /// </summary>
-        /// <param name="groupGift">The group gift.</param>
-        /// <returns>
-        ///     A <see cref="IList{GiftResponse}"/>.
-        /// </returns>
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
         public async Task<IActionResult> UpdateGroupInventories([FromBody] ApolloGroupGift groupGift)
@@ -730,11 +629,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Update group inventories.
         /// </summary>
-        /// <param name="groupId">The group ID.</param>
-        /// <param name="gift">The player inventory.</param>
-        /// <returns>
-        ///     The <see cref="GiftResponse{T}"/>.
-        /// </returns>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
             UserRole.SupportAgentAdmin)]
@@ -772,10 +666,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the gift histories.
         /// </summary>
-        /// <param name="xuid">The xuid.</param>
-        /// <returns>
-        ///     The list of <see cref="ApolloGiftHistory"/>.
-        /// </returns>
         [HttpGet("player/xuid({xuid})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<ApolloGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(ulong xuid)
@@ -788,10 +678,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the gift histories.
         /// </summary>
-        /// <param name="groupId">The group ID.</param>
-        /// <returns>
-        ///     The list of <see cref="ApolloGiftHistory"/>.
-        /// </returns>
         [HttpGet("group/groupId({groupId})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<ApolloGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(int groupId)
@@ -865,9 +751,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the master inventory list.
         /// </summary>
-        /// <returns>
-        ///     <see cref="ApolloMasterInventory"/>.
-        /// </returns>
         private async Task<ApolloMasterInventory> RetrieveMasterInventoryList()
         {
             var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM7Cars);
@@ -891,10 +774,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        /// <param name="gift">The apollo gift.</param>
-        /// <returns>
-        ///     String of items that are invalid.
-        /// </returns>
         private async Task<string> VerifyGiftAgainstMasterInventory(ApolloMasterInventory gift)
         {
             var masterInventoryItem = await this.RetrieveMasterInventoryList().ConfigureAwait(true);

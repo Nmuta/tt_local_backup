@@ -21,12 +21,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        /// <param name="playerInventory">The gravity player inventory.</param>
-        /// <param name="masterInventory">The gravity master inventory.</param>
-        /// <param name="loggingService">The logging service.</param>
-        /// <returns>
-        ///     String of items that are invalid.
-        /// </returns>
         public static GravityPlayerInventoryBeta SetPlayerInventoryItemDescriptions(
             GravityPlayerInventoryBeta playerInventory,
             GravityMasterInventory masterInventory,
@@ -46,12 +40,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        /// <param name="playerInventory">The gravity player inventory.</param>
-        /// <param name="masterInventory">The gravity master inventory.</param>
-        /// <param name="loggingService">The logging service.</param>
-        /// <returns>
-        ///     The <see cref="SunriseMasterInventory"/>.
-        /// </returns>
         public static SunriseMasterInventory SetItemDescriptions(
             SunriseMasterInventory playerInventory, SunriseMasterInventory masterInventory, ILoggingService loggingService)
         {
@@ -68,12 +56,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        /// <param name="playerInventory">The gravity player inventory.</param>
-        /// <param name="masterInventory">The gravity master inventory.</param>
-        /// <param name="loggingService">The logging service.</param>
-        /// <returns>
-        ///     The <see cref="ApolloMasterInventory"/>.
-        /// </returns>
         public static ApolloMasterInventory SetItemDescriptions(ApolloMasterInventory playerInventory, ApolloMasterInventory masterInventory, ILoggingService loggingService)
         {
             var title = "Apollo";
@@ -86,13 +68,6 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Sets player inventory item descriptions based on matching master inventory items.
         /// </summary>
-        /// <param name="playerInventoryItems">The player inventory items.</param>
-        /// <param name="masterInventoryItems">The master inventory items.</param>
-        /// <param name="logName">The title and item type to be logged in case of an error.</param>
-        /// <param name="loggingService">The logging service.</param>
-        /// <returns>
-        ///     A <see cref="IList{MasterInventoryItem}"/>.
-        /// </returns>
         public static IList<MasterInventoryItem> SetPlayerInventoryItemDescription(IList<MasterInventoryItem> playerInventoryItems, IList<MasterInventoryItem> masterInventoryItems, string logName, ILoggingService loggingService)
         {
             foreach (var item in playerInventoryItems)

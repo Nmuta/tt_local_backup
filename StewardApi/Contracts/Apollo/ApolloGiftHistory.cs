@@ -11,12 +11,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloGiftHistory"/> class.
         /// </summary>
-        /// <param name="idType">The ID type.</param>
-        /// <param name="id">The ID.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="requestingAgent">The requesting agent.</param>
-        /// <param name="giftSendDateUtc">The gift send date.</param>
-        /// <param name="giftInventory">The gift inventory.</param>
         public ApolloGiftHistory(GiftIdentityAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, ApolloGift giftInventory)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));

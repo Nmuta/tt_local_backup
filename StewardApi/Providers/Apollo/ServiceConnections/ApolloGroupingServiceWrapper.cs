@@ -35,8 +35,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///      Initializes a new instance of the <see cref="ApolloGroupingServiceWrapper"/> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="keyVaultProvider">The key vault provider.</param>
         public ApolloGroupingServiceWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider)
         {
             configuration.ShouldNotBeNull(nameof(configuration));

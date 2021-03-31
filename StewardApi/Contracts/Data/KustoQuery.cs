@@ -19,9 +19,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="KustoQuery"/> class.
         /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="query">The query.</param>
         public KustoQuery(string name, string title, string query)
         {
             this.Name = name;
