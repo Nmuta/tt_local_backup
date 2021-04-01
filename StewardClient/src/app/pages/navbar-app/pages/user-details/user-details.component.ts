@@ -132,7 +132,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   /** Handles when the lookup list changes. */
   public lookupChange(replaceUrl: boolean = false): void {
     this.store.dispatch(
-      new Navigate([...this.sunriseRouterLink], null, {
+      new Navigate([], null, {
         queryParams: {
           lookupType: this.lookupType,
           lookupName: this.lookupName,

@@ -8,7 +8,7 @@ import { LogTopic } from './log-topic';
 /* eslint-disable no-console */
 /* eslint-disable no-debugger */
 
-const logTopicsToIgnoreInConsole = [];
+const logTopicsToIgnoreInConsole = [LogTopic.AuthInterception];
 const logTopicsToIgnoreInAppInsights = [LogTopic.AuthInterception];
 
 /** A logger service that acts as a configurable proxy for console.log and app insights. */

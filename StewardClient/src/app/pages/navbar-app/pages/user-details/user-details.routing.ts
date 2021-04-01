@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
+import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
 import { ApolloUserDetailsComponent } from './apollo/apollo-user-details.component';
 import { GravityUserDetailsComponent } from './gravity/gravity-user-details.component';
 import { OpusUserDetailsComponent } from './opus/opus-user-details.component';
@@ -11,30 +13,35 @@ const routes: Routes = [
   {
     path: '',
     component: UserDetailsComponent,
+    data: { tool: 'userDetails' },
     children: [
       {
         path: '',
-        redirectTo: 'sunrise',
+        canActivate: [TitleMemoryRedirectGuard],
         pathMatch: 'full',
       },
       {
         path: 'sunrise',
         component: SunriseUserDetailsComponent,
+        canActivate: [TitleMemorySetGuard],
         pathMatch: 'full',
       },
       {
         path: 'opus',
         component: OpusUserDetailsComponent,
+        canActivate: [TitleMemorySetGuard],
         pathMatch: 'full',
       },
       {
         path: 'apollo',
         component: ApolloUserDetailsComponent,
+        canActivate: [TitleMemorySetGuard],
         pathMatch: 'full',
       },
       {
         path: 'gravity',
         component: GravityUserDetailsComponent,
+        canActivate: [TitleMemorySetGuard],
         pathMatch: 'full',
       },
     ],

@@ -6,4 +6,5 @@ export class TitleMemoryModel {
   public gifting: GameTitleCodeName;
   public banning: GameTitleCodeName;
   public giftHistory: GameTitleCodeName;
+  public userDetails: GameTitleCodeName;
 }
