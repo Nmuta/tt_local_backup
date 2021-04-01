@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xls.WebServices.FH4.master.Generated;
 using static Xls.WebServices.FH4.master.Generated.NotificationsService;
@@ -54,5 +55,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         ///     Send group message.
         /// </summary>
         public Task SendGroupMessageNotificationAsync(int groupId, string message);
+
+        /// <summary>
+        ///     Send message to multiple xuids.
+        /// </summary>
+        Task<SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message);
     }
 }

@@ -1443,6 +1443,129 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
         }
 
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SendNotifications()
+        {
+            var message = new BulkCommunityMessage{Xuids = new List<ulong> {notificationXuid}, Message = "Integration Test Message"};
+            var result = await stewardClient.SendNotificationsAsync(message).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Any());
+            Assert.IsTrue(result[0].Success);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SendNotificationsInvalidXuid()
+        {
+            var message = new BulkCommunityMessage { Xuids = new List<ulong> { TestConstants.InvalidXuid }, Message = "Integration Test Message" };
+
+            try
+            {
+                await stewardClient.SendNotificationsAsync(message).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SendNotificationsMessageTooLong()
+        {
+            var message = new BulkCommunityMessage { Xuids = new List<ulong> { notificationXuid }, Message = new string('*', 520)};
+
+            try
+            {
+                await stewardClient.SendNotificationsAsync(message).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SendNotificationsUnauthorized()
+        {
+            var message = new BulkCommunityMessage { Xuids = new List<ulong> { notificationXuid }, Message = "Integration Test Message" };
+
+            try
+            {
+                await unauthorizedClient.SendNotificationsAsync(message).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SendGroupNotifications()
+        {
+            var message = new CommunityMessage { Message = "Integration Test Message" };
+
+            await stewardClient.SendGroupNotificationsAsync(lspGroupId, message).ConfigureAwait(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SendGroupNotificationsUnauthorized()
+        {
+            var message = new CommunityMessage { Message = "Integration Test Message" };
+
+            try
+            {
+                await unauthorizedClient.SendGroupNotificationsAsync(lspGroupId, message).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SendGroupNotificationsMessageTooLong()
+        {
+            var message = new CommunityMessage { Message = new string('*', 520) };
+
+            try
+            {
+                await stewardClient.SendGroupNotificationsAsync(lspGroupId, message).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SendGroupNotificationsInvalidGroupId()
+        {
+            var message = new CommunityMessage { Message = new string('*', 520) };
+
+            try
+            {
+                await stewardClient.SendGroupNotificationsAsync(TestConstants.InvalidProfileId, message).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
         private async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, SunriseGroupGift groupGift, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };

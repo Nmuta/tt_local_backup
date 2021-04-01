@@ -224,6 +224,24 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<SunriseNotification>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
+        public async Task<IList<MessageSendResult<ulong>>> SendNotificationsAsync(BulkCommunityMessage message)
+        {
+            message.ShouldNotBeNull(nameof(message));
+
+            var path = new Uri(this.baseUri, $"{TitlePath}notifications/send");
+
+            return await ServiceClient.SendRequestAsync<IList<MessageSendResult<ulong>>>(HttpMethod.Post, path, this.authKey, Version, message).ConfigureAwait(false);
+        }
+
+        public async Task<MessageSendResult<int>> SendGroupNotificationsAsync(int groupId, CommunityMessage message)
+        {
+            message.ShouldNotBeNull(nameof(message));
+
+            var path = new Uri(this.baseUri, $"{TitlePath}notifications/send/groupId({groupId})");
+
+            return await ServiceClient.SendRequestAsync<MessageSendResult<int>>(HttpMethod.Post, path, this.authKey, Version, message).ConfigureAwait(false);
+        }
+
         public async Task<BackgroundJob> GetJobStatusAsync(string jobId)
         {
             jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));

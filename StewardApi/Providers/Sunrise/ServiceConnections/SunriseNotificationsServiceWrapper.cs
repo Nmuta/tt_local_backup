@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Turn10.Contracts.STS;
@@ -127,6 +128,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             var notificationsService = await this.PrepareNotificationsServiceAsync().ConfigureAwait(false);
 
             await notificationsService.SendGroupMessageNotification(groupId, message).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message)
+        {
+            var notificationsService = await this.PrepareNotificationsServiceAsync().ConfigureAwait(false);
+
+            return await notificationsService.SendMessageNotificationToMultipleUsers(xuids.ToArray(), xuids.Count, message).ConfigureAwait(false);
         }
 
         private async Task<NotificationsService> PrepareNotificationsServiceAsync()

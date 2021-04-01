@@ -44,5 +44,10 @@ namespace Turn10.LiveOps.StewardApi.Authorization
         ///     The data pipeline read role.
         /// </summary>
         public const string DataPipelineRead = "DataPipelineRead";
+
+        /// <summary>
+        ///     The community manager role.
+        /// </summary>
+        public const string CommunityManager = "CommunityManager";
     }
 }

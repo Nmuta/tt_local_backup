@@ -815,6 +815,71 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return this.Ok(notifications);
         }
 
+        /// <summary>
+        ///     Sends the players notifications.
+        /// </summary>
+        [HttpPost("notifications/send")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
+        public async Task<IActionResult> SendPlayerNotifications([FromBody] BulkCommunityMessage communityMessage)
+        {
+            communityMessage.ShouldNotBeNull(nameof(communityMessage));
+            communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
+            if (communityMessage.Message.Length > 512)
+            {
+                return this.BadRequest("Message cannot be longer than 512 characters.");
+            }
+
+            var stringBuilder = new StringBuilder();
+
+            foreach (var xuid in communityMessage.Xuids)
+            {
+                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                {
+                    stringBuilder.Append($"{xuid} ");
+                }
+            }
+
+            if (stringBuilder.Length > 0)
+            {
+                return this.BadRequest($"Players with XUIDs: {stringBuilder} were not found.");
+            }
+
+            var notifications = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(communityMessage.Xuids, communityMessage.Message).ConfigureAwait(true);
+
+            return this.Ok(notifications);
+        }
+
+        /// <summary>
+        ///     Sends the group notifications.
+        /// </summary>
+        [HttpPost("notifications/send/groupId({groupId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
+        public async Task<IActionResult> SendGroupNotifications(int groupId, [FromBody] CommunityMessage communityMessage)
+        {
+            communityMessage.ShouldNotBeNull(nameof(communityMessage));
+            communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
+            if (communityMessage.Message.Length > 512)
+            {
+                return this.BadRequest("Message cannot be longer than 512 characters.");
+            }
+
+            var groups = await this.sunrisePlayerInventoryProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
+            if (!groups.Any(x => x.Id == groupId))
+            {
+                return this.BadRequest($"Group ID: {groupId} is an invalid group ID.");
+            }
+
+            var result = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(groupId, communityMessage.Message).ConfigureAwait(true);
+
+            return this.Ok(result);
+        }
+
         private async Task<string> AddJobIdToHeaderAsync(string requestBody, string username)
         {
             var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, username).ConfigureAwait(true);

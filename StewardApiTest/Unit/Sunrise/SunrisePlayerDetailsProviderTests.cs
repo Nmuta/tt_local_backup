@@ -13,9 +13,10 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Xls.WebServices.FH4.master.Generated;
+using Xls.WebServices.NotificationsObjects.FH4.master.Generated;
 using static Forza.WebServices.FH4.master.Generated.UserService;
+using static Xls.WebServices.FH4.master.Generated.NotificationsService;
 using static Xls.WebServices.FH4.master.Generated.UserService;
-using NotificationsService = Xls.WebServices.FH4.master.Generated.NotificationsService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 {
@@ -440,6 +441,88 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Result.ShouldNotBeNull();
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCommunityMessageAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuids = Fixture.Create<List<ulong>>();
+            var message = Fixture.Create<string>();
+
+            // Act.
+            async Task<IList<MessageSendResult<ulong>>> Action() => await provider.SendCommunityMessageAsync(xuids, message).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<List<MessageSendResult<ulong>>>();
+            Action().Result.ShouldNotBeNull();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCommunityMessageAsync_WithNullXuids_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var message = Fixture.Create<string>();
+
+            // Act.
+            Func<Task<IList<MessageSendResult<ulong>>>> action = async () => await provider.SendCommunityMessageAsync(null, message).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCommunityMessageAsync_WithNullEmptyWhitespaceMessage_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuids = Fixture.Create<List<ulong>>();
+            var groupId = Fixture.Create<int>();
+
+            // Act.
+            var actions = new List<Func<Task>>
+            {
+                async () => await provider.SendCommunityMessageAsync(xuids, null).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.WhiteSpace).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, null).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.Empty).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.WhiteSpace).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "message"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCommunityMessageAsync_WithValidParameters_DoesNotThrow()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var groupId = Fixture.Create<int>();
+            var message = Fixture.Create<string>();
+
+            async Task<MessageSendResult<int>> Action() => await provider.SendCommunityMessageAsync(groupId, message).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<MessageSendResult<int>>();
+            Action().Result.ShouldNotBeNull();
+
+
+            // Act.
+            Func<Task> action = async () => await provider.SendCommunityMessageAsync(groupId, message).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
         private SunriseBanParameters GenerateBanParameters()
         {
             return new SunriseBanParameters
@@ -474,7 +557,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseEnforcementService.BanUsersAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<ForzaUserBanParameters>()).Returns(GenerateBanUsersOutput());
                 this.SunriseEnforcementService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.SunriseEnforcementService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
-                this.SunriseNotificationsService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<NotificationsService.LiveOpsRetrieveForUserOutput>());
+                this.SunriseNotificationsService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsRetrieveForUserOutput>());
+                this.SunriseNotificationsService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
                 this.Mapper.Map<SunrisePlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.Mapper.Map<IList<SunriseConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<SunriseConsoleDetails>>());
                 this.Mapper.Map<IList<SunriseSharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SunriseSharedConsoleUser>>());
@@ -485,6 +569,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper.Map<List<SunriseBanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<SunriseBanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SunrisePlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<SunriseNotification>>(Arg.Any<LiveOpsNotification[]>()).Returns(Fixture.Create<IList<SunriseNotification>>());
+                this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
             }
 
             public ISunriseUserService SunriseUserService { get; set; } = Substitute.For<ISunriseUserService>();

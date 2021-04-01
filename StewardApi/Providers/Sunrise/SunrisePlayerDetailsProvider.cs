@@ -435,6 +435,46 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
         }
 
+        /// <inheritdoc />
+        public async Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(IList<ulong> xuids, string message)
+        {
+            xuids.ShouldNotBeNull(nameof(xuids));
+            message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
+
+            try
+            {
+                var results = await this.sunriseNotificationsService.SendMessageNotificationToMultipleUsersAsync(xuids, message).ConfigureAwait(false);
+
+                return this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new FailedToSendStewardException("Notifications failed to send.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<MessageSendResult<int>> SendCommunityMessageAsync(int groupId, string message)
+        {
+            message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
+
+            var messageResponse = new MessageSendResult<int>();
+            messageResponse.PlayerOrLspGroup = groupId;
+            messageResponse.IdentityAntecedent = GiftIdentityAntecedent.LspGroupId;
+
+            try
+            {
+                await this.sunriseNotificationsService.SendGroupMessageNotificationAsync(groupId, message).ConfigureAwait(false);
+                messageResponse.Success = true;
+            }
+            catch
+            {
+                messageResponse.Success = false;
+            }
+
+            return messageResponse;
+        }
+
         private IList<int> PrepareGroupIds(SunriseUserFlags userFlags, bool toggleOn)
         {
             var resultGroupIds = new List<int>();

@@ -7,6 +7,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Xls.Security.FH4.master.Generated;
 using Xls.WebServices.FH4.master.Generated;
+using Xls.WebServices.NotificationsObjects.FH4.master.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
@@ -121,6 +122,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(source => source.expirationDate))
                 .ReverseMap();
             this.CreateMap<SunriseUserFlagsInput, SunriseUserFlags>().ReverseMap();
+            this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
+                .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(source => source.Xuid))
+                .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(source => GiftIdentityAntecedent.Xuid));
         }
     }
 }

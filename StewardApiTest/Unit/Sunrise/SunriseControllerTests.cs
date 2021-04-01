@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -1037,6 +1038,128 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             details.Should().BeOfType<List<SunriseNotification>>();
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task SendPlayerNotifications_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var communityMessage = Fixture.Create<BulkCommunityMessage>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.SendPlayerNotifications(communityMessage).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as IList<MessageSendResult<ulong>>;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<List<MessageSendResult<ulong>>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task SendPlayerNotifications_WithNullCommunityMessage_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var groupId = Fixture.Create<int>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.SendPlayerNotifications(null).ConfigureAwait(false);
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.SendPlayerNotifications(null).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, null).ConfigureAwait(false),
+        };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "communityMessage"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task SendPlayerNotifications_WithNullEmptyWhitespaceMessage_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var groupId = Fixture.Create<int>();
+            var tooLong = new string('*', 520);
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.SendPlayerNotifications(null).ConfigureAwait(false);
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = null}).ConfigureAwait(false),
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.Empty}).ConfigureAwait(false),
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.WhiteSpace}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = null}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = TestConstants.Empty}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = TestConstants.WhiteSpace}).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "message"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task SendPlayerNotifications_WithTooLongMessage_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var groupId = Fixture.Create<int>();
+            var tooLong = new string('*', 520);
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = tooLong}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = tooLong}).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action().Should().BeAssignableTo<Task<IActionResult>>();
+                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
+                result.StatusCode.Should().Be(400);
+                (result.Value as string).Should().Be("Message cannot be longer than 512 characters.");
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task SendGroupNotifications_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var groupId = TestConstants.InvalidProfileId;
+            var communityMessage = Fixture.Create<CommunityMessage>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.SendGroupNotifications(groupId, communityMessage).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as MessageSendResult<int>;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<MessageSendResult<int>>();
+        }
+
         private IList<SunriseBanParametersInput> GenerateBanParameters()
         {
             return new List<SunriseBanParametersInput>
@@ -1123,9 +1246,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunriseMasterInventory>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SunriseMasterInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
-                this.SunrisePlayerInventoryProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseLspGroup>>());
+                this.SunrisePlayerInventoryProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<SunriseLspGroup>{ new SunriseLspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
                 this.SunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SunriseGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.SunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SunriseGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
+                this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
+                this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());
