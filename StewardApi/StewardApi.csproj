@@ -67,6 +67,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+	<PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" />
     <PackageReference Include="Turn10.Data.Common" Version="2.1.0" />
     <PackageReference Include="Turn10.Data.SecretProvider" Version="2.0.0" />
 	<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.0.0-beta" />
