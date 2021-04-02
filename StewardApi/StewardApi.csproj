@@ -81,7 +81,7 @@
     <PackageReference Include="Turn10.Services.Serialization" Version="1.2.0" />
     <PackageReference Include="Turn10.Services.ServiceClient" Version="1.2.5" />
     <PackageReference Include="Turn10.Services.STS.Contracts" Version="1.2.0" />
-    <PackageReference Include="Turn10.Services.WebApi-Core" Version="1.2.0" />
+    <PackageReference Include="Turn10.Services.WebApi-Core" Version="1.2.1" />
   </ItemGroup>
 
   <Target Name="RealClean" AfterTargets="Clean">
