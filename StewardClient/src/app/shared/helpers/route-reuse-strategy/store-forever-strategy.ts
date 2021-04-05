@@ -31,6 +31,13 @@ export class StoreForeverStrategy implements RouteReuseStrategy {
   /** Route Reuse hook. */
   public store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle): void {
     const key = this.makeKey(route);
+    const path = this.normalizePath(route);
+
+    // Clear safe handles cache if Steward app is switched (i.e. base path updates /support, /community, etc... )
+    if (path?.split('/')?.length <= 1) {
+      this.safeHandles.clear();
+    }
+
     if (handle !== null) {
       // console.warn(`[RouteReuse|${this.instanceId}] store() ${this.makeId(route)}`, handle);
       this.safeHandles.set(key, { handle, route });
