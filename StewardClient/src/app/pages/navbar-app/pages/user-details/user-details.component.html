@@ -1,5 +1,14 @@
 <mat-toolbar>
   <a
+    [class.mat-button-disabled]="!identity?.extra?.hasGravity"
+    [matTooltip]="gravityTooltip"
+    [routerLink]="gravityRouterLink"
+    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    >Gravity</a
+  >
+  <a
     [class.mat-button-disabled]="!identity?.extra?.hasSunrise"
     [matTooltip]="sunriseTooltip"
     [routerLink]="sunriseRouterLink"
@@ -7,15 +16,6 @@
     mat-button
     routerLinkActive="mat-stroked-button"
     >Sunrise</a
-  >
-  <a
-    [class.mat-button-disabled]="!identity?.extra?.hasOpus"
-    [matTooltip]="opusTooltip"
-    [routerLink]="opusRouterLink"
-    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
-    mat-button
-    routerLinkActive="mat-stroked-button"
-    >Opus</a
   >
   <a
     [class.mat-button-disabled]="!identity?.extra?.hasApollo"
@@ -27,13 +27,13 @@
     >Apollo</a
   >
   <a
-    [class.mat-button-disabled]="!identity?.extra?.hasGravity"
-    [matTooltip]="gravityTooltip"
-    [routerLink]="gravityRouterLink"
+    [class.mat-button-disabled]="!identity?.extra?.hasOpus"
+    [matTooltip]="opusTooltip"
+    [routerLink]="opusRouterLink"
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
     routerLinkActive="mat-stroked-button"
-    >Gravity</a
+    >Opus</a
   >
   <span class="icon-spacer"></span>
   <player-selection-single

@@ -29,6 +29,9 @@ import { ApolloGroupGroupIdInventoryFakeApi } from './apis/title/apollo/group/gr
 import { ApolloGroupXuidsInventoryFakeApi } from './apis/title/apollo/group/xuids/inventory';
 import { ApolloGroupGroupIdGiftHistoryFakeApi } from './apis/title/apollo/group/groupId/giftHistory';
 import { ApolloGroupsFakeApi } from './apis/title/apollo/groups';
+import { ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/apollo/player/xuid/sharedConsoleUsers';
+import { ApolloPlayerXuidConsolesFakeApi } from './apis/title/apollo/player/xuid/consoleDetails';
+import { ApolloPlayerXuidUserFlagsFakeApi } from './apis/title/apollo/player/xuid/userFlags';
 
 import { GravityPlayerGamertagDetailsFakeApi } from './apis/title/gravity/player/gamertag/details';
 import { GravityPlayerXuidInventoryFakeApi } from './apis/title/gravity/player/xuid/inventory';
@@ -129,6 +132,9 @@ const fakeApiConstructors = [
 
   // Apollo
   ApolloPlayerGamertagDetailsFakeApi,
+  ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi,
+  ApolloPlayerXuidConsolesFakeApi,
+  ApolloPlayerXuidUserFlagsFakeApi,
   ApolloPlayerProfileIdInventoryFakeApi,
   ApolloPlayerXuidInventoryFakeApi,
   ApolloPlayerXuidInventoryProfilesFakeApi,

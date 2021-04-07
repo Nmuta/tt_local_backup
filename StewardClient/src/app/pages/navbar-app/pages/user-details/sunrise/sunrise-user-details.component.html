@@ -4,10 +4,10 @@
     <mat-tab-group animationDuration="0ms">
       <mat-tab label="User Details">
         <div class="tab-container">
-          <sunrise-user-flags [xuid]="identity.xuid"></sunrise-user-flags>
+          <sunrise-user-flags [identity]="identity"></sunrise-user-flags>
           <sunrise-ban-history [xuid]="identity.xuid"></sunrise-ban-history>
-          <sunrise-gamertags [xuid]="identity.xuid"></sunrise-gamertags>
-          <sunrise-consoles [xuid]="identity.xuid"></sunrise-consoles>
+          <sunrise-gamertags [identity]="identity"></sunrise-gamertags>
+          <sunrise-consoles [identity]="identity"></sunrise-consoles>
         </div>
       </mat-tab>
       <mat-tab label="Deep Dive">

@@ -9,3 +9,6 @@ export * from './apollo-ban-request.model';
 export * from './apollo-ban-result.model';
 export * from './apollo-ban-summary.model';
 export * from './apollo-ban-history.model';
+export * from './apollo-shared-console-users.model';
+export * from './apollo-user-flags.model';
+export * from './apollo-console-details.model';

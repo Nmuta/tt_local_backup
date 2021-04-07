@@ -1,11 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SunrisePlayerXuidConsolesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/consoleDetails';
-import {
-  SunriseConsoleDetails,
-  SunriseConsoleDetailsEntry,
-} from '@models/sunrise/sunrise-console-details.model';
+import { SunriseConsoleDetailsEntry } from '@models/sunrise/sunrise-console-details.model';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 import _ from 'lodash';
@@ -16,31 +13,25 @@ import { SunriseConsolesComponent } from './sunrise-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 
 describe('SunriseConsolesComponent', () => {
-  let injector: TestBed;
-  let service: SunriseService;
   let component: SunriseConsolesComponent;
   let fixture: ComponentFixture<SunriseConsolesComponent>;
 
-  beforeEach(
-    waitForAsync(async () => {
-      await TestBed.configureTestingModule({
-        declarations: [SunriseConsolesComponent, BigJsonPipe],
-        providers: [createMockSunriseService()],
-        schemas: [NO_ERRORS_SCHEMA],
-      }).compileComponents();
+  let mockSunriseService: SunriseService;
 
-      injector = getTestBed();
-      service = injector.inject(SunriseService);
-    }),
-  );
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [SunriseConsolesComponent, BigJsonPipe],
+      providers: [createMockSunriseService()],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  });
 
-  beforeEach(
-    waitForAsync(() => {
-      fixture = TestBed.createComponent(SunriseConsolesComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    }),
-  );
+  beforeEach(() => {
+    fixture = TestBed.createComponent(SunriseConsolesComponent);
+    component = fixture.componentInstance;
+    mockSunriseService = TestBed.inject(SunriseService);
+    fixture.detectChanges();
+  });
 
   it(
     'should create',
@@ -50,22 +41,22 @@ describe('SunriseConsolesComponent', () => {
   );
 
   describe('valid initialization', () => {
-    let consoleDetails$: Subject<SunriseConsoleDetails> = undefined;
-    let consoleDetailsValue: SunriseConsoleDetails = undefined;
+    let consoleDetails$: Subject<SunriseConsoleDetailsEntry[]> = undefined;
+    let consoleDetailsValue: SunriseConsoleDetailsEntry[] = undefined;
     let banStatus$: Subject<void> = undefined;
 
     beforeEach(
       waitForAsync(() => {
         // console details prep
-        consoleDetails$ = new Subject<SunriseConsoleDetails>();
-        consoleDetailsValue = SunrisePlayerXuidConsolesFakeApi.makeMany() as SunriseConsoleDetails;
-        service.getConsoleDetailsByXuid = jasmine
+        consoleDetails$ = new Subject<SunriseConsoleDetailsEntry[]>();
+        consoleDetailsValue = SunrisePlayerXuidConsolesFakeApi.makeMany() as SunriseConsoleDetailsEntry[];
+        mockSunriseService.getConsoleDetailsByXuid = jasmine
           .createSpy('getConsoleDetailsByXuid')
           .and.returnValue(consoleDetails$);
 
         // ban status prep
         banStatus$ = new Subject<void>();
-        service.putBanStatusByConsoleId = jasmine
+        mockSunriseService.putBanStatusByConsoleId = jasmine
           .createSpy('putBanStatusByConsoleId')
           .and.returnValue(banStatus$);
 
@@ -87,7 +78,11 @@ describe('SunriseConsolesComponent', () => {
         'should update when xuid set',
         waitForAsync(async () => {
           // emulate xuid update event
-          component.xuid = BigInt(faker.random.number({ min: 10_000, max: 500_000 }));
+          component.identity = {
+            query: undefined,
+            gamertag: faker.name.firstName(),
+            xuid: BigInt(faker.random.number({ min: 10_000, max: 500_000 })),
+          };
           component.ngOnChanges();
 
           // waiting on value
@@ -108,7 +103,11 @@ describe('SunriseConsolesComponent', () => {
         'should update when request errored',
         waitForAsync(async () => {
           // emulate xuid update event
-          component.xuid = BigInt(faker.random.number({ min: 10_000, max: 500_000 }));
+          component.identity = {
+            query: undefined,
+            gamertag: faker.name.firstName(),
+            xuid: BigInt(faker.random.number({ min: 10_000, max: 500_000 })),
+          };
           component.ngOnChanges();
 
           // waiting on value
@@ -140,7 +139,11 @@ describe('SunriseConsolesComponent', () => {
             .first();
 
           // emulate xuid update event
-          component.xuid = BigInt(faker.random.number({ min: 10_000, max: 500_000 }));
+          component.identity = {
+            query: undefined,
+            gamertag: faker.name.firstName(),
+            xuid: BigInt(faker.random.number({ min: 10_000, max: 500_000 })),
+          };
           component.ngOnChanges();
 
           // waiting on value

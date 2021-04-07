@@ -1,5 +1,5 @@
 /** A single console details entry. */
-export interface SunriseConsoleDetailsEntry {
+export interface ApolloConsoleDetailsEntry {
   consoleId: string;
   isBanned: boolean;
   isBannable: boolean;

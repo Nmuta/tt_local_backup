@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SunriseUserFlagsComponent } from './titles/sunrise/sunrise-user-flags.component';
 import { MatCardModule } from '@angular/material/card';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
@@ -12,10 +11,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SunriseUserFlagsComponent } from './sunrise/sunrise-user-flags.component';
+import { ApolloUserFlagsComponent } from './apollo/apollo-user-flags.component';
 
 /** A domain module for displaying user flags. */
 @NgModule({
-  declarations: [SunriseUserFlagsComponent],
+  declarations: [SunriseUserFlagsComponent, ApolloUserFlagsComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -30,6 +31,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     JsonDumpModule,
     FontAwesomeModule,
   ],
-  exports: [SunriseUserFlagsComponent],
+  exports: [SunriseUserFlagsComponent, ApolloUserFlagsComponent],
 })
 export class UserFlagsModule {}

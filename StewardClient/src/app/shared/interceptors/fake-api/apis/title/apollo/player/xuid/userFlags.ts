@@ -1,10 +1,10 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SunriseConsoleDetailsEntry } from '@models/sunrise';
+import { ApolloUserFlags } from '@models/apollo';
 import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */
-export class SunriseConsoleIsBannedFakeApi extends FakeApiBase {
+export class ApolloPlayerXuidUserFlagsFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -12,23 +12,24 @@ export class SunriseConsoleIsBannedFakeApi extends FakeApiBase {
       return false;
     }
 
-    const isPut = this.request.method.toLowerCase() === 'put';
-    if (!isPut) {
-      return false;
-    }
-
     const url = new URL(this.request.url);
-    const regex = /^\/?api\/v1\/title\/sunrise\/console\/consoleId\((\d+)\)\/isBanned\((true|false)\)$/i;
+    const regex = /^\/?api\/v1\/title\/apollo\/player\/xuid\((\d+)\)\/userFlags$/i;
     return regex.test(url.pathname);
   }
 
   /** Produces a sample API response. */
-  public handle(): Unprocessed<SunriseConsoleDetailsEntry[]> {
-    return SunriseConsoleIsBannedFakeApi.make();
+  public handle(): Unprocessed<ApolloUserFlags> {
+    return ApolloPlayerXuidUserFlagsFakeApi.make();
   }
 
-  /** Creates a sample response object. */
-  public static make(): Unprocessed<SunriseConsoleDetailsEntry[]> {
-    return null;
+  /** Generate an example. */
+  public static make(): Unprocessed<ApolloUserFlags> {
+    return {
+      isVip: false,
+      isTurn10Employee: false,
+      isCommunityManager: false,
+      isUnderReview: false,
+      isEarlyAccess: false,
+    };
   }
 }

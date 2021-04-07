@@ -1,21 +1,19 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { SunriseUserFlags } from '@models/sunrise';
-import { SunriseService } from '@services/sunrise/sunrise.service';
 import _ from 'lodash';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { NEVER, Observable } from 'rxjs';
+import { catchError, take, takeUntil, tap } from 'rxjs/operators';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import { GameTitleCodeName } from '@models/enums';
+import { IdentityResultUnion } from '@models/identity-query.model';
 
 /** Retreives and displays Sunrise User Flags by XUID. */
 @Component({
-  selector: 'sunrise-user-flags',
-  templateUrl: './sunrise-user-flags.component.html',
-  styleUrls: ['./sunrise-user-flags.component.scss'],
+  template: '',
 })
-export class SunriseUserFlagsComponent extends BaseComponent implements OnChanges {
+export abstract class UserFlagsBaseComponent<T> extends BaseComponent implements OnChanges {
   /** The XUID to look up. */
-  @Input() public xuid: bigint;
+  @Input() public identity: IdentityResultUnion;
   /** Boolean determining if flags can be edited. */
   @Input() public disabled: boolean = false;
 
@@ -24,9 +22,9 @@ export class SunriseUserFlagsComponent extends BaseComponent implements OnChange
   /** The error received while loading. */
   public loadError: unknown;
   /** The flags currently applied to the user. */
-  public currentFlags: SunriseUserFlags;
+  public currentFlags: T;
   /** The modified flags. */
-  public flags: SunriseUserFlags;
+  public flags: T;
   /** True when the "I have verified this" checkbox is ticked. Reset on model change. */
   public verified = false;
   /** True while waiting to submit. */
@@ -36,9 +34,9 @@ export class SunriseUserFlagsComponent extends BaseComponent implements OnChange
   /** The icon used to refresh the user flags. */
   public refreshIcon = faUndo;
 
-  constructor(public readonly sunrise: SunriseService) {
-    super();
-  }
+  public abstract gameTitle: GameTitleCodeName;
+  public abstract getFlagsByXuid(xuid: bigint): Observable<T>;
+  public abstract putFlagsByXuid(xuid: bigint, newFlags: T): Observable<T>;
 
   /** True if changes have been made to the flags. */
   public get hasChanges(): boolean {
@@ -47,28 +45,41 @@ export class SunriseUserFlagsComponent extends BaseComponent implements OnChange
 
   /** Initialization hook. */
   public ngOnChanges(): void {
-    if (this.xuid === undefined) {
+    if (!this.identity?.xuid) {
       return;
     }
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.sunrise.getFlagsByXuid(this.xuid).subscribe(
-      flags => {
+    const getFlagsByXuid$ = this.getFlagsByXuid(this.identity.xuid);
+    getFlagsByXuid$
+      .pipe(
+        takeUntil(this.onDestroy$),
+        take(1),
+        catchError(error => {
+          this.isLoading = false;
+          this.loadError = error;
+          return NEVER;
+        }),
+      )
+      .subscribe(flags => {
         this.isLoading = false;
         this.currentFlags = flags;
         this.setFlagsToCurrent();
-      },
-      _error => {
-        this.isLoading = false;
-        this.loadError = _error; // TODO: Display something useful to the user
-      },
-    );
+      });
   }
 
   /** Submits the changes. */
-  public makeAction(): Observable<SunriseUserFlags> {
-    return this.sunrise.putFlagsByXuid(this.xuid, this.flags).pipe(
+  public makeAction(): Observable<T> {
+    const putFlagsByXuid$ = this.putFlagsByXuid(this.identity.xuid, this.flags);
+    return putFlagsByXuid$.pipe(
+      takeUntil(this.onDestroy$),
+      catchError(error => {
+        this.isLoading = false;
+        this.loadError = error;
+        return NEVER;
+      }),
+      take(1),
       tap(value => {
         this.currentFlags = value;
         this.setFlagsToCurrent();

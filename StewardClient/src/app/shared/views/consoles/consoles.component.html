@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-content>
     <h2>
-      Consoles (Sunrise)
+      Consoles ({{ gameTitle }})
       <error-spinner
         [isActive]="false"
         [error]="loadError"
@@ -30,21 +30,24 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let entry">
-            <verify-action-button
-              *ngIf="entry.isBannable && !entry.isBanned"
-              [canSubmit]="true"
-              checkboxText="Verify ban"
-              [action]="makeBanAction(entry.consoleId).bind(this)"
-              ><fa-icon [icon]="bannedIcon"></fa-icon> Ban</verify-action-button
-            >
-            <verify-action-button
-              *ngIf="entry.isBannable && entry.isBanned"
-              [canSubmit]="true"
-              checkboxText="Verify ban removal"
-              [action]="makeUnbanAction(entry.consoleId).bind(this)"
-              >Unban</verify-action-button
-            >
-            <ng-container *ngIf="!entry.isBannable">Ban Locked.</ng-container>
+            <ng-container *ngIf="supportsConsoleBanning">
+              <verify-action-button
+                *ngIf="entry.isBannable && !entry.isBanned"
+                [canSubmit]="true"
+                checkboxText="Verify ban"
+                [action]="makeBanAction(entry.consoleId).bind(this)"
+                ><fa-icon [icon]="bannedIcon"></fa-icon> Ban</verify-action-button
+              >
+              <verify-action-button
+                *ngIf="entry.isBannable && entry.isBanned"
+                [canSubmit]="true"
+                checkboxText="Verify ban removal"
+                [action]="makeUnbanAction(entry.consoleId).bind(this)"
+                >Unban</verify-action-button
+              >
+              <ng-container *ngIf="!entry.isBannable">Ban Locked.</ng-container>
+            </ng-container>
+            <ng-container *ngIf="!supportsConsoleBanning">Banning is not supported.</ng-container>
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>

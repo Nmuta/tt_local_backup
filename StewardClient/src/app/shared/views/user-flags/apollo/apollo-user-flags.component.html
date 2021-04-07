@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-content>
     <h2>
-      Sunrise Flags
+      Player Flags ({{ gameTitle }})
       <button
         class="reset-button"
         mat-mini-fab
@@ -28,12 +28,6 @@
           [disabled]="disabled || submit.isSubmitting"
           (ngModelChange)="submit.reset()"
           >VIP</mat-checkbox
-        >
-        <mat-checkbox
-          [(ngModel)]="flags.isUltimateVip"
-          [disabled]="disabled || submit.isSubmitting"
-          (ngModelChange)="submit.reset()"
-          >Ultimate VIP</mat-checkbox
         >
         <mat-checkbox
           [(ngModel)]="flags.isTurn10Employee"

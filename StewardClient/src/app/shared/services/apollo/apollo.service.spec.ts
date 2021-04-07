@@ -1,7 +1,10 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
+import { ApolloPlayerXuidConsolesFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/consoleDetails';
+import { ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/sharedConsoleUsers';
+import { ApolloPlayerXuidUserFlagsFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/userFlags';
 import { fakeXuid } from '@interceptors/fake-api/utility';
-import { ApolloGift, ApolloGroupGift } from '@models/apollo';
+import { ApolloGift, ApolloGroupGift, ApolloUserFlags } from '@models/apollo';
 import { LspGroup } from '@models/lsp-group';
 import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
@@ -28,6 +31,49 @@ describe('ApolloService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('handles getFlagsByXuid', done => {
+    service.getFlagsByXuid(fakeXuid()).subscribe(output => {
+      expect(output as unknown).toEqual(
+        nextReturnValue as unknown,
+        'fields should not be modified',
+      );
+      done();
+    });
+  });
+
+  it('handles putFlagsByXuid', done => {
+    const typedReturnValue = (nextReturnValue = ApolloPlayerXuidUserFlagsFakeApi.make());
+    service.putFlagsByXuid(fakeXuid(), typedReturnValue as ApolloUserFlags).subscribe(output => {
+      expect(output as unknown).toEqual(
+        nextReturnValue as unknown,
+        'fields should not be modified',
+      );
+      done();
+    });
+  });
+
+  it('handles getSharedConsoleUsersByXuid', done => {
+    const typedReturnValue = (nextReturnValue = ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
+    service.getSharedConsoleUsersByXuid(fakeXuid()).subscribe(output => {
+      expect(output as unknown).toEqual(
+        typedReturnValue as unknown,
+        'fields should not be modified',
+      );
+      done();
+    });
+  });
+
+  it('handles getConsoleDetailsByXuid', done => {
+    nextReturnValue = ApolloPlayerXuidConsolesFakeApi.makeMany();
+    service.getConsoleDetailsByXuid(BigInt(fakeXuid())).subscribe(output => {
+      expect(output as unknown).toEqual(
+        nextReturnValue as unknown,
+        'fields should not be modified',
+      );
+      done();
+    });
   });
 
   describe('Method: getPlayerIdentity', () => {

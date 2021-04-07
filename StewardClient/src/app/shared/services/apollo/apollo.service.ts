@@ -4,12 +4,14 @@ import {
   ApolloBanRequest,
   ApolloBanResult,
   ApolloBanSummary,
+  ApolloConsoleDetailsEntry,
   ApolloGift,
   ApolloGiftHistory,
   ApolloGroupGift,
   ApolloMasterInventory,
   ApolloPlayerDetails,
   ApolloPlayerInventoryProfile,
+  ApolloSharedConsoleUser,
 } from '@models/apollo';
 import { BackgroundJob } from '@models/background-job';
 import { GiftResponse } from '@models/gift-response';
@@ -20,6 +22,7 @@ import {
   IdentityResultAlphaBatch,
 } from '@models/identity-query.model';
 import { LspGroup, LspGroups } from '@models/lsp-group';
+import { ApolloUserFlags } from '@models/apollo';
 import { ApiService } from '@services/api';
 import { chain } from 'lodash';
 import { Observable, of } from 'rxjs';
@@ -67,6 +70,35 @@ export class ApolloService {
   public getBanHistoryByXuid(xuid: bigint): Observable<ApolloBanHistoryEntry[]> {
     return this.apiService.getRequest<ApolloBanHistoryEntry[]>(
       `${this.basePath}/player/xuid(${xuid})/banHistory`,
+    );
+  }
+
+  /** Gets user flags by a XUID. */
+  public getFlagsByXuid(xuid: bigint): Observable<ApolloUserFlags> {
+    return this.apiService.getRequest<ApolloUserFlags>(
+      `${this.basePath}/player/xuid(${xuid})/userFlags`,
+    );
+  }
+
+  /** Sets user flags by a XUID. */
+  public putFlagsByXuid(xuid: bigint, flags: ApolloUserFlags): Observable<ApolloUserFlags> {
+    return this.apiService.putRequest<ApolloUserFlags>(
+      `${this.basePath}/player/xuid(${xuid})/userFlags`,
+      flags,
+    );
+  }
+
+  /** Gets shared console users by XUID. */
+  public getSharedConsoleUsersByXuid(xuid: bigint): Observable<ApolloSharedConsoleUser[]> {
+    return this.apiService.getRequest<ApolloSharedConsoleUser[]>(
+      `${this.basePath}/player/xuid(${xuid})/sharedConsoleUsers`,
+    );
+  }
+
+  /** Gets console details by XUID. */
+  public getConsoleDetailsByXuid(xuid: bigint): Observable<ApolloConsoleDetailsEntry[]> {
+    return this.apiService.getRequest<ApolloConsoleDetailsEntry[]>(
+      `${this.basePath}/player/xuid(${xuid})/consoleDetails`,
     );
   }
 

@@ -1,10 +1,10 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SunriseSharedConsoleUser } from '@models/sunrise';
+import { ApolloSharedConsoleUser } from '@models/apollo';
 import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */
-export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBase {
+export class ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -13,17 +13,17 @@ export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBa
     }
 
     const url = new URL(this.request.url);
-    const regex = /^\/?api\/v1\/title\/sunrise\/player\/xuid\((\d+)\)\/sharedConsoleUsers$/i;
+    const regex = /^\/?api\/v1\/title\/apollo\/player\/xuid\((\d+)\)\/sharedConsoleUsers$/i;
     return regex.test(url.pathname);
   }
 
   /** Produces a sample API response. */
-  public handle(): Unprocessed<SunriseSharedConsoleUser[]> {
-    return SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany();
+  public handle(): Unprocessed<ApolloSharedConsoleUser[]> {
+    return ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany();
   }
 
   /** Creates a sample response. */
-  public static makeMany(): Unprocessed<SunriseSharedConsoleUser[]> {
+  public static makeMany(): Unprocessed<ApolloSharedConsoleUser[]> {
     return [
       {
         sharedConsoleId: BigInt(17942385017267761210),
