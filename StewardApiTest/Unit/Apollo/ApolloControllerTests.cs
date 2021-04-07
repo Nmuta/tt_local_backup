@@ -783,9 +783,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Assert.
             foreach (var action in actions)
             {
-                var result = await action().ConfigureAwait(false) as AcceptedResult;
+                var result = await action().ConfigureAwait(false) as CreatedResult;
                 result.Should().NotBeNull();
-                result.StatusCode.Should().Be(202);
+                result.StatusCode.Should().Be(201);
                 result.Value.Should().NotBeNull();
             }
         }
@@ -924,8 +924,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
                 var httpContext = new DefaultHttpContext();
                 httpContext.Request.Path = TestConstants.TestRequestPath;
+                httpContext.Request.Host = new HostString(TestConstants.TestRequestHost);
+                httpContext.Request.Scheme = TestConstants.TestRequestScheme;
 
-                var claims = new List<Claim> { new Claim(ClaimTypes.Email, "requesting-agent-email") };
+                var claims = new List<Claim> { new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", "unit-test-azure-object-id") };
                 var claimsIdentities = new List<ClaimsIdentity> { new ClaimsIdentity(claims) };
                 httpContext.User = new ClaimsPrincipal(claimsIdentities);
 
@@ -956,7 +958,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
-
+            
             public IApolloPlayerDetailsProvider ApolloPlayerDetailsProvider { get; set; } = Substitute.For<IApolloPlayerDetailsProvider>();
 
             public IApolloPlayerInventoryProvider ApolloPlayerInventoryProvider { get; set; } = Substitute.For<IApolloPlayerInventoryProvider>();

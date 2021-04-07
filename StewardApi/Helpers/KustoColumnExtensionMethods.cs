@@ -1,42 +1,15 @@
 ﻿using System.Data;
-using System.Security.Claims;
 using Newtonsoft.Json.Linq;
-using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.Services.Authentication;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
 {
     /// <summary>
-    ///     Contains assorted extension methods for use in Steward.
+    ///     Contains assorted extension methods for <see cref="KustoColumn"/>.
     /// </summary>
-    public static class StewardExtensionMethods
+    public static class KustoColumnExtensionMethods
     {
-        /// <summary>
-        ///     Generates a user model from claims principal.
-        /// </summary>
-        public static StewardUser UserModel(this ClaimsPrincipal user)
-        {
-            var stewardUser = new StewardUser
-            {
-                Name = user.HasClaimType("name")
-                       ? user.GetClaimValue("name")
-                       : null,
-                Role = user.HasClaimType(ClaimTypes.Role)
-                       ? user.GetClaimValue(ClaimTypes.Role)
-                       : "none",
-                EmailAddress = user.HasClaimType(ClaimTypes.Email)
-                               ? user.GetClaimValue(ClaimTypes.Email)
-                               : null,
-                Id = user.HasClaimType("http://schemas.microsoft.com/identity/claims/objectidentifier")
-                     ? user.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier")
-                     : null
-            };
-
-            return stewardUser;
-        }
-
         /// <summary>
         ///    Puts a column's value into a JObject.
         /// </summary>

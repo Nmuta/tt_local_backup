@@ -3,7 +3,7 @@
     /// <summary>
     ///     Represents a Live Ops user.
     /// </summary>
-    public sealed class StewardUser
+    public sealed class StewardUserClaims
     {
         /// <summary>
         ///     Gets or sets the email address.
@@ -21,8 +21,8 @@
         public string Name { get; set; }
 
         /// <summary>
-        ///     Gets or sets the ID.
+        ///     Gets or sets the Azure object ID.
         /// </summary>
-        public string Id { get; set; }
+        public string ObjectId { get; set; }
     }
 }

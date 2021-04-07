@@ -11,7 +11,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Adds a job into the tracker.
         /// </summary>
-        Task<string> CreateNewJobAsync(string requestBody, string username);
+        Task<string> CreateNewJobAsync(string requestBody, string objectId);
 
         /// <summary>
         ///     Gets the job status.
@@ -21,11 +21,11 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Updates the job status.
         /// </summary>
-        Task UpdateJobAsync(string jobId, string username, BackgroundJobStatus backgroundJobStatus, object jobResult);
+        Task UpdateJobAsync(string jobId, string objectId, BackgroundJobStatus backgroundJobStatus, object jobResult);
 
         /// <summary>
         ///     Updates the job status.
         /// </summary>
-        Task UpdateJobAsync(string jobId, string username, BackgroundJobStatus backgroundJobStatus);
+        Task UpdateJobAsync(string jobId, string objectId, BackgroundJobStatus backgroundJobStatus);
     }
 }

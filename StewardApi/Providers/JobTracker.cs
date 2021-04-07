@@ -53,12 +53,12 @@ namespace Turn10.LiveOps.StewardApi.Providers
         }
 
         /// <inheritdoc />
-        public async Task<string> CreateNewJobAsync(string requestBody, string username)
+        public async Task<string> CreateNewJobAsync(string requestBody, string objectId)
         {
-            username.ShouldNotBeNullEmptyOrWhiteSpace(nameof(username));
+            objectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(objectId));
 
             var jobId = Guid.NewGuid().ToString();
-            var backgroundJob = new BackgroundJobInternal(jobId, username, BackgroundJobStatus.InProgress);
+            var backgroundJob = new BackgroundJobInternal(jobId, objectId, BackgroundJobStatus.InProgress);
 
             await this.blobRepository
                 .AddOrReplaceFromBytesExclusiveAsync(string.Empty, jobId, JobContainerName, Encoding.ASCII.GetBytes(requestBody))
@@ -78,16 +78,16 @@ namespace Turn10.LiveOps.StewardApi.Providers
         }
 
         /// <inheritdoc />
-        public async Task UpdateJobAsync(string jobId, string username, BackgroundJobStatus backgroundJobStatus)
+        public async Task UpdateJobAsync(string jobId, string objectId, BackgroundJobStatus backgroundJobStatus)
         {
-            await this.UpdateJobAsync(jobId, username, backgroundJobStatus, string.Empty).ConfigureAwait(false);
+            await this.UpdateJobAsync(jobId, objectId, backgroundJobStatus, string.Empty).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task UpdateJobAsync(string jobId, string username, BackgroundJobStatus backgroundJobStatus, object jobResult)
+        public async Task UpdateJobAsync(string jobId, string objectId, BackgroundJobStatus backgroundJobStatus, object jobResult)
         {
             jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));
-            username.ShouldNotBeNullEmptyOrWhiteSpace(nameof(username));
+            objectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(objectId));
 
             async Task<BackgroundJobInternal> UpdateTable()
             {
@@ -96,7 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 });
 
-                var backgroundJob = new BackgroundJobInternal(jobId, username, backgroundJobStatus, serializedResults);
+                var backgroundJob = new BackgroundJobInternal(jobId, objectId, backgroundJobStatus, serializedResults);
 
                 var command = TableOperation.InsertOrMerge(backgroundJob);
 
@@ -119,8 +119,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
 
             async Task<BackgroundJobInternal> QueryStatus()
             {
-                var tableQuery = new TableQuery<BackgroundJobInternal>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, jobId));
-
+                var tableQuery = new TableQuery<BackgroundJobInternal>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, jobId));
                 var result = (await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false)).First();
 
                 this.AddFinalStatusToCache(result, jobId);

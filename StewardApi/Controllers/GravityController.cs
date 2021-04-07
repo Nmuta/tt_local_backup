@@ -16,9 +16,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using Turn10.LiveOps.StewardApi.Validation;
-using Turn10.Services.Authentication;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -240,8 +240,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             string t10Id,
             [FromBody] GravityGift gift)
         {
-            var user = this.User.UserModel();
-            var requestingAgent = user.EmailAddress ?? user.Id;
+            var userClaims = this.User.UserClaims();
+            var requestingAgent = userClaims.ObjectId;
 
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             gift.ShouldNotBeNull(nameof(gift));
@@ -274,8 +274,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var username = this.User.GetNameIdentifier();
-            var jobId = await this.AddJobIdToHeaderAsync(gift.ToJson(), username).ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(gift.ToJson(), requestingAgent).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -283,23 +282,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+                    var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
                     var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
-                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Accepted(new BackgroundJob
-            {
-                JobId = jobId,
-                Status = BackgroundJobStatus.InProgress.ToString(),
-            });
+            return this.Created(
+                new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId({jobId})"),
+                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
         }
 
         /// <summary>
@@ -309,8 +306,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GiftResponse<string>))]
         public async Task<IActionResult> UpdatePlayerInventoryByT10Id(string t10Id, [FromBody] GravityGift gift)
         {
-            var user = this.User.UserModel();
-            var requestingAgent = user.EmailAddress ?? user.Id;
+            var userClaims = this.User.UserClaims();
+            var requestingAgent = userClaims.ObjectId;
 
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             gift.ShouldNotBeNull(nameof(gift));
@@ -343,7 +340,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+            var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
             var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
         }
@@ -382,9 +379,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return this.Ok(giftHistory);
         }
 
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string username)
+        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string objectId)
         {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, username).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, objectId).ConfigureAwait(true);
 
             this.Response.Headers.Add("jobId", jobId);
 

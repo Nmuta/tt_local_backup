@@ -1,8 +1,12 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace Turn10.LiveOps.StewardApi.Contracts
 {
     /// <summary>
     ///     Represents the available background job statuses.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum BackgroundJobStatus
     {
         /// <summary>

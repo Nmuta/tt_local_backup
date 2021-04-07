@@ -910,7 +910,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             {
                 // To reset the context and prevent header key collision, rebuild the Dependencies.
                 controller = new Dependencies().Build();
-                action().Result.Should().BeAssignableTo<AcceptedResult>();
+                action().Result.Should().BeAssignableTo<CreatedResult>();
             }
         }
 
@@ -1220,8 +1220,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
                 var httpContext = new DefaultHttpContext();
                 httpContext.Request.Path = TestConstants.TestRequestPath;
+                httpContext.Request.Host = new HostString(TestConstants.TestRequestHost);
+                httpContext.Request.Scheme = TestConstants.TestRequestScheme;
 
-                var claims = new List<Claim> { new Claim(ClaimTypes.Email, "requesting-agent-email") };
+                var claims = new List<Claim> { new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", "unit-test-azure-object-id") };
                 var claimsIdentities = new List<ClaimsIdentity> { new ClaimsIdentity(claims) };
                 httpContext.User = new ClaimsPrincipal(claimsIdentities);
 
@@ -1258,7 +1260,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
-
+            
             public ISunrisePlayerDetailsProvider SunrisePlayerDetailsProvider { get; set; } = Substitute.For<ISunrisePlayerDetailsProvider>();
 
             public ISunrisePlayerInventoryProvider SunrisePlayerInventoryProvider { get; set; } = Substitute.For<ISunrisePlayerInventoryProvider>();

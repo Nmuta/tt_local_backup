@@ -1,5 +1,4 @@
-﻿using Microsoft.Azure.Cosmos.Table;
-using Turn10.Data.Common;
+﻿using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts
 {
@@ -32,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts
             backgroundJobStatus.ShouldNotBeNull(nameof(backgroundJobStatus));
 
             this.JobId = jobId;
-            this.Status = backgroundJobStatus.ToString();
+            this.Status = backgroundJobStatus;
             this.RawResult = rawResult;
         }
 
@@ -44,7 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         /// <summary>
         ///     Gets or sets the status.
         /// </summary>
-        public string Status { get; set; }
+        public BackgroundJobStatus Status { get; set; }
 
         /// <summary>
         ///     Gets or sets the raw result.

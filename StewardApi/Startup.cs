@@ -246,6 +246,7 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddSingleton<IJobTracker, JobTracker>();
             services.AddSingleton<IKustoQueryProvider, KustoQueryProvider>();
+            services.AddSingleton<IStewardUserProvider, StewardUserProvider>();
         }
 
         /// <summary>

@@ -659,7 +659,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
                 var backgroundJob = await stewardClient.GetJobStatusAsync(response.Headers["jobId"])
                     .ConfigureAwait(false);
 
-                Enum.TryParse(backgroundJob.Status, out status);
+                status = backgroundJob.Status;
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 

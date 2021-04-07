@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using Turn10.LiveOps.StewardApi.Validation;
 
@@ -517,7 +518,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 var httpContext = new DefaultHttpContext();
                 httpContext.Request.Path = TestConstants.TestRequestPath;
 
-                var claims = new List<Claim> { new Claim(ClaimTypes.Email, "requesting-agent-email") };
+                var claims = new List<Claim> { new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", "unit-test-azure-object-id") };
                 var claimsIdentities = new List<ClaimsIdentity> { new ClaimsIdentity(claims) };
                 httpContext.User = new ClaimsPrincipal(claimsIdentities);
 

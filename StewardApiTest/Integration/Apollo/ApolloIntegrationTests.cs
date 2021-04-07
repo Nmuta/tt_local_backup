@@ -1255,7 +1255,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             {
                 var backgroundJob = await apolloStewardTestingClient.GetJobStatusAsync(response.Headers["jobId"]).ConfigureAwait(false);
 
-                Enum.TryParse(backgroundJob.Status, out status);
+                status = backgroundJob.Status;
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
@@ -1292,7 +1292,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
                 var backgroundJob = await apolloStewardTestingClient.GetJobStatusAsync(response.Headers["jobId"])
                     .ConfigureAwait(false);
 
-                Enum.TryParse(backgroundJob.Status, out status);
+                status = backgroundJob.Status;
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +24,6 @@ using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Validation;
-using Turn10.Services.Authentication;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -39,6 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
         UserRole.SupportAgentNew)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This can't be avoided.")]
     public sealed class ApolloController : ControllerBase
     {
         private const int DefaultStartIndex = 0;
@@ -209,8 +208,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing([FromBody] IList<ApolloBanParametersInput> banInput)
         {
-            var user = this.User.UserModel();
-            var requestingAgent = user.EmailAddress ?? user.Id;
+            var userClaims = this.User.UserClaims();
+            var requestingAgent = userClaims.ObjectId;
 
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
             banInput.ShouldNotBeNull(nameof(banInput));
@@ -229,8 +228,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest(result);
             }
 
-            var username = this.User.GetNameIdentifier();
-            var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), username).ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), requestingAgent).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -240,21 +238,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     var results = await this.apolloPlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
 
-                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, results).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Completed, results).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Accepted(new BackgroundJob
-            {
-                JobId = jobId,
-                Status = BackgroundJobStatus.InProgress.ToString(),
-            });
+            return this.Created(
+                new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId({jobId})"),
+                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
         }
 
         /// <summary>
@@ -264,8 +260,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(201, type: typeof(List<ApolloBanResult>))]
         public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput)
         {
-            var user = this.User.UserModel();
-            var requestingAgent = user.EmailAddress ?? user.Id;
+            var userClaims = this.User.UserClaims();
+            var requestingAgent = userClaims.ObjectId;
 
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
             banInput.ShouldNotBeNull(nameof(banInput));
@@ -510,8 +506,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(BackgroundJob))]
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] ApolloGroupGift groupGift)
         {
-            var user = this.User.UserModel();
-            var requestingAgent = user.EmailAddress ?? user.Id;
+            var userClaims = this.User.UserClaims();
+            var requestingAgent = userClaims.ObjectId;
 
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
@@ -548,8 +544,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var username = this.User.GetNameIdentifier();
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), username).ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requestingAgent).ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -557,23 +552,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+                    var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
                     var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
-                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, username, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
 
             this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
 
-            return this.Accepted(new BackgroundJob
-            {
-                JobId = jobId,
-                Status = BackgroundJobStatus.InProgress.ToString(),
-            });
+            return this.Created(
+                new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId({jobId})"),
+                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
         }
 
         /// <summary>
@@ -583,8 +576,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
         public async Task<IActionResult> UpdateGroupInventories([FromBody] ApolloGroupGift groupGift)
         {
-            var user = this.User.UserModel();
-            var requestingAgent = user.EmailAddress ?? user.Id;
+            var userClaims = this.User.UserClaims();
+            var requestingAgent = userClaims.ObjectId;
 
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
@@ -621,7 +614,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+            var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
             var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
         }
@@ -636,8 +629,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] ApolloGift gift)
         {
-            var user = this.User.UserModel();
-            var requestingAgent = user.EmailAddress ?? user.Id;
+            var userClaims = this.User.UserClaims();
+            var requestingAgent = userClaims.ObjectId;
 
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
@@ -658,7 +651,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit = user.Role == UserRole.SupportAgentAdmin || user.Role == UserRole.LiveOpsAdmin;
+            var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
             var response = await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
             }
@@ -687,9 +680,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return this.Ok(giftHistory);
         }
 
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string username)
+        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string objectId)
         {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, username).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, objectId).ConfigureAwait(true);
 
             this.Response.Headers.Add("jobId", jobId);
 
