@@ -1,41 +1,17 @@
-﻿using Microsoft.Azure.Cosmos.Table;
-using Turn10.Data.Common;
+﻿using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
 namespace Turn10.LiveOps.StewardApi.Contracts
 {
     /// <summary>
-    ///     Represents a Live Ops user.
+    ///     Represents a Steward user.
     /// </summary>
-    public sealed class StewardUser : TableEntity
+    public sealed class StewardUser
     {
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="StewardUser"/> class.
-        /// </summary>
-        public StewardUser()
-        { }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="StewardUser"/> class.
-        /// </summary>
-        public StewardUser(string objectId, string name, string emailAddress)
-        {
-            objectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(objectId));
-            name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));
-            emailAddress.ShouldNotBeNullEmptyOrWhiteSpace(nameof(emailAddress));
-
-            this.RowKey = objectId;
-            this.Name = name;
-            this.PartitionKey = "Users";
-            this.EmailAddress = emailAddress;
-        }
-
         /// <summary>
         ///     Gets the user's Azure object ID.
         /// </summary>
-        public string ObjectId
-        {
-            get { return this.RowKey; }
-        }
+        public string ObjectId { get; set; }
 
         /// <summary>
         ///     Gets or sets the email address.
@@ -46,5 +22,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         ///     Gets or sets the name.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the error.
+        /// </summary>
+        public StewardError Error { get; set; }
     }
 }

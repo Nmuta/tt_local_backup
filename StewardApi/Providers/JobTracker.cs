@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,6 +13,7 @@ using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
 namespace Turn10.LiveOps.StewardApi.Providers
 {
@@ -53,41 +55,52 @@ namespace Turn10.LiveOps.StewardApi.Providers
         }
 
         /// <inheritdoc />
-        public async Task<string> CreateNewJobAsync(string requestBody, string objectId)
+        public async Task<string> CreateNewJobAsync(string requestBody, string userObjectId, string reason)
         {
-            objectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(objectId));
+            userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
+            reason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(reason));
 
             var jobId = Guid.NewGuid().ToString();
-            var backgroundJob = new BackgroundJobInternal(jobId, objectId, BackgroundJobStatus.InProgress);
 
-            await this.blobRepository
-                .AddOrReplaceFromBytesExclusiveAsync(string.Empty, jobId, JobContainerName, Encoding.ASCII.GetBytes(requestBody))
-                .ConfigureAwait(false);
+            try
+            {
+                var backgroundJob = new BackgroundJobInternal(jobId, userObjectId, reason, BackgroundJobStatus.InProgress);
 
-            var leaseId = await this.blobRepository.GetBlobLeaseAsync(string.Empty, jobId, JobContainerName, LeaseLockTimeInSeconds)
-                .ConfigureAwait(false);
+                await this.blobRepository
+                    .AddOrReplaceFromBytesExclusiveAsync(string.Empty, jobId, JobContainerName,
+                        Encoding.ASCII.GetBytes(requestBody))
+                    .ConfigureAwait(false);
 
-            var insertOrReplaceOperation = TableOperation.InsertOrReplace(backgroundJob);
+                var leaseId = await this.blobRepository
+                    .GetBlobLeaseAsync(string.Empty, jobId, JobContainerName, LeaseLockTimeInSeconds)
+                    .ConfigureAwait(false);
 
-            await this.tableStorageClient.ExecuteAsync(insertOrReplaceOperation).ConfigureAwait(false);
+                var insertOrReplaceOperation = TableOperation.InsertOrReplace(backgroundJob);
 
-            await this.blobRepository.ReleaseBlobLeaseAsync(string.Empty, jobId, JobContainerName, leaseId)
-                .ConfigureAwait(false);
+                await this.tableStorageClient.ExecuteAsync(insertOrReplaceOperation).ConfigureAwait(false);
 
-            return jobId;
+                await this.blobRepository.ReleaseBlobLeaseAsync(string.Empty, jobId, JobContainerName, leaseId)
+                    .ConfigureAwait(false);
+
+                return jobId;
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException($"Creation failed for job with ID: {jobId}", ex);
+            }
         }
 
         /// <inheritdoc />
-        public async Task UpdateJobAsync(string jobId, string objectId, BackgroundJobStatus backgroundJobStatus)
+        public async Task UpdateJobAsync(string jobId, string userObjectId, BackgroundJobStatus backgroundJobStatus)
         {
-            await this.UpdateJobAsync(jobId, objectId, backgroundJobStatus, string.Empty).ConfigureAwait(false);
+            await this.UpdateJobAsync(jobId, userObjectId, backgroundJobStatus, string.Empty).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task UpdateJobAsync(string jobId, string objectId, BackgroundJobStatus backgroundJobStatus, object jobResult)
+        public async Task UpdateJobAsync(string jobId, string userObjectId, BackgroundJobStatus backgroundJobStatus, object jobResult)
         {
             jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));
-            objectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(objectId));
+            userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
 
             async Task<BackgroundJobInternal> UpdateTable()
             {
@@ -96,9 +109,21 @@ namespace Turn10.LiveOps.StewardApi.Providers
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 });
 
-                var backgroundJob = new BackgroundJobInternal(jobId, objectId, backgroundJobStatus, serializedResults);
+                var tableQuery = new TableQuery<BackgroundJobInternal>()
+                    .Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, jobId))
+                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userObjectId));
 
-                var command = TableOperation.InsertOrMerge(backgroundJob);
+                var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
+                if (results.Count <= 0)
+                {
+                    throw new NotFoundStewardException($"Query failed with jobId: {jobId}");
+                }
+
+                var updateJob = results[0];
+                updateJob.Status = backgroundJobStatus.ToString();
+                updateJob.Result = serializedResults;
+
+                var command = TableOperation.Replace(updateJob);
 
                 var operationResponse = await this.tableStorageClient.ExecuteAsync(command).ConfigureAwait(false);
 
@@ -109,7 +134,14 @@ namespace Turn10.LiveOps.StewardApi.Providers
                 return result;
             }
 
-            await this.UpdateTableStorageSafely(UpdateTable, jobId).ConfigureAwait(false);
+            try
+            {
+                await this.UpdateTableStorageSafely(UpdateTable, jobId).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException($"Update failed for job with ID: {jobId}", ex);
+            }
         }
 
         /// <inheritdoc />
@@ -127,9 +159,91 @@ namespace Turn10.LiveOps.StewardApi.Providers
                 return result;
             }
 
-            var backgroundJob = this.refreshableCacheStore.GetItem<BackgroundJobInternal>(jobId) ?? await QueryStatus().ConfigureAwait(false);
+            try
+            {
+                var backgroundJob = this.refreshableCacheStore.GetItem<BackgroundJobInternal>(jobId) ?? await QueryStatus().ConfigureAwait(false);
 
-            return backgroundJob;
+                return backgroundJob;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"Lookup failed for job ID: {jobId}", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<BackgroundJobInternal>> GetJobsByUserAsync(string userObjectId)
+        {
+            userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
+
+            try
+            {
+                var tableQuery = new TableQuery<BackgroundJobInternal>()
+                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userObjectId));
+                var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"Failed to lookup jobs with object ID: {userObjectId}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<BackgroundJobInternal>> GetUnreadJobsByUserAsync(string userObjectId)
+        {
+            userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
+
+            try
+            {
+                var tableQuery = new TableQuery<BackgroundJobInternal>()
+                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userObjectId))
+                    .Where(TableQuery.GenerateFilterConditionForBool("IsRead", QueryComparisons.Equal, false));
+                var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"Failed to lookup unread jobs with object ID: {userObjectId}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task SetJobIsReadAsync(string jobId, string userObjectId, bool isRead)
+        {
+            jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));
+            userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
+
+            try
+            {
+                var tableQuery = new TableQuery<BackgroundJobInternal>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, jobId));
+
+                var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
+                if (results.Count <= 0)
+                {
+                    throw new NotFoundStewardException($"Lookup failed with job ID: {jobId}");
+                }
+
+                var result = results[0];
+
+                if (result.PartitionKey != userObjectId)
+                {
+                    throw new InvalidArgumentsStewardException($"Object ID {userObjectId} is not allowed to update job with job ID: {jobId}");
+                }
+
+                result.IsRead = isRead;
+
+                var replaceOperation = TableOperation.Replace(result);
+                await this.tableStorageClient.ExecuteAsync(replaceOperation).ConfigureAwait(false);
+
+                this.AddFinalStatusToCache(result, jobId);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"Failed to find job: {jobId} to edit.", ex);
+            }
         }
 
         private void AddFinalStatusToCache(BackgroundJobInternal backgroundJob, string jobId)

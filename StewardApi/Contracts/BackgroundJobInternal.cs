@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos.Table;
+﻿using System;
+using Microsoft.Azure.Cosmos.Table;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts
@@ -18,24 +19,28 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         /// <summary>
         ///     Initializes a new instance of the <see cref="BackgroundJobInternal"/> class.
         /// </summary>
-        public BackgroundJobInternal(string jobId, string objectId, BackgroundJobStatus backgroundJobStatus)
-            : this(jobId, objectId, backgroundJobStatus, string.Empty)
+        public BackgroundJobInternal(string jobId, string userObjectId, string reason, BackgroundJobStatus backgroundJobStatus)
+            : this(jobId, userObjectId, reason, backgroundJobStatus, string.Empty)
         {
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="BackgroundJobInternal"/> class.
         /// </summary>
-        public BackgroundJobInternal(string jobId, string objectId, BackgroundJobStatus backgroundJobStatus, string result)
+        public BackgroundJobInternal(string jobId, string userObjectId, string reason, BackgroundJobStatus backgroundJobStatus, string result)
         {
             jobId.ShouldNotBeNull(nameof(jobId));
-            objectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(objectId));
+            userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
+            reason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(reason));
             backgroundJobStatus.ShouldNotBeNull(nameof(backgroundJobStatus));
 
-            this.PartitionKey = objectId;
+            this.PartitionKey = userObjectId;
             this.RowKey = jobId;
+            this.Reason = reason;
             this.Status = backgroundJobStatus.ToString();
             this.Result = result;
+            this.IsRead = false;
+            this.CreatedTimeUtc = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -55,5 +60,20 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         ///     Gets or sets the status.
         /// </summary>
         public string Result { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the reason.
+        /// </summary>
+        public string Reason { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the job has been read.
+        /// </summary>
+        public bool? IsRead { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the created time.
+        /// </summary>
+        public DateTime? CreatedTimeUtc { get; set; }
     }
 }

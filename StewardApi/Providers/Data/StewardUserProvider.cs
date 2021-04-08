@@ -67,7 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             try
             {
-                var stewardUser = new StewardUser(id, name, email);
+                var stewardUser = new StewardUserInternal(id, name, email);
 
                 var insertOrReplaceOperation = TableOperation.InsertOrReplace(stewardUser);
 
@@ -111,13 +111,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<StewardUser> GetStewardUserAsync(string id)
+        public async Task<StewardUserInternal> GetStewardUserAsync(string id)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
 
-            async Task<StewardUser> QueryUser()
+            async Task<StewardUserInternal> QueryUser()
             {
-                var tableQuery = new TableQuery<StewardUser>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, id));
+                var tableQuery = new TableQuery<StewardUserInternal>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, id));
 
                 var result = (await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false)).First();
                 this.refreshableCacheStore.PutItem(id, TimeSpan.FromDays(1), result);
@@ -127,7 +127,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
 
             try
             {
-                var user = this.refreshableCacheStore.GetItem<StewardUser>(id) ?? await QueryUser().ConfigureAwait(false);
+                var user = this.refreshableCacheStore.GetItem<StewardUserInternal>(id) ?? await QueryUser().ConfigureAwait(false);
 
                 return user;
             }

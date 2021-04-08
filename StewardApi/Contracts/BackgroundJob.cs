@@ -1,4 +1,5 @@
-﻿using Turn10.Data.Common;
+﻿using System;
+using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts
 {
@@ -41,13 +42,28 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         public string JobId { get; set; }
 
         /// <summary>
+        ///     Gets or sets the reason.
+        /// </summary>
+        public string Reason { get; set; }
+
+        /// <summary>
         ///     Gets or sets the status.
         /// </summary>
         public BackgroundJobStatus Status { get; set; }
 
         /// <summary>
+        ///     Gets or sets a value indicating whether the job has been read.
+        /// </summary>
+        public bool IsRead { get; set; }
+
+        /// <summary>
         ///     Gets or sets the raw result.
         /// </summary>
         public object RawResult { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the created time.
+        /// </summary>
+        public DateTime? CreatedTimeUtc { get; set; }
     }
 }

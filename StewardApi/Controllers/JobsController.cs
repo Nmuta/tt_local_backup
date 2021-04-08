@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
@@ -34,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets the background job..
+        ///     Gets the background job.
         /// </summary>
         [HttpGet("jobId({jobId})")]
         [SwaggerResponse(200, type: typeof(BackgroundJob))]
@@ -47,6 +49,29 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 var status = await this.jobTracker.GetJobStatusAsync(jobId).ConfigureAwait(true);
 
                 var output = this.mapper.Map<BackgroundJob>(status);
+
+                return this.Ok(output);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(ex);
+            }
+        }
+
+        /// <summary>
+        ///     Gets background jobs by object ID.
+        /// </summary>
+        [HttpGet("userId({userId})")]
+        [SwaggerResponse(200, type: typeof(IList<BackgroundJob>))]
+        public async Task<IActionResult> GetJobsByUserAsync(string userId)
+        {
+            try
+            {
+                userId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userId));
+
+                var jobs = await this.jobTracker.GetJobsByUserAsync(userId).ConfigureAwait(true);
+
+                var output = this.mapper.Map<IList<BackgroundJob>>(jobs);
 
                 return this.Ok(output);
             }

@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Retrieves a steward user.
         /// </summary>
-        Task<StewardUser> GetStewardUserAsync(string id);
+        Task<StewardUserInternal> GetStewardUserAsync(string id);
 
         /// <summary>
         ///     Unsure user updated.
@@ -40,7 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         Task EnsureStewardUserAsync(StewardUserClaims user);
 
         /// <summary>
-        ///     Unsure user updated.
+        ///     Ensure user updated.
         /// </summary>
         Task EnsureStewardUserAsync(string id, string name, string email);
     }

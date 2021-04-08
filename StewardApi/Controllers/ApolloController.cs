@@ -228,7 +228,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest(result);
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), requestingAgent).ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), requestingAgent, $"Apollo Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -544,7 +544,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requestingAgent).ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requestingAgent, $"Apollo Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -680,9 +680,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return this.Ok(giftHistory);
         }
 
-        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string objectId)
+        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
         {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, objectId).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason).ConfigureAwait(true);
 
             this.Response.Headers.Add("jobId", jobId);
 
