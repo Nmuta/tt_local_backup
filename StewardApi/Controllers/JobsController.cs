@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Authorization;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -22,21 +26,145 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     {
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
+        private readonly IScheduler scheduler;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="JobsController"/> class.
         /// </summary>
-        public JobsController(IJobTracker jobTracker, IMapper mapper)
+        public JobsController(
+            IJobTracker jobTracker,
+            IMapper mapper,
+            IScheduler scheduler)
         {
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
             mapper.ShouldNotBeNull(nameof(mapper));
+            scheduler.ShouldNotBeNull(nameof(scheduler));
 
             this.jobTracker = jobTracker;
             this.mapper = mapper;
+            this.scheduler = scheduler;
         }
 
         /// <summary>
-        ///     Gets the background job.
+        ///     Creates a fake background job that never ends.
+        /// </summary>
+        [HttpPost("fake/in-progress/{jobTimeInMilliseconds}")]
+        [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        public async Task<IActionResult> PostFakeOngoingAsync(
+            int jobTimeInMilliseconds,
+            [FromBody] object postBody)
+        {
+            var objectId = this.User?.UserClaims()?.ObjectId;
+            var jobId = await this.AddJobIdToHeaderAsync(postBody.ToJson(), objectId).ConfigureAwait(true);
+
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
+            {
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
+                try
+                {
+                    await Task.Delay(jobTimeInMilliseconds, cancellationToken).ConfigureAwait(true);
+                }
+                catch (Exception)
+                {
+                    await this.jobTracker.UpdateJobAsync(jobId, objectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                }
+            }
+
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
+
+            return this.Created(
+                new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId(jobId)"),
+                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
+        }
+
+        /// <summary>
+        ///     Creates a fake background job that ends in failure.
+        /// </summary>
+        [HttpPost("fake/failure/{jobTimeInMilliseconds}")]
+        [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        public async Task<IActionResult> PostFakeFailureAsync(
+            int jobTimeInMilliseconds,
+            [FromBody] object postBody)
+        {
+            var objectId = this.User?.UserClaims()?.ObjectId;
+            var jobId = await this.AddJobIdToHeaderAsync(postBody.ToJson(), objectId).ConfigureAwait(true);
+
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
+            {
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
+                try
+                {
+                    await Task.Delay(jobTimeInMilliseconds, cancellationToken).ConfigureAwait(true);
+
+                    await this.jobTracker
+                        .UpdateJobAsync(
+                            jobId,
+                            objectId,
+                            BackgroundJobStatus.Failed,
+                            postBody)
+                        .ConfigureAwait(true);
+                }
+                catch (Exception)
+                {
+                    await this.jobTracker.UpdateJobAsync(jobId, objectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                }
+            }
+
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
+
+            return this.Created(
+                new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId(jobId)"),
+                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
+        }
+
+        /// <summary>
+        ///     Creates a fake background job that ends in success.
+        /// </summary>
+        [HttpPost("fake/success/{jobTimeInMilliseconds}")]
+        [SwaggerResponse(202, type: typeof(BackgroundJob))]
+        [AuthorizeRoles(UserRole.LiveOpsAdmin)]
+        public async Task<IActionResult> PostFakeSuccessAsync(
+            int jobTimeInMilliseconds,
+            [FromBody] object postBody)
+        {
+            var objectId = this.User?.UserClaims()?.ObjectId;
+            var jobId = await this.AddJobIdToHeaderAsync(postBody.ToJson(), objectId).ConfigureAwait(true);
+
+            async Task BackgroundProcessing(CancellationToken cancellationToken)
+            {
+                // Throwing within the hosting environment background worker seems to have significant consequences.
+                // Do not throw.
+                try
+                {
+                    await Task.Delay(jobTimeInMilliseconds, cancellationToken).ConfigureAwait(true);
+
+                    await this.jobTracker
+                        .UpdateJobAsync(
+                            jobId,
+                            objectId,
+                            BackgroundJobStatus.Completed,
+                            postBody)
+                        .ConfigureAwait(true);
+                }
+                catch (Exception)
+                {
+                    await this.jobTracker.UpdateJobAsync(jobId, objectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                }
+            }
+
+            this.scheduler.QueueBackgroundWorkItem(BackgroundProcessing);
+
+            return this.Created(
+                new Uri($"{this.Request.Scheme}://{this.Request.Host}/api/v1/jobs/jobId(jobId)"),
+                new BackgroundJob(jobId, BackgroundJobStatus.InProgress));
+        }
+
+        /// <summary>
+        ///     Gets the background job by ID.
         /// </summary>
         [HttpGet("jobId({jobId})")]
         [SwaggerResponse(200, type: typeof(BackgroundJob))]
@@ -59,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets background jobs by object ID.
+        ///     Gets the background jobs for a given user.
         /// </summary>
         [HttpGet("userId({userId})")]
         [SwaggerResponse(200, type: typeof(IList<BackgroundJob>))]
@@ -79,6 +207,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             {
                 return this.NotFound(ex);
             }
+        }
+
+        private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId)
+        {
+            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, "Fake Job").ConfigureAwait(true);
+
+            this.Response.Headers.Add("jobId", jobId);
+
+            return jobId;
         }
     }
 }

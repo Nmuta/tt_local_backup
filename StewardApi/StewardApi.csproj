@@ -52,12 +52,14 @@
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="5.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
     <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="1.4.1" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.8.2" />
     <PackageReference Include="Microsoft.NETCore.App" Version="2.2.0" />
     <PackageReference Include="Microsoft.OpenApi" Version="1.1.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
 	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
@@ -67,7 +69,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-	<PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" />
+	<PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
     <PackageReference Include="Turn10.Data.Common" Version="2.1.0" />
     <PackageReference Include="Turn10.Data.SecretProvider" Version="2.0.0" />
 	<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.0.0-beta" />

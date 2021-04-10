@@ -43,6 +43,7 @@ import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-l
 import { AvailableAppsModule } from '@shared/views/available-apps/available-apps.module';
 import { StoreForeverStrategy } from '@helpers/route-reuse-strategy/store-forever-strategy';
 import { RouteReuseStrategy } from '@angular/router';
+import { HubsModule } from '@shared/hubs/hubs.module';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -79,6 +80,7 @@ function fakeApiOrNothing(): Provider[] {
     CenterContentsModule,
     FlexLayoutModule,
     AvailableAppsModule,
+    HubsModule,
     NgxsModule.forRoot([
       UserState,
       UserSettingsState,

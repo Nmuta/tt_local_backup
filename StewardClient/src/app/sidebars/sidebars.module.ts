@@ -14,6 +14,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-privacy-notice.module';
 import { LocationDetailsModule } from '@shared/views/location-details/location-details.module';
 import { MatCardModule } from '@angular/material/card';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { HubsModule } from '@shared/hubs/hubs.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 /** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
 export const sidebarRoutes = [
@@ -27,11 +30,16 @@ export const sidebarRoutes = [
     component: SettingsComponent,
     outlet: 'sidebar',
   },
+  {
+    path: 'notifications',
+    component: NotificationsComponent,
+    outlet: 'sidebar',
+  },
 ];
 
 /** Module containing all routable sidebar components. */
 @NgModule({
-  declarations: [ProfileComponent, SettingsComponent],
+  declarations: [ProfileComponent, SettingsComponent, NotificationsComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -42,9 +50,11 @@ export const sidebarRoutes = [
     MatExpansionModule,
     MatTooltipModule,
     MatIconModule,
+    MatCheckboxModule,
     DataPrivacyNoticeModule,
     MatCardModule,
     LocationDetailsModule,
+    HubsModule,
     RouterModule.forChild(sidebarRoutes),
   ],
   exports: [RouterModule],

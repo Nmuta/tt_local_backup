@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BackgroundJob } from '@models/background-job';
+import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { ApiService } from '@shared/services/api';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -12,6 +12,33 @@ export class BackgroundJobService {
   public basePath: string = 'v1/jobs';
 
   constructor(protected readonly apiService: ApiService) {}
+
+  /** Gets the background job. */
+  public makeFakeBackgroundJob<T>(
+    delayInMilliseconds: number,
+    status: BackgroundJobStatus,
+    response: T,
+  ): Observable<BackgroundJob<T>> {
+    switch (status) {
+      case BackgroundJobStatus.Failed:
+        return this.apiService.postRequest<BackgroundJob<T>>(
+          `${this.basePath}/fake/failure/${delayInMilliseconds}`,
+          response,
+        );
+      case BackgroundJobStatus.InProgress:
+        return this.apiService.postRequest<BackgroundJob<T>>(
+          `${this.basePath}/fake/in-progress/${delayInMilliseconds}`,
+          response,
+        );
+      case BackgroundJobStatus.Completed:
+        return this.apiService.postRequest<BackgroundJob<T>>(
+          `${this.basePath}/fake/success/${delayInMilliseconds}`,
+          response,
+        );
+      default:
+        throw new Error(`Invalid status ${status}`);
+    }
+  }
 
   /** Gets the background job. */
   public getBackgroundJob<T>(jobId: string): Observable<BackgroundJob<T>> {

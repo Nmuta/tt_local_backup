@@ -1,15 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Turn10.Data.Azure;
@@ -22,6 +29,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
+using Turn10.LiveOps.StewardApi.Hubs;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Middleware;
 using Turn10.LiveOps.StewardApi.Obligation;
@@ -61,10 +69,36 @@ namespace Turn10.LiveOps.StewardApi
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options => options.Filters.Add(new
-                ServiceExceptionFilter()));
+            // If you are setting "redacted due to PII" when debugging certificates/dates/identities, enable this.
+            ////IdentityModelEventSource.ShowPII = true;
+
+            services
+                .AddMvc(options => options.Filters.Add(new ServiceExceptionFilter()));
+
             services.AddMemoryCache();
+
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                });
             services.AddMicrosoftIdentityWebApiAuthentication(this.configuration);
+            services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                var existingOnMessageReceivedHandler = options.Events.OnMessageReceived;
+                options.Events.OnMessageReceived = async context =>
+                {
+                    await existingOnMessageReceivedHandler(context).ConfigureAwait(false);
+
+                    var accessToken = context.Request.Query["access_token"];
+                    var path = context.HttpContext.Request.Path;
+
+                    if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+                    {
+                        context.Token = accessToken;
+                    }
+                };
+            });
             services.Configure<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
                 // Use the groups claim for populating roles
@@ -87,6 +121,8 @@ namespace Turn10.LiveOps.StewardApi
             {
                 options.SerializerSettings.Converters = new List<JsonConverter> { new TimeSpanConverter() };
             });
+
+            services.AddSignalR().AddNewtonsoftJsonProtocol();
 
             services.AddApplicationInsightsTelemetry();
 
@@ -127,13 +163,27 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+                options.AddPolicy(
+                    "CorsPolicy",
+                    builder =>
+                        builder
+                            .WithOrigins(
+                                "http://localhost:4200",
+                                "https://steward-ui-dev.azurewebsites.net",
+                                "https://steward-ui-dev-staging.azurewebsites.net",
+                                "https://steward-ui-prod.azurewebsites.net",
+                                "https://steward-ui-prod-staging.azurewebsites.net")
+                            .AllowCredentials()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
             });
 
             services.AddSingleton<IKeyVaultClientFactory, KeyVaultClientFactory>();
             services.AddSingleton<IKeyVaultProvider, KeyVaultProvider>();
             services.AddSingleton<IObligationAuthoringClient, ObligationAuthoringClient>();
             services.AddSingleton<IObligationProvider, ObligationProvider>();
+            services.AddSingleton<IUserIdProvider, UserIdProvider>();
+
             // Prepare LogSink
             var ifxLogSink = new IfxLogSink(
                 this.configuration[ConfigurationKeyConstants.GenevaTenantId],
@@ -244,6 +294,7 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddSingleton<IBlobRepository>(blobRepo);
 
+            services.AddSingleton<HubManager>();
             services.AddSingleton<IJobTracker, JobTracker>();
             services.AddSingleton<IKustoQueryProvider, KustoQueryProvider>();
             services.AddSingleton<IStewardUserProvider, StewardUserProvider>();
@@ -275,6 +326,7 @@ namespace Turn10.LiveOps.StewardApi
             applicationBuilder.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<NotificationsHub>("/hubs/notifications");
             });
 
             applicationBuilder.UseMiddleware<JournalMiddleware>();

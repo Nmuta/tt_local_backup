@@ -9,6 +9,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
     /// </summary>
     public interface IJobTracker
     {
+
         /// <summary>
         ///     Adds a job into the tracker.
         /// </summary>

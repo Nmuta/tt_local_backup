@@ -13,6 +13,7 @@ using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Hubs;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
 namespace Turn10.LiveOps.StewardApi.Providers
@@ -26,23 +27,27 @@ namespace Turn10.LiveOps.StewardApi.Providers
         private readonly IBlobRepository blobRepository;
         private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly ITableStorageClient tableStorageClient;
+        private readonly HubManager hubManager;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="JobTracker"/> class.
         /// </summary>
         public JobTracker(
-                          ITableStorageClientFactory tableStorageClientFactory,
-                          IConfiguration configuration,
-                          IBlobRepository blobRepository,
-                          IRefreshableCacheStore refreshableCacheStore,
-                          IKeyVaultProvider keyVaultProvider)
+            HubManager hubManager,
+            ITableStorageClientFactory tableStorageClientFactory,
+            IConfiguration configuration,
+            IBlobRepository blobRepository,
+            IRefreshableCacheStore refreshableCacheStore,
+            IKeyVaultProvider keyVaultProvider)
         {
+            hubManager.ShouldNotBeNull(nameof(hubManager));
             tableStorageClientFactory.ShouldNotBeNull(nameof(tableStorageClientFactory));
             blobRepository.ShouldNotBeNull(nameof(blobRepository));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
             configuration.ShouldNotBeNull(nameof(configuration));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
 
+            this.hubManager = hubManager;
             var tableStorageProperties = new TableStorageProperties();
             var tableStorageConnectionString = keyVaultProvider.GetSecretAsync(configuration[ConfigurationKeyConstants.KeyVaultUrl], "table-storage-connection-string").GetAwaiter().GetResult();
 
@@ -65,6 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
             try
             {
                 var backgroundJob = new BackgroundJobInternal(jobId, userObjectId, reason, BackgroundJobStatus.InProgress);
+                await this.hubManager.ForwardJobChange(backgroundJob).ConfigureAwait(false);
 
                 await this.blobRepository
                     .AddOrReplaceFromBytesExclusiveAsync(string.Empty, jobId, JobContainerName,
@@ -110,13 +116,23 @@ namespace Turn10.LiveOps.StewardApi.Providers
                 });
 
                 var tableQuery = new TableQuery<BackgroundJobInternal>()
-                    .Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, jobId))
-                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userObjectId));
+                    .Where(
+                        TableQuery.CombineFilters(
+                            TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, jobId),
+                            TableOperators.And,
+                            TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userObjectId)
+                        )
+                    );
 
                 var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
                 if (results.Count <= 0)
                 {
                     throw new NotFoundStewardException($"Query failed with jobId: {jobId}");
+                }
+
+                if (results.Count > 1)
+                {
+                    throw new NotFoundStewardException($"Too many results for jobId: {jobId}");
                 }
 
                 var updateJob = results[0];
@@ -128,6 +144,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
                 var operationResponse = await this.tableStorageClient.ExecuteAsync(command).ConfigureAwait(false);
 
                 var result = operationResponse.Result as BackgroundJobInternal;
+                await this.hubManager.ForwardJobChange(result).ConfigureAwait(false);
 
                 this.AddFinalStatusToCache(result, jobId);
 
@@ -198,8 +215,13 @@ namespace Turn10.LiveOps.StewardApi.Providers
             try
             {
                 var tableQuery = new TableQuery<BackgroundJobInternal>()
-                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userObjectId))
-                    .Where(TableQuery.GenerateFilterConditionForBool("IsRead", QueryComparisons.Equal, false));
+                    .Where(
+                        TableQuery.CombineFilters(
+                            TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userObjectId),
+                            TableOperators.And,
+                            TableQuery.GenerateFilterConditionForBool("IsRead", QueryComparisons.Equal, false)
+                        )
+                    );
                 var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
 
                 return results;
@@ -237,6 +259,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
 
                 var replaceOperation = TableOperation.Replace(result);
                 await this.tableStorageClient.ExecuteAsync(replaceOperation).ConfigureAwait(false);
+                await this.hubManager.ForwardJobChange(result).ConfigureAwait(false);
 
                 this.AddFinalStatusToCache(result, jobId);
             }

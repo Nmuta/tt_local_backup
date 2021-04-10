@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Azure.Cosmos.Table;
+using System.Text.Json.Serialization;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts
@@ -41,6 +42,15 @@ namespace Turn10.LiveOps.StewardApi.Contracts
             this.Result = result;
             this.IsRead = false;
             this.CreatedTimeUtc = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        ///     Gets the object Id for this job.
+        /// </summary>
+        [JsonIgnore]
+        public string ObjectId
+        {
+            get { return this.PartitionKey; }
         }
 
         /// <summary>

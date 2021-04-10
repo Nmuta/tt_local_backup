@@ -6,6 +6,7 @@ import { createMockBackgroundJobService } from '@services/background-job/backgro
 import { of, throwError } from 'rxjs';
 import { BanResultsUnion, UserBanningBaseComponent } from './user-banning.base.component';
 import faker from 'faker';
+import { createMockNotificationsService } from '@shared/hubs/notifications.service.mock';
 
 describe('UserBanningBaseComponent', () => {
   let component: UserBanningBaseComponent;
@@ -16,7 +17,7 @@ describe('UserBanningBaseComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UserBanningBaseComponent],
-      providers: [createMockBackgroundJobService()],
+      providers: [createMockBackgroundJobService(), createMockNotificationsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -40,6 +41,9 @@ describe('UserBanningBaseComponent', () => {
       status: BackgroundJobStatus.InProgress,
       result: undefined,
       rawResult: undefined,
+      isMarkingRead: false,
+      isRead: false,
+      reason: 'test',
     };
 
     beforeEach(() => {
@@ -87,6 +91,9 @@ describe('UserBanningBaseComponent', () => {
             success: true,
             banDescription: undefined,
           },
+          isMarkingRead: false,
+          isRead: false,
+          reason: 'test',
         };
         beforeEach(() => {
           mockBackgroundJobService.getBackgroundJob = jasmine

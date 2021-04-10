@@ -1,0 +1,28 @@
+h2 {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+
+  .spacer {
+    flex-grow: 1;
+  }
+
+  button {
+    margin: 0.25em;
+  }
+}
+
+.job-entries {
+  list-style: none;
+  display: flex;
+  flex-flow: column nowrap;
+
+  mat-checkbox {
+    &,
+    ::ng-deep .mat-checkbox-label {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+    }
+  }
+}

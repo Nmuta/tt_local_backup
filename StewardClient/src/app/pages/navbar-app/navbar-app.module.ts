@@ -17,25 +17,27 @@ import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { AllAppsDropdownModule } from '@shared/views/all-apps-dropdown/all-apps-dropdown.module';
+import { MatBadgeModule } from '@angular/material/badge';
 
 /** Defines the sidebar module. */
 @NgModule({
   imports: [
+    AllAppsDropdownModule,
     CommonModule,
     DataPrivacyNoticeModule,
-    SidebarsModule,
-    NavbarAppRouterModule,
     FontAwesomeModule,
-    UserDetailsModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTooltipModule,
     FontAwesomeModule,
     FourOhFourModule,
+    MatBadgeModule,
+    MatButtonModule,
     MatCardModule,
-    AllAppsDropdownModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    NavbarAppRouterModule,
+    SidebarsModule,
+    UserDetailsModule,
   ],
   providers: [],
   declarations: [NavbarAppComponent, HomeComponent, NavbarComponent],

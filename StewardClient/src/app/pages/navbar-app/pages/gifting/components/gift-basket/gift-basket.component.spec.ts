@@ -610,6 +610,9 @@ describe('GiftBasketBaseComponent', () => {
       status: BackgroundJobStatus.InProgress,
       rawResult: undefined,
       result: undefined,
+      isMarkingRead: false,
+      isRead: false,
+      reason: 'test',
     };
 
     beforeEach(() => {
@@ -657,6 +660,9 @@ describe('GiftBasketBaseComponent', () => {
               error: undefined,
             },
           ],
+          isMarkingRead: false,
+          isRead: false,
+          reason: 'test',
         };
         beforeEach(() => {
           mockBackgroundJobService.getBackgroundJob = jasmine
