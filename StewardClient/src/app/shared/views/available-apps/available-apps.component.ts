@@ -26,7 +26,7 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
   public appAvailableTooltip = 'App is available to your role.';
   public appUnavailableTooltip = 'App is unavailable to your role.';
 
-  constructor(protected readonly store: Store) {
+  constructor(private readonly store: Store) {
     super();
   }
 

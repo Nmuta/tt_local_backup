@@ -11,7 +11,7 @@ import { tap } from 'rxjs/operators';
 export class BackgroundJobService {
   public basePath: string = 'v1/jobs';
 
-  constructor(protected readonly apiService: ApiService) {}
+  constructor(private readonly apiService: ApiService) {}
 
   /** Gets the background job. */
   public makeFakeBackgroundJob<T>(

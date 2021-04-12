@@ -38,10 +38,7 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
     identities: AugmentedCompositeIdentity[],
   ) => Observable<AugmentedCompositeIdentity[]> = null;
 
-  constructor(
-    protected readonly backgroundJobService: BackgroundJobService,
-    protected readonly apollo: ApolloService,
-  ) {
+  constructor(backgroundJobService: BackgroundJobService, private readonly apollo: ApolloService) {
     super(backgroundJobService);
 
     const summaries$ = new ReplaySubject<ApolloBanSummary[]>(1);

@@ -21,7 +21,7 @@ export class UserBanningBaseComponent extends BaseComponent {
   /** The error received while loading. */
   public loadError: unknown;
 
-  constructor(protected readonly backgroundJobService: BackgroundJobService) {
+  constructor(private readonly backgroundJobService: BackgroundJobService) {
     super();
   }
 

@@ -30,7 +30,7 @@ export class AllAppsDropdownComponent implements OnInit {
 
   public showAllAppsDropdown: boolean;
 
-  constructor(protected readonly store: Store) {}
+  constructor(private readonly store: Store) {}
 
   /** Lifecycle hook. */
   public ngOnInit(): void {

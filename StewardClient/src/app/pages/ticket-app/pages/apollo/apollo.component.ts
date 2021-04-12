@@ -14,9 +14,9 @@ import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
 })
 export class ApolloComponent extends TicketAppBaseComponent {
   constructor(
-    protected readonly apolloService: ApolloService,
-    protected readonly store: Store,
-    protected readonly ticketService: TicketService,
+    private readonly apolloService: ApolloService,
+    store: Store,
+    ticketService: TicketService,
   ) {
     super(ticketService, store);
   }

@@ -28,7 +28,7 @@ export class GravityGiftHistoryComponent extends GiftHistoryBaseComponent implem
   public selectedPlayerInventory: GravityPlayerInventoryBeta;
   public selectedPlayer: IdentityResultBeta;
 
-  constructor(protected readonly store: Store) {
+  constructor(private readonly store: Store) {
     super();
   }
 

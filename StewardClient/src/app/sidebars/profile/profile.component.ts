@@ -28,10 +28,10 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   public showDevTools: boolean;
 
   constructor(
-    protected router: Router,
-    protected store: Store,
-    protected windowService: WindowService,
-    protected clipboard: Clipboard,
+    private readonly router: Router,
+    private readonly store: Store,
+    private readonly windowService: WindowService,
+    private readonly clipboard: Clipboard,
   ) {
     super();
   }

@@ -33,7 +33,7 @@ export class ApolloGiftHistoryComponent extends GiftHistoryBaseComponent impleme
   public selectedLspGroup: LspGroup;
   public selectedPlayer: IdentityResultAlpha;
 
-  constructor(protected readonly store: Store) {
+  constructor(private readonly store: Store) {
     super();
   }
 

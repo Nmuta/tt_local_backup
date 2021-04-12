@@ -24,7 +24,7 @@ import { LspGroupSelectionBaseComponent } from '../lsp-group-selection.base.comp
 export class ApolloLspGroupSelectionComponent extends LspGroupSelectionBaseComponent {
   public title = GameTitleCodeName.FM7;
 
-  constructor(protected readonly store: Store) {
+  constructor(private readonly store: Store) {
     super();
   }
 

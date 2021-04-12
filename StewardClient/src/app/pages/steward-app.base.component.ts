@@ -15,7 +15,7 @@ export class StewardAppBaseComponent extends BaseComponent implements OnInit {
   public drawerOpened = false;
   private lastSidebarRoute = null;
 
-  constructor(protected readonly router: Router, protected readonly route: ActivatedRoute) {
+  constructor(private readonly router: Router, private readonly route: ActivatedRoute) {
     super();
   }
 

@@ -41,7 +41,7 @@ export class DurationPickerComponent implements OnInit, ControlValueAccessor {
 
   public targetDate: Date = null;
 
-  constructor(protected readonly store: Store, private readonly ref: ChangeDetectorRef) {
+  constructor(private readonly store: Store, private readonly ref: ChangeDetectorRef) {
     this.formControl.valueChanges.subscribe(value => this.updateDate(value));
   }
 

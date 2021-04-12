@@ -38,8 +38,8 @@ export class LiveOpsKustoComponent extends BaseComponent {
   public loadError: unknown;
 
   constructor(
-    protected readonly kustoService: KustoService,
-    protected readonly formBuilder: FormBuilder,
+    private readonly kustoService: KustoService,
+    private readonly formBuilder: FormBuilder,
   ) {
     super();
   }

@@ -14,9 +14,9 @@ import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
 })
 export class SunriseComponent extends TicketAppBaseComponent {
   constructor(
-    protected readonly sunriseService: SunriseService,
-    protected readonly store: Store,
-    protected readonly ticketService: TicketService,
+    private readonly sunriseService: SunriseService,
+    store: Store,
+    ticketService: TicketService,
   ) {
     super(ticketService, store);
   }

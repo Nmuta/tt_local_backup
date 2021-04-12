@@ -101,8 +101,8 @@ export abstract class GiftBasketBaseComponent<
   public abstract title: GameTitleCodeName;
 
   constructor(
-    protected readonly backgroundJobService: BackgroundJobService,
-    protected readonly formBuilder: FormBuilder,
+    private readonly backgroundJobService: BackgroundJobService,
+    private readonly formBuilder: FormBuilder,
     protected readonly store: Store,
   ) {
     super();

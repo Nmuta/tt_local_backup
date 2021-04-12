@@ -22,7 +22,7 @@ export class KustoQueryResultsComponent implements OnChanges {
 
   public downloadIcon = faDownload;
 
-  constructor(protected readonly humanizePipe: HumanizePipe) {}
+  constructor(private readonly humanizePipe: HumanizePipe) {}
 
   /** Lifecycle hook. */
   public ngOnChanges(changes: SimpleChanges): void {

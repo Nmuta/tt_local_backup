@@ -49,8 +49,8 @@ export class KustoQuerySelectionComponent extends BaseComponent implements OnIni
   public stateGroupOptions: Observable<KustoQueryGroup[]>;
 
   constructor(
-    protected readonly kustoService: KustoService,
-    protected readonly formBuilder: FormBuilder,
+    private readonly kustoService: KustoService,
+    private readonly formBuilder: FormBuilder,
   ) {
     super();
   }

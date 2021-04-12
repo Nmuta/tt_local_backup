@@ -37,9 +37,9 @@ export class MasterInventoryListMemoryModel {
 /** Defines the lsp group memoty state. */
 export class MasterInventoryListMemoryState {
   constructor(
-    protected readonly gravityService: GravityService,
-    protected readonly sunriseService: SunriseService,
-    protected readonly apolloService: ApolloService,
+    private readonly gravityService: GravityService,
+    private readonly sunriseService: SunriseService,
+    private readonly apolloService: ApolloService,
   ) {}
 
   /** Gets gravity's master inventory list. */

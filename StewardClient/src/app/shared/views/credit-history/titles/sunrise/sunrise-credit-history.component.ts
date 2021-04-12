@@ -35,7 +35,7 @@ export class SunriseCreditHistoryComponent extends BaseComponent implements OnIn
   public loadingMore = false;
   public showLoadMore: boolean;
 
-  constructor(protected readonly sunrise: SunriseService) {
+  constructor(private readonly sunrise: SunriseService) {
     super();
   }
 

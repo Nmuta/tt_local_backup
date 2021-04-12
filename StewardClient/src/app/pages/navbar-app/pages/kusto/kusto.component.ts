@@ -26,8 +26,8 @@ export class KustoComponent extends BaseComponent {
   public loadError: unknown;
 
   constructor(
-    protected readonly formBuilder: FormBuilder,
-    protected readonly kustoService: KustoService,
+    private readonly formBuilder: FormBuilder,
+    private readonly kustoService: KustoService,
   ) {
     super();
   }

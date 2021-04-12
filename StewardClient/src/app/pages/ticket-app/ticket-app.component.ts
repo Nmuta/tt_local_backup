@@ -19,11 +19,7 @@ export class TicketAppComponent extends StewardAppBaseComponent implements OnIni
   public loading: boolean;
   public profile: UserModel;
 
-  constructor(
-    protected readonly zendesk: ZendeskService,
-    protected readonly router: Router,
-    protected readonly route: ActivatedRoute,
-  ) {
+  constructor(private readonly zendesk: ZendeskService, router: Router, route: ActivatedRoute) {
     super(router, route);
   }
 

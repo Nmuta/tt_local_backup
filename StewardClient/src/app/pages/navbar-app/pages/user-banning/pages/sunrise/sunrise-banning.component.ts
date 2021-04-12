@@ -41,7 +41,7 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
   public identitySortFn = null;
 
   constructor(
-    protected readonly backgroundJobService: BackgroundJobService,
+    backgroundJobService: BackgroundJobService,
     private readonly sunrise: SunriseService,
   ) {
     super(backgroundJobService);

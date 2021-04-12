@@ -14,9 +14,9 @@ import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
 })
 export class GravityComponent extends TicketAppBaseComponent {
   constructor(
-    protected readonly gravityService: GravityService,
-    protected readonly store: Store,
-    protected readonly ticketService: TicketService,
+    private readonly gravityService: GravityService,
+    store: Store,
+    ticketService: TicketService,
   ) {
     super(ticketService, store);
   }

@@ -40,10 +40,10 @@ export class GravityGiftBasketComponent
   public hasGameSettings: boolean = true;
 
   constructor(
-    protected readonly backgroundJobService: BackgroundJobService,
     private readonly gravityService: GravityService,
-    protected readonly store: Store,
-    protected readonly formBuilder: FormBuilder,
+    backgroundJobService: BackgroundJobService,
+    store: Store,
+    formBuilder: FormBuilder,
   ) {
     super(backgroundJobService, formBuilder, store);
   }

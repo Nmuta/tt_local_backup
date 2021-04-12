@@ -37,10 +37,10 @@ export class SunriseGiftBasketComponent
   public title = GameTitleCodeName.FH4;
 
   constructor(
-    protected readonly backgroundJobService: BackgroundJobService,
     private readonly sunriseService: SunriseService,
-    protected readonly store: Store,
-    protected readonly formBuilder: FormBuilder,
+    backgroundJobService: BackgroundJobService,
+    store: Store,
+    formBuilder: FormBuilder,
   ) {
     super(backgroundJobService, formBuilder, store);
   }

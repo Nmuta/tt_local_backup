@@ -28,8 +28,8 @@ export class LspGroupMemoryModel {
 /** Defines the lsp group memoty state. */
 export class LspGroupMemoryState {
   constructor(
-    protected readonly sunriseService: SunriseService,
-    protected readonly apolloService: ApolloService,
+    private readonly sunriseService: SunriseService,
+    private readonly apolloService: ApolloService,
   ) {}
 
   /** Updates the last gifting page title. */

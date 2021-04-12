@@ -37,10 +37,10 @@ export class ApolloGiftBasketComponent
   public title = GameTitleCodeName.FM7;
 
   constructor(
-    protected readonly backgroundJobService: BackgroundJobService,
     private readonly apolloService: ApolloService,
-    protected readonly store: Store,
-    protected readonly formBuilder: FormBuilder,
+    backgroundJobService: BackgroundJobService,
+    store: Store,
+    formBuilder: FormBuilder,
   ) {
     super(backgroundJobService, formBuilder, store);
   }

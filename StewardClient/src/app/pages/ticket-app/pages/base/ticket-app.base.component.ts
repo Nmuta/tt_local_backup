@@ -23,7 +23,7 @@ export abstract class TicketAppBaseComponent extends BaseComponent implements On
   public gamertag: string;
   public xuid: bigint;
 
-  constructor(protected readonly ticketService: TicketService, protected readonly store: Store) {
+  constructor(private readonly ticketService: TicketService, private readonly store: Store) {
     super();
   }
 

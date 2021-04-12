@@ -14,9 +14,9 @@ import { TicketAppBaseComponent } from '../base/ticket-app.base.component';
 })
 export class OpusComponent extends TicketAppBaseComponent {
   constructor(
-    protected readonly opusService: OpusService,
-    protected readonly store: Store,
-    protected readonly ticketService: TicketService,
+    private readonly opusService: OpusService,
+    store: Store,
+    ticketService: TicketService,
   ) {
     super(ticketService, store);
   }

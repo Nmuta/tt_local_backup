@@ -19,9 +19,9 @@ export class HoverToCopyDirective {
   private tooltipClicked: string = 'Copied';
 
   constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private clipboard: Clipboard,
+    private readonly elementRef: ElementRef,
+    private readonly renderer: Renderer2,
+    private readonly clipboard: Clipboard,
   ) {}
 
   /** Click event. */

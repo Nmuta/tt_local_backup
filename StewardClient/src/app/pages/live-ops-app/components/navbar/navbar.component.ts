@@ -36,7 +36,7 @@ export class LiveOpsNavbarComponent {
   public readonly profileIcon = faUser;
   public readonly settingsIcon = faCog;
 
-  constructor(protected readonly windowService: WindowService) {}
+  constructor(private readonly windowService: WindowService) {}
 
   /** A string representing the current location */
   public get location(): string {
