@@ -17,16 +17,18 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardUserInternal"/> class.
         /// </summary>
-        public StewardUserInternal(string userObjectId, string name, string emailAddress)
+        public StewardUserInternal(string userObjectId, string name, string emailAddress, string role)
         {
             userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
             name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));
             emailAddress.ShouldNotBeNullEmptyOrWhiteSpace(nameof(emailAddress));
+            emailAddress.ShouldNotBeNullEmptyOrWhiteSpace(nameof(role));
 
             this.RowKey = userObjectId;
             this.Name = name;
             this.PartitionKey = "Users";
             this.EmailAddress = emailAddress;
+            this.Role = role;
         }
 
         /// <summary>
@@ -46,5 +48,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         ///     Gets or sets the name.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the role.
+        /// </summary>
+        public string Role { get; set; }
     }
 }

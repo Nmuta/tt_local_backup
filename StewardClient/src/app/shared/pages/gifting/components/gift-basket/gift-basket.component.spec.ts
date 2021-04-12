@@ -67,6 +67,7 @@ describe('GiftBasketBaseComponent', () => {
       name: faker.name.firstName(),
       emailAddress: 'fakeemail@microsoft.com',
       role: UserRole.LiveOpsAdmin,
+      objectId: `${faker.datatype.uuid()}`,
     };
 
     beforeEach(() => {
@@ -115,6 +116,7 @@ describe('GiftBasketBaseComponent', () => {
           name: faker.name.firstName(),
           emailAddress: 'fakeemail2@microsoft.com',
           role: UserRole.SupportAgentAdmin,
+          objectId: `${faker.datatype.uuid()}`,
         };
 
         beforeEach(() => {
@@ -137,6 +139,7 @@ describe('GiftBasketBaseComponent', () => {
             name: faker.name.firstName(),
             emailAddress: 'fakeemail@microsoft.com',
             role: UserRole.LiveOpsAdmin,
+            objectId: `${faker.datatype.uuid()}`,
           };
         });
 
@@ -184,6 +187,7 @@ describe('GiftBasketBaseComponent', () => {
             name: faker.name.firstName(),
             emailAddress: 'fakeemail@microsoft.com',
             role: UserRole.LiveOpsAdmin,
+            objectId: `${faker.datatype.uuid()}`,
           };
         });
 

@@ -20,6 +20,7 @@
       "@interceptors/*": ["app/shared/interceptors/*"],
       "@mocks/*": ["app/shared/mocks/*"],
       "@models/*": ["app/shared/models/*"],
+      "@views/*": ["app/shared/views/*"],
       "@services/*": ["app/shared/services/*"],
       "@shared/*": ["app/shared/*"],
       "@live-ops-app/*": ["app/pages/live-ops-app/*"],

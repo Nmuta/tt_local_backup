@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the user.
         /// </summary>
-        [HttpPost("/users")]
+        [HttpPost("users")]
         public async Task<IActionResult> GetLiveOpsUser([FromBody] BulkUserLookup users)
         {
             users.ShouldNotBeNull(nameof(users));

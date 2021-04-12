@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BulkStewardUserLookup } from '@models/bulk-steward-user-lookup';
 import { UserModel } from '@models/user.model';
 import { ApiService } from '@shared/services/api';
 import { Observable } from 'rxjs';
@@ -15,5 +16,10 @@ export class UserService {
   /** Sends request to get the user profile. */
   public getUserProfile(): Observable<UserModel> {
     return this.apiService.getRequest<UserModel>(`${this.basePath}/me`);
+  }
+
+  /** Sends request to get Steward user data. */
+  public getStewardUsers(bulkLookup: BulkStewardUserLookup): Observable<UserModel[]> {
+    return this.apiService.postRequest<UserModel[]>(`${this.basePath}/users`, bulkLookup);
   }
 }

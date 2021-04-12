@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.Services.Authentication;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
@@ -12,9 +12,9 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Generates a user model from claims principal.
         /// </summary>
-        public static StewardUserClaims UserClaims(this ClaimsPrincipal user)
+        public static StewardUser UserClaims(this ClaimsPrincipal user)
         {
-            return new StewardUserClaims
+            return new StewardUser
             {
                 ObjectId = user.HasClaimType("http://schemas.microsoft.com/identity/claims/objectidentifier")
                     ? user.GetClaimValue("http://schemas.microsoft.com/identity/claims/objectidentifier")

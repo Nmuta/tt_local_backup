@@ -12,6 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { StewardUserModule } from '@views/steward-user/steward-user.module';
 
 /** A domain module for displaying player gift histories. */
 @NgModule({
@@ -31,6 +32,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     PipesModule,
     JsonDumpModule,
     MatTooltipModule,
+    StewardUserModule,
   ],
   exports: [
     GravityGiftHistoryResultsComponent,

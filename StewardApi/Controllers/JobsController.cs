@@ -189,15 +189,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the background jobs for a given user.
         /// </summary>
-        [HttpGet("userId({userId})")]
+        [HttpGet("userObjectId({userObjectId})")]
         [SwaggerResponse(200, type: typeof(IList<BackgroundJob>))]
-        public async Task<IActionResult> GetJobsByUserAsync(string userId)
+        public async Task<IActionResult> GetJobsByUserAsync(string userObjectId)
         {
             try
             {
-                userId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userId));
+                userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
 
-                var jobs = await this.jobTracker.GetJobsByUserAsync(userId).ConfigureAwait(true);
+                var jobs = await this.jobTracker.GetJobsByUserAsync(userObjectId).ConfigureAwait(true);
 
                 var output = this.mapper.Map<IList<BackgroundJob>>(jobs);
 

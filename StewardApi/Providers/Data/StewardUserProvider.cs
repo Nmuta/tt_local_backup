@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
-using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -18,7 +17,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
     public sealed class StewardUserProvider : IStewardUserProvider
     {
         private readonly ITableStorageClient tableStorageClient;
-        private readonly IMapper mapper;
         private readonly IRefreshableCacheStore refreshableCacheStore;
 
         /// <summary>
@@ -32,7 +30,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             IRefreshableCacheStore refreshableCacheStore)
         {
             tableStorageClientFactory.ShouldNotBeNull(nameof(tableStorageClientFactory));
-            mapper.ShouldNotBeNull(nameof(mapper));
             configuration.ShouldNotBeNull(nameof(configuration));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
@@ -46,28 +43,28 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             tableStorageProperties.ConnectionString = tableStorageConnectionString;
 
             this.tableStorageClient = tableStorageClientFactory.CreateTableStorageClient(tableStorageProperties);
-            this.mapper = mapper;
             this.refreshableCacheStore = refreshableCacheStore;
         }
 
         /// <inheritdoc />
-        public async Task CreateStewardUserAsync(StewardUserClaims user)
+        public async Task CreateStewardUserAsync(StewardUser user)
         {
             user.ShouldNotBeNull(nameof(user));
 
-            await this.CreateStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress).ConfigureAwait(false);
+            await this.CreateStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task CreateStewardUserAsync(string id, string name, string email)
+        public async Task CreateStewardUserAsync(string id, string name, string email, string role)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));
             email.ShouldNotBeNullEmptyOrWhiteSpace(nameof(email));
+            role.ShouldNotBeNullEmptyOrWhiteSpace(nameof(role));
 
             try
             {
-                var stewardUser = new StewardUserInternal(id, name, email);
+                var stewardUser = new StewardUserInternal(id, name, email, role);
 
                 var insertOrReplaceOperation = TableOperation.InsertOrReplace(stewardUser);
 
@@ -80,15 +77,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task UpdateStewardUserAsync(StewardUserClaims user)
+        public async Task UpdateStewardUserAsync(StewardUser user)
         {
             user.ShouldNotBeNull(nameof(user));
 
-            await this.UpdateStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress).ConfigureAwait(false);
+            await this.UpdateStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task UpdateStewardUserAsync(string id, string name, string email)
+        public async Task UpdateStewardUserAsync(string id, string name, string email, string role)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             name.ShouldNotBeNullEmptyOrWhiteSpace(nameof(name));
@@ -98,6 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 var result = await this.GetStewardUserAsync(id).ConfigureAwait(false);
                 result.Name = name;
                 result.EmailAddress = email;
+                result.Role = role;
 
                 var replaceOperation = TableOperation.Replace(result);
 
@@ -138,26 +136,26 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task EnsureStewardUserAsync(StewardUserClaims user)
+        public async Task EnsureStewardUserAsync(StewardUser user)
         {
-            await this.EnsureStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress).ConfigureAwait(false);
+            await this.EnsureStewardUserAsync(user.ObjectId, user.Name, user.EmailAddress, user.Role).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task EnsureStewardUserAsync(string id, string name, string email)
+        public async Task EnsureStewardUserAsync(string id, string name, string email, string role)
         {
             try
             {
                 var user = await this.GetStewardUserAsync(id).ConfigureAwait(false);
 
-                if (name != user.Name || email != user.EmailAddress)
+                if (name != user.Name || email != user.EmailAddress || role != user.Role)
                 {
-                    await this.UpdateStewardUserAsync(id, name, email).ConfigureAwait(false);
+                    await this.UpdateStewardUserAsync(id, name, email, role).ConfigureAwait(false);
                 }
             }
             catch
             {
-                await this.CreateStewardUserAsync(id, name, email).ConfigureAwait(false);
+                await this.CreateStewardUserAsync(id, name, email, role).ConfigureAwait(false);
             }
         }
     }

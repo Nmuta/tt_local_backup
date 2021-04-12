@@ -72,6 +72,7 @@ describe('TicketAppComponent', () => {
       emailAddress: 'test.email@microsoft.com',
       role: UserRole.LiveOpsAdmin,
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      objectId: `${faker.datatype.uuid()}`,
     };
 
     describe('When subscribing to profile returns a value', () => {

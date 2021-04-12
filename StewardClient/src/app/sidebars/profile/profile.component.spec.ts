@@ -93,6 +93,7 @@ describe('ProfileComponent', () => {
       emailAddress: 'test.email@microsoft.com',
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,
       role: UserRole.LiveOpsAdmin,
+      objectId: `${faker.datatype.uuid()}`,
     };
 
     describe('When subscribing to profile returns a value', () => {

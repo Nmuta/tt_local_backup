@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
@@ -12,22 +11,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Creates a steward user.
         /// </summary>
-        Task CreateStewardUserAsync(StewardUserClaims user);
+        Task CreateStewardUserAsync(StewardUser user);
 
         /// <summary>
         ///     Creates a steward user.
         /// </summary>
-        Task CreateStewardUserAsync(string id, string name, string email);
+        Task CreateStewardUserAsync(string id, string name, string email, string role);
 
         /// <summary>
         ///     Updates a steward user.
         /// </summary>
-        Task UpdateStewardUserAsync(StewardUserClaims user);
+        Task UpdateStewardUserAsync(StewardUser user);
 
         /// <summary>
         ///     Updates a steward user.
         /// </summary>
-        Task UpdateStewardUserAsync(string id, string name, string email);
+        Task UpdateStewardUserAsync(string id, string name, string email, string role);
 
         /// <summary>
         ///     Retrieves a steward user.
@@ -37,11 +36,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Unsure user updated.
         /// </summary>
-        Task EnsureStewardUserAsync(StewardUserClaims user);
+        Task EnsureStewardUserAsync(StewardUser user);
 
         /// <summary>
         ///     Ensure user updated.
         /// </summary>
-        Task EnsureStewardUserAsync(string id, string name, string email);
+        Task EnsureStewardUserAsync(string id, string name, string email, string role);
     }
 }

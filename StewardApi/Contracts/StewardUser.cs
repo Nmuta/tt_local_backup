@@ -1,5 +1,4 @@
-﻿using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+﻿using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
 namespace Turn10.LiveOps.StewardApi.Contracts
 {
@@ -22,6 +21,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         ///     Gets or sets the name.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the role.
+        /// </summary>
+        public string Role { get; set; }
 
         /// <summary>
         ///     Gets or sets the error.

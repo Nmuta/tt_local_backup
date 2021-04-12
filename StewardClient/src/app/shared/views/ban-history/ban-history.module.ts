@@ -14,6 +14,7 @@ import { ApolloBanHistoryCompactComponent } from './titles/apollo/compact/apollo
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SunriseBanHistoryCompactComponent } from './titles/sunrise/compact/sunrise-ban-history-compact.component';
+import { StewardUserModule } from '@views/steward-user/steward-user.module';
 
 /** A domain module for displaying player ban histories. */
 @NgModule({
@@ -35,6 +36,7 @@ import { SunriseBanHistoryCompactComponent } from './titles/sunrise/compact/sunr
     MatDividerModule,
     MatExpansionModule,
     MatTooltipModule,
+    StewardUserModule,
   ],
   exports: [
     SunriseBanHistoryComponent,
