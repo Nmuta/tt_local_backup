@@ -821,9 +821,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
+
             if (communityMessage.Message.Length > 512)
             {
                 return this.BadRequest("Message cannot be longer than 512 characters.");
+            }
+
+            if (communityMessage.Duration < TimeSpan.FromDays(1))
+            {
+                return this.BadRequest("Duration cannot be less than a day.");
             }
 
             var stringBuilder = new StringBuilder();
@@ -841,7 +847,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
-            var notifications = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(communityMessage.Xuids, communityMessage.Message).ConfigureAwait(true);
+            var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
+            var notifications = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(communityMessage.Xuids, communityMessage.Message, expireTime).ConfigureAwait(true);
 
             return this.Ok(notifications);
         }
@@ -858,9 +865,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
+
             if (communityMessage.Message.Length > 512)
             {
                 return this.BadRequest("Message cannot be longer than 512 characters.");
+            }
+
+            if (communityMessage.Duration < TimeSpan.FromDays(1))
+            {
+                return this.BadRequest("Duration cannot be less than a day.");
             }
 
             var groups = await this.sunrisePlayerInventoryProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
@@ -869,7 +882,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Group ID: {groupId} is an invalid group ID.");
             }
 
-            var result = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(groupId, communityMessage.Message).ConfigureAwait(true);
+            var expireTime = DateTime.Now.Add(communityMessage.Duration);
+            var result = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(groupId, communityMessage.Message, expireTime).ConfigureAwait(true);
 
             return this.Ok(result);
         }

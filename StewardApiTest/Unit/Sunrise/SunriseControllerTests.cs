@@ -1045,6 +1045,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var controller = new Dependencies().Build();
             var communityMessage = Fixture.Create<BulkCommunityMessage>();
+            communityMessage.Duration = TimeSpan.FromDays(1);
 
             // Act.
             async Task<IActionResult> Action() => await controller.SendPlayerNotifications(communityMessage).ConfigureAwait(false);
@@ -1060,15 +1061,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task SendPlayerNotifications_WithNullCommunityMessage_Throws()
+        public void SendPlayerNotifications_WithNullCommunityMessage_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
-
-            // Act.
-            async Task<IActionResult> Action() => await controller.SendPlayerNotifications(null).ConfigureAwait(false);
-
+            
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
@@ -1085,25 +1083,22 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task SendPlayerNotifications_WithNullEmptyWhitespaceMessage_Throws()
+        public void SendPlayerNotifications_WithNullEmptyWhitespaceMessage_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
-            var tooLong = new string('*', 520);
-
-            // Act.
-            async Task<IActionResult> Action() => await controller.SendPlayerNotifications(null).ConfigureAwait(false);
-
+            var duration = TimeSpan.FromDays(1);
+            
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = null}).ConfigureAwait(false),
-                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.Empty}).ConfigureAwait(false),
-                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.WhiteSpace}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = null}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = TestConstants.Empty}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = TestConstants.WhiteSpace}).ConfigureAwait(false),
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = null, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.Empty, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.WhiteSpace, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = null, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = TestConstants.Empty, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration}).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1121,12 +1116,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
             var tooLong = new string('*', 520);
+            var duration = TimeSpan.FromDays(1);
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = tooLong}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = tooLong}).ConfigureAwait(false),
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = tooLong, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = tooLong, Duration = duration}).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1141,12 +1137,40 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
+        public async Task SendPlayerNotifications_WithTooShortDuration_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var groupId = Fixture.Create<int>();
+            var message = Fixture.Create<string>();
+            var duration = TimeSpan.FromHours(3);
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = message, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = message, Duration = duration}).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action().Should().BeAssignableTo<Task<IActionResult>>();
+                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
+                result.StatusCode.Should().Be(400);
+                (result.Value as string).Should().Be("Duration cannot be less than a day.");
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public async Task SendGroupNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = TestConstants.InvalidProfileId;
             var communityMessage = Fixture.Create<CommunityMessage>();
+            communityMessage.Duration = TimeSpan.FromDays(1);
 
             // Act.
             async Task<IActionResult> Action() => await controller.SendGroupNotifications(groupId, communityMessage).ConfigureAwait(false);
@@ -1251,8 +1275,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerInventoryProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<SunriseLspGroup>{ new SunriseLspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
                 this.SunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SunriseGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.SunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SunriseGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
-                this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
+                this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
+                this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<MessageSendResult<int>>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());

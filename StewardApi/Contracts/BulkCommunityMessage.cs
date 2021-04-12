@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Turn10.LiveOps.StewardApi.Contracts
 {
@@ -16,5 +17,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         ///     Gets or sets the message.
         /// </summary>
         public string Message { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the duration.
+        /// </summary>
+        public TimeSpan Duration { get; set; }
     }
 }

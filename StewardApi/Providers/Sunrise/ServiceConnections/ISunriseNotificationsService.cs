@@ -49,16 +49,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Send message notification.
         /// </summary>
-        public Task SendMessageNotificationAsync(ulong xuid, string message);
+        public Task SendMessageNotificationAsync(ulong xuid, string message, DateTime expireTimeUtc);
 
         /// <summary>
         ///     Send group message.
         /// </summary>
-        public Task SendGroupMessageNotificationAsync(int groupId, string message);
+        public Task SendGroupMessageNotificationAsync(int groupId, string message, DateTime expireTimeUtc);
 
         /// <summary>
         ///     Send message to multiple xuids.
         /// </summary>
-        Task<SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message);
+        Task<SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc);
     }
 }

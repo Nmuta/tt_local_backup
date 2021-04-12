@@ -115,27 +115,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc/>
-        public async Task SendMessageNotificationAsync(ulong xuid, string message)
+        public async Task SendMessageNotificationAsync(ulong xuid, string message, DateTime expireTimeUtc)
         {
             var notificationsService = await this.PrepareNotificationsServiceAsync().ConfigureAwait(false);
 
-            await notificationsService.SendMessageNotification(xuid, message).ConfigureAwait(false);
+            await notificationsService.SendMessageNotification(xuid, message, expireTimeUtc).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task SendGroupMessageNotificationAsync(int groupId, string message)
+        public async Task SendGroupMessageNotificationAsync(int groupId, string message, DateTime expireTimeUtc)
         {
             var notificationsService = await this.PrepareNotificationsServiceAsync().ConfigureAwait(false);
 
-            await notificationsService.SendGroupMessageNotification(groupId, message).ConfigureAwait(false);
+            await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message)
+        public async Task<SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc)
         {
             var notificationsService = await this.PrepareNotificationsServiceAsync().ConfigureAwait(false);
 
-            return await notificationsService.SendMessageNotificationToMultipleUsers(xuids.ToArray(), xuids.Count, message).ConfigureAwait(false);
+            return await notificationsService.SendMessageNotificationToMultipleUsers(xuids.ToArray(), xuids.Count, message, expireTimeUtc).ConfigureAwait(false);
         }
 
         private async Task<NotificationsService> PrepareNotificationsServiceAsync()

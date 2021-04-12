@@ -449,9 +449,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
             var xuids = Fixture.Create<List<ulong>>();
             var message = Fixture.Create<string>();
+            var expireTime = Fixture.Create<DateTime>();
 
             // Act.
-            async Task<IList<MessageSendResult<ulong>>> Action() => await provider.SendCommunityMessageAsync(xuids, message).ConfigureAwait(false);
+            async Task<IList<MessageSendResult<ulong>>> Action() => await provider.SendCommunityMessageAsync(xuids, message, expireTime).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<List<MessageSendResult<ulong>>>();
@@ -465,9 +466,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var provider = new Dependencies().Build();
             var message = Fixture.Create<string>();
+            var expireTime = Fixture.Create<DateTime>();
 
             // Act.
-            Func<Task<IList<MessageSendResult<ulong>>>> action = async () => await provider.SendCommunityMessageAsync(null, message).ConfigureAwait(false);
+            Func<Task<IList<MessageSendResult<ulong>>>> action = async () => await provider.SendCommunityMessageAsync(null, message, expireTime).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
@@ -481,16 +483,17 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
             var xuids = Fixture.Create<List<ulong>>();
             var groupId = Fixture.Create<int>();
+            var expireTime = Fixture.Create<DateTime>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.SendCommunityMessageAsync(xuids, null).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(groupId, null).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.WhiteSpace).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(xuids, null, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.Empty, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.WhiteSpace, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, null, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.Empty, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.WhiteSpace, expireTime).ConfigureAwait(false),
             };
 
             // Assert.
@@ -508,8 +511,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
             var message = Fixture.Create<string>();
+            var expireTime = Fixture.Create<DateTime>();
 
-            async Task<MessageSendResult<int>> Action() => await provider.SendCommunityMessageAsync(groupId, message).ConfigureAwait(false);
+            async Task<MessageSendResult<int>> Action() => await provider.SendCommunityMessageAsync(groupId, message, expireTime).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<MessageSendResult<int>>();
@@ -517,7 +521,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
 
             // Act.
-            Func<Task> action = async () => await provider.SendCommunityMessageAsync(groupId, message).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.SendCommunityMessageAsync(groupId, message, expireTime).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -558,7 +562,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseEnforcementService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.SunriseEnforcementService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.SunriseNotificationsService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsRetrieveForUserOutput>());
-                this.SunriseNotificationsService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
+                this.SunriseNotificationsService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
                 this.Mapper.Map<SunrisePlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.Mapper.Map<IList<SunriseConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<SunriseConsoleDetails>>());
                 this.Mapper.Map<IList<SunriseSharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SunriseSharedConsoleUser>>());

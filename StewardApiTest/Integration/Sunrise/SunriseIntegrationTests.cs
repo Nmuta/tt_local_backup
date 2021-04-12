@@ -6,7 +6,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -56,7 +55,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
                 var keyVaultName = testContext.Properties["KeyVaultName"].ToString();
                 var lspGiftingPasswordName = testContext.Properties["LspGiftingPasswordName"].ToString();
                 lspGiftingPassword = await KeyVaultProvider.GetSecretAsync(keyVaultName, lspGiftingPasswordName).ConfigureAwait(false);
-
             }
 
             notificationXuid = 2535406565799176; // This xuid is required until we have access to an API to clear notification queue on LSP.
@@ -1447,7 +1445,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendNotifications()
         {
-            var message = new BulkCommunityMessage{Xuids = new List<ulong> {notificationXuid}, Message = "Integration Test Message"};
+            var message = new BulkCommunityMessage
+            {
+                Xuids = new List<ulong> {notificationXuid},
+                Message = "Integration Test Message",
+                Duration = TimeSpan.FromDays(1)
+            };
             var result = await stewardClient.SendNotificationsAsync(message).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
@@ -1459,7 +1462,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendNotificationsInvalidXuid()
         {
-            var message = new BulkCommunityMessage { Xuids = new List<ulong> { TestConstants.InvalidXuid }, Message = "Integration Test Message" };
+            var message = new BulkCommunityMessage
+            {
+                Xuids = new List<ulong> { TestConstants.InvalidXuid },
+                Message = "Integration Test Message",
+                Duration = TimeSpan.FromDays(1)
+            };
 
             try
             {
@@ -1476,7 +1484,34 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendNotificationsMessageTooLong()
         {
-            var message = new BulkCommunityMessage { Xuids = new List<ulong> { notificationXuid }, Message = new string('*', 520)};
+            var message = new BulkCommunityMessage
+            {
+                Xuids = new List<ulong> { notificationXuid },
+                Message = new string('*', 520),
+                Duration = TimeSpan.FromDays(1)
+            };
+
+            try
+            {
+                await stewardClient.SendNotificationsAsync(message).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SendNotificationsMessageDurationTooShort()
+        {
+            var message = new BulkCommunityMessage
+            {
+                Xuids = new List<ulong> { notificationXuid },
+                Message = "Integration Test Message",
+                Duration = TimeSpan.FromMinutes(5)
+            };
 
             try
             {
@@ -1493,7 +1528,12 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendNotificationsUnauthorized()
         {
-            var message = new BulkCommunityMessage { Xuids = new List<ulong> { notificationXuid }, Message = "Integration Test Message" };
+            var message = new BulkCommunityMessage
+            {
+                Xuids = new List<ulong> { notificationXuid },
+                Message = "Integration Test Message",
+                Duration = TimeSpan.FromDays(1)
+            };
 
             try
             {
@@ -1510,7 +1550,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendGroupNotifications()
         {
-            var message = new CommunityMessage { Message = "Integration Test Message" };
+            var message = new CommunityMessage
+            {
+                Message = "Integration Test Message",
+                Duration = TimeSpan.FromDays(1)
+            };
 
             await stewardClient.SendGroupNotificationsAsync(lspGroupId, message).ConfigureAwait(false);
         }
@@ -1519,7 +1563,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendGroupNotificationsUnauthorized()
         {
-            var message = new CommunityMessage { Message = "Integration Test Message" };
+            var message = new CommunityMessage
+            {
+                Message = "Integration Test Message",
+                Duration = TimeSpan.FromDays(1)
+            };
 
             try
             {
@@ -1536,7 +1584,32 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendGroupNotificationsMessageTooLong()
         {
-            var message = new CommunityMessage { Message = new string('*', 520) };
+            var message = new CommunityMessage
+            {
+                Message = new string('*', 520),
+                Duration = TimeSpan.FromDays(1)
+            };
+
+            try
+            {
+                await stewardClient.SendGroupNotificationsAsync(lspGroupId, message).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SendGroupNotificationsDurationTooShort()
+        {
+            var message = new CommunityMessage
+            {
+                Message = "Integration Test Message",
+                Duration = TimeSpan.FromMinutes(5)
+            };
 
             try
             {
@@ -1553,7 +1626,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendGroupNotificationsInvalidGroupId()
         {
-            var message = new CommunityMessage { Message = new string('*', 520) };
+            var message = new CommunityMessage
+            {
+                Message = new string('*', 520),
+                Duration = TimeSpan.FromDays(1)
+            };
 
             try
             {

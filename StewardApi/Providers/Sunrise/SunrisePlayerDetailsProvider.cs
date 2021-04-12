@@ -436,14 +436,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(IList<ulong> xuids, string message)
+        public async Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
 
             try
             {
-                var results = await this.sunriseNotificationsService.SendMessageNotificationToMultipleUsersAsync(xuids, message).ConfigureAwait(false);
+                var results = await this.sunriseNotificationsService.SendMessageNotificationToMultipleUsersAsync(xuids, message, expireTimeUtc).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults);
             }
@@ -454,7 +454,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<MessageSendResult<int>> SendCommunityMessageAsync(int groupId, string message)
+        public async Task<MessageSendResult<int>> SendCommunityMessageAsync(int groupId, string message, DateTime expireTimeUtc)
         {
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
 
@@ -464,7 +464,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                await this.sunriseNotificationsService.SendGroupMessageNotificationAsync(groupId, message).ConfigureAwait(false);
+                await this.sunriseNotificationsService.SendGroupMessageNotificationAsync(groupId, message, expireTimeUtc).ConfigureAwait(false);
                 messageResponse.Success = true;
             }
             catch
