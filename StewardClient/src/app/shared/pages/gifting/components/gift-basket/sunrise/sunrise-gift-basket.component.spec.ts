@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 import { SunriseMasterInventory } from '@models/sunrise/sunrise-master-inventory.model';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { SunriseService } from '@services/sunrise';
-import { SetSunriseGiftBasket } from '@navbar-app/pages/gifting/sunrise/state/sunrise-gifting.state.actions';
+import { SetSunriseGiftBasket } from '@shared/pages/gifting/sunrise/state/sunrise-gifting.state.actions';
 import faker from 'faker';
 
 describe('SunriseGiftBasketComponent', () => {

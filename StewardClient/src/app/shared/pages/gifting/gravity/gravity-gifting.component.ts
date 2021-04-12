@@ -28,7 +28,7 @@ export class GravityGiftingComponent extends GiftingBaseComponent implements OnI
   public selectedPlayerInventoryProfile: GravityPseudoPlayerInventoryProfile;
   public selectedPlayerInventory: GravityPlayerInventoryBeta;
 
-  constructor(protected readonly store: Store) {
+  constructor(private readonly store: Store) {
     super();
   }
 

@@ -9,7 +9,7 @@ import { of, throwError } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { GravityService } from '@services/gravity';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
-import { SetGravityGiftBasket } from '@navbar-app/pages/gifting/gravity/state/gravity-gifting.state.actions';
+import { SetGravityGiftBasket } from '@shared/pages/gifting/gravity/state/gravity-gifting.state.actions';
 import faker from 'faker';
 
 describe('GravityGiftBasketComponent', () => {

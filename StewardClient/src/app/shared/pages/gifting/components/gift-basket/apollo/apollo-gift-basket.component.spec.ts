@@ -9,7 +9,7 @@ import { ApolloMasterInventory } from '@models/apollo';
 import { of } from 'rxjs';
 import { GetApolloMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { ApolloService } from '@services/apollo';
-import { SetApolloGiftBasket } from '@navbar-app/pages/gifting/apollo/state/apollo-gifting.state.actions';
+import { SetApolloGiftBasket } from '@shared/pages/gifting/apollo/state/apollo-gifting.state.actions';
 import faker from 'faker';
 
 describe('ApolloGiftBasketComponent', () => {

@@ -6,8 +6,8 @@ import { GiftResponse } from '@models/gift-response';
 import { GravityGift, GravityMasterInventoryLists, GravityMasterInventory } from '@models/gravity';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
-import { GravityGiftingState } from '@navbar-app/pages/gifting/gravity/state/gravity-gifting.state';
-import { SetGravityGiftBasket } from '@navbar-app/pages/gifting/gravity/state/gravity-gifting.state.actions';
+import { GravityGiftingState } from '@shared/pages/gifting/gravity/state/gravity-gifting.state';
+import { SetGravityGiftBasket } from '@shared/pages/gifting/gravity/state/gravity-gifting.state.actions';
 import { Select, Store } from '@ngxs/store';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { GravityService } from '@services/gravity';
@@ -41,7 +41,7 @@ export class GravityGiftBasketComponent
 
   constructor(
     protected readonly backgroundJobService: BackgroundJobService,
-    protected readonly gravityService: GravityService,
+    private readonly gravityService: GravityService,
     protected readonly store: Store,
     protected readonly formBuilder: FormBuilder,
   ) {

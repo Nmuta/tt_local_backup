@@ -28,6 +28,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/messaging/messaging.module').then(m => m.CommunityMessagingModule),
       },
+      {
+        path: CommunityAppTools.GiftingPage.path,
+        loadChildren: () =>
+          import('../../shared/pages/gifting/gifting.module').then(m => m.GiftingsModule),
+      },
       ...sidebarRoutes,
       {
         path: '**',

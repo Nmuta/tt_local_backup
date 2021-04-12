@@ -58,7 +58,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   });
   public stateGroupOptions: Observable<InventoryItemGroup[]>;
 
-  constructor(protected readonly formBuilder: FormBuilder) {
+  constructor(private readonly formBuilder: FormBuilder) {
     super();
   }
 

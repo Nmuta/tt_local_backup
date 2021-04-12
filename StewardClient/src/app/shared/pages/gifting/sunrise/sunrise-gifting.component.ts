@@ -38,7 +38,7 @@ export class SunriseGiftingComponent extends GiftingBaseComponent implements OnI
 
   public disableLspGroupSelection: boolean = true;
 
-  constructor(protected readonly store: Store) {
+  constructor(private readonly store: Store) {
     super();
   }
 

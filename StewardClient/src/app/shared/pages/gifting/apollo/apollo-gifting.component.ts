@@ -34,7 +34,7 @@ export class ApolloGiftingComponent extends GiftingBaseComponent implements OnIn
   public selectedPlayerInventoryProfile: ApolloPlayerInventoryProfile;
   public selectedPlayerInventory: ApolloMasterInventory;
 
-  constructor(protected readonly store: Store) {
+  constructor(private readonly store: Store) {
     super();
   }
 

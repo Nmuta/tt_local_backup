@@ -16,14 +16,21 @@ export class CommunityAppTools {
     path: 'home',
   };
 
-  /** The gifting tool page. */
+  /** The messaging tool page. */
   public static readonly MessagingPage: RouteParams = {
     title: 'Messaging',
     path: 'messaging',
+  };
+
+  /** The gifting tool page. */
+  public static readonly GiftingPage: RouteParams = {
+    title: 'Gifting',
+    path: 'gifting',
   };
 }
 
 /** The list of tools to display in the navbar. */
 export const communityAppToolList: RouterLinkPath[] = [
   createCommunityNavbarPath(CommunityAppTools.MessagingPage),
+  createCommunityNavbarPath(CommunityAppTools.GiftingPage),
 ];
