@@ -29,6 +29,13 @@ import { ApolloGroupGroupIdInventoryFakeApi } from './apis/title/apollo/group/gr
 import { ApolloGroupXuidsInventoryFakeApi } from './apis/title/apollo/group/xuids/inventory';
 import { ApolloGroupGroupIdGiftHistoryFakeApi } from './apis/title/apollo/group/groupId/giftHistory';
 import { ApolloGroupsFakeApi } from './apis/title/apollo/groups';
+import { ApolloPlayersBanSummariesFakeApi } from './apis/title/apollo/players/ban-summaries';
+import { ApolloPlayersIdentitiesFakeApi } from './apis/title/apollo/players/identities';
+import { ApolloMasterInventoryFakeApi } from './apis/title/apollo/masterInventory';
+import { ApolloGiftingPlayersFakeApi } from './apis/title/apollo/gifting/players';
+import { ApolloGiftingLspGroupFakeApi } from './apis/title/apollo/gifting/groupId';
+import { ApolloGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/apollo/gifting/players_returnsbackgroundjob';
+import { ApolloPlayerXuidBanHistoryFakeApi } from './apis/title/apollo/player/xuid/banHistory';
 import { ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi } from './apis/title/apollo/player/xuid/sharedConsoleUsers';
 import { ApolloPlayerXuidConsolesFakeApi } from './apis/title/apollo/player/xuid/consoleDetails';
 import { ApolloPlayerXuidUserFlagsFakeApi } from './apis/title/apollo/player/xuid/userFlags';
@@ -39,11 +46,16 @@ import { GravityPlayerXuidProfileIdInventoryFakeApi } from './apis/title/gravity
 import { GravityPlayerT10IdInventoryFakeApi } from './apis/title/gravity/player/t10Id/inventory';
 import { GravityPlayerT10IdProfileIdInventoryFakeApi } from './apis/title/gravity/player/t10Id/profileId/inventory';
 import { GravityPlayerT10IdGiftHistoryFakeApi } from './apis/title/gravity/player/t10Id/giftHistory';
+import { GravityPlayersIdentitiesFakeApi } from './apis/title/gravity/players/identities';
+import { GravityPlayerT10IdDetailsFakeApi } from './apis/title/gravity/player/t10Id/details';
+import { GravityMasterInventoryFakeApi } from './apis/title/gravity/masterInventory';
+import { GravityGiftingPlayerFakeApi } from './apis/title/gravity/gifting/players';
 
 import { OpusPlayerGamertagDetailsFakeApi } from './apis/title/opus/player/gamertag/details';
 import { OpusPlayerProfileIdInventoryFakeApi } from './apis/title/opus/player/profileId/inventory';
 import { OpusPlayerXuidInventoryFakeApi } from './apis/title/opus/player/xuid/inventory';
 import { OpusPlayerXuidInventoryProfilesFakeApi } from './apis/title/opus/player/xuid/inventoryProfiles';
+import { OpusPlayersIdentitiesFakeApi } from './apis/title/opus/players/identities';
 
 import { SunriseConsoleIsBannedFakeApi } from './apis/title/sunrise/console/isBanned';
 import { SunrisePlayerGamertagDetailsFakeApi } from './apis/title/sunrise/player/gamertag/details';
@@ -66,25 +78,16 @@ import { SunriseGroupGroupIdGiftHistoryFakeApi } from './apis/title/sunrise/grou
 import { SunriseGroupsFakeApi } from './apis/title/sunrise/groups';
 import { SunrisePlayerXuidNotificationsFakeApi } from './apis/title/sunrise/player/xuid/notifications';
 import { SunrisePlayersBanSummariesFakeApi } from './apis/title/sunrise/players/ban-summaries';
-import { ApolloPlayersBanSummariesFakeApi } from './apis/title/apollo/players/ban-summaries';
-import { LoggerService, LogTopic } from '@services/logger';
-import { ApolloPlayersIdentitiesFakeApi } from './apis/title/apollo/players/identities';
-import { OpusPlayersIdentitiesFakeApi } from './apis/title/opus/players/identities';
+import { SunriseSendCommunityMessageFakeApi } from './apis/title/sunrise/notifications/send';
+import { SunriseSendCommunityMessageToLspGroupFakeApi } from './apis/title/sunrise/notifications/send/groupId';
 import { SunrisePlayersIdentitiesFakeApi } from './apis/title/sunrise/players/identities';
-import { GravityPlayersIdentitiesFakeApi } from './apis/title/gravity/players/identities';
-import { GravityPlayerT10IdDetailsFakeApi } from './apis/title/gravity/player/t10Id/details';
-import { GravityMasterInventoryFakeApi } from './apis/title/gravity/masterInventory';
-import { GravityGiftingPlayerFakeApi } from './apis/title/gravity/gifting/players';
 import { SunriseMasterInventoryFakeApi } from './apis/title/sunrise/masterInventory';
 import { SunriseGiftingLspGroupFakeApi } from './apis/title/sunrise/gifting/groupId';
 import { SunriseGiftingPlayersFakeApi } from './apis/title/sunrise/gifting/players';
-import { ApolloMasterInventoryFakeApi } from './apis/title/apollo/masterInventory';
-import { ApolloGiftingPlayersFakeApi } from './apis/title/apollo/gifting/players';
-import { ApolloGiftingLspGroupFakeApi } from './apis/title/apollo/gifting/groupId';
-import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
 import { SunriseGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/sunrise/gifting/players_returnsbackgroundjob';
-import { ApolloGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/apollo/gifting/players_returnsbackgroundjob';
-import { ApolloPlayerXuidBanHistoryFakeApi } from './apis/title/apollo/player/xuid/banHistory';
+
+import { LoggerService, LogTopic } from '@services/logger';
+import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -129,6 +132,10 @@ const fakeApiConstructors = [
   SunriseGiftingLspGroupFakeApi,
   SunriseGiftingPlayersReturnsBackgroundJobFakeApi,
   SunriseGiftingPlayersFakeApi,
+  SunriseSendCommunityMessageFakeApi,
+  SunriseSendCommunityMessageToLspGroupFakeApi,
+  SunriseSendCommunityMessageFakeApi,
+  SunriseSendCommunityMessageToLspGroupFakeApi,
 
   // Apollo
   ApolloPlayerGamertagDetailsFakeApi,

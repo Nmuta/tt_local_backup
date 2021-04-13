@@ -26,7 +26,9 @@ const routes: Routes = [
       {
         path: CommunityAppTools.MessagingPage.path,
         loadChildren: () =>
-          import('./pages/messaging/messaging.module').then(m => m.CommunityMessagingModule),
+          import('./pages/community-messaging/community-messaging.module').then(
+            m => m.CommunityMessagingModule,
+          ),
       },
       {
         path: CommunityAppTools.GiftingPage.path,

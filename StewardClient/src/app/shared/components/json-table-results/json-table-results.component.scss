@@ -5,7 +5,7 @@ button {
 }
 
 .table-container {
-  max-height: 35vh;
+  max-height: $text-area-max-height;
   overflow: auto;
 
   fa-icon {
@@ -38,4 +38,8 @@ button {
 
 .mat-cell {
   border-bottom: $border-standard solid $table-row-separator;
+}
+
+.row-error {
+  background-color: app-color-lighter($app-warn);
 }

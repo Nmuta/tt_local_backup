@@ -32,6 +32,11 @@ import { chain } from 'lodash';
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJob } from '@models/background-job';
 import { HttpParams } from '@angular/common/http';
+import {
+  BulkCommunityMessage,
+  CommunityMessage,
+  CommunityMessageResult,
+} from '@models/community-message';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -177,6 +182,31 @@ export class SunriseService {
   public getProfileSummaryByXuid(xuid: BigNumber): Observable<SunriseProfileSummary> {
     return this.apiService.getRequest<SunriseProfileSummary>(
       `${this.basePath}/player/xuid(${xuid})/profileSummary`,
+    );
+  }
+
+  /** Sends a community message. */
+  public postSendCommunityMessageToXuids(
+    xuids: BigNumber[],
+    communityMessage: CommunityMessage,
+  ): Observable<CommunityMessageResult<BigNumber>[]> {
+    const bulkMessage = communityMessage as BulkCommunityMessage;
+    bulkMessage.xuids = xuids;
+
+    return this.apiService.postRequest<CommunityMessageResult<BigNumber>[]>(
+      `${this.basePath}/notifications/send`,
+      bulkMessage,
+    );
+  }
+
+  /** Sends a community message. */
+  public postSendCommunityMessageToLspGroup(
+    groupId: BigNumber,
+    communityMessage: CommunityMessage,
+  ): Observable<CommunityMessageResult<BigNumber>> {
+    return this.apiService.postRequest<CommunityMessageResult<BigNumber>>(
+      `${this.basePath}/notifications/send/groupId(${groupId})`,
+      communityMessage,
     );
   }
 

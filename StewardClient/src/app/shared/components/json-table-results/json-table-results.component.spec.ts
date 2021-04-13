@@ -3,11 +3,12 @@ import { NgxsModule } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { KustoQueryResultsComponent } from './kusto-query-results.component';
+import { JsonTableResultsComponent } from './json-table-results.component';
+import { JsonTableResult } from '@models/json-table-result';
 
-describe('KustoQueryResultsComponent', () => {
-  let fixture: ComponentFixture<KustoQueryResultsComponent>;
-  let component: KustoQueryResultsComponent;
+describe('JsonTableResultsComponent', () => {
+  let fixture: ComponentFixture<JsonTableResultsComponent>;
+  let component: JsonTableResultsComponent;
 
   beforeEach(
     waitForAsync(() => {
@@ -17,12 +18,12 @@ describe('KustoQueryResultsComponent', () => {
           HttpClientTestingModule,
           NgxsModule.forRoot(),
         ],
-        declarations: [KustoQueryResultsComponent],
+        declarations: [JsonTableResultsComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KustoQueryResultsComponent);
+      fixture = TestBed.createComponent(JsonTableResultsComponent);
       component = fixture.debugElement.componentInstance;
     }),
   );
@@ -33,9 +34,9 @@ describe('KustoQueryResultsComponent', () => {
 
   describe('Method: ngOnChanges', () => {
     const testResults = [
-      { foo: 'bar', cat: 'dog' },
-      { foo: 'bar2', cat: 'dog2' },
-    ];
+      { foo: 'bar', cat: 'dog', showErrorInTable: false },
+      { foo: 'bar2', cat: 'dog2', showErrorInTable: true },
+    ] as JsonTableResult<never>[];
 
     beforeEach(() => {
       component.results = testResults;

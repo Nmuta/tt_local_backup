@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base-component.component';
+import { JsonTableResult } from '@models/json-table-result';
 import { KustoQuery } from '@models/kusto/kusto-query';
 import { KustoService } from '@services/kusto';
 import { NEVER } from 'rxjs';
@@ -18,7 +19,7 @@ export class KustoComponent extends BaseComponent {
     queryInput: new FormControl('', Validators.required),
   });
 
-  public queryResponse: unknown;
+  public queryResponse: JsonTableResult<unknown>[];
 
   /** True while waiting on a request. */
   public isLoading = false;
@@ -63,7 +64,11 @@ export class KustoComponent extends BaseComponent {
       )
       .subscribe(response => {
         this.isLoading = false;
-        this.queryResponse = response;
+        this.queryResponse = response.map(item => {
+          const tableResult = item as JsonTableResult<unknown>;
+          tableResult.showErrorInTable = false;
+          return tableResult;
+        });
       });
   }
 

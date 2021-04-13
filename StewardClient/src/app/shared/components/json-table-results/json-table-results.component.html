@@ -9,7 +9,7 @@
               class="fa-2x"
               [icon]="downloadIcon"
               [downloadCsv]="downloadResults"
-              filname="KustoQueryResults"
+              [filname]="downloadFilename"
               matTooltip="Download Kusto results."
             ></fa-icon>
             {{ column | humanize }}
@@ -18,7 +18,10 @@
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="resultKeys; sticky: true"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: resultKeys"></mat-row>
+        <mat-row
+          *matRowDef="let row; columns: resultKeys"
+          [class.row-error]="row?.showErrorInTable"
+        ></mat-row>
       </table>
     </div>
   </ng-container>

@@ -1,0 +1,36 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+}
+
+verify-action-button {
+  margin-top: $gap-large;
+  display: block;
+}
+
+section.new-community-message {
+  margin-top: 2em;
+
+  section.action-buttons {
+    margin-top: 3em;
+  }
+}
+
+section.message-results {
+  button {
+    margin-top: 2em;
+  }
+}
+
+.new-message-content {
+  font-size: 16px;
+
+  span:first-of-type {
+    margin-top: 2em;
+  }
+
+  span {
+    display: block;
+  }
+}

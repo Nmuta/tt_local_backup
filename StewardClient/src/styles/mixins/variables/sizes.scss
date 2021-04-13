@@ -5,3 +5,5 @@ $full-screen-height-calc: calc(
 $full-screen-height-calc-basic: calc(
   100vh - 64px /*navbar*/ - 64px /*navbar*/ - 20px /*tasteful margin*/
 );
+
+$button-min-size: 150px;

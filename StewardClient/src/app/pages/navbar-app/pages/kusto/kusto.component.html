@@ -35,8 +35,11 @@
   <mat-card>
     <h2>Query Results</h2>
     <ng-container *ngIf="!isLoading && !loadError; else failState">
-      <kusto-query-results *ngIf="queryResponse" [results]="queryResponse"
-        >Click to view results.</kusto-query-results
+      <json-table-results
+        *ngIf="queryResponse"
+        [results]="queryResponse"
+        downloadFilename="KustoQueryResults"
+        >Click to view results.</json-table-results
       >
     </ng-container>
   </mat-card>

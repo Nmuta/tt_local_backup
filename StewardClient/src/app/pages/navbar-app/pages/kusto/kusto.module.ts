@@ -12,8 +12,8 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { KustoQueryResultsModule } from './component/kusto-query-results/kusto-query-results.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { JsonTableResultsModule } from '@components/json-table-results/json-table-results.module';
 
 /** Module for displaying the available apps, or a login button. */
 @NgModule({
@@ -33,7 +33,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     JsonDumpModule,
     MatProgressSpinnerModule,
     KustoQuerySelectionModule,
-    KustoQueryResultsModule,
+    JsonTableResultsModule,
   ],
   exports: [KustoComponent],
 })

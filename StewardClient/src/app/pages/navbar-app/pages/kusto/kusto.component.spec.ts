@@ -11,6 +11,7 @@ import { of, throwError } from 'rxjs';
 import faker from 'faker';
 
 import { KustoComponent } from './kusto.component';
+import { JsonTableResult } from '@models/json-table-result';
 
 describe('KustoComponent', () => {
   let component: KustoComponent;
@@ -71,9 +72,9 @@ describe('KustoComponent', () => {
 
   describe('Method: runQuery', () => {
     const testResults = [
-      { foo: 'bar', cat: 'dog' },
-      { foo: 'bar2', cat: 'dog2' },
-    ];
+      { foo: 'bar', cat: 'dog', showErrorInTable: false },
+      { foo: 'bar2', cat: 'dog2', showErrorInTable: true },
+    ] as JsonTableResult<never>[];
 
     beforeEach(() => {
       mockKustoService.postRunKustoQuery = jasmine

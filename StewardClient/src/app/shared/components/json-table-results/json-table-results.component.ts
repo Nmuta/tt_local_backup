@@ -1,21 +1,18 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { KustoQuery } from '@models/kusto';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { JsonTableResult } from '@models/json-table-result';
 
-export type KustoQueryGroup = {
-  category: string;
-  items: KustoQuery[];
-};
-/** The query-results component. */
+/** Displays json table results component. */
 @Component({
-  selector: 'kusto-query-results',
-  templateUrl: './kusto-query-results.component.html',
-  styleUrls: ['./kusto-query-results.component.scss'],
+  selector: 'json-table-results',
+  templateUrl: './json-table-results.component.html',
+  styleUrls: ['./json-table-results.component.scss'],
   providers: [HumanizePipe],
 })
-export class KustoQueryResultsComponent implements OnChanges {
-  @Input() public results: unknown[];
+export class JsonTableResultsComponent implements OnChanges {
+  @Input() public results: JsonTableResult<unknown>[];
+  @Input() public downloadFilename: string = 'Unknown';
 
   public resultKeys: string[];
   public downloadResults: string[][];
@@ -31,7 +28,7 @@ export class KustoQueryResultsComponent implements OnChanges {
 
     if (!!changes?.results && this.results?.length > 0) {
       // Create the download results object based on the unknown[] of results
-      this.resultKeys = Object.keys(this.results[0]);
+      this.resultKeys = Object.keys(this.results[0]).filter(key => key !== 'showErrorInTable'); // showErrorInTable is only to know what elements to hightlight warnings for
       this.downloadResults[0] = this.resultKeys.map(key => this.humanizePipe.transform(key));
       for (const result of this.results) {
         const resultRow = [];
