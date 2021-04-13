@@ -122,7 +122,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 var response = await this.sunriseUserService.GetLiveOpsUserDataByXuidAsync(xuid).ConfigureAwait(false);
 
-                if (response.userData.region <= 0) { return null; }
+                if (response.userData.region <= 0)
+                {
+                    throw new NotFoundStewardException($"No player found for XUID: {xuid}.");
+                }
 
                 return this.mapper.Map<SunrisePlayerDetails>(response.userData);
             }

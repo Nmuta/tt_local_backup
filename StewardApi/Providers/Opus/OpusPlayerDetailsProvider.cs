@@ -95,6 +95,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
             {
                 var response = await this.opusUserService.GetUserMasterDataByXuidAsync(xuid).ConfigureAwait(false);
 
+                if (response.userMasterData.Region <= 0)
+                {
+                    throw new NotFoundStewardException($"No player found for XUID: {xuid}.");
+                }
+
                 return this.mapper.Map<OpusPlayerDetails>(response.userMasterData);
             }
             catch (Exception ex)
@@ -108,9 +113,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         {
             try
             {
-                await this.opusUserService.GetUserMasterDataByXuidAsync(xuid).ConfigureAwait(false);
+                var result = await this.opusUserService.GetUserMasterDataByXuidAsync(xuid).ConfigureAwait(false);
 
-                return true;
+                return result.userMasterData.Region > 0;
             }
             catch
             {
