@@ -1,14 +1,15 @@
+import BigNumber from 'bignumber.js';
 import { GuidLikeString } from '@models/extended-types';
 
 /** Interface for opus car item. */
 export interface OpusCar {
   vin: GuidLikeString;
-  baseCost: bigint;
-  carId: bigint;
+  baseCost: BigNumber;
+  carId: BigNumber;
   dateCreatedUtc: Date;
   displayName: string;
   special: 'Unicorn' | '';
-  quantity: bigint;
+  quantity: BigNumber;
   versionedLiveryId: GuidLikeString;
   versionedTuneId: GuidLikeString;
 }

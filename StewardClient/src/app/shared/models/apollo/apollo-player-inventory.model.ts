@@ -1,10 +1,11 @@
+import BigNumber from 'bignumber.js';
 import { ApolloInventoryItem, ApolloCar } from './inventory-items';
 
 /** Interface for apollo player inventory. */
 export interface ApolloPlayerInventory {
-  xuid: bigint;
+  xuid: BigNumber;
   giftReason: string;
-  credits: bigint;
+  credits: BigNumber;
   cars: ApolloCar[];
   mods: ApolloInventoryItem[];
   vanityItems: ApolloInventoryItem[];

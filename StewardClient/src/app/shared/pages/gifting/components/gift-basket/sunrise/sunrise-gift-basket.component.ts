@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, forwardRef, OnInit } from '@angular/core';
 import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BackgroundJob } from '@models/background-job';
@@ -16,6 +17,7 @@ import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-l
 import { Observable } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
+import { ZERO } from '@helpers/bignumbers';
 
 /** Sunrise gift basket. */
 @Component({
@@ -135,7 +137,7 @@ export class SunriseGiftBasketComponent
   }
 
   /** Sends a sunrise gift to an LSP group. */
-  public sendGiftToLspGroup(gift: SunriseGift): Observable<GiftResponse<bigint>> {
+  public sendGiftToLspGroup(gift: SunriseGift): Observable<GiftResponse<BigNumber>> {
     return this.sunriseService.postGiftLspGroup(this.lspGroup, gift);
   }
 
@@ -152,9 +154,9 @@ export class SunriseGiftBasketComponent
       const item = giftBasket[i];
       const itemExists = this.masterInventory[item.itemType]?.some(
         (masterItem: MasterInventoryItem) =>
-          masterItem.id === item.id &&
-          (masterItem.id >= BigInt(0) ||
-            (masterItem.id < BigInt(0) && masterItem.description === item.description)),
+          masterItem.id.isEqualTo(item.id) &&
+          (masterItem.id >= ZERO ||
+            (masterItem.id < ZERO && masterItem.description === item.description)),
       );
       giftBasket[i].error = !itemExists
         ? 'Item does not exist in the master inventory.'
@@ -165,7 +167,7 @@ export class SunriseGiftBasketComponent
     if (!this.ignoreMaxCreditLimit) {
       const creditsAboveLimit = giftBasket.findIndex(
         item =>
-          item.id < 0 &&
+          item.id.isLessThan(ZERO) &&
           item.description.toLowerCase() === 'credits' &&
           item.quantity > 500_000_000,
       );
@@ -176,14 +178,19 @@ export class SunriseGiftBasketComponent
 
     const creditsAboveMax = giftBasket.findIndex(
       item =>
-        item.id < 0 && item.description.toLowerCase() === 'credits' && item.quantity > 999_999_999,
+        item.id.isLessThan(ZERO) &&
+        item.description.toLowerCase() === 'credits' &&
+        item.quantity > 999_999_999,
     );
     if (creditsAboveMax >= 0) {
       giftBasket[creditsAboveMax].error = 'Credit max is 999,999,999.';
     }
 
     const wheelSpinsAboveLimit = giftBasket.findIndex(
-      item => item.id < 0 && item.description.toLowerCase() === 'wheelspins' && item.quantity > 200,
+      item =>
+        item.id.isLessThan(ZERO) &&
+        item.description.toLowerCase() === 'wheelspins' &&
+        item.quantity > 200,
     );
     if (wheelSpinsAboveLimit >= 0) {
       giftBasket[wheelSpinsAboveLimit].error = 'Wheel Spin limit for a gift is 200.';
@@ -191,7 +198,9 @@ export class SunriseGiftBasketComponent
 
     const superWheelSpinsAboveLimit = giftBasket.findIndex(
       item =>
-        item.id < 0 && item.description.toLowerCase() === 'superwheelspins' && item.quantity > 200,
+        item.id.isLessThan(ZERO) &&
+        item.description.toLowerCase() === 'superwheelspins' &&
+        item.quantity > 200,
     );
     if (superWheelSpinsAboveLimit >= 0) {
       giftBasket[superWheelSpinsAboveLimit].error = 'Super Wheel Spin limit for a gift is 200.';

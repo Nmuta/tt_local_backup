@@ -1,7 +1,8 @@
+import BigNumber from 'bignumber.js';
 /** Interface for sunrise player inventory item. */
 export interface SunriseInventoryItem {
-  itemId: bigint;
-  quantity: bigint;
+  itemId: BigNumber;
+  quantity: BigNumber;
   acquisitionUtc: Date;
   modifiedUtc: Date;
   lastUsedUtc: Date;

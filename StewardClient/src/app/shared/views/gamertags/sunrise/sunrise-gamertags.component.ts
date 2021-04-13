@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { SunriseSharedConsoleUser } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
@@ -24,7 +25,7 @@ export class SunriseGamertagsComponent extends GamertagsBaseComponent<SunriseSha
   }
 
   /** Gets the shared console gamertag list. */
-  public getSharedConsoleUsersByXuid(xuid: bigint): Observable<SunriseSharedConsoleUser[]> {
+  public getSharedConsoleUsersByXuid(xuid: BigNumber): Observable<SunriseSharedConsoleUser[]> {
     return this.sunriseService.getSharedConsoleUsersByXuid(xuid);
   }
 }

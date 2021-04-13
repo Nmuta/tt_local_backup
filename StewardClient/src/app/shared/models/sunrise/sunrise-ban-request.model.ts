@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import * as moment from 'moment';
 
 export enum SunriseBanArea {
@@ -18,7 +19,7 @@ export enum SunriseBanArea {
 
 /** A single part of the bulk /v1/title/Sunrise/players/ban request model */
 export interface SunriseBanRequest {
-  xuid?: bigint;
+  xuid?: BigNumber;
   gamertag?: string;
   banAllConsoles: boolean;
   banAllPcs: boolean;

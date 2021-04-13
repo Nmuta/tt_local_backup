@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 // General
 import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -57,7 +58,7 @@ describe('TicketAppBaseComponent', () => {
       mockStore = TestBed.inject(Store);
 
       const lookupGamertag = faker.name.firstName();
-      const xuid = BigInt(faker.random.number());
+      const xuid = new BigNumber(faker.random.number());
       const validIdentity: IdentityResultAlpha = {
         query: undefined,
         xuid: xuid,
@@ -121,7 +122,7 @@ describe('TicketAppBaseComponent', () => {
 
   describe('When getTicketRequestorGamertag$ returns valid identity', () => {
     const lookupGamertag = faker.name.firstName();
-    const xuid = BigInt(faker.random.number());
+    const xuid = new BigNumber(faker.random.number());
     const validIdentity: IdentityResultAlpha = {
       query: undefined,
       xuid: xuid,

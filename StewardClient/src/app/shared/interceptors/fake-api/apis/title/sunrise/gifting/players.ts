@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GiftResponse } from '@models/gift-response';
@@ -19,20 +20,20 @@ export class SunriseGiftingPlayersFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<GiftResponse<bigint>[]>> {
+  public handle(): Partial<Unprocessed<GiftResponse<BigNumber>[]>> {
     return SunriseGiftingPlayersFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<GiftResponse<bigint>[]>> {
+  public static make(): Partial<Unprocessed<GiftResponse<BigNumber>[]>> {
     return [
       {
-        playerOrLspGroup: BigInt(1234),
+        playerOrLspGroup: new BigNumber(1234),
         identityAntecedent: GiftIdentityAntecedent.Xuid,
         error: undefined,
       },
       {
-        playerOrLspGroup: BigInt(5678),
+        playerOrLspGroup: new BigNumber(5678),
         identityAntecedent: GiftIdentityAntecedent.Xuid,
         error: { message: 'fake api error' },
       },

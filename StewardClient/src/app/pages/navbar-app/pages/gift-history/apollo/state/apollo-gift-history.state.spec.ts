@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { IdentityResultAlpha } from '@models/identity-query.model';
@@ -27,7 +28,7 @@ describe('ApolloGiftHistoryState', () => {
 
   describe('[SetApolloGiftHistorySelectedPlayerIdentities] Action', () => {
     const selectedPlayerIdentities: IdentityResultAlpha = {
-      query: { xuid: BigInt(0) },
+      query: { xuid: new BigNumber(0) },
       gamertag: 'test-gamertag',
     };
 

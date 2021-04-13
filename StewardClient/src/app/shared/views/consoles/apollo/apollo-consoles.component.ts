@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { ApolloConsoleDetailsEntry } from '@models/apollo';
 import { GameTitleCodeName } from '@models/enums';
@@ -20,7 +21,7 @@ export class ApolloConsolesComponent extends ConsolesBaseComponent<ApolloConsole
   }
 
   /** Gets the console details list from XUID. */
-  public getConsoleDetailsByXuid(xuid: bigint): Observable<ApolloConsoleDetailsEntry[]> {
+  public getConsoleDetailsByXuid(xuid: BigNumber): Observable<ApolloConsoleDetailsEntry[]> {
     return this.apolloService.getConsoleDetailsByXuid(xuid);
   }
 }

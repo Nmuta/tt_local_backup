@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Injectable } from '@angular/core';
 import { BackgroundJob } from '@models/background-job';
 import { GuidLikeString, T10IdString } from '@models/extended-types';
@@ -83,7 +84,7 @@ export class GravityService {
   /** Gets a specific version of a player's inventory */
   public getPlayerInventoryByT10IdAndProfileId(
     t10Id: string,
-    profileId: bigint,
+    profileId: BigNumber,
   ): Observable<GravityPlayerInventoryBeta> {
     return this.apiService.getRequest<GravityPlayerInventoryBeta>(
       `${this.basePath}/player/t10Id(${t10Id})/profileId(${profileId})/inventory`,

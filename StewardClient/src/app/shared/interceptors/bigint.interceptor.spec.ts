@@ -3,12 +3,13 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
+import BigNumber from 'bignumber.js';
 
-import { BigintInterceptor } from './bigint.interceptor';
+import { BigNumberInterceptor } from './bigint.interceptor';
 
 // strategy based on https://dev.to/alisaduncan/intercepting-http-requests---using-and-testing-angulars-httpclient
-describe('BigintInterceptor:', () => {
-  let interceptor: BigintInterceptor;
+describe('BigNumberInterceptor:', () => {
+  let interceptor: BigNumberInterceptor;
   let httpMock: HttpTestingController;
   let http: HttpClient;
   const testUrl = `${environment.stewardApiUrl}/test`;
@@ -16,7 +17,7 @@ describe('BigintInterceptor:', () => {
     '{ "bigInt": 1859489456156489156456498156189189489156178917561756715647534176, "nested": { "bigInt": 1859489456156489156456498156189189489156178917561756715647534176 }, "smallInt": 2, "string": "hello" }';
 
   beforeEach(() => {
-    interceptor = new BigintInterceptor();
+    interceptor = new BigNumberInterceptor();
     interceptor.handle = jasmine.createSpy('handle', interceptor.handle).and.callThrough();
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -87,8 +88,8 @@ describe('BigintInterceptor:', () => {
 
   it('converts large numbers', done => {
     http.get(testUrl, { responseType: 'json' }).subscribe(response => {
-      expect(typeof response['bigInt'] === 'bigint').toBeTruthy();
-      expect(typeof response['nested']['bigInt'] === 'bigint').toBeTruthy();
+      expect(BigNumber.isBigNumber(response['bigInt'])).toBeTruthy();
+      expect(BigNumber.isBigNumber(response['nested']['bigInt'])).toBeTruthy();
       done();
     });
 
@@ -100,7 +101,7 @@ describe('BigintInterceptor:', () => {
 
   it('converts small numbers', done => {
     http.get(testUrl, { responseType: 'json' }).subscribe(response => {
-      expect(typeof response['smallInt'] === 'bigint').toBeTruthy();
+      expect(BigNumber.isBigNumber(response['smallInt'])).toBeTruthy();
       done();
     });
 

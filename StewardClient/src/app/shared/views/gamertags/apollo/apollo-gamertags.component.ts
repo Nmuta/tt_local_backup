@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { createNavbarPath, NavbarTools } from '@navbar-app/navbar-tool-list';
 import { GamertagsBaseComponent } from '../gamertags.base.component';
@@ -24,7 +25,7 @@ export class ApolloGamertagsComponent extends GamertagsBaseComponent<ApolloShare
   }
 
   /** Gets the shared console gamertag list. */
-  public getSharedConsoleUsersByXuid(xuid: bigint): Observable<ApolloSharedConsoleUser[]> {
+  public getSharedConsoleUsersByXuid(xuid: BigNumber): Observable<ApolloSharedConsoleUser[]> {
     return this.apolloService.getSharedConsoleUsersByXuid(xuid);
   }
 }

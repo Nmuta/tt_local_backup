@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA, SimpleChanges } from '@angular/core';
 import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -190,7 +191,7 @@ describe('GravityGiftBasketComponent', () => {
         component.playerIdentities = [
           {
             query: { gamertag: null },
-            xuid: BigInt(1234),
+            xuid: new BigNumber(1234),
             t10Id: t10Id,
           },
         ];
@@ -233,7 +234,7 @@ describe('GravityGiftBasketComponent', () => {
           component.playerIdentities = [
             {
               query: { gamertag: null },
-              xuid: BigInt(1234),
+              xuid: new BigNumber(1234),
               t10Id: t10Id,
             },
           ];
@@ -272,12 +273,12 @@ describe('GravityGiftBasketComponent', () => {
 
   describe('Method: generateGiftInventoryFromGiftBasket', () => {
     const giftReason: string = 'fake gift reason';
-    const giftItem1Id = BigInt(faker.random.number());
-    const giftItem2Id = BigInt(faker.random.number());
-    const giftItem3Id = BigInt(faker.random.number());
-    const giftItem4Id = BigInt(faker.random.number());
-    const giftItem5Id = BigInt(faker.random.number());
-    const giftItem6Id = BigInt(faker.random.number());
+    const giftItem1Id = new BigNumber(faker.random.number());
+    const giftItem2Id = new BigNumber(faker.random.number());
+    const giftItem3Id = new BigNumber(faker.random.number());
+    const giftItem4Id = new BigNumber(faker.random.number());
+    const giftItem5Id = new BigNumber(faker.random.number());
+    const giftItem6Id = new BigNumber(faker.random.number());
 
     beforeEach(() => {
       component.sendGiftForm = formBuilder.group({
@@ -367,7 +368,7 @@ describe('GravityGiftBasketComponent', () => {
       component.playerIdentities = [
         {
           query: { t10Id: faker.random.uuid().toString() },
-          xuid: BigInt(faker.random.number()),
+          xuid: new BigNumber(faker.random.number()),
         },
       ];
     });
@@ -413,12 +414,12 @@ describe('GravityGiftBasketComponent', () => {
   describe('Method: setGiftBasketItemErrors', () => {
     beforeEach(() => {
       component.masterInventory = {
-        creditRewards: [{ id: BigInt(0), description: 'Credits', quantity: 0 }],
-        cars: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
-        repairKits: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
-        masteryKits: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
-        upgradeKits: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
-        energyRefills: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
+        creditRewards: [{ id: new BigNumber(0), description: 'Credits', quantity: 0 }],
+        cars: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
+        repairKits: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
+        masteryKits: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
+        upgradeKits: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
+        energyRefills: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
       } as GravityMasterInventory;
     });
 
@@ -429,7 +430,7 @@ describe('GravityGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Credits',
             quantity: 200,
-            id: BigInt(0),
+            id: new BigNumber(0),
             edit: false,
             error: undefined,
           },
@@ -449,7 +450,7 @@ describe('GravityGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Bad Credits',
             quantity: 200,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -462,14 +463,14 @@ describe('GravityGiftBasketComponent', () => {
       });
     });
 
-    describe('When car reward reward', () => {
+    describe('When car reward', () => {
       it('should set item error to undefined', () => {
         const input = [
           {
             itemType: 'cars',
             description: 'Test Car',
             quantity: 200,
-            id: BigInt(12345),
+            id: new BigNumber(12345),
             edit: false,
             error: undefined,
           },
@@ -490,7 +491,7 @@ describe('GravityGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Soft Currency',
             quantity: 500_000_001,
-            id: BigInt(0),
+            id: new BigNumber(0),
             edit: false,
             error: undefined,
           },
@@ -511,7 +512,7 @@ describe('GravityGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Soft Currency',
             quantity: 400_000_000,
-            id: BigInt(0),
+            id: new BigNumber(0),
             edit: false,
             error: undefined,
           },
@@ -532,11 +533,12 @@ describe('GravityGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Soft Currency',
             quantity: 1_000_000_000,
-            id: BigInt(0),
+            id: new BigNumber(0),
             edit: false,
             error: undefined,
           },
         ];
+
         const response = component.setGiftBasketItemErrors(input);
 
         expect(response.length).toEqual(1);

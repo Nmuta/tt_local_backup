@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { GamertagString } from '@models/extended-types';
 import * as moment from 'moment';
 
@@ -18,7 +19,7 @@ export enum ApolloBanArea {
 
 /** A single part of the bulk /v1/title/Apollo/players/ban request model */
 export interface ApolloBanRequest {
-  xuid: bigint;
+  xuid: BigNumber;
   gamertag: GamertagString;
   banAllConsoles: boolean;
   banAllPcs: boolean;

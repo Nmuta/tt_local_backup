@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
@@ -33,7 +34,7 @@ describe('GoToInventoryButtonComponent', () => {
   });
 
   describe('Method goToInventory:', () => {
-    const xuid = BigInt(faker.random.number());
+    const xuid = new BigNumber(faker.random.number());
     const gameTitle = GameTitleCodeName.Street;
     beforeEach(() => {
       component.xuid = xuid;

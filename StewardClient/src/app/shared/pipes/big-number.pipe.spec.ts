@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { BigNumberPipe } from './big-number.pipe';
 
 describe('BigNumbersPipe', () => {
@@ -8,7 +9,7 @@ describe('BigNumbersPipe', () => {
 
   it('formats BigInts', () => {
     const pipe = new BigNumberPipe();
-    const acceptableNumber = BigInt(Number.MAX_SAFE_INTEGER);
+    const acceptableNumber = new BigNumber(Number.MAX_SAFE_INTEGER);
     const formatted = pipe.transform(acceptableNumber);
     expect(formatted).toBe('9,007,199,254,740,991');
   });
@@ -22,7 +23,9 @@ describe('BigNumbersPipe', () => {
 
   it('handles numbers above MAX_SAFE_INTEGER', () => {
     const pipe = new BigNumberPipe();
-    const tooLargeNumber = BigInt(Number.MAX_SAFE_INTEGER) * BigInt(Number.MAX_SAFE_INTEGER);
+    const tooLargeNumber = new BigNumber(Number.MAX_SAFE_INTEGER).times(
+      new BigNumber(Number.MAX_SAFE_INTEGER),
+    );
     const formatted = pipe.transform(tooLargeNumber);
     expect(formatted).toBe('81,129,638,414,606,663,681,390,495,662,081');
   });

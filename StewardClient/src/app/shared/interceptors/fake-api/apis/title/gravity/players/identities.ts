@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import {
@@ -34,7 +35,7 @@ export class GravityPlayersIdentitiesFakeApi extends FakeApiBase {
       return <IdentityResultBeta>{
         query: query,
         gamertag: isGamertagQuery(query) ? query.gamertag : faker.name.firstName(),
-        xuid: isXuidQuery(query) ? query.xuid : BigInt(faker.random.number()),
+        xuid: isXuidQuery(query) ? query.xuid : new BigNumber(faker.random.number()),
         t10id: isT10IdQuery(query) ? query.t10Id : faker.random.uuid(),
       };
     });

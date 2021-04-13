@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, OnChanges } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { SunriseConsoleDetailsEntry } from '@models/sunrise';
@@ -24,7 +25,7 @@ export class SunriseConsolesComponent
   }
 
   /** Gets the console details list from XUID. */
-  public getConsoleDetailsByXuid(xuid: bigint): Observable<SunriseConsoleDetailsEntry[]> {
+  public getConsoleDetailsByXuid(xuid: BigNumber): Observable<SunriseConsoleDetailsEntry[]> {
     return this.sunriseSerice.getConsoleDetailsByXuid(xuid);
   }
 

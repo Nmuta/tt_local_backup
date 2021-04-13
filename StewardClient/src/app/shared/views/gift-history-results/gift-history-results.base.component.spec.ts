@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IdentityResultAlpha } from '@models/identity-query.model';
@@ -48,7 +49,7 @@ describe('SunriseGiftHistoryComponent', () => {
       });
       describe('when selectedPlayer is valid', () => {
         beforeEach(() => {
-          component.selectedPlayer = { query: { xuid: BigInt(123456789) } };
+          component.selectedPlayer = { query: { xuid: new BigNumber(123456789) } };
         });
         describe('when service returns valid gift histories', () => {
           const validGiftHistories: SunriseGiftHistory[] = [];
@@ -83,7 +84,7 @@ describe('SunriseGiftHistoryComponent', () => {
       });
       describe('when selectedGroup is valid', () => {
         beforeEach(() => {
-          component.selectedGroup = { id: BigInt(4), name: 'testName' };
+          component.selectedGroup = { id: new BigNumber(4), name: 'testName' };
         });
         describe('when service returns valid gift histories', () => {
           const validGiftHistories: SunriseGiftHistory[] = [];

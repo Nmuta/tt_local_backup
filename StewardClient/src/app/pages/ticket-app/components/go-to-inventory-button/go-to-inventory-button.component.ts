@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
+import BigNumber from 'bignumber.js';
 
 /** A button that routes the user to an inventory app. */
 @Component({
@@ -10,7 +11,7 @@ import { GameTitleCodeName } from '@models/enums';
 })
 export class GoToInventoryButtonComponent {
   @Input() public gameTitle: GameTitleCodeName = null;
-  @Input() public xuid: BigInt = null;
+  @Input() public xuid: BigNumber = null;
 
   /** Routes to the inventory app. */
   public goToInventory(): void {

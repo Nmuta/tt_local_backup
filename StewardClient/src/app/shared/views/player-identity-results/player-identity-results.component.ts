@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, Input } from '@angular/core';
 import { IdentityResultBeta, IdentityResultUnion } from '@models/identity-query.model';
 
@@ -23,7 +24,7 @@ export class PlayerIdentityResultsComponent {
   }
 
   /** The players XUID. */
-  public get xuid(): bigint {
+  public get xuid(): BigNumber {
     return this.identity?.xuid;
   }
 }

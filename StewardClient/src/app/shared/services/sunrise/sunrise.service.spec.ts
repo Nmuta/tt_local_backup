@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { SunriseConsoleIsBannedFakeApi } from '@interceptors/fake-api/apis/title/sunrise/console/isBanned';
@@ -81,7 +82,7 @@ describe('SunriseService', () => {
     let expectedXuid;
 
     beforeEach(() => {
-      expectedXuid = BigInt(fakeXuid());
+      expectedXuid = new BigNumber(fakeXuid());
     });
 
     it('should call API service getRequest with the expected params', done => {
@@ -129,7 +130,7 @@ describe('SunriseService', () => {
   });
 
   describe('Method: getGiftHistoryByXuid', () => {
-    const expectedXuid = BigInt(123456789);
+    const expectedXuid = new BigNumber(123456789);
 
     beforeEach(() => {
       apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
@@ -146,7 +147,7 @@ describe('SunriseService', () => {
   });
 
   describe('Method: getGiftHistoryByLspGroup', () => {
-    const expectedLspGroupId = BigInt(1234);
+    const expectedLspGroupId = new BigNumber(1234);
 
     beforeEach(() => {
       apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
@@ -185,7 +186,7 @@ describe('SunriseService', () => {
 
   it('handles getBanHistoryByXuid', done => {
     const typedReturnValue = (nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make(
-      BigInt(12345),
+      new BigNumber(12345),
       1,
     ));
     service.getBanHistoryByXuid(fakeXuid()).subscribe(output => {
@@ -222,7 +223,7 @@ describe('SunriseService', () => {
 
   it('handles getConsoleDetailsByXuid', done => {
     nextReturnValue = SunrisePlayerXuidConsolesFakeApi.makeMany();
-    service.getConsoleDetailsByXuid(BigInt(fakeXuid())).subscribe(output => {
+    service.getConsoleDetailsByXuid(new BigNumber(fakeXuid())).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -259,7 +260,7 @@ describe('SunriseService', () => {
 
   describe('Method: postGiftPlayers', () => {
     const gift: SunriseGroupGift = {
-      xuids: [BigInt(123456789)],
+      xuids: [new BigNumber(123456789)],
       giftReason: 'unit testing gift',
       inventory: {
         creditRewards: [],
@@ -288,7 +289,7 @@ describe('SunriseService', () => {
 
   describe('Method: postGiftPlayersUsingBackgroundTask', () => {
     const gift: SunriseGroupGift = {
-      xuids: [BigInt(123456789)],
+      xuids: [new BigNumber(123456789)],
       giftReason: 'unit testing gift',
       inventory: {
         creditRewards: [],
@@ -316,7 +317,7 @@ describe('SunriseService', () => {
   });
 
   describe('Method: postGiftLspGroup', () => {
-    const lspGroup: LspGroup = { id: BigInt(123), name: 'test-lsp-group' };
+    const lspGroup: LspGroup = { id: new BigNumber(123), name: 'test-lsp-group' };
     const gift: SunriseGift = {
       giftReason: 'unit testing gift',
       inventory: {

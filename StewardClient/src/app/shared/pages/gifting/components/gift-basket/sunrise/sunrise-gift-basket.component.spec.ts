@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -83,12 +84,12 @@ describe('SunriseGiftBasketComponent', () => {
 
   describe('Method: generateGiftInventoryFromGiftBasket', () => {
     const giftReason: string = 'fake gift reason';
-    const giftItem1Id = BigInt(faker.random.number());
-    const giftItem2Id = BigInt(faker.random.number());
-    const giftItem3Id = BigInt(faker.random.number());
-    const giftItem4Id = BigInt(faker.random.number());
-    const giftItem5Id = BigInt(faker.random.number());
-    const giftItem6Id = BigInt(faker.random.number());
+    const giftItem1Id = new BigNumber(faker.random.number());
+    const giftItem2Id = new BigNumber(faker.random.number());
+    const giftItem3Id = new BigNumber(faker.random.number());
+    const giftItem4Id = new BigNumber(faker.random.number());
+    const giftItem5Id = new BigNumber(faker.random.number());
+    const giftItem6Id = new BigNumber(faker.random.number());
 
     beforeEach(() => {
       component.sendGiftForm = formBuilder.group({
@@ -242,15 +243,15 @@ describe('SunriseGiftBasketComponent', () => {
     beforeEach(() => {
       component.masterInventory = {
         creditRewards: [
-          { id: BigInt(-1), description: 'Credits', quantity: 0 },
-          { id: BigInt(-1), description: 'WheelSpins', quantity: 0 },
-          { id: BigInt(-1), description: 'SuperWheelSpins', quantity: 0 },
+          { id: new BigNumber(-1), description: 'Credits', quantity: 0 },
+          { id: new BigNumber(-1), description: 'WheelSpins', quantity: 0 },
+          { id: new BigNumber(-1), description: 'SuperWheelSpins', quantity: 0 },
         ],
-        cars: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
-        carHorns: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
-        vanityItems: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
-        quickChatLines: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
-        emotes: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
+        cars: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
+        carHorns: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
+        vanityItems: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
+        quickChatLines: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
+        emotes: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
       } as SunriseMasterInventory;
     });
 
@@ -261,7 +262,7 @@ describe('SunriseGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Credits',
             quantity: 200,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -281,7 +282,7 @@ describe('SunriseGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Bad Credits',
             quantity: 200,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -301,7 +302,7 @@ describe('SunriseGiftBasketComponent', () => {
             itemType: 'cars',
             description: 'Test Car',
             quantity: 200,
-            id: BigInt(12345),
+            id: new BigNumber(12345),
             edit: false,
             error: undefined,
           },
@@ -321,7 +322,7 @@ describe('SunriseGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Credits',
             quantity: 500_000_001,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -341,7 +342,7 @@ describe('SunriseGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Credits',
             quantity: 400_000_000,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -361,7 +362,7 @@ describe('SunriseGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Credits',
             quantity: 1_000_000_000,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -381,7 +382,7 @@ describe('SunriseGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'WheelSpins',
             quantity: 201,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -401,7 +402,7 @@ describe('SunriseGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'WheelSpins',
             quantity: 199,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -421,7 +422,7 @@ describe('SunriseGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'SuperWheelSpins',
             quantity: 201,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -441,7 +442,7 @@ describe('SunriseGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'SuperWheelSpins',
             quantity: 199,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },

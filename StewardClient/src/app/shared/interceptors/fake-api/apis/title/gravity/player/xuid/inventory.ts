@@ -1,6 +1,7 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt } from '@interceptors/fake-api/utility';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { GravityPlayerInventoryBeta } from '@models/gravity';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { Unprocessed } from '@models/unprocessed';
@@ -32,7 +33,7 @@ export class GravityPlayerXuidInventoryFakeApi extends FakeApiBase {
         .fill(0)
         .map(() => {
           return {
-            id: fakeBigInt(),
+            id: fakeBigNumber(),
             quantity: faker.random.number(5),
             description: faker.lorem.sentences(2),
             itemType: undefined,
@@ -45,7 +46,7 @@ export class GravityPlayerXuidInventoryFakeApi extends FakeApiBase {
       externalProfileId: faker.random.uuid(),
       creditRewards: [
         {
-          id: BigInt(0),
+          id: new BigNumber(0),
           description: 'Soft Currency',
           quantity: faker.random.number(100_000),
           itemType: undefined,

@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ApolloBanArea, ApolloBanRequest, ApolloBanSummary } from '@models/apollo';
@@ -11,7 +12,6 @@ import { NEVER, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
-
 /** Routed Component; Apollo Banning Tool. */
 @Component({
   templateUrl: './apollo-banning.component.html',
@@ -31,7 +31,7 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
   public selectedPlayerIdentity: AugmentedCompositeIdentity = null;
 
   public summaryLookup: Dictionary<ApolloBanSummary> = {};
-  public bannedXuids: bigint[] = [];
+  public bannedXuids: BigNumber[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
 
   public identitySortFn: (
@@ -55,7 +55,7 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
     summaryLookup$.subscribe(summaryLookup => (this.summaryLookup = summaryLookup));
     summaries$
       .pipe(
-        map(summaries => filter(summaries, summary => summary.banCount > BigInt(0))), // only banned identities
+        map(summaries => filter(summaries, summary => summary.banCount > new BigNumber(0))), // only banned identities
         map(summaries => summaries.map(summary => summary.xuid)), // map to xuids
       )
       .subscribe(bannedXuids => (this.bannedXuids = bannedXuids));

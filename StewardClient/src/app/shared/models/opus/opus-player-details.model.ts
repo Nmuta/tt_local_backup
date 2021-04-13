@@ -1,24 +1,25 @@
+import BigNumber from 'bignumber.js';
 import { GamertagString } from '@models/extended-types';
 
 /** The /v1/title/opus/player/???/details model */
 export interface OpusPlayerDetails {
-  xuid: bigint;
+  xuid: BigNumber;
   gamertag: GamertagString;
   licensePlate: string;
   ageGroup: string;
   subscriptionTier: string;
-  country: bigint;
-  region: bigint;
-  lcid: bigint;
+  country: BigNumber;
+  region: BigNumber;
+  lcid: BigNumber;
   ipAddress: string;
   lastLoginUtc: Date;
   firstLoginUtc: Date;
-  currentDriverModelId: bigint;
+  currentDriverModelId: BigNumber;
   currentPlayerTitleId: string;
   currentBadgeId: string;
-  currentCareerLevel: bigint;
+  currentCareerLevel: BigNumber;
   acceptsClubInvites: boolean;
-  clubTopTierCount: bigint;
+  clubTopTierCount: BigNumber;
   clubTag: string;
   roleInClub: string;
 }

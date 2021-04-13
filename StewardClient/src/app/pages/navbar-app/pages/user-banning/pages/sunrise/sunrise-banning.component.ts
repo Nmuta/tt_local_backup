@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, ViewChildren } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { IdentityResultAlpha } from '@models/identity-query.model';
@@ -35,7 +36,7 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
   });
 
   public summaryLookup: Dictionary<SunriseBanSummary> = {};
-  public bannedXuids: bigint[] = [];
+  public bannedXuids: BigNumber[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
 
   public identitySortFn = null;
@@ -60,7 +61,7 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
     summaryLookup$.subscribe(summaryLookup => (this.summaryLookup = summaryLookup));
     summaries$
       .pipe(
-        map(summaries => filter(summaries, summary => summary.banCount > BigInt(0))), // only banned identities
+        map(summaries => filter(summaries, summary => summary.banCount > new BigNumber(0))), // only banned identities
         map(summaries => summaries.map(summary => summary.xuid)), // map to xuids
       )
       .subscribe(bannedXuids => (this.bannedXuids = bannedXuids));

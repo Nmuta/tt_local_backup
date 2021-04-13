@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt, fakeGamertag, faker, fakeXuid } from '@interceptors/fake-api/utility';
+import { fakeBigNumber, fakeGamertag, faker, fakeXuid } from '@interceptors/fake-api/utility';
 import { GuidLikeString } from '@models/extended-types';
 import { GravityPlayerDetails, GravitySaveState } from '@models/gravity';
 import { chain } from 'lodash';
@@ -38,18 +38,18 @@ export class GravityPlayerT10IdDetailsFakeApi extends FakeApiBase {
     const model = {
       xuid: fakeXuid(),
       gamertag: fakeGamertag(),
-      ageGroup: fakeBigInt(),
-      country: fakeBigInt(),
+      ageGroup: fakeBigNumber(),
+      country: fakeBigNumber(),
       firstLoginUtc: faker.date.past(1),
       ipAddress: faker.internet.ip(),
       lastGameSettingsUsed: faker.random.uuid(),
       lastLoginUtc: faker.date.recent(7),
-      lcid: fakeBigInt(),
+      lcid: fakeBigNumber(),
       playFabId: faker.random.uuid(),
-      region: fakeBigInt(),
+      region: fakeBigNumber(),
       subscriptionTier: faker.random.uuid(),
       t10Id: t10id,
-      timeOffsetInSeconds: fakeBigInt(),
+      timeOffsetInSeconds: fakeBigNumber(),
       userInventoryId: faker.random.uuid(),
       saveStates: Array(10)
         .fill(undefined)

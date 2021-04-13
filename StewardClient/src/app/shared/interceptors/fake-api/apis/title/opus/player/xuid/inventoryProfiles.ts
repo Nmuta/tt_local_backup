@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
+import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 import { OpusPlayerInventoryProfile } from '@models/opus';
 
 /** Fake API for apollo player inventory profiles. */
@@ -32,7 +32,7 @@ export class OpusPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
       .fill(undefined)
       .map(() => {
         return {
-          profileId: fakeBigInt(),
+          profileId: fakeBigNumber(),
           isCurrent: false,
         };
       });

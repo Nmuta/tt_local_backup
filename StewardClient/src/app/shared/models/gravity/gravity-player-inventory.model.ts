@@ -1,9 +1,10 @@
+import BigNumber from 'bignumber.js';
 import { GuidLikeString, T10IdString } from '@models/extended-types';
 import { GravityCar, GravityInventoryItem, GravityKit } from './inventory-items';
 
 /** Interface for gravity player inventory. */
 export interface GravityPlayerInventory {
-  xuid: bigint;
+  xuid: BigNumber;
   t10Id: T10IdString;
   previousGameSettingsId: GuidLikeString;
   currentExternalProfileId: GuidLikeString;

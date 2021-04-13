@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, Input } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
@@ -59,7 +60,7 @@ export abstract class GiftBasketBaseComponent<
   /** Whether the gift basket has errors in it. */
   public giftBasketHasErrors: boolean = false;
   /** Gifting response. */
-  public giftResponse: GiftResponse<bigint | string>[];
+  public giftResponse: GiftResponse<BigNumber | string>[];
   /** The gift basket display columns */
   public displayedColumns: string[] = ['itemId', 'description', 'quantity', 'itemType', 'remove'];
   /** Gift reasons */
@@ -118,7 +119,7 @@ export abstract class GiftBasketBaseComponent<
   public abstract sendGiftToPlayers(gift: GiftUnion): Observable<BackgroundJob<void>>;
 
   /** Sends a gift to an LSP group. */
-  public abstract sendGiftToLspGroup(gift: GiftUnion): Observable<GiftResponse<bigint>>;
+  public abstract sendGiftToLspGroup(gift: GiftUnion): Observable<GiftResponse<BigNumber>>;
 
   /** Sets the state gift basket. */
   public abstract setStateGiftBasket(giftBasket: GiftBasketModel[]): void;
@@ -146,7 +147,7 @@ export abstract class GiftBasketBaseComponent<
 
     const existingItemIndex = tmpGiftBasket.findIndex(data => {
       return (
-        data.id === item.id &&
+        data.id.isEqualTo(item.id) &&
         data.itemType === item.itemType &&
         data.description === item.description
       );
@@ -201,7 +202,7 @@ export abstract class GiftBasketBaseComponent<
     this.isLoading = true;
     const gift = this.generateGiftInventoryFromGiftBasket();
 
-    const sendGift$: Observable<BackgroundJob<void> | GiftResponse<bigint>> = this
+    const sendGift$: Observable<BackgroundJob<void> | GiftResponse<BigNumber>> = this
       .usingPlayerIdentities
       ? this.sendGiftToPlayers(gift)
       : this.sendGiftToLspGroup(gift);
@@ -222,7 +223,7 @@ export abstract class GiftBasketBaseComponent<
             return;
           }
 
-          this.giftResponse = [response as GiftResponse<bigint>];
+          this.giftResponse = [response as GiftResponse<BigNumber>];
           this.isLoading = false;
         }),
       )
@@ -232,7 +233,7 @@ export abstract class GiftBasketBaseComponent<
   /** Waits for a background job to complete. */
   public waitForBackgroundJobToComplete(job: BackgroundJob<void>): void {
     this.backgroundJobService
-      .getBackgroundJob<GiftResponse<bigint | string>[]>(job.jobId)
+      .getBackgroundJob<GiftResponse<BigNumber | string>[]>(job.jobId)
       .pipe(
         takeUntil(this.onDestroy$),
         catchError(_error => {

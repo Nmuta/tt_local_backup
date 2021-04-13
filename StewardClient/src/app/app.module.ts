@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
-import { BigintInterceptor } from '@interceptors/bigint.interceptor';
+import { BigNumberInterceptor } from '@interceptors/bigint.interceptor';
 import { FakeApiInterceptor } from '@interceptors/fake-api/fake-api.interceptor';
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
@@ -156,7 +156,7 @@ function fakeApiOrNothing(): Provider[] {
     {
       // this has to be the last interceptor, since it changes the type of the request to 'text'
       provide: HTTP_INTERCEPTORS,
-      useClass: BigintInterceptor,
+      useClass: BigNumberInterceptor,
       multi: true,
     },
   ],

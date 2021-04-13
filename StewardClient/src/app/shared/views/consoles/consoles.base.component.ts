@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
@@ -27,7 +28,7 @@ export abstract class ConsolesBaseComponent<T> extends BaseComponent implements 
   public abstract supportsConsoleBanning: boolean;
 
   /** Gets the console details list from XUID. */
-  public abstract getConsoleDetailsByXuid(xuid: bigint): Observable<T[]>;
+  public abstract getConsoleDetailsByXuid(xuid: BigNumber): Observable<T[]>;
 
   /** Initialization hook. */
   public ngOnChanges(): void {

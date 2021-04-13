@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SunriseSharedConsoleUser } from '@models/sunrise';
@@ -60,7 +61,7 @@ describe('SunriseGamertagsComponent', () => {
         component.identity = {
           query: undefined,
           gamertag: faker.name.firstName(),
-          xuid: BigInt(faker.random.number({ min: 10_000, max: 500_000 })),
+          xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
         };
       });
 
@@ -73,8 +74,8 @@ describe('SunriseGamertagsComponent', () => {
       describe('And getSharedConsoleUsersByXuid return valid response', () => {
         const relatedGamertags = [
           {
-            sharedConsoleId: BigInt(faker.random.number()),
-            xuid: BigInt(faker.random.number()),
+            sharedConsoleId: new BigNumber(faker.random.number()),
+            xuid: new BigNumber(faker.random.number()),
             gamertag: faker.random.word(),
             everBanned: faker.random.boolean(),
           },
@@ -117,7 +118,7 @@ describe('SunriseGamertagsComponent', () => {
       component.identity = {
         query: undefined,
         gamertag: faker.name.firstName(),
-        xuid: BigInt(faker.random.number({ min: 10_000, max: 500_000 })),
+        xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
       };
       mockSunriseService.getSharedConsoleUsersByXuid = jasmine
         .createSpy('getSharedConsoleUsersByXuid')

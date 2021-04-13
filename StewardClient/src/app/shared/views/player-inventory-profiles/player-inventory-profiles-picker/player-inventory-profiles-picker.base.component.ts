@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import {
   Component,
   EventEmitter,
@@ -47,8 +48,8 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   extends BaseComponent
   implements OnInit, OnChanges {
   @Input() public identity: IdentityResultType;
-  @Input() public profileId: string | bigint;
-  @Output() public profileIdChange = new EventEmitter<string | bigint>();
+  @Input() public profileId: string | BigNumber;
+  @Output() public profileIdChange = new EventEmitter<string | BigNumber>();
 
   public profiles: AcceptableInventoryProfileTypesIntersection[] = [];
   /** True while loading. */

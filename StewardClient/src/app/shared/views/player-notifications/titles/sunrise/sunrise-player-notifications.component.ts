@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges } from '@angular/core';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { SunrisePlayerNotifications } from '@models/sunrise';
@@ -11,7 +12,7 @@ import { sortBy } from 'lodash';
   styleUrls: ['./sunrise-player-notifications.component.scss'],
 })
 export class SunrisePlayerNotificationsComponent implements OnChanges {
-  @Input() public xuid?: bigint;
+  @Input() public xuid?: BigNumber;
 
   /** True while waiting on a request. */
   public isLoading = true;

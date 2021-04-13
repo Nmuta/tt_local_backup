@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { ApolloPlayerXuidConsolesFakeApi } from '@interceptors/fake-api/apis/title/apollo/player/xuid/consoleDetails';
@@ -67,7 +68,7 @@ describe('ApolloService', () => {
 
   it('handles getConsoleDetailsByXuid', done => {
     nextReturnValue = ApolloPlayerXuidConsolesFakeApi.makeMany();
-    service.getConsoleDetailsByXuid(BigInt(fakeXuid())).subscribe(output => {
+    service.getConsoleDetailsByXuid(new BigNumber(fakeXuid())).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -153,7 +154,7 @@ describe('ApolloService', () => {
   });
 
   describe('Method: getGiftHistoryByXuid', () => {
-    const expectedXuid = BigInt(123456789);
+    const expectedXuid = new BigNumber(123456789);
 
     beforeEach(() => {
       apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
@@ -170,7 +171,7 @@ describe('ApolloService', () => {
   });
 
   describe('Method: getGiftHistoryByLspGroup', () => {
-    const expectedLspGroupId = BigInt(1234);
+    const expectedLspGroupId = new BigNumber(1234);
 
     beforeEach(() => {
       apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
@@ -188,7 +189,7 @@ describe('ApolloService', () => {
 
   describe('Method: postGiftPlayers', () => {
     const gift: ApolloGroupGift = {
-      xuids: [BigInt(123456789)],
+      xuids: [new BigNumber(123456789)],
       giftReason: 'unit testing gift',
       inventory: {
         creditRewards: [],
@@ -214,7 +215,7 @@ describe('ApolloService', () => {
 
   describe('Method: postGiftPlayersUsingBackgroundTask', () => {
     const gift: ApolloGroupGift = {
-      xuids: [BigInt(123456789)],
+      xuids: [new BigNumber(123456789)],
       giftReason: 'unit testing gift',
       inventory: {
         creditRewards: [],
@@ -239,7 +240,7 @@ describe('ApolloService', () => {
   });
 
   describe('Method: postGiftLspGroup', () => {
-    const lspGroup: LspGroup = { id: BigInt(123), name: 'test-lsp-group' };
+    const lspGroup: LspGroup = { id: new BigNumber(123), name: 'test-lsp-group' };
     const gift: ApolloGift = {
       giftReason: 'unit testing gift',
       inventory: {

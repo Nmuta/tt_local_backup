@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloSharedConsoleUser } from '@models/apollo';
@@ -26,8 +27,8 @@ export class ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBas
   public static makeMany(): Unprocessed<ApolloSharedConsoleUser[]> {
     return [
       {
-        sharedConsoleId: BigInt(17942385017267761210),
-        xuid: BigInt(2535460485267489),
+        sharedConsoleId: new BigNumber(17942385017267761210),
+        xuid: new BigNumber(2535460485267489),
         gamertag: 'temporary1021',
         everBanned: false,
       },

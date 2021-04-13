@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloBanArea, ApolloBanSummary } from '@models/apollo';
@@ -20,19 +21,19 @@ export class ApolloPlayersBanSummariesFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(body?: unknown): Partial<Unprocessed<ApolloBanSummary[]>> {
-    return ApolloPlayersBanSummariesFakeApi.make(body as BigInt[]);
+    return ApolloPlayersBanSummariesFakeApi.make(body as BigNumber[]);
   }
 
   /** Generates a sample object */
-  public static make(xuids: BigInt[]): Partial<Unprocessed<ApolloBanSummary[]>> {
+  public static make(xuids: BigNumber[]): Partial<Unprocessed<ApolloBanSummary[]>> {
     return xuids.map(xuid => {
       return <ApolloBanSummary>{
-        banCount: BigInt(faker.random.number()),
+        banCount: new BigNumber(faker.random.number()),
         bannedAreas: faker.random.arrayElements(Object.values(ApolloBanArea)),
         gamertag: faker.random.word(),
         xuid: xuid,
         lastBanDescription: {
-          countOfTimesExtended: BigInt(faker.random.number()),
+          countOfTimesExtended: new BigNumber(faker.random.number()),
           expireTimeUtc: faker.date.future(),
           featureArea: faker.random.arrayElement(Object.values(ApolloBanArea)),
           isActive: faker.random.boolean(),

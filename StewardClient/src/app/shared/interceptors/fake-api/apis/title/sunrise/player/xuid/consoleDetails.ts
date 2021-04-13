@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunriseConsoleDetailsEntry } from '@models/sunrise';
@@ -28,36 +29,36 @@ export class SunrisePlayerXuidConsolesFakeApi extends FakeApiBase {
     return [
       {
         clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
-        consoleId: (
-          BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
-        ).toString(),
+        consoleId: new BigNumber(Number.MAX_SAFE_INTEGER)
+          .plus(new BigNumber(faker.random.number(Number.MAX_SAFE_INTEGER)))
+          .toString(),
         isBanned: false,
         isBannable: true,
         deviceType: 'WindowsOneCore',
       },
       {
         clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
-        consoleId: (
-          BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
-        ).toString(),
+        consoleId: new BigNumber(Number.MAX_SAFE_INTEGER)
+          .plus(new BigNumber(faker.random.number(Number.MAX_SAFE_INTEGER)))
+          .toString(),
         isBanned: true,
         isBannable: true,
         deviceType: 'WindowsOneCore',
       },
       {
         clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
-        consoleId: (
-          BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
-        ).toString(),
+        consoleId: new BigNumber(Number.MAX_SAFE_INTEGER)
+          .plus(new BigNumber(faker.random.number(Number.MAX_SAFE_INTEGER)))
+          .toString(),
         isBanned: false,
         isBannable: false,
         deviceType: 'WindowsOneCore',
       },
       {
         clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
-        consoleId: (
-          BigInt(Number.MAX_SAFE_INTEGER) + BigInt(faker.random.number(Number.MAX_SAFE_INTEGER))
-        ).toString(),
+        consoleId: new BigNumber(Number.MAX_SAFE_INTEGER)
+          .plus(new BigNumber(faker.random.number(Number.MAX_SAFE_INTEGER)))
+          .toString(),
         isBanned: true,
         isBannable: false,
         deviceType: 'WindowsOneCore',

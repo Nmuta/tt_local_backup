@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Injectable, Provider } from '@angular/core';
 import { ApolloGiftingLspGroupFakeApi } from '@interceptors/fake-api/apis/title/apollo/gifting/groupId';
 import { ApolloGiftingPlayersFakeApi } from '@interceptors/fake-api/apis/title/apollo/gifting/players';
@@ -22,12 +23,14 @@ export class MockApolloService {
   public getIdentity = jasmine
     .createSpy('getIdentity')
     .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of({ xuid: BigInt(12345), gamertag: 'gamertag' }))),
+      this.waitUntil$.pipe(
+        switchMap(() => of({ xuid: new BigNumber(12345), gamertag: 'gamertag' })),
+      ),
     );
 
   public getPlayerDetailsByGamertag = jasmine
     .createSpy('getPlayerDetailsByGamertag')
-    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({ xuid: BigInt(12345) }))));
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({ xuid: new BigNumber(12345) }))));
 
   public postBanPlayers = jasmine
     .createSpy('postBanPlayers')

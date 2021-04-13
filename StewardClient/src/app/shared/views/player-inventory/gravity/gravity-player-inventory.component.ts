@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { GravityPlayerInventoryBeta } from '@models/gravity';
 import { IdentityResultBeta } from '@models/identity-query.model';
@@ -32,7 +33,7 @@ export class GravityPlayerInventoryComponent extends PlayerInventoryBaseComponen
   /** Implement in order to retrieve concrete identity instance. */
   protected getPlayerInventoryByIdentityAndProfileId(
     identity: IdentityResultBeta,
-    profileId: bigint,
+    profileId: BigNumber,
   ): Observable<GravityPlayerInventoryBeta> {
     return this.gravity.getPlayerInventoryByT10IdAndProfileId(identity.t10Id, profileId);
   }

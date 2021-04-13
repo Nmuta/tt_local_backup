@@ -1,4 +1,6 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
+import { ZERO } from '@helpers/bignumbers';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunriseBanSummary, SunriseBanArea } from '@models/sunrise';
 import { Unprocessed } from '@models/unprocessed';
@@ -20,19 +22,19 @@ export class SunrisePlayersBanSummariesFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(body?: unknown): Partial<Unprocessed<SunriseBanSummary[]>> {
-    return SunrisePlayersBanSummariesFakeApi.make(body as BigInt[]);
+    return SunrisePlayersBanSummariesFakeApi.make(body as BigNumber[]);
   }
 
   /** Generates a sample object */
-  public static make(xuids: BigInt[]): Partial<Unprocessed<SunriseBanSummary[]>> {
+  public static make(xuids: BigNumber[]): Partial<Unprocessed<SunriseBanSummary[]>> {
     return xuids.map(xuid => {
       return <SunriseBanSummary>{
-        banCount: faker.random.boolean() ? BigInt(0) : BigInt(faker.random.number()),
+        banCount: faker.random.boolean() ? ZERO : new BigNumber(faker.random.number()),
         bannedAreas: faker.random.arrayElements(Object.values(SunriseBanArea)),
         gamertag: faker.random.word(),
         xuid: xuid,
         lastBanDescription: {
-          countOfTimesExtended: BigInt(faker.random.number()),
+          countOfTimesExtended: new BigNumber(faker.random.number()),
           expireTimeUtc: faker.date.future(),
           featureArea: faker.random.arrayElement(Object.values(SunriseBanArea)),
           isActive: faker.random.boolean(),

@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -28,9 +29,9 @@ describe('BanResultsComponent', () => {
     }),
   );
 
-  const result1Id = BigInt(faker.random.number());
-  const result2Id = BigInt(faker.random.number());
-  const result3Id = BigInt(faker.random.number());
+  const result1Id = new BigNumber(faker.random.number());
+  const result2Id = new BigNumber(faker.random.number());
+  const result3Id = new BigNumber(faker.random.number());
 
   beforeEach(() => {
     component.banResults = [

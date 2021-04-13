@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { IdentityResultAlpha } from '@models/identity-query.model';
@@ -50,7 +51,7 @@ describe('SunriseGiftingState', () => {
 
   describe('[SetSunriseGiftingSelectedPlayerIdentities] Action', () => {
     const selectedPlayerIdentities: IdentityResultAlpha = {
-      query: { xuid: BigInt(0) },
+      query: { xuid: new BigNumber(0) },
       gamertag: 'test-gamertag',
     };
     let action;
@@ -75,7 +76,7 @@ describe('SunriseGiftingState', () => {
   });
 
   describe('[SetSunriseGiftBasket] Action', () => {
-    const testItemId = BigInt(12345);
+    const testItemId = new BigNumber(12345);
     const giftBasket: GiftBasketModel[] = [
       {
         id: testItemId,

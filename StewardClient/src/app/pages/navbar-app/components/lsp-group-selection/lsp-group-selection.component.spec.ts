@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -49,7 +50,7 @@ describe('LspGroupSelectionBaseComponent', () => {
     });
 
     describe('When lspGroupSelector observable returns valid data', () => {
-      const testData = [{ id: BigInt(0), name: 'test-1' }];
+      const testData = [{ id: new BigNumber(0), name: 'test-1' }];
       beforeEach(() => {
         component.lspGroupSelector = jasmine
           .createSpy('lspGroupSelector')
@@ -108,7 +109,7 @@ describe('LspGroupSelectionBaseComponent', () => {
     describe('If name in lspGroup is defined', () => {
       const lspGroupName = 'test-1';
       beforeEach(() => {
-        lspGroup = { id: BigInt(0), name: lspGroupName };
+        lspGroup = { id: new BigNumber(0), name: lspGroupName };
       });
 
       it('should return test-1', () => {
@@ -132,7 +133,7 @@ describe('LspGroupSelectionBaseComponent', () => {
   });
 
   describe('Method: writeValue', () => {
-    const testLspGroup = { id: BigInt(0), name: 'test-1' };
+    const testLspGroup = { id: new BigNumber(0), name: 'test-1' };
 
     it('should set selectedLspGroup to given value', () => {
       component.writeValue(testLspGroup);

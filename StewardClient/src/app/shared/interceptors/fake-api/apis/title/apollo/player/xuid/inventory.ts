@@ -1,13 +1,14 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloMasterInventory } from '@models/apollo';
 import { MasterInventoryItem } from '@models/master-inventory-item';
-import { fakeBigInt } from '@interceptors/fake-api/utility';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from 'faker';
 
 /** Fake API for apollo player inventory. */
 export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
-  private xuid: bigint;
+  private xuid: BigNumber;
 
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
@@ -24,7 +25,7 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
     }
 
     const match = url.pathname.match(regex);
-    this.xuid = BigInt(match[1]);
+    this.xuid = new BigNumber(match[1]);
     return true;
   }
 
@@ -34,13 +35,13 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Generates a sample object */
-  public static make(_xuid: bigint): ApolloMasterInventory {
+  public static make(_xuid: BigNumber): ApolloMasterInventory {
     function makeFakeItems(count: number): MasterInventoryItem[] {
       return Array(faker.random.number(count))
         .fill(0)
         .map(() => {
           return {
-            id: fakeBigInt(),
+            id: fakeBigNumber(),
             quantity: faker.random.number(1_000),
             description: faker.lorem.sentences(2),
             itemType: undefined,
@@ -51,7 +52,7 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
     return {
       creditRewards: [
         {
-          id: BigInt(-1),
+          id: new BigNumber(-1),
           description: 'Credits',
           quantity: faker.random.number(100_000_000),
           itemType: undefined,

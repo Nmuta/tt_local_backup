@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, forwardRef, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BackgroundJob } from '@models/background-job';
@@ -16,6 +17,7 @@ import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-l
 import { NEVER, Observable, Subject, throwError } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
+import { ONE, ZERO } from '@helpers/bignumbers';
 
 /** Gravity gift basket. */
 @Component({
@@ -183,7 +185,7 @@ export class GravityGiftBasketComponent
   }
 
   /** Sends a gravity gift to an LSP group. */
-  public sendGiftToLspGroup(_gift: GravityGift): Observable<GiftResponse<bigint>> {
+  public sendGiftToLspGroup(_gift: GravityGift): Observable<GiftResponse<BigNumber>> {
     return throwError('Gravity does not support LSP gifting.');
   }
 
@@ -198,9 +200,9 @@ export class GravityGiftBasketComponent
     // Check item ids & types to verify item is real
     for (let i = 0; i < giftBasket.length; i++) {
       const item = giftBasket[i];
-      const itemExists = this.masterInventory[item.itemType]?.some(
-        (masterItem: MasterInventoryItem) => masterItem.id === item.id,
-      );
+      const itemExists = this.masterInventory[
+        item.itemType
+      ]?.some((masterItem: MasterInventoryItem) => masterItem.id.isEqualTo(item.id));
       giftBasket[i].error = !itemExists
         ? 'Item does not exist in the master inventory.'
         : undefined;
@@ -213,7 +215,7 @@ export class GravityGiftBasketComponent
       const softCurrencyAboveLimit = giftBasket.findIndex(
         item =>
           item.itemType.toLowerCase() === creditRewardsItemType &&
-          item.id === BigInt(0) &&
+          item.id.isEqualTo(ZERO) &&
           item.quantity > 500_000_000,
       );
       if (softCurrencyAboveLimit >= 0) {
@@ -225,9 +227,10 @@ export class GravityGiftBasketComponent
     const softCurrencyAboveMax = giftBasket.findIndex(
       item =>
         item.itemType.toLowerCase() === creditRewardsItemType &&
-        item.id === BigInt(0) &&
+        item.id.isEqualTo(ZERO) &&
         item.quantity > 999_999_999,
     );
+
     if (softCurrencyAboveMax >= 0) {
       giftBasket[softCurrencyAboveMax].error = 'Soft Currency max is 999,999,999.';
     }
@@ -235,7 +238,7 @@ export class GravityGiftBasketComponent
     const hardCurrencyAboveLimit = giftBasket.findIndex(
       item =>
         item.itemType.toLowerCase() === creditRewardsItemType &&
-        item.id === BigInt(1) &&
+        item.id.isEqualTo(ONE) &&
         item.quantity > 15_000,
     );
     if (hardCurrencyAboveLimit >= 0) {

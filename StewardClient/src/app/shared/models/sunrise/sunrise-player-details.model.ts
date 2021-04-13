@@ -1,21 +1,22 @@
+import BigNumber from 'bignumber.js';
 import { GamertagString } from '@models/extended-types';
 
 /** The /v1/title/Sunrise/player/???/details model */
 export interface SunrisePlayerDetails {
-  xuid: bigint;
+  xuid: BigNumber;
   gamertag: GamertagString;
-  region: bigint;
+  region: BigNumber;
   licensePlate: string;
-  customizationSlots: BigInt[];
-  currentDriverModelId: bigint;
-  currentPlayerTitleId: bigint;
-  currentPlayerBadgeId: bigint;
-  currentCareerLevel: bigint;
-  flags: bigint;
-  blueprintThreadLevel: bigint;
-  photoThreadLevel: bigint;
-  tunerThreadLevel: bigint;
-  painterThreadLevel: bigint;
+  customizationSlots: BigNumber[];
+  currentDriverModelId: BigNumber;
+  currentPlayerTitleId: BigNumber;
+  currentPlayerBadgeId: BigNumber;
+  currentCareerLevel: BigNumber;
+  flags: BigNumber;
+  blueprintThreadLevel: BigNumber;
+  photoThreadLevel: BigNumber;
+  tunerThreadLevel: BigNumber;
+  painterThreadLevel: BigNumber;
   teamId: string;
   teamTag: string;
   roleInTeam: string;

@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Injectable, Provider } from '@angular/core';
 import { GravityPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/gamertag/details';
 import { GravityPlayerT10IdDetailsFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/t10Id/details';
@@ -22,7 +23,9 @@ export class MockGravityService {
     .createSpy('getIdentity')
     .and.callFake(() =>
       this.waitUntil$.pipe(
-        switchMap(() => of({ xuid: BigInt(12345), gamertag: 'gamertag', t10Id: '1234567489' })),
+        switchMap(() =>
+          of({ xuid: new BigNumber(12345), gamertag: 'gamertag', t10Id: '1234567489' }),
+        ),
       ),
     );
 

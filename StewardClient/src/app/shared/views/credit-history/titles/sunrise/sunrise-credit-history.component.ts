@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { SunriseCreditHistory } from '@models/sunrise';
@@ -12,7 +13,7 @@ import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
   styleUrls: ['./sunrise-credit-history.component.scss'],
 })
 export class SunriseCreditHistoryComponent extends BaseComponent implements OnInit, OnChanges {
-  @Input() public xuid?: bigint;
+  @Input() public xuid?: BigNumber;
 
   /** True while waiting on a request. */
   public isLoading = true;

@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -72,7 +73,7 @@ describe('ApolloConsolesComponent', () => {
           component.identity = {
             query: undefined,
             gamertag: faker.name.firstName(),
-            xuid: BigInt(faker.random.number({ min: 10_000, max: 500_000 })),
+            xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
           };
           component.ngOnChanges();
 
@@ -97,7 +98,7 @@ describe('ApolloConsolesComponent', () => {
           component.identity = {
             query: undefined,
             gamertag: faker.name.firstName(),
-            xuid: BigInt(faker.random.number({ min: 10_000, max: 500_000 })),
+            xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
           };
           component.ngOnChanges();
 

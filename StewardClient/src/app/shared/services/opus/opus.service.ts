@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Injectable } from '@angular/core';
 import {
   IdentityQueryAlpha,
@@ -49,21 +50,23 @@ export class OpusService {
   }
 
   /** Gets the opus player's inventory */
-  public getPlayerInventoryByXuid(xuid: bigint): Observable<OpusMasterInventory> {
+  public getPlayerInventoryByXuid(xuid: BigNumber): Observable<OpusMasterInventory> {
     return this.apiService.getRequest<OpusMasterInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
 
   /** Gets a specific version of an apollo player's inventory */
-  public getPlayerInventoryByProfileId(profileId: bigint): Observable<OpusMasterInventory> {
+  public getPlayerInventoryByProfileId(profileId: BigNumber): Observable<OpusMasterInventory> {
     return this.apiService.getRequest<OpusMasterInventory>(
       `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }
 
   /** Gets a player's profile list  by XUID. */
-  public getPlayerInventoryProfilesByXuid(xuid: bigint): Observable<OpusPlayerInventoryProfile[]> {
+  public getPlayerInventoryProfilesByXuid(
+    xuid: BigNumber,
+  ): Observable<OpusPlayerInventoryProfile[]> {
     return this.apiService
       .getRequest<OpusPlayerInventoryProfile[]>(
         `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,

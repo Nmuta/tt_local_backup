@@ -1,8 +1,9 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt } from '@interceptors/fake-api/utility/fake-bigint';
+import { fakeBigNumber } from '@interceptors/fake-api/utility/fake-bigint';
 import { ApolloGiftHistory } from '@models/apollo';
 import { Unprocessed } from '@models/unprocessed';
+import BigNumber from 'bignumber.js';
 import faker from 'faker';
 
 /** Fake API for finding gift history. */
@@ -21,11 +22,11 @@ export class ApolloPlayerXuidGiftHistoryFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(body?: unknown): Partial<Unprocessed<ApolloGiftHistory[]>> {
-    return ApolloPlayerXuidGiftHistoryFakeApi.make(body as BigInt);
+    return ApolloPlayerXuidGiftHistoryFakeApi.make(body as BigNumber);
   }
 
   /** Generates a sample object */
-  public static make(xuid: BigInt): Partial<Unprocessed<ApolloGiftHistory[]>> {
+  public static make(xuid: BigNumber): Partial<Unprocessed<ApolloGiftHistory[]>> {
     return [
       {
         idType: 'Xuid',
@@ -37,21 +38,21 @@ export class ApolloPlayerXuidGiftHistoryFakeApi extends FakeApiBase {
           inventory: {
             creditRewards: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },
             ],
             cars: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },
             ],
             vanityItems: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },

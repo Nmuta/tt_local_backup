@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxsModule } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -62,7 +63,7 @@ describe('ItemSelectionComponent', () => {
 
     describe('If there is a selection item', () => {
       const testInventoryItem = {
-        id: BigInt(1),
+        id: new BigNumber(1),
         description: 'test-description',
         quantity: 0,
         itemType: 'fake type',
@@ -102,7 +103,7 @@ describe('ItemSelectionComponent', () => {
 
   describe('Method: newItemSelected', () => {
     const testInventoryItem = {
-      id: BigInt(1),
+      id: new BigNumber(1),
       description: 'test-description',
       quantity: 0,
       itemType: 'fake type',
@@ -138,7 +139,7 @@ describe('ItemSelectionComponent', () => {
 
     beforeEach(() => {
       testInventoryItem = {
-        id: BigInt(1),
+        id: new BigNumber(1),
         description: testDescription,
         quantity: 1,
         itemType: 'test type',

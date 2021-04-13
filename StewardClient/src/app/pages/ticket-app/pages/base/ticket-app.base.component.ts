@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GameTitleCodeName } from '@models/enums';
@@ -21,7 +22,7 @@ export abstract class TicketAppBaseComponent extends BaseComponent implements On
 
   public gameTitle: GameTitleCodeName;
   public gamertag: string;
-  public xuid: bigint;
+  public xuid: BigNumber;
 
   constructor(private readonly ticketService: TicketService, private readonly store: Store) {
     super();

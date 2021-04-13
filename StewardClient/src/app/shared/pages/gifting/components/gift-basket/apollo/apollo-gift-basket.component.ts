@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, forwardRef, OnInit } from '@angular/core';
 import { FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ApolloGift, ApolloGroupGift, ApolloMasterInventory } from '@models/apollo';
@@ -16,6 +17,7 @@ import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-l
 import { Observable } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
+import { ZERO } from '@helpers/bignumbers';
 
 /** Apollo gift basket. */
 @Component({
@@ -123,7 +125,7 @@ export class ApolloGiftBasketComponent
   }
 
   /** Sends an apollo gift to an LSP group. */
-  public sendGiftToLspGroup(gift: ApolloGift): Observable<GiftResponse<bigint>> {
+  public sendGiftToLspGroup(gift: ApolloGift): Observable<GiftResponse<BigNumber>> {
     return this.apolloService.postGiftLspGroup(this.lspGroup, gift);
   }
 
@@ -140,9 +142,9 @@ export class ApolloGiftBasketComponent
       const item = giftBasket[i];
       const itemExists = this.masterInventory[item.itemType]?.some(
         (masterItem: MasterInventoryItem) =>
-          masterItem.id === item.id &&
-          (masterItem.id >= BigInt(0) ||
-            (masterItem.id < BigInt(0) && masterItem.description === item.description)),
+          masterItem.id.isEqualTo(item.id) &&
+          (masterItem.id >= ZERO ||
+            (masterItem.id < ZERO && masterItem.description === item.description)),
       );
       giftBasket[i].error = !itemExists
         ? 'Item does not exist in the master inventory.'
@@ -153,7 +155,7 @@ export class ApolloGiftBasketComponent
     if (!this.ignoreMaxCreditLimit) {
       const creditsAboveLimit = giftBasket.findIndex(
         item =>
-          item.id < 0 &&
+          item.id < ZERO &&
           item.description.toLowerCase() === 'credits' &&
           item.quantity > 500_000_000,
       );
@@ -165,7 +167,9 @@ export class ApolloGiftBasketComponent
     // Verify credit reward is under max
     const creditsAboveMax = giftBasket.findIndex(
       item =>
-        item.id < 0 && item.description.toLowerCase() === 'credits' && item.quantity > 999_999_999,
+        item.id < ZERO &&
+        item.description.toLowerCase() === 'credits' &&
+        item.quantity > 999_999_999,
     );
     if (creditsAboveMax >= 0) {
       giftBasket[creditsAboveMax].error = 'Credit max is 999,999,999.';

@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
@@ -19,7 +20,7 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
   ],
 })
 export class SunriseBanHistoryComponent extends BaseComponent implements OnChanges {
-  @Input() public xuid?: bigint;
+  @Input() public xuid?: BigNumber;
 
   /** True while waiting on a request. */
   public isLoading = true;

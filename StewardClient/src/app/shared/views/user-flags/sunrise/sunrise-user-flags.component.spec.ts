@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SunriseUserFlags } from '@models/sunrise';
@@ -58,7 +59,7 @@ describe('SunriseUserFlagsComponent', () => {
         component.identity = {
           query: undefined,
           gamertag: faker.name.firstName(),
-          xuid: BigInt(faker.random.number({ min: 10_000, max: 500_000 })),
+          xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
         };
       });
 
@@ -115,7 +116,7 @@ describe('SunriseUserFlagsComponent', () => {
       component.identity = {
         query: undefined,
         gamertag: faker.name.firstName(),
-        xuid: BigInt(faker.random.number({ min: 10_000, max: 500_000 })),
+        xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
       };
       mockSunriseService.getFlagsByXuid = jasmine
         .createSpy('getFlagsByXuid')

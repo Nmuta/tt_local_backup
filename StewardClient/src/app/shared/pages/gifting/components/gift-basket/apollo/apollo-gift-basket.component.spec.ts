@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -80,9 +81,9 @@ describe('ApolloGiftBasketComponent', () => {
 
   describe('Method: generateGiftInventoryFromGiftBasket', () => {
     const giftReason: string = 'fake gift reason';
-    const testItem1Id = BigInt(faker.random.number());
-    const testItem2Id = BigInt(faker.random.number());
-    const testItem3Id = BigInt(faker.random.number());
+    const testItem1Id = new BigNumber(faker.random.number());
+    const testItem2Id = new BigNumber(faker.random.number());
+    const testItem3Id = new BigNumber(faker.random.number());
 
     beforeEach(() => {
       component.sendGiftForm = formBuilder.group({
@@ -191,9 +192,9 @@ describe('ApolloGiftBasketComponent', () => {
   describe('Method: setGiftBasketItemErrors', () => {
     beforeEach(() => {
       component.masterInventory = {
-        creditRewards: [{ id: BigInt(-1), description: 'Credits', quantity: 0 }],
-        cars: [{ id: BigInt(12345), description: 'Test car', quantity: 0 }],
-        vanityItems: [{ id: BigInt(67890), description: 'Test vanity item', quantity: 0 }],
+        creditRewards: [{ id: new BigNumber(-1), description: 'Credits', quantity: 0 }],
+        cars: [{ id: new BigNumber(12345), description: 'Test car', quantity: 0 }],
+        vanityItems: [{ id: new BigNumber(67890), description: 'Test vanity item', quantity: 0 }],
       } as ApolloMasterInventory;
     });
 
@@ -204,7 +205,7 @@ describe('ApolloGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Credits',
             quantity: 200,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -224,7 +225,7 @@ describe('ApolloGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Bad Credits',
             quantity: 200,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -244,7 +245,7 @@ describe('ApolloGiftBasketComponent', () => {
             itemType: 'cars',
             description: 'Test Car',
             quantity: 200,
-            id: BigInt(12345),
+            id: new BigNumber(12345),
             edit: false,
             error: undefined,
           },
@@ -264,7 +265,7 @@ describe('ApolloGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Credits',
             quantity: 500_000_001,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -284,7 +285,7 @@ describe('ApolloGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Credits',
             quantity: 400_000_000,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },
@@ -304,7 +305,7 @@ describe('ApolloGiftBasketComponent', () => {
             itemType: 'creditRewards',
             description: 'Credits',
             quantity: 1_000_000_000,
-            id: BigInt(-1),
+            id: new BigNumber(-1),
             edit: false,
             error: undefined,
           },

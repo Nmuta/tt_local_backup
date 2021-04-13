@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
@@ -25,7 +26,7 @@ export abstract class GiftHistoryResultsBaseComponent<
   @Input() public selectedGroup: LspGroup;
   @Input() public usingPlayerIdentities: boolean;
 
-  public SENTINEL_VALUE = BigInt(-1);
+  public SENTINEL_VALUE = new BigNumber(-1);
 
   /** The error received while loading. */
   public loadError: unknown;

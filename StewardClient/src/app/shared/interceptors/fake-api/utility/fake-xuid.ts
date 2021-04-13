@@ -1,6 +1,7 @@
-import { fakeBigInt } from './fake-bigint';
+import BigNumber from 'bignumber.js';
+import { fakeBigNumber } from './fake-bigint';
 
 /** Generate a fake xuid. */
-export function fakeXuid(): bigint {
-  return fakeBigInt({ min: Number.MAX_SAFE_INTEGER });
+export function fakeXuid(): BigNumber {
+  return fakeBigNumber({ min: Number.MAX_SAFE_INTEGER });
 }

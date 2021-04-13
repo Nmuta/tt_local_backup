@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { SunriseUserFlags } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
@@ -19,12 +20,12 @@ export class SunriseUserFlagsComponent extends UserFlagsBaseComponent<SunriseUse
   }
 
   /** Gets Sunrise user flags. */
-  public getFlagsByXuid(xuid: bigint): Observable<SunriseUserFlags> {
+  public getFlagsByXuid(xuid: BigNumber): Observable<SunriseUserFlags> {
     return this.sunriseService.getFlagsByXuid(xuid);
   }
 
   /** Sets the newly selected Sunrise flags. */
-  public putFlagsByXuid(xuid: bigint, newFlags: SunriseUserFlags): Observable<SunriseUserFlags> {
+  public putFlagsByXuid(xuid: BigNumber, newFlags: SunriseUserFlags): Observable<SunriseUserFlags> {
     return this.sunriseService.putFlagsByXuid(xuid, newFlags);
   }
 }

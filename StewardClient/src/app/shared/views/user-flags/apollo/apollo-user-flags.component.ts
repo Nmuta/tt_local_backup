@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserFlagsBaseComponent } from '../user-flags.base.component';
@@ -19,12 +20,12 @@ export class ApolloUserFlagsComponent extends UserFlagsBaseComponent<ApolloUserF
   }
 
   /** Gets Apollo user flags. */
-  public getFlagsByXuid(xuid: bigint): Observable<ApolloUserFlags> {
+  public getFlagsByXuid(xuid: BigNumber): Observable<ApolloUserFlags> {
     return this.apolloService.getFlagsByXuid(xuid);
   }
 
   /** Sets the newly selected Apollo flags. */
-  public putFlagsByXuid(xuid: bigint, newFlags: ApolloUserFlags): Observable<ApolloUserFlags> {
+  public putFlagsByXuid(xuid: BigNumber, newFlags: ApolloUserFlags): Observable<ApolloUserFlags> {
     return this.apolloService.putFlagsByXuid(xuid, newFlags);
   }
 }

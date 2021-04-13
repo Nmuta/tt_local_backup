@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import {
   Component,
   EventEmitter,
@@ -41,13 +42,13 @@ export abstract class PlayerInventoryBaseComponent<
   extends BaseComponent
   implements OnInit, OnChanges {
   @Input() public identity: IdentityResultType;
-  @Input() public profileId: bigint | undefined | null;
+  @Input() public profileId: BigNumber | undefined | null;
   @Output() public inventoryFound = new EventEmitter<PlayerInventoryType>();
 
   /** The located inventory. */
   public inventory: PlayerInventoryType;
   /** The computed total number of cars. */
-  public totalCars = BigInt(0);
+  public totalCars = new BigNumber(0);
   /** True while loading. */
   public get isLoading(): boolean {
     return !this.inventory;
@@ -62,7 +63,7 @@ export abstract class PlayerInventoryBaseComponent<
   private identity$ = new Subject<IdentityResultType>();
 
   /** Intermediate event that is fired when @see profileId changes. */
-  private profileId$ = new Subject<bigint | undefined | null>();
+  private profileId$ = new Subject<BigNumber | undefined | null>();
 
   /** Implement in order to retrieve concrete identity instance. */
   protected abstract getPlayerInventoryByIdentity(
@@ -72,7 +73,7 @@ export abstract class PlayerInventoryBaseComponent<
   /** Implement in order to retrieve concrete identity instance. */
   protected abstract getPlayerInventoryByIdentityAndProfileId(
     identity: IdentityResultType,
-    profileId: bigint,
+    profileId: BigNumber,
   ): Observable<PlayerInventoryType>;
 
   /** Implement to specify the expando tables to show. */
@@ -143,8 +144,8 @@ export abstract class PlayerInventoryBaseComponent<
     let description = '';
     if (property !== 'creditRewards') {
       const count = ((this.inventory[property] as unknown) as MasterInventoryItem[]).reduce(
-        (accumulator, entry) => accumulator + BigInt(entry.quantity),
-        BigInt(0),
+        (accumulator, entry) => accumulator.plus(new BigNumber(entry.quantity)),
+        new BigNumber(0),
       );
       description = `${count} Total`;
     }

@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GameTitleCodeName } from '@models/enums';
@@ -8,7 +9,7 @@ import faker from 'faker';
 
 /** Fake API for finding User Flags. */
 export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
-  private xuid: bigint;
+  private xuid: BigNumber;
 
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
@@ -25,7 +26,7 @@ export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
     }
 
     const match = url.pathname.match(regex);
-    this.xuid = BigInt(match[1]);
+    this.xuid = new BigNumber(match[1]);
     return true;
   }
 
@@ -35,7 +36,7 @@ export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
   }
 
   /** Creates a sample object. */
-  public static make(xuid: bigint, min: number = 0): Unprocessed<LiveOpsBanDescriptions> {
+  public static make(xuid: BigNumber, min: number = 0): Unprocessed<LiveOpsBanDescriptions> {
     return new Array(faker.random.number({ min: min, max: 5 })).fill(undefined).map(
       () =>
         <LiveOpsBanDescription>{

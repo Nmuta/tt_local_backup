@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloPlayerInventory } from '@models/apollo';
@@ -29,7 +30,7 @@ export class ApolloGroupXuidsInventoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<ApolloPlayerInventory>> {
     return {
-      xuid: BigInt(2533275026603041),
+      xuid: new BigNumber(2533275026603041),
     };
   }
 }

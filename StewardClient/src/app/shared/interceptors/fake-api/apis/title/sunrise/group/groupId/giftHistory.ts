@@ -1,8 +1,9 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt } from '@interceptors/fake-api/utility/fake-bigint';
+import { fakeBigNumber } from '@interceptors/fake-api/utility/fake-bigint';
 import { SunriseGiftHistory } from '@models/sunrise';
 import { Unprocessed } from '@models/unprocessed';
+import BigNumber from 'bignumber.js';
 import faker from 'faker';
 
 /** Fake API for finding gift history. */
@@ -21,11 +22,11 @@ export class SunriseGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(body?: unknown): Partial<Unprocessed<SunriseGiftHistory[]>> {
-    return SunriseGroupGroupIdGiftHistoryFakeApi.make(body as BigInt);
+    return SunriseGroupGroupIdGiftHistoryFakeApi.make(body as BigNumber);
   }
 
   /** Generates a sample object */
-  public static make(lspId: BigInt): Partial<Unprocessed<SunriseGiftHistory[]>> {
+  public static make(lspId: BigNumber): Partial<Unprocessed<SunriseGiftHistory[]>> {
     return [
       {
         idType: 'LspGroupId',
@@ -37,42 +38,42 @@ export class SunriseGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
           inventory: {
             creditRewards: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },
             ],
             cars: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },
             ],
             carHorns: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },
             ],
             emotes: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },
             ],
             vanityItems: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },
             ],
             quickChatLines: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },

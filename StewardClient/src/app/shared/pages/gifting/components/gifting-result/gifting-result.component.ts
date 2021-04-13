@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GiftResponse } from '@models/gift-response';
@@ -10,7 +11,7 @@ import { sortBy } from 'lodash';
   styleUrls: ['./gifting-result.component.scss'],
 })
 export class GiftingResultComponent extends BaseComponent implements OnInit {
-  @Input() public giftingResult: GiftResponse<bigint | string>[];
+  @Input() public giftingResult: GiftResponse<BigNumber | string>[];
 
   public giftingCsvData: string[][];
   public giftingErrorCount: number = 0;

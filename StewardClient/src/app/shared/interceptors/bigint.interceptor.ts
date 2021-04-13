@@ -13,7 +13,7 @@ import { filter, map } from 'rxjs/operators';
 
 /** Uses JSONBig(alwaysParseAsBig) to handle parse+stringify rather than the defualt JSON, which does not handle BigInts. */
 @Injectable()
-export class BigintInterceptor implements HttpInterceptor {
+export class BigNumberInterceptor implements HttpInterceptor {
   /** The interceptor hook. */
   public intercept(
     request: HttpRequest<unknown>,

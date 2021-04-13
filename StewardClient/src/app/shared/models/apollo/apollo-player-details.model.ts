@@ -1,26 +1,27 @@
+import BigNumber from 'bignumber.js';
 import { GamertagString } from '@models/extended-types';
 
 /** The /v1/title/apollo/player/???/details model */
 export interface ApolloPlayerDetails {
-  xuid: bigint;
+  xuid: BigNumber;
   gamertag: GamertagString;
-  currentProfileId: bigint;
+  currentProfileId: BigNumber;
   subscriptionTier: string;
   ageGroup: string;
-  country: bigint;
-  region: bigint;
-  lcid: bigint;
+  country: BigNumber;
+  region: BigNumber;
+  lcid: BigNumber;
   ipAddress: string;
   lastLoginUtc: Date;
   firstLoginUtc: Date;
-  currentDriverModelId: bigint;
+  currentDriverModelId: BigNumber;
   currentPlayerTitleId: string;
   currentBadgeId: string;
   clubTag: string;
   clubId: string;
   roleInClub: string;
-  currentCareerLevel: bigint;
-  equippedVanityItemId: bigint;
+  currentCareerLevel: BigNumber;
+  equippedVanityItemId: BigNumber;
   currentCarCollectionTier: string;
-  currentCarCollectionScore: bigint;
+  currentCarCollectionScore: BigNumber;
 }

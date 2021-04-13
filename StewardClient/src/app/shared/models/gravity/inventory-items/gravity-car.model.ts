@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { GuidLikeString } from '@models/extended-types';
 import { GravityInventoryItem } from './gravity-inventory-item.model';
 
@@ -5,12 +6,12 @@ import { GravityInventoryItem } from './gravity-inventory-item.model';
 export interface GravityCar extends GravityInventoryItem {
   vin: GuidLikeString;
   purchaseUtc: Date;
-  currentMasteryRank: bigint;
-  cumulativeMastery: bigint;
-  repairState: bigint;
-  starPoints: bigint;
-  color: bigint;
-  livery: bigint;
-  clientPr: bigint;
-  advancedCarCustomization: bigint;
+  currentMasteryRank: BigNumber;
+  cumulativeMastery: BigNumber;
+  repairState: BigNumber;
+  starPoints: BigNumber;
+  color: BigNumber;
+  livery: BigNumber;
+  clientPr: BigNumber;
+  advancedCarCustomization: BigNumber;
 }

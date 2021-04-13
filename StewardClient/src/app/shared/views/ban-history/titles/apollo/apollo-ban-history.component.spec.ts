@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { createMockApolloService } from '@services/apollo/apollo.service.mock';
@@ -19,7 +20,7 @@ describe('ApolloBanHistoryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ApolloBanHistoryComponent);
     component = fixture.componentInstance;
-    component.xuid = BigInt(8675309);
+    component.xuid = new BigNumber(8675309);
     fixture.detectChanges();
   });
 

@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import faker from 'faker';
@@ -45,7 +46,7 @@ describe('SunriseCreditHistoryComponent', () => {
 
     describe('When there is a xuid in the component', () => {
       beforeEach(() => {
-        component.xuid = BigInt(faker.random.number());
+        component.xuid = new BigNumber(faker.random.number());
       });
 
       it('should call getCreditUpdates$.next()', () => {
@@ -75,7 +76,7 @@ describe('SunriseCreditHistoryComponent', () => {
 
     describe('When there is a xuid in the component', () => {
       beforeEach(() => {
-        component.xuid = BigInt(faker.random.number());
+        component.xuid = new BigNumber(faker.random.number());
       });
 
       it('should call getCreditUpdates$.next()', () => {

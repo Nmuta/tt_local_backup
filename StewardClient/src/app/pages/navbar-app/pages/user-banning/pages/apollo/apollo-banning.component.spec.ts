@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ApolloPlayersBanSummariesFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/ban-summaries';
@@ -45,10 +46,10 @@ describe('ApolloBanningComponent', () => {
     const testXuids = [fakeXuid(), fakeXuid(), fakeXuid()];
     apollo.getBanSummariesByXuids = jasmine
       .createSpy('getBanSummariesByXuids')
-      .and.callFake((xuids: BigInt[]) => {
+      .and.callFake((xuids: BigNumber[]) => {
         const summaries = ApolloPlayersBanSummariesFakeApi.make(xuids);
-        summaries.forEach(s => (s.banCount = BigInt(0)));
-        summaries[0].banCount = BigInt(5);
+        summaries.forEach(s => (s.banCount = new BigNumber(0)));
+        summaries[0].banCount = new BigNumber(5);
         return defer(() => of(summaries));
       });
 

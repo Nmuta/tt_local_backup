@@ -45,7 +45,7 @@ describe('GravityGiftHistoryComponent', () => {
   //     event =
   //       {
   //         query: undefined,
-  //         xuid: BigInt(123456789),
+  //         xuid: new BigNumber(123456789),
   //       };
   //   });
   //   it('should displatch SetGravitySelectedPlayerIdentities with correct data', () => {

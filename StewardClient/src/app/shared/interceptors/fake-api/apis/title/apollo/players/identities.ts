@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import {
@@ -33,7 +34,7 @@ export class ApolloPlayersIdentitiesFakeApi extends FakeApiBase {
       return <IdentityResultAlpha>{
         query: query,
         gamertag: isGamertagQuery(query) ? query.gamertag : faker.name.firstName(),
-        xuid: isXuidQuery(query) ? query.xuid : BigInt(faker.random.number()),
+        xuid: isXuidQuery(query) ? query.xuid : new BigNumber(faker.random.number()),
       };
     });
   }

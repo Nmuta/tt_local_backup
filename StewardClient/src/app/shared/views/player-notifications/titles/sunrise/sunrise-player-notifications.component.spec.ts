@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
@@ -74,7 +75,7 @@ describe('SunrisePlayerNotificationsComponent', () => {
         'should update when xuid set',
         waitForAsync(async () => {
           // emulate xuid update event
-          component.xuid = BigInt(faker.random.number({ min: 10_000, max: 500_000 }));
+          component.xuid = new BigNumber(faker.random.number({ min: 10_000, max: 500_000 }));
           component.ngOnChanges();
 
           // waiting on value
@@ -95,7 +96,7 @@ describe('SunrisePlayerNotificationsComponent', () => {
         'should update when request errored',
         waitForAsync(async () => {
           // emulate xuid update event
-          component.xuid = BigInt(faker.random.number({ min: 10_000, max: 500_000 }));
+          component.xuid = new BigNumber(faker.random.number({ min: 10_000, max: 500_000 }));
           component.ngOnChanges();
 
           // waiting on value

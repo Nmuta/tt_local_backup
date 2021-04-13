@@ -1,6 +1,7 @@
+import BigNumber from 'bignumber.js';
 /** Interface for an lsp group. */
 export interface LspGroup {
-  id: bigint;
+  id: BigNumber;
   name: string;
 }
 

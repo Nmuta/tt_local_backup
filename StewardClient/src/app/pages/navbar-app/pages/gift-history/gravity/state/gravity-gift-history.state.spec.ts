@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { IdentityResultBeta } from '@models/identity-query.model';
@@ -25,7 +26,7 @@ describe('GravityGiftHistoryState', () => {
 
   describe('[SetGravitySelectedPlayerIdentities] Action', () => {
     const selectedPlayerIdentities: IdentityResultBeta = {
-      query: { xuid: BigInt(0) },
+      query: { xuid: new BigNumber(0) },
       gamertag: 'test-gamertag',
     };
 

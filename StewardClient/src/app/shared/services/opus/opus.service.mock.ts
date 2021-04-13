@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Injectable, Provider } from '@angular/core';
 import { OpusPlayerXuidInventoryFakeApi } from '@interceptors/fake-api/apis/title/opus/player/xuid/inventory';
 import { OpusPlayerXuidInventoryProfilesFakeApi } from '@interceptors/fake-api/apis/title/opus/player/xuid/inventoryProfiles';
@@ -17,7 +18,9 @@ export class MockOpusService {
   public getIdentity = jasmine
     .createSpy('getIdentity')
     .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of({ xuid: BigInt(12345), gamertag: 'gamertag' }))),
+      this.waitUntil$.pipe(
+        switchMap(() => of({ xuid: new BigNumber(12345), gamertag: 'gamertag' })),
+      ),
     );
 
   public getPlayerDetailsByGamertag = jasmine

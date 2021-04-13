@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Injectable } from '@angular/core';
 import {
   ApolloBanHistoryEntry,
@@ -59,7 +60,7 @@ export class ApolloService {
   }
 
   /** Gets ban summaries by a list of XUIDs. */
-  public getBanSummariesByXuids(xuids: bigint[]): Observable<ApolloBanSummary[]> {
+  public getBanSummariesByXuids(xuids: BigNumber[]): Observable<ApolloBanSummary[]> {
     return this.apiService.postRequest<ApolloBanSummary[]>(
       `${this.basePath}/players/banSummaries`,
       xuids,
@@ -67,21 +68,21 @@ export class ApolloService {
   }
 
   /** Gets ban history by a XUID. */
-  public getBanHistoryByXuid(xuid: bigint): Observable<ApolloBanHistoryEntry[]> {
+  public getBanHistoryByXuid(xuid: BigNumber): Observable<ApolloBanHistoryEntry[]> {
     return this.apiService.getRequest<ApolloBanHistoryEntry[]>(
       `${this.basePath}/player/xuid(${xuid})/banHistory`,
     );
   }
 
   /** Gets user flags by a XUID. */
-  public getFlagsByXuid(xuid: bigint): Observable<ApolloUserFlags> {
+  public getFlagsByXuid(xuid: BigNumber): Observable<ApolloUserFlags> {
     return this.apiService.getRequest<ApolloUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
     );
   }
 
   /** Sets user flags by a XUID. */
-  public putFlagsByXuid(xuid: bigint, flags: ApolloUserFlags): Observable<ApolloUserFlags> {
+  public putFlagsByXuid(xuid: BigNumber, flags: ApolloUserFlags): Observable<ApolloUserFlags> {
     return this.apiService.putRequest<ApolloUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
       flags,
@@ -89,14 +90,14 @@ export class ApolloService {
   }
 
   /** Gets shared console users by XUID. */
-  public getSharedConsoleUsersByXuid(xuid: bigint): Observable<ApolloSharedConsoleUser[]> {
+  public getSharedConsoleUsersByXuid(xuid: BigNumber): Observable<ApolloSharedConsoleUser[]> {
     return this.apiService.getRequest<ApolloSharedConsoleUser[]>(
       `${this.basePath}/player/xuid(${xuid})/sharedConsoleUsers`,
     );
   }
 
   /** Gets console details by XUID. */
-  public getConsoleDetailsByXuid(xuid: bigint): Observable<ApolloConsoleDetailsEntry[]> {
+  public getConsoleDetailsByXuid(xuid: BigNumber): Observable<ApolloConsoleDetailsEntry[]> {
     return this.apiService.getRequest<ApolloConsoleDetailsEntry[]>(
       `${this.basePath}/player/xuid(${xuid})/consoleDetails`,
     );
@@ -125,14 +126,14 @@ export class ApolloService {
   }
 
   /** Gets Gift history by a XUID. */
-  public getGiftHistoryByXuid(xuid: bigint): Observable<ApolloGiftHistory[]> {
+  public getGiftHistoryByXuid(xuid: BigNumber): Observable<ApolloGiftHistory[]> {
     return this.apiService.getRequest<ApolloGiftHistory[]>(
       `${this.basePath}/player/xuid(${xuid})/giftHistory`,
     );
   }
 
   /** Gets Gift history by a LSP Group. */
-  public getGiftHistoryByLspGroup(lspGroupId: bigint): Observable<ApolloGiftHistory[]> {
+  public getGiftHistoryByLspGroup(lspGroupId: BigNumber): Observable<ApolloGiftHistory[]> {
     return this.apiService.getRequest<ApolloGiftHistory[]>(
       `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
     );
@@ -149,14 +150,14 @@ export class ApolloService {
   }
 
   /** Gets the apollo player's inventory. */
-  public getPlayerInventoryByXuid(xuid: bigint): Observable<ApolloMasterInventory> {
+  public getPlayerInventoryByXuid(xuid: BigNumber): Observable<ApolloMasterInventory> {
     return this.apiService.getRequest<ApolloMasterInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
 
   /** Gets a specific version of an apollo player's inventory */
-  public getPlayerInventoryByProfileId(profileId: bigint): Observable<ApolloMasterInventory> {
+  public getPlayerInventoryByProfileId(profileId: BigNumber): Observable<ApolloMasterInventory> {
     return this.apiService.getRequest<ApolloMasterInventory>(
       `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
@@ -164,7 +165,7 @@ export class ApolloService {
 
   /** Gets a player's profile list  by XUID. */
   public getPlayerInventoryProfilesByXuid(
-    xuid: bigint,
+    xuid: BigNumber,
   ): Observable<ApolloPlayerInventoryProfile[]> {
     return this.apiService
       .getRequest<ApolloPlayerInventoryProfile[]>(
@@ -181,8 +182,8 @@ export class ApolloService {
   }
 
   /** Gift players inventory items. */
-  public postGiftPlayers(gift: ApolloGroupGift): Observable<GiftResponse<bigint>[]> {
-    return this.apiService.postRequest<GiftResponse<bigint>[]>(
+  public postGiftPlayers(gift: ApolloGroupGift): Observable<GiftResponse<BigNumber>[]> {
+    return this.apiService.postRequest<GiftResponse<BigNumber>[]>(
       `${this.basePath}/gifting/players`,
       gift,
     );
@@ -199,8 +200,11 @@ export class ApolloService {
   }
 
   /** Gift lsp group inventory items. */
-  public postGiftLspGroup(lspGroup: LspGroup, gift: ApolloGift): Observable<GiftResponse<bigint>> {
-    return this.apiService.postRequest<GiftResponse<bigint>>(
+  public postGiftLspGroup(
+    lspGroup: LspGroup,
+    gift: ApolloGift,
+  ): Observable<GiftResponse<BigNumber>> {
+    return this.apiService.postRequest<GiftResponse<BigNumber>>(
       `${this.basePath}/gifting/groupId(${lspGroup.id})`,
       gift,
     );

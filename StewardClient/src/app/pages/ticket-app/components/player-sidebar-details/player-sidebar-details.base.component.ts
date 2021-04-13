@@ -4,6 +4,7 @@ import { ApolloPlayerDetails } from '@models/apollo';
 import { GravityPlayerDetails } from '@models/gravity';
 import { OpusPlayerDetails } from '@models/opus';
 import { SunrisePlayerDetails } from '@models/sunrise';
+import BigNumber from 'bignumber.js';
 import { NEVER, Observable } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';
 
@@ -12,7 +13,7 @@ type PlayerDetailsTitleUnion =
   | GravityPlayerDetails
   | ApolloPlayerDetails
   | SunrisePlayerDetails;
-type RequiredPlayerDetailsFields = { xuid: BigInt };
+type RequiredPlayerDetailsFields = { xuid: BigNumber };
 
 /**
  * **Any** (read: exactly one) of the valid *PlayerDetails model types;

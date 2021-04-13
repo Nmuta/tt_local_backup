@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import _ from 'lodash';
@@ -35,8 +36,8 @@ export abstract class UserFlagsBaseComponent<T> extends BaseComponent implements
   public refreshIcon = faUndo;
 
   public abstract gameTitle: GameTitleCodeName;
-  public abstract getFlagsByXuid(xuid: bigint): Observable<T>;
-  public abstract putFlagsByXuid(xuid: bigint, newFlags: T): Observable<T>;
+  public abstract getFlagsByXuid(xuid: BigNumber): Observable<T>;
+  public abstract putFlagsByXuid(xuid: BigNumber, newFlags: T): Observable<T>;
 
   /** True if changes have been made to the flags. */
   public get hasChanges(): boolean {

@@ -1,6 +1,7 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
+import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 import { OpusMasterInventory } from '@models/opus';
 
 /** Fake API for opus player inventory. */
@@ -27,11 +28,11 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Generates a sample object */
-  public static make(_xuid: bigint): OpusMasterInventory {
+  public static make(_xuid: BigNumber): OpusMasterInventory {
     return {
       creditRewards: [
         {
-          id: BigInt(-1),
+          id: new BigNumber(-1),
           description: 'Credits',
           quantity: faker.random.number(400_000_000),
           itemType: undefined,
@@ -41,7 +42,7 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
         .fill(0)
         .map(() => {
           return {
-            id: fakeBigInt(),
+            id: fakeBigNumber(),
             quantity: 1,
             description: faker.random.words(3),
             itemType: undefined,

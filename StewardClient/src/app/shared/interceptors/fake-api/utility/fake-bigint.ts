@@ -1,33 +1,37 @@
+import BigNumber from 'bignumber.js';
+import { ZERO } from '@helpers/bignumbers';
 import * as faker from 'faker';
-interface FakeBigIntParams {
-  min: bigint | number;
-  max?: bigint | number;
+interface FakeBigNumberParams {
+  min: BigNumber | number;
+  max?: BigNumber | number;
 }
 
-/** Generate a fake BigInt that is at least as large as MAX_SAFE_INTEGER by default. */
-export function fakeBigInt(params: FakeBigIntParams = { min: Number.MAX_SAFE_INTEGER }): bigint {
-  const min = BigInt(params.min ?? 0);
-  const max = params.max ? BigInt(params.max) : undefined;
+/** Generate a fake BigNumber that is at least as large as MAX_SAFE_INTEGER by default. */
+export function fakeBigNumber(
+  params: FakeBigNumberParams = { min: Number.MAX_SAFE_INTEGER },
+): BigNumber {
+  const min = new BigNumber(params.min ?? 0);
+  const max = params.max ? new BigNumber(params.max) : undefined;
 
   let result = min;
 
   if (max) {
     const ACCUMULATOR_STEP_NUMBER = Number.MAX_SAFE_INTEGER;
-    const ACCUMULATOR_STEP_BIGINT = BigInt(ACCUMULATOR_STEP_NUMBER);
-    let difference = max - min;
+    const ACCUMULATOR_STEP_BIGINT = new BigNumber(ACCUMULATOR_STEP_NUMBER);
+    let difference = max.minus(min);
 
-    if (difference < 0) {
+    if (difference < ZERO) {
       throw new Error(`Max must be greater than min. ${min} > ${max}`);
     }
 
     do {
-      result = result + BigInt(faker.random.number(ACCUMULATOR_STEP_NUMBER));
-      difference = difference - ACCUMULATOR_STEP_BIGINT;
+      result = result.plus(new BigNumber(faker.random.number(ACCUMULATOR_STEP_NUMBER)));
+      difference = difference.minus(ACCUMULATOR_STEP_BIGINT);
     } while (difference > ACCUMULATOR_STEP_BIGINT);
 
-    result = result + BigInt(faker.random.number(Number(difference)));
+    result = result.plus(new BigNumber(faker.random.number(Number(difference))));
   } else {
-    result = result + BigInt(faker.random.number());
+    result = result.plus(new BigNumber(faker.random.number()));
   }
 
   return result;

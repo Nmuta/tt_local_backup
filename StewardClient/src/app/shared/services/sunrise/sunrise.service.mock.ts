@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Injectable, Provider } from '@angular/core';
 import { SunriseGiftingLspGroupFakeApi } from '@interceptors/fake-api/apis/title/sunrise/gifting/groupId';
 import { SunriseGiftingPlayersFakeApi } from '@interceptors/fake-api/apis/title/sunrise/gifting/players';
@@ -26,7 +27,9 @@ export class MockSunriseService {
   public getIdentity = jasmine
     .createSpy('getIdentity')
     .and.callFake(() =>
-      this.waitUntil$.pipe(switchMap(() => of({ xuid: BigInt(12345), gamertag: 'gamertag' }))),
+      this.waitUntil$.pipe(
+        switchMap(() => of({ xuid: new BigNumber(12345), gamertag: 'gamertag' })),
+      ),
     );
 
   public getPlayerDetailsByGamertag = jasmine
@@ -40,7 +43,7 @@ export class MockSunriseService {
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator())))));
   public getBanHistoryByXuid = jasmine.createSpy('getBanHistoryByXuid').and.callFake(() => {
     const unprocessed = (SunrisePlayerXuidBanHistoryFakeApi.make(
-      BigInt(12345),
+      new BigNumber(12345),
     ) as unknown) as SunriseBanHistory;
 
     return of(unprocessed);
@@ -75,7 +78,7 @@ export class MockSunriseService {
     );
   public getBanSummariesByXuids = jasmine
     .createSpy('getBanSummariesByXuids')
-    .and.callFake((xuids: BigInt[]) =>
+    .and.callFake((xuids: BigNumber[]) =>
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayersBanSummariesFakeApi.make(xuids)))),
     );
   public getMasterInventory = jasmine

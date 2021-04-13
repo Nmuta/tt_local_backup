@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { faGavel, faSpinner } from '@fortawesome/free-solid-svg-icons';
@@ -26,7 +27,7 @@ export class BanChipIconComponent extends BaseComponent implements OnChanges {
   public bannedIcon = faGavel;
 
   public hasBans = false;
-  public banCount: BigInt = BigInt(0);
+  public banCount: BigNumber = new BigNumber(0);
 
   constructor() {
     super();
@@ -36,9 +37,9 @@ export class BanChipIconComponent extends BaseComponent implements OnChanges {
   public ngOnChanges(_changes: SimpleChanges): void {
     if (this.banSummary) {
       this.banCount = this.banSummary.banCount;
-      this.hasBans = this.banSummary.banCount > BigInt(0);
+      this.hasBans = this.banSummary.banCount > new BigNumber(0);
     } else {
-      this.banCount = BigInt(0);
+      this.banCount = new BigNumber(0);
       this.hasBans = false;
     }
   }

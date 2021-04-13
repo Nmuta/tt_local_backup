@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA, Type } from '@angular/core';
 import { NgxsModule, Store } from '@ngxs/store';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -205,7 +206,7 @@ describe('GiftBasketBaseComponent', () => {
 
     beforeEach(() => {
       testItemNew = {
-        id: BigInt(1234),
+        id: new BigNumber(1234),
         description: 'test description',
         quantity: 10,
         itemType: 'test type',
@@ -231,7 +232,7 @@ describe('GiftBasketBaseComponent', () => {
         component.giftBasket = new MatTableDataSource<GiftBasketModel>();
         component.giftBasket.data = [
           {
-            id: BigInt(1234),
+            id: new BigNumber(1234),
             description: 'test description',
             quantity: 50,
             itemType: 'test type',
@@ -261,7 +262,7 @@ describe('GiftBasketBaseComponent', () => {
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       component.giftBasket.data = [
         {
-          id: BigInt(1234),
+          id: new BigNumber(1234),
           description: 'test description',
           quantity: 50,
           itemType: 'test type',
@@ -282,12 +283,12 @@ describe('GiftBasketBaseComponent', () => {
   });
 
   describe('Method: removeItemFromGiftBasket', () => {
-    const testid = BigInt(4321);
+    const testid = new BigNumber(4321);
     beforeEach(() => {
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       component.giftBasket.data = [
         {
-          id: BigInt(1234),
+          id: new BigNumber(1234),
           description: 'test description 1',
           quantity: 50,
           itemType: 'test type 1',
@@ -323,7 +324,7 @@ describe('GiftBasketBaseComponent', () => {
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       component.giftBasket.data = component.giftBasket.data = [
         {
-          id: BigInt(1234),
+          id: new BigNumber(1234),
           description: 'test description 1',
           quantity: 50,
           itemType: 'test type 1',
@@ -331,7 +332,7 @@ describe('GiftBasketBaseComponent', () => {
           error: undefined,
         },
         {
-          id: BigInt(4321),
+          id: new BigNumber(4321),
           description: 'test description 2',
           quantity: 10,
           itemType: 'test type 2',
@@ -373,17 +374,17 @@ describe('GiftBasketBaseComponent', () => {
       // Set valid form data
       component.playerIdentities = [
         {
-          query: { xuid: BigInt(123456789), t10Id: 'test-t10-id' },
-          xuid: BigInt(123456789),
+          query: { xuid: new BigNumber(123456789), t10Id: 'test-t10-id' },
+          xuid: new BigNumber(123456789),
           t10Id: 'test-t10-id',
           gamertag: 'test-gamertag',
         },
       ];
-      component.lspGroup = { id: BigInt(1), name: 'test-lsp-group' };
+      component.lspGroup = { id: new BigNumber(1), name: 'test-lsp-group' };
       component.giftBasket = new MatTableDataSource<GiftBasketModel>();
       component.giftBasket.data = component.giftBasket.data = [
         {
-          id: BigInt(1234),
+          id: new BigNumber(1234),
           description: 'test description 1',
           quantity: 50,
           itemType: 'test type 1',
@@ -391,7 +392,7 @@ describe('GiftBasketBaseComponent', () => {
           error: undefined,
         },
         {
-          id: BigInt(4321),
+          id: new BigNumber(4321),
           description: 'test description 2',
           quantity: 10,
           itemType: 'test type 2',
@@ -581,9 +582,9 @@ describe('GiftBasketBaseComponent', () => {
 
       describe('And a GiftResponse is returned', () => {
         const testGiftResponse = {
-          playerOrLspGroup: BigInt(11234567890),
+          playerOrLspGroup: new BigNumber(11234567890),
           identityAntecedent: GiftIdentityAntecedent.LspGroupId,
-        } as GiftResponse<bigint>;
+        } as GiftResponse<BigNumber>;
         beforeEach(() => {
           component.sendGiftToPlayers = jasmine
             .createSpy('sendGiftToPlayers')
@@ -649,7 +650,7 @@ describe('GiftBasketBaseComponent', () => {
       });
 
       describe('And a BackgroundJob is returned', () => {
-        const testBackgroundJobResp: BackgroundJob<GiftResponse<string | bigint>[]> = {
+        const testBackgroundJobResp: BackgroundJob<GiftResponse<string | BigNumber>[]> = {
           jobId: 'test=-job-id',
           status: BackgroundJobStatus.InProgress,
           rawResult: {

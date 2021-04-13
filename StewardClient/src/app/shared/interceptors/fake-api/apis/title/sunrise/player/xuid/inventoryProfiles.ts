@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
+import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 import { SunrisePlayerInventoryProfile } from '@models/sunrise';
 
 /** Fake API for sunrise player inventory profiles. */
@@ -28,7 +28,7 @@ export class SunrisePlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
       .fill(undefined)
       .map(() => {
         return {
-          profileId: fakeBigInt(),
+          profileId: fakeBigNumber(),
           externalProfileId: faker.random.uuid(),
           isCurrent: false,
           deviceType: faker.random.arrayElement(['Invalid']),

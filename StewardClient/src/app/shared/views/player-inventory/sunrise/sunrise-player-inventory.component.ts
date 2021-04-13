@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SunriseMasterInventory } from '@models/sunrise';
@@ -32,7 +33,7 @@ export class SunrisePlayerInventoryComponent extends PlayerInventoryBaseComponen
   /** Implement in order to retrieve concrete identity instance. */
   protected getPlayerInventoryByIdentityAndProfileId(
     _identity: IdentityResultAlpha,
-    profileId: bigint,
+    profileId: BigNumber,
   ): Observable<SunriseMasterInventory> {
     return this.sunrise.getPlayerInventoryByProfileId(profileId);
   }

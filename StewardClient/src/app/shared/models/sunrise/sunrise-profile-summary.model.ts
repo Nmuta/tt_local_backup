@@ -1,11 +1,12 @@
+import BigNumber from 'bignumber.js';
 /** The /v1/title/Sunrise/player/???/profileSummary model */
 export interface SunriseProfileSummary {
-  totalTombolaSpins: bigint;
-  totalSuperTombolaSpins: bigint;
-  currentCredits: bigint;
-  maxCredits: bigint;
-  housesPurchased: bigint;
-  unaccountedForCredits: bigint;
-  totalXp: bigint;
+  totalTombolaSpins: BigNumber;
+  totalSuperTombolaSpins: BigNumber;
+  currentCredits: BigNumber;
+  maxCredits: BigNumber;
+  housesPurchased: BigNumber;
+  unaccountedForCredits: BigNumber;
+  totalXp: BigNumber;
   hackFlags: string[];
 }

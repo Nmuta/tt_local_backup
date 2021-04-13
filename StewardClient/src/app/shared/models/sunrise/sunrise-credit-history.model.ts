@@ -1,11 +1,12 @@
+import BigNumber from 'bignumber.js';
 /** A single console details entry. */
 export interface SunriseCreditDetailsEntry {
   eventTimestampUtc: Date;
   deviceType: string;
-  creditsAfter: bigint;
-  creditAmount: bigint;
+  creditsAfter: BigNumber;
+  creditAmount: BigNumber;
   sceneName: string;
-  totalXp: bigint;
+  totalXp: BigNumber;
 }
 
 /** The /v1/title/Sunrise/player/???/creditHistory model */

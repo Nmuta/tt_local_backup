@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { OpusMasterInventory } from '@models/opus';
@@ -32,7 +33,7 @@ export class OpusPlayerInventoryComponent extends PlayerInventoryBaseComponent<
   /** Implement in order to retrieve concrete identity instance. */
   protected getPlayerInventoryByIdentityAndProfileId(
     _identity: IdentityResultAlpha,
-    profileId: bigint,
+    profileId: BigNumber,
   ): Observable<OpusMasterInventory> {
     return this.opus.getPlayerInventoryByProfileId(profileId);
   }

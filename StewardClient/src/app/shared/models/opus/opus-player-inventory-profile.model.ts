@@ -1,4 +1,5 @@
+import BigNumber from 'bignumber.js';
 export interface OpusPlayerInventoryProfile {
-  profileId: bigint;
+  profileId: BigNumber;
   isCurrent: boolean;
 }

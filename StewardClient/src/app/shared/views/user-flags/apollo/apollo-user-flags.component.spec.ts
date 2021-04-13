@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ApolloService, createMockApolloService } from '@services/apollo';
@@ -56,7 +57,7 @@ describe('ApolloUserFlagsComponent', () => {
         component.identity = {
           query: undefined,
           gamertag: faker.name.firstName(),
-          xuid: BigInt(faker.random.number({ min: 10_000, max: 500_000 })),
+          xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
         };
       });
 
@@ -112,7 +113,7 @@ describe('ApolloUserFlagsComponent', () => {
       component.identity = {
         query: undefined,
         gamertag: faker.name.firstName(),
-        xuid: BigInt(faker.random.number({ min: 10_000, max: 500_000 })),
+        xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
       };
       mockApolloService.getFlagsByXuid = jasmine
         .createSpy('getFlagsByXuid')

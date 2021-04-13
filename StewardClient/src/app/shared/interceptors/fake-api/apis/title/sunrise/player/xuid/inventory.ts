@@ -1,12 +1,13 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { SunriseMasterInventory } from '@models/sunrise';
-import { fakeBigInt, faker } from '@interceptors/fake-api/utility';
+import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 
 /** Fake API for sunrise player inventory. */
 export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
-  private xuid: bigint;
+  private xuid: BigNumber;
 
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
@@ -23,7 +24,7 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
     }
 
     const match = url.pathname.match(regex);
-    this.xuid = BigInt(match[1]);
+    this.xuid = new BigNumber(match[1]);
     return true;
   }
 
@@ -33,13 +34,13 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Generates a sample object */
-  public static make(_xuid: bigint): SunriseMasterInventory {
+  public static make(_xuid: BigNumber): SunriseMasterInventory {
     function makeFakeItems(count: number): MasterInventoryItem[] {
       return Array(faker.random.number(count))
         .fill(0)
         .map(() => {
           return {
-            id: fakeBigInt(),
+            id: fakeBigNumber(),
             quantity: faker.random.number(5),
             description: faker.lorem.sentences(2),
             itemType: undefined,
@@ -50,31 +51,31 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
     return {
       creditRewards: [
         {
-          id: BigInt(-1),
+          id: new BigNumber(-1),
           description: 'Credits',
           quantity: faker.random.number(400_000_000),
           itemType: undefined,
         },
         {
-          id: BigInt(-1),
+          id: new BigNumber(-1),
           description: 'WheelSpins',
           quantity: faker.random.number(400_000_000),
           itemType: undefined,
         },
         {
-          id: BigInt(-1),
+          id: new BigNumber(-1),
           description: 'SuperWheelSpins',
           quantity: faker.random.number(400_000_000),
           itemType: undefined,
         },
         {
-          id: BigInt(-1),
+          id: new BigNumber(-1),
           description: 'SkillPoints',
           quantity: faker.random.number(400_000_000),
           itemType: undefined,
         },
         {
-          id: BigInt(-1),
+          id: new BigNumber(-1),
           description: 'ForzathonPoints',
           quantity: faker.random.number(400_000_000),
           itemType: undefined,

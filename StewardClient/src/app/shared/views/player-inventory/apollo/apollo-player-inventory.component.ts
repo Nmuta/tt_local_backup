@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { ApolloMasterInventory } from '@models/apollo';
 import { IdentityResultAlpha } from '@models/identity-query.model';
@@ -32,7 +33,7 @@ export class ApolloPlayerInventoryComponent extends PlayerInventoryBaseComponent
   /** Implement in order to retrieve concrete identity instance. */
   protected getPlayerInventoryByIdentityAndProfileId(
     _identity: IdentityResultAlpha,
-    profileId: bigint,
+    profileId: BigNumber,
   ): Observable<ApolloMasterInventory> {
     return this.apollo.getPlayerInventoryByProfileId(profileId);
   }

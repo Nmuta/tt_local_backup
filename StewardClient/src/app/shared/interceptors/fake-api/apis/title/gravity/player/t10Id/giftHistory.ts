@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { fakeBigInt } from '@interceptors/fake-api/utility/fake-bigint';
+import { fakeBigNumber } from '@interceptors/fake-api/utility/fake-bigint';
 import { GravityGiftHistory } from '@models/gravity';
 import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
@@ -37,42 +37,42 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
           inventory: {
             creditRewards: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },
             ],
             cars: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },
             ],
             masteryKits: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },
             ],
             upgradeKits: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },
             ],
             repairKits: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },
             ],
             energyRefills: [
               {
-                id: fakeBigInt(),
+                id: fakeBigNumber(),
                 description: faker.random.word(),
                 quantity: faker.random.number(),
               },

@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges } from '@angular/core';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { NEVER, Observable } from 'rxjs';
@@ -29,7 +30,7 @@ export abstract class GamertagsBaseComponent<T> extends BaseComponent implements
   public abstract userDetailsRouterLink: string[];
 
   /** Gets the shared console gamertag list. */
-  public abstract getSharedConsoleUsersByXuid(xuid: bigint): Observable<T[]>;
+  public abstract getSharedConsoleUsersByXuid(xuid: BigNumber): Observable<T[]>;
 
   /** Initialization hook. */
   public ngOnChanges(): void {

@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges } from '@angular/core';
 import { SunriseProfileSummary } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
@@ -9,7 +10,7 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
   styleUrls: ['./sunrise-overview.component.scss'],
 })
 export class SunriseOverviewComponent implements OnChanges {
-  @Input() public xuid?: bigint;
+  @Input() public xuid?: BigNumber;
 
   /** True while waiting on a request. */
   public isLoading = true;

@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { MSError } from './error.model';
 import { GamertagString, T10IdString } from './extended-types';
 
@@ -8,7 +9,7 @@ interface IdentityQueryByGamertag {
 
 /** An identity query by xuid. */
 interface IdentityQueryByXuid {
-  xuid: bigint;
+  xuid: BigNumber;
 }
 
 /** An identity query by t10Id. */
@@ -19,13 +20,13 @@ interface IdentityQueryByT10Id {
 /** Creates a valid @see IdentityQueryAlpha from a variety of inputs. */
 export function makeAlphaQuery(
   type: 'gamertag' | 'xuid',
-  value: string | bigint,
+  value: string | BigNumber,
 ): IdentityQueryAlpha {
   switch (type) {
     case 'gamertag':
       return { gamertag: value.toString() };
     case 'xuid':
-      return { xuid: BigInt(value) };
+      return { xuid: new BigNumber(value) };
     default:
       throw new Error(`Unacceptable type for makeAlphaQuery: ${type} (value: ${value})`);
   }
@@ -34,13 +35,13 @@ export function makeAlphaQuery(
 /** Creates a valid @see IdentityQueryBeta from a variety of inputs. */
 export function makeBetaQuery(
   type: 'gamertag' | 'xuid' | 't10Id',
-  value: string | bigint,
+  value: string | BigNumber,
 ): IdentityQueryBeta {
   switch (type) {
     case 'gamertag':
       return { gamertag: value.toString() };
     case 'xuid':
-      return { xuid: BigInt(value) };
+      return { xuid: new BigNumber(value) };
     case 't10Id':
       return { t10Id: value.toString() };
     default:
@@ -107,7 +108,7 @@ export interface IdentityResultAlpha {
   /** The gamertag, if found. */
   gamertag?: string;
   /** The XUID, if found. */
-  xuid?: bigint;
+  xuid?: BigNumber;
   /** Why this query failed. */
   error?: MSError;
 }
@@ -137,7 +138,7 @@ export interface IdentityResultBeta {
   /** The gamertag, if found. */
   gamertag?: string;
   /** The XUID, if found. */
-  xuid?: bigint;
+  xuid?: BigNumber;
   /** The principal T10ID, if found. */
   t10Id?: string;
   /** The other T10IDs, if found. */

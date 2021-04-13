@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
@@ -81,13 +82,13 @@ describe('UserBanningBaseComponent', () => {
           status: BackgroundJobStatus.InProgress,
           result: [
             {
-              xuid: BigInt(faker.random.number()),
+              xuid: new BigNumber(faker.random.number()),
               success: true,
               banDescription: undefined,
             },
           ],
           rawResult: {
-            xuid: BigInt(faker.random.number()),
+            xuid: new BigNumber(faker.random.number()),
             success: true,
             banDescription: undefined,
           },

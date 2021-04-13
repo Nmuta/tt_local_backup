@@ -1,13 +1,14 @@
+import BigNumber from 'bignumber.js';
 import { GuidLikeString } from '@models/extended-types';
 import { ApolloInventoryItem } from './apollo-inventory-item.model';
 
 /** Interface for sunrise car item. */
 export interface ApolloCar extends ApolloInventoryItem {
   vin: GuidLikeString;
-  baseCost: bigint;
-  collectorScore: bigint;
+  baseCost: BigNumber;
+  collectorScore: BigNumber;
   isOnlineOnly: boolean;
-  productionNumber: bigint;
+  productionNumber: BigNumber;
   purchaseUtc: Date;
   versionedLiveryId: GuidLikeString;
   versionedTuneId: GuidLikeString;

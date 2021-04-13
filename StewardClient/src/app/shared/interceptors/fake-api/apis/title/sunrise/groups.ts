@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { LspGroups } from '@models/lsp-group';
@@ -25,8 +26,8 @@ export class SunriseGroupsFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<LspGroups>> {
     return [
-      { id: BigInt(0), name: 'Fake Lsp Group 1' },
-      { id: BigInt(1), name: 'Fake Lsp Group 2' },
+      { id: new BigNumber(0), name: 'Fake Lsp Group 1' },
+      { id: new BigNumber(1), name: 'Fake Lsp Group 2' },
     ];
   }
 }

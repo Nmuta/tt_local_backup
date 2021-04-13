@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunriseProfileSummary } from '@models/sunrise';
@@ -25,13 +26,13 @@ export class SunrisePlayerXuidProfileSummaryFakeApi extends FakeApiBase {
   /** Creates a sample object. */
   public static make(): Unprocessed<SunriseProfileSummary> {
     return {
-      totalTombolaSpins: BigInt(13),
-      totalSuperTombolaSpins: BigInt(0),
-      currentCredits: BigInt(511830),
-      maxCredits: BigInt(511830),
-      housesPurchased: BigInt(0),
-      unaccountedForCredits: BigInt(-359026),
-      totalXp: BigInt(325702),
+      totalTombolaSpins: new BigNumber(13),
+      totalSuperTombolaSpins: new BigNumber(0),
+      currentCredits: new BigNumber(511830),
+      maxCredits: new BigNumber(511830),
+      housesPurchased: new BigNumber(0),
+      unaccountedForCredits: new BigNumber(-359026),
+      totalXp: new BigNumber(325702),
       hackFlags: [
         'FileDecryptionAuthFailure',
         'Checksum_ObfuscatedDataAccessors',
