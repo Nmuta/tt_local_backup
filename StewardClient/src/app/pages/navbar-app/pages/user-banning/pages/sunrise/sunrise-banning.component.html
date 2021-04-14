@@ -29,7 +29,7 @@
         <sunrise-ban-history-compact
           *ngFor="let xuid of bannedXuids"
           [xuid]="xuid"
-          [hidden]="xuid !== selectedPlayer?.xuid"
+          [hidden]="!xuid.isEqualTo(selectedPlayer?.xuid)"
         ></sunrise-ban-history-compact>
       </mat-card>
     </div>

@@ -29,7 +29,7 @@
         <apollo-ban-history-compact
           *ngFor="let xuid of bannedXuids"
           [xuid]="xuid"
-          [hidden]="xuid !== selectedPlayer?.xuid"
+          [hidden]="!xuid.isEqualTo(selectedPlayer?.xuid)"
         ></apollo-ban-history-compact>
       </mat-card>
     </div>
