@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DataPrivacyNoticeModule } from '@shared/views/data-privacy-notice/data-privacy-notice.module';
 import { LocationDetailsModule } from '@shared/views/location-details/location-details.module';
 import { MatCardModule } from '@angular/material/card';
+import { ChangelogModule } from '@shared/views/changelog/changelog.module';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { HubsModule } from '@shared/hubs/hubs.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -54,6 +55,7 @@ export const sidebarRoutes = [
     DataPrivacyNoticeModule,
     MatCardModule,
     LocationDetailsModule,
+    ChangelogModule,
     HubsModule,
     RouterModule.forChild(sidebarRoutes),
   ],

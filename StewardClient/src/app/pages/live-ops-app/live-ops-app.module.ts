@@ -16,6 +16,7 @@ import { LiveOpsAppComponent } from './live-ops-app.component';
 import { LiveOpsHomeComponent } from './pages/home/home.component';
 import { LiveOpsNavbarComponent } from './components/navbar/navbar.component';
 import { AllAppsDropdownModule } from '@shared/views/all-apps-dropdown/all-apps-dropdown.module';
+import { SidebarIconsModule } from '@shared/views/sidebar-icons/sidebar-icons.module';
 
 /** Defines the sidebar module. */
 @NgModule({
@@ -34,6 +35,7 @@ import { AllAppsDropdownModule } from '@shared/views/all-apps-dropdown/all-apps-
     FourOhFourModule,
     MatCardModule,
     AllAppsDropdownModule,
+    SidebarIconsModule,
   ],
   providers: [],
   declarations: [LiveOpsAppComponent, LiveOpsHomeComponent, LiveOpsNavbarComponent],

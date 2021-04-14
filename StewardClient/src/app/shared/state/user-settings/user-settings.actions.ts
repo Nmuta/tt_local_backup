@@ -3,3 +3,9 @@ export class SetFakeApi {
   public static readonly type = '[Settings] Toggle Fake API';
   constructor(public readonly enabled: boolean) {}
 }
+
+/** Sets the current version of the Steward app the client is running. */
+export class SetAppVersion {
+  public static readonly type = '[Settings] Set App Version';
+  constructor(public readonly version: string) {}
+}

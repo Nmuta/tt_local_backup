@@ -1,11 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  faCog,
-  faExclamationTriangle,
-  faInfoCircle,
-  faSyncAlt,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faInfoCircle, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from '@models/user.model';
 import { Select } from '@ngxs/store';
 import { WindowService } from '@services/window';
@@ -32,9 +26,6 @@ export class LiveOpsNavbarComponent {
   public infoIcon = faInfoCircle;
   public items: RouterLinkPath[] = liveOpsAppToolList;
   public homeRouterLink = createLiveOpsNavbarPath(LiveOpsAppTools.HomePage).routerLink;
-
-  public readonly profileIcon = faUser;
-  public readonly settingsIcon = faCog;
 
   constructor(private readonly windowService: WindowService) {}
 

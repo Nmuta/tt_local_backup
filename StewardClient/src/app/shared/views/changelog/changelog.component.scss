@@ -1,0 +1,24 @@
+@import '/src/styles/mixins';
+
+:host {
+  display: block;
+  width: 100%;
+  margin-top: $gap-large;
+  bottom: 0;
+  left: 0;
+  position: relative;
+
+  max-height: 40vh;
+
+  mat-panel-title {
+    font-weight: 700;
+  }
+
+  mat-expansion-panel {
+    margin-bottom: $gap-medium;
+  }
+
+  .new-release-found-text {
+    color: app-color-default($app-accent);
+  }
+}

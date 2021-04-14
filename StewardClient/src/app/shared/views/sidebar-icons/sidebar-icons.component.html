@@ -1,0 +1,28 @@
+<span>
+  <a
+    [routerLink]="[{ outlets: { sidebar: 'settings' } }]"
+    queryParamsHandling="preserve"
+    mat-icon-button
+    routerLinkActive="mat-stroked-button"
+    matTooltip="Settings"
+    aria-label="Settings"
+    [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
+    matBadgeColor="accent"
+    matBadgeSize="small"
+    (click)="clickedSettings()"
+  >
+    <fa-icon [icon]="settingsIcon"></fa-icon>
+  </a>
+</span>
+<span>
+  <a
+    [routerLink]="[{ outlets: { sidebar: 'profile' } }]"
+    queryParamsHandling="preserve"
+    mat-icon-button
+    routerLinkActive="navbar-button-active"
+    matTooltip="Profile"
+    aria-label="Profile"
+  >
+    <fa-icon [icon]="profileIcon"></fa-icon>
+  </a>
+</span>

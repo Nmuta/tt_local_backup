@@ -1,0 +1,68 @@
+<!-- This is the HTML file template for the changelog component. /shared/views/changelog -->
+<section>
+  <h2>
+    Steward Changelog
+    <span *ngIf="clientOnNewVersion" class="new-release-found-text">(New Release)</span>
+  </h2>
+
+  <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h3>Unreleased</h3>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <p>Bug Fixes</p>
+    <ul>
+      <li></li>
+    </ul>
+
+    <p>Features</p>
+    <ul>
+      <li>
+        Changelog added. Developers will keep track of bug fixes, features, and general maintenance
+        for users to view. (04/08/21)
+      </li>
+    </ul>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h3>04/06/2021 Release</h3>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <p>Bug Fixes</p>
+    <ul>
+      <li>Route reuse no longer breaks navigation in the toolbar. (04/01/21)</li>
+    </ul>
+
+    <p>App Features</p>
+    <ul>
+      <li>[Support App] Kusto querying is activated. (04/05/21)</li>
+      <li>[Support App] Apollo ban history is visible in the user details page. (04/05/21)</li>
+      <li>
+        [Support App] Server-side caching of player identities for quicker lookup times. (03/30/21)
+      </li>
+      <li>
+        [Support App] SupportAgentAdmins can now gift credits above the 500 million limit when
+        sending as a 'Lost Save'. (03/30/21)
+      </li>
+      <li>
+        [Support App] Banning, bulk lookup of users is now sorted based on number of previous bans.
+        (03/24/21)
+      </li>
+      <li>[Community App] Draft of new Community Messaging endpoints is live. (04/01/21)</li>
+      <li>
+        [Live Ops App] New Kusto tool to manage Support's predefined kusto functions. (03/29/21)
+      </li>
+    </ul>
+
+    <p>General</p>
+    <ul>
+      <li>Upgraded System.Text.Encoding.Web to become compliant with MS security. (04/02/21)</li>
+      <li>Upgraded to Angular version 11.2.8. (04/02/21)</li>
+    </ul>
+  </mat-expansion-panel>
+</section>
