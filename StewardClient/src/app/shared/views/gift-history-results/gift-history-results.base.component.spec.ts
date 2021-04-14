@@ -5,12 +5,15 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SunriseGiftHistory } from '@models/sunrise';
 import { of, throwError } from 'rxjs';
 import { GiftHistoryResultsBaseComponent } from './gift-history-results.base.component';
+import { MasterInventoryItem } from '@models/master-inventory-item';
+import { GiftHistoryView } from './gift-history-results.base.component';
+import faker from 'faker';
 
-describe('SunriseGiftHistoryComponent', () => {
-  let component: GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistory[]>;
+describe('GiftHistoryResultsBaseComponent', () => {
+  let component: GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistory>;
   let fixture: ComponentFixture<GiftHistoryResultsBaseComponent<
     IdentityResultAlpha,
-    SunriseGiftHistory[]
+    SunriseGiftHistory
   >>;
 
   beforeEach(
@@ -24,7 +27,7 @@ describe('SunriseGiftHistoryComponent', () => {
 
       fixture = TestBed.createComponent(
         GiftHistoryResultsBaseComponent as Type<
-          GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistory[]>
+          GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistory>
         >,
       );
       component = fixture.debugElement.componentInstance;
@@ -42,6 +45,8 @@ describe('SunriseGiftHistoryComponent', () => {
     beforeEach(() => {
       // Need to subscribe to intermediate observable to verify component variable set correctly.
       component.ngOnInit();
+      component.generateItemsList = jasmine.createSpy('generateItemsList');
+      component.generateDescriptionList = jasmine.createSpy('generateDescriptionList');
     });
     describe('when usingPlayerIdentities set to true', () => {
       beforeEach(() => {
@@ -52,7 +57,7 @@ describe('SunriseGiftHistoryComponent', () => {
           component.selectedPlayer = { query: { xuid: new BigNumber(123456789) } };
         });
         describe('when service returns valid gift histories', () => {
-          const validGiftHistories: SunriseGiftHistory[] = [];
+          const validGiftHistories: (SunriseGiftHistory & GiftHistoryView)[] = [];
           beforeEach(() => {
             component.retrieveHistoryByPlayer = jasmine
               .createSpy('retrieveHistoryByPlayer')
@@ -87,7 +92,7 @@ describe('SunriseGiftHistoryComponent', () => {
           component.selectedGroup = { id: new BigNumber(4), name: 'testName' };
         });
         describe('when service returns valid gift histories', () => {
-          const validGiftHistories: SunriseGiftHistory[] = [];
+          const validGiftHistories: (SunriseGiftHistory & GiftHistoryView)[] = [];
           beforeEach(() => {
             component.retrieveHistoryByLspGroup = jasmine
               .createSpy('retrieveHistoryByLspGroup')
@@ -112,6 +117,25 @@ describe('SunriseGiftHistoryComponent', () => {
           });
         });
       });
+    });
+  });
+
+  describe('Method: makeItemList', () => {
+    const title = 'test-title';
+    const giftItems = [
+      {
+        id: new BigNumber(faker.random.number()),
+        description: faker.random.words(10),
+        quantity: faker.random.number(),
+        itemType: 'creditRewards',
+      },
+    ] as MasterInventoryItem[];
+    it('should generate a MasterInventoryItemList', () => {
+      const itemList = component.makeItemList(title, giftItems);
+
+      expect(itemList.title).toEqual(title);
+      expect(itemList.description).toEqual('1 Total');
+      expect(itemList.items).toEqual(giftItems);
     });
   });
 });

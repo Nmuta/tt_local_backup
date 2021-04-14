@@ -4,10 +4,8 @@ import { ApolloMasterInventory } from '@models/apollo';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { ApolloService } from '@services/apollo';
 import { Observable } from 'rxjs';
-import {
-  PlayerInventoryBaseComponent,
-  PropertyToExpandoData,
-} from '../player-inventory.base.component';
+import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
+import { MasterInventoryItemList } from '@models/master-inventory-item-list';
 
 /** Displays an Apollo player's inventory. */
 @Component({
@@ -39,11 +37,11 @@ export class ApolloPlayerInventoryComponent extends PlayerInventoryBaseComponent
   }
 
   /** Implement to specify the expando tables to show. */
-  protected makeWhatToShow(): PropertyToExpandoData<ApolloMasterInventory>[] {
+  protected makewhatToShowList(): MasterInventoryItemList[] {
     return [
-      this.makeEntry('creditRewards', 'Credit Rewards'),
-      this.makeEntry('cars', 'Cars'),
-      this.makeEntry('vanityItems', 'Vanity Items'),
+      this.makeItemList('Credit Rewards', this.inventory.creditRewards),
+      this.makeItemList('Cars', this.inventory.cars),
+      this.makeItemList('Vanity Items', this.inventory.vanityItems),
     ];
   }
 }

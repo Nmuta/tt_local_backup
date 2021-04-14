@@ -9,6 +9,7 @@ import {
   isXuidQuery,
 } from '@models/identity-query.model';
 import faker from 'faker';
+import { fakeT10Id } from '@interceptors/fake-api/utility/fake-t10id';
 
 /** Fake API for identifying players. */
 export class GravityPlayersIdentitiesFakeApi extends FakeApiBase {
@@ -36,7 +37,7 @@ export class GravityPlayersIdentitiesFakeApi extends FakeApiBase {
         query: query,
         gamertag: isGamertagQuery(query) ? query.gamertag : faker.name.firstName(),
         xuid: isXuidQuery(query) ? query.xuid : new BigNumber(faker.random.number()),
-        t10id: isT10IdQuery(query) ? query.t10Id : faker.random.uuid(),
+        t10Id: isT10IdQuery(query) ? query.t10Id : fakeT10Id(),
       };
     });
   }

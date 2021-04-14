@@ -10,7 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { OpusPlayerInventoryComponent } from './opus/opus-player-inventory.component';
 import { ApolloPlayerInventoryComponent } from './apollo/apollo-player-inventory.component';
 import { GravityPlayerInventoryComponent } from './gravity/gravity-player-inventory.component';
-import { PlayerInventoryTablesComponent } from './player-inventory-tables/player-inventory-tables.component';
+import { InventoryItemListDisplayModule } from '@views/inventory-item-list-display/inventory-item-list-display.module';
 
 /** Feature module containing cards that display player inventory. */
 @NgModule({
@@ -19,7 +19,6 @@ import { PlayerInventoryTablesComponent } from './player-inventory-tables/player
     OpusPlayerInventoryComponent,
     ApolloPlayerInventoryComponent,
     GravityPlayerInventoryComponent,
-    PlayerInventoryTablesComponent,
   ],
   imports: [
     CommonModule,
@@ -29,6 +28,7 @@ import { PlayerInventoryTablesComponent } from './player-inventory-tables/player
     MatTooltipModule,
     MatExpansionModule,
     MatProgressSpinnerModule,
+    InventoryItemListDisplayModule,
   ],
   exports: [
     SunrisePlayerInventoryComponent,

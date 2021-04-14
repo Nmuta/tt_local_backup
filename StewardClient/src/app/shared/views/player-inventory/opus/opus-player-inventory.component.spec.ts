@@ -36,7 +36,7 @@ describe('OpusPlayerInventoryComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when valid identity is received', () => {
+  describe('Method: ngOnChanges', () => {
     const testXuid = fakeXuid();
 
     beforeEach(
@@ -66,7 +66,7 @@ describe('OpusPlayerInventoryComponent', () => {
 
       it('should populate inventory', () => {
         expect(component.inventory).toBeTruthy();
-        expect(component.whatToShow).toBeTruthy();
+        expect(component.itemsToShow).toBeTruthy();
       });
 
       describe('when null identity is set', () => {

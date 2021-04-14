@@ -4,10 +4,8 @@ import { GravityPlayerInventoryBeta } from '@models/gravity';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { GravityService } from '@services/gravity';
 import { Observable } from 'rxjs';
-import {
-  PlayerInventoryBaseComponent,
-  PropertyToExpandoData,
-} from '../player-inventory.base.component';
+import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
+import { MasterInventoryItemList } from '@models/master-inventory-item-list';
 
 /** Displays a Gravity player's inventory. */
 @Component({
@@ -39,12 +37,12 @@ export class GravityPlayerInventoryComponent extends PlayerInventoryBaseComponen
   }
 
   /** Implement to specify the expando tables to show. */
-  protected makeWhatToShow(): PropertyToExpandoData<GravityPlayerInventoryBeta>[] {
+  protected makewhatToShowList(): MasterInventoryItemList[] {
     return [
-      this.makeEntry('creditRewards', 'Credit Rewards'),
-      this.makeEntry('cars', 'Cars'),
-      this.makeEntry('masteryKits', 'Mastery Kits'),
-      this.makeEntry('energyRefills', 'Energy Refills'),
+      this.makeItemList('Credit Rewards', this.inventory.creditRewards),
+      this.makeItemList('Cars', this.inventory.cars),
+      this.makeItemList('Mastery Kits', this.inventory.masteryKits),
+      this.makeItemList('Energy Refills', this.inventory.energyRefills),
     ];
   }
 }

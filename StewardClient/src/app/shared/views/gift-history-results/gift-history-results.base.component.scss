@@ -2,6 +2,11 @@
 
 :host {
   @include flex-column-fill();
+
+  mat-accordion {
+    margin-top: 2em;
+    display: block;
+  }
 }
 
 h2 {
@@ -13,13 +18,21 @@ h3 {
   font-weight: bold;
 }
 
+.sent-by-info {
+  margin-bottom: 1em;
+}
+
 mat-panel-title {
   &,
   & > * {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-end;
     padding-right: 0.5em;
+    min-width: 5em;
   }
 
   flex-basis: auto;
@@ -49,6 +62,22 @@ mat-panel-description {
   }
   > .data {
     margin-right: 0.5em;
+  }
+
+  ul,
+  li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  ul {
+    display: flex;
+    flex-flow: row wrap;
+  }
+
+  li {
+    padding: 0 0.25em;
   }
 }
 

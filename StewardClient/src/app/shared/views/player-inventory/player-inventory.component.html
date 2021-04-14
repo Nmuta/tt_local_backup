@@ -1,8 +1,8 @@
 <div *ngIf="inventory; else failstate">
-  <player-inventory-tables
-    [inventory]="inventory"
+  <inventory-item-list-display
+    *ngFor="let whatToShow of itemsToShow"
     [whatToShow]="whatToShow"
-  ></player-inventory-tables>
+  ></inventory-item-list-display>
 </div>
 
 <json-dump [input]="inventory">Inventory Response</json-dump>

@@ -4,10 +4,8 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { OpusMasterInventory } from '@models/opus';
 import { OpusService } from '@services/opus';
 import { Observable } from 'rxjs';
-import {
-  PlayerInventoryBaseComponent,
-  PropertyToExpandoData,
-} from '../player-inventory.base.component';
+import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
+import { MasterInventoryItemList } from '@models/master-inventory-item-list';
 
 /** Displays an Opus player's inventory. */
 @Component({
@@ -39,7 +37,10 @@ export class OpusPlayerInventoryComponent extends PlayerInventoryBaseComponent<
   }
 
   /** Implement to specify the expando tables to show. */
-  protected makeWhatToShow(): PropertyToExpandoData<OpusMasterInventory>[] {
-    return [this.makeEntry('creditRewards', 'Credit Rewards'), this.makeEntry('cars', 'Cars')];
+  protected makewhatToShowList(): MasterInventoryItemList[] {
+    return [
+      this.makeItemList('Credit Rewards', this.inventory.creditRewards),
+      this.makeItemList('Cars', this.inventory.cars),
+    ];
   }
 }

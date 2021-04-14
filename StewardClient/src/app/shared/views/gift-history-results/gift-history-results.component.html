@@ -1,0 +1,55 @@
+<mat-card>
+  <mat-card-content>
+    <h2>{{ gameTitle }} Gift History</h2>
+    <span class="notification">{{ giftHistoryDelay }}</span>
+    <ng-container *ngIf="!isLoading && !loadError; else failState">
+      <ng-container
+        *ngIf="!giftHistoryList || giftHistoryList?.length > 0; else noHistoryFoundTemplate"
+      >
+        <mat-accordion>
+          <mat-expansion-panel hideToggle *ngFor="let history of giftHistoryList">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <span class="gift-reason">{{ history.giftInventory.giftReason }}</span>
+                <span [matTooltip]="history.giftSendDateUtc | date: 'long'">
+                  {{ history.giftSendDateUtc | date: 'short' }}
+                </span>
+              </mat-panel-title>
+              <mat-panel-description>
+                <span class="inventoryPreview">
+                  <ul>
+                    <li *ngFor="let description of history.descriptionToShow">
+                      <b>{{ description.title }}:</b> {{ description.quantity }}
+                    </li>
+                  </ul>
+                </span>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="sent-by-info">
+              <b>Sent by: </b><steward-user [objectId]="history.requestingAgent"> </steward-user>
+            </div>
+            <ng-container>
+              <div *ngFor="let itemsToShow of history.itemsToShow">
+                <inventory-item-list-display
+                  *ngIf="itemsToShow?.items?.length > 0"
+                  [whatToShow]="itemsToShow"
+                ></inventory-item-list-display>
+              </div>
+            </ng-container>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </ng-container>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #noHistoryFoundTemplate>
+  <h3>No gift history found.</h3>
+</ng-template>
+
+<ng-template #failState>
+  <div id="fail-state">
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+    <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+  </div>
+</ng-template>

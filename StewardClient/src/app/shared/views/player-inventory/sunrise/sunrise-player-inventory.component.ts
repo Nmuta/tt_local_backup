@@ -4,10 +4,8 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SunriseMasterInventory } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise';
 import { Observable } from 'rxjs';
-import {
-  PlayerInventoryBaseComponent,
-  PropertyToExpandoData,
-} from '../player-inventory.base.component';
+import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
+import { MasterInventoryItemList } from '@models/master-inventory-item-list';
 
 /** Displays a Sunrise player's inventory. */
 @Component({
@@ -39,14 +37,14 @@ export class SunrisePlayerInventoryComponent extends PlayerInventoryBaseComponen
   }
 
   /** Implement to specify the expando tables to show. */
-  protected makeWhatToShow(): PropertyToExpandoData<SunriseMasterInventory>[] {
+  protected makewhatToShowList(): MasterInventoryItemList[] {
     return [
-      this.makeEntry('creditRewards', 'Credit Rewards'),
-      this.makeEntry('cars', 'Cars'),
-      this.makeEntry('vanityItems', 'Vanity Items'),
-      this.makeEntry('carHorns', 'Car Horns'),
-      this.makeEntry('quickChatLines', 'Quick Chat Lines'),
-      this.makeEntry('emotes', 'Emotes'),
+      this.makeItemList('Credit Rewards', this.inventory.creditRewards),
+      this.makeItemList('Cars', this.inventory.cars),
+      this.makeItemList('Vanity Items', this.inventory.vanityItems),
+      this.makeItemList('Car Horns', this.inventory.carHorns),
+      this.makeItemList('Quick Chat Lines', this.inventory.quickChatLines),
+      this.makeItemList('Emotes', this.inventory.emotes),
     ];
   }
 }

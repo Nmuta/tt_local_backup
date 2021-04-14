@@ -1,23 +1,22 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { InventoryItemListDisplayComponent } from './inventory-item-list-display.component';
 
-import { PlayerInventoryTablesComponent } from './player-inventory-tables.component';
-
-describe('PlayerInventoryTablesComponent', () => {
-  let component: PlayerInventoryTablesComponent;
-  let fixture: ComponentFixture<PlayerInventoryTablesComponent>;
+describe('InventoryItemListDisplayComponent', () => {
+  let component: InventoryItemListDisplayComponent;
+  let fixture: ComponentFixture<InventoryItemListDisplayComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PlayerInventoryTablesComponent],
+      declarations: [InventoryItemListDisplayComponent],
       imports: [PipesModule],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PlayerInventoryTablesComponent);
+    fixture = TestBed.createComponent(InventoryItemListDisplayComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

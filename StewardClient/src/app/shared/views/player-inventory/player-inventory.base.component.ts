@@ -17,6 +17,7 @@ import { OpusMasterInventory } from '@models/opus';
 import { SunriseMasterInventory } from '@models/sunrise';
 import { combineLatest, NEVER, Observable, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { MasterInventoryItemList } from '@models/master-inventory-item-list';
 
 export type AcceptablePlayerInventoryTypeUnion =
   | GravityPlayerInventoryBeta
@@ -57,7 +58,7 @@ export abstract class PlayerInventoryBaseComponent<
   public error: unknown;
 
   /** The properties to display in a standard fashion. */
-  public whatToShow: PropertyToExpandoData<PlayerInventoryType>[] = [];
+  public itemsToShow: MasterInventoryItemList[] = [];
 
   /** Intermediate event that is fired when @see identity changes. */
   private identity$ = new Subject<IdentityResultType>();
@@ -77,7 +78,7 @@ export abstract class PlayerInventoryBaseComponent<
   ): Observable<PlayerInventoryType>;
 
   /** Implement to specify the expando tables to show. */
-  protected abstract makeWhatToShow(): PropertyToExpandoData<PlayerInventoryType>[];
+  protected abstract makewhatToShowList(): MasterInventoryItemList[];
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
@@ -114,7 +115,7 @@ export abstract class PlayerInventoryBaseComponent<
       .subscribe(inventory => {
         this.inventory = inventory;
         this.inventoryFound.emit(inventory);
-        this.whatToShow = this.makeWhatToShow();
+        this.itemsToShow = this.makewhatToShowList();
       });
 
     this.identity$.next(this.identity);
@@ -136,24 +137,12 @@ export abstract class PlayerInventoryBaseComponent<
     }
   }
 
-  /** Utility method for generating the expandos to show. */
-  protected makeEntry(
-    property: keyof PlayerInventoryType,
-    title: string,
-  ): PropertyToExpandoData<PlayerInventoryType> {
-    let description = '';
-    if (property !== 'creditRewards') {
-      const count = ((this.inventory[property] as unknown) as MasterInventoryItem[]).reduce(
-        (accumulator, entry) => accumulator.plus(new BigNumber(entry.quantity)),
-        new BigNumber(0),
-      );
-      description = `${count} Total`;
-    }
-
+  /** Utility method for generating master inventory list to display. */
+  protected makeItemList(title: string, items: MasterInventoryItem[]): MasterInventoryItemList {
     return {
-      property: property,
       title: title,
-      description: description,
-    };
+      description: `${items.length} Total`,
+      items: items,
+    } as MasterInventoryItemList;
   }
 }
