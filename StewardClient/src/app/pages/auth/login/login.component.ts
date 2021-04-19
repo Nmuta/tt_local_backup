@@ -6,6 +6,8 @@ import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { Select, Store } from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
+import { WindowService } from '@services/window';
+import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
@@ -27,6 +29,7 @@ export class LoginComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly store: Store,
     private readonly logger: LoggerService,
+    private readonly windowService: WindowService,
   ) {}
 
   /** OnInit hook. */
@@ -38,9 +41,16 @@ export class LoginComponent implements OnInit {
 
   /** Launches the login popup. */
   public async login$(): Promise<void> {
+    const location = this.windowService.location();
+    const useStaging =
+      this.store.selectSnapshot<boolean>(UserSettingsState.enableStagingApi) &&
+      location?.origin === environment.stewardUiStagingUrl;
     try {
       await this.msalService.loginPopup({
         extraScopesToConsent: [environment.azureAppScope],
+        redirectUri: `${
+          useStaging ? environment.stewardUiStagingUrl : environment.stewardUiUrl
+        }/auth/aad-login`,
       });
 
       await this.store.dispatch(new RecheckAuth()).toPromise();

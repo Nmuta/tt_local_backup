@@ -3,12 +3,14 @@ import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
+import { WindowService } from '@services/window';
 import { UserService } from '@shared/services/user';
 import { clone } from 'lodash';
 import { concat, from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, switchMap, take, tap, timeout } from 'rxjs/operators';
+import { UserSettingsState } from '../user-settings/user-settings.state';
 
 import {
   BreakAccessToken,
@@ -50,6 +52,8 @@ export class UserState {
     private readonly userService: UserService,
     private readonly authService: MsalService,
     private readonly logger: LoggerService,
+    private readonly store: Store,
+    private readonly windowService: WindowService,
   ) {}
 
   /** Logs out the current user and directs them to the auth page. */
@@ -128,9 +132,17 @@ export class UserState {
       [LogTopic.AuthInterception],
       `[user.state] [requestAccessToken] acquireTokenSilent`,
     );
+
+    const location = this.windowService.location();
+    const useStaging =
+      this.store.selectSnapshot<boolean>(UserSettingsState.enableStagingApi) &&
+      location?.origin === environment.stewardUiStagingUrl;
     return from(
       this.authService.acquireTokenSilent({
         scopes: [environment.azureAppScope],
+        redirectUri: `${
+          useStaging ? environment.stewardUiStagingUrl : environment.stewardUiUrl
+        }/auth/aad-login`,
       }),
     ).pipe(
       tap(() =>

@@ -1,10 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
+import { environment } from '@environments/environment';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
+import { WindowService } from '@services/window';
+import { SetStagingApi } from '@shared/state/user-settings/user-settings.actions';
+import {
+  UserSettingsState,
+  UserSettingsStateModel,
+} from '@shared/state/user-settings/user-settings.state';
 import { UserState } from '@shared/state/user/user.state';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 /** Displays the apps available to the user, or a login button. */
 @Component({
@@ -13,6 +22,8 @@ import { UserState } from '@shared/state/user/user.state';
   styleUrls: ['./available-apps.component.scss'],
 })
 export class AvailableAppsComponent extends BaseComponent implements OnInit {
+  @Select(UserSettingsState) public settings$: Observable<UserSettingsStateModel>;
+
   public userProfile: UserModel;
 
   public areLiveOpsAppsAccessible: boolean = false;
@@ -26,13 +37,22 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
   public appAvailableTooltip = 'App is available to your role.';
   public appUnavailableTooltip = 'App is unavailable to your role.';
 
-  constructor(private readonly store: Store) {
+  public enableStagingApi: boolean;
+  public showStagingApiToggle: boolean; // Only show on prod and if user is a live ops admin
+
+  constructor(private readonly store: Store, private readonly windowService: WindowService) {
     super();
   }
 
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.userProfile = this.store.selectSnapshot<UserModel>(UserState.profile);
+    const location = this.windowService.location();
+    this.showStagingApiToggle = location?.origin === environment.stewardUiStagingUrl;
+
+    this.settings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
+      this.enableStagingApi = latest.enableStagingApi;
+    });
 
     if (!!(this.userProfile as UserModel)?.role) {
       const role = (this.userProfile as UserModel).role;
@@ -58,5 +78,10 @@ export class AvailableAppsComponent extends BaseComponent implements OnInit {
           break;
       }
     }
+  }
+
+  /** Fired when any setting changes. */
+  public syncStagingApiSettings(): void {
+    this.store.dispatch(new SetStagingApi(this.enableStagingApi));
   }
 }

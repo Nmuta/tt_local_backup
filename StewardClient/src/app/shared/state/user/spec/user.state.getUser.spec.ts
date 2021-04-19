@@ -12,25 +12,36 @@ import { UserModel } from '@models/user.model';
 import faker from 'faker';
 import { UserRole } from '@models/enums';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { createMockWindowService, WindowService } from '@services/window';
 
 describe('State: User', () => {
   let store: Store;
   let actions$: Actions;
   let mockUserService: UserService;
+  let mockWindowService: WindowService;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
-        providers: [createMockUserService(), createMockMsalService(), createMockLoggerService()],
+        providers: [
+          createMockUserService(),
+          createMockMsalService(),
+          createMockLoggerService(),
+          createMockWindowService(),
+        ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
 
       store = TestBed.inject(Store);
       actions$ = TestBed.inject(Actions);
       mockUserService = TestBed.inject(UserService);
+      mockWindowService = TestBed.inject(WindowService);
 
       mockUserService.getUserProfile = jasmine.createSpy('getUserProfile').and.returnValue(of({}));
+      mockWindowService.location = jasmine
+        .createSpy('location')
+        .and.returnValue({ origin: 'http://microsoft.test' });
     }),
   );
 

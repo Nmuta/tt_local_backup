@@ -29,7 +29,9 @@ export class AccessTokenInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    const shouldHandle = request.url.startsWith(environment.stewardApiUrl);
+    const shouldHandle =
+      request.url.startsWith(environment.stewardApiUrl) ||
+      request.url.startsWith(environment.stewardApiStagingUrl);
     if (!shouldHandle) {
       return next.handle(request);
     }

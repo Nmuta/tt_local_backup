@@ -7,7 +7,9 @@ export interface StewardEnvironment {
   azureAppId: string;
   azureAppScope: string;
   stewardUiUrl: string;
+  stewardUiStagingUrl: string;
   stewardApiUrl: string;
+  stewardApiStagingUrl: string;
   oldScrutineerApiUrl: string;
   /** Placeholder value replaced in ADO pipeline. */
   adoVersion: string;

@@ -14,12 +14,15 @@ import { delay, startWith } from 'rxjs/operators';
 import faker from 'faker';
 
 import { LoginComponent } from './login.component';
+import { createMockWindowService, WindowService } from '@services/window';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let activatedRoute: ActivatedRoute;
   let store: Store;
+  let mockWindowService: WindowService;
+
   const sampleRoute = '/i/am/a/route';
   const testProfile: UserModel = {
     emailAddress: 'test.email@microsoft.com',
@@ -32,13 +35,18 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([]), RouterTestingModule.withRoutes([])],
       declarations: [LoginComponent],
-      providers: [createMockMsalService(), createMockLoggerService()],
+      providers: [createMockMsalService(), createMockLoggerService(), createMockWindowService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
     store = TestBed.inject(Store);
+    mockWindowService = TestBed.inject(WindowService);
+
     store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of({}));
     activatedRoute = TestBed.inject(ActivatedRoute);
+    mockWindowService.location = jasmine
+      .createSpy('location')
+      .and.returnValue({ origin: 'http://microsoft.test' });
 
     activatedRoute.snapshot = {
       queryParamMap: convertToParamMap({ from: sampleRoute }),
