@@ -8,20 +8,53 @@
   <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <h3>Unreleased</h3>
+        <h3>04/20/2021 Release</h3>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <p>Bug Fixes</p>
+    <h4>Bug Fixes</h4>
     <ul>
-      <li></li>
+      <li>Kusto query results no longer fails when retreiving DBNull values. (4/20/21)</li>
+      <li>
+        Gift history now uses the same view as player inventory. Large quantities are no longer cut
+        off. (4/14/21)
+      </li>
+      <li>
+        Converted BigInt usage to BigNumber, allowing decimals to be parsed correctly. (4/13/21)
+      </li>
+      <li>
+        Opus identity lookup with Xuid now correctly shows if player is non-existant. (4/13/21)
+      </li>
     </ul>
 
-    <p>Features</p>
+    <h4>Features</h4>
+    <ul>
+      <li><b>[ All Apps ]</b> Theme change to use light-blue as accent color. (4/13/21)</li>
+      <li>
+        <b>[ All Apps ]</b> Steward user emails are no longer stored in Kusto, now using AAD object
+        id stored in a Cosmos Table DB. (4/12/21)
+      </li>
+      <li>
+        <b>[ All Apps ]</b> Changelog added. Developers will keep track of bug fixes, features, and
+        general maintenance for users to view. (04/08/21)
+      </li>
+      <li><b>[ Community App ]</b> Community messaging tool is now available. (4/13/21)</li>
+      <li><b>[ Community App ]</b> Gifting tool is now available. (4/12/21)</li>
+      <li>
+        <b>[ Support App ]</b> V1 of background job notifications is active. See top navbar for new
+        icon. (04/09/21)
+      </li>
+      <li>
+        <b>[ Support App ]</b> Apollo user details now include user flags, ban history, associated
+        gamertags, and shared consoles. (04/07/21)
+      </li>
+    </ul>
+
+    <h4>General</h4>
     <ul>
       <li>
-        Changelog added. Developers will keep track of bug fixes, features, and general maintenance
-        for users to view. (04/08/21)
+        Clean up code to use private access on all constructor variables whenever possible.
+        (4/12/21)
       </li>
     </ul>
   </mat-expansion-panel>

@@ -128,7 +128,7 @@
   <mat-card-actions *ngIf="!isLoading && !loadError && !giftResponse">
     <div class="send-gift-basket-container">
       <p *ngIf="ignoreMaxCreditLimit">
-        <b>Notice: </b>You are exceeding the typical maximum of 500,000,000.
+        <b>Notice: </b>You are allowed to exceed the typical currency maximum of 500,000,000.
       </p>
       <form [formGroup]="sendGiftForm" (ngSubmit)="sendGiftBasket()">
         <mat-form-field appearance="fill">
