@@ -15,6 +15,11 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// </summary>
         public static void ReadValue(this KustoColumn column, JObject jObj, IDataReader reader)
         {
+            if (reader.IsDBNull(column.Ordinal)) {
+                jObj.Add(column.ColumnName, null);
+                return;
+            }
+
             switch (column.DataType)
             {
                 case "System.String":
