@@ -51,7 +51,9 @@ export class UtcInterceptor implements HttpInterceptor {
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
     const shouldHandle =
-      request.responseType === 'json' && request.url.startsWith(environment.stewardApiUrl);
+      request.responseType === 'json' &&
+      (request.url.startsWith(environment.stewardApiUrl) ||
+        request.url.startsWith(environment.stewardApiStagingUrl));
 
     if (!shouldHandle) {
       return next.handle(request);
