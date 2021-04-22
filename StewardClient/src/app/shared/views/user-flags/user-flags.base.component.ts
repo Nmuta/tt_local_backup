@@ -4,7 +4,6 @@ import { BaseComponent } from '@components/base-component/base-component.compone
 import _ from 'lodash';
 import { NEVER, Observable } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';
-import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
 
@@ -32,8 +31,6 @@ export abstract class UserFlagsBaseComponent<T> extends BaseComponent implements
   public isSubmitting: boolean;
   /** The error received when submitting. */
   public submitError: unknown;
-  /** The icon used to refresh the user flags. */
-  public refreshIcon = faUndo;
 
   public abstract gameTitle: GameTitleCodeName;
   public abstract getFlagsByXuid(xuid: BigNumber): Observable<T>;

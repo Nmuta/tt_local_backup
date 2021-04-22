@@ -5,11 +5,19 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
+import { MatIconModule } from '@angular/material/icon';
 
 /** The action icon for the ban module. */
 @NgModule({
   declarations: [BanChipIconComponent],
-  imports: [CommonModule, FontAwesomeModule, MatTooltipModule, ErrorSpinnerModule, MatBadgeModule],
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    MatTooltipModule,
+    ErrorSpinnerModule,
+    MatBadgeModule,
+    MatIconModule,
+  ],
   exports: [BanChipIconComponent],
 })
 export class BanChipIconModule {}

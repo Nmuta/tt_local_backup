@@ -14,7 +14,11 @@
   </a>
   <span class="spacer"></span>
   <span class="info">
-    <fa-icon [icon]="infoIcon" [title]="location"></fa-icon>
+    <mat-icon
+      svgIcon="steward-info"
+      aria-label="Show route location"
+      [matTooltip]="location"
+    ></mat-icon>
   </span>
   <span class="short-spacer"></span>
   <sidebar-icons></sidebar-icons>

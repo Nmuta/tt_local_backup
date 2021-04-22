@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { KustoQuerySelectionComponent } from './kusto-query-selection.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DirectivesModule } from '@shared/directives/directives.module';
+import { MatIconModule } from '@angular/material/icon';
 
 /** The feature module for the kusto query selection component. */
 @NgModule({
@@ -30,6 +31,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatFormFieldModule,
+    MatIconModule,
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,

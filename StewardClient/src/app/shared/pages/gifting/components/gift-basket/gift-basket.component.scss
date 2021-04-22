@@ -48,7 +48,7 @@ mat-card {
           width: 100%;
         }
 
-        fa-icon {
+        mat-icon {
           margin-left: 0.6em;
           margin-right: 0.6em;
         }
@@ -70,10 +70,6 @@ mat-card {
         td {
           margin-top: $gap-small;
           margin-bottom: $gap-small;
-        }
-
-        fa-icon {
-          cursor: pointer;
         }
       }
     }

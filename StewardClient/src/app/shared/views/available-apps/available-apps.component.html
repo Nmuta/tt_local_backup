@@ -32,10 +32,10 @@
     >
       Live Ops App
 
-      <fa-icon
-        [icon]="areLiveOpsAppsAccessible ? availableIcon : unavailableIcon"
+      <mat-icon
+        [svgIcon]="areLiveOpsAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
         [matTooltip]="areLiveOpsAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
-      ></fa-icon>
+      ></mat-icon>
     </a>
     <a
       [disabled]="!areSupportAppsAccessible"
@@ -45,10 +45,10 @@
     >
       Support App
 
-      <fa-icon
-        [icon]="areSupportAppsAccessible ? availableIcon : unavailableIcon"
+      <mat-icon
+        [svgIcon]="areSupportAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
         [matTooltip]="areSupportAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
-      ></fa-icon>
+      ></mat-icon>
     </a>
     <a
       [disabled]="!areSupportAppsAccessible"
@@ -58,10 +58,10 @@
     >
       Support Ticket App
 
-      <fa-icon
-        [icon]="areSupportAppsAccessible ? availableIcon : unavailableIcon"
+      <mat-icon
+        [svgIcon]="areSupportAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
         [matTooltip]="areSupportAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
-      ></fa-icon>
+      ></mat-icon>
     </a>
     <a
       [disabled]="!areCommunityAppsAccessible"
@@ -71,10 +71,10 @@
     >
       Community Manager App
 
-      <fa-icon
-        [icon]="areCommunityAppsAccessible ? availableIcon : unavailableIcon"
+      <mat-icon
+        [svgIcon]="areCommunityAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
         [matTooltip]="areCommunityAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
-      ></fa-icon>
+      ></mat-icon>
     </a>
 
     <a
@@ -85,10 +85,10 @@
     >
       Data Pipeline App
 
-      <fa-icon
-        [icon]="areDataAppsAccessible ? availableIcon : unavailableIcon"
+      <mat-icon
+        [svgIcon]="areDataAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
         [matTooltip]="areDataAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
-      ></fa-icon>
+      ></mat-icon>
     </a>
 
     <p>More coming soon...</p>

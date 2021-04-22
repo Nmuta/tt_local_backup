@@ -6,12 +6,13 @@
     routerLinkActive="mat-stroked-button"
     matTooltip="Settings"
     aria-label="Settings"
-    [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
-    matBadgeColor="accent"
-    matBadgeSize="small"
     (click)="clickedSettings()"
   >
-    <fa-icon [icon]="settingsIcon"></fa-icon>
+    <mat-icon
+      svgIcon="steward-settings"
+      [matBadge]="settingsNotificationCount > 0 ? settingsNotificationCount : null"
+      matBadgeSize="small"
+    ></mat-icon>
   </a>
 </span>
 <span>
@@ -23,6 +24,6 @@
     matTooltip="Profile"
     aria-label="Profile"
   >
-    <fa-icon [icon]="profileIcon"></fa-icon>
+    <mat-icon svgIcon="steward-profile" aria-label="User profile icon"></mat-icon>
   </a>
 </span>

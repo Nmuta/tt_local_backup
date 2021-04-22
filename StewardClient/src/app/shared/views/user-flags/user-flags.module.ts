@@ -13,6 +13,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SunriseUserFlagsComponent } from './sunrise/sunrise-user-flags.component';
 import { ApolloUserFlagsComponent } from './apollo/apollo-user-flags.component';
+import { MatIconModule } from '@angular/material/icon';
 
 /** A domain module for displaying user flags. */
 @NgModule({
@@ -27,6 +28,7 @@ import { ApolloUserFlagsComponent } from './apollo/apollo-user-flags.component';
     MatButtonModule,
     MatTooltipModule,
     MatCheckboxModule,
+    MatIconModule,
     FormsModule,
     JsonDumpModule,
     FontAwesomeModule,

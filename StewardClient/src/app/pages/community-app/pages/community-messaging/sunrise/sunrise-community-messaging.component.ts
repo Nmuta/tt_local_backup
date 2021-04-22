@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommunityMessage, CommunityMessageResult } from '@models/community-message';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { NEVER, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base-component.component';
@@ -35,8 +34,6 @@ export class SunriseCommunityMessagingComponent extends BaseComponent {
   public isLoading = false;
   /** The error received while loading. */
   public loadError: unknown;
-
-  public pencilIcon = faPencilAlt;
 
   constructor(private readonly sunriseService: SunriseService) {
     super();

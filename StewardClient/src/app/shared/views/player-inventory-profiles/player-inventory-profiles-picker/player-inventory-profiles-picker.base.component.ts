@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { MatChipListChange } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { faHistory, faPassport, faUserCheck, faUserSlash } from '@fortawesome/free-solid-svg-icons';
 import { ApolloPlayerInventoryProfile } from '@models/apollo';
 import { GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 import { IdentityResultUnion } from '@models/identity-query.model';
@@ -57,11 +56,6 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
     return isEmpty(this.profiles);
   }
   public error: unknown;
-
-  public currentUserIcon = faUserCheck;
-  public unusedUserIcon = faUserSlash;
-  public externalIdIcon = faPassport;
-  public lastUsedTimeIcon = faHistory;
 
   /** Intermediate event that is fired when @see identity changes. */
   private identity$ = new Subject<IdentityResultType>();

@@ -21,6 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { OverlayComponent } from './components/overlay/overlay.component';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
+import { MatIconModule } from '@angular/material/icon';
 
 /** Defines the ticket sidebar module. */
 @NgModule({
@@ -36,6 +37,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
     ContentCollapseModule,
     MatProgressSpinnerModule,
     MatSidenavModule,
+    MatIconModule,
     JsonDumpModule,
   ],
   providers: [],

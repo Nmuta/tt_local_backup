@@ -10,6 +10,7 @@ import { VerifyActionButtonModule } from '@components/verify-action-button/verif
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { ApolloConsolesComponent } from './apollo/apollo-consoles.component';
 import { SunriseConsolesComponent } from './sunrise/sunrise-consoles.component';
+import { MatIconModule } from '@angular/material/icon';
 
 /** A domain module for displaying related console lists. */
 @NgModule({
@@ -24,6 +25,7 @@ import { SunriseConsolesComponent } from './sunrise/sunrise-consoles.component';
     VerifyActionButtonModule,
     ErrorSpinnerModule,
     JsonDumpModule,
+    MatIconModule,
   ],
   exports: [SunriseConsolesComponent, ApolloConsolesComponent],
 })

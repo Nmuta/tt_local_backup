@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
-import { faCog, faUser } from '@fortawesome/free-solid-svg-icons';
 import { SetAppVersion } from '@shared/state/user-settings/user-settings.actions';
 import { environment } from '@environments/environment';
 
@@ -13,9 +12,6 @@ import { environment } from '@environments/environment';
 })
 export class SidebarIconsComponent implements OnInit {
   public settingsNotificationCount: number = 0;
-
-  public readonly profileIcon = faUser;
-  public readonly settingsIcon = faCog;
 
   constructor(private readonly store: Store) {}
 

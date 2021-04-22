@@ -2,16 +2,6 @@
 <span *ngIf="hasBans" [matTooltip]="banCount.toString() + ' bans found'">
   <span *ngIf="banSummary">{{ banSummary?.banCount }}</span>
   <span class="ban-count">
-    <fa-icon [icon]="bannedIcon"></fa-icon>
+    <mat-icon svgIcon="steward-gavel"></mat-icon>
   </span>
-  <!-- 
-  <span
-    class="ban-count"
-    [matTooltip]="'Ban Areas: ' + banSummary?.bannedAreas?.join(', ')">
-    <fa-icon
-      class="remove-player-icon"
-      [icon]="bannedIcon"
-    ></fa-icon>
-    <span *ngIf="banSummary">{{ banSummary?.bannedAreas?.length }}</span>
-  </span> -->
 </span>

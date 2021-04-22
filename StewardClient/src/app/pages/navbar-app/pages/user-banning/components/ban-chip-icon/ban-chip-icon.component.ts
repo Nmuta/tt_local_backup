@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { faGavel, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { SunriseBanSummary } from '@models/sunrise';
 
@@ -23,7 +23,6 @@ export class BanChipIconComponent extends BaseComponent implements OnChanges {
   @Input() public banQuery: BanQuery = null;
   @Output() public gavelClick = new EventEmitter<BanChipIconComponent>();
 
-  public spinnerIcon = faSpinner;
   public bannedIcon = faGavel;
 
   public hasBans = false;

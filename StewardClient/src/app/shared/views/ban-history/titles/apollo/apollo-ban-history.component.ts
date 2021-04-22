@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
-import { faCheck, faHistory } from '@fortawesome/free-solid-svg-icons';
 import { ApolloBanHistoryEntry } from '@models/apollo';
 import { ApolloService } from '@services/apollo/apollo.service';
 
@@ -29,9 +28,6 @@ export class ApolloBanHistoryComponent extends BaseComponent implements OnChange
 
   /** The ban list to display. */
   public banList: ApolloBanHistoryEntry[];
-
-  public isActiveIcon = faCheck;
-  public isInactiveIcon = faHistory;
 
   /** The columns + order to display. */
   public columnsToDisplay = ['isActive', 'reason', 'featureArea', 'startTimeUtc', 'expireTimeUtc'];

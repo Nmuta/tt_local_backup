@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { HumanizePipe } from '@shared/pipes/humanize.pipe';
-import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { JsonTableResult } from '@models/json-table-result';
 
 /** Displays json table results component. */
@@ -16,8 +15,6 @@ export class JsonTableResultsComponent implements OnChanges {
 
   public resultKeys: string[];
   public downloadResults: string[][];
-
-  public downloadIcon = faDownload;
 
   constructor(private readonly humanizePipe: HumanizePipe) {}
 

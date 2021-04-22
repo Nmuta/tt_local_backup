@@ -20,7 +20,6 @@ import { GravityService } from '@services/gravity';
 import { ApolloService } from '@services/apollo';
 import { OpusService } from '@services/opus';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 export interface AugmentedCompositeIdentity {
   query: IdentityQueryBeta & IdentityQueryAlpha;
@@ -97,8 +96,6 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
 
   /** Separators that trigger a lookup. */
   public readonly separatorKeysCodes: number[] = [ENTER, COMMA, SEMICOLON];
-
-  public readonly unacceptableIcon = faExclamationCircle;
 
   /** Emitted when the foundIdentities list changes. */
   protected foundIdentities$ = new Subject<AugmentedCompositeIdentity[]>();

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 
@@ -18,6 +19,7 @@ import { VerifyActionButtonComponent } from './verify-action-button.component';
     MatCheckboxModule,
     MatButtonModule,
     MatTooltipModule,
+    MatIconModule,
   ],
   exports: [VerifyActionButtonComponent],
 })

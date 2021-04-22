@@ -5,7 +5,6 @@ import { LspGroup, LspGroups } from '@models/lsp-group';
 import { catchError, takeUntil, tap, filter, map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { ControlValueAccessor, FormControl } from '@angular/forms';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { GameTitleCodeName } from '@models/enums';
 
 /** The shared top-level navbar. */
@@ -24,9 +23,6 @@ export abstract class LspGroupSelectionBaseComponent
   public autocompleteControl = new FormControl();
   public filteredLspGroupOptions$: Observable<LspGroups>;
   public lspInputValue: string = '';
-
-  /** Font awesome icons */
-  public trashIcon = faTrashAlt;
 
   /** True while waiting on a request. */
   public isLoading = false;

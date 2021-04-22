@@ -27,23 +27,22 @@
     >
   </mat-form-field>
   <button
-    *ngIf="showReloadButton"
-    id="reload-kusto-queries-btn"
+    mat-icon-button
+    color="primary"
     class="icon-button"
-    mat-mini-fab
-    color="basic"
-    aria-label="Reload predefined Kusto queries"
-    matTooltip="Reload Kusto Queries"
+    aria-label="Reload Kusto queries"
+    matTooltip="Reload Kusto queries"
     (click)="ngOnInit()"
     clickStop
   >
-    <fa-icon [icon]="reloadIcon"></fa-icon>
+    <mat-icon class="fa-2x" svgIcon="steward-refresh"></mat-icon>
   </button>
   <button
-    mat-raised-button
-    color="accent"
+    mat-stroked-button
+    color="primary"
     (click)="selectedQueryEmitter(formDirective)"
     [disabled]="!querySelectionForm.valid"
+    [attr.aria-label]="selectQueryText"
     clickStop
   >
     {{ selectQueryText }}

@@ -14,14 +14,25 @@
   </a>
   <span class="spacer"></span>
   <span *ngIf="missingZendesk$ | async" class="warnings">
-    <fa-icon [icon]="warningIcon" title="Zendesk API missing"></fa-icon>
-    <fa-icon [icon]="refreshIcon" title="Refresh page"></fa-icon>
+    <mat-icon
+      svgIcon="steward-warning"
+      aria-label="Zendesk API missing"
+      matTooltip="Zendesk API missing"
+    ></mat-icon>
+    <mat-icon
+      svgIcon="steward-refresh"
+      aria-label="Refresh page"
+      matTooltip="Refresh page"
+    ></mat-icon>
   </span>
   <span class="info">
-    <fa-icon [icon]="infoIcon" [title]="location"></fa-icon>
+    <mat-icon
+      svgIcon="steward-info"
+      aria-label="Show route location"
+      [matTooltip]="location"
+    ></mat-icon>
   </span>
   <span class="short-spacer"></span>
-  <sidebar-icons></sidebar-icons>
   <span>
     <a
       [routerLink]="[{ outlets: { sidebar: 'notifications' } }]"
@@ -32,10 +43,12 @@
       aria-label="Notifications"
     >
       <mat-icon
-        svgIcon="fa-tasks"
+        svgIcon="steward-notifications"
         [matBadge]="notificationCount"
         [matBadgeColor]="notificationColor"
+        matBadgeSize="small"
       ></mat-icon>
     </a>
   </span>
+  <sidebar-icons></sidebar-icons>
 </mat-toolbar>

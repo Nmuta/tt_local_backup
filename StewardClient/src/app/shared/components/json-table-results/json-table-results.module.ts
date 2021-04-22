@@ -9,6 +9,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatIconModule } from '@angular/material/icon';
 
 /** The feature module for the kusto query selection component. */
 @NgModule({
@@ -22,6 +23,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatButtonModule,
     MatTableModule,
     MatTooltipModule,
+    MatIconModule,
     FontAwesomeModule,
   ],
   exports: [JsonTableResultsComponent],

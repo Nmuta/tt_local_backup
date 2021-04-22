@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterModule } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
 
@@ -18,6 +19,7 @@ import { FormsModule } from '@angular/forms';
     FontAwesomeModule,
     RouterModule,
     MatTooltipModule,
+    MatIconModule,
     MatSlideToggleModule,
   ],
   exports: [AvailableAppsComponent],

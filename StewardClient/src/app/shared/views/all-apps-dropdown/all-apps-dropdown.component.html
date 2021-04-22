@@ -4,7 +4,7 @@
     [matMenuTriggerFor]="allAppsMenu"
     aria-label="Example icon-button with a menu"
   >
-    <fa-icon [icon]="moreAppsIcon"></fa-icon>
+    <mat-icon svgIcon="steward-ellipsis"></mat-icon>
   </button>
   <mat-menu #allAppsMenu="matMenu">
     <button mat-menu-item *ngFor="let app of allApps" [routerLink]="app.routerLink">

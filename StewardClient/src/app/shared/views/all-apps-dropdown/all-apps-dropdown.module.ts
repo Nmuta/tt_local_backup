@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AllAppsDropdownComponent } from './all-apps-dropdown.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 /** Module for a menu drop with links to all Steward apps. */
 @NgModule({
@@ -17,6 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
     RouterModule,
     MatTooltipModule,
     MatMenuModule,
+    MatIconModule,
   ],
   exports: [AllAppsDropdownComponent],
 })

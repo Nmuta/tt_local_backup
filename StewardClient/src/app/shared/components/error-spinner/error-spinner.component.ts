@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 /** A common error + spinner component. */
 @Component({
@@ -19,7 +18,4 @@ export class ErrorSpinnerComponent {
 
   /** The tooltip to display while spinning. */
   @Input() public spinnerMessage: string = undefined;
-
-  /** Icon to show on error. */
-  public warningIcon = faExclamationTriangle;
 }

@@ -14,7 +14,7 @@
         <ng-container matColumnDef="everBanned">
           <th mat-header-cell *matHeaderCellDef>Ever Banned</th>
           <td mat-cell *matCellDef="let entry">
-            <fa-icon *ngIf="entry.everBanned" [icon]="everBannedIcon"></fa-icon>
+            <mat-icon *ngIf="entry.everBanned" svgIcon="steward-gavel"></mat-icon>
           </td>
         </ng-container>
         <ng-container matColumnDef="gamertag">

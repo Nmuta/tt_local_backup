@@ -9,6 +9,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ApolloPlayerInventoryProfilePickerComponent } from './apollo/apollo-player-inventory-profile-picker.component';
 import { OpusPlayerInventoryProfilePickerComponent } from './opus/opus-player-inventory-profile-picker.component';
 import { GravityPlayerInventoryProfilePickerComponent } from './gravity/gravity-player-inventory-profile-picker.component';
+import { MatIconModule } from '@angular/material/icon';
 
 /**
  * Player Inventory Profile -related components.
@@ -26,6 +27,7 @@ import { GravityPlayerInventoryProfilePickerComponent } from './gravity/gravity-
     MatChipsModule,
     JsonDumpModule,
     MatProgressSpinnerModule,
+    MatIconModule,
     FontAwesomeModule,
   ],
   exports: [

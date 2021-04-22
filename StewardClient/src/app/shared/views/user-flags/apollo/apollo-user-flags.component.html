@@ -3,14 +3,16 @@
     <h2>
       Player Flags ({{ gameTitle }})
       <button
-        class="reset-button"
-        mat-mini-fab
         *ngIf="hasChanges"
+        mat-mini-fab
+        color="warn"
+        class="reset-button"
         (click)="setFlagsToCurrent()"
         matTooltip="Clear Changes"
       >
-        <fa-icon [icon]="refreshIcon" class="reset-icon"></fa-icon>
+        <mat-icon svgIcon="steward-undo"></mat-icon>
       </button>
+
       <error-spinner
         [isActive]="false"
         [error]="loadError"

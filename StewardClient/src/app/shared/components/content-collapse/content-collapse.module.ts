@@ -9,7 +9,7 @@ export { ContentCollapseComponent } from './content-collapse.component';
 
 /** Defines the ticket information item module. */
 @NgModule({
-  imports: [CommonModule, FontAwesomeModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, FontAwesomeModule, MatIconModule, MatButtonModule, MatIconModule],
   exports: [ContentCollapseComponent],
   declarations: [ContentCollapseComponent],
 })

@@ -51,12 +51,12 @@
         [ngTemplateOutletContext]="{ $implicit: identity, identity: identity }"
       ></ng-template>
 
-      <fa-icon
+      <mat-icon
+        svgIcon="steward-unacceptable"
         *ngIf="identity.extra ? !identity.extra?.isAcceptable : false"
-        [icon]="unacceptableIcon"
         [matTooltip]="identity.extra?.rejectionReason"
         class="unacceptable-icon"
-      ></fa-icon>
+      ></mat-icon>
 
       <error-spinner
         [isActive]="!identity.extra"

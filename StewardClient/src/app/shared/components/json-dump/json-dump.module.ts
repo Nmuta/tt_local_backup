@@ -8,6 +8,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 
 /** Utility module for displaying a blob of JSON in a uniform manner. */
 @NgModule({
@@ -21,6 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ClipboardModule,
     DirectivesModule,
     MatTooltipModule,
+    MatIconModule,
   ],
   exports: [JsonDumpComponent],
 })

@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges } from '@angular/core';
-import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { NEVER, Observable } from 'rxjs';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { catchError, take, takeUntil } from 'rxjs/operators';
@@ -17,8 +16,6 @@ export abstract class GamertagsBaseComponent<T> extends BaseComponent implements
   /** The retrieved list of shared users. */
   public sharedConsoleUsers: T[];
   public columnsToDisplay = ['everBanned', 'gamertag', 'sharedConsoleId', 'xuid'];
-
-  public everBannedIcon = faGavel;
 
   /** True while waiting on a request. */
   public isLoading = true;

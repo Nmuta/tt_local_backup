@@ -1,6 +1,7 @@
 <span *ngIf="alwaysShow || (canSubmit && !isSubmitting)" class="apply">
   <button
-    mat-stroked-button
+    mat-raised-button
+    color="primary"
     [disabled]="!verified || !canSubmit || isSubmitting"
     [matTooltip]="activeTooltip"
     (click)="doAction()"

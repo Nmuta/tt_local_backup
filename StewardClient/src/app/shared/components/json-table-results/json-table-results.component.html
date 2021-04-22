@@ -4,14 +4,16 @@
       <table mat-table [dataSource]="results" class="mat-elevation-z8">
         <ng-container *ngFor="let column of resultKeys; let i = index" matColumnDef="{{ column }}">
           <mat-header-cell *matHeaderCellDef>
-            <fa-icon
+            <button
               *ngIf="i === 0"
-              class="fa-2x"
-              [icon]="downloadIcon"
+              mat-icon-button
               [downloadCsv]="downloadResults"
               [filname]="downloadFilename"
-              matTooltip="Download Kusto results."
-            ></fa-icon>
+              matTooltip="Download Kusto results"
+              aria-label="Download Kusto results"
+            >
+              <mat-icon class="fa-2x" svgIcon="steward-download"></mat-icon>
+            </button>
             {{ column | humanize }}
           </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{ element[column] }} </mat-cell>

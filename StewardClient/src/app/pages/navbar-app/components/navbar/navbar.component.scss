@@ -8,18 +8,6 @@
   flex: 0 1 2em;
 }
 
-fa-icon {
-  margin: 0 0.5em;
-}
-
-.warnings fa-icon {
-  color: app-color-default($app-warn);
-}
-
-.info fa-icon {
-  color: app-color-lighter($app-primary);
-}
-
 .location {
   overflow: hidden;
 }

@@ -3,11 +3,11 @@
   mode="indeterminate"
   [matTooltip]="spinnerMessage"
 ></mat-progress-spinner>
-<fa-icon
+<mat-icon
   *ngIf="!isActive && !!error"
-  [icon]="warningIcon"
+  svgIcon="steward-warning"
   title="Click to copy error to clipboard"
   [matTooltip]="errorMessage"
   [cdkCopyToClipboard]="error | bigjson"
   class="warning"
-></fa-icon>
+></mat-icon>

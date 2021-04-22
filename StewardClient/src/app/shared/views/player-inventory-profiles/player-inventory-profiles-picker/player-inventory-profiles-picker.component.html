@@ -13,30 +13,34 @@
     (click)="chip.toggleSelected(true)"
     [selected]="profile?.isCurrent"
   >
-    <fa-icon [icon]="currentUserIcon" *ngIf="profile.isCurrent" matTooltip="User Active"></fa-icon>
-    <fa-icon
-      [icon]="unusedUserIcon"
+    <mat-icon
+      svgIcon="steward-user-check"
+      *ngIf="profile.isCurrent"
+      matTooltip="User Active"
+    ></mat-icon>
+    <mat-icon
+      svgIcon="steward-user-slash"
       *ngIf="!profile.isCurrent"
       matTooltip="User Inactive"
-    ></fa-icon>
+    ></mat-icon>
     <span class="id" [matTooltip]="'Profile ID: ' + profile.profileId">{{
       profile.profileId
     }}</span>
     <span class="device-type" [matTooltip]="'Device Type: ' + profile.deviceType">{{
       profile.deviceType
     }}</span>
-    <fa-icon
+    <mat-icon
       *ngIf="profile.lastLoginUtc"
       class="last-used"
-      [icon]="lastUsedTimeIcon"
+      svgIcon="steward-history"
       [matTooltip]="'Last Used On: ' + (profile.lastLoginUtc | date: 'long')"
-    ></fa-icon>
-    <fa-icon
+    ></mat-icon>
+    <mat-icon
       *ngIf="profile.externalProfileId"
       class="external-id"
-      [icon]="externalIdIcon"
+      svgIcon="steward-passport"
       [matTooltip]="'External ID: ' + profile.externalProfileId"
-    ></fa-icon>
+    ></mat-icon>
   </mat-chip>
 </mat-chip-list>
 

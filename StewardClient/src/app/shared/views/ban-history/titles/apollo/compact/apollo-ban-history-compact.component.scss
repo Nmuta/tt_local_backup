@@ -12,9 +12,6 @@ mat-panel-description {
   display: block;
 }
 
-fa-icon {
+mat-icon {
   margin-right: 0.25em;
-  &.inactive {
-    color: app-color-text($app-background, 0.5);
-  }
 }

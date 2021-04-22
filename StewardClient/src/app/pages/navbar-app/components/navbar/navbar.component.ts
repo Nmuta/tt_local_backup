@@ -1,12 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  faCog,
-  faExclamationTriangle,
-  faInfoCircle,
-  faSyncAlt,
-  faTasks,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
 import { UserModel } from '@models/user.model';
 import { Select } from '@ngxs/store';
 import { WindowService } from '@services/window';
@@ -18,9 +10,6 @@ import { createNavbarPath, navbarToolList, NavbarTools } from '@navbar-app/navba
 import { RouterLinkPath } from '@models/routing';
 import { NotificationsService } from '@shared/hubs/notifications.service';
 import { BackgroundJobStatus } from '@models/background-job';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
-import { icon } from '@fortawesome/fontawesome-svg-core';
 
 /** The shared top-level navbar. */
 @Component({
@@ -31,15 +20,9 @@ import { icon } from '@fortawesome/fontawesome-svg-core';
 export class NavbarComponent implements OnInit {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  public warningIcon = faExclamationTriangle;
-  public refreshIcon = faSyncAlt;
-  public infoIcon = faInfoCircle;
   public items: RouterLinkPath[] = navbarToolList;
   public homeRouterLink = createNavbarPath(NavbarTools.HomePage).routerLink;
 
-  public readonly profileIcon = faUser;
-  public readonly settingsIcon = faCog;
-  public readonly notificationsIcon = faTasks;
   public notificationCount = null;
   public notificationColor: 'default' | 'warn' = 'default';
 
@@ -47,12 +30,7 @@ export class NavbarComponent implements OnInit {
     private readonly windowService: WindowService,
     private readonly zendeskService: ZendeskService,
     private readonly notificationsService: NotificationsService,
-    registry: MatIconRegistry,
-    sanitizer: DomSanitizer,
-  ) {
-    const faTasksSvg = icon(faTasks).html.join('');
-    registry.addSvgIconLiteral('fa-tasks', sanitizer.bypassSecurityTrustHtml(faTasksSvg));
-  }
+  ) {}
 
   /**
    * Lifecycle hook.

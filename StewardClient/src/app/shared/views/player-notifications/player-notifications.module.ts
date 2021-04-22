@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 
 /** A domain module for displaying player notifications. */
 @NgModule({
@@ -23,6 +24,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FontAwesomeModule,
     PipesModule,
     MatTooltipModule,
+    MatIconModule,
   ],
   exports: [SunrisePlayerNotificationsComponent],
 })

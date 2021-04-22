@@ -27,6 +27,7 @@ import { NewCommunityMessageComponent } from '@community-app/pages/community-mes
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { JsonTableResultsModule } from '@components/json-table-results/json-table-results.module';
+import { MatIconModule } from '@angular/material/icon';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -60,6 +61,7 @@ import { JsonTableResultsModule } from '@components/json-table-results/json-tabl
     JsonDumpModule,
     DirectivesModule,
     MatTabsModule,
+    MatIconModule,
     TextFieldModule,
     JsonTableResultsModule,
   ],

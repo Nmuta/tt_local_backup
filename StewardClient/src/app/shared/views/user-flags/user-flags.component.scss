@@ -1,9 +1,5 @@
 @import '/src/styles/mixins';
 
-fa-icon {
-  color: app-color-default($app-warn);
-}
-
 section.checkboxes {
   > mat-checkbox {
     display: block;
@@ -22,8 +18,4 @@ h2 {
 
 .reset-button {
   margin: 0 0.5em;
-
-  .reset-icon {
-    color: #ffffff;
-  }
 }

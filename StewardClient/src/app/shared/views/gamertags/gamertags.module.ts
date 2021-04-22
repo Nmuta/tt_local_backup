@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { SunriseGamertagsComponent } from './sunrise/sunrise-gamertags.component';
 import { ApolloGamertagsComponent } from './apollo/apollo-gamertags.component';
+import { MatIconModule } from '@angular/material/icon';
 
 /** A domain module for displaying related gamertags. */
 @NgModule({
@@ -19,6 +20,7 @@ import { ApolloGamertagsComponent } from './apollo/apollo-gamertags.component';
     MatCardModule,
     MatProgressSpinnerModule,
     MatTableModule,
+    MatIconModule,
     FontAwesomeModule,
     RouterModule,
     PipesModule,

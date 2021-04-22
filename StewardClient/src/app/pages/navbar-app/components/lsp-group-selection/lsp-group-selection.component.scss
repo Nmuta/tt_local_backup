@@ -14,9 +14,5 @@ mat-card {
     line-height: 100%;
     margin-left: 1em;
     @include align-mat-fab-button-with-input();
-
-    fa-icon {
-      color: #fff;
-    }
   }
 }

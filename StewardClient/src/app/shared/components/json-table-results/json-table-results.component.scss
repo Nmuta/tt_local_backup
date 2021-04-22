@@ -7,11 +7,6 @@ button {
 .table-container {
   max-height: $text-area-max-height;
   overflow: auto;
-
-  fa-icon {
-    margin-right: 1em;
-    cursor: pointer;
-  }
 }
 
 // Allow veritcal/horizonal scroll based on cell content
