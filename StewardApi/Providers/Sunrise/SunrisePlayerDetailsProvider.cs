@@ -176,6 +176,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
+        public async Task<IList<SunriseProfileRollback>> GetProfileRollbacksAsync(ulong xuid)
+        {
+            try
+            {
+                var response = await this.sunriseUserService.GetProfileRollbacksAsync(xuid).ConfigureAwait(false);
+
+                return this.mapper.Map<IList<SunriseProfileRollback>>(response);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No profile rollbacks found for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
         public async Task<IList<SunriseSharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
         {
             try

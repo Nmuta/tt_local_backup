@@ -43,6 +43,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         Task<IList<SunriseConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults);
 
         /// <summary>
+        ///     Get profile rollbacks.
+        /// </summary>
+        Task<IList<SunriseProfileRollback>> GetProfileRollbacksAsync(ulong xuid);
+
+        /// <summary>
         ///     Set console ban status.
         /// </summary>
         Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned);

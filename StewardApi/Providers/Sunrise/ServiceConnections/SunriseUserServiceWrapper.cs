@@ -85,6 +85,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc/>
+        public async Task<object> GetProfileRollbacksAsync(ulong xuid)
+        {
+            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+
+            throw new NotImplementedException("Sunrise LSP has not implemented function: GetProfileRollbacksAsync");
+        }
+
+        /// <inheritdoc/>
         public async Task<GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
         {
             var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);

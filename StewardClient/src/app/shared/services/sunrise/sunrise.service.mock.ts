@@ -17,6 +17,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { SunriseService } from './sunrise.service';
+import { SunrisePlayerXuidProfileRollbacksApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/profileRollbacks';
 
 /** Defines the mock for the API Service. */
 @Injectable()
@@ -124,6 +125,11 @@ export class MockSunriseService {
     .createSpy('postGiftLspGroup')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(SunriseGiftingLspGroupFakeApi.make()))),
+    );
+  public getProfileRollbacksXuid = jasmine
+    .createSpy('getProfileRollbacksXuid')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidProfileRollbacksApi.makeMany()))),
     );
 
   constructor(private readonly generator: () => unknown) {}

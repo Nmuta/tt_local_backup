@@ -295,6 +295,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets the user's profile rollbacks.
+        /// </summary>
+        [HttpGet("player/xuid({xuid})/profileRollbacks")]
+        [SwaggerResponse(200, type: typeof(IList<SunriseProfileRollback>))]
+        public async Task<IActionResult> GetProfileRollbacksAsync(ulong xuid)
+        {
+            var result = await this.sunrisePlayerDetailsProvider.GetProfileRollbacksAsync(xuid).ConfigureAwait(true);
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
         ///     Gets credit updates.
         /// </summary>
         [HttpGet("player/xuid({xuid})/creditUpdates")]

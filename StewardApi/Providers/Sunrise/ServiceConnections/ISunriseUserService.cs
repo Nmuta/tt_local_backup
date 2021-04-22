@@ -55,6 +55,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         Task<GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults);
 
         /// <summary>
+        ///     Gets the user's profile rollbacks.
+        /// </summary>
+        Task<object> GetProfileRollbacksAsync(ulong xuid);
+
+        /// <summary>
         ///     Gets shared console users.
         /// </summary>
         Task<GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);

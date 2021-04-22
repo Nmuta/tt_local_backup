@@ -21,6 +21,7 @@ import {
   SunrisePlayerDetails,
   SunrisePlayerInventoryProfile,
   SunrisePlayerNotifications,
+  SunriseProfileRollback,
   SunriseProfileSummary,
   SunriseSharedConsoleUser,
   SunriseUserFlags,
@@ -101,6 +102,13 @@ export class SunriseService {
   public getFlagsByXuid(xuid: BigNumber): Observable<SunriseUserFlags> {
     return this.apiService.getRequest<SunriseUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
+    );
+  }
+
+  /** Gets user flags by a XUID. */
+  public getProfileRollbacksXuid(xuid: BigNumber): Observable<SunriseProfileRollback[]> {
+    return this.apiService.getRequest<SunriseProfileRollback[]>(
+      `${this.basePath}/player/xuid(${xuid})/profileRollbacks`,
     );
   }
 

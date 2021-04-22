@@ -85,6 +85,7 @@ import { SunriseMasterInventoryFakeApi } from './apis/title/sunrise/masterInvent
 import { SunriseGiftingLspGroupFakeApi } from './apis/title/sunrise/gifting/groupId';
 import { SunriseGiftingPlayersFakeApi } from './apis/title/sunrise/gifting/players';
 import { SunriseGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/sunrise/gifting/players_returnsbackgroundjob';
+import { SunrisePlayerXuidProfileRollbacksApi } from './apis/title/sunrise/player/xuid/profileRollbacks';
 
 import { LoggerService, LogTopic } from '@services/logger';
 import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
@@ -136,6 +137,7 @@ const fakeApiConstructors = [
   SunriseSendCommunityMessageToLspGroupFakeApi,
   SunriseSendCommunityMessageFakeApi,
   SunriseSendCommunityMessageToLspGroupFakeApi,
+  SunrisePlayerXuidProfileRollbacksApi,
 
   // Apollo
   ApolloPlayerGamertagDetailsFakeApi,
