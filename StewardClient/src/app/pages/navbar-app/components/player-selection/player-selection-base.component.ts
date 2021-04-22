@@ -20,9 +20,11 @@ import { GravityService } from '@services/gravity';
 import { ApolloService } from '@services/apollo';
 import { OpusService } from '@services/opus';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
+import { SteelheadService } from '@services/steelhead';
 
 export interface AugmentedCompositeIdentity {
   query: IdentityQueryBeta & IdentityQueryAlpha;
+  steelhead: IdentityResultAlpha;
   sunrise: IdentityResultAlpha;
   gravity: IdentityResultBeta;
   apollo: IdentityResultAlpha;
@@ -35,6 +37,7 @@ export interface AugmentedCompositeIdentity {
     rejectionReason: string;
     isValid: boolean;
     isInvalid: boolean;
+    hasSteelhead: boolean;
     hasSunrise: boolean;
     hasApollo: boolean;
     hasOpus: boolean;
@@ -104,6 +107,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   private lookupTypeGroupChange = new Subject<void>();
 
   constructor(
+    private readonly steelhead: SteelheadService,
     private readonly sunrise: SunriseService,
     private readonly gravity: GravityService,
     private readonly apollo: ApolloService,
@@ -262,10 +266,11 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     const queryIsBetaCompatible = every(newQueries, q => isValidBetaQuery(q));
 
     const queries: [
-      a: Observable<IdentityResultAlpha[]>,
-      b: Observable<IdentityResultAlpha[]>,
-      c: Observable<IdentityResultAlpha[]>,
-      d: Observable<IdentityResultBeta[]>,
+      a: Observable<IdentityResultAlpha[]>, // Sunrise
+      b: Observable<IdentityResultAlpha[]>, // Opus
+      c: Observable<IdentityResultAlpha[]>, // Apollo
+      d: Observable<IdentityResultBeta[]>, // Gravity
+      e: Observable<IdentityResultAlpha[]>, // Steelhead
     ] = [
       queryIsAlphaCompatible
         ? this.sunrise.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
@@ -279,6 +284,13 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       queryIsBetaCompatible
         ? this.gravity.getPlayerIdentities(newQueries as IdentityQueryBeta[])
         : of([] as IdentityResultBeta[]),
+
+      // TODO: Uncomment this when endpoint is ready for production use.
+      // Using empty array for now to stop failures
+      //queryIsAlphaCompatible
+      //  ? this.steelhead.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
+      //  : of([] as IdentityResultAlpha[]),
+      of([] as IdentityResultAlpha[]),
     ];
 
     // get the value and replace it in the source if it's still there
@@ -286,7 +298,13 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       .pipe(takeUntil(this.onDestroy$), takeUntil(this.lookupTypeGroupChange))
       .subscribe(results => {
         // destructure
-        const [sunriseIdentities, opusIdentities, apolloIdentities, gravityIdentities] = results;
+        const [
+          sunriseIdentities,
+          opusIdentities,
+          apolloIdentities,
+          gravityIdentities,
+          steelheadIdentities,
+        ] = results;
 
         // make lookup for faster operations later
         const sunriseLookup = keyBy<IdentityResultAlpha>(
@@ -305,6 +323,10 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
           gravityIdentities,
           r => r.query[this.lookupType],
         );
+        const steelheadLookup = keyBy<IdentityResultAlpha>(
+          steelheadIdentities,
+          r => r.query[this.lookupType],
+        );
 
         // get all unique queries that came back
         const allQueries = uniqBy(
@@ -313,6 +335,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             ...opusIdentities.map(q => q.query),
             ...apolloIdentities.map(q => q.query),
             ...gravityIdentities.map(q => q.query),
+            ...steelheadIdentities.map(q => q.query),
           ],
           q => q[this.lookupType],
         );
@@ -335,18 +358,21 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
           compositeIdentity.apollo = apolloLookup[key];
           compositeIdentity.opus = opusLookup[key];
           compositeIdentity.gravity = gravityLookup[key];
+          compositeIdentity.steelhead = steelheadLookup[key];
 
           const allRequestsErrored =
             compositeIdentity.sunrise?.error &&
             compositeIdentity.apollo?.error &&
             compositeIdentity.opus?.error &&
-            compositeIdentity.gravity?.error;
+            compositeIdentity.gravity?.error &&
+            compositeIdentity.steelhead?.error;
 
           compositeIdentity.extra = {
             lookupType: this.lookupType,
             theme: allRequestsErrored ? 'warn' : 'primary',
             isValid: !allRequestsErrored,
             isInvalid: !!allRequestsErrored,
+            hasSteelhead: compositeIdentity.steelhead ? !compositeIdentity.steelhead?.error : false,
             hasSunrise: compositeIdentity.sunrise ? !compositeIdentity.sunrise?.error : false,
             hasApollo: compositeIdentity.apollo ? !compositeIdentity.apollo?.error : false,
             hasOpus: compositeIdentity.opus ? !compositeIdentity.opus?.error : false,
@@ -358,6 +384,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
           };
 
           compositeIdentity.extra.label = [
+            compositeIdentity.extra.hasSteelhead ? 'SH' : undefined,
             compositeIdentity.extra.hasApollo ? 'A' : undefined,
             compositeIdentity.extra.hasGravity ? 'G' : undefined,
             compositeIdentity.extra.hasOpus ? 'O' : undefined,
@@ -367,6 +394,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             .join('');
 
           compositeIdentity.extra.labelTooltip = [
+            compositeIdentity.extra.hasSteelhead ? 'Steelhead' : undefined,
             compositeIdentity.extra.hasApollo ? 'Apollo' : undefined,
             compositeIdentity.extra.hasGravity ? 'Gravity' : undefined,
             compositeIdentity.extra.hasOpus ? 'Opus' : undefined,

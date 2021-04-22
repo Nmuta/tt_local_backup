@@ -29,6 +29,7 @@ import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 import { PlayerIdentityResultsModule } from '@shared/views/player-identity-results/player-identity-results.module';
+import { SteelheadUserDetailsComponent } from './steelhead/steelhead-user-details.component';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -38,6 +39,7 @@ import { PlayerIdentityResultsModule } from '@shared/views/player-identity-resul
     OpusUserDetailsComponent,
     ApolloUserDetailsComponent,
     GravityUserDetailsComponent,
+    SteelheadUserDetailsComponent,
   ],
   imports: [
     CommonModule,

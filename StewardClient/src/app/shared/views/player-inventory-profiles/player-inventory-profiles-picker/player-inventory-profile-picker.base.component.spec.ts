@@ -5,8 +5,10 @@ import { ApolloPlayerInventoryProfilePickerComponent } from '../apollo/apollo-pl
 import { GravityPlayerInventoryProfilePickerComponent } from '../gravity/gravity-player-inventory-profile-picker.component';
 import { OpusPlayerInventoryProfilePickerComponent } from '../opus/opus-player-inventory-profile-picker.component';
 import { SunrisePlayerInventoryProfilePickerComponent } from '../sunrise/sunrise-player-inventory-profile-picker.component';
+import { SteelheadPlayerInventoryProfilePickerComponent } from '../steelhead/steelhead-player-inventory-profile-picker.component';
 
 type AcceptableComponents =
+  | SteelheadPlayerInventoryProfilePickerComponent
   | SunrisePlayerInventoryProfilePickerComponent
   | ApolloPlayerInventoryProfilePickerComponent
   | GravityPlayerInventoryProfilePickerComponent

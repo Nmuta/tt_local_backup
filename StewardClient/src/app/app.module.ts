@@ -45,6 +45,8 @@ import { StoreForeverStrategy } from '@helpers/route-reuse-strategy/store-foreve
 import { RouteReuseStrategy } from '@angular/router';
 import { HubsModule } from '@shared/hubs/hubs.module';
 import { StagingRewriteInterceptor } from '@interceptors/staging-rewrite.interceptor';
+import { SteelheadGiftingState } from '@shared/pages/gifting/steelhead/state/steelhead-gifting.state';
+import { SteelheadGiftHistoryState } from '@navbar-app/pages/gift-history/steelhead/state/steelhead-gift-history.state';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -89,10 +91,12 @@ function fakeApiOrNothing(): Provider[] {
       MasterInventoryListMemoryState,
       LspGroupMemoryState,
       // Gifting page states
+      SteelheadGiftingState,
       GravityGiftingState,
       SunriseGiftingState,
       ApolloGiftingState,
       // Gift History page states
+      SteelheadGiftHistoryState,
       GravityGiftHistoryState,
       SunriseGiftHistoryState,
       ApolloGiftHistoryState,

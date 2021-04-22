@@ -1,0 +1,10 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+}
+
+verify-action-button {
+  margin-top: $gap-large;
+  display: block;
+}

@@ -10,10 +10,12 @@ import { createMockGravityService, GravityService } from '@services/gravity';
 import {
   GetApolloMasterInventoryList,
   GetGravityMasterInventoryList,
+  GetSteelheadMasterInventoryList,
   GetSunriseMasterInventoryList,
 } from '../master-inventory-list-memory.actions';
 import { NEVER } from 'rxjs';
 import { ApolloService, createMockApolloService } from '@services/apollo';
+import { createMockSteelheadService, SteelheadService } from '@services/steelhead';
 
 describe('State: MasterInventoryListMemoryState', () => {
   let service: MasterInventoryListMemoryState;
@@ -22,6 +24,7 @@ describe('State: MasterInventoryListMemoryState', () => {
   let mockGravityService: GravityService;
   let mockSunriseService: SunriseService;
   let mockApolloService: ApolloService;
+  let mockSteelheadService: SteelheadService;
 
   beforeEach(
     waitForAsync(() => {
@@ -31,6 +34,7 @@ describe('State: MasterInventoryListMemoryState', () => {
           createMockGravityService(),
           createMockSunriseService(),
           createMockApolloService(),
+          createMockSteelheadService(),
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -41,6 +45,7 @@ describe('State: MasterInventoryListMemoryState', () => {
       mockGravityService = TestBed.inject(GravityService);
       mockSunriseService = TestBed.inject(SunriseService);
       mockApolloService = TestBed.inject(ApolloService);
+      mockSteelheadService = TestBed.inject(SteelheadService);
 
       store.reset({
         giftingMasterListMemory: {
@@ -207,6 +212,50 @@ describe('State: MasterInventoryListMemoryState', () => {
             }),
             tap(() => {
               expect(mockApolloService.getMasterInventory).toHaveBeenCalled();
+            }),
+          )
+          .subscribe();
+      });
+    });
+  });
+
+  describe('[GetSteelheadMasterInventory] Action', () => {
+    describe('Master list already exists in state', () => {
+      beforeEach(() => {
+        store.reset({
+          giftingMasterListMemory: {
+            [GameTitleCodeName.FM8]: {},
+          },
+        });
+      });
+
+      it('should not request steelhead master list from api', () => {
+        store
+          .dispatch(new GetSteelheadMasterInventoryList())
+          .pipe(
+            catchError(() => {
+              expect(false).toBeTruthy();
+              return NEVER;
+            }),
+            tap(() => {
+              expect(mockSteelheadService.getMasterInventory).not.toHaveBeenCalled();
+            }),
+          )
+          .subscribe();
+      });
+    });
+
+    describe('Master list does not exist in state', () => {
+      it('should request steelhead master list from api', () => {
+        store
+          .dispatch(new GetSteelheadMasterInventoryList())
+          .pipe(
+            catchError(() => {
+              expect(false).toBeTruthy();
+              return NEVER;
+            }),
+            tap(() => {
+              expect(mockSteelheadService.getMasterInventory).toHaveBeenCalled();
             }),
           )
           .subscribe();

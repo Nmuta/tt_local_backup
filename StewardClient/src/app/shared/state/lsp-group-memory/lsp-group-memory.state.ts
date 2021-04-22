@@ -8,6 +8,7 @@ import { GetLspGroups } from './lsp-group-memory.actions';
 import { LspGroup, LspGroups } from '@models/lsp-group';
 import { tap } from 'rxjs/operators';
 import { clone } from 'lodash';
+import { SteelheadService } from '@services/steelhead';
 
 /**
  * Defines the lsp group memory model.
@@ -15,6 +16,7 @@ import { clone } from 'lodash';
 export class LspGroupMemoryModel {
   public [GameTitleCodeName.FH4]: LspGroup[];
   public [GameTitleCodeName.FM7]: LspGroup[];
+  public [GameTitleCodeName.FM8]: LspGroup[];
 }
 
 @Injectable()
@@ -23,6 +25,7 @@ export class LspGroupMemoryModel {
   defaults: {
     [GameTitleCodeName.FH4]: [],
     [GameTitleCodeName.FM7]: [],
+    [GameTitleCodeName.FM8]: [],
   },
 })
 /** Defines the lsp group memoty state. */
@@ -30,6 +33,7 @@ export class LspGroupMemoryState {
   constructor(
     private readonly sunriseService: SunriseService,
     private readonly apolloService: ApolloService,
+    private readonly steelheadService: SteelheadService,
   ) {}
 
   /** Updates the last gifting page title. */
@@ -55,6 +59,9 @@ export class LspGroupMemoryState {
       case GameTitleCodeName.FM7:
         request$ = this.apolloService.getLspGroups();
         break;
+      case GameTitleCodeName.FM8:
+        request$ = this.steelheadService.getLspGroups();
+        break;
       default:
         return throwError(`${title} is not currently setup to handle LSP groups.`);
     }
@@ -64,6 +71,12 @@ export class LspGroupMemoryState {
         ctx.patchState({ [title]: clone(data) });
       }),
     );
+  }
+
+  /** Steelhead lsp groups selector. */
+  @Selector()
+  public static steelheadLspGroups(state: LspGroupMemoryModel): LspGroups {
+    return state.Steelhead;
   }
 
   /** Sunrise lsp groups selector. */

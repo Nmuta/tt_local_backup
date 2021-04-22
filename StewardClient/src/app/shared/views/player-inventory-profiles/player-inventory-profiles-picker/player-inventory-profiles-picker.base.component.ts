@@ -19,14 +19,17 @@ import { chain, isEmpty } from 'lodash';
 import { NEVER, Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
 
 export type AcceptableInventoryProfileTypes =
+  | SteelheadPlayerInventoryProfile
   | SunrisePlayerInventoryProfile
   | OpusPlayerInventoryProfile
   | GravityPseudoPlayerInventoryProfile
   | ApolloPlayerInventoryProfile;
 
-type AcceptableInventoryProfileTypesIntersectionIntermediate = SunrisePlayerInventoryProfile &
+type AcceptableInventoryProfileTypesIntersectionIntermediate = SteelheadPlayerInventoryProfile &
+  SunrisePlayerInventoryProfile &
   OpusPlayerInventoryProfile &
   GravityPseudoPlayerInventoryProfile &
   ApolloPlayerInventoryProfile;

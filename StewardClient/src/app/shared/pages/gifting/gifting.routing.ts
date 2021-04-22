@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LiveOpsGuard } from 'app/route-guards/live-ops.guard';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
 import { ApolloGiftingComponent } from './apollo/apollo-gifting.component';
 
 import { GiftingComponent } from './gifting.component';
 import { GravityGiftingComponent } from './gravity/gravity-gifting.component';
+import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.component';
 import { SunriseGiftingComponent } from './sunrise/sunrise-gifting.component';
 
 const routes: Routes = [
@@ -17,6 +19,12 @@ const routes: Routes = [
       {
         path: '',
         canActivate: [TitleMemoryRedirectGuard],
+        pathMatch: 'full',
+      },
+      {
+        path: 'steelhead',
+        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Steelhead is ready
+        component: SteelheadGiftingComponent,
         pathMatch: 'full',
       },
       {

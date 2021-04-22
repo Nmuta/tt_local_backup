@@ -15,10 +15,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { StewardUserModule } from '@views/steward-user/steward-user.module';
 import { PlayerInventoryModule } from '@views/player-inventory/player-inventory.module';
 import { InventoryItemListDisplayModule } from '@views/inventory-item-list-display/inventory-item-list-display.module';
+import { SteelheadGiftHistoryResultsComponent } from './steelhead/steelhead-gift-history-results.component';
 
 /** A domain module for displaying player gift histories. */
 @NgModule({
   declarations: [
+    SteelheadGiftHistoryResultsComponent,
     GravityGiftHistoryResultsComponent,
     SunriseGiftHistoryResultsComponent,
     ApolloGiftHistoryResultsComponent,
@@ -39,6 +41,7 @@ import { InventoryItemListDisplayModule } from '@views/inventory-item-list-displ
     InventoryItemListDisplayModule,
   ],
   exports: [
+    SteelheadGiftHistoryResultsComponent,
     GravityGiftHistoryResultsComponent,
     SunriseGiftHistoryResultsComponent,
     ApolloGiftHistoryResultsComponent,

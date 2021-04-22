@@ -4,10 +4,12 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ApolloPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/apollo/players/identities';
 import { GravityPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/gravity/players/identities';
 import { OpusPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/opus/players/identities';
+import { SteelheadPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/steelhead/players/identities';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { createMockGravityService, GravityService } from '@services/gravity';
 import { createMockOpusService, OpusService } from '@services/opus';
+import { createMockSteelheadService, SteelheadService } from '@services/steelhead';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { first } from 'lodash';
@@ -24,6 +26,8 @@ describe('PlayerSelectionSingleComponent', () => {
   let opus: OpusService;
   let gravity: GravityService;
   let apollo: ApolloService;
+  let steelhead: SteelheadService;
+
   const deferUntil = new Subject<void>();
 
   beforeEach(async () => {
@@ -35,6 +39,7 @@ describe('PlayerSelectionSingleComponent', () => {
         createMockGravityService(),
         createMockApolloService(),
         createMockOpusService(),
+        createMockSteelheadService(),
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -43,6 +48,7 @@ describe('PlayerSelectionSingleComponent', () => {
     opus = TestBed.inject(OpusService);
     gravity = TestBed.inject(GravityService);
     apollo = TestBed.inject(ApolloService);
+    steelhead = TestBed.inject(SteelheadService);
 
     sunrise.getPlayerIdentities = jasmine
       .createSpy('getPlayerIdentities')
@@ -64,6 +70,12 @@ describe('PlayerSelectionSingleComponent', () => {
       .createSpy('getPlayerIdentities')
       .and.callFake(q =>
         deferUntil.pipe(switchMap(_ => of(ApolloPlayersIdentitiesFakeApi.make(q)))),
+      );
+
+    steelhead.getPlayerIdentities = jasmine
+      .createSpy('getPlayerIdentities')
+      .and.callFake(q =>
+        deferUntil.pipe(switchMap(_ => of(SteelheadPlayersIdentitiesFakeApi.make(q)))),
       );
   });
 
@@ -112,6 +124,7 @@ describe('PlayerSelectionSingleComponent', () => {
           expect(sunrise.getPlayerIdentities).toHaveBeenCalledTimes(0);
           expect(gravity.getPlayerIdentities).toHaveBeenCalledTimes(0);
           expect(apollo.getPlayerIdentities).toHaveBeenCalledTimes(0);
+          expect(steelhead.getPlayerIdentities).toHaveBeenCalledTimes(0);
         }),
       );
     });
@@ -140,6 +153,7 @@ describe('PlayerSelectionSingleComponent', () => {
           expect(opus.getPlayerIdentities).toHaveBeenCalledTimes(1);
           expect(gravity.getPlayerIdentities).toHaveBeenCalledTimes(1);
           expect(apollo.getPlayerIdentities).toHaveBeenCalledTimes(1);
+          // expect(steelhead.getPlayerIdentities).toHaveBeenCalledTimes(1);
         }),
       );
 
@@ -187,6 +201,7 @@ describe('PlayerSelectionSingleComponent', () => {
           expect(opus.getPlayerIdentities).toHaveBeenCalledTimes(1);
           expect(gravity.getPlayerIdentities).toHaveBeenCalledTimes(1);
           expect(apollo.getPlayerIdentities).toHaveBeenCalledTimes(1);
+          // expect(steelhead.getPlayerIdentities).toHaveBeenCalledTimes(1);
         }),
       );
 
@@ -201,6 +216,7 @@ describe('PlayerSelectionSingleComponent', () => {
           expect(stub.apollo).toBeFalsy();
           expect(stub.gravity).toBeFalsy();
           expect(stub.opus).toBeFalsy();
+          expect(stub.steelhead).toBeFalsy();
         }),
       );
 
@@ -234,6 +250,7 @@ describe('PlayerSelectionSingleComponent', () => {
             expect(newStub.apollo).toBeTruthy('apollo');
             expect(newStub.gravity).toBeTruthy('gravity');
             expect(newStub.opus).toBeTruthy('opus');
+            // expect(newStub.steelhead).toBeTruthy('steelhead');
           }),
         );
 

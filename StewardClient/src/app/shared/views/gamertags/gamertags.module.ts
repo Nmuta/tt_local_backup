@@ -10,11 +10,12 @@ import { RouterModule } from '@angular/router';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { SunriseGamertagsComponent } from './sunrise/sunrise-gamertags.component';
 import { ApolloGamertagsComponent } from './apollo/apollo-gamertags.component';
+import { SteelheadGamertagsComponent } from './steelhead/steelhead-gamertags.component';
 import { MatIconModule } from '@angular/material/icon';
 
 /** A domain module for displaying related gamertags. */
 @NgModule({
-  declarations: [SunriseGamertagsComponent, ApolloGamertagsComponent],
+  declarations: [SteelheadGamertagsComponent, SunriseGamertagsComponent, ApolloGamertagsComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -27,6 +28,6 @@ import { MatIconModule } from '@angular/material/icon';
     ErrorSpinnerModule,
     JsonDumpModule,
   ],
-  exports: [SunriseGamertagsComponent, ApolloGamertagsComponent],
+  exports: [SteelheadGamertagsComponent, SunriseGamertagsComponent, ApolloGamertagsComponent],
 })
 export class GamertagsModule {}

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommunityAppTools, createCommunityNavbarPath } from '@community-app/community-tool-list';
+import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
 import { createNavbarPath, NavbarTools } from 'app/pages/navbar-app/navbar-tool-list';
 
@@ -45,5 +46,13 @@ export class GiftingComponent implements OnInit {
         route: [...rootRouterLink, GameTitleCodeName.FM7.toLowerCase()],
       },
     ];
+
+    // TODO: Make this a permanent route after Steelhead is fully integrated.
+    if (!environment.production) {
+      this.navbarRouterLinks.unshift({
+        name: GameTitleCodeName.FM8,
+        route: [...rootRouterLink, GameTitleCodeName.FM8.toLowerCase()],
+      });
+    }
   }
 }

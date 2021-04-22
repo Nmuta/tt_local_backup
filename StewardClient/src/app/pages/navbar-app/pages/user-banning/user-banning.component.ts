@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
 import { createNavbarPath, NavbarTools } from '../../navbar-tool-list';
 
@@ -8,7 +9,7 @@ import { createNavbarPath, NavbarTools } from '../../navbar-tool-list';
   templateUrl: './user-banning.component.html',
   styleUrls: ['./user-banning.component.scss'],
 })
-export class UserBanningComponent {
+export class UserBanningComponent implements OnInit {
   public rootRouterLink = createNavbarPath(NavbarTools.UserBanningPage).routerLink;
   public navbarRouterLinks = [
     {
@@ -20,4 +21,15 @@ export class UserBanningComponent {
       route: [...this.rootRouterLink, GameTitleCodeName.FM7.toLowerCase()],
     },
   ];
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    // TODO: Make this a permanent route after Steelhead is fully integrated.
+    if (!environment.production) {
+      this.navbarRouterLinks.unshift({
+        name: GameTitleCodeName.FM8,
+        route: [...this.rootRouterLink, GameTitleCodeName.FM8.toLowerCase()],
+      });
+    }
+  }
 }

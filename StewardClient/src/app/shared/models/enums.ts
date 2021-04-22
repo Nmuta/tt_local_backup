@@ -7,6 +7,7 @@ export enum InventoryOption {
 
 /** Enum for game title names. */
 export enum GameTitleName {
+  FM8 = 'Forza Motorsport 8',
   Street = 'Forza Street',
   FH4 = 'Forza Horizon 4',
   FM7 = 'Forza Motorsport 7',
@@ -15,6 +16,7 @@ export enum GameTitleName {
 
 /** Enum for game title names. */
 export enum GameTitleCodeName {
+  FM8 = 'Steelhead',
   Street = 'Gravity',
   FH4 = 'Sunrise',
   FM7 = 'Apollo',

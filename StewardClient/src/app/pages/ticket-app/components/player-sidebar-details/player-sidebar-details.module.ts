@@ -9,11 +9,11 @@ import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.modu
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { PlayerDetailsItemModule } from './player-details-item/player-details-item.module';
-import { ApolloPlayerSidebarDetailsComponent } from './titles/apollo/apollo-player-sidebar-details.component';
-import { GravityPlayerSidebarDetailsComponent } from './titles/gravity/gravity-player-sidebar-details.component';
-import { OpusPlayerSidebarDetailsComponent } from './titles/opus/opus-player-sidebar-details.component';
-import { SunrisePlayerSidebarDetailsComponent } from './titles/sunrise/sunrise-player-sidebar-details.component';
+import { PlayerDetailsItemModule } from '../player-details-item/player-details-item.module';
+import { ApolloPlayerSidebarDetailsComponent } from './apollo/apollo-player-sidebar-details.component';
+import { GravityPlayerSidebarDetailsComponent } from './gravity/gravity-player-sidebar-details.component';
+import { OpusPlayerSidebarDetailsComponent } from './opus/opus-player-sidebar-details.component';
+import { SunrisePlayerSidebarDetailsComponent } from './sunrise/sunrise-player-sidebar-details.component';
 
 /** A domain module for displaying player details (designed for ticket-app). */
 @NgModule({

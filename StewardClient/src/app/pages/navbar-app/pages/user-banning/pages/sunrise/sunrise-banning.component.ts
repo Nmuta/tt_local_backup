@@ -7,7 +7,7 @@ import { AugmentedCompositeIdentity } from '@navbar-app/components/player-select
 import { BackgroundJob } from '@models/background-job';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { SunriseService } from '@services/sunrise';
-import { SunriseBanHistoryComponent } from '@shared/views/ban-history/titles/sunrise/sunrise-ban-history.component';
+import { SunriseBanHistoryComponent } from '@shared/views/ban-history/sunrise/sunrise-ban-history.component';
 import { chain, Dictionary, filter, keyBy } from 'lodash';
 import { NEVER, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';

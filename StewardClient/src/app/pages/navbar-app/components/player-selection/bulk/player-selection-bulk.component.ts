@@ -10,6 +10,7 @@ import { MatChipList, MatChipListChange } from '@angular/material/chips';
 import { ApolloService } from '@services/apollo';
 import { GravityService } from '@services/gravity';
 import { OpusService } from '@services/opus';
+import { SteelheadService } from '@services/steelhead';
 import { SunriseService } from '@services/sunrise';
 import { takeUntil } from 'rxjs/operators';
 import {
@@ -37,13 +38,14 @@ export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
   }
 
   constructor(
+    steelhead: SteelheadService,
     sunrise: SunriseService,
     gravity: GravityService,
     apollo: ApolloService,
     opus: OpusService,
   ) {
     // normally, this could be deleted. but this fails to inject to the base class during code coverage checks. https://github.com/angular/angular-cli/issues/14860
-    super(sunrise, gravity, apollo, opus);
+    super(steelhead, sunrise, gravity, apollo, opus);
     this.foundIdentities$.pipe(takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
       this.found.emit(foundIdentities);
       const selectedItemInFoundIdentities = foundIdentities.includes(this.selectedValue);

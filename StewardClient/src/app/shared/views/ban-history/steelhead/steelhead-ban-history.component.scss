@@ -1,0 +1,47 @@
+@import '/src/styles/mixins';
+
+table {
+  width: 100%;
+}
+
+tr.detail-row {
+  height: 0;
+}
+
+tr.element-row:not(.expanded-row):hover {
+  background: $table-tr-hover;
+}
+
+tr.element-row:not(.expanded-row):active {
+  background: $table-tr-active;
+}
+
+.element-row td {
+  border-bottom-width: 0;
+}
+
+.element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.element-detail {
+  padding: $gap-table;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  & > * {
+    flex: 1 1 $width-mediaquery-sidebar-break;
+    margin: $gap-table;
+  }
+}
+
+.mat-column-expireTimeUtc,
+.mat-column-startTimeUtc {
+  min-width: 5em;
+  padding-left: $gap-medium;
+}
+
+.mat-column-featureArea {
+  padding-left: $gap-medium;
+}

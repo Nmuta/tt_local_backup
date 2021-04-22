@@ -8,6 +8,7 @@ import { GravityService } from '@services/gravity';
 import {
   GetApolloMasterInventoryList,
   GetGravityMasterInventoryList,
+  GetSteelheadMasterInventoryList,
   GetSunriseMasterInventoryList,
 } from './master-inventory-list-memory.actions';
 import { ApolloMasterInventory } from '@models/apollo';
@@ -15,6 +16,8 @@ import { ApolloService } from '@services/apollo';
 import { clone } from 'lodash';
 import { GravityMasterInventory, GravityMasterInventoryLists } from '@models/gravity';
 import { SunriseMasterInventory } from '@models/sunrise';
+import { SteelheadMasterInventory } from '@models/steelhead';
+import { SteelheadService } from '@services/steelhead';
 
 /**
  * Defines the master inventory list memory model.
@@ -23,6 +26,7 @@ export class MasterInventoryListMemoryModel {
   public [GameTitleCodeName.Street]: GravityMasterInventoryLists;
   public [GameTitleCodeName.FH4]: SunriseMasterInventory;
   public [GameTitleCodeName.FM7]: ApolloMasterInventory;
+  public [GameTitleCodeName.FM8]: SteelheadMasterInventory;
 }
 
 @Injectable()
@@ -32,6 +36,7 @@ export class MasterInventoryListMemoryModel {
     [GameTitleCodeName.Street]: {},
     [GameTitleCodeName.FH4]: undefined,
     [GameTitleCodeName.FM7]: undefined,
+    [GameTitleCodeName.FM8]: undefined,
   },
 })
 /** Defines the lsp group memoty state. */
@@ -40,7 +45,29 @@ export class MasterInventoryListMemoryState {
     private readonly gravityService: GravityService,
     private readonly sunriseService: SunriseService,
     private readonly apolloService: ApolloService,
+    private readonly steelheadService: SteelheadService,
   ) {}
+
+  /** Gets steelhead's master inventory list. */
+  @Action(GetSteelheadMasterInventoryList, { cancelUncompleted: true })
+  public getSteelheadMasterInventoryList(
+    ctx: StateContext<MasterInventoryListMemoryModel>,
+  ): Observable<SteelheadMasterInventory> {
+    const state = ctx.getState();
+
+    // Memory check
+    if (!!state[GameTitleCodeName.FM8]) {
+      return of(state[GameTitleCodeName.FM8]);
+    }
+
+    // If not found in memory, make request
+    const request$ = this.steelheadService.getMasterInventory();
+    return request$.pipe(
+      tap(data => {
+        ctx.patchState({ [GameTitleCodeName.FM8]: clone(data) });
+      }),
+    );
+  }
 
   /** Gets gravity's master inventory list. */
   @Action(GetGravityMasterInventoryList, { cancelUncompleted: true })
@@ -116,6 +143,14 @@ export class MasterInventoryListMemoryState {
         ctx.patchState({ [GameTitleCodeName.FM7]: clone(data) });
       }),
     );
+  }
+
+  /** Steelhead master inventory list. */
+  @Selector()
+  public static steelheadMasterInventory(
+    state: MasterInventoryListMemoryModel,
+  ): SteelheadMasterInventory {
+    return state[GameTitleCodeName.FM8];
   }
 
   /** Gravity master inventory list. */

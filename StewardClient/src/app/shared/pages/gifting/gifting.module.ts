@@ -21,6 +21,7 @@ import { ItemSelectionModule } from './components/item-selection/item-selection.
 import { PlayerSelectionModule } from '@navbar-app/components/player-selection/player-selection.module';
 import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inventory.module';
+import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.component';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -29,6 +30,7 @@ import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inv
     GravityGiftingComponent,
     SunriseGiftingComponent,
     ApolloGiftingComponent,
+    SteelheadGiftingComponent,
   ],
   imports: [
     CommonModule,

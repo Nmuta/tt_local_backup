@@ -13,11 +13,12 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SunriseUserFlagsComponent } from './sunrise/sunrise-user-flags.component';
 import { ApolloUserFlagsComponent } from './apollo/apollo-user-flags.component';
+import { SteelheadUserFlagsComponent } from './steelhead/steelhead-user-flags.component';
 import { MatIconModule } from '@angular/material/icon';
 
 /** A domain module for displaying user flags. */
 @NgModule({
-  declarations: [SunriseUserFlagsComponent, ApolloUserFlagsComponent],
+  declarations: [SteelheadUserFlagsComponent, SunriseUserFlagsComponent, ApolloUserFlagsComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -33,6 +34,6 @@ import { MatIconModule } from '@angular/material/icon';
     JsonDumpModule,
     FontAwesomeModule,
   ],
-  exports: [SunriseUserFlagsComponent, ApolloUserFlagsComponent],
+  exports: [SteelheadUserFlagsComponent, SunriseUserFlagsComponent, ApolloUserFlagsComponent],
 })
 export class UserFlagsModule {}

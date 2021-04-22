@@ -28,6 +28,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatTabsModule } from '@angular/material/tabs';
+import { SteelheadBanningComponent } from './pages/steelhead/steelhead-banning.component';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -35,6 +36,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     UserBanningComponent,
     ApolloBanningComponent,
     SunriseBanningComponent,
+    SteelheadBanningComponent,
     BanOptionsComponent,
     DurationPickerComponent,
   ],

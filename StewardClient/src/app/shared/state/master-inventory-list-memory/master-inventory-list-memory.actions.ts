@@ -1,3 +1,10 @@
+/** Gets steelhead's master inventory list. */
+export class GetSteelheadMasterInventoryList {
+  public static readonly type = '[GiftingMasterListMemory] Get Steelhead Master Inventory List';
+  constructor() {
+    /** Empty */
+  }
+}
 /** Gets gravity's master inventory list. */
 export class GetGravityMasterInventoryList {
   public static readonly type = '[GiftingMasterListMemory] Get Gravity Master Inventory List';

@@ -1,5 +1,15 @@
 <mat-toolbar>
   <a
+    *ngIf="!isProduction"
+    [class.mat-button-disabled]="!identity?.extra?.hasSteelhead"
+    [matTooltip]="steelheadTooltip"
+    [routerLink]="steelheadRouterLink"
+    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    >Steelhead</a
+  >
+  <a
     [class.mat-button-disabled]="!identity?.extra?.hasGravity"
     [matTooltip]="gravityTooltip"
     [routerLink]="gravityRouterLink"

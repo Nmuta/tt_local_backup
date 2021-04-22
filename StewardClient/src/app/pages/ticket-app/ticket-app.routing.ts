@@ -6,6 +6,7 @@ import { sidebarRoutes } from 'app/sidebars/sidebars.module';
 import { ApolloComponent } from './pages/apollo/apollo.component';
 import { GravityComponent } from './pages/gravity/gravity.component';
 import { OpusComponent } from './pages/opus/opus.component';
+import { SteelheadComponent } from './pages/steelhead/steelhead.component';
 import { SunriseComponent } from './pages/sunrise/sunrise.component';
 import { UnknownComponent } from './pages/unknown/unknown.component';
 
@@ -22,6 +23,10 @@ const routes: Routes = [
         path: '',
         component: UnknownComponent,
         pathMatch: 'full',
+      },
+      {
+        path: 'steelhead',
+        component: SteelheadComponent,
       },
       {
         path: 'gravity',

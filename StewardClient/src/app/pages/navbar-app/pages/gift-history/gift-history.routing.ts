@@ -7,6 +7,8 @@ import { GiftHistoryComponent } from './gift-history.component';
 import { ApolloGiftHistoryComponent } from './apollo/apollo-gift-history.component';
 import { GravityGiftHistoryComponent } from './gravity/gravity-gift-history.component';
 import { SunriseGiftHistoryComponent } from './sunrise/sunrise-gift-history.component';
+import { SteelheadGiftHistoryComponent } from './steelhead/steelhead-gift-history.component';
+import { LiveOpsGuard } from 'app/route-guards/live-ops.guard';
 
 const routes: Routes = [
   {
@@ -17,6 +19,12 @@ const routes: Routes = [
       {
         path: '',
         canActivate: [TitleMemoryRedirectGuard],
+        pathMatch: 'full',
+      },
+      {
+        path: 'steelhead',
+        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Steelhead is ready
+        component: SteelheadGiftHistoryComponent,
         pathMatch: 'full',
       },
       {

@@ -20,11 +20,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { ItemSelectionModule } from '../item-selection/item-selection.module';
 import { GiftingResultModule } from '../gifting-result/gifting-result.module';
+import { SteelheadGiftBasketComponent } from './steelhead/steelhead-gift-basket.component';
 import { MatIconModule } from '@angular/material/icon';
 
 /** The gift basket module. */
 @NgModule({
-  declarations: [GravityGiftBasketComponent, SunriseGiftBasketComponent, ApolloGiftBasketComponent],
+  declarations: [
+    SteelheadGiftBasketComponent,
+    GravityGiftBasketComponent,
+    SunriseGiftBasketComponent,
+    ApolloGiftBasketComponent,
+  ],
   imports: [
     CommonModule,
     ErrorSpinnerModule,
@@ -48,6 +54,11 @@ import { MatIconModule } from '@angular/material/icon';
     GiftingResultModule,
     MatIconModule,
   ],
-  exports: [GravityGiftBasketComponent, SunriseGiftBasketComponent, ApolloGiftBasketComponent],
+  exports: [
+    SteelheadGiftBasketComponent,
+    GravityGiftBasketComponent,
+    SunriseGiftBasketComponent,
+    ApolloGiftBasketComponent,
+  ],
 })
 export class GiftBasketModule {}

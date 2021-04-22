@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
 import { createNavbarPath, NavbarTools } from 'app/pages/navbar-app/navbar-tool-list';
 
@@ -7,7 +8,7 @@ import { createNavbarPath, NavbarTools } from 'app/pages/navbar-app/navbar-tool-
   templateUrl: './gift-history.component.html',
   styleUrls: ['./gift-history.component.scss'],
 })
-export class GiftHistoryComponent {
+export class GiftHistoryComponent implements OnInit {
   public rootRouterLink = createNavbarPath(NavbarTools.GiftHistoryPage).routerLink;
   public navbarRouterLinks = [
     {
@@ -23,4 +24,15 @@ export class GiftHistoryComponent {
       route: [...this.rootRouterLink, GameTitleCodeName.FM7.toLowerCase()],
     },
   ];
+
+  /** Lifecycle hook. */
+  public ngOnInit(): void {
+    // TODO: Make this a permanent route after Steelhead is fully integrated.
+    if (!environment.production) {
+      this.navbarRouterLinks.unshift({
+        name: GameTitleCodeName.FM8,
+        route: [...this.rootRouterLink, GameTitleCodeName.FM8.toLowerCase()],
+      });
+    }
+  }
 }

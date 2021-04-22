@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@components/base-component/base-component.component';
+import { environment } from '@environments/environment';
 import { IdentityQueryBetaIntersection } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 import { Navigate } from '@ngxs/router-plugin';
@@ -15,6 +16,7 @@ import { createNavbarPath, NavbarTools } from '../../navbar-tool-list';
   styleUrls: ['./user-details.component.scss'],
 })
 export class UserDetailsComponent extends BaseComponent implements OnInit {
+  public isProduction: boolean;
   public gamertag: string;
 
   public lookupType: keyof IdentityQueryBetaIntersection;
@@ -25,6 +27,11 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   public get lookupName(): string {
     return first(this.lookupList) ?? '';
   }
+
+  public steelheadRouterLink = [
+    ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
+    'steelhead',
+  ];
 
   public sunriseRouterLink = [
     ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
@@ -39,6 +46,17 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
     'gravity',
   ];
+
+  /** Generates a nav tooltip */
+  public get steelheadTooltip(): string {
+    if (!this.identity) {
+      return null;
+    }
+    if (this.identity?.extra?.hasSteelhead) {
+      return null;
+    }
+    return `Player ${first(this.lookupList)} does not have a Steelhead account`;
+  }
 
   /** Generates a nav tooltip */
   public get sunriseTooltip(): string {
@@ -90,6 +108,8 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
 
   /** Initialization hook. */
   public ngOnInit(): void {
+    // TODO: Remove variable when steelhead becomes a permanent route in the app.
+    this.isProduction = environment.production;
     this.route.queryParamMap
       .pipe(
         takeUntil(this.onDestroy$),

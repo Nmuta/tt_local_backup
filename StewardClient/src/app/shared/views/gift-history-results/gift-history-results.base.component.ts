@@ -11,9 +11,14 @@ import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MasterInventoryItemList } from '@models/master-inventory-item-list';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { GameTitleCodeName } from '@models/enums';
+import { SteelheadGiftHistory } from '@models/steelhead';
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
-type GiftHistoryResultUnion = GravityGiftHistory | SunriseGiftHistory | ApolloGiftHistory;
+type GiftHistoryResultUnion =
+  | SteelheadGiftHistory
+  | GravityGiftHistory
+  | SunriseGiftHistory
+  | ApolloGiftHistory;
 
 export type GiftHistoryView = {
   descriptionToShow: GiftHistoryDescription[];

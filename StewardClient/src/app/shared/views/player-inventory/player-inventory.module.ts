@@ -11,10 +11,12 @@ import { OpusPlayerInventoryComponent } from './opus/opus-player-inventory.compo
 import { ApolloPlayerInventoryComponent } from './apollo/apollo-player-inventory.component';
 import { GravityPlayerInventoryComponent } from './gravity/gravity-player-inventory.component';
 import { InventoryItemListDisplayModule } from '@views/inventory-item-list-display/inventory-item-list-display.module';
+import { SteelheadPlayerInventoryComponent } from './steelhead/steelhead-player-inventory.component';
 
 /** Feature module containing cards that display player inventory. */
 @NgModule({
   declarations: [
+    SteelheadPlayerInventoryComponent,
     SunrisePlayerInventoryComponent,
     OpusPlayerInventoryComponent,
     ApolloPlayerInventoryComponent,
@@ -31,6 +33,7 @@ import { InventoryItemListDisplayModule } from '@views/inventory-item-list-displ
     InventoryItemListDisplayModule,
   ],
   exports: [
+    SteelheadPlayerInventoryComponent,
     SunrisePlayerInventoryComponent,
     OpusPlayerInventoryComponent,
     ApolloPlayerInventoryComponent,

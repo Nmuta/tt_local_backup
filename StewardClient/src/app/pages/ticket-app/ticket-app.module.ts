@@ -21,6 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { OverlayComponent } from './components/overlay/overlay.component';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
+import { SteelheadComponent } from './pages/steelhead/steelhead.component';
 import { MatIconModule } from '@angular/material/icon';
 
 /** Defines the ticket sidebar module. */
@@ -44,6 +45,7 @@ import { MatIconModule } from '@angular/material/icon';
   declarations: [
     TicketAppComponent,
     SunriseComponent,
+    SteelheadComponent,
     GravityComponent,
     ApolloComponent,
     OpusComponent,
