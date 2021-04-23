@@ -1,7 +1,12 @@
-<ng-container *ngIf="!identityError; else identityErrorState">
-  <gravity-player-sidebar-details [gamertag]="gamertag"></gravity-player-sidebar-details>
+<ng-container *ngIf="!playerIdentity?.error; else identityErrorState">
+  <gravity-player-sidebar-details
+    [gamertag]="playerIdentity?.gamertag"
+  ></gravity-player-sidebar-details>
   <quick-actions class="top-spacing">
-    <go-to-inventory-button [gameTitle]="gameTitle" [xuid]="xuid"></go-to-inventory-button>
+    <go-to-inventory-button
+      [gameTitle]="gameTitle"
+      [xuid]="playerIdentity?.xuid"
+    ></go-to-inventory-button>
   </quick-actions>
 </ng-container>
 
@@ -10,7 +15,7 @@
     <mat-card-title>Gravity Lookup Failed</mat-card-title>
     <mat-card-content>
       <p>"{{ lookupGamertag }}" does not exist.</p>
-      <json-dump [input]="identityError">Lookup Error</json-dump>
+      <json-dump [input]="playerIdentity?.error">Lookup Error</json-dump>
     </mat-card-content>
   </mat-card>
 </ng-template>

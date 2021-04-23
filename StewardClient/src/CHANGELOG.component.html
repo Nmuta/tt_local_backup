@@ -5,6 +5,40 @@
     <span *ngIf="clientOnNewVersion" class="new-release-found-text">(New Release)</span>
   </h2>
 
+  <mat-expansion-panel *ngIf="!isProduction" [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h3>Unrelease</h3>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <h4>Bug Fixes</h4>
+    <ul>
+      <li>Fix for Sunrise user flags in ticket sidebar infinitly spinning. (4/21/21)</li>
+    </ul>
+
+    <h4>Features</h4>
+    <ul>
+      <li>
+        <b>[ All Apps ]</b> Added Steelhead to existing tools in the UI. Hidden from production
+        until Service hookups are finalized. (4/21/21)
+      </li>
+      <li>
+        <b>[ All Apps ]</b> Converted all font awesome icons to use angular material icons by
+        registering them in the Mat Registry. (4/20/21)
+      </li>
+      <li>
+        <b>[ Support App ]</b> New profile rollbacks info in Sunrise User Details. Currently hidden
+        in production until Service hookups are finalized. (4/21/21)
+      </li>
+    </ul>
+
+    <h4>General</h4>
+    <ul>
+      <li></li>
+    </ul>
+  </mat-expansion-panel>
+
   <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>

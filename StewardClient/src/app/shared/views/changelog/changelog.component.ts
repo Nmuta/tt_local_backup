@@ -12,11 +12,13 @@ import { UserSettingsState } from '@shared/state/user-settings/user-settings.sta
 })
 export class ChangelogComponent implements OnInit {
   public clientOnNewVersion: boolean = false;
+  public isProduction: boolean = false;
 
   constructor(private readonly store: Store) {}
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
+    this.isProduction = environment.production;
     const storedAppVersion = this.store.selectSnapshot<string>(UserSettingsState.appVersion);
     const currentAppVersion = environment.adoVersion;
     this.clientOnNewVersion = currentAppVersion !== storedAppVersion;

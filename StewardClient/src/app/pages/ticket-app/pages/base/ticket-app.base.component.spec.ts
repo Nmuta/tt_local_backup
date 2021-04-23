@@ -144,9 +144,10 @@ describe('TicketAppBaseComponent', () => {
     it('should set component variables correctly', () => {
       component.ngOnInit();
 
-      expect(component.xuid).toEqual(xuid);
-      expect(component.gamertag).toEqual(lookupGamertag);
-      expect(component.identityError).toBeUndefined();
+      expect(component.playerIdentity).not.toBeUndefined();
+      expect(component.playerIdentity.xuid).toEqual(xuid);
+      expect(component.playerIdentity.gamertag).toEqual(lookupGamertag);
+      expect(component.playerIdentity.error).toBeUndefined();
     });
   });
 
@@ -180,9 +181,10 @@ describe('TicketAppBaseComponent', () => {
     it('should set component variables correctly', () => {
       component.ngOnInit();
 
-      expect(component.xuid).toBeNull();
-      expect(component.gamertag).toBeNull();
-      expect(component.identityError).toEqual(error);
+      expect(component.playerIdentity).not.toBeUndefined();
+      expect(component.playerIdentity.xuid).toBeNull();
+      expect(component.playerIdentity.gamertag).toBeNull();
+      expect(component.playerIdentity.error).toEqual(error);
     });
   });
 });

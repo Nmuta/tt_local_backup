@@ -1,11 +1,20 @@
-<ng-container *ngIf="!identityError; else identityErrorState">
-  <sunrise-player-sidebar-details [gamertag]="gamertag"></sunrise-player-sidebar-details>
-  <sunrise-user-flags [xuid]="xuid" [disabled]="true" class="top-spacing"></sunrise-user-flags>
+<ng-container *ngIf="!playerIdentity?.error; else identityErrorState">
+  <sunrise-player-sidebar-details
+    [gamertag]="playerIdentity?.gamertag"
+  ></sunrise-player-sidebar-details>
+  <sunrise-user-flags
+    [identity]="playerIdentity"
+    [disabled]="true"
+    class="top-spacing"
+  ></sunrise-user-flags>
   <mat-card class="top-spacing">
-    <sunrise-ban-history-compact [xuid]="xuid"></sunrise-ban-history-compact>
+    <sunrise-ban-history-compact [xuid]="playerIdentity?.xuid"></sunrise-ban-history-compact>
   </mat-card>
   <quick-actions class="top-spacing">
-    <go-to-inventory-button [gameTitle]="gameTitle" [xuid]="xuid"></go-to-inventory-button>
+    <go-to-inventory-button
+      [gameTitle]="gameTitle"
+      [xuid]="playerIdentity?.xuid"
+    ></go-to-inventory-button>
   </quick-actions>
 </ng-container>
 
@@ -14,7 +23,7 @@
     <mat-card-title>Sunrise Lookup Failed</mat-card-title>
     <mat-card-content>
       <p>"{{ lookupGamertag }}" does not exist.</p>
-      <json-dump [input]="identityError">Lookup Error</json-dump>
+      <json-dump [input]="playerIdentity?.error">Lookup Error</json-dump>
     </mat-card-content>
   </mat-card>
 </ng-template>

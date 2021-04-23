@@ -1,8 +1,6 @@
-import BigNumber from 'bignumber.js';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base-component.component';
 import { GameTitleCodeName } from '@models/enums';
-import { MSError } from '@models/error.model';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
@@ -18,11 +16,9 @@ export type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 })
 export abstract class TicketAppBaseComponent extends BaseComponent implements OnInit {
   public lookupGamertag: string;
-  public identityError: MSError;
 
   public gameTitle: GameTitleCodeName;
-  public gamertag: string;
-  public xuid: BigNumber;
+  public playerIdentity: IdentityResultUnion;
 
   constructor(private readonly ticketService: TicketService, private readonly store: Store) {
     super();
@@ -60,9 +56,7 @@ export abstract class TicketAppBaseComponent extends BaseComponent implements On
         }),
         take(1),
         tap(identity => {
-          this.gamertag = identity.gamertag;
-          this.xuid = identity.xuid;
-          this.identityError = identity.error;
+          this.playerIdentity = identity;
         }),
       )
       .subscribe();
