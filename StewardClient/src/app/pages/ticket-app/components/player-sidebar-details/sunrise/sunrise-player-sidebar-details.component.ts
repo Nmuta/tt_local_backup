@@ -13,7 +13,7 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
 export class SunrisePlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   SunrisePlayerDetails
 > {
-  constructor(public readonly sunriseService: SunriseService) {
+  constructor(private readonly sunriseService: SunriseService) {
     super();
   }
 

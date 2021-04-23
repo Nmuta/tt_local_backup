@@ -14,9 +14,9 @@ import { ResetUserProfile } from '@shared/state/user/user.actions';
 })
 export class LogoutComponent implements OnInit {
   constructor(
-    public readonly msalService: MsalService,
-    public readonly windowService: WindowService,
-    public readonly store: Store,
+    private readonly msalService: MsalService,
+    private readonly windowService: WindowService,
+    private readonly store: Store,
   ) {}
 
   /** OnInit hook. */

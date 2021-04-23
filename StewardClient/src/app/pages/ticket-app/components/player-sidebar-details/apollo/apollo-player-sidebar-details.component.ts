@@ -13,7 +13,7 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
 export class ApolloPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   ApolloPlayerDetails
 > {
-  constructor(public readonly apolloService: ApolloService) {
+  constructor(private readonly apolloService: ApolloService) {
     super();
   }
 

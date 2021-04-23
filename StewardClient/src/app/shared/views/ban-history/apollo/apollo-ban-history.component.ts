@@ -32,7 +32,7 @@ export class ApolloBanHistoryComponent extends BaseComponent implements OnChange
   /** The columns + order to display. */
   public columnsToDisplay = ['isActive', 'reason', 'featureArea', 'startTimeUtc', 'expireTimeUtc'];
 
-  constructor(public readonly apollo: ApolloService) {
+  constructor(private readonly apollo: ApolloService) {
     super();
   }
 

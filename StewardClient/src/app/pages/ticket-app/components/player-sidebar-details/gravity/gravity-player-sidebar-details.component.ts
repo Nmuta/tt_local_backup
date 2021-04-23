@@ -13,7 +13,7 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
 export class GravityPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   GravityPlayerDetails
 > {
-  constructor(public readonly gravityService: GravityService) {
+  constructor(private readonly gravityService: GravityService) {
     super();
   }
 

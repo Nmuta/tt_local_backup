@@ -36,7 +36,7 @@ export class SteelheadBanHistoryComponent extends BaseComponent implements OnCha
   /** The columns + order to display. */
   public columnsToDisplay = ['isActive', 'reason', 'featureArea', 'startTimeUtc', 'expireTimeUtc'];
 
-  constructor(public readonly steelhead: SteelheadService) {
+  constructor(private readonly steelhead: SteelheadService) {
     super();
   }
 

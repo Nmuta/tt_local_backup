@@ -15,7 +15,7 @@ import { last } from 'lodash';
   providedIn: 'root',
 })
 export class TitleMemorySetGuard implements CanActivate {
-  constructor(public readonly store: Store) {}
+  constructor(private readonly store: Store) {}
 
   /** The guard hook. */
   public canActivate(route: ActivatedRouteSnapshot, _state: RouterStateSnapshot): boolean {

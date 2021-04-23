@@ -32,7 +32,7 @@ export class SunriseBanHistoryComponent extends BaseComponent implements OnChang
   /** The columns + order to display. */
   public columnsToDisplay = ['isActive', 'reason', 'featureArea', 'startTimeUtc', 'expireTimeUtc'];
 
-  constructor(public readonly sunrise: SunriseService) {
+  constructor(private readonly sunrise: SunriseService) {
     super();
   }
 

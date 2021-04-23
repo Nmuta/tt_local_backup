@@ -13,7 +13,7 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
 export class OpusPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   OpusPlayerDetails
 > {
-  constructor(public readonly opusService: OpusService) {
+  constructor(private readonly opusService: OpusService) {
     super();
   }
 

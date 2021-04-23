@@ -13,7 +13,7 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
 export class SteelheadPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   SteelheadPlayerDetails
 > {
-  constructor(public readonly steelheadService: SteelheadService) {
+  constructor(private readonly steelheadService: SteelheadService) {
     super();
   }
 
