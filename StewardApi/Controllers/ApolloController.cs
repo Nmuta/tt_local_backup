@@ -36,7 +36,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
-        UserRole.SupportAgentNew)]
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This can't be avoided.")]
     public sealed class ApolloController : ControllerBase
     {
@@ -204,6 +205,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Bans players.
         /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent,
+            UserRole.SupportAgentNew)]
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing([FromBody] IList<ApolloBanParametersInput> banInput)
@@ -256,6 +262,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Bans players.
         /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent,
+            UserRole.SupportAgentNew)]
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<ApolloBanResult>))]
         public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput)
@@ -344,6 +355,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Sets consoles ban status.
         /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent,
+            UserRole.SupportAgentNew)]
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
         public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, bool isBanned)
@@ -403,6 +419,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Sets user flags.
         /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.SupportAgent,
+            UserRole.SupportAgentNew)]
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(ApolloUserFlags))]
         public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] ApolloUserFlagsInput userFlags)
