@@ -35,14 +35,14 @@ export class ApolloPlayerXuidBanHistoryFakeApi extends FakeApiBase {
 
   /** Creates a sample object. */
   public static make(xuid: BigNumber, min: number = 0): ApolloBanHistoryEntry[] {
-    return new Array(faker.random.number({ min: min, max: 5 })).fill(undefined).map(
+    return new Array(faker.datatype.number({ min: min, max: 5 })).fill(undefined).map(
       () =>
         <ApolloBanHistoryEntry>{
           banParameters: faker.lorem.paragraph(),
           expireTimeUtc: faker.date.future(),
           startTimeUtc: faker.date.past(),
           featureArea: faker.random.arrayElement(Object.values(ApolloBanArea)),
-          isActive: faker.random.boolean(),
+          isActive: faker.datatype.boolean(),
           reason: faker.lorem.sentence(),
           requestingAgent: faker.internet.email(),
           title: 'apollo',

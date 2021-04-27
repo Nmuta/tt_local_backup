@@ -41,7 +41,7 @@ export class SteelheadGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
                 itemType: undefined,
               },
             ],
@@ -49,7 +49,7 @@ export class SteelheadGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
                 itemType: undefined,
               },
             ],
@@ -57,7 +57,7 @@ export class SteelheadGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
                 itemType: undefined,
               },
             ],

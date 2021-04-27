@@ -273,12 +273,12 @@ describe('GravityGiftBasketComponent', () => {
 
   describe('Method: generateGiftInventoryFromGiftBasket', () => {
     const giftReason: string = 'fake gift reason';
-    const giftItem1Id = new BigNumber(faker.random.number());
-    const giftItem2Id = new BigNumber(faker.random.number());
-    const giftItem3Id = new BigNumber(faker.random.number());
-    const giftItem4Id = new BigNumber(faker.random.number());
-    const giftItem5Id = new BigNumber(faker.random.number());
-    const giftItem6Id = new BigNumber(faker.random.number());
+    const giftItem1Id = new BigNumber(faker.datatype.number());
+    const giftItem2Id = new BigNumber(faker.datatype.number());
+    const giftItem3Id = new BigNumber(faker.datatype.number());
+    const giftItem4Id = new BigNumber(faker.datatype.number());
+    const giftItem5Id = new BigNumber(faker.datatype.number());
+    const giftItem6Id = new BigNumber(faker.datatype.number());
 
     beforeEach(() => {
       component.sendGiftForm = formBuilder.group({
@@ -367,8 +367,8 @@ describe('GravityGiftBasketComponent', () => {
       );
       component.playerIdentities = [
         {
-          query: { t10Id: faker.random.uuid().toString() },
-          xuid: new BigNumber(faker.random.number()),
+          query: { t10Id: faker.datatype.uuid().toString() },
+          xuid: new BigNumber(faker.datatype.number()),
         },
       ];
     });

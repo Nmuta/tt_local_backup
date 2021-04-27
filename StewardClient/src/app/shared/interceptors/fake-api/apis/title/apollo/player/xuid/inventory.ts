@@ -37,12 +37,12 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(_xuid: BigNumber): ApolloMasterInventory {
     function makeFakeItems(count: number): MasterInventoryItem[] {
-      return Array(faker.random.number(count))
+      return Array(faker.datatype.number(count))
         .fill(0)
         .map(() => {
           return {
             id: fakeBigNumber(),
-            quantity: faker.random.number(1_000),
+            quantity: faker.datatype.number(1_000),
             description: faker.lorem.sentences(2),
             itemType: undefined,
           };
@@ -54,7 +54,7 @@ export class ApolloPlayerXuidInventoryFakeApi extends FakeApiBase {
         {
           id: new BigNumber(-1),
           description: 'Credits',
-          quantity: faker.random.number(100_000_000),
+          quantity: faker.datatype.number(100_000_000),
           itemType: undefined,
         },
       ],

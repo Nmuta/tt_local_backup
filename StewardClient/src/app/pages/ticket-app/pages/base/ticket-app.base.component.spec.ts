@@ -58,7 +58,7 @@ describe('TicketAppBaseComponent', () => {
       mockStore = TestBed.inject(Store);
 
       const lookupGamertag = faker.name.firstName();
-      const xuid = new BigNumber(faker.random.number());
+      const xuid = new BigNumber(faker.datatype.number());
       const validIdentity: IdentityResultAlpha = {
         query: undefined,
         xuid: xuid,
@@ -122,7 +122,7 @@ describe('TicketAppBaseComponent', () => {
 
   describe('When getTicketRequestorGamertag$ returns valid identity', () => {
     const lookupGamertag = faker.name.firstName();
-    const xuid = new BigNumber(faker.random.number());
+    const xuid = new BigNumber(faker.datatype.number());
     const validIdentity: IdentityResultAlpha = {
       query: undefined,
       xuid: xuid,

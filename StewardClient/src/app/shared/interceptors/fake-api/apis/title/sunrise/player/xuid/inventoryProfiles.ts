@@ -24,12 +24,12 @@ export class SunrisePlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(): SunrisePlayerInventoryProfile[] {
-    const items = Array(faker.random.number({ min: 1, max: 5 }))
+    const items = Array(faker.datatype.number({ min: 1, max: 5 }))
       .fill(undefined)
       .map(() => {
         return {
           profileId: fakeBigNumber(),
-          externalProfileId: faker.random.uuid(),
+          externalProfileId: faker.datatype.uuid(),
           isCurrent: false,
           deviceType: faker.random.arrayElement(['Invalid']),
         };

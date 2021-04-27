@@ -59,7 +59,7 @@ describe('ApolloGamertagsComponent', () => {
         component.identity = {
           query: undefined,
           gamertag: faker.name.firstName(),
-          xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
+          xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
         };
       });
 
@@ -72,10 +72,10 @@ describe('ApolloGamertagsComponent', () => {
       describe('And getSharedConsoleUsersByXuid return valid response', () => {
         const relatedGamertags = [
           {
-            sharedConsoleId: new BigNumber(faker.random.number()),
-            xuid: new BigNumber(faker.random.number()),
+            sharedConsoleId: new BigNumber(faker.datatype.number()),
+            xuid: new BigNumber(faker.datatype.number()),
             gamertag: faker.random.word(),
-            everBanned: faker.random.boolean(),
+            everBanned: faker.datatype.boolean(),
           },
         ] as ApolloSharedConsoleUser[];
 
@@ -116,7 +116,7 @@ describe('ApolloGamertagsComponent', () => {
       component.identity = {
         query: undefined,
         gamertag: faker.name.firstName(),
-        xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
+        xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
       };
       mockApolloService.getSharedConsoleUsersByXuid = jasmine
         .createSpy('getSharedConsoleUsersByXuid')

@@ -26,7 +26,7 @@ export class SunriseGiftingPlayersReturnsBackgroundJobFakeApi extends FakeApiBas
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<BackgroundJob<void>>> {
     return {
-      jobId: faker.random.uuid().toString(),
+      jobId: faker.datatype.uuid().toString(),
       status: 'InProgess',
       rawResult: {
         key: 'value',

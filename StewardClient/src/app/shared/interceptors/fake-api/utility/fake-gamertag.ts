@@ -3,7 +3,7 @@ import * as faker from 'faker';
 /** Generate a fake xuid. */
 export function fakeGamertag(): string {
   const wordsPart = faker.random.arrayElements(wordlist, 2).join('');
-  const numbersPart = faker.random.number({ min: 10, max: 99 });
+  const numbersPart = faker.datatype.number({ min: 10, max: 99 });
   return `${wordsPart}${numbersPart}`;
 }
 

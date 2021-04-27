@@ -124,9 +124,9 @@ describe('GiftHistoryResultsBaseComponent', () => {
     const title = 'test-title';
     const giftItems = [
       {
-        id: new BigNumber(faker.random.number()),
+        id: new BigNumber(faker.datatype.number()),
         description: faker.random.words(10),
-        quantity: faker.random.number(),
+        quantity: faker.datatype.number(),
         itemType: 'creditRewards',
       },
     ] as MasterInventoryItem[];

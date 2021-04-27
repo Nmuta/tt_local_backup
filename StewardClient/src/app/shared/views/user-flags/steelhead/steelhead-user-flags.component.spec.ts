@@ -57,7 +57,7 @@ describe('SteelheadUserFlagsComponent', () => {
         component.identity = {
           query: undefined,
           gamertag: faker.name.firstName(),
-          xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
+          xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
         };
       });
 
@@ -69,11 +69,11 @@ describe('SteelheadUserFlagsComponent', () => {
 
       describe('And getFlagsByXuid return valid response', () => {
         const flags = {
-          isVip: faker.random.boolean(),
-          isTurn10Employee: faker.random.boolean(),
-          isCommunityManager: faker.random.boolean(),
-          isEarlyAccess: faker.random.boolean(),
-          isUnderReview: faker.random.boolean(),
+          isVip: faker.datatype.boolean(),
+          isTurn10Employee: faker.datatype.boolean(),
+          isCommunityManager: faker.datatype.boolean(),
+          isEarlyAccess: faker.datatype.boolean(),
+          isUnderReview: faker.datatype.boolean(),
         } as SteelheadUserFlags;
 
         beforeEach(() => {
@@ -113,7 +113,7 @@ describe('SteelheadUserFlagsComponent', () => {
       component.identity = {
         query: undefined,
         gamertag: faker.name.firstName(),
-        xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
+        xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
       };
       mockSteelheadService.getFlagsByXuid = jasmine
         .createSpy('getFlagsByXuid')

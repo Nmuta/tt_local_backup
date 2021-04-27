@@ -28,7 +28,7 @@ export class OpusPlayerXuidInventoryProfilesFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(): OpusPlayerInventoryProfile[] {
-    const items = Array(faker.random.number({ min: 1, max: 5 }))
+    const items = Array(faker.datatype.number({ min: 1, max: 5 }))
       .fill(undefined)
       .map(() => {
         return {

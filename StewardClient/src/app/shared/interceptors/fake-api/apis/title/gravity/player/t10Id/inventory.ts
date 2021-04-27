@@ -36,12 +36,12 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(_t10Id: string): GravityPlayerInventoryBeta {
     function makeFakeItems(count: number): MasterInventoryItem[] {
-      return Array(faker.random.number(count))
+      return Array(faker.datatype.number(count))
         .fill(0)
         .map(() => {
           return {
             id: fakeBigNumber(),
-            quantity: faker.random.number(5),
+            quantity: faker.datatype.number(5),
             description: faker.lorem.sentences(2),
             itemType: undefined,
           };
@@ -49,13 +49,13 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
     }
 
     return {
-      gameSettingsId: faker.random.uuid(),
-      externalProfileId: faker.random.uuid(),
+      gameSettingsId: faker.datatype.uuid(),
+      externalProfileId: faker.datatype.uuid(),
       creditRewards: [
         {
           id: new BigNumber(0),
           description: 'Soft Currency',
-          quantity: faker.random.number(100_000),
+          quantity: faker.datatype.number(100_000),
           itemType: undefined,
         },
       ],

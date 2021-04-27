@@ -15,7 +15,7 @@ interface RouteData {
  */
 export class StoreForeverStrategy implements RouteReuseStrategy {
   protected safeHandles = new Map<string, RouteData>();
-  private readonly instanceId = faker.random.number();
+  private readonly instanceId = faker.datatype.number();
 
   constructor() {
     // console.warn(`[RouteReuse|${this.instanceId}] constructor(${this.instanceId})`);

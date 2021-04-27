@@ -26,7 +26,7 @@ describe('service: WindowService', () => {
     it('OpenWindow should work', () => {
       const oldOpen = window.open;
       window.open = jasmine.createSpy('open');
-      const fake = new WindowOpen(faker.internet.url(), faker.random.uuid());
+      const fake = new WindowOpen(faker.internet.url(), faker.datatype.uuid());
       store.dispatch(fake);
 
       expect(window.open).toHaveBeenCalledWith(fake.url, fake.target);

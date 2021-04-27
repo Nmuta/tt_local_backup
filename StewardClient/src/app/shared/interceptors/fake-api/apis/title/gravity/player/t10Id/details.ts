@@ -42,21 +42,21 @@ export class GravityPlayerT10IdDetailsFakeApi extends FakeApiBase {
       country: fakeBigNumber(),
       firstLoginUtc: faker.date.past(1),
       ipAddress: faker.internet.ip(),
-      lastGameSettingsUsed: faker.random.uuid(),
+      lastGameSettingsUsed: faker.datatype.uuid(),
       lastLoginUtc: faker.date.recent(7),
       lcid: fakeBigNumber(),
-      playFabId: faker.random.uuid(),
+      playFabId: faker.datatype.uuid(),
       region: fakeBigNumber(),
-      subscriptionTier: faker.random.uuid(),
+      subscriptionTier: faker.datatype.uuid(),
       t10Id: t10id,
       timeOffsetInSeconds: fakeBigNumber(),
-      userInventoryId: faker.random.uuid(),
+      userInventoryId: faker.datatype.uuid(),
       saveStates: Array(10)
         .fill(undefined)
         .map(() => {
           return <GravitySaveState>{
             lastLoginUtc: faker.date.recent(180),
-            userInventoryId: faker.random.uuid(),
+            userInventoryId: faker.datatype.uuid(),
           };
         }),
     };

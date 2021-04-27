@@ -29,9 +29,9 @@ describe('BanResultsComponent', () => {
     }),
   );
 
-  const result1Id = new BigNumber(faker.random.number());
-  const result2Id = new BigNumber(faker.random.number());
-  const result3Id = new BigNumber(faker.random.number());
+  const result1Id = new BigNumber(faker.datatype.number());
+  const result2Id = new BigNumber(faker.datatype.number());
+  const result3Id = new BigNumber(faker.datatype.number());
 
   beforeEach(() => {
     component.banResults = [

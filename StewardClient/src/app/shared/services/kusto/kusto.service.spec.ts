@@ -65,7 +65,7 @@ describe('KustoService', () => {
 
   describe('Method: postSaveNewKustoQuery', () => {
     const query: KustoQuery = {
-      id: faker.random.uuid(),
+      id: faker.datatype.uuid(),
       name: 'Test Kusto Query',
       title: GameTitleCodeName.Street,
       query: faker.random.words(10),
@@ -92,7 +92,7 @@ describe('KustoService', () => {
       title: GameTitleCodeName.Street,
       query: faker.random.words(10),
     };
-    const queryEditId: GuidLikeString = faker.random.uuid();
+    const queryEditId: GuidLikeString = faker.datatype.uuid();
 
     beforeEach(() => {
       apiServiceMock.putRequest = jasmine.createSpy('putRequest').and.returnValue(of({}));
@@ -111,7 +111,7 @@ describe('KustoService', () => {
 
   describe('Method: deleteKustoQuery', () => {
     const query: KustoQuery = {
-      id: faker.random.uuid(),
+      id: faker.datatype.uuid(),
       name: 'Test Kusto Query',
       title: GameTitleCodeName.Street,
       query: faker.random.words(10),

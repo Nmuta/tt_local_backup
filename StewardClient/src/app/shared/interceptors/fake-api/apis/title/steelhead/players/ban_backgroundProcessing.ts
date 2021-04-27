@@ -25,13 +25,13 @@ export class SteelheadPlayersBanWithBackgroundProcessingFakeApi extends FakeApiB
   /** Generates a sample object */
   public static make(): BackgroundJob<unknown> {
     return {
-      jobId: faker.random.uuid().toString(),
+      jobId: faker.datatype.uuid().toString(),
       status: BackgroundJobStatus.InProgress,
       rawResult: undefined,
       result: undefined,
-      isRead: faker.random.boolean(),
+      isRead: faker.datatype.boolean(),
       reason: '',
-      isMarkingRead: faker.random.boolean(),
+      isMarkingRead: faker.datatype.boolean(),
     };
   }
 }

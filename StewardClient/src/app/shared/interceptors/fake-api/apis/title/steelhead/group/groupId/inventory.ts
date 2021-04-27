@@ -32,7 +32,7 @@ export class SteelheadGroupGroupIdInventoryFakeApi extends FakeApiBase {
     return {
       xuid: new BigNumber(2533275026603041),
       giftReason: faker.random.words(10),
-      credits: new BigNumber(faker.random.number(999_999_999)),
+      credits: new BigNumber(faker.datatype.number(999_999_999)),
       cars: [],
       mods: [],
       vanityItems: [],

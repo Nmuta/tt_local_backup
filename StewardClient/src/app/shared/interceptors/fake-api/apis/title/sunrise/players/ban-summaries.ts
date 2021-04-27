@@ -29,22 +29,22 @@ export class SunrisePlayersBanSummariesFakeApi extends FakeApiBase {
   public static make(xuids: BigNumber[]): Partial<Unprocessed<SunriseBanSummary[]>> {
     return xuids.map(xuid => {
       return <SunriseBanSummary>{
-        banCount: faker.random.boolean() ? ZERO : new BigNumber(faker.random.number()),
+        banCount: faker.datatype.boolean() ? ZERO : new BigNumber(faker.datatype.number()),
         bannedAreas: faker.random.arrayElements(Object.values(SunriseBanArea)),
         gamertag: faker.random.word(),
         xuid: xuid,
         lastBanDescription: {
-          countOfTimesExtended: new BigNumber(faker.random.number()),
+          countOfTimesExtended: new BigNumber(faker.datatype.number()),
           expireTimeUtc: faker.date.future(),
           featureArea: faker.random.arrayElement(Object.values(SunriseBanArea)),
-          isActive: faker.random.boolean(),
-          lastExtendedReason: faker.random.words(faker.random.number({ min: 5, max: 50 })),
+          isActive: faker.datatype.boolean(),
+          lastExtendedReason: faker.random.words(faker.datatype.number({ min: 5, max: 50 })),
           lastExtendedTimeUtc: faker.date.past(),
-          reason: faker.random.words(faker.random.number({ min: 5, max: 50 })),
+          reason: faker.random.words(faker.datatype.number({ min: 5, max: 50 })),
           startTimeUtc: faker.date.past(),
           xuid: xuid,
         },
-        userExists: faker.random.boolean(),
+        userExists: faker.datatype.boolean(),
       };
     });
   }

@@ -40,21 +40,21 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
             cars: [
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
             vanityItems: [
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
           },

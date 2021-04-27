@@ -82,13 +82,13 @@ describe('UserBanningBaseComponent', () => {
           status: BackgroundJobStatus.InProgress,
           result: [
             {
-              xuid: new BigNumber(faker.random.number()),
+              xuid: new BigNumber(faker.datatype.number()),
               success: true,
               banDescription: undefined,
             },
           ],
           rawResult: {
-            xuid: new BigNumber(faker.random.number()),
+            xuid: new BigNumber(faker.datatype.number()),
             success: true,
             banDescription: undefined,
           },

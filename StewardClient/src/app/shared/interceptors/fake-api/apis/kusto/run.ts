@@ -28,10 +28,10 @@ export class KustoRunQueryFakeApi extends FakeApiBase {
     for (let i = 0; i < 100; i++) {
       fakeResponse[i] = {
         note: 'THIS IS FAKE DATA',
-        id: faker.random.number(),
-        xuid: faker.random.uuid(),
+        id: faker.datatype.number(),
+        xuid: faker.datatype.uuid(),
         gamertag: faker.random.words(3),
-        t10Id: faker.random.uuid(),
+        t10Id: faker.datatype.uuid(),
         foo: 'bar',
         duct: 'tape',
         doOrDoNot: 'there is no try',

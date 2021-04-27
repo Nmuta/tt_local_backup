@@ -51,7 +51,7 @@ describe('KustoComponent', () => {
 
   describe('Method: setQueryToInput', () => {
     const kustoQuery: KustoQuery = {
-      id: faker.random.uuid(),
+      id: faker.datatype.uuid(),
       name: 'Test Query Name',
       query: 'Test Query',
       title: GameTitleCodeName.FH4,

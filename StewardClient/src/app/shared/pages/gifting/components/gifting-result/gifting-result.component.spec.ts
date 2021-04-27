@@ -29,10 +29,10 @@ describe('GiftingResultComponent', () => {
     }),
   );
 
-  const result1Id = faker.random.uuid().toString();
-  const result2Id = faker.random.uuid().toString();
+  const result1Id = faker.datatype.uuid().toString();
+  const result2Id = faker.datatype.uuid().toString();
   const result2Error = { message: faker.random.words(5) };
-  const result3Id = faker.random.uuid().toString();
+  const result3Id = faker.datatype.uuid().toString();
 
   beforeEach(() => {
     component.giftingResult = [

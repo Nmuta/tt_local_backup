@@ -27,36 +27,36 @@ export class SteelheadPlayerXuidConsolesFakeApi extends FakeApiBase {
   public static makeMany(): SteelheadConsoleDetailsEntry[] {
     return [
       {
-        clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
+        clientVersion: faker.datatype.number({ min: 432815, max: 500000 }).toString(),
         consoleId: new BigNumber(Number.MAX_SAFE_INTEGER)
-          .plus(new BigNumber(faker.random.number(Number.MAX_SAFE_INTEGER)))
+          .plus(new BigNumber(faker.datatype.number(Number.MAX_SAFE_INTEGER)))
           .toString(),
         isBanned: false,
         isBannable: true,
         deviceType: 'WindowsOneCore',
       },
       {
-        clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
+        clientVersion: faker.datatype.number({ min: 432815, max: 500000 }).toString(),
         consoleId: new BigNumber(Number.MAX_SAFE_INTEGER)
-          .plus(new BigNumber(faker.random.number(Number.MAX_SAFE_INTEGER)))
+          .plus(new BigNumber(faker.datatype.number(Number.MAX_SAFE_INTEGER)))
           .toString(),
         isBanned: true,
         isBannable: true,
         deviceType: 'WindowsOneCore',
       },
       {
-        clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
+        clientVersion: faker.datatype.number({ min: 432815, max: 500000 }).toString(),
         consoleId: new BigNumber(Number.MAX_SAFE_INTEGER)
-          .plus(new BigNumber(faker.random.number(Number.MAX_SAFE_INTEGER)))
+          .plus(new BigNumber(faker.datatype.number(Number.MAX_SAFE_INTEGER)))
           .toString(),
         isBanned: false,
         isBannable: false,
         deviceType: 'WindowsOneCore',
       },
       {
-        clientVersion: faker.random.number({ min: 432815, max: 500000 }).toString(),
+        clientVersion: faker.datatype.number({ min: 432815, max: 500000 }).toString(),
         consoleId: new BigNumber(Number.MAX_SAFE_INTEGER)
-          .plus(new BigNumber(faker.random.number(Number.MAX_SAFE_INTEGER)))
+          .plus(new BigNumber(faker.datatype.number(Number.MAX_SAFE_INTEGER)))
           .toString(),
         isBanned: true,
         isBannable: false,

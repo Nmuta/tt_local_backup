@@ -40,42 +40,42 @@ export class SunrisePlayerXuidGiftHistoryFakeApi extends FakeApiBase {
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
             cars: [
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
             carHorns: [
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
             emotes: [
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
             vanityItems: [
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
             quickChatLines: [
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
           },

@@ -34,11 +34,11 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
         {
           id: new BigNumber(-1),
           description: 'Credits',
-          quantity: faker.random.number(400_000_000),
+          quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
         },
       ],
-      cars: Array(faker.random.number(200))
+      cars: Array(faker.datatype.number(200))
         .fill(0)
         .map(() => {
           return {

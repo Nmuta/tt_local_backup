@@ -59,7 +59,7 @@ describe('SunriseUserFlagsComponent', () => {
         component.identity = {
           query: undefined,
           gamertag: faker.name.firstName(),
-          xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
+          xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
         };
       });
 
@@ -71,12 +71,12 @@ describe('SunriseUserFlagsComponent', () => {
 
       describe('And getFlagsByXuid return valid response', () => {
         const flags = {
-          isVip: faker.random.boolean(),
-          isUltimateVip: faker.random.boolean(),
-          isTurn10Employee: faker.random.boolean(),
-          isCommunityManager: faker.random.boolean(),
-          isEarlyAccess: faker.random.boolean(),
-          isUnderReview: faker.random.boolean(),
+          isVip: faker.datatype.boolean(),
+          isUltimateVip: faker.datatype.boolean(),
+          isTurn10Employee: faker.datatype.boolean(),
+          isCommunityManager: faker.datatype.boolean(),
+          isEarlyAccess: faker.datatype.boolean(),
+          isUnderReview: faker.datatype.boolean(),
         } as SunriseUserFlags;
 
         beforeEach(() => {
@@ -116,7 +116,7 @@ describe('SunriseUserFlagsComponent', () => {
       component.identity = {
         query: undefined,
         gamertag: faker.name.firstName(),
-        xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
+        xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
       };
       mockSunriseService.getFlagsByXuid = jasmine
         .createSpy('getFlagsByXuid')

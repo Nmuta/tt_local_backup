@@ -25,7 +25,7 @@ export class SunrisePlayerXuidProfileRollbacksApi extends FakeApiBase {
 
   /** Create many example models. */
   public static makeMany(): Unprocessed<SunriseProfileRollback[]> {
-    return new Array(faker.random.number({ min: 1, max: 5 })).fill(undefined).map(
+    return new Array(faker.datatype.number({ min: 1, max: 5 })).fill(undefined).map(
       () =>
         <SunriseProfileRollback>{
           dateUtc: faker.date.past(),

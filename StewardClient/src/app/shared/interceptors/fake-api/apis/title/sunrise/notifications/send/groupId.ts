@@ -38,7 +38,7 @@ export class SunriseSendCommunityMessageToLspGroupFakeApi extends FakeApiBase {
     return {
       identity: lspGroupId,
       identityAntecedent: GiftIdentityAntecedent.LspGroupId,
-      success: faker.random.boolean(),
+      success: faker.datatype.boolean(),
     } as CommunityMessageResult<BigNumber>;
   }
 }

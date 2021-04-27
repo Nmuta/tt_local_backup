@@ -34,7 +34,7 @@ export class SunrisePlayersIdentitiesFakeApi extends FakeApiBase {
       return <IdentityResultAlpha>{
         query: query,
         gamertag: isGamertagQuery(query) ? query.gamertag : faker.name.firstName(),
-        xuid: isXuidQuery(query) ? query.xuid : new BigNumber(faker.random.number()),
+        xuid: isXuidQuery(query) ? query.xuid : new BigNumber(faker.datatype.number()),
       };
     });
   }

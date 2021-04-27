@@ -26,7 +26,7 @@ export class JobsGetJobFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): Partial<Unprocessed<BackgroundJob<unknown>>> {
     return {
-      jobId: faker.random.uuid().toString(),
+      jobId: faker.datatype.uuid().toString(),
       status: 'InProgress',
       rawResult: {
         key: 'value',

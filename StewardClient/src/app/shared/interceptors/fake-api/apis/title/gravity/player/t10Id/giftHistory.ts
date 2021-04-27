@@ -39,42 +39,42 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
             cars: [
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
             masteryKits: [
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
             upgradeKits: [
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
             repairKits: [
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
             energyRefills: [
               {
                 id: fakeBigNumber(),
                 description: faker.random.word(),
-                quantity: faker.random.number(),
+                quantity: faker.datatype.number(),
               },
             ],
           },

@@ -81,9 +81,9 @@ describe('ApolloGiftBasketComponent', () => {
 
   describe('Method: generateGiftInventoryFromGiftBasket', () => {
     const giftReason: string = 'fake gift reason';
-    const testItem1Id = new BigNumber(faker.random.number());
-    const testItem2Id = new BigNumber(faker.random.number());
-    const testItem3Id = new BigNumber(faker.random.number());
+    const testItem1Id = new BigNumber(faker.datatype.number());
+    const testItem2Id = new BigNumber(faker.datatype.number());
+    const testItem3Id = new BigNumber(faker.datatype.number());
 
     beforeEach(() => {
       component.sendGiftForm = formBuilder.group({
@@ -94,7 +94,7 @@ describe('ApolloGiftBasketComponent', () => {
         {
           id: testItem1Id,
           description: faker.random.words(3),
-          quantity: faker.random.number(),
+          quantity: faker.datatype.number(),
           itemType: 'creditRewards',
           edit: false,
           error: undefined,
@@ -102,7 +102,7 @@ describe('ApolloGiftBasketComponent', () => {
         {
           id: testItem2Id,
           description: faker.random.words(3),
-          quantity: faker.random.number(),
+          quantity: faker.datatype.number(),
           itemType: 'cars',
           edit: false,
           error: undefined,
@@ -110,7 +110,7 @@ describe('ApolloGiftBasketComponent', () => {
         {
           id: testItem3Id,
           description: faker.random.words(3),
-          quantity: faker.random.number(),
+          quantity: faker.datatype.number(),
           itemType: 'vanityItems',
           edit: false,
           error: undefined,

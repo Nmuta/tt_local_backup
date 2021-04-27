@@ -36,12 +36,12 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(_xuid: BigNumber): SunriseMasterInventory {
     function makeFakeItems(count: number): MasterInventoryItem[] {
-      return Array(faker.random.number(count))
+      return Array(faker.datatype.number(count))
         .fill(0)
         .map(() => {
           return {
             id: fakeBigNumber(),
-            quantity: faker.random.number(5),
+            quantity: faker.datatype.number(5),
             description: faker.lorem.sentences(2),
             itemType: undefined,
           };
@@ -53,31 +53,31 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
         {
           id: new BigNumber(-1),
           description: 'Credits',
-          quantity: faker.random.number(400_000_000),
+          quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
         },
         {
           id: new BigNumber(-1),
           description: 'WheelSpins',
-          quantity: faker.random.number(400_000_000),
+          quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
         },
         {
           id: new BigNumber(-1),
           description: 'SuperWheelSpins',
-          quantity: faker.random.number(400_000_000),
+          quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
         },
         {
           id: new BigNumber(-1),
           description: 'SkillPoints',
-          quantity: faker.random.number(400_000_000),
+          quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
         },
         {
           id: new BigNumber(-1),
           description: 'ForzathonPoints',
-          quantity: faker.random.number(400_000_000),
+          quantity: faker.datatype.number(400_000_000),
           itemType: undefined,
         },
       ],

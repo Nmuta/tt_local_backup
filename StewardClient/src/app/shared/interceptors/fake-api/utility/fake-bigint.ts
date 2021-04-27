@@ -25,13 +25,13 @@ export function fakeBigNumber(
     }
 
     do {
-      result = result.plus(new BigNumber(faker.random.number(ACCUMULATOR_STEP_NUMBER)));
+      result = result.plus(new BigNumber(faker.datatype.number(ACCUMULATOR_STEP_NUMBER)));
       difference = difference.minus(ACCUMULATOR_STEP_BIGINT);
     } while (difference > ACCUMULATOR_STEP_BIGINT);
 
-    result = result.plus(new BigNumber(faker.random.number(Number(difference))));
+    result = result.plus(new BigNumber(faker.datatype.number(Number(difference))));
   } else {
-    result = result.plus(new BigNumber(faker.random.number()));
+    result = result.plus(new BigNumber(faker.datatype.number()));
   }
 
   return result;

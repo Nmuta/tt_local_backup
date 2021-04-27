@@ -82,7 +82,7 @@ describe('SunriseConsolesComponent', () => {
           component.identity = {
             query: undefined,
             gamertag: faker.name.firstName(),
-            xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
+            xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
           };
           component.ngOnChanges();
 
@@ -107,7 +107,7 @@ describe('SunriseConsolesComponent', () => {
           component.identity = {
             query: undefined,
             gamertag: faker.name.firstName(),
-            xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
+            xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
           };
           component.ngOnChanges();
 
@@ -143,7 +143,7 @@ describe('SunriseConsolesComponent', () => {
           component.identity = {
             query: undefined,
             gamertag: faker.name.firstName(),
-            xuid: new BigNumber(faker.random.number({ min: 10_000, max: 500_000 })),
+            xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
           };
           component.ngOnChanges();
 

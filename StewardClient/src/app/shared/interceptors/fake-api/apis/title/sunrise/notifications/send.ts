@@ -31,12 +31,12 @@ export class SunriseSendCommunityMessageFakeApi extends FakeApiBase {
 
   /** Creates a sample object. */
   public static make(min: number = 1): CommunityMessageResult<BigNumber>[] {
-    return new Array(faker.random.number({ min: min, max: 10 })).fill(undefined).map(
+    return new Array(faker.datatype.number({ min: min, max: 10 })).fill(undefined).map(
       () =>
         <CommunityMessageResult<BigNumber>>{
-          identity: new BigNumber(faker.random.number({ min: 100_000_000, max: 999_999_999 })),
+          identity: new BigNumber(faker.datatype.number({ min: 100_000_000, max: 999_999_999 })),
           identityAntecedent: GiftIdentityAntecedent.Xuid,
-          success: faker.random.boolean(),
+          success: faker.datatype.boolean(),
         },
     );
   }

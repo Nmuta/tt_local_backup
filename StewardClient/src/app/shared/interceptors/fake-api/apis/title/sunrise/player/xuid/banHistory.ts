@@ -37,14 +37,14 @@ export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
 
   /** Creates a sample object. */
   public static make(xuid: BigNumber, min: number = 0): Unprocessed<LiveOpsBanDescriptions> {
-    return new Array(faker.random.number({ min: min, max: 5 })).fill(undefined).map(
+    return new Array(faker.datatype.number({ min: min, max: 5 })).fill(undefined).map(
       () =>
         <LiveOpsBanDescription>{
           banParameters: faker.lorem.paragraph(),
           expireTimeUtc: faker.date.future(),
           startTimeUtc: faker.date.past(),
           featureArea: faker.random.arrayElement(Object.values(SunriseBanArea)),
-          isActive: faker.random.boolean(),
+          isActive: faker.datatype.boolean(),
           reason: faker.lorem.sentence(),
           requestingAgent: faker.internet.email(),
           title: faker.random.arrayElement(Object.values(GameTitleCodeName)),

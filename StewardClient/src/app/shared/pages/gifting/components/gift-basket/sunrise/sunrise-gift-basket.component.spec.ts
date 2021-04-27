@@ -84,12 +84,12 @@ describe('SunriseGiftBasketComponent', () => {
 
   describe('Method: generateGiftInventoryFromGiftBasket', () => {
     const giftReason: string = 'fake gift reason';
-    const giftItem1Id = new BigNumber(faker.random.number());
-    const giftItem2Id = new BigNumber(faker.random.number());
-    const giftItem3Id = new BigNumber(faker.random.number());
-    const giftItem4Id = new BigNumber(faker.random.number());
-    const giftItem5Id = new BigNumber(faker.random.number());
-    const giftItem6Id = new BigNumber(faker.random.number());
+    const giftItem1Id = new BigNumber(faker.datatype.number());
+    const giftItem2Id = new BigNumber(faker.datatype.number());
+    const giftItem3Id = new BigNumber(faker.datatype.number());
+    const giftItem4Id = new BigNumber(faker.datatype.number());
+    const giftItem5Id = new BigNumber(faker.datatype.number());
+    const giftItem6Id = new BigNumber(faker.datatype.number());
 
     beforeEach(() => {
       component.sendGiftForm = formBuilder.group({
@@ -100,7 +100,7 @@ describe('SunriseGiftBasketComponent', () => {
         {
           id: giftItem1Id,
           description: faker.random.words(10),
-          quantity: faker.random.number(),
+          quantity: faker.datatype.number(),
           itemType: 'creditRewards',
           edit: false,
           error: undefined,
@@ -108,7 +108,7 @@ describe('SunriseGiftBasketComponent', () => {
         {
           id: giftItem2Id,
           description: faker.random.words(10),
-          quantity: faker.random.number(),
+          quantity: faker.datatype.number(),
           itemType: 'cars',
           edit: false,
           error: undefined,
@@ -116,7 +116,7 @@ describe('SunriseGiftBasketComponent', () => {
         {
           id: giftItem3Id,
           description: faker.random.words(10),
-          quantity: faker.random.number(),
+          quantity: faker.datatype.number(),
           itemType: 'vanityItems',
           edit: false,
           error: undefined,
@@ -124,7 +124,7 @@ describe('SunriseGiftBasketComponent', () => {
         {
           id: giftItem4Id,
           description: faker.random.words(10),
-          quantity: faker.random.number(),
+          quantity: faker.datatype.number(),
           itemType: 'carHorns',
           edit: false,
           error: undefined,
@@ -132,7 +132,7 @@ describe('SunriseGiftBasketComponent', () => {
         {
           id: giftItem5Id,
           description: faker.random.words(10),
-          quantity: faker.random.number(),
+          quantity: faker.datatype.number(),
           itemType: 'quickChatLines',
           edit: false,
           error: undefined,
@@ -140,7 +140,7 @@ describe('SunriseGiftBasketComponent', () => {
         {
           id: giftItem6Id,
           description: faker.random.words(10),
-          quantity: faker.random.number(),
+          quantity: faker.datatype.number(),
           itemType: 'emotes',
           edit: false,
           error: undefined,

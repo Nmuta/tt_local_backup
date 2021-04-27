@@ -34,7 +34,7 @@ describe('GoToInventoryButtonComponent', () => {
   });
 
   describe('Method goToInventory:', () => {
-    const xuid = new BigNumber(faker.random.number());
+    const xuid = new BigNumber(faker.datatype.number());
     const gameTitle = GameTitleCodeName.Street;
     beforeEach(() => {
       component.xuid = xuid;

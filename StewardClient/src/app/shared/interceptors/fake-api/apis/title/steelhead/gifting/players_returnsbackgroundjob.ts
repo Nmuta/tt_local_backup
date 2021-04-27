@@ -25,15 +25,15 @@ export class SteelheadGiftingPlayersReturnsBackgroundJobFakeApi extends FakeApiB
   /** Generates a sample object */
   public static make(): BackgroundJob<void> {
     return {
-      jobId: faker.random.uuid().toString(),
+      jobId: faker.datatype.uuid().toString(),
       status: BackgroundJobStatus.InProgress,
       rawResult: {
         key: 'value',
       },
       result: undefined,
-      isRead: faker.random.boolean(),
+      isRead: faker.datatype.boolean(),
       reason: faker.random.words(10),
-      isMarkingRead: faker.random.boolean(),
+      isMarkingRead: faker.datatype.boolean(),
     };
   }
 }

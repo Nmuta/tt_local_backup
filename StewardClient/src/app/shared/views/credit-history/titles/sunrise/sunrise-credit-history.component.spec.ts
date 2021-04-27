@@ -46,7 +46,7 @@ describe('SunriseCreditHistoryComponent', () => {
 
     describe('When there is a xuid in the component', () => {
       beforeEach(() => {
-        component.xuid = new BigNumber(faker.random.number());
+        component.xuid = new BigNumber(faker.datatype.number());
       });
 
       it('should call getCreditUpdates$.next()', () => {
@@ -76,7 +76,7 @@ describe('SunriseCreditHistoryComponent', () => {
 
     describe('When there is a xuid in the component', () => {
       beforeEach(() => {
-        component.xuid = new BigNumber(faker.random.number());
+        component.xuid = new BigNumber(faker.datatype.number());
       });
 
       it('should call getCreditUpdates$.next()', () => {

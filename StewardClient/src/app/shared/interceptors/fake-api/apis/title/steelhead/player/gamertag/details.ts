@@ -28,8 +28,8 @@ export class SteelheadPlayerGamertagDetailsFakeApi extends FakeApiBase {
     return {
       xuid: new BigNumber(189456456),
       gamertag: 'steelhead-gamertag',
-      country: new BigNumber(faker.random.number(50)),
-      region: new BigNumber(faker.random.number(20)),
+      country: new BigNumber(faker.datatype.number(50)),
+      region: new BigNumber(faker.datatype.number(20)),
       currentProfileId: undefined,
       subscriptionTier: undefined,
       ageGroup: undefined,
