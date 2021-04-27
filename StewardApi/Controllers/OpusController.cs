@@ -24,7 +24,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.LiveOpsAdmin,
         UserRole.SupportAgentAdmin,
         UserRole.SupportAgent,
-        UserRole.SupportAgentNew)]
+        UserRole.SupportAgentNew,
+        UserRole.CommunityManager)]
     public sealed class OpusController : ControllerBase
     {
         private readonly IMemoryCache memoryCache;
