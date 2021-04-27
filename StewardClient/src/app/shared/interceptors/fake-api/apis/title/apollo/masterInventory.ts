@@ -1,7 +1,8 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 import { ApolloMasterInventory } from '@models/apollo';
-import { Unprocessed } from '@models/unprocessed';
+import { MasterInventoryItem } from '@models/master-inventory-item';
 
 /** Fake API for getting master inventory. */
 export class ApolloMasterInventoryFakeApi extends FakeApiBase {
@@ -18,16 +19,37 @@ export class ApolloMasterInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<ApolloMasterInventory>> {
+  public handle(): ApolloMasterInventory {
     return ApolloMasterInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<ApolloMasterInventory>> {
+  public static make(): ApolloMasterInventory {
     return {
-      creditRewards: [],
-      cars: [],
-      vanityItems: [],
+      creditRewards: new Array(faker.datatype.number(5)).fill(undefined).map(_ => {
+        return <MasterInventoryItem>{
+          id: fakeBigNumber(),
+          description: faker.lorem.sentence(1),
+          itemType: faker.lorem.word(2),
+          quantity: faker.datatype.number(),
+        };
+      }),
+      cars: new Array(faker.datatype.number(5)).fill(undefined).map(_ => {
+        return <MasterInventoryItem>{
+          id: fakeBigNumber(),
+          description: faker.lorem.sentence(1),
+          itemType: faker.lorem.word(2),
+          quantity: faker.datatype.number(),
+        };
+      }),
+      vanityItems: new Array(faker.datatype.number(5)).fill(undefined).map(_ => {
+        return <MasterInventoryItem>{
+          id: fakeBigNumber(),
+          description: faker.lorem.sentence(1),
+          itemType: faker.lorem.word(2),
+          quantity: faker.datatype.number(),
+        };
+      }),
     };
   }
 }

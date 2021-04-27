@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloUserFlags } from '@models/apollo';
-import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */
 export class ApolloPlayerXuidUserFlagsFakeApi extends FakeApiBase {
@@ -18,12 +17,12 @@ export class ApolloPlayerXuidUserFlagsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Unprocessed<ApolloUserFlags> {
+  public handle(): ApolloUserFlags {
     return ApolloPlayerXuidUserFlagsFakeApi.make();
   }
 
   /** Generate an example. */
-  public static make(): Unprocessed<ApolloUserFlags> {
+  public static make(): ApolloUserFlags {
     return {
       isVip: false,
       isTurn10Employee: false,

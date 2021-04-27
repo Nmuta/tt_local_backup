@@ -1,8 +1,7 @@
-import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunrisePlayerInventory } from '@models/sunrise';
-import { Unprocessed } from '@models/unprocessed';
+import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 
 /** Fake API for sunrise player inventory. */
 export class SunriseGroupXuidsInventoryFakeApi extends FakeApiBase {
@@ -23,14 +22,29 @@ export class SunriseGroupXuidsInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<SunrisePlayerInventory>> {
+  public handle(): SunrisePlayerInventory {
     return SunriseGroupXuidsInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<SunrisePlayerInventory>> {
+  public static make(): SunrisePlayerInventory {
     return {
-      xuid: new BigNumber(2533275026603041),
+      xuid: fakeBigNumber(),
+      barnFindRumors: [],
+      carHorns: [],
+      cars: [],
+      creditRewards: [],
+      credits: fakeBigNumber(),
+      emotes: [],
+      forzathonPoints: fakeBigNumber(),
+      giftReason: faker.lorem.sentence(),
+      perks: [],
+      quickChatLines: [],
+      rebuilds: [],
+      skillPoints: fakeBigNumber(),
+      superWheelSpins: fakeBigNumber(),
+      vanityItems: [],
+      wheelSpins: fakeBigNumber(),
     };
   }
 }

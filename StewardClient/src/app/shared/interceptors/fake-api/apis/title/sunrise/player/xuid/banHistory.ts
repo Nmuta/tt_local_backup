@@ -4,7 +4,6 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GameTitleCodeName } from '@models/enums';
 import { SunriseBanArea } from '@models/sunrise';
 import { LiveOpsBanDescription, LiveOpsBanDescriptions } from '@models/sunrise';
-import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
 
 /** Fake API for finding User Flags. */
@@ -31,12 +30,12 @@ export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Unprocessed<LiveOpsBanDescriptions> {
+  public handle(): LiveOpsBanDescriptions {
     return SunrisePlayerXuidBanHistoryFakeApi.make(this.xuid);
   }
 
   /** Creates a sample object. */
-  public static make(xuid: BigNumber, min: number = 0): Unprocessed<LiveOpsBanDescriptions> {
+  public static make(xuid: BigNumber, min: number = 0): LiveOpsBanDescriptions {
     return new Array(faker.datatype.number({ min: min, max: 5 })).fill(undefined).map(
       () =>
         <LiveOpsBanDescription>{

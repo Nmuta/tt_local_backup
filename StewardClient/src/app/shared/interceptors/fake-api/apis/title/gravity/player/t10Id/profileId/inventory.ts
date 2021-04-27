@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GravityPlayerInventoryBeta } from '@models/gravity';
-import { Unprocessed } from '@models/unprocessed';
 import { GravityPlayerT10IdInventoryFakeApi } from '../inventory';
 
 /** Fake API for gravity player inventory. */
@@ -30,12 +29,12 @@ export class GravityPlayerT10IdProfileIdInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<GravityPlayerInventoryBeta>> {
+  public handle(): GravityPlayerInventoryBeta {
     return GravityPlayerT10IdProfileIdInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<GravityPlayerInventoryBeta>> {
+  public static make(): GravityPlayerInventoryBeta {
     return GravityPlayerT10IdInventoryFakeApi.make(null);
   }
 }

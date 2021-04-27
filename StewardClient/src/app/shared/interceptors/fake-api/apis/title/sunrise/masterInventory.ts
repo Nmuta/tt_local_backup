@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunriseMasterInventory } from '@models/sunrise';
-import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for getting master inventory. */
 export class SunriseMasterInventoryFakeApi extends FakeApiBase {
@@ -18,12 +17,12 @@ export class SunriseMasterInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<SunriseMasterInventory>> {
+  public handle(): SunriseMasterInventory {
     return SunriseMasterInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<SunriseMasterInventory>> {
+  public static make(): SunriseMasterInventory {
     return {
       creditRewards: [],
       cars: [],

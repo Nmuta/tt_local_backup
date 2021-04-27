@@ -4,7 +4,6 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { GravityPlayerInventoryBeta } from '@models/gravity';
 import { MasterInventoryItem } from '@models/master-inventory-item';
-import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
 
 /** Fake API for gravity player inventory. */
@@ -22,7 +21,7 @@ export class GravityPlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<GravityPlayerInventoryBeta>> {
+  public handle(): GravityPlayerInventoryBeta {
     return GravityPlayerXuidInventoryFakeApi.make();
   }
 

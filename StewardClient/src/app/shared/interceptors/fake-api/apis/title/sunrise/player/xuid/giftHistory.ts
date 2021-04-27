@@ -2,7 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility/fake-bigint';
 import { SunriseGiftHistory } from '@models/sunrise';
-import { Unprocessed } from '@models/unprocessed';
+import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
 import faker from 'faker';
 
@@ -21,60 +21,67 @@ export class SunrisePlayerXuidGiftHistoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(body?: unknown): Partial<Unprocessed<SunriseGiftHistory[]>> {
+  public handle(body?: unknown): SunriseGiftHistory[] {
     return SunrisePlayerXuidGiftHistoryFakeApi.make(body as BigNumber);
   }
 
   /** Generates a sample object */
-  public static make(xuid: BigNumber): Partial<Unprocessed<SunriseGiftHistory[]>> {
+  public static make(xuid: BigNumber): SunriseGiftHistory[] {
     return [
       {
-        idType: 'Xuid',
+        idType: GiftIdentityAntecedent.Xuid,
         id: xuid,
-        title: 'Sunrise',
+        title: 'sunrise',
         giftSendDateUtc: faker.date.past(),
+        requestingAgent: faker.internet.userName(),
         giftInventory: {
           giftReason: faker.random.word(),
           inventory: {
             creditRewards: [
               {
                 id: fakeBigNumber(),
-                description: faker.random.word(),
+                itemType: faker.random.word(),
+                description: faker.random.words(5),
                 quantity: faker.datatype.number(),
               },
             ],
             cars: [
               {
                 id: fakeBigNumber(),
-                description: faker.random.word(),
+                itemType: faker.random.word(),
+                description: faker.random.words(5),
                 quantity: faker.datatype.number(),
               },
             ],
             carHorns: [
               {
                 id: fakeBigNumber(),
-                description: faker.random.word(),
+                itemType: faker.random.word(),
+                description: faker.random.words(5),
                 quantity: faker.datatype.number(),
               },
             ],
             emotes: [
               {
                 id: fakeBigNumber(),
-                description: faker.random.word(),
+                itemType: faker.random.word(),
+                description: faker.random.words(5),
                 quantity: faker.datatype.number(),
               },
             ],
             vanityItems: [
               {
                 id: fakeBigNumber(),
-                description: faker.random.word(),
+                itemType: faker.random.word(),
+                description: faker.random.words(5),
                 quantity: faker.datatype.number(),
               },
             ],
             quickChatLines: [
               {
                 id: fakeBigNumber(),
-                description: faker.random.word(),
+                itemType: faker.random.word(),
+                description: faker.random.words(5),
                 quantity: faker.datatype.number(),
               },
             ],

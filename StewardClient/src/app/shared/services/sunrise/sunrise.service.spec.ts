@@ -10,7 +10,6 @@ import { SunrisePlayerXuidUserFlagsFakeApi } from '@interceptors/fake-api/apis/t
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { LspGroup } from '@models/lsp-group';
 import { SunriseGift, SunriseGroupGift, SunriseUserFlags } from '@models/sunrise';
-import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
 
 import { of } from 'rxjs';
@@ -21,7 +20,7 @@ describe('SunriseService', () => {
   let injector: TestBed;
   let service: SunriseService;
   let apiServiceMock: ApiService;
-  let nextReturnValue: Unprocessed<unknown> = {};
+  let nextReturnValue: unknown = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({

@@ -7,7 +7,6 @@ import { SteelheadPlayerXuidUserFlagsFakeApi } from '@interceptors/fake-api/apis
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { SteelheadGift, SteelheadGroupGift, SteelheadUserFlags } from '@models/steelhead';
 import { LspGroup } from '@models/lsp-group';
-import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
 import { of } from 'rxjs';
 import { SteelheadService } from './steelhead.service';
@@ -16,7 +15,7 @@ describe('SteelheadService', () => {
   let injector: TestBed;
   let service: SteelheadService;
   let apiServiceMock: ApiService;
-  let nextReturnValue: Unprocessed<unknown> = {};
+  let nextReturnValue: unknown = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({

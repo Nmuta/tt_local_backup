@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { BackgroundJob } from '@models/background-job';
-import { Unprocessed } from '@models/unprocessed';
+import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import faker from 'faker';
 
 /** Fake API for getting master inventory. */
@@ -19,19 +18,22 @@ export class JobsGetJobFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<BackgroundJob<unknown>>> {
+  public handle(): BackgroundJob<unknown> {
     return JobsGetJobFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<BackgroundJob<unknown>>> {
+  public static make(): BackgroundJob<unknown> {
     return {
-      jobId: faker.datatype.uuid().toString(),
-      status: 'InProgress',
+      jobId: faker.datatype.uuid(),
+      status: BackgroundJobStatus.InProgress,
       rawResult: {
         key: 'value',
       },
       result: undefined,
+      isMarkingRead: undefined,
+      isRead: false,
+      reason: faker.lorem.sentence(),
     };
   }
 }

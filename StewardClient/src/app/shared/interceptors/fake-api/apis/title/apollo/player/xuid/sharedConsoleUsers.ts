@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloSharedConsoleUser } from '@models/apollo';
-import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */
 export class ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBase {
@@ -19,12 +18,12 @@ export class ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBas
   }
 
   /** Produces a sample API response. */
-  public handle(): Unprocessed<ApolloSharedConsoleUser[]> {
+  public handle(): ApolloSharedConsoleUser[] {
     return ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany();
   }
 
   /** Creates a sample response. */
-  public static makeMany(): Unprocessed<ApolloSharedConsoleUser[]> {
+  public static makeMany(): ApolloSharedConsoleUser[] {
     return [
       {
         sharedConsoleId: new BigNumber(17942385017267761210),

@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { BackgroundJob } from '@models/background-job';
-import { Unprocessed } from '@models/unprocessed';
+import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import faker from 'faker';
 
 /** Fake API for gifting to players. */
@@ -19,19 +18,22 @@ export class ApolloGiftingPlayersReturnsBackgroundJobFakeApi extends FakeApiBase
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<BackgroundJob<void>>> {
+  public handle(): BackgroundJob<void> {
     return ApolloGiftingPlayersReturnsBackgroundJobFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<BackgroundJob<void>>> {
+  public static make(): BackgroundJob<void> {
     return {
-      jobId: faker.datatype.uuid().toString(),
-      status: 'InProgess',
+      jobId: faker.datatype.uuid(),
+      status: BackgroundJobStatus.InProgress,
       rawResult: {
         key: 'value',
       },
       result: undefined,
+      isRead: false,
+      isMarkingRead: undefined,
+      reason: faker.lorem.words(3),
     };
   }
 }

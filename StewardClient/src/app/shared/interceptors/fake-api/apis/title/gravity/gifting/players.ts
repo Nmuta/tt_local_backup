@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GiftResponse } from '@models/gift-response';
-import { Unprocessed } from '@models/unprocessed';
 import { GiftIdentityAntecedent } from '@shared/constants';
 
 /** Fake API for gifting to player. */
@@ -19,12 +18,12 @@ export class GravityGiftingPlayerFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<GiftResponse<string>>> {
+  public handle(): GiftResponse<string> {
     return GravityGiftingPlayerFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<GiftResponse<string>>> {
+  public static make(): GiftResponse<string> {
     return {
       playerOrLspGroup: 'Fake T10 ID',
       identityAntecedent: GiftIdentityAntecedent.T10Id,

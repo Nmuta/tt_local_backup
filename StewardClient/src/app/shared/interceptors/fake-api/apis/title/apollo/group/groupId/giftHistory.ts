@@ -2,7 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility/fake-bigint';
 import { ApolloGiftHistory } from '@models/apollo';
-import { Unprocessed } from '@models/unprocessed';
+import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
 import faker from 'faker';
 
@@ -21,24 +21,26 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(body?: unknown): Partial<Unprocessed<ApolloGiftHistory[]>> {
+  public handle(body?: unknown): ApolloGiftHistory[] {
     return ApolloGroupGroupIdGiftHistoryFakeApi.make(body as BigNumber);
   }
 
   /** Generates a sample object */
-  public static make(lspId: BigNumber): Partial<Unprocessed<ApolloGiftHistory[]>> {
+  public static make(lspId: BigNumber): ApolloGiftHistory[] {
     return [
       {
-        idType: 'LspGroupId',
+        idType: GiftIdentityAntecedent.LspGroupId,
         id: lspId,
-        title: 'Apollo',
+        title: 'apollo',
         giftSendDateUtc: faker.date.past(),
+        requestingAgent: faker.internet.userName(),
         giftInventory: {
           giftReason: faker.random.word(),
           inventory: {
             creditRewards: [
               {
                 id: fakeBigNumber(),
+                itemType: faker.random.word(),
                 description: faker.random.word(),
                 quantity: faker.datatype.number(),
               },
@@ -46,6 +48,7 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
             cars: [
               {
                 id: fakeBigNumber(),
+                itemType: faker.random.word(),
                 description: faker.random.word(),
                 quantity: faker.datatype.number(),
               },
@@ -53,6 +56,7 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
             vanityItems: [
               {
                 id: fakeBigNumber(),
+                itemType: faker.random.word(),
                 description: faker.random.word(),
                 quantity: faker.datatype.number(),
               },

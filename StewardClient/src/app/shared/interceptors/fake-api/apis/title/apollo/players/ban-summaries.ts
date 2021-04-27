@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloBanArea, ApolloBanSummary } from '@models/apollo';
-import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
 
 /** Fake API for banning players. */
@@ -20,12 +19,12 @@ export class ApolloPlayersBanSummariesFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(body?: unknown): Partial<Unprocessed<ApolloBanSummary[]>> {
+  public handle(body?: unknown): ApolloBanSummary[] {
     return ApolloPlayersBanSummariesFakeApi.make(body as BigNumber[]);
   }
 
   /** Generates a sample object */
-  public static make(xuids: BigNumber[]): Partial<Unprocessed<ApolloBanSummary[]>> {
+  public static make(xuids: BigNumber[]): ApolloBanSummary[] {
     return xuids.map(xuid => {
       return <ApolloBanSummary>{
         banCount: new BigNumber(faker.datatype.number()),

@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunriseSharedConsoleUser } from '@models/sunrise';
-import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for finding User Flags. */
 export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBase {
@@ -19,12 +18,12 @@ export class SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi extends FakeApiBa
   }
 
   /** Produces a sample API response. */
-  public handle(): Unprocessed<SunriseSharedConsoleUser[]> {
+  public handle(): SunriseSharedConsoleUser[] {
     return SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany();
   }
 
   /** Creates a sample response. */
-  public static makeMany(): Unprocessed<SunriseSharedConsoleUser[]> {
+  public static makeMany(): SunriseSharedConsoleUser[] {
     return [
       {
         sharedConsoleId: new BigNumber(17942385017267761210),

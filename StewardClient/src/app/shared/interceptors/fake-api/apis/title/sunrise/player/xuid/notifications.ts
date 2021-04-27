@@ -2,7 +2,6 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { faker } from '@interceptors/fake-api/utility';
 import { SunrisePlayerNotification } from '@models/sunrise';
-import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for sunrise player inventory profiles. */
 export class SunrisePlayerXuidNotificationsFakeApi extends FakeApiBase {
@@ -19,16 +18,16 @@ export class SunrisePlayerXuidNotificationsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Unprocessed<SunrisePlayerNotification[]> {
+  public handle(): SunrisePlayerNotification[] {
     return SunrisePlayerXuidNotificationsFakeApi.makeMany();
   }
 
   /** Generates a sample object */
-  public static makeMany(): Unprocessed<SunrisePlayerNotification[]> {
+  public static makeMany(): SunrisePlayerNotification[] {
     return new Array(faker.datatype.number({ min: 5, max: 20 })).fill(null).map(_ => {
-      return {
-        expirationDateUtc: faker.date.future().toISOString(),
-        sendDateUtc: faker.date.past().toISOString(),
+      return <SunrisePlayerNotification>{
+        expirationDateUtc: faker.date.future(),
+        sendDateUtc: faker.date.past(),
         isRead: faker.datatype.boolean(),
         notificationId: faker.datatype.uuid(),
         notificationType: faker.random.arrayElement([

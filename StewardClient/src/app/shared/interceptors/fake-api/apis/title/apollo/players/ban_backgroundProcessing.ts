@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
-import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
 
 /** Fake API for banning players with background processing. */
@@ -19,16 +18,20 @@ export class ApolloPlayersBanWithBackgroundProcessingFakeApi extends FakeApiBase
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<BackgroundJob<void>>> {
+  public handle(): BackgroundJob<void> {
     return ApolloPlayersBanWithBackgroundProcessingFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<BackgroundJob<void>>> {
+  public static make(): BackgroundJob<void> {
     return {
       jobId: faker.datatype.uuid().toString(),
       status: BackgroundJobStatus.InProgress,
-      result: '',
+      result: undefined,
+      isMarkingRead: undefined,
+      isRead: false,
+      rawResult: undefined,
+      reason: faker.lorem.sentence(),
     };
   }
 }

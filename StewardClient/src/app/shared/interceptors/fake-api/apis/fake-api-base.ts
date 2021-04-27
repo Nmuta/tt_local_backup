@@ -1,5 +1,4 @@
 import { HttpRequest } from '@angular/common/http';
-import { Unprocessed } from '@models/unprocessed';
 
 /** Base for implementation of fake API methods. */
 export abstract class FakeApiBase {
@@ -9,5 +8,5 @@ export abstract class FakeApiBase {
   public abstract get canHandle(): boolean;
 
   /** The object that should be returned for this request. */
-  public abstract handle(body?: unknown): Unprocessed<unknown>;
+  public abstract handle(body?: unknown): unknown;
 }

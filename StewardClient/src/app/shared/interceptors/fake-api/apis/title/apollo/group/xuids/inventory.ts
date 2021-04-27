@@ -1,8 +1,7 @@
-import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloPlayerInventory } from '@models/apollo';
-import { Unprocessed } from '@models/unprocessed';
+import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 
 /** Fake API for apollo player inventory. */
 export class ApolloGroupXuidsInventoryFakeApi extends FakeApiBase {
@@ -23,14 +22,21 @@ export class ApolloGroupXuidsInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<ApolloPlayerInventory>> {
+  public handle(): ApolloPlayerInventory {
     return ApolloGroupXuidsInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<ApolloPlayerInventory>> {
+  public static make(): ApolloPlayerInventory {
     return {
-      xuid: new BigNumber(2533275026603041),
+      xuid: fakeBigNumber(),
+      badges: [],
+      cars: [],
+      credits: fakeBigNumber(),
+      giftReason: faker.lorem.sentence(),
+      mods: [],
+      packs: [],
+      vanityItems: [],
     };
   }
 }

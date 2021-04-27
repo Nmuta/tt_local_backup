@@ -1,7 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GravityMasterInventory } from '@models/gravity';
-import { Unprocessed } from '@models/unprocessed';
 
 /** Fake API for getting master inventory. */
 export class GravityMasterInventoryFakeApi extends FakeApiBase {
@@ -18,12 +17,12 @@ export class GravityMasterInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<GravityMasterInventory>> {
+  public handle(): GravityMasterInventory {
     return GravityMasterInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<GravityMasterInventory>> {
+  public static make(): GravityMasterInventory {
     return {
       creditRewards: [],
       cars: [],

@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { LspGroups } from '@models/lsp-group';
-import { Unprocessed } from '@models/unprocessed';
+import { faker } from '@interceptors/fake-api/utility';
 
 /** Fake API for finding apollo groups. */
 export class ApolloGroupsFakeApi extends FakeApiBase {
@@ -19,15 +19,15 @@ export class ApolloGroupsFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Partial<Unprocessed<LspGroups>> {
+  public handle(): LspGroups {
     return ApolloGroupsFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): Partial<Unprocessed<LspGroups>> {
+  public static make(): LspGroups {
     return [
-      { id: new BigNumber(0), name: 'Fake Lsp Group 1' },
-      { id: new BigNumber(1), name: 'Fake Lsp Group 2' },
+      { id: new BigNumber(0), name: faker.name.jobTitle() },
+      { id: new BigNumber(1), name: faker.name.jobTitle() },
     ];
   }
 }

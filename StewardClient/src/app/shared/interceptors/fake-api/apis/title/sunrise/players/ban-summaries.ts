@@ -3,7 +3,6 @@ import { environment } from '@environments/environment';
 import { ZERO } from '@helpers/bignumbers';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunriseBanSummary, SunriseBanArea } from '@models/sunrise';
-import { Unprocessed } from '@models/unprocessed';
 import faker from 'faker';
 
 /** Fake API for banning players. */
@@ -21,12 +20,12 @@ export class SunrisePlayersBanSummariesFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(body?: unknown): Partial<Unprocessed<SunriseBanSummary[]>> {
+  public handle(body?: unknown): SunriseBanSummary[] {
     return SunrisePlayersBanSummariesFakeApi.make(body as BigNumber[]);
   }
 
   /** Generates a sample object */
-  public static make(xuids: BigNumber[]): Partial<Unprocessed<SunriseBanSummary[]>> {
+  public static make(xuids: BigNumber[]): SunriseBanSummary[] {
     return xuids.map(xuid => {
       return <SunriseBanSummary>{
         banCount: faker.datatype.boolean() ? ZERO : new BigNumber(faker.datatype.number()),

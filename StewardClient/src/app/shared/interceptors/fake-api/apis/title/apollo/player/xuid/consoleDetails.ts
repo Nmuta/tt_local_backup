@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloConsoleDetailsEntry } from '@models/apollo';
-import { Unprocessed } from '@models/unprocessed';
 import * as faker from 'faker';
 
 /** Fake API for finding User Flags. */
@@ -20,12 +19,12 @@ export class ApolloPlayerXuidConsolesFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): Unprocessed<ApolloConsoleDetailsEntry[]> {
+  public handle(): ApolloConsoleDetailsEntry[] {
     return ApolloPlayerXuidConsolesFakeApi.makeMany();
   }
 
   /** Create many example models. */
-  public static makeMany(): Unprocessed<ApolloConsoleDetailsEntry[]> {
+  public static makeMany(): ApolloConsoleDetailsEntry[] {
     return [
       {
         clientVersion: faker.datatype.number({ min: 432815, max: 500000 }).toString(),

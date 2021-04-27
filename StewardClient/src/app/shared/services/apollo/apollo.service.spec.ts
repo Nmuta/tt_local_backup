@@ -7,7 +7,6 @@ import { ApolloPlayerXuidUserFlagsFakeApi } from '@interceptors/fake-api/apis/ti
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { ApolloGift, ApolloGroupGift, ApolloUserFlags } from '@models/apollo';
 import { LspGroup } from '@models/lsp-group';
-import { Unprocessed } from '@models/unprocessed';
 import { ApiService, createMockApiService } from '@services/api';
 import { of } from 'rxjs';
 
@@ -17,7 +16,7 @@ describe('ApolloService', () => {
   let injector: TestBed;
   let service: ApolloService;
   let apiServiceMock: ApiService;
-  let nextReturnValue: Unprocessed<unknown> = {};
+  let nextReturnValue: unknown = {};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
