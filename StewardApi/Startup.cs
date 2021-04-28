@@ -327,6 +327,7 @@ namespace Turn10.LiveOps.StewardApi
             }
 
             applicationBuilder.UseCors("CorsPolicy");
+            applicationBuilder.UseMiddleware<EasyAuthSwaggerMiddleware>();
             applicationBuilder.UseSwagger();
             applicationBuilder.UseSwaggerUI(c =>
             {
