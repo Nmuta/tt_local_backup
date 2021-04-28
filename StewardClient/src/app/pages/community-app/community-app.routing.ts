@@ -6,6 +6,7 @@ import { AuthGuard } from 'app/route-guards/auth.guard';
 import { CommunityAppTools } from './community-tool-list';
 import { CommunityAppComponent } from './community-app.component';
 import { CommunityHomeComponent } from './pages/home/home.component';
+import { SharedNavbarTools } from '@shared/pages/shared-tool-list';
 
 const routes: Routes = [
   {
@@ -24,14 +25,14 @@ const routes: Routes = [
         component: CommunityHomeComponent,
       },
       {
-        path: CommunityAppTools.MessagingPage.path,
+        path: SharedNavbarTools.MessagingPage.path,
         loadChildren: () =>
-          import('./pages/community-messaging/community-messaging.module').then(
+          import('../../shared/pages/community-messaging/community-messaging.module').then(
             m => m.CommunityMessagingModule,
           ),
       },
       {
-        path: CommunityAppTools.GiftingPage.path,
+        path: SharedNavbarTools.GiftingPage.path,
         loadChildren: () =>
           import('../../shared/pages/gifting/gifting.module').then(m => m.GiftingsModule),
       },

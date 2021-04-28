@@ -23,7 +23,7 @@ import { SunriseCommunityMessagingComponent } from './sunrise/sunrise-community-
 import { CommunityMessagingRoutingModule } from './community-messaging.routing';
 import { CommunityMessagingComponent } from './community-messaging.component';
 import { LspGroupSelectionModule } from '@navbar-app/components/lsp-group-selection/lsp-group-selection.module';
-import { NewCommunityMessageComponent } from '@community-app/pages/community-messaging/components/new-community-message/new-community-message.component';
+import { NewCommunityMessageComponent } from '@shared/pages/community-messaging/components/new-community-message/new-community-message.component';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { JsonTableResultsModule } from '@components/json-table-results/json-table-results.module';

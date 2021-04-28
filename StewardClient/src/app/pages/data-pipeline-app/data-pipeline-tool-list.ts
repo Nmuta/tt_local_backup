@@ -1,12 +1,12 @@
 import { RouteParams, RouterLinkPath, createRouterLinkPath } from '@models/routing';
 
+/** The root path for all these tools. */
+export const dataPipelineAppRootPath = ['/data-pipeline/data-pipeline-app', 'tools'];
+
 /** Creates a Data Pipeline Path for use in displaying the navbar, from a RouteParams object. */
 export function createDataPipelineNavbarPath(routeParams: RouteParams): RouterLinkPath {
   return createRouterLinkPath(dataPipelineAppRootPath, routeParams);
 }
-
-/** The root path for all these tools. */
-export const dataPipelineAppRootPath = ['/data-pipeline/data-pipeline-app', 'tools'];
 
 /** Constants for tools in the data pipeline app. */
 export class DataPipelineAppTools {

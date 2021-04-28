@@ -1,12 +1,13 @@
 import { RouteParams, RouterLinkPath, createRouterLinkPath } from '@models/routing';
+import { SharedNavbarTools } from '@shared/pages/shared-tool-list';
+
+/** The root path for all these tools. */
+export const communityAppRootPath = ['/community/community-app', 'tools'];
 
 /** Creates a CommunityPath for use in displaying the navbar, from a RouteParams object. */
 export function createCommunityNavbarPath(routeParams: RouteParams): RouterLinkPath {
   return createRouterLinkPath(communityAppRootPath, routeParams);
 }
-
-/** The root path for all these tools. */
-export const communityAppRootPath = ['/community/community-app', 'tools'];
 
 /** Constants for tools in the community app. */
 export class CommunityAppTools {
@@ -15,22 +16,10 @@ export class CommunityAppTools {
     title: 'Community App',
     path: 'home',
   };
-
-  /** The messaging tool page. */
-  public static readonly MessagingPage: RouteParams = {
-    title: 'Messaging',
-    path: 'messaging',
-  };
-
-  /** The gifting tool page. */
-  public static readonly GiftingPage: RouteParams = {
-    title: 'Gifting',
-    path: 'gifting',
-  };
 }
 
 /** The list of tools to display in the navbar. */
 export const communityAppToolList: RouterLinkPath[] = [
-  createCommunityNavbarPath(CommunityAppTools.MessagingPage),
-  createCommunityNavbarPath(CommunityAppTools.GiftingPage),
+  createCommunityNavbarPath(SharedNavbarTools.MessagingPage),
+  createCommunityNavbarPath(SharedNavbarTools.GiftingPage),
 ];

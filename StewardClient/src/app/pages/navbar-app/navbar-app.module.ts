@@ -19,6 +19,7 @@ import { MatCardModule } from '@angular/material/card';
 import { AllAppsDropdownModule } from '@shared/views/all-apps-dropdown/all-apps-dropdown.module';
 import { MatBadgeModule } from '@angular/material/badge';
 import { SidebarIconsModule } from '@shared/views/sidebar-icons/sidebar-icons.module';
+import { MatMenuModule } from '@angular/material/menu';
 
 /** Defines the sidebar module. */
 @NgModule({
@@ -39,6 +40,7 @@ import { SidebarIconsModule } from '@shared/views/sidebar-icons/sidebar-icons.mo
     MatSidenavModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatMenuModule,
     NavbarAppRouterModule,
     SidebarsModule,
     UserDetailsModule,

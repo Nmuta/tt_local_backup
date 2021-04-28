@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
-import { createNavbarPath, NavbarTools } from 'app/pages/navbar-app/navbar-tool-list';
+import { createNavbarPath, NavbarTools } from '@navbar-app/navbar-tool-list';
 
 /** The gift history page for the Navbar app. */
 @Component({

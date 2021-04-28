@@ -840,6 +840,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("notifications/send")]
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
         public async Task<IActionResult> SendPlayerNotifications([FromBody] BulkCommunityMessage communityMessage)
@@ -884,6 +885,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("notifications/send/groupId({groupId})")]
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
         public async Task<IActionResult> SendGroupNotifications(int groupId, [FromBody] CommunityMessage communityMessage)

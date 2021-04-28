@@ -12,6 +12,21 @@
   >
     {{ item.title }}
   </a>
+  <ng-container *ngIf="showAdminPages">
+    <a
+      *ngFor="let item of adminOnlyItems"
+      mat-button
+      [routerLink]="item.routerLink"
+      routerLinkActive="mat-stroked-button"
+    >
+      <mat-icon
+        svgIcon="steward-shield"
+        aria-label="Admin only page"
+        matTooltip="Admin only page"
+      ></mat-icon>
+      {{ item.title }}
+    </a>
+  </ng-container>
   <span class="spacer"></span>
   <span *ngIf="missingZendesk$ | async" class="warnings">
     <mat-icon

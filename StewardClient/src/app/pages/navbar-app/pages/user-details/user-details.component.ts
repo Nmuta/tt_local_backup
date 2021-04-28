@@ -8,7 +8,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { first } from 'lodash';
 import { filter, takeUntil } from 'rxjs/operators';
-import { createNavbarPath, NavbarTools } from '../../navbar-tool-list';
+import { createNavbarPath, NavbarTools } from '@navbar-app/navbar-tool-list';
 
 /** User Details page. */
 @Component({

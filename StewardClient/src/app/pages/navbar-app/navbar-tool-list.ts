@@ -1,12 +1,13 @@
-import { createRouterLinkPath, RouteParams, RouterLinkPath } from '@models/routing';
+import { RouteParams, RouterLinkPath, createRouterLinkPath } from '@models/routing';
+import { SharedNavbarTools } from '@shared/pages/shared-tool-list';
+
+/** The root path for all these tools. */
+export const navbarAppRootPath = ['/support/navbar-app', 'tools'];
 
 /** Creates a NavbarPath for use in displaying the navbar, from a RouteParams object. */
 export function createNavbarPath(routeParams: RouteParams): RouterLinkPath {
   return createRouterLinkPath(navbarAppRootPath, routeParams);
 }
-
-/** The root path for all these tools. */
-export const navbarAppRootPath = ['/support/navbar-app', 'tools'];
 
 /** Constants for tools in the navbar. */
 export class NavbarTools {
@@ -14,12 +15,6 @@ export class NavbarTools {
   public static readonly HomePage: RouteParams = {
     title: 'Support App',
     path: 'home',
-  };
-
-  /** The gifting tool page. */
-  public static readonly GiftingPage: RouteParams = {
-    title: 'Gifting',
-    path: 'gifting',
   };
 
   /** The gift history tool page. */
@@ -50,8 +45,13 @@ export class NavbarTools {
 /** The list of tools to display in the navbar. */
 export const navbarToolList: RouterLinkPath[] = [
   createNavbarPath(NavbarTools.UserDetailsPage),
-  createNavbarPath(NavbarTools.GiftingPage),
+  createNavbarPath(SharedNavbarTools.GiftingPage),
   createNavbarPath(NavbarTools.UserBanningPage),
   createNavbarPath(NavbarTools.GiftHistoryPage),
   createNavbarPath(NavbarTools.KustoPage),
+];
+
+/** The list of tools to display in the navbar. */
+export const navbarToolListAdminOnly: RouterLinkPath[] = [
+  createNavbarPath(SharedNavbarTools.MessagingPage),
 ];

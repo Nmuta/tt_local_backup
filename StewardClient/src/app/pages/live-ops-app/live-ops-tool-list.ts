@@ -1,12 +1,12 @@
 import { RouteParams, RouterLinkPath, createRouterLinkPath } from '@models/routing';
 
+/** The root path for all these tools. */
+export const liveOpsAppRootPath = ['/live-ops/live-ops-app', 'tools'];
+
 /** Creates a LiveOps Path for use in displaying the navbar, from a RouteParams object. */
 export function createLiveOpsNavbarPath(routeParams: RouteParams): RouterLinkPath {
   return createRouterLinkPath(liveOpsAppRootPath, routeParams);
 }
-
-/** The root path for all these tools. */
-export const liveOpsAppRootPath = ['/live-ops/live-ops-app', 'tools'];
 
 /** Constants for tools in the live ops app. */
 export class LiveOpsAppTools {

@@ -1,15 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { UserModel } from '@models/user.model';
-import { Select } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { WindowService } from '@services/window';
 import { ZendeskService } from '@services/zendesk';
-import { UserState } from '@shared/state/user/user.state';
 import { Observable } from 'rxjs';
 
-import { createNavbarPath, navbarToolList, NavbarTools } from '@navbar-app/navbar-tool-list';
+import {
+  createNavbarPath,
+  navbarToolList,
+  navbarToolListAdminOnly,
+  NavbarTools,
+} from '@navbar-app/navbar-tool-list';
 import { RouterLinkPath } from '@models/routing';
 import { NotificationsService } from '@shared/hubs/notifications.service';
 import { BackgroundJobStatus } from '@models/background-job';
+import { UserModel } from '@models/user.model';
+import { UserState } from '@shared/state/user/user.state';
+import { UserRole } from '@models/enums';
 
 /** The shared top-level navbar. */
 @Component({
@@ -18,15 +24,17 @@ import { BackgroundJobStatus } from '@models/background-job';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-  @Select(UserState.profile) public profile$: Observable<UserModel>;
-
   public items: RouterLinkPath[] = navbarToolList;
+  public adminOnlyItems: RouterLinkPath[] = navbarToolListAdminOnly;
   public homeRouterLink = createNavbarPath(NavbarTools.HomePage).routerLink;
 
   public notificationCount = null;
   public notificationColor: 'default' | 'warn' = 'default';
 
+  public showAdminPages: boolean = false;
+
   constructor(
+    private readonly store: Store,
     private readonly windowService: WindowService,
     private readonly zendeskService: ZendeskService,
     private readonly notificationsService: NotificationsService,
@@ -37,6 +45,10 @@ export class NavbarComponent implements OnInit {
    * TODO: Remove when Kusto feature is ready.
    */
   public ngOnInit(): void {
+    const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
+    this.showAdminPages =
+      profile.role === UserRole.LiveOpsAdmin || profile.role === UserRole.SupportAgentAdmin;
+
     this.notificationsService.notifications$.subscribe(notifications => {
       const unreadNotifications = notifications.filter(n => !n.isRead);
       this.notificationCount = unreadNotifications.length ? unreadNotifications.length : null;

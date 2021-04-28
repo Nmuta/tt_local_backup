@@ -22,6 +22,7 @@ import {
   faPassport,
   faPencilAlt,
   faPlus,
+  faShieldAlt,
   faSyncAlt,
   faTasks,
   faTimes,
@@ -72,7 +73,8 @@ export class MatIconRegistryService {
       .addSvgIconLiteral('steward-passport', this.getFaIconPath(faPassport))
       .addSvgIconLiteral('steward-seen', this.getFaIconPath(faEye))
       .addSvgIconLiteral('steward-unseen', this.getFaIconPath(faEyeSlash))
-      .addSvgIconLiteral('steward-undo', this.getFaIconPath(faUndo));
+      .addSvgIconLiteral('steward-undo', this.getFaIconPath(faUndo))
+      .addSvgIconLiteral('steward-shield', this.getFaIconPath(faShieldAlt));
   }
 
   /** Generates a svg html string of a font awesome icon.  */
