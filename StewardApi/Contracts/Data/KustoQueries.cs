@@ -63,5 +63,15 @@
         ///     Basic query for getting the FM7 VanityItem data.
         /// </summary>
         public const string GetFM7VanityItems = "FM7_VanityItems | project Id, Name";
+
+        /// <summary>
+        ///     Basic query for getting the FM8 Car data.
+        /// </summary>
+        public const string GetFM8Cars = "FM8_DataCars | join kind=leftouter (database('T10Analytics').FM8_ListCarMake | project MakeDisplayName=DisplayName, MakeID=ID) on MakeID | project Id=Id, Description=strcat_delim(' ', MakeDisplayName, DisplayName, strcat(\"(\", Year, \")\"))";
+
+        /// <summary>
+        ///     Basic query for getting the FM8 VanityItem data.
+        /// </summary>
+        public const string GetFM8VanityItems = "FM8_VanityItems | project Id, Name";
     }
 }

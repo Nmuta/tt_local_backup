@@ -52,16 +52,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             // Gamertag must be set to null for NGP. v-joyate 20201123
             banParameters.Gamertag = null;
-            var startTimeUtc = banParameters.StartTimeUtc; // just in case
+
             var banHistory = new LiveOpsBanHistory(
-                                            (long)xuid,
-                                            title,
-                                            requestingAgent,
-                                            banParameters.StartTimeUtc,
-                                            banParameters.ExpireTimeUtc,
-                                            banParameters.FeatureArea,
-                                            banParameters.Reason,
-                                            banParameters.ToJson());
+                (long)xuid,
+                title,
+                requestingAgent,
+                banParameters.StartTimeUtc,
+                banParameters.ExpireTimeUtc,
+                banParameters.FeatureArea,
+                banParameters.Reason,
+                banParameters.ToJson());
 
             var kustoColumnMappings = banHistory.ToJsonColumnMappings();
             var tableName = "BanHistory";

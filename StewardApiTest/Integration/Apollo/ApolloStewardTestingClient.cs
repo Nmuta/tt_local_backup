@@ -54,13 +54,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<ApolloPlayerDetails>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<ApolloBanResult>> BanPlayersAsync(IList<ApolloBanParametersInput> banParameters)
+        public async Task<IList<BanResult>> BanPlayersAsync(IList<ApolloBanParametersInput> banParameters)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
             var path = new Uri(this.baseUri, $"{TitlePath}players/ban");
 
-            return await ServiceClient.SendRequestAsync<IList<ApolloBanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<BanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters).ConfigureAwait(false);
         }
 
         public async Task<ResponseWithHeaders<BackgroundJobInternal>> BanPlayersWithHeaderResponseAsync(IList<ApolloBanParametersInput> banParameters, IList<string> headersToValidate)
@@ -72,13 +72,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJobInternal>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters).ConfigureAwait(false);
         }
 
-        public async Task<IList<ApolloBanSummary>> GetBanSummariesAsync(IList<ulong> xuids)
+        public async Task<IList<BanSummary>> GetBanSummariesAsync(IList<ulong> xuids)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
 
             var path = new Uri(this.baseUri, $"{TitlePath}players/banSummaries");
 
-            return await ServiceClient.SendRequestAsync<IList<ApolloBanSummary>>(HttpMethod.Post, path, this.authKey, Version, xuids).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<BanSummary>>(HttpMethod.Post, path, this.authKey, Version, xuids).ConfigureAwait(false);
         }
 
         public async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid)
@@ -95,11 +95,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<IList<LiveOpsBanHistory>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<ApolloConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
+        public async Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/consoleDetails?maxResults={maxResults}");
 
-            return await ServiceClient.SendRequestAsync<List<ApolloConsoleDetails>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<List<ConsoleDetails>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned)
@@ -109,11 +109,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             await ServiceClient.SendRequestAsync(HttpMethod.Put, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<ApolloSharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/sharedConsoleUsers?startIndex={startIndex}&maxResults={maxResults}");
 
-            return await ServiceClient.SendRequestAsync<List<ApolloSharedConsoleUser>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<List<SharedConsoleUser>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task<ApolloUserFlags> GetUserFlagsAsync(ulong xuid)
@@ -153,11 +153,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<IList<ApolloInventoryProfile>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<ApolloLspGroup>> GetGroupsAsync()
+        public async Task<IList<LspGroup>> GetGroupsAsync()
         {
             var path = new Uri(this.baseUri, $"{TitlePath}groups");
 
-            return await ServiceClient.SendRequestAsync<IList<ApolloLspGroup>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<LspGroup>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task<ResponseWithHeaders<BackgroundJobInternal>> UpdatePlayerInventoriesWithHeaderResponseAsync(ApolloGroupGift groupGift, IList<string> headersToValidate)

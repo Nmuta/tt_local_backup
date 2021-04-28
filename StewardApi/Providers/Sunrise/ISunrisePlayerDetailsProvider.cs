@@ -40,7 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Get consoles.
         /// </summary>
-        Task<IList<SunriseConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults);
+        Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults);
 
         /// <summary>
         ///     Get profile rollbacks.
@@ -55,7 +55,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Get shared console users.
         /// </summary>
-        Task<IList<SunriseSharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);
+        Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
         ///     Get user flags.
@@ -80,12 +80,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Ban users.
         /// </summary>
-        Task<IList<SunriseBanResult>> BanUsersAsync(SunriseBanParameters banParameters, string requestingAgent);
+        Task<IList<BanResult>> BanUsersAsync(SunriseBanParameters banParameters, string requestingAgent);
 
         /// <summary>
         ///     Get ban summaries.
         /// </summary>
-        Task<IList<SunriseBanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids);
+        Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids);
 
         /// <summary>
         ///     Get user ban history.

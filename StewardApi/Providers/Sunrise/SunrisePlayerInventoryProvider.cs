@@ -104,13 +104,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseLspGroup>> GetLspGroupsAsync(int startIndex, int maxResults)
+        public async Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults)
         {
             try
             {
                 var result = await this.sunriseUserService.GetUserGroupsAsync(startIndex, maxResults)
                     .ConfigureAwait(false);
-                var lspGroups = this.mapper.Map<IList<SunriseLspGroup>>(result.userGroups);
+                var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
 
                 return lspGroups;
             }

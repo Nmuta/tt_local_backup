@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
-            string MakeKey(IdentityQueryAlpha identityQuery)
+            static string MakeKey(IdentityQueryAlpha identityQuery)
             {
                 return $"apollo:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
             }
@@ -268,7 +268,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgent,
             UserRole.SupportAgentNew)]
         [HttpPost("players/ban")]
-        [SwaggerResponse(201, type: typeof(List<ApolloBanResult>))]
+        [SwaggerResponse(201, type: typeof(List<BanResult>))]
         public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput)
         {
             var userClaims = this.User.UserClaims();
@@ -328,7 +328,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets ban summaries.
         /// </summary>
         [HttpPost("players/banSummaries")]
-        [SwaggerResponse(200, type: typeof(List<ApolloBanSummary>))]
+        [SwaggerResponse(200, type: typeof(List<BanSummary>))]
         public async Task<IActionResult> GetBanSummaries([FromBody] IList<ulong> xuids)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
@@ -342,7 +342,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the console details.
         /// </summary>
         [HttpGet("player/xuid({xuid})/consoleDetails")]
-        [SwaggerResponse(200, type: typeof(List<ApolloConsoleDetails>))]
+        [SwaggerResponse(200, type: typeof(List<ConsoleDetails>))]
         public async Task<IActionResult> GetConsoles(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
@@ -373,7 +373,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets shared console users.
         /// </summary>
         [HttpGet("player/xuid({xuid})/sharedConsoleUsers")]
-        [SwaggerResponse(200, type: typeof(List<ApolloSharedConsoleUser>))]
+        [SwaggerResponse(200, type: typeof(List<SharedConsoleUser>))]
         public async Task<IActionResult> GetSharedConsoleUsers(ulong xuid, [FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
@@ -388,7 +388,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Get groups.
         /// </summary>
         [HttpGet("groups")]
-        [SwaggerResponse(200, type: typeof(IList<ApolloLspGroup>))]
+        [SwaggerResponse(200, type: typeof(IList<LspGroup>))]
         public async Task<IActionResult> GetGroups([FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));

@@ -28,7 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Get LSP groups.
         /// </summary>
-        Task<IList<SunriseLspGroup>> GetLspGroupsAsync(int startIndex, int maxResults);
+        Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults);
 
         /// <summary>
         ///     Update player inventory.

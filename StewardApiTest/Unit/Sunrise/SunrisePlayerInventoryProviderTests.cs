@@ -7,6 +7,7 @@ using FluentAssertions;
 using Forza.WebServices.FH4.master.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Xls.WebServices.FH4.master.Generated;
@@ -153,10 +154,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            Func<Task<IList<SunriseLspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
+            Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<SunriseLspGroup>>();
+            action().Result.Should().BeOfType<List<LspGroup>>();
         }
 
         [TestMethod]
@@ -317,7 +318,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseUserService.GetLiveOpsUserDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
                 this.Mapper.Map<SunriseMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<SunriseMasterInventory>());
                 this.Mapper.Map<IList<SunriseInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
-                this.Mapper.Map<IList<SunriseLspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<SunriseLspGroup>>());
+                this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<SunriseGift>(Arg.Any<SunriseGroupGift>()).Returns(Fixture.Create<SunriseGift>());
             }
 

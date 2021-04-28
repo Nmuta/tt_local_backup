@@ -54,18 +54,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<SunrisePlayerDetails>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<SunriseConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
+        public async Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/consoleDetails?maxResults={maxResults}");
 
-            return await ServiceClient.SendRequestAsync<List<SunriseConsoleDetails>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<List<ConsoleDetails>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<SunriseSharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/sharedConsoleUsers?startIndex={startIndex}&maxResults={maxResults}");
 
-            return await ServiceClient.SendRequestAsync<List<SunriseSharedConsoleUser>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<List<SharedConsoleUser>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task<SunriseUserFlags> GetUserFlagsAsync(ulong xuid)
@@ -98,13 +98,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<List<SunriseCreditUpdate>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<SunriseBanResult>> BanPlayersAsync(IList<SunriseBanParametersInput> banParameters)
+        public async Task<IList<BanResult>> BanPlayersAsync(IList<SunriseBanParametersInput> banParameters)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
             var path = new Uri(this.baseUri, $"{TitlePath}players/ban");
 
-            return await ServiceClient.SendRequestAsync<IList<SunriseBanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<BanResult>>(HttpMethod.Post, path, this.authKey, Version, banParameters).ConfigureAwait(false);
         }
 
         public async Task<ResponseWithHeaders<BackgroundJob>> BanPlayersWithHeaderResponseAsync(IList<SunriseBanParametersInput> banParameters, IList<string> headersToValidate)
@@ -116,13 +116,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestWithHeaderResponseAsync<BackgroundJob>(HttpMethod.Post, path, this.authKey, Version, headersToValidate, banParameters).ConfigureAwait(false);
         }
 
-        public async Task<IList<SunriseBanSummary>> GetBanSummariesAsync(IList<ulong> xuids)
+        public async Task<IList<BanSummary>> GetBanSummariesAsync(IList<ulong> xuids)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
 
             var path = new Uri(this.baseUri, $"{TitlePath}players/banSummaries");
 
-            return await ServiceClient.SendRequestAsync<IList<SunriseBanSummary>>(HttpMethod.Post, path, this.authKey, Version, xuids).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<BanSummary>>(HttpMethod.Post, path, this.authKey, Version, xuids).ConfigureAwait(false);
         }
 
         public async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid)
@@ -167,11 +167,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<SunriseInventoryProfile>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<SunriseLspGroup>> GetGroupsAsync()
+        public async Task<IList<LspGroup>> GetGroupsAsync()
         {
             var path = new Uri(this.baseUri, $"{TitlePath}groups");
 
-            return await ServiceClient.SendRequestAsync<IList<SunriseLspGroup>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<LspGroup>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task<ResponseWithHeaders<BackgroundJobInternal>> UpdatePlayerInventoriesWithHeaderResponseAsync(SunriseGroupGift groupGift, IList<string> headersToValidate)

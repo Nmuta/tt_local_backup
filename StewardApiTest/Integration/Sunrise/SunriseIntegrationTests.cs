@@ -797,7 +797,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count);
-            Assert.IsTrue(result[0].UserExists);
         }
 
         [TestMethod]
@@ -1679,7 +1678,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return jobResult;
         }
 
-        private async Task<IList<SunriseBanResult>> BanPlayersWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, IList<SunriseBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
+        private async Task<IList<BanResult>> BanPlayersWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, IList<SunriseBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
@@ -1689,7 +1688,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             stopWatch.Start();
 
             bool jobCompleted;
-            IList<SunriseBanResult> jobResults;
+            IList<BanResult> jobResults;
             BackgroundJobStatus status;
 
             do
@@ -1700,7 +1699,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
-                jobResults = JsonConvert.DeserializeObject<IList<SunriseBanResult>>(
+                jobResults = JsonConvert.DeserializeObject<IList<BanResult>>(
                     JsonConvert.SerializeObject(backgroundJob.RawResult));
 
                 if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)

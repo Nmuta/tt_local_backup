@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using Forza.WebServices.FM7.Generated;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
-using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Providers;
 using Xls.Security.FM7.Generated;
 using Xls.WebServices.FM7.Generated;
 
@@ -57,7 +54,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.IsUnderReview, opt => opt.MapFrom(src => src.IsUserUnderReview))
                 .ForMember(des => des.AgeGroup, opt => opt.MapFrom(src => src.UserAgeGroup));
             this.CreateMap<AdminForzaProfile, ApolloInventoryProfile>().ReverseMap();
-            this.CreateMap<ForzaUserBanSummary, ApolloBanSummary>();
+            this.CreateMap<ForzaUserBanSummary, BanSummary>();
             this.CreateMap<ApolloBanParametersInput, ApolloBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));
@@ -65,16 +62,16 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))
                 .ForMember(dest => dest.ExpireTime, opt => opt.MapFrom(src => src.ExpireTimeUtc));
-            this.CreateMap<ForzaUserBanDescription, ApolloBanDescription>()
+            this.CreateMap<ForzaUserBanDescription, BanDescription>()
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.GetName(typeof(FeatureAreas), source.FeatureAreas)))
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
                 .ForMember(dest => dest.LastExtendedTimeUtc, opt => opt.MapFrom(src => src.LastExtendTime))
                 .ForMember(dest => dest.CountOfTimesExtended, opt => opt.MapFrom(src => src.ExtendTimes));
-            this.CreateMap<ForzaUserBanResult, ApolloBanResult>();
-            this.CreateMap<ForzaConsole, ApolloConsoleDetails>().ReverseMap();
-            this.CreateMap<ForzaSharedConsoleUser, ApolloSharedConsoleUser>().ReverseMap();
-            this.CreateMap<ForzaUserGroup, ApolloLspGroup>();
+            this.CreateMap<ForzaUserBanResult, BanResult>();
+            this.CreateMap<ForzaConsole, ConsoleDetails>().ReverseMap();
+            this.CreateMap<ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
+            this.CreateMap<ForzaUserGroup, LspGroup>();
             this.CreateMap<ApolloPlayerDetails, IdentityResultAlpha>().ReverseMap();
 
             this.CreateMap<ApolloGroupGift, ApolloGift>().ReverseMap();

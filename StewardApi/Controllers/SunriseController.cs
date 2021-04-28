@@ -212,7 +212,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the console details.
         /// </summary>
         [HttpGet("player/xuid({xuid})/consoleDetails")]
-        [SwaggerResponse(200, type: typeof(List<SunriseConsoleDetails>))]
+        [SwaggerResponse(200, type: typeof(List<ConsoleDetails>))]
         public async Task<IActionResult> GetConsoles(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
@@ -226,7 +226,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets shared console users.
         /// </summary>
         [HttpGet("player/xuid({xuid})/sharedConsoleUsers")]
-        [SwaggerResponse(200, type: typeof(List<SunriseSharedConsoleUser>))]
+        [SwaggerResponse(200, type: typeof(List<SharedConsoleUser>))]
         public async Task<IActionResult> GetSharedConsoleUsers(ulong xuid, [FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
@@ -342,7 +342,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var userClaims = this.User.UserClaims();
             var requestingAgent = userClaims.ObjectId;
 
-            async Task<List<SunriseBanResult>> BulkBanUsersAsync(List<SunriseBanParameters> banParameters)
+            async Task<List<BanResult>> BulkBanUsersAsync(List<SunriseBanParameters> banParameters)
             {
                 var tasks =
                     banParameters.Select(
@@ -429,7 +429,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgent,
             UserRole.SupportAgentNew)]
         [HttpPost("players/ban")]
-        [SwaggerResponse(201, type: typeof(List<SunriseBanResult>))]
+        [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
         public async Task<IActionResult> BanPlayers(
             [FromBody] IList<SunriseBanParametersInput> banInput)
@@ -437,7 +437,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var userClaims = this.User.UserClaims();
             var requestingAgent = userClaims.ObjectId;
 
-            async Task<List<SunriseBanResult>> BulkBanUsersAsync(List<SunriseBanParameters> banParameters)
+            async Task<List<BanResult>> BulkBanUsersAsync(List<SunriseBanParameters> banParameters)
             {
                 var tasks =
                     banParameters.Select(
@@ -492,7 +492,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets ban summaries.
         /// </summary>
         [HttpPost("players/banSummaries")]
-        [SwaggerResponse(200, type: typeof(IList<SunriseBanSummary>))]
+        [SwaggerResponse(200, type: typeof(IList<BanSummary>))]
         public async Task<IActionResult> GetBanSummaries([FromBody] IList<ulong> xuids)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
@@ -627,7 +627,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Get groups.
         /// </summary>
         [HttpGet("groups")]
-        [SwaggerResponse(200, type: typeof(IList<SunriseLspGroup>))]
+        [SwaggerResponse(200, type: typeof(IList<LspGroup>))]
         public async Task<IActionResult> GetGroups([FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
@@ -770,37 +770,30 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] SunriseGift gift)
         {
-            try
+            var userClaims = this.User.UserClaims();
+            var requestingAgent = userClaims.ObjectId;
+
+            gift.ShouldNotBeNull(nameof(gift));
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+
+            this.giftRequestValidator.Validate(gift, this.ModelState);
+
+            if (!this.ModelState.IsValid)
             {
-                var userClaims = this.User.UserClaims();
-                var requestingAgent = userClaims.ObjectId;
+                var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
 
-                gift.ShouldNotBeNull(nameof(gift));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-                this.giftRequestValidator.Validate(gift, this.ModelState);
-
-                if (!this.ModelState.IsValid)
-                {
-                    var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
-
-                    return this.BadRequest(result);
-                }
-
-                var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.Inventory).ConfigureAwait(true);
-                if (invalidItems.Length > 0)
-                {
-                    return this.BadRequest($"Invalid items found. {invalidItems}");
-                }
-
-                var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-                var response = await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
-                return this.Ok(response);
+                return this.BadRequest(result);
             }
-            catch (Exception ex)
+
+            var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.Inventory).ConfigureAwait(true);
+            if (invalidItems.Length > 0)
             {
-                return this.BadRequest(ex);
+                return this.BadRequest($"Invalid items found. {invalidItems}");
             }
+
+            var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var response = await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
+            return this.Ok(response);
         }
 
         /// <summary>

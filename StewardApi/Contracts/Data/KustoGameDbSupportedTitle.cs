@@ -22,6 +22,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Forza Horizon 4's internal name.
         /// </summary>
-        Sunrise
+        Sunrise,
+
+        /// <summary>
+        ///     Forza Motorsport 8's internal name.
+        /// </summary>
+        Steelhead
     }
 }

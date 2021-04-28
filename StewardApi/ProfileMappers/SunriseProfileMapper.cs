@@ -55,10 +55,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.qwXuid))
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.wzGamerTag))
                 .ReverseMap();
-            this.CreateMap<ForzaConsole, SunriseConsoleDetails>().ReverseMap();
-            this.CreateMap<ForzaSharedConsoleUser, SunriseSharedConsoleUser>().ReverseMap();
-            this.CreateMap<ForzaUserBanResult, SunriseBanResult>();
-            this.CreateMap<ForzaUserBanSummary, SunriseBanSummary>();
+            this.CreateMap<ForzaConsole, ConsoleDetails>().ReverseMap();
+            this.CreateMap<ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
+            this.CreateMap<ForzaUserBanResult, BanResult>();
+            this.CreateMap<ForzaUserBanSummary, BanSummary>();
             this.CreateMap<IList<SunriseBanParametersInput>, SunriseBanParameters>()
                 .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.First().Reason))
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(src => src.First().FeatureArea))
@@ -74,7 +74,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))
                 .ForMember(dest => dest.ExpireTime, opt => opt.MapFrom(src => src.ExpireTimeUtc));
-            this.CreateMap<ForzaUserBanDescription, SunriseBanDescription>()
+            this.CreateMap<ForzaUserBanDescription, BanDescription>()
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.GetName(typeof(FeatureAreas), source.FeatureAreas)))
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(
                     src => src.deviceType == "Invalid" ? "Legacy" : src.deviceType == "Win32" ? "Steam" : src.deviceType))
                 .ReverseMap();
-            this.CreateMap<ForzaUserGroup, SunriseLspGroup>();
+            this.CreateMap<ForzaUserGroup, LspGroup>();
             this.CreateMap<InventoryItem, SunriseInventoryItem>();
             this.CreateMap<Car, SunriseCar>();
             this.CreateMap<PlayerInventory, SunrisePlayerInventory>();

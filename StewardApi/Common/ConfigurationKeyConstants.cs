@@ -174,5 +174,55 @@
         ///     The Sunrise title ID.
         /// </summary>
         public const string SunriseTitleId = "SunriseEnvironment:TitleId";
+
+        /// <summary>
+        ///     The Steelhead uri.
+        /// </summary>
+        public const string SteelheadUri = "SteelheadEnvironment:Uri";
+
+        /// <summary>
+        ///     The Steelhead client version.
+        /// </summary>
+        public const string SteelheadClientVersion = "SteelheadEnvironment:ClientVersion";
+
+        /// <summary>
+        ///     The Steelhead admin xuid.
+        /// </summary>
+        public const string SteelheadAdminXuid = "SteelheadEnvironment:AdminXuid";
+
+        /// <summary>
+        ///     The Steelhead sandbox.
+        /// </summary>
+        public const string SteelheadSandbox = "SteelheadEnvironment:Sandbox";
+
+        /// <summary>
+        ///     The Steelhead title ID.
+        /// </summary>
+        public const string SteelheadTitleId = "SteelheadEnvironment:TitleId";
+
+        /// <summary>
+        ///     The Woodstock uri.
+        /// </summary>
+        public const string WoodstockUri = "WoodstockEnvironment:Uri";
+
+        /// <summary>
+        ///     The Woodstock client version.
+        /// </summary>
+        public const string WoodstockClientVersion = "WoodstockEnvironment:ClientVersion";
+
+        /// <summary>
+        ///     The Woodstock admin xuid.
+        /// </summary>
+        public const string WoodstockAdminXuid = "WoodstockEnvironment:AdminXuid";
+
+        /// <summary>
+        ///     The Woodstock sandbox.
+        /// </summary>
+        public const string WoodstockSandbox = "WoodstockEnvironment:Sandbox";
+
+        /// <summary>
+        ///     The Woodstock title ID.
+        /// </summary>
+        public const string WoodstockTitleId = "WoodstockEnvironment:TitleId";
     }
 }

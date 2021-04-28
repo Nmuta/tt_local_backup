@@ -215,10 +215,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            async Task<IList<SunriseConsoleDetails>> Action() => await provider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+            async Task<IList<ConsoleDetails>> Action() => await provider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<SunriseConsoleDetails>>();
+            Action().Result.Should().BeOfType<List<ConsoleDetails>>();
         }
 
         [TestMethod]
@@ -248,10 +248,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            async Task<IList<SunriseSharedConsoleUser>> Action() => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
+            async Task<IList<SharedConsoleUser>> Action() => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<SunriseSharedConsoleUser>>();
+            Action().Result.Should().BeOfType<List<SharedConsoleUser>>();
         }
 
         [TestMethod]
@@ -344,10 +344,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<SunriseBanResult>> Action() => await provider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(false);
+            async Task<IList<BanResult>> Action() => await provider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<SunriseBanResult>>();
+            Action().Result.Should().BeOfType<List<BanResult>>();
         }
 
         [TestMethod]
@@ -359,7 +359,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var banParameters = GenerateBanParameters();
 
             // Act.
-            var actions = new List<Func<Task<IList<SunriseBanResult>>>>
+            var actions = new List<Func<Task<IList<BanResult>>>>
             {
                 async () => await provider.BanUsersAsync(banParameters, null).ConfigureAwait(false),
                 async () => await provider.BanUsersAsync(banParameters, TestConstants.WhiteSpace).ConfigureAwait(false),
@@ -382,7 +382,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<SunriseBanResult>>> action = async () => await provider.BanUsersAsync(null, requestingAgent).ConfigureAwait(false);
+            Func<Task<IList<BanResult>>> action = async () => await provider.BanUsersAsync(null, requestingAgent).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParameters"));
@@ -397,10 +397,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuids = Fixture.Create<List<ulong>>();
 
             // Act.
-            async Task<IList<SunriseBanSummary>> Action() => await provider.GetUserBanSummariesAsync(xuids).ConfigureAwait(false);
+            async Task<IList<BanSummary>> Action() => await provider.GetUserBanSummariesAsync(xuids).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<SunriseBanSummary>>();
+            Action().Result.Should().BeOfType<List<BanSummary>>();
         }
 
         [TestMethod]
@@ -564,13 +564,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseNotificationsService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsRetrieveForUserOutput>());
                 this.SunriseNotificationsService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
                 this.Mapper.Map<SunrisePlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SunrisePlayerDetails>());
-                this.Mapper.Map<IList<SunriseConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<SunriseConsoleDetails>>());
-                this.Mapper.Map<IList<SunriseSharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SunriseSharedConsoleUser>>());
+                this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
+                this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
                 this.Mapper.Map<SunriseProfileSummary>(Arg.Any<ForzaProfileSummary>()).Returns(Fixture.Create<SunriseProfileSummary>());
                 this.Mapper.Map<IList<SunriseCreditUpdate>>(Arg.Any<ForzaCredityUpdateEntry[]>()).Returns(Fixture.Create<IList<SunriseCreditUpdate>>());
-                this.Mapper.Map<IList<SunriseBanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<SunriseBanResult>>());
-                this.Mapper.Map<IList<SunriseBanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<SunriseBanSummary>>());
-                this.Mapper.Map<List<SunriseBanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<SunriseBanDescription>>());
+                this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
+                this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
+                this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SunrisePlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<SunriseNotification>>(Arg.Any<LiveOpsNotification[]>()).Returns(Fixture.Create<IList<SunriseNotification>>());
                 this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());

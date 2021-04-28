@@ -199,10 +199,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<ApolloBanResult>> Action() => await provider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(false);
+            async Task<IList<BanResult>> Action() => await provider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<ApolloBanResult>>();
+            Action().Result.Should().BeOfType<List<BanResult>>();
         }
 
         [TestMethod]
@@ -214,7 +214,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var banParameters = GenerateBanParameters();
 
             // Act.
-            var actions = new List<Func<Task<IList<ApolloBanResult>>>>
+            var actions = new List<Func<Task<IList<BanResult>>>>
             {
                 async () => await provider.BanUsersAsync(banParameters, null).ConfigureAwait(false),
                 async () => await provider.BanUsersAsync(banParameters, TestConstants.WhiteSpace).ConfigureAwait(false),
@@ -237,7 +237,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<ApolloBanResult>>> action = async () => await provider.BanUsersAsync(null, requestingAgent).ConfigureAwait(false);
+            Func<Task<IList<BanResult>>> action = async () => await provider.BanUsersAsync(null, requestingAgent).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParameters"));
@@ -274,10 +274,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var xuids = Fixture.Create<List<ulong>>();
 
             // Act.
-            async Task<IList<ApolloBanSummary>> Action() => await provider.GetUserBanSummariesAsync(xuids).ConfigureAwait(false);
+            async Task<IList<BanSummary>> Action() => await provider.GetUserBanSummariesAsync(xuids).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<ApolloBanSummary>>();
+            Action().Result.Should().BeOfType<List<BanSummary>>();
         }
 
         [TestMethod]
@@ -290,10 +290,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            async Task<IList<ApolloConsoleDetails>> Action() => await provider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+            async Task<IList<ConsoleDetails>> Action() => await provider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<ApolloConsoleDetails>>();
+            Action().Result.Should().BeOfType<List<ConsoleDetails>>();
         }
 
         [TestMethod]
@@ -323,10 +323,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            async Task<IList<ApolloSharedConsoleUser>> Action() => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
+            async Task<IList<SharedConsoleUser>> Action() => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<ApolloSharedConsoleUser>>();
+            Action().Result.Should().BeOfType<List<SharedConsoleUser>>();
         }
 
         [TestMethod]
@@ -339,10 +339,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            async Task<IList<ApolloLspGroup>> Action() => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
+            async Task<IList<LspGroup>> Action() => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<ApolloLspGroup>>();
+            Action().Result.Should().BeOfType<List<LspGroup>>();
         }
 
         [TestMethod]
@@ -425,12 +425,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloGroupingService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
                 this.ApolloGroupingService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupsOutput>());
                 this.Mapper.Map<ApolloPlayerDetails>(Arg.Any<CompositeUser>()).Returns(Fixture.Create<ApolloPlayerDetails>());
-                this.Mapper.Map<IList<ApolloBanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<ApolloBanResult>>());
-                this.Mapper.Map<IList<ApolloBanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<ApolloBanSummary>>());
-                this.Mapper.Map<List<ApolloBanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<ApolloBanDescription>>());
-                this.Mapper.Map<IList<ApolloConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ApolloConsoleDetails>>());
-                this.Mapper.Map<IList<ApolloSharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<ApolloSharedConsoleUser>>());
-                this.Mapper.Map<IList<ApolloLspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<ApolloLspGroup>>());
+                this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
+                this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
+                this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
+                this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
+                this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
+                this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<ApolloPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
             }
 

@@ -151,7 +151,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<IList<ApolloBanResult>> BanUsersAsync(IList<ApolloBanParameters> banParameters, string requestingAgent)
+        public async Task<IList<BanResult>> BanUsersAsync(IList<ApolloBanParameters> banParameters, string requestingAgent)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
@@ -184,7 +184,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             try
             {
-                var banResults = new List<ApolloBanResult>();
+                var banResults = new List<BanResult>();
 
                 for (var i = 0; i < banParameters.Count; i += maxXuidsPerRequest)
                 {
@@ -209,7 +209,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                         }
                     }
 
-                    banResults.AddRange(this.mapper.Map<IList<ApolloBanResult>>(result.banResults));
+                    banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
                 }
 
                 return banResults;
@@ -246,18 +246,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<IList<ApolloBanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)
+        public async Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)
         {
             try
             {
                 if (xuids.Count == 0)
                 {
-                    return new List<ApolloBanSummary>();
+                    return new List<BanSummary>();
                 }
 
                 var result = await this.apolloUserService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
 
-                var banSummaryResults = this.mapper.Map<IList<ApolloBanSummary>>(result.banSummaries);
+                var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
 
                 return banSummaryResults;
             }
@@ -268,13 +268,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<IList<ApolloConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
+        public async Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
         {
             try
             {
                 var response = await this.apolloUserService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
-                return this.mapper.Map<IList<ApolloConsoleDetails>>(response.consoles);
+                return this.mapper.Map<IList<ConsoleDetails>>(response.consoles);
             }
             catch (Exception ex)
             {
@@ -296,13 +296,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<IList<ApolloSharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
         {
             try
             {
                 var response = await this.apolloUserService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
 
-                return this.mapper.Map<IList<ApolloSharedConsoleUser>>(response.sharedConsoleUsers);
+                return this.mapper.Map<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
             }
             catch (Exception ex)
             {
@@ -311,13 +311,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<IList<ApolloLspGroup>> GetLspGroupsAsync(int startIndex, int maxResults)
+        public async Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults)
         {
             try
             {
                 var result = await this.apolloGroupingService.GetUserGroupsAsync(startIndex, maxResults)
                     .ConfigureAwait(false);
-                var lspGroups = this.mapper.Map<IList<ApolloLspGroup>>(result.userGroups);
+                var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
 
                 return lspGroups;
             }

@@ -39,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Ban users.
         /// </summary>
-        Task<IList<ApolloBanResult>> BanUsersAsync(IList<ApolloBanParameters> banParameters, string requestingAgent);
+        Task<IList<BanResult>> BanUsersAsync(IList<ApolloBanParameters> banParameters, string requestingAgent);
 
         /// <summary>
         ///     Get user ban history.
@@ -49,12 +49,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Get user ban summaries.
         /// </summary>
-        Task<IList<ApolloBanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids);
+        Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids);
 
         /// <summary>
         ///     Get consoles.
         /// </summary>
-        Task<IList<ApolloConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults);
+        Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults);
 
         /// <summary>
         ///     Set console ban status.
@@ -64,12 +64,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Get shared console users.
         /// </summary>
-        Task<IList<ApolloSharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);
+        Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
         ///     Get LSP groups.
         /// </summary>
-        Task<IList<ApolloLspGroup>> GetLspGroupsAsync(int startIndex, int maxResults);
+        Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults);
 
         /// <summary>
         ///     Get user flags.

@@ -161,13 +161,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
+        public async Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
         {
             try
             {
                 var response = await this.sunriseUserService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
-                return this.mapper.Map<IList<SunriseConsoleDetails>>(response.consoles);
+                return this.mapper.Map<IList<ConsoleDetails>>(response.consoles);
             }
             catch (Exception ex)
             {
@@ -191,14 +191,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseSharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
         {
             try
             {
                 var response = await this.sunriseUserService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults)
                     .ConfigureAwait(false);
 
-                return this.mapper.Map<IList<SunriseSharedConsoleUser>>(response.sharedConsoleUsers);
+                return this.mapper.Map<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
             }
             catch (Exception ex)
             {
@@ -304,7 +304,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseBanResult>> BanUsersAsync(SunriseBanParameters banParameters, string requestingAgent)
+        public async Task<IList<BanResult>> BanUsersAsync(SunriseBanParameters banParameters, string requestingAgent)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
             banParameters.FeatureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(banParameters.FeatureArea));
@@ -342,7 +342,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
                 xuids = xuids.Distinct().ToList();
 
-                var banResults = new List<SunriseBanResult>();
+                var banResults = new List<BanResult>();
 
                 for (var i = 0; i < xuids.Count; i += maxXuidsPerRequest)
                 {
@@ -360,7 +360,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                         }
                     }
 
-                    banResults.AddRange(this.mapper.Map<IList<SunriseBanResult>>(result.banResults));
+                    banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
                 }
 
                 return banResults;
@@ -377,18 +377,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseBanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)
+        public async Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)
         {
             try
             {
                 if (xuids.Count == 0)
                 {
-                    return new List<SunriseBanSummary>();
+                    return new List<BanSummary>();
                 }
 
                 var result = await this.sunriseEnforcementService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
 
-                var banSummaryResults = this.mapper.Map<IList<SunriseBanSummary>>(result.banSummaries);
+                var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
 
                 return banSummaryResults;
             }

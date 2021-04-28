@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -373,9 +372,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<SunriseConsoleDetails>;
+            var details = result.Value as IList<ConsoleDetails>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<SunriseConsoleDetails>>();
+            details.Should().BeOfType<List<ConsoleDetails>>();
         }
 
         [TestMethod]
@@ -411,9 +410,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<SunriseSharedConsoleUser>;
+            var details = result.Value as IList<SharedConsoleUser>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<SunriseSharedConsoleUser>>();
+            details.Should().BeOfType<List<SharedConsoleUser>>();
         }
 
         [TestMethod]
@@ -598,9 +597,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<SunriseBanResult>;
+            var details = result.Value as IList<BanResult>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<SunriseBanResult>>();
+            details.Should().BeOfType<List<BanResult>>();
         }
 
         [TestMethod]
@@ -661,9 +660,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<SunriseBanSummary>;
+            var details = result.Value as IList<BanSummary>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<SunriseBanSummary>>();
+            details.Should().BeOfType<List<BanSummary>>();
         }
 
         [TestMethod]
@@ -825,9 +824,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<SunriseLspGroup>;
+            var details = result.Value as IList<LspGroup>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<SunriseLspGroup>>();
+            details.Should().BeOfType<List<LspGroup>>();
         }
 
         [TestMethod]
@@ -994,13 +993,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var groupId = Fixture.Create<int>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.UpdateGroupInventories(groupId, null).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, null).ConfigureAwait(false);
 
             // Assert.
-            Action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await Action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
 
 
@@ -1284,21 +1280,21 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.SunrisePlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.SunrisePlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerDetails>());
-                this.SunrisePlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseConsoleDetails>>());
-                this.SunrisePlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseSharedConsoleUser>>());
+                this.SunrisePlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
+                this.SunrisePlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
                 this.SunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
                 this.SunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>()).Returns(true);
                 this.SunrisePlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunriseUserFlags>());
                 this.SunrisePlayerDetailsProvider.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunriseProfileSummary>());
                 this.SunrisePlayerDetailsProvider.GetCreditUpdatesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseCreditUpdate>>());
-                this.SunrisePlayerDetailsProvider.BanUsersAsync(Arg.Any<SunriseBanParameters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SunriseBanResult>>());
-                this.SunrisePlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<SunriseBanSummary>>());
+                this.SunrisePlayerDetailsProvider.BanUsersAsync(Arg.Any<SunriseBanParameters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
+                this.SunrisePlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
                 this.SunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseNotification>>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunriseMasterInventory>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SunriseMasterInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
-                this.SunrisePlayerInventoryProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<SunriseLspGroup>{ new SunriseLspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
+                this.SunrisePlayerInventoryProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
                 this.SunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SunriseGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.SunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SunriseGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());

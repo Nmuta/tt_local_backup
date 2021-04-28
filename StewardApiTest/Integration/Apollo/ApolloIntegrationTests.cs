@@ -472,7 +472,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count);
-            Assert.IsTrue(result[0].UserExists);
         }
 
         [TestMethod]
@@ -1238,7 +1237,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             Assert.IsFalse(result.Any());
         }
 
-        private async Task<IList<ApolloBanResult>> BanPlayersWithHeaderResponseAsync(ApolloStewardTestingClient apolloStewardTestingClient, IList<ApolloBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
+        private async Task<IList<BanResult>> BanPlayersWithHeaderResponseAsync(ApolloStewardTestingClient apolloStewardTestingClient, IList<ApolloBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
@@ -1248,7 +1247,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             stopWatch.Start();
 
             bool jobCompleted;
-            IList<ApolloBanResult> jobResults;
+            IList<BanResult> jobResults;
             BackgroundJobStatus status;
 
             do
@@ -1259,7 +1258,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
                 jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
-                jobResults = JsonConvert.DeserializeObject<IList<ApolloBanResult>>(
+                jobResults = JsonConvert.DeserializeObject<IList<BanResult>>(
                     JsonConvert.SerializeObject(backgroundJob.RawResult));
 
                 if (stopWatch.ElapsedMilliseconds >= TestConstants.MaxLoopTimeInMilliseconds)

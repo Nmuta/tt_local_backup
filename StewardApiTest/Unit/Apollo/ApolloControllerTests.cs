@@ -413,9 +413,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<ApolloBanSummary>;
+            var details = result.Value as IList<BanSummary>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<ApolloBanSummary>>();
+            details.Should().BeOfType<List<BanSummary>>();
         }
 
         [TestMethod]
@@ -484,9 +484,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<ApolloConsoleDetails>;
+            var details = result.Value as IList<ConsoleDetails>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<ApolloConsoleDetails>>();
+            details.Should().BeOfType<List<ConsoleDetails>>();
         }
 
         [TestMethod]
@@ -541,9 +541,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<ApolloSharedConsoleUser>;
+            var details = result.Value as IList<SharedConsoleUser>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<ApolloSharedConsoleUser>>();
+            details.Should().BeOfType<List<SharedConsoleUser>>();
         }
 
         [TestMethod]
@@ -700,9 +700,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<ApolloLspGroup>;
+            var details = result.Value as IList<LspGroup>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<ApolloLspGroup>>();
+            details.Should().BeOfType<List<LspGroup>>();
         }
 
         [TestMethod]
@@ -939,9 +939,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloPlayerDetails>());
                 this.ApolloPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
                 this.ApolloPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
-                this.ApolloPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<ApolloBanSummary>>());
-                this.ApolloPlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ApolloConsoleDetails>>());
-                this.ApolloPlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ApolloSharedConsoleUser>>());
+                this.ApolloPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<BanSummary>>());
+                this.ApolloPlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
+                this.ApolloPlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
                 this.ApolloPlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloUserFlags>());
                 this.ApolloPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
                 this.ApolloPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>()).Returns(true);
@@ -950,7 +950,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<ApolloInventoryProfile>>());
                 this.ApolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<ApolloGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.ApolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<ApolloGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
-                this.ApolloPlayerDetailsProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ApolloLspGroup>>());
+                this.ApolloPlayerDetailsProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<ApolloGiftHistory>>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
             }

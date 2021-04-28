@@ -7,6 +7,7 @@ using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.Services.Authentication;
@@ -59,6 +60,18 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static ApolloMasterInventory SetItemDescriptions(ApolloMasterInventory playerInventory, ApolloMasterInventory masterInventory, ILoggingService loggingService)
         {
             var title = "Apollo";
+            playerInventory.Cars = SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars, $"{title} Car", loggingService);
+            playerInventory.VanityItems = SetPlayerInventoryItemDescription(playerInventory.VanityItems, masterInventory.VanityItems, $"{title} VanityItem", loggingService);
+
+            return playerInventory;
+        }
+
+        /// <summary>
+        ///     Verifies the gift inventory against the title master inventory list.
+        /// </summary>
+        public static SteelheadMasterInventory SetItemDescriptions(SteelheadMasterInventory playerInventory, SteelheadMasterInventory masterInventory, ILoggingService loggingService)
+        {
+            var title = "Steelhead";
             playerInventory.Cars = SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars, $"{title} Car", loggingService);
             playerInventory.VanityItems = SetPlayerInventoryItemDescription(playerInventory.VanityItems, masterInventory.VanityItems, $"{title} VanityItem", loggingService);
 

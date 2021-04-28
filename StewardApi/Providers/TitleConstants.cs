@@ -26,6 +26,11 @@
         public const string GravityCodeName = "Gravity";
 
         /// <summary>
+        ///     The Steelhead code name.
+        /// </summary>
+        public const string SteelheadCodeName = "Steelhead";
+
+        /// <summary>
         ///     The Opus abbreviation.
         /// </summary>
         public const string OpusAbbreviation = "FH3";
@@ -46,23 +51,33 @@
         public const string GravityAbbreviation = "Street";
 
         /// <summary>
-        ///     The Opus abbreviation.
+        ///     The Steelhead abbreviation.
+        /// </summary>
+        public const string SteelheadAbbreviation = "FM8";
+
+        /// <summary>
+        ///     The Opus full name.
         /// </summary>
         public const string OpusFullName = "Forza Horizon 3";
 
         /// <summary>
-        ///     The Apollo abbreviation.
+        ///     The Apollo full name.
         /// </summary>
         public const string ApolloFullName = "Forza Motorsport 7";
 
         /// <summary>
-        ///     The Sunrise abbreviation.
+        ///     The Sunrise full name.
         /// </summary>
         public const string SunriseFullName = "Forza Horizon 4";
 
         /// <summary>
-        ///     The Gravity abbreviation.
+        ///     The Gravity full name.
         /// </summary>
         public const string GravityFullName = "Forza Street";
+
+        /// <summary>
+        ///     The Steelhead full name.
+        /// </summary>
+        public const string SteelheadFullName = "Forza Motorsport 8";
     }
 }
