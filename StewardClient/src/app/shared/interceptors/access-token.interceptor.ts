@@ -12,7 +12,7 @@ import { Select, Store } from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
 import { RecheckAuth } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
-import { Observable, throwError } from 'rxjs';
+import { NEVER, Observable, throwError } from 'rxjs';
 import { catchError, switchMap, tap, first } from 'rxjs/operators';
 
 let requestCounter = 0;
@@ -56,7 +56,7 @@ export class AccessTokenInterceptor implements HttpInterceptor {
           );
           this.logger.warn([LogTopic.Auth], 'Authentication error encountered. Retrying.');
 
-          this.store.dispatch(new RecheckAuth());
+          this.store.dispatch(new RecheckAuth()).subscribe();
           return UserState.latestValidProfile$(this.profile$).pipe(
             first(),
             tap(() =>
@@ -66,6 +66,15 @@ export class AccessTokenInterceptor implements HttpInterceptor {
                 request.url,
               ),
             ),
+            catchError(error2 => {
+              this.logger.log(
+                [LogTopic.AuthInterception],
+                `[${requestId}] [reauth error]`,
+                request.url,
+                error2,
+              );
+              return NEVER;
+            }),
             tap(() =>
               this.logger.log(
                 [LogTopic.AuthInterception],
@@ -83,13 +92,13 @@ export class AccessTokenInterceptor implements HttpInterceptor {
                     request.url,
                   ),
                 ),
-                catchError(error2 => {
+                catchError(error3 => {
                   this.logger.log(
                     [LogTopic.AuthInterception],
                     `[${requestId}] [retry failed]`,
                     request.url,
                   );
-                  return throwError(error2);
+                  return throwError(error3);
                 }),
               );
             }),

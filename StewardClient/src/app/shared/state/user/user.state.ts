@@ -4,13 +4,21 @@ import { environment } from '@environments/environment';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import {
+  Action,
+  Actions,
+  ofActionSuccessful,
+  Selector,
+  State,
+  StateContext,
+  Store,
+} from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
 import { WindowService } from '@services/window';
 import { UserService } from '@shared/services/user';
 import { clone, cloneDeep } from 'lodash';
 import { concat, from, Observable, of, throwError } from 'rxjs';
-import { catchError, filter, map, switchMap, take, tap, timeout } from 'rxjs/operators';
+import { catchError, filter, first, map, switchMap, take, tap, timeout } from 'rxjs/operators';
 import { UserSettingsState } from '../user-settings/user-settings.state';
 
 import {
@@ -56,6 +64,7 @@ export class UserState {
     private readonly logger: LoggerService,
     private readonly store: Store,
     private readonly windowService: WindowService,
+    private readonly actions$: Actions,
   ) {}
 
   /** Logs out the current user and directs them to the auth page. */
@@ -72,7 +81,13 @@ export class UserState {
   @Action(RecheckAuth, { cancelUncompleted: true })
   public recheckAuth(ctx: StateContext<UserStateModel>, _action: RecheckAuth): Observable<void> {
     this.logger.log([LogTopic.AuthInterception], `[user.state] recheckAuth`);
-    return concat(ctx.dispatch(new ResetUserProfile()), ctx.dispatch(new RequestAccessToken()));
+    const resetUserProfile$ = ctx.dispatch(new ResetUserProfile());
+    const requestAccessToken$ = this.actions$.pipe(
+      ofActionSuccessful(ResetAccessToken),
+      first(),
+      switchMap(() => ctx.dispatch(new RequestAccessToken())),
+    );
+    return concat(resetUserProfile$, requestAccessToken$);
   }
 
   /** Action that requests user profile and sets it to the state. */
