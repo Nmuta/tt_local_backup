@@ -36,6 +36,9 @@
           <mat-icon>schedule</mat-icon>
         </button>
         <mat-error *ngIf="formControls.timeRange.start.hasError('required')">Required</mat-error>
+        <mat-error *ngIf="formControls.timeRange.start.hasError('bad-time')"
+          >Unrecognized Time</mat-error
+        >
         <mat-error *ngIf="formControls.timeRange.start.hasError('before-date')"
           >Must be before End Time</mat-error
         >
@@ -60,7 +63,7 @@
           <mat-icon>schedule</mat-icon>
         </button>
         <mat-error *ngIf="formControls.timeRange.end.hasError('required')">Required</mat-error>
-        <mat-error *ngIf="formControls.timeRange.end.hasError('bad-date')"
+        <mat-error *ngIf="formControls.timeRange.end.hasError('bad-time')"
           >Unrecognized Time</mat-error
         >
         <mat-error *ngIf="formControls.timeRange.end.hasError('after-date')"

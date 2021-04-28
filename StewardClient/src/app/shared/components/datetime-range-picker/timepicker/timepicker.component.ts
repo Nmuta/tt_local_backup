@@ -239,7 +239,7 @@ export class TimepickerComponent
     let hasError = false;
     if (this.value == null && !!this.valueInternal) {
       hasError = true;
-      aggregator['bad-date'] = true;
+      aggregator['bad-time'] = true;
     }
 
     return hasError ? aggregator : null;

@@ -1,4 +1,5 @@
-import { Directive, Input } from '@angular/core';
+import { Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { AbstractControl, ValidationErrors, Validator } from '@angular/forms';
 import moment from 'moment';
 import { NgxMaterialTimepickerComponent, TimepickerDirective } from 'ngx-material-timepicker';
 
@@ -6,7 +7,9 @@ import { NgxMaterialTimepickerComponent, TimepickerDirective } from 'ngx-materia
 @Directive({
   selector: '[safeNgxTimepicker]',
 })
-export class SafeNgxTimepickerDirective extends TimepickerDirective {
+export class SafeNgxTimepickerDirective
+  extends TimepickerDirective
+  implements OnChanges, Validator {
   private useFallbackValue = false;
   private fallbackValue = super.value;
 
@@ -25,7 +28,7 @@ export class SafeNgxTimepickerDirective extends TimepickerDirective {
     }
   }
 
-  /** Override the value setter. */
+  /** Override the value getter. */
   public get value(): string {
     if (this.useFallbackValue) {
       return this.fallbackValue;
@@ -34,9 +37,27 @@ export class SafeNgxTimepickerDirective extends TimepickerDirective {
     return super.value;
   }
 
+  /** Angular lifecycle hook. */
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (this.fallbackValue) {
+      return;
+    }
+
+    super.ngOnChanges(changes);
+  }
+
   /** Override the primary input. */
   @Input()
   public set safeNgxTimepicker(picker: NgxMaterialTimepickerComponent) {
     super.timepicker = picker;
+  }
+
+  /** Form control hook. */
+  public validate(_: AbstractControl): ValidationErrors | null {
+    if (this.useFallbackValue) {
+      return { 'bad-time': true };
+    }
+
+    return null;
   }
 }
