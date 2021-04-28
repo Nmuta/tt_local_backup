@@ -56,6 +56,7 @@ describe('AllAppsDropdownComponent', () => {
           emailAddress: `${faker.name.firstName()}@microsofttest.fake`,
           role: UserRole.LiveOpsAdmin,
           name: faker.name.firstName(),
+          liveOpsAdminSecondaryRole: undefined,
         } as UserModel);
       });
 
@@ -72,6 +73,7 @@ describe('AllAppsDropdownComponent', () => {
           emailAddress: `${faker.name.firstName()}@microsofttest.fake`,
           role: UserRole.SupportAgent,
           name: faker.name.firstName(),
+          liveOpsAdminSecondaryRole: undefined,
         } as UserModel);
       });
 

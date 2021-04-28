@@ -7,4 +7,7 @@ export interface UserModel {
   role: UserRole;
   name: string;
   objectId: GuidLikeString;
+
+  // Client Only
+  liveOpsAdminSecondaryRole: UserRole;
 }

@@ -1,6 +1,7 @@
 <section>
   <mat-card>
     <h2>Settings</h2>
+
     <mat-slide-toggle
       *ngIf="showFakeApiToggle"
       [(ngModel)]="enableFakeApi"
@@ -20,6 +21,16 @@
     >
       Staging API</mat-slide-toggle
     >
+
+    <mat-form-field class="set-active-role" appearance="fill" *ngIf="showRoleSelectionDropdown">
+      <mat-label>Active Role</mat-label>
+      <mat-select [(ngModel)]="activeRole" (selectionChange)="changeActiveRole($event)">
+        <mat-option *ngFor="let role of roleList" [value]="role">
+          {{ role }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <p>No settings available</p>
   </mat-card>
   <mat-card>

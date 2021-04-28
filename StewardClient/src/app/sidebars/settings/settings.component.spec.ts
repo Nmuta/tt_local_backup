@@ -44,6 +44,7 @@ describe('SettingsComponent', () => {
       emailAddress: 'fake-email',
       name: 'fake-name',
       role: UserRole.LiveOpsAdmin,
+      liveOpsAdminSecondaryRole: undefined,
     } as UserModel);
   });
 

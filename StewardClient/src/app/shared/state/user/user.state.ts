@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
+import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { LoggerService, LogTopic } from '@services/logger';
 import { WindowService } from '@services/window';
 import { UserService } from '@shared/services/user';
-import { clone } from 'lodash';
+import { clone, cloneDeep } from 'lodash';
 import { concat, from, Observable, of, throwError } from 'rxjs';
-import { catchError, filter, switchMap, take, tap, timeout } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, take, tap, timeout } from 'rxjs/operators';
 import { UserSettingsState } from '../user-settings/user-settings.state';
 
 import {
@@ -20,6 +21,7 @@ import {
   RequestAccessToken,
   ResetAccessToken,
   ResetUserProfile,
+  SetLiveOpsAdminSecondaryRole,
   SetNoUserProfile,
 } from './user.actions';
 
@@ -194,10 +196,27 @@ export class UserState {
     ctx.patchState({ accessToken: 'i am a potato' });
   }
 
+  /** Action thats sets state live ops secondary role. */
+  @Action(SetLiveOpsAdminSecondaryRole, { cancelUncompleted: true })
+  public setLiveOpsAdminSecondaryRole(
+    ctx: StateContext<UserStateModel>,
+    action: SetLiveOpsAdminSecondaryRole,
+  ): void {
+    const state = ctx.getState();
+    const profile = state.profile;
+    if (profile?.role === UserRole.LiveOpsAdmin) {
+      profile.liveOpsAdminSecondaryRole = action.secondaryRole;
+      ctx.patchState({ profile: cloneDeep(profile) });
+    }
+  }
+
   /** Helper function that timeouts state checks for user profile. */
   public static latestValidProfile$(profile$: Observable<UserModel>): Observable<UserModel> {
     const obs = profile$.pipe(
       filter(x => x !== undefined),
+      map(profile => {
+        return this.useSecondaryRoleIfAllowed(profile);
+      }),
       take(1),
       timeout(10_000),
     );
@@ -208,6 +227,13 @@ export class UserState {
   /** Selector for state user profile. */
   @Selector()
   public static profile(state: UserStateModel): UserModel {
+    const profile = state.profile;
+    return this.useSecondaryRoleIfAllowed(profile);
+  }
+
+  /** Selector for state user profile's true data. */
+  @Selector()
+  public static profileForceTrueData(state: UserStateModel): UserModel {
     return state.profile;
   }
 
@@ -215,5 +241,15 @@ export class UserState {
   @Selector()
   public static accessToken(state: UserStateModel): string {
     return state.accessToken;
+  }
+
+  /** Sets the live ops secondary role to the returned profile's role property. */
+  private static useSecondaryRoleIfAllowed(profile: UserModel): UserModel {
+    const clonedProfile = cloneDeep(profile); // Clone required, selectors can mutate local storage of referenced state object
+    if (clonedProfile.role === UserRole.LiveOpsAdmin && !!clonedProfile.liveOpsAdminSecondaryRole) {
+      clonedProfile.role = profile.liveOpsAdminSecondaryRole;
+    }
+
+    return clonedProfile;
   }
 }

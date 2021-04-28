@@ -73,6 +73,7 @@ describe('TicketAppComponent', () => {
       role: UserRole.LiveOpsAdmin,
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,
       objectId: `${faker.datatype.uuid()}`,
+      liveOpsAdminSecondaryRole: undefined,
     };
 
     describe('When subscribing to profile returns a value', () => {

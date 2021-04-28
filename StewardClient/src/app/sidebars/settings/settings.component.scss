@@ -14,3 +14,7 @@ h2 + p {
 mat-slide-toggle {
   display: block;
 }
+
+mat-form-field.set-active-role {
+  margin-top: $gap-large;
+}

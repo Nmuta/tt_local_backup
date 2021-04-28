@@ -34,7 +34,7 @@ export class AllAppsDropdownComponent implements OnInit {
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
-    const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
+    const profile = this.store.selectSnapshot<UserModel>(UserState.profileForceTrueData);
     this.showAllAppsDropdown = profile && profile.role === UserRole.LiveOpsAdmin;
   }
 }

@@ -1,3 +1,5 @@
+import { UserRole } from '@models/enums';
+
 /** GetUser action declaration. */
 export class GetUser {
   public static readonly type = '[User] Get User';
@@ -58,6 +60,14 @@ export class RecheckAuth {
 export class BreakAccessToken {
   public static readonly type = '[User] Break Access Token';
   constructor() {
+    // Empty
+  }
+}
+
+/** Break the access token. */
+export class SetLiveOpsAdminSecondaryRole {
+  public static readonly type = '[User] Set Live Ops Admin Secondary Role';
+  constructor(public readonly secondaryRole: UserRole) {
     // Empty
   }
 }

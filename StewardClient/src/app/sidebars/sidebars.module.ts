@@ -18,6 +18,9 @@ import { ChangelogModule } from '@shared/views/changelog/changelog.module';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { HubsModule } from '@shared/hubs/hubs.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 /** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
 export const sidebarRoutes = [
@@ -52,6 +55,9 @@ export const sidebarRoutes = [
     MatTooltipModule,
     MatIconModule,
     MatCheckboxModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
     DataPrivacyNoticeModule,
     MatCardModule,
     LocationDetailsModule,
