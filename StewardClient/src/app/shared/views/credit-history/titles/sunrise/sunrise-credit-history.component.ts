@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { SunriseCreditHistory } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { NEVER, Subject } from 'rxjs';

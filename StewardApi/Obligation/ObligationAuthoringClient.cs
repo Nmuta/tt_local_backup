@@ -50,6 +50,24 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         }
 
         /// <inheritdoc />
+        public async Task<IList<ObligationPipeline>> GetPipelinesAsync()
+        {
+            using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri($"{WebHost}obligation/pipelines"));
+
+            try
+            {
+                var response = await this.SendRequestAsync(httpRequestMessage).ConfigureAwait(false);
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Debug.Write(ex);
+                throw;
+            }
+        }
+
+        /// <inheritdoc />
         public async Task<Guid> SafeUpdatePipelineAsync(ObligationPipeline pipeline)
         {
             var existing = await this.GetPipelineAsync(pipeline.Name).ConfigureAwait(false);

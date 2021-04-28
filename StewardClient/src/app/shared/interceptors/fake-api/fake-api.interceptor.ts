@@ -89,6 +89,10 @@ import { SunrisePlayerXuidProfileRollbacksApi } from './apis/title/sunrise/playe
 
 import { LoggerService, LogTopic } from '@services/logger';
 import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
+import { PipelineGetFakeApi } from './apis/pipeline/get';
+import { PipelinePutFakeApi } from './apis/pipeline/put';
+import { PipelinePostFakeApi } from './apis/pipeline/post';
+import { PipelineDeleteFakeApi } from './apis/pipeline/delete';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -177,6 +181,12 @@ const fakeApiConstructors = [
 
   // Other
   JobsGetJobFakeApi,
+
+  // Pipelines
+  PipelineGetFakeApi,
+  PipelinePutFakeApi,
+  PipelinePostFakeApi,
+  PipelineDeleteFakeApi,
 ];
 
 /** The URLs this interceptor will not block. */

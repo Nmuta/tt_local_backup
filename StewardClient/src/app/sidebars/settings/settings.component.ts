@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { environment } from '@environments/environment';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';

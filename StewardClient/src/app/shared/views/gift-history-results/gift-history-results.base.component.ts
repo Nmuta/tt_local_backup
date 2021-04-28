@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { NEVER, Observable, of, Subject } from 'rxjs';

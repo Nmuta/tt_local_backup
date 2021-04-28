@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloPlayerDetails } from '@models/apollo';
 import { GravityPlayerDetails } from '@models/gravity';
 import { OpusPlayerDetails } from '@models/opus';

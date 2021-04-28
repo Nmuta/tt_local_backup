@@ -4,7 +4,7 @@ import { UserService } from '@services/user';
 import { NEVER, Subject } from 'rxjs';
 import { UserModel } from '@models/user.model';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 
 /**
  *  Retrieves and displays Steward user information.

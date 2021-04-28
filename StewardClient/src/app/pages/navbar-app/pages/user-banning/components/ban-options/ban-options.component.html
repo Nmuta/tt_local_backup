@@ -19,7 +19,7 @@
       [formControl]="formControls.banReason"
     ></textarea>
     <mat-hint>This reason will be shown to the player.</mat-hint>
-    <mat-error *ngIf="formControls.banReason.hasError('required')"> Missing ban reason </mat-error>
+    <mat-error *ngIf="formControls.banReason.hasError('required')">Missing ban reason</mat-error>
   </mat-form-field>
 
   <duration-picker [formControl]="formControls.banDuration"></duration-picker>

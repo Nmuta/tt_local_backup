@@ -1,0 +1,44 @@
+<div class="wrapper standard-form" [formGroup]="formGroup">
+  <section class="vertical">
+    <section>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput type="text" [formControl]="formControls.name" />
+        <button
+          mat-button
+          *ngIf="formControls.name"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="formControls.name.setValue('')"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="formControls.name.hasError('required')">Required</mat-error>
+      </mat-form-field>
+      <ng-content select=".name-button"></ng-content>
+    </section>
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput type="text" [formControl]="formControls.description" />
+      <button
+        mat-button
+        *ngIf="formControls.description"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        (click)="formControls.description.setValue('')"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="formControls.description.hasError('required')">Required</mat-error>
+    </mat-form-field>
+  </section>
+
+  <section>
+    <obligation-data-activities
+      [formControl]="formControls.dataActivities"
+    ></obligation-data-activities>
+  </section>
+</div>

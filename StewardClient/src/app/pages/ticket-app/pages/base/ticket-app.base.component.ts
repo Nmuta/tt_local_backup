@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { Navigate } from '@ngxs/router-plugin';

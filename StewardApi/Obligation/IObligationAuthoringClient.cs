@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Turn10.LiveOps.StewardApi.Obligation
@@ -8,6 +9,11 @@ namespace Turn10.LiveOps.StewardApi.Obligation
     /// </summary>
     public interface IObligationAuthoringClient
     {
+        /// <summary>
+        ///     Gets all available pipelines.
+        /// </summary>
+        Task<IList<ObligationPipeline>> GetPipelinesAsync();
+
         /// <summary>
         ///     Given a pipeline, check that the pipeline exists and that all existing data activities are
         ///     represented in the given pipeline. If those checks are passed, then update the pipeline.

@@ -8,8 +8,7 @@ import { GravityComponent } from './pages/gravity/gravity.component';
 import { OpusComponent } from './pages/opus/opus.component';
 import { SteelheadComponent } from './pages/steelhead/steelhead.component';
 import { SunriseComponent } from './pages/sunrise/sunrise.component';
-import { UnknownComponent } from './pages/unknown/unknown.component';
-
+import { UnknownTitleComponent } from './pages/unknown-title/unknown-title.component';
 import { TicketAppComponent } from './ticket-app.component';
 
 const routes: Routes = [
@@ -21,7 +20,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: UnknownComponent,
+        component: UnknownTitleComponent,
         pathMatch: 'full',
       },
       {

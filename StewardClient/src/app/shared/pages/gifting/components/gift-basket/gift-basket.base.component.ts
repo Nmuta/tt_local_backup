@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitleCodeName, UserRole } from '@models/enums';
 import { LspGroup } from '@models/lsp-group';

@@ -1,0 +1,6 @@
+@import '/src/styles/mixins/';
+
+// this divider needs some margin in order to clear the Number of Buckets hint text.
+mat-divider {
+  @include tweak-mat-divider-vertical-padding(3em, 2em);
+}

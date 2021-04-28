@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { Observable } from 'rxjs';
 
 /** Shared module for verified actions. */
@@ -30,6 +30,9 @@ export class VerifyActionButtonComponent extends BaseComponent {
   /** Tooltip to display beside checkbox. */
   @Input() public checkboxText = '';
 
+  /** Tooltip to display over submittable button. */
+  @Input() public tooltip: string = null;
+
   public verified = false;
   public isSubmitting = false;
   public submitError: unknown = undefined;
@@ -48,7 +51,7 @@ export class VerifyActionButtonComponent extends BaseComponent {
       return this.verifyText;
     }
 
-    return undefined;
+    return this.tooltip;
   }
 
   /** Resets the state of the verification button. */

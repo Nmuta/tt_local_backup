@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { SunriseBanSummary } from '@models/sunrise';

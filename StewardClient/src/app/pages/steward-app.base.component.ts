@@ -2,7 +2,7 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { ActivatedRouteSnapshot, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { flattenRouteChildren } from '@helpers/flatten-route';
 import { chain } from 'lodash';
 import { filter, takeUntil } from 'rxjs/operators';

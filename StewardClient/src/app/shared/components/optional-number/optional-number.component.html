@@ -1,0 +1,14 @@
+<span [formGroup]="formGroup">
+  <mat-checkbox
+    [formControl]="formControls.useNumber"
+    [aria-label]="'Use ' + label"
+    [matTooltip]="tooltip"
+  ></mat-checkbox>
+  <mat-form-field [matTooltip]="tooltip">
+    <mat-label>{{ label }}</mat-label>
+    <input matInput type="number" [formControl]="formControls.number" [placeholder]="placeholder" />
+    <mat-hint><ng-content selector="[mat-hint]"></ng-content></mat-hint>
+    <mat-error *ngIf="formControls.number.hasError('min')">Minimum value is {{ min }}</mat-error>
+    <mat-error *ngIf="formControls.number.hasError('max')">Minimum value is {{ max }}</mat-error>
+  </mat-form-field>
+</span>

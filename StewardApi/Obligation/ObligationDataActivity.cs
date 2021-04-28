@@ -23,9 +23,9 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         public string KustoTableName { get; set; }
 
         /// <summary>
-        ///     Gets or sets the Kusto function name.
+        ///     Gets or sets the Kusto function name and options.
         /// </summary>
-        public KustoFunction KustoFunctionName { get; set; }
+        public KustoFunction KustoFunction { get; set; }
 
         /// <summary>
         ///     Gets or sets the destination database.
@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         ///     This is useful when restating data to allow Obligation to grab larger than normal slices
         ///     which will reduce the amount of time required to restate the data.
         /// </remarks>
-        public ObligationTimeSpan MaxExecutionSpan { get; set; }
+        public TimeSpan MaxExecutionSpan { get; set; }
 
         /// <summary>
         ///     Gets or sets the execution interval.
@@ -58,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         ///     This is how often the activity should be run. As an example, an activity that is meant to
         ///     output something at a daily grain should have this set to 1 day.
         /// </remarks>
-        public ObligationTimeSpan ExecutionInterval { get; set; }
+        public TimeSpan ExecutionInterval { get; set; }
 
         /// <summary>
         ///     Gets or sets the processing delay.
@@ -68,7 +68,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         ///     delayed at the source, this value should be used to ensure that the activity doesn't execute
         ///     until that expected time has elapsed.
         /// </remarks>
-        public ObligationTimeSpan ExecutionDelay { get; set; }
+        public TimeSpan ExecutionDelay { get; set; }
 
         /// <summary>
         ///     Gets or sets the data activity dependency names.

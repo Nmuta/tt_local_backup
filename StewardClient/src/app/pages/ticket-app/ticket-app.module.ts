@@ -14,7 +14,7 @@ import { ApolloComponent } from './pages/apollo/apollo.component';
 import { OpusComponent } from './pages/opus/opus.component';
 import { GoToInventoryButtonComponent } from './components/go-to-inventory-button/go-to-inventory-button.component';
 import { QuickActionsComponent } from './components/quick-actions/quick-actions.component';
-import { UnknownComponent } from './pages/unknown/unknown.component';
+import { UnknownTitleComponent } from './pages/unknown-title/unknown-title.component';
 import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
 import { BanHistoryModule } from '@shared/views/ban-history/ban-history.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -49,10 +49,11 @@ import { MatIconModule } from '@angular/material/icon';
     GravityComponent,
     ApolloComponent,
     OpusComponent,
-    UnknownComponent,
+    TicketAppComponent,
     GoToInventoryButtonComponent,
     QuickActionsComponent,
     OverlayComponent,
+    UnknownTitleComponent,
   ],
 })
 export class TicketAppModule {}

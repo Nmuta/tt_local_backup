@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
 import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { TicketService } from '@services/zendesk/ticket.service';
 import { Observable } from 'rxjs';
 
-/** A routing component. */
+/** A routing component for the ticket sidebar app, navigated to when the title is unknown. */
 @Component({
-  selector: 'app-unknown',
-  templateUrl: './unknown.component.html',
-  styleUrls: ['./unknown.component.scss'],
+  templateUrl: './unknown-title.component.html',
+  styleUrls: ['./unknown-title.component.scss'],
 })
-export class UnknownComponent extends BaseComponent implements OnInit {
+export class UnknownTitleComponent extends BaseComponent implements OnInit {
   constructor(private readonly store: Store, private readonly ticket: TicketService) {
     super();
   }

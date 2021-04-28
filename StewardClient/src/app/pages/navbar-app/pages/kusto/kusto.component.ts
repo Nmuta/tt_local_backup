@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { JsonTableResult } from '@models/json-table-result';
 import { KustoQuery } from '@models/kusto/kusto-query';
 import { KustoService } from '@services/kusto';

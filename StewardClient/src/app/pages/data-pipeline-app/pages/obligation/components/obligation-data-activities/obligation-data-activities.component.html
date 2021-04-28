@@ -1,0 +1,39 @@
+<div [formGroup]="formGroup">
+  <mat-accordion formArrayName="activities">
+    <mat-expansion-panel *ngFor="let dataActivityFormControl of formControls">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{
+          dataActivityFormControl.value.name || 'unnamed activity'
+        }}</mat-panel-title>
+        <mat-panel-description>
+          <span *ngIf="dataActivityFormControl.errors">invalid</span>
+          <span *ngIf="!dataActivityFormControl.errors">
+            {{ dataActivityFormControl.value.table || 'N/A' }}@{{
+              dataActivityFormControl.value.database
+            }}
+            ({{ dataActivityFormControl.value.dateRange.start | utcDate: 'short' }} -
+            {{ dataActivityFormControl.value.dateRange.end | utcDate: 'short' }})</span
+          >
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="removeActivity(dataActivityFormControl)"
+            [disabled]="formArray.length <= 1"
+            clickStop
+            [matTooltip]="formArray.length <= 1 ? 'Cannot remove last activity' : 'Remove Activity'"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <obligation-data-activity [formControl]="dataActivityFormControl"></obligation-data-activity>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="actions">
+    <button mat-mini-fab color="accent" (click)="addActivity()" clickStop matTooltip="Add Activity">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>

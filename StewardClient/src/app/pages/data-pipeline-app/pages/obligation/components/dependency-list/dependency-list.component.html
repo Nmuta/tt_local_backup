@@ -1,0 +1,21 @@
+<mat-form-field>
+  <mat-label>Pipeline Dependencies</mat-label>
+  <mat-chip-list #chipList aria-label="Pipeline Dependencies">
+    <mat-chip
+      *ngFor="let formControl of formControls"
+      [selectable]="false"
+      [removable]="true"
+      (removed)="removeDependency(formControl)"
+    >
+      {{ formControl.value }}
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+    <input
+      placeholder="Activity Name"
+      [formControl]="inputFormControl"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="addDependency($event)"
+    />
+  </mat-chip-list>
+</mat-form-field>

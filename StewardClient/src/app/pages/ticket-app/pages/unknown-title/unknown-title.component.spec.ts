@@ -6,16 +6,16 @@ import { NgxsModule, Store } from '@ngxs/store';
 import { createMockTicketService, MockTicketService, TicketService } from '@services/zendesk';
 import { of } from 'rxjs';
 
-import { UnknownComponent } from './unknown.component';
+import { UnknownTitleComponent } from './unknown-title.component';
 
-describe('UnknownComponent', () => {
-  let fixture: ComponentFixture<UnknownComponent>;
+describe('UnknownTitleComponent', () => {
+  let fixture: ComponentFixture<UnknownTitleComponent>;
   let store: Store;
   let ticketService: MockTicketService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UnknownComponent],
+      declarations: [UnknownTitleComponent],
       imports: [NgxsModule.forRoot([])],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [createMockTicketService()],
@@ -26,7 +26,7 @@ describe('UnknownComponent', () => {
     store = TestBed.inject(Store);
     store.dispatch = jasmine.createSpy('dispatch').and.returnValue(of());
 
-    fixture = TestBed.createComponent(UnknownComponent);
+    fixture = TestBed.createComponent(UnknownTitleComponent);
 
     ticketService.activeTitle = GameTitleCodeName.FH4;
   });

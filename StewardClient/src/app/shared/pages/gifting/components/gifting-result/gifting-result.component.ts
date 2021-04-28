@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnInit } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { GiftResponse } from '@models/gift-response';
 import { sortBy } from 'lodash';
 

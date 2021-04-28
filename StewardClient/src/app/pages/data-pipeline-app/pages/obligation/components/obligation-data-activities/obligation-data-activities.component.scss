@@ -1,0 +1,16 @@
+mat-accordion .mat-expansion-panel-header-title {
+  justify-content: space-between;
+  align-items: center;
+}
+
+mat-accordion .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions {
+  margin: 1em 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}

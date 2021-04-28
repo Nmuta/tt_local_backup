@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import _ from 'lodash';
 import { NEVER, Observable } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';

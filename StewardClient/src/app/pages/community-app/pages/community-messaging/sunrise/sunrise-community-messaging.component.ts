@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommunityMessage, CommunityMessageResult } from '@models/community-message';
 import { NEVER, Observable, of } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { SunriseService } from '@services/sunrise';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 import { IdentityResultAlpha } from '@models/identity-query.model';

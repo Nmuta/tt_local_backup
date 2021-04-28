@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { NEVER } from 'rxjs';
 import { LspGroup, LspGroups } from '@models/lsp-group';
 import { catchError, takeUntil, tap, filter, map, startWith } from 'rxjs/operators';

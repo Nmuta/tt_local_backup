@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloBanResult } from '@models/apollo';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { SunriseBanResult } from '@models/sunrise';

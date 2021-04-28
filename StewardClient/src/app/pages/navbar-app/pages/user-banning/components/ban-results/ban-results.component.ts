@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { sortBy } from 'lodash';
 import { BanResultsUnion } from '../../pages/base/user-banning.base.component';
 

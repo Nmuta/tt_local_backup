@@ -1,0 +1,25 @@
+@mixin standard-form {
+  section {
+    &:not(.vertical) {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+
+      // get the spacing right
+      margin: -1em;
+      > * {
+        margin: 1em;
+      }
+
+      // fill items
+      > *:not(mat-checkbox):not(button) {
+        flex-grow: 1;
+      }
+    }
+
+    &.vertical {
+      display: flex;
+      flex-flow: column nowrap;
+    }
+  }
+}

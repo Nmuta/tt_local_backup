@@ -8,7 +8,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloMasterInventory } from '@models/apollo';
 import { GravityPlayerInventoryBeta } from '@models/gravity';
 import { IdentityResultUnion } from '@models/identity-query.model';

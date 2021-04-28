@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Obligation;
@@ -32,9 +33,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Get a pipeline.
+        /// </summary>
+        [HttpGet("pipeline")]
+        public async Task<IActionResult> GetPipelines()
+        {
+            var result = await this.obligationProvider.GetPipelinesAsync().ConfigureAwait(true);
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
         ///     Delete a pipeline.
         /// </summary>
         [HttpDelete("pipeline/{pipelineName}")]
+        [SwaggerResponse(200, type: typeof(string), description: "work_item_id")]
         public async Task<IActionResult> DeletePipeline([FromRoute] string pipelineName)
         {
             try
@@ -55,6 +68,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Get a pipeline.
         /// </summary>
         [HttpGet("pipeline/{pipelineName}")]
+        [SwaggerResponse(200, type: typeof(SimplifiedObligationPipeline))]
         public async Task<IActionResult> GetPipeline([FromRoute] string pipelineName)
         {
             var result = await this.obligationProvider.GetPipelineAsync(pipelineName).ConfigureAwait(true);
@@ -66,17 +80,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Updates a pipeline.
         /// </summary>
         [HttpPut("pipeline")]
+        [SwaggerResponse(200, type: typeof(string), description: "work_item_id")]
         public async Task<IActionResult> UpdatePipeline([FromBody] SimplifiedObligationPipeline obligationPipeline)
         {
             var response = await this.obligationProvider.SafeUpdatePipelineAsync(obligationPipeline).ConfigureAwait(true);
 
-            return this.Created(this.Request.Path, response);
+            return this.Ok(response);
         }
 
         /// <summary>
         ///     Create a pipeline.
         /// </summary>
         [HttpPost("pipeline")]
+        [SwaggerResponse(201, type: typeof(string), description: "work_item_id")]
         public async Task<IActionResult> CreatePipeline([FromBody] SimplifiedObligationPipeline obligationPipeline)
         {
             var response = await this.obligationProvider.UpsertPipelineAsync(obligationPipeline).ConfigureAwait(true);
@@ -88,6 +104,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Renames a pipeline.
         /// </summary>
         [HttpPatch("pipeline")]
+        [SwaggerResponse(200, type: typeof(string), description: "work_item_id")]
         public async Task<IActionResult> RenamePipeline([FromBody] PatchOperation patchOperation)
         {
             var response = await this.obligationProvider.RenamePipelineAsync(patchOperation).ConfigureAwait(true);

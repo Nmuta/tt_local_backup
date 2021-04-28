@@ -1,13 +1,113 @@
 <section>
   <mat-card>
-    <h2>Obligation App</h2>
-    <p>Not Implemented</p>
+    <mat-card-header>
+      <mat-icon mat-card-avatar>add_task</mat-icon>
+      <mat-card-title>Obligation</mat-card-title>
+      <mat-card-subtitle>Find, Modify, and Create</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="formGroup">
+        <full-obligation-input [formControl]="formControls.options">
+          <button
+            class="name-button"
+            mat-button
+            mat-icon-button
+            mat-mini-fab
+            aria-label="Get Entry"
+            color="accent"
+            matTooltip="GET Pipeline by Name"
+            [disabled]="!options.name"
+            [monitor]="getMonitor"
+            monitorDisable
+            monitorWarn
+            (click)="onGetClick()"
+            clickStop
+          >
+            <mat-icon>sync</mat-icon>
+          </button>
+        </full-obligation-input>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <div>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onPutClick()"
+          clickStop
+          [disabled]="!formGroup.valid"
+          matTooltip="Create or attempt to replace pipeline (if it is in a safe state)"
+        >
+          PUT
+        </button>
+      </div>
+
+      <mat-divider vertical></mat-divider>
+
+      <div>
+        <button
+          mat-stroked-button
+          color="warn"
+          (click)="onPostClick()"
+          clickStop
+          [disabled]="!formGroup.valid"
+          [verifyWith]="confirmPost"
+          matTooltip="Create or force replace pipeline (even if it is in an UNSAFE state)"
+        >
+          POST
+        </button>
+        <mat-checkbox
+          #confirmPost
+          matTooltip="This operation is UNSAFE. It can force replace a pipeline into a bad state. Check to acknowledge."
+        ></mat-checkbox>
+      </div>
+
+      <div>
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="onDeleteClick()"
+          clickStop
+          [disabled]="!formGroup.valid"
+          [verifyWith]="confirmDelete"
+          matTooltip="Delete the pipeline"
+        >
+          DELETE
+        </button>
+        <mat-checkbox
+          #confirmDelete
+          matTooltip="This operation is UNSAFE. It permanently deletes a pipeline. Check to acknowledge."
+        ></mat-checkbox>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-icon mat-card-avatar>bug_report</mat-icon>
+      <mat-card-title>Debug</mat-card-title>
+      <mat-card-subtitle>Temporary information to aid in debugging</mat-card-subtitle>
+    </mat-card-header>
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Errors</mat-panel-title>
+          <mat-panel-description>
+            <span *ngIf="!formGroup.valid"> Expand to view errors </span>
+            <span *ngIf="formGroup.valid"> No errors </span>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <pre>{{ formGroup | formGroupErrors | impureJson }}</pre>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Value</mat-panel-title>
+          <mat-panel-description>Expand to view value</mat-panel-description>
+        </mat-expansion-panel-header>
+        <pre>{{ formGroup.value | impureJson }}</pre>
+      </mat-expansion-panel>
+    </mat-accordion>
   </mat-card>
 </section>
-
-<ng-template #failState>
-  <div id="fail-state">
-    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-    <json-dump *ngIf="loadError" [input]="loadError">Failure occured.</json-dump>
-  </div>
-</ng-template>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BaseComponent } from '@components/base-component/base-component.component';
+import { BaseComponent } from '@components/base-component/base.component';
 import { Clipboard } from '@helpers/clipboard';
 import { UserRole } from '@models/enums';
 import { Select, Store } from '@ngxs/store';
