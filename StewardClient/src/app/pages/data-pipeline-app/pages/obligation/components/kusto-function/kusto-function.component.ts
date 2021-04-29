@@ -11,6 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { collectErrors } from '@helpers/form-group-collect-errors';
+import { StringValidators } from '@shared/validators/string-validators';
 import BigNumber from 'bignumber.js';
 
 export interface KustoFunctionOptions {
@@ -47,7 +48,10 @@ export class KustoFunctionComponent implements ControlValueAccessor, Validator {
   };
 
   public formControls = {
-    name: new FormControl(KustoFunctionComponent.defaults.name, [Validators.required]),
+    name: new FormControl(KustoFunctionComponent.defaults.name, [
+      Validators.required,
+      StringValidators.trim,
+    ]),
     useSplitting: new FormControl(KustoFunctionComponent.defaults.useSplitting),
     useEndDate: new FormControl(KustoFunctionComponent.defaults.useEndDate),
     numberOfBuckets: new FormControl(KustoFunctionComponent.defaults.numberOfBuckets),

@@ -16,7 +16,13 @@
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="formControls.name.hasError('required')">Required</mat-error>
+          <<<<<<< HEAD
+          <mat-error *ngIf="formControls.name.hasError('trim')"
+            >Has surrounding whitespace</mat-error
+          >
+          =======
           <mat-hint>Unique ID across this pipeline</mat-hint>
+          >>>>>>> main
         </mat-form-field>
         <ng-content select=".name-button"></ng-content>
       </section>
@@ -36,6 +42,9 @@
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="formControls.table.hasError('required')">Required</mat-error>
+          <mat-error *ngIf="formControls.table.hasError('trim')"
+            >Has surrounding whitespace</mat-error
+          >
         </mat-form-field>
 
         <mat-form-field>
@@ -52,6 +61,9 @@
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="formControls.database.hasError('required')">Required</mat-error>
+          <mat-error *ngIf="formControls.database.hasError('trim')"
+            >Has surrounding whitespace</mat-error
+          >
         </mat-form-field>
       </section>
     </section>

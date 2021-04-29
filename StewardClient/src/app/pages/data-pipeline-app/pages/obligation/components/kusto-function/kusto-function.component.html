@@ -15,6 +15,7 @@
       </button>
       <mat-hint>Using a function you have already deployed makes this easier</mat-hint>
       <mat-error *ngIf="formControls.name.hasError('required')">Required</mat-error>
+      <mat-error *ngIf="formControls.name.hasError('trim')">Has surrounding whitespace</mat-error>
     </mat-form-field>
   </section>
 

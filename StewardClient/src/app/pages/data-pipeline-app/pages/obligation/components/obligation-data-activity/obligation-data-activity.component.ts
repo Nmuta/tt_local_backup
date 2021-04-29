@@ -11,6 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { collectErrors } from '@helpers/form-group-collect-errors';
+import { StringValidators } from '@shared/validators/string-validators';
 import { DateTime } from 'luxon';
 import {
   KustoFunctionComponent,
@@ -71,12 +72,22 @@ export class ObligationDataActivityComponent implements ControlValueAccessor, Va
   };
 
   public formControls = {
-    name: new FormControl(ObligationDataActivityComponent.defaults.name, [Validators.required]),
-    table: new FormControl(ObligationDataActivityComponent.defaults.table, [Validators.required]),
+    name: new FormControl(ObligationDataActivityComponent.defaults.name, [
+      Validators.required,
+      StringValidators.trim,
+    ]),
+    table: new FormControl(ObligationDataActivityComponent.defaults.table, [
+      Validators.required,
+      StringValidators.trim,
+    ]),
     database: new FormControl(ObligationDataActivityComponent.defaults.database, [
       Validators.required,
+      StringValidators.trim,
     ]),
-    query: new FormControl(ObligationDataActivityComponent.defaults.query, [Validators.required]),
+    query: new FormControl(ObligationDataActivityComponent.defaults.query, [
+      Validators.required,
+      StringValidators.trim,
+    ]),
     dateRange: new FormControl(ObligationDataActivityComponent.defaults.dateRange),
     maximumExecutionTimeInMinutes: new FormControl(
       ObligationDataActivityComponent.defaults.maximumExecutionTimeInMinutes,

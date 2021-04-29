@@ -11,6 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { collectErrors } from '@helpers/form-group-collect-errors';
+import { StringValidators } from '@shared/validators/string-validators';
 import { cloneDeep } from 'lodash';
 import { ObligationDataActivitiesComponent } from '../obligation-data-activities/obligation-data-activities.component';
 import { ObligationDataActivityOptions } from '../obligation-data-activity/obligation-data-activity.component';
@@ -47,9 +48,13 @@ export class FullObligationInputComponent implements ControlValueAccessor, Valid
   };
 
   public formControls = {
-    name: new FormControl(FullObligationInputComponent.defaults.name, [Validators.required]),
+    name: new FormControl(FullObligationInputComponent.defaults.name, [
+      Validators.required,
+      StringValidators.trim,
+    ]),
     description: new FormControl(FullObligationInputComponent.defaults.description, [
       Validators.required,
+      StringValidators.trim,
     ]),
     dataActivities: new FormControl(FullObligationInputComponent.defaults.dataActivities, [
       Validators.required,
