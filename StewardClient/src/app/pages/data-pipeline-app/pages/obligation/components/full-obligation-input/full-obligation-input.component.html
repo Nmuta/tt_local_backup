@@ -15,6 +15,7 @@
           <mat-icon>close</mat-icon>
         </button>
         <mat-error *ngIf="formControls.name.hasError('required')">Required</mat-error>
+        <mat-hint>Unique ID of the pipeline to lookup/modify/create</mat-hint>
       </mat-form-field>
       <ng-content select=".name-button"></ng-content>
     </section>
@@ -33,6 +34,7 @@
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="formControls.description.hasError('required')">Required</mat-error>
+      <mat-hint>Only displayed in the UI</mat-hint>
     </mat-form-field>
   </section>
 
