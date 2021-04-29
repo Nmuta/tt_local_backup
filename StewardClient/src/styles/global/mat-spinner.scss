@@ -1,0 +1,17 @@
+mat-spinner.force-inline {
+  display: inline-block;
+  &,
+  svg {
+    width: 1em !important;
+    height: 1em !important;
+  }
+}
+
+mat-spinner.force-inline-2x {
+  display: inline-block;
+  &,
+  svg {
+    width: 1.5em !important;
+    height: 1.5em !important;
+  }
+}

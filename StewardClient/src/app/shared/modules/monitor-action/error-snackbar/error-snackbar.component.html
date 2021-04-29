@@ -1,0 +1,10 @@
+<span class="message">
+  <span class="label">{{ label }}</span> error
+</span>
+<span class="spacer"></span>
+<button mat-icon-button [cdkCopyToClipboard]="monitor.status.error | json" matTooltip="Copy error">
+  <mat-icon>content_copy</mat-icon>
+</button>
+<button mat-icon-button (click)="onDismiss()" matTooltip="Dismiss">
+  <mat-icon>close</mat-icon>
+</button>

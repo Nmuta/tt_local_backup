@@ -24,7 +24,7 @@ import {
 })
 export class DataPipelineObligationComponent extends BaseComponent {
   @ViewChildren(VerifyWithButtonDirective) private checkboxes: VerifyWithButtonDirective[] = [];
-  public getMonitor: ActionMonitor = null;
+  public getMonitor: ActionMonitor = new ActionMonitor();
 
   public formControls = {
     options: new FormControl(cloneDeep(FullObligationInputComponent.defaults), [
@@ -50,7 +50,8 @@ export class DataPipelineObligationComponent extends BaseComponent {
 
   /** Called when the GET button is clicked. */
   public onGetClick(): void {
-    this.getMonitor = new ActionMonitor();
+    this.getMonitor.dispose();
+    this.getMonitor = new ActionMonitor('GET');
     this.obligationsService
       .get(this.options.name)
       .pipe(

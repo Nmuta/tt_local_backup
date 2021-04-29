@@ -26,13 +26,21 @@ type ActionMonitorMode = 'single-fire' | 'multi-fire';
  * - State starts as `inactive`
  */
 export class ActionMonitor {
+  private static readonly DEFAULT_STATUS: ActionStatus<unknown> = {
+    dates: undefined,
+    error: undefined,
+    mode: undefined,
+    state: 'inactive',
+    value: undefined,
+  };
+
   private _status$ = new Subject<ActionStatus<unknown>>();
   private _allStatuses: ActionStatus<unknown>[] = [];
   private mode: ActionMonitorMode = null;
 
   /** The current status of the action. */
   public get status(): ActionStatus<unknown> {
-    return last(this._allStatuses);
+    return last(this._allStatuses) || ActionMonitor.DEFAULT_STATUS;
   }
 
   /** Gets all historic statuses. */
@@ -44,6 +52,8 @@ export class ActionMonitor {
   public get status$(): Observable<ActionStatus<unknown>> {
     return this._status$;
   }
+
+  constructor(public readonly label: string = 'UNLABELED') {}
 
   /** Produces the RXJS operator for monitoring a single-fire action. */
   public monitorSingleFire<T>(): MonoTypeOperatorFunction<T> {
@@ -115,6 +125,11 @@ export class ActionMonitor {
         }),
       );
     };
+  }
+
+  /** Call to perform cleanup. */
+  public dispose(): void {
+    this._status$.complete();
   }
 
   private onValueStart(): void {

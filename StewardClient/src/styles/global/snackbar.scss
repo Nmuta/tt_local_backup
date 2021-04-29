@@ -1,0 +1,6 @@
+@import '/src/styles/mixins';
+
+.snackbar-warn {
+  background-color: app-color-lighter($app-warn);
+  color: app-color-lighter-contrast($app-warn);
+}

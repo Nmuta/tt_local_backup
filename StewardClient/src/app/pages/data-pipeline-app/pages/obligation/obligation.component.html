@@ -20,10 +20,15 @@
             [monitor]="getMonitor"
             monitorDisable
             monitorWarn
+            monitorWarnSnackbar
             (click)="onGetClick()"
             clickStop
           >
-            <mat-icon>sync</mat-icon>
+            <mat-icon *ngIf="getMonitor.status.state !== 'active'">sync</mat-icon>
+            <mat-spinner
+              class="force-inline-2x"
+              *ngIf="getMonitor.status.state === 'active'"
+            ></mat-spinner>
           </button>
         </full-obligation-input>
       </form>
