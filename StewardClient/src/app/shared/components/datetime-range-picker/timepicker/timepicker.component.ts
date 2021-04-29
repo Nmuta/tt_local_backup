@@ -155,11 +155,10 @@ export class TimepickerComponent
     this._disabled = coerceBooleanProperty(value);
     this.stateChanges.next();
   }
-
   constructor(
     formBuilder: FormBuilder,
-    private focusMonitor: FocusMonitor,
-    private elementRef: ElementRef<HTMLElement>,
+    private readonly focusMonitor: FocusMonitor,
+    private readonly elementRef: ElementRef<HTMLElement>,
     /** The bound angular control. MatFormFieldControl hook. */
     @Optional() @Self() public ngControl: NgControl,
   ) {
@@ -240,6 +239,11 @@ export class TimepickerComponent
     if (this.value == null && !!this.valueInternal) {
       hasError = true;
       aggregator['bad-time'] = true;
+    }
+
+    if (this.value == null && !this.valueInternal) {
+      hasError = true;
+      aggregator['required'] = true;
     }
 
     return hasError ? aggregator : null;

@@ -1,5 +1,4 @@
 import { Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { AbstractControl, ValidationErrors, Validator } from '@angular/forms';
 import moment from 'moment';
 import { NgxMaterialTimepickerComponent, TimepickerDirective } from 'ngx-material-timepicker';
 
@@ -7,9 +6,7 @@ import { NgxMaterialTimepickerComponent, TimepickerDirective } from 'ngx-materia
 @Directive({
   selector: '[safeNgxTimepicker]',
 })
-export class SafeNgxTimepickerDirective
-  extends TimepickerDirective
-  implements OnChanges, Validator {
+export class SafeNgxTimepickerDirective extends TimepickerDirective implements OnChanges {
   private useFallbackValue = false;
   private fallbackValue = super.value;
 
@@ -50,14 +47,5 @@ export class SafeNgxTimepickerDirective
   @Input()
   public set safeNgxTimepicker(picker: NgxMaterialTimepickerComponent) {
     super.timepicker = picker;
-  }
-
-  /** Form control hook. */
-  public validate(_: AbstractControl): ValidationErrors | null {
-    if (this.useFallbackValue) {
-      return { 'bad-time': true };
-    }
-
-    return null;
   }
 }

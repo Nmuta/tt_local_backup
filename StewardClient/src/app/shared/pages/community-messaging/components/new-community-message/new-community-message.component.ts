@@ -1,9 +1,9 @@
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommunityMessage } from '@models/community-message';
-import { isAfterDateValidator } from '@shared/validators/is-after-date.validator';
 import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
+import { DateValidators } from '@shared/validators/date-validators';
 
 /** Outputs a new community message. */
 @Component({
@@ -21,7 +21,7 @@ export class NewCommunityMessageComponent implements OnInit {
   /** New community message form. */
   public newCommunityMessageForm: FormGroup = this.formBuilder.group({
     message: ['', [Validators.required, Validators.maxLength(this.messageMaxLength)]],
-    expireTime: ['', [Validators.required, isAfterDateValidator(moment())]],
+    expireTime: ['', [Validators.required, DateValidators.isAfter(moment())]],
   });
 
   constructor(private readonly formBuilder: FormBuilder) {}

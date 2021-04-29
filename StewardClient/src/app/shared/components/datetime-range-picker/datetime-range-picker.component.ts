@@ -8,7 +8,6 @@ import {
   NG_VALUE_ACCESSOR,
   ValidationErrors,
   Validator,
-  Validators,
 } from '@angular/forms';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { isEqual } from 'lodash';
@@ -66,12 +65,16 @@ export class DatetimeRangePickerComponent
 
   public formControls = {
     dateRange: {
-      start: new FormControl(this.defaults.dateRange.start, [Validators.required]),
-      end: new FormControl(this.defaults.dateRange.end, [Validators.required]),
+      start: new FormControl(
+        this.defaults.dateRange.start /** Date controls are always required */,
+      ),
+      end: new FormControl(this.defaults.dateRange.end /** Date controls are always required */),
     },
     timeRange: {
-      start: new FormControl(this.defaults.timeRange.start, [Validators.required]),
-      end: new FormControl(this.defaults.timeRange.end, [Validators.required]),
+      start: new FormControl(
+        this.defaults.timeRange.start /** Date controls are always required */,
+      ),
+      end: new FormControl(this.defaults.timeRange.end /** Date controls are always required */),
     },
   };
 
