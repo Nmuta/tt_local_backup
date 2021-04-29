@@ -18,7 +18,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DatetimeRangePickerModule } from '@components/datetime-range-picker/datetime-range-picker.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { ObligationsService } from '@services/obligations';
-import { ObligationDataActivityComponent } from './components/obligation-data-activity/obligation-data-activity.component';
+import { ObligationDataActivityComponent } from './components/obligation-data-activities/obligation-data-activity/obligation-data-activity.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ObligationDataActivitiesComponent } from './components/obligation-data-activities/obligation-data-activities.component';
 import { KustoFunctionComponent } from './components/kusto-function/kusto-function.component';
@@ -29,6 +29,9 @@ import { VerifyCheckboxModule } from '@shared/modules/verify/verify-checkbox.mod
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { DependencyListComponent } from './components/dependency-list/dependency-list.component';
+import { ObligationPrincipalsComponent } from './components/obligation-principals/obligation-principals.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
 
 /** Module for displaying the data pipeline obligation page. */
 @NgModule({
@@ -39,6 +42,7 @@ import { DependencyListComponent } from './components/dependency-list/dependency
     ObligationDataActivitiesComponent,
     KustoFunctionComponent,
     DependencyListComponent,
+    ObligationPrincipalsComponent,
   ],
   providers: [ObligationsService],
   imports: [
@@ -67,6 +71,8 @@ import { DependencyListComponent } from './components/dependency-list/dependency
     VerifyCheckboxModule,
     MatDividerModule,
     MatChipsModule,
+    MatTableModule,
+    MatSelectModule,
   ],
   exports: [DataPipelineObligationComponent],
 })

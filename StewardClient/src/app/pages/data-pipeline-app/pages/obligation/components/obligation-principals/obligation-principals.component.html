@@ -1,0 +1,80 @@
+<div [formGroup]="formGroup">
+  <h2>Principals</h2>
+  <table mat-table [dataSource]="dataSource" formArrayName="rows">
+    <tr mat-row *matRowDef="let row; let i = index; columns: displayColumns"></tr>
+
+    <ng-container matColumnDef="type">
+      <td mat-cell *matCellDef="let row; let index = index" [formGroup]="getFormGroup(index)">
+        <mat-form-field appearance="fill">
+          <mat-label>Type</mat-label>
+          <mat-select [formControl]="getFormControl(index, 'principalType')">
+            <mat-select-trigger>
+              {{ principalTypeNameMap[getFormControl(index, 'principalType').value] || '' }}
+            </mat-select-trigger>
+            <mat-option *ngFor="let option of principalTypeOptions" [value]="option.value">{{
+              option.name
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <td mat-cell *matCellDef="let row; let index = index" [formGroup]="getFormGroup(index)">
+        <mat-form-field appearance="fill">
+          <mat-label>Role</mat-label>
+          <mat-select [formControl]="getFormControl(index, 'role')">
+            <mat-select-trigger>
+              {{ principalRoleNameMap[getFormControl(index, 'role').value] || '' }}
+            </mat-select-trigger>
+            <mat-option *ngFor="let option of principalRoleOptions" [value]="option.value">{{
+              option.name
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="value">
+      <td mat-cell *matCellDef="let row; let index = index" [formGroup]="getFormGroup(index)">
+        <mat-form-field>
+          <mat-label>Value</mat-label>
+          <input matInput type="text" [formControl]="getFormControl(index, 'principalValue')" />
+          <button
+            mat-button
+            *ngIf="getFormControl(index, 'principalValue').value"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="getFormControl(index, 'principalValue').setValue('')"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-hint *ngIf="getFormControl(index, 'principalType').value == PrincipalType.User"
+            >The user's email address</mat-hint
+          >
+          <mat-hint *ngIf="getFormControl(index, 'principalType').value == PrincipalType.Group"
+            >The AAD object ID of the group</mat-hint
+          >
+          <mat-error *ngIf="getFormControl(index, 'principalValue').hasError('required')"
+            >Required</mat-error
+          >
+        </mat-form-field>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <td mat-cell *matCellDef="let row; let index = index" [formGroup]="getFormGroup(index)">
+        <button mat-icon-button color="warn" (click)="removeRow(index)" clickStop>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+  </table>
+
+  <div class="actions">
+    <button mat-mini-fab color="accent" (click)="addRow()" clickStop matTooltip="Add Principal">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>

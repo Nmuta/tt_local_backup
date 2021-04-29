@@ -16,7 +16,7 @@ import { DateTime } from 'luxon';
 import {
   KustoFunctionComponent,
   KustoFunctionOptions,
-} from '../kusto-function/kusto-function.component';
+} from '../../kusto-function/kusto-function.component';
 
 export interface ObligationDataActivityOptions {
   name: string;

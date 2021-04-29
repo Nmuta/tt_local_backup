@@ -17,7 +17,7 @@ import { cloneDeep, remove } from 'lodash';
 import {
   ObligationDataActivityComponent,
   ObligationDataActivityOptions,
-} from '../obligation-data-activity/obligation-data-activity.component';
+} from './obligation-data-activity/obligation-data-activity.component';
 
 export type ObligationDataActivitiesOptions = ObligationDataActivityOptions[];
 

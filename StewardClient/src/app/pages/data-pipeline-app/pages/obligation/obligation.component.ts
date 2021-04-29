@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
+import { ObligationPrincipal } from '@models/pipelines/obligation-principal';
 import { SimplifiedObligationPipeline } from '@models/pipelines/simplified-obligation-pipeline';
 import { ObligationsService } from '@services/obligations';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
@@ -15,6 +16,7 @@ import {
   FullObligationInputComponent,
   ObligationOptions,
 } from './components/full-obligation-input/full-obligation-input.component';
+import { ObligationPrincipalOptions } from './components/obligation-principals/obligation-principals.component';
 
 /** Displays the community messaging feature. */
 @Component({
@@ -129,7 +131,14 @@ export class DataPipelineObligationComponent extends BaseComponent {
     return {
       pipelineName: options.name,
       pipelineDescription: options.description,
-      principals: null,
+      principals: options.principals.map(
+        p =>
+          <ObligationPrincipal>{
+            principal_type: p.principalType,
+            role: p.role,
+            principal_value: p.principalValue,
+          },
+      ),
       obligationPipelines: options.dataActivities.map(activity => {
         return {
           activityName: activity.name,
@@ -157,6 +166,14 @@ export class DataPipelineObligationComponent extends BaseComponent {
     return {
       name: model.pipelineName,
       description: model.pipelineDescription,
+      principals: model.principals.map(
+        p =>
+          <ObligationPrincipalOptions>{
+            principalType: p.principal_type,
+            role: p.role,
+            principalValue: p.principal_value,
+          },
+      ),
       dataActivities: model.obligationPipelines.map(pipeline => {
         return {
           name: pipeline.activityName,

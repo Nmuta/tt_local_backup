@@ -14,12 +14,17 @@ import { collectErrors } from '@helpers/form-group-collect-errors';
 import { StringValidators } from '@shared/validators/string-validators';
 import { cloneDeep } from 'lodash';
 import { ObligationDataActivitiesComponent } from '../obligation-data-activities/obligation-data-activities.component';
-import { ObligationDataActivityOptions } from '../obligation-data-activity/obligation-data-activity.component';
+import { ObligationDataActivityOptions } from '../obligation-data-activities/obligation-data-activity/obligation-data-activity.component';
+import {
+  ObligationPrincipalOptions,
+  ObligationPrincipalsComponent,
+} from '../obligation-principals/obligation-principals.component';
 
 export interface ObligationOptions {
   name: string;
   description: string;
   dataActivities: ObligationDataActivityOptions[];
+  principals: ObligationPrincipalOptions[];
 }
 
 /** A form component that bundles all the validation of a full obligation item. */
@@ -45,6 +50,7 @@ export class FullObligationInputComponent implements ControlValueAccessor, Valid
     name: '',
     description: '',
     dataActivities: cloneDeep(ObligationDataActivitiesComponent.defaults),
+    principals: cloneDeep(ObligationPrincipalsComponent.defaultsAll),
   };
 
   public formControls = {
@@ -60,12 +66,14 @@ export class FullObligationInputComponent implements ControlValueAccessor, Valid
       Validators.required,
       Validators.minLength(1),
     ]),
+    principals: new FormControl(FullObligationInputComponent.defaults.principals),
   };
 
   public formGroup = new FormGroup({
     name: this.formControls.name,
     description: this.formControls.description,
     dataActivities: this.formControls.dataActivities,
+    principals: this.formControls.principals,
   });
 
   /** Form control hook. */

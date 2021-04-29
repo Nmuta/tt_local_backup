@@ -9,7 +9,7 @@ import { DependencyListComponent } from './components/dependency-list/dependency
 import { FullObligationInputComponent } from './components/full-obligation-input/full-obligation-input.component';
 import { KustoFunctionComponent } from './components/kusto-function/kusto-function.component';
 import { ObligationDataActivitiesComponent } from './components/obligation-data-activities/obligation-data-activities.component';
-import { ObligationDataActivityComponent } from './components/obligation-data-activity/obligation-data-activity.component';
+import { ObligationDataActivityComponent } from './components/obligation-data-activities/obligation-data-activity/obligation-data-activity.component';
 
 import { DataPipelineObligationComponent } from './obligation.component';
 

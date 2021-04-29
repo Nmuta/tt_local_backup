@@ -1,0 +1,14 @@
+table {
+  width: 100%;
+}
+
+td.mat-cell {
+  border-bottom: none;
+}
+
+.actions {
+  margin: 1em 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
