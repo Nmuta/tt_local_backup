@@ -84,10 +84,7 @@ export class ObligationDataActivityComponent implements ControlValueAccessor, Va
       Validators.required,
       StringValidators.trim,
     ]),
-    query: new FormControl(ObligationDataActivityComponent.defaults.query, [
-      Validators.required,
-      StringValidators.trim,
-    ]),
+    query: new FormControl(ObligationDataActivityComponent.defaults.query, [Validators.required]),
     dateRange: new FormControl(ObligationDataActivityComponent.defaults.dateRange),
     maximumExecutionTimeInMinutes: new FormControl(
       ObligationDataActivityComponent.defaults.maximumExecutionTimeInMinutes,
