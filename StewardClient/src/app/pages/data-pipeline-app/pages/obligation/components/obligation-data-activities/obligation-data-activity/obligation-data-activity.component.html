@@ -16,13 +16,10 @@
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="formControls.name.hasError('required')">Required</mat-error>
-          <<<<<<< HEAD
           <mat-error *ngIf="formControls.name.hasError('trim')"
             >Has surrounding whitespace</mat-error
           >
-          =======
           <mat-hint>Unique ID across this pipeline</mat-hint>
-          >>>>>>> main
         </mat-form-field>
         <ng-content select=".name-button"></ng-content>
       </section>

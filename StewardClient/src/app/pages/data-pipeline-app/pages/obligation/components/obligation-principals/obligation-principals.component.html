@@ -59,6 +59,9 @@
           <mat-error *ngIf="getFormControl(index, 'principalValue').hasError('required')"
             >Required</mat-error
           >
+          <mat-error *ngIf="getFormControl(index, 'principalValue').hasError('trim')"
+            >Has surrounding whitespace</mat-error
+          >
         </mat-form-field>
       </td>
     </ng-container>
