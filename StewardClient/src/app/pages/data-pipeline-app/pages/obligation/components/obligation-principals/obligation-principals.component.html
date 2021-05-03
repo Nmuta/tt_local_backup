@@ -36,7 +36,12 @@
     </ng-container>
 
     <ng-container matColumnDef="value">
-      <td mat-cell *matCellDef="let row; let index = index" [formGroup]="getFormGroup(index)">
+      <td
+        class="grow"
+        mat-cell
+        *matCellDef="let row; let index = index"
+        [formGroup]="getFormGroup(index)"
+      >
         <mat-form-field>
           <mat-label>Value</mat-label>
           <input matInput type="text" [formControl]="getFormControl(index, 'principalValue')" />
@@ -76,8 +81,15 @@
   </table>
 
   <div class="actions">
-    <button mat-mini-fab color="accent" (click)="addRow()" clickStop matTooltip="Add Principal">
-      <mat-icon>add</mat-icon>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="addRow()"
+      clickStop
+      matTooltip="Add Principal"
+    >
+      <mat-icon>person_add</mat-icon>
+      Add Principal
     </button>
   </div>
 </div>

@@ -3,18 +3,37 @@
   <mat-accordion formArrayName="activities">
     <mat-expansion-panel *ngFor="let dataActivityFormControl of formControls">
       <mat-expansion-panel-header>
-        <mat-panel-title>{{
-          dataActivityFormControl.value.name || 'unnamed activity'
-        }}</mat-panel-title>
-        <mat-panel-description>
-          <span *ngIf="dataActivityFormControl.errors">invalid</span>
-          <span *ngIf="!dataActivityFormControl.errors">
-            {{ dataActivityFormControl.value.table || 'N/A' }}@{{
-              dataActivityFormControl.value.database
-            }}
-            ({{ dataActivityFormControl.value.dateRange.start | utcDate: 'short' }} -
-            {{ dataActivityFormControl.value.dateRange.end | utcDate: 'short' }})</span
+        <mat-panel-title>
+          <span
+            class="flex-truncate"
+            [matTooltip]="dataActivityFormControl.value.name || 'unnamed activity'"
           >
+            {{ dataActivityFormControl.value.name || 'unnamed activity' }}
+          </span>
+        </mat-panel-title>
+        <mat-panel-description>
+          <div *ngIf="dataActivityFormControl.errors">invalid</div>
+          <div *ngIf="!dataActivityFormControl.errors" class="truncate">
+            <div
+              class="truncate"
+              [matTooltip]="
+                (dataActivityFormControl.value.table || 'N/A') +
+                ' @ ' +
+                (dataActivityFormControl.value.database || 'N/A')
+              "
+            >
+              {{ dataActivityFormControl.value.table || 'N/A' }}
+              @
+              {{ dataActivityFormControl.value.database || 'N/A' }}
+            </div>
+            <div class="truncate">
+              <span class="truncate">
+                {{ dataActivityFormControl.value.dateRange.start | utcDate: 'short' }}
+                -
+                {{ dataActivityFormControl.value.dateRange.end | utcDate: 'short' }}
+              </span>
+            </div>
+          </div>
           <button
             mat-icon-button
             color="warn"
@@ -33,8 +52,15 @@
   </mat-accordion>
 
   <div class="actions">
-    <button mat-mini-fab color="accent" (click)="addActivity()" clickStop matTooltip="Add Activity">
-      <mat-icon>add</mat-icon>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="addActivity()"
+      clickStop
+      matTooltip="Add Activity"
+    >
+      <mat-icon>post_add</mat-icon>
+      Add Activity
     </button>
   </div>
 </div>
