@@ -12,8 +12,12 @@ import {
   Validator,
   Validators,
 } from '@angular/forms';
+import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { cloneDeep, remove } from 'lodash';
+import { Subject } from 'rxjs';
+import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { ActivePipelineService } from '../../services/active-pipeline.service';
 import {
   ObligationDataActivityComponent,
   ObligationDataActivityOptions,
@@ -39,7 +43,9 @@ export type ObligationDataActivitiesOptions = ObligationDataActivityOptions[];
     },
   ],
 })
-export class ObligationDataActivitiesComponent implements ControlValueAccessor, Validator {
+export class ObligationDataActivitiesComponent
+  extends BaseComponent
+  implements ControlValueAccessor, Validator {
   public static readonly defaults: ObligationDataActivitiesOptions = [
     cloneDeep(ObligationDataActivityComponent.defaults),
   ];
@@ -55,7 +61,33 @@ export class ObligationDataActivitiesComponent implements ControlValueAccessor, 
     activities: this.formArray,
   });
 
-  constructor() {
+  private readonly onChange$ = new Subject<ObligationDataActivitiesOptions>();
+  private readonly formArray$ = new Subject<FormArray>();
+
+  constructor(private readonly activePipeline: ActivePipelineService) {
+    super();
+
+    this.formArray$
+      .pipe(
+        switchMap(formArray => formArray.valueChanges),
+        takeUntil(this.onDestroy$),
+        startWith(this.formArray.value),
+        map(value => value as ObligationDataActivitiesOptions),
+      )
+      .subscribe(this.onChange$);
+
+    this.onChange$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {
+      this.activePipeline.activityNames = this.formControls
+        .map(fc => fc.value as ObligationDataActivityOptions)
+        .map(da => da.name);
+      this.changeFn(v);
+    });
+
+    this.onDestroy$.subscribe(() => {
+      this.formArray$.complete();
+      this.onChange$.complete();
+    });
+
     this.overrideList(ObligationDataActivitiesComponent.defaults);
   }
 
@@ -76,7 +108,6 @@ export class ObligationDataActivitiesComponent implements ControlValueAccessor, 
   /** Form control hook. */
   public registerOnChange(fn: (data: ObligationDataActivitiesOptions) => void): void {
     this.changeFn = fn;
-    this.formArray.valueChanges.subscribe(this.changeFn);
     this.changeFn(this.formArray.value);
   }
 
@@ -120,6 +151,7 @@ export class ObligationDataActivitiesComponent implements ControlValueAccessor, 
     this.formControls = options.map(v => this.valueToFormControl(v));
     this.formArray = new FormArray(this.formControls, Validators.minLength(1));
     this.formGroup = new FormGroup({ activities: this.formArray });
+    this.formArray$.next(this.formArray);
   }
 
   /** Hook for adding standardized validators to each form control. */

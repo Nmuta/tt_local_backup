@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { PipesModule } from '@shared/pipes/pipes.module';
@@ -26,6 +27,7 @@ describe('DataPipelineObligationComponent', () => {
         HttpClientTestingModule,
         NgxsModule.forRoot([]),
         PipesModule,
+        MatAutocompleteModule,
       ],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [

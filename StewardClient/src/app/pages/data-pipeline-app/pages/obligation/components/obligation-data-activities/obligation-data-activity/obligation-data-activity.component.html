@@ -16,6 +16,7 @@
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="formControls.name.hasError('required')">Required</mat-error>
+          <mat-error *ngIf="formControls.name.hasError('uniqueInList')">Duplicate name</mat-error>
           <mat-error *ngIf="formControls.name.hasError('trim')"
             >Has surrounding whitespace</mat-error
           >

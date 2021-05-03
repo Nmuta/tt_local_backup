@@ -1,5 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, forwardRef } from '@angular/core';
+import { Component, ElementRef, forwardRef, ViewChild } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR,
   NG_VALIDATORS,
@@ -11,9 +11,15 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
-import { remove } from 'lodash';
+import { StringValidators } from '@shared/validators/string-validators';
+import { orderBy, remove } from 'lodash';
+import { Observable, zip } from 'rxjs';
+import { map, startWith, takeUntil } from 'rxjs/operators';
+import { ActivePipelineService } from '../../services/active-pipeline.service';
 
 export type DependencyListOptions = string[];
 
@@ -35,8 +41,12 @@ export type DependencyListOptions = string[];
     },
   ],
 })
-export class DependencyListComponent implements ControlValueAccessor, Validator {
+export class DependencyListComponent
+  extends BaseComponent
+  implements ControlValueAccessor, Validator {
   public static readonly defaults: DependencyListOptions = [];
+
+  @ViewChild('input') private input: ElementRef<HTMLInputElement>;
 
   public inputFormControl = new FormControl();
   public separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -52,8 +62,30 @@ export class DependencyListComponent implements ControlValueAccessor, Validator 
     activities: this.formArray,
   });
 
-  constructor() {
+  /** The dependency options. */
+  public dependencyOptions$: Observable<string[]>;
+
+  constructor(private readonly activePipeline: ActivePipelineService) {
+    super();
     this.overrideList(DependencyListComponent.defaults);
+    this.dependencyOptions$ = zip(
+      this.formArray.valueChanges.pipe(
+        startWith({}),
+        map(() => this.formControls.map(fc => fc.value as string)),
+      ),
+      this.activePipeline.activityNames$.pipe(startWith(this.activePipeline.activityNames)),
+    ).pipe(
+      takeUntil(this.onDestroy$),
+      map(([values, activityNames]) => activityNames.filter(an => !values.includes(an))),
+      map(activityNames => orderBy(activityNames)),
+    );
+  }
+
+  /** Fired when an autocomplete option is selected. */
+  public onSelected(event: MatAutocompleteSelectedEvent): void {
+    this.formControls.push(this.valueToFormControl(event.option.viewValue));
+    this.input.nativeElement.value = '';
+    this.inputFormControl.setValue(null);
   }
 
   /** Form control hook. */
@@ -127,7 +159,10 @@ export class DependencyListComponent implements ControlValueAccessor, Validator 
 
   /** Hook for adding standardized validators to each form control. */
   private valueToFormControl(v: string): FormControl {
-    return new FormControl(v);
+    return new FormControl(v, [
+      StringValidators.existsInList(() => this.activePipeline.activityNames),
+      StringValidators.trim,
+    ]);
   }
 
   private changeFn = (_data: DependencyListOptions) => {

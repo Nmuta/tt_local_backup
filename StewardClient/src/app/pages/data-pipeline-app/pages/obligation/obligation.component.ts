@@ -17,12 +17,14 @@ import {
   ObligationOptions,
 } from './components/full-obligation-input/full-obligation-input.component';
 import { ObligationPrincipalOptions } from './components/obligation-principals/obligation-principals.component';
+import { ActivePipelineService } from './services/active-pipeline.service';
 
 /** Displays the community messaging feature. */
 @Component({
   templateUrl: './obligation.component.html',
   styleUrls: ['./obligation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ActivePipelineService],
 })
 export class DataPipelineObligationComponent extends BaseComponent {
   @ViewChildren(VerifyWithButtonDirective) private checkboxes: VerifyWithButtonDirective[] = [];
@@ -46,6 +48,7 @@ export class DataPipelineObligationComponent extends BaseComponent {
   constructor(
     private readonly obligationsService: ObligationsService,
     private readonly changeDetectorRef: ChangeDetectorRef,
+    private readonly activePipeline: ActivePipelineService,
   ) {
     super();
   }
@@ -67,7 +70,7 @@ export class DataPipelineObligationComponent extends BaseComponent {
         }),
       )
       .subscribe(mapped => {
-        this.formControls.options.setValue(mapped);
+        this.setValue(mapped);
         this.changeDetectorRef.markForCheck();
         this.clearVerificationCheckboxes();
       });
@@ -114,7 +117,7 @@ export class DataPipelineObligationComponent extends BaseComponent {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
-        this.formControls.options.setValue(cloneDeep(FullObligationInputComponent.defaults));
+        this.setValue(cloneDeep(FullObligationInputComponent.defaults));
         this.changeDetectorRef.markForCheck();
       });
   }
@@ -197,5 +200,11 @@ export class DataPipelineObligationComponent extends BaseComponent {
         };
       }),
     };
+  }
+
+  /** Sets the value for the form. */
+  private setValue(options: ObligationOptions): void {
+    this.formControls.options.setValue(options);
+    this.activePipeline.activityNames = this.options.dataActivities.map(da => da.name);
   }
 }

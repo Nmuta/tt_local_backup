@@ -10,6 +10,7 @@ import {
   Validator,
   Validators,
 } from '@angular/forms';
+import { ActivePipelineService } from '@data-pipeline-app/pages/obligation/services/active-pipeline.service';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { StringValidators } from '@shared/validators/string-validators';
 import { DateTime } from 'luxon';
@@ -75,6 +76,7 @@ export class ObligationDataActivityComponent implements ControlValueAccessor, Va
     name: new FormControl(ObligationDataActivityComponent.defaults.name, [
       Validators.required,
       StringValidators.trim,
+      StringValidators.uniqueInList(() => this.activePipeline.activityNames),
     ]),
     table: new FormControl(ObligationDataActivityComponent.defaults.table, [
       Validators.required,
@@ -119,7 +121,7 @@ export class ObligationDataActivityComponent implements ControlValueAccessor, Va
     dependencyNames: this.formControls.dependencyNames,
   });
 
-  constructor() {
+  constructor(private readonly activePipeline: ActivePipelineService) {
     this.formGroup.valueChanges.subscribe(data => this.changeFn(data));
   }
 

@@ -5,17 +5,34 @@
       *ngFor="let formControl of formControls"
       [selectable]="false"
       [removable]="true"
+      selected
       (removed)="removeDependency(formControl)"
+      [color]="!formControl.valid ? 'warn' : null"
     >
       {{ formControl.value }}
+      <mat-icon *ngIf="formControl.hasError('trim')" matTooltip="Has surrounding whitespace"
+        >warning</mat-icon
+      >
+      <mat-icon
+        *ngIf="formControl.hasError('existsInList')"
+        matTooltip="This action was not found within this pipeline"
+        >warning</mat-icon
+      >
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
     <input
+      #input
       placeholder="Activity Name"
       [formControl]="inputFormControl"
       [matChipInputFor]="chipList"
+      [matAutocomplete]="auto"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
       (matChipInputTokenEnd)="addDependency($event)"
     />
   </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelected($event)">
+    <mat-option *ngFor="let option of dependencyOptions$ | async" [value]="option">
+      {{ option }}
+    </mat-option>
+  </mat-autocomplete>
 </mat-form-field>

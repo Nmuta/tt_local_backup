@@ -32,6 +32,7 @@ import { DependencyListComponent } from './components/dependency-list/dependency
 import { ObligationPrincipalsComponent } from './components/obligation-principals/obligation-principals.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 /** Module for displaying the data pipeline obligation page. */
 @NgModule({
@@ -73,6 +74,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatChipsModule,
     MatTableModule,
     MatSelectModule,
+    MatAutocompleteModule,
   ],
   exports: [DataPipelineObligationComponent],
 })
