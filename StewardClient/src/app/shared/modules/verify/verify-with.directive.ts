@@ -1,34 +1,39 @@
-import { Directive, Input } from '@angular/core';
+import { Directive, forwardRef, Input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { BaseDirective } from '@components/base-component/base.directive';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {
+  DisableStateProvider,
+  STEWARD_DISABLE_STATE_PROVIDER,
+} from '../state-managers/injection-tokens';
 
 /** A directive that toggles the enabled state of the host button with the provided mat-checkbox. */
 @Directive({
-  selector: `button[mat-button][verifyWith], button[mat-raised-button][verifyWith], button[mat-icon-button][verifyWith],
-  button[mat-fab][verifyWith], button[mat-mini-fab][verifyWith], button[mat-stroked-button][verifyWith],
-  button[mat-flat-button][verifyWith]`,
+  selector: `button[mat-button][stateManager][verifyWith], button[mat-raised-button][stateManager][verifyWith], button[mat-icon-button][stateManager][verifyWith],
+  button[mat-fab][stateManager][verifyWith], button[mat-mini-fab][stateManager][verifyWith], button[mat-stroked-button][stateManager][verifyWith],
+  button[mat-flat-button][stateManager][verifyWith]`,
+  providers: [
+    {
+      provide: STEWARD_DISABLE_STATE_PROVIDER,
+      useExisting: forwardRef(() => VerifyWithButtonDirective),
+      multi: true,
+    },
+  ],
 })
-export class VerifyWithButtonDirective extends BaseDirective {
+export class VerifyWithButtonDirective extends BaseDirective implements DisableStateProvider {
+  public overrideDisable: boolean = undefined;
+  public overrideDisable$ = new BehaviorSubject<boolean | undefined>(this.overrideDisable);
+
   private checkbox: MatCheckbox = undefined;
   private checkbox$ = new Subject<MatCheckbox>();
   private isVerified = false;
-
-  private disabledByTemplate = false;
 
   /** The checkbox to use for verification. */
   @Input()
   public set verifyWith(value: MatCheckbox) {
     this.checkbox$.next(value);
-  }
-
-  /** The disabled value to use when the monitor is not overriding it. Named to match the default @Inputs. */
-  @Input()
-  public set disabled(value: boolean) {
-    this.disabledByTemplate = value;
-    this.updateHostState();
   }
 
   constructor(private readonly host: MatButton) {
@@ -55,6 +60,7 @@ export class VerifyWithButtonDirective extends BaseDirective {
   }
 
   private updateHostState(): void {
-    this.host.disabled = this.disabledByTemplate || !this.isVerified;
+    this.overrideDisable = !this.isVerified;
+    this.overrideDisable$.next(this.overrideDisable);
   }
 }

@@ -1,0 +1,14 @@
+<span class="message">
+  <span class="label">{{ label }}</span> Complete
+</span>
+<span class="spacer"></span>
+<button
+  mat-icon-button
+  [cdkCopyToClipboard]="monitor.allStatuses | json"
+  matTooltip="Copy statuses"
+>
+  <mat-icon>content_copy</mat-icon>
+</button>
+<button mat-icon-button (click)="onDismiss()" matTooltip="Dismiss">
+  <mat-icon>close</mat-icon>
+</button>

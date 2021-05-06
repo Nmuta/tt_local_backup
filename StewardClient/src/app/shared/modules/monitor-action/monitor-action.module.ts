@@ -7,10 +7,17 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SuccessSnackbarComponent } from './success-snackbar/success-snackbar.component';
+import { MonitorCheckboxDirective } from './monitor-checkbox.directive';
 
 /** A feature module that enables monitoring RXJS actions. */
 @NgModule({
-  declarations: [MonitorButtonDirective, ErrorSnackbarComponent],
+  declarations: [
+    MonitorButtonDirective,
+    ErrorSnackbarComponent,
+    SuccessSnackbarComponent,
+    MonitorCheckboxDirective,
+  ],
   imports: [
     CommonModule,
     MatSnackBarModule,
@@ -19,6 +26,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatButtonModule,
     MatTooltipModule,
   ],
-  exports: [MonitorButtonDirective],
+  exports: [MonitorButtonDirective, MonitorCheckboxDirective],
 })
 export class MonitorActionModule {}

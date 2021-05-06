@@ -7312,6 +7312,13 @@ ngx-material-timepicker@^5.5.3:
     luxon "1.24.0"
     tslib "^1.9.0"
 
+ngx-pipes@^2.7.5:
+  version "2.7.5"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/ngx-pipes/-/ngx-pipes-2.7.5.tgz#22e2e4b7015ae9103210dfa2dacd6f4ae4411639"
+  integrity sha1-IuLktwFa6RAyEN+i2s1vSuRBFjk=
+  dependencies:
+    tslib "^2.0.0"
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"

@@ -16,8 +16,10 @@
             aria-label="Get Entry"
             color="accent"
             matTooltip="GET Pipeline by Name"
+            stateManager
             [disabled]="!options.name"
             [monitor]="getMonitor"
+            [waitOnMonitors]="allMonitors"
             monitorDisable
             monitorWarn
             monitorWarnSnackbar
@@ -41,10 +43,17 @@
           color="primary"
           (click)="onPutClick()"
           clickStop
+          stateManager
           [disabled]="!formGroup.valid"
-          matTooltip="Create or attempt to replace pipeline (if it is in a safe state)"
+          [monitor]="putMonitor"
+          [waitOnMonitors]="allMonitors"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+          monitorCompleteSnackbar
+          matTooltip="Attempt to replace pipeline (if it is in a safe state)"
         >
-          PUT
+          Update
         </button>
       </div>
 
@@ -56,14 +65,24 @@
           color="warn"
           (click)="onPostClick()"
           clickStop
+          stateManager
           [disabled]="!formGroup.valid"
           [verifyWith]="confirmPost"
+          [monitor]="postMonitor"
+          [waitOnMonitors]="allMonitors"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+          monitorCompleteSnackbar
           matTooltip="Create or force replace pipeline (even if it is in an UNSAFE state)"
         >
           POST
         </button>
         <mat-checkbox
           #confirmPost
+          stateManager
+          [monitor]="deleteMonitor"
+          [waitOnMonitors]="allMonitors"
           matTooltip="This operation is UNSAFE. It can force replace a pipeline into a bad state. Check to acknowledge."
         ></mat-checkbox>
       </div>
@@ -74,14 +93,24 @@
           color="warn"
           (click)="onDeleteClick()"
           clickStop
+          stateManager
           [disabled]="!formGroup.valid"
           [verifyWith]="confirmDelete"
+          [monitor]="deleteMonitor"
+          [waitOnMonitors]="allMonitors"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+          monitorCompleteSnackbar
           matTooltip="Delete the pipeline"
         >
           DELETE
         </button>
         <mat-checkbox
           #confirmDelete
+          stateManager
+          [monitor]="deleteMonitor"
+          [waitOnMonitors]="allMonitors"
           matTooltip="This operation is UNSAFE. It permanently deletes a pipeline. Check to acknowledge."
         ></mat-checkbox>
       </div>

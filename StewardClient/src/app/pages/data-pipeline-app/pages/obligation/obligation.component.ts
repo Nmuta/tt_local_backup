@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
+import { replace } from '@helpers/replace';
 import { ObligationPrincipal } from '@models/pipelines/obligation-principal';
 import { SimplifiedObligationPipeline } from '@models/pipelines/simplified-obligation-pipeline';
 import { ObligationsService } from '@services/obligations';
@@ -28,7 +29,11 @@ import { ActivePipelineService } from './services/active-pipeline.service';
 })
 export class DataPipelineObligationComponent extends BaseComponent {
   @ViewChildren(VerifyWithButtonDirective) private checkboxes: VerifyWithButtonDirective[] = [];
-  public getMonitor: ActionMonitor = new ActionMonitor();
+  public getMonitor: ActionMonitor = new ActionMonitor('GET');
+  public putMonitor: ActionMonitor = new ActionMonitor('PUT');
+  public postMonitor: ActionMonitor = new ActionMonitor('POST');
+  public deleteMonitor: ActionMonitor = new ActionMonitor('DELETE');
+  public allMonitors = [this.getMonitor, this.putMonitor, this.postMonitor, this.deleteMonitor];
 
   public formControls = {
     options: new FormControl(cloneDeep(FullObligationInputComponent.defaults), [
@@ -55,8 +60,8 @@ export class DataPipelineObligationComponent extends BaseComponent {
 
   /** Called when the GET button is clicked. */
   public onGetClick(): void {
-    this.getMonitor.dispose();
-    this.getMonitor = new ActionMonitor('GET');
+    this.getMonitor = this.updateMonitors(this.getMonitor);
+
     this.obligationsService
       .get(this.options.name)
       .pipe(
@@ -82,9 +87,11 @@ export class DataPipelineObligationComponent extends BaseComponent {
       return;
     }
 
+    this.putMonitor = this.updateMonitors(this.putMonitor);
+
     this.obligationsService
       .put(this.obligationOptionsToApiObligation(this.options))
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(takeUntil(this.onDestroy$), this.putMonitor.monitorSingleFire())
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
         this.onGetClick();
@@ -97,9 +104,10 @@ export class DataPipelineObligationComponent extends BaseComponent {
       return;
     }
 
+    this.postMonitor = this.updateMonitors(this.postMonitor);
     this.obligationsService
       .post(this.obligationOptionsToApiObligation(this.options))
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(takeUntil(this.onDestroy$), this.postMonitor.monitorSingleFire())
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
         this.onGetClick();
@@ -112,9 +120,11 @@ export class DataPipelineObligationComponent extends BaseComponent {
       return;
     }
 
+    this.deleteMonitor = this.updateMonitors(this.deleteMonitor);
+
     this.obligationsService
       .delete(this.options.name)
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(takeUntil(this.onDestroy$), this.deleteMonitor.monitorSingleFire())
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
         this.setValue(cloneDeep(FullObligationInputComponent.defaults));
@@ -206,5 +216,13 @@ export class DataPipelineObligationComponent extends BaseComponent {
   private setValue(options: ObligationOptions): void {
     this.formControls.options.setValue(options);
     this.activePipeline.activityNames = this.options.dataActivities.map(da => da.name);
+  }
+
+  /** Recreates the given action monitor, replacing it in the allMonitors list. */
+  private updateMonitors(oldMonitor: ActionMonitor): ActionMonitor {
+    oldMonitor.dispose();
+    const newMonitor = new ActionMonitor(oldMonitor.label);
+    this.allMonitors = replace(this.allMonitors, oldMonitor, newMonitor);
+    return newMonitor;
   }
 }

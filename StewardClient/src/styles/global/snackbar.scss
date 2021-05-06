@@ -4,3 +4,8 @@
   background-color: app-color-lighter($app-warn);
   color: app-color-lighter-contrast($app-warn);
 }
+
+.snackbar-success {
+  background-color: app-color-lighter($app-primary);
+  color: app-color-lighter-contrast($app-primary);
+}

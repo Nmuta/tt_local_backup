@@ -1,6 +1,6 @@
 import { cloneDeep, last } from 'lodash';
 import { DateTime } from 'luxon';
-import { MonoTypeOperatorFunction, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, MonoTypeOperatorFunction, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ActionStatus } from './action-status';
 
@@ -34,7 +34,7 @@ export class ActionMonitor {
     value: undefined,
   };
 
-  private _status$ = new Subject<ActionStatus<unknown>>();
+  private _status$ = new BehaviorSubject<ActionStatus<unknown>>(ActionMonitor.DEFAULT_STATUS);
   private _allStatuses: ActionStatus<unknown>[] = [];
   private mode: ActionMonitorMode = null;
 
@@ -128,8 +128,9 @@ export class ActionMonitor {
   }
 
   /** Call to perform cleanup. */
-  public dispose(): void {
+  public dispose(): ActionMonitor {
     this._status$.complete();
+    return this;
   }
 
   private onValueStart(): void {

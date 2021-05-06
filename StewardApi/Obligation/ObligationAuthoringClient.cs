@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
 namespace Turn10.LiveOps.StewardApi.Obligation
 {
@@ -165,6 +166,9 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             try
             {
                 var response = await this.SendRequestAsync(httpRequestMessage).ConfigureAwait(false);
+                if (response == null) {
+                    throw new NotFoundStewardException("This pipeline does not exist.");
+                }
 
                 var pipelineAuthoringModel = JsonConvert.DeserializeObject<PipelineAuthoringModel>(response);
                 pipelineAuthoringModel.Pipeline.Etag = pipelineAuthoringModel.Etag;
