@@ -284,9 +284,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as GravityPlayerInventoryBeta;
+                var details = result.Value as GravityPlayerInventory;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<GravityPlayerInventoryBeta>();
+                details.Should().BeOfType<GravityPlayerInventory>();
             }
         }
 
@@ -541,10 +541,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 this.GravityPlayerDetailsProvider.GetPlayerDetailsByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerDetails>());
                 this.GravityPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
                 this.GravityPlayerDetailsProvider.EnsurePlayerExistsByT10IdAsync(Arg.Any<string>()).Returns(true);
-                this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GravityPlayerInventoryBeta>());
-                this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventoryBeta>());
-                this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventoryBeta>());
-                this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventoryBeta>());
+                this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GravityPlayerInventory>());
+                this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
+                this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
+                this.GravityPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GravityPlayerInventory>());
                 this.GravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(Arg.Any<string>(), Arg.Any<Guid>(), Arg.Any<GravityGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<string>>()); ;
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<GravityGiftHistory>>());
             }

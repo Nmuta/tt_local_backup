@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Forza.WebServices.FH4.master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts;
-using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Xls.Security.FH4.master.Generated;
 using Xls.WebServices.FH4.master.Generated;
@@ -31,7 +30,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.AcquisitionUtc, opt => opt.MapFrom(src => src.acquisitionTime))
                 .ForMember(dest => dest.LastUsedUtc, opt => opt.MapFrom(src => src.lastUsedTime))
                 .ReverseMap();
-            this.CreateMap<SunrisePlayerInventory, AdminForzaUserInventorySummary>().ReverseMap();
 
             this.CreateMap<AdminForzaUserInventoryItem, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.itemId))
@@ -88,34 +86,12 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     src => src.deviceType == "Invalid" ? "Legacy" : src.deviceType == "Win32" ? "Steam" : src.deviceType))
                 .ReverseMap();
             this.CreateMap<ForzaUserGroup, LspGroup>();
-            this.CreateMap<InventoryItem, SunriseInventoryItem>();
-            this.CreateMap<Car, SunriseCar>();
-            this.CreateMap<PlayerInventory, SunrisePlayerInventory>();
             this.CreateMap<SunrisePlayerDetails, IdentityResultAlpha>().ReverseMap();
             this.CreateMap<SunriseGroupGift, SunriseGift>().ReverseMap();
             this.CreateMap<SunriseCar, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.ItemId));
             this.CreateMap<SunriseInventoryItem, MasterInventoryItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.ItemId));
-            this.CreateMap<SunrisePlayerInventory, SunriseGift>()
-                .ForMember(dest => dest.GiftReason, opt => opt.MapFrom(source => source.GiftReason))
-                .ForMember(dest => dest.Inventory, opt => opt.MapFrom((source, destObj, destMem, context) => new SunriseMasterInventory
-                {
-                    CreditRewards = new List<MasterInventoryItem>
-                    {
-                        new MasterInventoryItem { Description = "Credits", Quantity = source.Credits, Id = -1 },
-                        new MasterInventoryItem { Description = "ForzathonPoints", Quantity = source.ForzathonPoints, Id = -1 },
-                        new MasterInventoryItem { Description = "SkillPoints", Quantity = source.SkillPoints, Id = -1 },
-                        new MasterInventoryItem { Description = "WheelSpins", Quantity = source.WheelSpins, Id = -1 },
-                        new MasterInventoryItem { Description = "SuperWheelSpins", Quantity = source.SuperWheelSpins, Id = -1 },
-                    },
-                    Cars = context.Mapper.Map<IList<MasterInventoryItem>>(source.Cars),
-                    CarHorns = context.Mapper.Map<IList<MasterInventoryItem>>(source.CarHorns),
-                    VanityItems = context.Mapper.Map<IList<MasterInventoryItem>>(source.VanityItems),
-                    Emotes = context.Mapper.Map<IList<MasterInventoryItem>>(source.Emotes),
-                    QuickChatLines = context.Mapper.Map<IList<MasterInventoryItem>>(source.QuickChatLines),
-                }))
-                .ReverseMap();
             this.CreateMap<LiveOpsNotification, SunriseNotification>()
                 .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(source => source.id))
                 .ForMember(dest => dest.SendDateUtc, opt => opt.MapFrom(source => source.sentDate))

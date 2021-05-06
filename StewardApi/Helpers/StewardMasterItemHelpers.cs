@@ -22,8 +22,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        public static GravityPlayerInventoryBeta SetPlayerInventoryItemDescriptions(
-            GravityPlayerInventoryBeta playerInventory,
+        public static GravityPlayerInventory SetPlayerInventoryItemDescriptions(
+            GravityPlayerInventory playerInventory,
             GravityMasterInventory masterInventory,
             ILoggingService loggingService)
         {

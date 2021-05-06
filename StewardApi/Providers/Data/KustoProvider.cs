@@ -213,7 +213,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No gift history found for ID: {playerId} in Title: {title}.", ex);
+                throw new QueryFailedStewardException($"Gift history query on ID: {playerId} in Title: {title}.", ex);
             }
         }
 

@@ -9,7 +9,6 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
@@ -95,36 +94,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             foreach (var history in giftHistoryResult)
             {
-                SunriseGift convertedGift;
-                // TODO: Remove these conversions once KUSTO is only using the new SunriseGift model
-                // PlayerInventory model is from Scrutineer V1
-                // SunrisePlayerInventory is from Scrutineer V2 & Steward V1
-                // SunriseGift is the new model that uses a shared inventory model between all titles
-                try
+                var convertedGift = history.GiftInventory.FromJson<SunriseGift>();
+                if (convertedGift.Inventory == null)
                 {
-                    convertedGift = history.GiftInventory.FromJson<SunriseGift>();
-                    if (convertedGift.Inventory == null)
-                    {
-                        throw new UnknownFailureStewardException("Not a SunriseGift model");
-                    }
-                }
-                catch
-                {
-                    try
-                    {
-                        var sunrisePlayerInventory = history.GiftInventory.FromJson<SunrisePlayerInventory>();
-                        convertedGift = this.mapper.Map<SunriseGift>(sunrisePlayerInventory);
-                        if (convertedGift.Inventory == null)
-                        {
-                            throw new UnknownFailureStewardException("Not a SunrisePlayerInventory model");
-                        }
-                    }
-                    catch
-                    {
-                        var playerInventory = history.GiftInventory.FromJson<PlayerInventory>();
-                        var sunrisePlayerInventory = this.mapper.Map<SunrisePlayerInventory>(playerInventory);
-                        convertedGift = this.mapper.Map<SunriseGift>(sunrisePlayerInventory);
-                    }
+                    throw new UnknownFailureStewardException("Not a SunriseGift model");
                 }
 
                 // The below logic is in place to separate out ID and it's antecedent. Once V1 Zendesk stops uploading

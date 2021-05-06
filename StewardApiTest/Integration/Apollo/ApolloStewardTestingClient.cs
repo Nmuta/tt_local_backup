@@ -132,18 +132,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             return await ServiceClient.SendRequestAsync<ApolloUserFlags>(HttpMethod.Put, path, this.authKey, Version, userFlags).ConfigureAwait(false);
         }
 
-        public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<ApolloMasterInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/inventory");
 
-            return await ServiceClient.SendRequestAsync<ApolloPlayerInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<ApolloMasterInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(int profileId)
+        public async Task<ApolloMasterInventory> GetPlayerInventoryAsync(int profileId)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/profileId({profileId})/inventory");
 
-            return await ServiceClient.SendRequestAsync<ApolloPlayerInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<ApolloMasterInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task<IList<ApolloInventoryProfile>> GetInventoryProfilesAsync(ulong xuid)

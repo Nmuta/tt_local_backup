@@ -72,6 +72,7 @@ export abstract class GiftHistoryResultsBaseComponent<
         takeUntil(this.onDestroy$),
         tap(() => {
           this.giftHistoryList = undefined;
+          this.loadError = undefined;
         }),
         filter(
           () =>
@@ -81,17 +82,17 @@ export abstract class GiftHistoryResultsBaseComponent<
         switchMap(() => {
           this.isLoading = true;
 
-          return this.usingPlayerIdentities
+          return (this.usingPlayerIdentities
             ? this.retrieveHistoryByPlayer()
-            : this.retrieveHistoryByLspGroup();
-        }),
-        tap(() => {
-          this.isLoading = false;
-        }),
-        catchError(error => {
-          this.loadError = error;
-          this.giftHistoryList = undefined;
-          return NEVER;
+            : this.retrieveHistoryByLspGroup()
+          ).pipe(
+            catchError(error => {
+              this.isLoading = false;
+              this.loadError = error;
+              this.giftHistoryList = undefined;
+              return NEVER;
+            }),
+          );
         }),
         switchMap(giftHistories => {
           // Add gift history view content
@@ -105,6 +106,7 @@ export abstract class GiftHistoryResultsBaseComponent<
         }),
       )
       .subscribe(giftHistories => {
+        this.isLoading = false;
         this.giftHistoryList = giftHistories;
       });
 

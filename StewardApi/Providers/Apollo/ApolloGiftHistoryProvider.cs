@@ -10,7 +10,6 @@ using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo
@@ -95,36 +94,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             foreach (var history in giftHistoryResult)
             {
-                ApolloGift convertedGift;
-                // TODO: Remove these conversions once KUSTO is only using the new SunriseGift model
-                // PlayerInventory model is from Scrutineer V1
-                // SunrisePlayerInventory is from Scrutineer V2 & Steward V1
-                // SunriseGift is the new model that uses a shared inventory model between all titles
-                try
+                var convertedGift = history.GiftInventory.FromJson<ApolloGift>();
+                if (convertedGift.Inventory == null)
                 {
-                    convertedGift = history.GiftInventory.FromJson<ApolloGift>();
-                    if (convertedGift.Inventory == null)
-                    {
-                        throw new UnknownFailureStewardException("Not an ApolloGift model");
-                    }
-                }
-                catch
-                {
-                    try
-                    {
-                        var apolloPlayerInventory = history.GiftInventory.FromJson<ApolloPlayerInventory>();
-                        convertedGift = this.mapper.Map<ApolloGift>(apolloPlayerInventory);
-                        if (convertedGift.Inventory == null)
-                        {
-                            throw new UnknownFailureStewardException("Not an ApolloPlayerInventory model");
-                        }
-                    }
-                    catch
-                    {
-                        var playerInventory = history.GiftInventory.FromJson<PlayerInventory>();
-                        var apolloPlayerInventory = this.mapper.Map<ApolloPlayerInventory>(playerInventory);
-                        convertedGift = this.mapper.Map<ApolloGift>(apolloPlayerInventory);
-                    }
+                    throw new UnknownFailureStewardException("Not an ApolloGift model");
                 }
 
                 // The below logic is in place to separate out ID and it's antecedent. Once V1 Zendesk stops uploading

@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var t10Id = Fixture.Create<string>();
 
             // Act.
-            var actions = new List<Func<Task<GravityPlayerInventoryBeta>>>
+            var actions = new List<Func<Task<GravityPlayerInventory>>>
             {
                 async () => await provider.GetPlayerInventoryAsync(xuid).ConfigureAwait(false),
                 async () => await provider.GetPlayerInventoryAsync(xuid, profileId).ConfigureAwait(false),
@@ -110,7 +110,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<GravityPlayerInventoryBeta>();
+                action().Result.Should().BeOfType<GravityPlayerInventory>();
             }
         }
 
@@ -273,7 +273,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
                 this.GravityUserService.LiveOpsGetUserDetailsByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByT10IdOutput>());
                 this.GravityUserInventoryService.LiveOpsGetUserInventoryByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<UserInventoryService.LiveOpsGetUserInventoryByT10IdOutput>());
                 this.GravityUserInventoryService.LiveOpsGetInventoryByProfileIdAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<UserInventoryService.LiveOpsGetInventoryByProfileIdOutput>());
-                this.Mapper.Map<GravityPlayerInventoryBeta>(Arg.Any<LiveOpsUserInventory>()).Returns(Fixture.Create<GravityPlayerInventoryBeta>());
+                this.Mapper.Map<GravityPlayerInventory>(Arg.Any<LiveOpsUserInventory>()).Returns(Fixture.Create<GravityPlayerInventory>());
             }
 
             public IGravityUserService GravityUserService { get; set; } = Substitute.For<IGravityUserService>();

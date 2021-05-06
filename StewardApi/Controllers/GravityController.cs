@@ -163,7 +163,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
+        [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
             var playerInventory = await this.gravityPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
@@ -177,7 +177,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/t10Id({t10Id})/inventory")]
-        [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
+        [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(string t10Id)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
@@ -193,7 +193,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/xuid({xuid})/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
+        [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid, string profileId)
         {
             profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
@@ -214,7 +214,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/t10Id({t10Id})/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(GravityPlayerInventoryBeta))]
+        [SwaggerResponse(200, type: typeof(GravityPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(string t10Id, string profileId)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));

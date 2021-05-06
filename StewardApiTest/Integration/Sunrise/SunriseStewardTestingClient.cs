@@ -146,18 +146,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             await ServiceClient.SendRequestAsync(HttpMethod.Put, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<SunriseMasterInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/inventory");
 
-            return await ServiceClient.SendRequestAsync<SunrisePlayerInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<SunriseMasterInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(int profileId)
+        public async Task<SunriseMasterInventory> GetPlayerInventoryAsync(int profileId)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/profileId({profileId})/inventory");
 
-            return await ServiceClient.SendRequestAsync<SunrisePlayerInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<SunriseMasterInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task<IList<SunriseInventoryProfile>> GetInventoryProfilesAsync(ulong xuid)

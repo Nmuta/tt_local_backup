@@ -10,7 +10,6 @@ using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
-using Turn10.LiveOps.StewardApi.Contracts.Legacy;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Gravity
@@ -96,36 +95,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             foreach (var history in giftHistoryResult)
             {
-                GravityGift convertedGift;
-                // TODO: Remove these conversions once KUSTO is only using the new SunriseGift model
-                // PlayerInventory model is from Scrutineer V1
-                // GravityPlayerInventory is from Scrutineer V2 & Steward V1
-                // GravityGift is the new model that uses a shared inventory model between all titles
-                try
+                var convertedGift = history.GiftInventory.FromJson<GravityGift>();
+                if (convertedGift.Inventory == null)
                 {
-                    convertedGift = history.GiftInventory.FromJson<GravityGift>();
-                    if (convertedGift.Inventory == null)
-                    {
-                        throw new UnknownFailureStewardException("Not an GravityGift model");
-                    }
-                }
-                catch
-                {
-                    try
-                    {
-                        var gravityPlayerInventory = history.GiftInventory.FromJson<GravityPlayerInventory>();
-                        convertedGift = this.mapper.Map<GravityGift>(gravityPlayerInventory);
-                        if (convertedGift.Inventory == null)
-                        {
-                            throw new UnknownFailureStewardException("Not an GravityPlayerInventory model");
-                        }
-                    }
-                    catch
-                    {
-                        var playerInventory = history.GiftInventory.FromJson<PlayerInventory>();
-                        var gravityPlayerInventory = this.mapper.Map<GravityPlayerInventory>(playerInventory);
-                        convertedGift = this.mapper.Map<GravityGift>(gravityPlayerInventory);
-                    }
+                    throw new UnknownFailureStewardException("Not a GravityGift model");
                 }
 
                 // The below logic is in place to separate out ID and it's antecedent. Once V1 Zendesk stops uploading

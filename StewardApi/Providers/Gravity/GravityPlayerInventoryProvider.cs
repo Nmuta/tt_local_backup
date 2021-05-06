@@ -48,7 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<GravityPlayerInventoryBeta> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<GravityPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
                 var response = await this.gravityUserInventoryService.LiveOpsGetUserInventoryByT10IdAsync(profile.Turn10Id).ConfigureAwait(false);
 
-                return this.mapper.Map<GravityPlayerInventoryBeta>(response.userInventory);
+                return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<GravityPlayerInventoryBeta> GetPlayerInventoryAsync(string t10Id)
+        public async Task<GravityPlayerInventory> GetPlayerInventoryAsync(string t10Id)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
 
@@ -75,7 +75,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 var response = await this.gravityUserInventoryService.LiveOpsGetUserInventoryByT10IdAsync(t10Id)
                     .ConfigureAwait(false);
 
-                return this.mapper.Map<GravityPlayerInventoryBeta>(response.userInventory);
+                return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<GravityPlayerInventoryBeta> GetPlayerInventoryAsync(ulong xuid, string profileId)
+        public async Task<GravityPlayerInventory> GetPlayerInventoryAsync(ulong xuid, string profileId)
         {
             profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
 
@@ -95,7 +95,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
                 var response = await this.gravityUserInventoryService.LiveOpsGetInventoryByProfileIdAsync(profile.Turn10Id, profileId).ConfigureAwait(false);
 
-                return this.mapper.Map<GravityPlayerInventoryBeta>(response.userInventory);
+                return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
             }
             catch (Exception ex)
             {
@@ -104,7 +104,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<GravityPlayerInventoryBeta> GetPlayerInventoryAsync(string t10Id, string profileId)
+        public async Task<GravityPlayerInventory> GetPlayerInventoryAsync(string t10Id, string profileId)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             profileId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(profileId));
@@ -114,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 var response = await this.gravityUserInventoryService.LiveOpsGetInventoryByProfileIdAsync(t10Id, profileId)
                     .ConfigureAwait(false);
 
-                return this.mapper.Map<GravityPlayerInventoryBeta>(response.userInventory);
+                return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
             }
             catch (Exception ex)
             {
