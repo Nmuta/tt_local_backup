@@ -27,6 +27,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Forza Motorsport 8's internal name.
         /// </summary>
-        Steelhead
+        Steelhead,
+
+        /// <summary>
+        ///     Forza Horizon 5's internal name.
+        /// </summary>
+        Woodstock
     }
 }

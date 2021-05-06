@@ -17,28 +17,28 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Validation;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
     /// <summary>
-    ///     Handles requests for Steelhead.
+    ///     Handles requests for Woodstock.
     /// </summary>
-    [Route("api/v1/title/steelhead")]
+    [Route("api/v1/title/woodstock")]
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This can't be avoided.")]
-    public class SteelheadController : ControllerBase
+    public sealed class WoodstockController : ControllerBase
     {
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 100;
-        private const KustoGameDbSupportedTitle Title = KustoGameDbSupportedTitle.Steelhead;
+        private const KustoGameDbSupportedTitle Title = KustoGameDbSupportedTitle.Woodstock;
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -49,46 +49,46 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IMemoryCache memoryCache;
         private readonly ILoggingService loggingService;
         private readonly IKustoProvider kustoProvider;
-        private readonly ISteelheadPlayerInventoryProvider steelheadPlayerInventoryProvider;
-        private readonly ISteelheadPlayerDetailsProvider steelheadPlayerDetailsProvider;
-        private readonly ISteelheadGiftHistoryProvider giftHistoryProvider;
-        private readonly ISteelheadBanHistoryProvider banHistoryProvider;
+        private readonly IWoodstockPlayerInventoryProvider woodstockPlayerInventoryProvider;
+        private readonly IWoodstockPlayerDetailsProvider woodstockPlayerDetailsProvider;
+        private readonly IWoodstockGiftHistoryProvider giftHistoryProvider;
+        private readonly IWoodstockBanHistoryProvider banHistoryProvider;
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
         private readonly IScheduler scheduler;
-        private readonly IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator;
-        private readonly IRequestValidator<SteelheadGift> giftRequestValidator;
-        private readonly IRequestValidator<SteelheadGroupGift> groupGiftRequestValidator;
-        private readonly IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator;
-        private readonly IRequestValidator<SteelheadUserFlagsInput> userFlagsRequestValidator;
+        private readonly IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator;
+        private readonly IRequestValidator<WoodstockGift> giftRequestValidator;
+        private readonly IRequestValidator<WoodstockGroupGift> groupGiftRequestValidator;
+        private readonly IRequestValidator<WoodstockBanParametersInput> banParametersRequestValidator;
+        private readonly IRequestValidator<WoodstockUserFlagsInput> userFlagsRequestValidator;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SteelheadController"/> class.
+        ///     Initializes a new instance of the <see cref="WoodstockController"/> class.
         /// </summary>
-        public SteelheadController(
+        public WoodstockController(
             IMemoryCache memoryCache,
             ILoggingService loggingService,
             IKustoProvider kustoProvider,
-            ISteelheadPlayerDetailsProvider steelheadPlayerDetailsProvider,
-            ISteelheadPlayerInventoryProvider steelheadPlayerInventoryProvider,
+            IWoodstockPlayerDetailsProvider woodstockPlayerDetailsProvider,
+            IWoodstockPlayerInventoryProvider woodstockPlayerInventoryProvider,
             IKeyVaultProvider keyVaultProvider,
-            ISteelheadGiftHistoryProvider giftHistoryProvider,
-            ISteelheadBanHistoryProvider banHistoryProvider,
+            IWoodstockGiftHistoryProvider giftHistoryProvider,
+            IWoodstockBanHistoryProvider banHistoryProvider,
             IConfiguration configuration,
             IScheduler scheduler,
             IJobTracker jobTracker,
             IMapper mapper,
-            IRequestValidator<SteelheadMasterInventory> masterInventoryRequestValidator,
-            IRequestValidator<SteelheadGift> giftRequestValidator,
-            IRequestValidator<SteelheadGroupGift> groupGiftRequestValidator,
-            IRequestValidator<SteelheadBanParametersInput> banParametersRequestValidator,
-            IRequestValidator<SteelheadUserFlagsInput> userFlagsRequestValidator)
+            IRequestValidator<WoodstockMasterInventory> masterInventoryRequestValidator,
+            IRequestValidator<WoodstockGift> giftRequestValidator,
+            IRequestValidator<WoodstockGroupGift> groupGiftRequestValidator,
+            IRequestValidator<WoodstockBanParametersInput> banParametersRequestValidator,
+            IRequestValidator<WoodstockUserFlagsInput> userFlagsRequestValidator)
         {
             memoryCache.ShouldNotBeNull(nameof(memoryCache));
             loggingService.ShouldNotBeNull(nameof(loggingService));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
-            steelheadPlayerDetailsProvider.ShouldNotBeNull(nameof(steelheadPlayerDetailsProvider));
-            steelheadPlayerInventoryProvider.ShouldNotBeNull(nameof(steelheadPlayerInventoryProvider));
+            woodstockPlayerDetailsProvider.ShouldNotBeNull(nameof(woodstockPlayerDetailsProvider));
+            woodstockPlayerInventoryProvider.ShouldNotBeNull(nameof(woodstockPlayerInventoryProvider));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
@@ -106,8 +106,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.memoryCache = memoryCache;
             this.loggingService = loggingService;
             this.kustoProvider = kustoProvider;
-            this.steelheadPlayerDetailsProvider = steelheadPlayerDetailsProvider;
-            this.steelheadPlayerInventoryProvider = steelheadPlayerInventoryProvider;
+            this.woodstockPlayerDetailsProvider = woodstockPlayerDetailsProvider;
+            this.woodstockPlayerInventoryProvider = woodstockPlayerInventoryProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
             this.scheduler = scheduler;
@@ -124,7 +124,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the master inventory data.
         /// </summary>
         [HttpGet("masterInventory")]
-        [SwaggerResponse(200, type: typeof(SteelheadMasterInventory))]
+        [SwaggerResponse(200, type: typeof(WoodstockMasterInventory))]
         public async Task<IActionResult> GetMasterInventoryList()
         {
             var masterInventory = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
@@ -139,9 +139,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
-            static string MakeKey(IdentityQueryAlpha identityQuery)
+            string MakeKey(IdentityQueryAlpha identityQuery)
             {
-                return $"steelhead:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
+                return $"woodstock:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
             }
 
             var results = new List<IdentityResultAlpha>();
@@ -173,12 +173,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player details.
         /// </summary>
         [HttpGet("player/gamertag({gamertag})/details")]
-        [SwaggerResponse(200, type: typeof(SteelheadPlayerDetails))]
+        [SwaggerResponse(200, type: typeof(WoodstockPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var playerDetails = await this.steelheadPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
+            var playerDetails = await this.woodstockPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
             if (playerDetails == null)
             {
                 return this.NotFound($"Player {gamertag} was not found.");
@@ -191,10 +191,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player details.
         /// </summary>
         [HttpGet("player/xuid({xuid})/details")]
-        [SwaggerResponse(200, type: typeof(SteelheadPlayerDetails))]
+        [SwaggerResponse(200, type: typeof(WoodstockPlayerDetails))]
         public async Task<IActionResult> GetPlayerDetails(ulong xuid)
         {
-            var playerDetails = await this.steelheadPlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
+            var playerDetails = await this.woodstockPlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
             if (playerDetails == null)
             {
                 return this.NotFound($"Player {xuid} was not found.");
@@ -212,7 +212,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.steelheadPlayerDetailsProvider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(true);
+            var result = await this.woodstockPlayerDetailsProvider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -224,7 +224,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, bool isBanned)
         {
-            await this.steelheadPlayerDetailsProvider.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(true);
+            await this.woodstockPlayerDetailsProvider.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -239,7 +239,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.steelheadPlayerDetailsProvider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
+            var result = await this.woodstockPlayerDetailsProvider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -248,15 +248,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets user flags.
         /// </summary>
         [HttpGet("player/xuid({xuid})/userFlags")]
-        [SwaggerResponse(200, type: typeof(SteelheadUserFlags))]
+        [SwaggerResponse(200, type: typeof(WoodstockUserFlags))]
         public async Task<IActionResult> GetUserFlags(ulong xuid)
         {
-            if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
             {
                 return this.NotFound($"No profile found for XUID: {xuid}.");
             }
 
-            var result = await this.steelheadPlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
+            var result = await this.woodstockPlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -265,8 +265,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Sets user flags.
         /// </summary>
         [HttpPut("player/xuid({xuid})/userFlags")]
-        [SwaggerResponse(200, type: typeof(SteelheadUserFlags))]
-        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] SteelheadUserFlagsInput userFlags)
+        [SwaggerResponse(200, type: typeof(WoodstockUserFlags))]
+        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] WoodstockUserFlagsInput userFlags)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
 
@@ -277,15 +277,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest(result);
             }
 
-            if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
             {
                 return this.NotFound($"No profile found for XUID: {xuid}.");
             }
 
-            var validatedFlags = this.mapper.Map<SteelheadUserFlags>(userFlags);
-            await this.steelheadPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags).ConfigureAwait(true);
+            var validatedFlags = this.mapper.Map<WoodstockUserFlags>(userFlags);
+            await this.woodstockPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags).ConfigureAwait(true);
 
-            var results = await this.steelheadPlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
+            var results = await this.woodstockPlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -296,7 +296,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
         public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
-            [FromBody] IList<SteelheadBanParametersInput> banInput)
+            [FromBody] IList<WoodstockBanParametersInput> banInput)
         {
             var userClaims = this.User.UserClaims();
             var requestingAgent = userClaims.ObjectId;
@@ -310,7 +310,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<SteelheadBanParameters>>(banInput);
+            var banParameters = this.mapper.Map<IList<WoodstockBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -318,7 +318,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest(result);
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), requestingAgent, $"Steelhead Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), requestingAgent, $"Woodstock Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -326,7 +326,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var results = await this.steelheadPlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
+                    var results = await this.woodstockPlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
 
                     await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Completed, results).ConfigureAwait(true);
                 }
@@ -350,7 +350,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
         [SwaggerResponse(202)]
         public async Task<IActionResult> BanPlayers(
-            [FromBody] IList<SteelheadBanParametersInput> banInput)
+            [FromBody] IList<WoodstockBanParametersInput> banInput)
         {
             var userClaims = this.User.UserClaims();
             var requestingAgent = userClaims.ObjectId;
@@ -364,7 +364,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 this.banParametersRequestValidator.Validate(banParam, this.ModelState);
             }
 
-            var banParameters = this.mapper.Map<IList<SteelheadBanParameters>>(banInput);
+            var banParameters = this.mapper.Map<IList<WoodstockBanParameters>>(banInput);
 
             if (!this.ModelState.IsValid)
             {
@@ -372,7 +372,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest(result);
             }
 
-            var results = await this.steelheadPlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
+            var results = await this.woodstockPlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -386,7 +386,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             xuids.ShouldNotBeNull(nameof(xuids));
 
-            var result = await this.steelheadPlayerDetailsProvider.GetUserBanSummariesAsync(xuids).ConfigureAwait(true);
+            var result = await this.woodstockPlayerDetailsProvider.GetUserBanSummariesAsync(xuids).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -412,7 +412,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var playerDetails = await this.steelheadPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
+            var playerDetails = await this.woodstockPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
 
             if (playerDetails == null)
             {
@@ -434,7 +434,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.steelheadPlayerDetailsProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
+            var result = await this.woodstockPlayerDetailsProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -443,15 +443,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(SteelheadMasterInventory))]
+        [SwaggerResponse(200, type: typeof(WoodstockMasterInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
-            if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
             {
                 return this.NotFound($"No profile found for XUID: {xuid}.");
             }
 
-            var getPlayerInventory = this.steelheadPlayerInventoryProvider.GetPlayerInventoryAsync(xuid);
+            var getPlayerInventory = this.woodstockPlayerInventoryProvider.GetPlayerInventoryAsync(xuid);
             var getMasterInventory = this.RetrieveMasterInventoryList();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
@@ -472,10 +472,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(SteelheadMasterInventory))]
+        [SwaggerResponse(200, type: typeof(WoodstockMasterInventory))]
         public async Task<IActionResult> GetPlayerInventoryByProfileId(int profileId)
         {
-            var getPlayerInventory = this.steelheadPlayerInventoryProvider.GetPlayerInventoryAsync(profileId);
+            var getPlayerInventory = this.woodstockPlayerInventoryProvider.GetPlayerInventoryAsync(profileId);
             var getMasterInventory = this.RetrieveMasterInventoryList();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
@@ -496,11 +496,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory profiles.
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventoryProfiles")]
-        [SwaggerResponse(200, type: typeof(IList<SteelheadInventoryProfile>))]
+        [SwaggerResponse(200, type: typeof(IList<WoodstockInventoryProfile>))]
         [SwaggerResponse(200)]
         public async Task<IActionResult> GetPlayerInventoryProfiles(ulong xuid)
         {
-            var inventoryProfileSummary = await this.steelheadPlayerInventoryProvider.GetInventoryProfilesAsync(xuid).ConfigureAwait(true);
+            var inventoryProfileSummary = await this.woodstockPlayerInventoryProvider.GetInventoryProfilesAsync(xuid).ConfigureAwait(true);
 
             if (inventoryProfileSummary == null)
             {
@@ -515,7 +515,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
-        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] SteelheadGroupGift groupGift)
+        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] WoodstockGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
             var requestingAgent = userClaims.ObjectId;
@@ -539,7 +539,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -556,7 +556,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requestingAgent, $"Steelhead Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requestingAgent, $"Woodstock Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -565,7 +565,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 try
                 {
                     var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-                    var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
+                    var response = await this.woodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
                     await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
                 }
                 catch (Exception)
@@ -586,7 +586,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
-        public async Task<IActionResult> UpdateGroupInventories([FromBody] SteelheadGroupGift groupGift)
+        public async Task<IActionResult> UpdateGroupInventories([FromBody] WoodstockGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
             var requestingAgent = userClaims.ObjectId;
@@ -610,7 +610,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -628,7 +628,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
+            var response = await this.woodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
         }
 
@@ -640,49 +640,42 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
-        public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] SteelheadGift gift)
+        public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] WoodstockGift gift)
         {
-            try
+            var userClaims = this.User.UserClaims();
+            var requestingAgent = userClaims.ObjectId;
+
+            gift.ShouldNotBeNull(nameof(gift));
+            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+
+            this.giftRequestValidator.Validate(gift, this.ModelState);
+
+            if (!this.ModelState.IsValid)
             {
-                var userClaims = this.User.UserClaims();
-                var requestingAgent = userClaims.ObjectId;
+                var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
 
-                gift.ShouldNotBeNull(nameof(gift));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
-
-                this.giftRequestValidator.Validate(gift, this.ModelState);
-
-                if (!this.ModelState.IsValid)
-                {
-                    var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
-
-                    return this.BadRequest(result);
-                }
-
-                var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.Inventory).ConfigureAwait(true);
-                if (invalidItems.Length > 0)
-                {
-                    return this.BadRequest($"Invalid items found. {invalidItems}");
-                }
-
-                var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-                var response = await this.steelheadPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
-                return this.Ok(response);
+                return this.BadRequest(result);
             }
-            catch (Exception ex)
+
+            var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.Inventory).ConfigureAwait(true);
+            if (invalidItems.Length > 0)
             {
-                return this.BadRequest(ex);
+                return this.BadRequest($"Invalid items found. {invalidItems}");
             }
+
+            var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var response = await this.woodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
+            return this.Ok(response);
         }
 
         /// <summary>
         ///     Gets the gift histories.
         /// </summary>
         [HttpGet("player/xuid({xuid})/giftHistory")]
-        [SwaggerResponse(200, type: typeof(IList<SteelheadGiftHistory>))]
+        [SwaggerResponse(200, type: typeof(IList<WoodstockGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(ulong xuid)
         {
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.SteelheadCodeName, GiftIdentityAntecedent.Xuid).ConfigureAwait(true);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.WoodstockCodeName, GiftIdentityAntecedent.Xuid).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }
@@ -691,10 +684,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the gift histories.
         /// </summary>
         [HttpGet("group/groupId({groupId})/giftHistory")]
-        [SwaggerResponse(200, type: typeof(IList<SteelheadGiftHistory>))]
+        [SwaggerResponse(200, type: typeof(IList<WoodstockGiftHistory>))]
         public async Task<IActionResult> GetGiftHistoriesAsync(int groupId)
         {
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.SteelheadCodeName, GiftIdentityAntecedent.LspGroupId).ConfigureAwait(true);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.WoodstockCodeName, GiftIdentityAntecedent.LspGroupId).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }
@@ -716,7 +709,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid)
         {
-            var getServicesBanHistory = this.steelheadPlayerDetailsProvider.GetUserBanHistoryAsync(xuid);
+            var getServicesBanHistory = this.woodstockPlayerDetailsProvider.GetUserBanHistoryAsync(xuid);
             var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(xuid, Title.ToString());
 
             await Task.WhenAll(getServicesBanHistory, getLiveOpsBanHistory).ConfigureAwait(true);
@@ -743,7 +736,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             try
             {
-                return await this.steelheadPlayerDetailsProvider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+                return await this.woodstockPlayerDetailsProvider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -772,14 +765,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the master inventory list.
         /// </summary>
-        private async Task<SteelheadMasterInventory> RetrieveMasterInventoryList()
+        private async Task<WoodstockMasterInventory> RetrieveMasterInventoryList()
         {
-            var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM8Cars);
-            var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFM8VanityItems);
+            var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5Cars);
+            var carHorns = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5CarHorns);
+            var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5VanityItems);
+            var emotes = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5Emotes);
+            var quickChatLines = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5QuickChatLines);
 
-            await Task.WhenAll(cars, vanityItems).ConfigureAwait(true);
+            await Task.WhenAll(cars, carHorns, vanityItems, emotes, quickChatLines).ConfigureAwait(true);
 
-            var masterInventory = new SteelheadMasterInventory
+            var masterInventory = new WoodstockMasterInventory
             {
                 CreditRewards = new List<MasterInventoryItem>
                 {
@@ -790,7 +786,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" }
                 },
                 Cars = await cars.ConfigureAwait(true),
+                CarHorns = await carHorns.ConfigureAwait(true),
                 VanityItems = await vanityItems.ConfigureAwait(true),
+                Emotes = await emotes.ConfigureAwait(true),
+                QuickChatLines = await quickChatLines.ConfigureAwait(true)
             };
 
             return masterInventory;
@@ -799,7 +798,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        private async Task<string> VerifyGiftAgainstMasterInventory(SteelheadMasterInventory gift)
+        private async Task<string> VerifyGiftAgainstMasterInventory(WoodstockMasterInventory gift)
         {
             var masterInventoryItem = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
             var error = string.Empty;
@@ -810,10 +809,28 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 error += validItem ? string.Empty : $"Car: {car.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
+            foreach (var carHorn in gift.CarHorns)
+            {
+                var validItem = masterInventoryItem.CarHorns.Any(data => { return data.Id == carHorn.Id; });
+                error += validItem ? string.Empty : $"CarHorn: {carHorn.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
             foreach (var vanityItem in gift.VanityItems)
             {
                 var validItem = masterInventoryItem.VanityItems.Any(data => { return data.Id == vanityItem.Id; });
                 error += validItem ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var emote in gift.Emotes)
+            {
+                var validItem = masterInventoryItem.Emotes.Any(data => { return data.Id == emote.Id; });
+                error += validItem ? string.Empty : $"Emote: {emote.Id.ToString(CultureInfo.InvariantCulture)}, ";
+            }
+
+            foreach (var quickChatLine in gift.QuickChatLines)
+            {
+                var validItem = masterInventoryItem.QuickChatLines.Any(data => { return data.Id == quickChatLine.Id; });
+                error += validItem ? string.Empty : $"QuickChatLine: {quickChatLine.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             return error;

@@ -73,5 +73,31 @@
         ///     Basic query for getting the FM8 VanityItem data.
         /// </summary>
         public const string GetFM8VanityItems = "FM8_VanityItems | project Id, Name";
+
+        /// <summary>
+        ///     Basic query for getting the FH4 Car data.
+        /// </summary>
+        public const string GetFH5Cars =
+            "FH5_DataCars | join kind = leftouter(FH5_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = Id, Description = strcat_delim(' ', MakeDisplayName, DisplayName, strcat(\"(\", Year, \")\"))";
+
+        /// <summary>
+        ///     Basic query for getting the FH4 CarHorn data.
+        /// </summary>
+        public const string GetFH5CarHorns = "FH5_CarHorns | project Id=['id'], column_ifexists('DisplayNameEnglish', '')";
+
+        /// <summary>
+        ///     Basic query for getting the FH4 VanityItem data.
+        /// </summary>
+        public const string GetFH5VanityItems = "FH5_VanityItems | project Id=['id'], DisplayNameEnglish=coalesce(DisplayNameEnglish, ItemID)";
+
+        /// <summary>
+        ///     Basic query for getting the FH4 Emote data.
+        /// </summary>
+        public const string GetFH5Emotes = "FH5_EmoteData | project Id=['id'], column_ifexists('NameEnglish', '')";
+
+        /// <summary>
+        ///     Basic query for getting the FH4 QuickChatLine data.
+        /// </summary>
+        public const string GetFH5QuickChatLines = "FH5_QuickChatData | project Id=['id'], column_ifexists('ChatMessageEnglish', '')";
     }
 }

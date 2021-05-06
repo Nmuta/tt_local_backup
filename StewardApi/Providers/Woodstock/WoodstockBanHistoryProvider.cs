@@ -8,13 +8,13 @@ using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
-namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
+namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 {
     /// <inheritdoc />
-    public sealed class SteelheadBanHistoryProvider : ISteelheadBanHistoryProvider
+    public sealed class WoodstockBanHistoryProvider : IWoodstockBanHistoryProvider
     {
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -26,9 +26,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         private readonly string kustoDatabase;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SteelheadBanHistoryProvider"/> class.
+        ///     Initializes a new instance of the <see cref="WoodstockBanHistoryProvider"/> class.
         /// </summary>
-        public SteelheadBanHistoryProvider(IKustoStreamingLogger kustoStreamingLogger, IKustoProvider kustoProvider, IConfiguration configuration)
+        public WoodstockBanHistoryProvider(IKustoStreamingLogger kustoStreamingLogger, IKustoProvider kustoProvider, IConfiguration configuration)
         {
             kustoStreamingLogger.ShouldNotBeNull(nameof(kustoStreamingLogger));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
@@ -41,14 +41,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task UpdateBanHistoryAsync(ulong xuid, string title, string requestingAgent, SteelheadBanParameters banParameters)
+        public async Task UpdateBanHistoryAsync(ulong xuid, string title, string requestingAgent, WoodstockBanParameters banParameters)
         {
             requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
             // Gamertags must be set to null for NGP. v-joyate 20201123
-            var sanitizedBanParameters = new SteelheadBanParameters
+            var sanitizedBanParameters = new WoodstockBanParameters
             {
                 Xuid = banParameters.Xuid,
                 Gamertag = null,

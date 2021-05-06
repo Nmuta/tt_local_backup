@@ -1,4 +1,8 @@
-﻿using AutoFixture;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -8,27 +12,23 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Validation;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
+namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {
     [TestClass]
-    public sealed class SteelheadControllerTests
+    public sealed class WoodstockControllerTests
     {
         private static readonly Fixture Fixture = new Fixture();
 
@@ -76,30 +76,30 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenSunrisePlayerDetailsProviderNull_Throws()
+        public void Ctor_WhenWoodstockPlayerDetailsProviderNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { SteelheadPlayerDetailsProvider = null };
+            var dependencies = new Dependencies { WoodstockPlayerDetailsProvider = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadPlayerDetailsProvider"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockPlayerDetailsProvider"));
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenSunrisePlayerInventoryProviderNull_Throws()
+        public void Ctor_WhenWoodstockPlayerInventoryProviderNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { SteelheadPlayerInventoryProvider = null };
+            var dependencies = new Dependencies { WoodstockPlayerInventoryProvider = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadPlayerInventoryProvider"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "WoodstockPlayerInventoryProvider"));
         }
 
         [TestMethod]
@@ -279,7 +279,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var query = Fixture.Create<IdentityQueryAlpha>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> {query}).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -296,7 +296,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var query = new IdentityQueryAlpha { Xuid = default, Gamertag = null };
+            var query = new IdentityQueryAlpha {Xuid = default, Gamertag = null};
 
             // Act.
             Func<Task<IActionResult>> action = async () => await controller.GetPlayerIdentity(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
@@ -329,9 +329,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as SteelheadPlayerDetails;
+                var details = result.Value as WoodstockPlayerDetails;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<SteelheadPlayerDetails>();
+                details.Should().BeOfType<WoodstockPlayerDetails>();
             }
         }
 
@@ -465,9 +465,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as SteelheadUserFlags;
+            var details = result.Value as WoodstockUserFlags;
             details.Should().NotBeNull();
-            details.Should().BeOfType<SteelheadUserFlags>();
+            details.Should().BeOfType<WoodstockUserFlags>();
         }
 
         [TestMethod]
@@ -477,7 +477,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             // Arrange.
             var controller = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var userFlags = Fixture.Create<SteelheadUserFlagsInput>();
+            var userFlags = Fixture.Create<WoodstockUserFlagsInput>();
 
             // Act.
             async Task<IActionResult> Action() => await controller.SetUserFlags(xuid, userFlags).ConfigureAwait(false);
@@ -486,9 +486,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as SteelheadUserFlags;
+            var details = result.Value as WoodstockUserFlags;
             details.Should().NotBeNull();
-            details.Should().BeOfType<SteelheadUserFlags>();
+            details.Should().BeOfType<WoodstockUserFlags>();
         }
 
         [TestMethod]
@@ -680,9 +680,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as SteelheadMasterInventory;
+                var details = result.Value as WoodstockMasterInventory;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<SteelheadMasterInventory>();
+                details.Should().BeOfType<WoodstockMasterInventory>();
             }
         }
 
@@ -701,9 +701,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<SteelheadInventoryProfile>;
+            var details = result.Value as IList<WoodstockInventoryProfile>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<SteelheadInventoryProfile>>();
+            details.Should().BeOfType<List<WoodstockInventoryProfile>>();
         }
 
         [TestMethod]
@@ -765,10 +765,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var groupGift = Fixture.Create<SteelheadGroupGift>();
+            var groupGift = Fixture.Create<WoodstockGroupGift>();
             groupGift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
             groupGift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
-
+            groupGift.Inventory.Emotes = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -813,9 +815,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var groupGift = Fixture.Create<SteelheadGroupGift>();
+            var groupGift = Fixture.Create<WoodstockGroupGift>();
             groupGift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
             groupGift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.Emotes = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            groupGift.Inventory.QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -859,9 +864,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
-            var gift = Fixture.Create<SteelheadGift>();
+            var gift = Fixture.Create<WoodstockGift>();
             gift.Inventory.Cars = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            gift.Inventory.CarHorns = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
             gift.Inventory.VanityItems = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            gift.Inventory.Emotes = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
+            gift.Inventory.QuickChatLines = new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } };
 
             // Act.
             async Task<IActionResult> Action() => await controller.UpdateGroupInventories(groupId, gift).ConfigureAwait(false);
@@ -883,13 +891,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var groupId = Fixture.Create<int>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.UpdateGroupInventories(groupId, null).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, null).ConfigureAwait(false);
 
             // Assert.
-            Action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await Action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
 
 
@@ -908,9 +913,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<SteelheadGiftHistory>;
+            var details = result.Value as IList<WoodstockGiftHistory>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<SteelheadGiftHistory>>();
+            details.Should().BeOfType<List<WoodstockGiftHistory>>();
         }
 
         [TestMethod]
@@ -928,28 +933,52 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<SteelheadGiftHistory>;
+            var details = result.Value as IList<WoodstockGiftHistory>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<SteelheadGiftHistory>>();
+            details.Should().BeOfType<List<WoodstockGiftHistory>>();
         }
 
-        private static List<SteelheadBanParametersInput> GenerateBanParameters()
+        private IList<WoodstockBanParametersInput> GenerateBanParameters()
         {
-            var newParams = new SteelheadBanParametersInput
+            return new List<WoodstockBanParametersInput>
             {
-                Xuid = 111,
-                Gamertag = "gamerT1",
-                FeatureArea = "Matchmaking",
-                Reason = "Disgusting license plate.",
-                StartTimeUtc = DateTime.UtcNow,
-                Duration = TimeSpan.FromSeconds(1),
-                BanAllConsoles = false,
-                BanAllPcs = false,
-                DeleteLeaderboardEntries = false,
-                SendReasonNotification = false
+                new WoodstockBanParametersInput {
+                    Xuid = 111,
+                    Gamertag = "gamerT1",
+                    FeatureArea = "Matchmaking",
+                    Reason = "Disgusting license plate.",
+                    StartTimeUtc = DateTime.UtcNow,
+                    Duration = TimeSpan.FromSeconds(1),
+                    BanAllConsoles = false,
+                    BanAllPcs = false,
+                    DeleteLeaderboardEntries = false,
+                    SendReasonNotification = false
+                },
+                new WoodstockBanParametersInput {
+                    Xuid = 222,
+                    Gamertag = "gamerT2",
+                    FeatureArea = "Matchmaking",
+                    Reason = "Disgusting license plate.",
+                    StartTimeUtc = DateTime.UtcNow,
+                    Duration = TimeSpan.FromSeconds(1),
+                    BanAllConsoles = false,
+                    BanAllPcs = false,
+                    DeleteLeaderboardEntries = false,
+                    SendReasonNotification = false
+                },
+                new WoodstockBanParametersInput {
+                    Xuid = 333,
+                    Gamertag = "gamerT3",
+                    FeatureArea = "Matchmaking",
+                    Reason = "Disgusting license plate.",
+                    StartTimeUtc = DateTime.UtcNow,
+                    Duration = TimeSpan.FromSeconds(1),
+                    BanAllConsoles = false,
+                    BanAllPcs = false,
+                    DeleteLeaderboardEntries = false,
+                    SendReasonNotification = false
+                }
             };
-
-            return new List<SteelheadBanParametersInput> { newParams };
         }
 
         private sealed class Dependencies
@@ -979,41 +1008,41 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
                 this.KustoProvider.GetMasterInventoryList(Arg.Any<string>()).Returns(new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } });
-                this.SteelheadPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
-                this.SteelheadPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
-                this.SteelheadPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SteelheadPlayerDetails>());
-                this.SteelheadPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerDetails>());
-                this.SteelheadPlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
-                this.SteelheadPlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
-                this.SteelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
-                this.SteelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>()).Returns(true);
-                this.SteelheadPlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SteelheadUserFlags>());
-                this.SteelheadPlayerDetailsProvider.BanUsersAsync(Arg.Any<IList<SteelheadBanParameters>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
-                this.SteelheadPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<BanSummary>>());
-                this.SteelheadPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
-                this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SteelheadMasterInventory>());
-                this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SteelheadMasterInventory>());
-                this.SteelheadPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SteelheadInventoryProfile>>());
-                this.SteelheadPlayerDetailsProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup> { new LspGroup { Id = TestConstants.InvalidProfileId, Name = "UnitTesting" } });
-                this.SteelheadPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SteelheadGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
-                this.SteelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SteelheadGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
-                this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
+                this.WoodstockPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
+                this.WoodstockPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
+                this.WoodstockPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
+                this.WoodstockPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
+                this.WoodstockPlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
+                this.WoodstockPlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
+                this.WoodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
+                this.WoodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>()).Returns(true);
+                this.WoodstockPlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<WoodstockUserFlags>());
+                this.WoodstockPlayerDetailsProvider.BanUsersAsync(Arg.Any<IList<WoodstockBanParameters>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
+                this.WoodstockPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<BanSummary>>());
+                this.WoodstockPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
+                this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<WoodstockMasterInventory>());
+                this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<WoodstockMasterInventory>());
+                this.WoodstockPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
+                this.WoodstockPlayerDetailsProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
+                this.WoodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<WoodstockGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
+                this.WoodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<WoodstockGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
+               this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
-                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<SteelheadGiftHistory>>());
+                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<WoodstockGiftHistory>>());
             }
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
+            
+            public IWoodstockPlayerDetailsProvider WoodstockPlayerDetailsProvider { get; set; } = Substitute.For<IWoodstockPlayerDetailsProvider>();
 
-            public ISteelheadPlayerDetailsProvider SteelheadPlayerDetailsProvider { get; set; } = Substitute.For<ISteelheadPlayerDetailsProvider>();
-
-            public ISteelheadPlayerInventoryProvider SteelheadPlayerInventoryProvider { get; set; } = Substitute.For<ISteelheadPlayerInventoryProvider>();
+            public IWoodstockPlayerInventoryProvider WoodstockPlayerInventoryProvider { get; set; } = Substitute.For<IWoodstockPlayerInventoryProvider>();
 
             public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
 
-            public ISteelheadGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<ISteelheadGiftHistoryProvider>();
+            public IWoodstockGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IWoodstockGiftHistoryProvider>();
 
-            public ISteelheadBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<ISteelheadBanHistoryProvider>();
+            public IWoodstockBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<IWoodstockBanHistoryProvider>();
 
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 
@@ -1023,26 +1052,26 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
             public IMapper Mapper { get; set; } = Substitute.ForPartsOf<Mapper>(new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new SteelheadProfileMapper());
+                mc.AddProfile(new WoodstockProfileMapper());
                 mc.AllowNullCollections = true;
             }));
 
-            public IRequestValidator<SteelheadMasterInventory> MasterInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadMasterInventory>>();
+            public IRequestValidator<WoodstockMasterInventory> MasterInventoryRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockMasterInventory>>();
 
-            public IRequestValidator<SteelheadGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadGift>>();
+            public IRequestValidator<WoodstockGift> GiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockGift>>();
 
-            public IRequestValidator<SteelheadGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadGroupGift>>();
+            public IRequestValidator<WoodstockGroupGift> GroupGiftRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockGroupGift>>();
 
-            public IRequestValidator<SteelheadBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadBanParametersInput>>();
+            public IRequestValidator<WoodstockBanParametersInput> BanParametersRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockBanParametersInput>>();
 
-            public IRequestValidator<SteelheadUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<SteelheadUserFlagsInput>>();
+            public IRequestValidator<WoodstockUserFlagsInput> UserFlagsRequestValidator { get; set; } = Substitute.For<IRequestValidator<WoodstockUserFlagsInput>>();
 
-            public SteelheadController Build() => new SteelheadController(
+            public WoodstockController Build() => new WoodstockController(
                 new MemoryCache(new MemoryCacheOptions()),
                 this.LoggingService,
                 this.KustoProvider,
-                this.SteelheadPlayerDetailsProvider,
-                this.SteelheadPlayerInventoryProvider,
+                this.WoodstockPlayerDetailsProvider,
+                this.WoodstockPlayerInventoryProvider,
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,

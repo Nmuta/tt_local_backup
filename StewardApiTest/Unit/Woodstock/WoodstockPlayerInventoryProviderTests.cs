@@ -1,23 +1,23 @@
 ﻿using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.Steelhead_master.Generated;
-using Forza.UserInventory.Steelhead_master.Generated;
+using Forza.LiveOps.FH5_master.Generated;
+using Forza.UserInventory.FH5_master.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead;
-using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
-using static Forza.LiveOps.Steelhead_master.Generated.UserInventoryService;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
+using static Forza.LiveOps.FH5_master.Generated.UserInventoryService;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
+namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {
     [TestClass]
-    public sealed class SteelheadPlayerInventoryProviderTests
+    public sealed class WoodstockPlayerInventoryProviderTests
     {
         private static readonly Fixture Fixture = new Fixture();
 
@@ -37,30 +37,30 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenSunriseUserInventoryServiceNull_Throws()
+        public void Ctor_WhenWoodstockUserInventoryServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { SteelheadUserInventoryService = null };
+            var dependencies = new Dependencies { WoodstockUserInventoryService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadUserInventoryService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockUserInventoryService"));
         }
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenSunriseGiftingServiceNull_Throws()
+        public void Ctor_WhenWoodstockGiftingServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { SteelheadGiftingService = null };
+            var dependencies = new Dependencies { WoodstockGiftingService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadGiftingService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockGiftingService"));
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            var actions = new List<Func<Task<SteelheadMasterInventory>>>
+            var actions = new List<Func<Task<WoodstockMasterInventory>>>
             {
                 async () => await provider.GetPlayerInventoryAsync(xuid).ConfigureAwait(false),
                 async () => await provider.GetPlayerInventoryAsync(profileId).ConfigureAwait(false)
@@ -111,7 +111,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             foreach (var action in actions)
             {
                 var response = action();
-                response.Result.Should().BeOfType<SteelheadMasterInventory>();
+                response.Result.Should().BeOfType<WoodstockMasterInventory>();
             }
         }
 
@@ -124,10 +124,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            Func<Task<IList<SteelheadInventoryProfile>>> action = async () => await provider.GetInventoryProfilesAsync(xuid).ConfigureAwait(false);
+            Func<Task<IList<WoodstockInventoryProfile>>> action = async () => await provider.GetInventoryProfilesAsync(xuid).ConfigureAwait(false);
 
             // Assert.
-            action().Result.Should().BeOfType<List<SteelheadInventoryProfile>>();
+            action().Result.Should().BeOfType<List<WoodstockInventoryProfile>>();
         }
 
         [TestMethod]
@@ -139,8 +139,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var xuid = Fixture.Create<ulong>();
             var useAdminCreditLimit = Fixture.Create<bool>();
             var groupId = Fixture.Create<int>();
-            var gift = Fixture.Create<SteelheadGift>();
-            var groupGift = Fixture.Create<SteelheadGroupGift>();
+            var gift = Fixture.Create<WoodstockGift>();
+            var groupGift = Fixture.Create<WoodstockGroupGift>();
             var requestingAgent = Fixture.Create<string>();
 
             // Act.
@@ -183,7 +183,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void UpdatePlayerInventoriesAsync_WithNullSunriseGift_Throws()
+        public void UpdatePlayerInventoriesAsync_WithNullWoodstockGift_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -234,8 +234,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var groupId = Fixture.Create<int>();
-            var gift = Fixture.Create<SteelheadGift>();
-            var groupGift = Fixture.Create<SteelheadGroupGift>();
+            var gift = Fixture.Create<WoodstockGift>();
+            var groupGift = Fixture.Create<WoodstockGroupGift>();
             var useAdminCreditLimit = Fixture.Create<bool>();
 
             // Act.
@@ -265,7 +265,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var groupGift = Fixture.Create<SteelheadGroupGift>();
+            var groupGift = Fixture.Create<WoodstockGroupGift>();
             groupGift.Xuids = null;
             var requestingAgent = Fixture.Create<string>();
             var useAdminCreditLimit = Fixture.Create<bool>();
@@ -281,26 +281,26 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             public Dependencies()
             {
-                this.SteelheadUserInventoryService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
-                this.SteelheadUserInventoryService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
-                this.SteelheadUserInventoryService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
-                this.Mapper.Map<SteelheadMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<SteelheadMasterInventory>());
-                this.Mapper.Map<IList<SteelheadInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<SteelheadInventoryProfile>>());
+                this.WoodstockUserInventoryService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
+                this.WoodstockUserInventoryService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
+                this.WoodstockUserInventoryService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
+                this.Mapper.Map<WoodstockMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<WoodstockMasterInventory>());
+                this.Mapper.Map<IList<WoodstockInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
-                this.Mapper.Map<SteelheadGift>(Arg.Any<SteelheadGroupGift>()).Returns(Fixture.Create<SteelheadGift>());
+                this.Mapper.Map<WoodstockGift>(Arg.Any<WoodstockGroupGift>()).Returns(Fixture.Create<WoodstockGift>());
             }
 
-            public ISteelheadUserInventoryService SteelheadUserInventoryService { get; set; } = Substitute.For<ISteelheadUserInventoryService>();
+            public IWoodstockUserInventoryService WoodstockUserInventoryService { get; set; } = Substitute.For<IWoodstockUserInventoryService>();
 
-            public ISteelheadGiftingService SteelheadGiftingService { get; set; } = Substitute.For<ISteelheadGiftingService>();
+            public IWoodstockGiftingService WoodstockGiftingService { get; set; } = Substitute.For<IWoodstockGiftingService>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-            public ISteelheadGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<ISteelheadGiftHistoryProvider>();
+            public IWoodstockGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IWoodstockGiftHistoryProvider>();
 
-            public SteelheadPlayerInventoryProvider Build() => new SteelheadPlayerInventoryProvider(
-                                                                                            this.SteelheadUserInventoryService,
-                                                                                            this.SteelheadGiftingService,
+            public WoodstockPlayerInventoryProvider Build() => new WoodstockPlayerInventoryProvider(
+                                                                                            this.WoodstockUserInventoryService,
+                                                                                            this.WoodstockGiftingService,
                                                                                             this.Mapper,
                                                                                             this.GiftHistoryProvider);
         }

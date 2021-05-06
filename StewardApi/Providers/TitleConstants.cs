@@ -31,6 +31,11 @@
         public const string SteelheadCodeName = "Steelhead";
 
         /// <summary>
+        ///     The Woodstock code name.
+        /// </summary>
+        public const string WoodstockCodeName = "Woodstock";
+
+        /// <summary>
         ///     The Opus abbreviation.
         /// </summary>
         public const string OpusAbbreviation = "FH3";
@@ -56,6 +61,11 @@
         public const string SteelheadAbbreviation = "FM8";
 
         /// <summary>
+        ///     The Woodstock abbreviation.
+        /// </summary>
+        public const string WoodstockAbbreviation = "FH5";
+
+        /// <summary>
         ///     The Opus full name.
         /// </summary>
         public const string OpusFullName = "Forza Horizon 3";
@@ -79,5 +89,10 @@
         ///     The Steelhead full name.
         /// </summary>
         public const string SteelheadFullName = "Forza Motorsport 8";
+
+        /// <summary>
+        ///     The Woodstock full name.
+        /// </summary>
+        public const string WoodstockFullName = "Forza Horizon 5";
     }
 }

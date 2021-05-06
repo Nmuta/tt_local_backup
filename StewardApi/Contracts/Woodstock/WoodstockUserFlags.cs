@@ -1,9 +1,9 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
 {
     /// <summary>
-    ///     Represents a Steelhead user flags.
+    ///     Represents a Woodstock player flags.
     /// </summary>
-    public sealed class SteelheadUserFlags
+    public sealed class WoodstockUserFlags
     {
         /// <summary>
         ///     Gets or sets a value indicating whether the user is VIP.

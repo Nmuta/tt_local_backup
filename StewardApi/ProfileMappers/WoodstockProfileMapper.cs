@@ -1,47 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
-using Forza.LiveOps.Steelhead_master.Generated;
-using Forza.UserInventory.Steelhead_master.Generated;
+using Forza.LiveOps.FH5_master.Generated;
+using Forza.UserInventory.FH5_master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts;
-using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Xls.Security.Steelhead_master.Generated;
-using Xls.WebServices.Steelhead_master.Generated;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
+using Xls.Security.FH5_master.Generated;
+using Xls.WebServices.FH5_master.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
     /// <summary>
     ///    Mapper for Steelhead DTOs.
     /// </summary>
-    public sealed class SteelheadProfileMapper : Profile
+    public sealed class WoodstockProfileMapper : Profile
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="SteelheadProfileMapper"/> class.
+        ///     Initializes a new instance of the <see cref="WoodstockProfileMapper"/> class.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
-        public SteelheadProfileMapper()
+        public WoodstockProfileMapper()
         {
             this.CreateMap<AdminForzaCarUserInventoryItem, MasterInventoryItem>()
-                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
-                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
-                .ReverseMap();
+    .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
+    .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
+    .ReverseMap();
             this.CreateMap<AdminForzaUserInventoryItem, MasterInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ReverseMap();
-            this.CreateMap<AdminForzaUserInventorySummary, SteelheadMasterInventory>()
+            this.CreateMap<AdminForzaUserInventorySummary, WoodstockMasterInventory>()
                 .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>
                 {
                     new MasterInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits }
                 }))
                 .ReverseMap();
 
-            this.CreateMap<AdminForzaProfile, SteelheadInventoryProfile>().ReverseMap();
+            this.CreateMap<AdminForzaProfile, WoodstockInventoryProfile>().ReverseMap();
             this.CreateMap<ForzaUserBanSummary, BanSummary>();
-            this.CreateMap<SteelheadBanParametersInput, SteelheadBanParameters>()
+            this.CreateMap<WoodstockBanParametersInput, WoodstockBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));
-            this.CreateMap<SteelheadBanParameters, ForzaUserBanParameters>()
+            this.CreateMap<WoodstockBanParameters, ForzaUserBanParameters>()
                 .ForMember(dest => dest.xuids, opt => opt.MapFrom(source => new ulong[] { source.Xuid }))
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))
@@ -56,10 +55,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaConsole, ConsoleDetails>().ReverseMap();
             this.CreateMap<ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
             this.CreateMap<ForzaUserGroup, LspGroup>();
-            this.CreateMap<SteelheadPlayerDetails, IdentityResultAlpha>().ReverseMap();
-            this.CreateMap<SteelheadUserFlagsInput, SteelheadUserFlags>().ReverseMap();
-            this.CreateMap<SteelheadGroupGift, SteelheadGift>().ReverseMap();
-            this.CreateMap<UserData, SteelheadPlayerDetails>()
+            this.CreateMap<WoodstockPlayerDetails, IdentityResultAlpha>().ReverseMap();
+            this.CreateMap<WoodstockUserFlagsInput, WoodstockUserFlags>().ReverseMap();
+            this.CreateMap<WoodstockGroupGift, WoodstockGift>().ReverseMap();
+            this.CreateMap<UserData, WoodstockPlayerDetails>()
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.qwXuid))
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.wzGamerTag))
                 .ReverseMap();

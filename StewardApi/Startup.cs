@@ -23,6 +23,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Filters;
 using Turn10.LiveOps.StewardApi.Helpers.JsonConverters;
 using Turn10.LiveOps.StewardApi.Hubs;
@@ -38,11 +39,14 @@ using Turn10.LiveOps.StewardApi.Providers.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Validation;
 using Turn10.LiveOps.StewardApi.Validation.Apollo;
 using Turn10.LiveOps.StewardApi.Validation.Gravity;
 using Turn10.LiveOps.StewardApi.Validation.Steelhead;
 using Turn10.LiveOps.StewardApi.Validation.Sunrise;
+using Turn10.LiveOps.StewardApi.Validation.Woodstock;
 using Turn10.Services.Diagnostics;
 using Turn10.Services.Diagnostics.Geneva;
 using Turn10.Services.WebApi.Core;
@@ -209,6 +213,7 @@ namespace Turn10.LiveOps.StewardApi
                 mc.AddProfile(new GravityProfileMapper());
                 mc.AddProfile(new ApolloProfileMapper());
                 mc.AddProfile(new SteelheadProfileMapper());
+                mc.AddProfile(new WoodstockProfileMapper());
                 mc.AddProfile(new DataProfileMapper());
                 mc.AllowNullCollections = true;
             });
@@ -223,6 +228,19 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IStsClient, StsClientWrapper>();
 
             services.AddSingleton<ILoggingService, LoggingService>();
+
+            services.AddSingleton<IWoodstockUserService, WoodstockUserServiceWrapper>();
+            services.AddSingleton<IWoodstockUserInventoryService, WoodstockUserInventoryServiceWrapper>();
+            services.AddSingleton<IWoodstockGiftingService, WoodstockGiftingServiceWrapper>();
+            services.AddSingleton<IWoodstockPlayerDetailsProvider, WoodstockPlayerDetailsProvider>();
+            services.AddSingleton<IWoodstockPlayerInventoryProvider, WoodstockPlayerInventoryProvider>();
+            services.AddSingleton<IWoodstockBanHistoryProvider, WoodstockBanHistoryProvider>();
+            services.AddSingleton<IWoodstockGiftHistoryProvider, WoodstockGiftHistoryProvider>();
+            services.AddSingleton<IRequestValidator<WoodstockBanParametersInput>, WoodstockBanParametersRequestValidator>();
+            services.AddSingleton<IRequestValidator<WoodstockGroupGift>, WoodstockGroupGiftRequestValidator>();
+            services.AddSingleton<IRequestValidator<WoodstockGift>, WoodstockGiftRequestValidator>();
+            services.AddSingleton<IRequestValidator<WoodstockMasterInventory>, WoodstockMasterInventoryRequestValidator>();
+            services.AddSingleton<IRequestValidator<WoodstockUserFlagsInput>, WoodstockUserFlagsRequestValidator>();
 
             services.AddSingleton<ISteelheadUserService, SteelheadUserServiceWrapper>();
             services.AddSingleton<ISteelheadUserInventoryService, SteelheadUserInventoryServiceWrapper>();

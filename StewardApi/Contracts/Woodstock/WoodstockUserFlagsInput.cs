@@ -1,38 +1,38 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
 {
     /// <summary>
-    ///     Represents a Steelhead user flags.
+    ///     Woodstock user flags as sent to the API.
     /// </summary>
-    public sealed class SteelheadUserFlags
+    public sealed class WoodstockUserFlagsInput
     {
         /// <summary>
         ///     Gets or sets a value indicating whether the user is VIP.
         /// </summary>
-        public bool IsVip { get; set; }
+        public bool? IsVip { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the user is ultimate VIP.
         /// </summary>
-        public bool IsUltimateVip { get; set; }
+        public bool? IsUltimateVip { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the user is a Turn 10 employee.
         /// </summary>
-        public bool IsTurn10Employee { get; set; }
+        public bool? IsTurn10Employee { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the user is a community manager.
         /// </summary>
-        public bool IsCommunityManager { get; set; }
+        public bool? IsCommunityManager { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the user is early access.
         /// </summary>
-        public bool IsEarlyAccess { get; set; }
+        public bool? IsEarlyAccess { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the user is under review.
         /// </summary>
-        public bool IsUnderReview { get; set; }
+        public bool? IsUnderReview { get; set; }
     }
 }
