@@ -59,15 +59,15 @@ export class ObligationDataActivityComponent implements ControlValueAccessor, Va
   public static defaults: ObligationDataActivityOptions = {
     name: '',
     table: '',
-    database: '',
+    database: 'T10Analytics',
     query: KustoFunctionComponent.defaults,
     dateRange: {
       start: ObligationDataActivityComponent.UTC_NOW,
       end: ObligationDataActivityComponent.UTC_NOW.plus({ days: 7 }),
     },
-    maximumExecutionTimeInMinutes: 60,
-    executionIntervalInMinutes: 0,
-    executionDelayInMinutes: 30,
+    maximumExecutionTimeInMinutes: 1440,
+    executionIntervalInMinutes: 1440,
+    executionDelayInMinutes: 2880,
     dependencyNames: [],
     parallelismLimit: 2,
   };

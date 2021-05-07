@@ -90,7 +90,9 @@
         [formControl]="formControls.maximumExecutionTimeInMinutes"
         placeholder="minutes"
       />
-      <mat-hint>How long workers will execute. Also used for Minimum Execution Time</mat-hint>
+      <mat-hint
+        >Minutes. How long workers will execute. Also used for Minimum Execution Time</mat-hint
+      >
       <mat-error *ngIf="formControls.maximumExecutionTimeInMinutes.hasError('required')"
         >Required</mat-error
       >
@@ -110,7 +112,7 @@
         [formControl]="formControls.executionIntervalInMinutes"
         placeholder="minutes"
       />
-      <mat-hint>Set to multiple of Maximum Execution Time. Size of time slices</mat-hint>
+      <mat-hint>Minutes. Set to multiple of Maximum Execution Time. Size of time slices</mat-hint>
       <mat-error *ngIf="formControls.executionIntervalInMinutes.hasError('required')"
         >Required</mat-error
       >
@@ -124,7 +126,9 @@
         [formControl]="formControls.executionDelayInMinutes"
         placeholder="minutes"
       />
-      <mat-hint>Used to cope with lack of input completion markers. 30 minutes advised</mat-hint>
+      <mat-hint
+        >Minutes. Used to cope with lack of input completion markers. 30 minutes advised</mat-hint
+      >
       <mat-error *ngIf="formControls.executionDelayInMinutes.hasError('required')"
         >Required</mat-error
       >
