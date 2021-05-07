@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { ContentCollapseModule } from '@components/content-collapse/content-collapse.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PlayerSidebarDetailsModule } from './components/player-sidebar-details/player-sidebar-details.module';
 
@@ -35,7 +34,6 @@ import { MatIconModule } from '@angular/material/icon';
     BanHistoryModule,
     MatButtonModule,
     MatCardModule,
-    ContentCollapseModule,
     MatProgressSpinnerModule,
     MatSidenavModule,
     MatIconModule,

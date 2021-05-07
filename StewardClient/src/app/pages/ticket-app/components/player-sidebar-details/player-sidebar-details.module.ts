@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ContentCollapseModule } from '@components/content-collapse/content-collapse.module';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -26,7 +25,6 @@ import { SunrisePlayerSidebarDetailsComponent } from './sunrise/sunrise-player-s
     MatListModule,
     ErrorSpinnerModule,
     PlayerDetailsItemModule,
-    ContentCollapseModule,
     JsonDumpModule,
   ],
   exports: [
