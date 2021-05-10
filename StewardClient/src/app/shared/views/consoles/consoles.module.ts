@@ -11,11 +11,17 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { ApolloConsolesComponent } from './apollo/apollo-consoles.component';
 import { SunriseConsolesComponent } from './sunrise/sunrise-consoles.component';
 import { SteelheadConsolesComponent } from './steelhead/steelhead-consoles.component';
+import { WoodstockConsolesComponent } from './woodstock/woodstock-consoles.component';
 import { MatIconModule } from '@angular/material/icon';
 
 /** A domain module for displaying related console lists. */
 @NgModule({
-  declarations: [SteelheadConsolesComponent, SunriseConsolesComponent, ApolloConsolesComponent],
+  declarations: [
+    WoodstockConsolesComponent,
+    SteelheadConsolesComponent,
+    SunriseConsolesComponent,
+    ApolloConsolesComponent,
+  ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -28,6 +34,11 @@ import { MatIconModule } from '@angular/material/icon';
     JsonDumpModule,
     MatIconModule,
   ],
-  exports: [SteelheadConsolesComponent, SunriseConsolesComponent, ApolloConsolesComponent],
+  exports: [
+    WoodstockConsolesComponent,
+    SteelheadConsolesComponent,
+    SunriseConsolesComponent,
+    ApolloConsolesComponent,
+  ],
 })
 export class ConsolesModule {}

@@ -47,6 +47,8 @@ import { HubsModule } from '@shared/hubs/hubs.module';
 import { StagingRewriteInterceptor } from '@interceptors/staging-rewrite.interceptor';
 import { SteelheadGiftingState } from '@shared/pages/gifting/steelhead/state/steelhead-gifting.state';
 import { SteelheadGiftHistoryState } from '@navbar-app/pages/gift-history/steelhead/state/steelhead-gift-history.state';
+import { WoodstockGiftingState } from '@shared/pages/gifting/woodstock/state/woodstock-gifting.state';
+import { WoodstockGiftHistoryState } from '@navbar-app/pages/gift-history/woodstock/state/woodstock-gift-history.state';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -91,11 +93,13 @@ function fakeApiOrNothing(): Provider[] {
       MasterInventoryListMemoryState,
       LspGroupMemoryState,
       // Gifting page states
+      WoodstockGiftingState,
       SteelheadGiftingState,
       GravityGiftingState,
       SunriseGiftingState,
       ApolloGiftingState,
       // Gift History page states
+      WoodstockGiftHistoryState,
       SteelheadGiftHistoryState,
       GravityGiftHistoryState,
       SunriseGiftHistoryState,

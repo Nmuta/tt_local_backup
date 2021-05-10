@@ -28,6 +28,11 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     return first(this.lookupList) ?? '';
   }
 
+  public woodstockRouterLink = [
+    ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
+    'woodstock',
+  ];
+
   public steelheadRouterLink = [
     ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
     'steelhead',
@@ -46,6 +51,17 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
     'gravity',
   ];
+
+  /** Generates a nav tooltip */
+  public get woodstockTooltip(): string {
+    if (!this.identity) {
+      return null;
+    }
+    if (this.identity?.extra?.hasWoodstock) {
+      return null;
+    }
+    return `Player ${first(this.lookupList)} does not have a Woodstock account`;
+  }
 
   /** Generates a nav tooltip */
   public get steelheadTooltip(): string {

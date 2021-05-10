@@ -6,6 +6,7 @@ import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
 import { ApolloBanningComponent } from './pages/apollo/apollo-banning.component';
 import { SteelheadBanningComponent } from './pages/steelhead/steelhead-banning.component';
 import { SunriseBanningComponent } from './pages/sunrise/sunrise-banning.component';
+import { WoodstockBanningComponent } from './pages/woodstock/woodstock-banning.component';
 import { UserBanningComponent } from './user-banning.component';
 
 const routes: Routes = [
@@ -17,6 +18,12 @@ const routes: Routes = [
       {
         path: '',
         canActivate: [TitleMemoryRedirectGuard],
+        pathMatch: 'full',
+      },
+      {
+        path: 'woodstock',
+        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Woodstock is ready
+        component: WoodstockBanningComponent,
         pathMatch: 'full',
       },
       {

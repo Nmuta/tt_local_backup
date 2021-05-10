@@ -1,0 +1,29 @@
+<ng-container *ngIf="!playerIdentity?.error; else identityErrorState">
+  <woodstock-player-sidebar-details
+    [gamertag]="playerIdentity?.gamertag"
+  ></woodstock-player-sidebar-details>
+  <woodstock-user-flags
+    [identity]="playerIdentity"
+    [disabled]="true"
+    class="top-spacing"
+  ></woodstock-user-flags>
+  <mat-card class="top-spacing">
+    <woodstock-ban-history-compact [xuid]="playerIdentity?.xuid"></woodstock-ban-history-compact>
+  </mat-card>
+  <quick-actions class="top-spacing">
+    <go-to-inventory-button
+      [gameTitle]="gameTitle"
+      [xuid]="playerIdentity?.xuid"
+    ></go-to-inventory-button>
+  </quick-actions>
+</ng-container>
+
+<ng-template #identityErrorState>
+  <mat-card class="lookup-failed-card">
+    <mat-card-title>Woodstock Lookup Failed</mat-card-title>
+    <mat-card-content>
+      <p>"{{ lookupGamertag }}" does not exist.</p>
+      <json-dump [input]="playerIdentity?.error">Lookup Error</json-dump>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

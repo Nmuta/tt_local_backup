@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SunriseCreditHistoryComponent } from './titles/sunrise/sunrise-credit-history.component';
+import { WoodstockCreditHistoryComponent } from './titles/woodstock/woodstock-credit-history.component';
 import { MatCardModule } from '@angular/material/card';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { MatTableModule } from '@angular/material/table';
@@ -11,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 /** A domain module for displaying credit histories. */
 @NgModule({
-  declarations: [SunriseCreditHistoryComponent],
+  declarations: [WoodstockCreditHistoryComponent, SunriseCreditHistoryComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -22,6 +23,6 @@ import { MatButtonModule } from '@angular/material/button';
     JsonDumpModule,
     MatButtonModule,
   ],
-  exports: [SunriseCreditHistoryComponent],
+  exports: [WoodstockCreditHistoryComponent, SunriseCreditHistoryComponent],
 })
 export class CreditHistoryModule {}

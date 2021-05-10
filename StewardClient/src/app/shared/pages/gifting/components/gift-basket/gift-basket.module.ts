@@ -21,11 +21,13 @@ import { MatTableModule } from '@angular/material/table';
 import { ItemSelectionModule } from '../item-selection/item-selection.module';
 import { GiftingResultModule } from '../gifting-result/gifting-result.module';
 import { SteelheadGiftBasketComponent } from './steelhead/steelhead-gift-basket.component';
+import { WoodstockGiftBasketComponent } from './woodstock/woodstock-gift-basket.component';
 import { MatIconModule } from '@angular/material/icon';
 
 /** The gift basket module. */
 @NgModule({
   declarations: [
+    WoodstockGiftBasketComponent,
     SteelheadGiftBasketComponent,
     GravityGiftBasketComponent,
     SunriseGiftBasketComponent,
@@ -55,6 +57,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
   ],
   exports: [
+    WoodstockGiftBasketComponent,
     SteelheadGiftBasketComponent,
     GravityGiftBasketComponent,
     SunriseGiftBasketComponent,

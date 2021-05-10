@@ -13,6 +13,8 @@ import { ApolloPlayerSidebarDetailsComponent } from './apollo/apollo-player-side
 import { GravityPlayerSidebarDetailsComponent } from './gravity/gravity-player-sidebar-details.component';
 import { OpusPlayerSidebarDetailsComponent } from './opus/opus-player-sidebar-details.component';
 import { SunrisePlayerSidebarDetailsComponent } from './sunrise/sunrise-player-sidebar-details.component';
+import { SteelheadPlayerSidebarDetailsComponent } from './steelhead/steelhead-player-sidebar-details.component';
+import { WoodstockPlayerSidebarDetailsComponent } from './woodstock/woodstock-player-sidebar-details.component';
 
 /** A domain module for displaying player details (designed for ticket-app). */
 @NgModule({
@@ -28,12 +30,16 @@ import { SunrisePlayerSidebarDetailsComponent } from './sunrise/sunrise-player-s
     JsonDumpModule,
   ],
   exports: [
+    WoodstockPlayerSidebarDetailsComponent,
+    SteelheadPlayerSidebarDetailsComponent,
     GravityPlayerSidebarDetailsComponent,
     SunrisePlayerSidebarDetailsComponent,
     ApolloPlayerSidebarDetailsComponent,
     OpusPlayerSidebarDetailsComponent,
   ],
   declarations: [
+    WoodstockPlayerSidebarDetailsComponent,
+    SteelheadPlayerSidebarDetailsComponent,
     GravityPlayerSidebarDetailsComponent,
     SunrisePlayerSidebarDetailsComponent,
     ApolloPlayerSidebarDetailsComponent,

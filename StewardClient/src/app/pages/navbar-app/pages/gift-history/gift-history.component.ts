@@ -27,11 +27,15 @@ export class GiftHistoryComponent implements OnInit {
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
-    // TODO: Make this a permanent route after Steelhead is fully integrated.
+    // TODO: Make these permanent routes after respective titles are fully integrated.
     if (!environment.production) {
       this.navbarRouterLinks.unshift({
         name: GameTitleCodeName.FM8,
         route: [...this.rootRouterLink, GameTitleCodeName.FM8.toLowerCase()],
+      });
+      this.navbarRouterLinks.unshift({
+        name: GameTitleCodeName.FH5,
+        route: [...this.rootRouterLink, GameTitleCodeName.FH5.toLowerCase()],
       });
     }
   }

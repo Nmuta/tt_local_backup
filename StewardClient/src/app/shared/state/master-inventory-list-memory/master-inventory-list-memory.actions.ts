@@ -1,3 +1,11 @@
+/** Gets woodstock's master inventory list. */
+export class GetWoodstockMasterInventoryList {
+  public static readonly type = '[GiftingMasterListMemory] Get Woodstock Master Inventory List';
+  constructor() {
+    /** Empty */
+  }
+}
+
 /** Gets steelhead's master inventory list. */
 export class GetSteelheadMasterInventoryList {
   public static readonly type = '[GiftingMasterListMemory] Get Steelhead Master Inventory List';

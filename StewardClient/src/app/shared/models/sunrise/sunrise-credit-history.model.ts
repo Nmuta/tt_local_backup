@@ -8,6 +8,3 @@ export interface SunriseCreditDetailsEntry {
   sceneName: string;
   totalXp: BigNumber;
 }
-
-/** The /v1/title/Sunrise/player/???/creditHistory model */
-export type SunriseCreditHistory = SunriseCreditDetailsEntry[];

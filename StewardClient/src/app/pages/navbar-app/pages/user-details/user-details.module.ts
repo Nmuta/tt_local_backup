@@ -31,6 +31,7 @@ import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-pr
 import { PlayerIdentityResultsModule } from '@shared/views/player-identity-results/player-identity-results.module';
 import { ProfileRollbacksModule } from '@views/profile-rollback/profile-rollbacks.module';
 import { SteelheadUserDetailsComponent } from './steelhead/steelhead-user-details.component';
+import { WoodstockUserDetailsComponent } from './woodstock/woodstock-user-details.component';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -41,6 +42,7 @@ import { SteelheadUserDetailsComponent } from './steelhead/steelhead-user-detail
     ApolloUserDetailsComponent,
     GravityUserDetailsComponent,
     SteelheadUserDetailsComponent,
+    WoodstockUserDetailsComponent,
   ],
   imports: [
     CommonModule,

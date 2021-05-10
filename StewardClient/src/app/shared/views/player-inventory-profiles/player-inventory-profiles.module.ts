@@ -10,6 +10,7 @@ import { ApolloPlayerInventoryProfilePickerComponent } from './apollo/apollo-pla
 import { OpusPlayerInventoryProfilePickerComponent } from './opus/opus-player-inventory-profile-picker.component';
 import { GravityPlayerInventoryProfilePickerComponent } from './gravity/gravity-player-inventory-profile-picker.component';
 import { SteelheadPlayerInventoryProfilePickerComponent } from './steelhead/steelhead-player-inventory-profile-picker.component';
+import { WoodstockPlayerInventoryProfilePickerComponent } from './woodstock/woodstock-player-inventory-profile-picker.component';
 import { MatIconModule } from '@angular/material/icon';
 
 /**
@@ -17,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
  */
 @NgModule({
   declarations: [
+    WoodstockPlayerInventoryProfilePickerComponent,
     SteelheadPlayerInventoryProfilePickerComponent,
     SunrisePlayerInventoryProfilePickerComponent,
     OpusPlayerInventoryProfilePickerComponent,
@@ -33,6 +35,7 @@ import { MatIconModule } from '@angular/material/icon';
     FontAwesomeModule,
   ],
   exports: [
+    WoodstockPlayerInventoryProfilePickerComponent,
     SteelheadPlayerInventoryProfilePickerComponent,
     SunrisePlayerInventoryProfilePickerComponent,
     OpusPlayerInventoryProfilePickerComponent,

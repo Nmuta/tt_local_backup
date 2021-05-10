@@ -16,10 +16,12 @@ import { StewardUserModule } from '@views/steward-user/steward-user.module';
 import { PlayerInventoryModule } from '@views/player-inventory/player-inventory.module';
 import { InventoryItemListDisplayModule } from '@views/inventory-item-list-display/inventory-item-list-display.module';
 import { SteelheadGiftHistoryResultsComponent } from './steelhead/steelhead-gift-history-results.component';
+import { WoodstockGiftHistoryResultsComponent } from './woodstock/woodstock-gift-history-results.component';
 
 /** A domain module for displaying player gift histories. */
 @NgModule({
   declarations: [
+    WoodstockGiftHistoryResultsComponent,
     SteelheadGiftHistoryResultsComponent,
     GravityGiftHistoryResultsComponent,
     SunriseGiftHistoryResultsComponent,
@@ -41,6 +43,7 @@ import { SteelheadGiftHistoryResultsComponent } from './steelhead/steelhead-gift
     InventoryItemListDisplayModule,
   ],
   exports: [
+    WoodstockGiftHistoryResultsComponent,
     SteelheadGiftHistoryResultsComponent,
     GravityGiftHistoryResultsComponent,
     SunriseGiftHistoryResultsComponent,

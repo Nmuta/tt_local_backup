@@ -40,5 +40,13 @@ export class GiftingComponent implements OnInit {
         route: [...rootRouterLink, GameTitleCodeName.FM8.toLowerCase()],
       });
     }
+
+    // TODO: Make this a permanent route after Woodstock is fully integrated.
+    if (!environment.production) {
+      this.navbarRouterLinks.unshift({
+        name: GameTitleCodeName.FH5,
+        route: [...rootRouterLink, GameTitleCodeName.FH5.toLowerCase()],
+      });
+    }
   }
 }

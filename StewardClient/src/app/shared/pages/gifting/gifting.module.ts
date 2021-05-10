@@ -22,6 +22,7 @@ import { PlayerSelectionModule } from '@navbar-app/components/player-selection/p
 import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inventory.module';
 import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.component';
+import { WoodstockGiftingComponent } from './woodstock/woodstock-gifting.component';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -31,6 +32,7 @@ import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.compone
     SunriseGiftingComponent,
     ApolloGiftingComponent,
     SteelheadGiftingComponent,
+    WoodstockGiftingComponent,
   ],
   imports: [
     CommonModule,

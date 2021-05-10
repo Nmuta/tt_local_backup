@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SunriseCreditHistory } from '@models/sunrise';
+import { SunriseCreditDetailsEntry } from '@models/sunrise';
 
 /** Fake API for finding User Flags. */
 export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
@@ -18,12 +18,12 @@ export class SunrisePlayerXuidCreditUpdatesFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): SunriseCreditHistory {
+  public handle(): SunriseCreditDetailsEntry[] {
     return SunrisePlayerXuidCreditUpdatesFakeApi.makeMany();
   }
 
   /** Creates a sample response. */
-  public static makeMany(): SunriseCreditHistory {
+  public static makeMany(): SunriseCreditDetailsEntry[] {
     return [
       {
         eventTimestampUtc: new Date('2020-06-19T00:33:10.117Z'),

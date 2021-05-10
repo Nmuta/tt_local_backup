@@ -6,11 +6,13 @@ import { GravityPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/tit
 import { OpusPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/opus/players/identities';
 import { SteelheadPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/steelhead/players/identities';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
+import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { createMockGravityService, GravityService } from '@services/gravity';
 import { createMockOpusService, OpusService } from '@services/opus';
 import { createMockSteelheadService, SteelheadService } from '@services/steelhead';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
+import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { first } from 'lodash';
 import { of, Subject } from 'rxjs';
@@ -27,6 +29,7 @@ describe('PlayerSelectionSingleComponent', () => {
   let gravity: GravityService;
   let apollo: ApolloService;
   let steelhead: SteelheadService;
+  let woodstock: WoodstockService;
 
   const deferUntil = new Subject<void>();
 
@@ -40,6 +43,7 @@ describe('PlayerSelectionSingleComponent', () => {
         createMockApolloService(),
         createMockOpusService(),
         createMockSteelheadService(),
+        createMockWoodstockService(),
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -49,6 +53,7 @@ describe('PlayerSelectionSingleComponent', () => {
     gravity = TestBed.inject(GravityService);
     apollo = TestBed.inject(ApolloService);
     steelhead = TestBed.inject(SteelheadService);
+    woodstock = TestBed.inject(WoodstockService);
 
     sunrise.getPlayerIdentities = jasmine
       .createSpy('getPlayerIdentities')
@@ -76,6 +81,12 @@ describe('PlayerSelectionSingleComponent', () => {
       .createSpy('getPlayerIdentities')
       .and.callFake(q =>
         deferUntil.pipe(switchMap(_ => of(SteelheadPlayersIdentitiesFakeApi.make(q)))),
+      );
+
+    woodstock.getPlayerIdentities = jasmine
+      .createSpy('getPlayerIdentities')
+      .and.callFake(q =>
+        deferUntil.pipe(switchMap(_ => of(WoodstockPlayersIdentitiesFakeApi.make(q)))),
       );
   });
 
@@ -125,6 +136,7 @@ describe('PlayerSelectionSingleComponent', () => {
           expect(gravity.getPlayerIdentities).toHaveBeenCalledTimes(0);
           expect(apollo.getPlayerIdentities).toHaveBeenCalledTimes(0);
           expect(steelhead.getPlayerIdentities).toHaveBeenCalledTimes(0);
+          expect(woodstock.getPlayerIdentities).toHaveBeenCalledTimes(0);
         }),
       );
     });
@@ -154,6 +166,7 @@ describe('PlayerSelectionSingleComponent', () => {
           expect(gravity.getPlayerIdentities).toHaveBeenCalledTimes(1);
           expect(apollo.getPlayerIdentities).toHaveBeenCalledTimes(1);
           // expect(steelhead.getPlayerIdentities).toHaveBeenCalledTimes(1);
+          // expect(woodstock.getPlayerIdentities).toHaveBeenCalledTimes(1);
         }),
       );
 
@@ -202,6 +215,7 @@ describe('PlayerSelectionSingleComponent', () => {
           expect(gravity.getPlayerIdentities).toHaveBeenCalledTimes(1);
           expect(apollo.getPlayerIdentities).toHaveBeenCalledTimes(1);
           // expect(steelhead.getPlayerIdentities).toHaveBeenCalledTimes(1);
+          // expect(steelhead.getPlayerIdentities).toHaveBeenCalledTimes(1);
         }),
       );
 
@@ -217,6 +231,7 @@ describe('PlayerSelectionSingleComponent', () => {
           expect(stub.gravity).toBeFalsy();
           expect(stub.opus).toBeFalsy();
           expect(stub.steelhead).toBeFalsy();
+          expect(stub.woodstock).toBeFalsy();
         }),
       );
 
@@ -251,6 +266,7 @@ describe('PlayerSelectionSingleComponent', () => {
             expect(newStub.gravity).toBeTruthy('gravity');
             expect(newStub.opus).toBeTruthy('opus');
             // expect(newStub.steelhead).toBeTruthy('steelhead');
+            // expect(newStub.woodstock).toBeTruthy('woodstock');
           }),
         );
 

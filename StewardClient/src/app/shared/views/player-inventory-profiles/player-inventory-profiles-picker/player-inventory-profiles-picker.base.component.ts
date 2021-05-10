@@ -15,20 +15,23 @@ import { GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { OpusPlayerInventoryProfile } from '@models/opus';
 import { SunrisePlayerInventoryProfile } from '@models/sunrise';
+import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
+import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
 import { chain, isEmpty } from 'lodash';
 import { NEVER, Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
 
 export type AcceptableInventoryProfileTypes =
+  | WoodstockPlayerInventoryProfile
   | SteelheadPlayerInventoryProfile
   | SunrisePlayerInventoryProfile
   | OpusPlayerInventoryProfile
   | GravityPseudoPlayerInventoryProfile
   | ApolloPlayerInventoryProfile;
 
-type AcceptableInventoryProfileTypesIntersectionIntermediate = SteelheadPlayerInventoryProfile &
+type AcceptableInventoryProfileTypesIntersectionIntermediate = WoodstockPlayerInventoryProfile &
+  SteelheadPlayerInventoryProfile &
   SunrisePlayerInventoryProfile &
   OpusPlayerInventoryProfile &
   GravityPseudoPlayerInventoryProfile &

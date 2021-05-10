@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SunrisePlayerNotificationsComponent } from './titles/sunrise/sunrise-player-notifications.component';
+import { WoodstockPlayerNotificationsComponent } from './titles/woodstock/woodstock-player-notifications.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatCardModule } from '@angular/material/card';
@@ -13,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 /** A domain module for displaying player notifications. */
 @NgModule({
-  declarations: [SunrisePlayerNotificationsComponent],
+  declarations: [SunrisePlayerNotificationsComponent, WoodstockPlayerNotificationsComponent],
   imports: [
     CommonModule,
     MatProgressSpinnerModule,
@@ -26,6 +27,6 @@ import { MatIconModule } from '@angular/material/icon';
     MatTooltipModule,
     MatIconModule,
   ],
-  exports: [SunrisePlayerNotificationsComponent],
+  exports: [SunrisePlayerNotificationsComponent, WoodstockPlayerNotificationsComponent],
 })
 export class PlayerNotificationsModule {}

@@ -1,6 +1,16 @@
 <mat-toolbar>
   <a
     *ngIf="!isProduction"
+    [class.mat-button-disabled]="!identity?.extra?.hasWoodstock"
+    [matTooltip]="woodstockTooltip"
+    [routerLink]="woodstockRouterLink"
+    [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
+    mat-button
+    routerLinkActive="mat-stroked-button"
+    >Woodstock</a
+  >
+  <a
+    *ngIf="!isProduction"
     [class.mat-button-disabled]="!identity?.extra?.hasSteelhead"
     [matTooltip]="steelheadTooltip"
     [routerLink]="steelheadRouterLink"

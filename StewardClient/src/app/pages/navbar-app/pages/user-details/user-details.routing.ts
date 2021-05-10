@@ -7,8 +7,8 @@ import { ApolloUserDetailsComponent } from './apollo/apollo-user-details.compone
 import { GravityUserDetailsComponent } from './gravity/gravity-user-details.component';
 import { OpusUserDetailsComponent } from './opus/opus-user-details.component';
 import { SteelheadUserDetailsComponent } from './steelhead/steelhead-user-details.component';
-
 import { SunriseUserDetailsComponent } from './sunrise/sunrise-user-details.component';
+import { WoodstockUserDetailsComponent } from './woodstock/woodstock-user-details.component';
 import { UserDetailsComponent } from './user-details.component';
 
 const routes: Routes = [
@@ -20,6 +20,12 @@ const routes: Routes = [
       {
         path: '',
         canActivate: [TitleMemoryRedirectGuard],
+        pathMatch: 'full',
+      },
+      {
+        path: 'woodstock',
+        component: WoodstockUserDetailsComponent,
+        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Woodstock is ready
         pathMatch: 'full',
       },
       {

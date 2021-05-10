@@ -12,6 +12,7 @@ import { GravityService } from '@services/gravity';
 import { OpusService } from '@services/opus';
 import { SteelheadService } from '@services/steelhead';
 import { SunriseService } from '@services/sunrise';
+import { WoodstockService } from '@services/woodstock';
 import { first } from 'lodash';
 import { takeUntil } from 'rxjs/operators';
 import {
@@ -39,6 +40,7 @@ export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent
   }
 
   constructor(
+    woodstock: WoodstockService,
     steelhead: SteelheadService,
     sunrise: SunriseService,
     gravity: GravityService,
@@ -46,7 +48,7 @@ export class PlayerSelectionSingleComponent extends PlayerSelectionBaseComponent
     opus: OpusService,
   ) {
     // normally, this could be deleted. but this fails to inject to the base class during code coverage checks. https://github.com/angular/angular-cli/issues/14860
-    super(steelhead, sunrise, gravity, apollo, opus);
+    super(woodstock, steelhead, sunrise, gravity, apollo, opus);
     this.foundIdentities$.pipe(takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
       if (foundIdentities.length > 1) {
         throw new Error(`${this.constructor.name} was allowed to find multiple identities.`);

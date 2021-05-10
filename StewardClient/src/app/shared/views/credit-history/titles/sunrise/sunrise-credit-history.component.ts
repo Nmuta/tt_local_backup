@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { SunriseCreditHistory } from '@models/sunrise';
+import { SunriseCreditDetailsEntry } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
 import { NEVER, Subject } from 'rxjs';
-import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 
 /** Retreives and displays Sunrise credit history by XUID. */
 @Component({
@@ -20,7 +20,7 @@ export class SunriseCreditHistoryComponent extends BaseComponent implements OnIn
   /** The error received while loading. */
   public loadError: unknown;
   /** The credit history data. */
-  public creditHistory: SunriseCreditHistory;
+  public creditHistory: SunriseCreditDetailsEntry[];
   public columnsToDisplay = [
     'eventTimestampUtc',
     'deviceType',
@@ -58,15 +58,14 @@ export class SunriseCreditHistoryComponent extends BaseComponent implements OnIn
               }),
             );
         }),
-        tap(creditUpdates => {
-          this.loadingMore = false;
-          this.isLoading = false;
-          this.creditHistory = this.creditHistory.concat(creditUpdates);
-          this.startIndex += this.creditHistory.length;
-          this.showLoadMore = creditUpdates.length >= this.maxResultsPerRequest;
-        }),
       )
-      .subscribe();
+      .subscribe(creditUpdates => {
+        this.loadingMore = false;
+        this.isLoading = false;
+        this.creditHistory = this.creditHistory.concat(creditUpdates);
+        this.startIndex += this.creditHistory.length;
+        this.showLoadMore = creditUpdates.length >= this.maxResultsPerRequest;
+      });
 
     if (!!this.xuid) {
       this.getCreditUpdates$.next();

@@ -30,6 +30,10 @@ export class UnknownTitleComponent extends BaseComponent implements OnInit {
   /** Routes to the appropriate title page. */
   private routeByTitle(title: GameTitleCodeName): Observable<void> {
     switch (title) {
+      case GameTitleCodeName.FH5:
+        return this.store.dispatch(
+          new Navigate(['/support/ticket-app/title/woodstock'], null, { replaceUrl: true }),
+        );
       case GameTitleCodeName.FM8:
         return this.store.dispatch(
           new Navigate(['/support/ticket-app/title/steelhead'], null, { replaceUrl: true }),

@@ -21,6 +21,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { OverlayComponent } from './components/overlay/overlay.component';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { SteelheadComponent } from './pages/steelhead/steelhead.component';
+import { WoodstockComponent } from './pages/woodstock/woodstock.component';
 import { MatIconModule } from '@angular/material/icon';
 
 /** Defines the ticket sidebar module. */
@@ -44,6 +45,7 @@ import { MatIconModule } from '@angular/material/icon';
     TicketAppComponent,
     SunriseComponent,
     SteelheadComponent,
+    WoodstockComponent,
     GravityComponent,
     ApolloComponent,
     OpusComponent,

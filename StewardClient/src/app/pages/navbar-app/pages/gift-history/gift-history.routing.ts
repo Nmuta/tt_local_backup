@@ -8,6 +8,7 @@ import { ApolloGiftHistoryComponent } from './apollo/apollo-gift-history.compone
 import { GravityGiftHistoryComponent } from './gravity/gravity-gift-history.component';
 import { SunriseGiftHistoryComponent } from './sunrise/sunrise-gift-history.component';
 import { SteelheadGiftHistoryComponent } from './steelhead/steelhead-gift-history.component';
+import { WoodstockGiftHistoryComponent } from './woodstock/woodstock-gift-history.component';
 import { LiveOpsGuard } from 'app/route-guards/live-ops.guard';
 
 const routes: Routes = [
@@ -19,6 +20,12 @@ const routes: Routes = [
       {
         path: '',
         canActivate: [TitleMemoryRedirectGuard],
+        pathMatch: 'full',
+      },
+      {
+        path: 'woodstock',
+        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Woodstock is ready
+        component: WoodstockGiftHistoryComponent,
         pathMatch: 'full',
       },
       {

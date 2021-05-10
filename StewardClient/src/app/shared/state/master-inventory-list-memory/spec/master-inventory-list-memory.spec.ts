@@ -12,10 +12,12 @@ import {
   GetGravityMasterInventoryList,
   GetSteelheadMasterInventoryList,
   GetSunriseMasterInventoryList,
+  GetWoodstockMasterInventoryList,
 } from '../master-inventory-list-memory.actions';
 import { NEVER } from 'rxjs';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { createMockSteelheadService, SteelheadService } from '@services/steelhead';
+import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 
 describe('State: MasterInventoryListMemoryState', () => {
   let service: MasterInventoryListMemoryState;
@@ -25,6 +27,7 @@ describe('State: MasterInventoryListMemoryState', () => {
   let mockSunriseService: SunriseService;
   let mockApolloService: ApolloService;
   let mockSteelheadService: SteelheadService;
+  let mockWoodstockService: WoodstockService;
 
   beforeEach(
     waitForAsync(() => {
@@ -35,6 +38,7 @@ describe('State: MasterInventoryListMemoryState', () => {
           createMockSunriseService(),
           createMockApolloService(),
           createMockSteelheadService(),
+          createMockWoodstockService(),
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
@@ -46,6 +50,7 @@ describe('State: MasterInventoryListMemoryState', () => {
       mockSunriseService = TestBed.inject(SunriseService);
       mockApolloService = TestBed.inject(ApolloService);
       mockSteelheadService = TestBed.inject(SteelheadService);
+      mockWoodstockService = TestBed.inject(WoodstockService);
 
       store.reset({
         giftingMasterListMemory: {
@@ -259,6 +264,50 @@ describe('State: MasterInventoryListMemoryState', () => {
             }),
           )
           .subscribe();
+      });
+    });
+
+    describe('[GetWoodstockMasterInventory] Action', () => {
+      describe('Master list already exists in state', () => {
+        beforeEach(() => {
+          store.reset({
+            giftingMasterListMemory: {
+              [GameTitleCodeName.FH5]: {},
+            },
+          });
+        });
+
+        it('should not request woodstock master list from api', () => {
+          store
+            .dispatch(new GetWoodstockMasterInventoryList())
+            .pipe(
+              catchError(() => {
+                expect(false).toBeTruthy();
+                return NEVER;
+              }),
+              tap(() => {
+                expect(mockWoodstockService.getMasterInventory).not.toHaveBeenCalled();
+              }),
+            )
+            .subscribe();
+        });
+      });
+
+      describe('Master list does not exist in state', () => {
+        it('should request woodstock master list from api', () => {
+          store
+            .dispatch(new GetWoodstockMasterInventoryList())
+            .pipe(
+              catchError(() => {
+                expect(false).toBeTruthy();
+                return NEVER;
+              }),
+              tap(() => {
+                expect(mockWoodstockService.getMasterInventory).toHaveBeenCalled();
+              }),
+            )
+            .subscribe();
+        });
       });
     });
   });

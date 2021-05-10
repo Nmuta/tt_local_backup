@@ -5,5 +5,5 @@ export interface SunrisePlayerInventoryProfile {
   profileId: BigNumber;
   externalProfileId: GuidLikeString;
   isCurrent: boolean;
-  deviceType: string; // TODO: is this an enum? https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/651883
+  deviceType: string;
 }

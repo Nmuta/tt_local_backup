@@ -17,11 +17,15 @@ import { SunriseBanHistoryCompactComponent } from './sunrise/compact/sunrise-ban
 import { StewardUserModule } from '@views/steward-user/steward-user.module';
 import { SteelheadBanHistoryComponent } from './steelhead/steelhead-ban-history.component';
 import { SteelheadBanHistoryCompactComponent } from './steelhead/compact/steelhead-ban-history-compact.component';
+import { WoodstockBanHistoryComponent } from './woodstock/woodstock-ban-history.component';
+import { WoodstockBanHistoryCompactComponent } from './woodstock/compact/woodstock-ban-history-compact.component';
 import { MatIconModule } from '@angular/material/icon';
 
 /** A domain module for displaying player ban histories. */
 @NgModule({
   declarations: [
+    WoodstockBanHistoryComponent,
+    WoodstockBanHistoryCompactComponent,
     SteelheadBanHistoryComponent,
     SteelheadBanHistoryCompactComponent,
     SunriseBanHistoryComponent,
@@ -45,6 +49,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
   ],
   exports: [
+    WoodstockBanHistoryComponent,
+    WoodstockBanHistoryCompactComponent,
     SteelheadBanHistoryComponent,
     SteelheadBanHistoryCompactComponent,
     SunriseBanHistoryComponent,

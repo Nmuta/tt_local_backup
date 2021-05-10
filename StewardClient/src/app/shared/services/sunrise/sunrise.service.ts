@@ -13,7 +13,7 @@ import {
   SunriseBanResult,
   SunriseBanSummary,
   SunriseConsoleDetailsEntry,
-  SunriseCreditHistory,
+  SunriseCreditDetailsEntry,
   SunriseGift,
   SunriseGiftHistory,
   SunriseGroupGift,
@@ -223,11 +223,11 @@ export class SunriseService {
     xuid: BigNumber,
     startIndex: number = 0,
     maxResults: number = 100,
-  ): Observable<SunriseCreditHistory> {
+  ): Observable<SunriseCreditDetailsEntry[]> {
     const httpParams = new HttpParams()
       .set('startIndex', startIndex.toString())
       .set('maxResults', maxResults.toString());
-    return this.apiService.getRequest<SunriseCreditHistory>(
+    return this.apiService.getRequest<SunriseCreditDetailsEntry[]>(
       `${this.basePath}/player/xuid(${xuid})/creditUpdates`,
       httpParams,
     );

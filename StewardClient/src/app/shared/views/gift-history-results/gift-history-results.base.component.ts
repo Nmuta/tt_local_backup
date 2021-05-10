@@ -7,14 +7,16 @@ import { NEVER, Observable, of, Subject } from 'rxjs';
 import { GravityGiftHistory } from '@models/gravity';
 import { SunriseGiftHistory } from '@models/sunrise';
 import { ApolloGiftHistory } from '@models/apollo';
+import { SteelheadGiftHistory } from '@models/steelhead';
+import { WoodstockGiftHistory } from '@models/woodstock';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MasterInventoryItemList } from '@models/master-inventory-item-list';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { GameTitleCodeName } from '@models/enums';
-import { SteelheadGiftHistory } from '@models/steelhead';
 
 type IdentityResultUnion = IdentityResultAlpha | IdentityResultBeta;
 type GiftHistoryResultUnion =
+  | WoodstockGiftHistory
   | SteelheadGiftHistory
   | GravityGiftHistory
   | SunriseGiftHistory

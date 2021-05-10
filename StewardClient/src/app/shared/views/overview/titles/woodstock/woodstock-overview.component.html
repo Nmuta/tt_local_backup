@@ -1,0 +1,62 @@
+<mat-card>
+  <mat-card-content>
+    <h2>
+      Woodstock Overview
+      <error-spinner
+        [isActive]="false"
+        [error]="loadError"
+        spinnerMessage="Loading"
+        errorMessage="Failed to load"
+      ></error-spinner>
+    </h2>
+    <ng-container *ngIf="!isLoading && !loadError; else failstate">
+      <table class="mat-table">
+        <tr class="mat-row">
+          <th class="mat-header-cell">Current Credits</th>
+          <td class="mat-cell">{{ profileSummary.currentCredits }}</td>
+        </tr>
+        <tr class="mat-row">
+          <th class="mat-header-cell">Max Credits</th>
+          <td class="mat-cell">{{ profileSummary.maxCredits }}</td>
+        </tr>
+        <tr class="mat-row">
+          <th class="mat-header-cell">Unaccounted Credits</th>
+          <td class="mat-cell">{{ profileSummary.unaccountedForCredits }}</td>
+        </tr>
+        <tr class="mat-row">
+          <th class="mat-header-cell">Houses Purchased</th>
+          <td class="mat-cell">{{ profileSummary.housesPurchased }}</td>
+        </tr>
+        <tr class="mat-row">
+          <th class="mat-header-cell">Total XP</th>
+          <td class="mat-cell">{{ profileSummary.totalXp }}</td>
+        </tr>
+        <tr class="mat-row">
+          <th class="mat-header-cell">Tombola Spins</th>
+          <td class="mat-cell">{{ profileSummary.totalTombolaSpins }}</td>
+        </tr>
+        <tr class="mat-row">
+          <th class="mat-header-cell">Super Tombola Spins</th>
+          <td class="mat-cell">
+            {{ profileSummary.totalSuperTombolaSpins }}
+          </td>
+        </tr>
+        <tr class="mat-row">
+          <th class="mat-header-cell">Hack Flags</th>
+          <td class="mat-cell">
+            <ul>
+              <li *ngFor="let flag of profileSummary.hackFlags">
+                {{ flag | humanize }}
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+</ng-template>

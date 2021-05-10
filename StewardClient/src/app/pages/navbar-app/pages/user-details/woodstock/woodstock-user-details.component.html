@@ -1,0 +1,57 @@
+<ng-container *ngIf="identity && !identity?.error; else noIdentity">
+  <h1><player-identity-results [identity]="identity"></player-identity-results></h1>
+  <section>
+    <mat-tab-group animationDuration="0ms">
+      <mat-tab label="User Details">
+        <div class="tab-container">
+          <woodstock-user-flags [identity]="identity"></woodstock-user-flags>
+          <woodstock-ban-history [xuid]="identity.xuid"></woodstock-ban-history>
+          <!-- TODO: Uncomment once LSP and Steward API are setup to get profile rollbacks. -->
+          <!-- <woodstock-profile-rollbacks [identity]="identity"></woodstock-profile-rollbacks> -->
+          <woodstock-gamertags [identity]="identity"></woodstock-gamertags>
+          <woodstock-consoles [identity]="identity"></woodstock-consoles>
+        </div>
+      </mat-tab>
+      <mat-tab label="Deep Dive">
+        <div class="tab-container">
+          <woodstock-overview [xuid]="identity.xuid"></woodstock-overview>
+          <woodstock-credit-history [xuid]="identity.xuid"></woodstock-credit-history>
+        </div>
+      </mat-tab>
+      <mat-tab label="Inventory">
+        <div class="tab-container">
+          <woodstock-player-inventory-profile-picker
+            [identity]="identity"
+            [(profileId)]="profileId"
+            (profileIdChange)="onProfileIdChange($event)"
+          ></woodstock-player-inventory-profile-picker>
+          <woodstock-player-inventory
+            [identity]="identity"
+            [profileId]="profileId"
+          ></woodstock-player-inventory>
+        </div>
+      </mat-tab>
+      <mat-tab label="Notifications">
+        <div class="tab-container">
+          <woodstock-player-notifications [xuid]="identity.xuid"></woodstock-player-notifications>
+        </div>
+      </mat-tab>
+      <mat-tab label="JSON">
+        <div class="tab-container">
+          <json-dump [input]="identity">Identity</json-dump>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </section>
+</ng-container>
+
+<ng-template #noIdentity>
+  <h1 *ngIf="lookupName">Finding {{ lookupName }} by {{ lookupType | humanize }}</h1>
+  <h1 *ngIf="!lookupName">Waiting for {{ lookupType | humanize }}</h1>
+  <ng-container *ngIf="identity?.error">
+    <hr />
+    <h2>Request failed</h2>
+    <p>If this keeps happening, contact support.</p>
+    <json-dump [input]="identity?.error">View error</json-dump>
+  </ng-container>
+</ng-template>

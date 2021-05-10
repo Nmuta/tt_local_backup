@@ -9,6 +9,7 @@ import { GiftingComponent } from './gifting.component';
 import { GravityGiftingComponent } from './gravity/gravity-gifting.component';
 import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.component';
 import { SunriseGiftingComponent } from './sunrise/sunrise-gifting.component';
+import { WoodstockGiftingComponent } from './woodstock/woodstock-gifting.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,12 @@ const routes: Routes = [
       {
         path: '',
         canActivate: [TitleMemoryRedirectGuard],
+        pathMatch: 'full',
+      },
+      {
+        path: 'woodstock',
+        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Woodstock is ready
+        component: WoodstockGiftingComponent,
         pathMatch: 'full',
       },
       {

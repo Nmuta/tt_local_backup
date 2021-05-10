@@ -21,9 +21,11 @@ import { ApolloService } from '@services/apollo';
 import { OpusService } from '@services/opus';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { SteelheadService } from '@services/steelhead';
+import { WoodstockService } from '@services/woodstock';
 
 export interface AugmentedCompositeIdentity {
   query: IdentityQueryBeta & IdentityQueryAlpha;
+  woodstock: IdentityResultAlpha;
   steelhead: IdentityResultAlpha;
   sunrise: IdentityResultAlpha;
   gravity: IdentityResultBeta;
@@ -37,6 +39,7 @@ export interface AugmentedCompositeIdentity {
     rejectionReason: string;
     isValid: boolean;
     isInvalid: boolean;
+    hasWoodstock: boolean;
     hasSteelhead: boolean;
     hasSunrise: boolean;
     hasApollo: boolean;
@@ -107,6 +110,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   private lookupTypeGroupChange = new Subject<void>();
 
   constructor(
+    private readonly woodstock: WoodstockService,
     private readonly steelhead: SteelheadService,
     private readonly sunrise: SunriseService,
     private readonly gravity: GravityService,
@@ -271,6 +275,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       c: Observable<IdentityResultAlpha[]>, // Apollo
       d: Observable<IdentityResultBeta[]>, // Gravity
       e: Observable<IdentityResultAlpha[]>, // Steelhead
+      f: Observable<IdentityResultAlpha[]>, // Woodstock
     ] = [
       queryIsAlphaCompatible
         ? this.sunrise.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
@@ -285,10 +290,17 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
         ? this.gravity.getPlayerIdentities(newQueries as IdentityQueryBeta[])
         : of([] as IdentityResultBeta[]),
 
-      // TODO: Uncomment this when endpoint is ready for production use.
+      // TODO: Uncomment this when Steelhead endpoint is ready for production use.
       // Using empty array for now to stop failures
       //queryIsAlphaCompatible
       //  ? this.steelhead.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
+      //  : of([] as IdentityResultAlpha[]),
+      of([] as IdentityResultAlpha[]),
+
+      // TODO: Uncomment this when Woodstock endpoint is ready for production use.
+      // Using empty array for now to stop failures
+      //queryIsAlphaCompatible
+      //  ? this.woodstock.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
       //  : of([] as IdentityResultAlpha[]),
       of([] as IdentityResultAlpha[]),
     ];
@@ -304,6 +316,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
           apolloIdentities,
           gravityIdentities,
           steelheadIdentities,
+          woodstockIdentities,
         ] = results;
 
         // make lookup for faster operations later
@@ -327,6 +340,10 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
           steelheadIdentities,
           r => r.query[this.lookupType],
         );
+        const woodstockLookup = keyBy<IdentityResultAlpha>(
+          woodstockIdentities,
+          r => r.query[this.lookupType],
+        );
 
         // get all unique queries that came back
         const allQueries = uniqBy(
@@ -336,6 +353,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             ...apolloIdentities.map(q => q.query),
             ...gravityIdentities.map(q => q.query),
             ...steelheadIdentities.map(q => q.query),
+            ...woodstockIdentities.map(q => q.query),
           ],
           q => q[this.lookupType],
         );
@@ -359,19 +377,22 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
           compositeIdentity.opus = opusLookup[key];
           compositeIdentity.gravity = gravityLookup[key];
           compositeIdentity.steelhead = steelheadLookup[key];
+          compositeIdentity.woodstock = woodstockLookup[key];
 
           const allRequestsErrored =
             compositeIdentity.sunrise?.error &&
             compositeIdentity.apollo?.error &&
             compositeIdentity.opus?.error &&
             compositeIdentity.gravity?.error &&
-            compositeIdentity.steelhead?.error;
+            compositeIdentity.steelhead?.error &&
+            compositeIdentity.woodstock?.error;
 
           compositeIdentity.extra = {
             lookupType: this.lookupType,
             theme: allRequestsErrored ? 'warn' : 'primary',
             isValid: !allRequestsErrored,
             isInvalid: !!allRequestsErrored,
+            hasWoodstock: compositeIdentity.woodstock ? !compositeIdentity.woodstock?.error : false,
             hasSteelhead: compositeIdentity.steelhead ? !compositeIdentity.steelhead?.error : false,
             hasSunrise: compositeIdentity.sunrise ? !compositeIdentity.sunrise?.error : false,
             hasApollo: compositeIdentity.apollo ? !compositeIdentity.apollo?.error : false,
@@ -384,7 +405,8 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
           };
 
           compositeIdentity.extra.label = [
-            compositeIdentity.extra.hasSteelhead ? 'SH' : undefined,
+            compositeIdentity.extra.hasWoodstock ? 'W' : undefined,
+            compositeIdentity.extra.hasSteelhead ? 'Sh' : undefined,
             compositeIdentity.extra.hasApollo ? 'A' : undefined,
             compositeIdentity.extra.hasGravity ? 'G' : undefined,
             compositeIdentity.extra.hasOpus ? 'O' : undefined,
@@ -394,6 +416,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             .join('');
 
           compositeIdentity.extra.labelTooltip = [
+            compositeIdentity.extra.hasWoodstock ? 'Woodstock' : undefined,
             compositeIdentity.extra.hasSteelhead ? 'Steelhead' : undefined,
             compositeIdentity.extra.hasApollo ? 'Apollo' : undefined,
             compositeIdentity.extra.hasGravity ? 'Gravity' : undefined,

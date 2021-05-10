@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitleCodeName, UserRole } from '@models/enums';
 import { IdentityResultAlphaBatch, IdentityResultAlpha } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
 import { SunriseMasterInventory, SunrisePlayerInventoryProfile } from '@models/sunrise';
@@ -45,7 +45,7 @@ export class SunriseGiftingComponent extends GiftingBaseComponent implements OnI
   /** Initialization hook */
   public ngOnInit(): void {
     const user = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.disableLspGroupSelection = user.role !== 'LiveOpsAdmin';
+    this.disableLspGroupSelection = user.role !== UserRole.LiveOpsAdmin;
 
     this.matTabSelectedIndex = this.store.selectSnapshot<number>(
       SunriseGiftingState.selectedMatTabIndex,

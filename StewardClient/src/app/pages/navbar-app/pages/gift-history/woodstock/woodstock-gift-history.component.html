@@ -1,0 +1,59 @@
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane player-selection-div steward-layout-vertical-fill">
+      <mat-tab-group
+        mat-stretch-tabs
+        [(selectedIndex)]="matTabSelectedIndex"
+        (selectedTabChange)="matTabSelectionChange($event.index)"
+      >
+        <mat-tab label="Player Selection">
+          <mat-card>
+            <player-selection-single
+              [disableLookupTypes]="['t10Id']"
+              [allowSelection]="true"
+              [rejectionFn]="identityRejectionFn"
+              (found)="onPlayerIdentityChange($event)"
+              (selected)="playerIdentitySelected($event)"
+            ></player-selection-single>
+          </mat-card>
+        </mat-tab>
+        <mat-tab label="LSP Group Selection">
+          <woodstock-lsp-group-selection
+            [(ngModel)]="selectedLspGroup"
+          ></woodstock-lsp-group-selection>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+
+    <div class="steward-layout-pane steward-layout-fill reference-inventory">
+      <mat-card>
+        <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
+          <woodstock-player-inventory-profile-picker
+            [identity]="selectedPlayerIdentity"
+            [(profileId)]="selectedPlayerInventoryProfile"
+          ></woodstock-player-inventory-profile-picker>
+
+          <div class="inventory-div">
+            <woodstock-player-inventory
+              [identity]="selectedPlayerIdentity"
+              [profileId]="selectedPlayerInventoryProfile"
+              (inventoryFound)="onInventoryFound($event)"
+            ></woodstock-player-inventory>
+          </div>
+        </ng-container>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="steward-layout-pane steward-layout-fill reference-inventory">
+    <woodstock-gift-history-results
+      [selectedPlayer]="selectedPlayer"
+      [selectedGroup]="selectedLspGroup"
+      [usingPlayerIdentities]="matTabSelectedIndex === 0"
+    ></woodstock-gift-history-results>
+  </div>
+</div>
+
+<ng-template #selectPlayerExplanation>
+  <p>Select a player chip to view inventory</p>
+</ng-template>

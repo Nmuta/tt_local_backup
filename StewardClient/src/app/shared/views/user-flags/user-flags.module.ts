@@ -15,10 +15,16 @@ import { SunriseUserFlagsComponent } from './sunrise/sunrise-user-flags.componen
 import { ApolloUserFlagsComponent } from './apollo/apollo-user-flags.component';
 import { SteelheadUserFlagsComponent } from './steelhead/steelhead-user-flags.component';
 import { MatIconModule } from '@angular/material/icon';
+import { WoodstockUserFlagsComponent } from './woodstock/woodstock-user-flags.component';
 
 /** A domain module for displaying user flags. */
 @NgModule({
-  declarations: [SteelheadUserFlagsComponent, SunriseUserFlagsComponent, ApolloUserFlagsComponent],
+  declarations: [
+    WoodstockUserFlagsComponent,
+    SteelheadUserFlagsComponent,
+    SunriseUserFlagsComponent,
+    ApolloUserFlagsComponent,
+  ],
   imports: [
     CommonModule,
     MatCardModule,
@@ -34,6 +40,11 @@ import { MatIconModule } from '@angular/material/icon';
     JsonDumpModule,
     FontAwesomeModule,
   ],
-  exports: [SteelheadUserFlagsComponent, SunriseUserFlagsComponent, ApolloUserFlagsComponent],
+  exports: [
+    WoodstockUserFlagsComponent,
+    SteelheadUserFlagsComponent,
+    SunriseUserFlagsComponent,
+    ApolloUserFlagsComponent,
+  ],
 })
 export class UserFlagsModule {}

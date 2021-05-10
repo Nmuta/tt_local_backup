@@ -29,6 +29,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { SteelheadBanningComponent } from './pages/steelhead/steelhead-banning.component';
+import { WoodstockBanningComponent } from './pages/woodstock/woodstock-banning.component';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -37,6 +38,7 @@ import { SteelheadBanningComponent } from './pages/steelhead/steelhead-banning.c
     ApolloBanningComponent,
     SunriseBanningComponent,
     SteelheadBanningComponent,
+    WoodstockBanningComponent,
     BanOptionsComponent,
     DurationPickerComponent,
   ],
