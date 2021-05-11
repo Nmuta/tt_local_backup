@@ -47,6 +47,7 @@ import { HubsModule } from '@shared/hubs/hubs.module';
 import { StagingRewriteInterceptor } from '@interceptors/staging-rewrite.interceptor';
 import { SteelheadGiftingState } from '@shared/pages/gifting/steelhead/state/steelhead-gifting.state';
 import { SteelheadGiftHistoryState } from '@navbar-app/pages/gift-history/steelhead/state/steelhead-gift-history.state';
+import { USER_GUARD_PROVIDERS } from './route-guards/user-role.guards';
 import { WoodstockGiftingState } from '@shared/pages/gifting/woodstock/state/woodstock-gifting.state';
 import { WoodstockGiftHistoryState } from '@navbar-app/pages/gift-history/woodstock/state/woodstock-gift-history.state';
 
@@ -147,6 +148,7 @@ function fakeApiOrNothing(): Provider[] {
     { provide: RouteReuseStrategy, useClass: StoreForeverStrategy },
     Clipboard,
     ...fakeApiOrNothing(),
+    ...USER_GUARD_PROVIDERS,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: StagingRewriteInterceptor,

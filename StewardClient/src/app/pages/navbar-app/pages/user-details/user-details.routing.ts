@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LiveOpsGuard } from 'app/route-guards/live-ops.guard';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
 import { ApolloUserDetailsComponent } from './apollo/apollo-user-details.component';
@@ -10,6 +9,8 @@ import { SteelheadUserDetailsComponent } from './steelhead/steelhead-user-detail
 import { SunriseUserDetailsComponent } from './sunrise/sunrise-user-details.component';
 import { WoodstockUserDetailsComponent } from './woodstock/woodstock-user-details.component';
 import { UserDetailsComponent } from './user-details.component';
+import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
+import { UserRole } from '@models/enums';
 
 const routes: Routes = [
   {
@@ -25,13 +26,19 @@ const routes: Routes = [
       {
         path: 'woodstock',
         component: WoodstockUserDetailsComponent,
-        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Woodstock is ready
+        canActivate: [
+          TitleMemorySetGuard,
+          FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Woodstock is ready
+        ],
         pathMatch: 'full',
       },
       {
         path: 'steelhead',
         component: SteelheadUserDetailsComponent,
-        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Steelhead is ready
+        canActivate: [
+          TitleMemorySetGuard,
+          FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Steelhead is ready
+        ],
         pathMatch: 'full',
       },
       {

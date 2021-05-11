@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LiveOpsGuard } from 'app/route-guards/live-ops.guard';
+import { UserRole } from '@models/enums';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
+import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
 import { ApolloBanningComponent } from './pages/apollo/apollo-banning.component';
 import { SteelheadBanningComponent } from './pages/steelhead/steelhead-banning.component';
 import { SunriseBanningComponent } from './pages/sunrise/sunrise-banning.component';
@@ -22,13 +23,19 @@ const routes: Routes = [
       },
       {
         path: 'woodstock',
-        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Woodstock is ready
+        canActivate: [
+          TitleMemorySetGuard,
+          FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Woodstock is ready
+        ],
         component: WoodstockBanningComponent,
         pathMatch: 'full',
       },
       {
         path: 'steelhead',
-        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Steelhead is ready
+        canActivate: [
+          TitleMemorySetGuard,
+          FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Steelhead is ready
+        ],
         component: SteelheadBanningComponent,
         pathMatch: 'full',
       },

@@ -1,7 +1,8 @@
 <center-contents>
   <mat-card>
     <h1>Unauthorized Access</h1>
-    <p>You were trying to access {{ appName }} Apps which your role does not allow.</p>
+    <p>You were trying to access a page your role does not have access to.</p>
+    <a [routerLink]="[source]">{{ source }}</a>
 
     <a mat-raised-button color="accent" [routerLink]="['/']">Back to Home Page</a>
   </mat-card>

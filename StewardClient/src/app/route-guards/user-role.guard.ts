@@ -19,20 +19,24 @@ import { UserRole } from '@models/enums';
 @Injectable({
   providedIn: 'root',
 })
-export class LiveOpsGuard implements CanActivate, CanActivateChild {
+export class UserRoleGuard implements CanActivate, CanActivateChild {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 
-  constructor(private readonly store: Store) {}
+  constructor(private readonly store: Store, private readonly allowedRoles: UserRole[]) {}
 
   /** Checks when the component is first loaded. */
   public canActivate(
     _route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<boolean> {
+    if (!this.allowedRoles || this.allowedRoles?.length <= 0) {
+      throw new Error('Cannot use User Role Guard without providing list of allowed user roles.');
+    }
+
     // The query portion of the URL doesn't cleanly pass through the redirect process, resulting in 404s. We don't need it, anyway.
     const urlNoQuery = state.url.split('?')[0];
     const redirectAction = new Navigate(['/auth/login'], { from: urlNoQuery });
-    const unauthorizedAction = new Navigate(['/unauthorized'], { app: 'Live Ops' });
+    const unauthorizedAction = new Navigate(['/unauthorized'], { source: state.url || '' });
 
     this.store.dispatch(new RequestAccessToken());
 
@@ -47,14 +51,13 @@ export class LiveOpsGuard implements CanActivate, CanActivateChild {
           return false;
         }
 
-        const role = (profile as UserModel)?.role;
-        switch (role) {
-          case UserRole.LiveOpsAdmin:
-            return true;
-          default:
-            this.store.dispatch(unauthorizedAction);
-            return false;
+        const userRole = (profile as UserModel)?.role;
+        if (this.allowedRoles.includes(userRole)) {
+          return true;
         }
+
+        this.store.dispatch(unauthorizedAction);
+        return false;
       }),
     );
   }

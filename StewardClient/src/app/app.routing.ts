@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { UserRole } from '@models/enums';
 
 import { ErrorComponent } from './pages/error/error.component';
 import { AuthGuard } from './route-guards/auth.guard';
-import { CommunityGuard } from './route-guards/community.guard';
-import { DataPipelineGuard } from './route-guards/data-pipeline.guard';
-import { LiveOpsGuard } from './route-guards/live-ops.guard';
-import { SupportGuard } from './route-guards/support.guard';
+import { FindUserRoleGuard } from './route-guards/user-role.guards';
 import { ZendeskGuard } from './route-guards/zendesk.guard';
 
 const routes: Routes = [
@@ -17,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'live-ops',
-    canActivate: [AuthGuard, LiveOpsGuard],
+    canActivate: [AuthGuard, FindUserRoleGuard([UserRole.LiveOpsAdmin])],
     children: [
       {
         path: 'live-ops-app',
@@ -30,7 +28,15 @@ const routes: Routes = [
   },
   {
     path: 'support',
-    canActivate: [AuthGuard, SupportGuard],
+    canActivate: [
+      AuthGuard,
+      FindUserRoleGuard([
+        UserRole.LiveOpsAdmin,
+        UserRole.SupportAgentAdmin,
+        UserRole.SupportAgent,
+        UserRole.SupportAgentNew,
+      ]),
+    ],
     children: [
       {
         path: 'navbar-app',
@@ -50,7 +56,7 @@ const routes: Routes = [
   },
   {
     path: 'community',
-    canActivate: [AuthGuard, CommunityGuard],
+    canActivate: [AuthGuard, FindUserRoleGuard([UserRole.LiveOpsAdmin, UserRole.CommunityManager])],
     children: [
       {
         path: 'community-app',
@@ -63,7 +69,15 @@ const routes: Routes = [
   },
   {
     path: 'data-pipeline',
-    canActivate: [AuthGuard, DataPipelineGuard],
+    canActivate: [
+      AuthGuard,
+      FindUserRoleGuard([
+        UserRole.LiveOpsAdmin,
+        UserRole.DataPipelineAdmin,
+        UserRole.DataPipelineContributor,
+        UserRole.DataPipelineRead,
+      ]),
+    ],
     children: [
       {
         path: 'data-pipeline-app',

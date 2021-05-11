@@ -8,7 +8,8 @@ import { sidebarRoutes } from 'app/sidebars/sidebars.module';
 import { FourOhFourComponent } from '@shared/views/four-oh-four/four-oh-four.component';
 import { AuthGuard } from 'app/route-guards/auth.guard';
 import { SharedNavbarTools } from '@shared/pages/shared-tool-list';
-import { SupportAdminGuard } from 'app/route-guards/support-admin.guard';
+import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
+import { UserRole } from '@models/enums';
 
 const routes: Routes = [
   {
@@ -52,7 +53,7 @@ const routes: Routes = [
       },
       {
         path: SharedNavbarTools.MessagingPage.path,
-        canActivate: [SupportAdminGuard],
+        canActivate: [FindUserRoleGuard([UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin])],
         loadChildren: () =>
           import('../../shared/pages/community-messaging/community-messaging.module').then(
             m => m.CommunityMessagingModule,

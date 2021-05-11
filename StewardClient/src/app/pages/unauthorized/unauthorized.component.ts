@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./unauthorized.component.scss'],
 })
 export class UnauthorizedComponent extends BaseComponent implements OnInit {
-  public appName: string = 'Unknown';
+  public source: string = 'Unknown';
 
   constructor(private route: ActivatedRoute) {
     super();
@@ -17,7 +17,7 @@ export class UnauthorizedComponent extends BaseComponent implements OnInit {
   /** Angular lifecycle hook. */
   public ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.appName = params['app'];
+      this.source = params['source'];
     });
   }
 }

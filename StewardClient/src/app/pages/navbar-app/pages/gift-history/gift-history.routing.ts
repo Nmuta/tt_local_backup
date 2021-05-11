@@ -9,7 +9,8 @@ import { GravityGiftHistoryComponent } from './gravity/gravity-gift-history.comp
 import { SunriseGiftHistoryComponent } from './sunrise/sunrise-gift-history.component';
 import { SteelheadGiftHistoryComponent } from './steelhead/steelhead-gift-history.component';
 import { WoodstockGiftHistoryComponent } from './woodstock/woodstock-gift-history.component';
-import { LiveOpsGuard } from 'app/route-guards/live-ops.guard';
+import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
+import { UserRole } from '@models/enums';
 
 const routes: Routes = [
   {
@@ -24,13 +25,19 @@ const routes: Routes = [
       },
       {
         path: 'woodstock',
-        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Woodstock is ready
+        canActivate: [
+          TitleMemorySetGuard,
+          FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Woodstock is ready
+        ],
         component: WoodstockGiftHistoryComponent,
         pathMatch: 'full',
       },
       {
         path: 'steelhead',
-        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Steelhead is ready
+        canActivate: [
+          TitleMemorySetGuard,
+          FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Steelhead is ready
+        ],
         component: SteelheadGiftHistoryComponent,
         pathMatch: 'full',
       },

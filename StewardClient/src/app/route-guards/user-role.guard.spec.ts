@@ -9,10 +9,10 @@ import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import faker from 'faker';
 
-import { SupportAdminGuard } from './support-admin.guard';
+import { UserRoleGuard } from './user-role.guard';
 
-describe('SupportAdminGuard:', () => {
-  let guard: SupportAdminGuard;
+describe('UserRoleGuard:', () => {
+  let guard: UserRoleGuard;
   let store: Store;
   const testProfile: UserModel = {
     emailAddress: 'test.email@microsoft.com',
@@ -21,6 +21,7 @@ describe('SupportAdminGuard:', () => {
     objectId: `${faker.datatype.uuid()}`,
     liveOpsAdminSecondaryRole: undefined,
   };
+
   const testRoute: Partial<ActivatedRouteSnapshot> = {};
   const testSnapshot: Partial<RouterStateSnapshot> = { url: '/i/am/a/route?with=query' };
 
@@ -28,8 +29,10 @@ describe('SupportAdminGuard:', () => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([])],
       schemas: [NO_ERRORS_SCHEMA],
+      providers: [{ provide: Array, useValue: [UserRole.LiveOpsAdmin] }],
     });
-    guard = TestBed.inject(SupportAdminGuard);
+
+    guard = TestBed.inject(UserRoleGuard);
     store = TestBed.inject(Store);
 
     store.dispatch = jasmine.createSpy('dispatch');
@@ -54,18 +57,6 @@ describe('SupportAdminGuard:', () => {
         action.subscribe(result => expect(result).toBeTruthy());
       });
     });
-
-    describe('SupportAgentAdmin', () => {
-      beforeEach(() => {
-        testProfile.role = UserRole.SupportAgentAdmin;
-        guard.profile$ = of(testProfile);
-      });
-
-      it('should allow passage', () => {
-        const action = guard.canActivate(testRoute as never, testSnapshot as never);
-        action.subscribe(result => expect(result).toBeTruthy());
-      });
-    });
   });
 
   describe('When profile has an invalid role: ', () => {
@@ -81,7 +72,7 @@ describe('SupportAdminGuard:', () => {
 
         expect(store.dispatch).toHaveBeenCalled();
         expect(store.dispatch).toHaveBeenCalledWith(
-          new Navigate(['/unauthorized'], { app: 'Support - Messaging Feature' }),
+          new Navigate(['/unauthorized'], { source: testSnapshot.url }),
         );
       }));
     });

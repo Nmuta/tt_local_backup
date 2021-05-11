@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LiveOpsGuard } from 'app/route-guards/live-ops.guard';
+import { UserRole } from '@models/enums';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
+import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
 import { ApolloGiftingComponent } from './apollo/apollo-gifting.component';
 
 import { GiftingComponent } from './gifting.component';
@@ -24,13 +25,19 @@ const routes: Routes = [
       },
       {
         path: 'woodstock',
-        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Woodstock is ready
+        canActivate: [
+          TitleMemorySetGuard,
+          FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Woodstock is ready
+        ],
         component: WoodstockGiftingComponent,
         pathMatch: 'full',
       },
       {
         path: 'steelhead',
-        canActivate: [LiveOpsGuard, TitleMemorySetGuard], // TODO: Remove LiveOpsGuard when Steelhead is ready
+        canActivate: [
+          TitleMemorySetGuard,
+          FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Steelhead is ready
+        ],
         component: SteelheadGiftingComponent,
         pathMatch: 'full',
       },

@@ -10,11 +10,16 @@ mat-card {
     color: app-color-default($app-primary);
   }
 
-  a {
+  a[mat-raised-button] {
     display: block;
     width: ($intro-card-width / 2);
     margin-top: $gap-medium;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  a {
+    white-space: nowrap;
+    text-align: center;
   }
 }
