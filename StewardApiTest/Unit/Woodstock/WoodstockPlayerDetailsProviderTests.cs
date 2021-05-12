@@ -41,16 +41,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenSunriseUserServiceNull_Throws()
+        public void Ctor_WhenWoodstockServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { WoodstockUserService = null };
+            var dependencies = new Dependencies { WoodstockService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockUserService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockService"));
         }
 
         [TestMethod]
@@ -373,16 +373,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
         {
             public Dependencies()
             {
-                this.WoodstockUserService.GetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput>());
-                this.WoodstockUserService.GetUserDataByGamertagAsync("gamerT1").Returns(GenerateGetLiveOpsUserDataByGamerTagOutPut());
-                this.WoodstockUserService.GetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<LiveOpsService.GetLiveOpsUserDataByXuidOutput>());
-                this.WoodstockUserService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
-                this.WoodstockUserService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
-                this.WoodstockUserService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
-                this.WoodstockUserService.GetIsUnderReviewAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
-                this.WoodstockUserService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<int>()).Returns(GenerateBanUsersOutput());
-                this.WoodstockUserService.GetUserBanSummariesAsync(Arg.Any<ulong[]>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
-                this.WoodstockUserService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
+                this.WoodstockService.GetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
+                this.WoodstockService.GetUserDataByGamertagAsync("gamerT1").Returns(GenerateGetLiveOpsUserDataByGamerTagOutPut());
+                this.WoodstockService.GetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetLiveOpsUserDataByXuidOutput>());
+                this.WoodstockService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
+                this.WoodstockService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
+                this.WoodstockService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
+                this.WoodstockService.GetIsUnderReviewAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
+                this.WoodstockService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<int>()).Returns(GenerateBanUsersOutput());
+                this.WoodstockService.GetUserBanSummariesAsync(Arg.Any<ulong[]>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
+                this.WoodstockService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.Mapper.Map<WoodstockPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
@@ -392,14 +392,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<WoodstockPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
             }
 
-            public IWoodstockUserService WoodstockUserService { get; set; } = Substitute.For<IWoodstockUserService>();
+            public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
 
             public IWoodstockBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<IWoodstockBanHistoryProvider>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public WoodstockPlayerDetailsProvider Build() => new WoodstockPlayerDetailsProvider(
-                                                                                            this.WoodstockUserService,
+                                                                                            this.WoodstockService,
                                                                                             this.BanHistoryProvider,
                                                                                             this.Mapper);
 

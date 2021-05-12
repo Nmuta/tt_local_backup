@@ -41,7 +41,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenSunriseUserServiceNull_Throws()
+        public void Ctor_WhenSteelheadServiceNull_Throws()
         {
             // Arrange.
             var dependencies = new Dependencies { SteelheadUserService = null };
@@ -50,7 +50,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadUserService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadService"));
         }
 
         [TestMethod]
@@ -373,9 +373,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             public Dependencies()
             {
-                this.SteelheadUserService.GetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput>());
+                this.SteelheadUserService.GetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
                 this.SteelheadUserService.GetUserDataByGamertagAsync("gamerT1").Returns(GenerateGetLiveOpsUserDataByGamerTagOutPut());
-                this.SteelheadUserService.GetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<LiveOpsService.GetLiveOpsUserDataByXuidOutput>());
+                this.SteelheadUserService.GetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetLiveOpsUserDataByXuidOutput>());
                 this.SteelheadUserService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
                 this.SteelheadUserService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
                 this.SteelheadUserService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
@@ -392,7 +392,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SteelheadPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
             }
 
-            public ISteelheadUserService SteelheadUserService { get; set; } = Substitute.For<ISteelheadUserService>();
+            public ISteelheadService SteelheadUserService { get; set; } = Substitute.For<ISteelheadService>();
 
             public ISteelheadBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<ISteelheadBanHistoryProvider>();
 

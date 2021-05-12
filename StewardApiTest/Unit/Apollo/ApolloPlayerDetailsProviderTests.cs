@@ -11,6 +11,7 @@ using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
+using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 using Xls.WebServices.FM7.Generated;
 using static Forza.WebServices.FM7.Generated.UserService;
 using static Xls.WebServices.FM7.Generated.UserService;
@@ -38,30 +39,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenApolloUserServiceNull_Throws()
+        public void Ctor_WhenApolloServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { ApolloUserService = null };
+            var dependencies = new Dependencies { ApolloService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "apolloUserService"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenApolloGroupingServiceNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { ApolloGroupingService = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "apolloGroupingService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "apolloService"));
         }
 
         [TestMethod]
@@ -414,16 +401,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             public Dependencies()
             {
-                this.ApolloUserService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDataByGamertagOutput>());
-                this.ApolloUserService.LiveOpsGetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<LiveOpsGetUserDataByXuidOutput>());
-                this.ApolloUserService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>()).Returns(GenerateBanUsersOutput());
-                this.ApolloUserService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
-                this.ApolloUserService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(this.GenerateGetUserBanHistoryOutput());
-                this.ApolloUserService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
-                this.ApolloUserService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
-                this.ApolloUserService.GetIsUnderReviewAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
-                this.ApolloGroupingService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
-                this.ApolloGroupingService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupsOutput>());
+                this.ApolloService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDataByGamertagOutput>());
+                this.ApolloService.LiveOpsGetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<LiveOpsGetUserDataByXuidOutput>());
+                this.ApolloService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>()).Returns(GenerateBanUsersOutput());
+                this.ApolloService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
+                this.ApolloService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(this.GenerateGetUserBanHistoryOutput());
+                this.ApolloService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
+                this.ApolloService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
+                this.ApolloService.GetIsUnderReviewAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
+                this.ApolloService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
+                this.ApolloService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupsOutput>());
                 this.Mapper.Map<ApolloPlayerDetails>(Arg.Any<CompositeUser>()).Returns(Fixture.Create<ApolloPlayerDetails>());
                 this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
@@ -434,15 +421,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<ApolloPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
             }
 
-            public IApolloUserService ApolloUserService { get; set; } = Substitute.For<IApolloUserService>();
-
-            public IApolloGroupingService ApolloGroupingService { get; set; } = Substitute.For<IApolloGroupingService>();
-
+            public IApolloService ApolloService { get; set; } = Substitute.For<IApolloService>();
+            
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public IApolloBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<IApolloBanHistoryProvider>();
 
-            public ApolloPlayerDetailsProvider Build() => new ApolloPlayerDetailsProvider(this.ApolloUserService, this.ApolloGroupingService, this.Mapper, this.BanHistoryProvider);
+            public ApolloPlayerDetailsProvider Build() => new ApolloPlayerDetailsProvider(this.ApolloService, this.Mapper, this.BanHistoryProvider);
 
             private GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
             {

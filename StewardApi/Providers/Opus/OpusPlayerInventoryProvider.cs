@@ -5,6 +5,7 @@ using AutoMapper;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
+using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Opus
 {
@@ -13,18 +14,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
     {
         private const int MaxProfileResults = 50;
 
-        private readonly IOpusOnlineProfileService opusInventoryService;
+        private readonly IOpusService opusService;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="OpusPlayerInventoryProvider"/> class.
         /// </summary>
-        public OpusPlayerInventoryProvider(IOpusOnlineProfileService opusOnlineProfileService, IMapper mapper)
+        public OpusPlayerInventoryProvider(IOpusService opusService, IMapper mapper)
         {
-            opusOnlineProfileService.ShouldNotBeNull(nameof(opusOnlineProfileService));
+            opusService.ShouldNotBeNull(nameof(opusService));
             mapper.ShouldNotBeNull(nameof(mapper));
 
-            this.opusInventoryService = opusOnlineProfileService;
+            this.opusService = opusService;
             this.mapper = mapper;
         }
 
@@ -35,7 +36,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
 
             try
             {
-                var response = await this.opusInventoryService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
+                var response = await this.opusService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
 
                 return this.mapper.Map<OpusMasterInventory>(response.summary);
             }
@@ -50,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         {
             try
             {
-                var response = await this.opusInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId).ConfigureAwait(false);
+                var response = await this.opusService.GetAdminUserInventoryByProfileIdAsync(profileId).ConfigureAwait(false);
 
                 return this.mapper.Map<OpusMasterInventory>(response.summary);
             }
@@ -65,7 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         {
             try
             {
-                var response = await this.opusInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults)
+                var response = await this.opusService.GetAdminUserProfilesAsync(xuid, MaxProfileResults)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<OpusInventoryProfile>>(response.profiles);

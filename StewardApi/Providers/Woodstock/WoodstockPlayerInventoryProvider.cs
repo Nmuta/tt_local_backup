@@ -21,8 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         private const int AgentCreditSendAmount = 500_000_000;
         private const int AdminCreditSendAmount = 999_999_999;
 
-        private readonly IWoodstockUserInventoryService woodstockUserInventoryService;
-        private readonly IWoodstockGiftingService woodstockGiftingService;
+        private readonly IWoodstockService woodstockService;
         private readonly IMapper mapper;
         private readonly IWoodstockGiftHistoryProvider giftHistoryProvider;
 
@@ -30,18 +29,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         ///     Initializes a new instance of the <see cref="WoodstockPlayerInventoryProvider"/> class.
         /// </summary>
         public WoodstockPlayerInventoryProvider(
-            IWoodstockUserInventoryService woodstockUserInventoryService,
-            IWoodstockGiftingService woodstockGiftingService,
+            IWoodstockService woodstockService,
             IMapper mapper,
             IWoodstockGiftHistoryProvider giftHistoryProvider)
         {
-            woodstockUserInventoryService.ShouldNotBeNull(nameof(woodstockUserInventoryService));
-            woodstockGiftingService.ShouldNotBeNull(nameof(woodstockGiftingService));
+            woodstockService.ShouldNotBeNull(nameof(woodstockService));
             mapper.ShouldNotBeNull(nameof(mapper));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
 
-            this.woodstockUserInventoryService = woodstockUserInventoryService;
-            this.woodstockGiftingService = woodstockGiftingService;
+            this.woodstockService = woodstockService;
             this.mapper = mapper;
             this.giftHistoryProvider = giftHistoryProvider;
         }
@@ -53,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                var response = await this.woodstockUserInventoryService.GetAdminUserInventoryAsync(xuid)
+                var response = await this.woodstockService.GetAdminUserInventoryAsync(xuid)
                     .ConfigureAwait(false);
                 var playerInventoryDetails = this.mapper.Map<WoodstockMasterInventory>(response.summary);
 
@@ -70,7 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             try
             {
-                var response = await this.woodstockUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                var response = await this.woodstockService.GetAdminUserInventoryByProfileIdAsync(profileId)
                     .ConfigureAwait(false);
                 var inventoryProfile = this.mapper.Map<WoodstockMasterInventory>(response.summary);
 
@@ -89,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                var response = await this.woodstockUserInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+                var response = await this.woodstockService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<WoodstockInventoryProfile>>(response.profiles);
             }
@@ -122,7 +118,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.woodstockGiftingService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.woodstockService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
@@ -179,7 +175,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.woodstockGiftingService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.woodstockService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);

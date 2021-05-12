@@ -25,20 +25,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         private const int CommunityManagerUserGroupId = 5;
         private const int WhitelistUserGroupId = 6;
 
-        private readonly IWoodstockUserService woodstockUserService;
+        private readonly IWoodstockService woodstockService;
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockPlayerDetailsProvider"/> class.
         /// </summary>
-        public WoodstockPlayerDetailsProvider(IWoodstockUserService woodstockUserService, IWoodstockBanHistoryProvider banHistoryProvider, IMapper mapper)
+        public WoodstockPlayerDetailsProvider(IWoodstockService woodstockService, IWoodstockBanHistoryProvider banHistoryProvider, IMapper mapper)
         {
-            woodstockUserService.ShouldNotBeNull(nameof(woodstockUserService));
+            woodstockService.ShouldNotBeNull(nameof(woodstockService));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
             mapper.ShouldNotBeNull(nameof(mapper));
 
-            this.woodstockUserService = woodstockUserService;
+            this.woodstockService = woodstockService;
             this.banHistoryProvider = banHistoryProvider;
             this.mapper = mapper;
         }
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                var response = await this.woodstockUserService.GetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
+                var response = await this.woodstockService.GetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
 
                 return this.mapper.Map<WoodstockPlayerDetails>(response.userData);
             }
@@ -109,7 +109,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             try
             {
-                var response = await this.woodstockUserService.GetUserDataByXuidAsync(xuid).ConfigureAwait(false);
+                var response = await this.woodstockService.GetUserDataByXuidAsync(xuid).ConfigureAwait(false);
 
                 if (response.userData.region <= 0) { return null; }
 
@@ -126,7 +126,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             try
             {
-                var response = await this.woodstockUserService.GetUserDataByXuidAsync(xuid)
+                var response = await this.woodstockService.GetUserDataByXuidAsync(xuid)
                     .ConfigureAwait(false);
 
                 return response.userData.region > 0;
@@ -144,7 +144,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                var response = await this.woodstockUserService.GetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
+                var response = await this.woodstockService.GetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
 
                 return response.userData.region > 0;
             }
@@ -159,7 +159,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             try
             {
-                var response = await this.woodstockUserService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+                var response = await this.woodstockService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<ConsoleDetails>>(response.consoles);
             }
@@ -174,7 +174,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             try
             {
-                await this.woodstockUserService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
+                await this.woodstockService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             try
             {
-                var response = await this.woodstockUserService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults)
+                var response = await this.woodstockService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
@@ -203,7 +203,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             try
             {
-                var result = await this.woodstockUserService.GetUserGroupsAsync(startIndex, maxResults)
+                var result = await this.woodstockService.GetUserGroupsAsync(startIndex, maxResults)
                     .ConfigureAwait(false);
                 var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
 
@@ -220,9 +220,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             try
             {
-                var userGroupResults = await this.woodstockUserService
+                var userGroupResults = await this.woodstockService
                     .GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(false);
-                var suspiciousResults = await this.woodstockUserService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
+                var suspiciousResults = await this.woodstockService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
 
                 userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
 
@@ -252,10 +252,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 var addGroupList = this.PrepareGroupIds(userFlags, true);
                 var removeGroupList = this.PrepareGroupIds(userFlags, false);
 
-                await this.woodstockUserService.AddToUserGroupsAsync(xuid, addGroupList.ToArray()).ConfigureAwait(false);
-                await this.woodstockUserService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray())
+                await this.woodstockService.AddToUserGroupsAsync(xuid, addGroupList.ToArray()).ConfigureAwait(false);
+                await this.woodstockService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray())
                     .ConfigureAwait(false);
-                await this.woodstockUserService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview)
+                await this.woodstockService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview)
                     .ConfigureAwait(false);
             }
             catch (Exception ex)
@@ -284,7 +284,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
                     try
                     {
-                        var userResult = await this.woodstockUserService.GetUserDataByGamertagAsync(param.Gamertag)
+                        var userResult = await this.woodstockService.GetUserDataByGamertagAsync(param.Gamertag)
                             .ConfigureAwait(false);
 
                         param.Xuid = userResult.userData.qwXuid;
@@ -305,7 +305,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     var paramBatch = banParameters.ToList()
                         .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
                     var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
-                    var result = await this.woodstockUserService.BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count)
+                    var result = await this.woodstockService.BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count)
                         .ConfigureAwait(false);
 
                     foreach (var param in paramBatch)
@@ -344,7 +344,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     return new List<BanSummary>();
                 }
 
-                var result = await this.woodstockUserService.GetUserBanSummariesAsync(xuids.ToArray()).ConfigureAwait(false);
+                var result = await this.woodstockService.GetUserBanSummariesAsync(xuids.ToArray()).ConfigureAwait(false);
 
                 var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
 
@@ -361,12 +361,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         {
             try
             {
-                var result = await this.woodstockUserService
+                var result = await this.woodstockService
                     .GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
 
                 if (result.availableCount > DefaultMaxResults)
                 {
-                    result = await this.woodstockUserService
+                    result = await this.woodstockService
                         .GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
                 }
 

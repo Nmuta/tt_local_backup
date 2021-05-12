@@ -7,6 +7,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
+using Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 {
@@ -15,18 +16,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
     {
         private const int MaxLookupResults = 5;
 
-        private readonly IGravityUserService gravityUserService;
+        private readonly IGravityService gravityService;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityPlayerDetailsProvider"/> class.
         /// </summary>
-        public GravityPlayerDetailsProvider(IGravityUserService gravityUserService, IMapper mapper)
+        public GravityPlayerDetailsProvider(IGravityService gravityService, IMapper mapper)
         {
-            gravityUserService.ShouldNotBeNull(nameof(gravityUserService));
+            gravityService.ShouldNotBeNull(nameof(gravityService));
             mapper.ShouldNotBeNull(nameof(mapper));
 
-            this.gravityUserService = gravityUserService;
+            this.gravityService = gravityService;
             this.mapper = mapper;
         }
 
@@ -151,7 +152,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         {
             try
             {
-                await this.gravityUserService.LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
+                await this.gravityService.LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
 
                 return true;
             }
@@ -168,7 +169,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                await this.gravityUserService.LiveOpsGetUserDetailsByGamerTagAsync(gamertag, MaxLookupResults).ConfigureAwait(false);
+                await this.gravityService.LiveOpsGetUserDetailsByGamerTagAsync(gamertag, MaxLookupResults).ConfigureAwait(false);
 
                 return true;
             }
@@ -185,7 +186,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                await this.gravityUserService.LiveOpsGetUserDetailsByT10IdAsync(t10Id).ConfigureAwait(false);
+                await this.gravityService.LiveOpsGetUserDetailsByT10IdAsync(t10Id).ConfigureAwait(false);
 
                 return true;
             }
@@ -201,7 +202,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                var response = await this.gravityUserService
+                var response = await this.gravityService
                     .LiveOpsGetUserDetailsByT10IdAsync(t10Id).ConfigureAwait(false);
 
                 return response.userDetails;
@@ -216,7 +217,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         {
             try
             {
-                var response = await this.gravityUserService
+                var response = await this.gravityService
                     .LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
 
                 return response.userDetails;
@@ -233,7 +234,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                var response = await this.gravityUserService
+                var response = await this.gravityService
                 .LiveOpsGetUserDetailsByGamerTagAsync(gamertag, MaxLookupResults).ConfigureAwait(false);
 
                 return response.userDetails;

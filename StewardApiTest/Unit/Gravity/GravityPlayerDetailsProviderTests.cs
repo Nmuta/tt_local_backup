@@ -10,6 +10,7 @@ using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
+using Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections;
 using static Forza.WebServices.FMG.Generated.UserService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Gravity
@@ -35,16 +36,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenGravityUserServiceNull_Throws()
+        public void Ctor_WhenGravityServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { GravityUserService = null };
+            var dependencies = new Dependencies { GravityService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gravityUserService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gravityService"));
         }
 
         [TestMethod]
@@ -232,18 +233,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             public Dependencies()
             {
-                this.GravityUserService.LiveOpsGetUserDetailsByXuidAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByXuidOutput>());
-                this.GravityUserService.LiveOpsGetUserDetailsByGamerTagAsync(Arg.Any<string>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByGamerTagOutput>());
-                this.GravityUserService.LiveOpsGetUserDetailsByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByT10IdOutput>());
+                this.GravityService.LiveOpsGetUserDetailsByXuidAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByXuidOutput>());
+                this.GravityService.LiveOpsGetUserDetailsByGamerTagAsync(Arg.Any<string>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByGamerTagOutput>());
+                this.GravityService.LiveOpsGetUserDetailsByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByT10IdOutput>());
                 this.Mapper.Map<GravityPlayerDetails>(Arg.Any<LiveOpsUserDetails>()).Returns(Fixture.Create<GravityPlayerDetails>());
                 this.Mapper.Map<IdentityResultBeta>(Arg.Any<LiveOpsUserDetails>()).Returns(Fixture.Create<IdentityResultBeta>());
             }
 
-            public IGravityUserService GravityUserService { get; set; } = Substitute.For<IGravityUserService>();
+            public IGravityService GravityService { get; set; } = Substitute.For<IGravityService>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-            public GravityPlayerDetailsProvider Build() => new GravityPlayerDetailsProvider(this.GravityUserService, this.Mapper);
+            public GravityPlayerDetailsProvider Build() => new GravityPlayerDetailsProvider(this.GravityService, this.Mapper);
         }
     }
 }

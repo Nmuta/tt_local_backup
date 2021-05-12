@@ -9,6 +9,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {
@@ -18,12 +19,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         private const string Title = "Sunrise";
         private const int MaxProfileResults = 50;
         private const int AgentCreditSendAmount = 500_000_000;
-        private const int AdminCreditSendAmmount = 999_999_999;
+        private const int AdminCreditSendAmount = 999_999_999;
         private const int MaxWheelSpinAmount = 200;
 
-        private readonly ISunriseUserInventoryService sunriseUserInventoryService;
-        private readonly ISunriseGiftingService sunriseGiftingService;
-        private readonly ISunriseUserService sunriseUserService;
+        private readonly ISunriseService sunriseService;
         private readonly IMapper mapper;
         private readonly ISunriseGiftHistoryProvider giftHistoryProvider;
 
@@ -31,21 +30,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         ///     Initializes a new instance of the <see cref="SunrisePlayerInventoryProvider"/> class.
         /// </summary>
         public SunrisePlayerInventoryProvider(
-            ISunriseUserInventoryService sunriseUserInventoryService,
-            ISunriseGiftingService sunriseGiftingService,
-            ISunriseUserService sunriseUserService,
+            ISunriseService sunriseService,
             IMapper mapper,
             ISunriseGiftHistoryProvider giftHistoryProvider)
         {
-            sunriseUserInventoryService.ShouldNotBeNull(nameof(sunriseUserInventoryService));
-            sunriseGiftingService.ShouldNotBeNull(nameof(sunriseGiftingService));
-            sunriseUserService.ShouldNotBeNull(nameof(sunriseUserService));
+            sunriseService.ShouldNotBeNull(nameof(sunriseService));
             mapper.ShouldNotBeNull(nameof(mapper));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
 
-            this.sunriseUserInventoryService = sunriseUserInventoryService;
-            this.sunriseGiftingService = sunriseGiftingService;
-            this.sunriseUserService = sunriseUserService;
+            this.sunriseService = sunriseService;
             this.mapper = mapper;
             this.giftHistoryProvider = giftHistoryProvider;
         }
@@ -57,7 +50,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                var response = await this.sunriseUserInventoryService.GetAdminUserInventoryAsync(xuid)
+                var response = await this.sunriseService.GetAdminUserInventoryAsync(xuid)
                     .ConfigureAwait(false);
                 var playerInventoryDetails = this.mapper.Map<SunriseMasterInventory>(response.summary);
 
@@ -74,7 +67,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             try
             {
-                var response = await this.sunriseUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                var response = await this.sunriseService.GetAdminUserInventoryByProfileIdAsync(profileId)
                     .ConfigureAwait(false);
                 var inventoryProfile = this.mapper.Map<SunriseMasterInventory>(response.summary);
 
@@ -93,7 +86,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                var response = await this.sunriseUserInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+                var response = await this.sunriseService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SunriseInventoryProfile>>(response.profiles);
             }
@@ -108,7 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             try
             {
-                var result = await this.sunriseUserService.GetUserGroupsAsync(startIndex, maxResults)
+                var result = await this.sunriseService.GetUserGroupsAsync(startIndex, maxResults)
                     .ConfigureAwait(false);
                 var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
 
@@ -136,14 +129,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
-                var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmmount : AgentCreditSendAmount;
+                var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
                 currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
                 currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
                 currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.sunriseGiftingService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.sunriseService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
@@ -193,14 +186,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
-                var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmmount : AgentCreditSendAmount;
+                var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
                 currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
                 currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
                 currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.sunriseGiftingService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.sunriseService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);

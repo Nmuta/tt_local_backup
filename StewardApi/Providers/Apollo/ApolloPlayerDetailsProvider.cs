@@ -10,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
+using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 {
@@ -23,23 +24,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         private const int CommunityManagerUserGroupId = 4;
         private const int WhitelistUserGroupId = 5;
 
-        private readonly IApolloUserService apolloUserService;
-        private readonly IApolloGroupingService apolloGroupingService;
+        private readonly IApolloService apolloService;
         private readonly IMapper mapper;
         private readonly IApolloBanHistoryProvider banHistoryProvider;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ApolloPlayerDetailsProvider"/> class.
         /// </summary>
-        public ApolloPlayerDetailsProvider(IApolloUserService apolloUserService, IApolloGroupingService apolloGroupingService, IMapper mapper, IApolloBanHistoryProvider banHistoryProvider)
+        public ApolloPlayerDetailsProvider(IApolloService apolloService, IMapper mapper, IApolloBanHistoryProvider banHistoryProvider)
         {
-            apolloUserService.ShouldNotBeNull(nameof(apolloUserService));
-            apolloGroupingService.ShouldNotBeNull(nameof(apolloGroupingService));
+            apolloService.ShouldNotBeNull(nameof(apolloService));
             mapper.ShouldNotBeNull(nameof(mapper));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
 
-            this.apolloUserService = apolloUserService;
-            this.apolloGroupingService = apolloGroupingService;
+            this.apolloService = apolloService;
             this.mapper = mapper;
             this.banHistoryProvider = banHistoryProvider;
         }
@@ -95,7 +93,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             try
             {
-                var response = await this.apolloUserService.LiveOpsGetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
+                var response = await this.apolloService.LiveOpsGetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
 
                 return this.mapper.Map<ApolloPlayerDetails>(response.returnData);
             }
@@ -110,7 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             try
             {
-                var response = await this.apolloUserService.LiveOpsGetUserDataByXuidAsync(xuid).ConfigureAwait(false);
+                var response = await this.apolloService.LiveOpsGetUserDataByXuidAsync(xuid).ConfigureAwait(false);
 
                 return this.mapper.Map<ApolloPlayerDetails>(response.returnData);
             }
@@ -125,7 +123,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             try
             {
-                await this.apolloUserService.LiveOpsGetUserDataByXuidAsync(xuid).ConfigureAwait(false);
+                await this.apolloService.LiveOpsGetUserDataByXuidAsync(xuid).ConfigureAwait(false);
 
                 return true;
             }
@@ -140,7 +138,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             try
             {
-                await this.apolloUserService.LiveOpsGetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
+                await this.apolloService.LiveOpsGetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
 
                 return true;
             }
@@ -170,7 +168,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                     try
                     {
-                        var userResult = await this.apolloUserService.LiveOpsGetUserDataByGamertagAsync(param.Gamertag)
+                        var userResult = await this.apolloService.LiveOpsGetUserDataByGamertagAsync(param.Gamertag)
                             .ConfigureAwait(false);
 
                         param.Xuid = userResult.returnData.qwXuid;
@@ -191,7 +189,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     var paramBatch = banParameters.ToList()
                         .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
                     var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
-                    var result = await this.apolloUserService.BanUsersAsync(mappedBanParameters.ToArray())
+                    var result = await this.apolloService.BanUsersAsync(mappedBanParameters.ToArray())
                         .ConfigureAwait(false);
 
                     foreach (var param in paramBatch)
@@ -225,12 +223,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             try
             {
-                var result = await this.apolloUserService
+                var result = await this.apolloService
                     .GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
 
                 if (result.availableCount > DefaultMaxResults)
                 {
-                    result = await this.apolloUserService
+                    result = await this.apolloService
                         .GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
                 }
 
@@ -255,7 +253,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     return new List<BanSummary>();
                 }
 
-                var result = await this.apolloUserService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
+                var result = await this.apolloService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
 
                 var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
 
@@ -272,7 +270,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             try
             {
-                var response = await this.apolloUserService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+                var response = await this.apolloService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<ConsoleDetails>>(response.consoles);
             }
@@ -287,7 +285,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             try
             {
-                await this.apolloUserService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
+                await this.apolloService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -300,7 +298,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             try
             {
-                var response = await this.apolloUserService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
+                var response = await this.apolloService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
             }
@@ -315,7 +313,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             try
             {
-                var result = await this.apolloGroupingService.GetUserGroupsAsync(startIndex, maxResults)
+                var result = await this.apolloService.GetUserGroupsAsync(startIndex, maxResults)
                     .ConfigureAwait(false);
                 var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
 
@@ -332,8 +330,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             try
             {
-                var suspiciousResults = await this.apolloUserService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
-                var userGroupResults = await this.apolloGroupingService
+                var suspiciousResults = await this.apolloService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
+                var userGroupResults = await this.apolloService
                     .GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(false);
 
                 userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
@@ -360,18 +358,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             try
             {
-                await this.apolloUserService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview).ConfigureAwait(false);
+                await this.apolloService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview).ConfigureAwait(false);
 
                 userFlags.ShouldNotBeNull(nameof(userFlags));
 
                 var addGroupList = this.PrepareGroupIds(userFlags, true);
                 var removeGroupList = this.PrepareGroupIds(userFlags, false);
 
-                await this.apolloGroupingService.AddToUserGroupsAsync(xuid, addGroupList.ToArray())
+                await this.apolloService.AddToUserGroupsAsync(xuid, addGroupList.ToArray())
                     .ConfigureAwait(false);
-                await this.apolloGroupingService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray())
+                await this.apolloService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray())
                     .ConfigureAwait(false);
-                await this.apolloUserService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview).ConfigureAwait(false);
+                await this.apolloService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

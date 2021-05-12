@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
+using Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections;
 using static Forza.WebServices.FMG.Generated.UserService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Gravity
@@ -34,30 +35,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenGravityUserServiceNull_Throws()
+        public void Ctor_WhenGravityServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { GravityUserService = null };
+            var dependencies = new Dependencies { GravityService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gravityUserService"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenGravityUserInventoryServiceNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { GravityUserInventoryService = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gravityUserInventoryService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gravityService"));
         }
 
         [TestMethod]
@@ -269,22 +256,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
         {
             public Dependencies()
             {
-                this.GravityUserService.LiveOpsGetUserDetailsByXuidAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByXuidOutput>());
-                this.GravityUserService.LiveOpsGetUserDetailsByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByT10IdOutput>());
-                this.GravityUserInventoryService.LiveOpsGetUserInventoryByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<UserInventoryService.LiveOpsGetUserInventoryByT10IdOutput>());
-                this.GravityUserInventoryService.LiveOpsGetInventoryByProfileIdAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<UserInventoryService.LiveOpsGetInventoryByProfileIdOutput>());
+                this.GravityService.LiveOpsGetUserDetailsByXuidAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByXuidOutput>());
+                this.GravityService.LiveOpsGetUserDetailsByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDetailsByT10IdOutput>());
+                this.GravityService.LiveOpsGetUserInventoryByT10IdAsync(Arg.Any<string>()).Returns(Fixture.Create<UserInventoryService.LiveOpsGetUserInventoryByT10IdOutput>());
+                this.GravityService.LiveOpsGetInventoryByProfileIdAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<UserInventoryService.LiveOpsGetInventoryByProfileIdOutput>());
                 this.Mapper.Map<GravityPlayerInventory>(Arg.Any<LiveOpsUserInventory>()).Returns(Fixture.Create<GravityPlayerInventory>());
             }
 
-            public IGravityUserService GravityUserService { get; set; } = Substitute.For<IGravityUserService>();
-
-            public IGravityUserInventoryService GravityUserInventoryService { get; set; } = Substitute.For<IGravityUserInventoryService>();
-
+            public IGravityService GravityService { get; set; } = Substitute.For<IGravityService>();
+            
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public IGravityGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IGravityGiftHistoryProvider>();
 
-            public GravityPlayerInventoryProvider Build() => new GravityPlayerInventoryProvider(this.GravityUserService, this.GravityUserInventoryService, this.Mapper, this.GiftHistoryProvider);
+            public GravityPlayerInventoryProvider Build() => new GravityPlayerInventoryProvider(this.GravityService, this.Mapper, this.GiftHistoryProvider);
         }
     }
 }

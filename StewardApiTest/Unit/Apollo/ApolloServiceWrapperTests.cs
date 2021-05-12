@@ -7,12 +7,12 @@ using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Opus
+namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 {
     [TestClass]
-    public sealed class OpusUserServiceWrapperTests
+    public sealed class ApolloServiceWrapperTests
     {
         private static readonly Fixture Fixture = new Fixture();
 
@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.OpusUri},{ConfigurationKeyConstants.OpusClientVersion},{ConfigurationKeyConstants.OpusAdminXuid},{ConfigurationKeyConstants.OpusCertificateKeyVaultName},{ConfigurationKeyConstants.OpusCertificateSecretName}");
+            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.ApolloUri},{ConfigurationKeyConstants.ApolloClientVersion},{ConfigurationKeyConstants.ApolloAdminXuid},{ConfigurationKeyConstants.ApolloCertificateKeyVaultName},{ConfigurationKeyConstants.ApolloCertificateSecretName}");
         }
 
         private sealed class Dependencies
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
                 if (validConfiguration)
                 {
                     this.Configuration[Arg.Any<string>()].Returns(Fixture.Create<string>());
-                    this.Configuration["OpusEnvironment:AdminXuid"].Returns("1234567890");
+                    this.Configuration["ApolloEnvironment:AdminXuid"].Returns("1234567890");
                 }
                 else
                 {
@@ -92,7 +92,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
             public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
 
-            public OpusServiceWrapper Build() => new OpusServiceWrapper(this.Configuration, this.KeyVaultProvider);
+            public ApolloServiceWrapper Build() => new ApolloServiceWrapper(this.Configuration, this.KeyVaultProvider);
         }
     }
 }

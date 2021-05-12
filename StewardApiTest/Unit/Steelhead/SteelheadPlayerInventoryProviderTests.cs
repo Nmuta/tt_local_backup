@@ -37,30 +37,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenSunriseUserInventoryServiceNull_Throws()
+        public void Ctor_WhenSunriseServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { SteelheadUserInventoryService = null };
+            var dependencies = new Dependencies { SteelheadService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadUserInventoryService"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenSunriseGiftingServiceNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { SteelheadGiftingService = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadGiftingService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "steelheadService"));
         }
 
         [TestMethod]
@@ -281,26 +267,23 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             public Dependencies()
             {
-                this.SteelheadUserInventoryService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
-                this.SteelheadUserInventoryService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
-                this.SteelheadUserInventoryService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
+                this.SteelheadService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
+                this.SteelheadService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
+                this.SteelheadService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
                 this.Mapper.Map<SteelheadMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<SteelheadMasterInventory>());
                 this.Mapper.Map<IList<SteelheadInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<SteelheadInventoryProfile>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<SteelheadGift>(Arg.Any<SteelheadGroupGift>()).Returns(Fixture.Create<SteelheadGift>());
             }
 
-            public ISteelheadUserInventoryService SteelheadUserInventoryService { get; set; } = Substitute.For<ISteelheadUserInventoryService>();
-
-            public ISteelheadGiftingService SteelheadGiftingService { get; set; } = Substitute.For<ISteelheadGiftingService>();
-
+            public ISteelheadService SteelheadService { get; set; } = Substitute.For<ISteelheadService>();
+            
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public ISteelheadGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<ISteelheadGiftHistoryProvider>();
 
             public SteelheadPlayerInventoryProvider Build() => new SteelheadPlayerInventoryProvider(
-                                                                                            this.SteelheadUserInventoryService,
-                                                                                            this.SteelheadGiftingService,
+                                                                                            this.SteelheadService,
                                                                                             this.Mapper,
                                                                                             this.GiftHistoryProvider);
         }

@@ -21,8 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         private const int AgentCreditSendAmount = 500_000_000;
         private const int AdminCreditSendAmount = 999_999_999;
 
-        private readonly ISteelheadUserInventoryService steelheadUserInventoryService;
-        private readonly ISteelheadGiftingService steelheadGiftingService;
+        private readonly ISteelheadService steelheadService;
         private readonly IMapper mapper;
         private readonly ISteelheadGiftHistoryProvider giftHistoryProvider;
 
@@ -30,18 +29,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         ///     Initializes a new instance of the <see cref="SteelheadPlayerInventoryProvider"/> class.
         /// </summary>
         public SteelheadPlayerInventoryProvider(
-            ISteelheadUserInventoryService steelheadUserInventoryService,
-            ISteelheadGiftingService steelheadGiftingService,
+            ISteelheadService steelheadService,
             IMapper mapper,
             ISteelheadGiftHistoryProvider giftHistoryProvider)
         {
-            steelheadUserInventoryService.ShouldNotBeNull(nameof(steelheadUserInventoryService));
-            steelheadGiftingService.ShouldNotBeNull(nameof(steelheadGiftingService));
+            steelheadService.ShouldNotBeNull(nameof(steelheadService));
             mapper.ShouldNotBeNull(nameof(mapper));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
 
-            this.steelheadUserInventoryService = steelheadUserInventoryService;
-            this.steelheadGiftingService = steelheadGiftingService;
+            this.steelheadService = steelheadService;
             this.mapper = mapper;
             this.giftHistoryProvider = giftHistoryProvider;
         }
@@ -53,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
-                var response = await this.steelheadUserInventoryService.GetAdminUserInventoryAsync(xuid)
+                var response = await this.steelheadService.GetAdminUserInventoryAsync(xuid)
                     .ConfigureAwait(false);
                 var playerInventoryDetails = this.mapper.Map<SteelheadMasterInventory>(response.summary);
 
@@ -70,7 +66,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             try
             {
-                var response = await this.steelheadUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                var response = await this.steelheadService.GetAdminUserInventoryByProfileIdAsync(profileId)
                     .ConfigureAwait(false);
                 var inventoryProfile = this.mapper.Map<SteelheadMasterInventory>(response.summary);
 
@@ -89,7 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
-                var response = await this.steelheadUserInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+                var response = await this.steelheadService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SteelheadInventoryProfile>>(response.profiles);
             }
@@ -122,7 +118,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.steelheadGiftingService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.steelheadService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
@@ -179,7 +175,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.steelheadGiftingService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.steelheadService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);

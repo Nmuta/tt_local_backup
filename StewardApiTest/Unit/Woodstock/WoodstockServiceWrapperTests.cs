@@ -5,14 +5,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Providers;
+using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 
-namespace Turn10.LiveOps.StewardTest.Unit.Opus
+namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {
     [TestClass]
-    public sealed class OpusUserServiceWrapperTests
+    public sealed class WoodstockServiceWrapperTests
     {
         private static readonly Fixture Fixture = new Fixture();
 
@@ -60,6 +62,34 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenRefreshableCacheStoreNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { RefreshableCacheStore = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "refreshableCacheStore"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenStsClientNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { StsClient = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "stsClient"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -69,7 +99,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.OpusUri},{ConfigurationKeyConstants.OpusClientVersion},{ConfigurationKeyConstants.OpusAdminXuid},{ConfigurationKeyConstants.OpusCertificateKeyVaultName},{ConfigurationKeyConstants.OpusCertificateSecretName}");
+            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.WoodstockUri},{ConfigurationKeyConstants.WoodstockClientVersion},{ConfigurationKeyConstants.WoodstockAdminXuid},{ConfigurationKeyConstants.WoodstockSandbox},{ConfigurationKeyConstants.WoodstockTitleId}");
         }
 
         private sealed class Dependencies
@@ -80,7 +110,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
                 if (validConfiguration)
                 {
                     this.Configuration[Arg.Any<string>()].Returns(Fixture.Create<string>());
-                    this.Configuration["OpusEnvironment:AdminXuid"].Returns("1234567890");
+                    this.Configuration["WoodstockEnvironment:AdminXuid"].Returns("1234567890");
+                    this.Configuration["WoodstockEnvironment:TitleId"].Returns("1234567890");
                 }
                 else
                 {
@@ -92,7 +123,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
             public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
 
-            public OpusServiceWrapper Build() => new OpusServiceWrapper(this.Configuration, this.KeyVaultProvider);
+            public IRefreshableCacheStore RefreshableCacheStore { get; set; } = Substitute.For<IRefreshableCacheStore>();
+
+            public IStsClient StsClient { get; set; } = Substitute.For<IStsClient>();
+
+            public WoodstockServiceWrapper Build() => new WoodstockServiceWrapper(
+                this.Configuration,
+                this.KeyVaultProvider,
+                this.RefreshableCacheStore,
+                this.StsClient);
         }
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
+using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 using static Forza.WebServices.FH3.Generated.OnlineProfileService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Opus
@@ -34,16 +35,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenOpusInventoryServiceNull_Throws()
+        public void Ctor_WhenOpusServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { OpusInventoryService = null };
+            var dependencies = new Dependencies { OpusService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "opusOnlineProfileService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "opusService"));
         }
 
         [TestMethod]
@@ -102,18 +103,18 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         {
             public Dependencies()
             {
-                this.OpusInventoryService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
-                this.OpusInventoryService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
-                this.OpusInventoryService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
+                this.OpusService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
+                this.OpusService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
+                this.OpusService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
                 this.Mapper.Map<OpusMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<OpusMasterInventory>());
                 this.Mapper.Map<IList<OpusInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<OpusInventoryProfile>>());
             }
 
-            public IOpusOnlineProfileService OpusInventoryService { get; set; } = Substitute.For<IOpusOnlineProfileService>();
+            public IOpusService OpusService { get; set; } = Substitute.For<IOpusService>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-            public OpusPlayerInventoryProvider Build() => new OpusPlayerInventoryProvider(this.OpusInventoryService, this.Mapper);
+            public OpusPlayerInventoryProvider Build() => new OpusPlayerInventoryProvider(this.OpusService, this.Mapper);
         }
     }
 }

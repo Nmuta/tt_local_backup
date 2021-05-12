@@ -5,24 +5,25 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
+using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Opus
 {
     /// <inheritdoc/>
     public sealed class OpusPlayerDetailsProvider : IOpusPlayerDetailsProvider
     {
-        private readonly IOpusUserService opusUserService;
+        private readonly IOpusService opusService;
         private readonly IMapper mapper;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="OpusPlayerDetailsProvider"/> class.
         /// </summary>
-        public OpusPlayerDetailsProvider(IOpusUserService opusUserService, IMapper mapper)
+        public OpusPlayerDetailsProvider(IOpusService opusService, IMapper mapper)
         {
-            opusUserService.ShouldNotBeNull(nameof(opusUserService));
+            opusService.ShouldNotBeNull(nameof(opusService));
             mapper.ShouldNotBeNull(nameof(mapper));
 
-            this.opusUserService = opusUserService;
+            this.opusService = opusService;
             this.mapper = mapper;
         }
 
@@ -78,7 +79,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
 
             try
             {
-                var response = await this.opusUserService.GetUserMasterDataByGamerTagAsync(gamertag).ConfigureAwait(false);
+                var response = await this.opusService.GetUserMasterDataByGamerTagAsync(gamertag).ConfigureAwait(false);
 
                 return this.mapper.Map<OpusPlayerDetails>(response.userMasterData);
             }
@@ -93,7 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         {
             try
             {
-                var response = await this.opusUserService.GetUserMasterDataByXuidAsync(xuid).ConfigureAwait(false);
+                var response = await this.opusService.GetUserMasterDataByXuidAsync(xuid).ConfigureAwait(false);
 
                 if (response.userMasterData.Region <= 0)
                 {
@@ -113,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         {
             try
             {
-                var result = await this.opusUserService.GetUserMasterDataByXuidAsync(xuid).ConfigureAwait(false);
+                var result = await this.opusService.GetUserMasterDataByXuidAsync(xuid).ConfigureAwait(false);
 
                 return result.userMasterData.Region > 0;
             }

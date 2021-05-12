@@ -8,6 +8,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
+using Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 {
@@ -22,8 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         private const int HardCurrencyId = 1;
         private const int SoftCurrencyId = 0;
 
-        private readonly IGravityUserService gravityUserService;
-        private readonly IGravityUserInventoryService gravityUserInventoryService;
+        private readonly IGravityService gravityService;
         private readonly IMapper mapper;
         private readonly IGravityGiftHistoryProvider giftHistoryProvider;
 
@@ -31,18 +31,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         ///     Initializes a new instance of the <see cref="GravityPlayerInventoryProvider"/> class.
         /// </summary>
         public GravityPlayerInventoryProvider(
-            IGravityUserService gravityUserService,
-            IGravityUserInventoryService gravityUserInventoryService,
+            IGravityService gravityService,
             IMapper mapper,
             IGravityGiftHistoryProvider giftHistoryProvider)
         {
-            gravityUserService.ShouldNotBeNull(nameof(gravityUserService));
-            gravityUserInventoryService.ShouldNotBeNull(nameof(gravityUserInventoryService));
+            gravityService.ShouldNotBeNull(nameof(gravityService));
             mapper.ShouldNotBeNull(nameof(mapper));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
 
-            this.gravityUserService = gravityUserService;
-            this.gravityUserInventoryService = gravityUserInventoryService;
+            this.gravityService = gravityService;
             this.mapper = mapper;
             this.giftHistoryProvider = giftHistoryProvider;
         }
@@ -52,10 +49,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         {
             try
             {
-                var identity = await this.gravityUserService.LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
+                var identity = await this.gravityService.LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
                 var profile = identity.userDetails.OrderByDescending(e => e.LastLogin).FirstOrDefault();
 
-                var response = await this.gravityUserInventoryService.LiveOpsGetUserInventoryByT10IdAsync(profile.Turn10Id).ConfigureAwait(false);
+                var response = await this.gravityService.LiveOpsGetUserInventoryByT10IdAsync(profile.Turn10Id).ConfigureAwait(false);
 
                 return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
             }
@@ -72,7 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                var response = await this.gravityUserInventoryService.LiveOpsGetUserInventoryByT10IdAsync(t10Id)
+                var response = await this.gravityService.LiveOpsGetUserInventoryByT10IdAsync(t10Id)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
@@ -90,10 +87,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                var identity = await this.gravityUserService.LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
+                var identity = await this.gravityService.LiveOpsGetUserDetailsByXuidAsync(xuid, MaxLookupResults).ConfigureAwait(false);
                 var profile = identity.userDetails.OrderByDescending(e => e.LastLogin).FirstOrDefault();
 
-                var response = await this.gravityUserInventoryService.LiveOpsGetInventoryByProfileIdAsync(profile.Turn10Id, profileId).ConfigureAwait(false);
+                var response = await this.gravityService.LiveOpsGetInventoryByProfileIdAsync(profile.Turn10Id, profileId).ConfigureAwait(false);
 
                 return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
             }
@@ -111,7 +108,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
             try
             {
-                var response = await this.gravityUserInventoryService.LiveOpsGetInventoryByProfileIdAsync(t10Id, profileId)
+                var response = await this.gravityService.LiveOpsGetInventoryByProfileIdAsync(t10Id, profileId)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<GravityPlayerInventory>(response.userInventory);
@@ -173,7 +170,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         {
             foreach (var item in items ?? Enumerable.Empty<MasterInventoryItem>())
             {
-                await this.gravityUserInventoryService.LiveOpsGrantItem(t10Id, gameSettingsId, itemType, item.Id, item.Quantity).ConfigureAwait(true);
+                await this.gravityService.LiveOpsGrantItem(t10Id, gameSettingsId, itemType, item.Id, item.Quantity).ConfigureAwait(true);
             }
         }
     }

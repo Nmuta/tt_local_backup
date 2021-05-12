@@ -37,30 +37,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenWoodstockUserInventoryServiceNull_Throws()
+        public void Ctor_WhenWoodstockServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { WoodstockUserInventoryService = null };
+            var dependencies = new Dependencies { WoodstockService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockUserInventoryService"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenWoodstockGiftingServiceNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { WoodstockGiftingService = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockGiftingService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "woodstockService"));
         }
 
         [TestMethod]
@@ -281,26 +267,23 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
         {
             public Dependencies()
             {
-                this.WoodstockUserInventoryService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
-                this.WoodstockUserInventoryService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
-                this.WoodstockUserInventoryService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
+                this.WoodstockService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
+                this.WoodstockService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
+                this.WoodstockService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
                 this.Mapper.Map<WoodstockMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<WoodstockMasterInventory>());
                 this.Mapper.Map<IList<WoodstockInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<WoodstockGift>(Arg.Any<WoodstockGroupGift>()).Returns(Fixture.Create<WoodstockGift>());
             }
 
-            public IWoodstockUserInventoryService WoodstockUserInventoryService { get; set; } = Substitute.For<IWoodstockUserInventoryService>();
-
-            public IWoodstockGiftingService WoodstockGiftingService { get; set; } = Substitute.For<IWoodstockGiftingService>();
-
+            public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
+            
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public IWoodstockGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IWoodstockGiftHistoryProvider>();
 
             public WoodstockPlayerInventoryProvider Build() => new WoodstockPlayerInventoryProvider(
-                                                                                            this.WoodstockUserInventoryService,
-                                                                                            this.WoodstockGiftingService,
+                                                                                            this.WoodstockService,
                                                                                             this.Mapper,
                                                                                             this.GiftHistoryProvider);
         }

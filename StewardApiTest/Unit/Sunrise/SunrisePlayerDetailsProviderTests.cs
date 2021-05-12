@@ -12,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
+using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Xls.WebServices.FH4.master.Generated;
 using Xls.WebServices.NotificationsObjects.FH4.master.Generated;
 using static Forza.WebServices.FH4.master.Generated.UserService;
@@ -41,44 +42,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenSunriseUserServiceNull_Throws()
+        public void Ctor_WhenSunriseServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { SunriseUserService = null };
+            var dependencies = new Dependencies { SunriseService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "sunriseUserService"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenSunriseEnforcementServiceNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { SunriseEnforcementService = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "sunriseEnforcementService"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenSunriseNotificationsServiceNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { SunriseNotificationsService = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "sunriseNotificationsService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "sunriseService"));
         }
 
         [TestMethod]
@@ -548,21 +521,21 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             public Dependencies()
             {
-                this.SunriseUserService.GetLiveOpsUserDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
-                this.SunriseUserService.GetLiveOpsUserDataByGamerTagAsync("gamerT1").Returns(GenerateGetLiveOpsUserDataByGamerTagOutPut());
-                this.SunriseUserService.GetLiveOpsUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetLiveOpsUserDataByXuidOutput>());
-                this.SunriseUserService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
-                this.SunriseUserService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
-                this.SunriseUserService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
-                this.SunriseUserService.GetIsUnderReviewAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
-                this.SunriseUserService.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetProfileSummaryOutput>());
-                this.SunriseUserService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
+                this.SunriseService.GetLiveOpsUserDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
+                this.SunriseService.GetLiveOpsUserDataByGamerTagAsync("gamerT1").Returns(GenerateGetLiveOpsUserDataByGamerTagOutPut());
+                this.SunriseService.GetLiveOpsUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetLiveOpsUserDataByXuidOutput>());
+                this.SunriseService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
+                this.SunriseService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
+                this.SunriseService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
+                this.SunriseService.GetIsUnderReviewAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
+                this.SunriseService.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetProfileSummaryOutput>());
+                this.SunriseService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
                 this.RefreshableCacheStore.GetItem<IList<SunriseCreditUpdate>>(Arg.Any<string>()).Returns((IList<SunriseCreditUpdate>)null);
-                this.SunriseEnforcementService.BanUsersAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<ForzaUserBanParameters>()).Returns(GenerateBanUsersOutput());
-                this.SunriseEnforcementService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
-                this.SunriseEnforcementService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
-                this.SunriseNotificationsService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsRetrieveForUserOutput>());
-                this.SunriseNotificationsService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
+                this.SunriseService.BanUsersAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<ForzaUserBanParameters>()).Returns(GenerateBanUsersOutput());
+                this.SunriseService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
+                this.SunriseService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
+                this.SunriseService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsRetrieveForUserOutput>());
+                this.SunriseService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
                 this.Mapper.Map<SunrisePlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
@@ -576,12 +549,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
             }
 
-            public ISunriseUserService SunriseUserService { get; set; } = Substitute.For<ISunriseUserService>();
-
-            public ISunriseEnforcementService SunriseEnforcementService { get; set; } = Substitute.For<ISunriseEnforcementService>();
-
-            public ISunriseNotificationsService SunriseNotificationsService { get; set; } = Substitute.For<ISunriseNotificationsService>();
-
+            public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();
+            
             public ISunriseBanHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<ISunriseBanHistoryProvider>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
@@ -589,9 +558,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public IRefreshableCacheStore RefreshableCacheStore { get; set; } = Substitute.For<IRefreshableCacheStore>();
 
             public SunrisePlayerDetailsProvider Build() => new SunrisePlayerDetailsProvider(
-                                                                                            this.SunriseUserService,
-                                                                                            this.SunriseEnforcementService,
-                                                                                            this.SunriseNotificationsService,
+                                                                                            this.SunriseService,
                                                                                             this.GiftHistoryProvider,
                                                                                             this.Mapper,
                                                                                             this.RefreshableCacheStore);

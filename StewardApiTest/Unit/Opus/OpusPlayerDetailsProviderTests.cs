@@ -10,6 +10,7 @@ using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
+using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 using static Forza.WebServices.FH3.Generated.UserService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Opus
@@ -35,16 +36,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenOpusUserServiceNull_Throws()
+        public void Ctor_WhenOpusServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { OpusUserService = null };
+            var dependencies = new Dependencies { OpusService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "opusUserService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "opusService"));
         }
 
         [TestMethod]
@@ -154,17 +155,17 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
         {
             public Dependencies()
             {
-                this.OpusUserService.GetUserMasterDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetUserMasterDataByGamerTagOutput>());
-                this.OpusUserService.GetUserMasterDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetUserMasterDataByXuidOutput>());
+                this.OpusService.GetUserMasterDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetUserMasterDataByGamerTagOutput>());
+                this.OpusService.GetUserMasterDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetUserMasterDataByXuidOutput>());
                 this.Mapper.Map<OpusPlayerDetails>(Arg.Any<UserMaster>()).Returns(Fixture.Create<OpusPlayerDetails>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<OpusPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
             }
 
-            public IOpusUserService OpusUserService { get; set; } = Substitute.For<IOpusUserService>();
+            public IOpusService OpusService { get; set; } = Substitute.For<IOpusService>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-            public OpusPlayerDetailsProvider Build() => new OpusPlayerDetailsProvider(this.OpusUserService, this.Mapper);
+            public OpusPlayerDetailsProvider Build() => new OpusPlayerDetailsProvider(this.OpusService, this.Mapper);
         }
     }
 }

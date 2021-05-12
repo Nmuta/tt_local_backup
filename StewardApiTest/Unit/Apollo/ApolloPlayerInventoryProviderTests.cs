@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
+using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 using static Forza.WebServices.FM7.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Apollo
@@ -34,44 +35,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenApolloUserInventoryServiceNull_Throws()
+        public void Ctor_WhenApolloServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { ApolloUserInventoryService = null };
+            var dependencies = new Dependencies { ApolloService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "apolloUserInventoryService"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenApolloGiftingServiceNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { ApolloGiftingService = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "apolloGiftingService"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenApolloUserServiceNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { ApolloUserService = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "apolloUserService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "apolloService"));
         }
 
         [TestMethod]
@@ -270,29 +243,23 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             public Dependencies()
             {
-                this.ApolloUserInventoryService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
-                this.ApolloUserInventoryService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
-                this.ApolloUserInventoryService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
-                this.ApolloUserService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<UserService.LiveOpsGetUserDataByGamertagOutput>());
+                this.ApolloService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
+                this.ApolloService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
+                this.ApolloService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
+                this.ApolloService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<UserService.LiveOpsGetUserDataByGamertagOutput>());
                 this.Mapper.Map<IList<ApolloInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<ApolloInventoryProfile>>());
                 this.Mapper.Map<ApolloGift>(Arg.Any<ApolloGroupGift>()).Returns(Fixture.Create<ApolloGift>());
                 this.Mapper.Map<ApolloMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<ApolloMasterInventory>());
             }
 
-            public IApolloUserInventoryService ApolloUserInventoryService { get; set; } = Substitute.For<IApolloUserInventoryService>();
-
-            public IApolloGiftingService ApolloGiftingService { get; set; } = Substitute.For<IApolloGiftingService>();
-
-            public IApolloUserService ApolloUserService { get; set; } = Substitute.For<IApolloUserService>();
+            public IApolloService ApolloService { get; set; } = Substitute.For<IApolloService>();
 
             public IApolloGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IApolloGiftHistoryProvider>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public ApolloPlayerInventoryProvider Build() => new ApolloPlayerInventoryProvider(
-                                                                                              this.ApolloUserInventoryService,
-                                                                                              this.ApolloGiftingService,
-                                                                                              this.ApolloUserService,
+                                                                                              this.ApolloService,
                                                                                               this.GiftHistoryProvider,
                                                                                               this.Mapper);
         }

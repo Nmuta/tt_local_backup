@@ -9,6 +9,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 {
@@ -19,9 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         private const int AgentCreditSendAmount = 500_000_000;
         private const int AdminCreditSendAmount = 999_999_999;
 
-        private readonly IApolloUserInventoryService apolloUserInventoryService;
-        private readonly IApolloGiftingService apolloGiftingService;
-        private readonly IApolloUserService apolloUserService;
+        private readonly IApolloService apolloService;
         private readonly IApolloGiftHistoryProvider giftHistoryProvider;
         private readonly IMapper mapper;
 
@@ -29,21 +28,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         ///     Initializes a new instance of the <see cref="ApolloPlayerInventoryProvider"/> class.
         /// </summary>
         public ApolloPlayerInventoryProvider(
-                                             IApolloUserInventoryService apolloUserInventoryService,
-                                             IApolloGiftingService apolloGiftingService,
-                                             IApolloUserService apolloUserService,
+                                             IApolloService apolloService,
                                              IApolloGiftHistoryProvider giftHistoryProvider,
                                              IMapper mapper)
         {
-            apolloUserInventoryService.ShouldNotBeNull(nameof(apolloUserInventoryService));
-            apolloGiftingService.ShouldNotBeNull(nameof(apolloGiftingService));
-            apolloUserService.ShouldNotBeNull(nameof(apolloUserService));
+            apolloService.ShouldNotBeNull(nameof(apolloService));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             mapper.ShouldNotBeNull(nameof(mapper));
 
-            this.apolloUserInventoryService = apolloUserInventoryService;
-            this.apolloGiftingService = apolloGiftingService;
-            this.apolloUserService = apolloUserService;
+            this.apolloService = apolloService;
             this.giftHistoryProvider = giftHistoryProvider;
             this.mapper = mapper;
         }
@@ -55,7 +48,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             try
             {
-                var response = await this.apolloUserInventoryService.GetAdminUserInventoryAsync(xuid)
+                var response = await this.apolloService.GetAdminUserInventoryAsync(xuid)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<ApolloMasterInventory>(response.summary);
@@ -71,7 +64,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         {
             try
             {
-                var response = await this.apolloUserInventoryService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                var response = await this.apolloService.GetAdminUserInventoryByProfileIdAsync(profileId)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<ApolloMasterInventory>(response.summary);
@@ -89,7 +82,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
             try
             {
-                var response = await this.apolloUserInventoryService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+                var response = await this.apolloService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<ApolloInventoryProfile>>(response.profiles);
             }
@@ -120,7 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.apolloGiftingService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.apolloService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
@@ -175,7 +168,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.apolloGiftingService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.apolloService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);

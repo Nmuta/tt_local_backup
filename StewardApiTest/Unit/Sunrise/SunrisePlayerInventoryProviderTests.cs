@@ -10,6 +10,7 @@ using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
+using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Xls.WebServices.FH4.master.Generated;
 using static Forza.WebServices.FH4.master.Generated.UserInventoryService;
 using static Xls.WebServices.FH4.master.Generated.UserService;
@@ -37,44 +38,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenSunriseUserInventoryServiceNull_Throws()
+        public void Ctor_WhenSunriseServiceNull_Throws()
         {
             // Arrange.
-            var dependencies = new Dependencies { SunriseUserInventoryService = null };
+            var dependencies = new Dependencies { SunriseService = null };
 
             // Act.
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "sunriseUserInventoryService"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenSunriseGiftingServiceNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { SunriseGiftingService = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "sunriseGiftingService"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void Ctor_WhenSunriseUserServiceNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { SunriseUserService = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "sunriseUserService"));
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "sunriseService"));
         }
 
         [TestMethod]
@@ -311,31 +284,25 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             public Dependencies()
             {
-                this.SunriseUserInventoryService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
-                this.SunriseUserInventoryService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
-                this.SunriseUserInventoryService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
-                this.SunriseUserService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupsOutput>());
-                this.SunriseUserService.GetLiveOpsUserDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
+                this.SunriseService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
+                this.SunriseService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
+                this.SunriseService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
+                this.SunriseService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupsOutput>());
+                this.SunriseService.GetLiveOpsUserDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
                 this.Mapper.Map<SunriseMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<SunriseMasterInventory>());
                 this.Mapper.Map<IList<SunriseInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<SunriseGift>(Arg.Any<SunriseGroupGift>()).Returns(Fixture.Create<SunriseGift>());
             }
 
-            public ISunriseUserInventoryService SunriseUserInventoryService { get; set; } = Substitute.For<ISunriseUserInventoryService>();
-
-            public ISunriseGiftingService SunriseGiftingService { get; set; } = Substitute.For<ISunriseGiftingService>();
-
-            public ISunriseUserService SunriseUserService { get; set; } = Substitute.For<ISunriseUserService>();
+            public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public ISunriseGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<ISunriseGiftHistoryProvider>();
 
             public SunrisePlayerInventoryProvider Build() => new SunrisePlayerInventoryProvider(
-                                                                                            this.SunriseUserInventoryService,
-                                                                                            this.SunriseGiftingService,
-                                                                                            this.SunriseUserService,
+                                                                                            this.SunriseService,
                                                                                             this.Mapper,
                                                                                             this.GiftHistoryProvider);
         }

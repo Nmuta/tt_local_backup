@@ -12,6 +12,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
+using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {
@@ -27,9 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         private const int WhitelistUserGroupId = 6;
         private const string CreditUpdatesIdTemplate = "Sunrise|CreditUpdates|{0}|{1}|{2}";
 
-        private readonly ISunriseUserService sunriseUserService;
-        private readonly ISunriseEnforcementService sunriseEnforcementService;
-        private readonly ISunriseNotificationsService sunriseNotificationsService;
+        private readonly ISunriseService sunriseService;
         private readonly ISunriseBanHistoryProvider banHistoryProvider;
         private readonly IMapper mapper;
         private readonly IRefreshableCacheStore refreshableCacheStore;
@@ -37,18 +36,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunrisePlayerDetailsProvider"/> class.
         /// </summary>
-        public SunrisePlayerDetailsProvider(ISunriseUserService sunriseUserService, ISunriseEnforcementService sunriseEnforcementService, ISunriseNotificationsService sunriseNotificationsService, ISunriseBanHistoryProvider banHistoryProvider, IMapper mapper, IRefreshableCacheStore refreshableCacheStore)
+        public SunrisePlayerDetailsProvider(ISunriseService sunriseService, ISunriseBanHistoryProvider banHistoryProvider, IMapper mapper, IRefreshableCacheStore refreshableCacheStore)
         {
-            sunriseUserService.ShouldNotBeNull(nameof(sunriseUserService));
-            sunriseEnforcementService.ShouldNotBeNull(nameof(sunriseEnforcementService));
-            sunriseNotificationsService.ShouldNotBeNull(nameof(sunriseNotificationsService));
+            sunriseService.ShouldNotBeNull(nameof(sunriseService));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
             mapper.ShouldNotBeNull(nameof(mapper));
             refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
 
-            this.sunriseUserService = sunriseUserService;
-            this.sunriseEnforcementService = sunriseEnforcementService;
-            this.sunriseNotificationsService = sunriseNotificationsService;
+            this.sunriseService = sunriseService;
             this.banHistoryProvider = banHistoryProvider;
             this.mapper = mapper;
             this.refreshableCacheStore = refreshableCacheStore;
@@ -105,7 +100,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                var response = await this.sunriseUserService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
+                var response = await this.sunriseService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
 
                 return this.mapper.Map<SunrisePlayerDetails>(response.userData);
             }
@@ -120,7 +115,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             try
             {
-                var response = await this.sunriseUserService.GetLiveOpsUserDataByXuidAsync(xuid).ConfigureAwait(false);
+                var response = await this.sunriseService.GetLiveOpsUserDataByXuidAsync(xuid).ConfigureAwait(false);
 
                 if (response.userData.region <= 0)
                 {
@@ -138,7 +133,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <inheritdoc />
         public async Task<bool> EnsurePlayerExistsAsync(ulong xuid)
         {
-            var response = await this.sunriseUserService.GetLiveOpsUserDataByXuidAsync(xuid).ConfigureAwait(false);
+            var response = await this.sunriseService.GetLiveOpsUserDataByXuidAsync(xuid).ConfigureAwait(false);
 
             return response.userData.region > 0;
         }
@@ -150,7 +145,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                await this.sunriseUserService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
+                await this.sunriseService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
 
                 return true;
             }
@@ -165,7 +160,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             try
             {
-                var response = await this.sunriseUserService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+                var response = await this.sunriseService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<ConsoleDetails>>(response.consoles);
             }
@@ -180,7 +175,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             try
             {
-                var response = await this.sunriseUserService.GetProfileRollbacksAsync(xuid).ConfigureAwait(false);
+                var response = await this.sunriseService.GetProfileRollbacksAsync(xuid).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SunriseProfileRollback>>(response);
             }
@@ -195,7 +190,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             try
             {
-                var response = await this.sunriseUserService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults)
+                var response = await this.sunriseService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
@@ -211,9 +206,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             try
             {
-                var userGroupResults = await this.sunriseUserService
+                var userGroupResults = await this.sunriseService
                     .GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(false);
-                var suspiciousResults = await this.sunriseUserService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
+                var suspiciousResults = await this.sunriseService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
 
                 userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
 
@@ -243,10 +238,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 var addGroupList = this.PrepareGroupIds(userFlags, true);
                 var removeGroupList = this.PrepareGroupIds(userFlags, false);
 
-                await this.sunriseUserService.AddToUserGroupsAsync(xuid, addGroupList.ToArray()).ConfigureAwait(false);
-                await this.sunriseUserService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray())
+                await this.sunriseService.AddToUserGroupsAsync(xuid, addGroupList.ToArray()).ConfigureAwait(false);
+                await this.sunriseService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray())
                     .ConfigureAwait(false);
-                await this.sunriseUserService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview)
+                await this.sunriseService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview)
                     .ConfigureAwait(false);
             }
             catch (Exception ex)
@@ -260,7 +255,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             try
             {
-                var result = await this.sunriseUserService.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
+                var result = await this.sunriseService.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
                 var profileSummary = this.mapper.Map<SunriseProfileSummary>(result.forzaProfileSummary);
 
                 return profileSummary;
@@ -283,7 +278,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
                 async Task<IList<SunriseCreditUpdate>> CreditUpdates()
                 {
-                    var result = await this.sunriseUserService.GetCreditUpdateEntriesAsync(xuid, startIndex, maxResults)
+                    var result = await this.sunriseService.GetCreditUpdateEntriesAsync(xuid, startIndex, maxResults)
                         .ConfigureAwait(false);
                     var creditUpdates = this.mapper.Map<IList<SunriseCreditUpdate>>(result.credityUpdateEntries);
 
@@ -328,7 +323,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     {
                         try
                         {
-                            var userResult = await this.sunriseUserService.GetLiveOpsUserDataByGamerTagAsync(gamertag)
+                            var userResult = await this.sunriseService.GetLiveOpsUserDataByGamerTagAsync(gamertag)
                             .ConfigureAwait(false);
 
                             xuids.Add(userResult.userData.qwXuid);
@@ -347,7 +342,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 for (var i = 0; i < xuids.Count; i += maxXuidsPerRequest)
                 {
                     var xuidBatch = xuids.GetRange(i, Math.Min(maxXuidsPerRequest, xuids.Count - i));
-                    var result = await this.sunriseEnforcementService
+                    var result = await this.sunriseService
                         .BanUsersAsync(xuidBatch.ToArray(), xuidBatch.Count, mappedBanParameters).ConfigureAwait(false);
 
                     foreach (var xuid in xuidBatch)
@@ -386,7 +381,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     return new List<BanSummary>();
                 }
 
-                var result = await this.sunriseEnforcementService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
+                var result = await this.sunriseService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
 
                 var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
 
@@ -403,12 +398,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             try
             {
-                var result = await this.sunriseEnforcementService
+                var result = await this.sunriseService
                     .GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
 
                 if (result.availableCount > DefaultMaxResults)
                 {
-                    result = await this.sunriseEnforcementService
+                    result = await this.sunriseService
                         .GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
                 }
 
@@ -428,7 +423,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         {
             try
             {
-                await this.sunriseUserService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
+                await this.sunriseService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -443,7 +438,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                var notifications = await this.sunriseNotificationsService.LiveOpsRetrieveForUserAsync(xuid, maxResults).ConfigureAwait(false);
+                var notifications = await this.sunriseService.LiveOpsRetrieveForUserAsync(xuid, maxResults).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SunriseNotification>>(notifications.results);
             }
@@ -461,7 +456,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                var results = await this.sunriseNotificationsService.SendMessageNotificationToMultipleUsersAsync(xuids, message, expireTimeUtc).ConfigureAwait(false);
+                var results = await this.sunriseService.SendMessageNotificationToMultipleUsersAsync(xuids, message, expireTimeUtc).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults);
             }
@@ -482,7 +477,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                await this.sunriseNotificationsService.SendGroupMessageNotificationAsync(groupId, message, expireTimeUtc).ConfigureAwait(false);
+                await this.sunriseService.SendGroupMessageNotificationAsync(groupId, message, expireTimeUtc).ConfigureAwait(false);
                 messageResponse.Success = true;
             }
             catch

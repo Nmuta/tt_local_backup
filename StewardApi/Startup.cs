@@ -33,12 +33,16 @@ using Turn10.LiveOps.StewardApi.Obligation;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo;
+using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 using Turn10.LiveOps.StewardApi.Providers.Gravity;
+using Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
+using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
+using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Validation;
@@ -229,9 +233,7 @@ namespace Turn10.LiveOps.StewardApi
 
             services.AddSingleton<ILoggingService, LoggingService>();
 
-            services.AddSingleton<IWoodstockUserService, WoodstockUserServiceWrapper>();
-            services.AddSingleton<IWoodstockUserInventoryService, WoodstockUserInventoryServiceWrapper>();
-            services.AddSingleton<IWoodstockGiftingService, WoodstockGiftingServiceWrapper>();
+            services.AddSingleton<IWoodstockService, WoodstockServiceWrapper>();
             services.AddSingleton<IWoodstockPlayerDetailsProvider, WoodstockPlayerDetailsProvider>();
             services.AddSingleton<IWoodstockPlayerInventoryProvider, WoodstockPlayerInventoryProvider>();
             services.AddSingleton<IWoodstockBanHistoryProvider, WoodstockBanHistoryProvider>();
@@ -242,9 +244,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IRequestValidator<WoodstockMasterInventory>, WoodstockMasterInventoryRequestValidator>();
             services.AddSingleton<IRequestValidator<WoodstockUserFlagsInput>, WoodstockUserFlagsRequestValidator>();
 
-            services.AddSingleton<ISteelheadUserService, SteelheadUserServiceWrapper>();
-            services.AddSingleton<ISteelheadUserInventoryService, SteelheadUserInventoryServiceWrapper>();
-            services.AddSingleton<ISteelheadGiftingService, SteelheadGiftingServiceWrapper>();
+            services.AddSingleton<ISteelheadService, SteelheadServiceWrapper>();
             services.AddSingleton<ISteelheadPlayerDetailsProvider, SteelheadPlayerDetailsProvider>();
             services.AddSingleton<ISteelheadPlayerInventoryProvider, SteelheadPlayerInventoryProvider>();
             services.AddSingleton<ISteelheadBanHistoryProvider, SteelheadBanHistoryProvider>();
@@ -255,9 +255,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IRequestValidator<SteelheadMasterInventory>, SteelheadMasterInventoryRequestValidator>();
             services.AddSingleton<IRequestValidator<SteelheadUserFlagsInput>, SteelheadUserFlagsRequestValidator>();
 
-            services.AddSingleton<IGravityUserService, GravityUserServiceWrapper>();
-            services.AddSingleton<IGravityGameSettingsService, GravityGameSettingsServiceWrapper>();
-            services.AddSingleton<IGravityUserInventoryService, GravityUserInventoryServiceWrapper>();
+            services.AddSingleton<IGravityService, GravityServiceWrapper>();
             services.AddSingleton<IGravityPlayerDetailsProvider, GravityPlayerDetailsProvider>();
             services.AddSingleton<IGravityGameSettingsProvider, GravityGameSettingsProvider>();
             services.AddSingleton<IGravityPlayerInventoryProvider, GravityPlayerInventoryProvider>();
@@ -265,11 +263,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IRequestValidator<GravityGift>, GravityGiftRequestValidator>();
             services.AddSingleton<IGravityGiftHistoryProvider, GravityGiftHistoryProvider>();
 
-            services.AddSingleton<ISunriseUserService, SunriseUserServiceWrapper>();
-            services.AddSingleton<ISunriseEnforcementService, SunriseEnforcementServiceWrapper>();
-            services.AddSingleton<ISunriseUserInventoryService, SunriseUserInventoryServiceWrapper>();
-            services.AddSingleton<ISunriseGiftingService, SunriseGiftingServiceWrapper>();
-            services.AddSingleton<ISunriseNotificationsService, SunriseNotificationsServiceWrapper>();
+            services.AddSingleton<ISunriseService, SunriseServiceWrapper>();
             services.AddSingleton<ISunrisePlayerDetailsProvider, SunrisePlayerDetailsProvider>();
             services.AddSingleton<ISunrisePlayerInventoryProvider, SunrisePlayerInventoryProvider>();
             services.AddSingleton<IRequestValidator<SunriseMasterInventory>, SunriseMasterInventoryRequestValidator>();
@@ -280,10 +274,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<ISunriseGiftHistoryProvider, SunriseGiftHistoryProvider>();
             services.AddSingleton<ISunriseBanHistoryProvider, SunriseBanHistoryProvider>();
 
-            services.AddSingleton<IApolloUserService, ApolloUserServiceWrapper>();
-            services.AddSingleton<IApolloGroupingService, ApolloGroupingServiceWrapper>();
-            services.AddSingleton<IApolloUserInventoryService, ApolloUserInventoryServiceWrapper>();
-            services.AddSingleton<IApolloGiftingService, ApolloGiftingServiceWrapper>();
+            services.AddSingleton<IApolloService, ApolloServiceWrapper>();
             services.AddSingleton<IApolloPlayerDetailsProvider, ApolloPlayerDetailsProvider>();
             services.AddSingleton<IApolloPlayerInventoryProvider, ApolloPlayerInventoryProvider>();
             services.AddSingleton<IApolloBanHistoryProvider, ApolloBanHistoryProvider>();
@@ -294,8 +285,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IRequestValidator<ApolloGroupGift>, ApolloGroupGiftRequestValidator>();
             services.AddSingleton<IApolloGiftHistoryProvider, ApolloGiftHistoryProvider>();
 
-            services.AddSingleton<IOpusUserService, OpusUserServiceWrapper>();
-            services.AddSingleton<IOpusOnlineProfileService, OpusOnlineProfileServiceWrapper>();
+            services.AddSingleton<IOpusService, OpusServiceWrapper>();
             services.AddSingleton<IOpusPlayerDetailsProvider, OpusPlayerDetailsProvider>();
             services.AddSingleton<IOpusPlayerInventoryProvider, OpusPlayerInventoryProvider>();
 

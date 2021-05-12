@@ -25,7 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         private const int CommunityManagerUserGroupId = 5;
         private const int WhitelistUserGroupId = 6;
 
-        private readonly ISteelheadUserService steelheadUserService;
+        private readonly ISteelheadService steelheadService;
         private readonly ISteelheadBanHistoryProvider banHistoryProvider;
         private readonly IMapper mapper;
 
@@ -33,15 +33,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         ///     Initializes a new instance of the <see cref="SteelheadPlayerDetailsProvider"/> class.
         /// </summary>
         public SteelheadPlayerDetailsProvider(
-            ISteelheadUserService steelheadUserService,
+            ISteelheadService steelheadService,
             ISteelheadBanHistoryProvider banhistoryProvider,
             IMapper mapper)
         {
-            steelheadUserService.ShouldNotBeNull(nameof(steelheadUserService));
+            steelheadService.ShouldNotBeNull(nameof(steelheadService));
             banhistoryProvider.ShouldNotBeNull(nameof(banhistoryProvider));
             mapper.ShouldNotBeNull(nameof(mapper));
 
-            this.steelheadUserService = steelheadUserService;
+            this.steelheadService = steelheadService;
             this.banHistoryProvider = banhistoryProvider;
             this.mapper = mapper;
         }
@@ -97,7 +97,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
-                var response = await this.steelheadUserService.GetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
+                var response = await this.steelheadService.GetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
 
                 if (response.userData.region <= 0) { return null; }
 
@@ -114,7 +114,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             try
             {
-                var response = await this.steelheadUserService.GetUserDataByXuidAsync(xuid).ConfigureAwait(false);
+                var response = await this.steelheadService.GetUserDataByXuidAsync(xuid).ConfigureAwait(false);
 
                 if (response.userData.region <= 0) { return null; }
 
@@ -131,7 +131,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             try
             {
-                var response = await this.steelheadUserService.GetUserDataByXuidAsync(xuid).ConfigureAwait(false);
+                var response = await this.steelheadService.GetUserDataByXuidAsync(xuid).ConfigureAwait(false);
 
                 return response.userData.region > 0;
             }
@@ -149,7 +149,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
             try
             {
-                var response = await this.steelheadUserService.GetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
+                var response = await this.steelheadService.GetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
 
                 return response.userData.region > 0;
             }
@@ -164,7 +164,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             try
             {
-                var response = await this.steelheadUserService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+                var response = await this.steelheadService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<ConsoleDetails>>(response.consoles);
             }
@@ -179,7 +179,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             try
             {
-                await this.steelheadUserService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
+                await this.steelheadService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -192,7 +192,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             try
             {
-                var response = await this.steelheadUserService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults)
+                var response = await this.steelheadService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
@@ -208,7 +208,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             try
             {
-                var result = await this.steelheadUserService.GetUserGroupsAsync(startIndex, maxResults)
+                var result = await this.steelheadService.GetUserGroupsAsync(startIndex, maxResults)
                     .ConfigureAwait(false);
                 var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
 
@@ -225,9 +225,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             try
             {
-                var userGroupResults = await this.steelheadUserService
+                var userGroupResults = await this.steelheadService
                     .GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(false);
-                var suspiciousResults = await this.steelheadUserService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
+                var suspiciousResults = await this.steelheadService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
 
                 userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
 
@@ -257,10 +257,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                 var addGroupList = this.PrepareGroupIds(userFlags, true);
                 var removeGroupList = this.PrepareGroupIds(userFlags, false);
 
-                await this.steelheadUserService.AddToUserGroupsAsync(xuid, addGroupList.ToArray()).ConfigureAwait(false);
-                await this.steelheadUserService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray())
+                await this.steelheadService.AddToUserGroupsAsync(xuid, addGroupList.ToArray()).ConfigureAwait(false);
+                await this.steelheadService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray())
                     .ConfigureAwait(false);
-                await this.steelheadUserService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview)
+                await this.steelheadService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview)
                     .ConfigureAwait(false);
             }
             catch (Exception ex)
@@ -289,7 +289,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
                     try
                     {
-                        var userResult = await this.steelheadUserService.GetUserDataByGamertagAsync(param.Gamertag)
+                        var userResult = await this.steelheadService.GetUserDataByGamertagAsync(param.Gamertag)
                             .ConfigureAwait(false);
 
                         param.Xuid = userResult.userData.qwXuid;
@@ -310,7 +310,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                     var paramBatch = banParameters.ToList()
                         .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
                     var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
-                    var result = await this.steelheadUserService.BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count)
+                    var result = await this.steelheadService.BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count)
                         .ConfigureAwait(false);
 
                     foreach (var param in paramBatch)
@@ -349,7 +349,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                     return new List<BanSummary>();
                 }
 
-                var result = await this.steelheadUserService.GetUserBanSummariesAsync(xuids.ToArray()).ConfigureAwait(false);
+                var result = await this.steelheadService.GetUserBanSummariesAsync(xuids.ToArray()).ConfigureAwait(false);
 
                 var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
 
@@ -366,12 +366,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         {
             try
             {
-                var result = await this.steelheadUserService
+                var result = await this.steelheadService
                     .GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
 
                 if (result.availableCount > DefaultMaxResults)
                 {
-                    result = await this.steelheadUserService
+                    result = await this.steelheadService
                         .GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
                 }
 
