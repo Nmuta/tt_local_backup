@@ -14,7 +14,7 @@ import {
 } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
-import { cloneDeep, remove } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { ActivePipelineService } from '../../services/active-pipeline.service';
@@ -67,6 +67,7 @@ export class ObligationDataActivitiesComponent
   constructor(private readonly activePipeline: ActivePipelineService) {
     super();
 
+    // subscribe onChange$ to latest formArray clone's value
     this.formArray$
       .pipe(
         switchMap(formArray => formArray.valueChanges),
@@ -76,16 +77,12 @@ export class ObligationDataActivitiesComponent
       )
       .subscribe(this.onChange$);
 
+    // update values in response to onChange$
     this.onChange$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {
       this.activePipeline.activityNames = this.formControls
         .map(fc => fc.value as ObligationDataActivityOptions)
         .map(da => da.name);
       this.changeFn(v);
-    });
-
-    this.onDestroy$.subscribe(() => {
-      this.formArray$.complete();
-      this.onChange$.complete();
     });
 
     this.overrideList(ObligationDataActivitiesComponent.defaults);
@@ -97,7 +94,6 @@ export class ObligationDataActivitiesComponent
       if (data.length !== this.formArray.length) {
         // if the list actually changed, we need to recreate the array
         this.overrideList(data);
-        this.formArray.valueChanges.subscribe(this.changeFn);
       } else {
         // otherwise we can just patch the existing array
         this.formArray.patchValue(data, { emitEvent: false });
@@ -135,8 +131,8 @@ export class ObligationDataActivitiesComponent
   }
 
   /** Called when the "delete" button is clicked. */
-  public removeActivity(activityFormControl: FormControl): void {
-    remove(this.formControls, i => i === activityFormControl);
+  public removeActivity(index: number): void {
+    this.formArray.removeAt(index);
   }
 
   /** Called when the "add" button is clicked. */

@@ -16,9 +16,9 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { StringValidators } from '@shared/validators/string-validators';
-import { orderBy, remove } from 'lodash';
-import { Observable, zip } from 'rxjs';
-import { map, startWith, takeUntil } from 'rxjs/operators';
+import { orderBy } from 'lodash';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { ActivePipelineService } from '../../services/active-pipeline.service';
 
 export type DependencyListOptions = string[];
@@ -65,25 +65,43 @@ export class DependencyListComponent
   /** The dependency options. */
   public dependencyOptions$: Observable<string[]>;
 
+  private readonly onChange$ = new Subject<DependencyListOptions>();
+  private readonly formArray$ = new Subject<FormArray>();
+
   constructor(private readonly activePipeline: ActivePipelineService) {
     super();
-    this.overrideList(DependencyListComponent.defaults);
-    this.dependencyOptions$ = zip(
+
+    // an observable of the latest permissible dependency names; used for auto-complete
+    this.dependencyOptions$ = combineLatest([
       this.formArray.valueChanges.pipe(
         startWith({}),
         map(() => this.formControls.map(fc => fc.value as string)),
       ),
       this.activePipeline.activityNames$.pipe(startWith(this.activePipeline.activityNames)),
-    ).pipe(
+    ]).pipe(
       takeUntil(this.onDestroy$),
       map(([values, activityNames]) => activityNames.filter(an => !values.includes(an))),
       map(activityNames => orderBy(activityNames)),
     );
+
+    // pass on updated values to the parent form
+    this.onChange$.pipe(takeUntil(this.onDestroy$)).subscribe(v => this.changeFn(v));
+
+    // subscribe onChange$ to latest formArray clone's value
+    this.formArray$
+      .pipe(
+        switchMap(formArray => formArray.valueChanges.pipe(startWith(formArray.value))),
+        takeUntil(this.onDestroy$),
+        map(value => value as DependencyListOptions),
+      )
+      .subscribe(this.onChange$);
+
+    this.overrideList(DependencyListComponent.defaults);
   }
 
   /** Fired when an autocomplete option is selected. */
   public onSelected(event: MatAutocompleteSelectedEvent): void {
-    this.formControls.push(this.valueToFormControl(event.option.viewValue));
+    this.formArray.push(this.valueToFormControl(event.option.viewValue));
     this.input.nativeElement.value = '';
     this.inputFormControl.setValue(null);
   }
@@ -104,7 +122,6 @@ export class DependencyListComponent
   /** Form control hook. */
   public registerOnChange(fn: (data: DependencyListOptions) => void): void {
     this.changeFn = fn;
-    this.formArray.valueChanges.subscribe(this.changeFn);
     this.changeFn(this.formArray.value);
   }
 
@@ -132,8 +149,8 @@ export class DependencyListComponent
   }
 
   /** Called when the "delete" button is clicked. */
-  public removeDependency(activityFormControl: FormControl): void {
-    remove(this.formControls, i => i === activityFormControl);
+  public removeDependency(index: number): void {
+    this.formArray.removeAt(index);
   }
 
   /** Called when the "add" button is clicked. */
@@ -142,7 +159,7 @@ export class DependencyListComponent
     const value = event.value;
 
     if ((value || '').trim()) {
-      this.formControls.push(this.valueToFormControl(value.trim()));
+      this.formArray.push(this.valueToFormControl(value.trim()));
     }
 
     if (input) {
@@ -155,6 +172,7 @@ export class DependencyListComponent
     this.formControls = options.map(v => this.valueToFormControl(v));
     this.formArray = new FormArray(this.formControls);
     this.formGroup = new FormGroup({ activities: this.formArray });
+    this.formArray$.next(this.formArray);
   }
 
   /** Hook for adding standardized validators to each form control. */

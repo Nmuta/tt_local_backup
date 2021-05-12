@@ -2,11 +2,11 @@
   <mat-label>Pipeline Dependencies</mat-label>
   <mat-chip-list #chipList aria-label="Pipeline Dependencies">
     <mat-chip
-      *ngFor="let formControl of formControls"
+      *ngFor="let formControl of formControls; let i = index"
       [selectable]="false"
       [removable]="true"
       selected
-      (removed)="removeDependency(formControl)"
+      (removed)="removeDependency(i)"
       [color]="!formControl.valid ? 'warn' : null"
     >
       {{ formControl.value }}
