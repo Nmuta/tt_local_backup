@@ -24,7 +24,7 @@ export class WindowService {
 
   /** Runs the window.open function. */
   @Action(WindowOpen)
-  public openAction(_: StateContext<void>, action: WindowOpen): Observable<Window> {
+  public openAction$(_: StateContext<void>, action: WindowOpen): Observable<Window> {
     return of(window.open(action.url, action.target));
   }
 }

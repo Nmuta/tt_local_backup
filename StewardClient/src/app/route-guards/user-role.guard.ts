@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import {
   CanActivate,
   CanActivateChild,
@@ -16,9 +15,6 @@ import { RequestAccessToken } from '@shared/state/user/user.actions';
 import { UserRole } from '@models/enums';
 
 /** A guard for preventing unauthenticated access and directing users to the auth flow. */
-@Injectable({
-  providedIn: 'root',
-})
 export class UserRoleGuard implements CanActivate, CanActivateChild {
   @Select(UserState.profile) public profile$: Observable<UserModel>;
 

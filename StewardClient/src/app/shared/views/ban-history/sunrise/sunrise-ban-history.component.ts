@@ -44,7 +44,7 @@ export class SunriseBanHistoryComponent extends BaseComponent implements OnChang
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.sunrise.getBanHistoryByXuid(this.xuid).subscribe(
+    this.sunrise.getBanHistoryByXuid$(this.xuid).subscribe(
       banHistory => {
         this.isLoading = false;
         this.banList = banHistory;

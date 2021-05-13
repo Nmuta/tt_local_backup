@@ -1,6 +1,6 @@
 <div [formGroup]="formGroup">
   <h2>Principals</h2>
-  <table mat-table [dataSource]="dataSource" formArrayName="rows">
+  <table mat-table [dataSource]="dataSource$" formArrayName="rows">
     <tr mat-row *matRowDef="let row; let i = index; columns: displayColumns"></tr>
 
     <ng-container matColumnDef="type">

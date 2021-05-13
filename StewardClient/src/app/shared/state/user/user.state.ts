@@ -69,7 +69,7 @@ export class UserState {
 
   /** Logs out the current user and directs them to the auth page. */
   @Action(LogoutUser, { cancelUncompleted: true })
-  public logoutUser(ctx: StateContext<UserStateModel>, action: LogoutUser): Observable<void> {
+  public logoutUser$(ctx: StateContext<UserStateModel>, action: LogoutUser): Observable<void> {
     this.logger.log([LogTopic.AuthInterception], `[user.state] logoutUser`);
     return ctx.dispatch([
       new ResetUserProfile(),
@@ -79,7 +79,7 @@ export class UserState {
 
   /** Logs out the current user and directs them to the auth page. */
   @Action(RecheckAuth, { cancelUncompleted: true })
-  public recheckAuth(ctx: StateContext<UserStateModel>, _action: RecheckAuth): Observable<void> {
+  public recheckAuth$(ctx: StateContext<UserStateModel>, _action: RecheckAuth): Observable<void> {
     this.logger.log([LogTopic.AuthInterception], `[user.state] recheckAuth`);
     const resetUserProfile$ = ctx.dispatch(new ResetUserProfile());
     const requestAccessToken$ = this.actions$.pipe(
@@ -92,9 +92,9 @@ export class UserState {
 
   /** Action that requests user profile and sets it to the state. */
   @Action(GetUser, { cancelUncompleted: true })
-  public getUser(ctx: StateContext<UserStateModel>): Observable<UserModel> {
+  public getUser$(ctx: StateContext<UserStateModel>): Observable<UserModel> {
     this.logger.log([LogTopic.AuthInterception], `[user.state] getUser`);
-    return this.userService.getUserProfile().pipe(
+    return this.userService.getUserProfile$().pipe(
       tap(
         data => {
           ctx.patchState({ profile: clone(data) });
@@ -108,7 +108,7 @@ export class UserState {
 
   /** Action that resets state user profile. */
   @Action(ResetUserProfile, { cancelUncompleted: true })
-  public resetUserProfile(ctx: StateContext<UserStateModel>): Observable<void> {
+  public resetUserProfile$(ctx: StateContext<UserStateModel>): Observable<void> {
     this.logger.log([LogTopic.AuthInterception], `[user.state] resetUserProfile`);
     ctx.patchState({ profile: undefined });
     return ctx.dispatch(new ResetAccessToken());
@@ -123,7 +123,7 @@ export class UserState {
 
   /** Action that requests user access token from azure app. */
   @Action(RequestAccessToken, { cancelUncompleted: true })
-  public requestAccessToken(ctx: StateContext<UserStateModel>): Observable<void> {
+  public requestAccessToken$(ctx: StateContext<UserStateModel>): Observable<void> {
     this.logger.log([LogTopic.AuthInterception], `[user.state] requestAccessToken`);
     // If access token exists, exit logic
     const currentState = ctx.getState();

@@ -48,8 +48,8 @@ describe('OpusPlayerInventoryComponent', () => {
       }),
     );
 
-    it('should call getPlayerInventoryByXuid', () => {
-      expect(service.getPlayerInventoryByXuid).toHaveBeenCalledWith(testXuid);
+    it('should call getPlayerInventoryByXuid$', () => {
+      expect(service.getPlayerInventoryByXuid$).toHaveBeenCalledWith(testXuid);
     });
 
     it('should reset', () => {

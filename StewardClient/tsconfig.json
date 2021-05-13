@@ -29,5 +29,9 @@
       "@data-pipeline-app/*": ["app/pages/data-pipeline-app/*"]
     },
     "allowSyntheticDefaultImports": true
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "strictInjectionParameters": true
   }
 }

@@ -19,6 +19,6 @@ export class SteelheadPlayerSidebarDetailsComponent extends PlayerSidebarDetails
 
   /** Creates Steelhead's player details request. */
   public makeRequest$(): Observable<SteelheadPlayerDetails> {
-    return this.steelheadService.getPlayerDetailsByGamertag(this.gamertag);
+    return this.steelheadService.getPlayerDetailsByGamertag$(this.gamertag);
   }
 }

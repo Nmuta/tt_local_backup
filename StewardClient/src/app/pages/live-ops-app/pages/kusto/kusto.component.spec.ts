@@ -44,7 +44,7 @@ describe('LiveOpsKustoComponent', () => {
 
     mockKustoService = TestBed.inject(KustoService);
 
-    mockKustoService.getKustoQueries = jasmine.createSpy('getKustoQueries');
+    mockKustoService.getKustoQueries$ = jasmine.createSpy('getKustoQueries$');
   });
 
   it('should create', () => {

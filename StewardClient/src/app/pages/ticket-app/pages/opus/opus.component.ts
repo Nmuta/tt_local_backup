@@ -27,7 +27,7 @@ export class OpusComponent extends TicketAppBaseComponent {
   }
 
   /** Requests player identity. */
-  public requestPlayerIdentity(gamertag: string): Observable<IdentityResultAlpha> {
-    return this.opusService.getPlayerIdentity({ gamertag });
+  public requestPlayerIdentity$(gamertag: string): Observable<IdentityResultAlpha> {
+    return this.opusService.getPlayerIdentity$({ gamertag });
   }
 }

@@ -45,7 +45,7 @@ export class KustoQuerySelectionComponent extends BaseComponent implements OnIni
     queryInput: new FormControl('', Validators.required),
   });
 
-  public stateGroupOptions: Observable<KustoQueryGroup[]>;
+  public stateGroupOptions$: Observable<KustoQueryGroup[]>;
 
   constructor(
     private readonly kustoService: KustoService,
@@ -61,7 +61,7 @@ export class KustoQuerySelectionComponent extends BaseComponent implements OnIni
 
     // Request kusto queries
     this.kustoService
-      .getKustoQueries()
+      .getKustoQueries$()
       .pipe(
         takeUntil(this.onDestroy$),
         take(1),
@@ -75,7 +75,7 @@ export class KustoQuerySelectionComponent extends BaseComponent implements OnIni
       .subscribe(response => {
         this.isLoading = false;
         this.queryGroups = this.buildMatAutocompleteState(response);
-        this.stateGroupOptions = this.querySelectionForm.get('queryInput')?.valueChanges.pipe(
+        this.stateGroupOptions$ = this.querySelectionForm.get('queryInput')?.valueChanges.pipe(
           takeUntil(this.onDestroy$),
           startWith(''),
           map(value => this.filterGroup(value)),

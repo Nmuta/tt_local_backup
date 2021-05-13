@@ -39,12 +39,12 @@ describe('SteelheadBanningComponent', () => {
   });
 
   it('should submit', () => {
-    component.submitInternal();
+    component.submitInternal$();
   });
 
   it('should gather summaries', () => {
     const testXuids = [fakeXuid(), fakeXuid(), fakeXuid()];
-    steelhead.getBanSummariesByXuids = jasmine
+    steelhead.getBanSummariesByXuids$ = jasmine
       .createSpy('getBanSummariesByXuids')
       .and.callFake((xuids: BigNumber[]) => {
         const summaries = SteelheadPlayersBanSummariesFakeApi.make(xuids);
@@ -60,7 +60,7 @@ describe('SteelheadBanningComponent', () => {
     component.playerIdentities$.next(fakeIdentities);
     fixture.detectChanges();
 
-    expect(steelhead.getBanSummariesByXuids).toHaveBeenCalledTimes(1);
+    expect(steelhead.getBanSummariesByXuids$).toHaveBeenCalledTimes(1);
     expect(keys(component.summaryLookup).length).toBe(testXuids.length);
 
     const lookup0 = component.summaryLookup[testXuids[0].toString()];

@@ -44,7 +44,7 @@ export class ApolloBanHistoryComponent extends BaseComponent implements OnChange
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.apollo.getBanHistoryByXuid(this.xuid).subscribe(
+    this.apollo.getBanHistoryByXuid$(this.xuid).subscribe(
       banHistory => {
         this.isLoading = false;
         this.banList = banHistory;

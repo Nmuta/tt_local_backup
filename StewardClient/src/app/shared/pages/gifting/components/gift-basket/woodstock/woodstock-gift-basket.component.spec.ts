@@ -171,16 +171,16 @@ describe('WoodstockGiftBasketComponent', () => {
     });
   });
 
-  describe('Method: sendGiftToPlayers', () => {
+  describe('Method: sendGiftToPlayers$', () => {
     beforeEach(() => {
-      mockWoodstockService.postGiftPlayersUsingBackgroundTask = jasmine.createSpy(
+      mockWoodstockService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
         'postGiftPlayersUsingBackgroundTask',
       );
       component.playerIdentities = [];
     });
 
     it('should call postGiftPlayersUsingBackgroundTask', () => {
-      component.sendGiftToPlayers({
+      component.sendGiftToPlayers$({
         giftReason: faker.random.words(10),
         inventory: {
           creditRewards: [],
@@ -192,17 +192,17 @@ describe('WoodstockGiftBasketComponent', () => {
         },
       });
 
-      expect(mockWoodstockService.postGiftPlayersUsingBackgroundTask).toHaveBeenCalled();
+      expect(mockWoodstockService.postGiftPlayersUsingBackgroundTask$).toHaveBeenCalled();
     });
   });
 
-  describe('Method: sendGiftToLspGroup', () => {
+  describe('Method: sendGiftToLspGroup$', () => {
     beforeEach(() => {
-      mockWoodstockService.postGiftLspGroup = jasmine.createSpy('postGiftLspGroup');
+      mockWoodstockService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
     });
 
-    it('should call sendGiftToLspGroup', () => {
-      component.sendGiftToLspGroup({
+    it('should call sendGiftToLspGroup$', () => {
+      component.sendGiftToLspGroup$({
         giftReason: faker.random.words(10),
         inventory: {
           creditRewards: [],
@@ -214,7 +214,7 @@ describe('WoodstockGiftBasketComponent', () => {
         },
       });
 
-      expect(mockWoodstockService.postGiftLspGroup).toHaveBeenCalled();
+      expect(mockWoodstockService.postGiftLspGroup$).toHaveBeenCalled();
     });
   });
 

@@ -32,7 +32,7 @@ export class SteelheadGiftingStateModel {
 export class SteelheadGiftingState {
   /** Sets the gifting page's selected player identities. */
   @Action(SetSteelheadGiftingSelectedPlayerIdentities, { cancelUncompleted: true })
-  public setSelectedPlayerIdentities(
+  public setSelectedPlayerIdentities$(
     ctx: StateContext<SteelheadGiftingStateModel>,
     action: SetSteelheadGiftingSelectedPlayerIdentities,
   ): Observable<SteelheadGiftingStateModel> {
@@ -41,7 +41,7 @@ export class SteelheadGiftingState {
 
   /** Sets the gifting page's selected mat tab index. */
   @Action(SetSteelheadGiftingMatTabIndex, { cancelUncompleted: true })
-  public setSunriseMatTabIndex(
+  public setSunriseMatTabIndex$(
     ctx: StateContext<SteelheadGiftingStateModel>,
     action: SetSteelheadGiftingMatTabIndex,
   ): Observable<SteelheadGiftingStateModel> {
@@ -50,7 +50,7 @@ export class SteelheadGiftingState {
 
   /** Sets the gift basket. */
   @Action(SetSteelheadGiftBasket, { cancelUncompleted: true })
-  public setSteelheadGiftBasket(
+  public setSteelheadGiftBasket$(
     ctx: StateContext<SteelheadGiftingStateModel>,
     action: SetSteelheadGiftBasket,
   ): Observable<SteelheadGiftingStateModel> {

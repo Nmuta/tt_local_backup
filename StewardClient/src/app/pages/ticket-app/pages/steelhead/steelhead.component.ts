@@ -27,7 +27,7 @@ export class SteelheadComponent extends TicketAppBaseComponent {
   }
 
   /** Requests player identity. */
-  public requestPlayerIdentity(gamertag: string): Observable<IdentityResultAlpha> {
-    return this.steelheadService.getPlayerIdentity({ gamertag });
+  public requestPlayerIdentity$(gamertag: string): Observable<IdentityResultAlpha> {
+    return this.steelheadService.getPlayerIdentity$({ gamertag });
   }
 }

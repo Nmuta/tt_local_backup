@@ -19,6 +19,6 @@ export class SunrisePlayerSidebarDetailsComponent extends PlayerSidebarDetailsBa
 
   /** Creates Sunrise's player details request. */
   public makeRequest$(): Observable<SunrisePlayerDetails> {
-    return this.sunriseService.getPlayerDetailsByGamertag(this.gamertag);
+    return this.sunriseService.getPlayerDetailsByGamertag$(this.gamertag);
   }
 }

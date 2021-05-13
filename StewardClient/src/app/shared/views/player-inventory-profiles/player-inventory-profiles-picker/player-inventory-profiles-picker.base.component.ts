@@ -47,14 +47,15 @@ type AcceptableInventoryProfileTypesIntersection = Partial<
   template: '',
 })
 export abstract class PlayerInventoryProfilesPickerBaseComponent<
+    ProfileIdType extends string | BigNumber,
     IdentityResultType extends IdentityResultUnion,
     InventoryProfileType extends AcceptableInventoryProfileTypes
   >
   extends BaseComponent
   implements OnInit, OnChanges {
   @Input() public identity: IdentityResultType;
-  @Input() public profileId: string | BigNumber;
-  @Output() public profileIdChange = new EventEmitter<string | BigNumber>();
+  @Input() public profileId: ProfileIdType;
+  @Output() public profileIdChange = new EventEmitter<ProfileIdType>();
 
   public profiles: AcceptableInventoryProfileTypesIntersection[] = [];
   /** True while loading. */
@@ -67,7 +68,7 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   private identity$ = new Subject<IdentityResultType>();
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected abstract getPlayerProfilesByIdentity(
+  protected abstract getPlayerProfilesByIdentity$(
     identity: IdentityResultType,
   ): Observable<InventoryProfileType[]>;
 
@@ -81,7 +82,7 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
           this.error = null;
         }),
         filter(i => !!i),
-        switchMap(i => this.getPlayerProfilesByIdentity(i)),
+        switchMap(i => this.getPlayerProfilesByIdentity$(i)),
         catchError((error, _observable) => {
           this.error = error;
           return NEVER;
@@ -113,6 +114,6 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   /** Handle chip-list selection change. */
   public onSelectionChange(newSelection: MatChipListChange): void {
     const newProfile = newSelection?.value as InventoryProfileType;
-    this.profileIdChange.next(newProfile?.profileId);
+    this.profileIdChange.emit(newProfile?.profileId as ProfileIdType);
   }
 }

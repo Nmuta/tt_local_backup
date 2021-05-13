@@ -22,7 +22,7 @@ export class SunriseProfileRollbacksComponent extends ProfileRollbacksBaseCompon
   }
 
   /** Gets Sunrise user flags. */
-  public getProfileRollbacksXuid(xuid: BigNumber): Observable<SunriseProfileRollback[]> {
-    return this.sunriseService.getProfileRollbacksXuid(xuid);
+  public getProfileRollbacksXuid$(xuid: BigNumber): Observable<SunriseProfileRollback[]> {
+    return this.sunriseService.getProfileRollbacksXuid$(xuid);
   }
 }

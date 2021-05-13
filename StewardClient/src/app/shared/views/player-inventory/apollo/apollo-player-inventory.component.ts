@@ -22,18 +22,18 @@ export class ApolloPlayerInventoryComponent extends PlayerInventoryBaseComponent
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerInventoryByIdentity(
+  protected getPlayerInventoryByIdentity$(
     identity: IdentityResultAlpha,
   ): Observable<ApolloMasterInventory> {
-    return this.apollo.getPlayerInventoryByXuid(identity.xuid);
+    return this.apollo.getPlayerInventoryByXuid$(identity.xuid);
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerInventoryByIdentityAndProfileId(
+  protected getPlayerInventoryByIdentityAndProfileId$(
     _identity: IdentityResultAlpha,
     profileId: BigNumber,
   ): Observable<ApolloMasterInventory> {
-    return this.apollo.getPlayerInventoryByProfileId(profileId);
+    return this.apollo.getPlayerInventoryByProfileId$(profileId);
   }
 
   /** Implement to specify the expando tables to show. */

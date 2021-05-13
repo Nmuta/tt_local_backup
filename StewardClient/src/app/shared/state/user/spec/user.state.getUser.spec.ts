@@ -38,7 +38,9 @@ describe('State: User', () => {
       mockUserService = TestBed.inject(UserService);
       mockWindowService = TestBed.inject(WindowService);
 
-      mockUserService.getUserProfile = jasmine.createSpy('getUserProfile').and.returnValue(of({}));
+      mockUserService.getUserProfile$ = jasmine
+        .createSpy('getUserProfile$')
+        .and.returnValue(of({}));
       mockWindowService.location = jasmine
         .createSpy('location')
         .and.returnValue({ origin: 'http://microsoft.test' });
@@ -63,8 +65,8 @@ describe('State: User', () => {
           objectId: `${faker.datatype.uuid()}`,
           liveOpsAdminSecondaryRole: undefined,
         };
-        mockUserService.getUserProfile = jasmine
-          .createSpy('getUserProfile')
+        mockUserService.getUserProfile$ = jasmine
+          .createSpy('getUserProfile$')
           .and.returnValue(of(expectedProfile));
       });
 
@@ -89,8 +91,8 @@ describe('State: User', () => {
 
     describe('when UserService throws an error', () => {
       beforeEach(() => {
-        mockUserService.getUserProfile = jasmine
-          .createSpy('getUserProfile')
+        mockUserService.getUserProfile$ = jasmine
+          .createSpy('getUserProfile$')
           .and.returnValue(throwError({ message: '401 Unauthorized' }));
       });
 

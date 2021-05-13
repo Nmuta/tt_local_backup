@@ -26,7 +26,7 @@ export abstract class ProfileRollbacksBaseComponent<T> extends BaseComponent imp
   /** Game title. */
   public abstract gameTitle: GameTitleCodeName;
 
-  public abstract getProfileRollbacksXuid(xuid: BigNumber): Observable<T[]>;
+  public abstract getProfileRollbacksXuid$(xuid: BigNumber): Observable<T[]>;
 
   /** Initialization hook. */
   public ngOnChanges(): void {
@@ -36,7 +36,7 @@ export abstract class ProfileRollbacksBaseComponent<T> extends BaseComponent imp
 
     this.isLoading = true;
     this.loadError = undefined;
-    const getProfileRollbacksXuid$ = this.getProfileRollbacksXuid(this.identity.xuid);
+    const getProfileRollbacksXuid$ = this.getProfileRollbacksXuid$(this.identity.xuid);
     getProfileRollbacksXuid$
       .pipe(
         takeUntil(this.onDestroy$),

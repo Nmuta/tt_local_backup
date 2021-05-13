@@ -13,14 +13,17 @@ import {
 } from './state/sunrise-gift-history.state.actions';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
-import { SunriseMasterInventory, SunrisePlayerInventoryProfile } from '@models/sunrise';
+import { SunriseMasterInventory } from '@models/sunrise';
+import BigNumber from 'bignumber.js';
 
 /** The gift history page for the Navbar app. */
 @Component({
   templateUrl: './sunrise-gift-history.component.html',
   styleUrls: ['./sunrise-gift-history.component.scss'],
 })
-export class SunriseGiftHistoryComponent extends GiftHistoryBaseComponent implements OnInit {
+export class SunriseGiftHistoryComponent
+  extends GiftHistoryBaseComponent<BigNumber>
+  implements OnInit {
   @Select(SunriseGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
@@ -28,7 +31,6 @@ export class SunriseGiftHistoryComponent extends GiftHistoryBaseComponent implem
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
-  public selectedPlayerInventoryProfile: SunrisePlayerInventoryProfile;
   public selectedPlayerInventory: SunriseMasterInventory;
   public selectedLspGroup: LspGroup;
   public selectedPlayer: IdentityResultAlpha;

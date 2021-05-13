@@ -27,7 +27,7 @@ export class SunriseComponent extends TicketAppBaseComponent {
   }
 
   /** Requests player identity. */
-  public requestPlayerIdentity(gamertag: string): Observable<IdentityResultAlpha> {
-    return this.sunriseService.getPlayerIdentity({ gamertag });
+  public requestPlayerIdentity$(gamertag: string): Observable<IdentityResultAlpha> {
+    return this.sunriseService.getPlayerIdentity$({ gamertag });
   }
 }

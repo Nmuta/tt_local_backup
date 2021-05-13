@@ -59,8 +59,8 @@ describe('GiftHistoryResultsBaseComponent', () => {
         describe('when service returns valid gift histories', () => {
           const validGiftHistories: (SunriseGiftHistory & GiftHistoryView)[] = [];
           beforeEach(() => {
-            component.retrieveHistoryByPlayer = jasmine
-              .createSpy('retrieveHistoryByPlayer')
+            component.retrieveHistoryByPlayer$ = jasmine
+              .createSpy('retrieveHistoryByPlayer$')
               .and.returnValue(of(validGiftHistories));
           });
           it('should set gift histories to returned list.', () => {
@@ -71,8 +71,8 @@ describe('GiftHistoryResultsBaseComponent', () => {
         describe('when service returns error', () => {
           const errorMessage = 'Failed to retrieve history.';
           beforeEach(() => {
-            component.retrieveHistoryByPlayer = jasmine
-              .createSpy('retrieveHistoryByPlayer')
+            component.retrieveHistoryByPlayer$ = jasmine
+              .createSpy('retrieveHistoryByPlayer$')
               .and.returnValue(throwError(errorMessage));
           });
           it('should handle error response.', () => {
@@ -94,8 +94,8 @@ describe('GiftHistoryResultsBaseComponent', () => {
         describe('when service returns valid gift histories', () => {
           const validGiftHistories: (SunriseGiftHistory & GiftHistoryView)[] = [];
           beforeEach(() => {
-            component.retrieveHistoryByLspGroup = jasmine
-              .createSpy('retrieveHistoryByLspGroup')
+            component.retrieveHistoryByLspGroup$ = jasmine
+              .createSpy('retrieveHistoryByLspGroup$')
               .and.returnValue(of(validGiftHistories));
           });
           it('should set gift histories to returned list.', () => {
@@ -106,8 +106,8 @@ describe('GiftHistoryResultsBaseComponent', () => {
         describe('when service returns error', () => {
           const errorMessage = 'Failed to retrieve history.';
           beforeEach(() => {
-            component.retrieveHistoryByLspGroup = jasmine
-              .createSpy('retrieveHistoryByLspGroup')
+            component.retrieveHistoryByLspGroup$ = jasmine
+              .createSpy('retrieveHistoryByLspGroup$')
               .and.returnValue(throwError(errorMessage));
           });
           it('should handle error response.', () => {

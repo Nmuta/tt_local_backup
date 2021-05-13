@@ -38,8 +38,8 @@ describe('SunriseProfileRollbacksComponent', () => {
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {
-      component.getProfileRollbacksXuid = jasmine
-        .createSpy('getProfileRollbacksXuid')
+      component.getProfileRollbacksXuid$ = jasmine
+        .createSpy('getProfileRollbacksXuid$')
         .and.returnValue(of({}));
     });
 
@@ -48,10 +48,10 @@ describe('SunriseProfileRollbacksComponent', () => {
         component.identity = undefined;
       });
 
-      it('should not call getProfileRollbacksXuid', () => {
+      it('should not call getProfileRollbacksXuid$', () => {
         component.ngOnChanges();
 
-        expect(component.getProfileRollbacksXuid).not.toHaveBeenCalledTimes(1);
+        expect(component.getProfileRollbacksXuid$).not.toHaveBeenCalledTimes(1);
       });
     });
 
@@ -64,21 +64,21 @@ describe('SunriseProfileRollbacksComponent', () => {
         };
       });
 
-      it('should call getProfileRollbacksXuid', () => {
+      it('should call getProfileRollbacksXuid$', () => {
         component.ngOnChanges();
 
-        expect(component.getProfileRollbacksXuid).toHaveBeenCalledTimes(1);
+        expect(component.getProfileRollbacksXuid$).toHaveBeenCalledTimes(1);
       });
 
-      describe('And getProfileRollbacksXuid return valid response', () => {
+      describe('And getProfileRollbacksXuid$ return valid response', () => {
         const profileRollbacks = [
           { dateUtc: faker.date.past(), author: 'System', details: faker.random.words(10) },
           { dateUtc: faker.date.past(), author: 'System', details: faker.random.words(10) },
         ] as SunriseProfileRollback[];
 
         beforeEach(() => {
-          component.getProfileRollbacksXuid = jasmine
-            .createSpy('getProfileRollbacksXuid')
+          component.getProfileRollbacksXuid$ = jasmine
+            .createSpy('getProfileRollbacksXuid$')
             .and.returnValue(of(profileRollbacks));
         });
 
@@ -89,12 +89,12 @@ describe('SunriseProfileRollbacksComponent', () => {
         });
       });
 
-      describe('And getProfileRollbacksXuid return error', () => {
+      describe('And getProfileRollbacksXuid$ return error', () => {
         const error = { message: 'test error' };
 
         beforeEach(() => {
-          component.getProfileRollbacksXuid = jasmine
-            .createSpy('getProfileRollbacksXuid')
+          component.getProfileRollbacksXuid$ = jasmine
+            .createSpy('getProfileRollbacksXuid$')
             .and.returnValue(throwError(error));
         });
 
@@ -115,17 +115,17 @@ describe('SunriseProfileRollbacksComponent', () => {
         gamertag: faker.name.firstName(),
         xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
       };
-      mockSunriseService.getProfileRollbacksXuid = jasmine
-        .createSpy('getProfileRollbacksXuid')
+      mockSunriseService.getProfileRollbacksXuid$ = jasmine
+        .createSpy('getProfileRollbacksXuid$')
         .and.returnValue(of({}));
     });
 
-    it('should call sunriseService.getProfileRollbacksXuid', () => {
+    it('should call sunriseService.getProfileRollbacksXuid$', () => {
       const expectedXuid = component.identity.xuid;
-      component.getProfileRollbacksXuid(component.identity.xuid);
+      component.getProfileRollbacksXuid$(component.identity.xuid);
 
-      expect(mockSunriseService.getProfileRollbacksXuid).toHaveBeenCalledTimes(1);
-      expect(mockSunriseService.getProfileRollbacksXuid).toHaveBeenCalledWith(expectedXuid);
+      expect(mockSunriseService.getProfileRollbacksXuid$).toHaveBeenCalledTimes(1);
+      expect(mockSunriseService.getProfileRollbacksXuid$).toHaveBeenCalledWith(expectedXuid);
     });
   });
 });

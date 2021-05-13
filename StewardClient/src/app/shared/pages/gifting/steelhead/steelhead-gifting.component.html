@@ -30,13 +30,13 @@
         <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
           <steelhead-player-inventory-profile-picker
             [identity]="selectedPlayerIdentity"
-            [(profileId)]="selectedPlayerInventoryProfile"
+            [(profileId)]="selectedPlayerInventoryProfileId"
           ></steelhead-player-inventory-profile-picker>
 
           <div class="inventory-div">
             <steelhead-player-inventory
               [identity]="selectedPlayerIdentity"
-              [profileId]="selectedPlayerInventoryProfile"
+              [profileId]="selectedPlayerInventoryProfileId"
               (inventoryFound)="onInventoryFound($event)"
             ></steelhead-player-inventory>
           </div>

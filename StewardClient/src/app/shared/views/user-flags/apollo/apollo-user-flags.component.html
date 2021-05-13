@@ -19,7 +19,7 @@
         spinnerMessage="Loading"
         errorMessage="Failed to load"
       ></error-spinner>
-      <verify-action-button #submit [canSubmit]="hasChanges" [action]="makeAction.bind(this)"
+      <verify-action-button #submit [canSubmit]="hasChanges" [action]="makeAction$.bind(this)"
         >Apply</verify-action-button
       >
     </h2>

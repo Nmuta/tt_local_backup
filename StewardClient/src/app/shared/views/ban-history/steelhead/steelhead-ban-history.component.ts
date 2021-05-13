@@ -48,7 +48,7 @@ export class SteelheadBanHistoryComponent extends BaseComponent implements OnCha
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.steelhead.getBanHistoryByXuid(this.xuid).subscribe(
+    this.steelhead.getBanHistoryByXuid$(this.xuid).subscribe(
       banHistory => {
         this.isLoading = false;
         this.banList = banHistory;

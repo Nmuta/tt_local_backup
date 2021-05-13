@@ -510,9 +510,11 @@ describe('GiftBasketBaseComponent', () => {
       component.generateGiftInventoryFromGiftBasket = jasmine
         .createSpy('generateGiftInventoryFromGiftBasket')
         .and.returnValue(of({}));
-      component.sendGiftToPlayers = jasmine.createSpy('sendGiftToPlayers').and.returnValue(of({}));
-      component.sendGiftToLspGroup = jasmine
-        .createSpy('sendGiftToLspGroup')
+      component.sendGiftToPlayers$ = jasmine
+        .createSpy('sendGiftToPlayers$')
+        .and.returnValue(of({}));
+      component.sendGiftToLspGroup$ = jasmine
+        .createSpy('sendGiftToLspGroup$')
         .and.returnValue(of({}));
 
       component.usingPlayerIdentities = true;
@@ -525,20 +527,20 @@ describe('GiftBasketBaseComponent', () => {
     });
 
     describe('If usingPlayerIdentities is true', () => {
-      it('should call sendGiftToPlayers', () => {
+      it('should call sendGiftToPlayers$', () => {
         component.usingPlayerIdentities = true;
         component.sendGiftBasket();
 
-        expect(component.sendGiftToPlayers).toHaveBeenCalled();
+        expect(component.sendGiftToPlayers$).toHaveBeenCalled();
       });
     });
 
     describe('If usingPlayerIdentities is false', () => {
-      it('should call sendGiftToLspGroup', () => {
+      it('should call sendGiftToLspGroup$', () => {
         component.usingPlayerIdentities = false;
         component.sendGiftBasket();
 
-        expect(component.sendGiftToLspGroup).toHaveBeenCalled();
+        expect(component.sendGiftToLspGroup$).toHaveBeenCalled();
       });
     });
 
@@ -546,8 +548,8 @@ describe('GiftBasketBaseComponent', () => {
       describe('And an error is caught', () => {
         const error = { message: 'error-message' };
         beforeEach(() => {
-          component.sendGiftToPlayers = jasmine
-            .createSpy('sendGiftToPlayers')
+          component.sendGiftToPlayers$ = jasmine
+            .createSpy('sendGiftToPlayers$')
             .and.returnValue(throwError(error));
         });
 
@@ -563,8 +565,8 @@ describe('GiftBasketBaseComponent', () => {
         const jobId = 'test-job-id';
         beforeEach(() => {
           component.usingPlayerIdentities = true;
-          component.sendGiftToPlayers = jasmine
-            .createSpy('sendGiftToPlayers')
+          component.sendGiftToPlayers$ = jasmine
+            .createSpy('sendGiftToPlayers$')
             .and.returnValue(of({ jobId: jobId } as BackgroundJob<void>));
           component.waitForBackgroundJobToComplete = jasmine.createSpy(
             'waitForBackgroundJobToComplete',
@@ -590,8 +592,8 @@ describe('GiftBasketBaseComponent', () => {
           identityAntecedent: GiftIdentityAntecedent.LspGroupId,
         } as GiftResponse<BigNumber>;
         beforeEach(() => {
-          component.sendGiftToPlayers = jasmine
-            .createSpy('sendGiftToPlayers')
+          component.sendGiftToPlayers$ = jasmine
+            .createSpy('sendGiftToPlayers$')
             .and.returnValue(of(testGiftResponse));
           component.waitForBackgroundJobToComplete = jasmine.createSpy(
             'waitForBackgroundJobToComplete',
@@ -625,7 +627,7 @@ describe('GiftBasketBaseComponent', () => {
     };
 
     beforeEach(() => {
-      mockBackgroundJobService.getBackgroundJob = jasmine
+      mockBackgroundJobService.getBackgroundJob$ = jasmine
         .createSpy('getBackgroundJob')
         .and.returnValue(of({}));
     });
@@ -633,14 +635,14 @@ describe('GiftBasketBaseComponent', () => {
     it('should call BackgroundJobService.getBackgroundJob with correct job id', () => {
       component.waitForBackgroundJobToComplete(testJob);
 
-      expect(mockBackgroundJobService.getBackgroundJob).toHaveBeenCalledWith(testJob.jobId);
+      expect(mockBackgroundJobService.getBackgroundJob$).toHaveBeenCalledWith(testJob.jobId);
     });
 
     describe('When subscribing to the send gift observable', () => {
       describe('And an error is caught', () => {
         const error = { message: 'error-message' };
         beforeEach(() => {
-          mockBackgroundJobService.getBackgroundJob = jasmine
+          mockBackgroundJobService.getBackgroundJob$ = jasmine
             .createSpy('getBackgroundJob')
             .and.returnValue(throwError(error));
         });
@@ -674,7 +676,7 @@ describe('GiftBasketBaseComponent', () => {
           reason: 'test',
         };
         beforeEach(() => {
-          mockBackgroundJobService.getBackgroundJob = jasmine
+          mockBackgroundJobService.getBackgroundJob$ = jasmine
             .createSpy('getBackgroundJob')
             .and.returnValue(of(testBackgroundJobResp));
         });

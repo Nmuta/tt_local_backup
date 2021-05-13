@@ -52,7 +52,7 @@ describe('GravityPlayerSidebarDetailsComponent', () => {
     const expectedGamertag = 'test-gamertag';
     beforeEach(() => {
       component.gamertag = expectedGamertag;
-      mockGravityService.getPlayerDetailsByGamertag = jasmine
+      mockGravityService.getPlayerDetailsByGamertag$ = jasmine
         .createSpy('getPlayerDetailsByGamertag')
         .and.returnValue(of(GravityPlayerGamertagDetailsFakeApi.make()));
     });
@@ -62,7 +62,7 @@ describe('GravityPlayerSidebarDetailsComponent', () => {
         /* nothing */
       });
 
-      expect(mockGravityService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
+      expect(mockGravityService.getPlayerDetailsByGamertag$).toHaveBeenCalledWith(expectedGamertag);
     });
   });
 });

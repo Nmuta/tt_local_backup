@@ -127,18 +127,18 @@ export class WoodstockGiftBasketComponent
   }
 
   /** Sends a woodstock gift to players. */
-  public sendGiftToPlayers(gift: WoodstockGift): Observable<BackgroundJob<void>> {
+  public sendGiftToPlayers$(gift: WoodstockGift): Observable<BackgroundJob<void>> {
     const groupGift = gift as WoodstockGroupGift;
     groupGift.xuids = this.playerIdentities
       .filter(player => !player.error)
       .map(player => player.xuid);
 
-    return this.woodstockService.postGiftPlayersUsingBackgroundTask(groupGift);
+    return this.woodstockService.postGiftPlayersUsingBackgroundTask$(groupGift);
   }
 
   /** Sends a woodstock gift to an LSP group. */
-  public sendGiftToLspGroup(gift: WoodstockGift): Observable<GiftResponse<BigNumber>> {
-    return this.woodstockService.postGiftLspGroup(this.lspGroup, gift);
+  public sendGiftToLspGroup$(gift: WoodstockGift): Observable<GiftResponse<BigNumber>> {
+    return this.woodstockService.postGiftLspGroup$(this.lspGroup, gift);
   }
 
   /** Sets the state gift basket. */

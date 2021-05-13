@@ -54,13 +54,13 @@ describe('SteelheadComponent - Ticket App', () => {
     });
   });
 
-  describe('Method: requestPlayerIdentity', () => {
+  describe('Method: requestPlayerIdentity$', () => {
     const gamertag = faker.name.firstName();
 
     it('should send request to steelheadService.getPlayerIdentity ', () => {
-      component.requestPlayerIdentity(gamertag);
+      component.requestPlayerIdentity$(gamertag);
 
-      expect(mockSteelheadService.getPlayerIdentity).toHaveBeenCalledWith({ gamertag: gamertag });
+      expect(mockSteelheadService.getPlayerIdentity$).toHaveBeenCalledWith({ gamertag: gamertag });
     });
   });
 });

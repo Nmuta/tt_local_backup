@@ -135,36 +135,36 @@ describe('SteelheadGiftBasketComponent', () => {
     });
   });
 
-  describe('Method: sendGiftToPlayers', () => {
+  describe('Method: sendGiftToPlayers$', () => {
     beforeEach(() => {
-      mockSteelheadService.postGiftPlayersUsingBackgroundTask = jasmine.createSpy(
+      mockSteelheadService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
         'postGiftPlayersUsingBackgroundTask',
       );
       component.playerIdentities = [];
     });
 
     it('should call postGiftPlayersUsingBackgroundTask', () => {
-      component.sendGiftToPlayers({
+      component.sendGiftToPlayers$({
         giftReason: faker.random.words(10),
         inventory: { creditRewards: [], cars: [], vanityItems: [] },
       });
 
-      expect(mockSteelheadService.postGiftPlayersUsingBackgroundTask).toHaveBeenCalled();
+      expect(mockSteelheadService.postGiftPlayersUsingBackgroundTask$).toHaveBeenCalled();
     });
   });
 
-  describe('Method: sendGiftToLspGroup', () => {
+  describe('Method: sendGiftToLspGroup$', () => {
     beforeEach(() => {
-      mockSteelheadService.postGiftLspGroup = jasmine.createSpy('postGiftLspGroup');
+      mockSteelheadService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
     });
 
-    it('should call sendGiftToLspGroup', () => {
-      component.sendGiftToLspGroup({
+    it('should call sendGiftToLspGroup$', () => {
+      component.sendGiftToLspGroup$({
         giftReason: faker.random.words(10),
         inventory: { creditRewards: [], cars: [], vanityItems: [] },
       });
 
-      expect(mockSteelheadService.postGiftLspGroup).toHaveBeenCalled();
+      expect(mockSteelheadService.postGiftLspGroup$).toHaveBeenCalled();
     });
   });
 

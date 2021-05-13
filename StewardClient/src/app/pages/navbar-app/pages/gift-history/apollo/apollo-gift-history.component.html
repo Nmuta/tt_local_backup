@@ -28,13 +28,13 @@
         <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
           <apollo-player-inventory-profile-picker
             [identity]="selectedPlayerIdentity"
-            [(profileId)]="selectedPlayerInventoryProfile"
+            [(profileId)]="selectedPlayerInventoryProfileId"
           ></apollo-player-inventory-profile-picker>
 
           <div class="inventory-div">
             <apollo-player-inventory
               [identity]="selectedPlayerIdentity"
-              [profileId]="selectedPlayerInventoryProfile"
+              [profileId]="selectedPlayerInventoryProfileId"
               (inventoryFound)="onInventoryFound($event)"
             ></apollo-player-inventory>
           </div>

@@ -67,7 +67,7 @@ export class MasterInventoryListMemoryState {
     }
 
     // If not found in memory, make request
-    const request$ = this.woodstockService.getMasterInventory();
+    const request$ = this.woodstockService.getMasterInventory$();
     return request$.pipe(
       tap(data => {
         ctx.patchState({ [GameTitleCodeName.FH5]: clone(data) });
@@ -77,7 +77,7 @@ export class MasterInventoryListMemoryState {
 
   /** Gets steelhead's master inventory list. */
   @Action(GetSteelheadMasterInventoryList, { cancelUncompleted: true })
-  public getSteelheadMasterInventoryList(
+  public getSteelheadMasterInventoryList$(
     ctx: StateContext<MasterInventoryListMemoryModel>,
   ): Observable<SteelheadMasterInventory> {
     const state = ctx.getState();
@@ -88,7 +88,7 @@ export class MasterInventoryListMemoryState {
     }
 
     // If not found in memory, make request
-    const request$ = this.steelheadService.getMasterInventory();
+    const request$ = this.steelheadService.getMasterInventory$();
     return request$.pipe(
       tap(data => {
         ctx.patchState({ [GameTitleCodeName.FM8]: clone(data) });
@@ -98,7 +98,7 @@ export class MasterInventoryListMemoryState {
 
   /** Gets gravity's master inventory list. */
   @Action(GetGravityMasterInventoryList, { cancelUncompleted: true })
-  public getGravityMasterInventoryList(
+  public getGravityMasterInventoryList$(
     ctx: StateContext<MasterInventoryListMemoryModel>,
     action: GetGravityMasterInventoryList,
   ): Observable<GravityMasterInventory> {
@@ -116,7 +116,7 @@ export class MasterInventoryListMemoryState {
     }
 
     // If not found in memory, make request
-    const request$ = this.gravityService.getMasterInventory(gameSettingsId);
+    const request$ = this.gravityService.getMasterInventory$(gameSettingsId);
     return request$.pipe(
       take(1),
       tap(data => {
@@ -132,7 +132,7 @@ export class MasterInventoryListMemoryState {
 
   /** Gets sunrise's master inventory list. */
   @Action(GetSunriseMasterInventoryList, { cancelUncompleted: true })
-  public getSunriseMasterInventoryList(
+  public getSunriseMasterInventoryList$(
     ctx: StateContext<MasterInventoryListMemoryModel>,
   ): Observable<SunriseMasterInventory> {
     const state = ctx.getState();
@@ -143,7 +143,7 @@ export class MasterInventoryListMemoryState {
     }
 
     // If not found in memory, make request
-    const request$ = this.sunriseService.getMasterInventory();
+    const request$ = this.sunriseService.getMasterInventory$();
     return request$.pipe(
       tap(data => {
         ctx.patchState({ [GameTitleCodeName.FH4]: clone(data) });
@@ -153,7 +153,7 @@ export class MasterInventoryListMemoryState {
 
   /** Gets apollo's master inventory list. */
   @Action(GetApolloMasterInventoryList, { cancelUncompleted: true })
-  public getApolloMasterInventoryList(
+  public getApolloMasterInventoryList$(
     ctx: StateContext<MasterInventoryListMemoryModel>,
   ): Observable<ApolloMasterInventory> {
     const state = ctx.getState();
@@ -164,7 +164,7 @@ export class MasterInventoryListMemoryState {
     }
 
     // If not found in memory, make request
-    const request$ = this.apolloService.getMasterInventory();
+    const request$ = this.apolloService.getMasterInventory$();
     return request$.pipe(
       tap(data => {
         ctx.patchState({ [GameTitleCodeName.FM7]: clone(data) });

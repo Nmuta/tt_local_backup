@@ -22,18 +22,18 @@ export class WoodstockPlayerInventoryComponent extends PlayerInventoryBaseCompon
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerInventoryByIdentity(
+  protected getPlayerInventoryByIdentity$(
     identity: IdentityResultAlpha,
   ): Observable<WoodstockMasterInventory> {
-    return this.woodstock.getPlayerInventoryByXuid(identity.xuid);
+    return this.woodstock.getPlayerInventoryByXuid$(identity.xuid);
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerInventoryByIdentityAndProfileId(
+  protected getPlayerInventoryByIdentityAndProfileId$(
     _identity: IdentityResultAlpha,
     profileId: BigNumber,
   ): Observable<WoodstockMasterInventory> {
-    return this.woodstock.getPlayerInventoryByProfileId(profileId);
+    return this.woodstock.getPlayerInventoryByProfileId$(profileId);
   }
 
   /** Implement to specify the expando tables to show. */

@@ -51,14 +51,14 @@ describe('SunriseConsolesComponent', () => {
         // console details prep
         consoleDetails$ = new Subject<SunriseConsoleDetailsEntry[]>();
         consoleDetailsValue = SunrisePlayerXuidConsolesFakeApi.makeMany() as SunriseConsoleDetailsEntry[];
-        mockSunriseService.getConsoleDetailsByXuid = jasmine
-          .createSpy('getConsoleDetailsByXuid')
+        mockSunriseService.getConsoleDetailsByXuid$ = jasmine
+          .createSpy('getConsoleDetailsByXuid$')
           .and.returnValue(consoleDetails$);
 
         // ban status prep
         banStatus$ = new Subject<void>();
-        mockSunriseService.putBanStatusByConsoleId = jasmine
-          .createSpy('putBanStatusByConsoleId')
+        mockSunriseService.putBanStatusByConsoleId$ = jasmine
+          .createSpy('putBanStatusByConsoleId$')
           .and.returnValue(banStatus$);
 
         // emulate initialization event

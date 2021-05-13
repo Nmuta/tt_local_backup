@@ -34,7 +34,7 @@ describe('ApolloService', () => {
   });
 
   it('handles getFlagsByXuid', done => {
-    service.getFlagsByXuid(fakeXuid()).subscribe(output => {
+    service.getFlagsByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -45,7 +45,7 @@ describe('ApolloService', () => {
 
   it('handles putFlagsByXuid', done => {
     const typedReturnValue = (nextReturnValue = ApolloPlayerXuidUserFlagsFakeApi.make());
-    service.putFlagsByXuid(fakeXuid(), typedReturnValue as ApolloUserFlags).subscribe(output => {
+    service.putFlagsByXuid$(fakeXuid(), typedReturnValue as ApolloUserFlags).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -56,7 +56,7 @@ describe('ApolloService', () => {
 
   it('handles getSharedConsoleUsersByXuid', done => {
     const typedReturnValue = (nextReturnValue = ApolloPlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
-    service.getSharedConsoleUsersByXuid(fakeXuid()).subscribe(output => {
+    service.getSharedConsoleUsersByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         typedReturnValue as unknown,
         'fields should not be modified',
@@ -67,7 +67,7 @@ describe('ApolloService', () => {
 
   it('handles getConsoleDetailsByXuid', done => {
     nextReturnValue = ApolloPlayerXuidConsolesFakeApi.makeMany();
-    service.getConsoleDetailsByXuid(new BigNumber(fakeXuid())).subscribe(output => {
+    service.getConsoleDetailsByXuid$(new BigNumber(fakeXuid())).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -78,15 +78,15 @@ describe('ApolloService', () => {
 
   describe('Method: getPlayerIdentity', () => {
     beforeEach(() => {
-      service.getPlayerIdentities = jasmine
+      service.getPlayerIdentities$ = jasmine
         .createSpy('getPlayerIdentities')
         .and.returnValue(of([]));
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
-    it('should call service.getPlayerIdentities', done => {
-      service.getPlayerIdentity({ gamertag: 'test' }).subscribe(() => {
-        expect(service.getPlayerIdentities).toHaveBeenCalled();
+    it('should call service.getPlayerIdentities$', done => {
+      service.getPlayerIdentity$({ gamertag: 'test' }).subscribe(() => {
+        expect(service.getPlayerIdentities$).toHaveBeenCalled();
         done();
       });
     });
@@ -96,12 +96,12 @@ describe('ApolloService', () => {
     const xuid = fakeXuid();
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call apiServiceMock.getRequest', done => {
-      service.getPlayerInventoryByXuid(xuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getPlayerInventoryByXuid$(xuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${xuid})/inventory`,
         );
         done();
@@ -111,12 +111,12 @@ describe('ApolloService', () => {
 
   describe('Method: getPlayerIdentities', () => {
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call apiServiceMock.postRequest', done => {
-      service.getPlayerIdentities([]).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.getPlayerIdentities$([]).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,
           jasmine.any(Object),
         );
@@ -134,8 +134,8 @@ describe('ApolloService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getPlayerDetailsByGamertag$(expectedGamertag).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/gamertag(${expectedGamertag})/details`,
         );
         done();
@@ -145,8 +145,8 @@ describe('ApolloService', () => {
 
   describe('Method: getLspGroups', () => {
     it('should call API service getRequest', done => {
-      service.getLspGroups().subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(`${service.basePath}/groups`);
+      service.getLspGroups$().subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/groups`);
         done();
       });
     });
@@ -156,12 +156,12 @@ describe('ApolloService', () => {
     const expectedXuid = new BigNumber(123456789);
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getGiftHistoryByXuid(expectedXuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getGiftHistoryByXuid$(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
         );
         done();
@@ -173,12 +173,12 @@ describe('ApolloService', () => {
     const expectedLspGroupId = new BigNumber(1234);
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getGiftHistoryByXuid(expectedLspGroupId).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getGiftHistoryByXuid$(expectedLspGroupId).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
         );
         done();
@@ -198,12 +198,12 @@ describe('ApolloService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.postGiftPlayers(gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.postGiftPlayers$(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/players`,
           gift,
         );
@@ -224,12 +224,12 @@ describe('ApolloService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.postGiftPlayersUsingBackgroundTask(gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.postGiftPlayersUsingBackgroundTask$(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/players/useBackgroundProcessing`,
           gift,
         );
@@ -250,12 +250,12 @@ describe('ApolloService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.postGiftLspGroup(lspGroup, gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.postGiftLspGroup$(lspGroup, gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/groupId(${lspGroup.id})`,
           gift,
         );

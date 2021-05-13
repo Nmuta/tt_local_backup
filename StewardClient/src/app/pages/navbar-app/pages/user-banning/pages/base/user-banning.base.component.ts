@@ -28,7 +28,7 @@ export class UserBanningBaseComponent extends BaseComponent {
   /** Waits for a background job to complete. */
   public waitForBackgroundJobToComplete(job: BackgroundJob<void>): void {
     this.backgroundJobService
-      .getBackgroundJob<BanResultsUnion[]>(job.jobId)
+      .getBackgroundJob$<BanResultsUnion[]>(job.jobId)
       .pipe(
         takeUntil(this.onDestroy$),
         catchError(_error => {
@@ -50,7 +50,7 @@ export class UserBanningBaseComponent extends BaseComponent {
           }
           this.isLoading = false;
         }),
-        retryWhen(errors => errors.pipe(delayWhen(() => timer(3_000)))),
+        retryWhen(errors$ => errors$.pipe(delayWhen(() => timer(3_000)))),
       )
       .subscribe();
   }

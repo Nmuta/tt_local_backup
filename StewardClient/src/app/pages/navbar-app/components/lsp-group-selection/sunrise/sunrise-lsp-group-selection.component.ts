@@ -34,7 +34,7 @@ export class SunriseLspGroupSelectionComponent extends LspGroupSelectionBaseComp
   }
 
   /** Lsp group state property selector */
-  public lspGroupSelector(): Observable<LspGroups> {
+  public lspGroupSelector$(): Observable<LspGroups> {
     return this.store.select(LspGroupMemoryState.sunriseLspGroups);
   }
 }

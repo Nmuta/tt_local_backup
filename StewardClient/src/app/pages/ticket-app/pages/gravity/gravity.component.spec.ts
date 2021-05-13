@@ -54,13 +54,13 @@ describe('GravityComponent - Ticket App', () => {
     });
   });
 
-  describe('Method: requestPlayerIdentity', () => {
+  describe('Method: requestPlayerIdentity$', () => {
     const gamertag = faker.name.firstName();
 
-    it('should send request to mockGravityService.getPlayerIdentity ', () => {
-      component.requestPlayerIdentity(gamertag);
+    it('should send request to mockGravityService.getPlayerIdentity$ ', () => {
+      component.requestPlayerIdentity$(gamertag);
 
-      expect(mockGravityService.getPlayerIdentity).toHaveBeenCalledWith({ gamertag: gamertag });
+      expect(mockGravityService.getPlayerIdentity$).toHaveBeenCalledWith({ gamertag: gamertag });
     });
   });
 });

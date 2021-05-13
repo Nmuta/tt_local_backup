@@ -37,7 +37,7 @@ describe('SteelheadUserFlagsComponent', () => {
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {
-      component.getFlagsByXuid = jasmine.createSpy('getFlagsByXuid').and.returnValue(of({}));
+      component.getFlagsByXuid$ = jasmine.createSpy('getFlagsByXuid$').and.returnValue(of({}));
     });
 
     describe('When identity is undefined', () => {
@@ -45,10 +45,10 @@ describe('SteelheadUserFlagsComponent', () => {
         component.identity = undefined;
       });
 
-      it('should not call getFlagsByXuid', () => {
+      it('should not call getFlagsByXuid$', () => {
         component.ngOnChanges();
 
-        expect(component.getFlagsByXuid).not.toHaveBeenCalledTimes(1);
+        expect(component.getFlagsByXuid$).not.toHaveBeenCalledTimes(1);
       });
     });
 
@@ -61,13 +61,13 @@ describe('SteelheadUserFlagsComponent', () => {
         };
       });
 
-      it('should call getFlagsByXuid', () => {
+      it('should call getFlagsByXuid$', () => {
         component.ngOnChanges();
 
-        expect(component.getFlagsByXuid).toHaveBeenCalledTimes(1);
+        expect(component.getFlagsByXuid$).toHaveBeenCalledTimes(1);
       });
 
-      describe('And getFlagsByXuid return valid response', () => {
+      describe('And getFlagsByXuid$ return valid response', () => {
         const flags = {
           isVip: faker.datatype.boolean(),
           isTurn10Employee: faker.datatype.boolean(),
@@ -77,7 +77,9 @@ describe('SteelheadUserFlagsComponent', () => {
         } as SteelheadUserFlags;
 
         beforeEach(() => {
-          component.getFlagsByXuid = jasmine.createSpy('getFlagsByXuid').and.returnValue(of(flags));
+          component.getFlagsByXuid$ = jasmine
+            .createSpy('getFlagsByXuid$')
+            .and.returnValue(of(flags));
         });
 
         it('should set currentFlags', () => {
@@ -88,12 +90,12 @@ describe('SteelheadUserFlagsComponent', () => {
         });
       });
 
-      describe('And getFlagsByXuid return error', () => {
+      describe('And getFlagsByXuid$ return error', () => {
         const error = { message: 'test error' };
 
         beforeEach(() => {
-          component.getFlagsByXuid = jasmine
-            .createSpy('getFlagsByXuid')
+          component.getFlagsByXuid$ = jasmine
+            .createSpy('getFlagsByXuid$')
             .and.returnValue(throwError(error));
         });
 
@@ -108,24 +110,24 @@ describe('SteelheadUserFlagsComponent', () => {
     });
   });
 
-  describe('Method: getFlagsByXuid', () => {
+  describe('Method: getFlagsByXuid$', () => {
     beforeEach(() => {
       component.identity = {
         query: undefined,
         gamertag: faker.name.firstName(),
         xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
       };
-      mockSteelheadService.getFlagsByXuid = jasmine
-        .createSpy('getFlagsByXuid')
+      mockSteelheadService.getFlagsByXuid$ = jasmine
+        .createSpy('getFlagsByXuid$')
         .and.returnValue(of({}));
     });
 
     it('should call sunriseService.getSharedConsoleUsersByXuid', () => {
       const expectedXuid = component.identity.xuid;
-      component.getFlagsByXuid(component.identity.xuid);
+      component.getFlagsByXuid$(component.identity.xuid);
 
-      expect(mockSteelheadService.getFlagsByXuid).toHaveBeenCalledTimes(1);
-      expect(mockSteelheadService.getFlagsByXuid).toHaveBeenCalledWith(expectedXuid);
+      expect(mockSteelheadService.getFlagsByXuid$).toHaveBeenCalledTimes(1);
+      expect(mockSteelheadService.getFlagsByXuid$).toHaveBeenCalledWith(expectedXuid);
     });
   });
 });

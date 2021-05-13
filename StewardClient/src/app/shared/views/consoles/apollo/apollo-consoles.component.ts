@@ -21,7 +21,7 @@ export class ApolloConsolesComponent extends ConsolesBaseComponent<ApolloConsole
   }
 
   /** Gets the console details list from XUID. */
-  public getConsoleDetailsByXuid(xuid: BigNumber): Observable<ApolloConsoleDetailsEntry[]> {
-    return this.apolloService.getConsoleDetailsByXuid(xuid);
+  public getConsoleDetailsByXuid$(xuid: BigNumber): Observable<ApolloConsoleDetailsEntry[]> {
+    return this.apolloService.getConsoleDetailsByXuid$(xuid);
   }
 }

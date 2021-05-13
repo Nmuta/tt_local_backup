@@ -14,13 +14,16 @@ import {
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 import { WoodstockMasterInventory, WoodstockPlayerInventoryProfile } from '@models/woodstock';
+import BigNumber from 'bignumber.js';
 
 /** The gift history page for the Navbar app. */
 @Component({
   templateUrl: './woodstock-gift-history.component.html',
   styleUrls: ['./woodstock-gift-history.component.scss'],
 })
-export class WoodstockGiftHistoryComponent extends GiftHistoryBaseComponent implements OnInit {
+export class WoodstockGiftHistoryComponent
+  extends GiftHistoryBaseComponent<BigNumber>
+  implements OnInit {
   @Select(WoodstockGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 

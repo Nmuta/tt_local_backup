@@ -33,12 +33,12 @@ describe('KustoService', () => {
 
   describe('Method: getKustoQueries', () => {
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call apiService.getRequest', done => {
-      service.getKustoQueries().subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(`${service.basePath}/queries`);
+      service.getKustoQueries$().subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/queries`);
         done();
       });
     });
@@ -48,12 +48,12 @@ describe('KustoService', () => {
     const queryString = 'test-query-string';
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of({}));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of({}));
     });
 
     it('should call apiService.postRequest', done => {
-      service.postRunKustoQuery(queryString).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.postRunKustoQuery$(queryString).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/query/run`,
           queryString,
         );
@@ -71,12 +71,12 @@ describe('KustoService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of({}));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of({}));
     });
 
     it('should call apiService.postRequest', done => {
-      service.postSaveNewKustoQuery(query).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(`${service.basePath}/queries`, [
+      service.postSaveNewKustoQuery$(query).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(`${service.basePath}/queries`, [
           query,
         ]);
         done();
@@ -94,12 +94,12 @@ describe('KustoService', () => {
     const queryEditId: GuidLikeString = faker.datatype.uuid();
 
     beforeEach(() => {
-      apiServiceMock.putRequest = jasmine.createSpy('putRequest').and.returnValue(of({}));
+      apiServiceMock.putRequest$ = jasmine.createSpy('putRequest').and.returnValue(of({}));
     });
 
     it('should call apiService.putRequest', done => {
-      service.putReplaceKustoQuery(queryEditId, query).subscribe(() => {
-        expect(apiServiceMock.putRequest).toHaveBeenCalledWith(
+      service.putReplaceKustoQuery$(queryEditId, query).subscribe(() => {
+        expect(apiServiceMock.putRequest$).toHaveBeenCalledWith(
           `${service.basePath}/queries/id(${queryEditId})`,
           query,
         );
@@ -117,12 +117,12 @@ describe('KustoService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.deleteRequest = jasmine.createSpy('deleteRequest').and.returnValue(of({}));
+      apiServiceMock.deleteRequest$ = jasmine.createSpy('deleteRequest').and.returnValue(of({}));
     });
 
     it('should call apiService.deleteRequest', done => {
-      service.deleteKustoQuery(query.id).subscribe(() => {
-        expect(apiServiceMock.deleteRequest).toHaveBeenCalledWith(
+      service.deleteKustoQuery$(query.id).subscribe(() => {
+        expect(apiServiceMock.deleteRequest$).toHaveBeenCalledWith(
           `${service.basePath}/queries/id(${query.id})`,
         );
         done();

@@ -60,8 +60,8 @@ export abstract class GiftHistoryResultsBaseComponent<
   private readonly getGiftHistory$ = new Subject<void>();
 
   public abstract gameTitle: GameTitleCodeName;
-  public abstract retrieveHistoryByPlayer(): Observable<U[]>;
-  public abstract retrieveHistoryByLspGroup(): Observable<U[]>;
+  public abstract retrieveHistoryByPlayer$(): Observable<U[]>;
+  public abstract retrieveHistoryByLspGroup$(): Observable<U[]>;
 
   /** Implement to specify the expando tables to show. */
   public abstract generateItemsList(giftHistory: U): MasterInventoryItemList[];
@@ -85,8 +85,8 @@ export abstract class GiftHistoryResultsBaseComponent<
           this.isLoading = true;
 
           return (this.usingPlayerIdentities
-            ? this.retrieveHistoryByPlayer()
-            : this.retrieveHistoryByLspGroup()
+            ? this.retrieveHistoryByPlayer$()
+            : this.retrieveHistoryByLspGroup$()
           ).pipe(
             catchError(error => {
               this.isLoading = false;

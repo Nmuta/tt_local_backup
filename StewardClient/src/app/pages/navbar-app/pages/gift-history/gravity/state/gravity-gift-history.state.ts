@@ -23,7 +23,7 @@ export class GravityGiftHistoryStateModel {
 export class GravityGiftHistoryState {
   /** Sets the gift history page's selected player identities. */
   @Action(SetGravitySelectedPlayerIdentities, { cancelUncompleted: true })
-  public setFakeApi(
+  public setFakeApi$(
     ctx: StateContext<GravityGiftHistoryStateModel>,
     action: SetGravitySelectedPlayerIdentities,
   ): Observable<GravityGiftHistoryStateModel> {

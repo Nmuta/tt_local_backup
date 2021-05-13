@@ -19,7 +19,7 @@ export class MockGravityService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
-  public getIdentity = jasmine
+  public getIdentity$ = jasmine
     .createSpy('getIdentity')
     .and.callFake(() =>
       this.waitUntil$.pipe(
@@ -29,42 +29,42 @@ export class MockGravityService {
       ),
     );
 
-  public getPlayerDetailsByGamertag = jasmine
+  public getPlayerDetailsByGamertag$ = jasmine
     .createSpy('getPlayerDetailsByGamertag')
     .and.callFake(_gamertag =>
       this.waitUntil$.pipe(switchMap(() => of(GravityPlayerGamertagDetailsFakeApi.make()))),
     );
 
-  public getPlayerDetailsByT10Id = jasmine
+  public getPlayerDetailsByT10Id$ = jasmine
     .createSpy('getPlayerDetailsByT10Id')
     .and.callFake(t10Id =>
       this.waitUntil$.pipe(switchMap(() => of(GravityPlayerT10IdDetailsFakeApi.make(t10Id)))),
     );
 
-  public getPlayerIdentity = jasmine
+  public getPlayerIdentity$ = jasmine
     .createSpy('getPlayerIdentity')
     .and.callFake((query: IdentityQueryBeta) =>
       this.waitUntil$.pipe(switchMap(() => of(GravityPlayersIdentitiesFakeApi.make([query])))),
     );
-  public getPlayerIdentities = jasmine
+  public getPlayerIdentities$ = jasmine
     .createSpy('getPlayerIdentities')
     .and.callFake((query: IdentityQueryBetaBatch) =>
       this.waitUntil$.pipe(switchMap(() => of(GravityPlayersIdentitiesFakeApi.make(query)))),
     );
 
-  public getMasterInventory = jasmine
+  public getMasterInventory$ = jasmine
     .createSpy('getMasterInventory')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(GravityMasterInventoryFakeApi.make()))),
     );
 
-  public postGiftPlayersUsingBackgroundTask = jasmine
+  public postGiftPlayersUsingBackgroundTask$ = jasmine
     .createSpy('postGiftPlayersUsingBackgroundTask')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(GravityGiftingPlayerFakeApi.make()))),
     );
 
-  public getPlayerInventoryProfilesByT10Id = jasmine
+  public getPlayerInventoryProfilesByT10Id$ = jasmine
     .createSpy('getPlayerInventoryProfilesByT10Id')
     .and.callFake(t10Id =>
       this.waitUntil$.pipe(
@@ -76,7 +76,7 @@ export class MockGravityService {
       ),
     );
 
-  public getPlayerInventoryByT10Id = jasmine
+  public getPlayerInventoryByT10Id$ = jasmine
     .createSpy('getPlayerInventoryByT10Id')
     .and.callFake(t10Id =>
       this.waitUntil$.pipe(switchMap(() => of(GravityPlayerT10IdInventoryFakeApi.make(t10Id)))),

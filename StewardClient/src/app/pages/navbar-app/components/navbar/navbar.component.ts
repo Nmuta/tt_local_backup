@@ -16,6 +16,7 @@ import { BackgroundJobStatus } from '@models/background-job';
 import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
 import { UserRole } from '@models/enums';
+import { ThemePalette } from '@angular/material/core';
 
 /** The shared top-level navbar. */
 @Component({
@@ -29,7 +30,7 @@ export class NavbarComponent implements OnInit {
   public homeRouterLink = createNavbarPath(NavbarTools.HomePage).routerLink;
 
   public notificationCount = null;
-  public notificationColor: 'default' | 'warn' = 'default';
+  public notificationColor: ThemePalette = undefined;
 
   public showAdminPages: boolean = false;
 
@@ -56,7 +57,7 @@ export class NavbarComponent implements OnInit {
         n => n.status === BackgroundJobStatus.Failed,
       )
         ? 'warn'
-        : 'default';
+        : undefined;
     });
   }
 

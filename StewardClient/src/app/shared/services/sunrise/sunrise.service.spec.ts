@@ -37,29 +37,29 @@ describe('SunriseService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('Method: getPlayerIdentity', () => {
+  describe('Method: getPlayerIdentity$', () => {
     beforeEach(() => {
-      service.getPlayerIdentities = jasmine
-        .createSpy('getPlayerIdentities')
+      service.getPlayerIdentities$ = jasmine
+        .createSpy('getPlayerIdentities$')
         .and.returnValue(of([]));
     });
 
-    it('should call service.getPlayerIdentities', done => {
-      service.getPlayerIdentity({ gamertag: 'test' }).subscribe(() => {
-        expect(service.getPlayerIdentities).toHaveBeenCalled();
+    it('should call service.getPlayerIdentities$', done => {
+      service.getPlayerIdentity$({ gamertag: 'test' }).subscribe(() => {
+        expect(service.getPlayerIdentities$).toHaveBeenCalled();
         done();
       });
     });
   });
 
-  describe('Method: getPlayerIdentities', () => {
+  describe('Method: getPlayerIdentities$', () => {
     beforeEach(() => {
       nextReturnValue = [];
     });
 
     it('should call apiServiceMock.postRequest', done => {
-      service.getPlayerIdentities([]).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.getPlayerIdentities$([]).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,
           jasmine.any(Object),
         );
@@ -68,16 +68,16 @@ describe('SunriseService', () => {
     });
   });
 
-  describe('Method: getLspGroups', () => {
+  describe('Method: getLspGroups$', () => {
     it('should call API service getRequest', done => {
-      service.getLspGroups().subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(`${service.basePath}/groups`);
+      service.getLspGroups$().subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/groups`);
         done();
       });
     });
   });
 
-  describe('Method: getPlayerNotificationsByXuid', () => {
+  describe('Method: getPlayerNotificationsByXuid$', () => {
     let expectedXuid;
 
     beforeEach(() => {
@@ -85,8 +85,8 @@ describe('SunriseService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerNotificationsByXuid(expectedXuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getPlayerNotificationsByXuid$(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/notifications`,
         );
         done();
@@ -94,16 +94,16 @@ describe('SunriseService', () => {
     });
   });
 
-  describe('Method: getPlayerInventoryByXuid', () => {
+  describe('Method: getPlayerInventoryByXuid$', () => {
     const xuid = fakeXuid();
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call apiServiceMock.getRequest', done => {
-      service.getPlayerInventoryByXuid(xuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getPlayerInventoryByXuid$(xuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${xuid})/inventory`,
         );
         done();
@@ -111,7 +111,7 @@ describe('SunriseService', () => {
     });
   });
 
-  describe('Method: getPlayerDetailsByGamertag', () => {
+  describe('Method: getPlayerDetailsByGamertag$', () => {
     let expectedGamertag;
 
     beforeEach(() => {
@@ -119,8 +119,8 @@ describe('SunriseService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getPlayerDetailsByGamertag$(expectedGamertag).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/gamertag(${expectedGamertag})/details`,
         );
         done();
@@ -128,16 +128,16 @@ describe('SunriseService', () => {
     });
   });
 
-  describe('Method: getGiftHistoryByXuid', () => {
+  describe('Method: getGiftHistoryByXuid$', () => {
     const expectedXuid = new BigNumber(123456789);
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getGiftHistoryByXuid(expectedXuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getGiftHistoryByXuid$(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
         );
         done();
@@ -145,16 +145,16 @@ describe('SunriseService', () => {
     });
   });
 
-  describe('Method: getProfileRollbacksXuid', () => {
+  describe('Method: getProfileRollbacksXuid$', () => {
     const expectedXuid = new BigNumber(123456789);
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getProfileRollbacksXuid(expectedXuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getProfileRollbacksXuid$(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/profileRollbacks`,
         );
         done();
@@ -166,12 +166,12 @@ describe('SunriseService', () => {
     const expectedLspGroupId = new BigNumber(1234);
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getGiftHistoryByXuid(expectedLspGroupId).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getGiftHistoryByXuid$(expectedLspGroupId).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
         );
         done();
@@ -179,8 +179,8 @@ describe('SunriseService', () => {
     });
   });
 
-  it('handles getFlagsByXuid', done => {
-    service.getFlagsByXuid(fakeXuid()).subscribe(output => {
+  it('handles getFlagsByXuid$', done => {
+    service.getFlagsByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -189,9 +189,9 @@ describe('SunriseService', () => {
     });
   });
 
-  it('handles putFlagsByXuid', done => {
+  it('handles putFlagsByXuid$', done => {
     const typedReturnValue = (nextReturnValue = SunrisePlayerXuidUserFlagsFakeApi.make());
-    service.putFlagsByXuid(fakeXuid(), typedReturnValue as SunriseUserFlags).subscribe(output => {
+    service.putFlagsByXuid$(fakeXuid(), typedReturnValue as SunriseUserFlags).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -200,12 +200,12 @@ describe('SunriseService', () => {
     });
   });
 
-  it('handles getBanHistoryByXuid', done => {
+  it('handles getBanHistoryByXuid$', done => {
     const typedReturnValue = (nextReturnValue = SunrisePlayerXuidBanHistoryFakeApi.make(
       new BigNumber(12345),
       1,
     ));
-    service.getBanHistoryByXuid(fakeXuid()).subscribe(output => {
+    service.getBanHistoryByXuid$(fakeXuid()).subscribe(output => {
       expect(output[0].startTimeUtc instanceof Date).toBe(true, 'liveOps.startTimeUtc is Date');
       expect(output[0].expireTimeUtc instanceof Date).toBe(true, 'liveOps.expireTimeUtc is Date');
       expect(output[0].startTimeUtc instanceof Date).toBe(true, 'services.startTimeUtc is Date');
@@ -226,9 +226,9 @@ describe('SunriseService', () => {
     });
   });
 
-  it('handles getSharedConsoleUsersByXuid', done => {
+  it('handles getSharedConsoleUsersByXuid$', done => {
     const typedReturnValue = (nextReturnValue = SunrisePlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
-    service.getSharedConsoleUsersByXuid(fakeXuid()).subscribe(output => {
+    service.getSharedConsoleUsersByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         typedReturnValue as unknown,
         'fields should not be modified',
@@ -237,9 +237,9 @@ describe('SunriseService', () => {
     });
   });
 
-  it('handles getConsoleDetailsByXuid', done => {
+  it('handles getConsoleDetailsByXuid$', done => {
     nextReturnValue = SunrisePlayerXuidConsolesFakeApi.makeMany();
-    service.getConsoleDetailsByXuid(new BigNumber(fakeXuid())).subscribe(output => {
+    service.getConsoleDetailsByXuid$(new BigNumber(fakeXuid())).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -248,11 +248,11 @@ describe('SunriseService', () => {
     });
   });
 
-  it('handles putBanStatusByConsoleId', done => {
+  it('handles putBanStatusByConsoleId$', done => {
     const sampleGet = SunrisePlayerXuidConsolesFakeApi.makeMany();
     nextReturnValue = SunriseConsoleIsBannedFakeApi.make();
     service
-      .putBanStatusByConsoleId(sampleGet[0].consoleId, !sampleGet[0].isBanned)
+      .putBanStatusByConsoleId$(sampleGet[0].consoleId, !sampleGet[0].isBanned)
       .subscribe(output => {
         expect(output as unknown).toEqual(
           nextReturnValue as unknown,
@@ -262,10 +262,10 @@ describe('SunriseService', () => {
       });
   });
 
-  it('handles getProfileSummaryByXuid', done => {
+  it('handles getProfileSummaryByXuid$', done => {
     const typedReturnValue = SunrisePlayerXuidProfileSummaryFakeApi.make();
     nextReturnValue = typedReturnValue;
-    service.getProfileSummaryByXuid(fakeXuid()).subscribe(output => {
+    service.getProfileSummaryByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -274,7 +274,7 @@ describe('SunriseService', () => {
     });
   });
 
-  describe('Method: postGiftPlayers', () => {
+  describe('Method: postGiftPlayers$', () => {
     const gift: SunriseGroupGift = {
       xuids: [new BigNumber(123456789)],
       giftReason: 'unit testing gift',
@@ -289,12 +289,12 @@ describe('SunriseService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.postGiftPlayers(gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.postGiftPlayers$(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/players`,
           gift,
         );
@@ -303,7 +303,7 @@ describe('SunriseService', () => {
     });
   });
 
-  describe('Method: postGiftPlayersUsingBackgroundTask', () => {
+  describe('Method: postGiftPlayers$UsingBackgroundTask$', () => {
     const gift: SunriseGroupGift = {
       xuids: [new BigNumber(123456789)],
       giftReason: 'unit testing gift',
@@ -318,12 +318,12 @@ describe('SunriseService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.postGiftPlayersUsingBackgroundTask(gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.postGiftPlayersUsingBackgroundTask$(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/players/useBackgroundProcessing`,
           gift,
         );
@@ -332,7 +332,7 @@ describe('SunriseService', () => {
     });
   });
 
-  describe('Method: postGiftLspGroup', () => {
+  describe('Method: postGiftLspGroup$', () => {
     const lspGroup: LspGroup = { id: new BigNumber(123), name: 'test-lsp-group' };
     const gift: SunriseGift = {
       giftReason: 'unit testing gift',
@@ -347,12 +347,12 @@ describe('SunriseService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.postGiftLspGroup(lspGroup, gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.postGiftLspGroup$(lspGroup, gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/groupId(${lspGroup.id})`,
           gift,
         );

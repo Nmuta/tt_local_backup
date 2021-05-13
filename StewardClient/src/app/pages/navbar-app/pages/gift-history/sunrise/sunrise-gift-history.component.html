@@ -28,13 +28,13 @@
         <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
           <sunrise-player-inventory-profile-picker
             [identity]="selectedPlayerIdentity"
-            [(profileId)]="selectedPlayerInventoryProfile"
+            [(profileId)]="selectedPlayerInventoryProfileId"
           ></sunrise-player-inventory-profile-picker>
 
           <div class="inventory-div">
             <sunrise-player-inventory
               [identity]="selectedPlayerIdentity"
-              [profileId]="selectedPlayerInventoryProfile"
+              [profileId]="selectedPlayerInventoryProfileId"
               (inventoryFound)="onInventoryFound($event)"
             ></sunrise-player-inventory>
           </div>

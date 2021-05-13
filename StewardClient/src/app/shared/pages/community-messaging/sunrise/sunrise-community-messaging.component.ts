@@ -51,12 +51,12 @@ export class SunriseCommunityMessagingComponent extends BaseComponent {
 
     const submitCommunityMessage$: Observable<CommunityMessageResult<BigNumber>[]> = this
       .isUsingPlayerIdentities
-      ? this.sunriseService.postSendCommunityMessageToXuids(
+      ? this.sunriseService.postSendCommunityMessageToXuids$(
           this.playerIdentities.map(identity => identity.xuid),
           this.newCommunityMessage,
         )
       : this.sunriseService
-          .postSendCommunityMessageToLspGroup(this.selectedLspGroup.id, this.newCommunityMessage)
+          .postSendCommunityMessageToLspGroup$(this.selectedLspGroup.id, this.newCommunityMessage)
           .pipe(switchMap(data => of([data])));
 
     submitCommunityMessage$

@@ -43,7 +43,7 @@ describe('service: ApiService', () => {
     });
     describe('When the http request succeeds', () => {
       it('should make a get request to the expected url & set headers & params', done => {
-        apiService.getRequest(url, params, headers).subscribe(response => {
+        apiService.getRequest$(url, params, headers).subscribe(response => {
           expect(response).toBeTruthy();
           done();
         });
@@ -55,7 +55,7 @@ describe('service: ApiService', () => {
     });
     describe('When the http request errors out', () => {
       it('should throw error', () => {
-        apiService.getRequest(url, params, headers).subscribe(
+        apiService.getRequest$(url, params, headers).subscribe(
           () => {
             expect(false).toBeTruthy();
           },
@@ -79,7 +79,7 @@ describe('service: ApiService', () => {
     });
     describe('When the http request succeeds', () => {
       it('should make a get request to the expected url & set headers & params', done => {
-        apiService.postRequest(url, object).subscribe(response => {
+        apiService.postRequest$(url, object).subscribe(response => {
           expect(response).toBeTruthy();
           done();
         });
@@ -90,7 +90,7 @@ describe('service: ApiService', () => {
     });
     describe('When the http request errors out', () => {
       it('should throw error', () => {
-        apiService.postRequest(url, object).subscribe(
+        apiService.postRequest$(url, object).subscribe(
           () => {
             expect(false).toBeTruthy();
           },
@@ -118,7 +118,7 @@ describe('service: ApiService', () => {
     });
     describe('When the http request succeeds', () => {
       it('should make a get request to the expected url & set headers & params', done => {
-        apiService.putRequest(url, object, params).subscribe(response => {
+        apiService.putRequest$(url, object, params).subscribe(response => {
           expect(response).toBeTruthy();
           done();
         });
@@ -131,7 +131,7 @@ describe('service: ApiService', () => {
     });
     describe('When the http request errors out', () => {
       it('should throw error', () => {
-        apiService.putRequest(url, object, params).subscribe(
+        apiService.putRequest$(url, object, params).subscribe(
           () => {
             expect(false).toBeTruthy();
           },
@@ -156,7 +156,7 @@ describe('service: ApiService', () => {
     });
     describe('When the http request succeeds', () => {
       it('should make a get request to the expected url & set headers & params', done => {
-        apiService.deleteRequest(url, params).subscribe(response => {
+        apiService.deleteRequest$(url, params).subscribe(response => {
           expect(response).toBeTruthy();
           done();
         });
@@ -168,7 +168,7 @@ describe('service: ApiService', () => {
     });
     describe('When the http request errors out', () => {
       it('should throw error', () => {
-        apiService.deleteRequest(url, params).subscribe(
+        apiService.deleteRequest$(url, params).subscribe(
           () => {
             expect(false).toBeTruthy();
           },

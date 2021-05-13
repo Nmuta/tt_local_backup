@@ -59,7 +59,7 @@ export class ObligationPrincipalsComponent
   public data: ObligationPrincipalOptions[] = [
     cloneDeep(ObligationPrincipalsComponent.defaultsSingle),
   ];
-  public dataSource = new BehaviorSubject<AbstractControl[]>([]);
+  public dataSource$ = new BehaviorSubject<AbstractControl[]>([]);
   public displayColumns = ['type', 'role', 'value', 'actions'];
 
   public rows = new FormArray([]);
@@ -92,7 +92,7 @@ export class ObligationPrincipalsComponent
 
   constructor() {
     super();
-    this.onDestroy$.subscribe(() => this.dataSource.complete());
+    this.onDestroy$.subscribe(() => this.dataSource$.complete());
   }
 
   /** Angular lifecycle hook. */
@@ -110,8 +110,8 @@ export class ObligationPrincipalsComponent
   public getFormControl(
     arrayIndex: number,
     controlName: keyof ObligationPrincipalOptions,
-  ): AbstractControl {
-    return this.getFormGroup(arrayIndex)?.get(controlName);
+  ): FormControl {
+    return this.getFormGroup(arrayIndex)?.get(controlName) as FormControl;
   }
 
   /** Clears the table. */
@@ -202,7 +202,7 @@ export class ObligationPrincipalsComponent
 
   /** Called when the controls have changed. */
   private updateView(): void {
-    this.dataSource.next(this.rows.controls);
+    this.dataSource$.next(this.rows.controls);
   }
 
   /** The registered callback function. Form control hook. */

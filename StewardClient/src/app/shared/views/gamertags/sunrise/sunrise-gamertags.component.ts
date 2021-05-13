@@ -25,7 +25,7 @@ export class SunriseGamertagsComponent extends GamertagsBaseComponent<SunriseSha
   }
 
   /** Gets the shared console gamertag list. */
-  public getSharedConsoleUsersByXuid(xuid: BigNumber): Observable<SunriseSharedConsoleUser[]> {
-    return this.sunriseService.getSharedConsoleUsersByXuid(xuid);
+  public getSharedConsoleUsersByXuid$(xuid: BigNumber): Observable<SunriseSharedConsoleUser[]> {
+    return this.sunriseService.getSharedConsoleUsersByXuid$(xuid);
   }
 }

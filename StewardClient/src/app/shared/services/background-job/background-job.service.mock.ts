@@ -9,7 +9,7 @@ import { BackgroundJobService } from './background-job.service';
 export class MockBackgroundJobService {
   public waitUntil$ = of();
 
-  public getBackgroundJob = jasmine
+  public getBackgroundJob$ = jasmine
     .createSpy('getBackgroundJob')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(JobsGetJobFakeApi.make()))));
 }

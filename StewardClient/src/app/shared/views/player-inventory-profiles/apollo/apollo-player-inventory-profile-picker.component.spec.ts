@@ -32,7 +32,7 @@ describe('ApolloPlayerInventoryProfilePickerComponent', () => {
   baseTests(
     () => fixture,
     () => first(ApolloPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
-    () => new MockApolloService().getPlayerInventoryProfilesByXuid,
-    fn => (service.getPlayerInventoryProfilesByXuid = fn),
+    () => new MockApolloService().getPlayerInventoryProfilesByXuid$,
+    fn => (service.getPlayerInventoryProfilesByXuid$ = fn),
   );
 });

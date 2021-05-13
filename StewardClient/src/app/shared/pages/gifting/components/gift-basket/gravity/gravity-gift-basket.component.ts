@@ -64,7 +64,7 @@ export class GravityGiftBasketComponent
         filter(t10Id => !!t10Id),
         switchMap(t10Id => {
           this.isLoading = true;
-          return this.gravityService.getPlayerDetailsByT10Id(t10Id).pipe(
+          return this.gravityService.getPlayerDetailsByT10Id$(t10Id).pipe(
             catchError(error => {
               this.isLoading = false;
               this.loadError = error;
@@ -179,13 +179,13 @@ export class GravityGiftBasketComponent
   }
 
   /** Sends a gravity gift to players. */
-  public sendGiftToPlayers(gift: GravityGift): Observable<BackgroundJob<void>> {
+  public sendGiftToPlayers$(gift: GravityGift): Observable<BackgroundJob<void>> {
     const t10Id = this.playerIdentities[0].t10Id;
-    return this.gravityService.postGiftPlayerUsingBackgroundTask(t10Id, gift);
+    return this.gravityService.postGiftPlayerUsingBackgroundTask$(t10Id, gift);
   }
 
   /** Sends a gravity gift to an LSP group. */
-  public sendGiftToLspGroup(_gift: GravityGift): Observable<GiftResponse<BigNumber>> {
+  public sendGiftToLspGroup$(_gift: GravityGift): Observable<GiftResponse<BigNumber>> {
     return throwError('Gravity does not support LSP gifting.');
   }
 

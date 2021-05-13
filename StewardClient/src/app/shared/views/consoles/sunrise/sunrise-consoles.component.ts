@@ -25,14 +25,14 @@ export class SunriseConsolesComponent
   }
 
   /** Gets the console details list from XUID. */
-  public getConsoleDetailsByXuid(xuid: BigNumber): Observable<SunriseConsoleDetailsEntry[]> {
-    return this.sunriseSerice.getConsoleDetailsByXuid(xuid);
+  public getConsoleDetailsByXuid$(xuid: BigNumber): Observable<SunriseConsoleDetailsEntry[]> {
+    return this.sunriseSerice.getConsoleDetailsByXuid$(xuid);
   }
 
   /** Generates a function that will *ban* the user and update the data when complete. */
   public makeBanAction(consoleId: string): () => Observable<void> {
     return () =>
-      this.sunriseSerice.putBanStatusByConsoleId(consoleId, true).pipe(
+      this.sunriseSerice.putBanStatusByConsoleId$(consoleId, true).pipe(
         tap(() => {
           _(this.consoleDetails)
             .filter(d => d.consoleId === consoleId)
@@ -44,7 +44,7 @@ export class SunriseConsolesComponent
   /** Generates a function that will *unban* the user and update data when complete. */
   public makeUnbanAction(consoleId: string): () => Observable<void> {
     return () =>
-      this.sunriseSerice.putBanStatusByConsoleId(consoleId, false).pipe(
+      this.sunriseSerice.putBanStatusByConsoleId$(consoleId, false).pipe(
         tap(() => {
           _(this.consoleDetails)
             .filter(d => d.consoleId === consoleId)

@@ -12,7 +12,7 @@ export class HoverToCopyDirective {
   @HostBinding('style.display') display = 'inline-block';
   @HostBinding('style.user-select') userSelect = 'none';
 
-  @Input() hoverToCopy: string;
+  @Input() hoverToCopy: string | { toString(): string };
 
   private tooltip: HTMLElement;
   private tooltipTitle: string = 'Click to Copy';
@@ -27,7 +27,7 @@ export class HoverToCopyDirective {
   /** Click event. */
   @HostListener('click', ['$event'])
   public onClick(_event: Event): void {
-    this.clipboard.copyMessage(this.hoverToCopy);
+    this.clipboard.copyMessage(this.hoverToCopy.toString());
     this.tooltip.textContent = this.tooltipClicked;
   }
 

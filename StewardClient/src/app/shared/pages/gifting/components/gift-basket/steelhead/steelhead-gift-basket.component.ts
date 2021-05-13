@@ -115,18 +115,18 @@ export class SteelheadGiftBasketComponent
   }
 
   /** Sends an steelhead gift to players. */
-  public sendGiftToPlayers(gift: SteelheadGift): Observable<BackgroundJob<void>> {
+  public sendGiftToPlayers$(gift: SteelheadGift): Observable<BackgroundJob<void>> {
     const groupGift: SteelheadGroupGift = gift as SteelheadGroupGift;
     groupGift.xuids = this.playerIdentities
       .filter(player => !player.error)
       .map(player => player.xuid);
 
-    return this.steelheadService.postGiftPlayersUsingBackgroundTask(groupGift);
+    return this.steelheadService.postGiftPlayersUsingBackgroundTask$(groupGift);
   }
 
   /** Sends an steelhead gift to an LSP group. */
-  public sendGiftToLspGroup(gift: SteelheadGift): Observable<GiftResponse<BigNumber>> {
-    return this.steelheadService.postGiftLspGroup(this.lspGroup, gift);
+  public sendGiftToLspGroup$(gift: SteelheadGift): Observable<GiftResponse<BigNumber>> {
+    return this.steelheadService.postGiftLspGroup$(this.lspGroup, gift);
   }
 
   /** Sets the state gift basket. */

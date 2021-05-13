@@ -50,13 +50,13 @@ describe('WoodstockLspGroupSelectionComponent', () => {
     });
   });
 
-  describe('Method: lspGroupSelector', () => {
+  describe('Method: lspGroupSelector$', () => {
     beforeEach(() => {
       mockStore.select = jasmine.createSpy('select');
     });
 
     it('should select woodstock lsp groups from memory', () => {
-      component.lspGroupSelector();
+      component.lspGroupSelector$();
       expect(mockStore.select).toHaveBeenCalledWith(LspGroupMemoryState.WoodstockLspGroups);
     });
   });

@@ -32,7 +32,7 @@ export class StewardUserComponent extends BaseComponent implements OnInit, OnCha
         takeUntil(this.onDestroy$),
         switchMap(() => {
           this.user = undefined;
-          return this.userService.getStewardUsers({ userObjectIds: [this.objectId] });
+          return this.userService.getStewardUsers$({ userObjectIds: [this.objectId] });
         }),
         catchError(() => {
           this.user = undefined;

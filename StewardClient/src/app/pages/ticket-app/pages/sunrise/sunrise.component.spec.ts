@@ -54,13 +54,13 @@ describe('SunriseComponent - Ticket App', () => {
     });
   });
 
-  describe('Method: requestPlayerIdentity', () => {
+  describe('Method: requestPlayerIdentity$', () => {
     const gamertag = faker.name.firstName();
 
     it('should send request to mockGravityService.getPlayerIdentity ', () => {
-      component.requestPlayerIdentity(gamertag);
+      component.requestPlayerIdentity$(gamertag);
 
-      expect(mockSunriseService.getPlayerIdentity).toHaveBeenCalledWith({ gamertag: gamertag });
+      expect(mockSunriseService.getPlayerIdentity$).toHaveBeenCalledWith({ gamertag: gamertag });
     });
   });
 });

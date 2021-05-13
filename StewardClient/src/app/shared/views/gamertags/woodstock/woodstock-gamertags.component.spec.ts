@@ -39,8 +39,8 @@ describe('WoodstockGamertagsComponent', () => {
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {
-      component.getSharedConsoleUsersByXuid = jasmine
-        .createSpy('getSharedConsoleUsersByXuid')
+      component.getSharedConsoleUsersByXuid$ = jasmine
+        .createSpy('getSharedConsoleUsersByXuid$')
         .and.returnValue(of({}));
     });
 
@@ -49,10 +49,10 @@ describe('WoodstockGamertagsComponent', () => {
         component.identity = undefined;
       });
 
-      it('should not call getSharedConsoleUsersByXuid', () => {
+      it('should not call getSharedConsoleUsersByXuid$', () => {
         component.ngOnChanges();
 
-        expect(component.getSharedConsoleUsersByXuid).not.toHaveBeenCalledTimes(1);
+        expect(component.getSharedConsoleUsersByXuid$).not.toHaveBeenCalledTimes(1);
       });
     });
 
@@ -65,13 +65,13 @@ describe('WoodstockGamertagsComponent', () => {
         };
       });
 
-      it('should call getSharedConsoleUsersByXuid', () => {
+      it('should call getSharedConsoleUsersByXuid$', () => {
         component.ngOnChanges();
 
-        expect(component.getSharedConsoleUsersByXuid).toHaveBeenCalledTimes(1);
+        expect(component.getSharedConsoleUsersByXuid$).toHaveBeenCalledTimes(1);
       });
 
-      describe('And getSharedConsoleUsersByXuid return valid response', () => {
+      describe('And getSharedConsoleUsersByXuid$ return valid response', () => {
         const relatedGamertags = [
           {
             sharedConsoleId: new BigNumber(faker.datatype.number()),
@@ -82,8 +82,8 @@ describe('WoodstockGamertagsComponent', () => {
         ] as WoodstockSharedConsoleUser[];
 
         beforeEach(() => {
-          component.getSharedConsoleUsersByXuid = jasmine
-            .createSpy('getSharedConsoleUsersByXuid')
+          component.getSharedConsoleUsersByXuid$ = jasmine
+            .createSpy('getSharedConsoleUsersByXuid$')
             .and.returnValue(of(relatedGamertags));
         });
 
@@ -94,12 +94,12 @@ describe('WoodstockGamertagsComponent', () => {
         });
       });
 
-      describe('And getSharedConsoleUsersByXuid return error', () => {
+      describe('And getSharedConsoleUsersByXuid$ return error', () => {
         const error = { message: 'test error' };
 
         beforeEach(() => {
-          component.getSharedConsoleUsersByXuid = jasmine
-            .createSpy('getSharedConsoleUsersByXuid')
+          component.getSharedConsoleUsersByXuid$ = jasmine
+            .createSpy('getSharedConsoleUsersByXuid$')
             .and.returnValue(throwError(error));
         });
 
@@ -120,17 +120,17 @@ describe('WoodstockGamertagsComponent', () => {
         gamertag: faker.name.firstName(),
         xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
       };
-      mockWoodstockService.getSharedConsoleUsersByXuid = jasmine
-        .createSpy('getSharedConsoleUsersByXuid')
+      mockWoodstockService.getSharedConsoleUsersByXuid$ = jasmine
+        .createSpy('getSharedConsoleUsersByXuid$')
         .and.returnValue(of({}));
     });
 
-    it('should call woodstockService.getSharedConsoleUsersByXuid', () => {
+    it('should call woodstockService.getSharedConsoleUsersByXuid$', () => {
       const expectedXuid = component.identity.xuid;
-      component.getSharedConsoleUsersByXuid(component.identity.xuid);
+      component.getSharedConsoleUsersByXuid$(component.identity.xuid);
 
-      expect(mockWoodstockService.getSharedConsoleUsersByXuid).toHaveBeenCalledTimes(1);
-      expect(mockWoodstockService.getSharedConsoleUsersByXuid).toHaveBeenCalledWith(expectedXuid);
+      expect(mockWoodstockService.getSharedConsoleUsersByXuid$).toHaveBeenCalledTimes(1);
+      expect(mockWoodstockService.getSharedConsoleUsersByXuid$).toHaveBeenCalledWith(expectedXuid);
     });
   });
 });

@@ -22,9 +22,9 @@ export class OpusService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets a single identity within this service. */
-  public getPlayerIdentity(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
+  public getPlayerIdentity$(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
     const queryBatch: IdentityQueryAlphaBatch = [identityQuery];
-    return this.getPlayerIdentities(queryBatch).pipe(
+    return this.getPlayerIdentities$(queryBatch).pipe(
       switchMap((data: IdentityResultAlphaBatch) => {
         const result = data[0];
         return of(result);
@@ -33,42 +33,42 @@ export class OpusService {
   }
 
   /** Gets identities within this service. */
-  public getPlayerIdentities(
+  public getPlayerIdentities$(
     identityQueries: IdentityQueryAlphaBatch,
   ): Observable<IdentityResultAlphaBatch> {
-    return this.apiService.postRequest<IdentityResultAlphaBatch>(
+    return this.apiService.postRequest$<IdentityResultAlphaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
     );
   }
 
   /** Gets opus player details with a gamertag. This can be used to retrieve a XUID. */
-  public getPlayerDetailsByGamertag(gamertag: string): Observable<OpusPlayerDetails> {
-    return this.apiService.getRequest<OpusPlayerDetails>(
+  public getPlayerDetailsByGamertag$(gamertag: string): Observable<OpusPlayerDetails> {
+    return this.apiService.getRequest$<OpusPlayerDetails>(
       `${this.basePath}/player/gamertag(${gamertag})/details`,
     );
   }
 
   /** Gets the opus player's inventory */
-  public getPlayerInventoryByXuid(xuid: BigNumber): Observable<OpusMasterInventory> {
-    return this.apiService.getRequest<OpusMasterInventory>(
+  public getPlayerInventoryByXuid$(xuid: BigNumber): Observable<OpusMasterInventory> {
+    return this.apiService.getRequest$<OpusMasterInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
 
   /** Gets a specific version of an apollo player's inventory */
-  public getPlayerInventoryByProfileId(profileId: BigNumber): Observable<OpusMasterInventory> {
-    return this.apiService.getRequest<OpusMasterInventory>(
+  public getPlayerInventoryByProfileId$(profileId: BigNumber): Observable<OpusMasterInventory> {
+    return this.apiService.getRequest$<OpusMasterInventory>(
       `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }
 
   /** Gets a player's profile list  by XUID. */
-  public getPlayerInventoryProfilesByXuid(
+  public getPlayerInventoryProfilesByXuid$(
     xuid: BigNumber,
   ): Observable<OpusPlayerInventoryProfile[]> {
     return this.apiService
-      .getRequest<OpusPlayerInventoryProfile[]>(
+      .getRequest$<OpusPlayerInventoryProfile[]>(
         `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
       )
       .pipe(

@@ -30,13 +30,13 @@
         <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
           <woodstock-player-inventory-profile-picker
             [identity]="selectedPlayerIdentity"
-            [(profileId)]="selectedPlayerInventoryProfile"
+            [(profileId)]="selectedPlayerInventoryProfileId"
           ></woodstock-player-inventory-profile-picker>
 
           <div class="inventory-div">
             <woodstock-player-inventory
               [identity]="selectedPlayerIdentity"
-              [profileId]="selectedPlayerInventoryProfile"
+              [profileId]="selectedPlayerInventoryProfileId"
               (inventoryFound)="onInventoryFound($event)"
             ></woodstock-player-inventory>
           </div>

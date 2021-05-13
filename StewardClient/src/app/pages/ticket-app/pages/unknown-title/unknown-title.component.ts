@@ -23,12 +23,12 @@ export class UnknownTitleComponent extends BaseComponent implements OnInit {
 
   private handleRouting(): void {
     this.ticket.getForzaTitle$().subscribe(title => {
-      this.routeByTitle(title);
+      this.routeByTitle$(title);
     });
   }
 
   /** Routes to the appropriate title page. */
-  private routeByTitle(title: GameTitleCodeName): Observable<void> {
+  private routeByTitle$(title: GameTitleCodeName): Observable<void> {
     switch (title) {
       case GameTitleCodeName.FH5:
         return this.store.dispatch(

@@ -28,7 +28,7 @@ describe('State: LspGroupMemoryState', () => {
       store = TestBed.inject(Store);
       mockSunriseService = TestBed.inject(SunriseService);
 
-      mockSunriseService.getLspGroups = jasmine.createSpy('getLspGroups').and.returnValue(
+      mockSunriseService.getLspGroups$ = jasmine.createSpy('getLspGroups$').and.returnValue(
         of([
           { id: 0, name: 'test-1' },
           { id: 1, name: 'test-2' },
@@ -70,7 +70,7 @@ describe('State: LspGroupMemoryState', () => {
         it('should call title service for lsp groups', () => {
           store.dispatch(action);
 
-          expect(mockSunriseService.getLspGroups).toHaveBeenCalled();
+          expect(mockSunriseService.getLspGroups$).toHaveBeenCalled();
         });
       });
       describe('If store has title lsp groups set', () => {
@@ -86,7 +86,7 @@ describe('State: LspGroupMemoryState', () => {
         it('should not call title service for lsp groups', () => {
           store.dispatch(action);
 
-          expect(mockSunriseService.getLspGroups).not.toHaveBeenCalled();
+          expect(mockSunriseService.getLspGroups$).not.toHaveBeenCalled();
         });
       });
     });

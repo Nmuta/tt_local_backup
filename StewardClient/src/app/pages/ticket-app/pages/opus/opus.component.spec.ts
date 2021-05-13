@@ -54,13 +54,13 @@ describe('OpusComponent - Ticket App', () => {
     });
   });
 
-  describe('Method: requestPlayerIdentity', () => {
+  describe('Method: requestPlayerIdentity$', () => {
     const gamertag = faker.name.firstName();
 
-    it('should send request to mockOpusService.getPlayerIdentity ', () => {
-      component.requestPlayerIdentity(gamertag);
+    it('should send request to mockOpusService.getPlayerIdentity$ ', () => {
+      component.requestPlayerIdentity$(gamertag);
 
-      expect(mockOpusService.getPlayerIdentity).toHaveBeenCalledWith({ gamertag: gamertag });
+      expect(mockOpusService.getPlayerIdentity$).toHaveBeenCalledWith({ gamertag: gamertag });
     });
   });
 });

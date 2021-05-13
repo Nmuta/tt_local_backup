@@ -42,7 +42,7 @@ export class LspGroupMemoryState {
 
   /** Updates the last gifting page title. */
   @Action(GetLspGroups, { cancelUncompleted: true })
-  public getLspGroups(
+  public getLspGroups$(
     ctx: StateContext<LspGroupMemoryModel>,
     action: GetLspGroups,
   ): Observable<LspGroups> {
@@ -58,16 +58,16 @@ export class LspGroupMemoryState {
     let request$: Observable<LspGroups>;
     switch (title) {
       case GameTitleCodeName.FH4:
-        request$ = this.sunriseService.getLspGroups();
+        request$ = this.sunriseService.getLspGroups$();
         break;
       case GameTitleCodeName.FM7:
-        request$ = this.apolloService.getLspGroups();
+        request$ = this.apolloService.getLspGroups$();
         break;
       case GameTitleCodeName.FM8:
-        request$ = this.steelheadService.getLspGroups();
+        request$ = this.steelheadService.getLspGroups$();
         break;
       case GameTitleCodeName.FH5:
-        request$ = this.woodstockService.getLspGroups();
+        request$ = this.woodstockService.getLspGroups$();
         break;
       default:
         return throwError(`${title} is not currently setup to handle LSP groups.`);

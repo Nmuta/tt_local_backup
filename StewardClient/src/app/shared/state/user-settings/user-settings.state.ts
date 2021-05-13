@@ -27,7 +27,7 @@ export class UserSettingsStateModel {
 export class UserSettingsState {
   /** Sets the state of the current API. */
   @Action(SetFakeApi, { cancelUncompleted: true })
-  public setFakeApi(
+  public setFakeApi$(
     ctx: StateContext<UserSettingsStateModel>,
     action: SetFakeApi,
   ): Observable<UserSettingsStateModel> {
@@ -36,7 +36,7 @@ export class UserSettingsState {
 
   /** Sets the state of the current API. */
   @Action(SetStagingApi, { cancelUncompleted: true })
-  public setStagingApi(
+  public setStagingApi$(
     ctx: StateContext<UserSettingsStateModel>,
     action: SetStagingApi,
   ): Observable<UserSettingsStateModel> {
@@ -45,7 +45,7 @@ export class UserSettingsState {
 
   /** Sets the state of the current app version. */
   @Action(SetAppVersion, { cancelUncompleted: true })
-  public setAppVersion(
+  public setAppVersion$(
     ctx: StateContext<UserSettingsStateModel>,
     action: SetAppVersion,
   ): Observable<UserSettingsStateModel> {

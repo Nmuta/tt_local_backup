@@ -15,13 +15,14 @@ import { UserState } from '@shared/state/user/user.state';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { ApolloMasterInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import BigNumber from 'bignumber.js';
 
 /** The gifting page for the Navbar app. */
 @Component({
   templateUrl: './apollo-gifting.component.html',
   styleUrls: ['./apollo-gifting.component.scss'],
 })
-export class ApolloGiftingComponent extends GiftingBaseComponent implements OnInit {
+export class ApolloGiftingComponent extends GiftingBaseComponent<BigNumber> implements OnInit {
   @Select(ApolloGiftingState.selectedPlayerIdentities) public selectedPlayerIdentities$: Observable<
     IdentityResultAlphaBatch
   >;

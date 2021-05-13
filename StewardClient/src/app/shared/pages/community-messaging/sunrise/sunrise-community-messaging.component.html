@@ -76,7 +76,7 @@
     </h3>
     <section class="new-community-message">
       <div class="new-message-content">
-        <b>Expires on:</b> {{ newCommunityMessage.expiryDate | date }}
+        <b>Expires on:</b> {{ newCommunityMessage.expiryDate | amDateFormat }}
         <span><b>Message:</b></span>
         <span>{{ newCommunityMessage.message }}</span>
       </div>

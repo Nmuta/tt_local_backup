@@ -19,6 +19,6 @@ export class GravityPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBa
 
   /** Creates Gravity's player details request. */
   public makeRequest$(): Observable<GravityPlayerDetails> {
-    return this.gravityService.getPlayerDetailsByGamertag(this.gamertag);
+    return this.gravityService.getPlayerDetailsByGamertag$(this.gamertag);
   }
 }

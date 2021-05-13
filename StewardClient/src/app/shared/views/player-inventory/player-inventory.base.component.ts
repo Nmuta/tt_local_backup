@@ -43,7 +43,7 @@ export abstract class PlayerInventoryBaseComponent<
   extends BaseComponent
   implements OnInit, OnChanges {
   @Input() public identity: IdentityResultType;
-  @Input() public profileId: BigNumber | undefined | null;
+  @Input() public profileId: BigNumber | string | undefined | null;
   @Output() public inventoryFound = new EventEmitter<PlayerInventoryType>();
 
   /** The located inventory. */
@@ -64,17 +64,17 @@ export abstract class PlayerInventoryBaseComponent<
   private identity$ = new Subject<IdentityResultType>();
 
   /** Intermediate event that is fired when @see profileId changes. */
-  private profileId$ = new Subject<BigNumber | undefined | null>();
+  private profileId$ = new Subject<BigNumber | string | undefined | null>();
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected abstract getPlayerInventoryByIdentity(
+  protected abstract getPlayerInventoryByIdentity$(
     identity: IdentityResultType,
   ): Observable<PlayerInventoryType>;
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected abstract getPlayerInventoryByIdentityAndProfileId(
+  protected abstract getPlayerInventoryByIdentityAndProfileId$(
     identity: IdentityResultType,
-    profileId: BigNumber,
+    profileId: BigNumber | string,
   ): Observable<PlayerInventoryType>;
 
   /** Implement to specify the expando tables to show. */
@@ -98,8 +98,8 @@ export abstract class PlayerInventoryBaseComponent<
         filter(v => !!v.identity),
         switchMap(v => {
           const request$ = v.profileId
-            ? this.getPlayerInventoryByIdentityAndProfileId(v.identity, v.profileId)
-            : this.getPlayerInventoryByIdentity(v.identity);
+            ? this.getPlayerInventoryByIdentityAndProfileId$(v.identity, v.profileId)
+            : this.getPlayerInventoryByIdentity$(v.identity);
           return request$.pipe(
             catchError((error, _observable) => {
               this.error = error;

@@ -22,18 +22,18 @@ export class OpusPlayerInventoryComponent extends PlayerInventoryBaseComponent<
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerInventoryByIdentity(
+  protected getPlayerInventoryByIdentity$(
     identity: IdentityResultAlpha,
   ): Observable<OpusMasterInventory> {
-    return this.opus.getPlayerInventoryByXuid(identity.xuid);
+    return this.opus.getPlayerInventoryByXuid$(identity.xuid);
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerInventoryByIdentityAndProfileId(
+  protected getPlayerInventoryByIdentityAndProfileId$(
     _identity: IdentityResultAlpha,
     profileId: BigNumber,
   ): Observable<OpusMasterInventory> {
-    return this.opus.getPlayerInventoryByProfileId(profileId);
+    return this.opus.getPlayerInventoryByProfileId$(profileId);
   }
 
   /** Implement to specify the expando tables to show. */

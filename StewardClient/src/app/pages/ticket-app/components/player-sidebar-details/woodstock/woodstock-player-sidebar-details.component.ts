@@ -19,6 +19,6 @@ export class WoodstockPlayerSidebarDetailsComponent extends PlayerSidebarDetails
 
   /** Creates Woodstock's player details request. */
   public makeRequest$(): Observable<WoodstockPlayerDetails> {
-    return this.woodstockService.getPlayerDetailsByGamertag(this.gamertag);
+    return this.woodstockService.getPlayerDetailsByGamertag$(this.gamertag);
   }
 }

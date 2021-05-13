@@ -21,7 +21,7 @@ import { TitleMemoryModel } from './title-memory.model';
 export class TitleMemoryState {
   /** Updates the last gifting page title. */
   @Action(UpdateTitleMemory, { cancelUncompleted: true })
-  public updateToolTitle(
+  public updateToolTitle$(
     ctx: StateContext<TitleMemoryModel>,
     action: UpdateTitleMemory,
   ): Observable<TitleMemoryModel> {

@@ -42,7 +42,7 @@ describe('WoodstockBanningComponent', () => {
 
   it('should gather summaries', () => {
     const testXuids = [fakeXuid(), fakeXuid(), fakeXuid()];
-    woodstock.getBanSummariesByXuids = jasmine
+    woodstock.getBanSummariesByXuids$ = jasmine
       .createSpy('getBanSummariesByXuids')
       .and.callFake((xuids: BigNumber[]) => {
         const summaries = WoodstockPlayersBanSummariesFakeApi.make(xuids);
@@ -58,7 +58,7 @@ describe('WoodstockBanningComponent', () => {
     component.playerIdentities$.next(fakeIdentities);
     fixture.detectChanges();
 
-    expect(woodstock.getBanSummariesByXuids).toHaveBeenCalledTimes(1);
+    expect(woodstock.getBanSummariesByXuids$).toHaveBeenCalledTimes(1);
     expect(keys(component.summaryLookup).length).toBe(testXuids.length);
 
     const lookup0 = component.summaryLookup[testXuids[0].toString()];

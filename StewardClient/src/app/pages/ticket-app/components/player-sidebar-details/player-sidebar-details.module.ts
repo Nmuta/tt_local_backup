@@ -36,6 +36,7 @@ import { WoodstockPlayerSidebarDetailsComponent } from './woodstock/woodstock-pl
     SunrisePlayerSidebarDetailsComponent,
     ApolloPlayerSidebarDetailsComponent,
     OpusPlayerSidebarDetailsComponent,
+    SteelheadPlayerSidebarDetailsComponent,
   ],
   declarations: [
     WoodstockPlayerSidebarDetailsComponent,
@@ -44,6 +45,7 @@ import { WoodstockPlayerSidebarDetailsComponent } from './woodstock/woodstock-pl
     SunrisePlayerSidebarDetailsComponent,
     ApolloPlayerSidebarDetailsComponent,
     OpusPlayerSidebarDetailsComponent,
+    SteelheadPlayerSidebarDetailsComponent,
   ],
 })
 export class PlayerSidebarDetailsModule {}

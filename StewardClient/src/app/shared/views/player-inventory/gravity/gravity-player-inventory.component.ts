@@ -22,18 +22,18 @@ export class GravityPlayerInventoryComponent extends PlayerInventoryBaseComponen
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerInventoryByIdentity(
+  protected getPlayerInventoryByIdentity$(
     identity: IdentityResultBeta,
   ): Observable<GravityPlayerInventoryBeta> {
-    return this.gravity.getPlayerInventoryByT10Id(identity.t10Id);
+    return this.gravity.getPlayerInventoryByT10Id$(identity.t10Id);
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerInventoryByIdentityAndProfileId(
+  protected getPlayerInventoryByIdentityAndProfileId$(
     identity: IdentityResultBeta,
     profileId: BigNumber,
   ): Observable<GravityPlayerInventoryBeta> {
-    return this.gravity.getPlayerInventoryByT10IdAndProfileId(identity.t10Id, profileId);
+    return this.gravity.getPlayerInventoryByT10IdAndProfileId$(identity.t10Id, profileId);
   }
 
   /** Implement to specify the expando tables to show. */

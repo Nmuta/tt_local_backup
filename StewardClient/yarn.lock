@@ -7410,6 +7410,11 @@ ngx-material-timepicker@^5.5.3:
     luxon "1.24.0"
     tslib "^1.9.0"
 
+ngx-moment@^5.0.0:
+  version "5.0.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/ngx-moment/-/ngx-moment-5.0.0.tgz#6500432a2fcda75fb236a632850e599db23c8177"
+  integrity sha1-ZQBDKi/Np1+yNqYyhQ5ZnbI8gXc=
+
 ngx-pipes@^2.7.5:
   version "2.7.5"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/ngx-pipes/-/ngx-pipes-2.7.5.tgz#22e2e4b7015ae9103210dfa2dacd6f4ae4411639"

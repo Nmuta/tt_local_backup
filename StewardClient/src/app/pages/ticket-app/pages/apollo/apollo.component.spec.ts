@@ -54,13 +54,13 @@ describe('ApolloComponent - Ticket App', () => {
     });
   });
 
-  describe('Method: requestPlayerIdentity', () => {
+  describe('Method: requestPlayerIdentity$', () => {
     const gamertag = faker.name.firstName();
 
     it('should send request to apolloService.getPlayerIdentity ', () => {
-      component.requestPlayerIdentity(gamertag);
+      component.requestPlayerIdentity$(gamertag);
 
-      expect(mockApolloService.getPlayerIdentity).toHaveBeenCalledWith({ gamertag: gamertag });
+      expect(mockApolloService.getPlayerIdentity$).toHaveBeenCalledWith({ gamertag: gamertag });
     });
   });
 });

@@ -56,7 +56,7 @@ describe('SteelheadLspGroupSelectionComponent', () => {
     });
 
     it('should select steelhead lsp groups from memory', () => {
-      component.lspGroupSelector();
+      component.lspGroupSelector$();
       expect(mockStore.select).toHaveBeenCalledWith(LspGroupMemoryState.steelheadLspGroups);
     });
   });

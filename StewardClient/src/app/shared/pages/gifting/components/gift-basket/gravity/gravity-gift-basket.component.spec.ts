@@ -68,7 +68,7 @@ describe('GravityGiftBasketComponent', () => {
         .createSpy('selectSnapshot')
         .and.returnValue({ [previousGameSettingsId]: testMasterInventory });
 
-      mockGravityService.getPlayerDetailsByT10Id = jasmine.createSpy('getPlayerDetailsByT10Id');
+      mockGravityService.getPlayerDetailsByT10Id$ = jasmine.createSpy('getPlayerDetailsByT10Id');
     });
 
     describe('When newIdentitySelectedSubject$ emits a null t10Id', () => {
@@ -76,7 +76,7 @@ describe('GravityGiftBasketComponent', () => {
         component.ngOnInit();
         component.newIdentitySelectedSubject$.next(null);
 
-        expect(mockGravityService.getPlayerDetailsByT10Id).not.toHaveBeenCalled();
+        expect(mockGravityService.getPlayerDetailsByT10Id$).not.toHaveBeenCalled();
       });
     });
 
@@ -85,7 +85,7 @@ describe('GravityGiftBasketComponent', () => {
         component.ngOnInit();
         component.newIdentitySelectedSubject$.next('');
 
-        expect(mockGravityService.getPlayerDetailsByT10Id).not.toHaveBeenCalled();
+        expect(mockGravityService.getPlayerDetailsByT10Id$).not.toHaveBeenCalled();
       });
     });
 
@@ -96,7 +96,7 @@ describe('GravityGiftBasketComponent', () => {
         const error = { message: 'fake-error' };
 
         beforeEach(() => {
-          mockGravityService.getPlayerDetailsByT10Id = jasmine
+          mockGravityService.getPlayerDetailsByT10Id$ = jasmine
             .createSpy('getPlayerDetailsByT10Id')
             .and.returnValue(throwError(error));
         });
@@ -114,7 +114,7 @@ describe('GravityGiftBasketComponent', () => {
         const gameSettingsId = 'game-settings-id';
 
         beforeEach(() => {
-          mockGravityService.getPlayerDetailsByT10Id = jasmine
+          mockGravityService.getPlayerDetailsByT10Id$ = jasmine
             .createSpy('getPlayerDetailsByT10Id')
             .and.returnValue(of({ lastGameSettingsUsed: gameSettingsId }));
         });
@@ -362,7 +362,7 @@ describe('GravityGiftBasketComponent', () => {
 
   describe('Method: sendGiftToPlayers', () => {
     beforeEach(() => {
-      mockGravityService.postGiftPlayerUsingBackgroundTask = jasmine.createSpy(
+      mockGravityService.postGiftPlayerUsingBackgroundTask$ = jasmine.createSpy(
         'postGiftPlayerUsingBackgroundTask',
       );
       component.playerIdentities = [
@@ -374,7 +374,7 @@ describe('GravityGiftBasketComponent', () => {
     });
 
     it('should call postGiftPlayerUsingBackgroundTask', () => {
-      component.sendGiftToPlayers({
+      component.sendGiftToPlayers$({
         giftReason: faker.random.words(10),
         inventory: {
           creditRewards: [],
@@ -386,7 +386,7 @@ describe('GravityGiftBasketComponent', () => {
         },
       });
 
-      expect(mockGravityService.postGiftPlayerUsingBackgroundTask).toHaveBeenCalled();
+      expect(mockGravityService.postGiftPlayerUsingBackgroundTask$).toHaveBeenCalled();
     });
   });
 

@@ -41,7 +41,7 @@ export class SunrisePlayerNotificationsComponent implements OnChanges {
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.sunrise.getPlayerNotificationsByXuid(this.xuid).subscribe(
+    this.sunrise.getPlayerNotificationsByXuid$(this.xuid).subscribe(
       notifications => {
         this.isLoading = false;
         this.notifications = sortBy(notifications, n => n.sendDateUtc).reverse();

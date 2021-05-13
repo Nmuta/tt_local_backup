@@ -25,12 +25,12 @@ describe('service: BackgroundJobService', () => {
     const jobId = 'test-job-id';
 
     beforeEach(() => {
-      apiMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+      apiMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getBackgroundJob(jobId).subscribe(() => {
-        expect(apiMock.getRequest).toHaveBeenCalledWith(`v1/jobs/jobId(${jobId})`);
+      service.getBackgroundJob$(jobId).subscribe(() => {
+        expect(apiMock.getRequest$).toHaveBeenCalledWith(`v1/jobs/jobId(${jobId})`);
         done();
       });
     });

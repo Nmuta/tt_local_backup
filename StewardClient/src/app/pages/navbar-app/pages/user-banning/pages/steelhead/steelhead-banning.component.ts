@@ -49,7 +49,7 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
     this.playerIdentities$
       .pipe(
         map(identities => identities.map(i => i.xuid)), // to xuid list
-        switchMap(xuids => this.steelhead.getBanSummariesByXuids(xuids)), // make request
+        switchMap(xuids => this.steelhead.getBanSummariesByXuids$(xuids)), // make request
       )
       .subscribe(summaries$);
     summaries$
@@ -85,10 +85,10 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
     this.selectedPlayer = identity;
   }
 
-  public submit = (): Observable<unknown> => this.submitInternal();
+  public submit$ = (): Observable<unknown> => this.submitInternal$();
 
   /** Submit the form. */
-  public submitInternal(): Observable<unknown> {
+  public submitInternal$(): Observable<unknown> {
     this.isLoading = true;
     const identities = this.playerIdentities;
     const banOptions = this.formControls.banOptions.value as BanOptions;
@@ -105,7 +105,7 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
       };
     });
 
-    return this.steelhead.postBanPlayersWithBackgroundProcessing(bans).pipe(
+    return this.steelhead.postBanPlayersWithBackgroundProcessing$(bans).pipe(
       takeUntil(this.onDestroy$),
       catchError(error => {
         this.loadError = error;

@@ -72,8 +72,8 @@ export class ActionMonitor {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
 
-    return function (source: Observable<T>): Observable<T> {
-      return source.pipe(
+    return function (source$: Observable<T>): Observable<T> {
+      return source$.pipe(
         tap({
           next: next => self.onValue(next),
           error: error => self.onError(error),
@@ -100,8 +100,8 @@ export class ActionMonitor {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
 
-    return function (source: Observable<T>): Observable<T> {
-      return source.pipe(
+    return function (source$: Observable<T>): Observable<T> {
+      return source$.pipe(
         tap({
           next: _next => self.onValueStart(),
         }),
@@ -116,8 +116,8 @@ export class ActionMonitor {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
 
-    return function (source: Observable<T>): Observable<T> {
-      return source.pipe(
+    return function (source$: Observable<T>): Observable<T> {
+      return source$.pipe(
         tap({
           next: next => self.onValueEnd(next),
           error: error => self.onError(error),

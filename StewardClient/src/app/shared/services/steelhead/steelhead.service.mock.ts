@@ -20,7 +20,7 @@ export class MockSteelheadService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
-  public getIdentity = jasmine
+  public getIdentity$ = jasmine
     .createSpy('getIdentity')
     .and.callFake(() =>
       this.waitUntil$.pipe(
@@ -28,21 +28,21 @@ export class MockSteelheadService {
       ),
     );
 
-  public getPlayerDetailsByGamertag = jasmine
+  public getPlayerDetailsByGamertag$ = jasmine
     .createSpy('getPlayerDetailsByGamertag')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({ xuid: new BigNumber(12345) }))));
 
-  public postBanPlayers = jasmine
+  public postBanPlayers$ = jasmine
     .createSpy('postBanPlayers')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayersBanFakeApi.make()))),
     );
-  public getBanHistoryByXuid = jasmine
+  public getBanHistoryByXuid$ = jasmine
     .createSpy('getBanHistoryByXuid')
     .and.callFake(xuid =>
       this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerXuidBanHistoryFakeApi.make(xuid)))),
     );
-  public postBanPlayersWithBackgroundProcessing = jasmine
+  public postBanPlayersWithBackgroundProcessing$ = jasmine
     .createSpy('postBanPlayersWithBackgroundProcessing')
     .and.callFake(() =>
       this.waitUntil$.pipe(
@@ -50,44 +50,44 @@ export class MockSteelheadService {
       ),
     );
 
-  public getPlayerIdentity = jasmine
+  public getPlayerIdentity$ = jasmine
     .createSpy('getPlayerIdentity')
     .and.callFake((query: IdentityQueryAlpha) =>
       this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayersIdentitiesFakeApi.make([query])))),
     );
-  public getPlayerIdentities = jasmine
+  public getPlayerIdentities$ = jasmine
     .createSpy('getPlayerIdentities')
     .and.callFake((query: IdentityQueryAlphaBatch) =>
       this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayersIdentitiesFakeApi.make(query)))),
     );
 
-  public getMasterInventory = jasmine
+  public getMasterInventory$ = jasmine
     .createSpy('getMasterInventory')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({}))));
 
-  public getPlayerInventoryProfilesByXuid = jasmine
+  public getPlayerInventoryProfilesByXuid$ = jasmine
     .createSpy('getPlayerInventoryProfilesByXuid')
     .and.callFake(_xuid =>
       this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerXuidInventoryProfilesFakeApi.make()))),
     );
 
-  public postGiftPlayers = jasmine
+  public postGiftPlayers$ = jasmine
     .createSpy('postGiftPlayers')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(SteelheadGiftingPlayersFakeApi.make()))),
     );
 
-  public postGiftPlayersUsingBackgroundTask = jasmine
+  public postGiftPlayersUsingBackgroundTask$ = jasmine
     .createSpy('postGiftPlayersUsingBackgroundTask')
     .and.returnValue(of('fake-job-id'));
 
-  public postGiftLspGroup = jasmine
+  public postGiftLspGroup$ = jasmine
     .createSpy('postGiftLspGroup')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(SteelheadGiftingLspGroupFakeApi.make()))),
     );
 
-  public getPlayerInventoryByXuid = jasmine
+  public getPlayerInventoryByXuid$ = jasmine
     .createSpy('getPlayerInventoryByXuid')
     .and.callFake(xuid =>
       this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerXuidInventoryFakeApi.make(xuid)))),

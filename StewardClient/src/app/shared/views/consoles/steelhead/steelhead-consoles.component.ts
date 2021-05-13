@@ -23,7 +23,7 @@ export class SteelheadConsolesComponent extends ConsolesBaseComponent<
   }
 
   /** Gets the console details list from XUID. */
-  public getConsoleDetailsByXuid(xuid: BigNumber): Observable<SteelheadConsoleDetailsEntry[]> {
-    return this.steelheadService.getConsoleDetailsByXuid(xuid);
+  public getConsoleDetailsByXuid$(xuid: BigNumber): Observable<SteelheadConsoleDetailsEntry[]> {
+    return this.steelheadService.getConsoleDetailsByXuid$(xuid);
   }
 }

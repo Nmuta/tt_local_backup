@@ -27,7 +27,7 @@ describe('ObligationsService', () => {
   });
 
   it('handles put', done => {
-    service.put(PipelineGetFakeApi.make(faker.datatype.uuid())).subscribe(output => {
+    service.put$(PipelineGetFakeApi.make(faker.datatype.uuid())).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -37,7 +37,7 @@ describe('ObligationsService', () => {
   });
 
   it('handles post', done => {
-    service.post(PipelineGetFakeApi.make(faker.datatype.uuid())).subscribe(output => {
+    service.post$(PipelineGetFakeApi.make(faker.datatype.uuid())).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -47,7 +47,7 @@ describe('ObligationsService', () => {
   });
 
   it('handles delete', done => {
-    service.delete(faker.datatype.uuid()).subscribe(output => {
+    service.delete$(faker.datatype.uuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -56,7 +56,7 @@ describe('ObligationsService', () => {
     });
   });
 
-  describe('Method: get', () => {
+  describe('Method: get$', () => {
     const identifier = faker.datatype.uuid();
 
     beforeEach(() => {
@@ -64,7 +64,7 @@ describe('ObligationsService', () => {
     });
 
     it('completes', done => {
-      service.get(identifier).subscribe(output => {
+      service.get$(identifier).subscribe(output => {
         expect(output as unknown).toEqual(
           nextReturnValue as unknown,
           'fields should not be modified',
@@ -74,14 +74,16 @@ describe('ObligationsService', () => {
     });
 
     it('should call apiServiceMock.getRequest', done => {
-      service.get(identifier).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(`${service.basePath}/${identifier}`);
+      service.get$(identifier).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/${identifier}`,
+        );
         done();
       });
     });
   });
 
-  describe('Method: put', () => {
+  describe('Method: put$', () => {
     const identifier = faker.datatype.uuid();
     const payload = PipelineGetFakeApi.make(identifier);
 
@@ -90,7 +92,7 @@ describe('ObligationsService', () => {
     });
 
     it('completes', done => {
-      service.put(payload).subscribe(output => {
+      service.put$(payload).subscribe(output => {
         expect(output as unknown).toEqual(
           nextReturnValue as unknown,
           'fields should not be modified',
@@ -100,14 +102,14 @@ describe('ObligationsService', () => {
     });
 
     it('should call apiServiceMock.putRequest', done => {
-      service.put(payload).subscribe(() => {
-        expect(apiServiceMock.putRequest).toHaveBeenCalledWith(`${service.basePath}`, payload);
+      service.put$(payload).subscribe(() => {
+        expect(apiServiceMock.putRequest$).toHaveBeenCalledWith(`${service.basePath}`, payload);
         done();
       });
     });
   });
 
-  describe('Method: post', () => {
+  describe('Method: post$', () => {
     const identifier = faker.datatype.uuid();
     const payload = PipelineGetFakeApi.make(identifier);
 
@@ -116,7 +118,7 @@ describe('ObligationsService', () => {
     });
 
     it('completes', done => {
-      service.post(payload).subscribe(output => {
+      service.post$(payload).subscribe(output => {
         expect(output as unknown).toEqual(
           nextReturnValue as unknown,
           'fields should not be modified',
@@ -126,14 +128,14 @@ describe('ObligationsService', () => {
     });
 
     it('should call apiServiceMock.postRequest', done => {
-      service.post(payload).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(`${service.basePath}`, payload);
+      service.post$(payload).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(`${service.basePath}`, payload);
         done();
       });
     });
   });
 
-  describe('Method: delete', () => {
+  describe('Method: delete$', () => {
     const identifier = faker.datatype.uuid();
 
     beforeEach(() => {
@@ -141,7 +143,7 @@ describe('ObligationsService', () => {
     });
 
     it('completes', done => {
-      service.delete(identifier).subscribe(output => {
+      service.delete$(identifier).subscribe(output => {
         expect(output as unknown).toEqual(
           nextReturnValue as unknown,
           'fields should not be modified',
@@ -151,8 +153,8 @@ describe('ObligationsService', () => {
     });
 
     it('should call apiServiceMock.deleteRequest', done => {
-      service.delete(identifier).subscribe(() => {
-        expect(apiServiceMock.deleteRequest).toHaveBeenCalledWith(
+      service.delete$(identifier).subscribe(() => {
+        expect(apiServiceMock.deleteRequest$).toHaveBeenCalledWith(
           `${service.basePath}/${identifier}`,
         );
         done();

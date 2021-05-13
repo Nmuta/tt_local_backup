@@ -11,11 +11,11 @@ export class MockKustoService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
-  public getKustoQueries = jasmine
+  public getKustoQueries$ = jasmine
     .createSpy('getKustoQueries')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(KustoGetQueriesFakeApi.make()))));
 
-  public postRunKustoQuery = jasmine
+  public postRunKustoQuery$ = jasmine
     .createSpy('postRunKustoQuery')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(KustoRunQueryFakeApi.make()))));
 }

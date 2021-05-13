@@ -32,7 +32,7 @@ export class ApolloGiftingStateModel {
 export class ApolloGiftingState {
   /** Sets the gifting page's selected player identities. */
   @Action(SetApolloGiftingSelectedPlayerIdentities, { cancelUncompleted: true })
-  public setSelectedPlayerIdentities(
+  public setSelectedPlayerIdentities$(
     ctx: StateContext<ApolloGiftingStateModel>,
     action: SetApolloGiftingSelectedPlayerIdentities,
   ): Observable<ApolloGiftingStateModel> {
@@ -41,7 +41,7 @@ export class ApolloGiftingState {
 
   /** Sets the gifting page's selected mat tab index. */
   @Action(SetApolloGiftingMatTabIndex, { cancelUncompleted: true })
-  public setSunriseMatTabIndex(
+  public setSunriseMatTabIndex$(
     ctx: StateContext<ApolloGiftingStateModel>,
     action: SetApolloGiftingMatTabIndex,
   ): Observable<ApolloGiftingStateModel> {
@@ -50,7 +50,7 @@ export class ApolloGiftingState {
 
   /** Sets the gift basket. */
   @Action(SetApolloGiftBasket, { cancelUncompleted: true })
-  public setApolloGiftBasket(
+  public setApolloGiftBasket$(
     ctx: StateContext<ApolloGiftingStateModel>,
     action: SetApolloGiftBasket,
   ): Observable<ApolloGiftingStateModel> {

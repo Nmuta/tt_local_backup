@@ -53,7 +53,7 @@ describe('WoodstockPlayerNotificationsComponent', () => {
         // notifications list prep
         consoleDetails$ = new Subject<WoodstockPlayerNotifications>();
         consoleDetailsValue = WoodstockPlayerXuidNotificationsFakeApi.makeMany() as WoodstockPlayerNotifications;
-        service.getPlayerNotificationsByXuid = jasmine
+        service.getPlayerNotificationsByXuid$ = jasmine
           .createSpy('getPlayerNotificationsByXuid')
           .and.returnValue(consoleDetails$);
 

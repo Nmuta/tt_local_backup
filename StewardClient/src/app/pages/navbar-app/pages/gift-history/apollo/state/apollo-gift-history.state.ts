@@ -28,7 +28,7 @@ export class ApolloGiftHistoryStateModel {
 export class ApolloGiftHistoryState {
   /** Sets the gift history page's selected player identities. */
   @Action(SetApolloGiftHistorySelectedPlayerIdentities, { cancelUncompleted: true })
-  public setFakeApi(
+  public setFakeApi$(
     ctx: StateContext<ApolloGiftHistoryStateModel>,
     action: SetApolloGiftHistorySelectedPlayerIdentities,
   ): Observable<ApolloGiftHistoryStateModel> {
@@ -37,7 +37,7 @@ export class ApolloGiftHistoryState {
 
   /** Sets the gift history page's selected mat tab index. */
   @Action(SetApolloGiftHistoryMatTabIndex, { cancelUncompleted: true })
-  public setApolloMatTabIndex(
+  public setApolloMatTabIndex$(
     ctx: StateContext<ApolloGiftHistoryStateModel>,
     action: SetApolloGiftHistoryMatTabIndex,
   ): Observable<ApolloGiftHistoryStateModel> {

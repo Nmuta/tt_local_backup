@@ -58,7 +58,7 @@ describe('StewardUserComponent', () => {
         beforeEach(() => {
           // Any used to access private service for testing.
           // eslint-disable-next-line
-          (component as any).userService.getStewardUsers = jasmine
+          (component as any).userService.getStewardUsers$ = jasmine
             .createSpy('getStewardUsers')
             .and.returnValue(of(validUsers));
         });

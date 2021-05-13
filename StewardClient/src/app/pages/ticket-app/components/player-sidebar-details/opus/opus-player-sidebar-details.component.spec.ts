@@ -52,7 +52,7 @@ describe('OpusPlayerSidebarDetailsComponent', () => {
     const expectedGamertag = 'test-gamertag';
     beforeEach(() => {
       component.gamertag = expectedGamertag;
-      mockOpusService.getPlayerDetailsByGamertag = jasmine
+      mockOpusService.getPlayerDetailsByGamertag$ = jasmine
         .createSpy('getPlayerDetailsByGamertag')
         .and.returnValue(of(OpusPlayerGamertagDetailsFakeApi.make()));
     });
@@ -62,7 +62,7 @@ describe('OpusPlayerSidebarDetailsComponent', () => {
         /* nothing */
       });
 
-      expect(mockOpusService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
+      expect(mockOpusService.getPlayerDetailsByGamertag$).toHaveBeenCalledWith(expectedGamertag);
     });
   });
 });

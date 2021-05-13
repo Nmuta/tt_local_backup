@@ -56,7 +56,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
       Validators.pattern('^(0|[1-9][0-9]*)$'),
     ]),
   });
-  public stateGroupOptions: Observable<InventoryItemGroup[]>;
+  public stateGroupOptions$: Observable<InventoryItemGroup[]>;
 
   constructor(private readonly formBuilder: FormBuilder) {
     super();
@@ -66,7 +66,7 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
   public ngOnChanges(_changes: SimpleChanges): void {
     if (!!this.masterInventory) {
       this.inventoryItemGroups = this.buildMatAutocompleteState();
-      this.stateGroupOptions = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
+      this.stateGroupOptions$ = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
         takeUntil(this.onDestroy$),
         startWith(''),
         map(value => this.filterGroup(value)),

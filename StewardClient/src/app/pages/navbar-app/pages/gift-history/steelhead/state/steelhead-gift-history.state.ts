@@ -28,7 +28,7 @@ export class SteelheadGiftHistoryStateModel {
 export class SteelheadGiftHistoryState {
   /** Sets the gift history page's selected player identities. */
   @Action(SetSteelheadGiftHistorySelectedPlayerIdentities, { cancelUncompleted: true })
-  public setFakeApi(
+  public setFakeApi$(
     ctx: StateContext<SteelheadGiftHistoryStateModel>,
     action: SetSteelheadGiftHistorySelectedPlayerIdentities,
   ): Observable<SteelheadGiftHistoryStateModel> {
@@ -37,7 +37,7 @@ export class SteelheadGiftHistoryState {
 
   /** Sets the gift history page's selected mat tab index. */
   @Action(SetSteelheadGiftHistoryMatTabIndex, { cancelUncompleted: true })
-  public setSteelheadMatTabIndex(
+  public setSteelheadMatTabIndex$(
     ctx: StateContext<SteelheadGiftHistoryStateModel>,
     action: SetSteelheadGiftHistoryMatTabIndex,
   ): Observable<SteelheadGiftHistoryStateModel> {

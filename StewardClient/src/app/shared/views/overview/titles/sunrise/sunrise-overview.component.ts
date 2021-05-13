@@ -29,7 +29,7 @@ export class SunriseOverviewComponent implements OnChanges {
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.sunrise.getProfileSummaryByXuid(this.xuid).subscribe(
+    this.sunrise.getProfileSummaryByXuid$(this.xuid).subscribe(
       summary => {
         this.isLoading = false;
         this.profileSummary = summary;

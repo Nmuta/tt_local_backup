@@ -53,7 +53,7 @@ describe('WoodstockPlayerInventoryComponent', () => {
     );
 
     it('should call getPlayerInventoryByXuid', () => {
-      expect(service.getPlayerInventoryByXuid).toHaveBeenCalledWith(testXuid);
+      expect(service.getPlayerInventoryByXuid$).toHaveBeenCalledWith(testXuid);
     });
 
     it('should reset', () => {

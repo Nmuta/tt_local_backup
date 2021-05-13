@@ -39,7 +39,7 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
   public bannedXuids: BigNumber[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
 
-  public identitySortFn = null;
+  public identitySortFn$ = null;
 
   constructor(
     backgroundJobService: BackgroundJobService,
@@ -52,7 +52,7 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
     this.playerIdentities$
       .pipe(
         map(identities => identities.map(i => i.xuid)), // to xuid list
-        switchMap(xuids => this.sunrise.getBanSummariesByXuids(xuids)), // make request
+        switchMap(xuids => this.sunrise.getBanSummariesByXuids$(xuids)), // make request
       )
       .subscribe(summaries$);
     summaries$
@@ -66,7 +66,7 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
       )
       .subscribe(bannedXuids => (this.bannedXuids = bannedXuids));
 
-    this.identitySortFn = identities => {
+    this.identitySortFn$ = identities => {
       return summaryLookup$.pipe(
         switchMap(summaryLookup => {
           return of(
@@ -83,10 +83,10 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
     };
   }
 
-  public submit = (): Observable<unknown> => this.submitInternal();
+  public submit$ = (): Observable<unknown> => this.submitInternal$();
 
   /** Submit the form. */
-  public submitInternal(): Observable<unknown> {
+  public submitInternal$(): Observable<unknown> {
     this.isLoading = true;
     const identities = this.playerIdentities;
     const banOptions = this.formControls.banOptions.value as BanOptions;
@@ -103,7 +103,7 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
       };
     });
 
-    return this.sunrise.postBanPlayersWithBackgroundProcessing(bans).pipe(
+    return this.sunrise.postBanPlayersWithBackgroundProcessing$(bans).pipe(
       takeUntil(this.onDestroy$),
       catchError(error => {
         this.loadError = error;

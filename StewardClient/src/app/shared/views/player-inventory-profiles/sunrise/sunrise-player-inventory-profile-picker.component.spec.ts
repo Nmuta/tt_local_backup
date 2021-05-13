@@ -32,7 +32,7 @@ describe('SunrisePlayerInventoryProfilePickerComponent', () => {
   baseTests(
     () => fixture,
     () => first(SunrisePlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
-    () => new MockSunriseService(null).getPlayerInventoryProfilesByXuid,
-    fn => (service.getPlayerInventoryProfilesByXuid = fn),
+    () => new MockSunriseService(null).getPlayerInventoryProfilesByXuid$,
+    fn => (service.getPlayerInventoryProfilesByXuid$ = fn),
   );
 });

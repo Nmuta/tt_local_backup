@@ -15,30 +15,30 @@ export class KustoService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets identities within this service. */
-  public getKustoQueries(): Observable<KustoQueries> {
-    return this.apiService.getRequest<KustoQueries>(`${this.basePath}/queries`);
+  public getKustoQueries$(): Observable<KustoQueries> {
+    return this.apiService.getRequest$<KustoQueries>(`${this.basePath}/queries`);
   }
 
   /** Runs a query against Kusto. */
-  public postRunKustoQuery(query: string): Observable<KustoQueryResponse> {
-    return this.apiService.postRequest<KustoQueryResponse>(`${this.basePath}/query/run`, query);
+  public postRunKustoQuery$(query: string): Observable<KustoQueryResponse> {
+    return this.apiService.postRequest$<KustoQueryResponse>(`${this.basePath}/query/run`, query);
   }
 
   /** Saves a new Kusto Query. */
-  public postSaveNewKustoQuery(kustoQuery: KustoQuery): Observable<void> {
-    return this.apiService.postRequest(`${this.basePath}/queries`, [kustoQuery]);
+  public postSaveNewKustoQuery$(kustoQuery: KustoQuery): Observable<void> {
+    return this.apiService.postRequest$(`${this.basePath}/queries`, [kustoQuery]);
   }
 
   /** Replaces a Kusto Query. */
-  public putReplaceKustoQuery(
+  public putReplaceKustoQuery$(
     kustoQueryId: GuidLikeString,
     kustoQuery: KustoQuery,
   ): Observable<void> {
-    return this.apiService.putRequest(`${this.basePath}/queries/id(${kustoQueryId})`, kustoQuery);
+    return this.apiService.putRequest$(`${this.basePath}/queries/id(${kustoQueryId})`, kustoQuery);
   }
 
   /** Deletes a Kusto Query. */
-  public deleteKustoQuery(kustoQueryId: GuidLikeString): Observable<void> {
-    return this.apiService.deleteRequest(`${this.basePath}/queries/id(${kustoQueryId})`);
+  public deleteKustoQuery$(kustoQueryId: GuidLikeString): Observable<void> {
+    return this.apiService.deleteRequest$(`${this.basePath}/queries/id(${kustoQueryId})`);
   }
 }

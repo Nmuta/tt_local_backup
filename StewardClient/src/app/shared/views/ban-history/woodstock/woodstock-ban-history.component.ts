@@ -44,7 +44,7 @@ export class WoodstockBanHistoryComponent extends BaseComponent implements OnCha
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.woodstock.getBanHistoryByXuid(this.xuid).subscribe(
+    this.woodstock.getBanHistoryByXuid$(this.xuid).subscribe(
       banHistory => {
         this.isLoading = false;
         this.banList = banHistory;

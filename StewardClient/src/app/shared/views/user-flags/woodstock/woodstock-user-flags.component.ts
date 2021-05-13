@@ -20,15 +20,15 @@ export class WoodstockUserFlagsComponent extends UserFlagsBaseComponent<Woodstoc
   }
 
   /** Gets Woodstock user flags. */
-  public getFlagsByXuid(xuid: BigNumber): Observable<WoodstockUserFlags> {
-    return this.woodstockService.getFlagsByXuid(xuid);
+  public getFlagsByXuid$(xuid: BigNumber): Observable<WoodstockUserFlags> {
+    return this.woodstockService.getFlagsByXuid$(xuid);
   }
 
   /** Sets the newly selected Woodstock flags. */
-  public putFlagsByXuid(
+  public putFlagsByXuid$(
     xuid: BigNumber,
     newFlags: WoodstockUserFlags,
   ): Observable<WoodstockUserFlags> {
-    return this.woodstockService.putFlagsByXuid(xuid, newFlags);
+    return this.woodstockService.putFlagsByXuid$(xuid, newFlags);
   }
 }

@@ -27,13 +27,13 @@ export class SunriseGiftHistoryResultsComponent extends GiftHistoryResultsBaseCo
   }
 
   /** Reteives the gift history of the player. */
-  public retrieveHistoryByPlayer(): Observable<SunriseGiftHistory[]> {
-    return this.sunrise.getGiftHistoryByXuid(this.selectedPlayer.xuid);
+  public retrieveHistoryByPlayer$(): Observable<SunriseGiftHistory[]> {
+    return this.sunrise.getGiftHistoryByXuid$(this.selectedPlayer.xuid);
   }
 
   /** Reteives the gift history of a LSP group. */
-  public retrieveHistoryByLspGroup(): Observable<SunriseGiftHistory[]> {
-    return this.sunrise.getGiftHistoryByLspGroup(this.selectedGroup.id);
+  public retrieveHistoryByLspGroup$(): Observable<SunriseGiftHistory[]> {
+    return this.sunrise.getGiftHistoryByLspGroup$(this.selectedGroup.id);
   }
 
   /** Generates the gift history item list to display for each gift history entry. */

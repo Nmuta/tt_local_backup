@@ -52,7 +52,7 @@ describe('SunrisePlayerSidebarDetailsComponent', () => {
     const expectedGamertag = 'test-gamertag';
     beforeEach(() => {
       component.gamertag = expectedGamertag;
-      mockSunriseService.getPlayerDetailsByGamertag = jasmine
+      mockSunriseService.getPlayerDetailsByGamertag$ = jasmine
         .createSpy('getPlayerDetailsByGamertag')
         .and.returnValue(of(SunrisePlayerGamertagDetailsFakeApi.make()));
     });
@@ -62,7 +62,7 @@ describe('SunrisePlayerSidebarDetailsComponent', () => {
         /* nothing */
       });
 
-      expect(mockSunriseService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
+      expect(mockSunriseService.getPlayerDetailsByGamertag$).toHaveBeenCalledWith(expectedGamertag);
     });
   });
 });

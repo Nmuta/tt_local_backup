@@ -4,12 +4,21 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { SunriseBanSummary } from '@models/sunrise';
+import { SteelheadBanSummary } from '@models/steelhead';
+import { ApolloBanSummary } from '@models/apollo';
+import { WoodstockBanSummary } from '@models/woodstock';
 
 export interface BanQuery {
   isLoading: boolean;
   loadError: boolean;
   banList: unknown[];
 }
+
+type AnyBanSummary =
+  | SunriseBanSummary
+  | SteelheadBanSummary
+  | ApolloBanSummary
+  | WoodstockBanSummary;
 
 /** Displays the ban chip icons for a given identity/query. */
 @Component({
@@ -19,7 +28,7 @@ export interface BanQuery {
 })
 export class BanChipIconComponent extends BaseComponent implements OnChanges {
   @Input() public identity: IdentityResultUnion = null;
-  @Input() public banSummary: SunriseBanSummary = null;
+  @Input() public banSummary: AnyBanSummary = null;
   @Input() public banQuery: BanQuery = null;
   @Output() public gavelClick = new EventEmitter<BanChipIconComponent>();
 

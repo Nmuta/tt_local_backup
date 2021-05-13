@@ -1,22 +1,21 @@
-import { Injectable, Provider } from '@angular/core';
+import { Provider } from '@angular/core';
 import _ from 'lodash';
 import { defer, of } from 'rxjs';
 
 import { ApiService } from './api.service';
 
 /** Defines the mock for the API Service. */
-@Injectable()
 export class MockApiService {
-  public getRequest = jasmine
+  public getRequest$ = jasmine
     .createSpy('getRequest')
     .and.returnValue(defer(() => of(_.clone(this.generator()))));
-  public postRequest = jasmine
+  public postRequest$ = jasmine
     .createSpy('postRequest')
     .and.returnValue(defer(() => of(_.clone(this.generator()))));
-  public putRequest = jasmine
+  public putRequest$ = jasmine
     .createSpy('putRequest')
     .and.returnValue(defer(() => of(_.clone(this.generator()))));
-  public deleteRequest = jasmine
+  public deleteRequest$ = jasmine
     .createSpy('deleteRequest')
     .and.returnValue(defer(() => of(_.clone(this.generator()))));
 

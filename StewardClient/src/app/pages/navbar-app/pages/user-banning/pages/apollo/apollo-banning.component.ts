@@ -34,7 +34,7 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
   public bannedXuids: BigNumber[] = [];
   public selectedPlayer: IdentityResultAlpha = null;
 
-  public identitySortFn: (
+  public identitySortFn$: (
     identities: AugmentedCompositeIdentity[],
   ) => Observable<AugmentedCompositeIdentity[]> = null;
 
@@ -46,7 +46,7 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
     this.playerIdentities$
       .pipe(
         map(identities => identities.map(i => i.xuid)), // to xuid list
-        switchMap(xuids => this.apollo.getBanSummariesByXuids(xuids)), // make request
+        switchMap(xuids => this.apollo.getBanSummariesByXuids$(xuids)), // make request
       )
       .subscribe(summaries$);
     summaries$
@@ -60,7 +60,7 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
       )
       .subscribe(bannedXuids => (this.bannedXuids = bannedXuids));
 
-    this.identitySortFn = identities => {
+    this.identitySortFn$ = identities => {
       return summaryLookup$.pipe(
         switchMap(summaryLookup => {
           return of(
@@ -82,10 +82,10 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
     this.selectedPlayer = identity;
   }
 
-  public submit = (): Observable<unknown> => this.submitInternal();
+  public submit$ = (): Observable<unknown> => this.submitInternal$();
 
   /** Submit the form. */
-  public submitInternal(): Observable<unknown> {
+  public submitInternal$(): Observable<unknown> {
     this.isLoading = true;
     const identities = this.playerIdentities;
     const banOptions = this.formControls.banOptions.value as BanOptions;
@@ -102,7 +102,7 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
       };
     });
 
-    return this.apollo.postBanPlayersWithBackgroundProcessing(bans).pipe(
+    return this.apollo.postBanPlayersWithBackgroundProcessing$(bans).pipe(
       takeUntil(this.onDestroy$),
       catchError(error => {
         this.loadError = error;

@@ -29,7 +29,7 @@ export class WoodstockOverviewComponent implements OnChanges {
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.woodstock.getProfileSummaryByXuid(this.xuid).subscribe(
+    this.woodstock.getProfileSummaryByXuid$(this.xuid).subscribe(
       summary => {
         this.isLoading = false;
         this.profileSummary = summary;

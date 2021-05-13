@@ -9,14 +9,16 @@ import { GravityGiftHistoryState } from './state/gravity-gift-history.state';
 import { SetGravitySelectedPlayerIdentities } from './state/gravity-gift-history.state.actions';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
-import { GravityPlayerInventoryBeta, GravityPseudoPlayerInventoryProfile } from '@models/gravity';
+import { GravityPlayerInventoryBeta } from '@models/gravity';
 
 /** The gravity gift history page for the Navbar app. */
 @Component({
   templateUrl: './gravity-gift-history.component.html',
   styleUrls: ['./gravity-gift-history.component.scss'],
 })
-export class GravityGiftHistoryComponent extends GiftHistoryBaseComponent implements OnInit {
+export class GravityGiftHistoryComponent
+  extends GiftHistoryBaseComponent<string>
+  implements OnInit {
   @Select(GravityGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultBetaBatch>;
 
@@ -24,7 +26,6 @@ export class GravityGiftHistoryComponent extends GiftHistoryBaseComponent implem
   public selectedPlayerIdentities: IdentityResultBetaBatch;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultBeta;
-  public selectedPlayerInventoryProfile: GravityPseudoPlayerInventoryProfile;
   public selectedPlayerInventory: GravityPlayerInventoryBeta;
   public selectedPlayer: IdentityResultBeta;
 

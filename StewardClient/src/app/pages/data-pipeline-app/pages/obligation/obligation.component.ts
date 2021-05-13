@@ -63,7 +63,7 @@ export class DataPipelineObligationComponent extends BaseComponent {
     this.getMonitor = this.updateMonitors(this.getMonitor);
 
     this.obligationsService
-      .get(this.options.name)
+      .get$(this.options.name)
       .pipe(
         takeUntil(this.onDestroy$),
         this.getMonitor.monitorSingleFire(),
@@ -90,7 +90,7 @@ export class DataPipelineObligationComponent extends BaseComponent {
     this.putMonitor = this.updateMonitors(this.putMonitor);
 
     this.obligationsService
-      .put(this.obligationOptionsToApiObligation(this.options))
+      .put$(this.obligationOptionsToApiObligation(this.options))
       .pipe(takeUntil(this.onDestroy$), this.putMonitor.monitorSingleFire())
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
@@ -106,7 +106,7 @@ export class DataPipelineObligationComponent extends BaseComponent {
 
     this.postMonitor = this.updateMonitors(this.postMonitor);
     this.obligationsService
-      .post(this.obligationOptionsToApiObligation(this.options))
+      .post$(this.obligationOptionsToApiObligation(this.options))
       .pipe(takeUntil(this.onDestroy$), this.postMonitor.monitorSingleFire())
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
@@ -123,7 +123,7 @@ export class DataPipelineObligationComponent extends BaseComponent {
     this.deleteMonitor = this.updateMonitors(this.deleteMonitor);
 
     this.obligationsService
-      .delete(this.options.name)
+      .delete$(this.options.name)
       .pipe(takeUntil(this.onDestroy$), this.deleteMonitor.monitorSingleFire())
       .subscribe(_model => {
         this.clearVerificationCheckboxes();

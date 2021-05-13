@@ -52,7 +52,7 @@ describe('ApolloPlayerSidebarDetailsComponent', () => {
     const expectedGamertag = 'test-gamertag';
     beforeEach(() => {
       component.gamertag = expectedGamertag;
-      mockApolloService.getPlayerDetailsByGamertag = jasmine
+      mockApolloService.getPlayerDetailsByGamertag$ = jasmine
         .createSpy('getPlayerDetailsByGamertag')
         .and.returnValue(of(ApolloPlayerGamertagDetailsFakeApi.make()));
     });
@@ -62,7 +62,7 @@ describe('ApolloPlayerSidebarDetailsComponent', () => {
         /* nothing */
       });
 
-      expect(mockApolloService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(expectedGamertag);
+      expect(mockApolloService.getPlayerDetailsByGamertag$).toHaveBeenCalledWith(expectedGamertag);
     });
   });
 });

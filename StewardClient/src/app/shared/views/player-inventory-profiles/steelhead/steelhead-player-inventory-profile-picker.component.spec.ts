@@ -36,7 +36,7 @@ describe('SteelheadPlayerInventoryProfilePickerComponent', () => {
   baseTests(
     () => fixture,
     () => first(SteelheadPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
-    () => new MockSteelheadService().getPlayerInventoryProfilesByXuid,
-    fn => (service.getPlayerInventoryProfilesByXuid = fn),
+    () => new MockSteelheadService().getPlayerInventoryProfilesByXuid$,
+    fn => (service.getPlayerInventoryProfilesByXuid$ = fn),
   );
 });

@@ -127,18 +127,18 @@ export class SunriseGiftBasketComponent
   }
 
   /** Sends a sunrise gift to players. */
-  public sendGiftToPlayers(gift: SunriseGift): Observable<BackgroundJob<void>> {
+  public sendGiftToPlayers$(gift: SunriseGift): Observable<BackgroundJob<void>> {
     const groupGift = gift as SunriseGroupGift;
     groupGift.xuids = this.playerIdentities
       .filter(player => !player.error)
       .map(player => player.xuid);
 
-    return this.sunriseService.postGiftPlayersUsingBackgroundTask(groupGift);
+    return this.sunriseService.postGiftPlayersUsingBackgroundTask$(groupGift);
   }
 
   /** Sends a sunrise gift to an LSP group. */
-  public sendGiftToLspGroup(gift: SunriseGift): Observable<GiftResponse<BigNumber>> {
-    return this.sunriseService.postGiftLspGroup(this.lspGroup, gift);
+  public sendGiftToLspGroup$(gift: SunriseGift): Observable<GiftResponse<BigNumber>> {
+    return this.sunriseService.postGiftLspGroup$(this.lspGroup, gift);
   }
 
   /** Sets the state gift basket. */

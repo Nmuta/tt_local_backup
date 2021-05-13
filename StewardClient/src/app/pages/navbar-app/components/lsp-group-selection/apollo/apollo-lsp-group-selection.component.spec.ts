@@ -50,13 +50,13 @@ describe('ApolloLspGroupSelectionComponent', () => {
     });
   });
 
-  describe('Method: lspGroupSelector', () => {
+  describe('Method: lspGroupSelector$', () => {
     beforeEach(() => {
       mockStore.select = jasmine.createSpy('select');
     });
 
     it('should select apollo lsp groups from memory', () => {
-      component.lspGroupSelector();
+      component.lspGroupSelector$();
       expect(mockStore.select).toHaveBeenCalledWith(LspGroupMemoryState.apolloLspGroups);
     });
   });

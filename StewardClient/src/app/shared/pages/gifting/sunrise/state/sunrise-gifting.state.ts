@@ -32,7 +32,7 @@ export class SunriseGiftingStateModel {
 export class SunriseGiftingState {
   /** Sets the gifting page's selected player identities. */
   @Action(SetSunriseGiftingSelectedPlayerIdentities, { cancelUncompleted: true })
-  public setSunriseSelectedPlayerIdentities(
+  public setSunriseSelectedPlayerIdentities$(
     ctx: StateContext<SunriseGiftingStateModel>,
     action: SetSunriseGiftingSelectedPlayerIdentities,
   ): Observable<SunriseGiftingStateModel> {
@@ -41,7 +41,7 @@ export class SunriseGiftingState {
 
   /** Sets the gifting page's selected mat tab index. */
   @Action(SetSunriseGiftingMatTabIndex, { cancelUncompleted: true })
-  public setSunriseMatTabIndex(
+  public setSunriseMatTabIndex$(
     ctx: StateContext<SunriseGiftingStateModel>,
     action: SetSunriseGiftingMatTabIndex,
   ): Observable<SunriseGiftingStateModel> {
@@ -50,7 +50,7 @@ export class SunriseGiftingState {
 
   /** Sets the gift basket. */
   @Action(SetSunriseGiftBasket, { cancelUncompleted: true })
-  public setSunriseGiftBasket(
+  public setSunriseGiftBasket$(
     ctx: StateContext<SunriseGiftingStateModel>,
     action: SetSunriseGiftBasket,
   ): Observable<SunriseGiftingStateModel> {

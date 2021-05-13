@@ -26,7 +26,7 @@ export type InventoryItemGroup = {
   items: MasterInventoryItem[];
 };
 export type GiftUnion = GravityGift | SunriseGift | ApolloGift;
-export type GiftBasketModel = MasterInventoryItem & { edit: boolean; error: string };
+export type GiftBasketModel = MasterInventoryItem & { edit?: boolean; error?: string };
 export enum GiftReason {
   LostSave = 'Lost Save',
   AuctionHouse = 'Auction House',
@@ -116,10 +116,10 @@ export abstract class GiftBasketBaseComponent<
   public abstract populateGiftBasketFromReference(): void;
 
   /** Sends a gift to players. */
-  public abstract sendGiftToPlayers(gift: GiftUnion): Observable<BackgroundJob<void>>;
+  public abstract sendGiftToPlayers$(gift: GiftUnion): Observable<BackgroundJob<void>>;
 
   /** Sends a gift to an LSP group. */
-  public abstract sendGiftToLspGroup(gift: GiftUnion): Observable<GiftResponse<BigNumber>>;
+  public abstract sendGiftToLspGroup$(gift: GiftUnion): Observable<GiftResponse<BigNumber>>;
 
   /** Sets the state gift basket. */
   public abstract setStateGiftBasket(giftBasket: GiftBasketModel[]): void;
@@ -204,8 +204,8 @@ export abstract class GiftBasketBaseComponent<
 
     const sendGift$: Observable<BackgroundJob<void> | GiftResponse<BigNumber>> = this
       .usingPlayerIdentities
-      ? this.sendGiftToPlayers(gift)
-      : this.sendGiftToLspGroup(gift);
+      ? this.sendGiftToPlayers$(gift)
+      : this.sendGiftToLspGroup$(gift);
 
     sendGift$
       .pipe(
@@ -233,7 +233,7 @@ export abstract class GiftBasketBaseComponent<
   /** Waits for a background job to complete. */
   public waitForBackgroundJobToComplete(job: BackgroundJob<void>): void {
     this.backgroundJobService
-      .getBackgroundJob<GiftResponse<BigNumber | string>[]>(job.jobId)
+      .getBackgroundJob$<GiftResponse<BigNumber | string>[]>(job.jobId)
       .pipe(
         takeUntil(this.onDestroy$),
         catchError(_error => {
@@ -254,7 +254,7 @@ export abstract class GiftBasketBaseComponent<
           }
           this.isLoading = false;
         }),
-        retryWhen(errors => errors.pipe(delayWhen(() => timer(3_000)))),
+        retryWhen(errors$ => errors$.pipe(delayWhen(() => timer(3_000)))),
       )
       .subscribe();
   }

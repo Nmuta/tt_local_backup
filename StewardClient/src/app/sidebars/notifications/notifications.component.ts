@@ -59,21 +59,21 @@ export class NotificationsComponent implements OnInit {
   /** Make fake job. Triggered on button press. */
   public makeFakeFailure(): void {
     this.jobService
-      .makeFakeBackgroundJob(1000, BackgroundJobStatus.Failed, { fake: 'fake' })
+      .makeFakeBackgroundJob$(1000, BackgroundJobStatus.Failed, { fake: 'fake' })
       .subscribe();
   }
 
   /** Make fake job. Triggered on button press. */
   public makeFakeSuccess(): void {
     this.jobService
-      .makeFakeBackgroundJob(1000, BackgroundJobStatus.Completed, { fake: 'fake' })
+      .makeFakeBackgroundJob$(1000, BackgroundJobStatus.Completed, { fake: 'fake' })
       .subscribe();
   }
 
   /** Make fake job. Triggered on button press. */
   public makeFakeOngoing(): void {
     this.jobService
-      .makeFakeBackgroundJob(1000, BackgroundJobStatus.InProgress, { fake: 'fake' })
+      .makeFakeBackgroundJob$(1000, BackgroundJobStatus.InProgress, { fake: 'fake' })
       .subscribe();
   }
 }

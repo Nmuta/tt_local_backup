@@ -25,7 +25,7 @@ export class ApolloGamertagsComponent extends GamertagsBaseComponent<ApolloShare
   }
 
   /** Gets the shared console gamertag list. */
-  public getSharedConsoleUsersByXuid(xuid: BigNumber): Observable<ApolloSharedConsoleUser[]> {
-    return this.apolloService.getSharedConsoleUsersByXuid(xuid);
+  public getSharedConsoleUsersByXuid$(xuid: BigNumber): Observable<ApolloSharedConsoleUser[]> {
+    return this.apolloService.getSharedConsoleUsersByXuid$(xuid);
   }
 }

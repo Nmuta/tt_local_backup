@@ -52,7 +52,7 @@ describe('SteelheadPlayerSidebarDetailsComponent', () => {
     const expectedGamertag = 'test-gamertag';
     beforeEach(() => {
       component.gamertag = expectedGamertag;
-      mockSteelheadService.getPlayerDetailsByGamertag = jasmine
+      mockSteelheadService.getPlayerDetailsByGamertag$ = jasmine
         .createSpy('getPlayerDetailsByGamertag')
         .and.returnValue(of(SteelheadPlayerGamertagDetailsFakeApi.make()));
     });
@@ -62,7 +62,7 @@ describe('SteelheadPlayerSidebarDetailsComponent', () => {
         /* nothing */
       });
 
-      expect(mockSteelheadService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(
+      expect(mockSteelheadService.getPlayerDetailsByGamertag$).toHaveBeenCalledWith(
         expectedGamertag,
       );
     });

@@ -39,14 +39,14 @@ describe('WoodstockService', () => {
 
   describe('Method: getPlayerIdentity', () => {
     beforeEach(() => {
-      service.getPlayerIdentities = jasmine
+      service.getPlayerIdentities$ = jasmine
         .createSpy('getPlayerIdentities')
         .and.returnValue(of([]));
     });
 
     it('should call service.getPlayerIdentities', done => {
-      service.getPlayerIdentity({ gamertag: 'test' }).subscribe(() => {
-        expect(service.getPlayerIdentities).toHaveBeenCalled();
+      service.getPlayerIdentity$({ gamertag: 'test' }).subscribe(() => {
+        expect(service.getPlayerIdentities$).toHaveBeenCalled();
         done();
       });
     });
@@ -57,9 +57,9 @@ describe('WoodstockService', () => {
       nextReturnValue = [];
     });
 
-    it('should call apiServiceMock.postRequest', done => {
-      service.getPlayerIdentities([]).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+    it('should call apiServiceMock.postRequest$', done => {
+      service.getPlayerIdentities$([]).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,
           jasmine.any(Object),
         );
@@ -69,9 +69,9 @@ describe('WoodstockService', () => {
   });
 
   describe('Method: getLspGroups', () => {
-    it('should call API service getRequest', done => {
-      service.getLspGroups().subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(`${service.basePath}/groups`);
+    it('should call API service getRequest$', done => {
+      service.getLspGroups$().subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/groups`);
         done();
       });
     });
@@ -84,9 +84,9 @@ describe('WoodstockService', () => {
       expectedXuid = new BigNumber(fakeXuid());
     });
 
-    it('should call API service getRequest with the expected params', done => {
-      service.getPlayerNotificationsByXuid(expectedXuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+    it('should call API service getRequest$ with the expected params', done => {
+      service.getPlayerNotificationsByXuid$(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/notifications`,
         );
         done();
@@ -98,12 +98,12 @@ describe('WoodstockService', () => {
     const xuid = fakeXuid();
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
     });
 
-    it('should call apiServiceMock.getRequest', done => {
-      service.getPlayerInventoryByXuid(xuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+    it('should call apiServiceMock.getRequest$', done => {
+      service.getPlayerInventoryByXuid$(xuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${xuid})/inventory`,
         );
         done();
@@ -118,9 +118,9 @@ describe('WoodstockService', () => {
       expectedGamertag = 'test-gamertag';
     });
 
-    it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+    it('should call API service getRequest$ with the expected params', done => {
+      service.getPlayerDetailsByGamertag$(expectedGamertag).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/gamertag(${expectedGamertag})/details`,
         );
         done();
@@ -132,12 +132,12 @@ describe('WoodstockService', () => {
     const expectedXuid = new BigNumber(123456789);
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
     });
 
-    it('should call API service getRequest with the expected params', done => {
-      service.getGiftHistoryByXuid(expectedXuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+    it('should call API service getRequest$ with the expected params', done => {
+      service.getGiftHistoryByXuid$(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
         );
         done();
@@ -149,12 +149,12 @@ describe('WoodstockService', () => {
     const expectedXuid = new BigNumber(123456789);
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
     });
 
-    it('should call API service getRequest with the expected params', done => {
-      service.getProfileRollbacksXuid(expectedXuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+    it('should call API service getRequest$ with the expected params', done => {
+      service.getProfileRollbacksXuid$(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/profileRollbacks`,
         );
         done();
@@ -166,12 +166,12 @@ describe('WoodstockService', () => {
     const expectedLspGroupId = new BigNumber(1234);
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
     });
 
-    it('should call API service getRequest with the expected params', done => {
-      service.getGiftHistoryByXuid(expectedLspGroupId).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+    it('should call API service getRequest$ with the expected params', done => {
+      service.getGiftHistoryByXuid$(expectedLspGroupId).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
         );
         done();
@@ -180,7 +180,7 @@ describe('WoodstockService', () => {
   });
 
   it('handles getFlagsByXuid', done => {
-    service.getFlagsByXuid(fakeXuid()).subscribe(output => {
+    service.getFlagsByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -191,13 +191,15 @@ describe('WoodstockService', () => {
 
   it('handles putFlagsByXuid', done => {
     const typedReturnValue = (nextReturnValue = WoodstockPlayerXuidUserFlagsFakeApi.make());
-    service.putFlagsByXuid(fakeXuid(), typedReturnValue as WoodstockUserFlags).subscribe(output => {
-      expect(output as unknown).toEqual(
-        nextReturnValue as unknown,
-        'fields should not be modified',
-      );
-      done();
-    });
+    service
+      .putFlagsByXuid$(fakeXuid(), typedReturnValue as WoodstockUserFlags)
+      .subscribe(output => {
+        expect(output as unknown).toEqual(
+          nextReturnValue as unknown,
+          'fields should not be modified',
+        );
+        done();
+      });
   });
 
   it('handles getBanHistoryByXuid', done => {
@@ -205,7 +207,7 @@ describe('WoodstockService', () => {
       new BigNumber(12345),
       1,
     ));
-    service.getBanHistoryByXuid(fakeXuid()).subscribe(output => {
+    service.getBanHistoryByXuid$(fakeXuid()).subscribe(output => {
       expect(output[0].startTimeUtc instanceof Date).toBe(true, 'liveOps.startTimeUtc is Date');
       expect(output[0].expireTimeUtc instanceof Date).toBe(true, 'liveOps.expireTimeUtc is Date');
       expect(output[0].startTimeUtc instanceof Date).toBe(true, 'services.startTimeUtc is Date');
@@ -228,7 +230,7 @@ describe('WoodstockService', () => {
 
   it('handles getSharedConsoleUsersByXuid', done => {
     const typedReturnValue = (nextReturnValue = WoodstockPlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
-    service.getSharedConsoleUsersByXuid(fakeXuid()).subscribe(output => {
+    service.getSharedConsoleUsersByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         typedReturnValue as unknown,
         'fields should not be modified',
@@ -239,7 +241,7 @@ describe('WoodstockService', () => {
 
   it('handles getConsoleDetailsByXuid', done => {
     nextReturnValue = WoodstockPlayerXuidConsolesFakeApi.makeMany();
-    service.getConsoleDetailsByXuid(new BigNumber(fakeXuid())).subscribe(output => {
+    service.getConsoleDetailsByXuid$(new BigNumber(fakeXuid())).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -252,7 +254,7 @@ describe('WoodstockService', () => {
     const sampleGet = WoodstockPlayerXuidConsolesFakeApi.makeMany();
     nextReturnValue = WoodstockConsoleIsBannedFakeApi.make();
     service
-      .putBanStatusByConsoleId(sampleGet[0].consoleId, !sampleGet[0].isBanned)
+      .putBanStatusByConsoleId$(sampleGet[0].consoleId, !sampleGet[0].isBanned)
       .subscribe(output => {
         expect(output as unknown).toEqual(
           nextReturnValue as unknown,
@@ -265,7 +267,7 @@ describe('WoodstockService', () => {
   it('handles getProfileSummaryByXuid', done => {
     const typedReturnValue = WoodstockPlayerXuidProfileSummaryFakeApi.make();
     nextReturnValue = typedReturnValue;
-    service.getProfileSummaryByXuid(fakeXuid()).subscribe(output => {
+    service.getProfileSummaryByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -289,12 +291,12 @@ describe('WoodstockService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
     });
 
-    it('should call API service postRequest with the expected params', done => {
-      service.postGiftPlayers(gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+    it('should call API service postRequest$ with the expected params', done => {
+      service.postGiftPlayers$(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/players`,
           gift,
         );
@@ -318,12 +320,12 @@ describe('WoodstockService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
     });
 
-    it('should call API service postRequest with the expected params', done => {
-      service.postGiftPlayersUsingBackgroundTask(gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+    it('should call API service postRequest$ with the expected params', done => {
+      service.postGiftPlayersUsingBackgroundTask$(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/players/useBackgroundProcessing`,
           gift,
         );
@@ -347,12 +349,12 @@ describe('WoodstockService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest$').and.returnValue(of([]));
     });
 
-    it('should call API service postRequest with the expected params', done => {
-      service.postGiftLspGroup(lspGroup, gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+    it('should call API service postRequest$ with the expected params', done => {
+      service.postGiftLspGroup$(lspGroup, gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/groupId(${lspGroup.id})`,
           gift,
         );

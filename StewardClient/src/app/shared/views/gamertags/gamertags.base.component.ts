@@ -27,7 +27,7 @@ export abstract class GamertagsBaseComponent<T> extends BaseComponent implements
   public abstract userDetailsRouterLink: string[];
 
   /** Gets the shared console gamertag list. */
-  public abstract getSharedConsoleUsersByXuid(xuid: BigNumber): Observable<T[]>;
+  public abstract getSharedConsoleUsersByXuid$(xuid: BigNumber): Observable<T[]>;
 
   /** Initialization hook. */
   public ngOnChanges(): void {
@@ -38,7 +38,7 @@ export abstract class GamertagsBaseComponent<T> extends BaseComponent implements
     this.isLoading = true;
     this.loadError = undefined;
 
-    const getSharedConsoleUsersByXuid$ = this.getSharedConsoleUsersByXuid(this.identity.xuid);
+    const getSharedConsoleUsersByXuid$ = this.getSharedConsoleUsersByXuid$(this.identity.xuid);
     getSharedConsoleUsersByXuid$
       .pipe(
         takeUntil(this.onDestroy$),

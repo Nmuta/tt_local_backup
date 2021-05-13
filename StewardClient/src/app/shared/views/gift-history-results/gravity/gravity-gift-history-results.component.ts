@@ -27,12 +27,12 @@ export class GravityGiftHistoryResultsComponent extends GiftHistoryResultsBaseCo
   }
 
   /** Reteives the gift history of the player. */
-  public retrieveHistoryByPlayer(): Observable<GravityGiftHistory[]> {
-    return this.gravity.getGiftHistoryByT10Id(this.selectedPlayer.t10Id);
+  public retrieveHistoryByPlayer$(): Observable<GravityGiftHistory[]> {
+    return this.gravity.getGiftHistoryByT10Id$(this.selectedPlayer.t10Id);
   }
 
   /** Reteives the gift history of a LSP group. */
-  public retrieveHistoryByLspGroup(): Observable<GravityGiftHistory[]> {
+  public retrieveHistoryByLspGroup$(): Observable<GravityGiftHistory[]> {
     return throwError('LSP Group Gifting not supported for Gravity.');
   }
 

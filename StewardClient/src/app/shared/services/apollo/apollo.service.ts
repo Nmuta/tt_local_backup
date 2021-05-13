@@ -39,9 +39,9 @@ export class ApolloService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets a single identity within this service. */
-  public getPlayerIdentity(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
+  public getPlayerIdentity$(identityQuery: IdentityQueryAlpha): Observable<IdentityResultAlpha> {
     const queryBatch: IdentityQueryAlphaBatch = [identityQuery];
-    return this.getPlayerIdentities(queryBatch).pipe(
+    return this.getPlayerIdentities$(queryBatch).pipe(
       switchMap((data: IdentityResultAlphaBatch) => {
         const result = data[0];
         return of(result);
@@ -50,125 +50,125 @@ export class ApolloService {
   }
 
   /** Gets identities within this service. */
-  public getPlayerIdentities(
+  public getPlayerIdentities$(
     identityQueries: IdentityQueryAlphaBatch,
   ): Observable<IdentityResultAlphaBatch> {
-    return this.apiService.postRequest<IdentityResultAlphaBatch>(
+    return this.apiService.postRequest$<IdentityResultAlphaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
     );
   }
 
   /** Gets ban summaries by a list of XUIDs. */
-  public getBanSummariesByXuids(xuids: BigNumber[]): Observable<ApolloBanSummary[]> {
-    return this.apiService.postRequest<ApolloBanSummary[]>(
+  public getBanSummariesByXuids$(xuids: BigNumber[]): Observable<ApolloBanSummary[]> {
+    return this.apiService.postRequest$<ApolloBanSummary[]>(
       `${this.basePath}/players/banSummaries`,
       xuids,
     );
   }
 
   /** Gets ban history by a XUID. */
-  public getBanHistoryByXuid(xuid: BigNumber): Observable<ApolloBanHistoryEntry[]> {
-    return this.apiService.getRequest<ApolloBanHistoryEntry[]>(
+  public getBanHistoryByXuid$(xuid: BigNumber): Observable<ApolloBanHistoryEntry[]> {
+    return this.apiService.getRequest$<ApolloBanHistoryEntry[]>(
       `${this.basePath}/player/xuid(${xuid})/banHistory`,
     );
   }
 
   /** Gets user flags by a XUID. */
-  public getFlagsByXuid(xuid: BigNumber): Observable<ApolloUserFlags> {
-    return this.apiService.getRequest<ApolloUserFlags>(
+  public getFlagsByXuid$(xuid: BigNumber): Observable<ApolloUserFlags> {
+    return this.apiService.getRequest$<ApolloUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
     );
   }
 
   /** Sets user flags by a XUID. */
-  public putFlagsByXuid(xuid: BigNumber, flags: ApolloUserFlags): Observable<ApolloUserFlags> {
-    return this.apiService.putRequest<ApolloUserFlags>(
+  public putFlagsByXuid$(xuid: BigNumber, flags: ApolloUserFlags): Observable<ApolloUserFlags> {
+    return this.apiService.putRequest$<ApolloUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
       flags,
     );
   }
 
   /** Gets shared console users by XUID. */
-  public getSharedConsoleUsersByXuid(xuid: BigNumber): Observable<ApolloSharedConsoleUser[]> {
-    return this.apiService.getRequest<ApolloSharedConsoleUser[]>(
+  public getSharedConsoleUsersByXuid$(xuid: BigNumber): Observable<ApolloSharedConsoleUser[]> {
+    return this.apiService.getRequest$<ApolloSharedConsoleUser[]>(
       `${this.basePath}/player/xuid(${xuid})/sharedConsoleUsers`,
     );
   }
 
   /** Gets console details by XUID. */
-  public getConsoleDetailsByXuid(xuid: BigNumber): Observable<ApolloConsoleDetailsEntry[]> {
-    return this.apiService.getRequest<ApolloConsoleDetailsEntry[]>(
+  public getConsoleDetailsByXuid$(xuid: BigNumber): Observable<ApolloConsoleDetailsEntry[]> {
+    return this.apiService.getRequest$<ApolloConsoleDetailsEntry[]>(
       `${this.basePath}/player/xuid(${xuid})/consoleDetails`,
     );
   }
 
   /** Bans players by a list of XUIDs. */
-  public postBanPlayers(bans: ApolloBanRequest[]): Observable<ApolloBanResult[]> {
-    return this.apiService.postRequest<ApolloBanResult[]>(`${this.basePath}/players/ban`, bans);
+  public postBanPlayers$(bans: ApolloBanRequest[]): Observable<ApolloBanResult[]> {
+    return this.apiService.postRequest$<ApolloBanResult[]>(`${this.basePath}/players/ban`, bans);
   }
 
   /** Bans players by a list of XUIDs using background processing. */
-  public postBanPlayersWithBackgroundProcessing(
+  public postBanPlayersWithBackgroundProcessing$(
     bans: ApolloBanRequest[],
   ): Observable<BackgroundJob<void>> {
-    return this.apiService.postRequest<BackgroundJob<void>>(
+    return this.apiService.postRequest$<BackgroundJob<void>>(
       `${this.basePath}/players/ban/useBackgroundProcessing`,
       bans,
     );
   }
 
   /** Gets apollo player details with a gamertag. This can be used to retrieve a XUID. */
-  public getPlayerDetailsByGamertag(gamertag: string): Observable<ApolloPlayerDetails> {
-    return this.apiService.getRequest<ApolloPlayerDetails>(
+  public getPlayerDetailsByGamertag$(gamertag: string): Observable<ApolloPlayerDetails> {
+    return this.apiService.getRequest$<ApolloPlayerDetails>(
       `${this.basePath}/player/gamertag(${gamertag})/details`,
     );
   }
 
   /** Gets Gift history by a XUID. */
-  public getGiftHistoryByXuid(xuid: BigNumber): Observable<ApolloGiftHistory[]> {
-    return this.apiService.getRequest<ApolloGiftHistory[]>(
+  public getGiftHistoryByXuid$(xuid: BigNumber): Observable<ApolloGiftHistory[]> {
+    return this.apiService.getRequest$<ApolloGiftHistory[]>(
       `${this.basePath}/player/xuid(${xuid})/giftHistory`,
     );
   }
 
   /** Gets Gift history by a LSP Group. */
-  public getGiftHistoryByLspGroup(lspGroupId: BigNumber): Observable<ApolloGiftHistory[]> {
-    return this.apiService.getRequest<ApolloGiftHistory[]>(
+  public getGiftHistoryByLspGroup$(lspGroupId: BigNumber): Observable<ApolloGiftHistory[]> {
+    return this.apiService.getRequest$<ApolloGiftHistory[]>(
       `${this.basePath}/group/groupId(${lspGroupId})/giftHistory`,
     );
   }
 
   /** Gets the apollo lsp groups. */
-  public getLspGroups(): Observable<LspGroups> {
-    return this.apiService.getRequest<LspGroups>(`${this.basePath}/groups`);
+  public getLspGroups$(): Observable<LspGroups> {
+    return this.apiService.getRequest$<LspGroups>(`${this.basePath}/groups`);
   }
 
   /** Gets the apollo master inventory. */
-  public getMasterInventory(): Observable<ApolloMasterInventory> {
-    return this.apiService.getRequest<ApolloMasterInventory>(`${this.basePath}/masterInventory`);
+  public getMasterInventory$(): Observable<ApolloMasterInventory> {
+    return this.apiService.getRequest$<ApolloMasterInventory>(`${this.basePath}/masterInventory`);
   }
 
   /** Gets the apollo player's inventory. */
-  public getPlayerInventoryByXuid(xuid: BigNumber): Observable<ApolloMasterInventory> {
-    return this.apiService.getRequest<ApolloMasterInventory>(
+  public getPlayerInventoryByXuid$(xuid: BigNumber): Observable<ApolloMasterInventory> {
+    return this.apiService.getRequest$<ApolloMasterInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
 
   /** Gets a specific version of an apollo player's inventory */
-  public getPlayerInventoryByProfileId(profileId: BigNumber): Observable<ApolloMasterInventory> {
-    return this.apiService.getRequest<ApolloMasterInventory>(
+  public getPlayerInventoryByProfileId$(profileId: BigNumber): Observable<ApolloMasterInventory> {
+    return this.apiService.getRequest$<ApolloMasterInventory>(
       `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }
 
   /** Gets a player's profile list  by XUID. */
-  public getPlayerInventoryProfilesByXuid(
+  public getPlayerInventoryProfilesByXuid$(
     xuid: BigNumber,
   ): Observable<ApolloPlayerInventoryProfile[]> {
     return this.apiService
-      .getRequest<ApolloPlayerInventoryProfile[]>(
+      .getRequest$<ApolloPlayerInventoryProfile[]>(
         `${this.basePath}/player/xuid(${xuid})/inventoryProfiles`,
       )
       .pipe(
@@ -182,29 +182,29 @@ export class ApolloService {
   }
 
   /** Gift players inventory items. */
-  public postGiftPlayers(gift: ApolloGroupGift): Observable<GiftResponse<BigNumber>[]> {
-    return this.apiService.postRequest<GiftResponse<BigNumber>[]>(
+  public postGiftPlayers$(gift: ApolloGroupGift): Observable<GiftResponse<BigNumber>[]> {
+    return this.apiService.postRequest$<GiftResponse<BigNumber>[]>(
       `${this.basePath}/gifting/players`,
       gift,
     );
   }
 
   /** Gift players inventory items using a background task. */
-  public postGiftPlayersUsingBackgroundTask(
+  public postGiftPlayersUsingBackgroundTask$(
     gift: ApolloGroupGift,
   ): Observable<BackgroundJob<void>> {
-    return this.apiService.postRequest<BackgroundJob<void>>(
+    return this.apiService.postRequest$<BackgroundJob<void>>(
       `${this.basePath}/gifting/players/useBackgroundProcessing`,
       gift,
     );
   }
 
   /** Gift lsp group inventory items. */
-  public postGiftLspGroup(
+  public postGiftLspGroup$(
     lspGroup: LspGroup,
     gift: ApolloGift,
   ): Observable<GiftResponse<BigNumber>> {
-    return this.apiService.postRequest<GiftResponse<BigNumber>>(
+    return this.apiService.postRequest$<GiftResponse<BigNumber>>(
       `${this.basePath}/gifting/groupId(${lspGroup.id})`,
       gift,
     );

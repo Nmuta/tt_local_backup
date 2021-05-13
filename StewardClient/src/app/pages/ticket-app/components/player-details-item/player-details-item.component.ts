@@ -11,7 +11,7 @@ export class PlayerDetailsItemComponent implements OnInit {
   /** Name of the player detail item. */
   @Input() public name: string;
   /** Value of the player details item */
-  @Input() public value: string | undefined;
+  @Input() public value: undefined | { toString(): string };
 
   /** Determines when to show the 'Copied!' UI notification.  */
   public copied: boolean;
@@ -30,7 +30,7 @@ export class PlayerDetailsItemComponent implements OnInit {
   /** Copies the value to client clipboard. */
   public copyToClipboard(): void {
     this.copied = true;
-    this.clipboard.copyMessage(this.value);
+    this.clipboard.copyMessage(this.value?.toString());
 
     if (!!this.timeoutObj) clearTimeout(this.timeoutObj);
 

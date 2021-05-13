@@ -7,7 +7,7 @@ import { JSONBigInt } from '@helpers/json-bigint';
 })
 export class BigJsonPipe implements PipeTransform {
   /** Transform hook. */
-  public transform(value: unknown): unknown {
+  public transform(value: unknown): string {
     return JSONBigInt.stringify(value, null, '  ');
   }
 }

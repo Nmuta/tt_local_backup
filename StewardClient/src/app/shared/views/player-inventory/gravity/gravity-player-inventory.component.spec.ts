@@ -42,8 +42,8 @@ describe('GravityPlayerInventoryComponent', () => {
 
     beforeEach(
       waitForAsync(() => {
-        service.getPlayerInventoryByT10Id = jasmine
-          .createSpy('getPlayerInventoryByT10Id')
+        service.getPlayerInventoryByT10Id$ = jasmine
+          .createSpy('getPlayerInventoryByT10Id$')
           .and.returnValue(of(GravityPlayerT10IdInventoryFakeApi.make(testT10Id)));
         component.identity = first(GravityPlayersIdentitiesFakeApi.make([{ t10Id: testT10Id }]));
         component.ngOnChanges({
@@ -52,8 +52,8 @@ describe('GravityPlayerInventoryComponent', () => {
       }),
     );
 
-    it('should call getPlayerInventoryByT10Id', () => {
-      expect(service.getPlayerInventoryByT10Id).toHaveBeenCalledWith(testT10Id);
+    it('should call getPlayerInventoryByT10Id$', () => {
+      expect(service.getPlayerInventoryByT10Id$).toHaveBeenCalledWith(testT10Id);
     });
 
     describe('when valid inventory is received', () => {

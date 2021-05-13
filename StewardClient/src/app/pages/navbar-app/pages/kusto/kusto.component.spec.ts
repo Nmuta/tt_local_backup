@@ -77,7 +77,7 @@ describe('KustoComponent', () => {
     ] as JsonTableResult<never>[];
 
     beforeEach(() => {
-      mockKustoService.postRunKustoQuery = jasmine
+      mockKustoService.postRunKustoQuery$ = jasmine
         .createSpy('postRunKustoQuery')
         .and.returnValue(of(testResults));
     });
@@ -90,7 +90,7 @@ describe('KustoComponent', () => {
       it('should not call kustoService.postRunKustoQuery()', () => {
         component.runQuery();
 
-        expect(mockKustoService.postRunKustoQuery).not.toHaveBeenCalled();
+        expect(mockKustoService.postRunKustoQuery$).not.toHaveBeenCalled();
       });
     });
 
@@ -106,7 +106,7 @@ describe('KustoComponent', () => {
       it('should not call kustoService.postRunKustoQuery()', () => {
         component.runQuery();
 
-        expect(mockKustoService.postRunKustoQuery).not.toHaveBeenCalled();
+        expect(mockKustoService.postRunKustoQuery$).not.toHaveBeenCalled();
       });
     });
 
@@ -124,14 +124,14 @@ describe('KustoComponent', () => {
       it('should call kustoService.postRunKustoQuery()', () => {
         component.runQuery();
 
-        expect(mockKustoService.postRunKustoQuery).toHaveBeenCalled();
+        expect(mockKustoService.postRunKustoQuery$).toHaveBeenCalled();
       });
 
       describe('And postRunKustoQuery returns error', () => {
         const error = { message: 'test error' };
 
         beforeEach(() => {
-          mockKustoService.postRunKustoQuery = jasmine
+          mockKustoService.postRunKustoQuery$ = jasmine
             .createSpy('postRunKustoQuery')
             .and.returnValue(throwError(error));
         });
@@ -139,7 +139,7 @@ describe('KustoComponent', () => {
         it('should set load error', () => {
           component.runQuery();
 
-          expect(mockKustoService.postRunKustoQuery).toHaveBeenCalled();
+          expect(mockKustoService.postRunKustoQuery$).toHaveBeenCalled();
           expect(component.isLoading).toBeFalsy();
           expect(component.loadError).toEqual(error);
         });
@@ -147,7 +147,7 @@ describe('KustoComponent', () => {
 
       describe('And postRunKustoQuery returns valid response', () => {
         beforeEach(() => {
-          mockKustoService.postRunKustoQuery = jasmine
+          mockKustoService.postRunKustoQuery$ = jasmine
             .createSpy('postRunKustoQuery')
             .and.returnValue(of(testResults));
         });
@@ -155,7 +155,7 @@ describe('KustoComponent', () => {
         it('should set queryResponse in component', () => {
           component.runQuery();
 
-          expect(mockKustoService.postRunKustoQuery).toHaveBeenCalled();
+          expect(mockKustoService.postRunKustoQuery$).toHaveBeenCalled();
           expect(component.isLoading).toBeFalsy();
           expect(component.loadError).toBeUndefined();
           expect(component.queryResponse).toEqual(testResults);

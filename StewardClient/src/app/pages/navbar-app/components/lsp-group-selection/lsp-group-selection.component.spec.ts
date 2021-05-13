@@ -40,7 +40,7 @@ describe('LspGroupSelectionBaseComponent', () => {
   describe('Method: ngOnInit', () => {
     beforeEach(() => {
       component.dispatchLspGroupStoreAction = jasmine.createSpy('dispatchLspGroupStoreAction');
-      component.lspGroupSelector = jasmine.createSpy('lspGroupSelector').and.returnValue(of([]));
+      component.lspGroupSelector$ = jasmine.createSpy('lspGroupSelector$').and.returnValue(of([]));
     });
 
     it('should call dispatchLspGroupStoreAction', () => {
@@ -49,11 +49,11 @@ describe('LspGroupSelectionBaseComponent', () => {
       expect(component.dispatchLspGroupStoreAction).toHaveBeenCalled();
     });
 
-    describe('When lspGroupSelector observable returns valid data', () => {
+    describe('When lspGroupSelector$ observable returns valid data', () => {
       const testData = [{ id: new BigNumber(0), name: 'test-1' }];
       beforeEach(() => {
-        component.lspGroupSelector = jasmine
-          .createSpy('lspGroupSelector')
+        component.lspGroupSelector$ = jasmine
+          .createSpy('lspGroupSelector$')
           .and.returnValue(of(testData));
       });
 
@@ -66,11 +66,11 @@ describe('LspGroupSelectionBaseComponent', () => {
       });
     });
 
-    describe('When lspGroupSelector observable throws an error', () => {
+    describe('When lspGroupSelector$ observable throws an error', () => {
       const errorMessage = 'Test error';
       beforeEach(() => {
-        component.lspGroupSelector = jasmine
-          .createSpy('lspGroupSelector')
+        component.lspGroupSelector$ = jasmine
+          .createSpy('lspGroupSelector$')
           .and.returnValue(throwError(errorMessage));
       });
 

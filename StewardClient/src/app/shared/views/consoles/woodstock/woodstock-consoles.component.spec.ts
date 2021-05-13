@@ -51,13 +51,13 @@ describe('WoodstockConsolesComponent', () => {
         // console details prep
         consoleDetails$ = new Subject<WoodstockConsoleDetailsEntry[]>();
         consoleDetailsValue = WoodstockPlayerXuidConsolesFakeApi.makeMany() as WoodstockConsoleDetailsEntry[];
-        mockWoodstockService.getConsoleDetailsByXuid = jasmine
+        mockWoodstockService.getConsoleDetailsByXuid$ = jasmine
           .createSpy('getConsoleDetailsByXuid')
           .and.returnValue(consoleDetails$);
 
         // ban status prep
         banStatus$ = new Subject<void>();
-        mockWoodstockService.putBanStatusByConsoleId = jasmine
+        mockWoodstockService.putBanStatusByConsoleId$ = jasmine
           .createSpy('putBanStatusByConsoleId')
           .and.returnValue(banStatus$);
 
@@ -158,12 +158,12 @@ describe('WoodstockConsolesComponent', () => {
         }),
       );
 
-      describe('makeBanAction', () => {
+      describe('makeBanAction$', () => {
         it(
           'should ban',
           waitForAsync(async () => {
             // create the ban action
-            const banAction = component.makeBanAction(firstUnbanned.consoleId);
+            const banAction = component.makeBanAction$(firstUnbanned.consoleId);
             expect(banAction).toBeTruthy();
             await fixture.whenStable();
 
@@ -182,12 +182,12 @@ describe('WoodstockConsolesComponent', () => {
         );
       });
 
-      describe('makeUnbanAction', () => {
+      describe('makeUnbanAction$', () => {
         it(
           'should unban',
           waitForAsync(async () => {
             // create the ban action
-            const banAction = component.makeUnbanAction(firstBanned.consoleId);
+            const banAction = component.makeUnbanAction$(firstBanned.consoleId);
             expect(banAction).toBeTruthy();
             await fixture.whenStable();
 

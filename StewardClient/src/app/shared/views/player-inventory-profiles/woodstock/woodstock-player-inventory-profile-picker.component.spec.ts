@@ -36,7 +36,7 @@ describe('WoodstockPlayerInventoryProfilePickerComponent', () => {
   baseTests(
     () => fixture,
     () => first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
-    () => new MockWoodstockService(null).getPlayerInventoryProfilesByXuid,
-    fn => (service.getPlayerInventoryProfilesByXuid = fn),
+    () => new MockWoodstockService(null).getPlayerInventoryProfilesByXuid$,
+    fn => (service.getPlayerInventoryProfilesByXuid$ = fn),
   );
 });

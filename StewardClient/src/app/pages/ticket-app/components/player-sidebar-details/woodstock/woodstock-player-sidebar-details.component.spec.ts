@@ -52,7 +52,7 @@ describe('WoodstockPlayerSidebarDetailsComponent', () => {
     const expectedGamertag = 'test-gamertag';
     beforeEach(() => {
       component.gamertag = expectedGamertag;
-      mockWoodstockService.getPlayerDetailsByGamertag = jasmine
+      mockWoodstockService.getPlayerDetailsByGamertag$ = jasmine
         .createSpy('getPlayerDetailsByGamertag')
         .and.returnValue(of(WoodstockPlayerGamertagDetailsFakeApi.make()));
     });
@@ -62,7 +62,7 @@ describe('WoodstockPlayerSidebarDetailsComponent', () => {
         /* nothing */
       });
 
-      expect(mockWoodstockService.getPlayerDetailsByGamertag).toHaveBeenCalledWith(
+      expect(mockWoodstockService.getPlayerDetailsByGamertag$).toHaveBeenCalledWith(
         expectedGamertag,
       );
     });

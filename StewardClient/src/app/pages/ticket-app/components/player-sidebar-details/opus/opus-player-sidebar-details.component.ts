@@ -19,6 +19,6 @@ export class OpusPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseC
 
   /** Creates Opus's player details request. */
   public makeRequest$(): Observable<OpusPlayerDetails> {
-    return this.opusService.getPlayerDetailsByGamertag(this.gamertag);
+    return this.opusService.getPlayerDetailsByGamertag$(this.gamertag);
   }
 }

@@ -52,7 +52,7 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
     this.playerIdentities$
       .pipe(
         map(identities => identities.map(i => i.xuid)), // to xuid list
-        switchMap(xuids => this.woodstock.getBanSummariesByXuids(xuids)), // make request
+        switchMap(xuids => this.woodstock.getBanSummariesByXuids$(xuids)), // make request
       )
       .subscribe(summaries$);
     summaries$
@@ -103,7 +103,7 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
       };
     });
 
-    return this.woodstock.postBanPlayersWithBackgroundProcessing(bans).pipe(
+    return this.woodstock.postBanPlayersWithBackgroundProcessing$(bans).pipe(
       takeUntil(this.onDestroy$),
       catchError(error => {
         this.loadError = error;

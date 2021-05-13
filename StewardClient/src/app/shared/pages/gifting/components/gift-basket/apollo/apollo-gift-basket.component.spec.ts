@@ -135,36 +135,36 @@ describe('ApolloGiftBasketComponent', () => {
     });
   });
 
-  describe('Method: sendGiftToPlayers', () => {
+  describe('Method: sendGiftToPlayers$', () => {
     beforeEach(() => {
-      mockApolloService.postGiftPlayersUsingBackgroundTask = jasmine.createSpy(
+      mockApolloService.postGiftPlayersUsingBackgroundTask$ = jasmine.createSpy(
         'postGiftPlayersUsingBackgroundTask',
       );
       component.playerIdentities = [];
     });
 
     it('should call postGiftPlayersUsingBackgroundTask', () => {
-      component.sendGiftToPlayers({
+      component.sendGiftToPlayers$({
         giftReason: faker.random.words(10),
         inventory: { creditRewards: [], cars: [], vanityItems: [] },
       });
 
-      expect(mockApolloService.postGiftPlayersUsingBackgroundTask).toHaveBeenCalled();
+      expect(mockApolloService.postGiftPlayersUsingBackgroundTask$).toHaveBeenCalled();
     });
   });
 
-  describe('Method: sendGiftToLspGroup', () => {
+  describe('Method: sendGiftToLspGroup$', () => {
     beforeEach(() => {
-      mockApolloService.postGiftLspGroup = jasmine.createSpy('postGiftLspGroup');
+      mockApolloService.postGiftLspGroup$ = jasmine.createSpy('postGiftLspGroup');
     });
 
-    it('should call sendGiftToLspGroup', () => {
-      component.sendGiftToLspGroup({
+    it('should call sendGiftToLspGroup$', () => {
+      component.sendGiftToLspGroup$({
         giftReason: faker.random.words(10),
         inventory: { creditRewards: [], cars: [], vanityItems: [] },
       });
 
-      expect(mockApolloService.postGiftLspGroup).toHaveBeenCalled();
+      expect(mockApolloService.postGiftLspGroup$).toHaveBeenCalled();
     });
   });
 

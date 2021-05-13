@@ -27,7 +27,7 @@ export class ApolloComponent extends TicketAppBaseComponent {
   }
 
   /** Requests player identity. */
-  public requestPlayerIdentity(gamertag: string): Observable<IdentityResultAlpha> {
-    return this.apolloService.getPlayerIdentity({ gamertag });
+  public requestPlayerIdentity$(gamertag: string): Observable<IdentityResultAlpha> {
+    return this.apolloService.getPlayerIdentity$({ gamertag });
   }
 }

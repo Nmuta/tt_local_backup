@@ -20,15 +20,15 @@ export class SteelheadUserFlagsComponent extends UserFlagsBaseComponent<Steelhea
   }
 
   /** Gets Steelhead user flags. */
-  public getFlagsByXuid(xuid: BigNumber): Observable<SteelheadUserFlags> {
-    return this.steelheadService.getFlagsByXuid(xuid);
+  public getFlagsByXuid$(xuid: BigNumber): Observable<SteelheadUserFlags> {
+    return this.steelheadService.getFlagsByXuid$(xuid);
   }
 
   /** Sets the newly selected Steelhead flags. */
-  public putFlagsByXuid(
+  public putFlagsByXuid$(
     xuid: BigNumber,
     newFlags: SteelheadUserFlags,
   ): Observable<SteelheadUserFlags> {
-    return this.steelheadService.putFlagsByXuid(xuid, newFlags);
+    return this.steelheadService.putFlagsByXuid$(xuid, newFlags);
   }
 }

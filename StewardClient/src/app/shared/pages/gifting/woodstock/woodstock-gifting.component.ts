@@ -15,13 +15,14 @@ import {
   SetWoodstockGiftingMatTabIndex,
   SetWoodstockGiftingSelectedPlayerIdentities,
 } from './state/woodstock-gifting.state.actions';
+import BigNumber from 'bignumber.js';
 
 /** The woodstock gifting page for the Navbar app. */
 @Component({
   templateUrl: './woodstock-gifting.component.html',
   styleUrls: ['./woodstock-gifting.component.scss'],
 })
-export class WoodstockGiftingComponent extends GiftingBaseComponent implements OnInit {
+export class WoodstockGiftingComponent extends GiftingBaseComponent<BigNumber> implements OnInit {
   @Select(WoodstockGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 

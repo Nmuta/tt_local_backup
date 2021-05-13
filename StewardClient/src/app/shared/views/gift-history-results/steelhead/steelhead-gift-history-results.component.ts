@@ -27,13 +27,13 @@ export class SteelheadGiftHistoryResultsComponent extends GiftHistoryResultsBase
   }
 
   /** Reteives the gift history of the player. */
-  public retrieveHistoryByPlayer(): Observable<SteelheadGiftHistory[]> {
-    return this.steelheadService.getGiftHistoryByXuid(this.selectedPlayer.xuid);
+  public retrieveHistoryByPlayer$(): Observable<SteelheadGiftHistory[]> {
+    return this.steelheadService.getGiftHistoryByXuid$(this.selectedPlayer.xuid);
   }
 
   /** Reteives the gift history of a LSP group. */
-  public retrieveHistoryByLspGroup(): Observable<SteelheadGiftHistory[]> {
-    return this.steelheadService.getGiftHistoryByLspGroup(this.selectedGroup.id);
+  public retrieveHistoryByLspGroup$(): Observable<SteelheadGiftHistory[]> {
+    return this.steelheadService.getGiftHistoryByLspGroup$(this.selectedGroup.id);
   }
 
   /** Generates the gift history item list to display for each gift history entry. */

@@ -48,7 +48,7 @@ export class WoodstockCreditHistoryComponent extends BaseComponent implements On
         switchMap(() => {
           this.loadingMore = true;
           return this.woodstock
-            .getCreditHistoryByXuid(this.xuid, this.startIndex, this.maxResultsPerRequest)
+            .getCreditHistoryByXuid$(this.xuid, this.startIndex, this.maxResultsPerRequest)
             .pipe(
               catchError(error => {
                 this.loadingMore = false;

@@ -29,7 +29,7 @@ export class GravityGiftingStateModel {
 export class GravityGiftingState {
   /** Sets the gifting page's selected player identities. */
   @Action(SetGravitySelectedPlayerIdentities, { cancelUncompleted: true })
-  public setFakeApi(
+  public setFakeApi$(
     ctx: StateContext<GravityGiftingStateModel>,
     action: SetGravitySelectedPlayerIdentities,
   ): Observable<GravityGiftingStateModel> {
@@ -38,7 +38,7 @@ export class GravityGiftingState {
 
   /** Sets the gift basket. */
   @Action(SetGravityGiftBasket, { cancelUncompleted: true })
-  public setApolloGiftBasket(
+  public setApolloGiftBasket$(
     ctx: StateContext<GravityGiftingStateModel>,
     action: SetGravityGiftBasket,
   ): Observable<GravityGiftingStateModel> {

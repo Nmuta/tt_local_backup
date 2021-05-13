@@ -14,12 +14,12 @@ export class UserService {
   constructor(private apiService: ApiService) {}
 
   /** Sends request to get the user profile. */
-  public getUserProfile(): Observable<UserModel> {
-    return this.apiService.getRequest<UserModel>(`${this.basePath}/me`);
+  public getUserProfile$(): Observable<UserModel> {
+    return this.apiService.getRequest$<UserModel>(`${this.basePath}/me`);
   }
 
   /** Sends request to get Steward user data. */
-  public getStewardUsers(bulkLookup: BulkStewardUserLookup): Observable<UserModel[]> {
-    return this.apiService.postRequest<UserModel[]>(`${this.basePath}/users`, bulkLookup);
+  public getStewardUsers$(bulkLookup: BulkStewardUserLookup): Observable<UserModel[]> {
+    return this.apiService.postRequest$<UserModel[]>(`${this.basePath}/users`, bulkLookup);
   }
 }

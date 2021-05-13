@@ -15,7 +15,7 @@ export class MockOpusService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
-  public getIdentity = jasmine
+  public getIdentity$ = jasmine
     .createSpy('getIdentity')
     .and.callFake(() =>
       this.waitUntil$.pipe(
@@ -23,28 +23,28 @@ export class MockOpusService {
       ),
     );
 
-  public getPlayerDetailsByGamertag = jasmine
+  public getPlayerDetailsByGamertag$ = jasmine
     .createSpy('getPlayerDetailsByGamertag')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of({}))));
 
-  public getPlayerIdentity = jasmine
+  public getPlayerIdentity$ = jasmine
     .createSpy('getPlayerIdentity')
     .and.callFake((query: IdentityQueryAlpha) =>
       this.waitUntil$.pipe(switchMap(() => of(OpusPlayersIdentitiesFakeApi.make([query])))),
     );
-  public getPlayerIdentities = jasmine
+  public getPlayerIdentities$ = jasmine
     .createSpy('getPlayerIdentities')
     .and.callFake((query: IdentityQueryAlphaBatch) =>
       this.waitUntil$.pipe(switchMap(() => of(OpusPlayersIdentitiesFakeApi.make(query)))),
     );
 
-  public getPlayerInventoryProfilesByXuid = jasmine
+  public getPlayerInventoryProfilesByXuid$ = jasmine
     .createSpy('getPlayerInventoryProfilesByXuid')
     .and.callFake(_xuid =>
       this.waitUntil$.pipe(switchMap(() => of(OpusPlayerXuidInventoryProfilesFakeApi.make()))),
     );
 
-  public getPlayerInventoryByXuid = jasmine
+  public getPlayerInventoryByXuid$ = jasmine
     .createSpy('getPlayerInventoryByXuid')
     .and.callFake(xuid =>
       this.waitUntil$.pipe(switchMap(() => of(OpusPlayerXuidInventoryFakeApi.make(xuid)))),

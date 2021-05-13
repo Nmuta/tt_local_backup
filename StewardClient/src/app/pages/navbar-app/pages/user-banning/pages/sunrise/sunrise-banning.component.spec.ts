@@ -37,12 +37,12 @@ describe('SunriseBanningComponent', () => {
   });
 
   it('should submit', () => {
-    component.submitInternal();
+    component.submitInternal$();
   });
 
   it('should gather summaries', () => {
     const testXuids = [fakeXuid(), fakeXuid(), fakeXuid()];
-    sunrise.getBanSummariesByXuids = jasmine
+    sunrise.getBanSummariesByXuids$ = jasmine
       .createSpy('getBanSummariesByXuids')
       .and.callFake((xuids: BigNumber[]) => {
         const summaries = SunrisePlayersBanSummariesFakeApi.make(xuids);
@@ -58,7 +58,7 @@ describe('SunriseBanningComponent', () => {
     component.playerIdentities$.next(fakeIdentities);
     fixture.detectChanges();
 
-    expect(sunrise.getBanSummariesByXuids).toHaveBeenCalledTimes(1);
+    expect(sunrise.getBanSummariesByXuids$).toHaveBeenCalledTimes(1);
     expect(keys(component.summaryLookup).length).toBe(testXuids.length);
 
     const lookup0 = component.summaryLookup[testXuids[0].toString()];

@@ -48,8 +48,8 @@ describe('ApolloConsolesComponent', () => {
         // console details prep
         consoleDetails$ = new Subject<ApolloConsoleDetailsEntry[]>();
         consoleDetailsValue = SunrisePlayerXuidConsolesFakeApi.makeMany() as ApolloConsoleDetailsEntry[];
-        mockApolloService.getConsoleDetailsByXuid = jasmine
-          .createSpy('getConsoleDetailsByXuid')
+        mockApolloService.getConsoleDetailsByXuid$ = jasmine
+          .createSpy('getConsoleDetailsByXuid$')
           .and.returnValue(consoleDetails$);
 
         // emulate initialization event

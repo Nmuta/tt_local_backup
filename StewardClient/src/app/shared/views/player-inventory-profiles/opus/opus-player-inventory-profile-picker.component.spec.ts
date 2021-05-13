@@ -32,7 +32,7 @@ describe('OpusPlayerInventoryProfilePickerComponent', () => {
   baseTests(
     () => fixture,
     () => first(OpusPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
-    () => new MockOpusService().getPlayerInventoryProfilesByXuid,
-    fn => (service.getPlayerInventoryProfilesByXuid = fn),
+    () => new MockOpusService().getPlayerInventoryProfilesByXuid$,
+    fn => (service.getPlayerInventoryProfilesByXuid$ = fn),
   );
 });

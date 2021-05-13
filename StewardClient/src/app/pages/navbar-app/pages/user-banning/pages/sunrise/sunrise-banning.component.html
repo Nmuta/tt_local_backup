@@ -8,7 +8,7 @@
               [disableLookupTypes]="['t10Id']"
               [allowSelection]="true"
               [rejectionFn]="identityRejectionFn"
-              [sortFn]="identitySortFn"
+              [sortFn]="identitySortFn$"
               (found)="onPlayerIdentitiesChange($event)"
               (selected)="playerIdentitySelected($event)"
             >
@@ -44,7 +44,7 @@
               <ban-options [formControl]="formControls.banOptions"></ban-options>
               <verify-action-button
                 #submitButton
-                [action]="submit"
+                [action]="submit$"
                 [alwaysShow]="true"
                 [canSubmit]="canBan()"
                 [canSubmitDisabledReason]="'Form is invalid'"

@@ -27,7 +27,7 @@ export class WoodstockGamertagsComponent extends GamertagsBaseComponent<
   }
 
   /** Gets the shared console gamertag list. */
-  public getSharedConsoleUsersByXuid(xuid: BigNumber): Observable<WoodstockSharedConsoleUser[]> {
-    return this.woodstockService.getSharedConsoleUsersByXuid(xuid);
+  public getSharedConsoleUsersByXuid$(xuid: BigNumber): Observable<WoodstockSharedConsoleUser[]> {
+    return this.woodstockService.getSharedConsoleUsersByXuid$(xuid);
   }
 }

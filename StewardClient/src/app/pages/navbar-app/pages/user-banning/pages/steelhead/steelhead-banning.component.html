@@ -44,7 +44,7 @@
               <ban-options [formControl]="formControls.banOptions"></ban-options>
               <verify-action-button
                 #submitButton
-                [action]="submit || 'testing'"
+                [action]="submit$"
                 [alwaysShow]="true"
                 [canSubmit]="canBan()"
                 [canSubmitDisabledReason]="'Form is invalid'"

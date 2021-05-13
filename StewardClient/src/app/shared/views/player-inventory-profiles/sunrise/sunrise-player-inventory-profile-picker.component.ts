@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SunrisePlayerInventoryProfile } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise';
+import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-profiles-picker/player-inventory-profiles-picker.base.component';
 
@@ -15,6 +16,7 @@ import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-
   ],
 })
 export class SunrisePlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
+  BigNumber,
   IdentityResultAlpha,
   SunrisePlayerInventoryProfile
 > {
@@ -23,9 +25,9 @@ export class SunrisePlayerInventoryProfilePickerComponent extends PlayerInventor
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerProfilesByIdentity(
+  protected getPlayerProfilesByIdentity$(
     identity: IdentityResultAlpha,
   ): Observable<SunrisePlayerInventoryProfile[]> {
-    return this.sunrise.getPlayerInventoryProfilesByXuid(identity.xuid);
+    return this.sunrise.getPlayerInventoryProfilesByXuid$(identity.xuid);
   }
 }

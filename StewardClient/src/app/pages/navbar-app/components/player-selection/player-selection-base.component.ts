@@ -107,7 +107,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   protected foundIdentities$ = new Subject<AugmentedCompositeIdentity[]>();
 
   // this has to be its own value because we don't have the actual thing until ngAfterViewInit, and lookupList is called before that
-  private lookupTypeGroupChange = new Subject<void>();
+  private lookupTypeGroupChange$ = new Subject<void>();
 
   constructor(
     private readonly woodstock: WoodstockService,
@@ -141,7 +141,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
         takeUntil(this.onDestroy$),
         map(v => v.value as keyof IdentityQueryBetaIntersection),
         tap(v => this.lookupTypeChange.next(v)),
-        tap(_ => this.lookupTypeGroupChange.next()),
+        tap(_ => this.lookupTypeGroupChange$.next()),
         startWith(this.lookupType),
         pairwise(),
       )
@@ -270,30 +270,30 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     const queryIsBetaCompatible = every(newQueries, q => isValidBetaQuery(q));
 
     const queries: [
-      a: Observable<IdentityResultAlpha[]>, // Sunrise
-      b: Observable<IdentityResultAlpha[]>, // Opus
-      c: Observable<IdentityResultAlpha[]>, // Apollo
-      d: Observable<IdentityResultBeta[]>, // Gravity
-      e: Observable<IdentityResultAlpha[]>, // Steelhead
-      f: Observable<IdentityResultAlpha[]>, // Woodstock
+      a$: Observable<IdentityResultAlpha[]>, // Sunrise
+      b$: Observable<IdentityResultAlpha[]>, // Opus
+      c$: Observable<IdentityResultAlpha[]>, // Apollo
+      d$: Observable<IdentityResultBeta[]>, // Gravity
+      e$: Observable<IdentityResultAlpha[]>, // Steelhead
+      f$: Observable<IdentityResultAlpha[]>, // Woodstock
     ] = [
       queryIsAlphaCompatible
-        ? this.sunrise.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
+        ? this.sunrise.getPlayerIdentities$(newQueries as IdentityQueryAlpha[])
         : of([] as IdentityResultAlpha[]),
       queryIsAlphaCompatible
-        ? this.opus.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
+        ? this.opus.getPlayerIdentities$(newQueries as IdentityQueryAlpha[])
         : of([] as IdentityResultAlpha[]),
       queryIsAlphaCompatible
-        ? this.apollo.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
+        ? this.apollo.getPlayerIdentities$(newQueries as IdentityQueryAlpha[])
         : of([] as IdentityResultAlpha[]),
       queryIsBetaCompatible
-        ? this.gravity.getPlayerIdentities(newQueries as IdentityQueryBeta[])
+        ? this.gravity.getPlayerIdentities$(newQueries as IdentityQueryBeta[])
         : of([] as IdentityResultBeta[]),
 
       // TODO: Uncomment this when Steelhead endpoint is ready for production use.
       // Using empty array for now to stop failures
       //queryIsAlphaCompatible
-      //  ? this.steelhead.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
+      //  ? this.steelhead.getPlayerIdentities$(newQueries as IdentityQueryAlpha[])
       //  : of([] as IdentityResultAlpha[]),
       of([] as IdentityResultAlpha[]),
 
@@ -307,7 +307,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
 
     // get the value and replace it in the source if it's still there
     combineLatest(queries)
-      .pipe(takeUntil(this.onDestroy$), takeUntil(this.lookupTypeGroupChange))
+      .pipe(takeUntil(this.onDestroy$), takeUntil(this.lookupTypeGroupChange$))
       .subscribe(results => {
         // destructure
         const [

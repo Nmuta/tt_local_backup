@@ -14,24 +14,24 @@ export class BackgroundJobService {
   constructor(private readonly apiService: ApiService) {}
 
   /** Gets the background job. */
-  public makeFakeBackgroundJob<T>(
+  public makeFakeBackgroundJob$<T>(
     delayInMilliseconds: number,
     status: BackgroundJobStatus,
     response: T,
   ): Observable<BackgroundJob<T>> {
     switch (status) {
       case BackgroundJobStatus.Failed:
-        return this.apiService.postRequest<BackgroundJob<T>>(
+        return this.apiService.postRequest$<BackgroundJob<T>>(
           `${this.basePath}/fake/failure/${delayInMilliseconds}`,
           response,
         );
       case BackgroundJobStatus.InProgress:
-        return this.apiService.postRequest<BackgroundJob<T>>(
+        return this.apiService.postRequest$<BackgroundJob<T>>(
           `${this.basePath}/fake/in-progress/${delayInMilliseconds}`,
           response,
         );
       case BackgroundJobStatus.Completed:
-        return this.apiService.postRequest<BackgroundJob<T>>(
+        return this.apiService.postRequest$<BackgroundJob<T>>(
           `${this.basePath}/fake/success/${delayInMilliseconds}`,
           response,
         );
@@ -41,8 +41,8 @@ export class BackgroundJobService {
   }
 
   /** Gets the background job. */
-  public getBackgroundJob<T>(jobId: string): Observable<BackgroundJob<T>> {
-    return this.apiService.getRequest<BackgroundJob<T>>(`${this.basePath}/jobId(${jobId})`).pipe(
+  public getBackgroundJob$<T>(jobId: string): Observable<BackgroundJob<T>> {
+    return this.apiService.getRequest$<BackgroundJob<T>>(`${this.basePath}/jobId(${jobId})`).pipe(
       tap(job => {
         try {
           job.result = (job.rawResult as unknown) as T;

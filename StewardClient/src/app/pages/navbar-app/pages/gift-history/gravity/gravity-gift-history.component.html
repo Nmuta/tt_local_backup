@@ -21,13 +21,13 @@
         <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
           <gravity-player-inventory-profile-picker
             [identity]="selectedPlayerIdentity"
-            [(profileId)]="selectedPlayerInventoryProfile"
+            [(profileId)]="selectedPlayerInventoryProfileId"
           ></gravity-player-inventory-profile-picker>
 
           <div class="inventory-div">
             <gravity-player-inventory
               [identity]="selectedPlayerIdentity"
-              [profileId]="selectedPlayerInventoryProfile"
+              [profileId]="selectedPlayerInventoryProfileId"
               (inventoryFound)="onInventoryFound($event)"
             ></gravity-player-inventory>
           </div>

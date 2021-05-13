@@ -23,28 +23,28 @@ describe('service: GravityService', () => {
 
   describe('Method: getPlayerIdentity', () => {
     beforeEach(() => {
-      service.getPlayerIdentities = jasmine
-        .createSpy('getPlayerIdentities')
+      service.getPlayerIdentities$ = jasmine
+        .createSpy('getPlayerIdentities$')
         .and.returnValue(of([]));
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
-    it('should call service.getPlayerIdentities', done => {
-      service.getPlayerIdentity({ gamertag: 'test' }).subscribe(() => {
-        expect(service.getPlayerIdentities).toHaveBeenCalled();
+    it('should call service.getPlayerIdentities$', done => {
+      service.getPlayerIdentity$({ gamertag: 'test' }).subscribe(() => {
+        expect(service.getPlayerIdentities$).toHaveBeenCalled();
         done();
       });
     });
   });
 
-  describe('Method: getPlayerIdentities', () => {
+  describe('Method: getPlayerIdentities$', () => {
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call apiServiceMock.postRequest', done => {
-      service.getPlayerIdentities([]).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.getPlayerIdentities$([]).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,
           jasmine.any(Object),
         );
@@ -58,12 +58,12 @@ describe('service: GravityService', () => {
 
     beforeEach(() => {
       expectedGamertag = 'test-gamertag';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getPlayerDetailsByGamertag$(expectedGamertag).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/gamertag(${expectedGamertag})/details`,
         );
         done();
@@ -76,12 +76,12 @@ describe('service: GravityService', () => {
 
     beforeEach(() => {
       expectedT10Id = 'test-t10-id';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByT10Id(expectedT10Id).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getPlayerDetailsByT10Id$(expectedT10Id).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/t10Id(${expectedT10Id})/details`,
         );
         done();
@@ -94,12 +94,12 @@ describe('service: GravityService', () => {
 
     beforeEach(() => {
       expectedT10Id = 'test-t10-id';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerInventoryByT10Id(expectedT10Id).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getPlayerInventoryByT10Id$(expectedT10Id).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/t10Id(${expectedT10Id})/inventory`,
         );
         done();
@@ -114,14 +114,14 @@ describe('service: GravityService', () => {
     beforeEach(() => {
       expectedt10Id = 'test-t10-id';
       expectedProfileId = 'test-profile-id';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call API service getRequest with the expected params', done => {
       service
-        .getPlayerInventoryByT10IdAndProfileId(expectedt10Id, expectedProfileId)
+        .getPlayerInventoryByT10IdAndProfileId$(expectedt10Id, expectedProfileId)
         .subscribe(() => {
-          expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+          expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
             `${service.basePath}/player/t10Id(${expectedt10Id})/profileId(${expectedProfileId})/inventory`,
           );
           done();
@@ -134,12 +134,12 @@ describe('service: GravityService', () => {
 
     beforeEach(() => {
       expectedGameSettingsId = 'test-game-sttings-id';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getMasterInventory(expectedGameSettingsId).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getMasterInventory$(expectedGameSettingsId).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/masterInventory/gameSettingsId(${expectedGameSettingsId})`,
         );
         done();
@@ -152,12 +152,12 @@ describe('service: GravityService', () => {
 
     beforeEach(() => {
       expectedGiftT10Id = '1234t10Id6789';
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getGiftHistoryByT10Id(expectedGiftT10Id).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getGiftHistoryByT10Id$(expectedGiftT10Id).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/t10Id(${expectedGiftT10Id})/giftHistory`,
         );
         done();
@@ -180,12 +180,12 @@ describe('service: GravityService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.postGiftPlayerUsingBackgroundTask(t10Id, gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.postGiftPlayerUsingBackgroundTask$(t10Id, gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/t10Id(${t10Id})/useBackgroundProcessing`,
           gift,
         );

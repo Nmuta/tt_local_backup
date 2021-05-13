@@ -32,8 +32,8 @@ describe('SteelheadService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('handles getFlagsByXuid', done => {
-    service.getFlagsByXuid(fakeXuid()).subscribe(output => {
+  it('handles getFlagsByXuid$', done => {
+    service.getFlagsByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -42,20 +42,22 @@ describe('SteelheadService', () => {
     });
   });
 
-  it('handles putFlagsByXuid', done => {
+  it('handles putFlagsByXuid$', done => {
     const typedReturnValue = (nextReturnValue = SteelheadPlayerXuidUserFlagsFakeApi.make());
-    service.putFlagsByXuid(fakeXuid(), typedReturnValue as SteelheadUserFlags).subscribe(output => {
-      expect(output as unknown).toEqual(
-        nextReturnValue as unknown,
-        'fields should not be modified',
-      );
-      done();
-    });
+    service
+      .putFlagsByXuid$(fakeXuid(), typedReturnValue as SteelheadUserFlags)
+      .subscribe(output => {
+        expect(output as unknown).toEqual(
+          nextReturnValue as unknown,
+          'fields should not be modified',
+        );
+        done();
+      });
   });
 
-  it('handles getSharedConsoleUsersByXuid', done => {
+  it('handles getSharedConsoleUsersByXuid$', done => {
     const typedReturnValue = (nextReturnValue = SteelheadPlayerXuidConsoleSharedConsoleUsersFakeApi.makeMany());
-    service.getSharedConsoleUsersByXuid(fakeXuid()).subscribe(output => {
+    service.getSharedConsoleUsersByXuid$(fakeXuid()).subscribe(output => {
       expect(output as unknown).toEqual(
         typedReturnValue as unknown,
         'fields should not be modified',
@@ -64,9 +66,9 @@ describe('SteelheadService', () => {
     });
   });
 
-  it('handles getConsoleDetailsByXuid', done => {
+  it('handles getConsoleDetailsByXuid$', done => {
     nextReturnValue = SteelheadPlayerXuidConsolesFakeApi.makeMany();
-    service.getConsoleDetailsByXuid(new BigNumber(fakeXuid())).subscribe(output => {
+    service.getConsoleDetailsByXuid$(new BigNumber(fakeXuid())).subscribe(output => {
       expect(output as unknown).toEqual(
         nextReturnValue as unknown,
         'fields should not be modified',
@@ -75,32 +77,32 @@ describe('SteelheadService', () => {
     });
   });
 
-  describe('Method: getPlayerIdentity', () => {
+  describe('Method: getPlayerIdentity$', () => {
     beforeEach(() => {
-      service.getPlayerIdentities = jasmine
-        .createSpy('getPlayerIdentities')
+      service.getPlayerIdentities$ = jasmine
+        .createSpy('getPlayerIdentities$')
         .and.returnValue(of([]));
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of({}));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of({}));
     });
 
-    it('should call service.getPlayerIdentities', done => {
-      service.getPlayerIdentity({ gamertag: 'test' }).subscribe(() => {
-        expect(service.getPlayerIdentities).toHaveBeenCalled();
+    it('should call service.getPlayerIdentities$', done => {
+      service.getPlayerIdentity$({ gamertag: 'test' }).subscribe(() => {
+        expect(service.getPlayerIdentities$).toHaveBeenCalled();
         done();
       });
     });
   });
 
-  describe('Method: getPlayerInventoryByXuid', () => {
+  describe('Method: getPlayerInventoryByXuid$', () => {
     const xuid = fakeXuid();
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call apiServiceMock.getRequest', done => {
-      service.getPlayerInventoryByXuid(xuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getPlayerInventoryByXuid$(xuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${xuid})/inventory`,
         );
         done();
@@ -108,14 +110,14 @@ describe('SteelheadService', () => {
     });
   });
 
-  describe('Method: getPlayerIdentities', () => {
+  describe('Method: getPlayerIdentities$', () => {
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call apiServiceMock.postRequest', done => {
-      service.getPlayerIdentities([]).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.getPlayerIdentities$([]).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/players/identities`,
           jasmine.any(Object),
         );
@@ -124,7 +126,7 @@ describe('SteelheadService', () => {
     });
   });
 
-  describe('Method: getPlayerDetailsByGamertag', () => {
+  describe('Method: getPlayerDetailsByGamertag$', () => {
     let expectedGamertag: string;
 
     beforeEach(() => {
@@ -133,8 +135,8 @@ describe('SteelheadService', () => {
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getPlayerDetailsByGamertag(expectedGamertag).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getPlayerDetailsByGamertag$(expectedGamertag).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/gamertag(${expectedGamertag})/details`,
         );
         done();
@@ -142,25 +144,25 @@ describe('SteelheadService', () => {
     });
   });
 
-  describe('Method: getLspGroups', () => {
+  describe('Method: getLspGroups$', () => {
     it('should call API service getRequest', done => {
-      service.getLspGroups().subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(`${service.basePath}/groups`);
+      service.getLspGroups$().subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/groups`);
         done();
       });
     });
   });
 
-  describe('Method: getGiftHistoryByXuid', () => {
+  describe('Method: getGiftHistoryByXuid$', () => {
     const expectedXuid = new BigNumber(123456789);
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getGiftHistoryByXuid(expectedXuid).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getGiftHistoryByXuid$(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/giftHistory`,
         );
         done();
@@ -172,12 +174,12 @@ describe('SteelheadService', () => {
     const expectedLspGroupId = new BigNumber(1234);
 
     beforeEach(() => {
-      apiServiceMock.getRequest = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {
-      service.getGiftHistoryByXuid(expectedLspGroupId).subscribe(() => {
-        expect(apiServiceMock.getRequest).toHaveBeenCalledWith(
+      service.getGiftHistoryByXuid$(expectedLspGroupId).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedLspGroupId})/giftHistory`,
         );
         done();
@@ -185,7 +187,7 @@ describe('SteelheadService', () => {
     });
   });
 
-  describe('Method: postGiftPlayers', () => {
+  describe('Method: postGiftPlayers$', () => {
     const gift: SteelheadGroupGift = {
       xuids: [new BigNumber(123456789)],
       giftReason: 'unit testing gift',
@@ -197,12 +199,12 @@ describe('SteelheadService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.postGiftPlayers(gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.postGiftPlayers$(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/players`,
           gift,
         );
@@ -211,7 +213,7 @@ describe('SteelheadService', () => {
     });
   });
 
-  describe('Method: postGiftPlayersUsingBackgroundTask', () => {
+  describe('Method: postGiftPlayersUsingBackgroundTask$', () => {
     const gift: SteelheadGroupGift = {
       xuids: [new BigNumber(123456789)],
       giftReason: 'unit testing gift',
@@ -223,12 +225,12 @@ describe('SteelheadService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.postGiftPlayersUsingBackgroundTask(gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.postGiftPlayersUsingBackgroundTask$(gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/players/useBackgroundProcessing`,
           gift,
         );
@@ -237,7 +239,7 @@ describe('SteelheadService', () => {
     });
   });
 
-  describe('Method: postGiftLspGroup', () => {
+  describe('Method: postGiftLspGroup$', () => {
     const lspGroup: LspGroup = { id: new BigNumber(123), name: 'test-lsp-group' };
     const gift: SteelheadGift = {
       giftReason: 'unit testing gift',
@@ -249,12 +251,12 @@ describe('SteelheadService', () => {
     };
 
     beforeEach(() => {
-      apiServiceMock.postRequest = jasmine.createSpy('postRequest').and.returnValue(of([]));
+      apiServiceMock.postRequest$ = jasmine.createSpy('postRequest').and.returnValue(of([]));
     });
 
     it('should call API service postRequest with the expected params', done => {
-      service.postGiftLspGroup(lspGroup, gift).subscribe(() => {
-        expect(apiServiceMock.postRequest).toHaveBeenCalledWith(
+      service.postGiftLspGroup$(lspGroup, gift).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/groupId(${lspGroup.id})`,
           gift,
         );

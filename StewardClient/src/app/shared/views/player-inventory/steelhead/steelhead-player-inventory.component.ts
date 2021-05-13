@@ -22,18 +22,18 @@ export class SteelheadPlayerInventoryComponent extends PlayerInventoryBaseCompon
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerInventoryByIdentity(
+  protected getPlayerInventoryByIdentity$(
     identity: IdentityResultAlpha,
   ): Observable<SteelheadMasterInventory> {
-    return this.steelhead.getPlayerInventoryByXuid(identity.xuid);
+    return this.steelhead.getPlayerInventoryByXuid$(identity.xuid);
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerInventoryByIdentityAndProfileId(
+  protected getPlayerInventoryByIdentityAndProfileId$(
     _identity: IdentityResultAlpha,
     profileId: BigNumber,
   ): Observable<SteelheadMasterInventory> {
-    return this.steelhead.getPlayerInventoryByProfileId(profileId);
+    return this.steelhead.getPlayerInventoryByProfileId$(profileId);
   }
 
   /** Implement to specify the expando tables to show. */

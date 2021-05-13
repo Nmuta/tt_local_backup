@@ -27,7 +27,7 @@ export class GravityComponent extends TicketAppBaseComponent {
   }
 
   /** Requests player identity. */
-  public requestPlayerIdentity(gamertag: string): Observable<IdentityResultBeta> {
-    return this.gravityService.getPlayerIdentity({ gamertag });
+  public requestPlayerIdentity$(gamertag: string): Observable<IdentityResultBeta> {
+    return this.gravityService.getPlayerIdentity$({ gamertag });
   }
 }

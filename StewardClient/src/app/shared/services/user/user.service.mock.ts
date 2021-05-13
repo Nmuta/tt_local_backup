@@ -4,7 +4,7 @@ import { UserService } from '@shared/services/user/user.service';
 /** Defines the mock for the User Service. */
 @Injectable()
 export class MockUserService {
-  public getUser = jasmine.createSpy('getUser');
+  public getUser$ = jasmine.createSpy('getUser');
 }
 
 /** Creates an injectable mock for User Service. */

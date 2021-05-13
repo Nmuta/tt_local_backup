@@ -4,6 +4,7 @@ import { ApolloPlayerInventoryProfile } from '@models/apollo';
 import { ApolloService } from '@services/apollo';
 import { Observable } from 'rxjs';
 import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-profiles-picker/player-inventory-profiles-picker.base.component';
+import BigNumber from 'bignumber.js';
 
 /** Displays a Apollo player's inventory. */
 @Component({
@@ -15,6 +16,7 @@ import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-
   ],
 })
 export class ApolloPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
+  BigNumber,
   IdentityResultAlpha,
   ApolloPlayerInventoryProfile
 > {
@@ -23,9 +25,9 @@ export class ApolloPlayerInventoryProfilePickerComponent extends PlayerInventory
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerProfilesByIdentity(
+  protected getPlayerProfilesByIdentity$(
     identity: IdentityResultAlpha,
   ): Observable<ApolloPlayerInventoryProfile[]> {
-    return this.apollo.getPlayerInventoryProfilesByXuid(identity.xuid);
+    return this.apollo.getPlayerInventoryProfilesByXuid$(identity.xuid);
   }
 }

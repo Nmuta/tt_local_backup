@@ -33,8 +33,8 @@ export abstract class UserFlagsBaseComponent<T> extends BaseComponent implements
   public submitError: unknown;
 
   public abstract gameTitle: GameTitleCodeName;
-  public abstract getFlagsByXuid(xuid: BigNumber): Observable<T>;
-  public abstract putFlagsByXuid(xuid: BigNumber, newFlags: T): Observable<T>;
+  public abstract getFlagsByXuid$(xuid: BigNumber): Observable<T>;
+  public abstract putFlagsByXuid$(xuid: BigNumber, newFlags: T): Observable<T>;
 
   /** True if changes have been made to the flags. */
   public get hasChanges(): boolean {
@@ -49,7 +49,7 @@ export abstract class UserFlagsBaseComponent<T> extends BaseComponent implements
 
     this.isLoading = true;
     this.loadError = undefined;
-    const getFlagsByXuid$ = this.getFlagsByXuid(this.identity.xuid);
+    const getFlagsByXuid$ = this.getFlagsByXuid$(this.identity.xuid);
     getFlagsByXuid$
       .pipe(
         takeUntil(this.onDestroy$),
@@ -68,8 +68,8 @@ export abstract class UserFlagsBaseComponent<T> extends BaseComponent implements
   }
 
   /** Submits the changes. */
-  public makeAction(): Observable<T> {
-    const putFlagsByXuid$ = this.putFlagsByXuid(this.identity.xuid, this.flags);
+  public makeAction$(): Observable<T> {
+    const putFlagsByXuid$ = this.putFlagsByXuid$(this.identity.xuid, this.flags);
     return putFlagsByXuid$.pipe(
       takeUntil(this.onDestroy$),
       catchError(error => {

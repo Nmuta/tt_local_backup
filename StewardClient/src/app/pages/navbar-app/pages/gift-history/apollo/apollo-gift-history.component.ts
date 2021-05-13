@@ -13,14 +13,17 @@ import {
 } from './state/apollo-gift-history.state.actions';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
-import { ApolloMasterInventory, ApolloPlayerInventoryProfile } from '@models/apollo';
+import { ApolloMasterInventory } from '@models/apollo';
+import BigNumber from 'bignumber.js';
 
 /** The gift history page for the Navbar app. */
 @Component({
   templateUrl: './apollo-gift-history.component.html',
   styleUrls: ['./apollo-gift-history.component.scss'],
 })
-export class ApolloGiftHistoryComponent extends GiftHistoryBaseComponent implements OnInit {
+export class ApolloGiftHistoryComponent
+  extends GiftHistoryBaseComponent<BigNumber>
+  implements OnInit {
   @Select(ApolloGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
@@ -28,7 +31,6 @@ export class ApolloGiftHistoryComponent extends GiftHistoryBaseComponent impleme
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
-  public selectedPlayerInventoryProfile: ApolloPlayerInventoryProfile;
   public selectedPlayerInventory: ApolloMasterInventory;
   public selectedLspGroup: LspGroup;
   public selectedPlayer: IdentityResultAlpha;

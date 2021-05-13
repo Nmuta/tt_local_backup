@@ -11,7 +11,7 @@ import { UserDetailsComponent } from '../user-details.component';
   styleUrls: ['./gravity-user-details.component.scss'],
 })
 export class GravityUserDetailsComponent {
-  public profileId: BigNumber;
+  public profileId: string;
 
   /** The lookup type. */
   public get lookupType(): string {
@@ -33,7 +33,7 @@ export class GravityUserDetailsComponent {
   ) {}
 
   /** Called when a new profile ID is picked. */
-  public onProfileIdChange(_newId: BigNumber): void {
+  public onProfileIdChange(_newId: string | BigNumber): void {
     // TODO: Handle routing to this with the URL https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/652013
   }
 }

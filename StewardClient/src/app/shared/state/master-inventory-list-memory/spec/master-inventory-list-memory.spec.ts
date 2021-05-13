@@ -108,7 +108,7 @@ describe('State: MasterInventoryListMemoryState', () => {
                 return NEVER;
               }),
               tap(() => {
-                expect(mockGravityService.getMasterInventory).not.toHaveBeenCalledWith(
+                expect(mockGravityService.getMasterInventory$).not.toHaveBeenCalledWith(
                   gameSettingsId,
                 );
               }),
@@ -127,7 +127,7 @@ describe('State: MasterInventoryListMemoryState', () => {
                 return NEVER;
               }),
               tap(() => {
-                expect(mockGravityService.getMasterInventory).toHaveBeenCalledWith(gameSettingsId);
+                expect(mockGravityService.getMasterInventory$).toHaveBeenCalledWith(gameSettingsId);
               }),
             )
             .subscribe();
@@ -155,7 +155,7 @@ describe('State: MasterInventoryListMemoryState', () => {
               return NEVER;
             }),
             tap(() => {
-              expect(mockSunriseService.getMasterInventory).not.toHaveBeenCalled();
+              expect(mockSunriseService.getMasterInventory$).not.toHaveBeenCalled();
             }),
           )
           .subscribe();
@@ -172,7 +172,7 @@ describe('State: MasterInventoryListMemoryState', () => {
               return NEVER;
             }),
             tap(() => {
-              expect(mockSunriseService.getMasterInventory).toHaveBeenCalled();
+              expect(mockSunriseService.getMasterInventory$).toHaveBeenCalled();
             }),
           )
           .subscribe();
@@ -199,7 +199,7 @@ describe('State: MasterInventoryListMemoryState', () => {
               return NEVER;
             }),
             tap(() => {
-              expect(mockApolloService.getMasterInventory).not.toHaveBeenCalled();
+              expect(mockApolloService.getMasterInventory$).not.toHaveBeenCalled();
             }),
           )
           .subscribe();
@@ -216,7 +216,7 @@ describe('State: MasterInventoryListMemoryState', () => {
               return NEVER;
             }),
             tap(() => {
-              expect(mockApolloService.getMasterInventory).toHaveBeenCalled();
+              expect(mockApolloService.getMasterInventory$).toHaveBeenCalled();
             }),
           )
           .subscribe();
@@ -243,7 +243,7 @@ describe('State: MasterInventoryListMemoryState', () => {
               return NEVER;
             }),
             tap(() => {
-              expect(mockSteelheadService.getMasterInventory).not.toHaveBeenCalled();
+              expect(mockSteelheadService.getMasterInventory$).not.toHaveBeenCalled();
             }),
           )
           .subscribe();
@@ -260,7 +260,7 @@ describe('State: MasterInventoryListMemoryState', () => {
               return NEVER;
             }),
             tap(() => {
-              expect(mockSteelheadService.getMasterInventory).toHaveBeenCalled();
+              expect(mockSteelheadService.getMasterInventory$).toHaveBeenCalled();
             }),
           )
           .subscribe();
@@ -286,7 +286,7 @@ describe('State: MasterInventoryListMemoryState', () => {
                 return NEVER;
               }),
               tap(() => {
-                expect(mockWoodstockService.getMasterInventory).not.toHaveBeenCalled();
+                expect(mockWoodstockService.getMasterInventory$).not.toHaveBeenCalled();
               }),
             )
             .subscribe();
@@ -303,7 +303,7 @@ describe('State: MasterInventoryListMemoryState', () => {
                 return NEVER;
               }),
               tap(() => {
-                expect(mockWoodstockService.getMasterInventory).toHaveBeenCalled();
+                expect(mockWoodstockService.getMasterInventory$).toHaveBeenCalled();
               }),
             )
             .subscribe();

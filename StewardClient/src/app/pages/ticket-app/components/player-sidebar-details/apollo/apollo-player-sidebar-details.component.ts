@@ -19,6 +19,6 @@ export class ApolloPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBas
 
   /** Creates Apollo's player details request. */
   public makeRequest$(): Observable<ApolloPlayerDetails> {
-    return this.apolloService.getPlayerDetailsByGamertag(this.gamertag);
+    return this.apolloService.getPlayerDetailsByGamertag$(this.gamertag);
   }
 }

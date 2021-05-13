@@ -16,7 +16,7 @@
       [displayWith]="queryAutoCompleteDisplayFn"
     >
       <mat-option [disabled]="true">Showing queries related to their game titles</mat-option>
-      <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.category">
+      <mat-optgroup *ngFor="let group of stateGroupOptions$ | async" [label]="group.category">
         <mat-option *ngFor="let item of group.items" [value]="item">
           {{ item.name }}
         </mat-option>

@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { inject, NO_ERRORS_SCHEMA } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { UserRole } from '@models/enums';
@@ -29,7 +29,12 @@ describe('UserRoleGuard:', () => {
     TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([])],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: Array, useValue: [UserRole.LiveOpsAdmin] }],
+      providers: [
+        {
+          provide: UserRoleGuard,
+          useFactory: () => new UserRoleGuard(inject(Store), [UserRole.LiveOpsAdmin]),
+        },
+      ],
     });
 
     guard = TestBed.inject(UserRoleGuard);

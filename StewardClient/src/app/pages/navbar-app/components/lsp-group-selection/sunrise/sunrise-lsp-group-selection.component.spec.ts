@@ -56,7 +56,7 @@ describe('SunriseLspGroupSelectionComponent', () => {
     });
 
     it('should select sunrise lsp groups from memory', () => {
-      component.lspGroupSelector();
+      component.lspGroupSelector$();
       expect(mockStore.select).toHaveBeenCalledWith(LspGroupMemoryState.sunriseLspGroups);
     });
   });

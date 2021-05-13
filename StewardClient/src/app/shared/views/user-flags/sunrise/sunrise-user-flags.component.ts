@@ -20,12 +20,15 @@ export class SunriseUserFlagsComponent extends UserFlagsBaseComponent<SunriseUse
   }
 
   /** Gets Sunrise user flags. */
-  public getFlagsByXuid(xuid: BigNumber): Observable<SunriseUserFlags> {
-    return this.sunriseService.getFlagsByXuid(xuid);
+  public getFlagsByXuid$(xuid: BigNumber): Observable<SunriseUserFlags> {
+    return this.sunriseService.getFlagsByXuid$(xuid);
   }
 
   /** Sets the newly selected Sunrise flags. */
-  public putFlagsByXuid(xuid: BigNumber, newFlags: SunriseUserFlags): Observable<SunriseUserFlags> {
-    return this.sunriseService.putFlagsByXuid(xuid, newFlags);
+  public putFlagsByXuid$(
+    xuid: BigNumber,
+    newFlags: SunriseUserFlags,
+  ): Observable<SunriseUserFlags> {
+    return this.sunriseService.putFlagsByXuid$(xuid, newFlags);
   }
 }

@@ -53,8 +53,8 @@ describe('SunrisePlayerNotificationsComponent', () => {
         // notifications list prep
         consoleDetails$ = new Subject<SunrisePlayerNotifications>();
         consoleDetailsValue = SunrisePlayerXuidNotificationsFakeApi.makeMany() as SunrisePlayerNotifications;
-        service.getPlayerNotificationsByXuid = jasmine
-          .createSpy('getPlayerNotificationsByXuid')
+        service.getPlayerNotificationsByXuid$ = jasmine
+          .createSpy('getPlayerNotificationsByXuid$')
           .and.returnValue(consoleDetails$);
 
         // emulate initialization event

@@ -15,13 +15,14 @@ import { UserState } from '@shared/state/user/user.state';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
 import { SteelheadMasterInventory, SteelheadPlayerInventoryProfile } from '@models/steelhead';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import BigNumber from 'bignumber.js';
 
 /** The gifting page for the Navbar app. */
 @Component({
   templateUrl: './steelhead-gifting.component.html',
   styleUrls: ['./steelhead-gifting.component.scss'],
 })
-export class SteelheadGiftingComponent extends GiftingBaseComponent implements OnInit {
+export class SteelheadGiftingComponent extends GiftingBaseComponent<BigNumber> implements OnInit {
   @Select(SteelheadGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 

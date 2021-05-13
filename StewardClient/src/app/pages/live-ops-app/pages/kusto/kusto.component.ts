@@ -71,8 +71,8 @@ export class LiveOpsKustoComponent extends BaseComponent {
     };
 
     const request$ = !this.editKustoQueryId
-      ? this.addNewKustoQuery(kustoQuery)
-      : this.editKustoQuery(this.editKustoQueryId, kustoQuery);
+      ? this.addNewKustoQuery$(kustoQuery)
+      : this.editKustoQuery$(this.editKustoQueryId, kustoQuery);
     request$
       .pipe(
         takeUntil(this.onDestroy$),
@@ -101,7 +101,7 @@ export class LiveOpsKustoComponent extends BaseComponent {
 
     this.isLoading = true;
     this.kustoService
-      .deleteKustoQuery(this.editKustoQueryId)
+      .deleteKustoQuery$(this.editKustoQueryId)
       .pipe(
         takeUntil(this.onDestroy$),
         catchError(error => {
@@ -130,12 +130,12 @@ export class LiveOpsKustoComponent extends BaseComponent {
   }
 
   /** Sends a request to add a new query */
-  private addNewKustoQuery(kustoQuery: KustoQuery): Observable<void> {
-    return this.kustoService.postSaveNewKustoQuery(kustoQuery);
+  private addNewKustoQuery$(kustoQuery: KustoQuery): Observable<void> {
+    return this.kustoService.postSaveNewKustoQuery$(kustoQuery);
   }
 
   /** Sends a request to add a new query */
-  private editKustoQuery(kustoQueryId: GuidLikeString, kustoQuery: KustoQuery): Observable<void> {
-    return this.kustoService.putReplaceKustoQuery(kustoQueryId, kustoQuery);
+  private editKustoQuery$(kustoQueryId: GuidLikeString, kustoQuery: KustoQuery): Observable<void> {
+    return this.kustoService.putReplaceKustoQuery$(kustoQueryId, kustoQuery);
   }
 }

@@ -39,13 +39,13 @@ export abstract class LspGroupSelectionBaseComponent
   public abstract dispatchLspGroupStoreAction(): void;
 
   /** Child(title) class should implement. */
-  public abstract lspGroupSelector(): Observable<LspGroups>;
+  public abstract lspGroupSelector$(): Observable<LspGroups>;
 
   /** Initialization hook. */
   public ngOnInit(): void {
     this.isLoading = true;
     this.dispatchLspGroupStoreAction();
-    const selector$ = this.lspGroupSelector();
+    const selector$ = this.lspGroupSelector$();
     selector$
       .pipe(
         takeUntil(this.onDestroy$),

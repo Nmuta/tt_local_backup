@@ -115,18 +115,18 @@ export class ApolloGiftBasketComponent
   }
 
   /** Sends an apollo gift to players. */
-  public sendGiftToPlayers(gift: ApolloGift): Observable<BackgroundJob<void>> {
+  public sendGiftToPlayers$(gift: ApolloGift): Observable<BackgroundJob<void>> {
     const groupGift: ApolloGroupGift = gift as ApolloGroupGift;
     groupGift.xuids = this.playerIdentities
       .filter(player => !player.error)
       .map(player => player.xuid);
 
-    return this.apolloService.postGiftPlayersUsingBackgroundTask(groupGift);
+    return this.apolloService.postGiftPlayersUsingBackgroundTask$(groupGift);
   }
 
   /** Sends an apollo gift to an LSP group. */
-  public sendGiftToLspGroup(gift: ApolloGift): Observable<GiftResponse<BigNumber>> {
-    return this.apolloService.postGiftLspGroup(this.lspGroup, gift);
+  public sendGiftToLspGroup$(gift: ApolloGift): Observable<GiftResponse<BigNumber>> {
+    return this.apolloService.postGiftLspGroup$(this.lspGroup, gift);
   }
 
   /** Sets the state gift basket. */

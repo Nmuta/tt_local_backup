@@ -28,7 +28,7 @@ export class SunriseGiftHistoryStateModel {
 export class SunriseGiftHistoryState {
   /** Sets the gift history page's selected player identities. */
   @Action(SetSunriseGiftHistorySelectedPlayerIdentities, { cancelUncompleted: true })
-  public setFakeApi(
+  public setFakeApi$(
     ctx: StateContext<SunriseGiftHistoryStateModel>,
     action: SetSunriseGiftHistorySelectedPlayerIdentities,
   ): Observable<SunriseGiftHistoryStateModel> {
@@ -37,7 +37,7 @@ export class SunriseGiftHistoryState {
 
   /** Sets the gift history page's selected mat tab index. */
   @Action(SetSunriseGiftHistoryMatTabIndex, { cancelUncompleted: true })
-  public setSunriseMatTabIndex(
+  public setSunriseMatTabIndex$(
     ctx: StateContext<SunriseGiftHistoryStateModel>,
     action: SetSunriseGiftHistoryMatTabIndex,
   ): Observable<SunriseGiftHistoryStateModel> {

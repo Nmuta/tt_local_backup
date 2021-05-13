@@ -7,6 +7,7 @@ import { UserModel } from '@models/user.model';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 import { Select, Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
+import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GiftingBaseComponent } from '../base/gifting.base.component';
@@ -21,7 +22,7 @@ import {
   templateUrl: './sunrise-gifting.component.html',
   styleUrls: ['./sunrise-gifting.component.scss'],
 })
-export class SunriseGiftingComponent extends GiftingBaseComponent implements OnInit {
+export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> implements OnInit {
   @Select(SunriseGiftingState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 

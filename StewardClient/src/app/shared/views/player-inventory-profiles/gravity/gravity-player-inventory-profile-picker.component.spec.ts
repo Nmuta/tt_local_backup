@@ -32,7 +32,7 @@ describe('GravityPlayerInventoryProfilePickerComponent', () => {
   baseTests(
     () => fixture,
     () => first(GravityPlayersIdentitiesFakeApi.make([{ xuid: fakeXuid() }])),
-    () => new MockGravityService().getPlayerInventoryProfilesByT10Id,
-    fn => (service.getPlayerInventoryProfilesByT10Id = fn),
+    () => new MockGravityService().getPlayerInventoryProfilesByT10Id$,
+    fn => (service.getPlayerInventoryProfilesByT10Id$ = fn),
   );
 });

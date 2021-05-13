@@ -27,7 +27,7 @@ export class SteelheadGamertagsComponent extends GamertagsBaseComponent<
   }
 
   /** Gets the shared console gamertag list. */
-  public getSharedConsoleUsersByXuid(xuid: BigNumber): Observable<SteelheadSharedConsoleUser[]> {
-    return this.steelheadService.getSharedConsoleUsersByXuid(xuid);
+  public getSharedConsoleUsersByXuid$(xuid: BigNumber): Observable<SteelheadSharedConsoleUser[]> {
+    return this.steelheadService.getSharedConsoleUsersByXuid$(xuid);
   }
 }

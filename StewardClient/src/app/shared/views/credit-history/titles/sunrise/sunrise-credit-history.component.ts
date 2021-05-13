@@ -48,7 +48,7 @@ export class SunriseCreditHistoryComponent extends BaseComponent implements OnIn
         switchMap(() => {
           this.loadingMore = true;
           return this.sunrise
-            .getCreditHistoryByXuid(this.xuid, this.startIndex, this.maxResultsPerRequest)
+            .getCreditHistoryByXuid$(this.xuid, this.startIndex, this.maxResultsPerRequest)
             .pipe(
               catchError(error => {
                 this.loadingMore = false;

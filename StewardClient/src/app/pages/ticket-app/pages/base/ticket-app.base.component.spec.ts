@@ -65,8 +65,8 @@ describe('TicketAppBaseComponent', () => {
         gamertag: lookupGamertag,
         error: undefined,
       };
-      component.requestPlayerIdentity = jasmine
-        .createSpy('requestPlayerIdentity')
+      component.requestPlayerIdentity$ = jasmine
+        .createSpy('requestPlayerIdentity$')
         .and.returnValue(of(validIdentity));
     }),
   );
@@ -136,8 +136,8 @@ describe('TicketAppBaseComponent', () => {
       mockTicketService.getTicketRequestorGamertag$ = jasmine
         .createSpy('getTicketRequestorGamertag$')
         .and.returnValue(of(lookupGamertag));
-      component.requestPlayerIdentity = jasmine
-        .createSpy('requestPlayerIdentity')
+      component.requestPlayerIdentity$ = jasmine
+        .createSpy('requestPlayerIdentity$')
         .and.returnValue(of(validIdentity));
     });
 
@@ -173,8 +173,8 @@ describe('TicketAppBaseComponent', () => {
       mockTicketService.getTicketRequestorGamertag$ = jasmine
         .createSpy('getTicketRequestorGamertag$')
         .and.returnValue(of(lookupGamertag));
-      component.requestPlayerIdentity = jasmine
-        .createSpy('requestPlayerIdentity')
+      component.requestPlayerIdentity$ = jasmine
+        .createSpy('requestPlayerIdentity$')
         .and.returnValue(of(invalidIdentity));
     });
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
 import { WoodstockService } from '@services/woodstock';
+import BigNumber from 'bignumber.js';
 import { Observable } from 'rxjs';
 import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-profiles-picker/player-inventory-profiles-picker.base.component';
 
@@ -15,6 +16,7 @@ import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-
   ],
 })
 export class WoodstockPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
+  BigNumber,
   IdentityResultAlpha,
   WoodstockPlayerInventoryProfile
 > {
@@ -23,9 +25,9 @@ export class WoodstockPlayerInventoryProfilePickerComponent extends PlayerInvent
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerProfilesByIdentity(
+  protected getPlayerProfilesByIdentity$(
     identity: IdentityResultAlpha,
   ): Observable<WoodstockPlayerInventoryProfile[]> {
-    return this.woodstock.getPlayerInventoryProfilesByXuid(identity.xuid);
+    return this.woodstock.getPlayerInventoryProfilesByXuid$(identity.xuid);
   }
 }

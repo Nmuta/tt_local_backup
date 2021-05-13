@@ -25,14 +25,14 @@ export class WoodstockConsolesComponent
   }
 
   /** Gets the console details list from XUID. */
-  public getConsoleDetailsByXuid(xuid: BigNumber): Observable<WoodstockConsoleDetailsEntry[]> {
-    return this.woodstockSerice.getConsoleDetailsByXuid(xuid);
+  public getConsoleDetailsByXuid$(xuid: BigNumber): Observable<WoodstockConsoleDetailsEntry[]> {
+    return this.woodstockSerice.getConsoleDetailsByXuid$(xuid);
   }
 
   /** Generates a function that will *ban* the user and update the data when complete. */
-  public makeBanAction(consoleId: string): () => Observable<void> {
+  public makeBanAction$(consoleId: string): () => Observable<void> {
     return () =>
-      this.woodstockSerice.putBanStatusByConsoleId(consoleId, true).pipe(
+      this.woodstockSerice.putBanStatusByConsoleId$(consoleId, true).pipe(
         tap(() => {
           _(this.consoleDetails)
             .filter(d => d.consoleId === consoleId)
@@ -42,9 +42,9 @@ export class WoodstockConsolesComponent
   }
 
   /** Generates a function that will *unban* the user and update data when complete. */
-  public makeUnbanAction(consoleId: string): () => Observable<void> {
+  public makeUnbanAction$(consoleId: string): () => Observable<void> {
     return () =>
-      this.woodstockSerice.putBanStatusByConsoleId(consoleId, false).pipe(
+      this.woodstockSerice.putBanStatusByConsoleId$(consoleId, false).pipe(
         tap(() => {
           _(this.consoleDetails)
             .filter(d => d.consoleId === consoleId)

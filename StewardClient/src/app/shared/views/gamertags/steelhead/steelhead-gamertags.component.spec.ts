@@ -37,8 +37,8 @@ describe('SteelheadGamertagsComponent', () => {
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {
-      component.getSharedConsoleUsersByXuid = jasmine
-        .createSpy('getSharedConsoleUsersByXuid')
+      component.getSharedConsoleUsersByXuid$ = jasmine
+        .createSpy('getSharedConsoleUsersByXuid$')
         .and.returnValue(of({}));
     });
 
@@ -47,10 +47,10 @@ describe('SteelheadGamertagsComponent', () => {
         component.identity = undefined;
       });
 
-      it('should not call getSharedConsoleUsersByXuid', () => {
+      it('should not call getSharedConsoleUsersByXuid$', () => {
         component.ngOnChanges();
 
-        expect(component.getSharedConsoleUsersByXuid).not.toHaveBeenCalledTimes(1);
+        expect(component.getSharedConsoleUsersByXuid$).not.toHaveBeenCalledTimes(1);
       });
     });
 
@@ -63,13 +63,13 @@ describe('SteelheadGamertagsComponent', () => {
         };
       });
 
-      it('should call getSharedConsoleUsersByXuid', () => {
+      it('should call getSharedConsoleUsersByXuid$', () => {
         component.ngOnChanges();
 
-        expect(component.getSharedConsoleUsersByXuid).toHaveBeenCalledTimes(1);
+        expect(component.getSharedConsoleUsersByXuid$).toHaveBeenCalledTimes(1);
       });
 
-      describe('And getSharedConsoleUsersByXuid return valid response', () => {
+      describe('And getSharedConsoleUsersByXuid$ return valid response', () => {
         const relatedGamertags = [
           {
             sharedConsoleId: new BigNumber(faker.datatype.number()),
@@ -80,8 +80,8 @@ describe('SteelheadGamertagsComponent', () => {
         ] as SteelheadSharedConsoleUser[];
 
         beforeEach(() => {
-          component.getSharedConsoleUsersByXuid = jasmine
-            .createSpy('getSharedConsoleUsersByXuid')
+          component.getSharedConsoleUsersByXuid$ = jasmine
+            .createSpy('getSharedConsoleUsersByXuid$')
             .and.returnValue(of(relatedGamertags));
         });
 
@@ -92,12 +92,12 @@ describe('SteelheadGamertagsComponent', () => {
         });
       });
 
-      describe('And getSharedConsoleUsersByXuid return error', () => {
+      describe('And getSharedConsoleUsersByXuid$ return error', () => {
         const error = { message: 'test error' };
 
         beforeEach(() => {
-          component.getSharedConsoleUsersByXuid = jasmine
-            .createSpy('getSharedConsoleUsersByXuid')
+          component.getSharedConsoleUsersByXuid$ = jasmine
+            .createSpy('getSharedConsoleUsersByXuid$')
             .and.returnValue(throwError(error));
         });
 
@@ -111,24 +111,24 @@ describe('SteelheadGamertagsComponent', () => {
     });
   });
 
-  describe('Method: getSharedConsoleUsersByXuid', () => {
+  describe('Method: getSharedConsoleUsersByXuid$', () => {
     beforeEach(() => {
       component.identity = {
         query: undefined,
         gamertag: faker.name.firstName(),
         xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
       };
-      mockSteelheadService.getSharedConsoleUsersByXuid = jasmine
-        .createSpy('getSharedConsoleUsersByXuid')
+      mockSteelheadService.getSharedConsoleUsersByXuid$ = jasmine
+        .createSpy('getSharedConsoleUsersByXuid$')
         .and.returnValue(of({}));
     });
 
-    it('should call sunriseService.getSharedConsoleUsersByXuid', () => {
+    it('should call sunriseService.getSharedConsoleUsersByXuid$', () => {
       const expectedXuid = component.identity.xuid;
-      component.getSharedConsoleUsersByXuid(component.identity.xuid);
+      component.getSharedConsoleUsersByXuid$(component.identity.xuid);
 
-      expect(mockSteelheadService.getSharedConsoleUsersByXuid).toHaveBeenCalledTimes(1);
-      expect(mockSteelheadService.getSharedConsoleUsersByXuid).toHaveBeenCalledWith(expectedXuid);
+      expect(mockSteelheadService.getSharedConsoleUsersByXuid$).toHaveBeenCalledTimes(1);
+      expect(mockSteelheadService.getSharedConsoleUsersByXuid$).toHaveBeenCalledWith(expectedXuid);
     });
   });
 });

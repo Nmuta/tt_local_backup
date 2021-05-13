@@ -48,7 +48,7 @@ describe('UserBanningBaseComponent', () => {
     };
 
     beforeEach(() => {
-      mockBackgroundJobService.getBackgroundJob = jasmine
+      mockBackgroundJobService.getBackgroundJob$ = jasmine
         .createSpy('getBackgroundJob')
         .and.returnValue(of({}));
     });
@@ -56,14 +56,14 @@ describe('UserBanningBaseComponent', () => {
     it('should call BackgroundJobService.getBackgroundJob with correct job id', () => {
       component.waitForBackgroundJobToComplete(testJob);
 
-      expect(mockBackgroundJobService.getBackgroundJob).toHaveBeenCalledWith(testJob.jobId);
+      expect(mockBackgroundJobService.getBackgroundJob$).toHaveBeenCalledWith(testJob.jobId);
     });
 
     describe('When subscribing to the send gift observable', () => {
       describe('And an error is caught', () => {
         const error = { message: 'error-message' };
         beforeEach(() => {
-          mockBackgroundJobService.getBackgroundJob = jasmine
+          mockBackgroundJobService.getBackgroundJob$ = jasmine
             .createSpy('getBackgroundJob')
             .and.returnValue(throwError(error));
         });
@@ -97,7 +97,7 @@ describe('UserBanningBaseComponent', () => {
           reason: 'test',
         };
         beforeEach(() => {
-          mockBackgroundJobService.getBackgroundJob = jasmine
+          mockBackgroundJobService.getBackgroundJob$ = jasmine
             .createSpy('getBackgroundJob')
             .and.returnValue(of(testBackgroundJobResp));
         });

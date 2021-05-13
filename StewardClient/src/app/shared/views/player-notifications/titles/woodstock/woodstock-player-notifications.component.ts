@@ -41,7 +41,7 @@ export class WoodstockPlayerNotificationsComponent implements OnChanges {
 
     this.isLoading = true;
     this.loadError = undefined;
-    this.woodstock.getPlayerNotificationsByXuid(this.xuid).subscribe(
+    this.woodstock.getPlayerNotificationsByXuid$(this.xuid).subscribe(
       notifications => {
         this.isLoading = false;
         this.notifications = sortBy(notifications, n => n.sendDateUtc).reverse();

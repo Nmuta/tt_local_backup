@@ -26,7 +26,7 @@ export abstract class TicketAppBaseComponent extends BaseComponent implements On
 
   public abstract isInCorrectTitleRoute(gameTitle: GameTitleCodeName): boolean;
 
-  public abstract requestPlayerIdentity(gamertag: string): Observable<IdentityResultUnion>;
+  public abstract requestPlayerIdentity$(gamertag: string): Observable<IdentityResultUnion>;
 
   /** Logic for the OnInit component lifecycle. */
   public ngOnInit(): void {
@@ -52,7 +52,7 @@ export abstract class TicketAppBaseComponent extends BaseComponent implements On
         takeUntil(this.onDestroy$),
         switchMap(gamertag => {
           this.lookupGamertag = gamertag;
-          return this.requestPlayerIdentity(this.lookupGamertag);
+          return this.requestPlayerIdentity$(this.lookupGamertag);
         }),
         take(1),
         tap(identity => {

@@ -13,14 +13,17 @@ import {
 } from './state/steelhead-gift-history.state.actions';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
-import { SteelheadMasterInventory, SteelheadPlayerInventoryProfile } from '@models/steelhead';
+import { SteelheadMasterInventory } from '@models/steelhead';
+import BigNumber from 'bignumber.js';
 
 /** The gift history page for the Navbar app. */
 @Component({
   templateUrl: './steelhead-gift-history.component.html',
   styleUrls: ['./steelhead-gift-history.component.scss'],
 })
-export class SteelheadGiftHistoryComponent extends GiftHistoryBaseComponent implements OnInit {
+export class SteelheadGiftHistoryComponent
+  extends GiftHistoryBaseComponent<BigNumber>
+  implements OnInit {
   @Select(SteelheadGiftHistoryState.selectedPlayerIdentities)
   public selectedPlayerIdentities$: Observable<IdentityResultAlphaBatch>;
 
@@ -28,7 +31,6 @@ export class SteelheadGiftHistoryComponent extends GiftHistoryBaseComponent impl
   public selectedPlayerIdentities: IdentityResultAlphaBatch;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultAlpha;
-  public selectedPlayerInventoryProfile: SteelheadPlayerInventoryProfile;
   public selectedPlayerInventory: SteelheadMasterInventory;
   public selectedLspGroup: LspGroup;
   public selectedPlayer: IdentityResultAlpha;

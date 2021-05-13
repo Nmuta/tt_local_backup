@@ -14,13 +14,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { SunriseLspGroupSelectionComponent } from './sunrise/sunrise-lsp-group-selection.component';
 import { ApolloLspGroupSelectionComponent } from './apollo/apollo-lsp-group-selection.component';
-import { SteelheadLspGroupSelectionComponent } from './steelhead/steelhead-lsp-group-selection.component';
 import { WoodstockLspGroupSelectionComponent } from './woodstock/woodstock-lsp-group-selection.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
+import { SteelheadLspGroupSelectionComponent } from './steelhead/steelhead-lsp-group-selection.component';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -32,6 +32,8 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     ErrorSpinnerModule,
     MatButtonModule,
     MatIconModule,
@@ -50,6 +52,7 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
     ReactiveFormsModule,
     JsonDumpModule,
     FormsModule,
+    MatAutocompleteModule,
   ],
   exports: [
     WoodstockLspGroupSelectionComponent,

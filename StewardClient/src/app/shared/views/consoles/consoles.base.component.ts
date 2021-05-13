@@ -28,7 +28,17 @@ export abstract class ConsolesBaseComponent<T> extends BaseComponent implements 
   public abstract supportsConsoleBanning: boolean;
 
   /** Gets the console details list from XUID. */
-  public abstract getConsoleDetailsByXuid(xuid: BigNumber): Observable<T[]>;
+  public abstract getConsoleDetailsByXuid$(xuid: BigNumber): Observable<T[]>;
+
+  /** Creates the action for the ban verify checkbox. */
+  public makeBanAction(..._params: unknown[]): () => Observable<void> {
+    return () => NEVER;
+  }
+
+  /** Creates the action for the unban verify checkbox. */
+  public makeUnbanAction(..._params: unknown[]): () => Observable<void> {
+    return () => NEVER;
+  }
 
   /** Initialization hook. */
   public ngOnChanges(): void {
@@ -39,7 +49,7 @@ export abstract class ConsolesBaseComponent<T> extends BaseComponent implements 
     this.isLoading = true;
     this.loadError = undefined;
 
-    const getConsoleDetailsByXuid$ = this.getConsoleDetailsByXuid(this.identity.xuid);
+    const getConsoleDetailsByXuid$ = this.getConsoleDetailsByXuid$(this.identity.xuid);
     getConsoleDetailsByXuid$
       .pipe(
         takeUntil(this.onDestroy$),

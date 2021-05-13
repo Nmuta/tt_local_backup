@@ -27,7 +27,7 @@ export class WoodstockComponent extends TicketAppBaseComponent {
   }
 
   /** Requests player identity. */
-  public requestPlayerIdentity(gamertag: string): Observable<IdentityResultAlpha> {
-    return this.woodstockService.getPlayerIdentity({ gamertag });
+  public requestPlayerIdentity$(gamertag: string): Observable<IdentityResultAlpha> {
+    return this.woodstockService.getPlayerIdentity$({ gamertag });
   }
 }

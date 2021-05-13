@@ -15,6 +15,7 @@ import { PlayerInventoryProfilesPickerBaseComponent } from '../player-inventory-
   ],
 })
 export class GravityPlayerInventoryProfilePickerComponent extends PlayerInventoryProfilesPickerBaseComponent<
+  string,
   IdentityResultBeta,
   GravityPseudoPlayerInventoryProfile
 > {
@@ -23,9 +24,9 @@ export class GravityPlayerInventoryProfilePickerComponent extends PlayerInventor
   }
 
   /** Implement in order to retrieve concrete identity instance. */
-  protected getPlayerProfilesByIdentity(
+  protected getPlayerProfilesByIdentity$(
     identity: IdentityResultBeta,
   ): Observable<GravityPseudoPlayerInventoryProfile[]> {
-    return this.gravity.getPlayerInventoryProfilesByT10Id(identity.t10Id);
+    return this.gravity.getPlayerInventoryProfilesByT10Id$(identity.t10Id);
   }
 }

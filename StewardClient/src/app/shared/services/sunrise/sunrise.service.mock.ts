@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Injectable, Provider } from '@angular/core';
+import { Provider } from '@angular/core';
 import { SunriseGiftingLspGroupFakeApi } from '@interceptors/fake-api/apis/title/sunrise/gifting/groupId';
 import { SunriseGiftingPlayersFakeApi } from '@interceptors/fake-api/apis/title/sunrise/gifting/players';
 import { SunriseMasterInventoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/masterInventory';
@@ -20,12 +20,11 @@ import { SunriseService } from './sunrise.service';
 import { SunrisePlayerXuidProfileRollbacksApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/profileRollbacks';
 
 /** Defines the mock for the API Service. */
-@Injectable()
 export class MockSunriseService {
   /** Override with a Subject to have all methods wait until the next emission to emit. */
   public waitUntil$: Observable<unknown> = of(true);
 
-  public getIdentity = jasmine
+  public getIdentity$ = jasmine
     .createSpy('getIdentity')
     .and.callFake(() =>
       this.waitUntil$.pipe(
@@ -33,100 +32,100 @@ export class MockSunriseService {
       ),
     );
 
-  public getPlayerDetailsByGamertag = jasmine
+  public getPlayerDetailsByGamertag$ = jasmine
     .createSpy('getPlayerDetailsByGamertag')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator())))));
-  public getFlagsByXuid = jasmine
+  public getFlagsByXuid$ = jasmine
     .createSpy('getFlagsByXuid')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator())))));
-  public putFlagsByXuid = jasmine
+  public putFlagsByXuid$ = jasmine
     .createSpy('putFlagsByXuid')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator())))));
-  public getBanHistoryByXuid = jasmine.createSpy('getBanHistoryByXuid').and.callFake(() => {
+  public getBanHistoryByXuid$ = jasmine.createSpy('getBanHistoryByXuid').and.callFake(() => {
     const unprocessed = (SunrisePlayerXuidBanHistoryFakeApi.make(
       new BigNumber(12345),
     ) as unknown) as SunriseBanHistory;
 
     return of(unprocessed);
   });
-  public getSharedConsoleUsersByXuid = jasmine
+  public getSharedConsoleUsersByXuid$ = jasmine
     .createSpy('getSharedConsoleUsersByXuid')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator())))));
-  public getConsoleDetailsByXuid = jasmine
+  public getConsoleDetailsByXuid$ = jasmine
     .createSpy('getConsoleDetailsByXuid')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator())))));
-  public putBanStatusByConsoleId = jasmine
+  public putBanStatusByConsoleId$ = jasmine
     .createSpy('putBanStatusByConsoleId')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator())))));
-  public getProfileSummaryByXuid = jasmine
+  public getProfileSummaryByXuid$ = jasmine
     .createSpy('getProfileSummaryByXuid')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator())))));
-  public getCreditHistoryByXuid = jasmine
+  public getCreditHistoryByXuid$ = jasmine
     .createSpy('getCreditHistoryByXuid')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator())))));
-  public getPlayerNotificationsByXuid = jasmine
+  public getPlayerNotificationsByXuid$ = jasmine
     .createSpy('getPlayerNotificationsByXuid')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator())))));
-  public postBanPlayers = jasmine
+  public postBanPlayers$ = jasmine
     .createSpy('postBanPlayers')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(SunrisePlayersBanFakeApi.make()))));
-  public postBanPlayersWithBackgroundProcessing = jasmine
+  public postBanPlayersWithBackgroundProcessing$ = jasmine
     .createSpy('postBanPlayersWithBackgroundProcessing')
     .and.callFake(() =>
       this.waitUntil$.pipe(
         switchMap(() => of(SunrisePlayersBanWithBackgroundProcessingFakeApi.make())),
       ),
     );
-  public getBanSummariesByXuids = jasmine
+  public getBanSummariesByXuids$ = jasmine
     .createSpy('getBanSummariesByXuids')
     .and.callFake((xuids: BigNumber[]) =>
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayersBanSummariesFakeApi.make(xuids)))),
     );
-  public getMasterInventory = jasmine
+  public getMasterInventory$ = jasmine
     .createSpy('getMasterInventory')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(SunriseMasterInventoryFakeApi.make()))),
     );
 
-  public getPlayerIdentity = jasmine
+  public getPlayerIdentity$ = jasmine
     .createSpy('getPlayerIdentity')
     .and.callFake((query: IdentityQueryAlpha) =>
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayersIdentitiesFakeApi.make([query])))),
     );
-  public getPlayerIdentities = jasmine
+  public getPlayerIdentities$ = jasmine
     .createSpy('getPlayerIdentities')
     .and.callFake((query: IdentityQueryAlphaBatch) =>
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayersIdentitiesFakeApi.make(query)))),
     );
 
-  public getPlayerInventoryProfilesByXuid = jasmine
+  public getPlayerInventoryProfilesByXuid$ = jasmine
     .createSpy('getPlayerInventoryProfilesByXuid')
     .and.callFake(_xuid =>
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidInventoryProfilesFakeApi.make()))),
     );
 
-  public getPlayerInventoryByXuid = jasmine
+  public getPlayerInventoryByXuid$ = jasmine
     .createSpy('getPlayerInventoryByXuid')
     .and.callFake(xuid =>
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidInventoryFakeApi.make(xuid)))),
     );
 
-  public postGiftPlayers = jasmine
+  public postGiftPlayers$ = jasmine
     .createSpy('postGiftPlayers')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(SunriseGiftingPlayersFakeApi.make()))),
     );
 
-  public postGiftPlayersUsingBackgroundTask = jasmine
+  public postGiftPlayersUsingBackgroundTask$ = jasmine
     .createSpy('postGiftPlayersUsingBackgroundTask')
     .and.returnValue(of('fake-job-id'));
 
-  public postGiftLspGroup = jasmine
+  public postGiftLspGroup$ = jasmine
     .createSpy('postGiftLspGroup')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(SunriseGiftingLspGroupFakeApi.make()))),
     );
-  public getProfileRollbacksXuid = jasmine
+  public getProfileRollbacksXuid$ = jasmine
     .createSpy('getProfileRollbacksXuid')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidProfileRollbacksApi.makeMany()))),
