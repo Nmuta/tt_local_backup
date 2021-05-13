@@ -1,3 +1,4 @@
+import { GuidLikeString } from '@models/extended-types';
 import BigNumber from 'bignumber.js';
 // TODO: This model can be simplied since we are only using LiveOpsBanDescription now
 
@@ -13,7 +14,7 @@ export interface LiveOpsBanDescription {
   startTimeUtc: Date;
   expireTimeUtc: Date;
   title: string;
-  requestingAgent: string;
+  requesterObjectId: GuidLikeString;
   featureArea: string;
   reason: string;
   banParameters: string;

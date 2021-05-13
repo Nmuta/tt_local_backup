@@ -1,3 +1,4 @@
+import { GuidLikeString } from '@models/extended-types';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
 import { SteelheadGift } from './steelhead-gift.model';
@@ -9,5 +10,5 @@ export interface SteelheadGiftHistory {
   title: 'Steelhead';
   giftSendDateUtc: Date;
   giftInventory: SteelheadGift;
-  requestingAgent: string;
+  requesterObjectId: GuidLikeString;
 }

@@ -1,3 +1,4 @@
+import { GuidLikeString } from '@models/extended-types';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import { GravityGift } from './gravity-gift.model';
 
@@ -8,5 +9,5 @@ export interface GravityGiftHistory {
   title: 'gravity';
   giftSendDateUtc: Date;
   giftInventory: GravityGift;
-  requestingAgent: string;
+  requesterObjectId: GuidLikeString;
 }

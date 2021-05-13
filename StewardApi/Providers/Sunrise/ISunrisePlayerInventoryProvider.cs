@@ -33,16 +33,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Update player inventory.
         /// </summary>
-        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requestingAgent, bool useAdminCreditLimit);
+        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requesterObjectId, bool useAdminCreditLimit);
 
         /// <summary>
         ///     Update player inventories.
         /// </summary>
-        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SunriseGroupGift groupGift, string requestingAgent, bool useAdminCreditLimit);
+        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SunriseGroupGift groupGift, string requesterObjectId, bool useAdminCreditLimit);
 
         /// <summary>
         ///     Updates LSP group inventories.
         /// </summary>
-        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requestingAgent, bool useAdminCreditLimit);
+        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requesterObjectId, bool useAdminCreditLimit);
     }
 }

@@ -149,10 +149,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<IList<BanResult>> BanUsersAsync(IList<ApolloBanParameters> banParameters, string requestingAgent)
+        public async Task<IList<BanResult>> BanUsersAsync(IList<ApolloBanParameters> banParameters, string requesterObjectId)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             const int maxXuidsPerRequest = 10;
 
             foreach (var param in banParameters)
@@ -201,7 +201,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                                 this.banHistoryProvider.UpdateBanHistoryAsync(
                                     param.Xuid,
                                     TitleConstants.ApolloCodeName,
-                                    requestingAgent,
+                                    requesterObjectId,
                                     param)
                                 .ConfigureAwait(false);
                         }

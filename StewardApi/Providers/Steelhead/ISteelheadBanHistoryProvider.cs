@@ -13,7 +13,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// <summary>
         ///     Updates ban history.
         /// </summary>
-        Task UpdateBanHistoryAsync(ulong xuid, string title, string requestingAgent, SteelheadBanParameters banParameters);
+        Task UpdateBanHistoryAsync(ulong xuid, string title, string requesterObjectId, SteelheadBanParameters banParameters);
 
         /// <summary>
         ///     Gets ban histories.

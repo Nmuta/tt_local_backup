@@ -1,3 +1,4 @@
+import { GuidLikeString } from '@models/extended-types';
 import BigNumber from 'bignumber.js';
 import { ApolloBanArea } from './apollo-ban-request.model';
 
@@ -10,7 +11,7 @@ export interface ApolloBanHistoryEntry {
   countOfTimesExtended: BigNumber;
   xuid: BigNumber;
   title: 'apollo';
-  requestingAgent: string;
+  requesterObjectId: GuidLikeString;
   featureArea: ApolloBanArea;
   reason: string;
   banParameters: string;

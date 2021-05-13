@@ -299,11 +299,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<BanResult>> BanUsersAsync(SunriseBanParameters banParameters, string requestingAgent)
+        public async Task<IList<BanResult>> BanUsersAsync(SunriseBanParameters banParameters, string requesterObjectId)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
             banParameters.FeatureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(banParameters.FeatureArea));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             try
             {
@@ -351,7 +351,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                         if (successfulBan)
                         {
                             await this.banHistoryProvider
-                                .UpdateBanHistoryAsync(xuid, TitleConstants.SunriseCodeName, requestingAgent, banParameters).ConfigureAwait(false);
+                                .UpdateBanHistoryAsync(xuid, TitleConstants.SunriseCodeName, requesterObjectId, banParameters).ConfigureAwait(false);
                         }
                     }
 

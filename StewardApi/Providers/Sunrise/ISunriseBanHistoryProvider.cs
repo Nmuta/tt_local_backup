@@ -13,7 +13,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Updates ban history.
         /// </summary>
-        Task UpdateBanHistoryAsync(ulong xuid, string title, string requestingAgent, SunriseBanParameters banParameters);
+        Task UpdateBanHistoryAsync(ulong xuid, string title, string requesterObjectId, SunriseBanParameters banParameters);
 
         /// <summary>
         ///     Gets ban histories.

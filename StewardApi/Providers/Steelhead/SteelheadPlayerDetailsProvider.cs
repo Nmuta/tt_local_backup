@@ -270,10 +270,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<IList<BanResult>> BanUsersAsync(IList<SteelheadBanParameters> banParameters, string requestingAgent)
+        public async Task<IList<BanResult>> BanUsersAsync(IList<SteelheadBanParameters> banParameters, string requesterObjectId)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             const int maxXuidsPerRequest = 10;
 
             foreach (var param in banParameters)
@@ -322,7 +322,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                                 this.banHistoryProvider.UpdateBanHistoryAsync(
                                     param.Xuid,
                                     TitleConstants.SteelheadCodeName,
-                                    requestingAgent,
+                                    requesterObjectId,
                                     param)
                                 .ConfigureAwait(false);
                         }

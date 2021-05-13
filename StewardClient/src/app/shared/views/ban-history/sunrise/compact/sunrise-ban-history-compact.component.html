@@ -31,7 +31,7 @@
       <span><b>Start Time:</b> {{ entry.startTimeUtc | date: 'short' }}</span>
       <span><b>Expire Time:</b> {{ entry.expireTimeUtc | date: 'short' }}</span>
       <span><b>Feature Area:</b> {{ entry.featureArea | humanize }}</span>
-      <span><b>Banned By:</b> {{ entry.requestingAgent }}</span>
+      <span><b>Banned By:</b> {{ entry.requesterObjectId }}</span>
       <span><b>Ban Reason:</b> {{ entry.reason }}</span>
     </div>
   </mat-expansion-panel>

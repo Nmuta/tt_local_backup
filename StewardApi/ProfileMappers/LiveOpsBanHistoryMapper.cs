@@ -17,7 +17,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
     /// </summary>
     public static class LiveOpsBanHistoryMapper
     {
-        private const string ServicesRequestingAgent = "From Services";
+        private const string ServicesRequesterObjectId = "From Services";
 
         /// <summary>
         ///     Maps FH4 forza user ban description to live ops ban history.
@@ -31,7 +31,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             var liveOpsBanHistory = new LiveOpsBanHistory(
                 (long)banDescription.Xuid,
                 TitleConstants.SunriseCodeName,
-                ServicesRequestingAgent,
+                ServicesRequesterObjectId,
                 banDescription.StartTime,
                 banDescription.ExpireTime,
                 Enum.GetName(typeof(FH4Security.FeatureAreas), banDescription.FeatureAreas),
@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             var liveOpsBanHistory = new LiveOpsBanHistory(
                 (long)banDescription.Xuid,
                 TitleConstants.SunriseCodeName,
-                ServicesRequestingAgent,
+                ServicesRequesterObjectId,
                 banDescription.StartTime,
                 banDescription.ExpireTime,
                 Enum.GetName(typeof(FM7Security.FeatureAreas), banDescription.FeatureAreas),
@@ -72,8 +72,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         {
             var liveOpsBanHistory = new LiveOpsBanHistory(
                 (long)banDescription.Xuid,
-                TitleConstants.SunriseCodeName,
-                ServicesRequestingAgent,
+                TitleConstants.SteelheadCodeName,
+                ServicesRequesterObjectId,
                 banDescription.StartTime,
                 banDescription.ExpireTime,
                 Enum.GetName(typeof(FM8Security.FeatureAreas), banDescription.FeatureAreas),
@@ -93,8 +93,8 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         {
             var liveOpsBanHistory = new LiveOpsBanHistory(
                 (long)banDescription.Xuid,
-                TitleConstants.SunriseCodeName,
-                ServicesRequestingAgent,
+                TitleConstants.WoodstockCodeName,
+                ServicesRequesterObjectId,
                 banDescription.StartTime,
                 banDescription.ExpireTime,
                 Enum.GetName(typeof(FH5Security.FeatureAreas), banDescription.FeatureAreas),

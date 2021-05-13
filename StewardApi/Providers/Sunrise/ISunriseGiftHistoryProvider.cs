@@ -13,7 +13,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Updates gift history.
         /// </summary>
-        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftIdentityAntecedent giftHistoryAntecedent, SunriseGift gift);
+        Task UpdateGiftHistoryAsync(string id, string title, string requesterObjectId, GiftIdentityAntecedent giftHistoryAntecedent, SunriseGift gift);
 
         /// <summary>
         ///     Gets gift histories.

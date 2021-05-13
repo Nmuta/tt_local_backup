@@ -44,7 +44,7 @@ export class SteelheadPlayerXuidBanHistoryFakeApi extends FakeApiBase {
           featureArea: faker.random.arrayElement(Object.values(SteelheadBanArea)),
           isActive: faker.datatype.boolean(),
           reason: faker.lorem.sentence(),
-          requestingAgent: faker.internet.email(),
+          requesterObjectId: faker.random.uuid(),
           title: 'steelhead',
           xuid: xuid,
           countOfTimesExtended: fakeBigNumber(),

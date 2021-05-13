@@ -93,11 +93,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requestingAgent, bool useAdminCreditLimit)
+        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requesterObjectId, bool useAdminCreditLimit)
         {
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var giftResponse = new GiftResponse<ulong>();
             giftResponse.PlayerOrLspGroup = xuid;
@@ -118,7 +118,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftIdentityAntecedent.Xuid, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requesterObjectId, GiftIdentityAntecedent.Xuid, gift).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -129,29 +129,29 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requestingAgent, bool useAdminCreditLimit)
+        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requesterObjectId, bool useAdminCreditLimit)
         {
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var response = new List<GiftResponse<ulong>>();
             var gift = this.mapper.Map<ApolloGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
-                response.Add(await this.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent, useAdminCreditLimit).ConfigureAwait(false));
+                response.Add(await this.UpdatePlayerInventoryAsync(xuid, gift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false));
             }
 
             return response;
         }
 
         /// <inheritdoc/>
-        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requestingAgent, bool useAdminCreditLimit)
+        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requesterObjectId, bool useAdminCreditLimit)
         {
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
 
             var giftResponse = new GiftResponse<int>();
@@ -173,7 +173,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requestingAgent, GiftIdentityAntecedent.LspGroupId, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requesterObjectId, GiftIdentityAntecedent.LspGroupId, gift).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

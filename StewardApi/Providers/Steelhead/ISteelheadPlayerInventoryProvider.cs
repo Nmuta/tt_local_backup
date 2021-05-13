@@ -28,16 +28,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// <summary>
         ///     Update player inventory.
         /// </summary>
-        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SteelheadGift gift, string requestingAgent, bool useAdminCreditLimit);
+        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SteelheadGift gift, string requesterObjectId, bool useAdminCreditLimit);
 
         /// <summary>
         ///     Update player inventories.
         /// </summary>
-        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SteelheadGroupGift groupGift, string requestingAgent, bool useAdminCreditLimit);
+        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SteelheadGroupGift groupGift, string requesterObjectId, bool useAdminCreditLimit);
 
         /// <summary>
         ///     Update group inventories.
         /// </summary>
-        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SteelheadGift gift, string requestingAgent, bool useAdminCreditLimit);
+        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SteelheadGift gift, string requesterObjectId, bool useAdminCreditLimit);
     }
 }

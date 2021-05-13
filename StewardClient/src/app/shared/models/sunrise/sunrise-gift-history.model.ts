@@ -1,3 +1,4 @@
+import { GuidLikeString } from '@models/extended-types';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
 import { SunriseGift } from './sunrise-gift.model';
@@ -9,5 +10,5 @@ export interface SunriseGiftHistory {
   title: 'sunrise';
   giftSendDateUtc: Date;
   giftInventory: SunriseGift;
-  requestingAgent: string;
+  requesterObjectId: GuidLikeString;
 }

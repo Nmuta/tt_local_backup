@@ -45,16 +45,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftIdentityAntecedent giftHistoryAntecedent, GravityGift gift)
+        public async Task UpdateGiftHistoryAsync(string id, string title, string requesterObjectId, GiftIdentityAntecedent giftHistoryAntecedent, GravityGift gift)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
 
             var playerId = $"{giftHistoryAntecedent}:{id}";
-            var giftHistory = new GiftHistory(playerId, title, requestingAgent, DateTime.UtcNow, gift.ToJson());
+            var giftHistory = new GiftHistory(playerId, title, requesterObjectId, DateTime.UtcNow, gift.ToJson());
             var kustoColumnMappings = giftHistory.ToJsonColumnMappings();
             var tableName = typeof(GiftHistory).Name;
             var giftHistories = new List<GiftHistory> { giftHistory };
@@ -107,7 +107,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 var antecedent = Enum.Parse<GiftIdentityAntecedent>(splitId[0]);
                 var id = splitId[1];
 
-                results.Add(new GravityGiftHistory(antecedent, id, history.Title, history.RequestingAgent, history.GiftSendDateUtc, convertedGift));
+                results.Add(new GravityGiftHistory(antecedent, id, history.Title, history.RequesterObjectId, history.GiftSendDateUtc, convertedGift));
             }
 
             results.Sort((x, y) => DateTime.Compare(y.GiftSendDateUtc, x.GiftSendDateUtc));

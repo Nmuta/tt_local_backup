@@ -39,7 +39,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Ban users.
         /// </summary>
-        Task<IList<BanResult>> BanUsersAsync(IList<ApolloBanParameters> banParameters, string requestingAgent);
+        Task<IList<BanResult>> BanUsersAsync(IList<ApolloBanParameters> banParameters, string requesterObjectId);
 
         /// <summary>
         ///     Get user ban history.

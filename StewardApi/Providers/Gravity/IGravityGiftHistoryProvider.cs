@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <summary>
         ///     Updates gift history.
         /// </summary>
-        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftIdentityAntecedent giftHistoryAntecedent, GravityGift gift);
+        Task UpdateGiftHistoryAsync(string id, string title, string requesterObjectId, GiftIdentityAntecedent giftHistoryAntecedent, GravityGift gift);
 
         /// <summary>
         ///     Gets gift histories.

@@ -265,10 +265,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<BanResult>> BanUsersAsync(IList<WoodstockBanParameters> banParameters, string requestingAgent)
+        public async Task<IList<BanResult>> BanUsersAsync(IList<WoodstockBanParameters> banParameters, string requesterObjectId)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             const int maxXuidsPerRequest = 10;
 
             foreach (var param in banParameters)
@@ -317,7 +317,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                                 this.banHistoryProvider.UpdateBanHistoryAsync(
                                     param.Xuid,
                                     TitleConstants.WoodstockCodeName,
-                                    requestingAgent,
+                                    requesterObjectId,
                                     param)
                                 .ConfigureAwait(false);
                         }

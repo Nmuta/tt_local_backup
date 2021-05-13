@@ -41,9 +41,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task UpdateBanHistoryAsync(ulong xuid, string title, string requestingAgent, SteelheadBanParameters banParameters)
+        public async Task UpdateBanHistoryAsync(ulong xuid, string title, string requesterObjectId, SteelheadBanParameters banParameters)
         {
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             banParameters.ShouldNotBeNull(nameof(banParameters));
 
@@ -63,14 +63,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             };
 
             var banHistory = new LiveOpsBanHistory(
-                                            (long)xuid,
-                                            title,
-                                            requestingAgent,
-                                            banParameters.StartTimeUtc,
-                                            banParameters.ExpireTimeUtc,
-                                            banParameters.FeatureArea,
-                                            banParameters.Reason,
-                                            sanitizedBanParameters.ToJson());
+                (long)xuid,
+                title,
+                requesterObjectId,
+                banParameters.StartTimeUtc,
+                banParameters.ExpireTimeUtc,
+                banParameters.FeatureArea,
+                banParameters.Reason,
+                sanitizedBanParameters.ToJson());
 
             var kustoColumnMappings = banHistory.ToJsonColumnMappings();
             var tableName = "BanHistory";

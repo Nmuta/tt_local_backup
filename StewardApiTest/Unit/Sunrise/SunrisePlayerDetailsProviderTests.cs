@@ -314,10 +314,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var provider = new Dependencies().Build();
             var banParameters = GenerateBanParameters();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<BanResult>> Action() => await provider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(false);
+            async Task<IList<BanResult>> Action() => await provider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<List<BanResult>>();
@@ -325,7 +325,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void BanUsersAsync_WithNullEmptyWhitespaceRequestingAgent_Throws()
+        public void BanUsersAsync_WithNullEmptyWhitespaceRequesterObjectId_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -342,7 +342,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
             }
         }
 
@@ -352,10 +352,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<BanResult>>> action = async () => await provider.BanUsersAsync(null, requestingAgent).ConfigureAwait(false);
+            Func<Task<IList<BanResult>>> action = async () => await provider.BanUsersAsync(null, requesterObjectId).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParameters"));

@@ -13,7 +13,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Updates gift history.
         /// </summary>
-        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftIdentityAntecedent giftHistoryAntecedent, WoodstockGift gift);
+        Task UpdateGiftHistoryAsync(string id, string title, string requesterObjectId, GiftIdentityAntecedent giftHistoryAntecedent, WoodstockGift gift);
 
         /// <summary>
         ///     Gets gift histories.

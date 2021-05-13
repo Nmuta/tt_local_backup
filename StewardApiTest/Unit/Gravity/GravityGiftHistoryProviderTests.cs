@@ -100,13 +100,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var provider = new Dependencies().Build();
             var id = Fixture.Create<string>();
             var title = Fixture.Create<string>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
             var gift = Fixture.Create<GravityGift>();
 
             // Act.
             Func<Task> act = async () =>
-                await provider.UpdateGiftHistoryAsync(id, title, requestingAgent, antecedent, gift).ConfigureAwait(false);
+                await provider.UpdateGiftHistoryAsync(id, title, requesterObjectId, antecedent, gift).ConfigureAwait(false);
 
             // Assert.
             act.Should().NotThrow();
@@ -119,16 +119,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Arrange.
             var provider = new Dependencies().Build();
             var title = Fixture.Create<string>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
             var gift = Fixture.Create<GravityGift>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdateGiftHistoryAsync(null, title, requestingAgent, antecedent, gift).ConfigureAwait(false),
-                async () => await provider.UpdateGiftHistoryAsync(TestConstants.Empty, title, requestingAgent, antecedent, gift).ConfigureAwait(false),
-                async () => await provider.UpdateGiftHistoryAsync(TestConstants.WhiteSpace, title, requestingAgent, antecedent, gift).ConfigureAwait(false)
+                async () => await provider.UpdateGiftHistoryAsync(null, title, requesterObjectId, antecedent, gift).ConfigureAwait(false),
+                async () => await provider.UpdateGiftHistoryAsync(TestConstants.Empty, title, requesterObjectId, antecedent, gift).ConfigureAwait(false),
+                async () => await provider.UpdateGiftHistoryAsync(TestConstants.WhiteSpace, title, requesterObjectId, antecedent, gift).ConfigureAwait(false)
             };
 
             // Assert.
@@ -145,16 +145,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Arrange.
             var provider = new Dependencies().Build();
             var id = Fixture.Create<string>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
             var gift = Fixture.Create<GravityGift>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdateGiftHistoryAsync(id, null, requestingAgent, antecedent, gift).ConfigureAwait(false),
-                async () => await provider.UpdateGiftHistoryAsync(id, TestConstants.Empty, requestingAgent, antecedent, gift).ConfigureAwait(false),
-                async () => await provider.UpdateGiftHistoryAsync(id, TestConstants.WhiteSpace, requestingAgent, antecedent, gift).ConfigureAwait(false)
+                async () => await provider.UpdateGiftHistoryAsync(id, null, requesterObjectId, antecedent, gift).ConfigureAwait(false),
+                async () => await provider.UpdateGiftHistoryAsync(id, TestConstants.Empty, requesterObjectId, antecedent, gift).ConfigureAwait(false),
+                async () => await provider.UpdateGiftHistoryAsync(id, TestConstants.WhiteSpace, requesterObjectId, antecedent, gift).ConfigureAwait(false)
             };
 
             // Assert.
@@ -166,7 +166,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void UpdateGiftHistoryAsync_WithNullEmptyWhitespaceRequestingAgent_Throws()
+        public void UpdateGiftHistoryAsync_WithNullEmptyWhitespaceRequesterObjectId_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -186,7 +186,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
             }
         }
 
@@ -198,11 +198,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var provider = new Dependencies().Build();
             var id = Fixture.Create<string>();
             var title = Fixture.Create<string>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
 
             // Act.
-            Func<Task> action = async () => await provider.UpdateGiftHistoryAsync(id, title, requestingAgent, antecedent, null).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.UpdateGiftHistoryAsync(id, title, requesterObjectId, antecedent, null).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));

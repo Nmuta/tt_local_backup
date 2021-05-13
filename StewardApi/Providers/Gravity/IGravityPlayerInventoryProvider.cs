@@ -33,6 +33,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         /// <summary>
         ///     Sends inventory item gifts to a player.
         /// </summary>
-        Task<GiftResponse<string>> UpdatePlayerInventoryAsync(string t10Id, Guid gameSettingsId, GravityGift gift, string requestingAgent, bool useAdminCurrencyLimit);
+        Task<GiftResponse<string>> UpdatePlayerInventoryAsync(string t10Id, Guid gameSettingsId, GravityGift gift, string requesterObjectId, bool useAdminCurrencyLimit);
     }
 }

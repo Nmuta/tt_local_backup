@@ -33,7 +33,7 @@ export class ApolloGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
         id: lspId,
         title: 'apollo',
         giftSendDateUtc: faker.date.past(),
-        requestingAgent: faker.internet.userName(),
+        requesterObjectId: faker.random.uuid(),
         giftInventory: {
           giftReason: faker.random.word(),
           inventory: {

@@ -876,20 +876,17 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task UpdateGroupInventories_WithNullGift_Throws()
+        public void UpdateGroupInventories_WithNullGift_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.UpdateGroupInventories(groupId, null).ConfigureAwait(false);
+            Func<Task<IActionResult>> action = async () => await controller.UpdateGroupInventories(groupId, null).ConfigureAwait(false);
 
             // Assert.
-            Action().Should().BeAssignableTo<Task<IActionResult>>();
-            var result = await Action().ConfigureAwait(false) as BadRequestObjectResult;
-            result.StatusCode.Should().Be(400);
-            (result.Value as ArgumentNullException).Message.Should().Be(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
         }
 
 

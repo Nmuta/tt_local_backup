@@ -340,13 +340,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] IList<SunriseBanParametersInput> banInput)
         {
             var userClaims = this.User.UserClaims();
-            var requestingAgent = userClaims.ObjectId;
+            var requesterObjectId = userClaims.ObjectId;
 
             async Task<List<BanResult>> BulkBanUsersAsync(List<SunriseBanParameters> banParameters)
             {
                 var tasks =
                     banParameters.Select(
-                        parameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(parameters, requestingAgent))
+                        parameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(parameters, requesterObjectId))
                     .ToList();
 
                 var nestedResults = await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -355,7 +355,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return results;
             }
 
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
             foreach (var banParam in banInput)
@@ -389,7 +389,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 .Select(group => this.mapper.Map<SunriseBanParameters>(group.ToList()))
                 .ToList();
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupedBanParameters.ToJson(), requestingAgent, $"Apollo Gifting: {groupedBanParameters.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(groupedBanParameters.ToJson(), requesterObjectId, $"Apollo Gifting: {groupedBanParameters.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -402,14 +402,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     await this.jobTracker
                         .UpdateJobAsync(
                             jobId,
-                            requestingAgent,
+                            requesterObjectId,
                             BackgroundJobStatus.Completed,
                             results)
                         .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
 
@@ -435,13 +435,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] IList<SunriseBanParametersInput> banInput)
         {
             var userClaims = this.User.UserClaims();
-            var requestingAgent = userClaims.ObjectId;
+            var requesterObjectId = userClaims.ObjectId;
 
             async Task<List<BanResult>> BulkBanUsersAsync(List<SunriseBanParameters> banParameters)
             {
                 var tasks =
                     banParameters.Select(
-                        parameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(parameters, requestingAgent))
+                        parameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(parameters, requesterObjectId))
                     .ToList();
 
                 var nestedResults = await Task.WhenAll(tasks).ConfigureAwait(false);
@@ -450,7 +450,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return resultList;
             }
 
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
             foreach (var banParam in banInput)
@@ -646,13 +646,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] SunriseGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
-            var requestingAgent = userClaims.ObjectId;
+            var requesterObjectId = userClaims.ObjectId;
 
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var stringBuilder = new StringBuilder();
 
@@ -684,7 +684,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requestingAgent, $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -693,12 +693,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 try
                 {
                     var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-                    var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
-                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
+                    var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
 
@@ -717,13 +717,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> UpdateGroupInventories([FromBody] SunriseGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
-            var requestingAgent = userClaims.ObjectId;
+            var requesterObjectId = userClaims.ObjectId;
 
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var stringBuilder = new StringBuilder();
 
@@ -756,7 +756,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
+            var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
         }
 
@@ -771,10 +771,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] SunriseGift gift)
         {
             var userClaims = this.User.UserClaims();
-            var requestingAgent = userClaims.ObjectId;
+            var requesterObjectId = userClaims.ObjectId;
 
             gift.ShouldNotBeNull(nameof(gift));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             this.giftRequestValidator.Validate(gift, this.ModelState);
 
@@ -792,7 +792,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
+            var response = await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
         }
 

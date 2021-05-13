@@ -28,16 +28,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Update player inventory.
         /// </summary>
-        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, WoodstockGift gift, string requestingAgent, bool useAdminCreditLimit);
+        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, WoodstockGift gift, string requesterObjectId, bool useAdminCreditLimit);
 
         /// <summary>
         ///     Update player inventories.
         /// </summary>
-        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(WoodstockGroupGift groupGift, string requestingAgent, bool useAdminCreditLimit);
+        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(WoodstockGroupGift groupGift, string requesterObjectId, bool useAdminCreditLimit);
 
         /// <summary>
         ///     Update group inventories.
         /// </summary>
-        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, WoodstockGift gift, string requestingAgent, bool useAdminCreditLimit);
+        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, WoodstockGift gift, string requesterObjectId, bool useAdminCreditLimit);
     }
 }

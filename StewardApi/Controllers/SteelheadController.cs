@@ -299,9 +299,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] IList<SteelheadBanParametersInput> banInput)
         {
             var userClaims = this.User.UserClaims();
-            var requestingAgent = userClaims.ObjectId;
+            var requesterObjectId = userClaims.ObjectId;
 
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
             foreach (var banParam in banInput)
@@ -318,7 +318,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest(result);
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), requestingAgent, $"Steelhead Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), requesterObjectId, $"Steelhead Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -326,13 +326,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var results = await this.steelheadPlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
+                    var results = await this.steelheadPlayerDetailsProvider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(true);
 
-                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Completed, results).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Completed, results).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
 
@@ -353,9 +353,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] IList<SteelheadBanParametersInput> banInput)
         {
             var userClaims = this.User.UserClaims();
-            var requestingAgent = userClaims.ObjectId;
+            var requesterObjectId = userClaims.ObjectId;
 
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
             foreach (var banParam in banInput)
@@ -372,7 +372,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest(result);
             }
 
-            var results = await this.steelheadPlayerDetailsProvider.BanUsersAsync(banParameters, requestingAgent).ConfigureAwait(true);
+            var results = await this.steelheadPlayerDetailsProvider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -518,13 +518,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] SteelheadGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
-            var requestingAgent = userClaims.ObjectId;
+            var requesterObjectId = userClaims.ObjectId;
 
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var stringBuilder = new StringBuilder();
 
@@ -556,7 +556,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requestingAgent, $"Steelhead Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Steelhead Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -565,12 +565,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 try
                 {
                     var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-                    var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
-                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
+                    var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
 
@@ -589,13 +589,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> UpdateGroupInventories([FromBody] SteelheadGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
-            var requestingAgent = userClaims.ObjectId;
+            var requesterObjectId = userClaims.ObjectId;
 
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var stringBuilder = new StringBuilder();
 
@@ -628,7 +628,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
+            var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
         }
 
@@ -642,13 +642,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
         public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] SteelheadGift gift)
         {
-            try
-            {
-                var userClaims = this.User.UserClaims();
-                var requestingAgent = userClaims.ObjectId;
+            var userClaims = this.User.UserClaims();
+            var requesterObjectId = userClaims.ObjectId;
 
-                gift.ShouldNotBeNull(nameof(gift));
-                requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            gift.ShouldNotBeNull(nameof(gift));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
                 this.giftRequestValidator.Validate(gift, this.ModelState);
 
@@ -665,14 +663,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     return this.BadRequest($"Invalid items found. {invalidItems}");
                 }
 
-                var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-                var response = await this.steelheadPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
-                return this.Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return this.BadRequest(ex);
-            }
+            var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var response = await this.steelheadPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+            return this.Ok(response);
         }
 
         /// <summary>

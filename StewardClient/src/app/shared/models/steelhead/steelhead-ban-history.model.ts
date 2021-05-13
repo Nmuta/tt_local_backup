@@ -1,3 +1,4 @@
+import { GuidLikeString } from '@models/extended-types';
 import BigNumber from 'bignumber.js';
 import { SteelheadBanArea } from './steelhead-ban-request.model';
 
@@ -10,7 +11,7 @@ export interface SteelheadBanHistoryEntry {
   countOfTimesExtended: BigNumber;
   xuid: BigNumber;
   title: 'steelhead';
-  requestingAgent: string;
+  requesterObjectId: GuidLikeString;
   featureArea: SteelheadBanArea;
   reason: string;
   banParameters: string;

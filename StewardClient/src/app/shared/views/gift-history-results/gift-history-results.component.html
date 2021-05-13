@@ -26,7 +26,7 @@
               </mat-panel-description>
             </mat-expansion-panel-header>
             <div class="sent-by-info">
-              <b>Sent by: </b><steward-user [objectId]="history.requestingAgent"> </steward-user>
+              <b>Sent by: </b><steward-user [objectId]="history.requesterObjectId"> </steward-user>
             </div>
             <ng-container>
               <div *ngFor="let itemsToShow of history.itemsToShow">

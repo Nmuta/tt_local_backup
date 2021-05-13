@@ -1,3 +1,4 @@
+import { GuidLikeString } from '@models/extended-types';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
 import { ApolloGift } from './apollo-gift.model';
@@ -9,5 +10,5 @@ export interface ApolloGiftHistory {
   title: 'apollo';
   giftSendDateUtc: Date;
   giftInventory: ApolloGift;
-  requestingAgent: string;
+  requesterObjectId: GuidLikeString;
 }

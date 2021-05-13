@@ -9,5 +9,5 @@ export interface WoodstockGiftHistory {
   title: 'woodstock';
   giftSendDateUtc: Date;
   giftInventory: WoodstockGift;
-  requestingAgent: string;
+  requesterObjectId: string;
 }

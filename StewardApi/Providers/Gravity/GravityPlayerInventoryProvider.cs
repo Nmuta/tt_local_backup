@@ -120,12 +120,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task<GiftResponse<string>> UpdatePlayerInventoryAsync(string t10Id, Guid gameSettingsId, GravityGift gift, string requestingAgent, bool useAdminCurrencyLimit)
+        public async Task<GiftResponse<string>> UpdatePlayerInventoryAsync(string t10Id, Guid gameSettingsId, GravityGift gift, string requesterObjectId, bool useAdminCurrencyLimit)
         {
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var giftResponse = new GiftResponse<string>();
             giftResponse.PlayerOrLspGroup = t10Id;
@@ -153,7 +153,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 await this.UpdatePlayerInventoryHelperAsync(t10Id, gameSettingsId, gift.Inventory.MasteryKits, ForzaUserInventoryItemType.MasteryKit).ConfigureAwait(true);
                 await this.UpdatePlayerInventoryHelperAsync(t10Id, gameSettingsId, gift.Inventory.RepairKits, ForzaUserInventoryItemType.RepairKit).ConfigureAwait(true);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(t10Id, Title, requestingAgent, GiftIdentityAntecedent.T10Id, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(t10Id, Title, requesterObjectId, GiftIdentityAntecedent.T10Id, gift).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

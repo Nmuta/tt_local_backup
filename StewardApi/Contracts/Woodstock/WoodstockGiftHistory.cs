@@ -11,17 +11,17 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockGiftHistory"/> class.
         /// </summary>
-        public WoodstockGiftHistory(GiftIdentityAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, WoodstockGift giftInventory)
+        public WoodstockGiftHistory(GiftIdentityAntecedent idType, string id, string title, string requesterObjectId, DateTime giftSendDateUtc, WoodstockGift giftInventory)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             giftInventory.ShouldNotBeNull(nameof(giftInventory));
 
             this.IdType = idType;
             this.Id = id;
             this.Title = title;
-            this.RequestingAgent = requestingAgent;
+            this.RequesterObjectId = requesterObjectId;
             this.GiftSendDateUtc = giftSendDateUtc;
             this.GiftInventory = giftInventory;
         }
@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
         /// <summary>
         ///     Gets or sets the requesting agent.
         /// </summary>
-        public string RequestingAgent { get; set; }
+        public string RequesterObjectId { get; set; }
 
         /// <summary>
         ///     Gets or sets the gift send date in universal time.

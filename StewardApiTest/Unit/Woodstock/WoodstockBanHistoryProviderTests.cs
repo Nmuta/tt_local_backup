@@ -85,11 +85,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var title = Fixture.Create<string>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
             var banParameters = Fixture.Create<WoodstockBanParameters>();
 
             // Act.
-            Func<Task> act = async () => await provider.UpdateBanHistoryAsync(xuid, title, requestingAgent, banParameters).ConfigureAwait(false);
+            Func<Task> act = async () => await provider.UpdateBanHistoryAsync(xuid, title, requesterObjectId, banParameters).ConfigureAwait(false);
 
             // Assert.
             act.Should().NotThrow();
@@ -102,15 +102,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
             var banParameters = Fixture.Create<WoodstockBanParameters>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdateBanHistoryAsync(xuid, null, requestingAgent, banParameters).ConfigureAwait(false),
-                async () => await provider.UpdateBanHistoryAsync(xuid, TestConstants.Empty, requestingAgent, banParameters).ConfigureAwait(false),
-                async () => await provider.UpdateBanHistoryAsync(xuid, TestConstants.WhiteSpace, requestingAgent, banParameters).ConfigureAwait(false)
+                async () => await provider.UpdateBanHistoryAsync(xuid, null, requesterObjectId, banParameters).ConfigureAwait(false),
+                async () => await provider.UpdateBanHistoryAsync(xuid, TestConstants.Empty, requesterObjectId, banParameters).ConfigureAwait(false),
+                async () => await provider.UpdateBanHistoryAsync(xuid, TestConstants.WhiteSpace, requesterObjectId, banParameters).ConfigureAwait(false)
             };
 
             // Assert.
@@ -141,7 +141,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
             }
         }
 
@@ -153,10 +153,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var title = Fixture.Create<string>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.UpdateBanHistoryAsync(xuid, title, requestingAgent, null).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.UpdateBanHistoryAsync(xuid, title, requesterObjectId, null).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParameters"));

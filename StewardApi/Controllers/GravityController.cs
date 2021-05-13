@@ -242,13 +242,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromBody] GravityGift gift)
         {
             var userClaims = this.User.UserClaims();
-            var requestingAgent = userClaims.ObjectId;
+            var requesterObjectId = userClaims.ObjectId;
 
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             gift.ShouldNotBeNull(nameof(gift));
             gift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gift.GiftReason));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             this.giftRequestValidator.Validate(gift, this.ModelState);
 
@@ -275,7 +275,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(gift.ToJson(), requestingAgent, $"Gravity Gifting to Turn 10 ID: {t10Id}.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(gift.ToJson(), requesterObjectId, $"Gravity Gifting to Turn 10 ID: {t10Id}.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -284,12 +284,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 try
                 {
                     var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-                    var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
-                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
+                    var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, requestingAgent, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
 
@@ -308,13 +308,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         public async Task<IActionResult> UpdatePlayerInventoryByT10Id(string t10Id, [FromBody] GravityGift gift)
         {
             var userClaims = this.User.UserClaims();
-            var requestingAgent = userClaims.ObjectId;
+            var requesterObjectId = userClaims.ObjectId;
 
             t10Id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(t10Id));
             gift.ShouldNotBeNull(nameof(gift));
             gift.GiftReason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gift.GiftReason));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             this.giftRequestValidator.Validate(gift, this.ModelState);
 
@@ -342,7 +342,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requestingAgent, allowedToExceedCreditLimit).ConfigureAwait(true);
+            var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
             return this.Ok(response);
         }
 

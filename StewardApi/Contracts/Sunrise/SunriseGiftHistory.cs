@@ -11,17 +11,17 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseGiftHistory"/> class.
         /// </summary>
-        public SunriseGiftHistory(GiftIdentityAntecedent idType, string id, string title, string requestingAgent, DateTime giftSendDateUtc, SunriseGift giftInventory)
+        public SunriseGiftHistory(GiftIdentityAntecedent idType, string id, string title, string requesterObjectId, DateTime giftSendDateUtc, SunriseGift giftInventory)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             giftInventory.ShouldNotBeNull(nameof(giftInventory));
 
             this.IdType = idType;
             this.Id = id;
             this.Title = title;
-            this.RequestingAgent = requestingAgent;
+            this.RequesterObjectId = requesterObjectId;
             this.GiftSendDateUtc = giftSendDateUtc;
             this.GiftInventory = giftInventory;
         }
@@ -42,9 +42,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         public string Title { get; set; }
 
         /// <summary>
-        ///     Gets or sets the requesting agent.
+        ///     Gets or sets the requestor object ID.
         /// </summary>
-        public string RequestingAgent { get; set; }
+        public string RequesterObjectId { get; set; }
 
         /// <summary>
         ///     Gets or sets the gift send date in universal time.

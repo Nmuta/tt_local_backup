@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// <summary>
         ///     Ban users.
         /// </summary>
-        Task<IList<BanResult>> BanUsersAsync(IList<SteelheadBanParameters> banParameters, string requestingAgent);
+        Task<IList<BanResult>> BanUsersAsync(IList<SteelheadBanParameters> banParameters, string requesterObjectId);
 
         /// <summary>
         ///     Get ban summaries.

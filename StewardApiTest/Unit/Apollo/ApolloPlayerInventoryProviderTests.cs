@@ -125,14 +125,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var gift = Fixture.Create<ApolloGift>();
             var groupGift = Fixture.Create<ApolloGroupGift>();
             groupGift.Xuids = Fixture.Create<List<ulong>>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, requestingAgent, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, requestingAgent, useAdminCreditLimit).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false)
             };
 
             // Assert.
@@ -150,12 +150,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var provider = new Dependencies().Build();
             var useAdminCreditLimit = Fixture.Create<bool>();
             var groupId = Fixture.Create<int>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, null, requestingAgent, useAdminCreditLimit).ConfigureAwait(false)
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, null, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false)
             };
 
             // Assert.
@@ -172,12 +172,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var useAdminCreditLimit = Fixture.Create<bool>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoriesAsync(null, requestingAgent, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(null, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false),
             };
 
             // Assert.
@@ -189,7 +189,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void UpdatePlayerInventoriesAsync_WithNullEmptyWhitespaceRequestingAgent_Throws()
+        public void UpdatePlayerInventoriesAsync_WithNullEmptyWhitespaceRequesterObjectId_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -217,7 +217,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
             }
         }
 
@@ -230,10 +230,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var useAdminCreditLimit = Fixture.Create<bool>();
             var groupGift = Fixture.Create<ApolloGroupGift>();
             groupGift.Xuids = null;
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requestingAgent, useAdminCreditLimit).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));

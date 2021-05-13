@@ -44,7 +44,7 @@ export class ApolloPlayerXuidBanHistoryFakeApi extends FakeApiBase {
           featureArea: faker.random.arrayElement(Object.values(ApolloBanArea)),
           isActive: faker.datatype.boolean(),
           reason: faker.lorem.sentence(),
-          requestingAgent: faker.internet.email(),
+          requesterObjectId: faker.random.uuid(),
           title: 'apollo',
           xuid: xuid,
           countOfTimesExtended: fakeBigNumber(),

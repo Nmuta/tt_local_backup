@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Updates gift history.
         /// </summary>
-        Task UpdateGiftHistoryAsync(string id, string title, string requestingAgent, GiftIdentityAntecedent giftHistoryAntecedent, ApolloGift gift);
+        Task UpdateGiftHistoryAsync(string id, string title, string requesterObjectId, GiftIdentityAntecedent giftHistoryAntecedent, ApolloGift gift);
 
         /// <summary>
         ///     Gets gift histories.

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Data
@@ -12,9 +11,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="LiveOpsBanHistory"/> class.
         /// </summary>
-        public LiveOpsBanHistory(long xuid, string title, string requestingAgent, DateTime startTimeUtc, DateTime expireTimeUtc, string featureArea, string reason, string banParameters)
+        public LiveOpsBanHistory(long xuid, string title, string requesterObjectId, DateTime startTimeUtc, DateTime expireTimeUtc, string featureArea, string reason, string banParameters)
         {
-            requestingAgent.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requestingAgent));
+            requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             featureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(featureArea));
             reason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(reason));
@@ -22,7 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
 
             this.Xuid = xuid;
             this.Title = title;
-            this.RequestingAgent = requestingAgent;
+            this.RequesterObjectId = requesterObjectId;
             this.StartTimeUtc = startTimeUtc;
             this.ExpireTimeUtc = expireTimeUtc;
             this.FeatureArea = featureArea;
@@ -66,9 +65,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public string Title { get; set; }
 
         /// <summary>
-        ///     Gets or sets the requesting agent.
+        ///     Gets or sets the requestor object ID.
         /// </summary>
-        public string RequestingAgent { get; set; }
+        public string RequesterObjectId { get; set; }
 
         /// <summary>
         ///     Gets or sets the feature area.

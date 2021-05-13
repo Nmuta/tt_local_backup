@@ -20,13 +20,13 @@
         ///     Gets the gift history.
         /// </summary>
         /// <remarks>Should be used with string.Format to fill out missing keys.</remarks>
-        public const string GetGiftHistory = "GiftHistory | where PlayerId == '{0}' and Title == '{1}' | project PlayerId, Title, RequestingAgent, GiftSendDateUtc, GiftInventory";
+        public const string GetGiftHistory = "GiftHistory | where PlayerId == '{0}' and Title == '{1}' | project PlayerId, Title, RequesterObjectId=coalesce(RequesterObjectId, RequestingAgent), GiftSendDateUtc, GiftInventory";
 
         /// <summary>
         ///     Gets the ban history.
         /// </summary>
         /// <remarks>Should be used with string.Format to fill out missing keys.</remarks>
-        public const string GetBanHistory = "BanHistory | where Xuid == {0} and Title == '{1}' | project Xuid, Title, RequestingAgent, StartTimeUtc, ExpireTimeUtc, FeatureArea, Reason, BanParameters";
+        public const string GetBanHistory = "BanHistory | where Xuid == {0} and Title == '{1}' | project Xuid, Title, RequesterObjectId=coalesce(RequesterObjectId, RequestingAgent), StartTimeUtc, ExpireTimeUtc, FeatureArea, Reason, BanParameters";
 
         /// <summary>
         ///     Basic query for getting the FH4 Car data.

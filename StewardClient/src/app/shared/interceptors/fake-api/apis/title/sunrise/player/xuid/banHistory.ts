@@ -45,7 +45,7 @@ export class SunrisePlayerXuidBanHistoryFakeApi extends FakeApiBase {
           featureArea: faker.random.arrayElement(Object.values(SunriseBanArea)),
           isActive: faker.datatype.boolean(),
           reason: faker.lorem.sentence(),
-          requestingAgent: faker.internet.email(),
+          requesterObjectId: faker.random.uuid(),
           title: faker.random.arrayElement(Object.values(GameTitleCodeName)),
           xuid: xuid,
         },

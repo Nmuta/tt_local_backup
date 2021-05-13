@@ -164,12 +164,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var useAdminCurrencyLimit = Fixture.Create<bool>();
             var gameSettingsId = Fixture.Create<Guid>();
             var gift = Fixture.Create<GravityGift>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, requestingAgent, useAdminCurrencyLimit).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, gift, requesterObjectId, useAdminCurrencyLimit).ConfigureAwait(false)
             };
 
             // Assert.
@@ -187,15 +187,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var provider = new Dependencies().Build();
             var gift = Fixture.Create<GravityGift>();
             var gameSettingsId = Fixture.Create<Guid>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
             var useAdminCurrencyLimit = Fixture.Create<bool>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(null, gameSettingsId, gift, requestingAgent, useAdminCurrencyLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.Empty, gameSettingsId, gift, requestingAgent, useAdminCurrencyLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.WhiteSpace, gameSettingsId, gift, requestingAgent, useAdminCurrencyLimit).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(null, gameSettingsId, gift, requesterObjectId, useAdminCurrencyLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.Empty, gameSettingsId, gift, requesterObjectId, useAdminCurrencyLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(TestConstants.WhiteSpace, gameSettingsId, gift, requesterObjectId, useAdminCurrencyLimit).ConfigureAwait(false)
             };
             // Assert.
             foreach (var action in actions)
@@ -206,7 +206,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void UpdatePlayerInventoryAsync_WithNullEmptyWhitespaceRequestingAgent_Throws()
+        public void UpdatePlayerInventoryAsync_WithNullEmptyWhitespaceRequesterObjectId_Throws()
         {
             // Arrange.
             var provider = new Dependencies().Build();
@@ -225,7 +225,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requestingAgent"));
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "requesterObjectId"));
             }
         }
 
@@ -238,12 +238,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Gravity
             var useAdminCurrencyLimit = Fixture.Create<bool>();
             var t10Id = Fixture.Create<string>();
             var gameSettingsId = Fixture.Create<Guid>();
-            var requestingAgent = Fixture.Create<string>();
+            var requesterObjectId = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, null, requestingAgent, useAdminCurrencyLimit).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(t10Id, gameSettingsId, null, requesterObjectId, useAdminCurrencyLimit).ConfigureAwait(false)
             };
             // Assert.
             foreach (var action in actions)

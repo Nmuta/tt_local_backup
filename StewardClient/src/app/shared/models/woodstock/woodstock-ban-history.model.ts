@@ -13,7 +13,7 @@ export interface LiveOpsBanDescription {
   startTimeUtc: Date;
   expireTimeUtc: Date;
   title: string;
-  requestingAgent: string;
+  requesterObjectId: string;
   featureArea: string;
   reason: string;
   banParameters: string;

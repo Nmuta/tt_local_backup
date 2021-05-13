@@ -33,7 +33,7 @@ export class SteelheadPlayerXuidGiftHistoryFakeApi extends FakeApiBase {
         id: xuid,
         title: 'Steelhead',
         giftSendDateUtc: faker.date.past(),
-        requestingAgent: faker.name.firstName(),
+        requesterObjectId: faker.random.uuid(),
         giftInventory: {
           giftReason: faker.random.word(),
           inventory: {

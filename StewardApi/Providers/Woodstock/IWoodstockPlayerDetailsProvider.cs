@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Ban users.
         /// </summary>
-        Task<IList<BanResult>> BanUsersAsync(IList<WoodstockBanParameters> banParameters, string requestingAgent);
+        Task<IList<BanResult>> BanUsersAsync(IList<WoodstockBanParameters> banParameters, string requesterObjectId);
 
         /// <summary>
         ///     Get ban summaries.
