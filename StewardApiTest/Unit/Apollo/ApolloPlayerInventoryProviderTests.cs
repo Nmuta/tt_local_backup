@@ -85,7 +85,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var profileId = Fixture.Create<int>();
 
             // Act.
-            var actions = new List<Func<Task<ApolloMasterInventory>>>
+            var actions = new List<Func<Task<ApolloPlayerInventory>>>
             {
                 async () => await provider.GetPlayerInventoryAsync(xuid).ConfigureAwait(false),
                 async () => await provider.GetPlayerInventoryAsync(profileId).ConfigureAwait(false)
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<ApolloMasterInventory>();
+                action().Result.Should().BeOfType<ApolloPlayerInventory>();
             }
         }
 
@@ -249,7 +249,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<UserService.LiveOpsGetUserDataByGamertagOutput>());
                 this.Mapper.Map<IList<ApolloInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<ApolloInventoryProfile>>());
                 this.Mapper.Map<ApolloGift>(Arg.Any<ApolloGroupGift>()).Returns(Fixture.Create<ApolloGift>());
-                this.Mapper.Map<ApolloMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<ApolloMasterInventory>());
+                this.Mapper.Map<ApolloPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<ApolloPlayerInventory>());
             }
 
             public IApolloService ApolloService { get; set; } = Substitute.For<IApolloService>();

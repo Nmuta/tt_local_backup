@@ -20,18 +20,18 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// </summary>
         public WoodstockProfileMapper()
         {
-            this.CreateMap<AdminForzaCarUserInventoryItem, MasterInventoryItem>()
+            this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
     .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
     .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
     .ReverseMap();
-            this.CreateMap<AdminForzaUserInventoryItem, MasterInventoryItem>()
+            this.CreateMap<AdminForzaUserInventoryItem, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
                 .ReverseMap();
-            this.CreateMap<AdminForzaUserInventorySummary, WoodstockMasterInventory>()
-                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>
+            this.CreateMap<AdminForzaUserInventorySummary, WoodstockPlayerInventory>()
+                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
                 {
-                    new MasterInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits }
+                    new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
                 }))
                 .ReverseMap();
 

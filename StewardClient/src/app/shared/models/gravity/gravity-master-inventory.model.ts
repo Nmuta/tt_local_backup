@@ -1,11 +1,5 @@
 import { MasterInventoryItem } from '@models/master-inventory-item';
+import { GravityBaseInventory } from './gravity-base-inventory.model';
 
-/** Interface for Gravity master inventory. */
-export interface GravityMasterInventory {
-  creditRewards: MasterInventoryItem[];
-  cars: MasterInventoryItem[];
-  repairKits: MasterInventoryItem[];
-  masteryKits: MasterInventoryItem[];
-  upgradeKits: MasterInventoryItem[];
-  energyRefills: MasterInventoryItem[];
-}
+/** Type for Gravity master inventory. */
+export type GravityMasterInventory = GravityBaseInventory<MasterInventoryItem>;

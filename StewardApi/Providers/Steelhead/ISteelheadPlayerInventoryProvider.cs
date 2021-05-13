@@ -13,12 +13,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// <summary>
         ///     Get player inventory.
         /// </summary>
-        Task<SteelheadMasterInventory> GetPlayerInventoryAsync(ulong xuid);
+        Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(ulong xuid);
 
         /// <summary>
         ///     Get player inventory.
         /// </summary>
-        Task<SteelheadMasterInventory> GetPlayerInventoryAsync(int profileId);
+        Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
         ///     Get inventory profiles.

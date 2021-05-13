@@ -1,9 +1,9 @@
 import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { MasterInventoryItem } from '@models/master-inventory-item';
-import { WoodstockMasterInventory } from '@models/woodstock';
+import { WoodstockPlayerInventory } from '@models/woodstock';
 import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
+import { PlayerInventoryItem } from '@models/player-inventory-item';
 
 /** Fake API for woodstock player inventory. */
 export class WoodstockPlayerXuidInventoryFakeApi extends FakeApiBase {
@@ -29,13 +29,13 @@ export class WoodstockPlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): WoodstockMasterInventory {
+  public handle(): WoodstockPlayerInventory {
     return WoodstockPlayerXuidInventoryFakeApi.make(this.xuid);
   }
 
   /** Generates a sample object */
-  public static make(_xuid: BigNumber): WoodstockMasterInventory {
-    function makeFakeItems(count: number): MasterInventoryItem[] {
+  public static make(_xuid: BigNumber): WoodstockPlayerInventory {
+    function makeFakeItems(count: number): PlayerInventoryItem[] {
       return Array(faker.datatype.number(count))
         .fill(0)
         .map(() => {
@@ -44,6 +44,7 @@ export class WoodstockPlayerXuidInventoryFakeApi extends FakeApiBase {
             quantity: faker.datatype.number(5),
             description: faker.lorem.sentences(2),
             itemType: undefined,
+            dateAquiredUtc: faker.date.past(),
           };
         });
     }

@@ -1,11 +1,11 @@
 import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
-import { GravityPlayerInventoryBeta } from '@models/gravity';
+import { GravityPlayerInventory } from '@models/gravity';
 import { IdentityResultBeta } from '@models/identity-query.model';
 import { GravityService } from '@services/gravity';
 import { Observable } from 'rxjs';
 import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
-import { MasterInventoryItemList } from '@models/master-inventory-item-list';
+import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 
 /** Displays a Gravity player's inventory. */
 @Component({
@@ -14,7 +14,7 @@ import { MasterInventoryItemList } from '@models/master-inventory-item-list';
   styleUrls: ['../player-inventory.component.scss'],
 })
 export class GravityPlayerInventoryComponent extends PlayerInventoryBaseComponent<
-  GravityPlayerInventoryBeta,
+  GravityPlayerInventory,
   IdentityResultBeta
 > {
   constructor(private readonly gravity: GravityService) {
@@ -24,7 +24,7 @@ export class GravityPlayerInventoryComponent extends PlayerInventoryBaseComponen
   /** Implement in order to retrieve concrete identity instance. */
   protected getPlayerInventoryByIdentity$(
     identity: IdentityResultBeta,
-  ): Observable<GravityPlayerInventoryBeta> {
+  ): Observable<GravityPlayerInventory> {
     return this.gravity.getPlayerInventoryByT10Id$(identity.t10Id);
   }
 
@@ -32,12 +32,12 @@ export class GravityPlayerInventoryComponent extends PlayerInventoryBaseComponen
   protected getPlayerInventoryByIdentityAndProfileId$(
     identity: IdentityResultBeta,
     profileId: BigNumber,
-  ): Observable<GravityPlayerInventoryBeta> {
+  ): Observable<GravityPlayerInventory> {
     return this.gravity.getPlayerInventoryByT10IdAndProfileId$(identity.t10Id, profileId);
   }
 
   /** Implement to specify the expando tables to show. */
-  protected makewhatToShowList(): MasterInventoryItemList[] {
+  protected makewhatToShowList(): PlayerInventoryItemList[] {
     return [
       this.makeItemList('Credit Rewards', this.inventory.creditRewards),
       this.makeItemList('Cars', this.inventory.cars),

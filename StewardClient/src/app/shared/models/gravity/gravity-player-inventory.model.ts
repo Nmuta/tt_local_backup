@@ -1,18 +1,9 @@
-import BigNumber from 'bignumber.js';
-import { GuidLikeString, T10IdString } from '@models/extended-types';
-import { GravityCar, GravityInventoryItem, GravityKit } from './inventory-items';
+import { GuidLikeString } from '@models/extended-types';
+import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { GravityBaseInventory } from './gravity-base-inventory.model';
 
-/** Interface for gravity player inventory. */
-export interface GravityPlayerInventory {
-  xuid: BigNumber;
-  t10Id: T10IdString;
-  previousGameSettingsId: GuidLikeString;
-  currentExternalProfileId: GuidLikeString;
-  cars: GravityCar[];
-  masteryKits: GravityInventoryItem[];
-  upgradeKits: GravityKit[];
-  repairKits: GravityKit[];
-  packs: GravityInventoryItem[];
-  currencies: GravityInventoryItem[];
-  energyRefills: GravityInventoryItem[];
-}
+/** Type for Gravity player inventory beta. */
+export type GravityPlayerInventory = GravityBaseInventory<PlayerInventoryItem> & {
+  gameSettingsId: GuidLikeString;
+  externalProfileId: GuidLikeString;
+};

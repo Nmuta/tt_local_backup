@@ -1,6 +1,7 @@
 export * from './apollo-player-details.model';
 export * from './apollo-player-inventory.model';
 export * from './apollo-gift-history.model';
+export * from './apollo-base-inventory.model';
 export * from './apollo-master-inventory.model';
 export * from './apollo-player-inventory-profile.model';
 export * from './apollo-gift.model';

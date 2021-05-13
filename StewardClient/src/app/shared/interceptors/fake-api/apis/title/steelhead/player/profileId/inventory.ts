@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SteelheadMasterInventory } from '@models/steelhead';
+import { SteelheadPlayerInventory } from '@models/steelhead';
 import { SteelheadPlayerXuidInventoryFakeApi } from '../xuid/inventory';
 
 /** Fake API for steelhead player inventory. */
@@ -18,12 +18,12 @@ export class SteelheadPlayerProfileIdInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): SteelheadMasterInventory {
+  public handle(): SteelheadPlayerInventory {
     return SteelheadPlayerProfileIdInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): SteelheadMasterInventory {
+  public static make(): SteelheadPlayerInventory {
     return SteelheadPlayerXuidInventoryFakeApi.make(null);
   }
 }

@@ -19,6 +19,7 @@ import {
   WoodstockGroupGift,
   WoodstockMasterInventory,
   WoodstockPlayerDetails,
+  WoodstockPlayerInventory,
   WoodstockPlayerInventoryProfile,
   WoodstockPlayerNotifications,
   WoodstockProfileRollback,
@@ -257,8 +258,8 @@ export class WoodstockService {
   }
 
   /** Gets the latest version of a player's inventory */
-  public getPlayerInventoryByXuid$(xuid: BigNumber): Observable<WoodstockMasterInventory> {
-    return this.apiService.getRequest$<WoodstockMasterInventory>(
+  public getPlayerInventoryByXuid$(xuid: BigNumber): Observable<WoodstockPlayerInventory> {
+    return this.apiService.getRequest$<WoodstockPlayerInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
@@ -266,8 +267,8 @@ export class WoodstockService {
   /** Gets a specific version of a player's inventory */
   public getPlayerInventoryByProfileId$(
     profileId: BigNumber,
-  ): Observable<WoodstockMasterInventory> {
-    return this.apiService.getRequest$<WoodstockMasterInventory>(
+  ): Observable<WoodstockPlayerInventory> {
+    return this.apiService.getRequest$<WoodstockPlayerInventory>(
       `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }

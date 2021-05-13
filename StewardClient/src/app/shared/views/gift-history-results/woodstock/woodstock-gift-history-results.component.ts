@@ -7,7 +7,7 @@ import {
   GiftHistoryDescription,
   GiftHistoryResultsBaseComponent,
 } from '../gift-history-results.base.component';
-import { MasterInventoryItemList } from '@models/master-inventory-item-list';
+import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 import { GameTitleCodeName } from '@models/enums';
 
 /** Retreives and displays Woodstock Gift history by XUID. */
@@ -37,7 +37,7 @@ export class WoodstockGiftHistoryResultsComponent extends GiftHistoryResultsBase
   }
 
   /** Generates the gift history item list to display for each gift history entry. */
-  public generateItemsList(giftHistory: WoodstockGiftHistory): MasterInventoryItemList[] {
+  public generateItemsList(giftHistory: WoodstockGiftHistory): PlayerInventoryItemList[] {
     return [
       this.makeItemList('Credit Rewards', giftHistory.giftInventory.inventory.creditRewards),
       this.makeItemList('Cars', giftHistory.giftInventory.inventory.cars),

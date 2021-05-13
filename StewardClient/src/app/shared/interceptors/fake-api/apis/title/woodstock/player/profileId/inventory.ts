@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { WoodstockMasterInventory } from '@models/woodstock';
+import { WoodstockPlayerInventory } from '@models/woodstock';
 import { WoodstockPlayerXuidInventoryFakeApi } from '../xuid/inventory';
 
 /** Fake API for woodstock player inventory. */
@@ -18,12 +18,12 @@ export class WoodstockPlayerProfileIdInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): WoodstockMasterInventory {
+  public handle(): WoodstockPlayerInventory {
     return WoodstockPlayerProfileIdInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): WoodstockMasterInventory {
+  public static make(): WoodstockPlayerInventory {
     return WoodstockPlayerXuidInventoryFakeApi.make(null);
   }
 }

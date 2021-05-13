@@ -37,65 +37,33 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.FirstLoginUtc, opt => opt.MapFrom(src => src.FirstLogin))
                 .ForMember(des => des.T10Id, opt => opt.MapFrom(src => src.Turn10Id))
                 .ReverseMap();
-            this.CreateMap<LiveOpsCar, Contracts.Gravity.GravityCar>()
-                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => 1))
-                .ForMember(des => des.PurchaseUtc, opt => opt.MapFrom(src => src.PurchaseTimestamp))
-                .ForMember(des => des.AcquisitionUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
-                .ForMember(des => des.ModifiedUtc, opt => opt.MapFrom(src => src.ModifiedTime))
-                .ForMember(des => des.LastUsedUtc, opt => opt.MapFrom(src => src.LastUsedTime))
-                .ReverseMap();
-            this.CreateMap<LiveOpsMasteryKit, GravityInventoryItem>()
-                .ForMember(des => des.AcquisitionUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
-                .ForMember(des => des.ModifiedUtc, opt => opt.MapFrom(src => src.ModifiedTime))
-                .ForMember(des => des.LastUsedUtc, opt => opt.MapFrom(src => src.LastUsedTime))
-                .ReverseMap();
-            this.CreateMap<LiveOpsUpgradeKit, GravityUpgradeKit>()
-                .ForMember(des => des.AcquisitionUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
-                .ForMember(des => des.ModifiedUtc, opt => opt.MapFrom(src => src.ModifiedTime))
-                .ForMember(des => des.LastUsedUtc, opt => opt.MapFrom(src => src.LastUsedTime))
-                .ReverseMap();
-            this.CreateMap<LiveOpsRepairKit, GravityRepairKit>()
-                .ForMember(des => des.AcquisitionUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
-                .ForMember(des => des.ModifiedUtc, opt => opt.MapFrom(src => src.ModifiedTime))
-                .ForMember(des => des.LastUsedUtc, opt => opt.MapFrom(src => src.LastUsedTime))
-                .ReverseMap();
-            this.CreateMap<LiveOpsPack, GravityInventoryItem>()
-                .ForMember(des => des.AcquisitionUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
-                .ForMember(des => des.ModifiedUtc, opt => opt.MapFrom(src => src.ModifiedTime))
-                .ForMember(des => des.LastUsedUtc, opt => opt.MapFrom(src => src.LastUsedTime))
-                .ReverseMap();
-            this.CreateMap<LiveOpsCurrency, GravityInventoryItem>()
-                .ForMember(des => des.AcquisitionUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
-                .ForMember(des => des.ModifiedUtc, opt => opt.MapFrom(src => src.ModifiedTime))
-                .ForMember(des => des.LastUsedUtc, opt => opt.MapFrom(src => src.LastUsedTime))
-                .ReverseMap();
-            this.CreateMap<LiveOpsEnergyRefill, GravityInventoryItem>()
-                .ForMember(des => des.AcquisitionUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
-                .ForMember(des => des.ModifiedUtc, opt => opt.MapFrom(src => src.ModifiedTime))
-                .ForMember(des => des.LastUsedUtc, opt => opt.MapFrom(src => src.LastUsedTime))
-                .ReverseMap();
 
-            this.CreateMap<LiveOpsCar, MasterInventoryItem>()
+            this.CreateMap<LiveOpsCar, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => 1))
+                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
                 .ReverseMap();
-            this.CreateMap<LiveOpsMasteryKit, MasterInventoryItem>()
+            this.CreateMap<LiveOpsMasteryKit, PlayerInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
+                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
+                .ReverseMap();
+            this.CreateMap<LiveOpsUpgradeKit, PlayerInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
+                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
+                .ReverseMap();
+            this.CreateMap<LiveOpsRepairKit, PlayerInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
+                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
+                .ReverseMap();
+            this.CreateMap<LiveOpsCurrency, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
                 .ReverseMap();
-            this.CreateMap<LiveOpsUpgradeKit, MasterInventoryItem>()
+            this.CreateMap<LiveOpsEnergyRefill, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
-                .ReverseMap();
-            this.CreateMap<LiveOpsRepairKit, MasterInventoryItem>()
-                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
-                .ReverseMap();
-            this.CreateMap<LiveOpsCurrency, MasterInventoryItem>()
-                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
-                .ReverseMap();
-            this.CreateMap<LiveOpsEnergyRefill, MasterInventoryItem>()
-                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.ItemId))
+                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.AcquisitionTime))
                 .ReverseMap();
             this.CreateMap<LiveOpsUserInventory, GravityPlayerInventory>()
-                .ForMember(des => des.CreditRewards, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<MasterInventoryItem>>(source.Currencies)))
+                .ForMember(des => des.CreditRewards, opt => opt.MapFrom((source, destObj, destMem, context) => context.Mapper.Map<IList<PlayerInventoryItem>>(source.Currencies)))
                 .ForMember(des => des.GameSettingsId, opt => opt.MapFrom(src => src.PreviousGameSettingsGuid))
                 .ForMember(des => des.ExternalProfileId, opt => opt.MapFrom(src => src.CurrentExternalProfileId))
                 .ReverseMap();
@@ -103,8 +71,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LiveOpsUserDetails, IdentityResultBeta>()
                 .ForMember(des => des.T10Id, opt => opt.MapFrom(src => src.Turn10Id))
                 .ReverseMap();
-            this.CreateMap<GravityInventoryItem, MasterInventoryItem>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom((source) => source.ItemId));
             this.CreateMap<Currency, MasterInventoryItem>()
                  .ForMember(dest => dest.Description, opt => opt.MapFrom((source) => source.Name));
             this.CreateMap<GravityCar, MasterInventoryItem>()

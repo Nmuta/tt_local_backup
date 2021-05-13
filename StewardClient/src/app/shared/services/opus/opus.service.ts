@@ -6,7 +6,7 @@ import {
   IdentityResultAlpha,
   IdentityResultAlphaBatch,
 } from '@models/identity-query.model';
-import { OpusMasterInventory, OpusPlayerDetails, OpusPlayerInventoryProfile } from '@models/opus';
+import { OpusPlayerDetails, OpusPlayerInventory, OpusPlayerInventoryProfile } from '@models/opus';
 import { ApiService } from '@services/api';
 import { chain } from 'lodash';
 import { Observable, of } from 'rxjs';
@@ -50,15 +50,15 @@ export class OpusService {
   }
 
   /** Gets the opus player's inventory */
-  public getPlayerInventoryByXuid$(xuid: BigNumber): Observable<OpusMasterInventory> {
-    return this.apiService.getRequest$<OpusMasterInventory>(
+  public getPlayerInventoryByXuid$(xuid: BigNumber): Observable<OpusPlayerInventory> {
+    return this.apiService.getRequest$<OpusPlayerInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
 
   /** Gets a specific version of an apollo player's inventory */
-  public getPlayerInventoryByProfileId$(profileId: BigNumber): Observable<OpusMasterInventory> {
-    return this.apiService.getRequest$<OpusMasterInventory>(
+  public getPlayerInventoryByProfileId$(profileId: BigNumber): Observable<OpusPlayerInventory> {
+    return this.apiService.getRequest$<OpusPlayerInventory>(
       `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }

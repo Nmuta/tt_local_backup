@@ -658,9 +658,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as ApolloMasterInventory;
+                var details = result.Value as ApolloPlayerInventory;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<ApolloMasterInventory>();
+                details.Should().BeOfType<ApolloPlayerInventory>();
             }
         }
 
@@ -945,8 +945,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloPlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloUserFlags>());
                 this.ApolloPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
                 this.ApolloPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>()).Returns(true);
-                this.ApolloPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloMasterInventory>());
-                this.ApolloPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<ApolloMasterInventory>());
+                this.ApolloPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ApolloPlayerInventory>());
+                this.ApolloPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<ApolloPlayerInventory>());
                 this.ApolloPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<ApolloInventoryProfile>>());
                 this.ApolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<ApolloGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.ApolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<ApolloGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());

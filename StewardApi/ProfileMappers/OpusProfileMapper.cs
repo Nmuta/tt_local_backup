@@ -17,23 +17,16 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// </summary>
         public OpusProfileMapper()
         {
-            this.CreateMap<AdminForzaGarageCar, OpusCar>()
-                .ForMember(des => des.DateCreatedUtc, opt => opt.MapFrom(src => src.dateCreated))
-                .ReverseMap();
-            this.CreateMap<AdminForzaGarageCar, List<OpusCar>>().ReverseMap();
-            this.CreateMap<AdminForzaUserInventorySummary, OpusPlayerInventory>()
-                .ForMember(des => des.Credits, opt => opt.MapFrom(src => src.creditUpdateEntries.OrderByDescending(e => e.eventTime).FirstOrDefault().currentCredits))
-                .ReverseMap();
-
-            this.CreateMap<AdminForzaGarageCar, MasterInventoryItem>()
+            this.CreateMap<AdminForzaGarageCar, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.carId))
                 .ForMember(des => des.Description, opt => opt.MapFrom(src => src.displayName))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => 1))
+                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.dateCreated))
                 .ReverseMap();
-            this.CreateMap<AdminForzaUserInventorySummary, OpusMasterInventory>()
-                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>
+            this.CreateMap<AdminForzaUserInventorySummary, OpusPlayerInventory>()
+                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
                 {
-                    new MasterInventoryItem { Id = -1, Description = "Credits", Quantity = src.creditUpdateEntries.OrderByDescending(e => e.eventTime).FirstOrDefault().currentCredits }
+                    new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.creditUpdateEntries.OrderByDescending(e => e.eventTime).FirstOrDefault().currentCredits },
                 }))
                 .ReverseMap();
 

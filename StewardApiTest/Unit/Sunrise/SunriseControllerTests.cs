@@ -782,9 +782,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as SunriseMasterInventory;
+                var details = result.Value as SunrisePlayerInventory;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<SunriseMasterInventory>();
+                details.Should().BeOfType<SunrisePlayerInventory>();
             }
         }
 
@@ -1291,8 +1291,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
                 this.SunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseNotification>>());
-                this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunriseMasterInventory>());
-                this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SunriseMasterInventory>());
+                this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunrisePlayerInventory>());
+                this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
                 this.SunrisePlayerInventoryProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
                 this.SunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SunriseGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;

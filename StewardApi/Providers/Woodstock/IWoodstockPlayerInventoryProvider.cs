@@ -13,12 +13,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Get player inventory.
         /// </summary>
-        Task<WoodstockMasterInventory> GetPlayerInventoryAsync(ulong xuid);
+        Task<WoodstockPlayerInventory> GetPlayerInventoryAsync(ulong xuid);
 
         /// <summary>
         ///     Get player inventory.
         /// </summary>
-        Task<WoodstockMasterInventory> GetPlayerInventoryAsync(int profileId);
+        Task<WoodstockPlayerInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
         ///     Get inventory profiles.

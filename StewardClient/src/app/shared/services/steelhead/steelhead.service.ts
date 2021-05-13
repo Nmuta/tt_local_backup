@@ -11,6 +11,7 @@ import {
   SteelheadGroupGift,
   SteelheadMasterInventory,
   SteelheadPlayerDetails,
+  SteelheadPlayerInventory,
   SteelheadPlayerInventoryProfile,
   SteelheadSharedConsoleUser,
 } from '@models/steelhead';
@@ -155,8 +156,8 @@ export class SteelheadService {
   }
 
   /** Gets the Steelhead player's inventory. */
-  public getPlayerInventoryByXuid$(xuid: BigNumber): Observable<SteelheadMasterInventory> {
-    return this.apiService.getRequest$<SteelheadMasterInventory>(
+  public getPlayerInventoryByXuid$(xuid: BigNumber): Observable<SteelheadPlayerInventory> {
+    return this.apiService.getRequest$<SteelheadPlayerInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
@@ -164,8 +165,8 @@ export class SteelheadService {
   /** Gets a specific version of an Steelhead player's inventory */
   public getPlayerInventoryByProfileId$(
     profileId: BigNumber,
-  ): Observable<SteelheadMasterInventory> {
-    return this.apiService.getRequest$<SteelheadMasterInventory>(
+  ): Observable<SteelheadPlayerInventory> {
+    return this.apiService.getRequest$<SteelheadPlayerInventory>(
       `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }

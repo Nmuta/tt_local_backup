@@ -680,9 +680,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as WoodstockMasterInventory;
+                var details = result.Value as WoodstockPlayerInventory;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<WoodstockMasterInventory>();
+                details.Should().BeOfType<WoodstockPlayerInventory>();
             }
         }
 
@@ -1020,8 +1020,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockPlayerDetailsProvider.BanUsersAsync(Arg.Any<IList<WoodstockBanParameters>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.WoodstockPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.WoodstockPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
-                this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<WoodstockMasterInventory>());
-                this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<WoodstockMasterInventory>());
+                this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
+                this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.WoodstockPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
                 this.WoodstockPlayerDetailsProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
                 this.WoodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<WoodstockGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;

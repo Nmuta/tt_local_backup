@@ -41,8 +41,8 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        public static SunriseMasterInventory SetItemDescriptions(
-            SunriseMasterInventory playerInventory, SunriseMasterInventory masterInventory, ILoggingService loggingService)
+        public static SunrisePlayerInventory SetItemDescriptions(
+            SunrisePlayerInventory playerInventory, SunriseMasterInventory masterInventory, ILoggingService loggingService)
         {
             var title = "Sunrise";
             playerInventory.Cars = SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars, $"{title} Car", loggingService);
@@ -57,7 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        public static ApolloMasterInventory SetItemDescriptions(ApolloMasterInventory playerInventory, ApolloMasterInventory masterInventory, ILoggingService loggingService)
+        public static ApolloPlayerInventory SetItemDescriptions(ApolloPlayerInventory playerInventory, ApolloMasterInventory masterInventory, ILoggingService loggingService)
         {
             var title = "Apollo";
             playerInventory.Cars = SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars, $"{title} Car", loggingService);
@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        public static SteelheadMasterInventory SetItemDescriptions(SteelheadMasterInventory playerInventory, SteelheadMasterInventory masterInventory, ILoggingService loggingService)
+        public static SteelheadPlayerInventory SetItemDescriptions(SteelheadPlayerInventory playerInventory, SteelheadMasterInventory masterInventory, ILoggingService loggingService)
         {
             var title = "Steelhead";
             playerInventory.Cars = SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars, $"{title} Car", loggingService);
@@ -81,7 +81,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Verifies the gift inventory against the title master inventory list.
         /// </summary>
-        public static WoodstockMasterInventory SetItemDescriptions(WoodstockMasterInventory playerInventory, WoodstockMasterInventory masterInventory, ILoggingService loggingService)
+        public static WoodstockPlayerInventory SetItemDescriptions(WoodstockPlayerInventory playerInventory, WoodstockMasterInventory masterInventory, ILoggingService loggingService)
         {
             var title = "Woodstock";
             playerInventory.Cars = SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars, $"{title} Car", loggingService);
@@ -96,7 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Sets player inventory item descriptions based on matching master inventory items.
         /// </summary>
-        public static IList<MasterInventoryItem> SetPlayerInventoryItemDescription(IList<MasterInventoryItem> playerInventoryItems, IList<MasterInventoryItem> masterInventoryItems, string logName, ILoggingService loggingService)
+        public static IList<PlayerInventoryItem> SetPlayerInventoryItemDescription(IList<PlayerInventoryItem> playerInventoryItems, IList<MasterInventoryItem> masterInventoryItems, string logName, ILoggingService loggingService)
         {
             foreach (var item in playerInventoryItems)
             {

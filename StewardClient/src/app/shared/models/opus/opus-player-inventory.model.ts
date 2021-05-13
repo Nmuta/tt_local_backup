@@ -1,8 +1,5 @@
-import BigNumber from 'bignumber.js';
-import { OpusCar } from './inventory-items';
+import { OpusBaseInventory } from './opus-base-inventory.model';
+import { PlayerInventoryItem } from '@models/player-inventory-item';
 
-/** Interface for opus player inventory. */
-export interface OpusPlayerInventory {
-  credits: BigNumber;
-  cars: OpusCar[];
-}
+/** Type for opus player inventory. */
+export type OpusPlayerInventory = OpusBaseInventory<PlayerInventoryItem>;

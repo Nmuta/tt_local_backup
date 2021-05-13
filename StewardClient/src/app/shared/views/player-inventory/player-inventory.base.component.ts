@@ -10,17 +10,17 @@ import {
 } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloMasterInventory } from '@models/apollo';
-import { GravityPlayerInventoryBeta } from '@models/gravity';
+import { GravityPlayerInventory } from '@models/gravity';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { OpusMasterInventory } from '@models/opus';
 import { SunriseMasterInventory } from '@models/sunrise';
 import { combineLatest, NEVER, Observable, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { MasterInventoryItemList } from '@models/master-inventory-item-list';
+import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 
 export type AcceptablePlayerInventoryTypeUnion =
-  | GravityPlayerInventoryBeta
+  | GravityPlayerInventory
   | SunriseMasterInventory
   | ApolloMasterInventory
   | OpusMasterInventory;
@@ -58,7 +58,7 @@ export abstract class PlayerInventoryBaseComponent<
   public error: unknown;
 
   /** The properties to display in a standard fashion. */
-  public itemsToShow: MasterInventoryItemList[] = [];
+  public itemsToShow: PlayerInventoryItemList[] = [];
 
   /** Intermediate event that is fired when @see identity changes. */
   private identity$ = new Subject<IdentityResultType>();
@@ -78,7 +78,7 @@ export abstract class PlayerInventoryBaseComponent<
   ): Observable<PlayerInventoryType>;
 
   /** Implement to specify the expando tables to show. */
-  protected abstract makewhatToShowList(): MasterInventoryItemList[];
+  protected abstract makewhatToShowList(): PlayerInventoryItemList[];
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
@@ -138,11 +138,11 @@ export abstract class PlayerInventoryBaseComponent<
   }
 
   /** Utility method for generating master inventory list to display. */
-  protected makeItemList(title: string, items: MasterInventoryItem[]): MasterInventoryItemList {
+  protected makeItemList(title: string, items: MasterInventoryItem[]): PlayerInventoryItemList {
     return {
       title: title,
       description: `${items.length} Total`,
       items: items,
-    } as MasterInventoryItemList;
+    } as PlayerInventoryItemList;
   }
 }

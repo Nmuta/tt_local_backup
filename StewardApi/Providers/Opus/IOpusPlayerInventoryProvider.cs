@@ -12,12 +12,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         /// <summary>
         ///     Get player inventory details.
         /// </summary>
-        Task<OpusMasterInventory> GetPlayerInventoryAsync(ulong xuid);
+        Task<OpusPlayerInventory> GetPlayerInventoryAsync(ulong xuid);
 
         /// <summary>
         ///     Get player inventory details.
         /// </summary>
-        Task<OpusMasterInventory> GetPlayerInventoryAsync(int profileId);
+        Task<OpusPlayerInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
         ///     Gets an inventory profile summary.

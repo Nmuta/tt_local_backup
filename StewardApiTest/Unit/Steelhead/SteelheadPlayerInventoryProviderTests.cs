@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            var actions = new List<Func<Task<SteelheadMasterInventory>>>
+            var actions = new List<Func<Task<SteelheadPlayerInventory>>>
             {
                 async () => await provider.GetPlayerInventoryAsync(xuid).ConfigureAwait(false),
                 async () => await provider.GetPlayerInventoryAsync(profileId).ConfigureAwait(false)
@@ -97,7 +97,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             foreach (var action in actions)
             {
                 var response = action();
-                response.Result.Should().BeOfType<SteelheadMasterInventory>();
+                response.Result.Should().BeOfType<SteelheadPlayerInventory>();
             }
         }
 
@@ -270,7 +270,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
                 this.SteelheadService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
                 this.SteelheadService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
-                this.Mapper.Map<SteelheadMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<SteelheadMasterInventory>());
+                this.Mapper.Map<SteelheadPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.Mapper.Map<IList<SteelheadInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<SteelheadInventoryProfile>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<SteelheadGift>(Arg.Any<SteelheadGroupGift>()).Returns(Fixture.Create<SteelheadGift>());

@@ -5,7 +5,7 @@ import { OpusMasterInventory } from '@models/opus';
 import { OpusService } from '@services/opus';
 import { Observable } from 'rxjs';
 import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
-import { MasterInventoryItemList } from '@models/master-inventory-item-list';
+import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 
 /** Displays an Opus player's inventory. */
 @Component({
@@ -37,7 +37,7 @@ export class OpusPlayerInventoryComponent extends PlayerInventoryBaseComponent<
   }
 
   /** Implement to specify the expando tables to show. */
-  protected makewhatToShowList(): MasterInventoryItemList[] {
+  protected makewhatToShowList(): PlayerInventoryItemList[] {
     return [
       this.makeItemList('Credit Rewards', this.inventory.creditRewards),
       this.makeItemList('Cars', this.inventory.cars),

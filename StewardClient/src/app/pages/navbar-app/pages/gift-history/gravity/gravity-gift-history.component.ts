@@ -9,7 +9,7 @@ import { GravityGiftHistoryState } from './state/gravity-gift-history.state';
 import { SetGravitySelectedPlayerIdentities } from './state/gravity-gift-history.state.actions';
 import { first } from 'lodash';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
-import { GravityPlayerInventoryBeta } from '@models/gravity';
+import { GravityPlayerInventory, GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 
 /** The gravity gift history page for the Navbar app. */
 @Component({
@@ -26,7 +26,8 @@ export class GravityGiftHistoryComponent
   public selectedPlayerIdentities: IdentityResultBetaBatch;
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultBeta;
-  public selectedPlayerInventory: GravityPlayerInventoryBeta;
+  public selectedPlayerInventoryProfile: GravityPseudoPlayerInventoryProfile;
+  public selectedPlayerInventory: GravityPlayerInventory;
   public selectedPlayer: IdentityResultBeta;
 
   constructor(private readonly store: Store) {
@@ -55,7 +56,7 @@ export class GravityGiftHistoryComponent
   }
 
   /** Called when a player inventory is selected and found. */
-  public onInventoryFound(inventory: GravityPlayerInventoryBeta): void {
+  public onInventoryFound(inventory: GravityPlayerInventory): void {
     this.selectedPlayerInventory = inventory;
   }
 

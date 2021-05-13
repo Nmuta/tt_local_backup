@@ -10,7 +10,7 @@ import { ApolloGiftHistory } from '@models/apollo';
 import { SteelheadGiftHistory } from '@models/steelhead';
 import { WoodstockGiftHistory } from '@models/woodstock';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { MasterInventoryItemList } from '@models/master-inventory-item-list';
+import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { GameTitleCodeName } from '@models/enums';
 
@@ -24,7 +24,7 @@ type GiftHistoryResultUnion =
 
 export type GiftHistoryView = {
   descriptionToShow: GiftHistoryDescription[];
-  itemsToShow: MasterInventoryItemList[];
+  itemsToShow: PlayerInventoryItemList[];
 };
 
 export type GiftHistoryDescription = {
@@ -64,7 +64,7 @@ export abstract class GiftHistoryResultsBaseComponent<
   public abstract retrieveHistoryByLspGroup$(): Observable<U[]>;
 
   /** Implement to specify the expando tables to show. */
-  public abstract generateItemsList(giftHistory: U): MasterInventoryItemList[];
+  public abstract generateItemsList(giftHistory: U): PlayerInventoryItemList[];
   public abstract generateDescriptionList(giftHistory: U): GiftHistoryDescription[];
 
   /** Angular lifecycle hook. */
@@ -123,11 +123,11 @@ export abstract class GiftHistoryResultsBaseComponent<
   }
 
   /** Utility method for generating master inventory list to display. */
-  public makeItemList(title: string, items: MasterInventoryItem[]): MasterInventoryItemList {
+  public makeItemList(title: string, items: MasterInventoryItem[]): PlayerInventoryItemList {
     return {
       title: title,
       description: `${items.length} Total`,
       items: items,
-    } as MasterInventoryItemList;
+    } as PlayerInventoryItemList;
   }
 }

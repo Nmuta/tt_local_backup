@@ -680,9 +680,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as SteelheadMasterInventory;
+                var details = result.Value as SteelheadPlayerInventory;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<SteelheadMasterInventory>();
+                details.Should().BeOfType<SteelheadPlayerInventory>();
             }
         }
 
@@ -991,8 +991,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadPlayerDetailsProvider.BanUsersAsync(Arg.Any<IList<SteelheadBanParameters>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.SteelheadPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.SteelheadPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
-                this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SteelheadMasterInventory>());
-                this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SteelheadMasterInventory>());
+                this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
+                this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.SteelheadPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SteelheadInventoryProfile>>());
                 this.SteelheadPlayerDetailsProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup> { new LspGroup { Id = TestConstants.InvalidProfileId, Name = "UnitTesting" } });
                 this.SteelheadPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SteelheadGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;

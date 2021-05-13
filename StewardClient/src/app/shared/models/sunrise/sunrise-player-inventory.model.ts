@@ -1,22 +1,5 @@
-import BigNumber from 'bignumber.js';
-import { SunriseInventoryItem, SunriseCar } from './inventory-items';
+import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { SunriseBaseInventory } from './sunrise-base-inventory.model';
 
-/** Interface for sunrise player inventory. */
-export interface SunrisePlayerInventory {
-  xuid: BigNumber;
-  credits: BigNumber;
-  wheelSpins: BigNumber;
-  superWheelSpins: BigNumber;
-  skillPoints: BigNumber;
-  forzathonPoints: BigNumber;
-  cars: SunriseCar[];
-  rebuilds: SunriseInventoryItem[];
-  vanityItems: SunriseInventoryItem[];
-  carHorns: SunriseInventoryItem[];
-  quickChatLines: SunriseInventoryItem[];
-  creditRewards: SunriseInventoryItem[];
-  emotes: SunriseInventoryItem[];
-  barnFindRumors: SunriseInventoryItem[];
-  perks: SunriseInventoryItem[];
-  giftReason: string;
-}
+/** Type for sunrise player inventory. */
+export type SunrisePlayerInventory = SunriseBaseInventory<PlayerInventoryItem>;

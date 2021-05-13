@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<SunriseMasterInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 var response = await this.sunriseService.GetAdminUserInventoryAsync(xuid)
                     .ConfigureAwait(false);
-                var playerInventoryDetails = this.mapper.Map<SunriseMasterInventory>(response.summary);
+                var playerInventoryDetails = this.mapper.Map<SunrisePlayerInventory>(response.summary);
 
                 return playerInventoryDetails;
             }
@@ -63,13 +63,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<SunriseMasterInventory> GetPlayerInventoryAsync(int profileId)
+        public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(int profileId)
         {
             try
             {
                 var response = await this.sunriseService.GetAdminUserInventoryByProfileIdAsync(profileId)
                     .ConfigureAwait(false);
-                var inventoryProfile = this.mapper.Map<SunriseMasterInventory>(response.summary);
+                var inventoryProfile = this.mapper.Map<SunrisePlayerInventory>(response.summary);
 
                 return inventoryProfile;
             }

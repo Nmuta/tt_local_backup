@@ -556,7 +556,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
+        [SwaggerResponse(200, type: typeof(SunrisePlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
             if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
@@ -585,7 +585,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
+        [SwaggerResponse(200, type: typeof(SunrisePlayerInventory))]
         public async Task<IActionResult> GetPlayerInventoryByProfileId(int profileId)
         {
             var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(profileId);

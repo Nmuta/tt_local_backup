@@ -1,8 +1,5 @@
 import { MasterInventoryItem } from '@models/master-inventory-item';
+import { SteelheadBaseInventory } from './steelhead-base-inventory.model';
 
-/** Interface for Steelhead master inventory. */
-export interface SteelheadMasterInventory {
-  creditRewards: MasterInventoryItem[];
-  cars: MasterInventoryItem[];
-  vanityItems: MasterInventoryItem[];
-}
+/** Type for Steelhead master inventory. */
+export type SteelheadMasterInventory = SteelheadBaseInventory<MasterInventoryItem>;

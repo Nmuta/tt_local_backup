@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SteelheadMasterInventory } from '@models/steelhead';
-import { MasterInventoryItem } from '@models/master-inventory-item';
+import { SteelheadPlayerInventory } from '@models/steelhead';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from 'faker';
+import { PlayerInventoryItem } from '@models/player-inventory-item';
 
 /** Fake API for steelhead player inventory. */
 export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
@@ -30,13 +30,13 @@ export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): SteelheadMasterInventory {
+  public handle(): SteelheadPlayerInventory {
     return SteelheadPlayerXuidInventoryFakeApi.make(this.xuid);
   }
 
   /** Generates a sample object */
-  public static make(_xuid: BigNumber): SteelheadMasterInventory {
-    function makeFakeItems(count: number): MasterInventoryItem[] {
+  public static make(_xuid: BigNumber): SteelheadPlayerInventory {
+    function makeFakeItems(count: number): PlayerInventoryItem[] {
       return Array(faker.datatype.number(count))
         .fill(0)
         .map(() => {
@@ -45,6 +45,7 @@ export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
             quantity: faker.datatype.number(1_000),
             description: faker.lorem.sentences(2),
             itemType: undefined,
+            dateAquiredUtc: faker.date.past(),
           };
         });
     }

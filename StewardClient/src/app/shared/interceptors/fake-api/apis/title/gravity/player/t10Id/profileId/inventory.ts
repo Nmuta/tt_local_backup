@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { GravityPlayerInventoryBeta } from '@models/gravity';
+import { GravityPlayerInventory } from '@models/gravity';
 import { GravityPlayerT10IdInventoryFakeApi } from '../inventory';
 
 /** Fake API for gravity player inventory. */
@@ -29,12 +29,12 @@ export class GravityPlayerT10IdProfileIdInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): GravityPlayerInventoryBeta {
+  public handle(): GravityPlayerInventory {
     return GravityPlayerT10IdProfileIdInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): GravityPlayerInventoryBeta {
+  public static make(): GravityPlayerInventory {
     return GravityPlayerT10IdInventoryFakeApi.make(null);
   }
 }

@@ -1,22 +1,5 @@
-import BigNumber from 'bignumber.js';
-import { WoodstockInventoryItem, WoodstockCar } from './inventory-items';
+import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { WoodstockBaseInventory } from './woodstock-base-inventory.model';
 
-/** Interface for woodstock player inventory. */
-export interface WoodstockPlayerInventory {
-  xuid: BigNumber;
-  credits: BigNumber;
-  wheelSpins: BigNumber;
-  superWheelSpins: BigNumber;
-  skillPoints: BigNumber;
-  forzathonPoints: BigNumber;
-  cars: WoodstockCar[];
-  rebuilds: WoodstockInventoryItem[];
-  vanityItems: WoodstockInventoryItem[];
-  carHorns: WoodstockInventoryItem[];
-  quickChatLines: WoodstockInventoryItem[];
-  creditRewards: WoodstockInventoryItem[];
-  emotes: WoodstockInventoryItem[];
-  barnFindRumors: WoodstockInventoryItem[];
-  perks: WoodstockInventoryItem[];
-  giftReason: string;
-}
+/** Type for woodstock player inventory. */
+export type WoodstockPlayerInventory = WoodstockBaseInventory<PlayerInventoryItem>;

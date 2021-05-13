@@ -11,6 +11,7 @@ import {
   ApolloGroupGift,
   ApolloMasterInventory,
   ApolloPlayerDetails,
+  ApolloPlayerInventory,
   ApolloPlayerInventoryProfile,
   ApolloSharedConsoleUser,
 } from '@models/apollo';
@@ -150,15 +151,15 @@ export class ApolloService {
   }
 
   /** Gets the apollo player's inventory. */
-  public getPlayerInventoryByXuid$(xuid: BigNumber): Observable<ApolloMasterInventory> {
-    return this.apiService.getRequest$<ApolloMasterInventory>(
+  public getPlayerInventoryByXuid$(xuid: BigNumber): Observable<ApolloPlayerInventory> {
+    return this.apiService.getRequest$<ApolloPlayerInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
 
   /** Gets a specific version of an apollo player's inventory */
-  public getPlayerInventoryByProfileId$(profileId: BigNumber): Observable<ApolloMasterInventory> {
-    return this.apiService.getRequest$<ApolloMasterInventory>(
+  public getPlayerInventoryByProfileId$(profileId: BigNumber): Observable<ApolloPlayerInventory> {
+    return this.apiService.getRequest$<ApolloPlayerInventory>(
       `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }

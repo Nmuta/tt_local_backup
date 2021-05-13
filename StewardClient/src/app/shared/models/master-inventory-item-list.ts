@@ -1,8 +1,9 @@
 import { MasterInventoryItem } from './master-inventory-item';
+import { PlayerInventoryItem } from './player-inventory-item';
 
-/** Interface for a master inventory item list. */
-export interface MasterInventoryItemList {
+/** Interface for a player inventory item list. */
+export interface PlayerInventoryItemList {
   title: string;
   description: string;
-  items: MasterInventoryItem[];
+  items: (PlayerInventoryItem | MasterInventoryItem)[];
 }

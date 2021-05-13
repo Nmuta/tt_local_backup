@@ -1,11 +1,5 @@
 import { MasterInventoryItem } from '@models/master-inventory-item';
+import { SunriseBaseInventory } from './sunrise-base-inventory.model';
 
-/** Interface for sunrise master inventory. */
-export interface SunriseMasterInventory {
-  creditRewards: MasterInventoryItem[];
-  cars: MasterInventoryItem[];
-  carHorns: MasterInventoryItem[];
-  vanityItems: MasterInventoryItem[];
-  quickChatLines: MasterInventoryItem[];
-  emotes: MasterInventoryItem[];
-}
+/** Type for sunrise master inventory. */
+export type SunriseMasterInventory = SunriseBaseInventory<MasterInventoryItem>;

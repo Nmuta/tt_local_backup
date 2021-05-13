@@ -13,12 +13,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Get player inventory.
         /// </summary>
-        Task<ApolloMasterInventory> GetPlayerInventoryAsync(ulong xuid);
+        Task<ApolloPlayerInventory> GetPlayerInventoryAsync(ulong xuid);
 
         /// <summary>
         ///     Get player inventory.
         /// </summary>
-        Task<ApolloMasterInventory> GetPlayerInventoryAsync(int profileId);
+        Task<ApolloPlayerInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
         ///     Get player inventory.

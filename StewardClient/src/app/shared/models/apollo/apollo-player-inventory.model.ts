@@ -1,14 +1,5 @@
-import BigNumber from 'bignumber.js';
-import { ApolloInventoryItem, ApolloCar } from './inventory-items';
+import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { ApolloBaseInventory } from './apollo-base-inventory.model';
 
-/** Interface for apollo player inventory. */
-export interface ApolloPlayerInventory {
-  xuid: BigNumber;
-  giftReason: string;
-  credits: BigNumber;
-  cars: ApolloCar[];
-  mods: ApolloInventoryItem[];
-  vanityItems: ApolloInventoryItem[];
-  packs: ApolloInventoryItem[];
-  badges: ApolloInventoryItem[];
-}
+/** Type for apollo player inventory. */
+export type ApolloPlayerInventory = ApolloBaseInventory<PlayerInventoryItem>;

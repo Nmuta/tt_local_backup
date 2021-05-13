@@ -454,7 +454,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(ApolloMasterInventory))]
+        [SwaggerResponse(200, type: typeof(ApolloPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
             if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
@@ -483,7 +483,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(ApolloMasterInventory))]
+        [SwaggerResponse(200, type: typeof(ApolloPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(int profileId)
         {
             var getPlayerInventory = this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(profileId);

@@ -1,8 +1,5 @@
 import { MasterInventoryItem } from '@models/master-inventory-item';
+import { ApolloBaseInventory } from './';
 
-/** Interface for apollo master inventory. */
-export interface ApolloMasterInventory {
-  creditRewards: MasterInventoryItem[];
-  cars: MasterInventoryItem[];
-  vanityItems: MasterInventoryItem[];
-}
+/** Type for apollo master inventory. */
+export type ApolloMasterInventory = ApolloBaseInventory<MasterInventoryItem>;

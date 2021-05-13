@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         }
 
         /// <inheritdoc/>
-        public async Task<OpusMasterInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<OpusPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
@@ -38,7 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
             {
                 var response = await this.opusService.GetAdminUserInventoryAsync(xuid).ConfigureAwait(false);
 
-                return this.mapper.Map<OpusMasterInventory>(response.summary);
+                return this.mapper.Map<OpusPlayerInventory>(response.summary);
             }
             catch (Exception ex)
             {
@@ -47,13 +47,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
         }
 
         /// <inheritdoc />
-        public async Task<OpusMasterInventory> GetPlayerInventoryAsync(int profileId)
+        public async Task<OpusPlayerInventory> GetPlayerInventoryAsync(int profileId)
         {
             try
             {
                 var response = await this.opusService.GetAdminUserInventoryByProfileIdAsync(profileId).ConfigureAwait(false);
 
-                return this.mapper.Map<OpusMasterInventory>(response.summary);
+                return this.mapper.Map<OpusPlayerInventory>(response.summary);
             }
             catch (Exception ex)
             {

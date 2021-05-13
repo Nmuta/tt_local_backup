@@ -87,7 +87,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            var actions = new List<Func<Task<WoodstockMasterInventory>>>
+            var actions = new List<Func<Task<WoodstockPlayerInventory>>>
             {
                 async () => await provider.GetPlayerInventoryAsync(xuid).ConfigureAwait(false),
                 async () => await provider.GetPlayerInventoryAsync(profileId).ConfigureAwait(false)
@@ -97,7 +97,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             foreach (var action in actions)
             {
                 var response = action();
-                response.Result.Should().BeOfType<WoodstockMasterInventory>();
+                response.Result.Should().BeOfType<WoodstockPlayerInventory>();
             }
         }
 
@@ -270,7 +270,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
                 this.WoodstockService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
                 this.WoodstockService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
-                this.Mapper.Map<WoodstockMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<WoodstockMasterInventory>());
+                this.Mapper.Map<WoodstockPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.Mapper.Map<IList<WoodstockInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<WoodstockGift>(Arg.Any<WoodstockGroupGift>()).Returns(Fixture.Create<WoodstockGift>());

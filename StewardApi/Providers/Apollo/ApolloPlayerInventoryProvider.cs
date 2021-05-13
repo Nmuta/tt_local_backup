@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc/>
-        public async Task<ApolloMasterInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 var response = await this.apolloService.GetAdminUserInventoryAsync(xuid)
                     .ConfigureAwait(false);
 
-                return this.mapper.Map<ApolloMasterInventory>(response.summary);
+                return this.mapper.Map<ApolloPlayerInventory>(response.summary);
             }
             catch (Exception ex)
             {
@@ -60,14 +60,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc/>
-        public async Task<ApolloMasterInventory> GetPlayerInventoryAsync(int profileId)
+        public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(int profileId)
         {
             try
             {
                 var response = await this.apolloService.GetAdminUserInventoryByProfileIdAsync(profileId)
                     .ConfigureAwait(false);
 
-                return this.mapper.Map<ApolloMasterInventory>(response.summary);
+                return this.mapper.Map<ApolloPlayerInventory>(response.summary);
             }
             catch (Exception ex)
             {

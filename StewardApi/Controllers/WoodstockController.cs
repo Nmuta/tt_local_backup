@@ -443,7 +443,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(WoodstockMasterInventory))]
+        [SwaggerResponse(200, type: typeof(WoodstockPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
             if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
@@ -472,7 +472,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(WoodstockMasterInventory))]
+        [SwaggerResponse(200, type: typeof(WoodstockPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventoryByProfileId(int profileId)
         {
             var getPlayerInventory = this.woodstockPlayerInventoryProvider.GetPlayerInventoryAsync(profileId);

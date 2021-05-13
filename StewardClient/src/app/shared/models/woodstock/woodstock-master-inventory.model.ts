@@ -1,11 +1,5 @@
 import { MasterInventoryItem } from '@models/master-inventory-item';
+import { WoodstockBaseInventory } from './woodstock-base-inventory.model';
 
-/** Interface for woodstock master inventory. */
-export interface WoodstockMasterInventory {
-  creditRewards: MasterInventoryItem[];
-  cars: MasterInventoryItem[];
-  carHorns: MasterInventoryItem[];
-  vanityItems: MasterInventoryItem[];
-  quickChatLines: MasterInventoryItem[];
-  emotes: MasterInventoryItem[];
-}
+/** Type for woodstock master inventory. */
+export type WoodstockMasterInventory = WoodstockBaseInventory<MasterInventoryItem>;

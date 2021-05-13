@@ -117,7 +117,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Get the player inventory.
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventory")]
-        [SwaggerResponse(200, type: typeof(OpusMasterInventory))]
+        [SwaggerResponse(200, type: typeof(OpusPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(ulong xuid)
         {
             if (!await this.opusPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
@@ -139,7 +139,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Get the player inventory.
         /// </summary>
         [HttpGet("player/profileId({profileId})/inventory")]
-        [SwaggerResponse(200, type: typeof(OpusMasterInventory))]
+        [SwaggerResponse(200, type: typeof(OpusPlayerInventory))]
         public async Task<IActionResult> GetPlayerInventory(int profileId)
         {
             var inventory = await this.opusPlayerInventoryProvider.GetPlayerInventoryAsync(profileId).ConfigureAwait(true);

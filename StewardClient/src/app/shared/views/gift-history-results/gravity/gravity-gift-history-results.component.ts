@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { GravityGiftHistory } from '@models/gravity';
 import { IdentityResultBeta } from '@models/identity-query.model';
-import { MasterInventoryItemList } from '@models/master-inventory-item-list';
+import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 import { GravityService } from '@services/gravity';
 import { Observable, throwError } from 'rxjs';
 import {
@@ -37,7 +37,7 @@ export class GravityGiftHistoryResultsComponent extends GiftHistoryResultsBaseCo
   }
 
   /** Generates the gift history item list to display for each gift history entry. */
-  public generateItemsList(giftHistory: GravityGiftHistory): MasterInventoryItemList[] {
+  public generateItemsList(giftHistory: GravityGiftHistory): PlayerInventoryItemList[] {
     return [
       this.makeItemList('Credit Rewards', giftHistory.giftInventory.inventory.creditRewards),
       this.makeItemList('Cars', giftHistory.giftInventory.inventory.cars),

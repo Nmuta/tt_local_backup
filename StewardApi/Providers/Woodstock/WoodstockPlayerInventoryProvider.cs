@@ -43,7 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<WoodstockMasterInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<WoodstockPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 var response = await this.woodstockService.GetAdminUserInventoryAsync(xuid)
                     .ConfigureAwait(false);
-                var playerInventoryDetails = this.mapper.Map<WoodstockMasterInventory>(response.summary);
+                var playerInventoryDetails = this.mapper.Map<WoodstockPlayerInventory>(response.summary);
 
                 return playerInventoryDetails;
             }
@@ -62,13 +62,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<WoodstockMasterInventory> GetPlayerInventoryAsync(int profileId)
+        public async Task<WoodstockPlayerInventory> GetPlayerInventoryAsync(int profileId)
         {
             try
             {
                 var response = await this.woodstockService.GetAdminUserInventoryByProfileIdAsync(profileId)
                     .ConfigureAwait(false);
-                var inventoryProfile = this.mapper.Map<WoodstockMasterInventory>(response.summary);
+                var inventoryProfile = this.mapper.Map<WoodstockPlayerInventory>(response.summary);
 
                 return inventoryProfile;
             }

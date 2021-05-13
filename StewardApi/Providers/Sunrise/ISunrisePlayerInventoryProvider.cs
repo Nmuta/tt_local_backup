@@ -13,12 +13,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Get player inventory.
         /// </summary>
-        Task<SunriseMasterInventory> GetPlayerInventoryAsync(ulong xuid);
+        Task<SunrisePlayerInventory> GetPlayerInventoryAsync(ulong xuid);
 
         /// <summary>
         ///     Get player inventory.
         /// </summary>
-        Task<SunriseMasterInventory> GetPlayerInventoryAsync(int profileId);
+        Task<SunrisePlayerInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
         ///     Get inventory profiles.

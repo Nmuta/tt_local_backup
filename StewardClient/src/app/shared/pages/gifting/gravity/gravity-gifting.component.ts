@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
-import { GravityPlayerInventoryBeta, GravityPseudoPlayerInventoryProfile } from '@models/gravity';
+import { GravityPlayerInventory, GravityPseudoPlayerInventoryProfile } from '@models/gravity';
 import { IdentityResultBeta, IdentityResultBetaBatch } from '@models/identity-query.model';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 import { Select, Store } from '@ngxs/store';
@@ -26,7 +26,7 @@ export class GravityGiftingComponent extends GiftingBaseComponent<string> implem
   /** Selected player identity when user clicks on identity chip. */
   public selectedPlayerIdentity: IdentityResultBeta;
   public selectedPlayerInventoryProfile: GravityPseudoPlayerInventoryProfile;
-  public selectedPlayerInventory: GravityPlayerInventoryBeta;
+  public selectedPlayerInventory: GravityPlayerInventory;
 
   constructor(private readonly store: Store) {
     super();
@@ -53,7 +53,7 @@ export class GravityGiftingComponent extends GiftingBaseComponent<string> implem
   }
 
   /** Called when a player inventory is selected and found. */
-  public onInventoryFound(inventory: GravityPlayerInventoryBeta): void {
+  public onInventoryFound(inventory: GravityPlayerInventory): void {
     this.selectedPlayerInventory = inventory;
   }
 

@@ -5,9 +5,9 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SunriseGiftHistory } from '@models/sunrise';
 import { of, throwError } from 'rxjs';
 import { GiftHistoryResultsBaseComponent } from './gift-history-results.base.component';
-import { MasterInventoryItem } from '@models/master-inventory-item';
 import { GiftHistoryView } from './gift-history-results.base.component';
 import faker from 'faker';
+import { PlayerInventoryItem } from '@models/player-inventory-item';
 
 describe('GiftHistoryResultsBaseComponent', () => {
   let component: GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistory>;
@@ -128,9 +128,10 @@ describe('GiftHistoryResultsBaseComponent', () => {
         description: faker.random.words(10),
         quantity: faker.datatype.number(),
         itemType: 'creditRewards',
+        dateAquiredUtc: faker.date.past(),
       },
-    ] as MasterInventoryItem[];
-    it('should generate a MasterInventoryItemList', () => {
+    ] as PlayerInventoryItem[];
+    it('should generate a PlayerInventoryItemList', () => {
       const itemList = component.makeItemList(title, giftItems);
 
       expect(itemList.title).toEqual(title);

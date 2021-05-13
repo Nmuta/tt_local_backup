@@ -24,9 +24,6 @@ import { ApolloPlayerXuidInventoryProfilesFakeApi } from './apis/title/apollo/pl
 import { ApolloPlayerXuidGiftHistoryFakeApi } from './apis/title/apollo/player/xuid/giftHistory';
 import { ApolloPlayersBanFakeApi } from './apis/title/apollo/players/ban';
 import { ApolloPlayersBanWithBackgroundProcessingFakeApi } from './apis/title/apollo/players/ban_backgroundProcessing';
-import { ApolloGroupGamertagsInventoryFakeApi } from './apis/title/apollo/group/gamertags/inventory';
-import { ApolloGroupGroupIdInventoryFakeApi } from './apis/title/apollo/group/groupId/inventory';
-import { ApolloGroupXuidsInventoryFakeApi } from './apis/title/apollo/group/xuids/inventory';
 import { ApolloGroupGroupIdGiftHistoryFakeApi } from './apis/title/apollo/group/groupId/giftHistory';
 import { ApolloGroupsFakeApi } from './apis/title/apollo/groups';
 import { ApolloPlayersBanSummariesFakeApi } from './apis/title/apollo/players/ban-summaries';
@@ -71,9 +68,6 @@ import { SunrisePlayersBanWithBackgroundProcessingFakeApi } from './apis/title/s
 import { SunrisePlayerXuidInventoryFakeApi } from './apis/title/sunrise/player/xuid/inventory';
 import { SunrisePlayerXuidInventoryProfilesFakeApi } from './apis/title/sunrise/player/xuid/inventoryProfiles';
 import { SunrisePlayerProfileIdInventoryFakeApi } from './apis/title/sunrise/player/profileId/inventory';
-import { SunriseGroupGamertagsInventoryFakeApi } from './apis/title/sunrise/group/gamertags/inventory';
-import { SunriseGroupGroupIdInventoryFakeApi } from './apis/title/sunrise/group/groupId/inventory';
-import { SunriseGroupXuidsInventoryFakeApi } from './apis/title/sunrise/group/xuids/inventory';
 import { SunriseGroupGroupIdGiftHistoryFakeApi } from './apis/title/sunrise/group/groupId/giftHistory';
 import { SunriseGroupsFakeApi } from './apis/title/sunrise/groups';
 import { SunrisePlayerXuidNotificationsFakeApi } from './apis/title/sunrise/player/xuid/notifications';
@@ -128,9 +122,6 @@ const fakeApiConstructors = [
   SunrisePlayersBanFakeApi,
   SunrisePlayersBanSummariesFakeApi,
   SunrisePlayersIdentitiesFakeApi,
-  SunriseGroupGamertagsInventoryFakeApi,
-  SunriseGroupGroupIdInventoryFakeApi,
-  SunriseGroupXuidsInventoryFakeApi,
   SunriseGroupGroupIdGiftHistoryFakeApi,
   SunrisePlayerXuidNotificationsFakeApi,
   SunriseMasterInventoryFakeApi,
@@ -158,9 +149,6 @@ const fakeApiConstructors = [
   ApolloPlayersBanSummariesFakeApi,
   ApolloPlayerXuidBanHistoryFakeApi,
   ApolloPlayersIdentitiesFakeApi,
-  ApolloGroupGamertagsInventoryFakeApi,
-  ApolloGroupGroupIdInventoryFakeApi,
-  ApolloGroupXuidsInventoryFakeApi,
   ApolloGroupGroupIdGiftHistoryFakeApi,
   ApolloGroupsFakeApi,
   ApolloMasterInventoryFakeApi,

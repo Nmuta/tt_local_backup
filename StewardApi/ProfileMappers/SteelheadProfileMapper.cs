@@ -21,18 +21,20 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
         public SteelheadProfileMapper()
         {
-            this.CreateMap<AdminForzaCarUserInventoryItem, MasterInventoryItem>()
+            this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
+                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
                 .ReverseMap();
-            this.CreateMap<AdminForzaUserInventoryItem, MasterInventoryItem>()
+            this.CreateMap<AdminForzaUserInventoryItem, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
+                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
                 .ReverseMap();
-            this.CreateMap<AdminForzaUserInventorySummary, SteelheadMasterInventory>()
-                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>
+            this.CreateMap<AdminForzaUserInventorySummary, SteelheadPlayerInventory>()
+                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
                 {
-                    new MasterInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits }
+                    new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
                 }))
                 .ReverseMap();
 

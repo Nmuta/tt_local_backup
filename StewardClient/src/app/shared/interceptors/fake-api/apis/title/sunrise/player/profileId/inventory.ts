@@ -1,6 +1,6 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SunriseMasterInventory } from '@models/sunrise';
+import { SunrisePlayerInventory } from '@models/sunrise';
 import { SunrisePlayerXuidInventoryFakeApi } from '../xuid/inventory';
 
 /** Fake API for sunrise player inventory. */
@@ -18,12 +18,12 @@ export class SunrisePlayerProfileIdInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): SunriseMasterInventory {
+  public handle(): SunrisePlayerInventory {
     return SunrisePlayerProfileIdInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): SunriseMasterInventory {
+  public static make(): SunrisePlayerInventory {
     return SunrisePlayerXuidInventoryFakeApi.make(null);
   }
 }

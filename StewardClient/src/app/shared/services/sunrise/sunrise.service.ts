@@ -19,6 +19,7 @@ import {
   SunriseGroupGift,
   SunriseMasterInventory,
   SunrisePlayerDetails,
+  SunrisePlayerInventory,
   SunrisePlayerInventoryProfile,
   SunrisePlayerNotifications,
   SunriseProfileRollback,
@@ -252,15 +253,15 @@ export class SunriseService {
   }
 
   /** Gets the latest version of a player's inventory */
-  public getPlayerInventoryByXuid$(xuid: BigNumber): Observable<SunriseMasterInventory> {
-    return this.apiService.getRequest$<SunriseMasterInventory>(
+  public getPlayerInventoryByXuid$(xuid: BigNumber): Observable<SunrisePlayerInventory> {
+    return this.apiService.getRequest$<SunrisePlayerInventory>(
       `${this.basePath}/player/xuid(${xuid})/inventory`,
     );
   }
 
   /** Gets a specific version of a player's inventory */
-  public getPlayerInventoryByProfileId$(profileId: BigNumber): Observable<SunriseMasterInventory> {
-    return this.apiService.getRequest$<SunriseMasterInventory>(
+  public getPlayerInventoryByProfileId$(profileId: BigNumber): Observable<SunrisePlayerInventory> {
+    return this.apiService.getRequest$<SunrisePlayerInventory>(
       `${this.basePath}/player/profileId(${profileId})/inventory`,
     );
   }

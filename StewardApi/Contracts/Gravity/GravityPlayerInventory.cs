@@ -6,7 +6,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
     /// <summary>
     ///     Represents a Gravity player inventory.
     /// </summary>
-    public class GravityPlayerInventory : GravityMasterInventory
+    public class GravityPlayerInventory : GravityBaseInventory<PlayerInventoryItem>
     {
         /// <summary>
         ///     Gets or sets the game settings ID.

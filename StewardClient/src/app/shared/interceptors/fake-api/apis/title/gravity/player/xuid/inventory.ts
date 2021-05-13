@@ -2,9 +2,9 @@ import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
-import { GravityPlayerInventoryBeta } from '@models/gravity';
-import { MasterInventoryItem } from '@models/master-inventory-item';
+import { GravityPlayerInventory } from '@models/gravity';
 import faker from 'faker';
+import { PlayerInventoryItem } from '@models/player-inventory-item';
 
 /** Fake API for gravity player inventory. */
 export class GravityPlayerXuidInventoryFakeApi extends FakeApiBase {
@@ -21,13 +21,13 @@ export class GravityPlayerXuidInventoryFakeApi extends FakeApiBase {
   }
 
   /** Produces a sample API response. */
-  public handle(): GravityPlayerInventoryBeta {
+  public handle(): GravityPlayerInventory {
     return GravityPlayerXuidInventoryFakeApi.make();
   }
 
   /** Generates a sample object */
-  public static make(): GravityPlayerInventoryBeta {
-    function makeFakeItems(count: number): MasterInventoryItem[] {
+  public static make(): GravityPlayerInventory {
+    function makeFakeItems(count: number): PlayerInventoryItem[] {
       return Array(faker.datatype.number(count))
         .fill(0)
         .map(() => {
@@ -36,6 +36,7 @@ export class GravityPlayerXuidInventoryFakeApi extends FakeApiBase {
             quantity: faker.datatype.number(5),
             description: faker.lorem.sentences(2),
             itemType: undefined,
+            dateAquiredUtc: faker.date.past(),
           };
         });
     }

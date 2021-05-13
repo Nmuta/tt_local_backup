@@ -43,7 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<SteelheadMasterInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
         {
             xuid.ShouldNotBeNull(nameof(xuid));
 
@@ -51,7 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 var response = await this.steelheadService.GetAdminUserInventoryAsync(xuid)
                     .ConfigureAwait(false);
-                var playerInventoryDetails = this.mapper.Map<SteelheadMasterInventory>(response.summary);
+                var playerInventoryDetails = this.mapper.Map<SteelheadPlayerInventory>(response.summary);
 
                 return playerInventoryDetails;
             }
@@ -62,13 +62,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<SteelheadMasterInventory> GetPlayerInventoryAsync(int profileId)
+        public async Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(int profileId)
         {
             try
             {
                 var response = await this.steelheadService.GetAdminUserInventoryByProfileIdAsync(profileId)
                     .ConfigureAwait(false);
-                var inventoryProfile = this.mapper.Map<SteelheadMasterInventory>(response.summary);
+                var inventoryProfile = this.mapper.Map<SteelheadPlayerInventory>(response.summary);
 
                 return inventoryProfile;
             }

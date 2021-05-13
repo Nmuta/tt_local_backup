@@ -20,28 +20,20 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         /// </summary>
         public ApolloProfileMapper()
         {
-            this.CreateMap<AdminForzaCarUserInventoryItem, ApolloCar>()
-                .ForMember(des => des.AcquisitionUtc, opt => opt.MapFrom(src => src.acquisitionTime))
-                .ForMember(des => des.LastUsedUtc, opt => opt.MapFrom(src => src.lastUsedTime))
-                .ForMember(des => des.PurchaseUtc, opt => opt.MapFrom(src => src.purchaseTimestamp))
-                .ReverseMap();
-            this.CreateMap<AdminForzaUserInventoryItem, ApolloInventoryItem>()
-                .ForMember(des => des.AcquisitionUtc, opt => opt.MapFrom(src => src.acquisitionTime))
-                .ForMember(des => des.LastUsedUtc, opt => opt.MapFrom(src => src.lastUsedTime))
-                .ReverseMap();
-
-            this.CreateMap<AdminForzaCarUserInventoryItem, MasterInventoryItem>()
-               .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
-                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
-               .ReverseMap();
-            this.CreateMap<AdminForzaUserInventoryItem, MasterInventoryItem>()
+            this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
+                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
+               .ReverseMap();
+            this.CreateMap<AdminForzaUserInventoryItem, PlayerInventoryItem>()
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
+                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
+                .ForMember(des => des.DateAquiredUtc, opt => opt.MapFrom(src => src.acquisitionTime))
                 .ReverseMap();
-            this.CreateMap<AdminForzaUserInventorySummary, ApolloMasterInventory>()
-                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<MasterInventoryItem>
+            this.CreateMap<AdminForzaUserInventorySummary, ApolloPlayerInventory>()
+                .ForMember(des => des.CreditRewards, opt => opt.MapFrom(src => new List<PlayerInventoryItem>
                 {
-                    new MasterInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits }
+                    new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
                 }))
                 .ReverseMap();
 
@@ -74,10 +66,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ApolloPlayerDetails, IdentityResultAlpha>().ReverseMap();
 
             this.CreateMap<ApolloGroupGift, ApolloGift>().ReverseMap();
-            this.CreateMap<ApolloCar, MasterInventoryItem>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.ItemId));
-            this.CreateMap<ApolloInventoryItem, MasterInventoryItem>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.ItemId));
             this.CreateMap<ApolloUserFlagsInput, ApolloUserFlags>().ReverseMap();
         }
     }

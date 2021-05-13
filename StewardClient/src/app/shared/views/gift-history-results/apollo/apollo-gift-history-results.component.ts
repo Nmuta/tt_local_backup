@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ApolloGiftHistory } from '@models/apollo';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultAlpha } from '@models/identity-query.model';
-import { MasterInventoryItemList } from '@models/master-inventory-item-list';
+import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 import { ApolloService } from '@services/apollo/apollo.service';
 import { Observable } from 'rxjs';
 import {
@@ -37,7 +37,7 @@ export class ApolloGiftHistoryResultsComponent extends GiftHistoryResultsBaseCom
   }
 
   /** Generates the gift history item list to display for each gift history entry. */
-  public generateItemsList(giftHistory: ApolloGiftHistory): MasterInventoryItemList[] {
+  public generateItemsList(giftHistory: ApolloGiftHistory): PlayerInventoryItemList[] {
     return [
       this.makeItemList('Credit Rewards', giftHistory.giftInventory.inventory.creditRewards),
       this.makeItemList('Cars', giftHistory.giftInventory.inventory.cars),

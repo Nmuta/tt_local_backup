@@ -5,7 +5,7 @@ import { IdentityResultAlpha } from '@models/identity-query.model';
 import { SteelheadService } from '@services/steelhead';
 import { Observable } from 'rxjs';
 import { PlayerInventoryBaseComponent } from '../player-inventory.base.component';
-import { MasterInventoryItemList } from '@models/master-inventory-item-list';
+import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 
 /** Displays an Steelhead player's inventory. */
 @Component({
@@ -37,7 +37,7 @@ export class SteelheadPlayerInventoryComponent extends PlayerInventoryBaseCompon
   }
 
   /** Implement to specify the expando tables to show. */
-  protected makewhatToShowList(): MasterInventoryItemList[] {
+  protected makewhatToShowList(): PlayerInventoryItemList[] {
     return [
       this.makeItemList('Credit Rewards', this.inventory.creditRewards),
       this.makeItemList('Cars', this.inventory.cars),

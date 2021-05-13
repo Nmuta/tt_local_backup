@@ -71,7 +71,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
             var profileId = Fixture.Create<int>();
 
             // Act.
-            var actions = new List<Func<Task<OpusMasterInventory>>>
+            var actions = new List<Func<Task<OpusPlayerInventory>>>
             {
                 async () => await provider.GetPlayerInventoryAsync(xuid).ConfigureAwait(false),
                 async () => await provider.GetPlayerInventoryAsync(profileId).ConfigureAwait(false)
@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
             // Assert.
             foreach (var action in actions)
             {
-                action().Result.Should().BeOfType<OpusMasterInventory>();
+                action().Result.Should().BeOfType<OpusPlayerInventory>();
             }
         }
 
@@ -106,7 +106,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Opus
                 this.OpusService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
                 this.OpusService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
                 this.OpusService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
-                this.Mapper.Map<OpusMasterInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<OpusMasterInventory>());
+                this.Mapper.Map<OpusPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<OpusPlayerInventory>());
                 this.Mapper.Map<IList<OpusInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<OpusInventoryProfile>>());
             }
 
