@@ -63,7 +63,7 @@ export class SunriseCreditHistoryComponent extends BaseComponent implements OnIn
         this.loadingMore = false;
         this.isLoading = false;
         this.creditHistory = this.creditHistory.concat(creditUpdates);
-        this.startIndex += this.creditHistory.length;
+        this.startIndex = this.creditHistory.length;
         this.showLoadMore = creditUpdates.length >= this.maxResultsPerRequest;
       });
 
