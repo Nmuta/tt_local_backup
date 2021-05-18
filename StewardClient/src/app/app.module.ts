@@ -87,25 +87,28 @@ function fakeApiOrNothing(): Provider[] {
     FlexLayoutModule,
     AvailableAppsModule,
     HubsModule,
-    NgxsModule.forRoot([
-      UserState,
-      UserSettingsState,
-      TitleMemoryState,
-      MasterInventoryListMemoryState,
-      LspGroupMemoryState,
-      // Gifting page states
-      WoodstockGiftingState,
-      SteelheadGiftingState,
-      GravityGiftingState,
-      SunriseGiftingState,
-      ApolloGiftingState,
-      // Gift History page states
-      WoodstockGiftHistoryState,
-      SteelheadGiftHistoryState,
-      GravityGiftHistoryState,
-      SunriseGiftHistoryState,
-      ApolloGiftHistoryState,
-    ]),
+    NgxsModule.forRoot(
+      [
+        UserState,
+        UserSettingsState,
+        TitleMemoryState,
+        MasterInventoryListMemoryState,
+        LspGroupMemoryState,
+        // Gifting page states
+        WoodstockGiftingState,
+        SteelheadGiftingState,
+        GravityGiftingState,
+        SunriseGiftingState,
+        ApolloGiftingState,
+        // Gift History page states
+        WoodstockGiftHistoryState,
+        SteelheadGiftHistoryState,
+        GravityGiftHistoryState,
+        SunriseGiftHistoryState,
+        ApolloGiftHistoryState,
+      ],
+      { developmentMode: !environment.production },
+    ),
     NgxsStoragePluginModule.forRoot({ key: [UserSettingsState, UserState] }),
     NgxsRouterPluginModule.forRoot(),
     MsalModule.forRoot(

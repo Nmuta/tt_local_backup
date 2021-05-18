@@ -1,14 +1,16 @@
-<div [formGroup]="formGroup">
-  <h2>Activities</h2>
+<div [formGroup]="hiddenFormGroup">
+  <h2>Kusto Activity Bundles</h2>
   <mat-accordion formArrayName="activities">
     <mat-expansion-panel *ngFor="let dataActivityFormControl of formControls; let i = index">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <span
             class="flex-truncate"
-            [matTooltip]="dataActivityFormControl.value.name || 'unnamed activity'"
+            [matTooltip]="
+              getFormValue(dataActivityFormControl).dataActivity.name || 'unnamed activity'
+            "
           >
-            {{ dataActivityFormControl.value.name || 'unnamed activity' }}
+            {{ getFormValue(dataActivityFormControl).dataActivity?.name || 'unnamed activity' }}
           </span>
         </mat-panel-title>
         <mat-panel-description>
@@ -17,20 +19,26 @@
             <div
               class="truncate"
               [matTooltip]="
-                (dataActivityFormControl.value.table || 'N/A') +
+                (getFormValue(dataActivityFormControl).dataActivity.table || 'N/A') +
                 ' @ ' +
-                (dataActivityFormControl.value.database || 'N/A')
+                (getFormValue(dataActivityFormControl).dataActivity.database || 'N/A')
               "
             >
-              {{ dataActivityFormControl.value.table || 'N/A' }}
+              {{ getFormValue(dataActivityFormControl).dataActivity.table || 'N/A' }}
               @
-              {{ dataActivityFormControl.value.database || 'N/A' }}
+              {{ getFormValue(dataActivityFormControl).dataActivity.database || 'N/A' }}
             </div>
             <div class="truncate">
               <span class="truncate">
-                {{ dataActivityFormControl.value.dateRange.start | utcDate: 'short' }}
+                {{
+                  getFormValue(dataActivityFormControl).dataActivity.dateRange.start.toJSDate()
+                    | utcDate: 'short'
+                }}
                 -
-                {{ dataActivityFormControl.value.dateRange.end | utcDate: 'short' }}
+                {{
+                  getFormValue(dataActivityFormControl).dataActivity.dateRange.end.toJSDate()
+                    | utcDate: 'short'
+                }}
               </span>
             </div>
           </div>
@@ -47,7 +55,9 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <obligation-data-activity [formControl]="dataActivityFormControl"></obligation-data-activity>
+      <kusto-data-activity-bundle
+        [formControl]="dataActivityFormControl"
+      ></kusto-data-activity-bundle>
     </mat-expansion-panel>
   </mat-accordion>
 

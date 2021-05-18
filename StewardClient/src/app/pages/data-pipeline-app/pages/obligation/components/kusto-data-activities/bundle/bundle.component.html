@@ -1,0 +1,38 @@
+<mat-tab-group [formGroup]="formGroup" [(selectedIndex)]="selectedIndex">
+  <mat-tab label="Data Activity">
+    <div class="wrapper">
+      <kusto-data-activity [formControl]="formControls.dataActivity"></kusto-data-activity>
+    </div>
+  </mat-tab>
+  <mat-tab label="Restate-o-matic" [disabled]="!formControls.restateOMatic.value">
+    <ng-template mat-tab-label>
+      Restate-o-matic
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="addRestateOMatic()"
+        clickStop
+        *ngIf="!formControls.restateOMatic.value"
+        matTooltip="Add Restate-o-matic"
+      >
+        <mat-icon>add_circle</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        color="warn"
+        (click)="removeRestateOMatic()"
+        clickStop
+        *ngIf="!!formControls.restateOMatic.value"
+        matTooltip="Remove Restate-o-matic"
+      >
+        <mat-icon>remove_circle</mat-icon>
+      </button>
+    </ng-template>
+    <div class="wrapper" *ngIf="!!formControls.restateOMatic.value">
+      <restate-o-matic
+        [formControl]="formControls.restateOMatic"
+        [attachedToFormControl]="formControls.dataActivity"
+      ></restate-o-matic>
+    </div>
+  </mat-tab>
+</mat-tab-group>

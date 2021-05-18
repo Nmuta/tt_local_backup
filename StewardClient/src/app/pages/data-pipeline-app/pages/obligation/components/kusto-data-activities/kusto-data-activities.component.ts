@@ -18,37 +18,32 @@ import { cloneDeep } from 'lodash';
 import { Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { ActivePipelineService } from '../../services/active-pipeline.service';
-import {
-  ObligationDataActivityComponent,
-  ObligationDataActivityOptions,
-} from './obligation-data-activity/obligation-data-activity.component';
+import { BundleComponent, KustoDataActivityBundle } from './bundle/bundle.component';
 
-export type ObligationDataActivitiesOptions = ObligationDataActivityOptions[];
+export type KustoDataActivityBundles = KustoDataActivityBundle[];
 
-/** A form component for creating a variable number of ObligationDataActivities. */
+/** A form component for creating a variable number of KustoDataActivities. */
 @Component({
-  selector: 'obligation-data-activities',
-  templateUrl: './obligation-data-activities.component.html',
-  styleUrls: ['./obligation-data-activities.component.scss'],
+  selector: 'kusto-data-activities',
+  templateUrl: './kusto-data-activities.component.html',
+  styleUrls: ['./kusto-data-activities.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ObligationDataActivitiesComponent),
+      useExisting: forwardRef(() => KustoDataActivitiesComponent),
       multi: true,
     },
     {
       provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => ObligationDataActivitiesComponent),
+      useExisting: forwardRef(() => KustoDataActivitiesComponent),
       multi: true,
     },
   ],
 })
-export class ObligationDataActivitiesComponent
+export class KustoDataActivitiesComponent
   extends BaseComponent
   implements ControlValueAccessor, Validator {
-  public static readonly defaults: ObligationDataActivitiesOptions = [
-    cloneDeep(ObligationDataActivityComponent.defaults),
-  ];
+  public static readonly defaults: KustoDataActivityBundles = [cloneDeep(BundleComponent.defaults)];
 
   public formControls = [];
 
@@ -57,15 +52,18 @@ export class ObligationDataActivitiesComponent
   // NOTE: This is just a container object becuase FormArray must be contained within one.
   // NOTE: Normally, this would be used for the output type output of this would be the output type,
   // NOTE: but in this case, the output type is the FormArray contents.
-  public formGroup = new FormGroup({
+  public hiddenFormGroup = new FormGroup({
     activities: this.formArray,
   });
 
-  private readonly onChange$ = new Subject<ObligationDataActivitiesOptions>();
+  private readonly onChange$ = new Subject<KustoDataActivityBundles>();
   private readonly formArray$ = new Subject<FormArray>();
 
   constructor(private readonly activePipeline: ActivePipelineService) {
     super();
+
+    // subscribe form callback to onChange$
+    this.onChange$.pipe(takeUntil(this.onDestroy$)).subscribe(v => this.changeFn(v));
 
     // subscribe onChange$ to latest formArray clone's value
     this.formArray$
@@ -73,23 +71,15 @@ export class ObligationDataActivitiesComponent
         switchMap(formArray => formArray.valueChanges),
         takeUntil(this.onDestroy$),
         startWith(this.formArray.value),
-        map(value => value as ObligationDataActivitiesOptions),
+        map(value => value as KustoDataActivityBundles),
       )
       .subscribe(this.onChange$);
 
-    // update values in response to onChange$
-    this.onChange$.pipe(takeUntil(this.onDestroy$)).subscribe(v => {
-      this.activePipeline.activityNames = this.formControls
-        .map(fc => fc.value as ObligationDataActivityOptions)
-        .map(da => da.name);
-      this.changeFn(v);
-    });
-
-    this.overrideList(ObligationDataActivitiesComponent.defaults);
+    this.overrideList(KustoDataActivitiesComponent.defaults);
   }
 
   /** Form control hook. */
-  public writeValue(data: ObligationDataActivitiesOptions): void {
+  public writeValue(data: KustoDataActivityBundles): void {
     if (data) {
       if (data.length !== this.formArray.length) {
         // if the list actually changed, we need to recreate the array
@@ -102,7 +92,7 @@ export class ObligationDataActivitiesComponent
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (data: ObligationDataActivitiesOptions) => void): void {
+  public registerOnChange(fn: (data: KustoDataActivityBundles) => void): void {
     this.changeFn = fn;
     this.changeFn(this.formArray.value);
   }
@@ -138,24 +128,29 @@ export class ObligationDataActivitiesComponent
   /** Called when the "add" button is clicked. */
   public addActivity(): void {
     this.formArray.push(
-      this.valueToFormControl(cloneDeep(ObligationDataActivityComponent.defaults)),
+      this.valueToFormControl(cloneDeep(KustoDataActivitiesComponent.defaults[0])),
     );
   }
 
+  /** Gets a typed value from a form control. */
+  public getFormValue(formControl: FormControl): KustoDataActivityBundle {
+    return formControl.value as KustoDataActivityBundle;
+  }
+
   /** Overrides the list when a new list is created. */
-  private overrideList(options: ObligationDataActivitiesOptions): void {
+  private overrideList(options: KustoDataActivityBundles): void {
     this.formControls = options.map(v => this.valueToFormControl(v));
     this.formArray = new FormArray(this.formControls, Validators.minLength(1));
-    this.formGroup = new FormGroup({ activities: this.formArray });
+    this.hiddenFormGroup = new FormGroup({ activities: this.formArray });
     this.formArray$.next(this.formArray);
   }
 
   /** Hook for adding standardized validators to each form control. */
-  private valueToFormControl(v: ObligationDataActivityOptions): FormControl {
+  private valueToFormControl(v: KustoDataActivityBundle): FormControl {
     return new FormControl(v);
   }
 
-  private changeFn = (_data: ObligationDataActivitiesOptions) => {
+  private changeFn = (_data: KustoDataActivityBundles) => {
     /* Empty */
   };
 }

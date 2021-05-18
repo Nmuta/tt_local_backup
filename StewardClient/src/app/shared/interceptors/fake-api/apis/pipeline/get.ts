@@ -4,7 +4,7 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SimplifiedObligationPipeline } from '@models/pipelines/simplified-obligation-pipeline';
 import { faker } from '@interceptors/fake-api/utility';
 import { ObligationPrincipal } from '@models/pipelines/obligation-principal';
-import { ObligationDataActivity } from '@models/pipelines/obligation-data-activity';
+import { ObligationKustoDataActivity } from '@models/pipelines/obligation-kusto-data-activity';
 import moment from 'moment';
 
 /** Fake API for GETing a single pipeline. */
@@ -51,8 +51,9 @@ export class PipelineGetFakeApi extends FakeApiBase {
           role: faker.name.jobTitle(),
         };
       }),
+      obligationRestateOMatics: [],
       obligationPipelines: new Array(faker.datatype.number(5)).fill(undefined).map(_ => {
-        return <ObligationDataActivity>{
+        return <ObligationKustoDataActivity>{
           activityName: faker.name.jobTitle(),
           dataActivityDependencyNames: new Array(faker.datatype.number(5))
             .fill(undefined)

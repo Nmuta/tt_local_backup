@@ -1,10 +1,11 @@
 import BigNumber from 'bignumber.js';
-import moment from 'moment';
 import { KustoFunction } from './kusto-function';
 
-export interface ObligationDataActivity {
+/** A kusto-type restate-o-matic data activity. */
+export interface ObligationKustoRestateOMaticDataActivity {
   activityName: string;
   kustoTableName: string;
+  kustoDatabase: string;
   kustoFunction: KustoFunction;
   destinationDatabase: string;
   startDateUtc: Date;
@@ -14,4 +15,6 @@ export interface ObligationDataActivity {
   executionDelay: moment.Duration;
   dataActivityDependencyNames: string[];
   parallelismLimit: BigNumber;
+  targetDataActivity: string;
+  includeChildren: boolean;
 }

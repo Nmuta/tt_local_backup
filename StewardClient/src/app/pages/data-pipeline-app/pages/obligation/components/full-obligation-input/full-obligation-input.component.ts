@@ -13,8 +13,10 @@ import {
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { StringValidators } from '@shared/validators/string-validators';
 import { cloneDeep } from 'lodash';
-import { ObligationDataActivitiesComponent } from '../obligation-data-activities/obligation-data-activities.component';
-import { ObligationDataActivityOptions } from '../obligation-data-activities/obligation-data-activity/obligation-data-activity.component';
+import {
+  KustoDataActivitiesComponent,
+  KustoDataActivityBundles,
+} from '../kusto-data-activities/kusto-data-activities.component';
 import {
   ObligationPrincipalOptions,
   ObligationPrincipalsComponent,
@@ -23,7 +25,7 @@ import {
 export interface ObligationOptions {
   name: string;
   description: string;
-  dataActivities: ObligationDataActivityOptions[];
+  dataActivities: KustoDataActivityBundles;
   principals: ObligationPrincipalOptions[];
 }
 
@@ -49,7 +51,7 @@ export class FullObligationInputComponent implements ControlValueAccessor, Valid
   public static readonly defaults: ObligationOptions = {
     name: '',
     description: '',
-    dataActivities: cloneDeep(ObligationDataActivitiesComponent.defaults),
+    dataActivities: cloneDeep(KustoDataActivitiesComponent.defaults),
     principals: cloneDeep(ObligationPrincipalsComponent.defaultsAll),
   };
 

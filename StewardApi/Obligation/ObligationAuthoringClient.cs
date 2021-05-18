@@ -78,14 +78,14 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             }
 
             pipeline.Etag = existing.Etag;
-            foreach (var existingDataActivity in existing.DataActivities)
+            foreach (var existingDataActivity in existing.DataActivities.OfType<KustoDataActivity>())
             {
                 if (existingDataActivity.Name.StartsWith("#orphaned_", StringComparison.OrdinalIgnoreCase))
                 {
                     throw new InvalidOperationException($"Found an orphaned data activity: {existingDataActivity.Name}. There is nothing safe about this anymore...");
                 }
 
-                if (pipeline.DataActivities.All(ds => ds.Name != existingDataActivity.Name))
+                if (pipeline.DataActivities.OfType<KustoDataActivity>().All(ds => ds.Name != existingDataActivity.Name))
                 {
                     throw new InvalidOperationException($"Attempting to remove a dataActivity '{existingDataActivity.Name}' isn't allowed in SafeUpdate.");
                 }

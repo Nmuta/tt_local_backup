@@ -4,23 +4,14 @@ using System.Collections.Generic;
 namespace Turn10.LiveOps.StewardApi.Obligation
 {
     /// <summary>
-    ///     Represents an obligation data activity.
+    ///     Represents a restate-o-matic obligation data activity.
     /// </summary>
-    /// <remarks>
-    ///     For now, this is very specific to Kusto. Will adjust if/when we decide to leverage Obligation
-    ///     for activities that do not involve Kusto.
-    /// </remarks>
-    public sealed class ObligationDataActivity
+    public sealed class ObligationKustoRestateOMaticDataActivity
     {
         /// <summary>
         ///     Gets or sets the name.
         /// </summary>
         public string ActivityName { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the Kusto table name.
-        /// </summary>
-        public string KustoTableName { get; set; }
 
         /// <summary>
         ///     Gets or sets the Kusto function name and options.
@@ -83,5 +74,34 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         ///     Gets or sets the parallelism limit.
         /// </summary>
         public int ParallelismLimit { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Kusto database.
+        /// </summary>
+        public string KustoDatabase { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the Kusto query.
+        /// </summary>
+        /// <remarks>
+        ///     The kusto query whose results are to be appended to the given table. Typically this is a
+        ///     relatively simply function call with the start and end parameters. For example:
+        ///     FactPlayerMatch_Materialize('{StartDate:o}', '{EndDate:o}')
+        ///
+        ///     StartDate, EndDate, NumBuckets, Bucket and TargetTable are interpolated here (when surrounded by {}) based
+        ///     on dataActivity start, end, and kusto table.
+        /// </remarks>
+        public string KustoQuery { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the target data activity.
+        /// </summary>
+        public string TargetDataActivity { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether to include all the dependent
+        ///     dataActivities of the dataActivities given via the dataActivities property.
+        /// </summary>
+        public bool IncludeChildren { get; set; }
     }
 }

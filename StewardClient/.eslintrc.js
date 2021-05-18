@@ -64,6 +64,7 @@ module.exports = {
           'error',
           { type: 'attribute', prefix: [], style: 'camelCase' },
         ], // why? naming convention feels repetitive (may want to flip this if we run into conflicts)
+        // '@typescript-eslint/member-ordering': ['error', { default: []} ], // temporarily disabling member ordering lint rules
         '@typescript-eslint/member-ordering': [
           'error',
           {
@@ -78,19 +79,10 @@ module.exports = {
               'signature',
 
               // Fields
-              'public-static-field',
-              'protected-static-field',
-              'private-static-field',
-
-              'public-decorated-field',
-              'protected-decorated-field',
-              'private-decorated-field',
-              'public-instance-field',
-              'protected-instance-field',
-              'private-instance-field',
-              'public-abstract-field',
-              'protected-abstract-field',
-              'private-abstract-field',
+              'static-field',
+              'decorated-field',
+              'instance-field',
+              'abstract-field',
 
               // Constructors
               'public-constructor',

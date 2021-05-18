@@ -18,10 +18,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DatetimeRangePickerModule } from '@components/datetime-range-picker/datetime-range-picker.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { ObligationsService } from '@services/obligations';
-import { ObligationDataActivityComponent } from './components/obligation-data-activities/obligation-data-activity/obligation-data-activity.component';
+import { KustoDataActivityComponent } from './components/kusto-data-activities/kusto-data-activity/kusto-data-activity.component';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { ObligationDataActivitiesComponent } from './components/obligation-data-activities/obligation-data-activities.component';
-import { KustoFunctionComponent } from './components/kusto-function/kusto-function.component';
+import { KustoDataActivitiesComponent } from './components/kusto-data-activities/kusto-data-activities.component';
+import { KustoFunctionComponent } from './components/kusto-data-activities/kusto-function/kusto-function.component';
 import { OptionalNumberModule } from '@components/optional-number/optional-number.module';
 import { VerifyActionButtonModule } from '@components/verify-action-button/verify-action-button.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
@@ -34,49 +34,57 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { OverrideManagersModule } from '@shared/modules/state-managers/state-managers.module';
+import { RestateOMaticComponent } from './components/kusto-data-activities/restate-o-matic/restate-o-matic.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { DirectivesModule } from '@shared/directives/directives.module';
+import { BundleComponent } from './components/kusto-data-activities/bundle/bundle.component';
 
 /** Module for displaying the data pipeline obligation page. */
 @NgModule({
   declarations: [
     DataPipelineObligationComponent,
     FullObligationInputComponent,
-    ObligationDataActivityComponent,
-    ObligationDataActivitiesComponent,
+    KustoDataActivityComponent,
+    KustoDataActivitiesComponent,
     KustoFunctionComponent,
     DependencyListComponent,
     ObligationPrincipalsComponent,
+    RestateOMaticComponent,
+    BundleComponent,
   ],
   providers: [ObligationsService],
   imports: [
-    DataPipelineObligationRoutingModule,
     CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
+    DataPipelineObligationRoutingModule,
+    DatetimeRangePickerModule,
+    DirectivesModule,
     FontAwesomeModule,
-    RouterModule,
+    FormsModule,
+    JsonDumpModule,
+    MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
-    MatInputModule,
-    MatTooltipModule,
-    TextFieldModule,
-    JsonDumpModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
     MatCheckboxModule,
-    MatTooltipModule,
-    DatetimeRangePickerModule,
-    PipesModule,
-    MatExpansionModule,
-    OptionalNumberModule,
-    VerifyActionButtonModule,
-    MonitorActionModule,
-    VerifyCheckboxModule,
-    MatDividerModule,
     MatChipsModule,
-    MatTableModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
     MatSelectModule,
-    MatAutocompleteModule,
+    MatTableModule,
+    MatTabsModule,
+    MatTooltipModule,
+    MatTooltipModule,
+    MonitorActionModule,
+    OptionalNumberModule,
     OverrideManagersModule,
+    PipesModule,
+    ReactiveFormsModule,
+    RouterModule,
+    TextFieldModule,
+    VerifyActionButtonModule,
+    VerifyCheckboxModule,
   ],
   exports: [DataPipelineObligationComponent],
 })

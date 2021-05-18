@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { AfterViewInit, Component, forwardRef, Input } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -10,16 +10,20 @@ import {
   Validator,
   Validators,
 } from '@angular/forms';
+import { BaseComponent } from '@components/base-component/base.component';
 import { ActivePipelineService } from '@data-pipeline-app/pages/obligation/services/active-pipeline.service';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { StringValidators } from '@shared/validators/string-validators';
 import { DateTime } from 'luxon';
+import { Observable, of, ReplaySubject } from 'rxjs';
+import { map, mergeMap, startWith, takeUntil } from 'rxjs/operators';
+import { KustoDataActivityOptions } from '../kusto-data-activity/kusto-data-activity.component';
 import {
   KustoFunctionComponent,
   KustoFunctionOptions,
-} from '../../kusto-function/kusto-function.component';
+} from '../kusto-function/kusto-function.component';
 
-export interface ObligationDataActivityOptions {
+export interface KustoRestateOMaticDataActivityOptions {
   name: string;
   table: string;
   database: string;
@@ -33,79 +37,99 @@ export interface ObligationDataActivityOptions {
   executionDelayInMinutes: number;
   parallelismLimit: number;
   dependencyNames: string[];
+  includeChildren: boolean;
 }
 
-/** A form component for a single pipeline activity. */
+/** A form component for a single kusto restate-o-matic pipeline activity. */
 @Component({
-  selector: 'obligation-data-activity',
-  templateUrl: './obligation-data-activity.component.html',
-  styleUrls: ['./obligation-data-activity.component.scss'],
+  selector: 'restate-o-matic',
+  templateUrl: './restate-o-matic.component.html',
+  styleUrls: ['./restate-o-matic.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ObligationDataActivityComponent),
+      useExisting: forwardRef(() => RestateOMaticComponent),
       multi: true,
     },
     {
       provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => ObligationDataActivityComponent),
+      useExisting: forwardRef(() => RestateOMaticComponent),
       multi: true,
     },
   ],
 })
-export class ObligationDataActivityComponent implements ControlValueAccessor, Validator {
+export class RestateOMaticComponent
+  extends BaseComponent
+  implements ControlValueAccessor, Validator, AfterViewInit {
+  public static readonly NAME_PREFIX = 'ROM_';
   private static readonly UTC_NOW = DateTime.utc();
+  private readonly attachedToFormControl$ = new ReplaySubject<FormControl>(1);
+  private readonly attachedToFormControlValue$: Observable<
+    KustoDataActivityOptions
+  > = this.attachedToFormControl$.pipe(
+    takeUntil(this.onDestroy$),
+    mergeMap(fc => fc?.valueChanges.pipe(startWith(fc.value)) ?? of([null])),
+    map(value => value as KustoDataActivityOptions),
+  );
+
+  /** Sets the attached form control. Used for populating some values. */
+  @Input() public set attachedToFormControl(value: FormControl) {
+    this.attachedToFormControl$.next(value);
+  }
+
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  public static defaults: ObligationDataActivityOptions = {
+  public static defaults: KustoRestateOMaticDataActivityOptions = {
     name: '',
     table: '',
     database: 'T10Analytics',
     query: KustoFunctionComponent.defaults,
     dateRange: {
-      start: ObligationDataActivityComponent.UTC_NOW,
-      end: ObligationDataActivityComponent.UTC_NOW.plus({ days: 7 }),
+      start: RestateOMaticComponent.UTC_NOW,
+      end: RestateOMaticComponent.UTC_NOW.plus({ days: 7 }),
     },
     maximumExecutionTimeInMinutes: 1440,
     executionIntervalInMinutes: 1440,
     executionDelayInMinutes: 2880,
     dependencyNames: [],
     parallelismLimit: 2,
+    includeChildren: true,
   };
 
   public formControls = {
-    name: new FormControl(ObligationDataActivityComponent.defaults.name, [
+    name: new FormControl({ value: RestateOMaticComponent.defaults.name, disabled: true }, [
       Validators.required,
       StringValidators.trim,
       StringValidators.uniqueInList(() => this.activePipeline.activityNames),
     ]),
-    table: new FormControl(ObligationDataActivityComponent.defaults.table, [
+    table: new FormControl(RestateOMaticComponent.defaults.table, [
       Validators.required,
       StringValidators.trim,
     ]),
-    database: new FormControl(ObligationDataActivityComponent.defaults.database, [
+    database: new FormControl(RestateOMaticComponent.defaults.database, [
       Validators.required,
       StringValidators.trim,
     ]),
-    query: new FormControl(ObligationDataActivityComponent.defaults.query, [Validators.required]),
-    dateRange: new FormControl(ObligationDataActivityComponent.defaults.dateRange),
+    query: new FormControl(RestateOMaticComponent.defaults.query, [Validators.required]),
+    dateRange: new FormControl(RestateOMaticComponent.defaults.dateRange),
     maximumExecutionTimeInMinutes: new FormControl(
-      ObligationDataActivityComponent.defaults.maximumExecutionTimeInMinutes,
+      RestateOMaticComponent.defaults.maximumExecutionTimeInMinutes,
       [Validators.required, Validators.min(60), Validators.max(1440)],
     ),
     executionIntervalInMinutes: new FormControl(
-      ObligationDataActivityComponent.defaults.executionIntervalInMinutes,
+      RestateOMaticComponent.defaults.executionIntervalInMinutes,
       [Validators.required],
     ),
     executionDelayInMinutes: new FormControl(
-      ObligationDataActivityComponent.defaults.executionDelayInMinutes,
+      RestateOMaticComponent.defaults.executionDelayInMinutes,
       [Validators.required],
     ),
-    parallelismLimit: new FormControl(ObligationDataActivityComponent.defaults.parallelismLimit, [
+    parallelismLimit: new FormControl(RestateOMaticComponent.defaults.parallelismLimit, [
       Validators.required,
       Validators.min(1),
       Validators.max(5),
     ]),
-    dependencyNames: new FormControl(ObligationDataActivityComponent.defaults.dependencyNames),
+    dependencyNames: new FormControl(RestateOMaticComponent.defaults.dependencyNames),
+    includeChildren: new FormControl(RestateOMaticComponent.defaults.includeChildren),
   };
 
   public formGroup = new FormGroup({
@@ -119,10 +143,32 @@ export class ObligationDataActivityComponent implements ControlValueAccessor, Va
     executionDelayInMinutes: this.formControls.executionDelayInMinutes,
     parallelismLimit: this.formControls.parallelismLimit,
     dependencyNames: this.formControls.dependencyNames,
+    includeChildren: this.formControls.includeChildren,
   });
 
   constructor(private readonly activePipeline: ActivePipelineService) {
-    this.formGroup.valueChanges.subscribe(data => this.changeFn(data));
+    super();
+
+    // pipe value changes to the parent form
+    this.formGroup.valueChanges
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => this.changeFn(data));
+
+    // cleanup
+    this.onDestroy$.subscribe(() => this.attachedToFormControl$.complete());
+  }
+
+  /** Gets the value of the attached form control. */
+  public get attachedFormControlValue(): KustoDataActivityOptions {
+    return this.attachedToFormControl?.value;
+  }
+
+  /** Angular lifecycle hook. */
+  public ngAfterViewInit(): void {
+    // update static values on our
+    this.attachedToFormControlValue$.subscribe(v => {
+      this.formControls.name.setValue(`${RestateOMaticComponent.NAME_PREFIX}${v.name}`);
+    });
   }
 
   /** Form control hook. */
@@ -133,7 +179,7 @@ export class ObligationDataActivityComponent implements ControlValueAccessor, Va
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (data: ObligationDataActivityOptions) => void): void {
+  public registerOnChange(fn: (data: KustoRestateOMaticDataActivityOptions) => void): void {
     this.changeFn = fn;
     this.changeFn(this.formGroup.value);
   }
@@ -161,7 +207,7 @@ export class ObligationDataActivityComponent implements ControlValueAccessor, Va
     return null;
   }
 
-  private changeFn = (_data: ObligationDataActivityOptions) => {
+  private changeFn = (_data: KustoRestateOMaticDataActivityOptions) => {
     /* Empty */
   };
 }

@@ -8,9 +8,9 @@ import { NgxsModule } from '@ngxs/store';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { DependencyListComponent } from './components/dependency-list/dependency-list.component';
 import { FullObligationInputComponent } from './components/full-obligation-input/full-obligation-input.component';
-import { KustoFunctionComponent } from './components/kusto-function/kusto-function.component';
-import { ObligationDataActivitiesComponent } from './components/obligation-data-activities/obligation-data-activities.component';
-import { ObligationDataActivityComponent } from './components/obligation-data-activities/obligation-data-activity/obligation-data-activity.component';
+import { KustoFunctionComponent } from './components/kusto-data-activities/kusto-function/kusto-function.component';
+import { KustoDataActivitiesComponent } from './components/kusto-data-activities/kusto-data-activities.component';
+import { KustoDataActivityComponent } from './components/kusto-data-activities/kusto-data-activity/kusto-data-activity.component';
 
 import { DataPipelineObligationComponent } from './obligation.component';
 
@@ -33,9 +33,10 @@ describe('DataPipelineObligationComponent', () => {
       declarations: [
         DataPipelineObligationComponent,
         FullObligationInputComponent,
-        ObligationDataActivityComponent,
-        ObligationDataActivitiesComponent,
+        KustoDataActivityComponent,
+        KustoDataActivitiesComponent,
         KustoFunctionComponent,
+        KustoDataActivityComponent,
         DependencyListComponent,
       ],
       providers: [{ provide: FormBuilder, useValue: formBuilder }],

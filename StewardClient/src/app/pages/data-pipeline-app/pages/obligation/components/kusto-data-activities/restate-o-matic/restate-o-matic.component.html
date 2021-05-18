@@ -1,0 +1,149 @@
+<div [formGroup]="formGroup">
+  <section>
+    <section class="vertical">
+      <section>
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput type="text" [formControl]="formControls.name" />
+          <mat-error *ngIf="formControls.name.hasError('required')">Required</mat-error>
+          <mat-error *ngIf="formControls.name.hasError('uniqueInList')">Duplicate name</mat-error>
+          <mat-error *ngIf="formControls.name.hasError('trim')"
+            >Has surrounding whitespace</mat-error
+          >
+          <mat-hint
+            >Unique ID across this pipeline. Named based on the Data Activity this is attached
+            to</mat-hint
+          >
+        </mat-form-field>
+        <ng-content select=".name-button"></ng-content>
+      </section>
+
+      <section>
+        <mat-form-field>
+          <mat-label>Table</mat-label>
+          <input matInput type="text" [formControl]="formControls.table" />
+          <button
+            mat-button
+            *ngIf="formControls.table"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="formControls.table.setValue('')"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="formControls.table.hasError('required')">Required</mat-error>
+          <mat-error *ngIf="formControls.table.hasError('trim')"
+            >Has surrounding whitespace</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Database</mat-label>
+          <input matInput type="text" [formControl]="formControls.database" />
+          <button
+            mat-button
+            *ngIf="formControls.database"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="formControls.database.setValue('')"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="formControls.database.hasError('required')">Required</mat-error>
+          <mat-error *ngIf="formControls.database.hasError('trim')"
+            >Has surrounding whitespace</mat-error
+          >
+        </mat-form-field>
+      </section>
+    </section>
+
+    <section>
+      <datetime-range-picker [formControl]="formControls.dateRange"></datetime-range-picker>
+    </section>
+  </section>
+
+  <section>
+    <dependency-list [formControl]="formControls.dependencyNames"></dependency-list>
+    <mat-checkbox
+      [formControl]="formControls.includeChildren"
+      matTooltip="Also include all child dependencies"
+      >Include Children</mat-checkbox
+    >
+  </section>
+
+  <section>
+    <kusto-function [formControl]="formControls.query"></kusto-function>
+  </section>
+
+  <mat-divider></mat-divider>
+
+  <section>
+    <mat-form-field>
+      <mat-label>Maximum Execution Time</mat-label>
+      <input
+        matInput
+        type="number"
+        [formControl]="formControls.maximumExecutionTimeInMinutes"
+        placeholder="minutes"
+      />
+      <mat-hint
+        >Minutes. How long workers will execute. Also used for Minimum Execution Time</mat-hint
+      >
+      <mat-error *ngIf="formControls.maximumExecutionTimeInMinutes.hasError('required')"
+        >Required</mat-error
+      >
+      <mat-error *ngIf="formControls.maximumExecutionTimeInMinutes.hasError('min')"
+        >The minimum is 60 minutes
+      </mat-error>
+      <mat-error *ngIf="formControls.maximumExecutionTimeInMinutes.hasError('max')"
+        >The maximum is 1440 minutes
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Execution Interval</mat-label>
+      <input
+        matInput
+        type="number"
+        [formControl]="formControls.executionIntervalInMinutes"
+        placeholder="minutes"
+      />
+      <mat-hint>Minutes. Set to multiple of Maximum Execution Time. Size of time slices</mat-hint>
+      <mat-error *ngIf="formControls.executionIntervalInMinutes.hasError('required')"
+        >Required</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Execution Delay</mat-label>
+      <input
+        matInput
+        type="number"
+        [formControl]="formControls.executionDelayInMinutes"
+        placeholder="minutes"
+      />
+      <mat-hint
+        >Minutes. Used to cope with lack of input completion markers. 30 minutes advised</mat-hint
+      >
+      <mat-error *ngIf="formControls.executionDelayInMinutes.hasError('required')"
+        >Required</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Parallelism</mat-label>
+      <input
+        matInput
+        type="number"
+        [formControl]="formControls.parallelismLimit"
+        placeholder="count"
+      />
+      <mat-hint>If you are unclear on the cost of your query, this should not exceed 2</mat-hint>
+      <mat-error *ngIf="formControls.parallelismLimit.hasError('required')">Required</mat-error>
+      <mat-error *ngIf="formControls.parallelismLimit.hasError('min')">The minimum is 1</mat-error>
+      <mat-error *ngIf="formControls.parallelismLimit.hasError('max')">The maximum is 5</mat-error>
+    </mat-form-field>
+  </section>
+</div>

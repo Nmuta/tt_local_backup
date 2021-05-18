@@ -1,4 +1,4 @@
-<div class="wrapper" [formGroup]="formGroup">
+<div [formGroup]="formGroup">
   <section>
     <section class="vertical">
       <section>
@@ -97,11 +97,11 @@
         >Required</mat-error
       >
       <mat-error *ngIf="formControls.maximumExecutionTimeInMinutes.hasError('min')"
-        >The minimum is 60 minutes</mat-error
-      >
+        >The minimum is 60 minutes
+      </mat-error>
       <mat-error *ngIf="formControls.maximumExecutionTimeInMinutes.hasError('max')"
-        >The maximum is 1440 minutes</mat-error
-      >
+        >The maximum is 1440 minutes
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field>

@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         ///     Gets or sets the data activities.
         /// </summary>
         [JsonProperty("data_activities")]
-        public IList<KustoDataActivity> DataActivities { get; set; }
+        public IList<DataActivityBase> DataActivities { get; set; }
 
         /// <summary>
         ///     Gets or sets the etag.
