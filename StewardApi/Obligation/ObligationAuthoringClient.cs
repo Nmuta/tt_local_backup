@@ -91,7 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
                 }
             }
 
-            return await this.UpsertPipelineAsync(pipeline).ConfigureAwait(false);
+            return await this.UpsertPipelineAsync(pipeline, requireNew: false).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -119,11 +119,15 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         }
 
         /// <inheritdoc />
-        public async Task<Guid> UpsertPipelineAsync(ObligationPipeline pipeline)
+        public async Task<Guid> UpsertPipelineAsync(ObligationPipeline pipeline, bool requireNew)
         {
             if (string.IsNullOrWhiteSpace(pipeline.Etag))
             {
                 pipeline.Etag = await this.GetEtag(pipeline.Name).ConfigureAwait(false);
+                if (requireNew && !string.IsNullOrWhiteSpace(pipeline.Etag))
+                {
+                    throw new ConflictStewardException($"Pipeline named {pipeline.Name} already exists.");
+                }
             }
 
             var pipelineResponse = new PipelineAuthoringModel

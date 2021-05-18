@@ -36,8 +36,10 @@ namespace Turn10.LiveOps.StewardApi.Obligation
 
         /// <summary>
         ///     Gets the type discriminator used by the API to decide which object to deserialize and the behavior.
-        ///     Do not change this value.
         /// </summary>
+        /// <remarks>
+        ///     Do not change this value.
+        /// </remarks>
         [JsonProperty("type")]
         [JsonConverter(typeof(StringEnumConverter))]
         public override DataActivityType Type { get; } = DataActivityType.Kusto;

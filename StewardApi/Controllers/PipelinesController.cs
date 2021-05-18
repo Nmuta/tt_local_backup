@@ -91,13 +91,25 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Create a pipeline.
+        ///     Force update a pipeline.
         /// </summary>
         [HttpPost("pipeline")]
         [SwaggerResponse(201, type: typeof(string), description: "work_item_id")]
+        public async Task<IActionResult> UpsertPipeline([FromBody] SimplifiedObligationPipeline obligationPipeline)
+        {
+            var response = await this.obligationProvider.UpsertPipelineAsync(obligationPipeline, requireNew: false).ConfigureAwait(true);
+
+            return this.Created(this.Request.Path, response);
+        }
+
+        /// <summary>
+        ///     Create a pipeline.
+        /// </summary>
+        [HttpPost("pipeline/new")]
+        [SwaggerResponse(201, type: typeof(string), description: "work_item_id")]
         public async Task<IActionResult> CreatePipeline([FromBody] SimplifiedObligationPipeline obligationPipeline)
         {
-            var response = await this.obligationProvider.UpsertPipelineAsync(obligationPipeline).ConfigureAwait(true);
+            var response = await this.obligationProvider.UpsertPipelineAsync(obligationPipeline, requireNew: true).ConfigureAwait(true);
 
             return this.Created(this.Request.Path, response);
         }

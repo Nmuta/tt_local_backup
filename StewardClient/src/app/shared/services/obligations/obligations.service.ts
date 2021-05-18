@@ -33,6 +33,11 @@ export class ObligationsService {
     return this.apiService.postRequest$<string>(`${this.basePath}`, pipeline);
   }
 
+  /** Create a new pipeline. Pipeline must not exist. */
+  public create$(pipeline: SimplifiedObligationPipeline): Observable<string> {
+    return this.apiService.postRequest$<string>(`${this.basePath}/new`, pipeline);
+  }
+
   /** Delete an existing pipeline. */
   public delete$(name: string): Observable<string> {
     return this.apiService.deleteRequest$<string>(`${this.basePath}/${name}`);

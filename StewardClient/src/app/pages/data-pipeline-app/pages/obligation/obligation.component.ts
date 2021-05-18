@@ -40,9 +40,16 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
   @ViewChildren(VerifyWithButtonDirective) private checkboxes: VerifyWithButtonDirective[] = [];
   public getMonitor: ActionMonitor = new ActionMonitor('GET');
   public putMonitor: ActionMonitor = new ActionMonitor('PUT');
+  public createMonitor: ActionMonitor = new ActionMonitor('POST (create)');
   public postMonitor: ActionMonitor = new ActionMonitor('POST');
   public deleteMonitor: ActionMonitor = new ActionMonitor('DELETE');
-  public allMonitors = [this.getMonitor, this.putMonitor, this.postMonitor, this.deleteMonitor];
+  public allMonitors = [
+    this.getMonitor,
+    this.putMonitor,
+    this.postMonitor,
+    this.createMonitor,
+    this.deleteMonitor,
+  ];
 
   public formControls = {
     options: new FormControl(cloneDeep(FullObligationInputComponent.defaults), [
@@ -126,6 +133,22 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
     this.obligationsService
       .post$(this.obligationOptionsToApiObligation(this.options))
       .pipe(takeUntil(this.onDestroy$), this.postMonitor.monitorSingleFire())
+      .subscribe(_model => {
+        this.clearVerificationCheckboxes();
+        this.onGetClick();
+      });
+  }
+
+  /** Called when the Create button is clicked. */
+  public onCreateClick(): void {
+    if (!this.formGroup.valid) {
+      return;
+    }
+
+    this.createMonitor = this.updateMonitors(this.createMonitor);
+    this.obligationsService
+      .create$(this.obligationOptionsToApiObligation(this.options))
+      .pipe(takeUntil(this.onDestroy$), this.createMonitor.monitorSingleFire())
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
         this.onGetClick();

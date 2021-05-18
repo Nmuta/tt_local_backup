@@ -64,6 +64,25 @@
           Update
         </button>
       </div>
+      <div>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onCreateClick()"
+          clickStop
+          stateManager
+          [disabled]="!formGroup.valid"
+          [monitor]="createMonitor"
+          [waitOnMonitors]="allMonitors"
+          monitorDisable
+          monitorWarn
+          monitorWarnSnackbar
+          monitorCompleteSnackbar
+          matTooltip="Attempt to create this pipeline (if it does not already exist)"
+        >
+          Create
+        </button>
+      </div>
 
       <mat-divider vertical></mat-divider>
 

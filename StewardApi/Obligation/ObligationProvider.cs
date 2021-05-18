@@ -54,11 +54,11 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         }
 
         /// <inheritdoc/>
-        public async Task<Guid> UpsertPipelineAsync(SimplifiedObligationPipeline obligationPipeline)
+        public async Task<Guid> UpsertPipelineAsync(SimplifiedObligationPipeline obligationPipeline, bool requireNew)
         {
             var pipeline = this.BuildPipeline(obligationPipeline);
 
-            var response = await this.obligationAuthoringClient.UpsertPipelineAsync(pipeline).ConfigureAwait(false);
+            var response = await this.obligationAuthoringClient.UpsertPipelineAsync(pipeline, requireNew: requireNew).ConfigureAwait(false);
 
             return response;
         }

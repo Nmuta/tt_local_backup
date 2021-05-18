@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         ///     Given a pipeline, upserts the pipeline regardless of safety checks.
         ///     This needs to be used to create a pipeline or remove a data activity from a pipeline.
         /// </summary>
-        Task<Guid> UpsertPipelineAsync(SimplifiedObligationPipeline obligationPipeline);
+        Task<Guid> UpsertPipelineAsync(SimplifiedObligationPipeline obligationPipeline, bool requireNew);
 
         /// <summary>
         ///     Deletes a pipeline.
