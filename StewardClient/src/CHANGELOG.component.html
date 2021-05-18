@@ -5,7 +5,7 @@
     <span *ngIf="clientOnNewVersion" class="new-release-found-text">(New Release)</span>
   </h2>
 
-  <mat-expansion-panel *ngIf="!isProduction" [expanded]="true">
+  <mat-expansion-panel *ngIf="!isProduction">
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h3>Unrelease</h3>
@@ -25,6 +25,45 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h3>05/18/21 Release</h3>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <h4>Bug Fixes</h4>
+    <ul>
+      <li>Fixed a couple bugs related to date/time picker in obligation. (5/18/21)</li>
+      <li>Credit updates no longer skipping events after the 2nd load more button. (5/13/21)</li>
+      <li>Automatic refresh token now working for obligation. (4/28/21)</li>
+    </ul>
+
+    <h4>Features</h4>
+    <ul>
+      <li><b>[ All Apps ]</b> Added date aquired to player inventory items. (5/13/21)</li>
+      <li><b>[ All Apps ]</b> Add easy auth to Swagger UI page. (4/28/21)</li>
+      <li>
+        <b>[ Support App ]</b> Added Woodstock to tooling. Currently hidden in production. (5/10/21)
+      </li>
+      <li>
+        <b>[ Support App ]</b> Added Steelhead to tooling. Currently hidden in production. (4/28/21)
+      </li>
+      <li><b>[ Data Pipeline App ]</b> Added Restate-O-Matic to obligation UI. (5/18/21)</li>
+      <li><b>[ Data Pipeline App ]</b> Added several features to obligation UI. (5/3/21)></li>
+      <li><b>[ Data Pipeline App ]</b> Added obligation UI. (4/27/21)</li>
+    </ul>
+
+    <h4>General</h4>
+    <ul>
+      <li>Changed requestingAgent to requesterObjectId. (5/13/21)</li>
+      <li>Reusing ForzaClient for each title in the API. (5/12/21)</li>
+      <li>Postpend '$' to all observables. (5/12/21)</li>
+      <li>Added universal role guard. (5/11/21)</li>
+      <li>Cleaned out old player inventory models from UI and API. (5/5/21)</li>
+    </ul>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h3>04/27/21 Release</h3>
