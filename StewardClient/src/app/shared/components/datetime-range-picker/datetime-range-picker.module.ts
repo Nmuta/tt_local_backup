@@ -11,7 +11,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { SafeNgxTimepickerDirective } from './timepicker/safe-ngx-timepicker.directive';
 import { DirectivesModule } from '@shared/directives/directives.module';
-import { MatLuxonDateModule } from 'ngx-material-luxon';
+import {
+  MatLuxonDateAdapterOptions,
+  MatLuxonDateModule,
+  MAT_LUXON_DATE_ADAPTER_OPTIONS,
+} from 'ngx-material-luxon';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 /** A utility module that exports a datetime picker component for forms. */
@@ -30,6 +34,12 @@ import { PipesModule } from '@shared/pipes/pipes.module';
     MatLuxonDateModule,
     NgxMaterialTimepickerModule.setLocale('en-US'),
     PipesModule,
+  ],
+  providers: [
+    {
+      provide: MAT_LUXON_DATE_ADAPTER_OPTIONS,
+      useValue: <MatLuxonDateAdapterOptions>{ useUtc: true },
+    },
   ],
   exports: [DatetimeRangePickerComponent],
 })

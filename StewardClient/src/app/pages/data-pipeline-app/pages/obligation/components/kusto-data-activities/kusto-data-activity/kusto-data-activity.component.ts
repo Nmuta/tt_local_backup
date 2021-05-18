@@ -62,8 +62,8 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
     database: 'T10Analytics',
     query: KustoFunctionComponent.defaults,
     dateRange: {
-      start: KustoDataActivityComponent.UTC_NOW,
-      end: KustoDataActivityComponent.UTC_NOW.plus({ days: 7 }),
+      start: KustoDataActivityComponent.UTC_NOW.startOf('day').toUTC(),
+      end: KustoDataActivityComponent.UTC_NOW.plus({ days: 7 }).startOf('day').toUTC(),
     },
     maximumExecutionTimeInMinutes: 1440,
     executionIntervalInMinutes: 1440,

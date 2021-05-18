@@ -13,7 +13,7 @@ import { collectErrors } from '@helpers/form-group-collect-errors';
 import { isEqual } from 'lodash';
 import { DateTime } from 'luxon';
 import { Subject } from 'rxjs';
-import { delay, map, pairwise, retry, startWith, tap } from 'rxjs/operators';
+import { delay, map, retry, startWith, tap } from 'rxjs/operators';
 
 export interface DatetimeRangePickerOptions {
   start: DateTime;
@@ -28,6 +28,16 @@ interface DatetimeRangePickerOptionsInternal {
   timeRange: {
     start: DateTime;
     end: DateTime;
+  };
+}
+
+function stringifyInternal(rawData: {
+  start: DateTime;
+  end: DateTime;
+}): { start: string; end: string } {
+  return {
+    start: rawData?.start?.toString(),
+    end: rawData?.end?.toString(),
   };
 }
 
@@ -55,11 +65,11 @@ export class DatetimeRangePickerComponent
   public defaults: DatetimeRangePickerOptionsInternal = {
     dateRange: {
       start: DatetimeRangePickerComponent.UTC_NOW,
-      end: DatetimeRangePickerComponent.UTC_NOW.plus({ days: 7 }),
+      end: DatetimeRangePickerComponent.UTC_NOW.plus({ days: 7 }).toUTC(),
     },
     timeRange: {
-      start: DatetimeRangePickerComponent.UTC_NOW,
-      end: DatetimeRangePickerComponent.UTC_NOW,
+      start: DatetimeRangePickerComponent.UTC_NOW.startOf('day').toUTC(),
+      end: DatetimeRangePickerComponent.UTC_NOW.startOf('day').toUTC(),
     },
   };
 
@@ -93,40 +103,50 @@ export class DatetimeRangePickerComponent
   private readonly onChanges$ = new Subject<DatetimeRangePickerOptionsInternal>();
 
   constructor() {
-    // when anything in the form group changes, trigger a change event
-    this.formGroup.valueChanges.subscribe(this.onChanges$);
-
+    let lastValueStringified: { start: string; end: string } = null;
     this.onChanges$
       .pipe(
-        startWith(this.formGroup.value), // start with the initial value, so pairwise will work on every new value
         map((data: DatetimeRangePickerOptionsInternal) => {
           // when there are changes, convert the date and forward it onward
           // must occur before revalidation
           return this.mergeDates(data);
         }),
         retry(), // do not stop on partial data
-        tap(data => {
-          // update our values before the validation step
-          this.currentDates = data;
-          this.onChangeFn(data);
+        tap(value => {
+          // update our values before waiting for the view to update
+          this.currentDates = value;
+          this.onChangeFn(value);
         }),
-        pairwise(), // track previous + current value for trigger below
         delay(0), // must happen *after* the view updates. this gets it in the queue
       )
-      .subscribe(([oldValue, newValue]) => {
+      .subscribe(value => {
+        const valueStringified = stringifyInternal(value);
+        const hasChanges = !isEqual(valueStringified, lastValueStringified);
+
         // when there are changes and the values do not match, revalidate everything
-        if (!isEqual(oldValue, newValue)) {
+        if (hasChanges) {
           this.formControls.dateRange.start.updateValueAndValidity();
           this.formControls.dateRange.end.updateValueAndValidity();
           this.formControls.timeRange.start.updateValueAndValidity();
           this.formControls.timeRange.end.updateValueAndValidity();
         }
+
+        // prep for next iteration
+        lastValueStringified = valueStringified;
       });
+
+    // when anything in the form group changes, trigger a change event
+    this.formGroup.valueChanges
+      .pipe(
+        startWith({ initial: true, ...this.formGroup.value }), // start with the initial value, so pairwise will work on every new value
+      )
+      .subscribe(this.onChanges$);
   }
 
   /** Angular lifecycle hook. */
   public ngAfterViewInit(): void {
     this.onChanges$.next(this.formGroup.value);
+    this.formGroup.updateValueAndValidity();
   }
 
   /** Form control hook. */
@@ -184,11 +204,23 @@ export class DatetimeRangePickerComponent
   }
 
   private mergeDayAndTime(day: DateTime, time: DateTime): DateTime {
-    const startOfTargetDay = day.startOf('day');
-    const startOfTimeDay = time.startOf('day');
-    const timeDiff = time.diff(startOfTimeDay);
-    const targetDateTime = startOfTargetDay.plus(timeDiff);
-    return targetDateTime;
+    try {
+      if (!day) {
+        return null;
+      }
+      if (!time) {
+        return null;
+      }
+      day = day?.toUTC();
+      time = time?.toUTC();
+      const startOfTargetDay = day.startOf('day');
+      const startOfTimeDay = time.startOf('day');
+      const timeDiff = time.diff(startOfTimeDay);
+      const targetDateTime = startOfTargetDay.plus(timeDiff);
+      return targetDateTime;
+    } catch (ex) {
+      return null;
+    }
   }
 
   private onChangeFn = (_data: DatetimeRangePickerOptions) => {

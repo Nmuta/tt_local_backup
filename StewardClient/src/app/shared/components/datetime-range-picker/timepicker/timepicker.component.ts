@@ -21,7 +21,7 @@ import {
 } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { isNull, isUndefined } from 'lodash';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { NgxMaterialTimepickerComponent } from 'ngx-material-timepicker';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -39,7 +39,12 @@ import { map } from 'rxjs/operators';
   ],
 })
 export class TimepickerComponent
-  implements MatFormFieldControl<Date>, OnDestroy, ControlValueAccessor, Validator, AfterViewInit {
+  implements
+    MatFormFieldControl<DateTime>,
+    OnDestroy,
+    ControlValueAccessor,
+    Validator,
+    AfterViewInit {
   private static nextId = 0;
 
   @ViewChild('picker')
@@ -54,8 +59,8 @@ export class TimepickerComponent
   @Input('aria-describedby')
   public userAriaDescribedBy: string;
 
-  public _value: Date = moment.utc().startOf('day').toDate();
-  public _valueInternal: string = moment.utc(this._value).format('HH:mm');
+  public _value: DateTime = DateTime.utc().startOf('day');
+  public _valueInternal: string = this._value.toFormat('HH:mm');
 
   /** MatFormFieldControl hook. */
   public focused = false;
@@ -77,14 +82,14 @@ export class TimepickerComponent
 
   /** Gets or sets the value of the input. MatFormFieldControl hook. */
   @Input()
-  public get value(): Date {
+  public get value(): DateTime {
     return this._value;
   }
 
   /** Gets or sets the value of the input. MatFormFieldControl hook. */
-  public set value(input: Date) {
-    this._value = input;
-    this._valueInternal = moment.utc(this._value).format('HH:mm');
+  public set value(input: DateTime) {
+    this._valueInternal = input.toFormat('HH:mm', { timeZone: 'utc' });
+    this._value = DateTime.fromFormat(this._valueInternal, 'HH:mm', { zone: 'utc' });
     this.stateChanges.next();
   }
 
@@ -96,11 +101,10 @@ export class TimepickerComponent
 
   /** Gets or sets the value of the input. Designed to translate for ngx-material-timepicker. */
   public set valueInternal(input: string) {
-    const parsed = moment.utc(input, 'HH:mm', true);
-
-    if (parsed && parsed.isValid()) {
+    const parsed = DateTime.fromFormat(input, 'HH:mm', { zone: 'utc' });
+    if (parsed && parsed.isValid) {
       this._valueInternal = input;
-      this._value = parsed.toDate();
+      this._value = parsed;
     } else {
       this._valueInternal = input;
       this._value = null;
@@ -182,6 +186,8 @@ export class TimepickerComponent
       }
       this.ngControl.control.setValidators(newValidators);
     }
+
+    this.stateChanges.next();
   }
 
   /** MatFormFieldControl hook. */
@@ -204,12 +210,12 @@ export class TimepickerComponent
   }
 
   /** Form control hook. */
-  public writeValue(data: Date): void {
+  public writeValue(data: DateTime): void {
     this.value = data;
   }
 
   /** Form control hook. */
-  public registerOnChange(fn: (data: Date) => void): void {
+  public registerOnChange(fn: (data: DateTime) => void): void {
     this.stateChanges.pipe(map(_ => this.value)).subscribe(fn);
   }
 
