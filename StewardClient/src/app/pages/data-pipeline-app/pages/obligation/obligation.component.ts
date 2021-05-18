@@ -77,6 +77,9 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
   public onGetClick(): void {
     this.getMonitor = this.updateMonitors(this.getMonitor);
 
+    // forces update of auto-complete options, etc
+    this.activePipeline.onSync$.next();
+
     this.obligationsService
       .get$(this.options.name)
       .pipe(

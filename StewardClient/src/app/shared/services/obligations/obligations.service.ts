@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ObligationPipelinePartial } from '@models/pipelines/obligation-pipeline-partial';
 import { SimplifiedObligationPipeline } from '@models/pipelines/simplified-obligation-pipeline';
 import { ApiService } from '@services/api';
 import { Observable } from 'rxjs';
@@ -11,6 +12,11 @@ export class ObligationsService {
   public basePath: string = 'v1/pipeline';
 
   constructor(private readonly apiService: ApiService) {}
+
+  /** Gets a list of all existing pipelines. */
+  public getAll$(): Observable<ObligationPipelinePartial[]> {
+    return this.apiService.getRequest$<ObligationPipelinePartial[]>(`${this.basePath}`);
+  }
 
   /** Get an existing pipeline by name. */
   public get$(name: string): Observable<SimplifiedObligationPipeline> {

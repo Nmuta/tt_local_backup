@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 /** A services that stores some context data for a single Full Obligation Input form. */
 @Injectable({ providedIn: 'any' })
 export class ActivePipelineService {
   private _activityNames: string[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/member-ordering
+  /** Fired when a sync/GET is performed. */
+  public readonly onSync$ = new Subject<void>();
+
   public readonly activityNames$: Observable<string[]> = new BehaviorSubject<string[]>(
     this._activityNames,
   );

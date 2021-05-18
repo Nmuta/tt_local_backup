@@ -51,15 +51,15 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         }
 
         /// <inheritdoc />
-        public async Task<IList<ObligationPipeline>> GetPipelinesAsync()
+        public async Task<IList<ObligationPipelinePartial>> GetPipelinesAsync()
         {
             using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, new Uri($"{WebHost}obligation/pipelines"));
 
             try
             {
                 var response = await this.SendRequestAsync(httpRequestMessage).ConfigureAwait(false);
-
-                return null;
+                var responseObject = JsonConvert.DeserializeObject<List<ObligationPipelinePartial>>(response);
+                return responseObject;
             }
             catch (Exception ex)
             {

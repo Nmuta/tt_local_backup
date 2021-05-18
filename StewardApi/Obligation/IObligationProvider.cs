@@ -18,7 +18,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         /// <summary>
         ///     Gets all available pipelines.
         /// </summary>
-        Task<IList<ObligationPipeline>> GetPipelinesAsync();
+        Task<IList<ObligationPipelinePartial>> GetPipelinesAsync();
 
         /// <summary>
         ///     Given a pipeline, check that the pipeline exists and that all existing data activities are

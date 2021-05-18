@@ -38,7 +38,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
         }
         
         /// <inheritdoc/>
-        public async Task<IList<ObligationPipeline>> GetPipelinesAsync()
+        public async Task<IList<ObligationPipelinePartial>> GetPipelinesAsync()
         {
             return await this.obligationAuthoringClient.GetPipelinesAsync().ConfigureAwait(false);
         }

@@ -3,7 +3,14 @@
     <section>
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput type="text" [formControl]="formControls.name" />
+        <input matInput type="text" [formControl]="formControls.name" [matAutocomplete]="auto" />
+        <button mat-icon-button matSuffix [disabled]="true">
+          <mat-spinner
+            matTooltip="Getting auto-complete options"
+            class="force-inline-2x"
+            *ngIf="optionsMonitor.status.state === 'active'"
+          ></mat-spinner>
+        </button>
         <button
           mat-button
           *ngIf="formControls.name"
@@ -14,6 +21,11 @@
         >
           <mat-icon>close</mat-icon>
         </button>
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+            {{ option.name }} ({{ option.status }})
+          </mat-option>
+        </mat-autocomplete>
         <mat-error *ngIf="formControls.name.hasError('required')">Required</mat-error>
         <mat-error *ngIf="formControls.name.hasError('trim')">Has surrounding whitespace</mat-error>
         <mat-hint>Unique ID of the pipeline to lookup/modify/create</mat-hint>

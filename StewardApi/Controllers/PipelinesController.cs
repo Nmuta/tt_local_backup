@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -36,6 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Get a pipeline.
         /// </summary>
         [HttpGet("pipeline")]
+        [SwaggerResponse(200, type: typeof(IList<ObligationPipelinePartial>))]
         public async Task<IActionResult> GetPipelines()
         {
             var result = await this.obligationProvider.GetPipelinesAsync().ConfigureAwait(true);

@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, OnInit } from '@angular/core';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -10,9 +10,16 @@ import {
   Validator,
   Validators,
 } from '@angular/forms';
+import { BaseComponent } from '@components/base-component/base.component';
 import { collectErrors } from '@helpers/form-group-collect-errors';
+import { ObligationPipelinePartial } from '@models/pipelines/obligation-pipeline-partial';
+import { ObligationsService } from '@services/obligations';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { StringValidators } from '@shared/validators/string-validators';
-import { cloneDeep } from 'lodash';
+import { chain, cloneDeep } from 'lodash';
+import { Observable, Subject } from 'rxjs';
+import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { ActivePipelineService } from '../../services/active-pipeline.service';
 import {
   KustoDataActivitiesComponent,
   KustoDataActivityBundles,
@@ -47,7 +54,9 @@ export interface ObligationOptions {
     },
   ],
 })
-export class FullObligationInputComponent implements ControlValueAccessor, Validator {
+export class FullObligationInputComponent
+  extends BaseComponent
+  implements ControlValueAccessor, Validator, OnInit {
   public static readonly defaults: ObligationOptions = {
     name: '',
     description: '',
@@ -77,6 +86,45 @@ export class FullObligationInputComponent implements ControlValueAccessor, Valid
     dataActivities: this.formControls.dataActivities,
     principals: this.formControls.principals,
   });
+
+  /** Options for the GET autocomplete. */
+  public filteredOptions: Observable<ObligationPipelinePartial[]>;
+
+  /** The options being considered for GET autocomplete. */
+  public options: ObligationPipelinePartial[] = [];
+  public options$ = new Subject<ObligationPipelinePartial[]>();
+  public optionsMonitor = new ActionMonitor('GET api/pipeline for autocomplete');
+
+  constructor(
+    private readonly obligations: ObligationsService,
+    private readonly activePipeline: ActivePipelineService,
+  ) {
+    super();
+  }
+
+  /** Angular lifecycle hook. */
+  public ngOnInit(): void {
+    this.prepareDropdownOptions();
+
+    // repeat the prepare dropdown step when changes might update the list
+    this.activePipeline.onSync$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => this.prepareDropdownOptions());
+
+    // filter autocomplete when the GET form value is changed or the autocomplete list changes
+    this.filteredOptions = this.formControls.name.valueChanges.pipe(
+      takeUntil(this.onDestroy$),
+      startWith(''),
+      switchMap(v =>
+        this.options$.pipe(
+          takeUntil(this.onDestroy$),
+          startWith(v),
+          map(_ => v),
+        ),
+      ),
+      map(value => this.filterAutocomplete(value)),
+    );
+  }
 
   /** Form control hook. */
   public writeValue(data: { [key: string]: unknown }): void {
@@ -112,5 +160,27 @@ export class FullObligationInputComponent implements ControlValueAccessor, Valid
     }
 
     return null;
+  }
+
+  private filterAutocomplete(value: string): ObligationPipelinePartial[] {
+    const filterValue = value.toLowerCase();
+
+    return chain(this.options)
+      .filter(option => option.name.toLowerCase().includes(filterValue))
+      .orderBy([option => option.name.toLowerCase().indexOf(filterValue), option => option.name])
+      .value();
+  }
+
+  private prepareDropdownOptions(): void {
+    this.optionsMonitor = new ActionMonitor(this.optionsMonitor.dispose().label);
+
+    // initialize the auto-complete list asynchronously
+    this.obligations
+      .getAll$()
+      .pipe(this.optionsMonitor.monitorSingleFire())
+      .subscribe(options => {
+        this.options = options;
+        this.options$.next(this.options);
+      });
   }
 }
