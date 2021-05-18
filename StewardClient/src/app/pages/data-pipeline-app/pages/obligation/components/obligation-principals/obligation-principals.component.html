@@ -1,5 +1,9 @@
 <div [formGroup]="formGroup">
   <h2>Principals</h2>
+  <p>
+    This is the list of people who have access to the pipeline. Some standard principals are always
+    included by our API (and hidden here) which ensures we always retain access to the pipelienes.
+  </p>
   <table mat-table [dataSource]="dataSource$" formArrayName="rows">
     <tr mat-row *matRowDef="let row; let i = index; columns: displayColumns"></tr>
 

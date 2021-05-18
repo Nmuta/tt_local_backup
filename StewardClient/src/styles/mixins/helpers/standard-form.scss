@@ -11,6 +11,11 @@
         margin: 1em;
       }
 
+      /** This gives a bit more clearance for hints/names that are near each other. */
+      mat-form-field {
+        margin-bottom: 2em;
+      }
+
       // fill items
       > *:not(mat-checkbox):not(button) {
         flex-grow: 1;
@@ -21,5 +26,10 @@
       display: flex;
       flex-flow: column nowrap;
     }
+  }
+
+  /** This gives a bit more clearance for hints/names that are near each other. */
+  mat-form-field {
+    margin-bottom: 2em;
   }
 }

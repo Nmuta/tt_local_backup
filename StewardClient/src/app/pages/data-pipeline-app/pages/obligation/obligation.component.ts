@@ -19,7 +19,7 @@ import { chain, cloneDeep, flatMap, has, keyBy } from 'lodash';
 import { DateTime } from 'luxon';
 import moment from 'moment';
 import { of } from 'rxjs';
-import { catchError, map, takeUntil } from 'rxjs/operators';
+import { catchError, delay, map, takeUntil } from 'rxjs/operators';
 import {
   FullObligationInputComponent,
   ObligationOptions,
@@ -116,7 +116,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
 
     this.obligationsService
       .put$(this.obligationOptionsToApiObligation(this.options))
-      .pipe(takeUntil(this.onDestroy$), this.putMonitor.monitorSingleFire())
+      .pipe(takeUntil(this.onDestroy$), delay(5_000 /*ms*/), this.putMonitor.monitorSingleFire())
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
         this.onGetClick();
@@ -132,7 +132,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
     this.postMonitor = this.updateMonitors(this.postMonitor);
     this.obligationsService
       .post$(this.obligationOptionsToApiObligation(this.options))
-      .pipe(takeUntil(this.onDestroy$), this.postMonitor.monitorSingleFire())
+      .pipe(takeUntil(this.onDestroy$), delay(5_000 /*ms*/), this.postMonitor.monitorSingleFire())
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
         this.onGetClick();
@@ -148,7 +148,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
     this.createMonitor = this.updateMonitors(this.createMonitor);
     this.obligationsService
       .create$(this.obligationOptionsToApiObligation(this.options))
-      .pipe(takeUntil(this.onDestroy$), this.createMonitor.monitorSingleFire())
+      .pipe(takeUntil(this.onDestroy$), delay(5_000 /*ms*/), this.createMonitor.monitorSingleFire())
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
         this.onGetClick();
