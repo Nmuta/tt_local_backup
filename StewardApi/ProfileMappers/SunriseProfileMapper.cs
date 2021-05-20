@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Forza.LiveOps.FH4.master.Generated;
+using Forza.UserInventory.FH4.master.Generated;
 using Forza.WebServices.FH4.master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -49,18 +51,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
             this.CreateMap<ForzaUserBanResult, BanResult>();
             this.CreateMap<ForzaUserBanSummary, BanSummary>();
-            this.CreateMap<IList<SunriseBanParametersInput>, SunriseBanParameters>()
-                .ForMember(dest => dest.Reason, opt => opt.MapFrom(src => src.First().Reason))
-                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(src => src.First().FeatureArea))
-                .ForMember(dest => dest.Xuids, opt => opt.MapFrom(src => src.Select(v => v.Xuid).Where(xuid => xuid.HasValue)))
-                .ForMember(dest => dest.Gamertags, opt => opt.MapFrom(src => src.Select(v => v.Gamertag).Where(gamertag => gamertag != null)))
-                .ForMember(dest => dest.BanAllConsoles, opt => opt.MapFrom(src => src.First().BanAllConsoles))
-                .ForMember(dest => dest.BanAllPcs, opt => opt.MapFrom(src => src.First().BanAllPcs))
-                .ForMember(dest => dest.DeleteLeaderboardEntries, opt => opt.MapFrom(src => src.First().DeleteLeaderboardEntries))
-                .ForMember(dest => dest.SendReasonNotification, opt => opt.MapFrom(src => src.First().SendReasonNotification))
-                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.First().StartTimeUtc ?? DateTime.UtcNow))
-                .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.First().StartTimeUtc ?? DateTime.UtcNow) + src.First().Duration));
+            this.CreateMap<SunriseBanParametersInput, SunriseBanParameters>()
+                .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
+                .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));
             this.CreateMap<SunriseBanParameters, ForzaUserBanParameters>()
+                .ForMember(dest => dest.xuids, opt => opt.MapFrom(source => new ulong[] { source.Xuid }))
                 .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))
                 .ForMember(dest => dest.ExpireTime, opt => opt.MapFrom(src => src.ExpireTimeUtc));

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.WebServices.FH4.master.Generated;
+using Forza.LiveOps.FH4.master.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -299,59 +299,61 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<BanResult>> BanUsersAsync(SunriseBanParameters banParameters, string requesterObjectId)
+        public async Task<IList<BanResult>> BanUsersAsync(IList<SunriseBanParameters> banParameters, string requesterObjectId)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
-            banParameters.FeatureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(banParameters.FeatureArea));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            const int maxXuidsPerRequest = 10;
+
+            foreach (var param in banParameters)
+            {
+                param.FeatureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(param.FeatureArea));
+
+                if (param.Xuid == default)
+                {
+                    if (string.IsNullOrWhiteSpace(param.Gamertag))
+                    {
+                        throw new InvalidArgumentsStewardException("No XUID or Gamertag provided.");
+                    }
+
+                    try
+                    {
+                        var userResult = await this.sunriseService.GetLiveOpsUserDataByGamerTagAsync(param.Gamertag)
+                            .ConfigureAwait(false);
+
+                        param.Xuid = userResult.userData.qwXuid;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new NotFoundStewardException($"No profile found for Gamertag: {param.Gamertag}.", ex);
+                    }
+                }
+            }
 
             try
             {
-                const int maxXuidsPerRequest = 10;
-
-                var mappedBanParameters = this.mapper.Map<ForzaUserBanParameters>(banParameters);
-
-                var xuids = new List<ulong>();
-                if (banParameters.Xuids != null && banParameters.Xuids.Any())
-                {
-                    xuids = banParameters.Xuids.ToList();
-                }
-
-                if (banParameters.Gamertags != null && banParameters.Gamertags.Any())
-                {
-                    foreach (var gamertag in banParameters.Gamertags)
-                    {
-                        try
-                        {
-                            var userResult = await this.sunriseService.GetLiveOpsUserDataByGamerTagAsync(gamertag)
-                            .ConfigureAwait(false);
-
-                            xuids.Add(userResult.userData.qwXuid);
-                        }
-                        catch
-                        {
-                            throw new NotFoundStewardException($"Profile not found for gamertag: {gamertag}.");
-                        }
-                    }
-                }
-
-                xuids = xuids.Distinct().ToList();
-
                 var banResults = new List<BanResult>();
 
-                for (var i = 0; i < xuids.Count; i += maxXuidsPerRequest)
+                for (var i = 0; i < banParameters.Count; i += maxXuidsPerRequest)
                 {
-                    var xuidBatch = xuids.GetRange(i, Math.Min(maxXuidsPerRequest, xuids.Count - i));
-                    var result = await this.sunriseService
-                        .BanUsersAsync(xuidBatch.ToArray(), xuidBatch.Count, mappedBanParameters).ConfigureAwait(false);
+                    var paramBatch = banParameters.ToList()
+                        .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
+                    var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
+                    var result = await this.sunriseService.BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count)
+                        .ConfigureAwait(false);
 
-                    foreach (var xuid in xuidBatch)
+                    foreach (var param in paramBatch)
                     {
-                        var successfulBan = result.banResults.Where(banAttempt => banAttempt.Xuid == xuid).FirstOrDefault()?.Success ?? false;
+                        var successfulBan = result.banResults.Where(banAttempt => banAttempt.Xuid == param.Xuid).FirstOrDefault()?.Success ?? false;
                         if (successfulBan)
                         {
-                            await this.banHistoryProvider
-                                .UpdateBanHistoryAsync(xuid, TitleConstants.SunriseCodeName, requesterObjectId, banParameters).ConfigureAwait(false);
+                            await
+                                this.banHistoryProvider.UpdateBanHistoryAsync(
+                                    param.Xuid,
+                                    TitleConstants.SunriseCodeName,
+                                    requesterObjectId,
+                                    param)
+                                .ConfigureAwait(false);
                         }
                     }
 
@@ -362,14 +364,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
             catch (Exception ex)
             {
-                if (ex is StewardBaseException)
-                {
-                    throw;
-                }
-
-                throw new UnknownFailureStewardException("Banning has failed.", ex);
+                throw new UnknownFailureStewardException("User banning has failed.", ex);
             }
         }
+
 
         /// <inheritdoc />
         public async Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)

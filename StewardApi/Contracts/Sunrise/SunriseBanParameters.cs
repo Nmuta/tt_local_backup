@@ -31,12 +31,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         /// <summary>
         ///     Gets or sets the xuid list.
         /// </summary>
-        public IList<ulong> Xuids { get; set; }
+        public ulong Xuid { get; set; }
 
         /// <summary>
         ///     Gets or sets the gamertag list.
         /// </summary>
-        public IList<string> Gamertags { get; set; }
+        public string Gamertag { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether to ban all consoles.

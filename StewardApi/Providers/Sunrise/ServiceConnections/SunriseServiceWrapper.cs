@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Forza.LiveOps.FH4.master.Generated;
 using Forza.UserInventory.FH4.master.Generated;
 using Forza.WebServices.FH4.master.Generated;
 using Microsoft.Extensions.Configuration;
@@ -12,11 +13,11 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
-using EnforcementService = Forza.WebServices.FH4.master.Generated.UserService;
-using GiftingService = Forza.WebServices.FH4.master.Generated.GiftingService;
+using GiftingService = Forza.LiveOps.FH4.master.Generated.GiftingService;
+using LiveOpsService = Forza.WebServices.FH4.master.Generated.LiveOpsService;
 using NotificationsService = Xls.WebServices.FH4.master.Generated.NotificationsService;
-using UserInventoryService = Forza.WebServices.FH4.master.Generated.UserInventoryService;
-using UserService = Xls.WebServices.FH4.master.Generated.UserService;
+using UserInventoryService = Forza.LiveOps.FH4.master.Generated.UserInventoryService;
+using UserManagementService = Forza.LiveOps.FH4.master.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 {
@@ -67,27 +68,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetLiveOpsUserDataByGamerTagOutput> GetLiveOpsUserDataByGamerTagAsync(string gamertag)
+        public async Task<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput> GetLiveOpsUserDataByGamerTagAsync(string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareLiveOpsServiceAsync().ConfigureAwait(false);
 
             return await userService.GetLiveOpsUserDataByGamerTag(gamertag).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetLiveOpsUserDataByXuidOutput> GetLiveOpsUserDataByXuidAsync(ulong xuid)
+        public async Task<LiveOpsService.GetLiveOpsUserDataByXuidOutput> GetLiveOpsUserDataByXuidAsync(ulong xuid)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareLiveOpsServiceAsync().ConfigureAwait(false);
 
             return await userService.GetLiveOpsUserDataByXuid(xuid).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults)
+        public async Task<UserManagementService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             return await userService.GetConsoles(xuid, maxResults).ConfigureAwait(false);
         }
@@ -95,15 +96,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <inheritdoc/>
         public async Task<object> GetProfileRollbacksAsync(ulong xuid)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             throw new NotImplementedException("Sunrise LSP has not implemented function: GetProfileRollbacksAsync");
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<UserManagementService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             return await userService.GetSharedConsoleUsers(xuid, startIndex, maxResults).ConfigureAwait(false);
         }
@@ -111,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <inheritdoc/>
         public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             await userService.SetConsoleBanStatus(consoleId, isBanned).ConfigureAwait(false);
         }
@@ -119,39 +120,39 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <inheritdoc/>
         public async Task SetIsUnderReviewAsync(ulong xuid, bool isUnderReview)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             await userService.SetIsUnderReview(xuid, isUnderReview).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetProfileSummaryOutput> GetProfileSummaryAsync(ulong xuid)
+        public async Task<LiveOpsService.GetProfileSummaryOutput> GetProfileSummaryAsync(ulong xuid)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareLiveOpsServiceAsync().ConfigureAwait(false);
 
             return await userService.GetProfileSummary(xuid).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetCreditUpdateEntriesOutput> GetCreditUpdateEntriesAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<LiveOpsService.GetCreditUpdateEntriesOutput> GetCreditUpdateEntriesAsync(ulong xuid, int startIndex, int maxResults)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareLiveOpsServiceAsync().ConfigureAwait(false);
 
             return await userService.GetCreditUpdateEntries(xuid, startIndex, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(ulong xuid)
+        public async Task<UserManagementService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(ulong xuid)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             return await userService.GetIsUnderReview(xuid).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(ulong xuid, int[] groupIdFilter, int maxResults)
+        public async Task<UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(ulong xuid, int[] groupIdFilter, int maxResults)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             return await userService.GetUserGroupMemberships(xuid, groupIdFilter, maxResults).ConfigureAwait(false);
         }
@@ -159,7 +160,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <inheritdoc/>
         public async Task AddToUserGroupsAsync(ulong xuid, int[] groupIds)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             await userService.AddToUserGroups(xuid, groupIds).ConfigureAwait(false);
         }
@@ -167,15 +168,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <inheritdoc/>
         public async Task RemoveFromUserGroupsAsync(ulong xuid, int[] groupIds)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             await userService.RemoveFromUserGroups(xuid, groupIds).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetUserGroupsOutput> GetUserGroupsAsync(int startIndex, int maxResults)
+        public async Task<UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(int startIndex, int maxResults)
         {
-            var userService = await this.PrepareUserServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             return await userService.GetUserGroups(startIndex, maxResults).ConfigureAwait(false);
         }
@@ -253,35 +254,35 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<EnforcementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(ulong[] xuids, int xuidCount)
+        public async Task<UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(ulong[] xuids, int xuidCount)
         {
-            var enforcementService = await this.PrepareEnforcementServiceAsync().ConfigureAwait(false);
+            var enforcementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             return await enforcementService.GetUserBanSummaries(xuids, xuidCount).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<EnforcementService.BanUsersOutput> BanUsersAsync(ulong[] xuids, int xuidCount, ForzaUserBanParameters banParameters)
+        public async Task<UserManagementService.BanUsersOutput> BanUsersAsync(ForzaUserBanParameters[] banParameters, int xuidCount)
         {
-            var enforcementService = await this.PrepareEnforcementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
-            return await enforcementService.BanUsers(xuids, xuidCount, banParameters).ConfigureAwait(false);
+            return await userManagementService.BanUsers(banParameters, xuidCount).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<EnforcementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<UserManagementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(ulong xuid, int startIndex, int maxResults)
         {
-            var enforcementService = await this.PrepareEnforcementServiceAsync().ConfigureAwait(false);
+            var enforcementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             return await enforcementService.GetUserBanHistory(xuid, startIndex, maxResults).ConfigureAwait(false);
         }
 
-        private async Task<UserService> PrepareUserServiceAsync()
+        private async Task<UserManagementService> PrepareUserManagementServiceAsync()
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
                                 ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new UserService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+            return new UserManagementService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
         }
 
         private async Task<UserInventoryService> PrepareUserInventoryServiceAsync()
@@ -308,12 +309,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             return new GiftingService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
         }
 
-        private async Task<EnforcementService> PrepareEnforcementServiceAsync()
+        private async Task<LiveOpsService> PrepareLiveOpsServiceAsync()
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new EnforcementService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+            return new LiveOpsService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
         }
 
         private async Task<string> GetAuthTokenAsync()

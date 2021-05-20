@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
+using Forza.LiveOps.FH4.master.Generated;
 using Forza.WebServices.FH4.master.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
@@ -15,9 +16,9 @@ using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Xls.WebServices.FH4.master.Generated;
 using Xls.WebServices.NotificationsObjects.FH4.master.Generated;
-using static Forza.WebServices.FH4.master.Generated.UserService;
+using static Forza.LiveOps.FH4.master.Generated.UserManagementService;
+using static Forza.WebServices.FH4.master.Generated.LiveOpsService;
 using static Xls.WebServices.FH4.master.Generated.NotificationsService;
-using static Xls.WebServices.FH4.master.Generated.UserService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 {
@@ -500,12 +501,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             action.Should().NotThrow();
         }
 
-        private SunriseBanParameters GenerateBanParameters()
+        private List<SunriseBanParameters> GenerateBanParameters()
         {
-            return new SunriseBanParameters
+            var newParams = new SunriseBanParameters
             {
-                Xuids = new List<ulong> { 111 },
-                Gamertags = new List<string> { "gamerT1" },
+                Xuid = 111,
+                Gamertag = "gamerT1",
                 FeatureArea = "Matchmaking",
                 Reason = "Disgusting license plate.",
                 StartTimeUtc = DateTime.UtcNow,
@@ -515,6 +516,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 DeleteLeaderboardEntries = false,
                 SendReasonNotification = false
             };
+
+            return new List<SunriseBanParameters> { newParams };
         }
 
         private sealed class Dependencies
@@ -531,7 +534,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetProfileSummaryOutput>());
                 this.SunriseService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
                 this.RefreshableCacheStore.GetItem<IList<SunriseCreditUpdate>>(Arg.Any<string>()).Returns((IList<SunriseCreditUpdate>)null);
-                this.SunriseService.BanUsersAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<ForzaUserBanParameters>()).Returns(GenerateBanUsersOutput());
+                this.SunriseService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<int>()).Returns(GenerateBanUsersOutput());
                 this.SunriseService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.SunriseService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.SunriseService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsRetrieveForUserOutput>());
