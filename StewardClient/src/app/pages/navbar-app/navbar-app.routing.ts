@@ -28,6 +28,13 @@ const routes: Routes = [
         component: HomeComponent,
       },
       {
+        path: SharedNavbarTools.StewardUserHistoryPage.path,
+        loadChildren: () =>
+          import('../../shared/pages/steward-user-history/steward-user-history.module').then(
+            m => m.StewardUserHistoryModule,
+          ),
+      },
+      {
         path: NavbarTools.UserDetailsPage.path,
         loadChildren: () =>
           import('./pages/user-details/user-details.module').then(m => m.UserDetailsModule),

@@ -25,6 +25,7 @@ export class JobsGetJobFakeApi extends FakeApiBase {
   /** Generates a sample object */
   public static make(): BackgroundJob<unknown> {
     return {
+      createdDateUtc: faker.date.past(),
       jobId: faker.datatype.uuid(),
       status: BackgroundJobStatus.InProgress,
       rawResult: {

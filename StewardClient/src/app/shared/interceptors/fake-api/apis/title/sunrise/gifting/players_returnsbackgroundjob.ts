@@ -25,6 +25,7 @@ export class SunriseGiftingPlayersReturnsBackgroundJobFakeApi extends FakeApiBas
   /** Generates a sample object */
   public static make(): BackgroundJob<void> {
     return {
+      createdDateUtc: faker.date.past(),
       jobId: faker.datatype.uuid(),
       status: BackgroundJobStatus.InProgress,
       rawResult: {

@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 using Turn10.LiveOps.StewardApi.Authorization;
+using System.Xml;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -191,13 +192,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("userObjectId({userObjectId})")]
         [SwaggerResponse(200, type: typeof(IList<BackgroundJob>))]
-        public async Task<IActionResult> GetJobsByUserAsync(string userObjectId)
+        public async Task<IActionResult> GetJobsByUserAsync(string userObjectId, [FromQuery] string resultsFrom = null)
         {
             try
             {
                 userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
 
-                var jobs = await this.jobTracker.GetJobsByUserAsync(userObjectId).ConfigureAwait(true);
+                TimeSpan? resultsFromTS = null;
+                try
+                {
+                    if (resultsFrom != null)
+                    {
+                        resultsFromTS = XmlConvert.ToTimeSpan(resultsFrom);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return this.BadRequest($"Provided invalid query param: \"{nameof(resultsFrom)}\" with value \"{resultsFrom}\"");
+                }
+
+                var jobs = await this.jobTracker.GetJobsByUserAsync(userObjectId, resultsFromTS).ConfigureAwait(true);
 
                 var output = this.mapper.Map<IList<BackgroundJob>>(jobs);
 

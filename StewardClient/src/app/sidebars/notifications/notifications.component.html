@@ -1,35 +1,41 @@
-<section class="job-entries">
-  <h2>
-    <span>Background Jobs</span>
-    <span class="spacer"></span>
-    <button mat-mini-fab (click)="markReadAll()" matTooltip="Mark all as read">
-      <mat-icon>done_all</mat-icon>
-    </button>
-    <button mat-mini-fab (click)="syncAll()" matTooltip="Sync jobs with server">
-      <mat-icon>sync</mat-icon>
-    </button>
-  </h2>
-  <mat-checkbox
-    *ngFor="let notification of notifications"
-    [(ngModel)]="notification.isRead"
-    [indeterminate]="notification.isMarkingRead"
-    (ngModelChange)="markRead(notification, $event)"
-  >
-    <ng-container [ngSwitch]="notification.status">
-      <mat-icon *ngSwitchCase="'InProgress'" matTooltip="In Progress">timer</mat-icon>
-      <mat-icon *ngSwitchCase="'Completed'" matTooltip="Completed Successfully" color="primary"
-        >check_circle</mat-icon
-      >
-      <mat-icon *ngSwitchCase="'Failed'" matTooltip="Failed" color="warn">error</mat-icon>
-    </ng-container>
-    {{ notification.reason }}
-    ({{ notification.jobId }})
-  </mat-checkbox>
-</section>
+<mat-card>
+  <section class="job-entries">
+    <h2>
+      <span>Background Jobs</span>
+      <span class="spacer"></span>
+      <button mat-mini-fab (click)="markReadAll()" matTooltip="Mark all as read">
+        <mat-icon>done_all</mat-icon>
+      </button>
+      <button mat-mini-fab (click)="syncAll()" matTooltip="Sync jobs with server">
+        <mat-icon>sync</mat-icon>
+      </button>
+    </h2>
+    <mat-checkbox
+      *ngFor="let notification of notifications"
+      [(ngModel)]="notification.isRead"
+      [indeterminate]="notification.isMarkingRead"
+      (ngModelChange)="markRead(notification, $event)"
+    >
+      <ng-container [ngSwitch]="notification.status">
+        <mat-icon *ngSwitchCase="'InProgress'" matTooltip="In Progress">timer</mat-icon>
+        <mat-icon *ngSwitchCase="'Completed'" matTooltip="Completed Successfully" color="primary"
+          >check_circle</mat-icon
+        >
+        <mat-icon *ngSwitchCase="'Failed'" matTooltip="Failed" color="warn">error</mat-icon>
+      </ng-container>
+      {{ notification.reason }}
+      ({{ notification.jobId }})
+    </mat-checkbox>
+  </section>
 
-<section *ngIf="showDevTools">
+  <section class="nav-to-job-history">
+    <a mat-stroked-button color="primary" [routerLink]="backgroundJobRouterLink">View All</a>
+  </section>
+</mat-card>
+
+<mat-card class="fake-jobs" *ngIf="showDevTools">
   <h2>Make Fake Jobs</h2>
   <button (click)="makeFakeFailure()">Failure</button>
   <button (click)="makeFakeSuccess()">Success</button>
   <button (click)="makeFakeOngoing()">Ongoing</button>
-</section>
+</mat-card>

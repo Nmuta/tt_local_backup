@@ -399,6 +399,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
 
+                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(results);
                     await this.jobTracker
                         .UpdateJobAsync(
                             jobId,
@@ -694,7 +695,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
                     var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
+
+                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { environment } from '@environments/environment';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { UserRole } from '@models/enums';
@@ -17,11 +18,13 @@ import { UserState } from '@shared/state/user/user.state';
 export class NotificationsComponent implements OnInit {
   public showDevTools = false;
   public notifications: BackgroundJob<unknown>[] = [];
+  public backgroundJobRouterLink: string[];
 
   constructor(
     private readonly notificationsService: NotificationsService,
     private readonly jobService: BackgroundJobService,
     private readonly store: Store,
+    private readonly router: Router,
   ) {}
 
   /** Angular lifecycle hook. */
@@ -33,6 +36,13 @@ export class NotificationsComponent implements OnInit {
     this.notificationsService.notifications$.subscribe(v => {
       this.notifications = v;
     });
+
+    // Background job history is a shared page and will always be on path directly after <app>/tools
+    const paths = this.router.url.split('/').filter(path => path !== '');
+    const toolsIndex = paths.findIndex(path => path === 'tools');
+    this.backgroundJobRouterLink = [
+      `/${paths.splice(0, toolsIndex + 1).join('/')}/steward-user-history`,
+    ];
   }
 
   /** Marks a notification as read. */

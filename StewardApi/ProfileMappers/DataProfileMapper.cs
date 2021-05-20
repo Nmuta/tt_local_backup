@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.RawResult, opt =>
                     opt.MapFrom(src => JsonConvert.DeserializeObject<object>(src.Result)))
                 .ForMember(des => des.JobId, opt =>
-                    opt.MapFrom(src => Enum.Parse(typeof(BackgroundJobStatus), src.Status, true)))
+                    opt.MapFrom(src => src.JobId))
                 .ForMember(des => des.IsRead, opt => opt.MapFrom(src => src.IsRead ?? true))
                 .ReverseMap();
             this.CreateMap<KustoQueryInternal, KustoQuery>()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts;
 
@@ -33,7 +34,8 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Gets all jobs with given Azure object ID.
         /// </summary>
-        Task<IList<BackgroundJobInternal>> GetJobsByUserAsync(string userObjectId);
+        /// <param name="resultsFrom">Filters results within TimeSpan range. Null will use no date filtering.</param>
+        Task<IList<BackgroundJobInternal>> GetJobsByUserAsync(string userObjectId, TimeSpan? resultsFrom);
 
         /// <summary>
         ///     Gets all jobs with given Azure object ID.

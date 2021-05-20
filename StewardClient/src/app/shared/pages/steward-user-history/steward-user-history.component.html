@@ -1,0 +1,78 @@
+<mat-card>
+  <mat-card-header>
+    <mat-icon mat-card-avatar svgIcon="steward-notifications"></mat-icon>
+    <mat-card-title>Background Job History</mat-card-title>
+    <mat-card-subtitle>View History and Results</mat-card-subtitle>
+  </mat-card-header>
+  <div [hidden]="selectedBackgroundJob">
+    <form [formGroup]="formGroup">
+      <mat-form-field appearance="fill">
+        <mat-label>From</mat-label>
+        <mat-select
+          matInput
+          formControlName="fromDuration"
+          (selectionChange)="newFromDuration($event)"
+        >
+          <mat-option *ngFor="let from of fromDurations" [value]="from.value">{{
+            from.text
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+    <ng-container *ngIf="!isLoading && !loadError; else failState">
+      <table mat-table [dataSource]="jobs" class="mat-elevation-z8">
+        <ng-container matColumnDef="createdDateUtc">
+          <th mat-header-cell *matHeaderCellDef>Created Date UTC</th>
+          <td mat-cell *matCellDef="let element">{{ element.createdTimeUtc | date: 'short' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Job Status</th>
+          <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let element">{{ element.reason }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="jobId">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.jobId }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          (click)="setSelectedBackgroundJob(row)"
+          [class.row-error]="
+            row?.status === BackgroundJobStatus.Failed ||
+            row?.status === BackgroundJobStatus.CompletedWithErrors
+          "
+        ></tr>
+      </table>
+    </ng-container>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50]"> </mat-paginator>
+  </div>
+
+  <div [hidden]="!selectedBackgroundJob" class="selected-background-job">
+    <h3>
+      <button mat-stroked-button color="primary" (click)="clearSelectedBackgroundJob()">
+        Back to all results
+      </button>
+      Viewing results for job: {{ selectedBackgroundJob?.jobId }}
+    </h3>
+    <json-table-results
+      [results]="selectedBackgroundJob?.jsonTableResults"
+      [downloadFilename]="'BackgroundJob_' + selectedBackgroundJob?.createdDateUtc"
+    ></json-table-results>
+  </div>
+</mat-card>
+
+<ng-template #failState>
+  <div id="fail-state">
+    <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+    <json-dump *ngIf="loadError" [input]="loadError">Failure occured.</json-dump>
+  </div>
+</ng-template>

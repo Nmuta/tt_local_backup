@@ -1,5 +1,6 @@
 /** Interface for a background job. */
 export interface BackgroundJob<T> {
+  createdDateUtc: Date;
   jobId: string;
   status: BackgroundJobStatus;
   rawResult: Record<string, unknown>;
@@ -12,6 +13,7 @@ export interface BackgroundJob<T> {
 
 export enum BackgroundJobStatus {
   Completed = 'Completed',
+  CompletedWithErrors = 'CompletedWithErrors',
   InProgress = 'InProgress',
   Failed = 'Failed',
 }

@@ -1,6 +1,8 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { ApiService } from '@shared/services/api';
+import moment from 'moment';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -51,6 +53,33 @@ export class BackgroundJobService {
         }
       }),
     );
+  }
+
+  /** Gets the background job. */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public getBackgroundJobs$(
+    userObjectId: string,
+    resultsFrom: moment.Duration,
+  ): Observable<BackgroundJob<unknown>[]> {
+    const params = new HttpParams().append('resultsFrom', resultsFrom.toISOString());
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return this.apiService
+      .getRequest$<BackgroundJob<unknown>[]>(
+        `${this.basePath}/userObjectId(${userObjectId})`,
+        params,
+      )
+      .pipe(
+        tap(jobs => {
+          for (const job of jobs) {
+            try {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              job.result = (job.rawResult as unknown) as any;
+            } catch (err) {
+              /** Do nothing, just try to parse */
+            }
+          }
+        }),
+      );
   }
 
   /** Converts each properties first letter to lowercase. */

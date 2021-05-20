@@ -15,6 +15,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Hubs;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using System.Globalization;
 
 namespace Turn10.LiveOps.StewardApi.Providers
 {
@@ -189,14 +190,24 @@ namespace Turn10.LiveOps.StewardApi.Providers
         }
 
         /// <inheritdoc />
-        public async Task<IList<BackgroundJobInternal>> GetJobsByUserAsync(string userObjectId)
+        public async Task<IList<BackgroundJobInternal>> GetJobsByUserAsync(string userObjectId, TimeSpan? resultsFrom)
         {
             userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
 
             try
             {
+                var partitionKeyFilter = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userObjectId);
                 var tableQuery = new TableQuery<BackgroundJobInternal>()
-                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userObjectId));
+                    .Where(partitionKeyFilter);
+
+                if (resultsFrom.HasValue)
+                {
+                    var resultsFromFilter = TableQuery.GenerateFilterConditionForDate("CreatedTimeUtc", QueryComparisons.GreaterThan, DateTime.UtcNow.Subtract(resultsFrom.Value));
+                    var combinedFilters = TableQuery.CombineFilters(partitionKeyFilter, TableOperators.And, resultsFromFilter);
+                    tableQuery = new TableQuery<BackgroundJobInternal>()
+                        .Where(combinedFilters);
+                }
+
                 var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
 
                 return results;

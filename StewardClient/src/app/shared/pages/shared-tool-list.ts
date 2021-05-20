@@ -13,4 +13,10 @@ export class SharedNavbarTools {
     title: 'Messaging',
     path: 'messaging',
   };
+
+  /** The Steward User History tool page. */
+  public static readonly StewardUserHistoryPage: RouteParams = {
+    title: 'Steward User History',
+    path: 'steward-user-history',
+  };
 }

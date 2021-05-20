@@ -328,7 +328,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     var results = await this.steelheadPlayerDetailsProvider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(true);
 
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Completed, results).ConfigureAwait(true);
+                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(results);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -566,7 +567,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
                     var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Completed, response).ConfigureAwait(true);
+
+                    var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {

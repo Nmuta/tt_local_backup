@@ -617,6 +617,7 @@ describe('GiftBasketBaseComponent', () => {
 
   describe('Method: waitForBackgroundJobToComplete', () => {
     const testJob: BackgroundJob<void> = {
+      createdDateUtc: faker.date.past(),
       jobId: 'test=-job-id',
       status: BackgroundJobStatus.InProgress,
       rawResult: undefined,
@@ -657,6 +658,7 @@ describe('GiftBasketBaseComponent', () => {
 
       describe('And a BackgroundJob is returned', () => {
         const testBackgroundJobResp: BackgroundJob<GiftResponse<string | BigNumber>[]> = {
+          createdDateUtc: faker.date.past(),
           jobId: 'test=-job-id',
           status: BackgroundJobStatus.InProgress,
           rawResult: {

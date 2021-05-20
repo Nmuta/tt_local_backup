@@ -38,6 +38,7 @@ describe('UserBanningBaseComponent', () => {
 
   describe('Method: waitForBackgroundJobToComplete', () => {
     const testJob: BackgroundJob<void> = {
+      createdDateUtc: faker.date.past(),
       jobId: 'test=-job-id',
       status: BackgroundJobStatus.InProgress,
       result: undefined,
@@ -78,6 +79,7 @@ describe('UserBanningBaseComponent', () => {
 
       describe('And a BackgroundJob is returned', () => {
         const testBackgroundJobResp: BackgroundJob<BanResultsUnion[]> = {
+          createdDateUtc: faker.date.past(),
           jobId: 'test=-job-id',
           status: BackgroundJobStatus.InProgress,
           result: [

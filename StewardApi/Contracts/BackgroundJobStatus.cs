@@ -15,6 +15,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts
         Completed,
 
         /// <summary>
+        ///     The job is completed but with errors.
+        /// </summary>
+        CompletedWithErrors,
+
+        /// <summary>
         ///     The job is in progress.
         /// </summary>
         InProgress,

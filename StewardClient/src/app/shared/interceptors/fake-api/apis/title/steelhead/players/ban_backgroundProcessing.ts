@@ -25,6 +25,7 @@ export class SteelheadPlayersBanWithBackgroundProcessingFakeApi extends FakeApiB
   /** Generates a sample object */
   public static make(): BackgroundJob<unknown> {
     return {
+      createdDateUtc: faker.date.past(),
       jobId: faker.datatype.uuid().toString(),
       status: BackgroundJobStatus.InProgress,
       rawResult: undefined,

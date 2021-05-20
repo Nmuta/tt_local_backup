@@ -1,3 +1,5 @@
+@import '/src/styles/mixins';
+
 h2 {
   display: flex;
   flex-flow: row nowrap;
@@ -24,5 +26,16 @@ h2 {
       flex-flow: row nowrap;
       align-items: center;
     }
+  }
+}
+
+.fake-jobs {
+  margin-top: $gap-medium;
+}
+
+.nav-to-job-history {
+  a {
+    margin-top: $gap-medium;
+    width: 100%;
   }
 }
