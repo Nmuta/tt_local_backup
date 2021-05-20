@@ -80,7 +80,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Ban users.
         /// </summary>
-        Task<IList<BanResult>> BanUsersAsync(IList<SunriseBanParameters> banParameters, string requesterObjectId);
+        Task<IList<BanResult>> BanUsersAsync(SunriseBanParameters banParameters, string requesterObjectId);
 
         /// <summary>
         ///     Get ban summaries.

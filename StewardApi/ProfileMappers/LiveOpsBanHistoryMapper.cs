@@ -2,7 +2,7 @@
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Providers;
 using FH4Security = Xls.Security.FH4.master.Generated;
-using FH4WebServices = Forza.LiveOps.FH4.master.Generated;
+using FH4WebServices = Forza.WebServices.FH4.master.Generated;
 using FH5LiveOps = Forza.LiveOps.FH5_master.Generated;
 using FH5Security = Xls.Security.FH5_master.Generated;
 using FM7Security = Xls.Security.FM7.Generated;
