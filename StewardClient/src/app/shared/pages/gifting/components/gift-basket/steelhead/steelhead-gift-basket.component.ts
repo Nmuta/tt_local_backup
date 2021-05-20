@@ -18,6 +18,7 @@ import { Observable } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
 import { ZERO } from '@helpers/bignumbers';
+import { cloneDeep } from 'lodash';
 
 /** Steelhead gift basket. */
 @Component({
@@ -55,7 +56,9 @@ export class SteelheadGiftBasketComponent
       const steelheadMasterInventory = this.store.selectSnapshot<SteelheadMasterInventory>(
         MasterInventoryListMemoryState.steelheadMasterInventory,
       );
-      this.masterInventory = steelheadMasterInventory;
+
+      // must be cloned because a child component modifies this value, and modification of state is disallowed
+      this.masterInventory = cloneDeep(steelheadMasterInventory);
     });
 
     this.giftBasket$

@@ -18,6 +18,7 @@ import { Observable } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
 import { ZERO } from '@helpers/bignumbers';
+import { cloneDeep } from 'lodash';
 
 /** Apollo gift basket. */
 @Component({
@@ -55,7 +56,9 @@ export class ApolloGiftBasketComponent
       const apolloMasterInventory = this.store.selectSnapshot<ApolloMasterInventory>(
         MasterInventoryListMemoryState.apolloMasterInventory,
       );
-      this.masterInventory = apolloMasterInventory;
+
+      // must be cloned because a child component modifies this value, and modification of state is disallowed
+      this.masterInventory = cloneDeep(apolloMasterInventory);
     });
 
     this.giftBasket$

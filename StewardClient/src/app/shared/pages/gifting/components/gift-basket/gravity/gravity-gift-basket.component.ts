@@ -18,6 +18,7 @@ import { NEVER, Observable, Subject, throwError } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
 import { ONE, ZERO } from '@helpers/bignumbers';
+import { cloneDeep } from 'lodash';
 
 /** Gravity gift basket. */
 @Component({
@@ -84,19 +85,20 @@ export class GravityGiftBasketComponent
               }),
             );
         }),
-        tap(() => {
-          this.isLoading = false;
-          const gravityMasterInventory = this.store.selectSnapshot<GravityMasterInventoryLists>(
-            MasterInventoryListMemoryState.gravityMasterInventory,
-          );
-          this.masterInventory = gravityMasterInventory[this.selectedGameSettingsId];
-
-          // With a potentially new game gettings, we need to verify the gift basket contents against the
-          // master inventory and set errors.
-          this.setStateGiftBasket(this.giftBasket.data ?? []);
-        }),
       )
-      .subscribe();
+      .subscribe(() => {
+        this.isLoading = false;
+        const gravityMasterInventory = this.store.selectSnapshot<GravityMasterInventoryLists>(
+          MasterInventoryListMemoryState.gravityMasterInventory,
+        );
+
+        // must be cloned because a child component modifies this value, and modification of state is disallowed
+        this.masterInventory = cloneDeep(gravityMasterInventory[this.selectedGameSettingsId]);
+
+        // With a potentially new game gettings, we need to verify the gift basket contents against the
+        // master inventory and set errors.
+        this.setStateGiftBasket(this.giftBasket.data ?? []);
+      });
 
     this.giftBasket$
       .pipe(

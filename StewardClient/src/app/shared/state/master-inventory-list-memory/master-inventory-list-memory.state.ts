@@ -14,7 +14,7 @@ import {
 } from './master-inventory-list-memory.actions';
 import { ApolloMasterInventory } from '@models/apollo';
 import { ApolloService } from '@services/apollo';
-import { clone } from 'lodash';
+import { clone, cloneDeep } from 'lodash';
 import { GravityMasterInventory, GravityMasterInventoryLists } from '@models/gravity';
 import { SunriseMasterInventory } from '@models/sunrise';
 import { SteelheadMasterInventory } from '@models/steelhead';
@@ -120,7 +120,7 @@ export class MasterInventoryListMemoryState {
     return request$.pipe(
       take(1),
       tap(data => {
-        let gravityVal = state[GameTitleCodeName.Street];
+        let gravityVal = cloneDeep(state[GameTitleCodeName.Street]);
         if (Object.keys(gravityVal).length >= 3) {
           gravityVal = {};
         }
