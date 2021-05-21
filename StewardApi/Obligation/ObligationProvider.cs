@@ -110,7 +110,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
                         ActivityName = resultDataActivity.Name,
                         KustoFunction = new KustoFunction
                         {
-                            Name = resultDataActivity.KustoQuery.Split('(')[0],
+                            Name = resultDataActivity.KustoQuery,
                             UseSplitting = resultDataActivity.KustoQuery.Contains("NumBuckets", StringComparison.OrdinalIgnoreCase),
                             UseEndDate = resultDataActivity.KustoQuery.Contains("EndDate", StringComparison.OrdinalIgnoreCase),
                             NumberOfBuckets = resultDataActivity.NumBucketsPreSplitHint
@@ -135,6 +135,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
                 PipelineName = result.Name,
                 PipelineDescription = result.Description,
                 ObligationPipelines = kustoDataActivities,
+                ObligationRestateOMatics = kustoRestatOMaticDataActivities,
                 Principals = result.Principals
                     .Where(resultPrincipal => !this.standardPrincipals.Select(s => s.Value).Contains(resultPrincipal.Value)).ToList()
             };
@@ -254,7 +255,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
                     Delay = obligationPipeline.ExecutionDelay,
                     TimeRange = new TimeRange(startDate, endDate),
                     KustoDatabase = obligationPipeline.DestinationDatabase,
-                    KustoQuery = BuildFunctionDefinition(obligationPipeline.KustoFunction),
+                    KustoQuery = obligationPipeline.KustoFunction.Name,
                     NumBucketsPreSplitHint = obligationPipeline.KustoFunction.NumberOfBuckets,
                     Dependencies = BuildDependencies(obligationPipeline.DataActivityDependencyNames),
                     IncludeChildren = obligationPipeline.IncludeChildren,

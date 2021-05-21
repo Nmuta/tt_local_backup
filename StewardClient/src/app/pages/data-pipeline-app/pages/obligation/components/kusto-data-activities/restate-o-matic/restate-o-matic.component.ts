@@ -25,7 +25,6 @@ import {
 
 export interface KustoRestateOMaticDataActivityOptions {
   name: string;
-  table: string;
   database: string;
   query: KustoFunctionOptions;
   dateRange: {
@@ -80,7 +79,6 @@ export class RestateOMaticComponent
   // eslint-disable-next-line @typescript-eslint/member-ordering
   public static defaults: KustoRestateOMaticDataActivityOptions = {
     name: '',
-    table: '',
     database: 'T10Analytics',
     query: KustoFunctionComponent.defaults,
     dateRange: {
@@ -96,14 +94,10 @@ export class RestateOMaticComponent
   };
 
   public formControls = {
-    name: new FormControl({ value: RestateOMaticComponent.defaults.name, disabled: true }, [
+    name: new FormControl({ value: RestateOMaticComponent.defaults.name }, [
       Validators.required,
       StringValidators.trim,
       StringValidators.uniqueInList(() => this.activePipeline.activityNames),
-    ]),
-    table: new FormControl(RestateOMaticComponent.defaults.table, [
-      Validators.required,
-      StringValidators.trim,
     ]),
     database: new FormControl(RestateOMaticComponent.defaults.database, [
       Validators.required,
@@ -134,7 +128,6 @@ export class RestateOMaticComponent
 
   public formGroup = new FormGroup({
     name: this.formControls.name,
-    table: this.formControls.table,
     database: this.formControls.database,
     query: this.formControls.query,
     dateRange: this.formControls.dateRange,

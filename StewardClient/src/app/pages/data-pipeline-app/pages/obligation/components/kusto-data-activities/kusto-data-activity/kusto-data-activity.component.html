@@ -72,11 +72,11 @@
   </section>
 
   <section>
-    <dependency-list [formControl]="formControls.dependencyNames"></dependency-list>
+    <kusto-function [formControl]="formControls.query"></kusto-function>
   </section>
 
   <section>
-    <kusto-function [formControl]="formControls.query"></kusto-function>
+    <dependency-list [formControl]="formControls.dependencyNames"></dependency-list>
   </section>
 
   <mat-divider></mat-divider>

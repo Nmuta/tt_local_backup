@@ -224,7 +224,6 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           <ObligationKustoRestateOMaticDataActivity>{
             activityName: activity.name,
             kustoDatabase: activity.database,
-            kustoTableName: activity.table,
             targetDataActivity: bundle.dataActivity.name,
             destinationDatabase: activity.database,
             startDateUtc: activity.dateRange.start.toUTC().toJSDate(),
@@ -291,7 +290,6 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           const restateOMaticActivity = restateOMaticLookup[pipeline.activityName];
           restateOMatic = {
             name: restateOMaticActivity.activityName,
-            table: restateOMaticActivity.kustoTableName,
             database: restateOMaticActivity.destinationDatabase,
             dependencyNames: restateOMaticActivity.dataActivityDependencyNames,
             dateRange: {

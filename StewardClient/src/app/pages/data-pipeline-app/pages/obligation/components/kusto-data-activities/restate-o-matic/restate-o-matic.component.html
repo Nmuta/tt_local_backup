@@ -20,25 +20,6 @@
 
       <section>
         <mat-form-field>
-          <mat-label>Table</mat-label>
-          <input matInput type="text" [formControl]="formControls.table" />
-          <button
-            mat-button
-            *ngIf="formControls.table"
-            matSuffix
-            mat-icon-button
-            aria-label="Clear"
-            (click)="formControls.table.setValue('')"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-          <mat-error *ngIf="formControls.table.hasError('required')">Required</mat-error>
-          <mat-error *ngIf="formControls.table.hasError('trim')"
-            >Has surrounding whitespace</mat-error
-          >
-        </mat-form-field>
-
-        <mat-form-field>
           <mat-label>Database</mat-label>
           <input matInput type="text" [formControl]="formControls.database" />
           <button
@@ -65,16 +46,16 @@
   </section>
 
   <section>
+    <kusto-function [formControl]="formControls.query"></kusto-function>
+  </section>
+
+  <section>
     <dependency-list [formControl]="formControls.dependencyNames"></dependency-list>
     <mat-checkbox
       [formControl]="formControls.includeChildren"
       matTooltip="Also include all child dependencies"
       >Include Children</mat-checkbox
     >
-  </section>
-
-  <section>
-    <kusto-function [formControl]="formControls.query"></kusto-function>
   </section>
 
   <mat-divider></mat-divider>
