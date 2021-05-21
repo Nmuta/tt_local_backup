@@ -158,16 +158,18 @@ export class GravityGiftBasketComponent
     }
     const referenceInventory = this.referenceInventory;
     function mapKey(key: keyof GravityMasterInventory): GiftBasketModel[] {
-      return referenceInventory[key].map(i => {
-        return <GiftBasketModel>{
-          description: i.description,
-          id: i.id,
-          itemType: key,
-          quantity: Number(i.quantity),
-          edit: undefined,
-          error: undefined,
-        };
-      });
+      return referenceInventory[key]
+        .map(i => {
+          return <GiftBasketModel>{
+            description: i.description,
+            id: i.id,
+            itemType: key,
+            quantity: Number(i.quantity),
+            edit: undefined,
+            error: undefined,
+          };
+        })
+        .filter(item => item.quantity > 0);
     }
 
     this.setStateGiftBasket([
