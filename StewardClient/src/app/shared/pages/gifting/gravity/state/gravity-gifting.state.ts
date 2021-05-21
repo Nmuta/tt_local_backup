@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IdentityResultBetaBatch } from '@models/identity-query.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { clone, sortBy } from 'lodash';
+import { cloneDeep, sortBy } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { GiftBasketModel } from '../../components/gift-basket/gift-basket.base.component';
 import {
@@ -33,7 +33,9 @@ export class GravityGiftingState {
     ctx: StateContext<GravityGiftingStateModel>,
     action: SetGravitySelectedPlayerIdentities,
   ): Observable<GravityGiftingStateModel> {
-    return of(ctx.patchState({ selectedPlayerIdentities: clone(action.selectedPlayerIdentities) }));
+    return of(
+      ctx.patchState({ selectedPlayerIdentities: cloneDeep(action.selectedPlayerIdentities) }),
+    );
   }
 
   /** Sets the gift basket. */
@@ -54,7 +56,7 @@ export class GravityGiftingState {
       },
     ]);
 
-    return of(ctx.patchState({ giftBasket: clone(giftBasket) }));
+    return of(ctx.patchState({ giftBasket: cloneDeep(giftBasket) }));
   }
 
   /** Selector for state selected player identities. */

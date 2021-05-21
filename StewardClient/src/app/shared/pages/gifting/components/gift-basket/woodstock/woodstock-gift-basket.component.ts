@@ -65,7 +65,7 @@ export class WoodstockGiftBasketComponent
       .pipe(
         takeUntil(this.onDestroy$),
         tap(basket => {
-          this.giftBasket.data = basket;
+          this.giftBasket.data = cloneDeep(basket);
           this.giftBasketHasErrors = basket.some(item => !!item.error);
         }),
       )

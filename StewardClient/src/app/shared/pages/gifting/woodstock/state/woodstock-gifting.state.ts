@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { clone, sortBy } from 'lodash';
+import { cloneDeep, sortBy } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { GiftBasketModel } from '../../components/gift-basket/gift-basket.base.component';
 import {
@@ -36,7 +36,9 @@ export class WoodstockGiftingState {
     ctx: StateContext<WoodstockGiftingStateModel>,
     action: SetWoodstockGiftingSelectedPlayerIdentities,
   ): Observable<WoodstockGiftingStateModel> {
-    return of(ctx.patchState({ selectedPlayerIdentities: clone(action.selectedPlayerIdentities) }));
+    return of(
+      ctx.patchState({ selectedPlayerIdentities: cloneDeep(action.selectedPlayerIdentities) }),
+    );
   }
 
   /** Sets the gifting page's selected mat tab index. */
@@ -45,7 +47,7 @@ export class WoodstockGiftingState {
     ctx: StateContext<WoodstockGiftingStateModel>,
     action: SetWoodstockGiftingMatTabIndex,
   ): Observable<WoodstockGiftingStateModel> {
-    return of(ctx.patchState({ selectedMatIndex: clone(action.selectedMatIndex) }));
+    return of(ctx.patchState({ selectedMatIndex: cloneDeep(action.selectedMatIndex) }));
   }
 
   /** Sets the gift basket. */
@@ -66,7 +68,7 @@ export class WoodstockGiftingState {
       },
     ]);
 
-    return of(ctx.patchState({ giftBasket: clone(giftBasket) }));
+    return of(ctx.patchState({ giftBasket: cloneDeep(giftBasket) }));
   }
 
   /** Selector for state selected player identities. */
