@@ -54,7 +54,7 @@ describe('NotificationsComponent', () => {
         emailAddress: `${name}@testemail.com`,
         role: UserRole.LiveOpsAdmin,
         name: name,
-        objectId: faker.random.uuid(),
+        objectId: faker.datatype.uuid(),
       } as UserModel);
     });
 

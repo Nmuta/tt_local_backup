@@ -45,7 +45,7 @@ export class WoodstockPlayerXuidBanHistoryFakeApi extends FakeApiBase {
           featureArea: faker.random.arrayElement(Object.values(WoodstockBanArea)),
           isActive: faker.datatype.boolean(),
           reason: faker.lorem.sentence(),
-          requesterObjectId: faker.random.uuid(),
+          requesterObjectId: faker.datatype.uuid(),
           title: faker.random.arrayElement(Object.values(GameTitleCodeName)),
           xuid: xuid,
         },

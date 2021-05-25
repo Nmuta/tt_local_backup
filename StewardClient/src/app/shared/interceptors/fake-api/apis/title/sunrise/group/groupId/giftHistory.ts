@@ -33,7 +33,7 @@ export class SunriseGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
         id: lspId,
         title: 'sunrise',
         giftSendDateUtc: faker.date.past(),
-        requesterObjectId: faker.random.uuid(),
+        requesterObjectId: faker.datatype.uuid(),
         giftInventory: {
           giftReason: faker.random.word(),
           inventory: {

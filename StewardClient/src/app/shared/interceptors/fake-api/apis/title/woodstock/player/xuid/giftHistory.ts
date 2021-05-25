@@ -33,7 +33,7 @@ export class WoodstockPlayerXuidGiftHistoryFakeApi extends FakeApiBase {
         id: xuid,
         title: 'woodstock',
         giftSendDateUtc: faker.date.past(),
-        requesterObjectId: faker.random.uuid(),
+        requesterObjectId: faker.datatype.uuid(),
         giftInventory: {
           giftReason: faker.random.word(),
           inventory: {

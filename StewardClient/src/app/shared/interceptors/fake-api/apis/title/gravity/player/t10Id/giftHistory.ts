@@ -32,7 +32,7 @@ export class GravityPlayerT10IdGiftHistoryFakeApi extends FakeApiBase {
         id: t10Id,
         title: 'gravity',
         giftSendDateUtc: faker.date.past(),
-        requesterObjectId: faker.random.uuid(),
+        requesterObjectId: faker.datatype.uuid(),
         giftInventory: {
           giftReason: faker.random.word(),
           inventory: {

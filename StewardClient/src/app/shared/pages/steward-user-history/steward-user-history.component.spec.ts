@@ -51,7 +51,7 @@ describe('StewardUserHistoryComponent', () => {
       emailAddress: `${name}@testemail.com`,
       role: UserRole.LiveOpsAdmin,
       name: name,
-      objectId: faker.random.uuid(),
+      objectId: faker.datatype.uuid(),
     } as UserModel;
 
     beforeEach(() => {
@@ -86,7 +86,7 @@ describe('StewardUserHistoryComponent', () => {
       beforeEach(() => {
         backgroundJob = {
           createdDateUtc: faker.date.past(),
-          jobId: faker.random.uuid(),
+          jobId: faker.datatype.uuid(),
           status: BackgroundJobStatus.Completed,
           rawResult: { foo: 'bar' } as Record<string, unknown>,
           result: [{ foo: 'bar' }, { cat: 'dog' }],
@@ -110,7 +110,7 @@ describe('StewardUserHistoryComponent', () => {
       beforeEach(() => {
         backgroundJob = {
           createdDateUtc: faker.date.past(),
-          jobId: faker.random.uuid(),
+          jobId: faker.datatype.uuid(),
           status: BackgroundJobStatus.Completed,
           rawResult: { foo: 'bar' },
           result: { foo: 'bar' },
@@ -134,7 +134,7 @@ describe('StewardUserHistoryComponent', () => {
     beforeEach(() => {
       component.selectedBackgroundJob = {
         createdDateUtc: faker.date.past(),
-        jobId: faker.random.uuid(),
+        jobId: faker.datatype.uuid(),
         status: BackgroundJobStatus.Completed,
         rawResult: { foo: 'bar' },
         result: { foo: 'bar' },

@@ -49,7 +49,7 @@ describe('InventoryItemListDisplayComponent', () => {
             {
               id: fakeBigNumber(),
               description: faker.random.words(10),
-              quantity: faker.random.number(100),
+              quantity: faker.datatype.number(100),
               itemType: undefined,
               dateAquiredUtc: faker.date.past(),
             },
@@ -76,7 +76,7 @@ describe('InventoryItemListDisplayComponent', () => {
             {
               id: fakeBigNumber(),
               description: faker.random.words(10),
-              quantity: faker.random.number(100),
+              quantity: faker.datatype.number(100),
               itemType: undefined,
             },
           ] as MasterInventoryItem[],
