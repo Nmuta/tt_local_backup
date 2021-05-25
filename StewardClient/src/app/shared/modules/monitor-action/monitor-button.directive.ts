@@ -90,8 +90,9 @@ export class MonitorButtonDirective extends MonitorBaseDirective {
     const anyMonitorActive = this.monitorIsActive || this.otherMonitorIsActive;
     this.updateHostDisabledState(this.shouldMonitorDisable && anyMonitorActive);
 
-    this.host.color =
+    const targetColor =
       this.shouldMonitorWarnWithColor && this.monitorIsErrored ? 'warn' : this.templateColor;
+    this.host.color = targetColor;
   }
 
   private produceSnackBar(): void {

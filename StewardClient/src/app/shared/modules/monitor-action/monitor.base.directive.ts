@@ -1,8 +1,8 @@
 import { Directive, Input } from '@angular/core';
 import { BaseDirective } from '@components/base-component/base.directive';
 import { isArray, isEmpty } from 'lodash';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { mergeMap, startWith, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, NEVER, Observable, of } from 'rxjs';
+import { catchError, mergeMap, startWith, takeUntil } from 'rxjs/operators';
 import { DisableStateProvider } from '../state-managers/injection-tokens';
 import { ActionMonitor } from './action-monitor';
 import { ActionStatus } from './action-status';
@@ -61,7 +61,7 @@ export abstract class MonitorBaseDirective extends BaseDirective implements Disa
             ]);
           }
 
-          return otherStatuses$;
+          return otherStatuses$.pipe(catchError(() => NEVER));
         }),
       )
       .subscribe(otherStatuses => {
@@ -77,7 +77,10 @@ export abstract class MonitorBaseDirective extends BaseDirective implements Disa
             return of(undefined as ActionStatus<undefined>);
           }
 
-          return monitor.status$.pipe(startWith(monitor.status));
+          return monitor.status$.pipe(
+            startWith(monitor.status),
+            catchError(() => NEVER),
+          );
         }),
       )
       .subscribe(status => {
