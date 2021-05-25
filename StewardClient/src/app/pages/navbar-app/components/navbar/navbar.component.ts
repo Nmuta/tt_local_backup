@@ -46,6 +46,7 @@ export class NavbarComponent implements OnInit {
    * TODO: Remove when Kusto feature is ready.
    */
   public ngOnInit(): void {
+    this.notificationsService.initialize();
     const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
     this.showAdminPages =
       profile.role === UserRole.LiveOpsAdmin || profile.role === UserRole.SupportAgentAdmin;

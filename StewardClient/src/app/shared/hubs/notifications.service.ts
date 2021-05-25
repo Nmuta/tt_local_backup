@@ -3,10 +3,14 @@ import { environment } from '@environments/environment';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { BackgroundJob } from '@models/background-job';
 import { Store } from '@ngxs/store';
+import { WindowService } from '@services/window';
 import { UserState } from '@shared/state/user/user.state';
-import { Subject } from 'rxjs';
+import { ReauthService } from '@shared/state/utilities/reauth.service';
+import { from, Subject } from 'rxjs';
 
-/** A service providing Notifications Hub connectivity. */
+/**
+ * You must prepare this service with this.initialize() before use.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -19,9 +23,56 @@ export class NotificationsService {
   public isReady = false;
   private notificationsHub: HubConnection;
 
-  constructor(private readonly store: Store) {
+  constructor(
+    private readonly store: Store,
+    private readonly windowService: WindowService,
+    private readonly reauthService: ReauthService,
+  ) {
+    this.makeHub();
+  }
+
+  /** Initialization method. */
+  public async initialize(): Promise<void> {
+    // do not initialize twice
+    if (this.isReady) {
+      return;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    const self = this;
+    function doRequest$() {
+      return from(self.notificationsHub.start());
+    }
+
+    doRequest$()
+      .pipe(this.reauthService.reauthOnFailure(this.getUrl(), () => doRequest$()))
+      .subscribe(() => (this.isReady = true));
+  }
+
+  /** Syncs notifications with the server. */
+  public async sync(): Promise<void> {
+    if (!this.isReady) {
+      throw new Error('Notifications Service is not ready');
+    }
+
+    this.notifications = [];
+    this.notifications$.next(this.notifications);
+    await this.notificationsHub.invoke('SyncAll');
+  }
+
+  /** Marks a notification as read. */
+  public markRead(notification: BackgroundJob<unknown>): Promise<void> {
+    return this.notificationsHub.invoke('MarkRead', notification);
+  }
+
+  /** Marks a notification as read. */
+  public markUnread(notification: BackgroundJob<unknown>): Promise<void> {
+    return this.notificationsHub.invoke('MarkUnread', notification);
+  }
+
+  private makeHub(): void {
     this.notificationsHub = new HubConnectionBuilder()
-      .withUrl(`${environment.stewardApiUrl}/hubs/notifications`, {
+      .withUrl(this.getUrl(), {
         accessTokenFactory: () => {
           let accessToken = this.store.selectSnapshot<string | null | undefined>(
             UserState.accessToken,
@@ -48,34 +99,14 @@ export class NotificationsService {
 
       this.notifications$.next(this.notifications);
     });
-    this.initialize();
   }
 
-  /** Initialization method. */
-  public async initialize(): Promise<void> {
-    try {
-      await this.notificationsHub.start();
-      this.isReady = true;
-    } catch (error) {
-      // eslint-disable-next-line no-debugger
-      debugger;
-    }
-  }
+  private getUrl(): string {
+    // if we are on staging, use the staging URL for the base
+    const location = this.windowService.location();
+    const isOnStaging = location?.origin === environment.stewardUiStagingUrl;
+    const urlBase = isOnStaging ? environment.stewardApiStagingUrl : environment.stewardApiUrl;
 
-  /** Syncs notifications with the server. */
-  public async sync(): Promise<void> {
-    this.notifications = [];
-    this.notifications$.next(this.notifications);
-    await this.notificationsHub.invoke('SyncAll');
-  }
-
-  /** Marks a notification as read. */
-  public markRead(notification: BackgroundJob<unknown>): Promise<void> {
-    return this.notificationsHub.invoke('MarkRead', notification);
-  }
-
-  /** Marks a notification as read. */
-  public markUnread(notification: BackgroundJob<unknown>): Promise<void> {
-    return this.notificationsHub.invoke('MarkUnread', notification);
+    return `${urlBase}/hubs/notifications`;
   }
 }
