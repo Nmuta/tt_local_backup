@@ -37,6 +37,9 @@ export interface KustoRestateOMaticDataActivityOptions {
   parallelismLimit: number;
   dependencyNames: string[];
   includeChildren: boolean;
+
+  /** True when this model was retrieved from the API. UI-only value. Disables some controls. */
+  fromApi: boolean;
 }
 
 /** A form component for a single kusto restate-o-matic pipeline activity. */
@@ -91,10 +94,11 @@ export class RestateOMaticComponent
     dependencyNames: [],
     parallelismLimit: 2,
     includeChildren: true,
+    fromApi: false,
   };
 
   public formControls = {
-    name: new FormControl({ value: RestateOMaticComponent.defaults.name }, [
+    name: new FormControl({ value: RestateOMaticComponent.defaults.name, disabled: true }, [
       Validators.required,
       StringValidators.trim,
       StringValidators.uniqueInList(() => this.activePipeline.activityNames),
@@ -124,6 +128,7 @@ export class RestateOMaticComponent
     ]),
     dependencyNames: new FormControl(RestateOMaticComponent.defaults.dependencyNames),
     includeChildren: new FormControl(RestateOMaticComponent.defaults.includeChildren),
+    fromApi: new FormControl(RestateOMaticComponent.defaults.fromApi),
   };
 
   public formGroup = new FormGroup({
@@ -137,6 +142,7 @@ export class RestateOMaticComponent
     parallelismLimit: this.formControls.parallelismLimit,
     dependencyNames: this.formControls.dependencyNames,
     includeChildren: this.formControls.includeChildren,
+    fromApi: this.formControls.fromApi,
   });
 
   constructor(private readonly activePipeline: ActivePipelineService) {
@@ -144,7 +150,10 @@ export class RestateOMaticComponent
 
     // pipe value changes to the parent form
     this.formGroup.valueChanges
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(
+        takeUntil(this.onDestroy$),
+        map(_ => this.formGroup.getRawValue()), // we need to map this to the raw value to include the disabled form controls
+      )
       .subscribe(data => this.changeFn(data));
 
     // cleanup
@@ -168,6 +177,12 @@ export class RestateOMaticComponent
   public writeValue(data: { [key: string]: unknown }): void {
     if (data) {
       this.formGroup.patchValue(data, { emitEvent: false });
+
+      if (data.fromApi) {
+        this.formControls.dateRange.disable();
+      } else {
+        this.formControls.dateRange.enable();
+      }
     }
   }
 

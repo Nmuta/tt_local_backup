@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Turn10.Data.Common;
 
@@ -84,13 +85,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
                     {
                         ActivityName = resultDataActivity.Name,
                         KustoTableName = resultDataActivity.KustoTable,
-                        KustoFunction = new KustoFunction
-                        {
-                            Name = resultDataActivity.KustoQuery.Split('(')[0],
-                            UseSplitting = resultDataActivity.KustoQuery.Contains("NumBuckets", StringComparison.OrdinalIgnoreCase),
-                            UseEndDate = resultDataActivity.KustoQuery.Contains("EndDate", StringComparison.OrdinalIgnoreCase),
-                            NumberOfBuckets = resultDataActivity.NumBucketsPreSplitHint
-                        },
+                        KustoFunction = BuildKustoFunction(resultDataActivity.KustoQuery, resultDataActivity.NumBucketsPreSplitHint),
                         DestinationDatabase = resultDataActivity.KustoDatabase,
                         StartDateUtc = resultDataActivity.TimeRange.Start.UtcDateTime,
                         EndDateUtc = resultDataActivity.TimeRange.End.UtcDateTime,
@@ -108,13 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
                     new ObligationKustoRestateOMaticDataActivity
                     {
                         ActivityName = resultDataActivity.Name,
-                        KustoFunction = new KustoFunction
-                        {
-                            Name = resultDataActivity.KustoQuery,
-                            UseSplitting = resultDataActivity.KustoQuery.Contains("NumBuckets", StringComparison.OrdinalIgnoreCase),
-                            UseEndDate = resultDataActivity.KustoQuery.Contains("EndDate", StringComparison.OrdinalIgnoreCase),
-                            NumberOfBuckets = resultDataActivity.NumBucketsPreSplitHint
-                        },
+                        KustoFunction = BuildKustoFunction(resultDataActivity.KustoQuery, resultDataActivity.NumBucketsPreSplitHint),
                         DestinationDatabase = resultDataActivity.KustoDatabase,
                         StartDateUtc = resultDataActivity.TimeRange.Start.UtcDateTime,
                         EndDateUtc = resultDataActivity.TimeRange.End.UtcDateTime,
@@ -174,8 +163,41 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             return initializationQuery;
         }
 
+        private static KustoFunction BuildKustoFunction(string query, int? numBucketsPreSplitHint)
+        {
+            var regex = new Regex(@"^(\w+)\((.*?)\)$");
+            var regexResult = regex.Match(query);
+            if (regexResult.Success)
+            {
+                var name = regexResult.Groups[1].Value;
+                var parameters = regexResult.Groups[2].Value;
+                return new KustoFunction
+                {
+                    Name = name,
+                    MakeFunctionCall = true,
+                    UseSplitting = parameters.Contains("NumBuckets", StringComparison.OrdinalIgnoreCase),
+                    UseEndDate = parameters.Contains("EndDate", StringComparison.OrdinalIgnoreCase),
+                    NumberOfBuckets = numBucketsPreSplitHint,
+                };
+            }
+
+            return new KustoFunction
+            {
+                Name = query,
+                MakeFunctionCall = true,
+                UseSplitting = false,
+                UseEndDate = false,
+                NumberOfBuckets = numBucketsPreSplitHint,
+            };
+        }
+
         private static string BuildFunctionDefinition(KustoFunction kustoFunction)
         {
+            if (!kustoFunction.MakeFunctionCall)
+            {
+                return kustoFunction.Name;
+            }
+
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(kustoFunction.Name);
             stringBuilder.Append("(datetime('{StartDate:o}')");
@@ -255,7 +277,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation
                     Delay = obligationPipeline.ExecutionDelay,
                     TimeRange = new TimeRange(startDate, endDate),
                     KustoDatabase = obligationPipeline.DestinationDatabase,
-                    KustoQuery = obligationPipeline.KustoFunction.Name,
+                    KustoQuery = BuildFunctionDefinition(obligationPipeline.KustoFunction),
                     NumBucketsPreSplitHint = obligationPipeline.KustoFunction.NumberOfBuckets,
                     Dependencies = BuildDependencies(obligationPipeline.DataActivityDependencyNames),
                     IncludeChildren = obligationPipeline.IncludeChildren,

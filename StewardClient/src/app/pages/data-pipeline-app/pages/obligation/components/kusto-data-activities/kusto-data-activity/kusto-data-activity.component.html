@@ -64,19 +64,19 @@
           >
         </mat-form-field>
       </section>
+
+      <section>
+        <dependency-list [formControl]="formControls.dependencyNames"></dependency-list>
+      </section>
     </section>
 
-    <section>
+    <section class="shrinkwrap">
       <datetime-range-picker [formControl]="formControls.dateRange"></datetime-range-picker>
     </section>
   </section>
 
   <section>
     <kusto-function [formControl]="formControls.query"></kusto-function>
-  </section>
-
-  <section>
-    <dependency-list [formControl]="formControls.dependencyNames"></dependency-list>
   </section>
 
   <mat-divider></mat-divider>

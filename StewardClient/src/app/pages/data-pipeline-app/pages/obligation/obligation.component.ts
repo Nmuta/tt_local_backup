@@ -208,6 +208,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           parallelismLimit: new BigNumber(activity.parallelismLimit),
           kustoFunction: {
             name: activity.query.name,
+            makeFunctionCall: activity.query.makeFunctionCall,
             useEndDate: activity.query.useEndDate,
             useSplitting: activity.query.useSplitting,
             numberOfBuckets: activity.query.numberOfBuckets,
@@ -234,6 +235,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
             parallelismLimit: new BigNumber(activity.parallelismLimit),
             kustoFunction: {
               name: activity.query.name,
+              makeFunctionCall: activity.query.makeFunctionCall,
               useEndDate: activity.query.useEndDate,
               useSplitting: activity.query.useSplitting,
               numberOfBuckets: activity.query.numberOfBuckets,
@@ -279,10 +281,12 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           parallelismLimit: pipeline.parallelismLimit.toNumber(),
           query: {
             name: pipeline.kustoFunction.name,
+            makeFunctionCall: pipeline.kustoFunction.makeFunctionCall,
             useEndDate: pipeline.kustoFunction.useEndDate,
             useSplitting: pipeline.kustoFunction.useSplitting,
             numberOfBuckets: pipeline.kustoFunction.numberOfBuckets,
           },
+          fromApi: true,
         };
 
         let restateOMatic: KustoRestateOMaticDataActivityOptions = null;
@@ -308,11 +312,13 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
             parallelismLimit: restateOMaticActivity.parallelismLimit.toNumber(),
             query: {
               name: restateOMaticActivity.kustoFunction.name,
+              makeFunctionCall: restateOMaticActivity.kustoFunction.makeFunctionCall,
               useEndDate: restateOMaticActivity.kustoFunction.useEndDate,
               useSplitting: restateOMaticActivity.kustoFunction.useSplitting,
               numberOfBuckets: restateOMaticActivity.kustoFunction.numberOfBuckets,
             },
             includeChildren: restateOMaticActivity.includeChildren,
+            fromApi: true,
           };
         }
 

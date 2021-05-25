@@ -16,8 +16,13 @@ import BigNumber from 'bignumber.js';
 
 export interface KustoFunctionOptions {
   name: string;
-  useSplitting: boolean;
+  /** When true, the API will append yourFunction(parameters, to, the, function). By default this is `datetime('{StartDate:o}')`. */
+  makeFunctionCall: boolean;
+  /** When true, the API will also append `datetime('{EndDate:o}')` to your function call.*/
   useEndDate: boolean;
+  /** When true, the API will also append `{NumBuckets}, {Bucket}` to your function call.*/
+  useSplitting: boolean;
+  /** When provided, the API will use this for the number of buckets. */
   numberOfBuckets?: BigNumber;
 }
 
@@ -42,6 +47,7 @@ export interface KustoFunctionOptions {
 export class KustoFunctionComponent implements ControlValueAccessor, Validator {
   public static defaults: KustoFunctionOptions = {
     name: '',
+    makeFunctionCall: true,
     useSplitting: false,
     useEndDate: false,
     numberOfBuckets: null,
@@ -52,15 +58,17 @@ export class KustoFunctionComponent implements ControlValueAccessor, Validator {
       Validators.required,
       StringValidators.trim,
     ]),
-    useSplitting: new FormControl(KustoFunctionComponent.defaults.useSplitting),
+    makeFunctionCall: new FormControl(KustoFunctionComponent.defaults.makeFunctionCall),
     useEndDate: new FormControl(KustoFunctionComponent.defaults.useEndDate),
+    useSplitting: new FormControl(KustoFunctionComponent.defaults.useSplitting),
     numberOfBuckets: new FormControl(KustoFunctionComponent.defaults.numberOfBuckets),
   };
 
   public formGroup = new FormGroup({
     name: this.formControls.name,
-    useSplitting: this.formControls.useSplitting,
+    makeFunctionCall: this.formControls.makeFunctionCall,
     useEndDate: this.formControls.useEndDate,
+    useSplitting: this.formControls.useSplitting,
     numberOfBuckets: this.formControls.numberOfBuckets,
   });
 
@@ -69,9 +77,10 @@ export class KustoFunctionComponent implements ControlValueAccessor, Validator {
   }
 
   /** Form control hook. */
-  public writeValue(data: { [key: string]: unknown }): void {
+  public writeValue(data: KustoFunctionOptions): void {
     if (data) {
       this.formGroup.patchValue(data, { emitEvent: false });
+      this.onMakeFunctionCallChanged(data.makeFunctionCall);
     }
   }
 
@@ -102,6 +111,19 @@ export class KustoFunctionComponent implements ControlValueAccessor, Validator {
     }
 
     return null;
+  }
+
+  /** Called when the Make Function Call checkbox is clicked. */
+  public onMakeFunctionCallChanged(makeFunctionCall: boolean): void {
+    if (makeFunctionCall) {
+      this.formControls.useEndDate.enable();
+      this.formControls.useSplitting.enable();
+      this.formControls.numberOfBuckets.enable();
+    } else {
+      this.formControls.useEndDate.disable();
+      this.formControls.useSplitting.disable();
+      this.formControls.numberOfBuckets.disable();
+    }
   }
 
   private changeFn = (_data: KustoFunctionOptions) => {

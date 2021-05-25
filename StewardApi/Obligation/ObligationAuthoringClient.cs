@@ -191,9 +191,15 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             using var httpRequestMessage =
                 new HttpRequestMessage(HttpMethod.Get, new Uri($"{WebHost}obligation/authoring/pipelines?name={pipelineName}"));
 
-            var response = await this.SendRequestAsync(httpRequestMessage).ConfigureAwait(false);
+            var responseRaw = await this.SendRequestAsync(httpRequestMessage).ConfigureAwait(false);
 
-            var etag = response == null ? null : JsonConvert.DeserializeObject<dynamic>(response).etag;
+            if (responseRaw == null)
+            {
+                return null;
+            }
+
+            var response = JsonConvert.DeserializeObject<dynamic>(responseRaw);
+            var etag = (string)response.etag;
 
             return etag;
         }

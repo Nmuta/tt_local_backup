@@ -20,8 +20,22 @@
   </section>
 
   <section>
-    <mat-checkbox [formControl]="formControls.useEndDate">Use End Date</mat-checkbox>
-    <mat-checkbox [formControl]="formControls.useSplitting">Use Splitting</mat-checkbox>
+    <mat-checkbox
+      [formControl]="formControls.makeFunctionCall"
+      (change)="onMakeFunctionCallChanged($event.checked)"
+      matTooltip="When set, adds function parameters to the passed name. Starts with datetime('{StartDate:o}')"
+      >Make Function Call</mat-checkbox
+    >
+    <mat-checkbox
+      [formControl]="formControls.useEndDate"
+      matTooltip="When set, adds datetime('{EndDate:o}')"
+      >Use End Date</mat-checkbox
+    >
+    <mat-checkbox
+      [formControl]="formControls.useSplitting"
+      matTooltip="When set, adds {NumBuckets}, {Bucket}"
+      >Use Splitting</mat-checkbox
+    >
     <optional-number
       [formControl]="formControls.numberOfBuckets"
       label="Number Of Buckets"

@@ -14,6 +14,7 @@ import { ActivePipelineService } from '@data-pipeline-app/pages/obligation/servi
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { StringValidators } from '@shared/validators/string-validators';
 import { DateTime } from 'luxon';
+import { map } from 'rxjs/operators';
 import {
   KustoFunctionComponent,
   KustoFunctionOptions,
@@ -33,6 +34,9 @@ export interface KustoDataActivityOptions {
   executionDelayInMinutes: number;
   parallelismLimit: number;
   dependencyNames: string[];
+
+  /** True when this model was retrieved from the API. UI-only value. Disables some controls. */
+  fromApi: boolean;
 }
 
 /** A form component for a single kusto pipeline activity. */
@@ -70,6 +74,7 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
     executionDelayInMinutes: 2880,
     dependencyNames: [],
     parallelismLimit: 2,
+    fromApi: false,
   };
 
   public formControls = {
@@ -106,6 +111,7 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
       Validators.max(5),
     ]),
     dependencyNames: new FormControl(KustoDataActivityComponent.defaults.dependencyNames),
+    fromApi: new FormControl(KustoDataActivityComponent.defaults.fromApi),
   };
 
   public formGroup = new FormGroup({
@@ -119,16 +125,27 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
     executionDelayInMinutes: this.formControls.executionDelayInMinutes,
     parallelismLimit: this.formControls.parallelismLimit,
     dependencyNames: this.formControls.dependencyNames,
+    fromApi: this.formControls.fromApi,
   });
 
   constructor(private readonly activePipeline: ActivePipelineService) {
-    this.formGroup.valueChanges.subscribe(data => this.changeFn(data));
+    this.formGroup.valueChanges
+      .pipe(map(_ => this.formGroup.getRawValue())) // we need to map this to the raw value to include the disabled form controls
+      .subscribe(data => this.changeFn(data));
   }
 
   /** Form control hook. */
-  public writeValue(data: { [key: string]: unknown }): void {
+  public writeValue(data: KustoDataActivityOptions): void {
     if (data) {
       this.formGroup.patchValue(data, { emitEvent: false });
+
+      if (data.fromApi) {
+        this.formControls.dateRange.disable();
+        this.formControls.name.disable();
+      } else {
+        this.formControls.dateRange.enable();
+        this.formControls.name.enable();
+      }
     }
   }
 

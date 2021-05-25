@@ -38,24 +38,24 @@
           >
         </mat-form-field>
       </section>
+
+      <section>
+        <dependency-list [formControl]="formControls.dependencyNames"></dependency-list>
+        <mat-checkbox
+          [formControl]="formControls.includeChildren"
+          matTooltip="Also include all child dependencies"
+          >Include Children</mat-checkbox
+        >
+      </section>
     </section>
 
-    <section>
+    <section class="shrinkwrap">
       <datetime-range-picker [formControl]="formControls.dateRange"></datetime-range-picker>
     </section>
   </section>
 
   <section>
     <kusto-function [formControl]="formControls.query"></kusto-function>
-  </section>
-
-  <section>
-    <dependency-list [formControl]="formControls.dependencyNames"></dependency-list>
-    <mat-checkbox
-      [formControl]="formControls.includeChildren"
-      matTooltip="Also include all child dependencies"
-      >Include Children</mat-checkbox
-    >
   </section>
 
   <mat-divider></mat-divider>
