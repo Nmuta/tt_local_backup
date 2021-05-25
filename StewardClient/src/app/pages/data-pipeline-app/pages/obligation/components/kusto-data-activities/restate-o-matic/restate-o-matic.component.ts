@@ -124,7 +124,7 @@ export class RestateOMaticComponent
     parallelismLimit: new FormControl(RestateOMaticComponent.defaults.parallelismLimit, [
       Validators.required,
       Validators.min(1),
-      Validators.max(5),
+      Validators.max(8),
     ]),
     dependencyNames: new FormControl(RestateOMaticComponent.defaults.dependencyNames),
     includeChildren: new FormControl(RestateOMaticComponent.defaults.includeChildren),
