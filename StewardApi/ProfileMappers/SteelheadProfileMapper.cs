@@ -4,6 +4,7 @@ using AutoMapper;
 using Forza.LiveOps.Steelhead_master.Generated;
 using Forza.UserInventory.Steelhead_master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Xls.Security.Steelhead_master.Generated;
 using Xls.WebServices.Steelhead_master.Generated;

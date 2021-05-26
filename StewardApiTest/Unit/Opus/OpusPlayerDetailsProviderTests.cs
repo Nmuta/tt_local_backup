@@ -8,6 +8,7 @@ using Forza.WebServices.FH3.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;

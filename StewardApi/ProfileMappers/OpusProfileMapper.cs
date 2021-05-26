@@ -3,6 +3,7 @@ using System.Linq;
 using AutoMapper;
 using Forza.WebServices.FH3.Generated;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers

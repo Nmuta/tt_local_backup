@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Opus

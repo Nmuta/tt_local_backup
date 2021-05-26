@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Obligation.UpstreamModels;
 
 namespace Turn10.LiveOps.StewardApi.Obligation
 {

@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 

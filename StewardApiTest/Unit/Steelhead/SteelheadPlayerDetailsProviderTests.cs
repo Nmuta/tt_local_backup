@@ -17,6 +17,7 @@ using FluentAssertions;
 using System.Threading.Tasks;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {

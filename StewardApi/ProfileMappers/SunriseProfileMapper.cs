@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Forza.WebServices.FH4.master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Xls.Security.FH4.master.Generated;
 using Xls.WebServices.FH4.master.Generated;

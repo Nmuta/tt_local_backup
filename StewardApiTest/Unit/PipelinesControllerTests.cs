@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Obligation;
+using Turn10.LiveOps.StewardApi.Providers.Pipelines;
 
 namespace Turn10.LiveOps.StewardTest.Unit
 {

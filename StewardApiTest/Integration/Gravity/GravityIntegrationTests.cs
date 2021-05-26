@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardTest.Utilities;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;

@@ -4,6 +4,7 @@ using AutoMapper;
 using Forza.WebServices.FM7.Generated;
 using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Xls.Security.FM7.Generated;
 using Xls.WebServices.FM7.Generated;
 

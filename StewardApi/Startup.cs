@@ -39,6 +39,7 @@ using Turn10.LiveOps.StewardApi.Providers.Gravity;
 using Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Opus;
 using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
+using Turn10.LiveOps.StewardApi.Providers.Pipelines;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
