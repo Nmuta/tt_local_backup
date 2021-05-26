@@ -6,7 +6,7 @@ import { VerifyActionButtonModule } from '@components/verify-action-button/verif
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
@@ -16,6 +16,7 @@ import { ApolloUserFlagsComponent } from './apollo/apollo-user-flags.component';
 import { SteelheadUserFlagsComponent } from './steelhead/steelhead-user-flags.component';
 import { MatIconModule } from '@angular/material/icon';
 import { WoodstockUserFlagsComponent } from './woodstock/woodstock-user-flags.component';
+import { MatInputModule } from '@angular/material/input';
 
 /** A domain module for displaying user flags. */
 @NgModule({
@@ -39,6 +40,9 @@ import { WoodstockUserFlagsComponent } from './woodstock/woodstock-user-flags.co
     FormsModule,
     JsonDumpModule,
     FontAwesomeModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
   ],
   exports: [
     WoodstockUserFlagsComponent,

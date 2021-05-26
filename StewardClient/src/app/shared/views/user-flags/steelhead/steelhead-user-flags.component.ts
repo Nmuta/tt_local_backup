@@ -5,15 +5,26 @@ import { UserFlagsBaseComponent } from '../user-flags.base.component';
 import { GameTitleCodeName } from '@models/enums';
 import { SteelheadService } from '@services/steelhead';
 import { SteelheadUserFlags } from '@models/steelhead';
+import { FormControl, FormGroup } from '@angular/forms';
 
 /** Retreives and displays Sunrise User Flags by XUID. */
 @Component({
   selector: 'steelhead-user-flags',
-  templateUrl: './steelhead-user-flags.component.html',
+  templateUrl: '../user-flags.component.html',
   styleUrls: ['../user-flags.component.scss'],
 })
 export class SteelheadUserFlagsComponent extends UserFlagsBaseComponent<SteelheadUserFlags> {
   public gameTitle = GameTitleCodeName.FM7;
+
+  public formControls = {
+    isVip: new FormControl(false),
+    isTurn10Employee: new FormControl(false),
+    isCommunityManager: new FormControl(false),
+    isEarlyAccess: new FormControl(false),
+    isUnderReview: new FormControl(false),
+  };
+
+  public formGroup = new FormGroup(this.formControls);
 
   constructor(private readonly steelheadService: SteelheadService) {
     super();
@@ -25,10 +36,13 @@ export class SteelheadUserFlagsComponent extends UserFlagsBaseComponent<Steelhea
   }
 
   /** Sets the newly selected Steelhead flags. */
-  public putFlagsByXuid$(
-    xuid: BigNumber,
-    newFlags: SteelheadUserFlags,
-  ): Observable<SteelheadUserFlags> {
-    return this.steelheadService.putFlagsByXuid$(xuid, newFlags);
+  public putFlagsByXuid$(xuid: BigNumber): Observable<SteelheadUserFlags> {
+    return this.steelheadService.putFlagsByXuid$(xuid, {
+      isVip: this.formControls.isVip.value,
+      isTurn10Employee: this.formControls.isTurn10Employee.value,
+      isCommunityManager: this.formControls.isCommunityManager.value,
+      isEarlyAccess: this.formControls.isEarlyAccess.value,
+      isUnderReview: this.formControls.isUnderReview.value,
+    } as SteelheadUserFlags);
   }
 }

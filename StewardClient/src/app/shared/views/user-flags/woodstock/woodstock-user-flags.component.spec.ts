@@ -48,7 +48,7 @@ describe('WoodstockUserFlagsComponent', () => {
       });
 
       it('should not call getFlagsByXuid$', () => {
-        component.ngOnChanges();
+        component.ngOnChanges({});
 
         expect(component.getFlagsByXuid$).not.toHaveBeenCalledTimes(1);
       });
@@ -64,7 +64,7 @@ describe('WoodstockUserFlagsComponent', () => {
       });
 
       it('should call getFlagsByXuid$', () => {
-        component.ngOnChanges();
+        component.ngOnChanges({});
 
         expect(component.getFlagsByXuid$).toHaveBeenCalledTimes(1);
       });
@@ -86,10 +86,15 @@ describe('WoodstockUserFlagsComponent', () => {
         });
 
         it('should set currentFlags', () => {
-          component.ngOnChanges();
+          component.ngOnChanges({});
 
           expect(component.currentFlags).toEqual(flags);
-          expect(component.flags).toEqual(flags);
+          expect(component.formControls.isVip.value).toEqual(flags.isVip);
+          expect(component.formControls.isUltimateVip.value).toEqual(flags.isUltimateVip);
+          expect(component.formControls.isTurn10Employee.value).toEqual(flags.isTurn10Employee);
+          expect(component.formControls.isCommunityManager.value).toEqual(flags.isCommunityManager);
+          expect(component.formControls.isEarlyAccess.value).toEqual(flags.isEarlyAccess);
+          expect(component.formControls.isUnderReview.value).toEqual(flags.isUnderReview);
         });
       });
 
@@ -103,10 +108,9 @@ describe('WoodstockUserFlagsComponent', () => {
         });
 
         it('should set error', () => {
-          component.ngOnChanges();
+          component.ngOnChanges({});
 
           expect(component.currentFlags).toBeUndefined();
-          expect(component.flags).toBeUndefined();
           expect(component.loadError).toEqual(error);
         });
       });

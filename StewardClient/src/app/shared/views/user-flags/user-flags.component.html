@@ -1,0 +1,45 @@
+<mat-card>
+  <form [formGroup]="formGroup">
+    <mat-card-header>
+      <mat-card-title>Player Flags</mat-card-title>
+      <mat-card-subtitle>
+        <div>{{ gameTitle }}</div>
+      </mat-card-subtitle>
+
+      <button
+        *ngIf="formGroup.dirty && !submit.isSubmitting"
+        mat-mini-fab
+        color="warn"
+        class="reset-button"
+        (click)="setFlagsToCurrent()"
+        matTooltip="Clear Changes"
+      >
+        <mat-icon svgIcon="steward-undo"></mat-icon>
+      </button>
+
+      <verify-action-button #submit [canSubmit]="formGroup.dirty" [action]="makeAction$.bind(this)"
+        >Apply</verify-action-button
+      >
+    </mat-card-header>
+    <mat-card-content>
+      <ng-container *ngIf="!isLoading && !loadError; else failstate">
+        <section class="checkboxes">
+          <mat-checkbox
+            *ngFor="let control of formControls | keyvalue: keepOrder"
+            [formControl]="formControls[control.key]"
+            [disabled]="submit.isSubmitting"
+            (change)="verifyDirtyStatus()"
+          >
+            {{ control.key | humanize }}
+            <span *ngIf="control.key === IS_COMMUNITY_MANAGER">(dangerous! see jeffspr)</span>
+          </mat-checkbox>
+        </section>
+      </ng-container>
+    </mat-card-content>
+  </form>
+</mat-card>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+</ng-template>
