@@ -1,15 +1,17 @@
 import BigNumber from 'bignumber.js';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base.component';
-import { ApolloBanHistoryEntry } from '@models/apollo';
+import { Component } from '@angular/core';
 import { ApolloService } from '@services/apollo/apollo.service';
+import { BanHistoryBaseComponent } from '../ban-history.base.component';
+import { Observable } from 'rxjs';
+import { LiveOpsBanDescription } from '@models/sunrise';
+import { GameTitleCodeName } from '@models/enums';
 
 /** Retreives and displays Apollo Ban history by XUID. */
 @Component({
   selector: 'apollo-ban-history',
-  templateUrl: './apollo-ban-history.component.html',
-  styleUrls: ['./apollo-ban-history.component.scss'],
+  templateUrl: '../ban-history.component.html',
+  styleUrls: ['../ban-history.component.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -18,41 +20,15 @@ import { ApolloService } from '@services/apollo/apollo.service';
     ]),
   ],
 })
-export class ApolloBanHistoryComponent extends BaseComponent implements OnChanges {
-  @Input() public xuid?: BigNumber;
-
-  /** True while waiting on a request. */
-  public isLoading = true;
-  /** The error received while loading. */
-  public loadError: unknown;
-
-  /** The ban list to display. */
-  public banList: ApolloBanHistoryEntry[];
-
-  /** The columns + order to display. */
-  public columnsToDisplay = ['isActive', 'reason', 'featureArea', 'startTimeUtc', 'expireTimeUtc'];
+export class ApolloBanHistoryComponent extends BanHistoryBaseComponent {
+  public gameTitle = GameTitleCodeName.FM7;
 
   constructor(private readonly apollo: ApolloService) {
     super();
   }
 
-  /** Initialization hook. */
-  public ngOnChanges(): void {
-    if (this.xuid === undefined) {
-      return;
-    }
-
-    this.isLoading = true;
-    this.loadError = undefined;
-    this.apollo.getBanHistoryByXuid$(this.xuid).subscribe(
-      banHistory => {
-        this.isLoading = false;
-        this.banList = banHistory;
-      },
-      _error => {
-        this.isLoading = false;
-        this.loadError = _error; // TODO: Display something useful to the user
-      },
-    );
+  /** Gets the Woodstock ban history. */
+  public getBanHistoryByXuid$(xuid: BigNumber): Observable<LiveOpsBanDescription[]> {
+    return this.apollo.getBanHistoryByXuid$(xuid);
   }
 }

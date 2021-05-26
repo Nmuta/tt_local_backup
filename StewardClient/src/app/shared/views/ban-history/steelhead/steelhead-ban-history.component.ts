@@ -1,16 +1,17 @@
 import BigNumber from 'bignumber.js';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base.component';
-import { faCheck, faHistory } from '@fortawesome/free-solid-svg-icons';
-import { SteelheadBanHistoryEntry } from '@models/steelhead';
+import { Component } from '@angular/core';
 import { SteelheadService } from '@services/steelhead/steelhead.service';
+import { BanHistoryBaseComponent } from '../ban-history.base.component';
+import { Observable } from 'rxjs';
+import { LiveOpsBanDescription } from '@models/sunrise';
+import { GameTitleCodeName } from '@models/enums';
 
 /** Retreives and displays Steelhead Ban history by XUID. */
 @Component({
   selector: 'steelhead-ban-history',
-  templateUrl: './steelhead-ban-history.component.html',
-  styleUrls: ['./steelhead-ban-history.component.scss'],
+  templateUrl: '../ban-history.component.html',
+  styleUrls: ['../ban-history.component.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -19,44 +20,15 @@ import { SteelheadService } from '@services/steelhead/steelhead.service';
     ]),
   ],
 })
-export class SteelheadBanHistoryComponent extends BaseComponent implements OnChanges {
-  @Input() public xuid?: BigNumber;
-
-  /** True while waiting on a request. */
-  public isLoading = true;
-  /** The error received while loading. */
-  public loadError: unknown;
-
-  /** The ban list to display. */
-  public banList: SteelheadBanHistoryEntry[];
-
-  public isActiveIcon = faCheck;
-  public isInactiveIcon = faHistory;
-
-  /** The columns + order to display. */
-  public columnsToDisplay = ['isActive', 'reason', 'featureArea', 'startTimeUtc', 'expireTimeUtc'];
+export class SteelheadBanHistoryComponent extends BanHistoryBaseComponent {
+  public gameTitle = GameTitleCodeName.FM8;
 
   constructor(private readonly steelhead: SteelheadService) {
     super();
   }
 
-  /** Initialization hook. */
-  public ngOnChanges(): void {
-    if (this.xuid === undefined) {
-      return;
-    }
-
-    this.isLoading = true;
-    this.loadError = undefined;
-    this.steelhead.getBanHistoryByXuid$(this.xuid).subscribe(
-      banHistory => {
-        this.isLoading = false;
-        this.banList = banHistory;
-      },
-      _error => {
-        this.isLoading = false;
-        this.loadError = _error; // TODO: Display something useful to the user
-      },
-    );
+  /** Gets the Woodstock ban history. */
+  public getBanHistoryByXuid$(xuid: BigNumber): Observable<LiveOpsBanDescription[]> {
+    return this.steelhead.getBanHistoryByXuid$(xuid);
   }
 }

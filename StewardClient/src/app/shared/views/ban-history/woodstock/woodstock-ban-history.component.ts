@@ -1,15 +1,17 @@
 import BigNumber from 'bignumber.js';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnChanges } from '@angular/core';
-import { BaseComponent } from '@components/base-component/base.component';
+import { Component } from '@angular/core';
 import { LiveOpsBanDescription } from '@models/woodstock';
 import { WoodstockService } from '@services/woodstock/woodstock.service';
+import { BanHistoryBaseComponent } from '../ban-history.base.component';
+import { Observable } from 'rxjs';
+import { GameTitleCodeName } from '@models/enums';
 
 /** Retreives and displays Woodstock Ban history by XUID. */
 @Component({
   selector: 'woodstock-ban-history',
-  templateUrl: './woodstock-ban-history.component.html',
-  styleUrls: ['./woodstock-ban-history.component.scss'],
+  templateUrl: '../ban-history.component.html',
+  styleUrls: ['../ban-history.component.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -18,41 +20,15 @@ import { WoodstockService } from '@services/woodstock/woodstock.service';
     ]),
   ],
 })
-export class WoodstockBanHistoryComponent extends BaseComponent implements OnChanges {
-  @Input() public xuid?: BigNumber;
-
-  /** True while waiting on a request. */
-  public isLoading = true;
-  /** The error received while loading. */
-  public loadError: unknown;
-
-  /** The ban list to display. */
-  public banList: LiveOpsBanDescription[];
-
-  /** The columns + order to display. */
-  public columnsToDisplay = ['isActive', 'reason', 'featureArea', 'startTimeUtc', 'expireTimeUtc'];
+export class WoodstockBanHistoryComponent extends BanHistoryBaseComponent {
+  public gameTitle = GameTitleCodeName.FH5;
 
   constructor(private readonly woodstock: WoodstockService) {
     super();
   }
 
-  /** Initialization hook. */
-  public ngOnChanges(): void {
-    if (this.xuid === undefined) {
-      return;
-    }
-
-    this.isLoading = true;
-    this.loadError = undefined;
-    this.woodstock.getBanHistoryByXuid$(this.xuid).subscribe(
-      banHistory => {
-        this.isLoading = false;
-        this.banList = banHistory;
-      },
-      _error => {
-        this.isLoading = false;
-        this.loadError = _error; // TODO: Display something useful to the user
-      },
-    );
+  /** Gets the Woodstock ban history. */
+  public getBanHistoryByXuid$(xuid: BigNumber): Observable<LiveOpsBanDescription[]> {
+    return this.woodstock.getBanHistoryByXuid$(xuid);
   }
 }
