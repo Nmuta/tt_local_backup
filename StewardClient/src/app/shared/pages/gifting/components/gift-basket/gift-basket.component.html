@@ -1,7 +1,12 @@
 <mat-card class="steward-layout-sticky-scroll">
   <mat-card-header>
-    <h2>{{ title }} Gift Basket</h2>
-    <p *ngIf="hasGameSettings">(Game Settings: {{ selectedGameSettingsId || 'None' }})</p>
+    <mat-card-title>Gift Basket</mat-card-title>
+    <mat-card-subtitle>
+      {{ title }}
+      <span *ngIf="hasGameSettings">(Game Settings: {{ selectedGameSettingsId || 'None' }})</span>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
     <ng-container
       *ngIf="
         !isLoading &&
@@ -15,8 +20,6 @@
         (addItemEvent)="addItemtoBasket($event)"
       ></item-selection>
     </ng-container>
-  </mat-card-header>
-  <mat-card-content>
     <ng-container *ngIf="!isLoading && !loadError; else failState">
       <!-- Gravity is unique, master inventory is based on player inventory game settings -->
       <ng-container

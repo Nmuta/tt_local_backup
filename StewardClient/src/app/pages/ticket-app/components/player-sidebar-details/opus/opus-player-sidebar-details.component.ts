@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GameTitleCodeName } from '@models/enums';
 import { OpusPlayerDetails } from '@models/opus';
 import { OpusService } from '@services/opus';
 import { Observable } from 'rxjs';
@@ -13,6 +14,8 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
 export class OpusPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   OpusPlayerDetails
 > {
+  public gameTitle = GameTitleCodeName.FH3;
+
   constructor(private readonly opusService: OpusService) {
     super();
   }

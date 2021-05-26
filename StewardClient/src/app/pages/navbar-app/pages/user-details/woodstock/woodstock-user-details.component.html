@@ -20,15 +20,23 @@
       </mat-tab>
       <mat-tab label="Inventory">
         <div class="tab-container">
-          <woodstock-player-inventory-profile-picker
-            [identity]="identity"
-            [(profileId)]="profileId"
-            (profileIdChange)="onProfileIdChange($event)"
-          ></woodstock-player-inventory-profile-picker>
-          <woodstock-player-inventory
-            [identity]="identity"
-            [profileId]="profileId"
-          ></woodstock-player-inventory>
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Player Inventory</mat-card-title>
+              <mat-card-subtitle>Woodstock</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <woodstock-player-inventory-profile-picker
+                [identity]="identity"
+                [(profileId)]="profileId"
+                (profileIdChange)="onProfileIdChange($event)"
+              ></woodstock-player-inventory-profile-picker>
+              <woodstock-player-inventory
+                [identity]="identity"
+                [profileId]="profileId"
+              ></woodstock-player-inventory>
+            </mat-card-content>
+          </mat-card>
         </div>
       </mat-tab>
       <mat-tab label="Notifications">

@@ -33,20 +33,26 @@
 
     <div class="steward-layout-pane steward-layout-fill reference-inventory">
       <mat-card>
-        <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
-          <sunrise-player-inventory-profile-picker
-            [identity]="selectedPlayerIdentity"
-            [(profileId)]="selectedPlayerInventoryProfileId"
-          ></sunrise-player-inventory-profile-picker>
-
-          <div class="inventory-div">
-            <sunrise-player-inventory
+        <mat-card-header>
+          <mat-card-title>Player Inventory</mat-card-title>
+          <mat-card-subtitle>Sunrise</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
+            <sunrise-player-inventory-profile-picker
               [identity]="selectedPlayerIdentity"
-              [profileId]="selectedPlayerInventoryProfileId"
-              (inventoryFound)="onInventoryFound($event)"
-            ></sunrise-player-inventory>
-          </div>
-        </ng-container>
+              [(profileId)]="selectedPlayerInventoryProfileId"
+            ></sunrise-player-inventory-profile-picker>
+
+            <div class="inventory-div">
+              <sunrise-player-inventory
+                [identity]="selectedPlayerIdentity"
+                [profileId]="selectedPlayerInventoryProfileId"
+                (inventoryFound)="onInventoryFound($event)"
+              ></sunrise-player-inventory>
+            </div>
+          </ng-container>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>

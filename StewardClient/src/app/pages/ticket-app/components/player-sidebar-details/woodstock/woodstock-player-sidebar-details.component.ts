@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GameTitleCodeName } from '@models/enums';
 import { WoodstockPlayerDetails } from '@models/woodstock';
 import { WoodstockService } from '@services/woodstock';
 import { Observable } from 'rxjs';
@@ -13,6 +14,8 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
 export class WoodstockPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   WoodstockPlayerDetails
 > {
+  public gameTitle = GameTitleCodeName.FH5;
+
   constructor(private readonly woodstockService: WoodstockService) {
     super();
   }

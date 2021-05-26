@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ApolloPlayerDetails } from '@models/apollo';
+import { GameTitleCodeName } from '@models/enums';
 import { ApolloService } from '@services/apollo';
 import { Observable } from 'rxjs';
 import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.base.component';
@@ -13,6 +14,8 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
 export class ApolloPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   ApolloPlayerDetails
 > {
+  public gameTitle = GameTitleCodeName.FM7;
+
   constructor(private readonly apolloService: ApolloService) {
     super();
   }

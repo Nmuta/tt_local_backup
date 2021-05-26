@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GameTitleCodeName } from '@models/enums';
 import { GravityPlayerDetails } from '@models/gravity';
 import { GravityService } from '@services/gravity';
 import { Observable } from 'rxjs';
@@ -13,6 +14,8 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
 export class GravityPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   GravityPlayerDetails
 > {
+  public gameTitle = GameTitleCodeName.Street;
+
   constructor(private readonly gravityService: GravityService) {
     super();
   }

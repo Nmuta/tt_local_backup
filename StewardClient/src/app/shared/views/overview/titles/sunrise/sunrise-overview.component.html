@@ -1,14 +1,9 @@
 <mat-card>
+  <mat-card-header>
+    <mat-card-title>Overview</mat-card-title>
+    <mat-card-subtitle>Sunrise</mat-card-subtitle>
+  </mat-card-header>
   <mat-card-content>
-    <h2>
-      Sunrise Overview
-      <error-spinner
-        [isActive]="false"
-        [error]="loadError"
-        spinnerMessage="Loading"
-        errorMessage="Failed to load"
-      ></error-spinner>
-    </h2>
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
       <table class="mat-table">
         <tr class="mat-row">

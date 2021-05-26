@@ -1,17 +1,11 @@
 <section class="player-details">
   <mat-card>
+    <mat-card-header>
+      <mat-card-title>Player Details</mat-card-title>
+      <mat-card-subtitle> {{ gameTitle }} (click on row to copy) </mat-card-subtitle>
+    </mat-card-header>
     <mat-card-content>
-      <h2>
-        Player Details
-        <error-spinner
-          [isActive]="false"
-          [error]="loadError"
-          spinnerMessage="Loading"
-          errorMessage="Failed to load"
-        ></error-spinner>
-      </h2>
       <div>
-        <p>* click on row to copy value</p>
         <ng-container *ngIf="!isLoading && !loadError; else failstate">
           <player-details-item
             [name]="'XUID'"

@@ -33,20 +33,26 @@
 
     <div class="steward-layout-pane steward-layout-fill reference-inventory">
       <mat-card>
-        <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
-          <woodstock-player-inventory-profile-picker
-            [identity]="selectedPlayerIdentity"
-            [(profileId)]="selectedPlayerInventoryProfileId"
-          ></woodstock-player-inventory-profile-picker>
-
-          <div class="inventory-div">
-            <woodstock-player-inventory
+        <mat-card-header>
+          <mat-card-title>Player Inventory</mat-card-title>
+          <mat-card-subtitle>Woodstock</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
+            <woodstock-player-inventory-profile-picker
               [identity]="selectedPlayerIdentity"
-              [profileId]="selectedPlayerInventoryProfileId"
-              (inventoryFound)="onInventoryFound($event)"
-            ></woodstock-player-inventory>
-          </div>
-        </ng-container>
+              [(profileId)]="selectedPlayerInventoryProfileId"
+            ></woodstock-player-inventory-profile-picker>
+
+            <div class="inventory-div">
+              <woodstock-player-inventory
+                [identity]="selectedPlayerIdentity"
+                [profileId]="selectedPlayerInventoryProfileId"
+                (inventoryFound)="onInventoryFound($event)"
+              ></woodstock-player-inventory>
+            </div>
+          </ng-container>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>

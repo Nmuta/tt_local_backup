@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GameTitleCodeName } from '@models/enums';
 import { SunrisePlayerDetails } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise';
 import { Observable } from 'rxjs';
@@ -13,6 +14,8 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
 export class SunrisePlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   SunrisePlayerDetails
 > {
+  public gameTitle = GameTitleCodeName.FH4;
+
   constructor(private readonly sunriseService: SunriseService) {
     super();
   }

@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { ApolloPlayerDetails } from '@models/apollo';
+import { GameTitleCodeName } from '@models/enums';
 import { GravityPlayerDetails } from '@models/gravity';
 import { OpusPlayerDetails } from '@models/opus';
 import { SunrisePlayerDetails } from '@models/sunrise';
@@ -56,6 +57,8 @@ export abstract class PlayerSidebarDetailsBaseComponent<T extends PlayerDetailsU
   public get playerDetailsComposite(): PlayerDetailsIntersection {
     return <PlayerDetailsIntersection>(<unknown>this.playerDetails);
   }
+
+  public abstract gameTitle: GameTitleCodeName;
 
   constructor() {
     super();

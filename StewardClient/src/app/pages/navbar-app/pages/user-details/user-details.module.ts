@@ -32,6 +32,7 @@ import { PlayerIdentityResultsModule } from '@shared/views/player-identity-resul
 import { ProfileRollbacksModule } from '@views/profile-rollback/profile-rollbacks.module';
 import { SteelheadUserDetailsComponent } from './steelhead/steelhead-user-details.component';
 import { WoodstockUserDetailsComponent } from './woodstock/woodstock-user-details.component';
+import { MatCardModule } from '@angular/material/card';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -52,6 +53,7 @@ import { WoodstockUserDetailsComponent } from './woodstock/woodstock-user-detail
     MatButtonModule,
     MatIconModule,
     MatInputModule,
+    MatCardModule,
     FontAwesomeModule,
     FormsModule,
     PlayerSelectionModule,

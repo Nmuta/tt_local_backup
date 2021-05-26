@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GameTitleCodeName } from '@models/enums';
 import { SteelheadPlayerDetails } from '@models/steelhead';
 import { SteelheadService } from '@services/steelhead';
 import { Observable } from 'rxjs';
@@ -13,6 +14,8 @@ import { PlayerSidebarDetailsBaseComponent } from '../player-sidebar-details.bas
 export class SteelheadPlayerSidebarDetailsComponent extends PlayerSidebarDetailsBaseComponent<
   SteelheadPlayerDetails
 > {
+  public gameTitle = GameTitleCodeName.FM8;
+
   constructor(private readonly steelheadService: SteelheadService) {
     super();
   }

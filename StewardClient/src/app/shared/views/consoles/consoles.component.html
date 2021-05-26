@@ -1,14 +1,9 @@
 <mat-card>
+  <mat-card-header>
+    <mat-card-title>Consoles</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
+  </mat-card-header>
   <mat-card-content>
-    <h2>
-      Consoles ({{ gameTitle }})
-      <error-spinner
-        [isActive]="false"
-        [error]="loadError"
-        spinnerMessage="Loading"
-        errorMessage="Failed to load"
-      ></error-spinner>
-    </h2>
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
       <table mat-table [dataSource]="consoleDetails">
         <ng-container matColumnDef="isBanned">

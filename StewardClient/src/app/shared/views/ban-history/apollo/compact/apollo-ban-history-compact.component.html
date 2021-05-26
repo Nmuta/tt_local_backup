@@ -1,13 +1,3 @@
-<h2>
-  Ban History (Apollo)
-  <error-spinner
-    [isActive]="false"
-    [error]="loadError"
-    spinnerMessage="Loading"
-    errorMessage="Failed to load"
-  >
-  </error-spinner>
-</h2>
 <mat-accordion *ngIf="!isLoading && !loadError; else failstate">
   <mat-expansion-panel *ngFor="let entry of banList">
     <mat-expansion-panel-header>

@@ -1,6 +1,9 @@
 <mat-card>
+  <mat-card-header>
+    <mat-card-title>Gift History</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
+  </mat-card-header>
   <mat-card-content>
-    <h2>{{ gameTitle }} Gift History</h2>
     <span class="notification">{{ giftHistoryDelay }}</span>
     <ng-container *ngIf="!isLoading && !loadError; else failState">
       <ng-container

@@ -8,7 +8,13 @@
     class="top-spacing"
   ></sunrise-user-flags>
   <mat-card class="top-spacing">
-    <sunrise-ban-history-compact [xuid]="playerIdentity?.xuid"></sunrise-ban-history-compact>
+    <mat-card-header>
+      <mat-card-title>Ban History</mat-card-title>
+      <mat-card-subtitle>Sunrise</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <sunrise-ban-history-compact [xuid]="playerIdentity?.xuid"></sunrise-ban-history-compact>
+    </mat-card-content>
   </mat-card>
   <quick-actions class="top-spacing">
     <go-to-inventory-button

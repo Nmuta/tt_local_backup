@@ -1,14 +1,9 @@
 <mat-card>
+  <mat-card-header>
+    <mat-card-title>Related Gamertags</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
+  </mat-card-header>
   <mat-card-content>
-    <h2>
-      Related Gamertags ({{ gameTitle }})
-      <error-spinner
-        [isActive]="false"
-        [error]="loadError"
-        spinnerMessage="Loading"
-        errorMessage="Failed to load"
-      ></error-spinner>
-    </h2>
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
       <table mat-table [dataSource]="sharedConsoleUsers">
         <ng-container matColumnDef="everBanned">

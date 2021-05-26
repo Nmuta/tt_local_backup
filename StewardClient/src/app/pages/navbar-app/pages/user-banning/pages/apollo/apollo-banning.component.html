@@ -26,17 +26,27 @@
     </div>
     <div class="steward-layout-pane steward-layout-fill ban-history">
       <mat-card>
-        <apollo-ban-history-compact
-          *ngFor="let xuid of bannedXuids"
-          [xuid]="xuid"
-          [hidden]="!xuid.isEqualTo(selectedPlayer?.xuid)"
-        ></apollo-ban-history-compact>
+        <mat-card-header>
+          <mat-card-title>Ban History</mat-card-title>
+          <mat-card-subtitle>Apollo</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <apollo-ban-history-compact
+            *ngFor="let xuid of bannedXuids"
+            [xuid]="xuid"
+            [hidden]="!xuid.isEqualTo(selectedPlayer?.xuid)"
+          ></apollo-ban-history-compact>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>
 
   <div class="steward-layout-pane steward-layout-main-group">
     <mat-card>
+      <mat-card-header>
+        <mat-card-title>Player Ban</mat-card-title>
+        <mat-card-subtitle>Apollo</mat-card-subtitle>
+      </mat-card-header>
       <mat-card-content>
         <ng-container *ngIf="!isLoading && !loadError; else failState">
           <ng-container *ngIf="!banResults; else banResultsState">
