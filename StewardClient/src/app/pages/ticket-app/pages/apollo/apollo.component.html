@@ -2,6 +2,14 @@
   <apollo-player-sidebar-details
     [gamertag]="playerIdentity?.gamertag"
   ></apollo-player-sidebar-details>
+  <apollo-user-flags
+    [identity]="playerIdentity"
+    [disabled]="true"
+    class="top-spacing"
+  ></apollo-user-flags>
+  <mat-card class="top-spacing">
+    <apollo-ban-history-compact [xuid]="playerIdentity?.xuid"></apollo-ban-history-compact>
+  </mat-card>
   <quick-actions class="top-spacing">
     <go-to-inventory-button
       [gameTitle]="gameTitle"
