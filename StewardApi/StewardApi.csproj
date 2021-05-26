@@ -78,11 +78,11 @@
     <PackageReference Include="Turn10.Data.KustoLogger" Version="4.0.0" />
     <PackageReference Include="Turn10.Services.ForzaClient" Version="1.4.0" />
     <PackageReference Include="Turn10.Services.ForzaClient.FH3" Version="1.1.0" />
-    <PackageReference Include="Turn10.Services.ForzaClient.FH4.master" Version="2.8.0" />
-    <PackageReference Include="Turn10.Services.ForzaClient.FH5_master" Version="2.7.0" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FH4.master" Version="3.0.3" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FH5_master" Version="2.9.0" />
     <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.3.0" />
     <PackageReference Include="Turn10.Services.ForzaClient.FMG" Version="1.0.4" />
-    <PackageReference Include="Turn10.Services.ForzaClient.Steelhead_master" Version="2.1.5" />
+    <PackageReference Include="Turn10.Services.ForzaClient.Steelhead_master" Version="2.1.8" />
     <PackageReference Include="Turn10.Services.Serialization" Version="1.2.1" />
     <PackageReference Include="Turn10.Services.ServiceClient" Version="1.2.5" />
     <PackageReference Include="Turn10.Services.STS.Contracts" Version="1.2.0" />

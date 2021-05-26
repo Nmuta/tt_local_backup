@@ -50,8 +50,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             // Gamertags must be set to null for NGP. v-joyate 20201123
             var sanitizedBanParameters = new SunriseBanParameters
             {
-                Xuids = banParameters.Xuids,
-                Gamertags = null,
+                Xuid = banParameters.Xuid,
+                Gamertag = null,
                 BanAllConsoles = banParameters.BanAllConsoles,
                 BanAllPcs = banParameters.BanAllPcs,
                 DeleteLeaderboardEntries = banParameters.DeleteLeaderboardEntries,

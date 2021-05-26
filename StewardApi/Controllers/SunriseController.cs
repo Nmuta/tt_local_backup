@@ -343,19 +343,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
-            async Task<List<BanResult>> BulkBanUsersAsync(List<SunriseBanParameters> banParameters)
-            {
-                var tasks =
-                    banParameters.Select(
-                        parameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(parameters, requesterObjectId))
-                    .ToList();
-
-                var nestedResults = await Task.WhenAll(tasks).ConfigureAwait(false);
-                var results = nestedResults.SelectMany(v => v).ToList();
-
-                return results;
-            }
-
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
@@ -371,26 +358,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest(result);
             }
 
-            var groupedBanParameters = banInput.GroupBy(v =>
-                {
-                    var compareUsingValues = new object[]
-                    {
-                        v.BanAllConsoles,
-                        v.BanAllPcs,
-                        v.DeleteLeaderboardEntries,
-                        v.StartTimeUtc,
-                        v.Duration,
-                        v.SendReasonNotification,
-                        v.Reason,
-                    };
-
-                    var compareValue = string.Join('|', compareUsingValues);
-                    return compareValue;
-                })
-                .Select(group => this.mapper.Map<SunriseBanParameters>(group.ToList()))
-                .ToList();
-
-            var jobId = await this.AddJobIdToHeaderAsync(groupedBanParameters.ToJson(), requesterObjectId, $"Apollo Gifting: {groupedBanParameters.Count} recipients.").ConfigureAwait(true);
+            var banParameters = this.mapper.Map<IList<SunriseBanParameters>>(banInput);
+            var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), requesterObjectId, $"Sunrise Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -398,8 +367,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
-
+                    var results = await this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(true);
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(results);
                     await this.jobTracker
                         .UpdateJobAsync(
@@ -439,19 +407,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
 
-            async Task<List<BanResult>> BulkBanUsersAsync(List<SunriseBanParameters> banParameters)
-            {
-                var tasks =
-                    banParameters.Select(
-                        parameters => this.sunrisePlayerDetailsProvider.BanUsersAsync(parameters, requesterObjectId))
-                    .ToList();
-
-                var nestedResults = await Task.WhenAll(tasks).ConfigureAwait(false);
-                var resultList = nestedResults.SelectMany(v => v).ToList();
-
-                return resultList;
-            }
-
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
@@ -467,26 +422,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest(result);
             }
 
-            var groupedBanParameters = banInput.GroupBy(v =>
-            {
-                var compareUsingValues = new object[]
-                {
-                        v.BanAllConsoles,
-                        v.BanAllPcs,
-                        v.DeleteLeaderboardEntries,
-                        v.StartTimeUtc,
-                        v.Duration,
-                        v.SendReasonNotification,
-                        v.Reason,
-                };
+            var banParameters = this.mapper.Map<IList<SunriseBanParameters>>(banInput);
+            var results = await this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(true);
 
-                var compareValue = string.Join('|', compareUsingValues);
-                return compareValue;
-            })
-                .Select(group => this.mapper.Map<SunriseBanParameters>(group.ToList()))
-                .ToList();
-
-            var results = await BulkBanUsersAsync(groupedBanParameters).ConfigureAwait(true);
             return this.Ok(results);
         }
 

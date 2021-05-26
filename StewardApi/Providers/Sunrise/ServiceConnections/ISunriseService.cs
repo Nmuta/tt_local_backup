@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Forza.LiveOps.FH4.master.Generated;
 using Forza.UserInventory.FH4.master.Generated;
-using Forza.WebServices.FH4.master.Generated;
-using EnforcementService = Forza.WebServices.FH4.master.Generated.UserService;
-using GiftingService = Forza.WebServices.FH4.master.Generated.GiftingService;
+using GiftingService = Forza.LiveOps.FH4.master.Generated.GiftingService;
+using LiveOpsService = Forza.WebServices.FH4.master.Generated.LiveOpsService;
 using NotificationsService = Xls.WebServices.FH4.master.Generated.NotificationsService;
-using UserInventoryService = Forza.WebServices.FH4.master.Generated.UserInventoryService;
-using UserService = Xls.WebServices.FH4.master.Generated.UserService;
+using UserInventoryService = Forza.LiveOps.FH4.master.Generated.UserInventoryService;
+using UserManagementService = Forza.LiveOps.FH4.master.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 {
@@ -19,22 +19,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///      Gets live ops user data by xuid.
         /// </summary>
-        Task<UserService.GetLiveOpsUserDataByXuidOutput> GetLiveOpsUserDataByXuidAsync(ulong xuid);
+        Task<LiveOpsService.GetLiveOpsUserDataByXuidOutput> GetLiveOpsUserDataByXuidAsync(ulong xuid);
 
         /// <summary>
         ///     Gets the live ops user data by gamerTag.
         /// </summary>
-        Task<UserService.GetLiveOpsUserDataByGamerTagOutput> GetLiveOpsUserDataByGamerTagAsync(string gamertag);
+        Task<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput> GetLiveOpsUserDataByGamerTagAsync(string gamertag);
 
         /// <summary>
         ///     Gets the LSP user groups.
         /// </summary>
-        Task<UserService.GetUserGroupsOutput> GetUserGroupsAsync(int startIndex, int maxResults);
+        Task<UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(int startIndex, int maxResults);
 
         /// <summary>
         ///     Gets the consoles.
         /// </summary>
-        Task<UserService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults);
+        Task<UserManagementService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults);
 
         /// <summary>
         ///     Gets the user's profile rollbacks.
@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Gets shared console users.
         /// </summary>
-        Task<UserService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);
+        Task<UserManagementService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
         ///     Sets the console ban status.
@@ -54,12 +54,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Gets credit update entries.
         /// </summary>
-        Task<UserService.GetCreditUpdateEntriesOutput> GetCreditUpdateEntriesAsync(ulong xuid, int startIndex, int maxResults);
+        Task<LiveOpsService.GetCreditUpdateEntriesOutput> GetCreditUpdateEntriesAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
         ///     Gets profile summary.
         /// </summary>
-        Task<UserService.GetProfileSummaryOutput> GetProfileSummaryAsync(ulong xuid);
+        Task<LiveOpsService.GetProfileSummaryOutput> GetProfileSummaryAsync(ulong xuid);
 
         /// <summary>
         ///    Set is under review flag.
@@ -69,12 +69,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///    Get the under review flag.
         /// </summary>
-        Task<UserService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(ulong xuid);
+        Task<UserManagementService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(ulong xuid);
 
         /// <summary>
         ///    Get the user group memberships.
         /// </summary>
-        Task<UserService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(ulong xuid, int[] groupIdFilter, int maxResults);
+        Task<UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(ulong xuid, int[] groupIdFilter, int maxResults);
 
         /// <summary>
         ///    Add to user groups.
@@ -134,16 +134,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///    Bans users.
         /// </summary>
-        Task<EnforcementService.BanUsersOutput> BanUsersAsync(ulong[] xuids, int xuidCount, ForzaUserBanParameters banParameters);
+        Task<UserManagementService.BanUsersOutput> BanUsersAsync(ForzaUserBanParameters[] banParameters, int xuidCount);
 
         /// <summary>
         ///    Get user ban history.
         /// </summary>
-        Task<EnforcementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(ulong xuid, int startIndex, int maxResults);
+        Task<UserManagementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
         ///    Get user ban summaries.
         /// </summary>
-        Task<EnforcementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(ulong[] xuids, int xuidCount);
+        Task<UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(ulong[] xuids, int xuidCount);
     }
 }

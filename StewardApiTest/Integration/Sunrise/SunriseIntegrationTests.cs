@@ -784,6 +784,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var banParameters = GenerateBanParameters();
             banParameters[0].Gamertag = TestConstants.InvalidGamertag;
+            banParameters[0].Xuid = null;
 
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Failed).ConfigureAwait(false);
 
