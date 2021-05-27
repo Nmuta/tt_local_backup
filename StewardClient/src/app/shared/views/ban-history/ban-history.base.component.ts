@@ -29,7 +29,8 @@ export abstract class BanHistoryBaseComponent extends BaseComponent implements O
 
   /** Initialization hook. */
   public ngOnChanges(): void {
-    if (this.xuid === undefined) {
+    if (!this.xuid) {
+      this.banList = [];
       return;
     }
 

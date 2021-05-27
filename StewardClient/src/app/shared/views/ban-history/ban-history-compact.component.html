@@ -17,15 +17,15 @@
         >
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div class="compact">
-      <span><b>Start Time:</b> {{ entry.startTimeUtc | date: 'short' }}</span>
-      <span><b>Expire Time:</b> {{ entry.expireTimeUtc | date: 'short' }}</span>
-      <span><b>Feature Area:</b> {{ entry.featureArea | humanize }}</span>
-      <span
-        ><b>Banned By: </b> <steward-user [objectId]="entry.requesterObjectId"> </steward-user>
-      </span>
-      <span><b>Ban Reason:</b> {{ entry.reason }}</span>
-    </div>
+    <ul>
+      <li><b>Start Time:</b> {{ entry.startTimeUtc | date: 'short' }}</li>
+      <li><b>Expire Time:</b> {{ entry.expireTimeUtc | date: 'short' }}</li>
+      <li><b>Feature Area:</b> {{ entry.featureArea | humanize }}</li>
+      <li>
+        <b>Banned By: </b> <steward-user [objectId]="entry.requesterObjectId"> </steward-user>
+      </li>
+      <li><b>Ban Reason:</b> {{ entry.reason }}</li>
+    </ul>
   </mat-expansion-panel>
 </mat-accordion>
 
