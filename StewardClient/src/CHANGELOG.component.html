@@ -13,10 +13,14 @@
     </mat-expansion-panel-header>
 
     <h4>Bug Fixes</h4>
-    <ul></ul>
+    <ul>
+      <li></li>
+    </ul>
 
     <h4>Features</h4>
-    <ul></ul>
+    <ul>
+      <li></li>
+    </ul>
 
     <h4>General</h4>
     <ul>
@@ -25,6 +29,61 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <h3>05/27/21</h3>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <h4>Bug Fixes</h4>
+    <ul>
+      <li>
+        Action monitor directive observables in Obligation no longer break UI when error is found.
+        (5/25/21)
+      </li>
+      <li>
+        Gifting no longer adds items of quanity zero when setting gift basket to match profile
+        inventory. (5/21/21)
+      </li>
+      <li>Fixed NGXS immutability errors occuring on Steward Dev. (5/20/21)</li>
+      <li>Fixed Obligation timepicker. (5/18/21)</li>
+    </ul>
+
+    <h4>Features</h4>
+    <ul>
+      <li>
+        <b>[ All Apps ]</b> SignalR requests can now manage reauth/retry requests that come back as
+        401s. (5/25/212)
+      </li>
+      <li>
+        <b>[ Support App ]</b> Apollo ticket sidebar now shows ban history and player flags.
+        (5/26/21)
+      </li>
+      <li>
+        <b>[ Support App ]</b> History of background jobs and their results are now accessible
+        through notifications tab. (5/20/21)
+      </li>
+      <li>
+        <b>[ Support App ]</b> Compact view of ban history now shows agent alias instead of AAD
+        object id. (5/19/21)
+      </li>
+      <li><b>[ Data Pipelines App ]</b> Get pipelines now autocompletes. (5/18/21)</li>
+    </ul>
+
+    <h4>General</h4>
+    <ul>
+      <li>API has been updated to utilize Services new shared title service. (5/27/21)</li>
+      <li>Consolodated ban history components into a single base. (5/26/21)</li>
+      <li>Restructured Obligation and non-title specific models on the API. (5/26/21)</li>
+      <li>All mat cards are now using correct mat header elements instead of h2s. (5/26/21)</li>
+      <li>Cleaned up Player flags to use reactive form. (5/26/21)</li>
+      <li>Removed depricated FAKER methods from tests/interceptors. (5/25/21)</li>
+      <li>Restate-O-Matic UI cleanup. (5/18/21)</li>
+      <li>Obligations UI cleanup. (5/18/21)</li>
+    </ul>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h3>05/18/21 Release</h3>
