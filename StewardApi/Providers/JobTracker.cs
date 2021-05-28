@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,11 +13,9 @@ using Turn10.Data.Azure;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts;
-using Turn10.LiveOps.StewardApi.Hubs;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
-using System.Globalization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Hubs;
 
 namespace Turn10.LiveOps.StewardApi.Providers
 {
@@ -75,7 +74,10 @@ namespace Turn10.LiveOps.StewardApi.Providers
                 await this.hubManager.ForwardJobChange(backgroundJob).ConfigureAwait(false);
 
                 await this.blobRepository
-                    .AddOrReplaceFromBytesExclusiveAsync(string.Empty, jobId, JobContainerName,
+                    .AddOrReplaceFromBytesExclusiveAsync(
+                        string.Empty,
+                        jobId,
+                        JobContainerName,
                         Encoding.ASCII.GetBytes(requestBody))
                     .ConfigureAwait(false);
 
@@ -122,9 +124,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
                         TableQuery.CombineFilters(
                             TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, jobId),
                             TableOperators.And,
-                            TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userObjectId)
-                        )
-                    );
+                            TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userObjectId)));
 
                 var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
                 if (results.Count <= 0)
@@ -231,9 +231,7 @@ namespace Turn10.LiveOps.StewardApi.Providers
                         TableQuery.CombineFilters(
                             TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userObjectId),
                             TableOperators.And,
-                            TableQuery.GenerateFilterConditionForBool("IsRead", QueryComparisons.Equal, false)
-                        )
-                    );
+                            TableQuery.GenerateFilterConditionForBool("IsRead", QueryComparisons.Equal, false)));
                 var results = await this.tableStorageClient.ExecuteQueryAsync(tableQuery).ConfigureAwait(false);
 
                 return results;

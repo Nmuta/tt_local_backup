@@ -376,7 +376,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
         }
 
-
         /// <inheritdoc />
         public async Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)
         {

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Net;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
 {
     /// <summary>
-    ///     Represents a failed to send Steward exception.
+    ///     Represents a 'friendly' failed to send exception.
     /// </summary>
     public sealed class FailedToSendStewardException : StewardBaseException
     {
@@ -30,5 +31,15 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
             : base(message, innerException)
         {
         }
+
+        /// <summary>
+        ///     Gets the status code.
+        /// </summary>
+        public override HttpStatusCode StatusCode => HttpStatusCode.InternalServerError;
+
+        /// <summary>
+        ///     Gets the error code.
+        /// </summary>
+        public override StewardErrorCode ErrorCode => StewardErrorCode.FailedToSend;
     }
 }

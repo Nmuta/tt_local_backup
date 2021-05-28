@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -82,7 +81,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                     throw;
                 }
 
-                throw new NotFoundStewardException($"No history found for {giftHistoryAntecedent}: {id}.", ex);
+                throw new NotFoundStewardException(
+                    $"No history found for {giftHistoryAntecedent}: {id}.", ex);
             }
         }
 
@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 var convertedGift = history.GiftInventory.FromJson<GravityGift>();
                 if (convertedGift.Inventory == null)
                 {
-                    throw new UnknownFailureStewardException("Not a GravityGift model");
+                    throw new ConversionFailedStewardException($"Not a {nameof(GravityGift)} model");
                 }
 
                 // The below logic is in place to separate out ID and it's antecedent. Once V1 Zendesk stops uploading

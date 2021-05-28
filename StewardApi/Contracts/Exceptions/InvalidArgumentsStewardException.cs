@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Net;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
 {
     /// <summary>
-    ///     Represents an invalid argument exception.
+    ///     Represents a 'friendly' invalid argument exception.
     /// </summary>
     public sealed class InvalidArgumentsStewardException : StewardBaseException
     {
@@ -30,5 +31,15 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
             : base(message, innerException)
         {
         }
+
+        /// <summary>
+        ///     Gets the status code.
+        /// </summary>
+        public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
+
+        /// <summary>
+        ///     Gets the error code.
+        /// </summary>
+        public override StewardErrorCode ErrorCode => StewardErrorCode.RequiredParameterMissing;
     }
 }

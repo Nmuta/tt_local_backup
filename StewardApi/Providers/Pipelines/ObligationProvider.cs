@@ -40,7 +40,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
 
             this.obligationAuthoringClient = obligationAuthoringClient;
         }
-        
+
         /// <inheritdoc/>
         public async Task<IList<ObligationPipelinePartial>> GetPipelinesAsync()
         {

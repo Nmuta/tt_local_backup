@@ -203,7 +203,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Data
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetKustoQueriesAsync_ReturnsCorrectType()
+        public void GetKustoQueriesAsync_ReturnsCorrectType()
         {
             // Arrange.
             var provider = new Dependencies().Build();

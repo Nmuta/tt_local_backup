@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Net;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
 {
     /// <summary>
-    ///     Represents an unknown failure exception.
+    ///     Represents an 'friendly' unknown failure exception.
     /// </summary>
-    public sealed class UnknownFailureStewardException : StewardBaseException
+     public sealed class UnknownFailureStewardException : StewardBaseException
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UnknownFailureStewardException"/> class.
@@ -30,5 +31,15 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
             : base(message, innerException)
         {
         }
+
+        /// <summary>
+        ///     Gets the status code.
+        /// </summary>
+        public override HttpStatusCode StatusCode => HttpStatusCode.InternalServerError;
+
+        /// <summary>
+        ///     Gets the error code.
+        /// </summary>
+        public override StewardErrorCode ErrorCode => StewardErrorCode.UnknownFailure;
     }
 }

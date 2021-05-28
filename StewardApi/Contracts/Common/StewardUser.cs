@@ -8,7 +8,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     public sealed class StewardUser
     {
         /// <summary>
-        ///     Gets the user's Azure object ID.
+        ///     Gets or sets the user's Azure object ID.
         /// </summary>
         public string ObjectId { get; set; }
 

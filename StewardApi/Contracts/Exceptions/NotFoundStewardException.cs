@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Net;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
 {
     /// <summary>
-    ///     Represents a profile not found exception.
+    ///     Represents a 'friendly' not found exception.
     /// </summary>
     public sealed class NotFoundStewardException : StewardBaseException
     {
@@ -30,5 +31,15 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
             : base(message, innerException)
         {
         }
+
+        /// <summary>
+        ///     Gets the status code.
+        /// </summary>
+        public override HttpStatusCode StatusCode => HttpStatusCode.NotFound;
+
+        /// <summary>
+        ///     Gets the error code.
+        /// </summary>
+        public override StewardErrorCode ErrorCode => StewardErrorCode.DocumentNotFound;
     }
 }

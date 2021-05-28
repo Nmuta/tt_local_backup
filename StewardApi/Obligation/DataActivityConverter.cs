@@ -7,7 +7,7 @@ using Turn10.LiveOps.StewardApi.Obligation.UpstreamModels;
 namespace Turn10.LiveOps.StewardApi.Obligation
 {
     /// <summary>
-    ///     A JSON Converter for Data Activities
+    ///     A JSON Converter for Data Activities.
     /// </summary>
     public sealed class DataActivityConverter : JsonConverter
     {

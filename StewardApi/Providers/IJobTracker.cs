@@ -11,7 +11,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
     /// </summary>
     public interface IJobTracker
     {
-
         /// <summary>
         ///     Adds a job into the tracker.
         /// </summary>
@@ -35,7 +34,6 @@ namespace Turn10.LiveOps.StewardApi.Providers
         /// <summary>
         ///     Gets all jobs with given Azure object ID.
         /// </summary>
-        /// <param name="resultsFrom">Filters results within TimeSpan range. Null will use no date filtering.</param>
         Task<IList<BackgroundJobInternal>> GetJobsByUserAsync(string userObjectId, TimeSpan? resultsFrom);
 
         /// <summary>

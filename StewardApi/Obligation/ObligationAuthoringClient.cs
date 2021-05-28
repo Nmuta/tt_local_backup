@@ -171,7 +171,8 @@ namespace Turn10.LiveOps.StewardApi.Obligation
             try
             {
                 var response = await this.SendRequestAsync(httpRequestMessage).ConfigureAwait(false);
-                if (response == null) {
+                if (response == null)
+                {
                     throw new NotFoundStewardException("This pipeline does not exist.");
                 }
 

@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -98,7 +97,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 var convertedGift = history.GiftInventory.FromJson<ApolloGift>();
                 if (convertedGift.Inventory == null)
                 {
-                    throw new UnknownFailureStewardException("Not an ApolloGift model");
+                    throw new ConversionFailedStewardException($"Not an {nameof(ApolloGift)} model");
                 }
 
                 // The below logic is in place to separate out ID and it's antecedent. Once V1 Zendesk stops uploading

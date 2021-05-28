@@ -23,22 +23,22 @@ namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
         private readonly bool attemptMidPartitionSyncSwap;
 
         /// <summary>
-        /// A restatement of this DataActivity happens in increments of this timespan. Increments of the span start at DataActivity 
-        /// 
+        /// A restatement of this DataActivity happens in increments of this timespan. Increments of the span start at DataActivity
+        ///
         /// You can think of this property as virtually dividing the DataActivity timerange into chunks. The concrete datasDataActivityet
         /// implementors are responsible for picking a scheme to actually divide up the DataActivity into these chunks. For
         /// example, with drop by tags in Kusto.
-        /// 
+        ///
         /// The two practical effects of this property are that:
         ///   1. When a slice overlaps with a restatement span boundary it will get split such that none of the executions
         ///     cross the boundary.
         ///   2. When a restatement of this DataActivity is performed, it will be expanded to fill these chunks. For example,
         ///     a DataActivity starts at new years 2017, and has a restatment_span of 10 days. A user requests a restatement
         ///     from Jan 9 2017 to jan 11 2017. What they get is a restatement from new years to Jan 20 2017.
-        /// 
+        ///
         /// This value should be chosen large enough that the underlying data is performant, and small enough that doing a
         /// restatement of a tiny chunk of time doesn't forcibly cause a restatement of some huge chunk of time.
-        /// 
+        ///
         /// This must be a multiple of the execution interval and greater than the minimum execution span. The exception is
         /// that a TimeSpan.Zero means undefined/null/not applicable. This defaults to 20 days.
         /// </summary>

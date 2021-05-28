@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Net;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
 {
     /// <summary>
-    ///     Represents a profile not found exception.
+    ///     Represents an abstract 'friendly' exception.
     /// </summary>
-    public class StewardBaseException : Exception
+    public abstract class StewardBaseException : Exception
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardBaseException"/> class.
         /// </summary>
-        public StewardBaseException()
+        protected StewardBaseException()
             : base()
         {
         }
@@ -18,7 +19,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardBaseException"/> class.
         /// </summary>
-        public StewardBaseException(string message)
+        protected StewardBaseException(string message)
             : base(message)
         {
         }
@@ -26,9 +27,19 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardBaseException"/> class.
         /// </summary>
-        public StewardBaseException(string message, Exception innerException)
+        protected StewardBaseException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
+
+        /// <summary>
+        ///     Gets the status code.
+        /// </summary>
+        public abstract HttpStatusCode StatusCode { get; }
+
+        /// <summary>
+        ///     Gets the error code.
+        /// </summary>
+        public abstract StewardErrorCode ErrorCode { get; }
     }
 }

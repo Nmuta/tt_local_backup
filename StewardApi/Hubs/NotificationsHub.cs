@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.SignalR;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Providers;
 
@@ -15,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Hubs
     [Authorize]
     public class NotificationsHub : Hub
     {
-        private IJobTracker jobTracker;
+        private readonly IJobTracker jobTracker;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="NotificationsHub"/> class.

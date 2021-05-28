@@ -112,7 +112,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
                 catch
                 {
                     item.Description = "No item name";
-                    loggingService.LogException(new StewardInventoryItemError($"Missing Description for {logName}. Item ID: {item.Id}"));
+                    loggingService.LogException(new InventoryItemStewardException($"Missing Description for {logName}. Item ID: {item.Id}"));
                 }
             }
 

@@ -11,7 +11,7 @@
         public string Name { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether to make this query into a function call
+        ///     Gets or sets a value indicating whether to make this query into a function call.
         /// </summary>
         public bool MakeFunctionCall { get; set; }
 

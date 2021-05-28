@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Net;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
 {
     /// <summary>
-    ///     Represents a failed query Steward exception.
+    ///     Represents a 'friendly' failed query exception.
     /// </summary>
     public sealed class QueryFailedStewardException : StewardBaseException
     {
@@ -30,5 +31,15 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
             : base(message, innerException)
         {
         }
+
+        /// <summary>
+        ///     Gets the status code.
+        /// </summary>
+        public override HttpStatusCode StatusCode => HttpStatusCode.InternalServerError;
+
+        /// <summary>
+        ///     Gets the error code.
+        /// </summary>
+        public override StewardErrorCode ErrorCode => StewardErrorCode.QueryFailed;
     }
 }

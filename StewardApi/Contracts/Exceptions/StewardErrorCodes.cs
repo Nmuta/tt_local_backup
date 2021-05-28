@@ -37,6 +37,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         /// <summary>
         ///     The query failed error code.
         /// </summary>
-        QueryFailed
+        QueryFailed,
+
+        /// <summary>
+        ///     The duplicate entry error code.
+        /// </summary>
+        DuplicateEntry
     }
 }

@@ -91,11 +91,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             foreach (var history in giftHistoryResult)
             {
-                WoodstockGift convertedGift = history.GiftInventory.FromJson<WoodstockGift>();
-
+                var convertedGift = history.GiftInventory.FromJson<WoodstockGift>();
                 if (convertedGift.Inventory == null)
                 {
-                    throw new UnknownFailureStewardException("Not a WoodstockGift model");
+                    throw new ConversionFailedStewardException($"Not a {nameof(WoodstockGift)} model");
                 }
 
                 // The below logic is in place to separate out ID and it's antecedent. Once V1 Zendesk stops uploading

@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardApi.Hubs
@@ -16,11 +11,9 @@ namespace Turn10.LiveOps.StewardApi.Hubs
         /// <summary>
         ///     Gets a User ID for a given request.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>The User ID.</returns>
-        public string GetUserId(HubConnectionContext context)
+        public string GetUserId(HubConnectionContext connection)
         {
-            var claims = context?.User?.UserClaims();
+            var claims = connection?.User?.UserClaims();
             return claims?.ObjectId;
         }
     }

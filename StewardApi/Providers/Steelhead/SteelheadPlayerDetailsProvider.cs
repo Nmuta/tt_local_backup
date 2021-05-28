@@ -140,7 +140,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             {
                 return false;
             }
-
         }
 
         /// <inheritdoc />

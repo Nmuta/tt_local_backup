@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts;
+using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
-using Turn10.LiveOps.StewardApi.Authorization;
-using System.Xml;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 
 namespace Turn10.LiveOps.StewardApi.Controllers
 {
@@ -207,7 +204,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         resultsFromTS = XmlConvert.ToTimeSpan(resultsFrom);
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     return this.BadRequest($"Provided invalid query param: \"{nameof(resultsFrom)}\" with value \"{resultsFrom}\"");
                 }

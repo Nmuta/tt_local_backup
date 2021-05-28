@@ -652,20 +652,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             gift.ShouldNotBeNull(nameof(gift));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
-                this.giftRequestValidator.Validate(gift, this.ModelState);
+            this.giftRequestValidator.Validate(gift, this.ModelState);
 
-                if (!this.ModelState.IsValid)
-                {
-                    var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
+            if (!this.ModelState.IsValid)
+            {
+                var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
 
-                    return this.BadRequest(result);
-                }
+                return this.BadRequest(result);
+            }
 
-                var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.Inventory).ConfigureAwait(true);
-                if (invalidItems.Length > 0)
-                {
-                    return this.BadRequest($"Invalid items found. {invalidItems}");
-                }
+            var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.Inventory).ConfigureAwait(true);
+            if (invalidItems.Length > 0)
+            {
+                return this.BadRequest($"Invalid items found. {invalidItems}");
+            }
 
             var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
             var response = await this.steelheadPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);

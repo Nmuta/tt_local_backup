@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -98,7 +97,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 var convertedGift = history.GiftInventory.FromJson<SunriseGift>();
                 if (convertedGift.Inventory == null)
                 {
-                    throw new UnknownFailureStewardException("Not a SunriseGift model");
+                    throw new ConversionFailedStewardException($"Not a {nameof(SunriseGift)} model");
                 }
 
                 // The below logic is in place to separate out ID and it's antecedent. Once V1 Zendesk stops uploading
