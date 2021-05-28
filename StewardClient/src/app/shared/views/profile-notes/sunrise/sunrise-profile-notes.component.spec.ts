@@ -1,29 +1,29 @@
 import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { SunriseProfileRollback } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 import faker from 'faker';
 import { of, throwError } from 'rxjs';
-import { SunriseProfileRollbacksComponent } from './sunrise-profile-rollbacks.component';
+import { SunriseProfileNotesComponent } from './sunrise-profile-notes.component';
+import { ProfileNote } from '@models/profile-note.model';
 
-describe('SunriseProfileRollbacksComponent', () => {
-  let component: SunriseProfileRollbacksComponent;
-  let fixture: ComponentFixture<SunriseProfileRollbacksComponent>;
+describe('SunriseProfileNotesComponent', () => {
+  let component: SunriseProfileNotesComponent;
+  let fixture: ComponentFixture<SunriseProfileNotesComponent>;
 
   let mockSunriseService: SunriseService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SunriseProfileRollbacksComponent],
+      declarations: [SunriseProfileNotesComponent],
       providers: [createMockSunriseService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SunriseProfileRollbacksComponent);
+    fixture = TestBed.createComponent(SunriseProfileNotesComponent);
     component = fixture.componentInstance;
     mockSunriseService = TestBed.inject(SunriseService);
     fixture.detectChanges();
@@ -38,8 +38,8 @@ describe('SunriseProfileRollbacksComponent', () => {
 
   describe('Method: ngOnChanges', () => {
     beforeEach(() => {
-      component.getProfileRollbacksXuid$ = jasmine
-        .createSpy('getProfileRollbacksXuid$')
+      component.getProfileNotesXuid$ = jasmine
+        .createSpy('getProfileNotesXuid')
         .and.returnValue(of({}));
     });
 
@@ -48,10 +48,10 @@ describe('SunriseProfileRollbacksComponent', () => {
         component.identity = undefined;
       });
 
-      it('should not call getProfileRollbacksXuid$', () => {
+      it('should not call getProfileNotesXuid', () => {
         component.ngOnChanges();
 
-        expect(component.getProfileRollbacksXuid$).not.toHaveBeenCalledTimes(1);
+        expect(component.getProfileNotesXuid$).not.toHaveBeenCalledTimes(1);
       });
     });
 
@@ -64,44 +64,44 @@ describe('SunriseProfileRollbacksComponent', () => {
         };
       });
 
-      it('should call getProfileRollbacksXuid$', () => {
+      it('should call getProfileNotesXuid', () => {
         component.ngOnChanges();
 
-        expect(component.getProfileRollbacksXuid$).toHaveBeenCalledTimes(1);
+        expect(component.getProfileNotesXuid$).toHaveBeenCalledTimes(1);
       });
 
-      describe('And getProfileRollbacksXuid$ return valid response', () => {
-        const profileRollbacks = [
-          { dateUtc: faker.date.past(), author: 'System', details: faker.random.words(10) },
-          { dateUtc: faker.date.past(), author: 'System', details: faker.random.words(10) },
-        ] as SunriseProfileRollback[];
+      describe('And getProfileNotesXuid return valid response', () => {
+        const profileNotes = [
+          { dateUtc: faker.date.past(), author: 'System', text: faker.random.words(10) },
+          { dateUtc: faker.date.past(), author: 'System', text: faker.random.words(10) },
+        ] as ProfileNote[];
 
         beforeEach(() => {
-          component.getProfileRollbacksXuid$ = jasmine
-            .createSpy('getProfileRollbacksXuid$')
-            .and.returnValue(of(profileRollbacks));
+          component.getProfileNotesXuid$ = jasmine
+            .createSpy('getProfileNotesXuid')
+            .and.returnValue(of(profileNotes));
         });
 
         it('should set currentFlags', () => {
           component.ngOnChanges();
 
-          expect(component.profileRollbacks).toEqual(profileRollbacks);
+          expect(component.profileNotes).toEqual(profileNotes);
         });
       });
 
-      describe('And getProfileRollbacksXuid$ return error', () => {
+      describe('And getProfileNotesXuid return error', () => {
         const error = { message: 'test error' };
 
         beforeEach(() => {
-          component.getProfileRollbacksXuid$ = jasmine
-            .createSpy('getProfileRollbacksXuid$')
+          component.getProfileNotesXuid$ = jasmine
+            .createSpy('getProfileNotesXuid')
             .and.returnValue(throwError(error));
         });
 
         it('should set error', () => {
           component.ngOnChanges();
 
-          expect(component.profileRollbacks).toBeUndefined();
+          expect(component.profileNotes).toBeUndefined();
           expect(component.loadError).toEqual(error);
         });
       });
@@ -115,17 +115,17 @@ describe('SunriseProfileRollbacksComponent', () => {
         gamertag: faker.name.firstName(),
         xuid: new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 })),
       };
-      mockSunriseService.getProfileRollbacksXuid$ = jasmine
-        .createSpy('getProfileRollbacksXuid$')
+      mockSunriseService.getProfileNotesXuid$ = jasmine
+        .createSpy('getProfileNotesXuid')
         .and.returnValue(of({}));
     });
 
-    it('should call sunriseService.getProfileRollbacksXuid$', () => {
+    it('should call sunriseService.getProfileNotesXuid', () => {
       const expectedXuid = component.identity.xuid;
-      component.getProfileRollbacksXuid$(component.identity.xuid);
+      component.getProfileNotesXuid$(component.identity.xuid);
 
-      expect(mockSunriseService.getProfileRollbacksXuid$).toHaveBeenCalledTimes(1);
-      expect(mockSunriseService.getProfileRollbacksXuid$).toHaveBeenCalledWith(expectedXuid);
+      expect(mockSunriseService.getProfileNotesXuid$).toHaveBeenCalledTimes(1);
+      expect(mockSunriseService.getProfileNotesXuid$).toHaveBeenCalledWith(expectedXuid);
     });
   });
 });

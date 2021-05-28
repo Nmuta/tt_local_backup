@@ -179,17 +179,32 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseProfileRollback>> GetProfileRollbacksAsync(ulong xuid)
+        public async Task<IList<SunriseProfileNote>> GetProfileNotesAsync(ulong xuid)
         {
             try
             {
-                var response = await this.sunriseService.GetProfileRollbacksAsync(xuid).ConfigureAwait(false);
+                var response = await this.sunriseService.GetProfileNotesAsync(xuid, 100).ConfigureAwait(false);
 
-                return this.mapper.Map<IList<SunriseProfileRollback>>(response);
+                return this.mapper.Map<IList<SunriseProfileNote>>(response.adminComments);
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No profile rollbacks found for XUID: {xuid}.", ex);
+                throw new NotFoundStewardException($"No profile notes found for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task AddProfileNoteAsync(ulong xuid, SunriseProfileNote note)
+        {
+            note.ShouldNotBeNull(nameof(note));
+
+            try
+            {
+                await this.sunriseService.AddProfileNote(xuid, note.Text, note.Author).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException($"Could not add profile note for XUID: {xuid}.", ex);
             }
         }
 
@@ -375,6 +390,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 throw new UnknownFailureStewardException("User banning has failed.", ex);
             }
         }
+
 
         /// <inheritdoc />
         public async Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)

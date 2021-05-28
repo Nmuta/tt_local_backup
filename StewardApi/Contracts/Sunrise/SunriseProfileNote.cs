@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
     /// <summary>
     ///     Represents a Sunrise profile rollback.
     /// </summary>
-    public sealed class SunriseProfileRollback
+    public sealed class SunriseProfileNote
     {
         /// <summary>
         ///     Gets or sets the date.
@@ -13,13 +13,13 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
         public DateTime DateUtc { get; set; }
 
         /// <summary>
-        ///     Gets or sets the rollback author.
+        ///     Gets or sets the author.
         /// </summary>
         public string Author { get; set; }
 
         /// <summary>
-        ///     Gets or sets the rollback details.
+        ///     Gets or sets the text.
         /// </summary>
-        public string Details { get; set; }
+        public string Text { get; set; }
     }
 }

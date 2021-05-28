@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Forza.LiveOps.FH4.master.Generated;
 using Forza.UserInventory.FH4.master.Generated;
+using static Forza.LiveOps.FH4.master.Generated.UserManagementService;
 using GiftingService = Forza.LiveOps.FH4.master.Generated.GiftingService;
 using LiveOpsService = Forza.WebServices.FH4.master.Generated.LiveOpsService;
 using NotificationsService = Xls.WebServices.FH4.master.Generated.NotificationsService;
@@ -45,6 +46,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         ///     Gets shared console users.
         /// </summary>
         Task<UserManagementService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);
+
+        /// <summary>
+        ///     Gets the user's profile notes.
+        /// </summary>
+        Task<GetAdminCommentsOutput> GetProfileNotesAsync(ulong xuid, int maxResults);
+
+        /// <summary>
+        ///     Add a note to a user's profile.
+        /// </summary>
+        Task AddProfileNote(ulong xuid, string text, string author);
 
         /// <summary>
         ///     Sets the console ban status.

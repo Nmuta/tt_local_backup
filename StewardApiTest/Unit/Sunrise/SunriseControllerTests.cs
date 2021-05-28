@@ -668,7 +668,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task GetProfileRollbacksAsync_WithValidParameters_ReturnsCorrectType()
+        public async Task GetProfileNotesAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -677,7 +677,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
             {
-                async () => await controller.GetProfileRollbacksAsync(xuid).ConfigureAwait(false),
+                async () => await controller.GetProfileNotesAsync(xuid).ConfigureAwait(false),
             };
 
             // Assert.
@@ -686,9 +686,49 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 action().Should().BeAssignableTo<Task<IActionResult>>();
                 action().Should().NotBeNull();
                 var result = await action().ConfigureAwait(false) as OkObjectResult;
-                var details = result.Value as IList<SunriseProfileRollback>;
+                var details = result.Value as IList<SunriseProfileNote>;
                 details.Should().NotBeNull();
-                details.Should().BeOfType<List<SunriseProfileRollback>>();
+                details.Should().BeOfType<List<SunriseProfileNote>>();
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task AddProfileNoteAsync_WithValidParameters_DoesNotThrow()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var note = Fixture.Create<SunriseProfileNote>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.AddProfileNoteAsync(xuid, note).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false);
+            result.Should().BeOfType<OkResult>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddProfileNoteAsync_WithNullProfileNote_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.AddProfileNoteAsync(xuid, null).ConfigureAwait(false)
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "profileNote"));
             }
         }
 
@@ -1300,7 +1340,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SunriseGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
                 this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<MessageSendResult<int>>());
-                this.SunrisePlayerDetailsProvider.GetProfileRollbacksAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseProfileRollback>>());
+                this.SunrisePlayerDetailsProvider.GetProfileNotesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseProfileNote>>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<SunriseGiftHistory>>());

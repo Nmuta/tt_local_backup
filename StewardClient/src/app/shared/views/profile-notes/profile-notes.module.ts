@@ -6,12 +6,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PipesModule } from '@shared/pipes/pipes.module';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { SunriseProfileRollbacksComponent } from './sunrise/sunrise-profile-rollbacks.component';
+import { SunriseProfileNotesComponent } from './sunrise/sunrise-profile-notes.component';
 import { MatTableModule } from '@angular/material/table';
 
-/** A domain module for displaying user profile rollbacks. */
+/** A domain module for displaying user profile notes. */
 @NgModule({
-  declarations: [SunriseProfileRollbacksComponent],
+  declarations: [SunriseProfileNotesComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -22,6 +22,6 @@ import { MatTableModule } from '@angular/material/table';
     JsonDumpModule,
     FontAwesomeModule,
   ],
-  exports: [SunriseProfileRollbacksComponent],
+  exports: [SunriseProfileNotesComponent],
 })
-export class ProfileRollbacksModule {}
+export class ProfileNotesModule {}

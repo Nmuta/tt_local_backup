@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -241,6 +240,23 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var path = new Uri(this.baseUri, $"{TitlePath}notifications/send/groupId({groupId})");
 
             return await ServiceClient.SendRequestAsync<MessageSendResult<int>>(HttpMethod.Post, path, this.authKey, Version, message).ConfigureAwait(false);
+        }
+
+        public async Task<IList<SunriseProfileNote>> GetProfileNotesAsync(ulong xuid)
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/profileNotes");
+
+            return await ServiceClient.SendRequestAsync<IList<SunriseProfileNote>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+        }
+
+
+        public async Task<IList<SunriseProfileNote>> SendProfileNotesAsync(ulong xuid, SunriseProfileNote message)
+        {
+            message.ShouldNotBeNull(nameof(message));
+
+            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/profileNotes");
+
+            return await ServiceClient.SendRequestAsync<IList<SunriseProfileNote>>(HttpMethod.Post, path, this.authKey, Version, message).ConfigureAwait(false);
         }
 
         public async Task<BackgroundJob> GetJobStatusAsync(string jobId)

@@ -1,10 +1,10 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
-import { SunriseProfileRollback } from '@models/sunrise';
+import { ProfileNote } from '@models/profile-note.model';
 import * as faker from 'faker';
 
 /** Fake API for finding User Flags. */
-export class SunrisePlayerXuidProfileRollbacksApi extends FakeApiBase {
+export class SunrisePlayerXuidProfileNotesApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -13,23 +13,23 @@ export class SunrisePlayerXuidProfileRollbacksApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /^\/?api\/v1\/title\/sunrise\/player\/xuid\((\d+)\)\/profileRollbacks$/i;
+    const regex = /^\/?api\/v1\/title\/sunrise\/player\/xuid\((\d+)\)\/profileNotes$/i;
     return regex.test(url.pathname);
   }
 
   /** Produces a sample API response. */
-  public handle(): SunriseProfileRollback[] {
-    return SunrisePlayerXuidProfileRollbacksApi.makeMany();
+  public handle(): ProfileNote[] {
+    return SunrisePlayerXuidProfileNotesApi.makeMany();
   }
 
   /** Create many example models. */
-  public static makeMany(): SunriseProfileRollback[] {
+  public static makeMany(): ProfileNote[] {
     return new Array(faker.datatype.number({ min: 1, max: 5 })).fill(undefined).map(
       () =>
-        <SunriseProfileRollback>{
+        <ProfileNote>{
           dateUtc: faker.date.past(),
           author: 'System',
-          details: faker.random.words(10),
+          text: faker.random.words(10),
         },
     );
   }

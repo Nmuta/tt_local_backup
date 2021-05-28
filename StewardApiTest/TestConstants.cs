@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardTest
         public const string InvalidGamertag = "Invalid Gamertag";
         public const string InvalidT10Id = "9876543210123456789";
         public const string InvalidAuthKey = "Bearer ThisIsNotAnApiKeyAtAll";
-        public const ulong InvalidXuid = 9223372036854775807;
+        public const ulong InvalidXuid = 9223372036854775806;
         public const int InvalidProfileId = 987654321;
         public const int MaxLoopTimeInMilliseconds = 120000;
         public const int DefaultStartIndex = 0;

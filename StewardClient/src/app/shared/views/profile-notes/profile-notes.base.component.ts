@@ -5,28 +5,29 @@ import { NEVER, Observable } from 'rxjs';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
+import { ProfileNote } from '@models/profile-note.model';
 
-/** Base component for displaying user profile rollbacks by XUID. */
+/** Base component for displaying user profile notes by XUID. */
 @Component({
   template: '',
 })
-export abstract class ProfileRollbacksBaseComponent<T> extends BaseComponent implements OnChanges {
+export abstract class ProfileNotesBaseComponent extends BaseComponent implements OnChanges {
   /** The XUID to look up. */
   @Input() public identity: IdentityResultUnion;
 
   /** The user's profile rollback details. */
-  public profileRollbacks: T[];
+  public profileNotes: ProfileNote[];
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */
   public loadError: unknown;
 
-  public displayColumns: string[] = ['date', 'author', 'details'];
+  public displayColumns: string[] = ['date', 'author', 'text'];
 
   /** Game title. */
   public abstract gameTitle: GameTitleCodeName;
 
-  public abstract getProfileRollbacksXuid$(xuid: BigNumber): Observable<T[]>;
+  public abstract getProfileNotesXuid$(xuid: BigNumber): Observable<ProfileNote[]>;
 
   /** Initialization hook. */
   public ngOnChanges(): void {
@@ -36,8 +37,8 @@ export abstract class ProfileRollbacksBaseComponent<T> extends BaseComponent imp
 
     this.isLoading = true;
     this.loadError = undefined;
-    const getProfileRollbacksXuid$ = this.getProfileRollbacksXuid$(this.identity.xuid);
-    getProfileRollbacksXuid$
+    const getProfileNotesXuid$ = this.getProfileNotesXuid$(this.identity.xuid);
+    getProfileNotesXuid$
       .pipe(
         takeUntil(this.onDestroy$),
         take(1),
@@ -47,9 +48,9 @@ export abstract class ProfileRollbacksBaseComponent<T> extends BaseComponent imp
           return NEVER;
         }),
       )
-      .subscribe(rollbacks => {
+      .subscribe(notes => {
         this.isLoading = false;
-        this.profileRollbacks = rollbacks;
+        this.profileNotes = notes;
       });
   }
 }

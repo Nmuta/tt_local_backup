@@ -312,6 +312,52 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void GetProfileNotesAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            async Task<IList<SunriseProfileNote>> Action() => await provider.GetProfileNotesAsync(xuid).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<List<SunriseProfileNote>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddProfileNotesAsync_WithValidParameters_DoesNotThrow()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var note = Fixture.Create<SunriseProfileNote>();
+
+            // Act.
+            Func<Task> action = async () => await provider.AddProfileNoteAsync(xuid, note).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void AddProfileNotesAsync_WithNullProfileNote_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            Func<Task> action = async () => await provider.AddProfileNoteAsync(xuid, null).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "note"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void BanUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -534,6 +580,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
                 this.SunriseService.GetIsUnderReviewAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
                 this.SunriseService.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetProfileSummaryOutput>());
+                this.SunriseService.GetProfileNotesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetAdminCommentsOutput>());
                 this.SunriseService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
                 this.RefreshableCacheStore.GetItem<IList<SunriseCreditUpdate>>(Arg.Any<string>()).Returns((IList<SunriseCreditUpdate>)null);
                 this.SunriseService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<int>()).Returns(GenerateBanUsersOutput());
@@ -552,6 +599,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SunrisePlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<SunriseNotification>>(Arg.Any<LiveOpsNotification[]>()).Returns(Fixture.Create<IList<SunriseNotification>>());
                 this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
+                this.Mapper.Map<IList<SunriseProfileNote>>(Arg.Any<ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<SunriseProfileNote>>());
             }
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();

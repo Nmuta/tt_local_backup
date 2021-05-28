@@ -29,7 +29,7 @@ import { UserFlagsModule } from '@shared/views/user-flags/user-flags.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 import { PlayerIdentityResultsModule } from '@shared/views/player-identity-results/player-identity-results.module';
-import { ProfileRollbacksModule } from '@views/profile-rollback/profile-rollbacks.module';
+import { ProfileNotesModule } from '@views/profile-notes/profile-notes.module';
 import { SteelheadUserDetailsComponent } from './steelhead/steelhead-user-details.component';
 import { WoodstockUserDetailsComponent } from './woodstock/woodstock-user-details.component';
 import { MatCardModule } from '@angular/material/card';
@@ -73,7 +73,7 @@ import { MatCardModule } from '@angular/material/card';
     PlayerSelectionModule,
     MatTooltipModule,
     PlayerIdentityResultsModule,
-    ProfileRollbacksModule,
+    ProfileNotesModule,
   ],
 })
 export class UserDetailsModule {}

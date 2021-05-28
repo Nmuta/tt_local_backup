@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Turn10.Data.SecretProvider;
-using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardTest.Utilities;
@@ -219,7 +218,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             try
             {
-                await stewardClient.GetConsolesAsync(TestConstants.InvalidXuid, TestConstants.DefaultMaxResults).ConfigureAwait(false);
+                var x = await stewardClient.GetConsolesAsync(TestConstants.InvalidXuid, TestConstants.DefaultMaxResults).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1641,6 +1640,48 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             catch (ServiceException e)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetProfileNotes()
+        {
+            var result = await stewardClient.GetProfileNotesAsync(xuid).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Any());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetProfileNotes_InvalidXuid()
+        {
+            try
+            {
+                await stewardClient.GetProfileNotesAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task SendProfileNotes_InvalidXuid()
+        {
+            var message = new SunriseProfileNote {Text = "Test Text", Author = "Integration Tests", DateUtc = DateTime.UtcNow};
+
+            try
+            {
+                await stewardClient.SendProfileNotesAsync(TestConstants.InvalidXuid, message).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
             }
         }
 

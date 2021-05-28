@@ -42,12 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         ///     Get consoles.
         /// </summary>
         Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults);
-
-        /// <summary>
-        ///     Get profile rollbacks.
-        /// </summary>
-        Task<IList<SunriseProfileRollback>> GetProfileRollbacksAsync(ulong xuid);
-
+        
         /// <summary>
         ///     Set console ban status.
         /// </summary>
@@ -77,6 +72,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         ///     Gets credit updates.
         /// </summary>
         Task<IList<SunriseCreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults);
+
+        /// <summary>
+        ///     Get profile notes.
+        /// </summary>
+        Task<IList<SunriseProfileNote>> GetProfileNotesAsync(ulong xuid);
+
+        /// <summary>
+        ///     Adds a profile note.
+        /// </summary>
+        Task AddProfileNoteAsync(ulong xuid, SunriseProfileNote note);
 
         /// <summary>
         ///     Ban users.

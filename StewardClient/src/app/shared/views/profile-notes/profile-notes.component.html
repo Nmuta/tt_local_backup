@@ -1,0 +1,39 @@
+<mat-card>
+  <mat-card-title>
+    <h2>Profile Notes ({{ gameTitle }})</h2>
+  </mat-card-title>
+  <mat-card-content>
+    <ng-container *ngIf="!isLoading && !loadError; else failstate">
+      <ng-container *ngIf="profileNotes?.length > 0; else noNotesState">
+        <table mat-table [dataSource]="profileNotes">
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let element">{{ element.dateUtc | date: 'short' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="author">
+            <th mat-header-cell *matHeaderCellDef>Author</th>
+            <td mat-cell *matCellDef="let element">{{ element.author }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="text">
+            <th mat-header-cell *matHeaderCellDef>Note</th>
+            <td mat-cell *matCellDef="let element">{{ element.text }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
+        </table>
+      </ng-container>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #noNotesState>
+  <h3>No notes on the player.</h3>
+</ng-template>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+</ng-template>

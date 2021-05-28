@@ -22,7 +22,6 @@ import {
   SunrisePlayerInventory,
   SunrisePlayerInventoryProfile,
   SunrisePlayerNotifications,
-  SunriseProfileRollback,
   SunriseProfileSummary,
   SunriseSharedConsoleUser,
   SunriseUserFlags,
@@ -39,6 +38,7 @@ import {
   CommunityMessage,
   CommunityMessageResult,
 } from '@models/community-message';
+import { ProfileNote } from '@models/profile-note.model';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -107,9 +107,9 @@ export class SunriseService {
   }
 
   /** Gets user flags by a XUID. */
-  public getProfileRollbacksXuid$(xuid: BigNumber): Observable<SunriseProfileRollback[]> {
-    return this.apiService.getRequest$<SunriseProfileRollback[]>(
-      `${this.basePath}/player/xuid(${xuid})/profileRollbacks`,
+  public getProfileNotesXuid$(xuid: BigNumber): Observable<ProfileNote[]> {
+    return this.apiService.getRequest$<ProfileNote[]>(
+      `${this.basePath}/player/xuid(${xuid})/profileNotes`,
     );
   }
 

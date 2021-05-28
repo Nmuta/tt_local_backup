@@ -301,15 +301,45 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets the user's profile rollbacks.
+        ///     Gets the user's profile notes.
         /// </summary>
-        [HttpGet("player/xuid({xuid})/profileRollbacks")]
-        [SwaggerResponse(200, type: typeof(IList<SunriseProfileRollback>))]
-        public async Task<IActionResult> GetProfileRollbacksAsync(ulong xuid)
+        [HttpGet("player/xuid({xuid})/profileNotes")]
+        [SwaggerResponse(200, type: typeof(IList<SunriseProfileNote>))]
+        public async Task<IActionResult> GetProfileNotesAsync(ulong xuid)
         {
-            var result = await this.sunrisePlayerDetailsProvider.GetProfileRollbacksAsync(xuid).ConfigureAwait(true);
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            {
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
+            }
+
+            var result = await this.sunrisePlayerDetailsProvider.GetProfileNotesAsync(xuid).ConfigureAwait(true);
 
             return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     Adds a profile note to a user's profile.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin)]
+        [HttpPost("player/xuid({xuid})/profileNotes")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> AddProfileNoteAsync(ulong xuid, [FromBody] SunriseProfileNote profileNote)
+        {
+            profileNote.ShouldNotBeNull(nameof(profileNote));
+
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            {
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
+            }
+
+            var userClaims = this.User.UserClaims();
+            profileNote.Author = userClaims.EmailAddress;
+
+            await this.sunrisePlayerDetailsProvider.AddProfileNoteAsync(xuid, profileNote).ConfigureAwait(true);
+
+            return this.Ok();
         }
 
         /// <summary>

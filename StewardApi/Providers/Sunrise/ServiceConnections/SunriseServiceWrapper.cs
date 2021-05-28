@@ -12,6 +12,7 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
+using static Forza.LiveOps.FH4.master.Generated.UserManagementService;
 using GiftingService = Forza.LiveOps.FH4.master.Generated.GiftingService;
 using LiveOpsService = Forza.WebServices.FH4.master.Generated.LiveOpsService;
 using NotificationsService = Xls.WebServices.FH4.master.Generated.NotificationsService;
@@ -106,6 +107,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
             return await userService.GetSharedConsoleUsers(xuid, startIndex, maxResults).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<GetAdminCommentsOutput> GetProfileNotesAsync(ulong xuid, int maxResults)
+        {
+            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+
+            return await userManagementService.GetAdminComments(xuid, maxResults).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task AddProfileNote(ulong xuid, string text, string author)
+        {
+            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+
+            await userManagementService.AddAdminComment(xuid, text, author).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
