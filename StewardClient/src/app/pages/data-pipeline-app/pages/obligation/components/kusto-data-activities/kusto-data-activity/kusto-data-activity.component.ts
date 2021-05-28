@@ -108,7 +108,7 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
     parallelismLimit: new FormControl(KustoDataActivityComponent.defaults.parallelismLimit, [
       Validators.required,
       Validators.min(1),
-      Validators.max(8),
+      Validators.max(25),
     ]),
     dependencyNames: new FormControl(KustoDataActivityComponent.defaults.dependencyNames),
     fromApi: new FormControl(KustoDataActivityComponent.defaults.fromApi),
