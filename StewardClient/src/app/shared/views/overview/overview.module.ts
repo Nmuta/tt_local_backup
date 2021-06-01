@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SunriseOverviewComponent } from './titles/sunrise/sunrise-overview.component';
-import { WoodstockOverviewComponent } from './titles/woodstock/woodstock-overview.component';
+import { SunriseOverviewComponent } from './sunrise/sunrise-overview.component';
+import { WoodstockOverviewComponent } from './woodstock/woodstock-overview.component';
 import { MatCardModule } from '@angular/material/card';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
