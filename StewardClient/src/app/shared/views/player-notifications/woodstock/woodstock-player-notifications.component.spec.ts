@@ -1,37 +1,38 @@
-import BigNumber from 'bignumber.js';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, getTestBed, TestBed, waitForAsync } from '@angular/core/testing';
-import { SunrisePlayerXuidNotificationsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/notifications';
-import { SunrisePlayerNotifications } from '@models/sunrise';
-import { createMockSunriseService, SunriseService } from '@services/sunrise';
-import faker from 'faker';
+import { WoodstockPlayerXuidNotificationsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/notifications';
+import { WoodstockPlayerNotifications } from '@models/woodstock';
+import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { Subject } from 'rxjs';
 
-import { SunrisePlayerNotificationsComponent } from './sunrise-player-notifications.component';
+import { WoodstockPlayerNotificationsComponent } from './woodstock-player-notifications.component';
+import { fakeXuid } from '@interceptors/fake-api/utility';
+import { first } from 'lodash';
+import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
 
-describe('SunrisePlayerNotificationsComponent', () => {
+describe('WoodstockPlayerNotificationsComponent', () => {
   let injector: TestBed;
-  let service: SunriseService;
-  let component: SunrisePlayerNotificationsComponent;
-  let fixture: ComponentFixture<SunrisePlayerNotificationsComponent>;
+  let service: WoodstockService;
+  let component: WoodstockPlayerNotificationsComponent;
+  let fixture: ComponentFixture<WoodstockPlayerNotificationsComponent>;
 
   beforeEach(
     waitForAsync(async () => {
       await TestBed.configureTestingModule({
-        declarations: [SunrisePlayerNotificationsComponent],
-        providers: [createMockSunriseService()],
+        declarations: [WoodstockPlayerNotificationsComponent],
+        providers: [createMockWoodstockService()],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
 
       injector = getTestBed();
-      service = injector.inject(SunriseService);
+      service = injector.inject(WoodstockService);
     }),
   );
 
   beforeEach(
     waitForAsync(() => {
-      fixture = TestBed.createComponent(SunrisePlayerNotificationsComponent);
+      fixture = TestBed.createComponent(WoodstockPlayerNotificationsComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     }),
@@ -45,17 +46,18 @@ describe('SunrisePlayerNotificationsComponent', () => {
   );
 
   describe('valid initialization', () => {
-    let consoleDetails$: Subject<SunrisePlayerNotifications> = undefined;
-    let consoleDetailsValue: SunrisePlayerNotifications = undefined;
+    let playerNotifications$: Subject<WoodstockPlayerNotifications> = undefined;
+    let playerNotificationsValue: WoodstockPlayerNotifications = undefined;
+    const testXuid = fakeXuid();
 
     beforeEach(
       waitForAsync(() => {
         // notifications list prep
-        consoleDetails$ = new Subject<SunrisePlayerNotifications>();
-        consoleDetailsValue = SunrisePlayerXuidNotificationsFakeApi.makeMany() as SunrisePlayerNotifications;
+        playerNotifications$ = new Subject<WoodstockPlayerNotifications>();
+        playerNotificationsValue = WoodstockPlayerXuidNotificationsFakeApi.makeMany() as WoodstockPlayerNotifications;
         service.getPlayerNotificationsByXuid$ = jasmine
-          .createSpy('getPlayerNotificationsByXuid$')
-          .and.returnValue(consoleDetails$);
+          .createSpy('getPlayerNotificationsByXuid')
+          .and.returnValue(playerNotifications$);
 
         // emulate initialization event
         component.ngOnChanges();
@@ -74,8 +76,7 @@ describe('SunrisePlayerNotificationsComponent', () => {
       it(
         'should update when xuid set',
         waitForAsync(async () => {
-          // emulate xuid update event
-          component.xuid = new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 }));
+          component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
           component.ngOnChanges();
 
           // waiting on value
@@ -83,8 +84,8 @@ describe('SunrisePlayerNotificationsComponent', () => {
           expect(component.isLoading).toBe(true);
 
           // value received
-          consoleDetails$.next(consoleDetailsValue);
-          consoleDetails$.complete();
+          playerNotifications$.next(playerNotificationsValue);
+          playerNotifications$.complete();
           await fixture.whenStable();
           fixture.detectChanges();
           expect(component.isLoading).toBe(false);
@@ -96,7 +97,7 @@ describe('SunrisePlayerNotificationsComponent', () => {
         'should update when request errored',
         waitForAsync(async () => {
           // emulate xuid update event
-          component.xuid = new BigNumber(faker.datatype.number({ min: 10_000, max: 500_000 }));
+          component.identity = first(WoodstockPlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
           component.ngOnChanges();
 
           // waiting on value
@@ -104,7 +105,7 @@ describe('SunrisePlayerNotificationsComponent', () => {
           expect(component.isLoading).toBe(true);
 
           // error received
-          consoleDetails$.error(new HttpErrorResponse({ error: 'hello' }));
+          playerNotifications$.error(new HttpErrorResponse({ error: 'hello' }));
           await fixture.whenStable();
           fixture.detectChanges();
           expect(component.isLoading).toBe(false);

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SunrisePlayerNotificationsComponent } from './titles/sunrise/sunrise-player-notifications.component';
-import { WoodstockPlayerNotificationsComponent } from './titles/woodstock/woodstock-player-notifications.component';
+import { SunrisePlayerNotificationsComponent } from './sunrise/sunrise-player-notifications.component';
+import { WoodstockPlayerNotificationsComponent } from './woodstock/woodstock-player-notifications.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatCardModule } from '@angular/material/card';
