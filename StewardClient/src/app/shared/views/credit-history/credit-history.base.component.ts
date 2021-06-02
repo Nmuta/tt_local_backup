@@ -1,26 +1,31 @@
-import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { SunriseCreditDetailsEntry } from '@models/sunrise';
-import { SunriseService } from '@services/sunrise/sunrise.service';
-import { NEVER, Subject } from 'rxjs';
+import { WoodstockCreditDetailsEntry } from '@models/woodstock';
+import { NEVER, Observable, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
+import { IdentityResultUnion } from '@models/identity-query.model';
+import { GameTitleCodeName } from '@models/enums';
+import BigNumber from 'bignumber.js';
+import { SunriseCreditDetailsEntry } from '@models/sunrise';
 
-/** Retreives and displays Sunrise credit history by XUID. */
+export type CreditDetailsEntryUnion = SunriseCreditDetailsEntry | WoodstockCreditDetailsEntry;
+/** Retreives and displays a player's credit history by XUID. */
 @Component({
-  selector: 'sunrise-credit-history',
-  templateUrl: './sunrise-credit-history.component.html',
-  styleUrls: ['./sunrise-credit-history.component.scss'],
+  template: '',
 })
-export class SunriseCreditHistoryComponent extends BaseComponent implements OnInit, OnChanges {
-  @Input() public xuid?: BigNumber;
+export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUnion>
+  extends BaseComponent
+  implements OnInit, OnChanges {
+  @Input() public identity?: IdentityResultUnion;
+
+  /** A list of player credit events. */
+  public creditHistory: T[];
 
   /** True while waiting on a request. */
   public isLoading = true;
   /** The error received while loading. */
   public loadError: unknown;
-  /** The credit history data. */
-  public creditHistory: SunriseCreditDetailsEntry[];
+
   public columnsToDisplay = [
     'eventTimestampUtc',
     'deviceType',
@@ -36,9 +41,12 @@ export class SunriseCreditHistoryComponent extends BaseComponent implements OnIn
   public loadingMore = false;
   public showLoadMore: boolean;
 
-  constructor(private readonly sunrise: SunriseService) {
-    super();
-  }
+  public abstract gameTitle: GameTitleCodeName;
+  public abstract getCreditHistoryByXuid$(
+    xuid: BigNumber,
+    startIndex: number,
+    maxResults: number,
+  ): Observable<T[]>;
 
   /** Lifecycle hook. */
   public ngOnInit(): void {
@@ -47,34 +55,37 @@ export class SunriseCreditHistoryComponent extends BaseComponent implements OnIn
         takeUntil(this.onDestroy$),
         switchMap(() => {
           this.loadingMore = true;
-          return this.sunrise
-            .getCreditHistoryByXuid$(this.xuid, this.startIndex, this.maxResultsPerRequest)
-            .pipe(
-              catchError(error => {
-                this.loadingMore = false;
-                this.isLoading = false;
-                this.loadError = error;
-                return NEVER;
-              }),
-            );
+          const getCreditHistoryByXuid$ = this.getCreditHistoryByXuid$(
+            this.identity.xuid,
+            this.startIndex,
+            this.maxResultsPerRequest,
+          );
+          return getCreditHistoryByXuid$.pipe(
+            catchError(error => {
+              this.loadingMore = false;
+              this.isLoading = false;
+              this.loadError = error;
+              return NEVER;
+            }),
+          );
         }),
       )
       .subscribe(creditUpdates => {
         this.loadingMore = false;
         this.isLoading = false;
         this.creditHistory = this.creditHistory.concat(creditUpdates);
-        this.startIndex = this.creditHistory.length;
+        this.startIndex += this.creditHistory.length;
         this.showLoadMore = creditUpdates.length >= this.maxResultsPerRequest;
       });
 
-    if (!!this.xuid) {
+    if (!!this.identity?.xuid) {
       this.getCreditUpdates$.next();
     }
   }
 
   /** Lifecycle hook. */
   public ngOnChanges(): void {
-    if (this.xuid === undefined) {
+    if (!this.identity || !this.identity?.xuid) {
       return;
     }
 

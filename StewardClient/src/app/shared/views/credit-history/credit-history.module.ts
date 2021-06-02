@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SunriseCreditHistoryComponent } from './titles/sunrise/sunrise-credit-history.component';
-import { WoodstockCreditHistoryComponent } from './titles/woodstock/woodstock-credit-history.component';
+import { SunriseCreditHistoryComponent } from './sunrise/sunrise-credit-history.component';
+import { WoodstockCreditHistoryComponent } from './woodstock/woodstock-credit-history.component';
 import { MatCardModule } from '@angular/material/card';
 import { ErrorSpinnerModule } from '@components/error-spinner/error-spinner.module';
 import { MatTableModule } from '@angular/material/table';

@@ -1,13 +1,16 @@
-import BigNumber from 'bignumber.js';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import faker from 'faker';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 import { SunriseCreditHistoryComponent } from './sunrise-credit-history.component';
+import { first } from 'lodash';
+import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
+import { fakeXuid } from '@interceptors/fake-api/utility';
 
 describe('SunriseCreditHistoryComponent', () => {
   let component: SunriseCreditHistoryComponent;
   let fixture: ComponentFixture<SunriseCreditHistoryComponent>;
+
+  const testXuid = fakeXuid();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,7 +23,6 @@ describe('SunriseCreditHistoryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SunriseCreditHistoryComponent);
     component = fixture.componentInstance;
-
     fixture.detectChanges();
   });
 
@@ -44,9 +46,9 @@ describe('SunriseCreditHistoryComponent', () => {
         .and.callThrough();
     });
 
-    describe('When there is a xuid in the component', () => {
+    describe('When there is a valid identity in the component', () => {
       beforeEach(() => {
-        component.xuid = new BigNumber(faker.datatype.number());
+        component.identity = first(SunrisePlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
       });
 
       it('should call getCreditUpdates$.next()', () => {
@@ -56,9 +58,9 @@ describe('SunriseCreditHistoryComponent', () => {
       });
     });
 
-    describe('When there is not a xuid in the component', () => {
+    describe('When there is not a valid identity in the component', () => {
       beforeEach(() => {
-        component.xuid = undefined;
+        component.identity = undefined;
       });
 
       it('should not call getCreditUpdates$.next()', () => {
@@ -74,9 +76,9 @@ describe('SunriseCreditHistoryComponent', () => {
       component.getCreditUpdates$.next = jasmine.createSpy('getCreditUpdates$.next');
     });
 
-    describe('When there is a xuid in the component', () => {
+    describe('When there is a valid identity in the component', () => {
       beforeEach(() => {
-        component.xuid = new BigNumber(faker.datatype.number());
+        component.identity = first(SunrisePlayersIdentitiesFakeApi.make([{ xuid: testXuid }]));
       });
 
       it('should call getCreditUpdates$.next()', () => {
@@ -86,9 +88,9 @@ describe('SunriseCreditHistoryComponent', () => {
       });
     });
 
-    describe('When there is not a xuid in the component', () => {
+    describe('When there is not a valid identity in the component', () => {
       beforeEach(() => {
-        component.xuid = undefined;
+        component.identity = undefined;
       });
 
       it('should not call getCreditUpdates$.next()', () => {
