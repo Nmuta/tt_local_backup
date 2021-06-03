@@ -28,7 +28,8 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { JsonTableResultsModule } from '@components/json-table-results/json-table-results.module';
 import { MatIconModule } from '@angular/material/icon';
-import { MomentModule } from 'ngx-moment';
+import { LuxonModule } from 'luxon-angular';
+import { MatLuxonDateModule } from 'ngx-material-luxon';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -54,6 +55,7 @@ import { MomentModule } from 'ngx-moment';
     MatFormFieldModule,
     MatCheckboxModule,
     MatDatepickerModule,
+    MatLuxonDateModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
     FontAwesomeModule,
@@ -65,7 +67,7 @@ import { MomentModule } from 'ngx-moment';
     MatIconModule,
     TextFieldModule,
     JsonTableResultsModule,
-    MomentModule,
+    LuxonModule,
   ],
 })
 export class CommunityMessagingModule {}

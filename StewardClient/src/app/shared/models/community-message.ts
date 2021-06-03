@@ -1,12 +1,12 @@
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
-import moment from 'moment';
+import { DateTime, Duration } from 'luxon';
 
 /** Interface for a community message. */
 export interface CommunityMessage {
   message: string;
-  expiryDate: moment.Moment;
-  duration: moment.Duration;
+  expiryDate: DateTime;
+  duration: Duration;
 }
 
 /** Interface for a bulk community message. */

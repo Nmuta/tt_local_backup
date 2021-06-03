@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import * as moment from 'moment';
+import { Duration } from 'luxon';
 
 export enum SunriseBanArea {
   AllRequests = 'AllRequests',
@@ -27,5 +27,5 @@ export interface SunriseBanRequest {
   sendReasonNotification: boolean;
   reason: string;
   featureArea: SunriseBanArea;
-  duration: moment.Duration;
+  duration: Duration;
 }

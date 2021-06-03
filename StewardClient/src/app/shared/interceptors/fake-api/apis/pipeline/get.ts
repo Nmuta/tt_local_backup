@@ -5,7 +5,7 @@ import { SimplifiedObligationPipeline } from '@models/pipelines/simplified-oblig
 import { faker } from '@interceptors/fake-api/utility';
 import { ObligationPrincipal } from '@models/pipelines/obligation-principal';
 import { ObligationKustoDataActivity } from '@models/pipelines/obligation-kusto-data-activity';
-import moment from 'moment';
+import { Duration } from 'luxon';
 
 /** Fake API for GETing a single pipeline. */
 export class PipelineGetFakeApi extends FakeApiBase {
@@ -61,15 +61,15 @@ export class PipelineGetFakeApi extends FakeApiBase {
           destinationDatabase: faker.datatype.uuid(),
           endDateUtc: faker.date.future(1),
           startDateUtc: faker.date.past(1),
-          executionDelay: moment.duration(faker.datatype.number({ min: 30, max: 2880 }), 'minutes'),
-          executionInterval: moment.duration(
-            faker.datatype.number({ min: 30, max: 1440 }),
-            'minutes',
-          ),
-          maxExecutionSpan: moment.duration(
-            faker.datatype.number({ min: 30, max: 1440 }),
-            'minutes',
-          ),
+          executionDelay: Duration.fromObject({
+            minutes: faker.datatype.number({ min: 30, max: 2880 }),
+          }),
+          executionInterval: Duration.fromObject({
+            minutes: faker.datatype.number({ min: 30, max: 1440 }),
+          }),
+          maxExecutionSpan: Duration.fromObject({
+            minutes: faker.datatype.number({ min: 30, max: 1440 }),
+          }),
           kustoFunction: {
             name: faker.lorem.words(5).replace(' ', '_').toLowerCase(),
             numberOfBuckets: faker.datatype.boolean()

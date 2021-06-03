@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import * as moment from 'moment';
+import { Duration } from 'luxon';
 
 export enum WoodstockBanArea {
   AllRequests = 'AllRequests',
@@ -27,5 +27,5 @@ export interface WoodstockBanRequest {
   sendReasonNotification: boolean;
   reason: string;
   featureArea: WoodstockBanArea;
-  duration: moment.Duration;
+  duration: Duration;
 }

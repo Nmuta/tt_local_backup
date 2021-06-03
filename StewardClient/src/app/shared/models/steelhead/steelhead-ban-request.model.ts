@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { GamertagString } from '@models/extended-types';
-import * as moment from 'moment';
+import { Duration } from 'luxon';
 
 export enum SteelheadBanArea {
   AllRequests = 'AllRequests',
@@ -27,5 +27,5 @@ export interface SteelheadBanRequest {
   sendReasonNotification: boolean;
   reason: string;
   featureArea: SteelheadBanArea;
-  duration: moment.Duration;
+  duration: Duration;
 }

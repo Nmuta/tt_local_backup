@@ -16,8 +16,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { VerifyWithButtonDirective } from '@shared/modules/verify/verify-with.directive';
 import BigNumber from 'bignumber.js';
 import { chain, cloneDeep, flatMap, has, keyBy } from 'lodash';
-import { DateTime } from 'luxon';
-import moment from 'moment';
+import { DateTime, Duration } from 'luxon';
 import { of } from 'rxjs';
 import { catchError, delay, map, takeUntil } from 'rxjs/operators';
 import {
@@ -202,9 +201,11 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           destinationDatabase: activity.database,
           startDateUtc: activity.dateRange.start.toUTC().toJSDate(),
           endDateUtc: activity.dateRange.end.toUTC().toJSDate(),
-          executionDelay: moment.duration(activity.executionDelayInMinutes, 'minutes'),
-          executionInterval: moment.duration(activity.executionIntervalInMinutes, 'minutes'),
-          maxExecutionSpan: moment.duration(activity.maximumExecutionTimeInMinutes, 'minutes'),
+          executionDelay: Duration.fromObject({ minutes: activity.executionDelayInMinutes }),
+          executionInterval: Duration.fromObject({ minutes: activity.executionIntervalInMinutes }),
+          maxExecutionSpan: Duration.fromObject({
+            minutes: activity.maximumExecutionTimeInMinutes,
+          }),
           parallelismLimit: new BigNumber(activity.parallelismLimit),
           kustoFunction: {
             name: activity.query.name,
@@ -229,9 +230,13 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
             destinationDatabase: activity.database,
             startDateUtc: activity.dateRange.start.toUTC().toJSDate(),
             endDateUtc: activity.dateRange.end.toUTC().toJSDate(),
-            executionDelay: moment.duration(activity.executionDelayInMinutes, 'minutes'),
-            executionInterval: moment.duration(activity.executionIntervalInMinutes, 'minutes'),
-            maxExecutionSpan: moment.duration(activity.maximumExecutionTimeInMinutes, 'minutes'),
+            executionDelay: Duration.fromObject({ minutes: activity.executionDelayInMinutes }),
+            executionInterval: Duration.fromObject({
+              minutes: activity.executionIntervalInMinutes,
+            }),
+            maxExecutionSpan: Duration.fromObject({
+              minutes: activity.maximumExecutionTimeInMinutes,
+            }),
             parallelismLimit: new BigNumber(activity.parallelismLimit),
             kustoFunction: {
               name: activity.query.name,
@@ -275,9 +280,9 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
             start: DateTime.fromJSDate(pipeline.startDateUtc).toUTC(),
             end: DateTime.fromJSDate(pipeline.endDateUtc).toUTC(),
           },
-          executionDelayInMinutes: moment.duration(pipeline.executionDelay).asMinutes(),
-          executionIntervalInMinutes: moment.duration(pipeline.executionInterval).asMinutes(),
-          maximumExecutionTimeInMinutes: moment.duration(pipeline.maxExecutionSpan).asMinutes(),
+          executionDelayInMinutes: pipeline.executionDelay.minutes,
+          executionIntervalInMinutes: pipeline.executionInterval.minutes,
+          maximumExecutionTimeInMinutes: pipeline.maxExecutionSpan.minutes,
           parallelismLimit: pipeline.parallelismLimit.toNumber(),
           query: {
             name: pipeline.kustoFunction.name,
@@ -300,15 +305,9 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
               start: DateTime.fromJSDate(restateOMaticActivity.startDateUtc).toUTC(),
               end: DateTime.fromJSDate(restateOMaticActivity.endDateUtc).toUTC(),
             },
-            executionDelayInMinutes: moment
-              .duration(restateOMaticActivity.executionDelay)
-              .asMinutes(),
-            executionIntervalInMinutes: moment
-              .duration(restateOMaticActivity.executionInterval)
-              .asMinutes(),
-            maximumExecutionTimeInMinutes: moment
-              .duration(restateOMaticActivity.maxExecutionSpan)
-              .asMinutes(),
+            executionDelayInMinutes: restateOMaticActivity.executionDelay.minutes,
+            executionIntervalInMinutes: restateOMaticActivity.executionInterval.minutes,
+            maximumExecutionTimeInMinutes: restateOMaticActivity.maxExecutionSpan.minutes,
             parallelismLimit: restateOMaticActivity.parallelismLimit.toNumber(),
             query: {
               name: restateOMaticActivity.kustoFunction.name,

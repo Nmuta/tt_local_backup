@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import moment from 'moment';
+import { Duration } from 'luxon';
 import { KustoFunction } from './kusto-function';
 
 /** A kusto-type data activity. */
@@ -10,9 +10,9 @@ export interface ObligationKustoDataActivity {
   destinationDatabase: string;
   startDateUtc: Date;
   endDateUtc: Date;
-  maxExecutionSpan: moment.Duration;
-  executionInterval: moment.Duration;
-  executionDelay: moment.Duration;
+  maxExecutionSpan: Duration;
+  executionInterval: Duration;
+  executionDelay: Duration;
   dataActivityDependencyNames: string[];
   parallelismLimit: BigNumber;
 }

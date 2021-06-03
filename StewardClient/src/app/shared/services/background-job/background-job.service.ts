@@ -2,7 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { ApiService } from '@shared/services/api';
-import moment from 'moment';
+import { Duration } from 'luxon';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -59,9 +59,9 @@ export class BackgroundJobService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public getBackgroundJobs$(
     userObjectId: string,
-    resultsFrom: moment.Duration,
+    resultsFrom: Duration,
   ): Observable<BackgroundJob<unknown>[]> {
-    const params = new HttpParams().append('resultsFrom', resultsFrom.toISOString());
+    const params = new HttpParams().append('resultsFrom', resultsFrom.toISO());
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return this.apiService
       .getRequest$<BackgroundJob<unknown>[]>(

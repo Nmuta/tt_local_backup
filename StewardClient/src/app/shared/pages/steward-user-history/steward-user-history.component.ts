@@ -11,7 +11,7 @@ import { Store } from '@ngxs/store';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { UserState } from '@shared/state/user/user.state';
 import { sortBy } from 'lodash';
-import moment from 'moment';
+import { Duration } from 'luxon';
 import { NEVER, Subject } from 'rxjs';
 import { takeUntil, switchMap, catchError, tap, map } from 'rxjs/operators';
 
@@ -28,9 +28,9 @@ export class StewardUserHistoryComponent extends BaseComponent implements OnInit
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   public fromDurations = [
-    { text: 'Last Week', value: moment.duration(1, 'week') },
-    { text: 'Last Month', value: moment.duration(1, 'month') },
-    { text: 'Last Year', value: moment.duration(1, 'year') },
+    { text: 'Last Week', value: Duration.fromObject({ week: 1 }) },
+    { text: 'Last Month', value: Duration.fromObject({ month: 1 }) },
+    { text: 'Last Year', value: Duration.fromObject({ year: 1 }) },
   ];
 
   public formControls = {

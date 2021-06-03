@@ -6,17 +6,17 @@ import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { first } from 'lodash';
-import * as moment from 'moment';
+import { DateTime, Duration } from 'luxon';
 
 interface DurationOption {
-  duration: moment.Duration;
+  duration: Duration;
   humanized: string;
 }
 
 export const DurationPickerOptions: DurationOption[] = [
-  { duration: moment.duration(1, 'week'), humanized: '1 week' },
-  { duration: moment.duration(1, 'month'), humanized: '1 month' },
-  { duration: moment.duration(20, 'years'), humanized: '20 years' },
+  { duration: Duration.fromObject({ week: 1 }), humanized: '1 week' },
+  { duration: Duration.fromObject({ month: 1 }), humanized: '1 month' },
+  { duration: Duration.fromObject({ years: 20 }), humanized: '20 years' },
 ];
 
 /** Allows selection of a duration. Compatible with ngModel. */
@@ -50,21 +50,21 @@ export class DurationPickerComponent implements OnInit, ControlValueAccessor {
     const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
     if (profile && profile.role === UserRole.LiveOpsAdmin) {
       this.options.unshift({
-        duration: moment.duration(1, 'minute'),
+        duration: Duration.fromObject({ minutes: 1 }),
         humanized: '1 minute',
       } as DurationOption);
     }
   }
 
   /** Updates the displayed date. */
-  public updateDate(newDuration: moment.Duration): void {
-    const today = moment().startOf('day');
-    const endDate = today.add(newDuration);
-    this.targetDate = endDate.toDate();
+  public updateDate(newDuration: Duration): void {
+    const today = DateTime.local().startOf('day');
+    const endDate = today.plus(newDuration);
+    this.targetDate = endDate.toJSDate();
   }
 
   /** ngModel hook. */
-  public writeValue(newDuration: moment.Duration): void {
+  public writeValue(newDuration: Duration): void {
     if (newDuration) {
       this.formControl.setValue(newDuration, { emitEvent: false });
       this.updateDate(this.formControl.value);
@@ -72,7 +72,7 @@ export class DurationPickerComponent implements OnInit, ControlValueAccessor {
   }
 
   /** ngModel hook. */
-  public registerOnChange(callback: (value: moment.Duration) => void): void {
+  public registerOnChange(callback: (value: Duration) => void): void {
     this.formControl.valueChanges.subscribe(callback);
   }
 

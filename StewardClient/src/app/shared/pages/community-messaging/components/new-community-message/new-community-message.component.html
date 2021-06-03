@@ -19,10 +19,13 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="expiry-date">
-      <mat-label>Expire Time (mm/dd/yyyy)</mat-label>
+      <mat-label>Expiry Time (mm/dd/yyyy)</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="expireTime" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="newCommunityMessageForm.controls['expireTime'].hasError('is-after')"
+        >Expiry time must be in the future.</mat-error
+      >
     </mat-form-field>
 
     <button

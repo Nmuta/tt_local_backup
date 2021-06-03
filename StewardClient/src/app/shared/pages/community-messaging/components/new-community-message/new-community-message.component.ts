@@ -2,8 +2,9 @@ import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommunityMessage } from '@models/community-message';
 import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
-import moment from 'moment';
 import { DateValidators } from '@shared/validators/date-validators';
+import { DateTime } from 'luxon';
+import { toDateTime } from '@helpers/to-date-time';
 
 /** Outputs a new community message. */
 @Component({
@@ -21,7 +22,7 @@ export class NewCommunityMessageComponent implements OnInit {
   /** New community message form. */
   public newCommunityMessageForm: FormGroup = this.formBuilder.group({
     message: ['', [Validators.required, Validators.maxLength(this.messageMaxLength)]],
-    expireTime: ['', [Validators.required, DateValidators.isAfter(moment())]],
+    expireTime: ['', [Validators.required, DateValidators.isAfter(DateTime.local())]],
   });
 
   constructor(private readonly formBuilder: FormBuilder) {}
@@ -33,7 +34,7 @@ export class NewCommunityMessageComponent implements OnInit {
         this.pendingCommunityMessage.message,
       );
       this.newCommunityMessageForm.controls['expireTime'].setValue(
-        this.pendingCommunityMessage.expiryDate.toISOString(),
+        this.pendingCommunityMessage.expiryDate.toISO(),
       );
     }
   }
@@ -41,12 +42,12 @@ export class NewCommunityMessageComponent implements OnInit {
   /** Testing */
   public createMessage(): void {
     const message = this.newCommunityMessageForm.controls['message'].value;
-    const expireTime = this.newCommunityMessageForm.controls['expireTime'].value;
-    const expireTimeDuration = moment.duration(moment(expireTime).diff(moment().startOf('day')));
+    const expireTime = toDateTime(this.newCommunityMessageForm.controls['expireTime'].value);
+    const expireTimeDuration = expireTime.diff(DateTime.local().startOf('day'));
 
     this.emitNewCommunityMessage.emit({
       message: message,
-      expiryDate: moment(expireTime),
+      expiryDate: expireTime,
       duration: expireTimeDuration,
     } as CommunityMessage);
   }

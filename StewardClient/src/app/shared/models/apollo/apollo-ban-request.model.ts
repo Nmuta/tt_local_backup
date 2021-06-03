@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { GamertagString } from '@models/extended-types';
-import * as moment from 'moment';
+import { Duration } from 'luxon';
 
 export enum ApolloBanArea {
   AllRequests = 'AllRequests',
@@ -27,5 +27,5 @@ export interface ApolloBanRequest {
   sendReasonNotification: boolean;
   reason: string;
   featureArea: ApolloBanArea;
-  duration: moment.Duration;
+  duration: Duration;
 }

@@ -1,5 +1,4 @@
 import { Component, forwardRef } from '@angular/core';
-import * as moment from 'moment';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -12,6 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { first } from 'lodash';
+import { Duration } from 'luxon';
 import { DurationPickerOptions } from '../duration-picker/duration-picker.component';
 
 export enum BanArea {
@@ -23,7 +23,7 @@ export enum BanArea {
 export interface BanOptions {
   banArea: BanArea;
   banReason: string;
-  banDuration: moment.Duration;
+  banDuration: Duration;
   checkboxes: {
     banAllXboxes: boolean;
     banAllPCs: boolean;

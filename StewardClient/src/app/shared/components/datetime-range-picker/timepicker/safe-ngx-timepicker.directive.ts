@@ -1,5 +1,5 @@
 import { Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import { NgxMaterialTimepickerComponent, TimepickerDirective } from 'ngx-material-timepicker';
 
 /** A safer version of the [ngxTimepicker] directive */
@@ -15,14 +15,19 @@ export class SafeNgxTimepickerDirective extends TimepickerDirective implements O
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore TS2611 This override of an accessor is intentional and works correctly. Produces compile-time error in TS4.x.x despite working fine.
   public set value(value: string) {
-    const strictParsed = moment.utc(value, 'HH:mm', true);
-    if (strictParsed.isValid()) {
-      this.useFallbackValue = false;
-      super.value = value;
-    } else {
-      this.useFallbackValue = true;
-      this.fallbackValue = value;
+    try {
+      const strictParsed = DateTime.fromFormat(value, 'HH:mm', { zone: 'utc' });
+      if (strictParsed.isValid) {
+        this.useFallbackValue = false;
+        super.value = value;
+        return;
+      }
+    } catch (ex) {
+      // ignore failures
     }
+
+    this.useFallbackValue = true;
+    this.fallbackValue = value;
   }
 
   /** Override the value getter. */
