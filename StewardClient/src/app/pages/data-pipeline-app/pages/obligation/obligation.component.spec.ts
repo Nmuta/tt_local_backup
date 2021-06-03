@@ -1,24 +1,47 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, DebugElement, NO_ERRORS_SCHEMA, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
-import { PipesModule } from '@shared/pipes/pipes.module';
-import { DependencyListComponent } from './components/dependency-list/dependency-list.component';
-import { FullObligationInputComponent } from './components/full-obligation-input/full-obligation-input.component';
-import { KustoFunctionComponent } from './components/kusto-data-activities/kusto-function/kusto-function.component';
-import { KustoDataActivitiesComponent } from './components/kusto-data-activities/kusto-data-activities.component';
-import { KustoDataActivityComponent } from './components/kusto-data-activities/kusto-data-activity/kusto-data-activity.component';
 
 import { DataPipelineObligationComponent } from './obligation.component';
+import { DataPipelineObligationModule } from './obligation.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AllAppsDropdownModule } from '@views/all-apps-dropdown/all-apps-dropdown.module';
+import { DataPrivacyNoticeModule } from '@views/data-privacy-notice/data-privacy-notice.module';
+import { FourOhFourModule } from '@views/four-oh-four/four-oh-four.module';
+import { SidebarIconsModule } from '@views/sidebar-icons/sidebar-icons.module';
+import { SidebarsModule } from 'app/sidebars/sidebars.module';
+import { By } from '@angular/platform-browser';
+
+@Component({
+  template: '<hook-to-test-obligation-page></hook-to-test-obligation-page>',
+})
+class TestHarnessComponent {}
+
+interface DebugElementOverride<T> extends DebugElement {
+  context: T;
+}
+
+function doQueryByDirective<T>(
+  parentDebugElement: DebugElement,
+  targetType: Type<T>,
+): DebugElementOverride<T> {
+  return parentDebugElement.query(By.directive(targetType));
+}
 
 describe('DataPipelineObligationComponent', () => {
-  let component: DataPipelineObligationComponent;
-  let fixture: ComponentFixture<DataPipelineObligationComponent>;
-
-  const formBuilder: FormBuilder = new FormBuilder();
+  let component: TestHarnessComponent;
+  let fixture: ComponentFixture<TestHarnessComponent>;
+  let rootElement: DebugElementOverride<DataPipelineObligationComponent>;
+  let rootComponent: DataPipelineObligationComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -26,28 +49,36 @@ describe('DataPipelineObligationComponent', () => {
         RouterTestingModule.withRoutes([]),
         HttpClientTestingModule,
         NgxsModule.forRoot([]),
-        PipesModule,
-        MatAutocompleteModule,
+        DataPipelineObligationModule,
+        NoopAnimationsModule,
+        DataPrivacyNoticeModule,
+        SidebarsModule,
+        FontAwesomeModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatTooltipModule,
+        FontAwesomeModule,
+        FourOhFourModule,
+        MatCardModule,
+        AllAppsDropdownModule,
+        SidebarIconsModule,
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [
-        DataPipelineObligationComponent,
-        FullObligationInputComponent,
-        KustoDataActivityComponent,
-        KustoDataActivitiesComponent,
-        KustoFunctionComponent,
-        KustoDataActivityComponent,
-        DependencyListComponent,
-      ],
-      providers: [{ provide: FormBuilder, useValue: formBuilder }],
+      declarations: [TestHarnessComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DataPipelineObligationComponent);
+    fixture = TestBed.createComponent(TestHarnessComponent);
     component = fixture.componentInstance;
+    rootElement = doQueryByDirective(fixture.debugElement, DataPipelineObligationComponent);
+    rootComponent = rootElement.context;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create and get keystone elements', () => {
     expect(component).toBeTruthy();
+    expect(rootElement).toBeTruthy();
+    expect(rootComponent).toBeTruthy();
   });
 });

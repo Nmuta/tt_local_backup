@@ -31,6 +31,7 @@ import { ActivePipelineService } from './services/active-pipeline.service';
 
 /** Displays the community messaging feature. */
 @Component({
+  selector: 'hook-to-test-obligation-page',
   templateUrl: './obligation.component.html',
   styleUrls: ['./obligation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
