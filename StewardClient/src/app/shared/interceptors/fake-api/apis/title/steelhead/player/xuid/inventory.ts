@@ -5,6 +5,7 @@ import { SteelheadPlayerInventory } from '@models/steelhead';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import faker from 'faker';
 import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for steelhead player inventory. */
 export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
@@ -45,7 +46,7 @@ export class SteelheadPlayerXuidInventoryFakeApi extends FakeApiBase {
             quantity: faker.datatype.number(1_000),
             description: faker.lorem.sentences(2),
             itemType: undefined,
-            dateAquiredUtc: faker.date.past(),
+            dateAquiredUtc: toDateTime(faker.date.past()),
           };
         });
     }

@@ -1,4 +1,5 @@
 import { environment } from '@environments/environment';
+import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { faker } from '@interceptors/fake-api/utility';
 import { WoodstockPlayerNotification } from '@models/woodstock';
@@ -26,8 +27,8 @@ export class WoodstockPlayerXuidNotificationsFakeApi extends FakeApiBase {
   public static makeMany(): WoodstockPlayerNotification[] {
     return new Array(faker.datatype.number({ min: 5, max: 20 })).fill(null).map(_ => {
       return <WoodstockPlayerNotification>{
-        expirationDateUtc: faker.date.future(),
-        sendDateUtc: faker.date.past(),
+        expirationDateUtc: toDateTime(faker.date.future()),
+        sendDateUtc: toDateTime(faker.date.past()),
         isRead: faker.datatype.boolean(),
         notificationId: faker.datatype.uuid(),
         notificationType: faker.random.arrayElement([

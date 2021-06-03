@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { GamertagString, GuidLikeString, T10IdString } from '@models/extended-types';
 import { GravitySaveState } from './gravity-save-state.model';
+import { DateTime } from 'luxon';
 
 /** Interface for gravity player details. */
 export interface GravityPlayerDetails {
@@ -14,8 +15,8 @@ export interface GravityPlayerDetails {
   region: BigNumber;
   ipAddress: string;
   subscriptionTier: string;
-  lastLoginUtc: Date;
-  firstLoginUtc: Date;
+  lastLoginUtc: DateTime;
+  firstLoginUtc: DateTime;
   ageGroup: BigNumber;
   timeOffsetInSeconds: BigNumber;
   lastGameSettingsUsed: GuidLikeString;

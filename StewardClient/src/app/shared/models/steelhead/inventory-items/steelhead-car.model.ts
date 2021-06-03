@@ -9,7 +9,7 @@ export interface SteelheadCar extends SteelheadInventoryItem {
   collectorScore: BigNumber;
   isOnlineOnly: boolean;
   productionNumber: BigNumber;
-  purchaseUtc: Date;
+  purchaseUtc: DateTime;
   versionedLiveryId: GuidLikeString;
   versionedTuneId: GuidLikeString;
 }

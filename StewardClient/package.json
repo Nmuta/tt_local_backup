@@ -4,6 +4,7 @@
   "scripts": {
     "refreshVSToken": "vsts-npm-auth -config .npmrc",
     "ng": "ng",
+    "fix": "yarn prettier:fix && yarn lint --fix",
     "lint": "ng lint",
     "eslint": "eslint -c ./.eslintrc.js --ext .ts,.html ./**/*.ts",
     "find:missing_no_errors_schema": "grep -rn -C 0 --include \\*.component.spec.ts -L \"\\[NO_ERRORS_SCHEMA\\]\" ./src/*",

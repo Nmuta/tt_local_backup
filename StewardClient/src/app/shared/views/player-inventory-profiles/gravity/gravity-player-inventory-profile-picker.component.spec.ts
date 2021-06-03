@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatChipsModule } from '@angular/material/chips';
+import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 import { GravityPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/gravity/players/identities';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 import { createMockGravityService, GravityService, MockGravityService } from '@services/gravity';
@@ -17,7 +18,7 @@ describe('GravityPlayerInventoryProfilePickerComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [GravityPlayerInventoryProfilePickerComponent],
       providers: [createMockGravityService()],
-      imports: [MatChipsModule],
+      imports: [MatChipsModule, ...STANDARD_DATE_IMPORTS],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

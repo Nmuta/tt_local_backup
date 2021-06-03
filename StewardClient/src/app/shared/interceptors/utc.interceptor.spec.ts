@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { environment } from '@environments/environment';
 import { clone } from 'lodash';
+import { DateTime } from 'luxon';
 
 import { UtcInterceptor } from './utc.interceptor';
 
@@ -140,8 +141,8 @@ describe('UtcInterceptor', () => {
         expect(response).toBeTruthy();
         expect(interceptor.handle).toHaveBeenCalledTimes(1);
 
-        expect(response.testUtc instanceof Date).toBeTruthy();
-        expect(response.test instanceof Date).toBeFalsy();
+        expect(response.testUtc instanceof DateTime).toBeTruthy();
+        expect(response.test instanceof DateTime).toBeFalsy();
         expect(response.test).toBe(testResponse.test);
 
         done();
@@ -161,12 +162,12 @@ describe('UtcInterceptor', () => {
         expect(response).toBeTruthy();
         expect(interceptor.handle).toHaveBeenCalledTimes(1);
 
-        expect(response.nested.testUtc instanceof Date).toBeTruthy();
-        expect(response.nested.test instanceof Date).toBeFalsy();
+        expect(response.nested.testUtc instanceof DateTime).toBeTruthy();
+        expect(response.nested.test instanceof DateTime).toBeFalsy();
         expect(response.nested.test).toBe(testResponse.nested.test);
 
-        expect(response.deeplyNested.testUtc instanceof Date).toBeTruthy();
-        expect(response.deeplyNested.test instanceof Date).toBeFalsy();
+        expect(response.deeplyNested.testUtc instanceof DateTime).toBeTruthy();
+        expect(response.deeplyNested.test instanceof DateTime).toBeFalsy();
         expect(response.deeplyNested.test).toBe(testResponse.deeplyNested.test);
 
         done();
@@ -186,8 +187,8 @@ describe('UtcInterceptor', () => {
         expect(response).toBeTruthy();
         expect(interceptor.handle).toHaveBeenCalledTimes(1);
 
-        expect(response.deeplyNested.nested.testUtc instanceof Date).toBeTruthy();
-        expect(response.deeplyNested.nested.test instanceof Date).toBeFalsy();
+        expect(response.deeplyNested.nested.testUtc instanceof DateTime).toBeTruthy();
+        expect(response.deeplyNested.nested.test instanceof DateTime).toBeFalsy();
         expect(response.test).toBe(testResponse.test);
 
         done();
@@ -210,8 +211,8 @@ describe('UtcInterceptor', () => {
         expect(interceptor.handle).toHaveBeenCalledTimes(1);
 
         for (const item of response) {
-          expect(item.testUtc instanceof Date).toBeTruthy();
-          expect(item.test instanceof Date).toBeFalsy();
+          expect(item.testUtc instanceof DateTime).toBeTruthy();
+          expect(item.test instanceof DateTime).toBeFalsy();
           expect(item.test).toBe(testResponseSimple.test);
         }
 
@@ -233,12 +234,12 @@ describe('UtcInterceptor', () => {
         expect(interceptor.handle).toHaveBeenCalledTimes(1);
 
         for (const item of response) {
-          expect(item.testUtc instanceof Date).toBeTruthy();
-          expect(item.test instanceof Date).toBeFalsy();
+          expect(item.testUtc instanceof DateTime).toBeTruthy();
+          expect(item.test instanceof DateTime).toBeFalsy();
           expect(item.test).toBe(testResponseComposite.test);
           for (const item2 of item.array) {
-            expect(item2.testUtc instanceof Date).toBeTruthy();
-            expect(item2.test instanceof Date).toBeFalsy();
+            expect(item2.testUtc instanceof DateTime).toBeTruthy();
+            expect(item2.test instanceof DateTime).toBeFalsy();
             expect(item2.test).toBe(testResponseSimple.test);
           }
         }
@@ -261,19 +262,19 @@ describe('UtcInterceptor', () => {
         expect(interceptor.handle).toHaveBeenCalledTimes(1);
 
         for (const item of response.deeplyNestedArray) {
-          expect(item.testUtc instanceof Date).toBeTruthy();
-          expect(item.test instanceof Date).toBeFalsy();
+          expect(item.testUtc instanceof DateTime).toBeTruthy();
+          expect(item.test instanceof DateTime).toBeFalsy();
           expect(item.test).toBe(testResponseComposite.test);
           for (const item2 of item.array) {
-            expect(item2.testUtc instanceof Date).toBeTruthy();
-            expect(item2.test instanceof Date).toBeFalsy();
+            expect(item2.testUtc instanceof DateTime).toBeTruthy();
+            expect(item2.test instanceof DateTime).toBeFalsy();
             expect(item2.test).toBe(testResponseSimple.test);
           }
         }
 
         for (const item2 of response.array) {
-          expect(item2.testUtc instanceof Date).toBeTruthy();
-          expect(item2.test instanceof Date).toBeFalsy();
+          expect(item2.testUtc instanceof DateTime).toBeTruthy();
+          expect(item2.test instanceof DateTime).toBeFalsy();
           expect(item2.test).toBe(testResponseSimple.test);
         }
 

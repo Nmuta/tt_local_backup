@@ -4,6 +4,7 @@ import { ZERO } from '@helpers/bignumbers';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { WoodstockBanSummary, WoodstockBanArea } from '@models/woodstock';
 import faker from 'faker';
+import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for banning players. */
 export class WoodstockPlayersBanSummariesFakeApi extends FakeApiBase {
@@ -34,13 +35,13 @@ export class WoodstockPlayersBanSummariesFakeApi extends FakeApiBase {
         xuid: xuid,
         lastBanDescription: {
           countOfTimesExtended: new BigNumber(faker.datatype.number()),
-          expireTimeUtc: faker.date.future(),
+          expireTimeUtc: toDateTime(faker.date.future()),
           featureArea: faker.random.arrayElement(Object.values(WoodstockBanArea)),
           isActive: faker.datatype.boolean(),
           lastExtendedReason: faker.random.words(faker.datatype.number({ min: 5, max: 50 })),
-          lastExtendedTimeUtc: faker.date.past(),
+          lastExtendedTimeUtc: toDateTime(faker.date.past()),
           reason: faker.random.words(faker.datatype.number({ min: 5, max: 50 })),
-          startTimeUtc: faker.date.past(),
+          startTimeUtc: toDateTime(faker.date.past()),
           xuid: xuid,
         },
         userExists: faker.datatype.boolean(),

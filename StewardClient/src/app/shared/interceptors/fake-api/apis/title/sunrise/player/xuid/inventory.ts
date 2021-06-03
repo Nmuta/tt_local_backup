@@ -4,6 +4,7 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunrisePlayerInventory } from '@models/sunrise';
 import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for sunrise player inventory. */
 export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
@@ -44,7 +45,7 @@ export class SunrisePlayerXuidInventoryFakeApi extends FakeApiBase {
             quantity: faker.datatype.number(5),
             description: faker.lorem.sentences(2),
             itemType: undefined,
-            dateAquiredUtc: faker.date.past(),
+            dateAquiredUtc: toDateTime(faker.date.past()),
           };
         });
     }

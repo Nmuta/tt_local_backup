@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { DateTime } from 'luxon';
 import { ApolloBanArea } from './apollo-ban-request.model';
 
 /** The /v1/title/Apollo/players/ban model */
@@ -11,11 +12,11 @@ export interface ApolloBanResult {
 /** Services model for bans. */
 export interface ApolloBanDescription {
   xuid: BigNumber;
-  startTimeUtc: Date;
-  expireTimeUtc: Date;
+  startTimeUtc: DateTime;
+  expireTimeUtc: DateTime;
   isActive: boolean;
   countOfTimesExtended: BigNumber;
-  lastExtendedTimeUtc: Date;
+  lastExtendedTimeUtc: DateTime;
   lastExtendedReason: string;
   reason: string;
   featureArea: ApolloBanArea;

@@ -8,6 +8,7 @@ import { of, throwError } from 'rxjs';
 import { BanResultsUnion, UserBanningBaseComponent } from './user-banning.base.component';
 import faker from 'faker';
 import { createMockNotificationsService } from '@shared/hubs/notifications.service.mock';
+import { toDateTime } from '@helpers/luxon';
 
 describe('UserBanningBaseComponent', () => {
   let component: UserBanningBaseComponent;
@@ -38,7 +39,7 @@ describe('UserBanningBaseComponent', () => {
 
   describe('Method: waitForBackgroundJobToComplete', () => {
     const testJob: BackgroundJob<void> = {
-      createdDateUtc: faker.date.past(),
+      createdDateUtc: toDateTime(faker.date.past()),
       jobId: 'test=-job-id',
       status: BackgroundJobStatus.InProgress,
       result: undefined,
@@ -79,7 +80,7 @@ describe('UserBanningBaseComponent', () => {
 
       describe('And a BackgroundJob is returned', () => {
         const testBackgroundJobResp: BackgroundJob<BanResultsUnion[]> = {
-          createdDateUtc: faker.date.past(),
+          createdDateUtc: toDateTime(faker.date.past()),
           jobId: 'test=-job-id',
           status: BackgroundJobStatus.InProgress,
           result: [

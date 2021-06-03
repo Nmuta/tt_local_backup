@@ -1,13 +1,14 @@
 import { GuidLikeString } from '@models/extended-types';
 import BigNumber from 'bignumber.js';
+import { DateTime } from 'luxon';
 import { SteelheadBanArea } from './steelhead-ban-request.model';
 
 /** A ban history entry from Steelhead. */
 export interface SteelheadBanHistoryEntry {
   isActive: boolean;
-  startTimeUtc: Date;
-  expireTimeUtc: Date;
-  lastExtendedTimeUtc: Date;
+  startTimeUtc: DateTime;
+  expireTimeUtc: DateTime;
+  lastExtendedTimeUtc: DateTime;
   countOfTimesExtended: BigNumber;
   xuid: BigNumber;
   title: 'steelhead';

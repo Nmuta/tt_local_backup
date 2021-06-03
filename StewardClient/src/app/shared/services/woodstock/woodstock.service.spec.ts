@@ -15,6 +15,7 @@ import { ApiService, createMockApiService } from '@services/api';
 import { of } from 'rxjs';
 
 import { WoodstockService } from './woodstock.service';
+import { DateTime } from 'luxon';
 
 describe('WoodstockService', () => {
   let injector: TestBed;
@@ -208,10 +209,22 @@ describe('WoodstockService', () => {
       1,
     ));
     service.getBanHistoryByXuid$(fakeXuid()).subscribe(output => {
-      expect(output[0].startTimeUtc instanceof Date).toBe(true, 'liveOps.startTimeUtc is Date');
-      expect(output[0].expireTimeUtc instanceof Date).toBe(true, 'liveOps.expireTimeUtc is Date');
-      expect(output[0].startTimeUtc instanceof Date).toBe(true, 'services.startTimeUtc is Date');
-      expect(output[0].expireTimeUtc instanceof Date).toBe(true, 'services.expireTimeUtc is Date');
+      expect(output[0].startTimeUtc instanceof DateTime).toBe(
+        true,
+        'liveOps.startTimeUtc is DateTime',
+      );
+      expect(output[0].expireTimeUtc instanceof DateTime).toBe(
+        true,
+        'liveOps.expireTimeUtc is DateTime',
+      );
+      expect(output[0].startTimeUtc instanceof DateTime).toBe(
+        true,
+        'services.startTimeUtc is DateTime',
+      );
+      expect(output[0].expireTimeUtc instanceof DateTime).toBe(
+        true,
+        'services.expireTimeUtc is DateTime',
+      );
 
       // clear the validated fields
       for (const value of [output, typedReturnValue]) {

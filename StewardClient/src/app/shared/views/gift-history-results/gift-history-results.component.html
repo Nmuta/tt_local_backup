@@ -14,8 +14,8 @@
             <mat-expansion-panel-header>
               <mat-panel-title>
                 <span class="gift-reason">{{ history.giftInventory.giftReason }}</span>
-                <span [matTooltip]="history.giftSendDateUtc | date: 'long'">
-                  {{ history.giftSendDateUtc | date: 'short' }}
+                <span [matTooltip]="history.giftSendDateUtc | dateTimeToJsDate | date: 'long'">
+                  {{ history.giftSendDateUtc | dateTimeToJsDate | date: 'short' }}
                 </span>
               </mat-panel-title>
               <mat-panel-description>

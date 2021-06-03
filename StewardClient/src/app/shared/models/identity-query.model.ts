@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { DateTime } from 'luxon';
 import { MSError } from './error.model';
 import { GamertagString, T10IdString } from './extended-types';
 
@@ -80,8 +81,8 @@ export function isT10IdQuery(mystery: unknown): mystery is IdentityQueryByT10Id 
 /** Contextual information about T10IDs. */
 export interface T10IdInfo {
   t10Id: T10IdString;
-  createdUtc: Date;
-  lastAccessedUtc: Date;
+  createdUtc: DateTime;
+  lastAccessedUtc: DateTime;
 }
 
 /**

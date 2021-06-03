@@ -20,6 +20,7 @@ import { SteelheadBanHistoryCompactComponent } from './steelhead/compact/steelhe
 import { WoodstockBanHistoryComponent } from './woodstock/woodstock-ban-history.component';
 import { WoodstockBanHistoryCompactComponent } from './woodstock/compact/woodstock-ban-history-compact.component';
 import { MatIconModule } from '@angular/material/icon';
+import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 
 /** A domain module for displaying player ban histories. */
 @NgModule({
@@ -35,6 +36,7 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   imports: [
     CommonModule,
+    ...STANDARD_DATE_IMPORTS,
     MatCardModule,
     MatProgressSpinnerModule,
     ErrorSpinnerModule,

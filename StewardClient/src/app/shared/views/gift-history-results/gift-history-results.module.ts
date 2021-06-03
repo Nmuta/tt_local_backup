@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { GravityGiftHistoryResultsComponent } from './gravity/gravity-gift-history-results.component';
 import { SunriseGiftHistoryResultsComponent } from './sunrise/sunrise-gift-history-results.component';
 import { ApolloGiftHistoryResultsComponent } from './apollo/apollo-gift-history-results.component';
@@ -17,6 +16,8 @@ import { PlayerInventoryModule } from '@views/player-inventory/player-inventory.
 import { InventoryItemListDisplayModule } from '@views/inventory-item-list-display/inventory-item-list-display.module';
 import { SteelheadGiftHistoryResultsComponent } from './steelhead/steelhead-gift-history-results.component';
 import { WoodstockGiftHistoryResultsComponent } from './woodstock/woodstock-gift-history-results.component';
+import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
+import { CommonModule } from '@angular/common';
 
 /** A domain module for displaying player gift histories. */
 @NgModule({
@@ -29,6 +30,7 @@ import { WoodstockGiftHistoryResultsComponent } from './woodstock/woodstock-gift
   ],
   imports: [
     CommonModule,
+    ...STANDARD_DATE_IMPORTS,
     MatCardModule,
     MatProgressSpinnerModule,
     MatExpansionModule,

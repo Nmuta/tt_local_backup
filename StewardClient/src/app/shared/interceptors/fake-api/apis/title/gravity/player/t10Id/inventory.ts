@@ -4,6 +4,7 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GravityPlayerInventory } from '@models/gravity';
 import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for gravity player inventory. */
 export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
@@ -44,7 +45,7 @@ export class GravityPlayerT10IdInventoryFakeApi extends FakeApiBase {
             quantity: faker.datatype.number(5),
             description: faker.lorem.sentences(2),
             itemType: undefined,
-            dateAquiredUtc: faker.date.past(),
+            dateAquiredUtc: toDateTime(faker.date.past()),
           };
         });
     }

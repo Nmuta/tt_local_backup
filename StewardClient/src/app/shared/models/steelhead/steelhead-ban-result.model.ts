@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { DateTime } from 'luxon';
 import { SteelheadBanArea } from './steelhead-ban-request.model';
 
 /** The /v1/title/steelhead/players/ban model */
@@ -11,11 +12,11 @@ export interface SteelheadBanResult {
 /** Services model for bans. */
 export interface SteelheadBanDescription {
   xuid: BigNumber;
-  startTimeUtc: Date;
-  expireTimeUtc: Date;
+  startTimeUtc: DateTime;
+  expireTimeUtc: DateTime;
   isActive: boolean;
   countOfTimesExtended: BigNumber;
-  lastExtendedTimeUtc: Date;
+  lastExtendedTimeUtc: DateTime;
   lastExtendedReason: string;
   reason: string;
   featureArea: SteelheadBanArea;

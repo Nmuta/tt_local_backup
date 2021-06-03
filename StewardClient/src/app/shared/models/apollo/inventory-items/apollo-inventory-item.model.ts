@@ -3,8 +3,8 @@ import BigNumber from 'bignumber.js';
 export interface ApolloInventoryItem {
   itemId: BigNumber;
   quantity: BigNumber;
-  acquisitionUtc: Date;
-  lastUsedUtc: Date;
+  acquisitionUtc: DateTime;
+  lastUsedUtc: DateTime;
   description: string;
   special: 'Unicorn' | ''; // may be other values
 }

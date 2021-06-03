@@ -6,6 +6,7 @@ import { faker } from '@interceptors/fake-api/utility';
 import { ObligationPrincipal } from '@models/pipelines/obligation-principal';
 import { ObligationKustoDataActivity } from '@models/pipelines/obligation-kusto-data-activity';
 import { Duration } from 'luxon';
+import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for GETing a single pipeline. */
 export class PipelineGetFakeApi extends FakeApiBase {
@@ -59,8 +60,8 @@ export class PipelineGetFakeApi extends FakeApiBase {
             .fill(undefined)
             .map(_ => faker.name.firstName()),
           destinationDatabase: faker.datatype.uuid(),
-          endDateUtc: faker.date.future(1),
-          startDateUtc: faker.date.past(1),
+          endDateUtc: toDateTime(faker.date.future(1)),
+          startDateUtc: toDateTime(faker.date.past(1)),
           executionDelay: Duration.fromObject({
             minutes: faker.datatype.number({ min: 30, max: 2880 }),
           }),

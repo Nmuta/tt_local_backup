@@ -7,6 +7,7 @@ import faker from 'faker';
 import { of, throwError } from 'rxjs';
 import { SunriseProfileNotesComponent } from './sunrise-profile-notes.component';
 import { ProfileNote } from '@models/profile-note.model';
+import { toDateTime } from '@helpers/luxon';
 
 describe('SunriseProfileNotesComponent', () => {
   let component: SunriseProfileNotesComponent;
@@ -72,8 +73,16 @@ describe('SunriseProfileNotesComponent', () => {
 
       describe('And getProfileNotesXuid return valid response', () => {
         const profileNotes = [
-          { dateUtc: faker.date.past(), author: 'System', text: faker.random.words(10) },
-          { dateUtc: faker.date.past(), author: 'System', text: faker.random.words(10) },
+          {
+            dateUtc: toDateTime(faker.date.past()),
+            author: 'System',
+            text: faker.random.words(10),
+          },
+          {
+            dateUtc: toDateTime(faker.date.past()),
+            author: 'System',
+            text: faker.random.words(10),
+          },
         ] as ProfileNote[];
 
         beforeEach(() => {

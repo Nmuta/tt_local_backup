@@ -1,4 +1,5 @@
 import { environment } from '@environments/environment';
+import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility/fake-bigint';
 import { ApolloGiftHistory } from '@models/apollo';
@@ -32,7 +33,7 @@ export class ApolloPlayerXuidGiftHistoryFakeApi extends FakeApiBase {
         idType: GiftIdentityAntecedent.Xuid,
         id: xuid,
         title: 'apollo',
-        giftSendDateUtc: faker.date.past(),
+        giftSendDateUtc: toDateTime(faker.date.past()),
         requesterObjectId: faker.datatype.uuid(),
         giftInventory: {
           giftReason: faker.random.word(),

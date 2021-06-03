@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { Duration } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import { KustoFunction } from './kusto-function';
 
 /** A kusto-type restate-o-matic data activity. */
@@ -9,8 +9,8 @@ export interface ObligationKustoRestateOMaticDataActivity {
   kustoDatabase: string;
   kustoFunction: KustoFunction;
   destinationDatabase: string;
-  startDateUtc: Date;
-  endDateUtc: Date;
+  startDateUtc: DateTime;
+  endDateUtc: DateTime;
   maxExecutionSpan: Duration;
   executionInterval: Duration;
   executionDelay: Duration;

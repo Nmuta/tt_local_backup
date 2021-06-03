@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
 import { chain, isArray, isPlainObject, map } from 'lodash';
 import { filter, map as rxMap } from 'rxjs/operators';
+import { toDateTime } from '@helpers/luxon';
 
 type DeepMapPairsFn = ([key, value]) => [string, unknown];
 function deepMapPairs(
@@ -69,7 +70,7 @@ export class UtcInterceptor implements HttpInterceptor {
       rxMap((event: HttpResponse<Record<string, unknown>>) => {
         const newBody = deepMapPairs(event.body, ([key, value]) => {
           if (key.endsWith('Utc') && typeof value === 'string') {
-            return [key, new Date(value)];
+            return [key, toDateTime(value)];
           }
 
           return [key, value];

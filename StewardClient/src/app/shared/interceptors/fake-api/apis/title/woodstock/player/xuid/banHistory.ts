@@ -5,6 +5,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { WoodstockBanArea } from '@models/woodstock';
 import { LiveOpsBanDescription, LiveOpsBanDescriptions } from '@models/woodstock';
 import faker from 'faker';
+import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for finding User Flags. */
 export class WoodstockPlayerXuidBanHistoryFakeApi extends FakeApiBase {
@@ -40,8 +41,8 @@ export class WoodstockPlayerXuidBanHistoryFakeApi extends FakeApiBase {
       () =>
         <LiveOpsBanDescription>{
           banParameters: faker.lorem.paragraph(),
-          expireTimeUtc: faker.date.future(),
-          startTimeUtc: faker.date.past(),
+          expireTimeUtc: toDateTime(faker.date.future()),
+          startTimeUtc: toDateTime(faker.date.past()),
           featureArea: faker.random.arrayElement(Object.values(WoodstockBanArea)),
           isActive: faker.datatype.boolean(),
           reason: faker.lorem.sentence(),

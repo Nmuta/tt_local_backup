@@ -6,7 +6,7 @@ export interface OpusCar {
   vin: GuidLikeString;
   baseCost: BigNumber;
   carId: BigNumber;
-  dateCreatedUtc: Date;
+  dateCreatedUtc: DateTime;
   displayName: string;
   special: 'Unicorn' | '';
   quantity: BigNumber;

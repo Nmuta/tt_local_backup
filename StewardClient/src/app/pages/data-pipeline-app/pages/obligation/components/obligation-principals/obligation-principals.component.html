@@ -59,10 +59,10 @@
           >
             <mat-icon>close</mat-icon>
           </button>
-          <mat-hint *ngIf="getFormControl(index, 'principalType').value == PrincipalType.User"
+          <mat-hint *ngIf="getFormControl(index, 'principalType').value === PrincipalType.User"
             >The user's email address</mat-hint
           >
-          <mat-hint *ngIf="getFormControl(index, 'principalType').value == PrincipalType.Group"
+          <mat-hint *ngIf="getFormControl(index, 'principalType').value === PrincipalType.Group"
             >The AAD object ID of the group</mat-hint
           >
           <mat-error *ngIf="getFormControl(index, 'principalValue').hasError('required')"

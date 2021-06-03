@@ -1,4 +1,5 @@
 import { environment } from '@environments/environment';
+import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ProfileNote } from '@models/profile-note.model';
 import * as faker from 'faker';
@@ -27,7 +28,7 @@ export class SunrisePlayerXuidProfileNotesApi extends FakeApiBase {
     return new Array(faker.datatype.number({ min: 1, max: 5 })).fill(undefined).map(
       () =>
         <ProfileNote>{
-          dateUtc: faker.date.past(),
+          dateUtc: toDateTime(faker.date.past()),
           author: 'System',
           text: faker.random.words(10),
         },

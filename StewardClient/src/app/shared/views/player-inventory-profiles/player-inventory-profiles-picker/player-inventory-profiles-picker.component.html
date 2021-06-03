@@ -33,7 +33,7 @@
       *ngIf="profile.lastLoginUtc"
       class="last-used"
       svgIcon="steward-history"
-      [matTooltip]="'Last Used On: ' + (profile.lastLoginUtc | date: 'long')"
+      [matTooltip]="'Last Used On: ' + (profile.lastLoginUtc | dateTimeToJsDate | date: 'long')"
     ></mat-icon>
     <mat-icon
       *ngIf="profile.externalProfileId"

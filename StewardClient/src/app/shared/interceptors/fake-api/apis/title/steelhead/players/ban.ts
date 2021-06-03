@@ -3,6 +3,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SteelheadBanArea, SteelheadBanResult } from '@models/steelhead';
 import { faker } from '@interceptors/fake-api/utility';
+import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for banning players. */
 export class SteelheadPlayersBanFakeApi extends FakeApiBase {
@@ -33,12 +34,12 @@ export class SteelheadPlayersBanFakeApi extends FakeApiBase {
           xuid: new BigNumber(2533275026603041),
           isActive: true,
           countOfTimesExtended: new BigNumber(0),
-          lastExtendedTimeUtc: faker.date.past(),
+          lastExtendedTimeUtc: toDateTime(faker.date.past()),
           lastExtendedReason: null,
           reason: 'Illegitimately obtaining the Owens McLaren',
           featureArea: SteelheadBanArea.AllRequests,
-          startTimeUtc: faker.date.past(),
-          expireTimeUtc: faker.date.future(),
+          startTimeUtc: toDateTime(faker.date.past()),
+          expireTimeUtc: toDateTime(faker.date.future()),
         },
       },
     ];

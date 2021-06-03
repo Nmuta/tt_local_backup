@@ -3,6 +3,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 import { OpusPlayerInventory } from '@models/opus';
+import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for opus player inventory. */
 export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
@@ -46,7 +47,7 @@ export class OpusPlayerXuidInventoryFakeApi extends FakeApiBase {
             quantity: 1,
             description: faker.random.words(3),
             itemType: undefined,
-            dateAquiredUtc: faker.date.past(),
+            dateAquiredUtc: toDateTime(faker.date.past()),
           };
         }),
     };

@@ -50,6 +50,8 @@ import { SteelheadGiftHistoryState } from '@navbar-app/pages/gift-history/steelh
 import { USER_GUARD_PROVIDERS } from './route-guards/user-role.guards';
 import { WoodstockGiftingState } from '@shared/pages/gifting/woodstock/state/woodstock-gifting.state';
 import { WoodstockGiftHistoryState } from '@navbar-app/pages/gift-history/woodstock/state/woodstock-gift-history.state';
+import { MatLuxonDateModule } from 'ngx-material-luxon';
+import { LuxonModule } from 'luxon-angular';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -82,6 +84,8 @@ function fakeApiOrNothing(): Provider[] {
     HttpClientModule,
     FourOhFourModule,
     MatCardModule,
+    MatLuxonDateModule,
+    LuxonModule,
     MatNativeDateModule,
     CenterContentsModule,
     FlexLayoutModule,

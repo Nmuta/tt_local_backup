@@ -1,6 +1,8 @@
+import { DateTime } from 'luxon';
+
 /** Interface for a background job. */
 export interface BackgroundJob<T> {
-  createdDateUtc: Date;
+  createdDateUtc: DateTime;
   jobId: string;
   status: BackgroundJobStatus;
   rawResult: Record<string, unknown>;

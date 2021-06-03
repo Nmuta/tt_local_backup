@@ -8,6 +8,7 @@ import { GiftHistoryResultsBaseComponent } from './gift-history-results.base.com
 import { GiftHistoryView } from './gift-history-results.base.component';
 import faker from 'faker';
 import { PlayerInventoryItem } from '@models/player-inventory-item';
+import { toDateTime } from '@helpers/luxon';
 
 describe('GiftHistoryResultsBaseComponent', () => {
   let component: GiftHistoryResultsBaseComponent<IdentityResultAlpha, SunriseGiftHistory>;
@@ -128,7 +129,7 @@ describe('GiftHistoryResultsBaseComponent', () => {
         description: faker.random.words(10),
         quantity: faker.datatype.number(),
         itemType: 'creditRewards',
-        dateAquiredUtc: faker.date.past(),
+        dateAquiredUtc: toDateTime(faker.date.past()),
       },
     ] as PlayerInventoryItem[];
     it('should generate a PlayerInventoryItemList', () => {

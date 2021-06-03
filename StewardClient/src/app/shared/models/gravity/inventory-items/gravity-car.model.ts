@@ -5,7 +5,7 @@ import { GravityInventoryItem } from './gravity-inventory-item.model';
 /** Interface for gravity player car item. */
 export interface GravityCar extends GravityInventoryItem {
   vin: GuidLikeString;
-  purchaseUtc: Date;
+  purchaseUtc: DateTime;
   currentMasteryRank: BigNumber;
   cumulativeMastery: BigNumber;
   repairState: BigNumber;

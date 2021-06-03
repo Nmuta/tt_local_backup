@@ -2,6 +2,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { OpusPlayerDetails } from '@models/opus';
 import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
+import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for finding User Flags. */
 export class OpusPlayerGamertagDetailsFakeApi extends FakeApiBase {
@@ -37,8 +38,8 @@ export class OpusPlayerGamertagDetailsFakeApi extends FakeApiBase {
       currentCareerLevel: fakeBigNumber(),
       currentDriverModelId: fakeBigNumber(),
       currentPlayerTitleId: faker.lorem.word(),
-      firstLoginUtc: faker.date.past(2),
-      lastLoginUtc: faker.date.past(1),
+      firstLoginUtc: toDateTime(faker.date.past(2)),
+      lastLoginUtc: toDateTime(faker.date.past(1)),
       ipAddress: faker.internet.ip(),
       lcid: fakeBigNumber(),
       licensePlate: faker.vehicle.vin(),

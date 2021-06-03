@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { GamertagString } from '@models/extended-types';
+import { DateTime } from 'luxon';
 
 /** The /v1/title/opus/player/???/details model */
 export interface OpusPlayerDetails {
@@ -12,8 +13,8 @@ export interface OpusPlayerDetails {
   region: BigNumber;
   lcid: BigNumber;
   ipAddress: string;
-  lastLoginUtc: Date;
-  firstLoginUtc: Date;
+  lastLoginUtc: DateTime;
+  firstLoginUtc: DateTime;
   currentDriverModelId: BigNumber;
   currentPlayerTitleId: string;
   currentBadgeId: string;

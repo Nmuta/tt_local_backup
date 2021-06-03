@@ -4,6 +4,7 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { GravityPlayerDetails } from '@models/gravity';
 import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
 import { fakeT10Id } from '@interceptors/fake-api/utility/fake-t10id';
+import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for finding User Flags. */
 export class GravityPlayerGamertagDetailsFakeApi extends FakeApiBase {
@@ -32,8 +33,8 @@ export class GravityPlayerGamertagDetailsFakeApi extends FakeApiBase {
       country: fakeBigNumber(),
       region: fakeBigNumber(),
       ageGroup: fakeBigNumber(),
-      firstLoginUtc: faker.date.past(2),
-      lastLoginUtc: faker.date.past(1),
+      firstLoginUtc: toDateTime(faker.date.past(2)),
+      lastLoginUtc: toDateTime(faker.date.past(1)),
       ipAddress: faker.internet.ip(),
       lastGameSettingsUsed: faker.datatype.uuid(),
       lcid: fakeBigNumber(),

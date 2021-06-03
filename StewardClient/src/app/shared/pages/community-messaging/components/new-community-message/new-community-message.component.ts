@@ -4,7 +4,7 @@ import { CommunityMessage } from '@models/community-message';
 import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { DateValidators } from '@shared/validators/date-validators';
 import { DateTime } from 'luxon';
-import { toDateTime } from '@helpers/to-date-time';
+import { toDateTime } from '@helpers/luxon';
 
 /** Outputs a new community message. */
 @Component({

@@ -6,6 +6,7 @@ import faker from 'faker';
 import { PlayerInventoryItem } from '@models/player-inventory-item';
 import { fakeBigNumber } from '@interceptors/fake-api/utility';
 import { MasterInventoryItem } from '@models/master-inventory-item';
+import { toDateTime } from '@helpers/luxon';
 
 describe('InventoryItemListDisplayComponent', () => {
   let component: InventoryItemListDisplayComponent;
@@ -51,7 +52,7 @@ describe('InventoryItemListDisplayComponent', () => {
               description: faker.random.words(10),
               quantity: faker.datatype.number(100),
               itemType: undefined,
-              dateAquiredUtc: faker.date.past(),
+              dateAquiredUtc: toDateTime(faker.date.past()),
             },
           ] as PlayerInventoryItem[],
         };

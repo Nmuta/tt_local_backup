@@ -3,8 +3,8 @@ import BigNumber from 'bignumber.js';
 export interface GravityInventoryItem {
   itemId: BigNumber;
   quantity: BigNumber;
-  acquisitionUtc: Date;
-  modifiedUtc: Date;
-  lastUsedUtc: Date;
+  acquisitionUtc: DateTime;
+  modifiedUtc: DateTime;
+  lastUsedUtc: DateTime;
   description: string;
 }

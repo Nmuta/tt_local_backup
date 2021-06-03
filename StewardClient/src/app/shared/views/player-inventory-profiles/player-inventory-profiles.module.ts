@@ -12,6 +12,7 @@ import { GravityPlayerInventoryProfilePickerComponent } from './gravity/gravity-
 import { SteelheadPlayerInventoryProfilePickerComponent } from './steelhead/steelhead-player-inventory-profile-picker.component';
 import { WoodstockPlayerInventoryProfilePickerComponent } from './woodstock/woodstock-player-inventory-profile-picker.component';
 import { MatIconModule } from '@angular/material/icon';
+import { STANDARD_DATE_IMPORTS } from '@helpers/standard-imports';
 
 /**
  * Player Inventory Profile -related components.
@@ -27,6 +28,7 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   imports: [
     CommonModule,
+    ...STANDARD_DATE_IMPORTS,
     MatTooltipModule,
     MatChipsModule,
     JsonDumpModule,

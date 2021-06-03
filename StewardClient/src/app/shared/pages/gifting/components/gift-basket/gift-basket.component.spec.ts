@@ -18,6 +18,7 @@ import { MatSelectChange } from '@angular/material/select';
 import faker from 'faker';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
+import { toDateTime } from '@helpers/luxon';
 
 describe('GiftBasketBaseComponent', () => {
   let fixture: ComponentFixture<GiftBasketBaseComponent<
@@ -617,7 +618,7 @@ describe('GiftBasketBaseComponent', () => {
 
   describe('Method: waitForBackgroundJobToComplete', () => {
     const testJob: BackgroundJob<void> = {
-      createdDateUtc: faker.date.past(),
+      createdDateUtc: toDateTime(faker.date.past()),
       jobId: 'test=-job-id',
       status: BackgroundJobStatus.InProgress,
       rawResult: undefined,
@@ -658,7 +659,7 @@ describe('GiftBasketBaseComponent', () => {
 
       describe('And a BackgroundJob is returned', () => {
         const testBackgroundJobResp: BackgroundJob<GiftResponse<string | BigNumber>[]> = {
-          createdDateUtc: faker.date.past(),
+          createdDateUtc: toDateTime(faker.date.past()),
           jobId: 'test=-job-id',
           status: BackgroundJobStatus.InProgress,
           rawResult: {

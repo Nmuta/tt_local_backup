@@ -1,4 +1,5 @@
 import { environment } from '@environments/environment';
+import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber, fakeGamertag, faker, fakeXuid } from '@interceptors/fake-api/utility';
 import { GuidLikeString } from '@models/extended-types';
@@ -40,10 +41,10 @@ export class GravityPlayerT10IdDetailsFakeApi extends FakeApiBase {
       gamertag: fakeGamertag(),
       ageGroup: fakeBigNumber(),
       country: fakeBigNumber(),
-      firstLoginUtc: faker.date.past(1),
+      firstLoginUtc: toDateTime(faker.date.past(1)),
       ipAddress: faker.internet.ip(),
       lastGameSettingsUsed: faker.datatype.uuid(),
-      lastLoginUtc: faker.date.recent(7),
+      lastLoginUtc: toDateTime(faker.date.recent(7)),
       lcid: fakeBigNumber(),
       playFabId: faker.datatype.uuid(),
       region: fakeBigNumber(),
@@ -55,7 +56,7 @@ export class GravityPlayerT10IdDetailsFakeApi extends FakeApiBase {
         .fill(undefined)
         .map(() => {
           return <GravitySaveState>{
-            lastLoginUtc: faker.date.recent(180),
+            lastLoginUtc: toDateTime(faker.date.recent(180)),
             userInventoryId: faker.datatype.uuid(),
           };
         }),

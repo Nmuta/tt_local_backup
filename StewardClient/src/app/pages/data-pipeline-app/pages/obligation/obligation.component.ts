@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
+import { toDuration } from '@helpers/luxon';
 import { replace } from '@helpers/replace';
 import { ObligationKustoRestateOMaticDataActivity } from '@models/pipelines/obligation-kusto-restate-o-matic-data-activity';
 import { ObligationPrincipal } from '@models/pipelines/obligation-principal';
@@ -16,7 +17,7 @@ import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { VerifyWithButtonDirective } from '@shared/modules/verify/verify-with.directive';
 import BigNumber from 'bignumber.js';
 import { chain, cloneDeep, flatMap, has, keyBy } from 'lodash';
-import { DateTime, Duration } from 'luxon';
+import { Duration } from 'luxon';
 import { of } from 'rxjs';
 import { catchError, delay, map, takeUntil } from 'rxjs/operators';
 import {
@@ -199,8 +200,8 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           activityName: activity.name,
           kustoTableName: activity.table,
           destinationDatabase: activity.database,
-          startDateUtc: activity.dateRange.start.toUTC().toJSDate(),
-          endDateUtc: activity.dateRange.end.toUTC().toJSDate(),
+          startDateUtc: activity.dateRange.start.toUTC(),
+          endDateUtc: activity.dateRange.end.toUTC(),
           executionDelay: Duration.fromObject({ minutes: activity.executionDelayInMinutes }),
           executionInterval: Duration.fromObject({ minutes: activity.executionIntervalInMinutes }),
           maxExecutionSpan: Duration.fromObject({
@@ -228,8 +229,8 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
             kustoDatabase: activity.database,
             targetDataActivity: bundle.dataActivity.name,
             destinationDatabase: activity.database,
-            startDateUtc: activity.dateRange.start.toUTC().toJSDate(),
-            endDateUtc: activity.dateRange.end.toUTC().toJSDate(),
+            startDateUtc: activity.dateRange.start.toUTC(),
+            endDateUtc: activity.dateRange.end.toUTC(),
             executionDelay: Duration.fromObject({ minutes: activity.executionDelayInMinutes }),
             executionInterval: Duration.fromObject({
               minutes: activity.executionIntervalInMinutes,
@@ -277,12 +278,12 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           database: pipeline.destinationDatabase,
           dependencyNames: pipeline.dataActivityDependencyNames,
           dateRange: {
-            start: DateTime.fromJSDate(pipeline.startDateUtc).toUTC(),
-            end: DateTime.fromJSDate(pipeline.endDateUtc).toUTC(),
+            start: pipeline.startDateUtc.toUTC(),
+            end: pipeline.endDateUtc.toUTC(),
           },
-          executionDelayInMinutes: pipeline.executionDelay.minutes,
-          executionIntervalInMinutes: pipeline.executionInterval.minutes,
-          maximumExecutionTimeInMinutes: pipeline.maxExecutionSpan.minutes,
+          executionDelayInMinutes: toDuration(pipeline.executionDelay).as('minutes'),
+          executionIntervalInMinutes: toDuration(pipeline.executionInterval).as('minutes'),
+          maximumExecutionTimeInMinutes: toDuration(pipeline.maxExecutionSpan).as('minutes'),
           parallelismLimit: pipeline.parallelismLimit.toNumber(),
           query: {
             name: pipeline.kustoFunction.name,
@@ -302,8 +303,8 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
             database: restateOMaticActivity.destinationDatabase,
             dependencyNames: restateOMaticActivity.dataActivityDependencyNames,
             dateRange: {
-              start: DateTime.fromJSDate(restateOMaticActivity.startDateUtc).toUTC(),
-              end: DateTime.fromJSDate(restateOMaticActivity.endDateUtc).toUTC(),
+              start: restateOMaticActivity.startDateUtc.toUTC(),
+              end: restateOMaticActivity.endDateUtc.toUTC(),
             },
             executionDelayInMinutes: restateOMaticActivity.executionDelay.minutes,
             executionIntervalInMinutes: restateOMaticActivity.executionInterval.minutes,

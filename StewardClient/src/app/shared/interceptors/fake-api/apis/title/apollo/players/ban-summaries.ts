@@ -3,6 +3,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloBanArea, ApolloBanSummary } from '@models/apollo';
 import faker from 'faker';
+import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for banning players. */
 export class ApolloPlayersBanSummariesFakeApi extends FakeApiBase {
@@ -33,13 +34,13 @@ export class ApolloPlayersBanSummariesFakeApi extends FakeApiBase {
         xuid: xuid,
         lastBanDescription: {
           countOfTimesExtended: new BigNumber(faker.datatype.number()),
-          expireTimeUtc: faker.date.future(),
+          expireTimeUtc: toDateTime(faker.date.future()),
           featureArea: faker.random.arrayElement(Object.values(ApolloBanArea)),
           isActive: faker.datatype.boolean(),
           lastExtendedReason: faker.random.words(faker.datatype.number({ min: 5, max: 50 })),
-          lastExtendedTimeUtc: faker.date.past(),
+          lastExtendedTimeUtc: toDateTime(faker.date.past()),
           reason: faker.random.words(faker.datatype.number({ min: 5, max: 50 })),
-          startTimeUtc: faker.date.past(),
+          startTimeUtc: toDateTime(faker.date.past()),
           xuid: xuid,
         },
         userExists: faker.datatype.boolean(),

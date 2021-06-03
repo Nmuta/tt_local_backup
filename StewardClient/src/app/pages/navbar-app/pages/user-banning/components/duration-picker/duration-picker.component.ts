@@ -39,7 +39,7 @@ export class DurationPickerComponent implements OnInit, ControlValueAccessor {
 
   public formControl = new FormControl(first(this.options).duration);
 
-  public targetDate: Date = null;
+  public targetDate: DateTime = null;
 
   constructor(private readonly store: Store, private readonly ref: ChangeDetectorRef) {
     this.formControl.valueChanges.subscribe(value => this.updateDate(value));
@@ -60,7 +60,7 @@ export class DurationPickerComponent implements OnInit, ControlValueAccessor {
   public updateDate(newDuration: Duration): void {
     const today = DateTime.local().startOf('day');
     const endDate = today.plus(newDuration);
-    this.targetDate = endDate.toJSDate();
+    this.targetDate = endDate;
   }
 
   /** ngModel hook. */

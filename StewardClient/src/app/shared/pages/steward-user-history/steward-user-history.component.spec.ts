@@ -12,6 +12,7 @@ import faker from 'faker';
 import { UserRole } from '@models/enums';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
+import { toDateTime } from '@helpers/luxon';
 
 describe('StewardUserHistoryComponent', () => {
   let component: StewardUserHistoryComponent;
@@ -85,7 +86,7 @@ describe('StewardUserHistoryComponent', () => {
       let backgroundJob: BackgroundJob<unknown[]>;
       beforeEach(() => {
         backgroundJob = {
-          createdDateUtc: faker.date.past(),
+          createdDateUtc: toDateTime(faker.date.past()),
           jobId: faker.datatype.uuid(),
           status: BackgroundJobStatus.Completed,
           rawResult: { foo: 'bar' } as Record<string, unknown>,
@@ -109,7 +110,7 @@ describe('StewardUserHistoryComponent', () => {
       let backgroundJob: BackgroundJob<unknown>;
       beforeEach(() => {
         backgroundJob = {
-          createdDateUtc: faker.date.past(),
+          createdDateUtc: toDateTime(faker.date.past()),
           jobId: faker.datatype.uuid(),
           status: BackgroundJobStatus.Completed,
           rawResult: { foo: 'bar' },
@@ -133,7 +134,7 @@ describe('StewardUserHistoryComponent', () => {
   describe('Method: clearSelectedBackgroundJob', () => {
     beforeEach(() => {
       component.selectedBackgroundJob = {
-        createdDateUtc: faker.date.past(),
+        createdDateUtc: toDateTime(faker.date.past()),
         jobId: faker.datatype.uuid(),
         status: BackgroundJobStatus.Completed,
         rawResult: { foo: 'bar' },

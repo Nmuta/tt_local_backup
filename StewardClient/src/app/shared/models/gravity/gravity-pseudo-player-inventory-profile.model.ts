@@ -1,5 +1,6 @@
 import { GuidLikeString } from '@models/extended-types';
 import { chain } from 'lodash';
+import { DateTime } from 'luxon';
 import { GravityPlayerDetails } from './gravity-player-details.model';
 
 export interface GravityPseudoPlayerInventoryProfile {
@@ -8,7 +9,7 @@ export interface GravityPseudoPlayerInventoryProfile {
   isCurrent: boolean;
 
   userInventoryId: GuidLikeString;
-  lastLoginUtc: Date;
+  lastLoginUtc: DateTime;
 }
 
 /** Converts a gravity details object (with save state) into a value closely resembling other Inventory Profile formats. */

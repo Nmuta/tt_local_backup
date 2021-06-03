@@ -1,4 +1,5 @@
 import { environment } from '@environments/environment';
+import { toDateTime } from '@helpers/luxon';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { fakeBigNumber } from '@interceptors/fake-api/utility/fake-bigint';
 import { SunriseGiftHistory } from '@models/sunrise';
@@ -32,7 +33,7 @@ export class SunriseGroupGroupIdGiftHistoryFakeApi extends FakeApiBase {
         idType: GiftIdentityAntecedent.LspGroupId,
         id: lspId,
         title: 'sunrise',
-        giftSendDateUtc: faker.date.past(),
+        giftSendDateUtc: toDateTime(faker.date.past()),
         requesterObjectId: faker.datatype.uuid(),
         giftInventory: {
           giftReason: faker.random.word(),

@@ -1,6 +1,8 @@
+import { DateTime } from 'luxon';
+
 /** Player profile note. */
 export interface ProfileNote {
-  dateUtc: Date;
+  dateUtc: DateTime;
   author: string;
   text: string;
 }

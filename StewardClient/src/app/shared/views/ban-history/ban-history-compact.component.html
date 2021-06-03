@@ -12,14 +12,14 @@
       </mat-panel-title>
       <mat-panel-description>
         <span class="timespan"
-          >{{ entry.startTimeUtc | date: 'shortDate' }} -
-          {{ entry.expireTimeUtc | date: 'shortDate' }}</span
+          >{{ entry.startTimeUtc | dateTimeToJsDate | date: 'shortDate' }} -
+          {{ entry.expireTimeUtc | dateTimeToJsDate | date: 'shortDate' }}</span
         >
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ul>
-      <li><b>Start Time:</b> {{ entry.startTimeUtc | date: 'short' }}</li>
-      <li><b>Expire Time:</b> {{ entry.expireTimeUtc | date: 'short' }}</li>
+      <li><b>Start Time:</b> {{ entry.startTimeUtc | dateTimeToJsDate | date: 'short' }}</li>
+      <li><b>Expire Time:</b> {{ entry.expireTimeUtc | dateTimeToJsDate | date: 'short' }}</li>
       <li><b>Feature Area:</b> {{ entry.featureArea | humanize }}</li>
       <li>
         <b>Banned By: </b> <steward-user [objectId]="entry.requesterObjectId"> </steward-user>

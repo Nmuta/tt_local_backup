@@ -3,6 +3,7 @@ import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloPlayerDetails } from '@models/apollo';
 import { fakeBigNumber, faker } from '@interceptors/fake-api/utility';
+import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for finding User Flags. */
 export class ApolloPlayerGamertagDetailsFakeApi extends FakeApiBase {
@@ -41,8 +42,8 @@ export class ApolloPlayerGamertagDetailsFakeApi extends FakeApiBase {
       currentPlayerTitleId: faker.datatype.uuid(),
       currentProfileId: fakeBigNumber(),
       equippedVanityItemId: fakeBigNumber(),
-      firstLoginUtc: faker.date.past(2),
-      lastLoginUtc: faker.date.past(1),
+      firstLoginUtc: toDateTime(faker.date.past(2)),
+      lastLoginUtc: toDateTime(faker.date.past(1)),
       ipAddress: faker.internet.ip(),
       lcid: fakeBigNumber(),
       roleInClub: faker.datatype.uuid(),
