@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
 {
     /// <summary>
     ///     Represents a Apollo gift.

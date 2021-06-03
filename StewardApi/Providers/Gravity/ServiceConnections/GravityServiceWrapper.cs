@@ -8,9 +8,6 @@ using Turn10.Contracts.STS;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
-using GameSettingsService = Forza.WebServices.FMG.Generated.GameSettingsService;
-using UserInventoryService = Forza.WebServices.FMG.Generated.UserInventoryService;
-using UserService = Forza.WebServices.FMG.Generated.UserService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections
 {

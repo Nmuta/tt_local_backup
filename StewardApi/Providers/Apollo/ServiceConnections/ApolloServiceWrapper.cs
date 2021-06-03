@@ -11,10 +11,7 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
-using GiftingService = Forza.WebServices.FM7.Generated.GiftingService;
 using GroupingService = Xls.WebServices.FM7.Generated.UserService;
-using UserInventoryService = Forza.WebServices.FM7.Generated.UserInventoryService;
-using UserService = Forza.WebServices.FM7.Generated.UserService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
 {

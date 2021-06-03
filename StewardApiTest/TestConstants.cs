@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Turn10.LiveOps.StewardTest
+﻿namespace Turn10.LiveOps.StewardTest
 {
     public static class TestConstants
     {

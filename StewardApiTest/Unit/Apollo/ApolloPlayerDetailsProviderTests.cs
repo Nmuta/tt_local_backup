@@ -7,7 +7,6 @@ using FluentAssertions;
 using Forza.WebServices.FM7.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
-using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;

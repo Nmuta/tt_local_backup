@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Globalization;
-using System.Security.Claims;
 using System.Xml;
 using Newtonsoft.Json;
-using Turn10.LiveOps.StewardApi.Authorization;
-using Turn10.Services.Authentication;
 
 namespace Turn10.LiveOps.StewardApi.Helpers.JsonConverters
 {

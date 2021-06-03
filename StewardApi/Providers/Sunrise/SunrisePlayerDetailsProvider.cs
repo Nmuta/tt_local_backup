@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH4.master.Generated;
 using Turn10.Data.Common;
-using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
@@ -390,7 +389,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 throw new UnknownFailureStewardException("User banning has failed.", ex);
             }
         }
-
 
         /// <inheritdoc />
         public async Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)

@@ -1,10 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Forza.UserInventory.FM7.Generated;
 using Forza.WebServices.FM7.Generated;
-using GiftingService = Forza.WebServices.FM7.Generated.GiftingService;
 using GroupingService = Xls.WebServices.FM7.Generated.UserService;
-using UserInventoryService = Forza.WebServices.FM7.Generated.UserInventoryService;
-using UserService = Forza.WebServices.FM7.Generated.UserService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
 {

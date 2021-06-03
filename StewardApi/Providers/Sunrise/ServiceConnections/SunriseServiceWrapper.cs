@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Forza.LiveOps.FH4.master.Generated;
 using Forza.UserInventory.FH4.master.Generated;
+using Forza.WebServices.FH4.master.Generated;
 using Microsoft.Extensions.Configuration;
 using Turn10.Contracts.STS;
 using Turn10.Data.Common;
@@ -13,11 +14,10 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using static Forza.LiveOps.FH4.master.Generated.UserManagementService;
+using ForzaUserBanParameters = Forza.LiveOps.FH4.master.Generated.ForzaUserBanParameters;
 using GiftingService = Forza.LiveOps.FH4.master.Generated.GiftingService;
-using LiveOpsService = Forza.WebServices.FH4.master.Generated.LiveOpsService;
 using NotificationsService = Xls.WebServices.FH4.master.Generated.NotificationsService;
 using UserInventoryService = Forza.LiveOps.FH4.master.Generated.UserInventoryService;
-using UserManagementService = Forza.LiveOps.FH4.master.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 {

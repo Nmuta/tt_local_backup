@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Forza.LiveOps.FH4.master.Generated;
 using Forza.UserInventory.FH4.master.Generated;
+using Forza.WebServices.FH4.master.Generated;
 using static Forza.LiveOps.FH4.master.Generated.UserManagementService;
+using ForzaUserBanParameters = Forza.LiveOps.FH4.master.Generated.ForzaUserBanParameters;
 using GiftingService = Forza.LiveOps.FH4.master.Generated.GiftingService;
-using LiveOpsService = Forza.WebServices.FH4.master.Generated.LiveOpsService;
 using NotificationsService = Xls.WebServices.FH4.master.Generated.NotificationsService;
 using UserInventoryService = Forza.LiveOps.FH4.master.Generated.UserInventoryService;
-using UserManagementService = Forza.LiveOps.FH4.master.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 {

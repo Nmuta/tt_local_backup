@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
 {
     /// <summary>
     ///     Represents a Gravity gift.

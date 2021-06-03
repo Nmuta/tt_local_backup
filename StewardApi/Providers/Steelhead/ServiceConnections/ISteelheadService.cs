@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Forza.LiveOps.Steelhead_master.Generated;
 using Forza.UserInventory.Steelhead_master.Generated;
-using LiveOpsService = Forza.WebServices.Steelhead_master.Generated.LiveOpsService;
+using Forza.WebServices.Steelhead_master.Generated;
+using GiftingService = Forza.LiveOps.Steelhead_master.Generated.GiftingService;
 using UserInventoryService = Forza.LiveOps.Steelhead_master.Generated.UserInventoryService;
-using UserManagementService = Forza.LiveOps.Steelhead_master.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 {

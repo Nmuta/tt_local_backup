@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
-using OnlineProfileService = Forza.WebServices.FH3.Generated.OnlineProfileService;
-using UserService = Forza.WebServices.FH3.Generated.UserService;
+using Forza.WebServices.FH3.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections
 {

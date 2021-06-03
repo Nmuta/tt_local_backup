@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Turn10.LiveOps.StewardApi.Authorization
+﻿namespace Turn10.LiveOps.StewardApi.Authorization
 {
     /// <summary>
     ///     Represents the AAD app user roles.

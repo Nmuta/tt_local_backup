@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using AutoMapper;
 using Forza.LiveOps.FH5_master.Generated;
 using Forza.UserInventory.FH5_master.Generated;
-using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Xls.Security.FH5_master.Generated;

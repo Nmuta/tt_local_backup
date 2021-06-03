@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
 {
     /// <summary>
     ///     Represents a Sunrise gift.

@@ -1,16 +1,9 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
 using Forza.WebServices.FMG.Generated;
-using Turn10.LiveOps.StewardApi.Contracts;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using static Forza.WebServices.FMG.Generated.GameSettingsService;
-using Currency = Forza.WebServices.FMG.Generated.Currency;
-using EnergyRefill = Forza.WebServices.FMG.Generated.EnergyRefill;
-using GravityCar = Forza.WebServices.FMG.Generated.GravityCar;
-using MasteryKit = Forza.WebServices.FMG.Generated.MasteryKit;
-using RepairKit = Forza.WebServices.FMG.Generated.RepairKit;
-using UpgradeKit = Forza.WebServices.FMG.Generated.UpgradeKit;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {

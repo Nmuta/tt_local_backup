@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using Forza.LiveOps.FH5_master.Generated;
 using Forza.UserInventory.FH5_master.Generated;
+using Forza.WebServices.FH5_master.Generated;
 using Microsoft.Extensions.Configuration;
 using Turn10.Contracts.STS;
 using Turn10.Data.Common;
@@ -12,9 +13,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using GiftingService = Forza.LiveOps.FH5_master.Generated.GiftingService;
-using LiveOpsService = Forza.WebServices.FH5_master.Generated.LiveOpsService;
 using UserInventoryService = Forza.LiveOps.FH5_master.Generated.UserInventoryService;
-using UserManagementService = Forza.LiveOps.FH5_master.Generated.UserManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 {
