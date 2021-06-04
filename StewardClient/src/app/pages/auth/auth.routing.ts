@@ -6,11 +6,16 @@ import { AadLogoutComponent } from './aad-logout/aad-logout.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutIframeComponent } from './logout-iframe/logout-iframe.component';
 import { LogoutComponent } from './logout/logout.component';
+import { SyncStateComponent } from './sync-state/sync-state.component';
 
 const routes: Routes = [
   {
     path: '',
     children: [
+      {
+        path: 'sync-state',
+        component: SyncStateComponent,
+      },
       {
         path: 'aad-login',
         component: AadLoginComponent,

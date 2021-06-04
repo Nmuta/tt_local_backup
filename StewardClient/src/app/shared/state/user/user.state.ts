@@ -31,16 +31,9 @@ import {
   ResetUserProfile,
   SetLiveOpsAdminSecondaryRole,
   SetNoUserProfile,
+  SyncUserState,
 } from './user.actions';
-
-/**
- * Defines the user state model.
- * Contains information about a user's identity and their roles.
- */
-export class UserStateModel {
-  public profile: UserModel;
-  public accessToken: string;
-}
+import { UserStateModel } from './user.state.model';
 
 /**
  * Defines the user state.
@@ -223,6 +216,12 @@ export class UserState {
       profile.liveOpsAdminSecondaryRole = action.secondaryRole;
       ctx.patchState({ profile: cloneDeep(profile) });
     }
+  }
+
+  /** Action that synchronizes the user state model with the target user state. */
+  @Action(SyncUserState, { cancelUncompleted: true })
+  public syncUserState(ctx: StateContext<UserStateModel>, action: SyncUserState): void {
+    ctx.setState(action.targetUserState);
   }
 
   /** Helper function that timeouts state checks for user profile. */

@@ -20,6 +20,11 @@
     "test:ff": "ng test --karma-config=src/karma-firefox.conf.js --source-map=true",
     "test:ado": "ng test --karma-config=src/karma-ado.conf.js --code-coverage --watch false",
     "test:ado:ncc": "ng test --karma-config=src/karma-ado.conf.js",
+    "test:cypress:start": "concurrently \"yarn start\" \"yarn test:cypress\"",
+    "test:cypress": "cypress open --config-file cypress/configs/localhost.json",
+    "test:cypress:dev": "cypress open --config-file cypress/configs/dev.json",
+    "test:cypress:prod": "cypress open --config-file cypress/configs/prod.json",
+    "test:cypress:prod-staging": "cypress open --config-file cypress/configs/prod-staging.json",
     "build": "yarn run build:dev",
     "build:dev": "(ng build --prod --configuration=dev --crossOrigin=anonymous) && yarn run build:dev:configMoveToBuild",
     "build:dev:configMoveToBuild": "cp web.config dist/",
@@ -98,7 +103,9 @@
     "@typescript-eslint/eslint-plugin-tslint": "^4.20.0",
     "@typescript-eslint/parser": "4.20.0",
     "codelyzer": "6.0.1",
+    "concurrently": "^6.2.0",
     "copyfiles": "~2.1.0",
+    "cypress": "^7.4.0",
     "eslint": "^7.13.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^2.22.1",
@@ -127,5 +134,12 @@
     "typescript": "~4.0.5",
     "webpack-bundle-analyzer": "^3.4.1",
     "webpack-cli": "~3.3.7"
-  }
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not dead",
+    "not IE 9-11"
+  ]
 }

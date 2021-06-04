@@ -10,6 +10,7 @@ import { StuckModule } from '@shared/views/stuck/stuck.module';
 import { MatCardModule } from '@angular/material/card';
 import { LogoutIframeComponent } from './logout-iframe/logout-iframe.component';
 import { CenterContentsModule } from '@components/center-contents/center-contents.module';
+import { SyncStateComponent } from './sync-state/sync-state.component';
 
 /** Defines the auth module. */
 @NgModule({
@@ -20,6 +21,7 @@ import { CenterContentsModule } from '@components/center-contents/center-content
     AadLoginComponent,
     AadLogoutComponent,
     LogoutIframeComponent,
+    SyncStateComponent,
   ],
 })
 export class AuthModule {}

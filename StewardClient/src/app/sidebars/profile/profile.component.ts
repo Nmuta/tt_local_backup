@@ -27,6 +27,8 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   public profileTabVisible = false;
   public showDevTools: boolean;
 
+  public syncAuthUrl: string;
+
   constructor(
     private readonly router: Router,
     private readonly store: Store,
@@ -48,6 +50,13 @@ export class ProfileComponent extends BaseComponent implements OnInit {
           this.loading = false;
           this.user = profile;
           this.showDevTools = profile.role === UserRole.LiveOpsAdmin;
+          this.syncAuthUrl = [
+            `/auth/sync-state?accessToken=${this.accessToken}`,
+            `emailAddress=${profile.emailAddress}`,
+            `role=${profile.role}`,
+            `name=${profile.name}`,
+            `objectId=${profile.objectId}`,
+          ].join('&');
         },
         _error => {
           this.loading = false;
@@ -58,6 +67,11 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   /** Copys the state access token to clipboard */
   public copyAccessToken(): void {
     this.clipboard.copyMessage(this.accessToken);
+  }
+
+  /** Copys the sync path to the clipboard. */
+  public copySyncPath(): void {
+    this.clipboard.copyMessage(this.syncAuthUrl);
   }
 
   /** Opens the auth page in a new tab. */
