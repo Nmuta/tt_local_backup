@@ -103,13 +103,7 @@ export class OptionalNumberComponent
       .pipe(takeUntil(this.onDestroy$), startWith(this.formGroup.value), pairwise())
       .subscribe(([oldValue, newValue]) => {
         if (!isEqual(oldValue, newValue)) {
-          if (newValue.useNumber) {
-            this.formControls.number.enable();
-          } else {
-            this.formControls.number.disable();
-          }
-
-          this.formControls.useNumber.updateValueAndValidity();
+          this.syncEnabledState(newValue);
         }
       });
 
@@ -122,9 +116,11 @@ export class OptionalNumberComponent
   }
 
   /** Form control hook. */
-  public writeValue(data: { [key: string]: unknown }): void {
+  public writeValue(data: OptionalNumberOptions): void {
     if (data) {
-      this.formGroup.patchValue(data, { emitEvent: false });
+      const internalValue = this.makeInternal(data);
+      this.formGroup.patchValue(internalValue, { emitEvent: false });
+      this.syncEnabledState(internalValue);
     }
   }
 
@@ -175,11 +171,29 @@ export class OptionalNumberComponent
     this.formControls.number.updateValueAndValidity();
   }
 
+  private syncEnabledState(internalValue: OptionalNumberOptionsInternal): void {
+    if (internalValue.useNumber) {
+      this.formControls.number.enable();
+    } else {
+      this.formControls.number.disable();
+    }
+
+    this.formControls.useNumber.updateValueAndValidity();
+  }
+
   private makeValue(internalValue: OptionalNumberOptionsInternal): OptionalNumberOptions {
     if (internalValue.useNumber) {
       return internalValue.number;
     }
 
     return null;
+  }
+
+  private makeInternal(externalValue: OptionalNumberOptions): OptionalNumberOptionsInternal {
+    if (!externalValue) {
+      return { useNumber: false, number: undefined };
+    }
+
+    return { useNumber: true, number: externalValue };
   }
 }

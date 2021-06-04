@@ -12,7 +12,6 @@ import {
 } from '@angular/forms';
 import { collectErrors } from '@helpers/form-group-collect-errors';
 import { StringValidators } from '@shared/validators/string-validators';
-import BigNumber from 'bignumber.js';
 
 export interface KustoFunctionOptions {
   name: string;
@@ -23,7 +22,7 @@ export interface KustoFunctionOptions {
   /** When true, the API will also append `{NumBuckets}, {Bucket}` to your function call.*/
   useSplitting: boolean;
   /** When provided, the API will use this for the number of buckets. */
-  numberOfBuckets?: BigNumber;
+  numberOfBuckets?: number | undefined;
 }
 
 /** A form component for a single kusto function's configuration. */
