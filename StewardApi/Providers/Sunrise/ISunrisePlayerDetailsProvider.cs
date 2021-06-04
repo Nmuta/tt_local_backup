@@ -65,12 +65,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Get profile summary.
         /// </summary>
-        Task<SunriseProfileSummary> GetProfileSummaryAsync(ulong xuid);
+        Task<ProfileSummary> GetProfileSummaryAsync(ulong xuid);
 
         /// <summary>
         ///     Gets credit updates.
         /// </summary>
-        Task<IList<SunriseCreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults);
+        Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
         ///     Get profile notes.

@@ -23,6 +23,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         Task<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput> GetUserDataByGamertagAsync(string gamertag);
 
         /// <summary>
+        ///     Gets credit update entries.
+        /// </summary>
+        Task<LiveOpsService.GetCreditUpdateEntriesOutput> GetCreditUpdateEntriesAsync(ulong xuid, int startIndex, int maxResults);
+
+        /// <summary>
+        ///     Gets profile summary.
+        /// </summary>
+        Task<LiveOpsService.GetProfileSummaryOutput> GetProfileSummaryAsync(ulong xuid);
+
+        /// <summary>
         ///     Get consoles.
         /// </summary>
         Task<UserManagementService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults);

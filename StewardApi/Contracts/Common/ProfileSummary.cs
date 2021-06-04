@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
+namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Represents a Sunrise profile summary.
+    ///     Represents a profile summary.
     /// </summary>
-    public sealed class SunriseProfileSummary
+    public sealed class ProfileSummary
     {
         /// <summary>
         ///     Gets or sets the total Tombola spins.

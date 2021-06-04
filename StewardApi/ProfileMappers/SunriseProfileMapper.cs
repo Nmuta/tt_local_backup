@@ -66,9 +66,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
                 .ForMember(dest => dest.LastExtendedTimeUtc, opt => opt.MapFrom(src => src.LastExtendTime))
                 .ForMember(dest => dest.CountOfTimesExtended, opt => opt.MapFrom(src => src.ExtendTimes));
-            this.CreateMap<WebServicesContracts.ForzaProfileSummary, SunriseProfileSummary>()
+            this.CreateMap<WebServicesContracts.ForzaProfileSummary, ProfileSummary>()
                 .ForMember(dest => dest.HackFlags, opt => opt.MapFrom(src => src.HackFlags.Select(t => t.Name)));
-            this.CreateMap<WebServicesContracts.ForzaCredityUpdateEntry, SunriseCreditUpdate>().ReverseMap();
+            this.CreateMap<WebServicesContracts.ForzaCredityUpdateEntry, CreditUpdate>().ReverseMap();
             this.CreateMap<AdminForzaProfile, SunriseInventoryProfile>()
                 .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(
                     src => src.deviceType == "Invalid" ? "Legacy" : src.deviceType == "Win32" ? "Steam" : src.deviceType))

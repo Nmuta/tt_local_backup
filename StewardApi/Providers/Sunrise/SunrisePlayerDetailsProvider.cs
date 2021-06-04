@@ -273,12 +273,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<SunriseProfileSummary> GetProfileSummaryAsync(ulong xuid)
+        public async Task<ProfileSummary> GetProfileSummaryAsync(ulong xuid)
         {
             try
             {
                 var result = await this.sunriseService.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
-                var profileSummary = this.mapper.Map<SunriseProfileSummary>(result.forzaProfileSummary);
+                var profileSummary = this.mapper.Map<ProfileSummary>(result.forzaProfileSummary);
 
                 return profileSummary;
             }
@@ -289,7 +289,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseCreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
@@ -298,18 +298,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 var creditUpdateId = string.Format(CultureInfo.InvariantCulture, CreditUpdatesIdTemplate, xuid, startIndex, maxResults);
 
-                async Task<IList<SunriseCreditUpdate>> CreditUpdates()
+                async Task<IList<CreditUpdate>> CreditUpdates()
                 {
                     var result = await this.sunriseService.GetCreditUpdateEntriesAsync(xuid, startIndex, maxResults)
                         .ConfigureAwait(false);
-                    var creditUpdates = this.mapper.Map<IList<SunriseCreditUpdate>>(result.credityUpdateEntries);
+                    var creditUpdates = this.mapper.Map<IList<CreditUpdate>>(result.credityUpdateEntries);
 
                     this.refreshableCacheStore.PutItem(creditUpdateId, TimeSpan.FromHours(1), creditUpdates);
 
                     return creditUpdates;
                 }
 
-                var result = this.refreshableCacheStore.GetItem<IList<SunriseCreditUpdate>>(creditUpdateId) ??
+                var result = this.refreshableCacheStore.GetItem<IList<CreditUpdate>>(creditUpdateId) ??
                              await CreditUpdates().ConfigureAwait(false);
 
                 return result;

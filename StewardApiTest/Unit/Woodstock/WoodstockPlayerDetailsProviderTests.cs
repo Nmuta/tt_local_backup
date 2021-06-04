@@ -16,6 +16,7 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Xls.WebServices.FH5_master.Generated;
 using static Forza.LiveOps.FH5_master.Generated.UserManagementService;
 using static Forza.WebServices.FH5_master.Generated.LiveOpsService;
+using static Xls.WebServices.FH5_master.Generated.UserService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {
@@ -64,6 +65,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
             // Assert.
             act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "mapper"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void Ctor_WhenRefreshableCacheStoreNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { RefreshableCacheStore = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "refreshableCacheStore"));
         }
 
         [TestMethod]
@@ -261,6 +276,38 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void GetProfileSummaryAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            async Task<ProfileSummary> Action() => await provider.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<ProfileSummary>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetCreditUpdatesAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var startIndex = Fixture.Create<int>();
+            var maxResults = Fixture.Create<int>();
+
+            // Act.
+            async Task<IList<CreditUpdate>> Action() => await provider.GetCreditUpdatesAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<List<CreditUpdate>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void BanUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -379,16 +426,21 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
                 this.WoodstockService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
                 this.WoodstockService.GetIsUnderReviewAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
+                this.WoodstockService.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetProfileSummaryOutput>());
+                this.WoodstockService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
                 this.WoodstockService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<int>()).Returns(GenerateBanUsersOutput());
                 this.WoodstockService.GetUserBanSummariesAsync(Arg.Any<ulong[]>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.WoodstockService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.Mapper.Map<WoodstockPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
+                this.Mapper.Map<ProfileSummary>(Arg.Any<ForzaProfileSummary>()).Returns(Fixture.Create<ProfileSummary>());
+                this.Mapper.Map<IList<CreditUpdate>>(Arg.Any<ForzaCredityUpdateEntry[]>()).Returns(Fixture.Create<IList<CreditUpdate>>());
                 this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<WoodstockPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
+                this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
             }
 
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
@@ -397,10 +449,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
+            public IRefreshableCacheStore RefreshableCacheStore { get; set; } = Substitute.For<IRefreshableCacheStore>();
+
             public WoodstockPlayerDetailsProvider Build() => new WoodstockPlayerDetailsProvider(
-                                                                                            this.WoodstockService,
-                                                                                            this.BanHistoryProvider,
-                                                                                            this.Mapper);
+                this.WoodstockService,
+                this.BanHistoryProvider,
+                this.Mapper,
+                this.RefreshableCacheStore);
 
             private static GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
             {

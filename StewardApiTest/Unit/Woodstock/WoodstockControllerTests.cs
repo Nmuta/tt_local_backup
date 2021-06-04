@@ -508,6 +508,82 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
+        public async Task GetProfileSummary_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.GetProfileSummary(xuid).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as ProfileSummary;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<ProfileSummary>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetCreditUpdates_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var startIndex = Fixture.Create<int>();
+            var maxResults = Fixture.Create<int>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as IList<CreditUpdate>;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<List<CreditUpdate>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetCreditUpdates_WithNegativeStartIndex_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var startIndex = -1;
+            var maxResults = Fixture.Create<int>();
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetCreditUpdates_WithNegativeMaxResults_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var startIndex = Fixture.Create<int>();
+            var maxResults = -1;
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetCreditUpdates(xuid, startIndex, maxResults).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public async Task BanPlayers_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1017,6 +1093,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
                 this.WoodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>()).Returns(true);
                 this.WoodstockPlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<WoodstockUserFlags>());
+                this.WoodstockPlayerDetailsProvider.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ProfileSummary>());
+                this.WoodstockPlayerDetailsProvider.GetCreditUpdatesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<CreditUpdate>>());
                 this.WoodstockPlayerDetailsProvider.BanUsersAsync(Arg.Any<IList<WoodstockBanParameters>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.WoodstockPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.WoodstockPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());

@@ -84,18 +84,18 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<SunriseUserFlags>(HttpMethod.Put, path, this.authKey, Version, userFlags).ConfigureAwait(false);
         }
 
-        public async Task<SunriseProfileSummary> GetProfileSummaryAsync(ulong xuid)
+        public async Task<ProfileSummary> GetProfileSummaryAsync(ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/profileSummary");
 
-            return await ServiceClient.SendRequestAsync<SunriseProfileSummary>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<ProfileSummary>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
-        public async Task<IList<SunriseCreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/creditUpdates?startIndex={startIndex}&maxResults={maxResults}");
 
-            return await ServiceClient.SendRequestAsync<List<SunriseCreditUpdate>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<List<CreditUpdate>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task<IList<BanResult>> BanPlayersAsync(IList<SunriseBanParametersInput> banParameters)

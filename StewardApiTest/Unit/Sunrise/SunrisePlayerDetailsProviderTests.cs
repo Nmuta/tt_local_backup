@@ -286,10 +286,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
 
             // Act.
-            async Task<SunriseProfileSummary> Action() => await provider.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
+            async Task<ProfileSummary> Action() => await provider.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<SunriseProfileSummary>();
+            Action().Result.Should().BeOfType<ProfileSummary>();
         }
 
         [TestMethod]
@@ -303,10 +303,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var maxResults = Fixture.Create<int>();
 
             // Act.
-            async Task<IList<SunriseCreditUpdate>> Action() => await provider.GetCreditUpdatesAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
+            async Task<IList<CreditUpdate>> Action() => await provider.GetCreditUpdatesAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<SunriseCreditUpdate>>();
+            Action().Result.Should().BeOfType<List<CreditUpdate>>();
         }
 
         [TestMethod]
@@ -581,7 +581,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetProfileSummaryOutput>());
                 this.SunriseService.GetProfileNotesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetAdminCommentsOutput>());
                 this.SunriseService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
-                this.RefreshableCacheStore.GetItem<IList<SunriseCreditUpdate>>(Arg.Any<string>()).Returns((IList<SunriseCreditUpdate>)null);
+                this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
                 this.SunriseService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<int>()).Returns(GenerateBanUsersOutput());
                 this.SunriseService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.SunriseService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
@@ -590,8 +590,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper.Map<SunrisePlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<LiveOpsContracts.ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<LiveOpsContracts.ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
-                this.Mapper.Map<SunriseProfileSummary>(Arg.Any<WebServicesContracts.ForzaProfileSummary>()).Returns(Fixture.Create<SunriseProfileSummary>());
-                this.Mapper.Map<IList<SunriseCreditUpdate>>(Arg.Any<WebServicesContracts.ForzaCredityUpdateEntry[]>()).Returns(Fixture.Create<IList<SunriseCreditUpdate>>());
+                this.Mapper.Map<ProfileSummary>(Arg.Any<WebServicesContracts.ForzaProfileSummary>()).Returns(Fixture.Create<ProfileSummary>());
+                this.Mapper.Map<IList<CreditUpdate>>(Arg.Any<WebServicesContracts.ForzaCredityUpdateEntry[]>()).Returns(Fixture.Create<IList<CreditUpdate>>());
                 this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());

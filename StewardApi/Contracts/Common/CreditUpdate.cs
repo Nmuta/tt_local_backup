@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
+namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Represents a Sunrise credit update.
+    ///     Represents a credit update.
     /// </summary>
-    public sealed class SunriseCreditUpdate
+    public sealed class CreditUpdate
     {
         /// <summary>
         ///     Gets or sets the event time stamp in UTC.

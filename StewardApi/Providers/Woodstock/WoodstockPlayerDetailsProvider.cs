@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -24,23 +25,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         private const int T10EmployeeUserGroupId = 4;
         private const int CommunityManagerUserGroupId = 5;
         private const int WhitelistUserGroupId = 6;
+        private const string CreditUpdatesIdTemplate = "Woodstock|CreditUpdates|{0}|{1}|{2}";
 
         private readonly IWoodstockService woodstockService;
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
         private readonly IMapper mapper;
+        private readonly IRefreshableCacheStore refreshableCacheStore;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockPlayerDetailsProvider"/> class.
         /// </summary>
-        public WoodstockPlayerDetailsProvider(IWoodstockService woodstockService, IWoodstockBanHistoryProvider banHistoryProvider, IMapper mapper)
+        public WoodstockPlayerDetailsProvider(IWoodstockService woodstockService, IWoodstockBanHistoryProvider banHistoryProvider, IMapper mapper, IRefreshableCacheStore refreshableCacheStore)
         {
             woodstockService.ShouldNotBeNull(nameof(woodstockService));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
             mapper.ShouldNotBeNull(nameof(mapper));
+            refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
 
             this.woodstockService = woodstockService;
             this.banHistoryProvider = banHistoryProvider;
             this.mapper = mapper;
+            this.refreshableCacheStore = refreshableCacheStore;
         }
 
         /// <inheritdoc />
@@ -261,6 +266,54 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             catch (Exception ex)
             {
                 throw new FailedToSendStewardException($"Update user flags failed for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<ProfileSummary> GetProfileSummaryAsync(ulong xuid)
+        {
+            try
+            {
+                var result = await this.woodstockService.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
+                var profileSummary = this.mapper.Map<ProfileSummary>(result.forzaProfileSummary);
+
+                return profileSummary;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"Profile summary not found for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults)
+        {
+            startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
+            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+
+            try
+            {
+                var creditUpdateId = string.Format(CultureInfo.InvariantCulture, CreditUpdatesIdTemplate, xuid, startIndex, maxResults);
+
+                async Task<IList<CreditUpdate>> CreditUpdates()
+                {
+                    var result = await this.woodstockService.GetCreditUpdateEntriesAsync(xuid, startIndex, maxResults)
+                        .ConfigureAwait(false);
+                    var creditUpdates = this.mapper.Map<IList<CreditUpdate>>(result.credityUpdateEntries);
+
+                    this.refreshableCacheStore.PutItem(creditUpdateId, TimeSpan.FromHours(1), creditUpdates);
+
+                    return creditUpdates;
+                }
+
+                var result = this.refreshableCacheStore.GetItem<IList<CreditUpdate>>(creditUpdateId) ??
+                             await CreditUpdates().ConfigureAwait(false);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No credit updates found for XUID: {xuid}.", ex);
             }
         }
 

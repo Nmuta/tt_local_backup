@@ -67,6 +67,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task SetUserFlagsAsync(ulong xuid, WoodstockUserFlags userFlags);
 
         /// <summary>
+        ///     Get profile summary.
+        /// </summary>
+        Task<ProfileSummary> GetProfileSummaryAsync(ulong xuid);
+
+        /// <summary>
+        ///     Gets credit updates.
+        /// </summary>
+        Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults);
+
+        /// <summary>
         ///     Ban users.
         /// </summary>
         Task<IList<BanResult>> BanUsersAsync(IList<WoodstockBanParameters> banParameters, string requesterObjectId);

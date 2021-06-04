@@ -80,6 +80,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         }
 
         /// <inheritdoc />
+        public async Task<LiveOpsService.GetProfileSummaryOutput> GetProfileSummaryAsync(ulong xuid)
+        {
+            var liveOpsService = await this.PrepareLiveOpsServiceAsync().ConfigureAwait(false);
+
+            return await liveOpsService.GetProfileSummary(xuid).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<LiveOpsService.GetCreditUpdateEntriesOutput> GetCreditUpdateEntriesAsync(ulong xuid, int startAt, int maxResults)
+        {
+            var liveOpsService = await this.PrepareLiveOpsServiceAsync().ConfigureAwait(false);
+
+            return await liveOpsService.GetCreditUpdateEntries(xuid, startAt, maxResults).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
         public async Task<UserManagementService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults)
         {
             var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
@@ -253,6 +269,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new GiftingService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+        }
+
+        private async Task<LiveOpsService> PrepareLiveOpsServiceAsync()
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new LiveOpsService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
         }
 
         private async Task<string> GetAuthTokenAsync()

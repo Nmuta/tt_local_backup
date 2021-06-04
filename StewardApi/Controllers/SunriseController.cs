@@ -291,7 +291,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the profile summary.
         /// </summary>
         [HttpGet("player/xuid({xuid})/profileSummary")]
-        [SwaggerResponse(200, type: typeof(SunriseProfileSummary))]
+        [SwaggerResponse(200, type: typeof(ProfileSummary))]
         public async Task<IActionResult> GetProfileSummary(ulong xuid)
         {
             var result = await this.sunrisePlayerDetailsProvider.GetProfileSummaryAsync(xuid).ConfigureAwait(true);
@@ -345,7 +345,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets credit updates.
         /// </summary>
         [HttpGet("player/xuid({xuid})/creditUpdates")]
-        [SwaggerResponse(200, type: typeof(List<SunriseCreditUpdate>))]
+        [SwaggerResponse(200, type: typeof(List<CreditUpdate>))]
         public async Task<IActionResult> GetCreditUpdates(ulong xuid, [FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));

@@ -79,7 +79,7 @@
     <PackageReference Include="Turn10.Services.ForzaClient" Version="1.4.0" />
     <PackageReference Include="Turn10.Services.ForzaClient.FH3" Version="1.1.0" />
     <PackageReference Include="Turn10.Services.ForzaClient.FH4.master" Version="3.0.3" />
-    <PackageReference Include="Turn10.Services.ForzaClient.FH5_master" Version="2.9.0" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FH5_master" Version="3.0.0" />
     <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.3.0" />
     <PackageReference Include="Turn10.Services.ForzaClient.FMG" Version="1.0.4" />
     <PackageReference Include="Turn10.Services.ForzaClient.Steelhead_master" Version="2.1.8" />

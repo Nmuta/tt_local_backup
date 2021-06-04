@@ -521,9 +521,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as SunriseProfileSummary;
+            var details = result.Value as ProfileSummary;
             details.Should().NotBeNull();
-            details.Should().BeOfType<SunriseProfileSummary>();
+            details.Should().BeOfType<ProfileSummary>();
         }
 
         [TestMethod]
@@ -543,9 +543,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<SunriseCreditUpdate>;
+            var details = result.Value as IList<CreditUpdate>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<SunriseCreditUpdate>>();
+            details.Should().BeOfType<List<CreditUpdate>>();
         }
 
         [TestMethod]
@@ -1325,8 +1325,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
                 this.SunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>()).Returns(true);
                 this.SunrisePlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunriseUserFlags>());
-                this.SunrisePlayerDetailsProvider.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunriseProfileSummary>());
-                this.SunrisePlayerDetailsProvider.GetCreditUpdatesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseCreditUpdate>>());
+                this.SunrisePlayerDetailsProvider.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ProfileSummary>());
+                this.SunrisePlayerDetailsProvider.GetCreditUpdatesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<CreditUpdate>>());
                 this.SunrisePlayerDetailsProvider.BanUsersAsync(Arg.Any<List<SunriseBanParameters>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
