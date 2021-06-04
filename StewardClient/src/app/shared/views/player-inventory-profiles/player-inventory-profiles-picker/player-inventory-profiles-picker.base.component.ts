@@ -17,10 +17,10 @@ import { OpusPlayerInventoryProfile } from '@models/opus';
 import { SunrisePlayerInventoryProfile } from '@models/sunrise';
 import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
 import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
-import { chain, isEmpty } from 'lodash';
+import { chain, isEmpty, sortBy } from 'lodash';
 import { NEVER, Observable } from 'rxjs';
 import { Subject } from 'rxjs';
-import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { catchError, filter, switchMap, takeUntil, tap, map } from 'rxjs/operators';
 
 export type AcceptableInventoryProfileTypes =
   | WoodstockPlayerInventoryProfile
@@ -82,11 +82,15 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
           this.error = null;
         }),
         filter(i => !!i),
-        switchMap(i => this.getPlayerProfilesByIdentity$(i)),
-        catchError((error, _observable) => {
-          this.error = error;
-          return NEVER;
-        }),
+        switchMap(i =>
+          this.getPlayerProfilesByIdentity$(i).pipe(
+            catchError((error, _observable) => {
+              this.error = error;
+              return NEVER;
+            }),
+          ),
+        ),
+        map(profiles => sortBy(profiles, profile => profile.isCurrent).reverse()),
       )
       .subscribe(profiles => {
         this.profiles = (profiles as unknown) as AcceptableInventoryProfileTypesIntersection[];
