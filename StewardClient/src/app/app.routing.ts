@@ -95,8 +95,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
   },
   {
-    path: 'demo',
-    loadChildren: () => import('./pages/demo/demo.module').then(m => m.DemoModule),
+    path: 'util',
+    loadChildren: () => import('./pages/util/util.module').then(m => m.UtilModule),
   },
   {
     path: 'unauthorized',

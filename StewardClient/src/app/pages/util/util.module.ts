@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DemoComponent } from './demo.component';
-import { DemoRouterModule } from './demo.routing';
+import { UtilComponent } from './util.component';
+import { DemoRouterModule } from './util.routing';
 import { MatCardModule } from '@angular/material/card';
 import { CenterContentsModule } from '@components/center-contents/center-contents.module';
 import { ColorsComponent } from './colors/colors.component';
@@ -14,10 +14,17 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DirectivesModule } from '@shared/directives/directives.module';
+import { SetFakeApiComponent } from './set-fake-api/set-fake-api.component';
 
 /** Demonstration and style testing pages. */
 @NgModule({
-  declarations: [DemoComponent, ColorsComponent, IconsComponent, SelectorHelperComponent],
+  declarations: [
+    UtilComponent,
+    ColorsComponent,
+    IconsComponent,
+    SelectorHelperComponent,
+    SetFakeApiComponent,
+  ],
   imports: [
     DemoRouterModule,
     CommonModule,
@@ -32,4 +39,4 @@ import { DirectivesModule } from '@shared/directives/directives.module';
     DirectivesModule,
   ],
 })
-export class DemoModule {}
+export class UtilModule {}

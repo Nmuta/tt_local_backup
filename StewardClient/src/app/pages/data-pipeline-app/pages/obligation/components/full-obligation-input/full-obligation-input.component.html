@@ -1,7 +1,7 @@
 <div class="wrapper standard-form" [formGroup]="formGroup">
   <section class="vertical">
     <section>
-      <mat-form-field>
+      <mat-form-field id="obligation-name">
         <mat-label>Name</mat-label>
         <input matInput type="text" [formControl]="formControls.name" [matAutocomplete]="auto" />
         <button mat-icon-button matSuffix [disabled]="true">
@@ -33,7 +33,7 @@
       <ng-content select=".name-button"></ng-content>
     </section>
 
-    <mat-form-field>
+    <mat-form-field id="obligation-description">
       <mat-label>Description</mat-label>
       <input matInput type="text" [formControl]="formControls.description" />
       <button

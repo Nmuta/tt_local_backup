@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DemoComponent } from './demo.component';
-import { demoRoutes } from './demo.routes';
+import { UtilComponent } from './util.component';
+import { demoRoutes } from './util.routes';
 
 export const routes: Routes = [
   {
     path: '',
-    component: DemoComponent,
+    component: UtilComponent,
     children: demoRoutes,
   },
 ];

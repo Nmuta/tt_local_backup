@@ -2,7 +2,14 @@
   "compilerOptions": {
     "target": "es2020",
     "lib": ["es2020", "dom"],
-    "types": ["cypress"]
+    "types": ["cypress"],
+    "baseUrl": ".",
+    "paths": {
+      "@fixtures/*": ["fixtures/*"],
+      "@plugins/*": ["plugins/*"],
+      "@support/*": ["support/*"],
+      "@cypress/*": ["*"]
+    }
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "plugins/index.js", "support/commands.js", "support/commands.js"]
 }
