@@ -9,6 +9,7 @@
 import { StewardCredentials } from './steward-credentials';
 
 export const credentials: StewardCredentials = {
-  syncPath:
-    '/auth/sync-state?accessToken=<REDACTED>&emailAddress=<REDACTED>&role=<REDACTED>&name=<REDACTED>&objectId=<REDACTED>',
+  get syncPath(): string {
+    return Cypress.env('SYNC_PATH');
+  },
 };
