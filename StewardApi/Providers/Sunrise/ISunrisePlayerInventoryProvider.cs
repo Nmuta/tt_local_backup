@@ -26,6 +26,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         Task<IList<SunriseInventoryProfile>> GetInventoryProfilesAsync(ulong xuid);
 
         /// <summary>
+        ///     Get the account inventory.
+        /// </summary>
+        Task<SunriseAccountInventory> GetAccountInventoryAsync(ulong xuid);
+
+        /// <summary>
         ///     Get LSP groups.
         /// </summary>
         Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults);

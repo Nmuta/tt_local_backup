@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using AutoMapper;
 using Forza.LiveOps.FH5_master.Generated;
 using Forza.UserInventory.FH5_master.Generated;
+using Forza.WebServices.RareCarShopTransactionObjects.FH5_master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Xls.Security.FH5_master.Generated;
 using Xls.WebServices.FH5_master.Generated;
+using WebServicesContracts = Forza.WebServices.FH5_master.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
@@ -61,6 +63,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<UserData, WoodstockPlayerDetails>()
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.qwXuid))
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.wzGamerTag))
+                .ReverseMap();
+            this.CreateMap<WebServicesContracts.RareCarTicketBalance, WoodstockAccountInventory>()
+                .ForMember(dest => dest.BackstagePasses, opt => opt.MapFrom(src => src.OfflineBalance))
+                .ReverseMap();
+            this.CreateMap<WebServicesContracts.RareCarShopTransaction, BackstagePassUpdate>()
+                .ForMember(dest => dest.CreatedAtUtc, opt => opt.MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.BackstagePassAmount, opt => opt.MapFrom(src => src.OfflineTicketAmount))
+                .ForMember(dest => dest.TransactionType, opt => opt.MapFrom(src => Enum.GetName(typeof(Operation), src.TransactionType)))
                 .ReverseMap();
         }
     }

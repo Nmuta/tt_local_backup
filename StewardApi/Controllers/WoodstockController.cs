@@ -318,6 +318,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets backstage pass updates.
+        /// </summary>
+        [HttpGet("player/xuid({xuid})/backstagePassUpdates")]
+        [SwaggerResponse(200, type: typeof(List<BackstagePassUpdate>))]
+        public async Task<IActionResult> GetBackstagePassUpdates(ulong xuid)
+        {
+            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            {
+                throw new NotFoundStewardException($"No account inventory found for XUID: {xuid}");
+            }
+
+            var result = await this.woodstockPlayerDetailsProvider.GetBackstagePassUpdatesAsync(xuid).ConfigureAwait(true);
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
         ///     Bans players.
         /// </summary>
         [HttpPost("players/ban/useBackgroundProcessing")]
@@ -534,6 +551,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             {
                 return this.NotFound($"No inventory profiles found for XUID: {xuid}.");
             }
+
+            return this.Ok(inventoryProfileSummary);
+        }
+
+        /// <summary>
+        ///     Gets the account inventory.
+        /// </summary>
+        [HttpGet("player/xuid({xuid})/accountInventory")]
+        [SwaggerResponse(200, type: typeof(WoodstockAccountInventory))]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> GetAccountInventory(ulong xuid)
+        {
+            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            {
+                throw new NotFoundStewardException($"No account inventory found for XUID: {xuid}");
+            }
+
+            var inventoryProfileSummary = await this.woodstockPlayerInventoryProvider.GetAccountInventoryAsync(xuid).ConfigureAwait(true);
 
             return this.Ok(inventoryProfileSummary);
         }
@@ -813,7 +848,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     new MasterInventoryItem { Id = -1, Description = "ForzathonPoints" },
                     new MasterInventoryItem { Id = -1, Description = "SkillPoints" },
                     new MasterInventoryItem { Id = -1, Description = "WheelSpins" },
-                    new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" }
+                    new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" },
+                    new MasterInventoryItem { Id = -1, Description = "BackstagePasses" }
                 },
                 Cars = await cars.ConfigureAwait(true),
                 CarHorns = await carHorns.ConfigureAwait(true),

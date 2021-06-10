@@ -45,8 +45,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <inheritdoc />
         public async Task<WoodstockPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
         {
-            xuid.ShouldNotBeNull(nameof(xuid));
-
             try
             {
                 var response = await this.woodstockService.GetAdminUserInventoryAsync(xuid)
@@ -96,6 +94,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
+        public async Task<WoodstockAccountInventory> GetAccountInventoryAsync(ulong xuid)
+        {
+            try
+            {
+                var response = await this.woodstockService.GetTokenBalanceAsync(xuid).ConfigureAwait(false);
+
+                return this.mapper.Map<WoodstockAccountInventory>(response.transactions);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No account found for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
         public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, WoodstockGift gift, string requesterObjectId, bool useAdminCreditLimit)
         {
             gift.ShouldNotBeNull(nameof(gift));
@@ -112,6 +125,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
+                var backstagePasses = gift.Inventory.CreditRewards.FirstOrDefault(data => { return data.Description == "BackstagePasses"; });
+                var backstagePassDelta = backstagePasses != default(MasterInventoryItem) ? backstagePasses.Quantity : 0;
 
                 var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
                 currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
@@ -122,6 +137,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+                await this.UpdateBackstagePasses(xuid, backstagePassDelta).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), Title, requesterObjectId, GiftIdentityAntecedent.Xuid, gift).ConfigureAwait(false);
             }
@@ -221,6 +237,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     playerCurrency -= creditsToSend;
                 }
             }
+        }
+
+        private async Task UpdateBackstagePasses(ulong xuid, int balanceDelta)
+        {
+            if (balanceDelta <= 0)
+            {
+                return;
+            }
+
+            var status = await this.woodstockService.GetTokenBalanceAsync(xuid).ConfigureAwait(false);
+            var currentBalance = status.transactions.OfflineBalance;
+            var newBalance = (uint)Math.Max(0, currentBalance + balanceDelta);
+
+            await this.woodstockService.SetTokenBalanceAsync(xuid, newBalance).ConfigureAwait(false);
         }
 
         private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(WoodstockMasterInventory giftInventory)

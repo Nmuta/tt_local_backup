@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Forza.LiveOps.FH4.master.Generated;
 using Forza.UserInventory.FH4.master.Generated;
 using Forza.WebServices.FH4.master.Generated;
-using static Forza.LiveOps.FH4.master.Generated.UserManagementService;
 using ForzaUserBanParameters = Forza.LiveOps.FH4.master.Generated.ForzaUserBanParameters;
 using GiftingService = Forza.LiveOps.FH4.master.Generated.GiftingService;
 using NotificationsService = Xls.WebServices.FH4.master.Generated.NotificationsService;
+using RareCarShopService = Forza.WebServices.FH4.master.Generated.RareCarShopService;
 using UserInventoryService = Forza.LiveOps.FH4.master.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
@@ -45,7 +45,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Gets the user's profile notes.
         /// </summary>
-        Task<GetAdminCommentsOutput> GetProfileNotesAsync(ulong xuid, int maxResults);
+        Task<UserManagementService.GetAdminCommentsOutput> GetProfileNotesAsync(ulong xuid, int maxResults);
 
         /// <summary>
         ///     Add a note to a user's profile.
@@ -151,5 +151,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         ///    Get user ban summaries.
         /// </summary>
         Task<UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(ulong[] xuids, int xuidCount);
+
+        /// <summary>
+        ///     Get token balance.
+        /// </summary>
+        Task<RareCarShopService.AdminGetTokenBalanceOutput> GetTokenBalanceAsync(ulong xuid);
+
+        /// <summary>
+        ///     Set token balance.
+        /// </summary>
+        Task SetTokenBalanceAsync(ulong xuid, uint newBalance);
+
+        /// <summary>
+        ///     Get transactions.
+        /// </summary>
+        Task<RareCarShopService.AdminGetTransactionsOutput> GetTokenTransactionsAsync(ulong xuid);
     }
 }

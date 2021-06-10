@@ -13,10 +13,10 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
-using static Forza.LiveOps.FH4.master.Generated.UserManagementService;
 using ForzaUserBanParameters = Forza.LiveOps.FH4.master.Generated.ForzaUserBanParameters;
 using GiftingService = Forza.LiveOps.FH4.master.Generated.GiftingService;
 using NotificationsService = Xls.WebServices.FH4.master.Generated.NotificationsService;
+using RareCarShopService = Forza.WebServices.FH4.master.Generated.RareCarShopService;
 using UserInventoryService = Forza.LiveOps.FH4.master.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
@@ -102,7 +102,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<GetAdminCommentsOutput> GetProfileNotesAsync(ulong xuid, int maxResults)
+        public async Task<UserManagementService.GetAdminCommentsOutput> GetProfileNotesAsync(ulong xuid, int maxResults)
         {
             var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
 
@@ -278,6 +278,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
+        public async Task<RareCarShopService.AdminGetTokenBalanceOutput> GetTokenBalanceAsync(ulong xuid)
+        {
+            var rareCarShopService = await this.PrepareRareCarShopServiceAsync().ConfigureAwait(false);
+
+            return await rareCarShopService.AdminGetTokenBalance(xuid).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task SetTokenBalanceAsync(ulong xuid, uint newBalance)
+        {
+            var rareCarShopService = await this.PrepareRareCarShopServiceAsync().ConfigureAwait(false);
+
+            await rareCarShopService.AdminSetBalance(xuid, newBalance).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<RareCarShopService.AdminGetTransactionsOutput> GetTokenTransactionsAsync(ulong xuid)
+        {
+            var rareCarShopService = await this.PrepareRareCarShopServiceAsync().ConfigureAwait(false);
+
+            return await rareCarShopService.AdminGetTransactions(xuid).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
         public async Task<UserManagementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(ulong xuid, int startIndex, int maxResults)
         {
             var enforcementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
@@ -323,6 +347,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new LiveOpsService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+        }
+
+        private async Task<RareCarShopService> PrepareRareCarShopServiceAsync()
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new RareCarShopService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
         }
 
         private async Task<string> GetAuthTokenAsync()

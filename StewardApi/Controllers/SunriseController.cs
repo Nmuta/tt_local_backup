@@ -357,6 +357,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets backstage pass updates.
+        /// </summary>
+        [HttpGet("player/xuid({xuid})/backstagePassUpdates")]
+        [SwaggerResponse(200, type: typeof(List<BackstagePassUpdate>))]
+        public async Task<IActionResult> GetBackstagePassUpdates(ulong xuid)
+        {
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            {
+                throw new NotFoundStewardException($"No account inventory found for XUID: {xuid}");
+            }
+
+            var result = await this.sunrisePlayerDetailsProvider.GetBackstagePassUpdatesAsync(xuid).ConfigureAwait(true);
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
         ///     Bans players.
         /// </summary>
         [AuthorizeRoles(
@@ -590,6 +607,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             return this.Ok(inventoryProfileSummary);
+        }
+
+        /// <summary>
+        ///     Gets the account inventory.
+        /// </summary>
+        [HttpGet("player/xuid({xuid})/accountInventory")]
+        [SwaggerResponse(200, type: typeof(SunriseAccountInventory))]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> GetAccountInventory(ulong xuid)
+        {
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            {
+                throw new NotFoundStewardException($"No account inventory found for XUID: {xuid}");
+            }
+
+            var accountInventory = await this.sunrisePlayerInventoryProvider.GetAccountInventoryAsync(xuid).ConfigureAwait(true);
+
+            return this.Ok(accountInventory);
         }
 
         /// <summary>
@@ -968,7 +1003,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         new MasterInventoryItem { Id = -1, Description = "ForzathonPoints" },
                         new MasterInventoryItem { Id = -1, Description = "SkillPoints" },
                         new MasterInventoryItem { Id = -1, Description = "WheelSpins" },
-                        new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" }
+                        new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" },
+                        new MasterInventoryItem { Id = -1, Description = "BackstagePasses" }
                 },
                 Cars = await cars.ConfigureAwait(true),
                 CarHorns = await carHorns.ConfigureAwait(true),

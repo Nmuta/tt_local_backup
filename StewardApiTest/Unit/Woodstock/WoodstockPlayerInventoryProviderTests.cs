@@ -5,7 +5,7 @@ using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
 using Forza.LiveOps.FH5_master.Generated;
-using Forza.UserInventory.FH5_master.Generated;
+using Forza.WebServices.FH5_master.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -13,6 +13,9 @@ using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using static Forza.LiveOps.FH5_master.Generated.UserInventoryService;
+using static Forza.WebServices.FH5_master.Generated.RareCarShopService;
+using AdminForzaProfile = Forza.LiveOps.FH5_master.Generated.AdminForzaProfile;
+using AdminForzaUserInventorySummary = Forza.UserInventory.FH5_master.Generated.AdminForzaUserInventorySummary;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {
@@ -114,6 +117,21 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
             // Assert.
             action().Result.Should().BeOfType<List<WoodstockInventoryProfile>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetAccountInventoryAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            Func<Task<WoodstockAccountInventory>> action = async () => await provider.GetAccountInventoryAsync(xuid).ConfigureAwait(false);
+
+            // Assert.
+            action().Result.Should().BeOfType<WoodstockAccountInventory>();
         }
 
         [TestMethod]
@@ -270,10 +288,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
                 this.WoodstockService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
                 this.WoodstockService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
+                this.WoodstockService.GetTokenBalanceAsync(Arg.Any<ulong>()).Returns(Fixture.Create<AdminGetTokenBalanceOutput>());
                 this.Mapper.Map<WoodstockPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.Mapper.Map<IList<WoodstockInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<WoodstockGift>(Arg.Any<WoodstockGroupGift>()).Returns(Fixture.Create<WoodstockGift>());
+                this.Mapper.Map<WoodstockAccountInventory>(Arg.Any<RareCarTicketBalance>()).Returns(Fixture.Create<WoodstockAccountInventory>());
             }
 
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();

@@ -46,13 +46,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <inheritdoc />
         public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(ulong xuid)
         {
-            xuid.ShouldNotBeNull(nameof(xuid));
-
             try
             {
-                var response = await this.sunriseService.GetAdminUserInventoryAsync(xuid)
+                var result = await this.sunriseService.GetAdminUserInventoryAsync(xuid)
                     .ConfigureAwait(false);
-                var playerInventoryDetails = this.mapper.Map<SunrisePlayerInventory>(response.summary);
+
+                var playerInventoryDetails = this.mapper.Map<SunrisePlayerInventory>(result.summary);
 
                 return playerInventoryDetails;
             }
@@ -82,8 +81,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <inheritdoc />
         public async Task<IList<SunriseInventoryProfile>> GetInventoryProfilesAsync(ulong xuid)
         {
-            xuid.ShouldNotBeNull(nameof(xuid));
-
             try
             {
                 var response = await this.sunriseService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
@@ -93,6 +90,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No inventory profiles found for XUID: {xuid}", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<SunriseAccountInventory> GetAccountInventoryAsync(ulong xuid)
+        {
+            try
+            {
+                var response = await this.sunriseService.GetTokenBalanceAsync(xuid).ConfigureAwait(false);
+
+                return this.mapper.Map<SunriseAccountInventory>(response.transactions);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No account found for XUID: {xuid}.", ex);
             }
         }
 
@@ -128,6 +140,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
+                var backstagePasses = gift.Inventory.CreditRewards.FirstOrDefault(data => { return data.Description == "BackstagePasses"; });
+                var backstagePassDelta = backstagePasses != default(MasterInventoryItem) ? backstagePasses.Quantity : 0;
 
                 var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
                 currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
@@ -140,6 +154,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
+                await this.UpdateBackstagePasses(xuid, backstagePassDelta).ConfigureAwait(false);
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), Title, requesterObjectId, GiftIdentityAntecedent.Xuid, gift).ConfigureAwait(false);
             }
@@ -239,6 +254,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     playerCurrency -= creditsToSend;
                 }
             }
+        }
+
+        private async Task UpdateBackstagePasses(ulong xuid, int balanceDelta)
+        {
+            if (balanceDelta <= 0)
+            {
+                return;
+            }
+
+            var status = await this.sunriseService.GetTokenBalanceAsync(xuid).ConfigureAwait(false);
+            var currentBalance = status.transactions.OfflineBalance;
+            var newBalance = (uint) Math.Max(0, currentBalance + balanceDelta);
+
+            await this.sunriseService.SetTokenBalanceAsync(xuid, newBalance).ConfigureAwait(false);
         }
 
         private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(SunriseMasterInventory giftInventory)

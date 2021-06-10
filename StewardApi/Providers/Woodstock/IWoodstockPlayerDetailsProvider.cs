@@ -77,6 +77,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
+        ///     Get backstage pass updates.
+        /// </summary>
+        Task<IList<BackstagePassUpdate>> GetBackstagePassUpdatesAsync(ulong xuid);
+
+        /// <summary>
         ///     Ban users.
         /// </summary>
         Task<IList<BanResult>> BanUsersAsync(IList<WoodstockBanParameters> banParameters, string requesterObjectId);

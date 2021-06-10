@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using GiftingService = Forza.LiveOps.FH5_master.Generated.GiftingService;
+using RareCarShopService = Forza.WebServices.FH5_master.Generated.RareCarShopService;
 using UserInventoryService = Forza.LiveOps.FH5_master.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
@@ -191,6 +192,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             return await userManagementService.BanUsers(banParameters, xuidCount).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
+        public async Task<RareCarShopService.AdminGetTokenBalanceOutput> GetTokenBalanceAsync(ulong xuid)
+        {
+            var rareCarShopService = await this.PrepareRareCarShopServiceAsync().ConfigureAwait(false);
+
+            return await rareCarShopService.AdminGetTokenBalance(xuid).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task SetTokenBalanceAsync(ulong xuid, uint newBalance)
+        {
+            var rareCarShopService = await this.PrepareRareCarShopServiceAsync().ConfigureAwait(false);
+
+            await rareCarShopService.AdminSetBalance(xuid, newBalance).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<RareCarShopService.AdminGetTransactionsOutput> GetTokenTransactionsAsync(ulong xuid)
+        {
+            var rareCarShopService = await this.PrepareRareCarShopServiceAsync().ConfigureAwait(false);
+
+            return await rareCarShopService.AdminGetTransactions(xuid).ConfigureAwait(false);
+        }
+
         /// <inheritdoc />
         public async Task<UserInventoryService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(ulong xuid)
         {
@@ -277,6 +302,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new LiveOpsService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+        }
+
+        private async Task<RareCarShopService> PrepareRareCarShopServiceAsync()
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new RareCarShopService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
         }
 
         private async Task<string> GetAuthTokenAsync()

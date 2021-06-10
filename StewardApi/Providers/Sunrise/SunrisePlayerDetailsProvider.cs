@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FH4.master.Generated;
+using Forza.WebServices.FH4.master.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
+using ForzaUserBanParameters = Forza.LiveOps.FH4.master.Generated.ForzaUserBanParameters;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {
@@ -27,6 +28,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         private const int CommunityManagerUserGroupId = 5;
         private const int WhitelistUserGroupId = 6;
         private const string CreditUpdatesIdTemplate = "Sunrise|CreditUpdates|{0}|{1}|{2}";
+        private const string BackstagePassUpdatesIdTemplate = "Sunrise|BackstagePassUpdates|{0}";
 
         private readonly ISunriseService sunriseService;
         private readonly ISunriseBanHistoryProvider banHistoryProvider;
@@ -317,6 +319,35 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No credit updates found for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<BackstagePassUpdate>> GetBackstagePassUpdatesAsync(ulong xuid)
+        {
+            try
+            {
+                var backstagePassUpdateId = string.Format(CultureInfo.InvariantCulture, BackstagePassUpdatesIdTemplate, xuid);
+
+                async Task<IList<BackstagePassUpdate>> BackstagePassUpdates()
+                {
+                    var result = await this.sunriseService.GetTokenTransactionsAsync(xuid)
+                        .ConfigureAwait(false);
+                    var backstagePasses = this.mapper.Map<IList<BackstagePassUpdate>>(result.transactions.Transactions);
+
+                    this.refreshableCacheStore.PutItem(backstagePassUpdateId, TimeSpan.FromHours(1), backstagePasses);
+
+                    return backstagePasses;
+                }
+
+                var result = this.refreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(backstagePassUpdateId) ??
+                             await BackstagePassUpdates().ConfigureAwait(false);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No backstage pass updates found for XUID: {xuid}.", ex);
             }
         }
 

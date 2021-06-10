@@ -3,6 +3,7 @@ using Forza.LiveOps.FH5_master.Generated;
 using Forza.UserInventory.FH5_master.Generated;
 using Forza.WebServices.FH5_master.Generated;
 using GiftingService = Forza.LiveOps.FH5_master.Generated.GiftingService;
+using RareCarShopService = Forza.WebServices.FH5_master.Generated.RareCarShopService;
 using UserInventoryService = Forza.LiveOps.FH5_master.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
@@ -121,5 +122,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         ///     Send a group item gift.
         /// </summary>
         Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue);
+
+        /// <summary>
+        ///     Get token balance.
+        /// </summary>
+        Task<RareCarShopService.AdminGetTokenBalanceOutput> GetTokenBalanceAsync(ulong xuid);
+
+        /// <summary>
+        ///     Set token balance.
+        /// </summary>
+        Task SetTokenBalanceAsync(ulong xuid, uint newBalance);
+
+        /// <summary>
+        ///     Get transactions.
+        /// </summary>
+        Task<RareCarShopService.AdminGetTransactionsOutput> GetTokenTransactionsAsync(ulong xuid);
     }
 }

@@ -525,6 +525,45 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         [TestMethod]
         [TestCategory("Integration")]
+        public async Task GetBackstagePassUpdates()
+        {
+            var result = await stewardClient.GetBackstagePassUpdatesAsync(xuid).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetBackstagePassUpdates_InvalidXuid()
+        {
+            try
+            {
+                await stewardClient.GetBackstagePassUpdatesAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetBackstagePassUpdates_Unauthorized()
+        {
+            try
+            {
+                await unauthorizedClient.GetBackstagePassUpdatesAsync(xuid).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
         public async Task GetCreditUpdates_Unauthorized()
         {
             try
@@ -1059,6 +1098,46 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             try
             {
                 await unauthorizedClient.GetPlayerInventoryAsync(profileId).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetAccountInventory()
+        {
+            var result = await stewardClient.GetAccountInventoryAsync(xuid).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.BackstagePasses > 0);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetAccountInventory_InvalidXuid()
+        {
+            try
+            {
+                await stewardClient.GetAccountInventoryAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
+                Assert.Fail();
+            }
+            catch (ServiceException e)
+            {
+                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetAccountInventory_Unauthorized()
+        {
+            try
+            {
+                await unauthorizedClient.GetAccountInventoryAsync(xuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1784,6 +1863,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
                     new List<MasterInventoryItem>
                     {
                         new MasterInventoryItem {Id = -1, Description = "Credits", Quantity = 1},
+                        new MasterInventoryItem {Id = -1, Description = "BackstagePasses", Quantity = 1}
                     },
                 Cars = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 2616, Quantity = 1}},
                 CarHorns = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 22, Quantity = 1}},
@@ -1801,8 +1881,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             {
                 Xuids = new List<ulong>
                 {
-                    xuid,
-                    xuid,
                     xuid
                 },
                 GiftReason = "Integration Test",

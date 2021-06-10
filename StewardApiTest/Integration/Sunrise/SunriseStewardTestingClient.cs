@@ -98,6 +98,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<List<CreditUpdate>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
+        public async Task<IList<BackstagePassUpdate>> GetBackstagePassUpdatesAsync(ulong xuid)
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/backstagePassUpdates");
+
+            return await ServiceClient.SendRequestAsync<List<BackstagePassUpdate>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+        }
+
         public async Task<IList<BanResult>> BanPlayersAsync(IList<SunriseBanParametersInput> banParameters)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
@@ -165,6 +172,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/inventoryProfiles");
 
             return await ServiceClient.SendRequestAsync<IList<SunriseInventoryProfile>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+        }
+
+        public async Task<SunriseAccountInventory> GetAccountInventoryAsync(ulong xuid)
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/accountInventory");
+
+            return await ServiceClient.SendRequestAsync<SunriseAccountInventory>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task<IList<LspGroup>> GetGroupsAsync()

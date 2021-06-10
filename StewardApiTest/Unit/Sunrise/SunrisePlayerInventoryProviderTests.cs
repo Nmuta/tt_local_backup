@@ -14,6 +14,8 @@ using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using static Forza.LiveOps.FH4.master.Generated.UserInventoryService;
 using static Forza.WebServices.FH4.master.Generated.LiveOpsService;
+using static Forza.WebServices.FH4.master.Generated.RareCarShopService;
+using WebServicesContracts = Forza.WebServices.FH4.master.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 {
@@ -115,6 +117,21 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             // Assert.
             action().Result.Should().BeOfType<List<SunriseInventoryProfile>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetAccountInventoryAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            Func<Task<SunriseAccountInventory>> action = async () => await provider.GetAccountInventoryAsync(xuid).ConfigureAwait(false);
+
+            // Assert.
+            action().Result.Should().BeOfType<SunriseAccountInventory>();
         }
 
         [TestMethod]
@@ -289,10 +306,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
                 this.SunriseService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
                 this.SunriseService.GetLiveOpsUserDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
+                this.SunriseService.GetTokenBalanceAsync(Arg.Any<ulong>()).Returns(Fixture.Create<AdminGetTokenBalanceOutput>());
                 this.Mapper.Map<SunrisePlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.Mapper.Map<IList<SunriseInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<SunriseGift>(Arg.Any<SunriseGroupGift>()).Returns(Fixture.Create<SunriseGift>());
+                this.Mapper.Map<SunriseAccountInventory>(Arg.Any<WebServicesContracts.RareCarTicketBalance>()).Returns(Fixture.Create<SunriseAccountInventory>());
             }
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();

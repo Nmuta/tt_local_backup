@@ -16,7 +16,14 @@ using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 using Xls.WebServices.FH5_master.Generated;
 using static Forza.LiveOps.FH5_master.Generated.UserManagementService;
 using static Forza.WebServices.FH5_master.Generated.LiveOpsService;
-using static Xls.WebServices.FH5_master.Generated.UserService;
+using static Forza.WebServices.FH5_master.Generated.RareCarShopService;
+using ForzaCredityUpdateEntry = Xls.WebServices.FH5_master.Generated.ForzaCredityUpdateEntry;
+using ForzaProfileSummary = Xls.WebServices.FH5_master.Generated.ForzaProfileSummary;
+using ForzaUserBanDescription = Forza.LiveOps.FH5_master.Generated.ForzaUserBanDescription;
+using ForzaUserBanParameters = Forza.LiveOps.FH5_master.Generated.ForzaUserBanParameters;
+using ForzaUserBanResult = Forza.LiveOps.FH5_master.Generated.ForzaUserBanResult;
+using ForzaUserBanSummary = Forza.LiveOps.FH5_master.Generated.ForzaUserBanSummary;
+using WebServicesContracts = Forza.WebServices.FH5_master.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {
@@ -308,6 +315,21 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void GetBackstagePassTransactionsAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+
+            // Act.
+            async Task<IList<BackstagePassUpdate>> Action() => await provider.GetBackstagePassUpdatesAsync(xuid).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<List<BackstagePassUpdate>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void BanUsersAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -431,6 +453,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<int>()).Returns(GenerateBanUsersOutput());
                 this.WoodstockService.GetUserBanSummariesAsync(Arg.Any<ulong[]>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.WoodstockService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
+                this.WoodstockService.GetTokenTransactionsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<AdminGetTransactionsOutput>());
                 this.Mapper.Map<WoodstockPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
@@ -438,9 +461,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.Mapper.Map<IList<CreditUpdate>>(Arg.Any<ForzaCredityUpdateEntry[]>()).Returns(Fixture.Create<IList<CreditUpdate>>());
                 this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
-                this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
+                this.Mapper.Map<IList<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<WoodstockPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
+                this.Mapper.Map<IList<BackstagePassUpdate>>(Arg.Any<WebServicesContracts.RareCarShopTransaction[]>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
                 this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
+                this.RefreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(Arg.Any<string>()).Returns((IList<BackstagePassUpdate>)null);
             }
 
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();

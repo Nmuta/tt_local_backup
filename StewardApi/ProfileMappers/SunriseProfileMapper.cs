@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Forza.LiveOps.FH4.master.Generated;
 using Forza.UserInventory.FH4.master.Generated;
+using Forza.WebServices.RareCarShopTransactionObjects.FH4.master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Xls.Security.FH4.master.Generated;
@@ -43,7 +44,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     new PlayerInventoryItem { Id = -1, Description = "SkillPoints", Quantity = src.skillPoints },
                 }))
                 .ReverseMap();
-
             this.CreateMap<UserData, SunrisePlayerDetails>()
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.qwXuid))
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.wzGamerTag))
@@ -56,12 +56,12 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));
             this.CreateMap<SunriseBanParameters, ForzaUserBanParameters>()
-                .ForMember(dest => dest.xuids, opt => opt.MapFrom(source => new ulong[] { source.Xuid }))
-                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.Parse(typeof(FeatureAreas), source.FeatureArea, true)))
+                .ForMember(dest => dest.xuids, opt => opt.MapFrom(src => new ulong[] { src.Xuid }))
+                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(src => Enum.Parse(typeof(FeatureAreas), src.FeatureArea, true)))
                 .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTimeUtc))
                 .ForMember(dest => dest.ExpireTime, opt => opt.MapFrom(src => src.ExpireTimeUtc));
             this.CreateMap<ForzaUserBanDescription, BanDescription>()
-                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(source => Enum.GetName(typeof(FeatureAreas), source.FeatureAreas)))
+                .ForMember(dest => dest.FeatureArea, opt => opt.MapFrom(src => Enum.GetName(typeof(FeatureAreas), src.FeatureAreas)))
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTime))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
                 .ForMember(dest => dest.LastExtendedTimeUtc, opt => opt.MapFrom(src => src.LastExtendTime))
@@ -77,18 +77,27 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<SunrisePlayerDetails, IdentityResultAlpha>().ReverseMap();
             this.CreateMap<SunriseGroupGift, SunriseGift>().ReverseMap();
             this.CreateMap<LiveOpsNotification, SunriseNotification>()
-                .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(source => source.id))
-                .ForMember(dest => dest.SendDateUtc, opt => opt.MapFrom(source => source.sentDate))
-                .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(source => source.expirationDate))
+                .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(src => src.id))
+                .ForMember(dest => dest.SendDateUtc, opt => opt.MapFrom(src => src.sentDate))
+                .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.expirationDate))
                 .ReverseMap();
             this.CreateMap<SunriseUserFlagsInput, SunriseUserFlags>().ReverseMap();
             this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
-                .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(source => source.Xuid))
-                .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(source => GiftIdentityAntecedent.Xuid));
+                .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
+                .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid));
             this.CreateMap<ForzaUserAdminComment, SunriseProfileNote>()
-                .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(source => source.date))
-                .ForMember(dest => dest.Author, opt => opt.MapFrom(source => source.author))
-                .ForMember(dest => dest.Text, opt => opt.MapFrom(source => source.text));
+                .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(src => src.date))
+                .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.author))
+                .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.text));
+            this.CreateMap<WebServicesContracts.RareCarTicketBalance, SunriseAccountInventory>()
+                .ForMember(dest => dest.BackstagePasses, opt => opt.MapFrom(src => src.OfflineBalance))
+                .ReverseMap();
+            this.CreateMap<WebServicesContracts.RareCarShopTransaction, BackstagePassUpdate>()
+                .ForMember(dest => dest.CreatedAtUtc, opt => opt.MapFrom(src => src.CreatedAt))
+                .ForMember(dest => dest.BackstagePassAmount, opt => opt.MapFrom(src => src.OfflineTicketAmount))
+
+                .ForMember(dest => dest.TransactionType, opt => opt.MapFrom(src => Enum.GetName(typeof(Operation), src.TransactionType)))
+                .ReverseMap();
         }
     }
 }

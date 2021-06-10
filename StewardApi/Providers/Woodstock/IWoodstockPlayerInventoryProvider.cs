@@ -26,6 +26,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task<IList<WoodstockInventoryProfile>> GetInventoryProfilesAsync(ulong xuid);
 
         /// <summary>
+        ///     Get the account inventory.
+        /// </summary>
+        Task<WoodstockAccountInventory> GetAccountInventoryAsync(ulong xuid);
+
+        /// <summary>
         ///     Update player inventory.
         /// </summary>
         Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, WoodstockGift gift, string requesterObjectId, bool useAdminCreditLimit);
