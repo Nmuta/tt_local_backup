@@ -5,6 +5,7 @@ using Forza.LiveOps.FH5_master.Generated;
 using Forza.UserInventory.FH5_master.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH5_master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Xls.Security.FH5_master.Generated;
 using Xls.WebServices.FH5_master.Generated;
@@ -15,6 +16,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
     /// <summary>
     ///    Mapper for Steelhead DTOs.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
     public sealed class WoodstockProfileMapper : Profile
     {
         /// <summary>
@@ -36,7 +38,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                     new PlayerInventoryItem { Id = -1, Description = "Credits", Quantity = src.credits },
                 }))
                 .ReverseMap();
-
             this.CreateMap<AdminForzaProfile, WoodstockInventoryProfile>().ReverseMap();
             this.CreateMap<ForzaUserBanSummary, BanSummary>();
             this.CreateMap<WoodstockBanParametersInput, WoodstockBanParameters>()
@@ -53,7 +54,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => src.ExpireTime))
                 .ForMember(dest => dest.LastExtendedTimeUtc, opt => opt.MapFrom(src => src.LastExtendTime))
                 .ForMember(dest => dest.CountOfTimesExtended, opt => opt.MapFrom(src => src.ExtendTimes));
-            this.CreateMap<ForzaUserBanResult, BanResult>();
+            this.CreateMap<ForzaUserBanResult, BanResult>()
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(
+                    src => src.Success ? null : new StewardError(StewardErrorCode.ServicesFailure, $"LSP failed to ban player with XUID: {src.Xuid}")));
             this.CreateMap<ForzaConsole, ConsoleDetails>().ReverseMap();
             this.CreateMap<ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
             this.CreateMap<ForzaUserGroup, LspGroup>();

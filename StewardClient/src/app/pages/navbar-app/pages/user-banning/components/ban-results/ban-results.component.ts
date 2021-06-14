@@ -17,8 +17,8 @@ export class BanResultsComponent extends BaseComponent implements OnInit {
 
   /** Test */
   public ngOnInit(): void {
-    this.banResults = sortBy(this.banResults, result => result.success);
-    this.banErrorCount = this.banResults.filter(data => !data.success).length;
+    this.banResults = sortBy(this.banResults, result => !result.error); //Failures to the top
+    this.banErrorCount = this.banResults.filter(data => data.error).length;
 
     this.buildCsvData();
   }
@@ -28,7 +28,10 @@ export class BanResultsComponent extends BaseComponent implements OnInit {
     this.banCsvData = [['Xuid', 'Success']];
 
     for (const result of this.banResults) {
-      this.banCsvData[this.banCsvData.length] = [`'${result.xuid}`, result.success.toString()];
+      this.banCsvData[this.banCsvData.length] = [
+        `'${result.xuid}`,
+        result.error ? 'True' : 'False',
+      ];
     }
   }
 }

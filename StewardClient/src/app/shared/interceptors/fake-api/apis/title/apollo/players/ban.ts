@@ -1,7 +1,7 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { ApolloBanArea, ApolloBanResult } from '@models/apollo';
-import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
 import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for banning players. */
@@ -27,12 +27,12 @@ export class ApolloPlayersBanFakeApi extends FakeApiBase {
   public static make(): ApolloBanResult[] {
     return [
       {
-        xuid: fakeBigNumber(),
-        success: true,
+        xuid: fakeXuid(),
+        error: null,
         banDescription: {
-          xuid: fakeBigNumber(),
+          xuid: fakeXuid(),
           isActive: true,
-          countOfTimesExtended: fakeBigNumber(),
+          countOfTimesExtended: fakeBigNumber({ min: 0, max: 20 }),
           lastExtendedTimeUtc: toDateTime('0001-01-01T00:00:00Z'),
           lastExtendedReason: null,
           reason: 'Illegitimately obtaining the Owens McLaren',

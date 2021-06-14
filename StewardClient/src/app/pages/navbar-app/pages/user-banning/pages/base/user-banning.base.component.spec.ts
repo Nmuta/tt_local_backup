@@ -86,7 +86,7 @@ describe('UserBanningBaseComponent', () => {
           result: [
             {
               xuid: new BigNumber(faker.datatype.number()),
-              success: true,
+              error: null,
               banDescription: undefined,
             },
           ],

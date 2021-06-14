@@ -5,6 +5,7 @@ using Forza.LiveOps.FH4.master.Generated;
 using Forza.UserInventory.FH4.master.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH4.master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Xls.Security.FH4.master.Generated;
 using Xls.WebServices.FH4.master.Generated;
@@ -50,7 +51,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
             this.CreateMap<LiveOpsContracts.ForzaConsole, ConsoleDetails>().ReverseMap();
             this.CreateMap<LiveOpsContracts.ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
-            this.CreateMap<ForzaUserBanResult, BanResult>();
+            this.CreateMap<ForzaUserBanResult, BanResult>()
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(
+                    src => src.Success ? null : new StewardError(StewardErrorCode.ServicesFailure, $"LSP failed to ban player with XUID: {src.Xuid}")));
             this.CreateMap<ForzaUserBanSummary, BanSummary>();
             this.CreateMap<SunriseBanParametersInput, SunriseBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))

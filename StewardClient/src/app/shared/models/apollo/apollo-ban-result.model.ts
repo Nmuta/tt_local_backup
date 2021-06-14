@@ -1,3 +1,4 @@
+import { MSError } from '@models/error.model';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
 import { ApolloBanArea } from './apollo-ban-request.model';
@@ -5,7 +6,7 @@ import { ApolloBanArea } from './apollo-ban-request.model';
 /** The /v1/title/Apollo/players/ban model */
 export interface ApolloBanResult {
   xuid: BigNumber;
-  success: boolean;
+  error: MSError;
   banDescription: ApolloBanDescription;
 }
 

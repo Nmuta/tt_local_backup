@@ -189,25 +189,37 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                     var paramBatch = banParameters.ToList()
                         .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
                     var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
-                    var result = await this.apolloService.BanUsersAsync(mappedBanParameters.ToArray())
+                    var result = await this.apolloService
+                        .BanUsersAsync(mappedBanParameters.ToArray())
                         .ConfigureAwait(false);
 
-                    foreach (var param in paramBatch)
+                    banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
+                }
+
+                foreach (var result in banResults)
+                {
+                    var parameters = banParameters.Where(banAttempt => banAttempt.Xuid == result.Xuid).FirstOrDefault();
+
+                    if (result.Error == null)
                     {
-                        var successfulBan = result.banResults.Where(banAttempt => banAttempt.Xuid == param.Xuid).FirstOrDefault()?.Success ?? false;
-                        if (successfulBan)
+                        try
                         {
                             await
                                 this.banHistoryProvider.UpdateBanHistoryAsync(
-                                    param.Xuid,
-                                    TitleConstants.ApolloCodeName,
-                                    requesterObjectId,
-                                    param)
-                                .ConfigureAwait(false);
+                                        parameters.Xuid,
+                                        TitleConstants.ApolloCodeName,
+                                        requesterObjectId,
+                                        parameters)
+                                    .ConfigureAwait(false);
+                        }
+                        catch (Exception ex)
+                        {
+                            result.Error = new StewardError(
+                                StewardErrorCode.FailedToSend,
+                                $"Ban Successful. Ban history upload failed for XUID: {result.Xuid}.",
+                                ex);
                         }
                     }
-
-                    banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
                 }
 
                 return banResults;

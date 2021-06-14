@@ -42,6 +42,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         /// <summary>
         ///     The duplicate entry error code.
         /// </summary>
-        DuplicateEntry
+        DuplicateEntry,
+
+        /// <summary>
+        ///     The services failure error code.
+        /// </summary>
+        ServicesFailure
     }
 }

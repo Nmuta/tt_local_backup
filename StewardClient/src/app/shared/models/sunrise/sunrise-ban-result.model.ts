@@ -1,3 +1,4 @@
+import { MSError } from '@models/error.model';
 import BigNumber from 'bignumber.js';
 import { DateTime } from 'luxon';
 import { SunriseBanArea } from './sunrise-ban-request.model';
@@ -5,7 +6,7 @@ import { SunriseBanArea } from './sunrise-ban-request.model';
 /** The /v1/title/Sunrise/players/ban model */
 export interface SunriseBanResult {
   xuid: BigNumber;
-  success: boolean;
+  error: MSError;
   banDescription: SunriseBanDescription;
 }
 

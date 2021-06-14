@@ -1,7 +1,7 @@
-import BigNumber from 'bignumber.js';
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { SunriseBanArea, SunriseBanResult } from '@models/sunrise';
+import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
 import { toDateTime } from '@helpers/luxon';
 
 /** Fake API for banning players. */
@@ -27,12 +27,12 @@ export class SunrisePlayersBanFakeApi extends FakeApiBase {
   public static make(): SunriseBanResult[] {
     return [
       {
-        xuid: new BigNumber(189456456),
-        success: true,
+        xuid: fakeXuid(),
+        error: null,
         banDescription: {
-          xuid: new BigNumber(2533275026603041),
+          xuid: fakeXuid(),
           isActive: true,
-          countOfTimesExtended: new BigNumber(0),
+          countOfTimesExtended: fakeBigNumber({ min: 0, max: 20 }),
           lastExtendedTimeUtc: toDateTime('0001-01-01T00:00:00Z'),
           lastExtendedReason: null,
           reason: 'Illegitimately obtaining the Owens McLaren',

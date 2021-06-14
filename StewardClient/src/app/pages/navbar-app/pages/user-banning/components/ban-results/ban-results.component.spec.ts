@@ -37,17 +37,23 @@ describe('BanResultsComponent', () => {
     component.banResults = [
       {
         xuid: result1Id,
-        success: true,
+        error: null,
         banDescription: undefined,
       },
       {
         xuid: result2Id,
-        success: false,
+        error: {
+          code: 'ServicesFailure',
+          message: 'LSP failed to ban player with XUID: ' + result2Id,
+          innererror: null,
+          target: null,
+          details: null,
+        },
         banDescription: undefined,
       },
       {
         xuid: result3Id,
-        success: true,
+        error: null,
         banDescription: undefined,
       },
     ];

@@ -1,17 +1,19 @@
 <div>
   <h4 *ngIf="banErrorCount <= 0">All Bans Sent Successfully</h4>
-  <h4 *ngIf="banErrorCount > 0">{{ banErrorCount }} Gifting Errors</h4>
+  <h4 *ngIf="banErrorCount > 0">{{ banErrorCount }} Banning Errors</h4>
   <mat-expansion-panel
     *ngFor="let result of banResults"
-    [disabled]="result.success"
-    [ngClass]="{ 'ban-result-error': !result.success }"
+    [disabled]="!result.error"
+    [ngClass]="{ 'ban-result-error': result.error }"
   >
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{ result.xuid }}
       </mat-panel-title>
       <mat-panel-description>
-        {{ result.success ? 'Ban was successful.' : 'Ban failed due to unexpected error.' }}
+        <span [matTooltip]="result.error?.message">{{
+          !result.error ? 'Ban was successful.' : result.error?.message
+        }}</span>
       </mat-panel-description>
     </mat-expansion-panel-header>
 

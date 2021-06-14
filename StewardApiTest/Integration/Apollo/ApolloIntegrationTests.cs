@@ -211,7 +211,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Any());
-            Assert.IsTrue(result[0].Success);
+            Assert.IsNull(result[0].Error);
         }
 
         [TestMethod]
@@ -226,7 +226,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Any());
-            Assert.IsTrue(result[0].Success);
+            Assert.IsNull(result[0].Error);
         }
 
         [TestMethod]
@@ -241,7 +241,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsFalse(result[0].Success);
+            Assert.IsNull(result[0].Error);
         }
 
         [TestMethod]
@@ -309,7 +309,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var result = await stewardClient.BanPlayersAsync(banParameters).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.ToList()[0].Success);
+            Assert.IsNull(result.ToList()[0].Error);
             Assert.IsTrue(result[0].BanDescription.StartTimeUtc.ToUniversalTime() < DateTime.UtcNow.AddMinutes(5));
             Assert.IsTrue(result[0].BanDescription.StartTimeUtc.ToUniversalTime() > DateTime.UtcNow.AddMinutes(-5));
         }
@@ -433,7 +433,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
 
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
-            Assert.IsTrue(result.ToList()[0].Success);
+            Assert.IsNull(result.ToList()[0].Error);
             Assert.IsFalse(string.IsNullOrWhiteSpace(result[0].BanDescription.FeatureArea));
         }
 
@@ -448,7 +448,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Completed).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsFalse(result[0].Success);
+            Assert.IsNotNull(result[0].Error);
         }
 
         [TestMethod]

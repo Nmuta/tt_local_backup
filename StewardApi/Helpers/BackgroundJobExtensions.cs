@@ -25,7 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static BackgroundJobStatus GetBackgroundJobStatus(
             IList<BanResult> results)
         {
-            var foundErrors = results.Any(ban => !ban.Success);
+            var foundErrors = results.Any(ban => ban.Error != null);
             return foundErrors ? BackgroundJobStatus.CompletedWithErrors : BackgroundJobStatus.Completed;
         }
     }
