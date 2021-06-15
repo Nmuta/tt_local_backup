@@ -1,0 +1,10 @@
+<ng-container *ngIf="!getMonitor?.isActive && !getMonitor?.status?.error; else failstate">
+  <p><b>Backstage Passes: </b> {{ accountInventory?.backstagePasses }}</p>
+</ng-container>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="getMonitor?.isActive" mode="indeterminate"> </mat-progress-spinner>
+  <json-dump *ngIf="!!getMonitor?.status?.error" [input]="getMonitor?.status?.error"
+    >Failed to get account inventory.</json-dump
+  >
+</ng-template>

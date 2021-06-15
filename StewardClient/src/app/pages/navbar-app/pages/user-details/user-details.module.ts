@@ -33,6 +33,8 @@ import { ProfileNotesModule } from '@views/profile-notes/profile-notes.module';
 import { SteelheadUserDetailsComponent } from './steelhead/steelhead-user-details.component';
 import { WoodstockUserDetailsComponent } from './woodstock/woodstock-user-details.component';
 import { MatCardModule } from '@angular/material/card';
+import { BackstagePassHistoryModule } from '@views/backstage-pass-history/backstage-pass-history.module';
+import { PlayerAccountInventoryModule } from '@views/player-account-inventory/player-account-inventory.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -74,6 +76,8 @@ import { MatCardModule } from '@angular/material/card';
     MatTooltipModule,
     PlayerIdentityResultsModule,
     ProfileNotesModule,
+    BackstagePassHistoryModule,
+    PlayerAccountInventoryModule,
   ],
 })
 export class UserDetailsModule {}

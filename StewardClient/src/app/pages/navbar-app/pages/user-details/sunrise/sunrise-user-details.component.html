@@ -14,6 +14,7 @@
       <mat-tab label="Deep Dive">
         <div class="tab-container">
           <sunrise-overview [identity]="identity"></sunrise-overview>
+          <sunrise-backstage-pass-history [identity]="identity"></sunrise-backstage-pass-history>
           <sunrise-credit-history [identity]="identity"></sunrise-credit-history>
         </div>
       </mat-tab>
@@ -25,6 +26,9 @@
               <mat-card-subtitle>Sunrise</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
+              <sunrise-player-account-inventory
+                [identity]="identity"
+              ></sunrise-player-account-inventory>
               <sunrise-player-inventory-profile-picker
                 [identity]="identity"
                 [(profileId)]="profileId"

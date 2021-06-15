@@ -18,6 +18,7 @@ import {
   WoodstockGiftHistory,
   WoodstockGroupGift,
   WoodstockMasterInventory,
+  WoodstockPlayerAccountInventory,
   WoodstockPlayerDetails,
   WoodstockPlayerInventory,
   WoodstockPlayerInventoryProfile,
@@ -39,6 +40,7 @@ import {
   CommunityMessage,
   CommunityMessageResult,
 } from '@models/community-message';
+import { BackstagePassHistory } from '@models/backstage-pass-history';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -236,6 +238,22 @@ export class WoodstockService {
     return this.apiService.getRequest$<WoodstockCreditDetailsEntry[]>(
       `${this.basePath}/player/xuid(${xuid})/creditUpdates`,
       httpParams,
+    );
+  }
+
+  /** Gets a player's history of backstage passes by XUID. */
+  public getBackstagePassHistoryByXuid$(xuid: BigNumber): Observable<BackstagePassHistory[]> {
+    return this.apiService.getRequest$<BackstagePassHistory[]>(
+      `${this.basePath}/player/xuid(${xuid})/backstagePassUpdates`,
+    );
+  }
+
+  /** Gets a player's account inventory by XUID. */
+  public getPlayerAccountInventoryByXuid$(
+    xuid: BigNumber,
+  ): Observable<WoodstockPlayerAccountInventory> {
+    return this.apiService.getRequest$<WoodstockPlayerAccountInventory>(
+      `${this.basePath}/player/xuid(${xuid})/accountInventory`,
     );
   }
 

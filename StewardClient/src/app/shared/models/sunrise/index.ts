@@ -15,3 +15,4 @@ export * from './sunrise-player-inventory-profile.model';
 export * from './sunrise-gift.model';
 export * from './sunrise-group-gift.model';
 export * from './sunrise-master-inventory.model';
+export * from './sunrise-player-account-inventory.model';

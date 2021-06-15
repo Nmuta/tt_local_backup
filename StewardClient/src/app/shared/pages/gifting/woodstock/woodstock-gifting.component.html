@@ -39,6 +39,10 @@
         </mat-card-header>
         <mat-card-content>
           <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
+            <woodstock-player-account-inventory
+              [identity]="selectedPlayerIdentity"
+            ></woodstock-player-account-inventory>
+
             <woodstock-player-inventory-profile-picker
               [identity]="selectedPlayerIdentity"
               [(profileId)]="selectedPlayerInventoryProfileId"

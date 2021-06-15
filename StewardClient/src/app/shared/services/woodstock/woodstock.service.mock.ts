@@ -18,6 +18,8 @@ import { switchMap } from 'rxjs/operators';
 
 import { WoodstockService } from './woodstock.service';
 import { WoodstockPlayerXuidProfileRollbacksApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/profileRollbacks';
+import { WoodstockPlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/backstagePassHistory';
+import { WoodstockPlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/accountInventory';
 
 /** Defines the mock for the API Service. */
 export class MockWoodstockService {
@@ -131,6 +133,20 @@ export class MockWoodstockService {
     .createSpy('getProfileRollbacksXuid$')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidProfileRollbacksApi.makeMany()))),
+    );
+
+  public getBackstagePassHistoryByXuid$ = jasmine
+    .createSpy('getBackstagePassHistoryByXuid')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(
+        switchMap(() => of(WoodstockPlayerXuidBackstagePassHistoryFakeApi.makeMany())),
+      ),
+    );
+
+  public getPlayerAccountInventoryByXuid$ = jasmine
+    .createSpy('getPlayerAccountInventoryByXuid')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidAccountInventoryFakeApi.make()))),
     );
 
   constructor(private readonly generator$: () => unknown) {}

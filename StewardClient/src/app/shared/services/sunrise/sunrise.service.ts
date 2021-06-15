@@ -18,6 +18,7 @@ import {
   SunriseGiftHistory,
   SunriseGroupGift,
   SunriseMasterInventory,
+  SunrisePlayerAccountInventory,
   SunrisePlayerDetails,
   SunrisePlayerInventory,
   SunrisePlayerInventoryProfile,
@@ -39,6 +40,7 @@ import {
   CommunityMessageResult,
 } from '@models/community-message';
 import { ProfileNote } from '@models/profile-note.model';
+import { BackstagePassHistory } from '@models/backstage-pass-history';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -231,6 +233,22 @@ export class SunriseService {
     return this.apiService.getRequest$<SunriseCreditDetailsEntry[]>(
       `${this.basePath}/player/xuid(${xuid})/creditUpdates`,
       httpParams,
+    );
+  }
+
+  /** Gets a player's history of backstage passes by XUID. */
+  public getBackstagePassHistoryByXuid$(xuid: BigNumber): Observable<BackstagePassHistory[]> {
+    return this.apiService.getRequest$<BackstagePassHistory[]>(
+      `${this.basePath}/player/xuid(${xuid})/backstagePassUpdates`,
+    );
+  }
+
+  /** Gets a player's account inventory by XUID. */
+  public getPlayerAccountInventoryByXuid$(
+    xuid: BigNumber,
+  ): Observable<SunrisePlayerAccountInventory> {
+    return this.apiService.getRequest$<SunrisePlayerAccountInventory>(
+      `${this.basePath}/player/xuid(${xuid})/accountInventory`,
     );
   }
 

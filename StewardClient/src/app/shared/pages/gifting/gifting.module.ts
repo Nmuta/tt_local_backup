@@ -23,6 +23,7 @@ import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-pr
 import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inventory.module';
 import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.component';
 import { WoodstockGiftingComponent } from './woodstock/woodstock-gifting.component';
+import { PlayerAccountInventoryModule } from '@views/player-account-inventory/player-account-inventory.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -52,6 +53,7 @@ import { WoodstockGiftingComponent } from './woodstock/woodstock-gifting.compone
     PlayerSelectionModule,
     PlayerInventoryProfilesModule,
     PlayerInventoryModule,
+    PlayerAccountInventoryModule,
   ],
 })
 export class GiftingsModule {}

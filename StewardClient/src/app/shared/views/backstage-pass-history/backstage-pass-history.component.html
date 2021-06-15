@@ -1,0 +1,47 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Backstage Pass History</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngIf="!getMonitor?.isActive && !getMonitor?.status?.error; else failstate">
+      <div class="table-container">
+        <table mat-table [dataSource]="backstagePassHistory">
+          <ng-container matColumnDef="createdAtUtc">
+            <th mat-header-cell *matHeaderCellDef>Transaction Date UTC</th>
+            <td mat-cell *matCellDef="let entry">
+              {{ entry.createdAtUtc | dateTimeToJsDate | date: 'short' }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="backstagePassAmount">
+            <th mat-header-cell *matHeaderCellDef>Backstage Pass Amount</th>
+            <td mat-cell *matCellDef="let entry">
+              {{ entry.backstagePassAmount }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="transactionType">
+            <th mat-header-cell *matHeaderCellDef>Transaction Type</th>
+            <td mat-cell *matCellDef="let entry">
+              {{ entry.transactionType | bignumber }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="uniqueId">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let entry">
+              {{ entry.uniqueId }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
+        </table>
+      </div>
+    </ng-container>
+  </mat-card-content>
+</mat-card>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="getMonitor?.isActive" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="!!getMonitor?.status?.error" [input]="getMonitor?.status?.error"
+    >Failed to get backstage pass history.</json-dump
+  >
+</ng-template>

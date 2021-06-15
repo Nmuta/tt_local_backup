@@ -80,6 +80,11 @@ import { SunriseGiftingLspGroupFakeApi } from './apis/title/sunrise/gifting/grou
 import { SunriseGiftingPlayersFakeApi } from './apis/title/sunrise/gifting/players';
 import { SunriseGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/sunrise/gifting/players_returnsbackgroundjob';
 import { SunrisePlayerXuidProfileNotesApi } from './apis/title/sunrise/player/xuid/profileNotes';
+import { SunrisePlayerXuidBackstagePassHistoryFakeApi } from './apis/title/sunrise/player/xuid/backstagePassHistory';
+import { SunrisePlayerXuidAccountInventoryFakeApi } from './apis/title/sunrise/player/xuid/accountInventory';
+
+import { WoodstockPlayerXuidBackstagePassHistoryFakeApi } from './apis/title/woodstock/player/xuid/backstagePassHistory';
+import { WoodstockPlayerXuidAccountInventoryFakeApi } from './apis/title/woodstock/player/xuid/accountInventory';
 
 import { LoggerService, LogTopic } from '@services/logger';
 import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
@@ -90,6 +95,10 @@ import { PipelineDeleteFakeApi } from './apis/pipeline/delete';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
+  // Woodstock
+  WoodstockPlayerXuidBackstagePassHistoryFakeApi,
+  WoodstockPlayerXuidAccountInventoryFakeApi,
+
   // Gravity
   GravityPlayerGamertagDetailsFakeApi,
   GravityPlayerXuidInventoryFakeApi,
@@ -133,6 +142,8 @@ const fakeApiConstructors = [
   SunriseSendCommunityMessageFakeApi,
   SunriseSendCommunityMessageToLspGroupFakeApi,
   SunrisePlayerXuidProfileNotesApi,
+  SunrisePlayerXuidBackstagePassHistoryFakeApi,
+  SunrisePlayerXuidAccountInventoryFakeApi,
 
   // Apollo
   ApolloPlayerGamertagDetailsFakeApi,

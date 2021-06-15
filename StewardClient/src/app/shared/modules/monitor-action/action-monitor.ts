@@ -53,6 +53,11 @@ export class ActionMonitor {
     return this._status$;
   }
 
+  /** Returns whether monitor is currently active. */
+  public get isActive(): boolean {
+    return this.status.state === 'active';
+  }
+
   constructor(public readonly label: string = 'UNLABELED') {}
 
   /** Produces the RXJS operator for monitoring a single-fire action. */

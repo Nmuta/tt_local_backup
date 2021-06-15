@@ -18,6 +18,8 @@ import { switchMap } from 'rxjs/operators';
 
 import { SunriseService } from './sunrise.service';
 import { SunrisePlayerXuidProfileNotesApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/profileNotes';
+import { SunrisePlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/backstagePassHistory';
+import { SunrisePlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/accountInventory';
 
 /** Defines the mock for the API Service. */
 export class MockSunriseService {
@@ -129,6 +131,20 @@ export class MockSunriseService {
     .createSpy('getProfileNotesXuid')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidProfileNotesApi.makeMany()))),
+    );
+
+  public getBackstagePassHistoryByXuid$ = jasmine
+    .createSpy('getBackstagePassHistoryByXuid')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(
+        switchMap(() => of(SunrisePlayerXuidBackstagePassHistoryFakeApi.makeMany())),
+      ),
+    );
+
+  public getPlayerAccountInventoryByXuid$ = jasmine
+    .createSpy('getPlayerAccountInventoryByXuid')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidAccountInventoryFakeApi.make()))),
     );
 
   constructor(private readonly generator: () => unknown) {}

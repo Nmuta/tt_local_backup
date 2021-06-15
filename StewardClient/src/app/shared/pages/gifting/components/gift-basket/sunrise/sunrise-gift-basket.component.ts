@@ -209,6 +209,16 @@ export class SunriseGiftBasketComponent
       giftBasket[superWheelSpinsAboveLimit].error = 'Super Wheel Spin limit for a gift is 200.';
     }
 
+    const backstagePassesAboveLimit = giftBasket.findIndex(
+      item =>
+        item.id.isLessThan(ZERO) &&
+        item.description.toLowerCase() === 'backstagepasses' &&
+        item.quantity > 20,
+    );
+    if (backstagePassesAboveLimit >= 0) {
+      giftBasket[backstagePassesAboveLimit].error = 'Backstage Passes limit for a gift is 20.';
+    }
+
     return giftBasket;
   }
 }
