@@ -186,7 +186,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
             if (playerDetails == null)
             {
-                return this.NotFound($"Player {gamertag} was not found.");
+                throw new NotFoundStewardException($"Player {gamertag} was not found.");
             }
 
             return this.Ok(playerDetails);
@@ -202,7 +202,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
             if (playerDetails == null)
             {
-                return this.NotFound($"Player {xuid} was not found.");
+                throw new NotFoundStewardException($"Player {xuid} was not found.");
             }
 
             return this.Ok(playerDetails);
@@ -246,7 +246,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
             {
-                return this.NotFound($"No profile found for XUID: {xuid}.");
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
             var result = await this.sunrisePlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
@@ -271,12 +271,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             if (!this.ModelState.IsValid)
             {
                 var result = this.userFlagsRequestValidator.GenerateErrorResponse(this.ModelState);
-                return this.BadRequest(result);
+                throw new InvalidArgumentsStewardException(result);
             }
 
             if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
             {
-                return this.NotFound($"No profile found for XUID: {xuid}.");
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
             var validatedFlags = this.mapper.Map<SunriseUserFlags>(userFlags);
@@ -401,7 +401,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             if (!this.ModelState.IsValid)
             {
                 var result = this.banParametersRequestValidator.GenerateErrorResponse(this.ModelState);
-                return this.BadRequest(result);
+                throw new InvalidArgumentsStewardException(result);
             }
 
             var banParameters = this.mapper.Map<IList<SunriseBanParameters>>(banInput);
@@ -465,7 +465,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             if (!this.ModelState.IsValid)
             {
                 var result = this.banParametersRequestValidator.GenerateErrorResponse(this.ModelState);
-                return this.BadRequest(result);
+                throw new InvalidArgumentsStewardException(result);
             }
 
             var banParameters = this.mapper.Map<IList<SunriseBanParameters>>(banInput);
@@ -513,7 +513,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (playerDetails == null)
             {
-                return this.NotFound($"Player {gamertag} was not found.");
+                throw new NotFoundStewardException($"Player {gamertag} was not found.");
             }
 
             var result = await this.GetBanHistoryAsync(playerDetails.Xuid).ConfigureAwait(true);
@@ -547,7 +547,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
             {
-                return this.NotFound($"No profile found for XUID: {xuid}.");
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
             var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(xuid);
@@ -560,7 +560,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (playerInventory == null)
             {
-                return this.NotFound($"No inventory found for XUID: {xuid}.");
+                throw new NotFoundStewardException($"No inventory found for XUID: {xuid}.");
             }
 
             playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
@@ -584,7 +584,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (playerInventory == null)
             {
-                return this.NotFound($"No inventory found for Profile ID: {profileId}.");
+                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.");
             }
 
             playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
@@ -603,7 +603,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (inventoryProfileSummary == null)
             {
-                return this.NotFound($"No inventory profiles found for XUID: {xuid}.");
+                throw new NotFoundStewardException($"No inventory profiles found for XUID: {xuid}.");
             }
 
             return this.Ok(inventoryProfileSummary);
@@ -666,7 +666,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             if (!this.ModelState.IsValid)
             {
                 var errorResponse = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
-                return this.BadRequest(errorResponse);
+                throw new InvalidArgumentsStewardException(errorResponse);
             }
 
             foreach (var xuid in groupGift.Xuids)
@@ -679,13 +679,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (stringBuilder.Length > 0)
             {
-                return this.BadRequest($"Players with XUIDs: {stringBuilder} were not found.");
+                throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
             var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
-                return this.BadRequest($"Invalid items found. {invalidItems}");
+                throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
             var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
@@ -739,7 +739,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             if (!this.ModelState.IsValid)
             {
                 var errorResponse = this.groupGiftRequestValidator.GenerateErrorResponse(this.ModelState);
-                return this.BadRequest(errorResponse);
+                throw new InvalidArgumentsStewardException(errorResponse);
             }
 
             foreach (var xuid in groupGift.Xuids)
@@ -752,13 +752,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (stringBuilder.Length > 0)
             {
-                return this.BadRequest($"Players with XUIDs: {stringBuilder} were not found.");
+                throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
             var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
-                return this.BadRequest($"Invalid items found. {invalidItems}");
+                throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
             var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
@@ -788,13 +788,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             {
                 var result = this.masterInventoryRequestValidator.GenerateErrorResponse(this.ModelState);
 
-                return this.BadRequest(result);
+                throw new InvalidArgumentsStewardException(result);
             }
 
             var invalidItems = await this.VerifyGiftAgainstMasterInventory(gift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
-                return this.BadRequest($"Invalid items found. {invalidItems}");
+                throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
             var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
@@ -856,12 +856,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (communityMessage.Message.Length > 512)
             {
-                return this.BadRequest("Message cannot be longer than 512 characters.");
+                throw new InvalidArgumentsStewardException("Message cannot be longer than 512 characters.");
             }
 
             if (communityMessage.Duration < TimeSpan.FromDays(1))
             {
-                return this.BadRequest("Duration cannot be less than a day.");
+                throw new InvalidArgumentsStewardException("Duration cannot be less than a day.");
             }
 
             var stringBuilder = new StringBuilder();
@@ -876,7 +876,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (stringBuilder.Length > 0)
             {
-                return this.BadRequest($"Players with XUIDs: {stringBuilder} were not found.");
+                throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
             var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
@@ -901,18 +901,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (communityMessage.Message.Length > 512)
             {
-                return this.BadRequest("Message cannot be longer than 512 characters.");
+                throw new InvalidArgumentsStewardException("Message cannot be longer than 512 characters.");
             }
 
             if (communityMessage.Duration < TimeSpan.FromDays(1))
             {
-                return this.BadRequest("Duration cannot be less than a day.");
+                throw new InvalidArgumentsStewardException("Duration cannot be less than a day.");
             }
 
             var groups = await this.sunrisePlayerInventoryProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
             if (!groups.Any(x => x.Id == groupId))
             {
-                return this.BadRequest($"Group ID: {groupId} is an invalid group ID.");
+                throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");
             }
 
             var expireTime = DateTime.Now.Add(communityMessage.Duration);

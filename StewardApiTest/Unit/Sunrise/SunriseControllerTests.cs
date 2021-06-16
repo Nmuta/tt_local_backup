@@ -16,6 +16,7 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -1201,7 +1202,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var duration = TimeSpan.FromDays(1);
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
+            var actions = new List<Func<Task>>
             {
                 async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = tooLong, Duration = duration}).ConfigureAwait(false),
                 async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = tooLong, Duration = duration}).ConfigureAwait(false),
@@ -1210,10 +1211,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as string).Should().Be("Message cannot be longer than 512 characters.");
+                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage("Message cannot be longer than 512 characters.");
             }
         }
 
@@ -1228,7 +1226,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var duration = TimeSpan.FromHours(3);
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
+            var actions = new List<Func<Task>>
             {
                 async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = message, Duration = duration}).ConfigureAwait(false),
                 async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = message, Duration = duration}).ConfigureAwait(false),
@@ -1237,10 +1235,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
-                (result.Value as string).Should().Be("Duration cannot be less than a day.");
+                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage("Duration cannot be less than a day.");
             }
         }
 

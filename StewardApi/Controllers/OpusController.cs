@@ -122,14 +122,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             if (!await this.opusPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
             {
-                return this.NotFound($"No profile found for XUID: {xuid}.");
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
             var inventory = await this.opusPlayerInventoryProvider.GetPlayerInventoryAsync(xuid).ConfigureAwait(true);
 
             if (inventory == null)
             {
-                return this.NotFound($"No inventory found for XUID: {xuid}");
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
             return this.Ok(inventory);
@@ -146,7 +146,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (inventory == null || (!inventory.Cars.Any() && (inventory.CreditRewards == null || inventory.CreditRewards[0].Quantity <= 0)))
             {
-                return this.NotFound($"No inventory found for Profile ID: {profileId}");
+                throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}");
             }
 
             return this.Ok(inventory);

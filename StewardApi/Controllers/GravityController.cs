@@ -201,7 +201,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (playerInventory == null)
             {
-                return this.NotFound($"No inventory found for XUID: {xuid}");
+                throw new NotFoundStewardException($"No inventory found for XUID: {xuid}");
             }
 
             playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory, this.loggingService);
@@ -223,7 +223,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (playerInventory == null)
             {
-                return this.NotFound($"No inventory found for Turn 10 ID: {t10Id}");
+                throw new NotFoundStewardException($"No inventory found for Turn 10 ID: {t10Id}");
             }
 
             playerInventory = StewardMasterItemHelpers.SetPlayerInventoryItemDescriptions(playerInventory, masterInventory, this.loggingService);
@@ -253,7 +253,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             if (!this.ModelState.IsValid)
             {
                 var errorResponse = this.giftRequestValidator.GenerateErrorResponse(this.ModelState);
-                return this.BadRequest(errorResponse);
+                throw new InvalidArgumentsStewardException(errorResponse);
             }
 
             GravityPlayerDetails playerDetails;
@@ -263,14 +263,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
             catch (Exception)
             {
-                return this.NotFound($"No player found for T10Id: {t10Id}");
+                throw new NotFoundStewardException($"No player found for T10Id: {t10Id}");
             }
 
             var playerGameSettingsId = playerDetails.LastGameSettingsUsed;
             var invalidItems = await this.VerifyGiftAgainstMasterInventory(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
-                return this.BadRequest($"Invalid items found. {invalidItems}");
+                throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
             var jobId = await this.AddJobIdToHeaderAsync(gift.ToJson(), requesterObjectId, $"Gravity Gifting to Turn 10 ID: {t10Id}.").ConfigureAwait(true);
@@ -321,7 +321,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             if (!this.ModelState.IsValid)
             {
                 var errorResponse = this.giftRequestValidator.GenerateErrorResponse(this.ModelState);
-                return this.BadRequest(errorResponse);
+                throw new InvalidArgumentsStewardException(errorResponse);
             }
 
             GravityPlayerDetails playerDetails;
@@ -331,18 +331,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
             catch (Exception)
             {
-                return this.NotFound($"No player found for T10Id: {t10Id}");
+                throw new NotFoundStewardException($"No player found for T10Id: {t10Id}");
             }
 
             var playerGameSettingsId = playerDetails.LastGameSettingsUsed;
             var invalidItems = await this.VerifyGiftAgainstMasterInventory(playerGameSettingsId, gift.Inventory).ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
-                return this.BadRequest($"Invalid items found. {invalidItems}");
+                throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
             var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
             var response = await this.gravityPlayerInventoryProvider.UpdatePlayerInventoryAsync(t10Id, playerGameSettingsId, gift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+
             return this.Ok(response);
         }
 
@@ -358,7 +359,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (!Guid.TryParse(gameSettingsId, out var gameSettingsIdGuid))
             {
-                this.BadRequest("Game settings ID provided is not a GUID.");
+                throw new InvalidArgumentsStewardException("Game settings ID provided is not a GUID.");
             }
 
             var masterInventory = await this.gravityGameSettingsProvider.GetGameSettingsAsync(gameSettingsIdGuid).ConfigureAwait(true);

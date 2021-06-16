@@ -1272,7 +1272,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             catch (ServiceException e)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-                Assert.AreEqual("Invalid items found. VanityItem: 700, ", e.ResponseBody);
+                Assert.IsTrue(e.ResponseBody.Contains("Invalid items found. VanityItem: 700, "));
             }
         }
 

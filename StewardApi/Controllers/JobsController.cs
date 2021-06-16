@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
 
@@ -169,20 +170,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(BackgroundJob))]
         public async Task<IActionResult> GetStatusAsync(string jobId)
         {
-            try
-            {
-                jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));
+            jobId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(jobId));
 
-                var status = await this.jobTracker.GetJobStatusAsync(jobId).ConfigureAwait(true);
+            var status = await this.jobTracker.GetJobStatusAsync(jobId).ConfigureAwait(true);
 
-                var output = this.mapper.Map<BackgroundJob>(status);
+            var output = this.mapper.Map<BackgroundJob>(status);
 
-                return this.Ok(output);
-            }
-            catch (Exception ex)
-            {
-                return this.NotFound(ex);
-            }
+            return this.Ok(output);
         }
 
         /// <summary>
@@ -192,33 +186,27 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(IList<BackgroundJob>))]
         public async Task<IActionResult> GetJobsByUserAsync(string userObjectId, [FromQuery] string resultsFrom = null)
         {
+            userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
+
+            TimeSpan? resultsFromTS = null;
             try
             {
-                userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
-
-                TimeSpan? resultsFromTS = null;
-                try
+                if (resultsFrom != null)
                 {
-                    if (resultsFrom != null)
-                    {
-                        resultsFromTS = XmlConvert.ToTimeSpan(resultsFrom);
-                    }
+                    resultsFromTS = XmlConvert.ToTimeSpan(resultsFrom);
                 }
-                catch
-                {
-                    return this.BadRequest($"Provided invalid query param: \"{nameof(resultsFrom)}\" with value \"{resultsFrom}\"");
-                }
-
-                var jobs = await this.jobTracker.GetJobsByUserAsync(userObjectId, resultsFromTS).ConfigureAwait(true);
-
-                var output = this.mapper.Map<IList<BackgroundJob>>(jobs);
-
-                return this.Ok(output);
             }
-            catch (Exception ex)
+            catch
             {
-                return this.NotFound(ex);
+                throw new InvalidArgumentsStewardException(
+                    $"Provided invalid query param: \"{nameof(resultsFrom)}\" with value \"{resultsFrom}\"");
             }
+
+            var jobs = await this.jobTracker.GetJobsByUserAsync(userObjectId, resultsFromTS).ConfigureAwait(true);
+
+            var output = this.mapper.Map<IList<BackgroundJob>>(jobs);
+
+            return this.Ok(output);
         }
 
         private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId)

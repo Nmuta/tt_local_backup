@@ -6,6 +6,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Controllers;
 using Turn10.LiveOps.StewardApi.Providers.Pipelines;
 
@@ -52,7 +53,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
             var controller = new Dependencies().Build();
 
             // Act.
-            var actions = new List<Func<Task<IActionResult>>>
+            var actions = new List<Func<Task>>
             {
                 async () => await controller.DeletePipeline(null).ConfigureAwait(false),
                 async () => await controller.DeletePipeline(TestConstants.Empty).ConfigureAwait(false),
@@ -62,9 +63,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
             // Assert.
             foreach (var action in actions)
             {
-                action().Should().BeAssignableTo<Task<IActionResult>>();
-                var result = await action().ConfigureAwait(false) as BadRequestObjectResult;
-                result.StatusCode.Should().Be(400);
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "pipelineName"));
             }
         }
 

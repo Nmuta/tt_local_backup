@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Pipelines;
 using Turn10.LiveOps.StewardApi.Obligation.UpstreamModels;
 using Turn10.LiveOps.StewardApi.Providers.Pipelines;
@@ -54,17 +55,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(string), description: "work_item_id")]
         public async Task<IActionResult> DeletePipeline([FromRoute] string pipelineName)
         {
+            pipelineName.ShouldNotBeNullEmptyOrWhiteSpace(nameof(pipelineName));
+
             try
             {
-                pipelineName.ShouldNotBeNullEmptyOrWhiteSpace(pipelineName);
-
                 var result = await this.obligationProvider.DeletePipelineAsync(pipelineName).ConfigureAwait(true);
 
                 return this.Ok(result);
             }
             catch (Exception ex)
             {
-                return this.BadRequest(ex.Message);
+                throw new BadGatewayStewardException(ex.Message, ex);
             }
         }
 
