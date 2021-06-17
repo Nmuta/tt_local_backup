@@ -1,4 +1,6 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Common
+﻿using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents a message send result.
@@ -17,8 +19,8 @@
         public GiftIdentityAntecedent IdentityAntecedent { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the message send was a success.
+        ///     Gets or sets the error.
         /// </summary>
-        public bool Success { get; set; }
+        public StewardError Error { get; set; }
     }
 }

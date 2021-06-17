@@ -87,7 +87,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<SunriseUserFlagsInput, SunriseUserFlags>().ReverseMap();
             this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
-                .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid));
+                .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid))
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(
+                    src => src.Success ? null : new StewardError(StewardErrorCode.ServicesFailure, $"LSP failed to message player with XUID: {src.Xuid}")));
             this.CreateMap<ForzaUserAdminComment, SunriseProfileNote>()
                 .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(src => src.date))
                 .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.author))

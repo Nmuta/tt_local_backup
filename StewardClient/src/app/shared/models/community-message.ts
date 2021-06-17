@@ -1,6 +1,7 @@
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
 import { DateTime, Duration } from 'luxon';
+import { MSError } from './error.model';
 
 /** Interface for a community message. */
 export interface CommunityMessage {
@@ -16,7 +17,7 @@ export interface BulkCommunityMessage extends CommunityMessage {
 
 /** Interface for a community message result. */
 export interface CommunityMessageResult<T> {
-  identity: T;
+  playerOrLspGroup: T;
   identityAntecedent: GiftIdentityAntecedent;
-  success: boolean;
+  error: MSError;
 }

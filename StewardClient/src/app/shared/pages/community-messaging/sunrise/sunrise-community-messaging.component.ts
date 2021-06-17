@@ -10,8 +10,18 @@ import { LspGroup } from '@models/lsp-group';
 import { JsonTableResult } from '@models/json-table-result';
 import { sortBy } from 'lodash';
 import BigNumber from 'bignumber.js';
+import { GiftIdentityAntecedent } from '@shared/constants';
 
 /** Routed Component; Sunrise Community Messaging Tool. */
+type MessageSendResultViewable = {
+  identity: BigNumber;
+  identityAntecedent: GiftIdentityAntecedent;
+  error: string;
+};
+
+/**
+ *
+ */
 @Component({
   templateUrl: './sunrise-community-messaging.component.html',
   styleUrls: ['./sunrise-community-messaging.component.scss'],
@@ -28,7 +38,7 @@ export class SunriseCommunityMessagingComponent extends BaseComponent {
   /** The pending community message. */
   public newCommunityMessage: CommunityMessage;
   /** The community message results */
-  public sentCommunityMessageResults: JsonTableResult<CommunityMessageResult<BigNumber>>[] = [];
+  public sentCommunityMessageResults: JsonTableResult<MessageSendResultViewable>[] = [];
 
   /** True while waiting on a request. */
   public isLoading = false;
@@ -70,19 +80,20 @@ export class SunriseCommunityMessagingComponent extends BaseComponent {
         }),
         map(data =>
           sortBy(data, item => {
-            return !item.success;
+            return item.error;
           }),
         ),
       )
       .subscribe(data => {
         this.isLoading = false;
-        const sortedData = sortBy(data, item => {
-          return item.success;
-        });
 
-        this.sentCommunityMessageResults = sortedData.map(item => {
-          const tableResult = item as JsonTableResult<CommunityMessageResult<BigNumber>>;
-          tableResult.showErrorInTable = !item.success;
+        this.sentCommunityMessageResults = data.map(item => {
+          const tableResult = {
+            showErrorInTable: !!item.error,
+            identity: item.playerOrLspGroup,
+            identityAntecedent: item.identityAntecedent,
+            error: item.error?.message,
+          };
           return tableResult;
         });
       });

@@ -3,7 +3,6 @@ import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
 import { CommunityMessageResult } from '@models/community-message';
 import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
-import faker from 'faker';
 
 /** Fake API for sending a community message to an lsp group. */
 export class SunriseSendCommunityMessageToLspGroupFakeApi extends FakeApiBase {
@@ -36,9 +35,9 @@ export class SunriseSendCommunityMessageToLspGroupFakeApi extends FakeApiBase {
   /** Creates a sample object. */
   public static make(lspGroupId: BigNumber): CommunityMessageResult<BigNumber> {
     return {
-      identity: lspGroupId,
+      playerOrLspGroup: lspGroupId,
       identityAntecedent: GiftIdentityAntecedent.LspGroupId,
-      success: faker.datatype.boolean(),
+      error: null,
     } as CommunityMessageResult<BigNumber>;
   }
 }

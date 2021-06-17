@@ -540,11 +540,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             try
             {
                 await this.sunriseService.SendGroupMessageNotificationAsync(groupId, message, expireTimeUtc).ConfigureAwait(false);
-                messageResponse.Success = true;
+                messageResponse.Error = null;
             }
             catch
             {
-                messageResponse.Success = false;
+                messageResponse.Error = new StewardError(StewardErrorCode.ServicesFailure, $"LSP failed to message group with ID: {groupId}");
             }
 
             return messageResponse;

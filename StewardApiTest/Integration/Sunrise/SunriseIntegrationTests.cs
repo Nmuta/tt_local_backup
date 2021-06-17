@@ -1534,7 +1534,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Any());
-            Assert.IsTrue(result[0].Success);
+            Assert.IsNull(result[0].Error);
         }
 
         [TestMethod]

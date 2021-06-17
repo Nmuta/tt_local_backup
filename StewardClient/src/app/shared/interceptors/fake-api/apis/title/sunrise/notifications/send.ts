@@ -34,9 +34,11 @@ export class SunriseSendCommunityMessageFakeApi extends FakeApiBase {
     return new Array(faker.datatype.number({ min: min, max: 10 })).fill(undefined).map(
       () =>
         <CommunityMessageResult<BigNumber>>{
-          identity: new BigNumber(faker.datatype.number({ min: 100_000_000, max: 999_999_999 })),
+          playerOrLspGroup: new BigNumber(
+            faker.datatype.number({ min: 100_000_000, max: 999_999_999 }),
+          ),
           identityAntecedent: GiftIdentityAntecedent.Xuid,
-          success: faker.datatype.boolean(),
+          error: null,
         },
     );
   }
