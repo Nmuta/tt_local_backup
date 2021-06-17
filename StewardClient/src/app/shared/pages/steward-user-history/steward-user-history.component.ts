@@ -28,7 +28,7 @@ export class StewardUserHistoryComponent extends BaseComponent implements OnInit
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   public fromDurations = [
-    { text: 'Last Week', value: Duration.fromObject({ week: 1 }) },
+    { text: 'Last Week', value: Duration.fromObject({ days: 7 }) },
     { text: 'Last Month', value: Duration.fromObject({ month: 1 }) },
     { text: 'Last Year', value: Duration.fromObject({ year: 1 }) },
   ];
@@ -79,6 +79,7 @@ export class StewardUserHistoryComponent extends BaseComponent implements OnInit
       .subscribe(jobs => {
         this.isLoading = false;
         this.jobs.data = jobs;
+        this.paginator.firstPage();
       });
   }
 

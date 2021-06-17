@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -10,6 +11,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.QueryParams;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -184,25 +186,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("userObjectId({userObjectId})")]
         [SwaggerResponse(200, type: typeof(IList<BackgroundJob>))]
-        public async Task<IActionResult> GetJobsByUserAsync(string userObjectId, [FromQuery] string resultsFrom = null)
+        public async Task<IActionResult> GetJobsByUserAsync(string userObjectId, [FromQuery] TimeSpanQueryParam resultsFrom)
         {
             userObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(userObjectId));
 
-            TimeSpan? resultsFromTS = null;
-            try
-            {
-                if (resultsFrom != null)
-                {
-                    resultsFromTS = XmlConvert.ToTimeSpan(resultsFrom);
-                }
-            }
-            catch
-            {
-                throw new InvalidArgumentsStewardException(
-                    $"Provided invalid query param: \"{nameof(resultsFrom)}\" with value \"{resultsFrom}\"");
-            }
-
-            var jobs = await this.jobTracker.GetJobsByUserAsync(userObjectId, resultsFromTS).ConfigureAwait(true);
+            var jobs = await this.jobTracker.GetJobsByUserAsync(userObjectId, resultsFrom.Value).ConfigureAwait(true);
 
             var output = this.mapper.Map<IList<BackgroundJob>>(jobs);
 
