@@ -110,6 +110,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             {
                 var response = await this.apolloService.LiveOpsGetUserDataByXuidAsync(xuid).ConfigureAwait(false);
 
+                if (response.returnData.CurrentProfileId <= 0)
+                {
+                    throw new NotFoundStewardException($"No player found for XUID: {xuid}.");
+                }
+
                 return this.mapper.Map<ApolloPlayerDetails>(response.returnData);
             }
             catch (Exception ex)
