@@ -245,12 +245,13 @@ export abstract class GiftBasketBaseComponent<
         tap(job => {
           switch (job.status) {
             case BackgroundJobStatus.Completed:
+            case BackgroundJobStatus.CompletedWithErrors:
               this.giftResponse = Array.isArray(job.result) ? job.result : [job.result];
               break;
             case BackgroundJobStatus.InProgress:
               throw 'still in progress';
             default:
-              this.loadError = job.result;
+              this.loadError = job.result || 'Background job failed unexpectedly.';
           }
           this.isLoading = false;
         }),

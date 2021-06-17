@@ -38,6 +38,7 @@ describe('DurationPickerComponent', () => {
       component = fixture.debugElement.componentInstance;
 
       mockStore = TestBed.inject(Store);
+      mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot');
     }),
   );
 
@@ -48,24 +49,6 @@ describe('DurationPickerComponent', () => {
   describe('Method: ngOnInit', () => {
     beforeEach(() => {
       component.options = [];
-    });
-
-    describe('If profile role is LiveOpsAdmin', () => {
-      beforeEach(() => {
-        mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue({
-          emailAddress: `${faker.name.firstName()}@microsofttest.fake`,
-          role: UserRole.LiveOpsAdmin,
-          name: faker.name.firstName(),
-          liveOpsAdminSecondaryRole: undefined,
-        } as UserModel);
-      });
-
-      it('should set 1 minute option duration options', () => {
-        component.ngOnInit();
-
-        expect(component.options.length).toEqual(1);
-        expect(component.options[0].humanized).toEqual('1 minute');
-      });
     });
 
     describe('If profile role is not LiveOpsAdmin', () => {
@@ -81,7 +64,25 @@ describe('DurationPickerComponent', () => {
       it('should not set 1 minute duration options', () => {
         component.ngOnInit();
 
-        expect(component.options.length).toEqual(0);
+        expect(component.options.length).toEqual(3);
+      });
+    });
+
+    describe('If profile role is LiveOpsAdmin', () => {
+      beforeEach(() => {
+        mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue({
+          emailAddress: `${faker.name.firstName()}@microsofttest.fake`,
+          role: UserRole.LiveOpsAdmin,
+          name: faker.name.firstName(),
+          liveOpsAdminSecondaryRole: undefined,
+        } as UserModel);
+      });
+
+      it('should set 1 minute option duration options', () => {
+        component.ngOnInit();
+
+        expect(component.options.length).toEqual(4);
+        expect(component.options[0].humanized).toEqual('1 minute');
       });
     });
   });

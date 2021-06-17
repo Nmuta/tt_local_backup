@@ -47,7 +47,7 @@ export class UserBanningBaseComponent extends BaseComponent {
             case BackgroundJobStatus.InProgress:
               throw new Error('in progress');
             default:
-              this.loadError = job.result;
+              this.loadError = job.result || 'Background job failed unexpectedly.';
           }
           this.isLoading = false;
         }),

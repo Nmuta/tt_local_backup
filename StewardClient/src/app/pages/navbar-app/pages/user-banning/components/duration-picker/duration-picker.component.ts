@@ -48,6 +48,7 @@ export class DurationPickerComponent implements OnInit, ControlValueAccessor {
   /** Lifecycle hook. */
   public ngOnInit(): void {
     const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
+    this.options = DurationPickerOptions;
     if (profile && profile.role === UserRole.LiveOpsAdmin) {
       this.options.unshift({
         duration: Duration.fromObject({ minutes: 1 }),
