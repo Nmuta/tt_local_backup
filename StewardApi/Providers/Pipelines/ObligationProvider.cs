@@ -126,8 +126,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
             {
                 PipelineName = result.Name,
                 PipelineDescription = result.Description,
-                ObligationPipelines = kustoDataActivities,
-                ObligationRestateOMatics = kustoRestatOMaticDataActivities,
+                KustoDataActivities = kustoDataActivities,
+                KustoRestateOMaticDataActivities = kustoRestatOMaticDataActivities,
                 Principals = result.Principals
                     .Where(resultPrincipal => !this.standardPrincipals.Select(s => s.Value).Contains(resultPrincipal.Value)).ToList()
             };
@@ -242,50 +242,53 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
                 DataActivities = new List<DataActivityBase>()
             };
 
-            foreach (var obligationPipeline in obligationRequest.ObligationPipelines)
+            foreach (var obligationDataActivity in obligationRequest.KustoDataActivities)
             {
-                var startDate = new DateTimeOffset(obligationPipeline.StartDateUtc);
-                var endDate = new DateTimeOffset(obligationPipeline.EndDateUtc);
+                var startDate = new DateTimeOffset(obligationDataActivity.StartDateUtc);
+                var endDate = new DateTimeOffset(obligationDataActivity.EndDateUtc);
 
                 var dataActivity = new KustoDataActivity
                 {
-                    Name = obligationPipeline.ActivityName,
-                    MinExecutionSpan = obligationPipeline.ExecutionInterval,
-                    MaxExecutionSpan = obligationPipeline.MaxExecutionSpan,
-                    ExecutionInterval = obligationPipeline.ExecutionInterval,
-                    Delay = obligationPipeline.ExecutionDelay,
+                    Name = obligationDataActivity.ActivityName,
+                    MinExecutionSpan = obligationDataActivity.ExecutionInterval,
+                    MaxExecutionSpan = obligationDataActivity.MaxExecutionSpan,
+                    ExecutionInterval = obligationDataActivity.ExecutionInterval,
+                    Delay = obligationDataActivity.ExecutionDelay,
                     TimeRange = new TimeRange(startDate, endDate),
-                    KustoDatabase = obligationPipeline.DestinationDatabase,
-                    KustoTable = obligationPipeline.KustoTableName,
-                    KustoQuery = BuildFunctionDefinition(obligationPipeline.KustoFunction),
-                    InitializationQuery = BuildInitializationQuery(obligationPipeline),
-                    NumBucketsPreSplitHint = obligationPipeline.KustoFunction.NumberOfBuckets,
-                    Dependencies = BuildDependencies(obligationPipeline.DataActivityDependencyNames)
-                }.AddParallelismLimit(obligationPipeline.ParallelismLimit, this.configQualifier.Tenant, obligationRequest.PipelineName);
+                    KustoDatabase = obligationDataActivity.DestinationDatabase,
+                    KustoTable = obligationDataActivity.KustoTableName,
+                    KustoQuery = BuildFunctionDefinition(obligationDataActivity.KustoFunction),
+                    InitializationQuery = BuildInitializationQuery(obligationDataActivity),
+                    NumBucketsPreSplitHint = obligationDataActivity.KustoFunction.NumberOfBuckets,
+                    Dependencies = BuildDependencies(obligationDataActivity.DataActivityDependencyNames)
+                }.AddParallelismLimit(obligationDataActivity.ParallelismLimit, this.configQualifier.Tenant, obligationRequest.PipelineName);
 
                 pipeline.DataActivities.Add(dataActivity);
             }
 
-            foreach (var obligationPipeline in obligationRequest.ObligationRestateOMatics)
+            foreach (var obligationRestateOMaticDataActivity in obligationRequest.KustoRestateOMaticDataActivities)
             {
-                var startDate = new DateTimeOffset(obligationPipeline.StartDateUtc);
-                var endDate = new DateTimeOffset(obligationPipeline.EndDateUtc);
+                var startDate = new DateTimeOffset(obligationRestateOMaticDataActivity.StartDateUtc);
+                var endDate = new DateTimeOffset(obligationRestateOMaticDataActivity.EndDateUtc);
 
                 var dataActivity = new KustoRestateOMaticDataActivity
                 {
-                    Name = obligationPipeline.ActivityName,
-                    MinExecutionSpan = obligationPipeline.ExecutionInterval,
-                    MaxExecutionSpan = obligationPipeline.MaxExecutionSpan,
-                    ExecutionInterval = obligationPipeline.ExecutionInterval,
-                    Delay = obligationPipeline.ExecutionDelay,
+                    Name = obligationRestateOMaticDataActivity.ActivityName,
+                    MinExecutionSpan = obligationRestateOMaticDataActivity.ExecutionInterval,
+                    MaxExecutionSpan = obligationRestateOMaticDataActivity.MaxExecutionSpan,
+                    ExecutionInterval = obligationRestateOMaticDataActivity.ExecutionInterval,
+                    Delay = obligationRestateOMaticDataActivity.ExecutionDelay,
                     TimeRange = new TimeRange(startDate, endDate),
-                    KustoDatabase = obligationPipeline.DestinationDatabase,
-                    KustoQuery = BuildFunctionDefinition(obligationPipeline.KustoFunction),
-                    NumBucketsPreSplitHint = obligationPipeline.KustoFunction.NumberOfBuckets,
-                    Dependencies = BuildDependencies(obligationPipeline.DataActivityDependencyNames),
-                    IncludeChildren = obligationPipeline.IncludeChildren,
-                    TargetDataActivity = obligationPipeline.TargetDataActivity,
-                }.AddParallelismLimit(obligationPipeline.ParallelismLimit, this.configQualifier.Tenant, obligationRequest.PipelineName);
+                    KustoDatabase = obligationRestateOMaticDataActivity.DestinationDatabase,
+                    KustoQuery = BuildFunctionDefinition(obligationRestateOMaticDataActivity.KustoFunction),
+                    NumBucketsPreSplitHint = obligationRestateOMaticDataActivity.KustoFunction.NumberOfBuckets,
+                    Dependencies = BuildDependencies(obligationRestateOMaticDataActivity.DataActivityDependencyNames),
+                    IncludeChildren = obligationRestateOMaticDataActivity.IncludeChildren,
+                    TargetDataActivity = obligationRestateOMaticDataActivity.TargetDataActivity,
+                }.AddParallelismLimit(
+                    obligationRestateOMaticDataActivity.ParallelismLimit,
+                    this.configQualifier.Tenant,
+                    obligationRequest.PipelineName);
 
                 pipeline.DataActivities.Add(dataActivity);
             }

@@ -52,8 +52,8 @@ export class PipelineGetFakeApi extends FakeApiBase {
           role: faker.name.jobTitle(),
         };
       }),
-      obligationRestateOMatics: [],
-      obligationPipelines: new Array(faker.datatype.number(5)).fill(undefined).map(_ => {
+      kustoRestateOMaticDataActivities: [],
+      kustoDataActivities: new Array(faker.datatype.number(5)).fill(undefined).map(_ => {
         return <ObligationKustoDataActivity>{
           activityName: faker.name.jobTitle(),
           dataActivityDependencyNames: new Array(faker.datatype.number(5))

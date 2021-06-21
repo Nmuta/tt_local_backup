@@ -6,7 +6,7 @@ import { ObligationPrincipal } from './obligation-principal';
 export interface SimplifiedObligationPipeline {
   pipelineName: string;
   pipelineDescription: string;
-  obligationPipelines: ObligationKustoDataActivity[];
-  obligationRestateOMatics: ObligationKustoRestateOMaticDataActivity[];
+  kustoDataActivities: ObligationKustoDataActivity[];
+  kustoRestateOMaticDataActivities: ObligationKustoRestateOMaticDataActivity[];
   principals: ObligationPrincipal[];
 }

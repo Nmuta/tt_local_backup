@@ -195,7 +195,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           },
       ),
 
-      obligationPipelines: options.dataActivities.map(bundle => {
+      kustoDataActivities: options.dataActivities.map(bundle => {
         const activity = bundle.dataActivity;
         return {
           activityName: activity.name,
@@ -221,7 +221,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           dataActivityDependencyNames: activity.dependencyNames,
         };
       }),
-      obligationRestateOMatics: flatMap(options.dataActivities, bundle => {
+      kustoRestateOMaticDataActivities: flatMap(options.dataActivities, bundle => {
         const activity = bundle.restateOMatic;
         if (!activity) {
           return [];
@@ -260,9 +260,9 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
   }
 
   private apiObligationToObligationOptions(model: SimplifiedObligationPipeline): ObligationOptions {
-    const kustoDataActivities = model.obligationPipelines;
+    const kustoDataActivities = model.kustoDataActivities;
     const restateOMaticLookup = keyBy(
-      model.obligationRestateOMatics,
+      model.kustoRestateOMaticDataActivities,
       activity => activity.targetDataActivity,
     );
     return {

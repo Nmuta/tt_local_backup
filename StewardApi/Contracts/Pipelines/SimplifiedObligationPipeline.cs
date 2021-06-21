@@ -20,12 +20,12 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Pipelines
         /// <summary>
         ///     Gets or sets the obligation pipelines.
         /// </summary>
-        public IList<ObligationKustoDataActivity> ObligationPipelines { get; set; }
+        public IList<ObligationKustoDataActivity> KustoDataActivities { get; set; }
 
         /// <summary>
         ///     Gets or sets the obligation restate-o-matic pipelines.
         /// </summary>
-        public IList<ObligationKustoRestateOMaticDataActivity> ObligationRestateOMatics { get; set; }
+        public IList<ObligationKustoRestateOMaticDataActivity> KustoRestateOMaticDataActivities { get; set; }
 
         /// <summary>
         ///     Gets or sets principals.
