@@ -1,3 +1,7 @@
 {
-  "baseUrl": "https://steward-ui-prod-staging.azurewebsites.net"
+  "baseUrl": "https://steward-ui-prod-staging.azurewebsites.net",
+  "testFiles": "**/*.spec.*",
+  "env": {
+    "STEWARD_API": "https://steward-api-prod-staging.azurewebsites.net"
+  }
 }

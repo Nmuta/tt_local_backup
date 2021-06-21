@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2020",
     "lib": ["es2020", "dom"],
-    "types": ["cypress"],
+    "types": ["cypress", "cypress-wait-until"],
     "baseUrl": ".",
     "paths": {
       "@fixtures/*": ["fixtures/*"],
@@ -11,5 +11,11 @@
       "@cypress/*": ["*"]
     }
   },
-  "include": ["**/*.ts", "plugins/index.js", "support/commands.js", "support/commands.js"]
+  "include": [
+    "**/*.ts",
+    "plugins/index.js",
+    "support/commands.ts",
+    "support/commands.ts",
+    "integration/steward-support/player-details/sunrise/by-gtag.spects"
+  ]
 }

@@ -1,4 +1,9 @@
 {
   "baseUrl": "http://localhost:4200",
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "testFiles": "**/*.spec.*",
+  "env": {
+    "STEWARD_API": "https://steward-api-dev.azurewebsites.net"
+  },
+  "supportFile": "cypress/support/commands.ts"
 }

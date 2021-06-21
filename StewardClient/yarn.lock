@@ -4137,6 +4137,11 @@ cyclist@^1.0.1:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
+cypress-wait-until@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/cypress-wait-until/-/cypress-wait-until-1.7.1.tgz#3789cd18affdbb848e3cfc1f918353c7ba1de6f8"
+  integrity sha512-8DL5IsBTbAxBjfYgCzdbohPq/bY+IKc63fxtso1C8RWhLnQkZbVESyaclNr76jyxfId6uyzX8+Xnt0ZwaXNtkA==
+
 cypress@^7.4.0:
   version "7.4.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/cypress/-/cypress-7.4.0.tgz#679bfe75335b9a4873d44f0d989e9f0367f00665"
