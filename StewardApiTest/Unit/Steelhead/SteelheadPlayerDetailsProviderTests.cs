@@ -14,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 using Xls.WebServices.Steelhead_master.Generated;
+using static Forza.LiveOps.Steelhead_master.Generated.NotificationsManagementService;
 using static Forza.LiveOps.Steelhead_master.Generated.UserManagementService;
 using static Forza.WebServices.Steelhead_master.Generated.LiveOpsService;
 
@@ -349,6 +350,109 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             }
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerNotificationsAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var maxResults = Fixture.Create<int>();
+
+            // Act.
+            async Task<IList<Notification>> Action() => await provider.GetPlayerNotificationsAsync(xuid, maxResults).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<List<Notification>>();
+            Action().Result.ShouldNotBeNull();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCommunityMessageAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuids = Fixture.Create<List<ulong>>();
+            var message = Fixture.Create<string>();
+            var expireTime = Fixture.Create<DateTime>();
+
+            // Act.
+            async Task<IList<MessageSendResult<ulong>>> Action() => await provider.SendCommunityMessageAsync(xuids, message, expireTime).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<List<MessageSendResult<ulong>>>();
+            Action().Result.ShouldNotBeNull();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCommunityMessageAsync_WithNullXuids_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var message = Fixture.Create<string>();
+            var expireTime = Fixture.Create<DateTime>();
+
+            // Act.
+            Func<Task<IList<MessageSendResult<ulong>>>> action = async () => await provider.SendCommunityMessageAsync(null, message, expireTime).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCommunityMessageAsync_WithNullEmptyWhitespaceMessage_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuids = Fixture.Create<List<ulong>>();
+            var groupId = Fixture.Create<int>();
+            var expireTime = Fixture.Create<DateTime>();
+
+            // Act.
+            var actions = new List<Func<Task>>
+            {
+                async () => await provider.SendCommunityMessageAsync(xuids, null, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.Empty, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.WhiteSpace, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, null, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.Empty, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.WhiteSpace, expireTime).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "message"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCommunityMessageAsync_WithValidParameters_DoesNotThrow()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var groupId = Fixture.Create<int>();
+            var message = Fixture.Create<string>();
+            var expireTime = Fixture.Create<DateTime>();
+
+            async Task<MessageSendResult<int>> Action() => await provider.SendCommunityMessageAsync(groupId, message, expireTime).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<MessageSendResult<int>>();
+            Action().Result.ShouldNotBeNull();
+
+
+            // Act.
+            Func<Task> action = async () => await provider.SendCommunityMessageAsync(groupId, message, expireTime).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
         private List<SteelheadBanParameters> GenerateBanParameters()
         {
             var newParams = new SteelheadBanParameters
@@ -382,6 +486,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadUserService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<int>()).Returns(GenerateBanUsersOutput());
                 this.SteelheadUserService.GetUserBanSummariesAsync(Arg.Any<ulong[]>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.SteelheadUserService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
+                this.SteelheadUserService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsRetrieveForUserOutput>());
+                this.SteelheadUserService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
                 this.Mapper.Map<SteelheadPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SteelheadPlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
@@ -389,6 +495,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SteelheadPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
+                this.Mapper.Map<IList<Notification>>(Arg.Any<LiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
+                this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
             }
 
             public ISteelheadService SteelheadUserService { get; set; } = Substitute.For<ISteelheadService>();

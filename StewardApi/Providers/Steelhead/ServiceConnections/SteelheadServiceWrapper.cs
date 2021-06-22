@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Forza.LiveOps.Steelhead_master.Generated;
 using Forza.UserInventory.Steelhead_master.Generated;
@@ -13,6 +14,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using GiftingService = Forza.LiveOps.Steelhead_master.Generated.GiftingService;
+using NotificationsManagementService = Forza.LiveOps.Steelhead_master.Generated.NotificationsManagementService;
 using UserInventoryService = Forza.LiveOps.Steelhead_master.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
@@ -223,6 +225,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             await giftingService.AdminSendItemGroupGift(groupId, itemType, itemValue).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
+        public async Task<NotificationsManagementService.LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUserAsync(ulong xuid, int maxResults)
+        {
+            var notificationsService = await this.PrepareNotificationsManagementServiceAsync().ConfigureAwait(false);
+
+            return await notificationsService.LiveOpsRetrieveForUser(xuid, maxResults).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc)
+        {
+            var notificationsService = await this.PrepareNotificationsManagementServiceAsync().ConfigureAwait(false);
+
+            return await notificationsService.SendMessageNotificationToMultipleUsers(xuids.ToArray(), xuids.Count, message, expireTimeUtc).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task SendGroupMessageNotificationAsync(int groupId, string message, DateTime expireTimeUtc)
+        {
+            var notificationsService = await this.PrepareNotificationsManagementServiceAsync().ConfigureAwait(false);
+
+            await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc).ConfigureAwait(false);
+        }
+
         private async Task<UserManagementService> PrepareUserManagementServiceAsync()
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
@@ -253,6 +279,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new GiftingService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+        }
+
+        private async Task<NotificationsManagementService> PrepareNotificationsManagementServiceAsync()
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new NotificationsManagementService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
         }
 
         private async Task<string> GetAuthTokenAsync()

@@ -1116,9 +1116,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action().Should().BeAssignableTo<Task<IActionResult>>();
             Action().Should().NotBeNull();
             var result = await Action().ConfigureAwait(false) as OkObjectResult;
-            var details = result.Value as IList<SunriseNotification>;
+            var details = result.Value as IList<Notification>;
             details.Should().NotBeNull();
-            details.Should().BeOfType<List<SunriseNotification>>();
+            details.Should().BeOfType<List<Notification>>();
         }
 
         [TestMethod]
@@ -1211,7 +1211,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage("Message cannot be longer than 512 characters.");
+                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage(string.Format(TestConstants.ArgumentTooLongExceptionMessagePartial, "Message", "512"));
             }
         }
 
@@ -1235,7 +1235,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             foreach (var action in actions)
             {
-                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage("Duration cannot be less than a day.");
+                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage(string.Format(TestConstants.ArgumentDurationTooShortMessagePartial, "Duration", TimeSpan.FromDays(1)));
             }
         }
 
@@ -1345,7 +1345,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerDetailsProvider.BanUsersAsync(Arg.Any<List<SunriseBanParameters>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.SunrisePlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
-                this.SunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SunriseNotification>>());
+                this.SunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<Notification>>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());

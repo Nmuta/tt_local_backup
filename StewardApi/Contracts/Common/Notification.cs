@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
+namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Represents a Sunrise notification.
+    ///     Represents a notification.
     /// </summary>
-    public sealed class SunriseNotification
+    public sealed class Notification
     {
         /// <summary>
         ///     Gets or sets the notification type.

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
-using Forza.LiveOps.FH5_master.Generated;
-using Forza.UserInventory.FH5_master.Generated;
-using Forza.WebServices.FH5_master.Generated;
+using Forza.LiveOps.FH5_main.Generated;
+using Forza.UserInventory.FH5_main.Generated;
+using Forza.WebServices.FH5_main.Generated;
 using Microsoft.Extensions.Configuration;
 using Turn10.Contracts.STS;
 using Turn10.Data.Common;
@@ -12,9 +13,10 @@ using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
-using GiftingService = Forza.LiveOps.FH5_master.Generated.GiftingService;
-using RareCarShopService = Forza.WebServices.FH5_master.Generated.RareCarShopService;
-using UserInventoryService = Forza.LiveOps.FH5_master.Generated.UserInventoryService;
+using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
+using NotificationsManagementService = Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
+using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
+using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 {
@@ -264,6 +266,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             await giftingService.AdminSendItemGroupGift(groupId, itemType, itemValue).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
+        public async Task<NotificationsManagementService.LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUserAsync(ulong xuid, int maxResults)
+        {
+            var notificationsService = await this.PrepareNotificationsManagementServiceAsync().ConfigureAwait(false);
+
+            return await notificationsService.LiveOpsRetrieveForUser(xuid, maxResults).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc)
+        {
+            var notificationsService = await this.PrepareNotificationsManagementServiceAsync().ConfigureAwait(false);
+
+            return await notificationsService.SendMessageNotificationToMultipleUsers(xuids.ToArray(), xuids.Count, message, expireTimeUtc).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task SendGroupMessageNotificationAsync(int groupId, string message, DateTime expireTimeUtc)
+        {
+            var notificationsService = await this.PrepareNotificationsManagementServiceAsync().ConfigureAwait(false);
+
+            await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc).ConfigureAwait(false);
+        }
+
         private async Task<UserManagementService> PrepareUserManagementServiceAsync()
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
@@ -310,6 +336,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new RareCarShopService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+        }
+
+        private async Task<NotificationsManagementService> PrepareNotificationsManagementServiceAsync()
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new NotificationsManagementService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
         }
 
         private async Task<string> GetAuthTokenAsync()

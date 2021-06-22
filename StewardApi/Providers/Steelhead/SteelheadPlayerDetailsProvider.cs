@@ -397,6 +397,63 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             }
         }
 
+        /// <inheritdoc />
+        public async Task<IList<Notification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults)
+        {
+            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+
+            try
+            {
+                var notifications = await this.steelheadService.LiveOpsRetrieveForUserAsync(xuid, maxResults).ConfigureAwait(false);
+
+                return this.mapper.Map<IList<Notification>>(notifications.results);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"Notifications for player with XUID: {xuid} could not be found.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc)
+        {
+            xuids.ShouldNotBeNull(nameof(xuids));
+            message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
+
+            try
+            {
+                var results = await this.steelheadService.SendMessageNotificationToMultipleUsersAsync(xuids, message, expireTimeUtc).ConfigureAwait(false);
+
+                return this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException("Notifications failed to send.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<MessageSendResult<int>> SendCommunityMessageAsync(int groupId, string message, DateTime expireTimeUtc)
+        {
+            message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
+
+            var messageResponse = new MessageSendResult<int>();
+            messageResponse.PlayerOrLspGroup = groupId;
+            messageResponse.IdentityAntecedent = GiftIdentityAntecedent.LspGroupId;
+
+            try
+            {
+                await this.steelheadService.SendGroupMessageNotificationAsync(groupId, message, expireTimeUtc).ConfigureAwait(false);
+                messageResponse.Error = null;
+            }
+            catch
+            {
+                messageResponse.Error = new StewardError(StewardErrorCode.ServicesFailure, $"LSP failed to message group with ID: {groupId}");
+            }
+
+            return messageResponse;
+        }
+
         private IList<int> PrepareGroupIds(SteelheadUserFlags userFlags, bool toggleOn)
         {
             var resultGroupIds = new List<int>();

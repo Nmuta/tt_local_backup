@@ -105,7 +105,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Get player notifications.
         /// </summary>
-        Task<IList<SunriseNotification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults);
+        Task<IList<Notification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults);
 
         /// <summary>
         ///     Send community message.

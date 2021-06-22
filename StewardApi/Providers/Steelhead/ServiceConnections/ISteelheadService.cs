@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Forza.LiveOps.Steelhead_master.Generated;
 using Forza.UserInventory.Steelhead_master.Generated;
 using Forza.WebServices.Steelhead_master.Generated;
 using GiftingService = Forza.LiveOps.Steelhead_master.Generated.GiftingService;
+using NotificationsManagementService = Forza.LiveOps.Steelhead_master.Generated.NotificationsManagementService;
 using UserInventoryService = Forza.LiveOps.Steelhead_master.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
@@ -111,5 +114,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Send a group item gift.
         /// </summary>
         Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue);
+
+        /// <summary>
+        ///     Retrieves notifications for a user.
+        /// </summary>
+        public Task<NotificationsManagementService.LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUserAsync(ulong xuid, int maxResults);
+
+        /// <summary>
+        ///     Send message to multiple xuids.
+        /// </summary>
+        Task<NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc);
+
+        /// <summary>
+        ///     Send group message.
+        /// </summary>
+        public Task SendGroupMessageNotificationAsync(int groupId, string message, DateTime expireTimeUtc);
     }
 }

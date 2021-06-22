@@ -696,6 +696,85 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets the player notifications.
+        /// </summary>
+        [HttpGet("player/xuid({xuid})/notifications")]
+        [SwaggerResponse(200, type: typeof(IList<Notification>))]
+        public async Task<IActionResult> GetPlayerNotifications(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
+        {
+            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+
+            var notifications = await this.steelheadPlayerDetailsProvider.GetPlayerNotificationsAsync(xuid, maxResults).ConfigureAwait(true);
+
+            return this.Ok(notifications);
+        }
+
+        /// <summary>
+        ///     Sends the players notifications.
+        /// </summary>
+        [HttpPost("notifications/send")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
+        public async Task<IActionResult> SendPlayerNotifications([FromBody] BulkCommunityMessage communityMessage)
+        {
+            communityMessage.ShouldNotBeNull(nameof(communityMessage));
+            communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
+            communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
+            communityMessage.Duration.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(communityMessage.Duration));
+
+            var stringBuilder = new StringBuilder();
+
+            foreach (var xuid in communityMessage.Xuids)
+            {
+                if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                {
+                    stringBuilder.Append($"{xuid} ");
+                }
+            }
+
+            if (stringBuilder.Length > 0)
+            {
+                throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
+            }
+
+            var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
+            var notifications = await this.steelheadPlayerDetailsProvider.SendCommunityMessageAsync(communityMessage.Xuids, communityMessage.Message, expireTime).ConfigureAwait(true);
+
+            return this.Ok(notifications);
+        }
+
+        /// <summary>
+        ///     Sends the group notifications.
+        /// </summary>
+        [HttpPost("notifications/send/groupId({groupId})")]
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin,
+            UserRole.CommunityManager)]
+        [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
+        public async Task<IActionResult> SendGroupNotifications(int groupId, [FromBody] CommunityMessage communityMessage)
+        {
+            communityMessage.ShouldNotBeNull(nameof(communityMessage));
+            communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
+            communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
+            communityMessage.Duration.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(communityMessage.Duration));
+
+            var groups = await this.steelheadPlayerDetailsProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
+            if (!groups.Any(x => x.Id == groupId))
+            {
+                throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");
+            }
+
+            var expireTime = DateTime.Now.Add(communityMessage.Duration);
+            var result = await this.steelheadPlayerDetailsProvider.SendCommunityMessageAsync(groupId, communityMessage.Message, expireTime).ConfigureAwait(true);
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
         ///     Creates a job and puts the job ID in the response header.
         /// </summary>
         private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)

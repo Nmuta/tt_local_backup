@@ -4,6 +4,8 @@
     {
         public const string ArgumentOutOfRangeExceptionMessagePartial = "Specified argument was out of the range of valid values. (Parameter '{0} must be > {1}. {0} was {2}.')";
         public const string ArgumentNullExceptionMessagePartial = "Value cannot be null. (Parameter '{0}')";
+        public const string ArgumentTooLongExceptionMessagePartial = "{0} cannot be longer than {1} characters.";
+        public const string ArgumentDurationTooShortMessagePartial = "{0} cannot be less than {1}.";
         public const string ArgumentExceptionMissingSettingMessagePartial = "The following setting is required but is missing from the settings source: ";
         public const string ArgumentExceptionMissingSettingsMessagePartial = "The following settings are required and not found in the settings source: ";
         public const string NotImplementedMessage = "{0} not supported for {1}.";

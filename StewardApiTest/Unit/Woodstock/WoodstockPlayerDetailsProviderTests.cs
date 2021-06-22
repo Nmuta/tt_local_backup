@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FH5_master.Generated;
+using Forza.LiveOps.FH5_main.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.Data.Common;
@@ -13,17 +13,19 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
-using Xls.WebServices.FH5_master.Generated;
-using static Forza.LiveOps.FH5_master.Generated.UserManagementService;
-using static Forza.WebServices.FH5_master.Generated.LiveOpsService;
-using static Forza.WebServices.FH5_master.Generated.RareCarShopService;
-using ForzaCredityUpdateEntry = Xls.WebServices.FH5_master.Generated.ForzaCredityUpdateEntry;
-using ForzaProfileSummary = Xls.WebServices.FH5_master.Generated.ForzaProfileSummary;
-using ForzaUserBanDescription = Forza.LiveOps.FH5_master.Generated.ForzaUserBanDescription;
-using ForzaUserBanParameters = Forza.LiveOps.FH5_master.Generated.ForzaUserBanParameters;
-using ForzaUserBanResult = Forza.LiveOps.FH5_master.Generated.ForzaUserBanResult;
-using ForzaUserBanSummary = Forza.LiveOps.FH5_master.Generated.ForzaUserBanSummary;
-using WebServicesContracts = Forza.WebServices.FH5_master.Generated;
+using Xls.WebServices.FH5_main.Generated;
+using static Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
+using static Forza.LiveOps.FH5_main.Generated.UserManagementService;
+using static Forza.WebServices.FH5_main.Generated.LiveOpsService;
+using static Forza.WebServices.FH5_main.Generated.RareCarShopService;
+using ForzaCredityUpdateEntry = Xls.WebServices.FH5_main.Generated.ForzaCredityUpdateEntry;
+using ForzaProfileSummary = Xls.WebServices.FH5_main.Generated.ForzaProfileSummary;
+using ForzaUserBanDescription = Forza.LiveOps.FH5_main.Generated.ForzaUserBanDescription;
+using ForzaUserBanParameters = Forza.LiveOps.FH5_main.Generated.ForzaUserBanParameters;
+using ForzaUserBanResult = Forza.LiveOps.FH5_main.Generated.ForzaUserBanResult;
+using ForzaUserBanSummary = Forza.LiveOps.FH5_main.Generated.ForzaUserBanSummary;
+using WebServicesContracts = Forza.WebServices.FH5_main.Generated;
+using LiveOpsContracts = Forza.LiveOps.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {
@@ -418,6 +420,109 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             }
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerNotificationsAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var maxResults = Fixture.Create<int>();
+
+            // Act.
+            async Task<IList<Notification>> Action() => await provider.GetPlayerNotificationsAsync(xuid, maxResults).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<List<Notification>>();
+            Action().Result.ShouldNotBeNull();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCommunityMessageAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuids = Fixture.Create<List<ulong>>();
+            var message = Fixture.Create<string>();
+            var expireTime = Fixture.Create<DateTime>();
+
+            // Act.
+            async Task<IList<MessageSendResult<ulong>>> Action() => await provider.SendCommunityMessageAsync(xuids, message, expireTime).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<List<MessageSendResult<ulong>>>();
+            Action().Result.ShouldNotBeNull();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCommunityMessageAsync_WithNullXuids_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var message = Fixture.Create<string>();
+            var expireTime = Fixture.Create<DateTime>();
+
+            // Act.
+            Func<Task<IList<MessageSendResult<ulong>>>> action = async () => await provider.SendCommunityMessageAsync(null, message, expireTime).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCommunityMessageAsync_WithNullEmptyWhitespaceMessage_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuids = Fixture.Create<List<ulong>>();
+            var groupId = Fixture.Create<int>();
+            var expireTime = Fixture.Create<DateTime>();
+
+            // Act.
+            var actions = new List<Func<Task>>
+            {
+                async () => await provider.SendCommunityMessageAsync(xuids, null, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.Empty, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.WhiteSpace, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, null, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.Empty, expireTime).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.WhiteSpace, expireTime).ConfigureAwait(false),
+            };
+
+            // Assert.
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "message"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void SendCommunityMessageAsync_WithValidParameters_DoesNotThrow()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var groupId = Fixture.Create<int>();
+            var message = Fixture.Create<string>();
+            var expireTime = Fixture.Create<DateTime>();
+
+            async Task<MessageSendResult<int>> Action() => await provider.SendCommunityMessageAsync(groupId, message, expireTime).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<MessageSendResult<int>>();
+            Action().Result.ShouldNotBeNull();
+
+
+            // Act.
+            Func<Task> action = async () => await provider.SendCommunityMessageAsync(groupId, message, expireTime).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
         private List<WoodstockBanParameters> GenerateBanParameters()
         {
             var newParams = new WoodstockBanParameters
@@ -454,6 +559,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockService.GetUserBanSummariesAsync(Arg.Any<ulong[]>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.WoodstockService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.WoodstockService.GetTokenTransactionsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<AdminGetTransactionsOutput>());
+                this.WoodstockService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsRetrieveForUserOutput>());
+                this.WoodstockService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
                 this.Mapper.Map<WoodstockPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
@@ -464,6 +571,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.Mapper.Map<IList<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<WoodstockPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<BackstagePassUpdate>>(Arg.Any<WebServicesContracts.RareCarShopTransaction[]>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
+                this.Mapper.Map<IList<Notification>>(Arg.Any<LiveOpsContracts.LiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
+                this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
                 this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
                 this.RefreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(Arg.Any<string>()).Returns((IList<BackstagePassUpdate>)null);
             }

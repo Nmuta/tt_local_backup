@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.WebServices.FH4.master.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -494,7 +492,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseNotification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults)
+        public async Task<IList<Notification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
@@ -502,9 +500,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 var notifications = await this.sunriseService.LiveOpsRetrieveForUserAsync(xuid, maxResults).ConfigureAwait(false);
 
-                return this.mapper.Map<IList<SunriseNotification>>(notifications.results);
+                return this.mapper.Map<IList<Notification>>(notifications.results);
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
                 throw new NotFoundStewardException($"Notifications for player with XUID: {xuid} could not be found.", ex);
             }
@@ -522,7 +520,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
                 return this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults);
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
                 throw new FailedToSendStewardException("Notifications failed to send.", ex);
             }

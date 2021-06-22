@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
-using Forza.LiveOps.FH5_master.Generated;
+using Forza.LiveOps.FH5_main.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -474,6 +475,63 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             {
                 throw new NotFoundStewardException($"No ban history found for XUID: {xuid}.", ex);
             }
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<Notification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults)
+        {
+            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+
+            try
+            {
+                var notifications = await this.woodstockService.LiveOpsRetrieveForUserAsync(xuid, maxResults).ConfigureAwait(false);
+
+                return this.mapper.Map<IList<Notification>>(notifications.results);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"Notifications for player with XUID: {xuid} could not be found.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc)
+        {
+            xuids.ShouldNotBeNull(nameof(xuids));
+            message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
+
+            try
+            {
+                var results = await this.woodstockService.SendMessageNotificationToMultipleUsersAsync(xuids, message, expireTimeUtc).ConfigureAwait(false);
+
+                return this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException("Notifications failed to send.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<MessageSendResult<int>> SendCommunityMessageAsync(int groupId, string message, DateTime expireTimeUtc)
+        {
+            message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
+
+            var messageResponse = new MessageSendResult<int>();
+            messageResponse.PlayerOrLspGroup = groupId;
+            messageResponse.IdentityAntecedent = GiftIdentityAntecedent.LspGroupId;
+
+            try
+            {
+                await this.woodstockService.SendGroupMessageNotificationAsync(groupId, message, expireTimeUtc).ConfigureAwait(false);
+                messageResponse.Error = null;
+            }
+            catch
+            {
+                messageResponse.Error = new StewardError(StewardErrorCode.ServicesFailure, $"LSP failed to message group with ID: {groupId}");
+            }
+
+            return messageResponse;
         }
 
         private IList<int> PrepareGroupIds(WoodstockUserFlags userFlags, bool toggleOn)

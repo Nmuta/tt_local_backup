@@ -1,10 +1,13 @@
-﻿using System.Threading.Tasks;
-using Forza.LiveOps.FH5_master.Generated;
-using Forza.UserInventory.FH5_master.Generated;
-using Forza.WebServices.FH5_master.Generated;
-using GiftingService = Forza.LiveOps.FH5_master.Generated.GiftingService;
-using RareCarShopService = Forza.WebServices.FH5_master.Generated.RareCarShopService;
-using UserInventoryService = Forza.LiveOps.FH5_master.Generated.UserInventoryService;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Forza.LiveOps.FH5_main.Generated;
+using Forza.UserInventory.FH5_main.Generated;
+using Forza.WebServices.FH5_main.Generated;
+using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
+using NotificationsManagementService = Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
+using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
+using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 {
@@ -137,5 +140,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         ///     Get transactions.
         /// </summary>
         Task<RareCarShopService.AdminGetTransactionsOutput> GetTokenTransactionsAsync(ulong xuid);
+
+        /// <summary>
+        ///     Retrieves notifications for a user.
+        /// </summary>
+        public Task<NotificationsManagementService.LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUserAsync(ulong xuid, int maxResults);
+
+        /// <summary>
+        ///     Send message to multiple xuids.
+        /// </summary>
+        Task<NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc);
+
+        /// <summary>
+        ///     Send group message.
+        /// </summary>
+        public Task SendGroupMessageNotificationAsync(int groupId, string message, DateTime expireTimeUtc);
     }
 }

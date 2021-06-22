@@ -4,18 +4,18 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FH5_master.Generated;
-using Forza.WebServices.FH5_master.Generated;
+using Forza.LiveOps.FH5_main.Generated;
+using Forza.WebServices.FH5_main.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
-using static Forza.LiveOps.FH5_master.Generated.UserInventoryService;
-using static Forza.WebServices.FH5_master.Generated.RareCarShopService;
-using AdminForzaProfile = Forza.LiveOps.FH5_master.Generated.AdminForzaProfile;
-using AdminForzaUserInventorySummary = Forza.UserInventory.FH5_master.Generated.AdminForzaUserInventorySummary;
+using static Forza.LiveOps.FH5_main.Generated.UserInventoryService;
+using static Forza.WebServices.FH5_main.Generated.RareCarShopService;
+using AdminForzaProfile = Forza.LiveOps.FH5_main.Generated.AdminForzaProfile;
+using AdminForzaUserInventorySummary = Forza.UserInventory.FH5_main.Generated.AdminForzaUserInventorySummary;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 {

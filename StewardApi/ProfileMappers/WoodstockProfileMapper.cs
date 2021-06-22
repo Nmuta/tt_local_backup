@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
-using Forza.LiveOps.FH5_master.Generated;
-using Forza.UserInventory.FH5_master.Generated;
-using Forza.WebServices.RareCarShopTransactionObjects.FH5_master.Generated;
+using Forza.LiveOps.FH5_main.Generated;
+using Forza.UserInventory.FH5_main.Generated;
+using Forza.WebServices.RareCarShopTransactionObjects.FH5_main.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
-using Xls.Security.FH5_master.Generated;
-using Xls.WebServices.FH5_master.Generated;
-using WebServicesContracts = Forza.WebServices.FH5_master.Generated;
+using Xls.Security.FH5_main.Generated;
+using Xls.WebServices.FH5_main.Generated;
+using LiveOpsContracts = Forza.LiveOps.FH5_main.Generated;
+using WebServicesContracts = Forza.WebServices.FH5_main.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
@@ -75,6 +76,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.BackstagePassAmount, opt => opt.MapFrom(src => src.OfflineTicketAmount))
                 .ForMember(dest => dest.TransactionType, opt => opt.MapFrom(src => Enum.GetName(typeof(Operation), src.TransactionType)))
                 .ReverseMap();
+            this.CreateMap<LiveOpsContracts.LiveOpsNotification, Notification>()
+                .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.SendDateUtc, opt => opt.MapFrom(src => src.SentDate))
+                .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
+                .ReverseMap();
+            this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
+                .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
+                .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid));
         }
     }
 }

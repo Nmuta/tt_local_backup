@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -80,5 +81,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         ///     Get user ban history.
         /// </summary>
         Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid);
+
+        /// <summary>
+        ///     Get player notifications.
+        /// </summary>
+        Task<IList<Notification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults);
+
+        /// <summary>
+        ///     Send community message.
+        /// </summary>
+        Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc);
+
+        /// <summary>
+        ///     Send community message.
+        /// </summary>
+        Task<MessageSendResult<int>> SendCommunityMessageAsync(int groupId, string message, DateTime expireTimeUtc);
     }
 }

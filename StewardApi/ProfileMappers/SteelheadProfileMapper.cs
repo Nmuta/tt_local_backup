@@ -68,6 +68,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.qwXuid))
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.wzGamerTag))
                 .ReverseMap();
+            this.CreateMap<LiveOpsNotification, Notification>()
+                .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.SendDateUtc, opt => opt.MapFrom(src => src.SentDate))
+                .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
+                .ReverseMap();
+            this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
+                .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
+                .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid));
         }
     }
 }

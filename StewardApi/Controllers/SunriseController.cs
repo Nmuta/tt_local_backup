@@ -830,7 +830,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the player notifications.
         /// </summary>
         [HttpGet("player/xuid({xuid})/notifications")]
-        [SwaggerResponse(200, type: typeof(IList<SunriseNotification>))]
+        [SwaggerResponse(200, type: typeof(IList<Notification>))]
         public async Task<IActionResult> GetPlayerNotifications(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
@@ -853,16 +853,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
-
-            if (communityMessage.Message.Length > 512)
-            {
-                throw new InvalidArgumentsStewardException("Message cannot be longer than 512 characters.");
-            }
-
-            if (communityMessage.Duration < TimeSpan.FromDays(1))
-            {
-                throw new InvalidArgumentsStewardException("Duration cannot be less than a day.");
-            }
+            communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
+            communityMessage.Duration.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(communityMessage.Duration));
 
             var stringBuilder = new StringBuilder();
 
@@ -898,16 +890,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
-
-            if (communityMessage.Message.Length > 512)
-            {
-                throw new InvalidArgumentsStewardException("Message cannot be longer than 512 characters.");
-            }
-
-            if (communityMessage.Duration < TimeSpan.FromDays(1))
-            {
-                throw new InvalidArgumentsStewardException("Duration cannot be less than a day.");
-            }
+            communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
+            communityMessage.Duration.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(communityMessage.Duration));
 
             var groups = await this.sunrisePlayerInventoryProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
             if (!groups.Any(x => x.Id == groupId))
