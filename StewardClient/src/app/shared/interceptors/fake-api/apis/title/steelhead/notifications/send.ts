@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js';
 import faker from 'faker';
 
 /** Fake API for sending a community message. */
-export class WoodstockSendCommunityMessageFakeApi extends FakeApiBase {
+export class SteelheadSendCommunityMessageFakeApi extends FakeApiBase {
   /** True when this API is capable of handling the URL. */
   public get canHandle(): boolean {
     const targetingStewardApi = this.request.url.startsWith(environment.stewardApiUrl);
@@ -15,7 +15,7 @@ export class WoodstockSendCommunityMessageFakeApi extends FakeApiBase {
     }
 
     const url = new URL(this.request.url);
-    const regex = /^\/?api\/v1\/title\/woodstock\/notifications\/send$/i;
+    const regex = /^\/?api\/v1\/title\/steelhead\/notifications\/send$/i;
     const isMatch = regex.test(url.pathname);
     if (!isMatch) {
       return false;
@@ -26,7 +26,7 @@ export class WoodstockSendCommunityMessageFakeApi extends FakeApiBase {
 
   /** Produces a sample API response. */
   public handle(): CommunityMessageResult<BigNumber>[] {
-    return WoodstockSendCommunityMessageFakeApi.make();
+    return SteelheadSendCommunityMessageFakeApi.make();
   }
 
   /** Creates a sample object. */

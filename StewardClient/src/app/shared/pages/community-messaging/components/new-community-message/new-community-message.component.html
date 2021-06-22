@@ -1,40 +1,40 @@
-<section>
-  <h3>Create new message</h3>
-  <form [formGroup]="newCommunityMessageForm">
-    <mat-form-field appearance="fill" class="community-message">
-      <mat-label
-        >Community Message {{ communityMessageTextarea.value.length }}/{{
-          messageMaxLength
-        }}</mat-label
-      >
-      <textarea
-        matInput
-        cdkTextareaAutosize
-        placeholder="Community Message"
-        type="text"
-        formControlName="message"
-        #communityMessageTextarea
-        required
-      ></textarea>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="expiry-date">
-      <mat-label>Expiry Time (mm/dd/yyyy)</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="expireTime" />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="newCommunityMessageForm.controls['expireTime'].hasError('is-after')"
-        >Expiry time must be in the future.</mat-error
-      >
-    </mat-form-field>
-
-    <button
-      mat-raised-button
-      color="accent"
-      (click)="createMessage()"
-      [disabled]="!newCommunityMessageForm.valid"
+<form [formGroup]="newCommunityMessageForm">
+  <mat-form-field appearance="fill" class="community-message">
+    <mat-label
+      >Community Message {{ communityMessageTextarea.value.length }}/{{
+        messageMaxLength
+      }}</mat-label
     >
-      Review <mat-icon svgIcon="steward-arrow-right"></mat-icon>
-    </button>
-  </form>
-</section>
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      placeholder="Community Message"
+      type="text"
+      formControlName="message"
+      #communityMessageTextarea
+      required
+    ></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="expiry-date">
+    <mat-label>Expiry Time (mm/dd/yyyy)</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="expireTime" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="newCommunityMessageForm.controls['expireTime'].hasError('is-after')"
+      >Expiry time must be in the future.</mat-error
+    >
+    <mat-error *ngIf="newCommunityMessageForm.controls['expireTime'].hasError('invalid-format')"
+      >Invalid format, please use mm/dd/yyyy.</mat-error
+    >
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="accent"
+    (click)="createMessage()"
+    [disabled]="!newCommunityMessageForm.valid"
+  >
+    Review <mat-icon svgIcon="steward-arrow-right"></mat-icon>
+  </button>
+</form>

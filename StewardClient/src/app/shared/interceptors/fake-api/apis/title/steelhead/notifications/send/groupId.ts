@@ -5,7 +5,7 @@ import { GiftIdentityAntecedent } from '@shared/constants';
 import BigNumber from 'bignumber.js';
 
 /** Fake API for sending a community message to an lsp group. */
-export class WoodstockSendCommunityMessageToLspGroupFakeApi extends FakeApiBase {
+export class SteelheadSendCommunityMessageToLspGroupFakeApi extends FakeApiBase {
   private lspGroupId: BigNumber;
 
   /** True when this API is capable of handling the URL. */
@@ -16,7 +16,7 @@ export class WoodstockSendCommunityMessageToLspGroupFakeApi extends FakeApiBase 
     }
 
     const url = new URL(this.request.url);
-    const regex = /^\/?api\/v1\/title\/woodstock\/notifications\/send\/groupId\((.+)\)$/i;
+    const regex = /^\/?api\/v1\/title\/steelhead\/notifications\/send\/groupId\((.+)\)$/i;
     const isMatch = regex.test(url.pathname);
     if (!isMatch) {
       return false;
@@ -29,7 +29,7 @@ export class WoodstockSendCommunityMessageToLspGroupFakeApi extends FakeApiBase 
 
   /** Produces a sample API response. */
   public handle(): CommunityMessageResult<BigNumber> {
-    return WoodstockSendCommunityMessageToLspGroupFakeApi.make(this.lspGroupId);
+    return SteelheadSendCommunityMessageToLspGroupFakeApi.make(this.lspGroupId);
   }
 
   /** Creates a sample object. */

@@ -3,40 +3,40 @@ import { Component } from '@angular/core';
 import { CommunityMessageResult } from '@models/community-message';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { SunriseService } from '@services/sunrise';
+import { WoodstockService } from '@services/woodstock';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
 import { CommunityMessagingBaseComponent } from '../base/community-messaging.base.component';
 import { GameTitleCodeName } from '@models/enums';
 
 /**
- *  Sunrise community messaging component.
+ *  Woodstock community messaging component.
  */
 @Component({
   templateUrl: '../base/community-messaging.base.component.html',
   styleUrls: ['../base/community-messaging.base.component.scss'],
 })
-export class SunriseCommunityMessagingComponent extends CommunityMessagingBaseComponent {
-  public gameTitle = GameTitleCodeName.FH4;
+export class WoodstockCommunityMessagingComponent extends CommunityMessagingBaseComponent {
+  public gameTitle = GameTitleCodeName.FH5;
 
-  constructor(private readonly sunriseService: SunriseService) {
+  constructor(private readonly woodstockService: WoodstockService) {
     super();
   }
 
   /** Send community message to player(s).  */
   public submitCommunityMessage$(): Observable<CommunityMessageResult<BigNumber>[]> {
     return this.isUsingPlayerIdentities
-      ? this.sunriseService.postSendCommunityMessageToXuids$(
+      ? this.woodstockService.postSendCommunityMessageToXuids$(
           this.playerIdentities.map(identity => identity.xuid),
           this.newCommunityMessage,
         )
-      : this.sunriseService
+      : this.woodstockService
           .postSendCommunityMessageToLspGroup$(this.selectedLspGroup.id, this.newCommunityMessage)
           .pipe(switchMap(data => of([data])));
   }
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentitiesChange(identities: AugmentedCompositeIdentity[]): void {
-    const newIdentities = identities.filter(i => i?.extra?.hasSunrise).map(i => i.sunrise);
+    const newIdentities = identities.filter(i => i?.extra?.hasWoodstock).map(i => i.woodstock);
     this.playerIdentities = newIdentities;
   }
 }

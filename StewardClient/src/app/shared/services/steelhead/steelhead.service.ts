@@ -29,6 +29,11 @@ import { ApiService } from '@services/api';
 import { chain } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import {
+  BulkCommunityMessage,
+  CommunityMessage,
+  CommunityMessageResult,
+} from '@models/community-message';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -215,6 +220,31 @@ export class SteelheadService {
     return this.apiService.postRequest$<GiftResponse<BigNumber>>(
       `${this.basePath}/gifting/groupId(${lspGroup.id})`,
       gift,
+    );
+  }
+
+  /** Sends a community message. */
+  public postSendCommunityMessageToXuids$(
+    xuids: BigNumber[],
+    communityMessage: CommunityMessage,
+  ): Observable<CommunityMessageResult<BigNumber>[]> {
+    const bulkMessage = communityMessage as BulkCommunityMessage;
+    bulkMessage.xuids = xuids;
+
+    return this.apiService.postRequest$<CommunityMessageResult<BigNumber>[]>(
+      `${this.basePath}/notifications/send`,
+      bulkMessage,
+    );
+  }
+
+  /** Sends a community message. */
+  public postSendCommunityMessageToLspGroup$(
+    groupId: BigNumber,
+    communityMessage: CommunityMessage,
+  ): Observable<CommunityMessageResult<BigNumber>> {
+    return this.apiService.postRequest$<CommunityMessageResult<BigNumber>>(
+      `${this.basePath}/notifications/send/groupId(${groupId})`,
+      communityMessage,
     );
   }
 }
