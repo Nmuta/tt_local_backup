@@ -1,14 +1,14 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Newtonsoft.Json.Converters;
-using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
+namespace Turn10.LiveOps.StewardApi.Contracts.Errors
 {
     /// <summary>
-    ///     Represents an error in Steward.
+    ///     Represents a generic Steward error.
     /// </summary>
-    public sealed class StewardError
+    public class StewardError
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardError"/> class.
@@ -20,11 +20,26 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardError"/> class.
         /// </summary>
+        public StewardError(string message)
+        {
+            this.Message = message;
+            this.InnerException = null;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="StewardError"/> class.
+        /// </summary>
+        public StewardError(string message, object innerException)
+        {
+            this.Message = message;
+            this.InnerException = innerException;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="StewardError"/> class.
+        /// </summary>
         public StewardError(StewardErrorCode code, string message)
         {
-            code.ShouldNotBeNull(nameof(code));
-            message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
-
             this.Code = code;
             this.Message = message;
             this.InnerException = null;
@@ -33,21 +48,18 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
         /// <summary>
         ///     Initializes a new instance of the <see cref="StewardError"/> class.
         /// </summary>
-        public StewardError(StewardErrorCode code, string message, Exception innerException)
+        public StewardError(StewardErrorCode code,  string message, object innerException)
         {
-            code.ShouldNotBeNull(nameof(code));
-            message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
-
             this.Code = code;
             this.Message = message;
             this.InnerException = innerException;
         }
 
         /// <summary>
-        ///     Gets or sets the code.
+        ///     Gets the code.
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public StewardErrorCode Code { get; set; }
+        public virtual StewardErrorCode Code { get; }
 
         /// <summary>
         ///     Gets or sets the message.

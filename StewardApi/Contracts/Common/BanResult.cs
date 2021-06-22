@@ -1,4 +1,4 @@
-﻿using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+﻿using Turn10.LiveOps.StewardApi.Contracts.Errors;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {

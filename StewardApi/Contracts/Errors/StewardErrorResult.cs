@@ -1,4 +1,4 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Exceptions
+﻿namespace Turn10.LiveOps.StewardApi.Contracts.Errors
 {
     /// <summary>
     ///     Represents the result returned in the event of an exception.

@@ -8,6 +8,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
@@ -219,8 +220,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                         }
                         catch (Exception ex)
                         {
-                            result.Error = new StewardError(
-                                StewardErrorCode.FailedToSend,
+                            result.Error = new FailedToSendStewardError(
                                 $"Ban Successful. Ban history upload failed for XUID: {result.Xuid}.",
                                 ex);
                         }

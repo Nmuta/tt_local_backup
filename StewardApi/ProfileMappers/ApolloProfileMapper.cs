@@ -4,7 +4,7 @@ using AutoMapper;
 using Forza.WebServices.FM7.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Xls.Security.FM7.Generated;
 using Xls.WebServices.FM7.Generated;
 
@@ -61,7 +61,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.CountOfTimesExtended, opt => opt.MapFrom(src => src.ExtendTimes));
             this.CreateMap<ForzaUserBanResult, BanResult>()
                 .ForMember(dest => dest.Error, opt => opt.MapFrom(
-                    src => src.Success ? null : new StewardError(StewardErrorCode.ServicesFailure, $"LSP failed to ban player with XUID: {src.Xuid}")));
+                    src => src.Success ? null : new ServicesFailureStewardError($"LSP failed to ban player with XUID: {src.Xuid}")));
             this.CreateMap<ForzaConsole, ConsoleDetails>().ReverseMap();
             this.CreateMap<ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
             this.CreateMap<ForzaUserGroup, LspGroup>();

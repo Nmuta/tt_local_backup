@@ -9,6 +9,7 @@ using Forza.LiveOps.FH5_main.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
@@ -414,8 +415,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                         }
                         catch (Exception ex)
                         {
-                            result.Error = new StewardError(
-                                StewardErrorCode.FailedToSend,
+                            result.Error = new FailedToSendStewardError(
                                 $"Ban Successful. Ban history upload failed for XUID: {result.Xuid}.",
                                 ex);
                         }
@@ -528,7 +528,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
             catch
             {
-                messageResponse.Error = new StewardError(StewardErrorCode.ServicesFailure, $"LSP failed to message group with ID: {groupId}");
+                messageResponse.Error = new ServicesFailureStewardError($"LSP failed to message group with ID: {groupId}");
             }
 
             return messageResponse;

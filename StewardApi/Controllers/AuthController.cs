@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Data;
 
@@ -68,7 +68,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     results.Add(new StewardUser
                     {
-                        Error = new StewardError(StewardErrorCode.DocumentNotFound, $"Lookup failed for Azure object ID: {userObjectId}.", ex)
+                        Error = new NotFoundStewardError($"Lookup failed for Azure object ID: {userObjectId}.", ex)
                     });
                 }
             }

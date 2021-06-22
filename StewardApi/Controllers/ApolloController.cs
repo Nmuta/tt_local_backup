@@ -17,6 +17,7 @@ using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -741,7 +742,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     return new IdentityResultAlpha
                     {
-                        Error = new IdentityLookupError(StewardErrorCode.RequiredParameterMissing, ex.Message),
+                        Error = new InvalidArgumentsStewardError(ex.Message, ex),
                         Query = query
                     };
                 }
@@ -750,7 +751,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     return new IdentityResultAlpha
                     {
-                        Error = new IdentityLookupError(StewardErrorCode.DocumentNotFound, ex.Message),
+                        Error = new NotFoundStewardError(ex.Message, ex),
                         Query = query
                     };
                 }

@@ -4,7 +4,7 @@ using System.Linq;
 using Forza.UserInventory.FH4.master.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH4.master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Xls.Security.FH4.master.Generated;
 using Xls.WebServices.FH4.master.Generated;
@@ -52,7 +52,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LiveOpsContracts.ForzaSharedConsoleUser, SharedConsoleUser>().ReverseMap();
             this.CreateMap<LiveOpsContracts.ForzaUserBanResult, BanResult>()
                 .ForMember(dest => dest.Error, opt => opt.MapFrom(
-                    src => src.Success ? null : new StewardError(StewardErrorCode.ServicesFailure, $"LSP failed to ban player with XUID: {src.Xuid}")));
+                    src => src.Success ? null : new ServicesFailureStewardError($"LSP failed to ban player with XUID: {src.Xuid}")));
             this.CreateMap<LiveOpsContracts.ForzaUserBanSummary, BanSummary>();
             this.CreateMap<SunriseBanParametersInput, SunriseBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
@@ -88,7 +88,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid))
                 .ForMember(dest => dest.Error, opt => opt.MapFrom(
-                    src => src.Success ? null : new StewardError(StewardErrorCode.ServicesFailure, $"LSP failed to message player with XUID: {src.Xuid}")));
+                    src => src.Success ? null : new ServicesFailureStewardError($"LSP failed to message player with XUID: {src.Xuid}")));
             this.CreateMap<LiveOpsContracts.ForzaUserAdminComment, SunriseProfileNote>()
                 .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(src => src.date))
                 .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.author))

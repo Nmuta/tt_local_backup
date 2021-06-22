@@ -6,6 +6,7 @@ using AutoMapper;
 using Forza.WebServices.FMG.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections;
@@ -157,7 +158,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             }
             catch (Exception ex)
             {
-                giftResponse.Error = new StewardError(StewardErrorCode.FailedToSend, $"Failed to send gift to Turn 10 Id: {t10Id}.", ex);
+                giftResponse.Error = new FailedToSendStewardError($"Failed to send gift to Turn 10 Id: {t10Id}.", ex);
             }
 
             return giftResponse;

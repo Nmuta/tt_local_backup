@@ -5,6 +5,7 @@ using AutoMapper;
 using Forza.WebServices.FMG.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 using Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections;
@@ -42,9 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
                 if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag) && string.IsNullOrWhiteSpace(query.T10Id))
                 {
-                    result.Error = new IdentityLookupError(
-                        StewardErrorCode.RequiredParameterMissing,
-                        "T10ID, Gamertag, or XUID must be provided.");
+                    result.Error = new InvalidArgumentsStewardError("T10ID, Gamertag, or XUID must be provided.");
                 }
                 else if (!string.IsNullOrWhiteSpace(query.T10Id))
                 {

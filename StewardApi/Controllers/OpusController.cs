@@ -8,6 +8,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -176,7 +177,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     return new IdentityResultAlpha
                     {
-                        Error = new IdentityLookupError(StewardErrorCode.RequiredParameterMissing, ex.Message),
+                        Error = new InvalidArgumentsStewardError(ex.Message, ex),
                         Query = query
                     };
                 }
@@ -185,7 +186,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 {
                     return new IdentityResultAlpha
                     {
-                        Error = new IdentityLookupError(StewardErrorCode.DocumentNotFound, ex.Message),
+                        Error = new NotFoundStewardError(ex.Message, ex),
                         Query = query
                     };
                 }

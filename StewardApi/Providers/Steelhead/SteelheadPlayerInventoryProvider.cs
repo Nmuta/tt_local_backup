@@ -7,6 +7,7 @@ using AutoMapper;
 using Forza.UserInventory.Steelhead_master.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
@@ -127,7 +128,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             }
             catch (Exception ex)
             {
-                giftResponse.Error = new StewardError(StewardErrorCode.FailedToSend, $"Failed to send gift to XUID: {xuid}.", ex);
+                giftResponse.Error = new FailedToSendStewardError($"Failed to send gift to XUID: {xuid}.", ex);
             }
 
             return giftResponse;
@@ -184,7 +185,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             }
             catch (Exception ex)
             {
-                giftResponse.Error = new StewardError(StewardErrorCode.FailedToSend, $"Failed to send gift to group ID: {groupId}.", ex);
+                giftResponse.Error = new FailedToSendStewardError($"Failed to send gift to group ID: {groupId}.", ex);
             }
 
             return giftResponse;
