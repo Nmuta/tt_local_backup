@@ -31,6 +31,7 @@ import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-pr
 import { PlayerIdentityResultsModule } from '@shared/views/player-identity-results/player-identity-results.module';
 import { ProfileNotesModule } from '@views/profile-notes/profile-notes.module';
 import { SteelheadUserDetailsComponent } from './steelhead/steelhead-user-details.component';
+import { PlayerAuctionsModule } from '@views/player-auctions/player-auctions.module';
 import { WoodstockUserDetailsComponent } from './woodstock/woodstock-user-details.component';
 import { MatCardModule } from '@angular/material/card';
 import { BackstagePassHistoryModule } from '@views/backstage-pass-history/backstage-pass-history.module';
@@ -75,6 +76,7 @@ import { PlayerAccountInventoryModule } from '@views/player-account-inventory/pl
     PlayerSelectionModule,
     MatTooltipModule,
     PlayerIdentityResultsModule,
+    PlayerAuctionsModule,
     ProfileNotesModule,
     BackstagePassHistoryModule,
     PlayerAccountInventoryModule,

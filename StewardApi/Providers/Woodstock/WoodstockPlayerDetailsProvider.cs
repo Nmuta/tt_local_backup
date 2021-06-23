@@ -478,6 +478,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
+        public async Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, AuctionFilters filters)
+        {
+            filters.ShouldNotBeNull(nameof(filters));
+
+            try
+            {
+                var forzaAuctionFilters = this.mapper.Map<ForzaAuctionFilters>(filters);
+                forzaAuctionFilters.Seller = xuid;
+                var forzaAuctions = await this.woodstockService.GetPlayerAuctions(forzaAuctionFilters).ConfigureAwait(false);
+
+                return this.mapper.Map<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);
+            }
+            catch (Exception ex)
+            {
+               throw new UnknownFailureStewardException("Search player auctions failed.", ex);
+            }
+        }
+
+        /// <inheritdoc />
         public async Task<IList<Notification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));

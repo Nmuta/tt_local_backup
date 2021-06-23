@@ -13,6 +13,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using ForzaUserBanParameters = Forza.LiveOps.FH4.master.Generated.ForzaUserBanParameters;
+using ForzaAuctionFilters = Forza.LiveOps.FH4.master.Generated.ForzaAuctionFilters;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {
@@ -546,6 +547,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
 
             return messageResponse;
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, AuctionFilters filters)
+        {
+            filters.ShouldNotBeNull(nameof(filters));
+
+            try
+            {
+                var forzaAuctionFilters = this.mapper.Map<ForzaAuctionFilters>(filters);
+                forzaAuctionFilters.Seller = xuid;
+                var forzaAuctions = await this.sunriseService.GetPlayerAuctions(forzaAuctionFilters).ConfigureAwait(false);
+
+                return this.mapper.Map<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);
+            }
+            catch (Exception ex)
+            {
+                throw new UnknownFailureStewardException("Search player auctions failed.", ex);
+            }
         }
 
         private IList<int> PrepareGroupIds(SunriseUserFlags userFlags, bool toggleOn)

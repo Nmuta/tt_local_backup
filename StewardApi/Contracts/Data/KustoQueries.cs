@@ -1,4 +1,7 @@
-﻿namespace Turn10.LiveOps.StewardApi.Contracts.Data
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace Turn10.LiveOps.StewardApi.Contracts.Data
 {
     /// <summary>
     ///     The query syntax for common data sets.
@@ -33,6 +36,24 @@
         /// </summary>
         public const string GetFH4Cars =
             "FH4_DataCars | join kind = leftouter(FH4_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, Description = strcat_delim(' ', MakeDisplayName, DisplayName, strcat(\"(\", Year, \")\"))";
+
+        /// <summary>
+        ///     Basic query for getting the details FH4 Car data.
+        /// </summary>
+        public const string GetFH4CarsDetailed =
+            "FH4_DataCars | join kind = leftouter(FH4_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, MakeID, Make = MakeDisplayName, Model = DisplayName";
+
+        /// <summary>
+        ///     Basic query for getting the details FH5 Car data.
+        /// </summary>
+        public const string GetFH5CarsDetailed =
+            "FH5_DataCars | join kind = leftouter(FH5_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, MakeID, Make = MakeDisplayName, Model = DisplayName";
+
+        /// <summary>
+        ///     Basic query for getting the details FM8 Car data.
+        /// </summary>
+        public const string GetFM8CarsDetailed =
+            "FM8_DataCars | join kind = leftouter(FM8_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = ModelId, MakeID, Make = MakeDisplayName, Model = DisplayName";
 
         /// <summary>
         ///     Basic query for getting the FH4 CarHorn data.
@@ -99,5 +120,15 @@
         ///     Basic query for getting the FH4 QuickChatLine data.
         /// </summary>
         public const string GetFH5QuickChatLines = "FH5_QuickChatData | project Id=['id'], column_ifexists('ChatMessageEnglish', '')";
+
+        /// <summary>
+        ///     Allowed queries to get detailed car lists from Kusto.
+        /// </summary>
+        public static readonly IList<string> AllowedDetailedKustoCarQueries = new List<string>()
+        {
+            KustoQueries.GetFH4CarsDetailed,
+            KustoQueries.GetFH5CarsDetailed,
+            KustoQueries.GetFM8CarsDetailed,
+        };
     }
 }

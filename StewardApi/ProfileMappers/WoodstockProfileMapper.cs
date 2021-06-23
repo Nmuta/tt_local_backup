@@ -26,9 +26,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
         public WoodstockProfileMapper()
         {
             this.CreateMap<AdminForzaCarUserInventoryItem, PlayerInventoryItem>()
-    .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
-    .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
-    .ReverseMap();
+                .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
+                .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
+                .ReverseMap();
             this.CreateMap<AdminForzaUserInventoryItem, PlayerInventoryItem>()
                 .ForMember(des => des.Id, opt => opt.MapFrom(src => src.itemId))
                 .ForMember(des => des.Quantity, opt => opt.MapFrom(src => src.quantity))
@@ -84,6 +84,29 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid));
+
+            this.CreateMap<AuctionFilters, ForzaAuctionFilters>()
+                .ForMember(dest => dest.IncludeThumbnail, opt => opt.MapFrom(source => true))
+                .ForMember(dest => dest.IncludeAdminTexture, opt => opt.MapFrom(source => true))
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.CarId))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.MakeId))
+                .ForMember(dest => dest.AuctionStatus, opt => opt.MapFrom(source => source.Status))
+                .ForMember(dest => dest.OrderBy, opt => opt.MapFrom(source => source.Sort == AuctionSort.ClosingDateAscending ? ForzaSearchOrderBy.ClosingDateAsc : ForzaSearchOrderBy.ClosingDateDesc));
+
+            this.CreateMap<ForzaAuctionWithFileData, PlayerAuction>()
+                .ForMember(dest => dest.TextureMapImageBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
+                .ForMember(dest => dest.LiveryImageBase64, opt => opt.MapFrom(source => source.LargeThumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.LargeThumbnail) : null))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Auction.Id))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(source => source.Auction.Status))
+                .ForMember(dest => dest.CurrentPrice, opt => opt.MapFrom(source => source.Auction.CurrentPrice))
+                .ForMember(dest => dest.BuyoutPrice, opt => opt.MapFrom(source => source.Auction.BuyoutPrice))
+                .ForMember(dest => dest.ClosingDateUtc, opt => opt.MapFrom(source => source.Auction.ClosingDate))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(source => source.Auction.CreatedDate))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Auction.Car.make))
+                .ForMember(dest => dest.ModelId, opt => opt.MapFrom(source => source.Auction.Car.carId))
+                .ForMember(dest => dest.Bids, opt => opt.MapFrom(source => source.Auction.BidCount))
+                .ForMember(dest => dest.TotalReports, opt => opt.MapFrom(source => source.Auction.UserReportTotal))
+                .ForMember(dest => dest.TimeFlagged, opt => opt.MapFrom(source => source.Auction.TimeFlagged != default(DateTime) ? source.Auction.TimeFlagged : (DateTime?)null));
         }
     }
 }

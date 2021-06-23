@@ -1,0 +1,47 @@
+<form [formGroup]="formGroup" (ngSubmit)="searchFilters()">
+  <mat-form-field class="item-selection-form-field">
+    <input
+      type="text"
+      matInput
+      #makeModelInput
+      placeholder="Search for make and model"
+      formControlName="makeModelInput"
+      [matAutocomplete]="autoGroup"
+    />
+    <mat-autocomplete
+      #autoGroup="matAutocomplete"
+      (optionSelected)="searchFilters()"
+      [displayWith]="autoCompleteDisplayFn"
+    >
+      <mat-option [disabled]="true">Showing item types</mat-option>
+      <mat-optgroup *ngFor="let group of stateGroupOptions$ | async" [label]="group.category">
+        <mat-option *ngFor="let item of group.items" [value]="item">
+          <span *ngIf="!!item?.id"> {{ item.make }} {{ item.model }}</span>
+          <span *ngIf="!item?.id"> {{ item.make }}</span>
+        </mat-option>
+      </mat-optgroup>
+    </mat-autocomplete>
+    <button
+      clickStop
+      matSuffix
+      mat-icon-button
+      (click)="clearMakeModelInput()"
+      matTooltip="Clear input"
+      aria-label="Clear make and model filter."
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Auction Status</mat-label>
+    <mat-select matInput formControlName="status" (selectionChange)="searchFilters()">
+      <mat-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Sort</mat-label>
+    <mat-select matInput formControlName="sort" (selectionChange)="searchFilters()">
+      <mat-option *ngFor="let sort of sortOptions" [value]="sort">{{ sort }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>

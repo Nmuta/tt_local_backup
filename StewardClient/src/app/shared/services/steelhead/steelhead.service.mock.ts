@@ -13,6 +13,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { SteelheadService } from './steelhead.service';
+import { SteelheadPlayerXuidAuctionsFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/xuid/auctions';
 
 /** Defines the mock for the API Service. */
 @Injectable()
@@ -91,6 +92,12 @@ export class MockSteelheadService {
     .createSpy('getPlayerInventoryByXuid')
     .and.callFake(xuid =>
       this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerXuidInventoryFakeApi.make(xuid)))),
+    );
+
+  public getPlayerAuctionsByXuid$ = jasmine
+    .createSpy('getPlayerAuctionsByXuid$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(SteelheadPlayerXuidAuctionsFakeApi.makeMany()))),
     );
 }
 /** Creates an injectable mock for Steelhead Service. */

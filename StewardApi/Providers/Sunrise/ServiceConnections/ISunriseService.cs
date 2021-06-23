@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Forza.LiveOps.FH4.master.Generated;
 using Forza.UserInventory.FH4.master.Generated;
 using Forza.WebServices.FH4.master.Generated;
@@ -9,6 +10,8 @@ using GiftingService = Forza.LiveOps.FH4.master.Generated.GiftingService;
 using NotificationsService = Xls.WebServices.FH4.master.Generated.NotificationsService;
 using RareCarShopService = Forza.WebServices.FH4.master.Generated.RareCarShopService;
 using UserInventoryService = Forza.LiveOps.FH4.master.Generated.UserInventoryService;
+using UserManagementService = Forza.LiveOps.FH4.master.Generated.UserManagementService;
+using AuctionManagementService = Forza.LiveOps.FH4.master.Generated.AuctionManagementService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 {
@@ -151,6 +154,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         ///    Get user ban summaries.
         /// </summary>
         Task<UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(ulong[] xuids, int xuidCount);
+
+        /// <summary>
+        ///    Get player auctions.
+        /// </summary>
+        Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(ForzaAuctionFilters filters);
 
         /// <summary>
         ///     Get token balance.

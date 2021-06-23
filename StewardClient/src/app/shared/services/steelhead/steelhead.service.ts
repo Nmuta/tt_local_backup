@@ -29,6 +29,9 @@ import { ApiService } from '@services/api';
 import { chain } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { AuctionFilters } from '@models/auction-filters';
+import { PlayerAuction } from '@models/player-auction';
+import { HttpParams } from '@angular/common/http';
 import {
   BulkCommunityMessage,
   CommunityMessage,
@@ -220,6 +223,29 @@ export class SteelheadService {
     return this.apiService.postRequest$<GiftResponse<BigNumber>>(
       `${this.basePath}/gifting/groupId(${lspGroup.id})`,
       gift,
+    );
+  }
+
+  /** Gets player auctions by XUID. */
+  public getPlayerAuctionsByXuid$(
+    xuid: BigNumber,
+    filters: AuctionFilters,
+  ): Observable<PlayerAuction[]> {
+    let httpParams: HttpParams = new HttpParams()
+      .append('sort', filters.sort.toString())
+      .append('status', filters.status.toString());
+
+    if (filters?.carId) {
+      httpParams = httpParams.append('carId', filters.carId.toString());
+    }
+
+    if (filters?.makeId) {
+      httpParams = httpParams.append('makeId', filters.makeId.toString());
+    }
+
+    return this.apiService.getRequest$<PlayerAuction[]>(
+      `${this.basePath}/player/xuid(${xuid})/auctions`,
+      httpParams,
     );
   }
 

@@ -22,6 +22,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         Task<IList<MasterInventoryItem>> GetMasterInventoryList(string kustoQuery);
 
         /// <summary>
+        ///     Gets detailed Kusto car list.
+        /// </summary>
+        Task<IList<KustoCar>> GetDetailedKustoCars(string kustoQuery);
+
+        /// <summary>
         ///     Gets the credit rewards.
         /// </summary>
         Task<IList<CreditReward>> GetCreditRewardsAsync(KustoGameDbSupportedTitle supportedTitle);

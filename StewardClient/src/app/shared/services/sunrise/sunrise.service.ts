@@ -39,6 +39,9 @@ import {
   CommunityMessage,
   CommunityMessageResult,
 } from '@models/community-message';
+import { AuctionFilters } from '@models/auction-filters';
+import { KustoCar } from '@models/kusto-car';
+import { PlayerAuction } from '@models/player-auction';
 import { ProfileNote } from '@models/profile-note.model';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
 
@@ -85,6 +88,11 @@ export class SunriseService {
   /** Gets the sunrise master inventory. */
   public getMasterInventory$(): Observable<SunriseMasterInventory> {
     return this.apiService.getRequest$<SunriseMasterInventory>(`${this.basePath}/masterInventory`);
+  }
+
+  /** Gets the sunrise master inventory. */
+  public getDetailedKustoCars$(): Observable<KustoCar[]> {
+    return this.apiService.getRequest$<KustoCar[]>(`${this.basePath}/kusto/cars`);
   }
 
   /** Gets sunrise player details with a gamertag. This can be used to retrieve a XUID. */
@@ -178,6 +186,29 @@ export class SunriseService {
   public getConsoleDetailsByXuid$(xuid: BigNumber): Observable<SunriseConsoleDetailsEntry[]> {
     return this.apiService.getRequest$<SunriseConsoleDetailsEntry[]>(
       `${this.basePath}/player/xuid(${xuid})/consoleDetails`,
+    );
+  }
+
+  /** Gets player auctions by XUID. */
+  public getPlayerAuctionsByXuid$(
+    xuid: BigNumber,
+    filters: AuctionFilters,
+  ): Observable<PlayerAuction[]> {
+    let httpParams: HttpParams = new HttpParams()
+      .append('sort', filters.sort.toString())
+      .append('status', filters.status.toString());
+
+    if (filters?.carId) {
+      httpParams = httpParams.append('carId', filters.carId.toString());
+    }
+
+    if (filters?.makeId) {
+      httpParams = httpParams.append('makeId', filters.makeId.toString());
+    }
+
+    return this.apiService.getRequest$<PlayerAuction[]>(
+      `${this.basePath}/player/xuid(${xuid})/auctions`,
+      httpParams,
     );
   }
 

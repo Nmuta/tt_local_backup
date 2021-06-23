@@ -319,6 +319,49 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets player auctions.
+        /// </summary>
+        [HttpGet("player/xuid({xuid})/auctions")]
+        [SwaggerResponse(200, type: typeof(IList<PlayerAuction>))]
+        public async Task<IActionResult> GetAuctions(
+            ulong xuid,
+            [FromQuery] short carId = short.MaxValue,
+            [FromQuery] short makeId = short.MaxValue,
+            [FromQuery] string status = "Any",
+            [FromQuery] string sort = "ClosingDateDescending")
+        {
+            xuid.ShouldNotBeNull(nameof(xuid));
+            carId.ShouldNotBeNull(nameof(carId));
+            makeId.ShouldNotBeNull(nameof(makeId));
+            status.ShouldNotBeNull(nameof(status));
+            sort.ShouldNotBeNull(nameof(sort));
+
+            if (!Enum.TryParse(status, out AuctionStatus statusEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionStatus)} provided: {status}");
+            }
+
+            if (!Enum.TryParse(sort, out AuctionSort sortEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionSort)} provided: {status}");
+            }
+
+            var results = await this.woodstockPlayerDetailsProvider
+                .GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum))
+                .ConfigureAwait(true);
+
+            // TODO: Uncomment once FH5 Kusto tables are placed into GDE003 production. Task: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/745566
+            // var kustoCarData = await this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed).ConfigureAwait(true);
+
+            // foreach (var auction in results)
+            // {
+            //    var carData = kustoCarData.FirstOrDefault(car => car.Id == auction.ModelId);
+            //    auction.ItemName = carData != default(KustoCar) ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
+            // }
+            return this.Ok(results);
+        }
+
+        /// <summary>
         ///     Gets backstage pass updates.
         /// </summary>
         [HttpGet("player/xuid({xuid})/backstagePassUpdates")]

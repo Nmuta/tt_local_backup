@@ -83,6 +83,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid);
 
         /// <summary>
+        ///     Gets player auctions.
+        /// </summary>
+        Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, AuctionFilters filters);
+
+        /// <summary>
         ///     Get player notifications.
         /// </summary>
         Task<IList<Notification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults);

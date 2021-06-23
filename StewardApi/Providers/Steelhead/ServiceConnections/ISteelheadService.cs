@@ -129,5 +129,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         ///     Send group message.
         /// </summary>
         public Task SendGroupMessageNotificationAsync(int groupId, string message, DateTime expireTimeUtc);
+
+        /// <summary>
+        ///    Get player auctions.
+        /// </summary>
+        Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(ForzaAuctionFilters filters);
     }
 }

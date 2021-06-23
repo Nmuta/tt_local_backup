@@ -31,6 +31,12 @@
           </mat-card>
         </div>
       </mat-tab>
+      <!-- TODO: Uncomment once auction endpoints are released to LSP Retail. -->
+      <!-- <mat-tab label="Auctions">
+        <div class="tab-container">
+          <steelhead-player-auctions [identity]="identity"></steelhead-player-auctions>
+        </div>
+      </mat-tab> -->
       <mat-tab label="JSON">
         <div class="tab-container">
           <json-dump [input]="identity">Identity</json-dump>

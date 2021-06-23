@@ -116,5 +116,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         ///     Send community message.
         /// </summary>
         Task<MessageSendResult<int>> SendCommunityMessageAsync(int groupId, string message, DateTime expireTimeUtc);
+
+        /// <summary>
+        ///     Gets player auctions.
+        /// </summary>
+        Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, AuctionFilters filters);
     }
 }

@@ -513,6 +513,51 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets player auctions.
+        /// </summary>
+        [HttpGet("player/xuid({xuid})/auctions")]
+        [SwaggerResponse(200, type: typeof(IList<PlayerAuction>))]
+        public async Task<IActionResult> GetAuctions(
+            ulong xuid,
+            [FromQuery] short carId = short.MaxValue,
+            [FromQuery] short makeId = short.MaxValue,
+            [FromQuery] string status = "Any",
+            [FromQuery] string sort = "ClosingDateDescending")
+        {
+            xuid.ShouldNotBeNull(nameof(xuid));
+            carId.ShouldNotBeNull(nameof(carId));
+            makeId.ShouldNotBeNull(nameof(makeId));
+            status.ShouldNotBeNull(nameof(status));
+            sort.ShouldNotBeNull(nameof(sort));
+
+            if (!Enum.TryParse(status, out AuctionStatus statusEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionStatus)} provided: {status}");
+            }
+
+            if (!Enum.TryParse(sort, out AuctionSort sortEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionSort)} provided: {status}");
+            }
+
+            var getAuctions = this.steelheadPlayerDetailsProvider.GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum));
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFM8CarsDetailed);
+
+            await Task.WhenAll(getAuctions, getKustoCars).ConfigureAwait(true);
+
+            var auctions = await getAuctions.ConfigureAwait(true);
+            var kustoCars = await getKustoCars.ConfigureAwait(true);
+
+            foreach (var auction in auctions)
+            {
+                var carData = kustoCars.FirstOrDefault(car => car.Id == auction.ModelId);
+                auction.ItemName = carData != default(KustoCar) ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
+            }
+
+            return this.Ok(auctions);
+        }
+
+        /// <summary>
         ///     Update player inventories with given items.
         /// </summary>
         [HttpPost("gifting/players/useBackgroundProcessing")]

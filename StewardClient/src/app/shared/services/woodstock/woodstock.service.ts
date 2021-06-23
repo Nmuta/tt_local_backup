@@ -40,6 +40,8 @@ import {
   CommunityMessage,
   CommunityMessageResult,
 } from '@models/community-message';
+import { AuctionFilters } from '@models/auction-filters';
+import { PlayerAuction } from '@models/player-auction';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
 
 /** Handles calls to Woodstock API routes. */
@@ -317,6 +319,29 @@ export class WoodstockService {
     return this.apiService.postRequest$<GiftResponse<BigNumber>>(
       `${this.basePath}/gifting/groupId(${lspGroup.id})`,
       gift,
+    );
+  }
+
+  /** Gets player auctions by XUID. */
+  public getPlayerAuctionsByXuid$(
+    xuid: BigNumber,
+    filters: AuctionFilters,
+  ): Observable<PlayerAuction[]> {
+    let httpParams: HttpParams = new HttpParams()
+      .append('sort', filters.sort.toString())
+      .append('status', filters.status.toString());
+
+    if (filters?.carId) {
+      httpParams = httpParams.append('carId', filters.carId.toString());
+    }
+
+    if (filters?.makeId) {
+      httpParams = httpParams.append('makeId', filters.makeId.toString());
+    }
+
+    return this.apiService.getRequest$<PlayerAuction[]>(
+      `${this.basePath}/player/xuid(${xuid})/auctions`,
+      httpParams,
     );
   }
 }

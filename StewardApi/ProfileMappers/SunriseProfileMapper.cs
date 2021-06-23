@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Forza.UserInventory.FH4.master.Generated;
+using Microsoft.OData.Edm;
 using Forza.WebServices.RareCarShopTransactionObjects.FH4.master.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
@@ -84,11 +85,35 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.expirationDate))
                 .ReverseMap();
             this.CreateMap<SunriseUserFlagsInput, SunriseUserFlags>().ReverseMap();
-            this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
+            this.CreateMap<LiveOpsContracts.ForzaUserMessageSendResult, MessageSendResult<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid))
                 .ForMember(dest => dest.Error, opt => opt.MapFrom(
-                    src => src.Success ? null : new ServicesFailureStewardError($"LSP failed to message player with XUID: {src.Xuid}")));
+                    src => src.Success ? null : new StewardError(StewardErrorCode.ServicesFailure, $"LSP failed to message player with XUID: {src.Xuid}")));
+
+            this.CreateMap<AuctionFilters, LiveOpsContracts.ForzaAuctionFilters>()
+                .ForMember(dest => dest.IncludeThumbnail, opt => opt.MapFrom(source => true))
+                .ForMember(dest => dest.IncludeAdminTexture, opt => opt.MapFrom(source => true))
+                .ForMember(dest => dest.CarId, opt => opt.MapFrom(source => source.CarId))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.MakeId))
+                .ForMember(dest => dest.AuctionStatus, opt => opt.MapFrom(source => source.Status))
+                .ForMember(dest => dest.OrderBy, opt => opt.MapFrom(source => source.Sort == AuctionSort.ClosingDateAscending ? LiveOpsContracts.ForzaSearchOrderBy.ClosingDateAsc : LiveOpsContracts.ForzaSearchOrderBy.ClosingDateDesc));
+
+            this.CreateMap<LiveOpsContracts.ForzaAuctionWithFileData, PlayerAuction>()
+                .ForMember(dest => dest.TextureMapImageBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
+                .ForMember(dest => dest.LiveryImageBase64, opt => opt.MapFrom(source => source.LargeThumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.LargeThumbnail) : null))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(source => source.Auction.Id))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(source => source.Auction.Status))
+                .ForMember(dest => dest.CurrentPrice, opt => opt.MapFrom(source => source.Auction.CurrentPrice))
+                .ForMember(dest => dest.BuyoutPrice, opt => opt.MapFrom(source => source.Auction.BuyoutPrice))
+                .ForMember(dest => dest.ClosingDateUtc, opt => opt.MapFrom(source => source.Auction.ClosingDate))
+                .ForMember(dest => dest.CreatedDateUtc, opt => opt.MapFrom(source => source.Auction.CreatedDate))
+                .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.Auction.Car.make))
+                .ForMember(dest => dest.ModelId, opt => opt.MapFrom(source => source.Auction.Car.carId))
+                .ForMember(dest => dest.Bids, opt => opt.MapFrom(source => source.Auction.BidCount))
+                .ForMember(dest => dest.TotalReports, opt => opt.MapFrom(source => source.Auction.UserReportTotal))
+                .ForMember(dest => dest.TimeFlagged, opt => opt.MapFrom(source => source.Auction.TimeFlagged != default(DateTime) ? source.Auction.TimeFlagged : (DateTime?)null));
+
             this.CreateMap<LiveOpsContracts.ForzaUserAdminComment, SunriseProfileNote>()
                 .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(src => src.date))
                 .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.author))

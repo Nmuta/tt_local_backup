@@ -47,6 +47,12 @@
           <sunrise-player-notifications [identity]="identity"></sunrise-player-notifications>
         </div>
       </mat-tab>
+      <!-- TODO: Uncomment once auction endpoints are released to LSP Retail. -->
+      <!-- <mat-tab label="Auctions">
+        <div class="tab-container">
+          <sunrise-player-auctions [identity]="identity"></sunrise-player-auctions>
+        </div>
+      </mat-tab> -->
       <mat-tab label="JSON">
         <div class="tab-container">
           <json-dump [input]="identity">Identity</json-dump>

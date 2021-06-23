@@ -1,6 +1,10 @@
 import { environment } from '@environments/environment';
 import { FakeApiBase } from '@interceptors/fake-api/apis/fake-api-base';
+import { fakeBigNumber } from '@interceptors/fake-api/utility';
+import { MasterInventoryItem } from '@models/master-inventory-item';
 import { SunriseMasterInventory } from '@models/sunrise';
+import BigNumber from 'bignumber.js';
+import faker from 'faker';
 
 /** Fake API for getting master inventory. */
 export class SunriseMasterInventoryFakeApi extends FakeApiBase {
@@ -23,13 +27,33 @@ export class SunriseMasterInventoryFakeApi extends FakeApiBase {
 
   /** Generates a sample object */
   public static make(): SunriseMasterInventory {
+    function makeFakeItems(count: number): MasterInventoryItem[] {
+      return Array(faker.datatype.number({ min: 5, max: count }))
+        .fill(0)
+        .map(() => {
+          return {
+            id: fakeBigNumber(),
+            quantity: 0,
+            description: faker.random.words(5),
+            itemType: undefined,
+          };
+        });
+    }
+
     return {
-      creditRewards: [],
-      cars: [],
-      carHorns: [],
-      vanityItems: [],
-      quickChatLines: [],
-      emotes: [],
+      creditRewards: [
+        {
+          id: new BigNumber(-1),
+          quantity: 0,
+          description: faker.random.word(),
+          itemType: undefined,
+        },
+      ],
+      cars: makeFakeItems(50),
+      carHorns: makeFakeItems(50),
+      vanityItems: makeFakeItems(50),
+      quickChatLines: makeFakeItems(50),
+      emotes: makeFakeItems(50),
     };
   }
 }

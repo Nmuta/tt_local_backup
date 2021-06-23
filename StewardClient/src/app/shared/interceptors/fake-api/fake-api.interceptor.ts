@@ -79,6 +79,8 @@ import { SunriseMasterInventoryFakeApi } from './apis/title/sunrise/masterInvent
 import { SunriseGiftingLspGroupFakeApi } from './apis/title/sunrise/gifting/groupId';
 import { SunriseGiftingPlayersFakeApi } from './apis/title/sunrise/gifting/players';
 import { SunriseGiftingPlayersReturnsBackgroundJobFakeApi } from './apis/title/sunrise/gifting/players_returnsbackgroundjob';
+import { SunrisePlayerXuidAuctionsFakeApi } from './apis/title/sunrise/player/xuid/auctions';
+import { SunriseKustoCarsFakeApi } from './apis/title/sunrise/kusto/cars';
 import { SunrisePlayerXuidProfileNotesApi } from './apis/title/sunrise/player/xuid/profileNotes';
 import { SunrisePlayerXuidBackstagePassHistoryFakeApi } from './apis/title/sunrise/player/xuid/backstagePassHistory';
 import { SunrisePlayerXuidAccountInventoryFakeApi } from './apis/title/sunrise/player/xuid/accountInventory';
@@ -141,6 +143,8 @@ const fakeApiConstructors = [
   SunriseSendCommunityMessageToLspGroupFakeApi,
   SunriseSendCommunityMessageFakeApi,
   SunriseSendCommunityMessageToLspGroupFakeApi,
+  SunrisePlayerXuidAuctionsFakeApi,
+  SunriseKustoCarsFakeApi,
   SunrisePlayerXuidProfileNotesApi,
   SunrisePlayerXuidBackstagePassHistoryFakeApi,
   SunrisePlayerXuidAccountInventoryFakeApi,

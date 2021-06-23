@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -135,6 +136,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var masterInventory = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
             return this.Ok(masterInventory);
+        }
+
+        /// <summary>
+        ///     Gets the master inventory data.
+        /// </summary>
+        [HttpGet("kusto/cars")]
+        [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
+        public async Task<IActionResult> GetDetailedKustoCars()
+        {
+            var cars = await this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed).ConfigureAwait(true);
+            return this.Ok(cars);
         }
 
         /// <summary>
@@ -355,6 +367,52 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var result = await this.sunrisePlayerDetailsProvider.GetCreditUpdatesAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
 
             return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     Gets player auctions.
+        /// </summary>
+        [HttpGet("player/xuid({xuid})/auctions")]
+        [SwaggerResponse(200, type: typeof(IList<PlayerAuction>))]
+        public async Task<IActionResult> GetAuctions(
+            ulong xuid,
+            [FromQuery] short carId = short.MaxValue,
+            [FromQuery] short makeId = short.MaxValue,
+            [FromQuery] string status = "Any",
+            [FromQuery] string sort = "ClosingDateDescending")
+        {
+            xuid.ShouldNotBeNull(nameof(xuid));
+            carId.ShouldNotBeNull(nameof(carId));
+            makeId.ShouldNotBeNull(nameof(makeId));
+            status.ShouldNotBeNull(nameof(status));
+            sort.ShouldNotBeNull(nameof(sort));
+
+            if (!Enum.TryParse(status, out AuctionStatus statusEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionStatus)} provided: {status}");
+            }
+
+            if (!Enum.TryParse(sort, out AuctionSort sortEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionSort)} provided: {status}");
+            }
+
+            var getAuctions = this.sunrisePlayerDetailsProvider.GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum));
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+
+            await Task.WhenAll(getAuctions, getKustoCars).ConfigureAwait(true);
+
+            var auctions = await getAuctions.ConfigureAwait(true);
+            var kustoCars = await getKustoCars.ConfigureAwait(true);
+
+
+            foreach (var auction in auctions)
+            {
+                var carData = kustoCars.FirstOrDefault(car => car.Id == auction.ModelId);
+                auction.ItemName = carData != default(KustoCar) ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
+            }
+
+            return this.Ok(auctions);
         }
 
         /// <summary>

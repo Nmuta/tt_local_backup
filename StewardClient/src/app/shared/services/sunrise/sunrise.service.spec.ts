@@ -12,12 +12,11 @@ import { LspGroup } from '@models/lsp-group';
 import { SunriseGift, SunriseGroupGift, SunriseUserFlags } from '@models/sunrise';
 import { ApiService, createMockApiService } from '@services/api';
 import faker from 'faker';
-
 import { of } from 'rxjs';
-
 import { SunriseService } from './sunrise.service';
-import { DateTime } from 'luxon';
+import { DefaultAuctionFilters } from '@models/auction-filters';
 import { HttpParams } from '@angular/common/http';
+import { DateTime } from 'luxon';
 
 describe('SunriseService', () => {
   let injector: TestBed;
@@ -38,6 +37,34 @@ describe('SunriseService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('Method: getMasterInventory$', () => {
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getMasterInventory$().subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/masterInventory`,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getDetailedKustoCars$', () => {
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getDetailedKustoCars$().subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/kusto/cars`);
+        done();
+      });
+    });
   });
 
   describe('Method: getPlayerIdentity$', () => {
@@ -91,6 +118,27 @@ describe('SunriseService', () => {
       service.getPlayerNotificationsByXuid$(expectedXuid).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${expectedXuid})/notifications`,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getPlayerAuctionsByXuid$', () => {
+    const xuid = fakeXuid();
+    const filters = DefaultAuctionFilters;
+
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call apiServiceMock.getRequest', done => {
+      service.getPlayerAuctionsByXuid$(xuid, filters).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${xuid})/auctions`,
+          new HttpParams()
+            .append('sort', filters.sort.toString())
+            .append('status', filters.status.toString()),
         );
         done();
       });
@@ -152,7 +200,7 @@ describe('SunriseService', () => {
     const expectedXuid = new BigNumber(123456789);
 
     beforeEach(() => {
-      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {
@@ -169,7 +217,7 @@ describe('SunriseService', () => {
     const expectedLspGroupId = new BigNumber(1234);
 
     beforeEach(() => {
-      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
     });
 
     it('should call API service getRequest with the expected params', done => {

@@ -290,6 +290,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
+        public async Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(ForzaAuctionFilters filters)
+        {
+            var auctionService = await this.PrepareAuctionManagementServiceAsync().ConfigureAwait(false);
+
+            return await auctionService.SearchAuctionHouse(filters).ConfigureAwait(false);
+        }
+
         private async Task<UserManagementService> PrepareUserManagementServiceAsync()
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
@@ -344,6 +352,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new NotificationsManagementService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+        }
+
+        private async Task<AuctionManagementService> PrepareAuctionManagementServiceAsync()
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new AuctionManagementService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
         }
 
         private async Task<string> GetAuthTokenAsync()

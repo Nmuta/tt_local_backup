@@ -10,6 +10,8 @@ import { LspGroup } from '@models/lsp-group';
 import { ApiService, createMockApiService } from '@services/api';
 import { of } from 'rxjs';
 import { SteelheadService } from './steelhead.service';
+import { DefaultAuctionFilters } from '@models/auction-filters';
+import { HttpParams } from '@angular/common/http';
 
 describe('SteelheadService', () => {
   let injector: TestBed;
@@ -259,6 +261,27 @@ describe('SteelheadService', () => {
         expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
           `${service.basePath}/gifting/groupId(${lspGroup.id})`,
           gift,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getPlayerAuctionsByXuid$', () => {
+    const xuid = fakeXuid();
+    const filters = DefaultAuctionFilters;
+
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call apiServiceMock.getRequest', done => {
+      service.getPlayerAuctionsByXuid$(xuid, filters).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${xuid})/auctions`,
+          new HttpParams()
+            .append('sort', filters.sort.toString())
+            .append('status', filters.status.toString()),
         );
         done();
       });

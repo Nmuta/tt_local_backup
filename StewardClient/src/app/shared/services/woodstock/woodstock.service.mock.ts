@@ -18,6 +18,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { WoodstockService } from './woodstock.service';
 import { WoodstockPlayerXuidProfileRollbacksApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/profileRollbacks';
+import { WoodstockPlayerXuidAuctionsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/auctions';
 import { WoodstockPlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/backstagePassHistory';
 import { WoodstockPlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/accountInventory';
 
@@ -133,6 +134,12 @@ export class MockWoodstockService {
     .createSpy('getProfileRollbacksXuid$')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidProfileRollbacksApi.makeMany()))),
+    );
+
+  public getPlayerAuctionsByXuid$ = jasmine
+    .createSpy('getPlayerAuctionsByXuid$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidAuctionsFakeApi.makeMany()))),
     );
 
   public getBackstagePassHistoryByXuid$ = jasmine

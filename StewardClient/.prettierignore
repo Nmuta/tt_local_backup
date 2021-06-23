@@ -1,3 +1,4 @@
 dist/
 coverage/
 package-lock.json
+src/app/shared/interceptors/fake-api/utility/fake-image-byte-array.ts

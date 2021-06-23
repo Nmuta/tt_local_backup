@@ -132,6 +132,9 @@ export class MockSunriseService {
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidProfileNotesApi.makeMany()))),
     );
+  public getPlayerAuctionsByXuid$ = jasmine
+    .createSpy('getPlayerAuctionsByXuid$')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(_.clone(this.generator())))));
 
   public getBackstagePassHistoryByXuid$ = jasmine
     .createSpy('getBackstagePassHistoryByXuid')

@@ -134,6 +134,45 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
+        public async Task<IList<KustoCar>> GetDetailedKustoCars(string kustoQuery)
+        {
+            if (!KustoQueries.AllowedDetailedKustoCarQueries.Contains(kustoQuery))
+            {
+                throw new InvalidArgumentsStewardException("Provided query is an invalid GetDetailedKustoCars query.");
+            }
+
+            async Task<IList<KustoCar>> KustoCars()
+            {
+                var items = new List<KustoCar>();
+
+                using (var reader = await this.cslQueryProvider
+                    .ExecuteQueryAsync(GameDatabaseName, kustoQuery, new ClientRequestProperties())
+                    .ConfigureAwait(false))
+                {
+                    while (reader.Read())
+                    {
+                        items.Add(new KustoCar
+                        {
+                            Id = (int) reader.GetInt64(0),
+                            MakeId = (int) reader.GetInt64(1),
+                            Make = reader.GetString(2),
+                            Model = reader.GetString(3),
+                        });
+                    }
+
+                    reader.Close();
+                }
+
+                this.refreshableCacheStore.PutItem(kustoQuery, TimeSpan.FromHours(24), items);
+
+                return items;
+            }
+
+            return this.refreshableCacheStore.GetItem<IList<KustoCar>>(kustoQuery)
+                   ?? await KustoCars().ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
         public async Task<IList<CreditReward>> GetCreditRewardsAsync(KustoGameDbSupportedTitle supportedTitle)
         {
             try
