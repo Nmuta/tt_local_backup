@@ -2,6 +2,8 @@
   "baseUrl": "https://steward-ui-dev.azurewebsites.net",
   "testFiles": "**/*.spec.*",
   "env": {
-    "STEWARD_API": "https://steward-api-dev.azurewebsites.net"
+    "STEWARD_API": "https://steward-api-dev.azurewebsites.net",
+    "TEST_WOODSTOCK": true,
+    "TEST_STEELHEAD": true
   }
 }

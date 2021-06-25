@@ -61,26 +61,4 @@ export function playerDetailsSunriseSharedTests(): void {
       cy.contains('Xls. Notifications. Unbanned Notification');
     });
   });
-
-  it('should display correct accounts', () => {
-    const allExpected = [
-      { title: 'Woodstock', hasAccount: false },
-      { title: 'Steelhead', hasAccount: false },
-      { title: 'Gravity', hasAccount: true },
-      { title: 'Sunrise', hasAccount: true },
-      { title: 'Apollo', hasAccount: true },
-      { title: 'Opus', hasAccount: false },
-    ];
-
-    for (const expected of allExpected) {
-      const $element = cy.contains('a', expected.title);
-      if (expected.hasAccount) {
-        // account exists
-        $element.should('not.have.class', 'mat-button-disabled');
-      } else {
-        // account does not exist
-        $element.should('have.class', 'mat-button-disabled');
-      }
-    }
-  });
 }

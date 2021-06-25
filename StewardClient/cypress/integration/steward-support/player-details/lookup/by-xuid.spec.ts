@@ -1,9 +1,9 @@
 import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
-import { playerDetailsSunriseSharedTests } from './shared';
+import { displaysCorrectActiveTitles, jordansAccountInfo } from './shared';
 
-context('Steward / Support / Player Details / Sunrise', () => {
+context('Steward / Support / Player Details', () => {
   beforeEach(() => {
     login();
     disableFakeApi();
@@ -17,6 +17,6 @@ context('Steward / Support / Player Details / Sunrise', () => {
       cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
     });
 
-    playerDetailsSunriseSharedTests();
+    displaysCorrectActiveTitles(jordansAccountInfo);
   });
 });
