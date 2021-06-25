@@ -96,7 +96,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
                         ExecutionInterval = resultDataActivity.ExecutionInterval,
                         ExecutionDelay = resultDataActivity.Delay,
                         DataActivityDependencyNames = resultDataActivity.Dependencies?.Select(d => d.DataActivityDependencyName).ToList(),
-                        ParallelismLimit = resultDataActivity.ParallelismLimitTags.Select(p => p.Limit).FirstOrDefault()
+                        ParallelismLimit = resultDataActivity.ParallelismLimitTags.Select(p => p.Limit).FirstOrDefault(),
+                        CreationBehavior = resultDataActivity.CreationBehavior,
                     })
                 .ToList();
 
@@ -119,6 +120,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
                         TargetDataActivity = resultDataActivity.TargetDataActivity,
                         KustoDatabase = resultDataActivity.KustoDatabase,
                         KustoQuery = resultDataActivity.KustoQuery,
+                        CreationBehavior = resultDataActivity.CreationBehavior,
                     })
                 .ToList();
 
@@ -260,7 +262,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
                     KustoQuery = BuildFunctionDefinition(obligationDataActivity.KustoFunction),
                     InitializationQuery = BuildInitializationQuery(obligationDataActivity),
                     NumBucketsPreSplitHint = obligationDataActivity.KustoFunction.NumberOfBuckets,
-                    Dependencies = BuildDependencies(obligationDataActivity.DataActivityDependencyNames)
+                    Dependencies = BuildDependencies(obligationDataActivity.DataActivityDependencyNames),
+                    CreationBehavior = obligationDataActivity.CreationBehavior,
                 }.AddParallelismLimit(obligationDataActivity.ParallelismLimit, this.configQualifier.Tenant, obligationRequest.PipelineName);
 
                 pipeline.DataActivities.Add(dataActivity);
@@ -285,6 +288,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Pipelines
                     Dependencies = BuildDependencies(obligationRestateOMaticDataActivity.DataActivityDependencyNames),
                     IncludeChildren = obligationRestateOMaticDataActivity.IncludeChildren,
                     TargetDataActivity = obligationRestateOMaticDataActivity.TargetDataActivity,
+                    CreationBehavior = obligationRestateOMaticDataActivity.CreationBehavior,
                 }.AddParallelismLimit(
                     obligationRestateOMaticDataActivity.ParallelismLimit,
                     this.configQualifier.Tenant,

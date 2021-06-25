@@ -13,6 +13,7 @@ import {
 import { BaseComponent } from '@components/base-component/base.component';
 import { ActivePipelineService } from '@data-pipeline-app/pages/obligation/services/active-pipeline.service';
 import { collectErrors } from '@helpers/form-group-collect-errors';
+import { DataActivityCreationBehavior } from '@models/pipelines/data-activity-creation-behavior';
 import { StringValidators } from '@shared/validators/string-validators';
 import { DateTime } from 'luxon';
 import { Observable, of, ReplaySubject } from 'rxjs';
@@ -37,6 +38,7 @@ export interface KustoRestateOMaticDataActivityOptions {
   parallelismLimit: number;
   dependencyNames: string[];
   includeChildren: boolean;
+  creationBehavior: DataActivityCreationBehavior;
 
   /** True when this model was retrieved from the API. UI-only value. Disables some controls. */
   fromApi: boolean;
@@ -94,6 +96,7 @@ export class RestateOMaticComponent
     dependencyNames: [],
     parallelismLimit: 2,
     includeChildren: true,
+    creationBehavior: DataActivityCreationBehavior.Full,
     fromApi: false,
   };
 
@@ -128,6 +131,7 @@ export class RestateOMaticComponent
     ]),
     dependencyNames: new FormControl(RestateOMaticComponent.defaults.dependencyNames),
     includeChildren: new FormControl(RestateOMaticComponent.defaults.includeChildren),
+    creationBehavior: new FormControl(RestateOMaticComponent.defaults.creationBehavior),
     fromApi: new FormControl(RestateOMaticComponent.defaults.fromApi),
   };
 
@@ -142,6 +146,7 @@ export class RestateOMaticComponent
     parallelismLimit: this.formControls.parallelismLimit,
     dependencyNames: this.formControls.dependencyNames,
     includeChildren: this.formControls.includeChildren,
+    creationBehavior: this.formControls.creationBehavior,
     fromApi: this.formControls.fromApi,
   });
 
@@ -180,8 +185,10 @@ export class RestateOMaticComponent
 
       if (data.fromApi) {
         this.formControls.dateRange.disable();
+        this.formControls.creationBehavior.disable();
       } else {
         this.formControls.dateRange.enable();
+        this.formControls.creationBehavior.enable();
       }
     }
   }

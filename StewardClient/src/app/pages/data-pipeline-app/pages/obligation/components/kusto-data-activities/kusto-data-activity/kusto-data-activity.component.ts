@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { ActivePipelineService } from '@data-pipeline-app/pages/obligation/services/active-pipeline.service';
 import { collectErrors } from '@helpers/form-group-collect-errors';
+import { DataActivityCreationBehavior } from '@models/pipelines/data-activity-creation-behavior';
 import { StringValidators } from '@shared/validators/string-validators';
 import { DateTime } from 'luxon';
 import { map } from 'rxjs/operators';
@@ -34,6 +35,7 @@ export interface KustoDataActivityOptions {
   executionDelayInMinutes: number;
   parallelismLimit: number;
   dependencyNames: string[];
+  creationBehavior: DataActivityCreationBehavior;
 
   /** True when this model was retrieved from the API. UI-only value. Disables some controls. */
   fromApi: boolean;
@@ -74,6 +76,7 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
     executionDelayInMinutes: 2880,
     dependencyNames: [],
     parallelismLimit: 2,
+    creationBehavior: DataActivityCreationBehavior.Full,
     fromApi: false,
   };
 
@@ -111,6 +114,7 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
       Validators.max(25),
     ]),
     dependencyNames: new FormControl(KustoDataActivityComponent.defaults.dependencyNames),
+    creationBehavior: new FormControl(KustoDataActivityComponent.defaults.creationBehavior),
     fromApi: new FormControl(KustoDataActivityComponent.defaults.fromApi),
   };
 
@@ -125,6 +129,7 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
     executionDelayInMinutes: this.formControls.executionDelayInMinutes,
     parallelismLimit: this.formControls.parallelismLimit,
     dependencyNames: this.formControls.dependencyNames,
+    creationBehavior: this.formControls.creationBehavior,
     fromApi: this.formControls.fromApi,
   });
 
@@ -142,9 +147,11 @@ export class KustoDataActivityComponent implements ControlValueAccessor, Validat
       if (data.fromApi) {
         this.formControls.dateRange.disable();
         this.formControls.name.disable();
+        this.formControls.creationBehavior.disable();
       } else {
         this.formControls.dateRange.enable();
         this.formControls.name.enable();
+        this.formControls.creationBehavior.enable();
       }
     }
   }

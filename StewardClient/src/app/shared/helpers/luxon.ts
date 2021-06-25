@@ -1,7 +1,12 @@
+import { isNull, isUndefined } from 'lodash';
 import { DateTime, Duration } from 'luxon';
 
 /** Converts the given source to a Luxon DateTime, if possible. */
 export function toDateTime(source: string | DateTime | Date): DateTime {
+  if (isUndefined(source) || isNull(source)) {
+    return source;
+  }
+
   if (source instanceof DateTime) {
     return source;
   }
@@ -21,6 +26,10 @@ export function toDateTime(source: string | DateTime | Date): DateTime {
 
 /** Converts the given source to a Luxon Duration, if possible. */
 export function toDuration(source: string | Duration): Duration {
+  if (isUndefined(source) || isNull(source)) {
+    return source;
+  }
+
   if (source instanceof Duration) {
     return source;
   }

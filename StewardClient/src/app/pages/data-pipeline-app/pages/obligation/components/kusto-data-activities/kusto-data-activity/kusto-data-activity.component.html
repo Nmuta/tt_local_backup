@@ -72,6 +72,37 @@
 
     <section class="shrinkwrap">
       <datetime-range-picker [formControl]="formControls.dateRange"></datetime-range-picker>
+      <mat-form-field appearance="fill">
+        <mat-label>Creation Behavior</mat-label>
+        <mat-select [formControl]="formControls.creationBehavior">
+          <mat-option
+            matTooltip="When this dataActivity is created, ensure there is a complete coverage for its timerange in the work table."
+            value="full"
+            >Full</mat-option
+          >
+          <mat-option
+            matTooltip="When this dataActivity is created, populate slices from approximately now until the end of the dataset."
+            value="approximately_now"
+            >Approximately Now</mat-option
+          >
+          <mat-option
+            matTooltip="When this dataActivity is created, do not add any slices."
+            value="none"
+            >None</mat-option
+          >
+        </mat-select>
+        <mat-hint *ngIf="formControls.creationBehavior.value === 'full'">
+          When this dataActivity is created, ensure there is a complete coverage for its timerange
+          in the work table.
+        </mat-hint>
+        <mat-hint *ngIf="formControls.creationBehavior.value === 'approximately_now'">
+          When this dataActivity is created, populate slices from approximately now until the end of
+          the dataset.
+        </mat-hint>
+        <mat-hint *ngIf="formControls.creationBehavior.value === 'none'">
+          When this dataActivity is created, do not add any slices.
+        </mat-hint>
+      </mat-form-field>
     </section>
   </section>
 

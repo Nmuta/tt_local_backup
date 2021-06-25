@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
+using Turn10.LiveOps.StewardApi.Obligation.UpstreamModels;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Pipelines
 {
@@ -79,5 +82,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Pipelines
         ///     Gets or sets the parallelism limit.
         /// </summary>
         public int ParallelismLimit { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the upstream creation behavior. Only valid on new data activities.
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public DataActivityCreationBehavior CreationBehavior { get; set; }
     }
 }

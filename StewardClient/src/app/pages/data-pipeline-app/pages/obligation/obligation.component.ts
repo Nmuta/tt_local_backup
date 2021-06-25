@@ -219,6 +219,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
               : null,
           },
           dataActivityDependencyNames: activity.dependencyNames,
+          creationBehavior: activity.creationBehavior,
         };
       }),
       kustoRestateOMaticDataActivities: flatMap(options.dataActivities, bundle => {
@@ -253,6 +254,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
             },
             dataActivityDependencyNames: activity.dependencyNames,
             includeChildren: activity.includeChildren,
+            creationBehavior: activity.creationBehavior,
           },
         ];
       }),
@@ -276,33 +278,34 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
             principalValue: p.principal_value,
           },
       ),
-      dataActivities: kustoDataActivities.map(pipeline => {
+      dataActivities: kustoDataActivities.map(activity => {
         const dataActivity = <KustoDataActivityOptions>{
-          name: pipeline.activityName,
-          table: pipeline.kustoTableName,
-          database: pipeline.destinationDatabase,
-          dependencyNames: pipeline.dataActivityDependencyNames,
+          name: activity.activityName,
+          table: activity.kustoTableName,
+          database: activity.destinationDatabase,
+          dependencyNames: activity.dataActivityDependencyNames,
           dateRange: {
-            start: pipeline.startDateUtc.toUTC(),
-            end: pipeline.endDateUtc.toUTC(),
+            start: activity.startDateUtc.toUTC(),
+            end: activity.endDateUtc.toUTC(),
           },
-          executionDelayInMinutes: toDuration(pipeline.executionDelay).as('minutes'),
-          executionIntervalInMinutes: toDuration(pipeline.executionInterval).as('minutes'),
-          maximumExecutionTimeInMinutes: toDuration(pipeline.maxExecutionSpan).as('minutes'),
-          parallelismLimit: pipeline.parallelismLimit.toNumber(),
+          executionDelayInMinutes: toDuration(activity.executionDelay).as('minutes'),
+          executionIntervalInMinutes: toDuration(activity.executionInterval).as('minutes'),
+          maximumExecutionTimeInMinutes: toDuration(activity.maxExecutionSpan).as('minutes'),
+          parallelismLimit: activity.parallelismLimit.toNumber(),
           query: {
-            name: pipeline.kustoFunction.name,
-            makeFunctionCall: pipeline.kustoFunction.makeFunctionCall,
-            useEndDate: pipeline.kustoFunction.useEndDate,
-            useSplitting: pipeline.kustoFunction.useSplitting,
-            numberOfBuckets: pipeline.kustoFunction.numberOfBuckets?.toNumber(),
+            name: activity.kustoFunction.name,
+            makeFunctionCall: activity.kustoFunction.makeFunctionCall,
+            useEndDate: activity.kustoFunction.useEndDate,
+            useSplitting: activity.kustoFunction.useSplitting,
+            numberOfBuckets: activity.kustoFunction.numberOfBuckets?.toNumber(),
           },
+          creationBehavior: activity.creationBehavior,
           fromApi: true,
         };
 
         let restateOMatic: KustoRestateOMaticDataActivityOptions = null;
-        if (has(restateOMaticLookup, pipeline.activityName)) {
-          const restateOMaticActivity = restateOMaticLookup[pipeline.activityName];
+        if (has(restateOMaticLookup, activity.activityName)) {
+          const restateOMaticActivity = restateOMaticLookup[activity.activityName];
           restateOMatic = {
             name: restateOMaticActivity.activityName,
             database: restateOMaticActivity.destinationDatabase,
@@ -311,9 +314,13 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
               start: restateOMaticActivity.startDateUtc.toUTC(),
               end: restateOMaticActivity.endDateUtc.toUTC(),
             },
-            executionDelayInMinutes: restateOMaticActivity.executionDelay.minutes,
-            executionIntervalInMinutes: restateOMaticActivity.executionInterval.minutes,
-            maximumExecutionTimeInMinutes: restateOMaticActivity.maxExecutionSpan.minutes,
+            executionDelayInMinutes: toDuration(restateOMaticActivity.executionDelay).as('minutes'),
+            executionIntervalInMinutes: toDuration(restateOMaticActivity.executionInterval).as(
+              'minutes',
+            ),
+            maximumExecutionTimeInMinutes: toDuration(restateOMaticActivity.maxExecutionSpan).as(
+              'minutes',
+            ),
             parallelismLimit: restateOMaticActivity.parallelismLimit.toNumber(),
             query: {
               name: restateOMaticActivity.kustoFunction.name,
@@ -323,6 +330,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
               numberOfBuckets: restateOMaticActivity.kustoFunction.numberOfBuckets?.toNumber(),
             },
             includeChildren: restateOMaticActivity.includeChildren,
+            creationBehavior: restateOMaticActivity.creationBehavior,
             fromApi: true,
           };
         }

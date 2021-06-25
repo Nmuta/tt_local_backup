@@ -75,7 +75,6 @@ import { BundleComponent } from './components/kusto-data-activities/bundle/bundl
     MatTableModule,
     MatTabsModule,
     MatTooltipModule,
-    MatTooltipModule,
     MonitorActionModule,
     OptionalNumberModule,
     OverrideManagersModule,
