@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
-using Xls.Security.Steelhead_master.Generated;
+using Xls.Security.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Validation.Steelhead
 {

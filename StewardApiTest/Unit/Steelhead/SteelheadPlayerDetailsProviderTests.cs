@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.Steelhead_master.Generated;
+using Forza.LiveOps.FM8.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.Data.Common;
@@ -13,10 +13,10 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
-using Xls.WebServices.Steelhead_master.Generated;
-using static Forza.LiveOps.Steelhead_master.Generated.NotificationsManagementService;
-using static Forza.LiveOps.Steelhead_master.Generated.UserManagementService;
-using static Forza.WebServices.Steelhead_master.Generated.LiveOpsService;
+using Xls.WebServices.FM8.Generated;
+using static Forza.LiveOps.FM8.Generated.NotificationsManagementService;
+using static Forza.LiveOps.FM8.Generated.UserManagementService;
+using static Forza.WebServices.FM8.Generated.LiveOpsService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Forza.LiveOps.FH4.master.Generated;
-using Forza.UserInventory.FH4.master.Generated;
-using Forza.WebServices.FH4.master.Generated;
-using ForzaUserBanParameters = Forza.LiveOps.FH4.master.Generated.ForzaUserBanParameters;
-using GiftingService = Forza.LiveOps.FH4.master.Generated.GiftingService;
-using NotificationsService = Xls.WebServices.FH4.master.Generated.NotificationsService;
-using RareCarShopService = Forza.WebServices.FH4.master.Generated.RareCarShopService;
-using UserInventoryService = Forza.LiveOps.FH4.master.Generated.UserInventoryService;
-using UserManagementService = Forza.LiveOps.FH4.master.Generated.UserManagementService;
-using AuctionManagementService = Forza.LiveOps.FH4.master.Generated.AuctionManagementService;
+using Forza.LiveOps.FH4.Generated;
+using Forza.UserInventory.FH4.Generated;
+using Forza.WebServices.FH4.Generated;
+using AuctionManagementService = Forza.LiveOps.FH4.Generated.AuctionManagementService;
+using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
+using GiftingService = Forza.LiveOps.FH4.Generated.GiftingService;
+using NotificationsService = Xls.WebServices.FH4.Generated.NotificationsService;
+using RareCarShopService = Forza.WebServices.FH4.Generated.RareCarShopService;
+using UserInventoryService = Forza.LiveOps.FH4.Generated.UserInventoryService;
+using UserManagementService = Forza.LiveOps.FH4.Generated.UserManagementService;
+
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 {

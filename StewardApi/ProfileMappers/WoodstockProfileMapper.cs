@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
-using Forza.LiveOps.FH5_main.Generated;
-using Forza.UserInventory.FH5_main.Generated;
-using Forza.WebServices.RareCarShopTransactionObjects.FH5_main.Generated;
+using Forza.LiveOps.FH5.Generated;
+using Forza.UserInventory.FH5.Generated;
+using Forza.WebServices.RareCarShopTransactionObjects.FH5.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
-using Xls.Security.FH5_main.Generated;
-using Xls.WebServices.FH5_main.Generated;
-using LiveOpsContracts = Forza.LiveOps.FH5_main.Generated;
-using WebServicesContracts = Forza.WebServices.FH5_main.Generated;
+using Xls.Security.FH5.Generated;
+using Xls.WebServices.FH5.Generated;
+using LiveOpsContracts = Forza.LiveOps.FH5.Generated;
+using WebServicesContracts = Forza.WebServices.FH5.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {

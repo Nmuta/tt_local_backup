@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Forza.LiveOps.Steelhead_master.Generated;
-using Forza.UserInventory.Steelhead_master.Generated;
-using Forza.WebServices.Steelhead_master.Generated;
-using GiftingService = Forza.LiveOps.Steelhead_master.Generated.GiftingService;
-using NotificationsManagementService = Forza.LiveOps.Steelhead_master.Generated.NotificationsManagementService;
-using UserInventoryService = Forza.LiveOps.Steelhead_master.Generated.UserInventoryService;
+using Forza.LiveOps.FM8.Generated;
+using Forza.UserInventory.FM8.Generated;
+using Forza.WebServices.FM8.Generated;
+using GiftingService = Forza.LiveOps.FM8.Generated.GiftingService;
+using NotificationsManagementService = Forza.LiveOps.FM8.Generated.NotificationsManagementService;
+using UserInventoryService = Forza.LiveOps.FM8.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 {

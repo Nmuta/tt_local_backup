@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.Steelhead_master.Generated;
-using Forza.UserInventory.Steelhead_master.Generated;
+using Forza.LiveOps.FM8.Generated;
+using Forza.UserInventory.FM8.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
-using static Forza.LiveOps.Steelhead_master.Generated.UserInventoryService;
+using static Forza.LiveOps.FM8.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 {

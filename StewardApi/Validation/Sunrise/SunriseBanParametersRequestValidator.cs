@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
-using Xls.Security.FH4.master.Generated;
+using Xls.Security.FH4.Generated;
 
 namespace Turn10.LiveOps.StewardApi.Validation.Sunrise
 {

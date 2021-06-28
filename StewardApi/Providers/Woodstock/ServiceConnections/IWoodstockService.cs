@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Forza.LiveOps.FH5_main.Generated;
-using Forza.UserInventory.FH5_main.Generated;
-using Forza.WebServices.FH5_main.Generated;
-using GiftingService = Forza.LiveOps.FH5_main.Generated.GiftingService;
-using NotificationsManagementService = Forza.LiveOps.FH5_main.Generated.NotificationsManagementService;
-using RareCarShopService = Forza.WebServices.FH5_main.Generated.RareCarShopService;
-using UserInventoryService = Forza.LiveOps.FH5_main.Generated.UserInventoryService;
+using Forza.LiveOps.FH5.Generated;
+using Forza.UserInventory.FH5.Generated;
+using Forza.WebServices.FH5.Generated;
+using GiftingService = Forza.LiveOps.FH5.Generated.GiftingService;
+using NotificationsManagementService = Forza.LiveOps.FH5.Generated.NotificationsManagementService;
+using RareCarShopService = Forza.WebServices.FH5.Generated.RareCarShopService;
+using UserInventoryService = Forza.LiveOps.FH5.Generated.UserInventoryService;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 {

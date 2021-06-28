@@ -12,14 +12,14 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
-using Xls.WebServices.FH4.master.Generated;
-using Xls.WebServices.NotificationsObjects.FH4.master.Generated;
-using static Forza.LiveOps.FH4.master.Generated.UserManagementService;
-using static Forza.WebServices.FH4.master.Generated.LiveOpsService;
-using static Forza.WebServices.FH4.master.Generated.RareCarShopService;
-using static Xls.WebServices.FH4.master.Generated.NotificationsService;
-using LiveOpsContracts = Forza.LiveOps.FH4.master.Generated;
-using WebServicesContracts = Forza.WebServices.FH4.master.Generated;
+using Xls.WebServices.FH4.Generated;
+using Xls.WebServices.NotificationsObjects.FH4.Generated;
+using static Forza.LiveOps.FH4.Generated.UserManagementService;
+using static Forza.WebServices.FH4.Generated.LiveOpsService;
+using static Forza.WebServices.FH4.Generated.RareCarShopService;
+using static Xls.WebServices.FH4.Generated.NotificationsService;
+using LiveOpsContracts = Forza.LiveOps.FH4.Generated;
+using WebServicesContracts = Forza.WebServices.FH4.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 {

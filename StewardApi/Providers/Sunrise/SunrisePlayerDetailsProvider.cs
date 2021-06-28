@@ -12,8 +12,8 @@ using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
-using ForzaUserBanParameters = Forza.LiveOps.FH4.master.Generated.ForzaUserBanParameters;
-using ForzaAuctionFilters = Forza.LiveOps.FH4.master.Generated.ForzaAuctionFilters;
+using ForzaAuctionFilters = Forza.LiveOps.FH4.Generated.ForzaAuctionFilters;
+using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 {

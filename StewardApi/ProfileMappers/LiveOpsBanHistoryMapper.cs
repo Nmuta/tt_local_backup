@@ -1,14 +1,14 @@
 ﻿using System;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Providers;
-using FH4Security = Xls.Security.FH4.master.Generated;
-using FH4WebServices = Forza.LiveOps.FH4.master.Generated;
-using FH5LiveOps = Forza.LiveOps.FH5_main.Generated;
-using FH5Security = Xls.Security.FH5_main.Generated;
+using FH4Security = Xls.Security.FH4.Generated;
+using FH4WebServices = Forza.LiveOps.FH4.Generated;
+using FH5LiveOps = Forza.LiveOps.FH5.Generated;
+using FH5Security = Xls.Security.FH5.Generated;
 using FM7Security = Xls.Security.FM7.Generated;
 using FM7WebServices = Forza.WebServices.FM7.Generated;
-using FM8LiveOps = Forza.LiveOps.Steelhead_master.Generated;
-using FM8Security = Xls.Security.Steelhead_master.Generated;
+using FM8LiveOps = Forza.LiveOps.FM8.Generated;
+using FM8Security = Xls.Security.FM8.Generated;
 
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {

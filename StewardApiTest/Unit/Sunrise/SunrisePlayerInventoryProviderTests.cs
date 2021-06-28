@@ -4,18 +4,18 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using Forza.LiveOps.FH4.master.Generated;
-using Forza.UserInventory.FH4.master.Generated;
+using Forza.LiveOps.FH4.Generated;
+using Forza.UserInventory.FH4.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
-using static Forza.LiveOps.FH4.master.Generated.UserInventoryService;
-using static Forza.WebServices.FH4.master.Generated.LiveOpsService;
-using static Forza.WebServices.FH4.master.Generated.RareCarShopService;
-using WebServicesContracts = Forza.WebServices.FH4.master.Generated;
+using static Forza.LiveOps.FH4.Generated.UserInventoryService;
+using static Forza.WebServices.FH4.Generated.LiveOpsService;
+using static Forza.WebServices.FH4.Generated.RareCarShopService;
+using WebServicesContracts = Forza.WebServices.FH4.Generated;
 
 namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 {
