@@ -381,11 +381,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             [FromQuery] string status = "Any",
             [FromQuery] string sort = "ClosingDateDescending")
         {
-            xuid.ShouldNotBeNull(nameof(xuid));
-            carId.ShouldNotBeNull(nameof(carId));
-            makeId.ShouldNotBeNull(nameof(makeId));
-            status.ShouldNotBeNull(nameof(status));
-            sort.ShouldNotBeNull(nameof(sort));
+            status.ShouldNotBeNullEmptyOrWhiteSpace(nameof(status));
+            sort.ShouldNotBeNullEmptyOrWhiteSpace(nameof(sort));
 
             if (!Enum.TryParse(status, out AuctionStatus statusEnum))
             {
@@ -394,7 +391,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             if (!Enum.TryParse(sort, out AuctionSort sortEnum))
             {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionSort)} provided: {status}");
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionSort)} provided: {sort}");
             }
 
             var getAuctions = this.sunrisePlayerDetailsProvider.GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum));

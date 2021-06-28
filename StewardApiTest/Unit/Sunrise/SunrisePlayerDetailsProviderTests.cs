@@ -563,6 +563,39 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             action.Should().NotThrow();
         }
 
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerAuctionsAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var filters = Fixture.Create<AuctionFilters>();
+
+            // Act.
+            async Task<IList<PlayerAuction>> Action() => await provider.GetPlayerAuctionsAsync(xuid, filters).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<List<PlayerAuction>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerAuctionsAsync_WithNullFilters_Throws()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var xuid = Fixture.Create<ulong>();
+            var filters = Fixture.Create<AuctionFilters>();
+
+            // Act.
+            Func<Task<IList<PlayerAuction>>> action = async () => await provider.GetPlayerAuctionsAsync(xuid, null).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "filters"));
+        }
+
+
         private List<SunriseBanParameters> GenerateBanParameters()
         {
             var newParams = new SunriseBanParameters
@@ -602,6 +635,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<LiveOpsRetrieveForUserOutput>());
                 this.SunriseService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
                 this.SunriseService.GetTokenTransactionsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<AdminGetTransactionsOutput>());
+                this.SunriseService.GetPlayerAuctions(Arg.Any<LiveOpsContracts.ForzaAuctionFilters>()).Returns(Fixture.Create<LiveOpsContracts.AuctionManagementService.SearchAuctionHouseOutput>());
                 this.Mapper.Map<SunrisePlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SunrisePlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<LiveOpsContracts.ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<LiveOpsContracts.ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
@@ -613,9 +647,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SunrisePlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<Notification>>(Arg.Any<LiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
                 this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.Mapper.Map<IList<SunriseProfileNote>>(Arg.Any<
-                    LiveOpsContracts.ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<SunriseProfileNote>>());
+                this.Mapper.Map<IList<SunriseProfileNote>>(Arg.Any<LiveOpsContracts.ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<SunriseProfileNote>>());
                 this.Mapper.Map<IList<BackstagePassUpdate>>(Arg.Any<WebServicesContracts.RareCarShopTransaction[]>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
+                this.Mapper.Map<LiveOpsContracts.ForzaAuctionFilters>(Arg.Any<AuctionFilters>()).Returns(Fixture.Create<LiveOpsContracts.ForzaAuctionFilters>());
+                this.Mapper.Map<IList<PlayerAuction>>(Arg.Any<LiveOpsContracts.ForzaAuctionWithFileData[]>()).Returns(Fixture.Create<IList<PlayerAuction>>());
                 this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
                 this.RefreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(Arg.Any<string>()).Returns((IList<BackstagePassUpdate>)null);
             }

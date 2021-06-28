@@ -1764,6 +1764,17 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
         }
 
+        [TestMethod]
+        [TestCategory("Integration")]
+        [Ignore] //Enable once auction lookup is deployed to FH4 prod.
+        public async Task GetPlayerAuctions()
+        {
+            var result = await stewardClient.GetPlayerAuctionsAsync(xuid, short.MaxValue, short.MaxValue, "Any", "ClosingDateDescending").ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Any());
+        }
+
         private async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, SunriseGroupGift groupGift, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };

@@ -208,13 +208,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var path = new Uri(this.baseUri, $"{TitlePath}gifting/groupId({groupId})");
 
-            try
-            {
-                return await ServiceClient.SendRequestAsync<GiftResponse<int>>(HttpMethod.Post, path, this.authKey, Version, gift).ConfigureAwait(false);
-            }
-            catch (Exception ex) {
-                throw ex;
-            }
+            return await ServiceClient.SendRequestAsync<GiftResponse<int>>(HttpMethod.Post, path, this.authKey, Version, gift).ConfigureAwait(false);
         }
 
         public async Task<IList<SunriseGiftHistory>> GetGiftHistoriesAsync(ulong xuid)
@@ -271,6 +265,13 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/profileNotes");
 
             return await ServiceClient.SendRequestAsync<IList<SunriseProfileNote>>(HttpMethod.Post, path, this.authKey, Version, message).ConfigureAwait(false);
+        }
+
+        public async Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, short carId, short makeId, string status, string sort)
+        {
+            var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/auctions?carId={carId}&makeId={makeId}&status={status}&sort={sort}");
+
+            return await ServiceClient.SendRequestAsync<IList<PlayerAuction>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
         public async Task<BackgroundJob> GetJobStatusAsync(string jobId)
