@@ -40,11 +40,12 @@
       [formControl]="formControls.numberOfBuckets"
       label="Number Of Buckets"
       placeholder="buckets"
-      [min]="1"
-      [max]="100"
+      [min]="2"
+      [max]="50"
     >
       <ng-container ngProjectAs="[mat-hint]">
-        The number of buckets to suggest to Obligation. If null, Obligation will decide for itself
+        The number of buckets to suggest to Obligation. Min 2. Max 50. If null, Obligation will
+        decide for itself
       </ng-container>
     </optional-number>
   </section>
