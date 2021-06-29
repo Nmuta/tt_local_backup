@@ -37,6 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Hubs
         /// <summary>
         ///     Marks a job as seen. Remote Function Call.
         /// </summary>
+        [HubMethodName(NotificationHubEvents.MarkJobRead)]
         public async Task MarkRead(BackgroundJob backgroundJob)
         {
             await this.jobTracker.SetJobIsReadAsync(backgroundJob.JobId, this.Context.UserIdentifier, true).ConfigureAwait(false);
@@ -45,6 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Hubs
         /// <summary>
         ///     Marks a job as unseen. Remote Function Call.
         /// </summary>
+        [HubMethodName(NotificationHubEvents.MarkJobUnread)]
         public async Task MarkUnread(BackgroundJob backgroundJob)
         {
             await this.jobTracker.SetJobIsReadAsync(backgroundJob.JobId, this.Context.UserIdentifier, false).ConfigureAwait(false);
@@ -53,10 +55,11 @@ namespace Turn10.LiveOps.StewardApi.Hubs
         /// <summary>
         ///     Resends all notifications.
         /// </summary>
+        [HubMethodName(NotificationHubEvents.SyncAllJobs)]
         public async Task SyncAll()
         {
             var jobs = await this.jobTracker.GetUnreadJobsByUserAsync(this.Context.UserIdentifier).ConfigureAwait(true);
-            var tasks = jobs.Select(job => this.Clients.Caller.SendAsync("JobChange", job));
+            var tasks = jobs.Select(job => this.Clients.Caller.SendAsync(NotificationHubEvents.UpdateJobState, job));
             await Task.WhenAll(tasks).ConfigureAwait(true);
         }
     }

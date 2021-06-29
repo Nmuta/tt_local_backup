@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { BackgroundJob } from '@models/background-job';
+import { NotificationHubEvents } from '@models/enums';
 import { Store } from '@ngxs/store';
 import { WindowService } from '@services/window';
 import { UserState } from '@shared/state/user/user.state';
@@ -57,17 +58,17 @@ export class NotificationsService {
 
     this.notifications = [];
     this.notifications$.next(this.notifications);
-    await this.notificationsHub.invoke('SyncAll');
+    await this.notificationsHub.invoke(NotificationHubEvents.SyncAllJobs);
   }
 
   /** Marks a notification as read. */
   public markRead(notification: BackgroundJob<unknown>): Promise<void> {
-    return this.notificationsHub.invoke('MarkRead', notification);
+    return this.notificationsHub.invoke(NotificationHubEvents.MarkJobRead, notification);
   }
 
   /** Marks a notification as read. */
   public markUnread(notification: BackgroundJob<unknown>): Promise<void> {
-    return this.notificationsHub.invoke('MarkUnread', notification);
+    return this.notificationsHub.invoke(NotificationHubEvents.MarkJobUnread, notification);
   }
 
   private makeHub(): void {
@@ -83,22 +84,25 @@ export class NotificationsService {
       })
       .build();
 
-    this.notificationsHub.on('JobChange', (job: BackgroundJob<unknown>) => {
-      let replaced = false;
-      for (let i = 0; i < this.notifications.length; i++) {
-        const notification = this.notifications[i];
-        if (notification.jobId === job.jobId) {
-          this.notifications[i] = job;
-          replaced = true;
-          break;
+    this.notificationsHub.on(
+      NotificationHubEvents.UpdateJobState,
+      (job: BackgroundJob<unknown>) => {
+        let replaced = false;
+        for (let i = 0; i < this.notifications.length; i++) {
+          const notification = this.notifications[i];
+          if (notification.jobId === job.jobId) {
+            this.notifications[i] = job;
+            replaced = true;
+            break;
+          }
         }
-      }
-      if (!replaced) {
-        this.notifications.push(job);
-      }
+        if (!replaced) {
+          this.notifications.push(job);
+        }
 
-      this.notifications$.next(this.notifications);
-    });
+        this.notifications$.next(this.notifications);
+      },
+    );
   }
 
   private getUrl(): string {

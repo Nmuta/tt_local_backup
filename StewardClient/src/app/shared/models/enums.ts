@@ -35,3 +35,10 @@ export enum UserRole {
   DataPipelineRead = 'DataPipelineRead',
   CommunityManager = 'CommunityManager',
 }
+
+export enum NotificationHubEvents {
+  MarkJobRead = 'NotificationHubMarkJobRead',
+  MarkJobUnread = 'NotificationHubJobUnread',
+  SyncAllJobs = 'NotificationHubSyncAll',
+  UpdateJobState = 'NotificationHubUpdateJobState',
+}

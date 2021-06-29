@@ -30,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Hubs
             var client = this.hubContext.Clients.User(job.ObjectId);
             if (client != null)
             {
-                await client.SendAsync("JobChange", job).ConfigureAwait(false);
+                await client.SendAsync(NotificationHubEvents.UpdateJobState, job).ConfigureAwait(false);
             }
         }
     }
