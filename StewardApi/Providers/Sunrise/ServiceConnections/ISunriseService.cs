@@ -31,6 +31,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         Task<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput> GetLiveOpsUserDataByGamerTagAsync(string gamertag);
 
         /// <summary>
+        ///     Get user IDs.
+        /// </summary>
+        Task<UserManagementService.GetUserIdsOutput> GetUserIds(ForzaPlayerLookupParameters[] parameters);
+
+        /// <summary>
         ///     Gets the LSP user groups.
         /// </summary>
         Task<UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(int startIndex, int maxResults);

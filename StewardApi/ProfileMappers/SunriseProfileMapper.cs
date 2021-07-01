@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Forza.UserInventory.FH4.Generated;
 using Forza.WebServices.RareCarShopTransactionObjects.FH4.Generated;
@@ -89,6 +90,27 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid))
                 .ForMember(dest => dest.Error, opt => opt.MapFrom(
                     src => src.Success ? null : new StewardError(StewardErrorCode.ServicesFailure, $"LSP failed to message player with XUID: {src.Xuid}")));
+            this.CreateMap<LiveOpsContracts.ForzaUserAdminComment, SunriseProfileNote>()
+                .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(source => source.date))
+                .ForMember(dest => dest.Author, opt => opt.MapFrom(source => source.author))
+                .ForMember(dest => dest.Text, opt => opt.MapFrom(source => source.text));
+            this.CreateMap<IdentityQueryAlpha, LiveOpsContracts.ForzaPlayerLookupParameters>()
+                .ForMember(dest => dest.UserIDType, opt => opt.MapFrom(src => src.Xuid.HasValue ? LiveOpsContracts.ForzaUserIdType.Xuid : LiveOpsContracts.ForzaUserIdType.Gamertag))
+                .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.Xuid.HasValue ? src.Xuid.ToString() : src.Gamertag));
+            this.CreateMap<LiveOpsContracts.ForzaPlayerLookupParameters, IdentityQueryAlpha>()
+                .ForMember(dest => dest.Xuid, opt => opt.MapFrom(
+                    src => src.UserIDType == LiveOpsContracts.ForzaUserIdType.Xuid ? (ulong?)Convert.ToUInt64(src.UserID, CultureInfo.InvariantCulture) : null))
+                .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(
+                    src => src.UserIDType == LiveOpsContracts.ForzaUserIdType.Gamertag ? src.UserID : null));
+            this.CreateMap<LiveOpsContracts.ForzaPlayerLookupResult, IdentityResultAlpha>()
+                .ForMember(dest => dest.Query, opt => opt.MapFrom(src => src.Request))
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(
+                    src => src.PlayerExists ? null :
+                        new NotFoundStewardError(
+                            $"No player found for {src.Request.UserIDType}: {src.Request.UserID}.")))
+                .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.PlayerExists ? src.Gamertag : null))
+                .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.PlayerExists ? src.Xuid : 0))
+                .ReverseMap();
 
             this.CreateMap<AuctionFilters, LiveOpsContracts.ForzaAuctionFilters>()
                 .ForMember(dest => dest.IncludeThumbnail, opt => opt.MapFrom(source => true))

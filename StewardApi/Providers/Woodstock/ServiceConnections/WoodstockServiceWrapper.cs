@@ -82,6 +82,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             return await userLookupService.GetLiveOpsUserDataByGamerTag(gamertag).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
+        public async Task<UserManagementService.GetUserIdsOutput> GetUserIds(ForzaPlayerLookupParameters[] parameters)
+        {
+            var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+
+            return await userService.GetUserIds(parameters.Length, parameters).ConfigureAwait(false);
+        }
+
         /// <inheritdoc />
         public async Task<LiveOpsService.GetProfileSummaryOutput> GetProfileSummaryAsync(ulong xuid)
         {

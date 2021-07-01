@@ -92,6 +92,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             Assert.IsNotNull(result);
             Assert.IsNotNull(result[0].Error);
             Assert.IsTrue(result[0].Xuid == default);
+            Assert.AreEqual(result[0].Query.Xuid, TestConstants.InvalidXuid);
             Assert.IsTrue(string.IsNullOrWhiteSpace(result[0].Gamertag));
         }
 
@@ -113,6 +114,20 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task GetPlayerIdentityByGamertag_InvalidGamertag()
         {
             var query = new IdentityQueryAlpha { Gamertag = TestConstants.InvalidGamertag };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result[0].Error);
+            Assert.IsTrue(result[0].Xuid == default);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(result[0].Gamertag));
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetPlayerIdentityNullXuidAndGamertag()
+        {
+            var query = new IdentityQueryAlpha { Gamertag = null, Xuid = null};
 
             var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryAlpha> { query }).ConfigureAwait(false);
 

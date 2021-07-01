@@ -1265,8 +1265,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
                 this.KustoProvider.GetMasterInventoryList(Arg.Any<string>()).Returns(new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } });
-                this.WoodstockPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
-                this.WoodstockPlayerDetailsProvider.GetPlayerIdentityAsync(Arg.Any<IdentityQueryAlpha>()).Returns(Fixture.Create<IdentityResultAlpha>());
+                this.WoodstockPlayerDetailsProvider.GetPlayerIdentitiesAsync(Arg.Any<IList<IdentityQueryAlpha>>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
                 this.WoodstockPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
                 this.WoodstockPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
                 this.WoodstockPlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ConsoleDetails>>());

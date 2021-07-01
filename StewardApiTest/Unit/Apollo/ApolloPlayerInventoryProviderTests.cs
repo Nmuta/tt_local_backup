@@ -259,9 +259,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public ApolloPlayerInventoryProvider Build() => new ApolloPlayerInventoryProvider(
-                                                                                              this.ApolloService,
-                                                                                              this.GiftHistoryProvider,
-                                                                                              this.Mapper);
+                this.ApolloService,
+                this.GiftHistoryProvider,
+                this.Mapper);
         }
     }
 }

@@ -96,13 +96,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var query = Fixture.Create<IdentityQueryAlpha>();
+            var queries = Fixture.Create<IList<IdentityQueryAlpha>>();
 
             // Act.
-            async Task<IdentityResultAlpha> Action() => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+            async Task<IList<IdentityResultAlpha>> Action() => await provider.GetPlayerIdentitiesAsync(queries).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<IdentityResultAlpha>();
+            Action().Result.Should().BeOfType<List<IdentityResultAlpha>>();
         }
 
         [TestMethod]
@@ -113,10 +113,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var provider = new Dependencies().Build();
 
             // Act.
-            Func<Task<IdentityResultAlpha>> action = async () => await provider.GetPlayerIdentityAsync(null).ConfigureAwait(false);
+            Func<Task<IList<IdentityResultAlpha>>> action = async () => await provider.GetPlayerIdentitiesAsync(null).ConfigureAwait(false);
 
             // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "query"));
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "queries"));
         }
 
         [TestMethod]
@@ -546,6 +546,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
         {
             public Dependencies()
             {
+                this.WoodstockService.GetUserIds(Arg.Any<ForzaPlayerLookupParameters[]>()).Returns(Fixture.Create<GetUserIdsOutput>());
                 this.WoodstockService.GetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
                 this.WoodstockService.GetUserDataByGamertagAsync("gamerT1").Returns(GenerateGetLiveOpsUserDataByGamerTagOutPut());
                 this.WoodstockService.GetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetLiveOpsUserDataByXuidOutput>());
@@ -575,6 +576,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
                 this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
                 this.RefreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(Arg.Any<string>()).Returns((IList<BackstagePassUpdate>)null);
+                this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
             }
 
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();

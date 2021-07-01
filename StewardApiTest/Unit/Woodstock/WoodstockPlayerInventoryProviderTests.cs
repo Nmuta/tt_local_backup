@@ -303,9 +303,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             public IWoodstockGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IWoodstockGiftHistoryProvider>();
 
             public WoodstockPlayerInventoryProvider Build() => new WoodstockPlayerInventoryProvider(
-                                                                                            this.WoodstockService,
-                                                                                            this.Mapper,
-                                                                                            this.GiftHistoryProvider);
+                this.WoodstockService,
+                this.Mapper,
+                this.GiftHistoryProvider);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -157,34 +156,49 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
+            identityQueries.ShouldNotBeNull(nameof(identityQueries));
+
             string MakeKey(IdentityQueryAlpha identityQuery)
             {
                 return $"sunrise:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
             }
 
-            var results = new List<IdentityResultAlpha>();
-            var queries = new List<Task<IdentityResultAlpha>>();
+            var invalidResults = identityQueries.Where(query => !query.IsValid())
+                .Select(query => new IdentityResultAlpha
+                {
+                    Xuid = default(ulong),
+                    Gamertag = string.Empty,
+                    Error = new InvalidArgumentsStewardError("Gamertag or Xuid must be provided."),
+                    Query = query,
+                });
 
-            foreach (var query in identityQueries)
+            var validQueries = identityQueries.Where(query => query.IsValid());
+
+            var cachedResults = validQueries.Select(v => this.memoryCache.Get<IdentityResultAlpha>(MakeKey(v)));
+            if (cachedResults.All(result => result != null))
             {
-                queries.Add(
-                    this.memoryCache.GetOrCreateAsync(
-                        MakeKey(query),
+                return this.Ok(cachedResults.Concat(invalidResults).ToList());
+            }
+
+            var results = await this.sunrisePlayerDetailsProvider.GetPlayerIdentitiesAsync(validQueries.ToList()).ConfigureAwait(true);
+
+            foreach (var result in results)
+            {
+                if (result.Error == null)
+                {
+                    this.memoryCache.GetOrCreate(
+                        MakeKey(result.Query),
                         (entry) =>
                         {
-                            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
-                            return this.RetrieveIdentity(query);
-                        }));
+                            entry.AbsoluteExpirationRelativeToNow =
+                                TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
+                            return result;
+                        }
+                    );
+                }
             }
 
-            await Task.WhenAll(queries).ConfigureAwait(true);
-
-            foreach (var query in queries)
-            {
-                results.Add(await query.ConfigureAwait(true));
-            }
-
-            return this.Ok(results);
+            return this.Ok(results.Concat(invalidResults).ToList());
         }
 
         /// <summary>
@@ -990,36 +1004,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             banHistories.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
 
             return banHistories;
-        }
-
-        private async Task<IdentityResultAlpha> RetrieveIdentity(IdentityQueryAlpha query)
-        {
-            try
-            {
-                return await this.sunrisePlayerDetailsProvider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                if (ex is ArgumentException)
-                {
-                    return new IdentityResultAlpha
-                    {
-                        Error = new InvalidArgumentsStewardError(ex.Message, ex),
-                        Query = query
-                    };
-                }
-
-                if (ex is NotFoundStewardException)
-                {
-                    return new IdentityResultAlpha
-                    {
-                        Error = new NotFoundStewardError(ex.Message, ex),
-                        Query = query
-                    };
-                }
-
-                throw;
-            }
         }
 
         /// <summary>

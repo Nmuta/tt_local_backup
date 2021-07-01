@@ -73,13 +73,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var query = Fixture.Create<IdentityQueryAlpha>();
+            var query = Fixture.Create<IList<IdentityQueryAlpha>>();
 
             // Act.
-            async Task<IdentityResultAlpha> Action() => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+            async Task<IList<IdentityResultAlpha>> Action() => await provider.GetPlayerIdentitiesAsync(query).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<IdentityResultAlpha>();
+            Action().Result.Should().BeOfType<List<IdentityResultAlpha>>();
         }
 
         [TestMethod]
@@ -90,10 +90,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var provider = new Dependencies().Build();
 
             // Act.
-            Func<Task<IdentityResultAlpha>> action = async () => await provider.GetPlayerIdentityAsync(null).ConfigureAwait(false);
+            Func<Task<IList<IdentityResultAlpha>>> action = async () => await provider.GetPlayerIdentitiesAsync(null).ConfigureAwait(false);
 
             // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "query"));
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "queries"));
         }
 
         [TestMethod]
@@ -476,6 +476,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             public Dependencies()
             {
+                this.SteelheadUserService.GetUserIds(Arg.Any<ForzaPlayerLookupParameters[]>()).Returns(Fixture.Create<GetUserIdsOutput>());
                 this.SteelheadUserService.GetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
                 this.SteelheadUserService.GetUserDataByGamertagAsync("gamerT1").Returns(GenerateGetLiveOpsUserDataByGamerTagOutPut());
                 this.SteelheadUserService.GetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetLiveOpsUserDataByXuidOutput>());
@@ -497,6 +498,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SteelheadPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<Notification>>(Arg.Any<LiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
                 this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
+                this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
             }
 
             public ISteelheadService SteelheadUserService { get; set; } = Substitute.For<ISteelheadService>();
@@ -506,9 +508,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
             public SteelheadPlayerDetailsProvider Build() => new SteelheadPlayerDetailsProvider(
-                                                                                            this.SteelheadUserService,
-                                                                                            this.BanHistoryProvider,
-                                                                                            this.Mapper);
+                this.SteelheadUserService,
+                this.BanHistoryProvider,
+                this.Mapper);
 
             private static GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
             {

@@ -90,13 +90,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var query = Fixture.Create<IdentityQueryAlpha>();
+            var query = Fixture.Create<IList<IdentityQueryAlpha>>();
 
             // Act.
-            async Task<IdentityResultAlpha> Action() => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+            async Task<IList<IdentityResultAlpha>> Action() => await provider.GetPlayerIdentitiesAsync(query).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<IdentityResultAlpha>();
+            Action().Result.Should().BeOfType<List<IdentityResultAlpha>>();
         }
 
         [TestMethod]
@@ -107,10 +107,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
 
             // Act.
-            Func<Task<IdentityResultAlpha>> action = async () => await provider.GetPlayerIdentityAsync(null).ConfigureAwait(false);
+            Func<Task<IList<IdentityResultAlpha>>> action = async () => await provider.GetPlayerIdentitiesAsync(null).ConfigureAwait(false);
 
             // Assert.
-            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "query"));
+            action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "queries"));
         }
 
         [TestMethod]
@@ -629,6 +629,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetProfileSummaryOutput>());
                 this.SunriseService.GetProfileNotesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetAdminCommentsOutput>());
                 this.SunriseService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
+                this.SunriseService.GetUserIds(Arg.Any<LiveOpsContracts.ForzaPlayerLookupParameters[]>()).Returns(Fixture.Create<GetUserIdsOutput>());
                 this.SunriseService.BanUsersAsync(Arg.Any<LiveOpsContracts.ForzaUserBanParameters[]>(), Arg.Any<int>()).Returns(GenerateBanUsersOutput());
                 this.SunriseService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.SunriseService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(GenerateGetUserBanHistoryOutput());
@@ -653,6 +654,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper.Map<IList<PlayerAuction>>(Arg.Any<LiveOpsContracts.ForzaAuctionWithFileData[]>()).Returns(Fixture.Create<IList<PlayerAuction>>());
                 this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
                 this.RefreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(Arg.Any<string>()).Returns((IList<BackstagePassUpdate>)null);
+                this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<LiveOpsContracts.ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
+                this.Mapper.Map<IList<SunriseProfileNote>>(Arg.Any<LiveOpsContracts.ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<SunriseProfileNote>>());
             }
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();
@@ -664,10 +667,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public IRefreshableCacheStore RefreshableCacheStore { get; set; } = Substitute.For<IRefreshableCacheStore>();
 
             public SunrisePlayerDetailsProvider Build() => new SunrisePlayerDetailsProvider(
-                                                                                            this.SunriseService,
-                                                                                            this.GiftHistoryProvider,
-                                                                                            this.Mapper,
-                                                                                            this.RefreshableCacheStore);
+                this.SunriseService,
+                this.GiftHistoryProvider,
+                this.Mapper,
+                this.RefreshableCacheStore);
 
             private static GetUserBanHistoryOutput GenerateGetUserBanHistoryOutput()
             {

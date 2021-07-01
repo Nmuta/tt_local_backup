@@ -283,9 +283,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             public ISteelheadGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<ISteelheadGiftHistoryProvider>();
 
             public SteelheadPlayerInventoryProvider Build() => new SteelheadPlayerInventoryProvider(
-                                                                                            this.SteelheadService,
-                                                                                            this.Mapper,
-                                                                                            this.GiftHistoryProvider);
+                this.SteelheadService,
+                this.Mapper,
+                this.GiftHistoryProvider);
         }
     }
 }

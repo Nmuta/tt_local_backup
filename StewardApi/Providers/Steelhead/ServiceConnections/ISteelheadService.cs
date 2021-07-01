@@ -26,6 +26,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         Task<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput> GetUserDataByGamertagAsync(string gamertag);
 
         /// <summary>
+        ///     Get user IDs.
+        /// </summary>
+        Task<UserManagementService.GetUserIdsOutput> GetUserIds(ForzaPlayerLookupParameters[] parameters);
+
+        /// <summary>
         ///     Get consoles.
         /// </summary>
         Task<UserManagementService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults);

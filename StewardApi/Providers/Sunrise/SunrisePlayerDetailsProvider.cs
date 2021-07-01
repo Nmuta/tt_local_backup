@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Forza.LiveOps.FH4.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
@@ -52,45 +53,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IdentityResultAlpha> GetPlayerIdentityAsync(IdentityQueryAlpha query)
+        public async Task<IList<IdentityResultAlpha>> GetPlayerIdentitiesAsync(IList<IdentityQueryAlpha> queries)
         {
-            query.ShouldNotBeNull(nameof(query));
+            queries.ShouldNotBeNull(nameof(queries));
 
             try
             {
-                var result = new SunrisePlayerDetails();
+                var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(queries);
 
-                if (!query.Xuid.HasValue && string.IsNullOrWhiteSpace(query.Gamertag))
-                {
-                    throw new ArgumentException("Gamertag or Xuid must be provided.");
-                }
-                else if (query.Xuid.HasValue)
-                {
-                    var playerDetails = await this.GetPlayerDetailsAsync(query.Xuid.Value).ConfigureAwait(false);
+                var result = await this.sunriseService.GetUserIds(convertedQueries).ConfigureAwait(false);
 
-                    result = playerDetails ??
-                             throw new NotFoundStewardException($"No profile found for XUID: {query.Xuid}.");
-                }
-                else if (!string.IsNullOrWhiteSpace(query.Gamertag))
-                {
-                    var playerDetails = await this.GetPlayerDetailsAsync(query.Gamertag).ConfigureAwait(false);
-
-                    result = playerDetails ??
-                             throw new NotFoundStewardException($"No profile found for Gamertag: {query.Gamertag}.");
-                }
-
-                var identity = this.mapper.Map<IdentityResultAlpha>(result);
-                identity.Query = query;
-
-                return identity;
+                return this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
             }
             catch (Exception ex)
             {
-                if (ex is StewardBaseException)
-                {
-                    throw;
-                }
-
                 throw new UnknownFailureStewardException("Identity lookup has failed for an unknown reason.", ex);
             }
         }

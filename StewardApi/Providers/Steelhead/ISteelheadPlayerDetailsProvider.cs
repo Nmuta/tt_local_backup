@@ -13,9 +13,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
     public interface ISteelheadPlayerDetailsProvider
     {
         /// <summary>
-        ///     Get player identity.
+        ///     Get player identities.
         /// </summary>
-        Task<IdentityResultAlpha> GetPlayerIdentityAsync(IdentityQueryAlpha query);
+        Task<IList<IdentityResultAlpha>> GetPlayerIdentitiesAsync(IList<IdentityQueryAlpha> queries);
 
         /// <summary>
         ///     Get player details.

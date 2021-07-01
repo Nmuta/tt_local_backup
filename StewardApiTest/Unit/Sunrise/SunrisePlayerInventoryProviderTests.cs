@@ -321,9 +321,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public ISunriseGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<ISunriseGiftHistoryProvider>();
 
             public SunrisePlayerInventoryProvider Build() => new SunrisePlayerInventoryProvider(
-                                                                                            this.SunriseService,
-                                                                                            this.Mapper,
-                                                                                            this.GiftHistoryProvider);
+                this.SunriseService,
+                this.Mapper,
+                this.GiftHistoryProvider);
         }
     }
 }

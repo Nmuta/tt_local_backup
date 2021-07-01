@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using AutoMapper;
 using Forza.LiveOps.FH5.Generated;
 using Forza.UserInventory.FH5.Generated;
@@ -107,6 +108,25 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Bids, opt => opt.MapFrom(source => source.Auction.BidCount))
                 .ForMember(dest => dest.TotalReports, opt => opt.MapFrom(source => source.Auction.UserReportTotal))
                 .ForMember(dest => dest.TimeFlagged, opt => opt.MapFrom(source => source.Auction.TimeFlagged != default(DateTime) ? source.Auction.TimeFlagged : (DateTime?)null));
+            this.CreateMap<IdentityQueryAlpha, ForzaPlayerLookupParameters>()
+                .ForMember(dest => dest.UserIDType, opt => opt.MapFrom(
+                    src => src.Xuid.HasValue ? ForzaUserIdType.Xuid : ForzaUserIdType.Gamertag))
+                .ForMember(dest => dest.UserID, opt => opt.MapFrom(
+                    src => src.Xuid.HasValue ? src.Xuid.ToString() : src.Gamertag));
+            this.CreateMap<ForzaPlayerLookupParameters, IdentityQueryAlpha>()
+                .ForMember(dest => dest.Xuid, opt => opt.MapFrom(
+                    src => src.UserIDType == ForzaUserIdType.Xuid ? (ulong?)Convert.ToUInt64(src.UserID, CultureInfo.InvariantCulture) : null))
+                .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(
+                    src => src.UserIDType == ForzaUserIdType.Gamertag ? src.UserID : null));
+            this.CreateMap<ForzaPlayerLookupResult, IdentityResultAlpha>()
+                .ForMember(dest => dest.Query, opt => opt.MapFrom(src => src.Request))
+                .ForMember(dest => dest.Error, opt => opt.MapFrom(
+                    src => src.PlayerExists ? null :
+                        new NotFoundStewardError(
+                            $"No player found for {src.Request.UserIDType}: {src.Request.UserID}.")))
+                .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.PlayerExists ? src.Gamertag : null))
+                .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.PlayerExists ? src.Xuid : 0))
+                .ReverseMap();
         }
     }
 }
