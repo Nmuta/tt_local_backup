@@ -25,6 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
         private readonly ISunriseService sunriseService;
         private readonly IMapper mapper;
+        private readonly IRefreshableCacheStore refreshableCacheStore;
         private readonly ISunriseGiftHistoryProvider giftHistoryProvider;
 
         /// <summary>
@@ -33,14 +34,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         public SunrisePlayerInventoryProvider(
             ISunriseService sunriseService,
             IMapper mapper,
+            IRefreshableCacheStore refreshableCacheStore,
             ISunriseGiftHistoryProvider giftHistoryProvider)
         {
             sunriseService.ShouldNotBeNull(nameof(sunriseService));
             mapper.ShouldNotBeNull(nameof(mapper));
+            refreshableCacheStore.ShouldNotBeNull(nameof(refreshableCacheStore));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
 
             this.sunriseService = sunriseService;
             this.mapper = mapper;
+            this.refreshableCacheStore = refreshableCacheStore;
             this.giftHistoryProvider = giftHistoryProvider;
         }
 
@@ -259,6 +263,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
         private async Task UpdateBackstagePasses(ulong xuid, int balanceDelta)
         {
+            const string BackstagePassUpdatesIdTemplate = "Sunrise|BackstagePassUpdates|{0}";
+
             if (balanceDelta <= 0)
             {
                 return;
@@ -269,6 +275,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             var newBalance = (uint) Math.Max(0, currentBalance + balanceDelta);
 
             await this.sunriseService.SetTokenBalanceAsync(xuid, newBalance).ConfigureAwait(false);
+
+            this.refreshableCacheStore.ClearItem(string.Format(CultureInfo.InvariantCulture, BackstagePassUpdatesIdTemplate, xuid));
         }
 
         private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(SunriseMasterInventory giftInventory)

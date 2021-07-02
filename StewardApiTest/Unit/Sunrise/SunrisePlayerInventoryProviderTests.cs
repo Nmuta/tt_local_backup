@@ -8,6 +8,7 @@ using Forza.LiveOps.FH4.Generated;
 using Forza.UserInventory.FH4.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
@@ -318,11 +319,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
+            public IRefreshableCacheStore RefreshableCacheStore { get; set; } = Substitute.For<IRefreshableCacheStore>();
+
             public ISunriseGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<ISunriseGiftHistoryProvider>();
 
             public SunrisePlayerInventoryProvider Build() => new SunrisePlayerInventoryProvider(
                 this.SunriseService,
                 this.Mapper,
+                this.RefreshableCacheStore,
                 this.GiftHistoryProvider);
         }
     }
