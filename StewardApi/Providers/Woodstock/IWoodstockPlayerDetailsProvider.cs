@@ -13,62 +13,62 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
     public interface IWoodstockPlayerDetailsProvider
     {
         /// <summary>
-        ///     Get player identities.
+        ///     Gets player identities.
         /// </summary>
         Task<IList<IdentityResultAlpha>> GetPlayerIdentitiesAsync(IList<IdentityQueryAlpha> queries);
 
         /// <summary>
-        ///     Get player details.
+        ///     Gets player details.
         /// </summary>
         Task<WoodstockPlayerDetails> GetPlayerDetailsAsync(string gamertag);
 
         /// <summary>
-        ///     Get player details.
+        ///     Gets player details.
         /// </summary>
         Task<WoodstockPlayerDetails> GetPlayerDetailsAsync(ulong xuid);
 
         /// <summary>
-        ///     Ensure player exists.
+        ///     Ensures player exists.
         /// </summary>
         Task<bool> EnsurePlayerExistsAsync(ulong xuid);
 
         /// <summary>
-        ///     Ensure player exists.
+        ///     Ensures player exists.
         /// </summary>
         Task<bool> EnsurePlayerExistsAsync(string gamertag);
 
         /// <summary>
-        ///     Get consoles.
+        ///     Gets consoles.
         /// </summary>
         Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults);
 
         /// <summary>
-        ///     Set console ban status.
+        ///     Sets console ban status.
         /// </summary>
         Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned);
 
         /// <summary>
-        ///     Get shared console users.
+        ///     Gets shared console users.
         /// </summary>
         Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
-        ///     Get LSP groups.
+        ///     Gets LSP groups.
         /// </summary>
         Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults);
 
         /// <summary>
-        ///     Get user flags.
+        ///     Gets user flags.
         /// </summary>
         Task<WoodstockUserFlags> GetUserFlagsAsync(ulong xuid);
 
         /// <summary>
-        ///     Set user flags.
+        ///     Sets user flags.
         /// </summary>
         Task SetUserFlagsAsync(ulong xuid, WoodstockUserFlags userFlags);
 
         /// <summary>
-        ///     Get profile summary.
+        ///     Gets profile summary.
         /// </summary>
         Task<ProfileSummary> GetProfileSummaryAsync(ulong xuid);
 
@@ -78,22 +78,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
-        ///     Get backstage pass updates.
+        ///     Gets backstage pass updates.
         /// </summary>
         Task<IList<BackstagePassUpdate>> GetBackstagePassUpdatesAsync(ulong xuid);
 
         /// <summary>
-        ///     Ban users.
+        ///     Bans users.
         /// </summary>
         Task<IList<BanResult>> BanUsersAsync(IList<WoodstockBanParameters> banParameters, string requesterObjectId);
 
         /// <summary>
-        ///     Get ban summaries.
+        ///     Gets ban summaries.
         /// </summary>
         Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids);
 
         /// <summary>
-        ///     Get user ban history.
+        ///     Gets user ban history.
         /// </summary>
         Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid);
 
@@ -103,17 +103,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, AuctionFilters filters);
 
         /// <summary>
-        ///     Get player notifications.
+        ///     Gets player notifications.
         /// </summary>
         Task<IList<Notification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults);
 
         /// <summary>
-        ///     Send community message.
+        ///     Sends community message.
         /// </summary>
         Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc);
 
         /// <summary>
-        ///     Send community message.
+        ///     Sends community message.
         /// </summary>
         Task<MessageSendResult<int>> SendCommunityMessageAsync(int groupId, string message, DateTime expireTimeUtc);
     }

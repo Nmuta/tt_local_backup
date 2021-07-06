@@ -3,7 +3,7 @@
 namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
 {
     /// <summary>
-    /// This class contains information about the tenant and cluster of a pipeline.
+    ///     This class contains information about the tenant and cluster of a pipeline.
     /// </summary>
     public sealed class ConfigQualifier
     {

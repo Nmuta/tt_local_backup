@@ -37,7 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Get a pipeline.
+        ///     Gets a pipeline.
         /// </summary>
         [HttpGet("pipeline")]
         [SwaggerResponse(200, type: typeof(IList<ObligationPipelinePartial>))]
@@ -49,7 +49,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Delete a pipeline.
+        ///     Deletes a pipeline.
         /// </summary>
         [HttpDelete("pipeline/{pipelineName}")]
         [SwaggerResponse(200, type: typeof(string), description: "work_item_id")]
@@ -70,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Get a pipeline.
+        ///     Gets a pipeline.
         /// </summary>
         [HttpGet("pipeline/{pipelineName}")]
         [SwaggerResponse(200, type: typeof(SimplifiedObligationPipeline))]
@@ -94,7 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Force update a pipeline.
+        ///     Force updates a pipeline.
         /// </summary>
         [HttpPost("pipeline")]
         [SwaggerResponse(201, type: typeof(string), description: "work_item_id")]
@@ -106,7 +106,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Create a pipeline.
+        ///     Creates a pipeline.
         /// </summary>
         [HttpPost("pipeline/new")]
         [SwaggerResponse(201, type: typeof(string), description: "work_item_id")]

@@ -46,7 +46,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         private readonly Client forzaClient;
 
         /// <summary>
-        ///      Initializes a new instance of the <see cref="SunriseServiceWrapper"/> class.
+        ///     Initializes a new instance of the <see cref="SunriseServiceWrapper"/> class.
         /// </summary>
         public SunriseServiceWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider, IRefreshableCacheStore refreshableCacheStore, IStsClient stsClient)
         {

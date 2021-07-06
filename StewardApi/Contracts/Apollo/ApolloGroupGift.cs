@@ -3,7 +3,7 @@
 namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
 {
     /// <summary>
-    ///     Represents a Apollo group gift.
+    ///     Represents an Apollo group gift.
     /// </summary>
     public sealed class ApolloGroupGift
     {

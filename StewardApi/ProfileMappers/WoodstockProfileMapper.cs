@@ -16,7 +16,7 @@ using WebServicesContracts = Forza.WebServices.FH5.Generated;
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
     /// <summary>
-    ///    Mapper for Steelhead DTOs.
+    ///     Mapper for Steelhead DTOs.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
     public sealed class WoodstockProfileMapper : Profile

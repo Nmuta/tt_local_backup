@@ -81,10 +81,8 @@ namespace Turn10.LiveOps.StewardApi
         public void ConfigureServices(IServiceCollection services)
         {
             // If you are setting "redacted due to PII" when debugging certificates/dates/identities, enable this.
-            ////IdentityModelEventSource.ShowPII = true;
-
-            services
-                .AddMvc(options => options.Filters.Add(new ServiceExceptionFilter()));
+            // IdentityModelEventSource.ShowPII = true;
+            services.AddMvc(options => options.Filters.Add(new ServiceExceptionFilter()));
 
             services.AddMemoryCache();
 

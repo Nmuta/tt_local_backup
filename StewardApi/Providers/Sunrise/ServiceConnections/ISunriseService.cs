@@ -21,7 +21,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
     public interface ISunriseService
     {
         /// <summary>
-        ///      Gets live ops user data by xuid.
+        ///     Gets live ops user data by xuid.
         /// </summary>
         Task<LiveOpsService.GetLiveOpsUserDataByXuidOutput> GetLiveOpsUserDataByXuidAsync(ulong xuid);
 
@@ -56,7 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         Task<UserManagementService.GetAdminCommentsOutput> GetProfileNotesAsync(ulong xuid, int maxResults);
 
         /// <summary>
-        ///     Add a note to a user's profile.
+        ///     Adds a note to a user's profile.
         /// </summary>
         Task AddProfileNote(ulong xuid, string text, string author);
 
@@ -76,42 +76,42 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         Task<LiveOpsService.GetProfileSummaryOutput> GetProfileSummaryAsync(ulong xuid);
 
         /// <summary>
-        ///    Set is under review flag.
+        ///     Sets is under review flag.
         /// </summary>
         Task SetIsUnderReviewAsync(ulong xuid, bool isUnderReview);
 
         /// <summary>
-        ///    Get the under review flag.
+        ///     Gets the under review flag.
         /// </summary>
         Task<UserManagementService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(ulong xuid);
 
         /// <summary>
-        ///    Get the user group memberships.
+        ///     Gets the user group memberships.
         /// </summary>
         Task<UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(ulong xuid, int[] groupIdFilter, int maxResults);
 
         /// <summary>
-        ///    Add to user groups.
+        ///     Adds to user groups.
         /// </summary>
         Task AddToUserGroupsAsync(ulong xuid, int[] groupIds);
 
         /// <summary>
-        ///    Remove from user groups.
+        ///     Removes from user groups.
         /// </summary>
         Task RemoveFromUserGroupsAsync(ulong xuid, int[] groupIds);
 
         /// <summary>
-        ///      Gets user profiles using admin endpoint.
+        ///     Gets user profiles using admin endpoint.
         /// </summary>
         Task<UserInventoryService.GetAdminUserProfilesOutput> GetAdminUserProfilesAsync(ulong xuid, uint maxProfiles);
 
         /// <summary>
-        ///      Gets user inventory using admin endpoint.
+        ///     Gets user inventory using admin endpoint.
         /// </summary>
         Task<UserInventoryService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(ulong xuid);
 
         /// <summary>
-        ///      Gets user inventory by profileID using admin endpoint.
+        ///     Gets user inventory by profileID using admin endpoint.
         /// </summary>
         Task<UserInventoryService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileIdAsync(int profileId);
 
@@ -121,12 +121,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         public Task<NotificationsService.LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUserAsync(ulong xuid, int maxResults);
 
         /// <summary>
-        ///     Send message to multiple xuids.
+        ///     Sends message to multiple xuids.
         /// </summary>
         Task<NotificationsService.SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc);
 
         /// <summary>
-        ///     Send group message.
+        ///     Sends group message.
         /// </summary>
         public Task SendGroupMessageNotificationAsync(int groupId, string message, DateTime expireTimeUtc);
 
@@ -136,47 +136,47 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         Task<GiftingService.AdminGetSupportedGiftTypesOutput> AdminGetSupportedGiftTypesAsync(int maxResults);
 
         /// <summary>
-        ///      Sends item gift using admin endpoint.
+        ///     Sends item gift using admin endpoint.
         /// </summary>
         Task AdminSendItemGiftAsync(ulong recipientXuid, InventoryItemType itemType, int itemValue);
 
         /// <summary>
-        ///      Sends gift to LSP group.
+        ///     Sends gift to LSP group.
         /// </summary>
         Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue);
 
         /// <summary>
-        ///    Bans users.
+        ///     Bans users.
         /// </summary>
         Task<UserManagementService.BanUsersOutput> BanUsersAsync(ForzaUserBanParameters[] banParameters, int xuidCount);
 
         /// <summary>
-        ///    Get user ban history.
+        ///     Gets user ban history.
         /// </summary>
         Task<UserManagementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
-        ///    Get user ban summaries.
+        ///     Gets user ban summaries.
         /// </summary>
         Task<UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(ulong[] xuids, int xuidCount);
 
         /// <summary>
-        ///    Get player auctions.
+        ///     Gets player auctions.
         /// </summary>
         Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(ForzaAuctionFilters filters);
 
         /// <summary>
-        ///     Get token balance.
+        ///     Gets token balance.
         /// </summary>
         Task<RareCarShopService.AdminGetTokenBalanceOutput> GetTokenBalanceAsync(ulong xuid);
 
         /// <summary>
-        ///     Set token balance.
+        ///     Sets token balance.
         /// </summary>
         Task SetTokenBalanceAsync(ulong xuid, uint newBalance);
 
         /// <summary>
-        ///     Get transactions.
+        ///     Gets token transactions.
         /// </summary>
         Task<RareCarShopService.AdminGetTransactionsOutput> GetTokenTransactionsAsync(ulong xuid);
     }

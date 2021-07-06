@@ -11,22 +11,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
     public interface IGravityPlayerInventoryProvider
     {
         /// <summary>
-        ///     Get player inventory.
+        ///     Gets player inventory.
         /// </summary>
         Task<GravityPlayerInventory> GetPlayerInventoryAsync(ulong xuid);
 
         /// <summary>
-        ///     Get player inventory.
+        ///     Gets player inventory.
         /// </summary>
         Task<GravityPlayerInventory> GetPlayerInventoryAsync(string t10Id);
 
         /// <summary>
-        ///     Get player inventory by profile ID.
+        ///     Gets player inventory by profile ID.
         /// </summary>
         Task<GravityPlayerInventory> GetPlayerInventoryAsync(ulong xuid, string profileId);
 
         /// <summary>
-        ///     Get player inventory by profile ID.
+        ///     Gets player inventory by profile ID.
         /// </summary>
         Task<GravityPlayerInventory> GetPlayerInventoryAsync(string t10Id, string profileId);
 

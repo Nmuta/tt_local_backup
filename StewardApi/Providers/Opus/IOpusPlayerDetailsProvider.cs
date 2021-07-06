@@ -10,22 +10,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
     public interface IOpusPlayerDetailsProvider
     {
         /// <summary>
-        ///     Get player identity.
+        ///     Gets player identity.
         /// </summary>
         Task<IdentityResultAlpha> GetPlayerIdentityAsync(IdentityQueryAlpha query);
 
         /// <summary>
-        ///     Get player details.
+        ///     Gets player details.
         /// </summary>
         Task<OpusPlayerDetails> GetPlayerDetailsAsync(string gamertag);
 
         /// <summary>
-        ///     Get player details.
+        ///     Gets player details.
         /// </summary>
         Task<OpusPlayerDetails> GetPlayerDetailsAsync(ulong xuid);
 
         /// <summary>
-        ///     Ensure player exists.
+        ///     Ensures a player exists.
         /// </summary>
         Task<bool> EnsurePlayerExistsAsync(ulong xuid);
     }

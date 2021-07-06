@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         public DateTime StartTimeUtc { get; set; }
 
         /// <summary>
-        ///   Gets or sets the expiry time.
+        ///     Gets or sets the expiry time.
         /// </summary>
         public DateTime ExpireTimeUtc { get; set; }
 

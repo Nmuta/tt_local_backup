@@ -44,7 +44,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         private readonly Client forzaClient;
 
         /// <summary>
-        ///      Initializes a new instance of the <see cref="WoodstockServiceWrapper"/> class.
+        ///     Initializes a new instance of the <see cref="WoodstockServiceWrapper"/> class.
         /// </summary>
         public WoodstockServiceWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider, IRefreshableCacheStore refreshableCacheStore, IStsClient stsClient)
         {

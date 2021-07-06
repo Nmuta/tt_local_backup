@@ -43,7 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         private readonly Client forzaClient;
 
         /// <summary>
-        ///      Initializes a new instance of the <see cref="SteelheadServiceWrapper"/> class.
+        ///     Initializes a new instance of the <see cref="SteelheadServiceWrapper"/> class.
         /// </summary>
         public SteelheadServiceWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider, IRefreshableCacheStore refreshableCacheStore, IStsClient stsClient)
         {

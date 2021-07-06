@@ -34,7 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         private readonly Client forzaClient;
 
         /// <summary>
-        ///      Initializes a new instance of the <see cref="ApolloServiceWrapper"/> class.
+        ///     Initializes a new instance of the <see cref="ApolloServiceWrapper"/> class.
         /// </summary>
         public ApolloServiceWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider)
         {

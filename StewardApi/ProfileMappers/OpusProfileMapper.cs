@@ -8,12 +8,12 @@ using Turn10.LiveOps.StewardApi.Contracts.Opus;
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
     /// <summary>
-    ///      Mapper for Opus DTO's.
+    ///     Mapper for Opus DTO's.
     /// </summary>
     public sealed class OpusProfileMapper : Profile
     {
         /// <summary>
-        ///      Initializes a new instance of the <see cref="OpusProfileMapper"/> class.
+        ///     Initializes a new instance of the <see cref="OpusProfileMapper"/> class.
         /// </summary>
         public OpusProfileMapper()
         {

@@ -11,32 +11,32 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
     public interface ISteelheadPlayerInventoryProvider
     {
         /// <summary>
-        ///     Get player inventory.
+        ///     Gets player inventory.
         /// </summary>
         Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(ulong xuid);
 
         /// <summary>
-        ///     Get player inventory.
+        ///     Gets player inventory.
         /// </summary>
         Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
-        ///     Get inventory profiles.
+        ///     Gets inventory profiles.
         /// </summary>
         Task<IList<SteelheadInventoryProfile>> GetInventoryProfilesAsync(ulong xuid);
 
         /// <summary>
-        ///     Update player inventory.
+        ///     Updates player inventory.
         /// </summary>
         Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SteelheadGift gift, string requesterObjectId, bool useAdminCreditLimit);
 
         /// <summary>
-        ///     Update player inventories.
+        ///     Updates player inventories.
         /// </summary>
         Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SteelheadGroupGift groupGift, string requesterObjectId, bool useAdminCreditLimit);
 
         /// <summary>
-        ///     Update group inventories.
+        ///     Updates group inventories.
         /// </summary>
         Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SteelheadGift gift, string requesterObjectId, bool useAdminCreditLimit);
     }

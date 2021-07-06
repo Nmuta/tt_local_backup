@@ -32,7 +32,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections
         private readonly Client forzaClient;
 
         /// <summary>
-        ///      Initializes a new instance of the <see cref="OpusServiceWrapper"/> class.
+        ///     Initializes a new instance of the <see cref="OpusServiceWrapper"/> class.
         /// </summary>
         public OpusServiceWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider)
         {

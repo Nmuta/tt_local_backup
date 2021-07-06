@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         public DateTime StartTimeUtc { get; set; }
 
         /// <summary>
-        ///   Gets or sets the expire time.
+        ///     Gets or sets the expire time.
         /// </summary>
         public DateTime ExpireTimeUtc { get; set; }
 

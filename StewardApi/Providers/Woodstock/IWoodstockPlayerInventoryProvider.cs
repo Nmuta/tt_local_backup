@@ -11,37 +11,37 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
     public interface IWoodstockPlayerInventoryProvider
     {
         /// <summary>
-        ///     Get player inventory.
+        ///     Gets player inventory.
         /// </summary>
         Task<WoodstockPlayerInventory> GetPlayerInventoryAsync(ulong xuid);
 
         /// <summary>
-        ///     Get player inventory.
+        ///     Gets player inventory.
         /// </summary>
         Task<WoodstockPlayerInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
-        ///     Get inventory profiles.
+        ///     Gets inventory profiles.
         /// </summary>
         Task<IList<WoodstockInventoryProfile>> GetInventoryProfilesAsync(ulong xuid);
 
         /// <summary>
-        ///     Get the account inventory.
+        ///     Gets the account inventory.
         /// </summary>
         Task<WoodstockAccountInventory> GetAccountInventoryAsync(ulong xuid);
 
         /// <summary>
-        ///     Update player inventory.
+        ///     Updates player inventory.
         /// </summary>
         Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, WoodstockGift gift, string requesterObjectId, bool useAdminCreditLimit);
 
         /// <summary>
-        ///     Update player inventories.
+        ///     Updates player inventories.
         /// </summary>
         Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(WoodstockGroupGift groupGift, string requesterObjectId, bool useAdminCreditLimit);
 
         /// <summary>
-        ///     Update group inventories.
+        ///     Updates group inventories.
         /// </summary>
         Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, WoodstockGift gift, string requesterObjectId, bool useAdminCreditLimit);
     }

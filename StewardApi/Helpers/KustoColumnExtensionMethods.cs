@@ -11,7 +11,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
     public static class KustoColumnExtensionMethods
     {
         /// <summary>
-        ///    Puts a column's value into a JObject.
+        ///     Puts a column's value into a JObject.
         /// </summary>
         public static void ReadValue(this KustoColumn column, JObject jObj, IDataReader reader)
         {

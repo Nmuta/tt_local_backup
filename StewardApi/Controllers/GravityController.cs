@@ -349,7 +349,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Get the master inventory list based on a game settings id.
+        ///     Gets the master inventory list based on a game settings id.
         /// </summary>
         [HttpGet("masterInventory/gameSettingsId({gameSettingsId})")]
         [SwaggerResponse(200, type: typeof(GravityMasterInventory))]

@@ -3,7 +3,7 @@
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    /// Represents a gift response.
+    ///     Represents a gift response.
     /// </summary>
     /// <typeparam name="T">Type of the player or lsp group the gift was sent to.</typeparam>
     public sealed class GiftResponse<T>

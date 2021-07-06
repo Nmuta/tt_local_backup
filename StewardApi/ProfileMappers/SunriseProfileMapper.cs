@@ -22,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
     public sealed class SunriseProfileMapper : AutoMapper.Profile
     {
         /// <summary>
-        ///       Initializes a new instance of the <see cref="SunriseProfileMapper"/> class.
+        ///     Initializes a new instance of the <see cref="SunriseProfileMapper"/> class.
         /// </summary>
         public SunriseProfileMapper()
         {

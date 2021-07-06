@@ -11,37 +11,37 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
     public interface ISunrisePlayerInventoryProvider
     {
         /// <summary>
-        ///     Get player inventory.
+        ///     Gets player inventory.
         /// </summary>
         Task<SunrisePlayerInventory> GetPlayerInventoryAsync(ulong xuid);
 
         /// <summary>
-        ///     Get player inventory.
+        ///     Gets player inventory.
         /// </summary>
         Task<SunrisePlayerInventory> GetPlayerInventoryAsync(int profileId);
 
         /// <summary>
-        ///     Get inventory profiles.
+        ///     Gets inventory profiles.
         /// </summary>
         Task<IList<SunriseInventoryProfile>> GetInventoryProfilesAsync(ulong xuid);
 
         /// <summary>
-        ///     Get the account inventory.
+        ///     Gets the account inventory.
         /// </summary>
         Task<SunriseAccountInventory> GetAccountInventoryAsync(ulong xuid);
 
         /// <summary>
-        ///     Get LSP groups.
+        ///     Gets LSP groups.
         /// </summary>
         Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults);
 
         /// <summary>
-        ///     Update player inventory.
+        ///     Updates player inventory.
         /// </summary>
         Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requesterObjectId, bool useAdminCreditLimit);
 
         /// <summary>
-        ///     Update player inventories.
+        ///     Updates player inventories.
         /// </summary>
         Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SunriseGroupGift groupGift, string requesterObjectId, bool useAdminCreditLimit);
 

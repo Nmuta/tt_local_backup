@@ -23,7 +23,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
         public DateTime? StartTimeUtc { get; set; }
 
         /// <summary>
-        ///   Gets or sets the duration.
+        ///     Gets or sets the duration.
         /// </summary>
         public TimeSpan? Duration { get; set; }
 

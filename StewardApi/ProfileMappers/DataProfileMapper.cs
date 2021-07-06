@@ -6,7 +6,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 namespace Turn10.LiveOps.StewardApi.ProfileMappers
 {
     /// <summary>
-    ///    Mapper for Job Controller DTOs.
+    ///     Mapper for Job Controller DTOs.
     /// </summary>
     public sealed class DataProfileMapper : Profile
     {

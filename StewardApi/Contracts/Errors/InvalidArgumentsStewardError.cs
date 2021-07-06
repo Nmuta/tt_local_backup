@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Errors
 {
     /// <summary>
     ///     Represents an error with provided arguments.
-    /// </summary>`
+    /// </summary>
     public sealed class InvalidArgumentsStewardError : StewardError
     {
         /// <summary>

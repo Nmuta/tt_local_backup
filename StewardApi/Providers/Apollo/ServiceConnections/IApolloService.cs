@@ -6,57 +6,57 @@ using GroupingService = Xls.WebServices.FM7.Generated.UserService;
 namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
 {
     /// <summary>
-    ///      Exposes methods for interacting with the Apollo User Service.
+    ///     Exposes methods for interacting with the Apollo User Service.
     /// </summary>
     public interface IApolloService
     {
         /// <summary>
-        ///      Gets user data by gamertag.
+        ///     Gets user data by gamertag.
         /// </summary>
         Task<UserService.LiveOpsGetUserDataByGamertagOutput> LiveOpsGetUserDataByGamertagAsync(string gamertag);
 
         /// <summary>
-        ///      Gets user data by xuid.
+        ///     Gets user data by xuid.
         /// </summary>
         Task<UserService.LiveOpsGetUserDataByXuidOutput> LiveOpsGetUserDataByXuidAsync(ulong xuid);
 
         /// <summary>
-        ///     Ban users.
+        ///     Bans users.
         /// </summary>
         Task<UserService.BanUsersOutput> BanUsersAsync(ForzaUserBanParameters[] banParameters);
 
         /// <summary>
-        ///     Get user ban history.
+        ///     Gets user ban history.
         /// </summary>
         Task<UserService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
-        ///     Get user ban summaries.
+        ///     Gets user ban summaries.
         /// </summary>
         Task<UserService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(ulong[] xuids, int xuidCount);
 
         /// <summary>
-        ///     Get consoles.
+        ///     Gets consoles.
         /// </summary>
         Task<UserService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults);
 
         /// <summary>
-        ///     Set console ban status.
+        ///     Sets console ban status.
         /// </summary>
         Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned);
 
         /// <summary>
-        ///     Get shared console users.
+        ///     Gets shared console users.
         /// </summary>
         Task<UserService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
-        ///     Get the under review flag.
+        ///     Gets the under review flag.
         /// </summary>
         Task<UserService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(ulong xuid);
 
         /// <summary>
-        ///     Set is under review flag.
+        ///     Sets is under review flag.
         /// </summary>
         Task SetIsUnderReviewAsync(ulong xuid, bool isUnderReview);
 
@@ -66,32 +66,32 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         Task<UserInventoryService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(ulong xuid);
 
         /// <summary>
-        ///      Gets user inventory by profile ID using admin endpoint.
+        ///     Gets user inventory by profile ID using admin endpoint.
         /// </summary>
         Task<UserInventoryService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileIdAsync(int profileId);
 
         /// <summary>
-        ///      Gets user profiles using admin endpoint.
+        ///     Gets user profiles using admin endpoint.
         /// </summary>
         Task<UserInventoryService.GetAdminUserProfilesOutput> GetAdminUserProfilesAsync(ulong xuid, uint maxProfiles);
 
         /// <summary>
-        ///     Add user to groups.
+        ///     Adds user to groups.
         /// </summary>
         Task AddToUserGroupsAsync(ulong xuid, int[] groupIds);
 
         /// <summary>
-        ///     Get user group membership.
+        ///     Gets user group membership.
         /// </summary>
         Task<GroupingService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(ulong xuid, int[] groupIdFilter, int maxResults);
 
         /// <summary>
-        ///     Get user groups.
+        ///     Gets user groups.
         /// </summary>
         Task<GroupingService.GetUserGroupsOutput> GetUserGroupsAsync(int startIndex, int maxResults);
 
         /// <summary>
-        ///     Remove from user groups.
+        ///     Removes from user groups.
         /// </summary>
         Task RemoveFromUserGroupsAsync(ulong xuid, int[] groupIds);
 

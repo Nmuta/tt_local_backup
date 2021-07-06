@@ -20,7 +20,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         Task SaveKustoQueryAsync(KustoQuery kustoQuery);
 
         /// <summary>
-        ///     Get the Kusto query by name.
+        ///     Gets the Kusto query by name.
         /// </summary>
         Task<IList<KustoQuery>> GetKustoQueriesAsync();
 

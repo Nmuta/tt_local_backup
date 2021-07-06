@@ -10,7 +10,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
     public interface IGravityGameSettingsProvider
     {
         /// <summary>
-        ///     Get the the game settings.
+        ///     Gets the the game settings.
         /// </summary>
         Task<GravityMasterInventory> GetGameSettingsAsync(Guid gameSettingsId);
     }

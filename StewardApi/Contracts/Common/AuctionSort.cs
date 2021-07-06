@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Represents the possible auction statuses.
+    ///     Represents the possible auction sort options.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum AuctionSort

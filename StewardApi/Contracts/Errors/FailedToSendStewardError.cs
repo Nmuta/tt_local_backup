@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Errors
 {
     /// <summary>
     ///     Represents an error with uploading.
-    /// </summary>`
+    /// </summary>
     public sealed class FailedToSendStewardError : StewardError
     {
         /// <summary>

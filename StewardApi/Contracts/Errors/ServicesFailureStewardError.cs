@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Errors
 {
     /// <summary>
     ///     Represents an error with Services request.
-    /// </summary>`
+    /// </summary>
     public sealed class ServicesFailureStewardError : StewardError
     {
         /// <summary>

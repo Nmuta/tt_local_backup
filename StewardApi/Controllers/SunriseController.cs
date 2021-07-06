@@ -698,7 +698,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Get groups.
+        ///     Gets groups.
         /// </summary>
         [HttpGet("groups")]
         [SwaggerResponse(200, type: typeof(IList<LspGroup>))]
@@ -713,7 +713,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Update player inventories with given items.
+        ///     Updates player inventories with given items.
         /// </summary>
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
@@ -786,7 +786,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Update player inventories with given items.
+        ///     Updates player inventories with given items.
         /// </summary>
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
@@ -837,7 +837,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Update inventories for an LSP group.
+        ///     Updates inventories for an LSP group.
         /// </summary>
         [AuthorizeRoles(
             UserRole.LiveOpsAdmin,

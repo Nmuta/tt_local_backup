@@ -34,7 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections
         private readonly IStsClient stsClient;
 
         /// <summary>
-        ///      Initializes a new instance of the <see cref="GravityServiceWrapper"/> class.
+        ///     Initializes a new instance of the <see cref="GravityServiceWrapper"/> class.
         /// </summary>
         public GravityServiceWrapper(IConfiguration configuration, IKeyVaultProvider keyVaultProvider, IRefreshableCacheStore refreshableCacheStore, IStsClient stsClient)
         {

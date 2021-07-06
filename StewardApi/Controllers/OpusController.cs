@@ -89,7 +89,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Get the player details.
+        ///     Gets the player details.
         /// </summary>
         [HttpGet("player/gamertag({gamertag})/details")]
         [SwaggerResponse(200, type: typeof(OpusPlayerDetails))]
@@ -103,7 +103,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Get the player details.
+        ///     Gets the player details.
         /// </summary>
         [HttpGet("player/xuid({xuid})/details")]
         [SwaggerResponse(200, type: typeof(OpusPlayerDetails))]
@@ -115,7 +115,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Get the player inventory.
+        ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventory")]
         [SwaggerResponse(200, type: typeof(OpusPlayerInventory))]
@@ -137,7 +137,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Get the player inventory.
+        ///     Gets the player inventory.
         /// </summary>
         [HttpGet("player/profileId({profileId})/inventory")]
         [SwaggerResponse(200, type: typeof(OpusPlayerInventory))]

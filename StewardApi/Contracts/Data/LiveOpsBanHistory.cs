@@ -65,7 +65,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         public string Title { get; set; }
 
         /// <summary>
-        ///     Gets or sets the requestor object ID.
+        ///     Gets or sets the requester object ID.
         /// </summary>
         public string RequesterObjectId { get; set; }
 

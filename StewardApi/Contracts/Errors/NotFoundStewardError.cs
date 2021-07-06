@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Errors
 {
     /// <summary>
     ///     Represents an error finding a document.
-    /// </summary>`
+    /// </summary>
     public sealed class NotFoundStewardError : StewardError
     {
         /// <summary>
