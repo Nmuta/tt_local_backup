@@ -1,4 +1,10 @@
-import { RouteParams, RouterLinkPath, createRouterLinkPath } from '@models/routing';
+import { environment } from '@environments/environment';
+import {
+  RouteParams,
+  RouterLinkPath,
+  createRouterLinkPath,
+  ExternalLinkPath,
+} from '@models/routing';
 import { SharedNavbarTools } from '@shared/pages/shared-tool-list';
 
 /** The root path for all these tools. */
@@ -54,4 +60,12 @@ export const navbarToolList: RouterLinkPath[] = [
 /** The list of tools to display in the navbar. */
 export const navbarToolListAdminOnly: RouterLinkPath[] = [
   createNavbarPath(SharedNavbarTools.MessagingPage),
+];
+
+/** The list of tools to display in the navbar. */
+export const navbarExternalList: ExternalLinkPath[] = [
+  {
+    title: 'Salus Enforcement Tool',
+    url: environment.salusUrl,
+  },
 ];

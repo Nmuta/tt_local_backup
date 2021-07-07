@@ -22,4 +22,5 @@ export const environment: StewardEnvironment = {
     appInsightsLogLevel: LogLevel.Everything,
     consoleLogLevel: LogLevel.Everything,
   },
+  salusUrl: 'https://gmx-dev.azureedge.net/#/dashboard',
 };

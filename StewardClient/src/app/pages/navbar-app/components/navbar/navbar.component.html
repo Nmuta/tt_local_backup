@@ -27,6 +27,14 @@
       {{ item.title }}
     </a>
   </ng-container>
+  <ng-container *ngIf="!isProductionEnvironment">
+    <button mat-button [matMenuTriggerFor]="externalToolsMenu">External Tools</button>
+    <mat-menu #externalToolsMenu="matMenu">
+      <a mat-menu-item *ngFor="let item of externalItems" [href]="item.url" target="_blank">{{
+        item.title
+      }}</a>
+    </mat-menu>
+  </ng-container>
   <span class="spacer"></span>
   <span *ngIf="missingZendesk$ | async" class="warnings">
     <mat-icon

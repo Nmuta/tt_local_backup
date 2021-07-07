@@ -11,5 +11,6 @@ modifiedEnvironment.stewardUiStagingUrl = baseEnvProd.stewardUiStagingUrl;
 modifiedEnvironment.stewardApiStagingUrl = baseEnvProd.stewardApiStagingUrl;
 modifiedEnvironment.azureAppId = baseEnvProd.azureAppId;
 modifiedEnvironment.azureAppScope = baseEnvProd.azureAppScope;
+modifiedEnvironment.salusUrl = baseEnvProd.salusUrl;
 
 export const environment = modifiedEnvironment;

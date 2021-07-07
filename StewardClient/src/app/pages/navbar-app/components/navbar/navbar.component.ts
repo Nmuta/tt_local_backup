@@ -6,17 +6,19 @@ import { Observable } from 'rxjs';
 
 import {
   createNavbarPath,
+  navbarExternalList,
   navbarToolList,
   navbarToolListAdminOnly,
   NavbarTools,
 } from '@navbar-app/navbar-tool-list';
-import { RouterLinkPath } from '@models/routing';
+import { ExternalLinkPath, RouterLinkPath } from '@models/routing';
 import { NotificationsService } from '@shared/hubs/notifications.service';
 import { BackgroundJobStatus } from '@models/background-job';
 import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
 import { UserRole } from '@models/enums';
 import { ThemePalette } from '@angular/material/core';
+import { environment } from '@environments/environment';
 
 /** The shared top-level navbar. */
 @Component({
@@ -28,11 +30,16 @@ export class NavbarComponent implements OnInit {
   public items: RouterLinkPath[] = navbarToolList;
   public adminOnlyItems: RouterLinkPath[] = navbarToolListAdminOnly;
   public homeRouterLink = createNavbarPath(NavbarTools.HomePage).routerLink;
+  public externalItems: ExternalLinkPath[] = navbarExternalList;
 
   public notificationCount = null;
   public notificationColor: ThemePalette = undefined;
 
   public showAdminPages: boolean = false;
+
+  // TODO: Remove this when Salus production is ready.
+  // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/609751
+  public isProductionEnvironment: boolean = false;
 
   constructor(
     private readonly store: Store,
@@ -50,6 +57,7 @@ export class NavbarComponent implements OnInit {
     const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
     this.showAdminPages =
       profile.role === UserRole.LiveOpsAdmin || profile.role === UserRole.SupportAgentAdmin;
+    this.isProductionEnvironment = environment.production;
 
     this.notificationsService.notifications$.subscribe(notifications => {
       const unreadNotifications = notifications.filter(n => !n.isRead);

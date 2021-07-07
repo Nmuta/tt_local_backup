@@ -11,6 +11,7 @@ export interface StewardEnvironment {
   stewardApiUrl: string;
   stewardApiStagingUrl: string;
   oldScrutineerApiUrl: string;
+  salusUrl: string;
   /** Placeholder value replaced in ADO pipeline. */
   adoVersion: string;
 

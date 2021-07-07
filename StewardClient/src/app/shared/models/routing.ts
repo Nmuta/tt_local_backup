@@ -10,6 +10,12 @@ export interface RouterLinkPath {
   readonly routerLink: string[];
 }
 
+/** An external path displayed in the navbar. */
+export interface ExternalLinkPath {
+  readonly title: string;
+  readonly url: string;
+}
+
 /** Creates a RouterLinkPath for use in displaying navbars, from a RouteParams object. */
 export function createRouterLinkPath(
   parentPath: string[],

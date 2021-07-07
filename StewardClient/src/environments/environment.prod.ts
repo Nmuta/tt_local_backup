@@ -22,4 +22,5 @@ export const environment: StewardEnvironment = {
     appInsightsLogLevel: LogLevel.Everything,
     consoleLogLevel: LogLevel.Nothing,
   },
+  salusUrl: 'https://gamingmoderation.azureedge.net/#/dashboard',
 };
