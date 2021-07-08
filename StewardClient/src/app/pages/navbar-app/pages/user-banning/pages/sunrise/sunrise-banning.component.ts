@@ -73,7 +73,7 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
             chain(identities)
               .sortBy(i => {
                 const banCount = summaryLookup[i?.sunrise?.xuid?.toString()]?.banCount;
-                return banCount;
+                return banCount?.toNumber();
               })
               .reverse()
               .value(),
