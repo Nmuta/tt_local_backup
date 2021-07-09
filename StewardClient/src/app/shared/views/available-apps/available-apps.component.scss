@@ -15,6 +15,9 @@ a {
   margin-top: 1.5em;
   margin-left: auto;
   margin-right: auto;
+  .mat-icon {
+    vertical-align: text-bottom;
+  }
 }
 
 .app-list {
