@@ -33,5 +33,7 @@
   "angularCompilerOptions": {
     "strictTemplates": true,
     "strictInjectionParameters": true
-  }
+  },
+  "include": ["src", "node_modules/cypress"],
+  "exclude": ["node_modules/cypress"]
 }
