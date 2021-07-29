@@ -145,24 +145,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return $"steelhead:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
             }
 
-            var invalidResults = identityQueries.Where(query => !query.IsValid())
-                .Select(query => new IdentityResultAlpha
-                {
-                    Xuid = default(ulong),
-                    Gamertag = string.Empty,
-                    Error = new InvalidArgumentsStewardError("Gamertag or Xuid must be provided."),
-                    Query = query,
-                });
-
-            var validQueries = identityQueries.Where(query => query.IsValid());
-
-            var cachedResults = validQueries.Select(v => this.memoryCache.Get<IdentityResultAlpha>(MakeKey(v)));
+            var cachedResults = identityQueries.Select(v => this.memoryCache.Get<IdentityResultAlpha>(MakeKey(v)));
             if (cachedResults.All(result => result != null))
             {
-                return this.Ok(cachedResults.Concat(invalidResults).ToList());
+                return this.Ok(cachedResults.ToList());
             }
 
-            var results = await this.steelheadPlayerDetailsProvider.GetPlayerIdentitiesAsync(validQueries.ToList()).ConfigureAwait(true);
+            var results = await this.steelheadPlayerDetailsProvider.GetPlayerIdentitiesAsync(identityQueries.ToList()).ConfigureAwait(true);
 
             foreach (var result in results)
             {
@@ -180,7 +169,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 }
             }
 
-            return this.Ok(results.Concat(invalidResults).ToList());
+            return this.Ok(results.ToList());
         }
 
         /// <summary>
