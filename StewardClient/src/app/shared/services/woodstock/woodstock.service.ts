@@ -43,6 +43,10 @@ import {
 import { AuctionFilters } from '@models/auction-filters';
 import { PlayerAuction } from '@models/player-auction';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
+import { PlayerUGCItem } from '@models/player-ugc-item';
+import { UGCFilters, UGCType } from '@models/ugc-filters';
+import { KustoCar } from '@models/kusto-car';
+import { UGCFeaturedStatus } from '@models/ugc-featured-status';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -343,5 +347,80 @@ export class WoodstockService {
       `${this.basePath}/player/xuid(${xuid})/auctions`,
       httpParams,
     );
+  }
+
+  /** Gets player UGC items by XUID. */
+  public getPlayerUGCByXuid$(xuid: BigNumber, filters: UGCFilters): Observable<PlayerUGCItem[]> {
+    const httpParams = new HttpParams().append('xuid', xuid.toString());
+
+    return this.getPlayerUGC$(filters, httpParams);
+  }
+
+  /** Gets player UGC items by share code. */
+  public getPlayerUGCByShareCode$(
+    shareCode: string,
+    filters: UGCFilters,
+  ): Observable<PlayerUGCItem[]> {
+    const httpParams = new HttpParams().append('shareCode', shareCode);
+
+    return this.getPlayerUGC$(filters, httpParams);
+  }
+
+  /** Gets the woodstock detailed car list. */
+  public getDetailedKustoCars$(): Observable<KustoCar[]> {
+    return this.apiService.getRequest$<KustoCar[]>(`${this.basePath}/kusto/cars`);
+  }
+
+  /** Gets a player's UGC item.  */
+  public getPlayerUGCItem(id: string, type: UGCType): Observable<PlayerUGCItem> {
+    switch (type) {
+      case UGCType.Livery:
+        return this.apiService.getRequest$<PlayerUGCItem>(
+          `${this.basePath}/storefront/livery/${id}`,
+        );
+      case UGCType.Photo:
+        return this.apiService.getRequest$<PlayerUGCItem>(
+          `${this.basePath}/storefront/photo/${id}`,
+        );
+      default:
+        throw new Error(`Invalid UGC item type for lookup: ${type}}`);
+    }
+  }
+
+  /** Sets a UGC item's feature status.  */
+  public setUGCItemFeatureStatus(status: UGCFeaturedStatus): Observable<void> {
+    if (status.isFeatured && !status.expiry) {
+      throw new Error('Cannot feature UGC item with an expiry duration.');
+    }
+
+    return this.apiService.postRequest$<void>(
+      `${this.basePath}/storefront/itemId(${status.itemId})/featuredStatus`,
+      status,
+    );
+  }
+
+  /** Sends search request to lookup player ugc item. */
+  private getPlayerUGC$(
+    filters: UGCFilters,
+    httpParams: HttpParams = new HttpParams(),
+  ): Observable<PlayerUGCItem[]> {
+    httpParams = httpParams
+      .append('ugcType', filters.type.toString())
+      .append('accessLevel', filters.accessLevel.toString())
+      .append('orderBy', filters.orderBy.toString());
+
+    if (filters?.carId) {
+      httpParams = httpParams.append('carId', filters.carId.toString());
+    }
+
+    if (filters?.makeId) {
+      httpParams = httpParams.append('makeId', filters.makeId.toString());
+    }
+
+    if (filters?.keyword) {
+      httpParams = httpParams.append('keyword', filters.keyword.toString());
+    }
+
+    return this.apiService.getRequest$<PlayerUGCItem[]>(`${this.basePath}/storefront`, httpParams);
   }
 }

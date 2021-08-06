@@ -15,6 +15,7 @@ import { TitleMemoryModel } from './title-memory.model';
     giftHistory: GameTitleCodeName.Street,
     messaging: GameTitleCodeName.FH4,
     userDetails: GameTitleCodeName.FH4,
+    ugc: GameTitleCodeName.FH4,
   },
 })
 /** Defines the user state. */

@@ -34,6 +34,7 @@ export class SunriseKustoCarsFakeApi extends FakeApiBase {
             makeId: fakeBigNumber(),
             make: faker.random.word(),
             model: faker.random.words(3),
+            makeOnly: false,
           };
         });
     }

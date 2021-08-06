@@ -326,6 +326,47 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             return await auctionService.SearchAuctionHouse(filters).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.SearchUGCLiveriesOutput> GetPlayerLiveries(ForzaUGCSearchRequest filters)
+        {
+            var storefrontService = await this.PrepareStorefrontManagementServiceAsync().ConfigureAwait(false);
+
+            return await storefrontService.SearchUGCLiveries(filters).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.SearchUGCPhotosOutput> GetPlayerPhotos(ForzaUGCSearchRequest filters)
+        {
+            var storefrontService = await this.PrepareStorefrontManagementServiceAsync().ConfigureAwait(false);
+
+            return await storefrontService.SearchUGCPhotos(filters).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLivery(Guid liveryId)
+        {
+            var storefrontService = await this.PrepareStorefrontManagementServiceAsync().ConfigureAwait(false);
+
+            return await storefrontService.GetUGCLivery(liveryId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhoto(Guid photoId)
+        {
+            var storefrontService = await this.PrepareStorefrontManagementServiceAsync().ConfigureAwait(false);
+
+            return await storefrontService.GetUGCPhoto(photoId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task SetUGCFeaturedStatus(Guid contentId, bool isFeatured, DateTime featureEndDate)
+        {
+            var storefrontService = await this.PrepareStorefrontManagementServiceAsync().ConfigureAwait(false);
+
+            // NOTE: User scenario for setting featured state always uses the same DateTime for featureEndDate & forceFeatureEndDate
+            await storefrontService.SetFeatured(contentId, isFeatured, featureEndDate, featureEndDate).ConfigureAwait(false);
+        }
+
         private async Task<UserManagementService> PrepareUserManagementServiceAsync()
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
@@ -380,6 +421,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new RareCarShopService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+        }
+
+        private async Task<StorefrontManagementService> PrepareStorefrontManagementServiceAsync()
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new StorefrontManagementService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
         }
 
         private async Task<string> GetAuthTokenAsync()

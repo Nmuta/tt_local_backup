@@ -11,12 +11,13 @@ import { fakeXuid } from '@interceptors/fake-api/utility';
 import { LspGroup } from '@models/lsp-group';
 import { SunriseGift, SunriseGroupGift, SunriseUserFlags } from '@models/sunrise';
 import { ApiService, createMockApiService } from '@services/api';
-import faker from 'faker';
 import { of } from 'rxjs';
 import { SunriseService } from './sunrise.service';
 import { DefaultAuctionFilters } from '@models/auction-filters';
 import { HttpParams } from '@angular/common/http';
 import { DateTime } from 'luxon';
+import { DefaultUGCFilters } from '@models/ugc-filters';
+import faker from 'faker';
 
 describe('SunriseService', () => {
   let injector: TestBed;
@@ -476,6 +477,56 @@ describe('SunriseService', () => {
       service.getPlayerAccountInventoryByXuid$(xuid).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${xuid})/accountInventory`,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getPlayerUGCByXuid$', () => {
+    const xuid = fakeXuid();
+    const filters = DefaultUGCFilters;
+    let httpParams = new HttpParams();
+
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      httpParams = new HttpParams()
+        .append('xuid', xuid.toString())
+        .append('ugcType', filters.type.toString())
+        .append('accessLevel', filters.accessLevel.toString())
+        .append('orderBy', filters.orderBy.toString());
+    });
+
+    it('should call apiServiceMock.getRequest', done => {
+      service.getPlayerUGCByXuid$(xuid, filters).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/storefront`,
+          httpParams,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getPlayerUGCByShareCode$', () => {
+    const shareCode = faker.random.word();
+    const filters = DefaultUGCFilters;
+    let httpParams = new HttpParams();
+
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      httpParams = new HttpParams()
+        .append('shareCode', shareCode.toString())
+        .append('ugcType', filters.type.toString())
+        .append('accessLevel', filters.accessLevel.toString())
+        .append('orderBy', filters.orderBy.toString());
+    });
+
+    it('should call apiServiceMock.getRequest', done => {
+      service.getPlayerUGCByShareCode$(shareCode, filters).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/storefront`,
+          httpParams,
         );
         done();
       });

@@ -1,0 +1,150 @@
+<h5 *ngIf="useExpandoColumnDef">* Click on a row to expand its details.</h5>
+
+<table mat-table [dataSource]="ugcTableDataSource" multiTemplateDataRows #matTable>
+  <ng-container matColumnDef="ugcInfo">
+    <th mat-header-cell *matHeaderCellDef>UGC Info</th>
+    <td mat-cell *matCellDef="let entry">
+      <ul>
+        <li>
+          <b>Featured:</b>
+          {{ entry.featuredByT10 ? (entry.featuredEndDateUtc | utcDate: 'short') : 'No' }}
+        </li>
+        <li><b>Title:</b> {{ entry.title }}</li>
+        <li><b>Description:</b> {{ entry.description }}</li>
+        <li><b>Created:</b> {{ entry.createdDateUtc | utcDate: 'short' }}</li>
+      </ul>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="metadata">
+    <th mat-header-cell *matHeaderCellDef>Metadata</th>
+    <td mat-cell *matCellDef="let entry">
+      <ul>
+        <li><b>Car:</b> {{ entry.carDescription }}</li>
+        <li><b>Share Code:</b> {{ entry.shareCode || 'N/A' }}</li>
+        <li><b>Id:</b> {{ entry.guidId }}</li>
+      </ul>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="stats">
+    <th mat-header-cell *matHeaderCellDef>Stats</th>
+    <td mat-cell *matCellDef="let entry">
+      <ul>
+        <li><b>Popularity:</b> {{ entry.popularityBucket }}/5</li>
+        <li><b>Likes:</b> {{ entry.timesLiked }}</li>
+        <li><b>Dislikes:</b> {{ entry.timesDisliked }}</li>
+        <li><b>Downloads:</b> {{ entry.timesDownloaded }}</li>
+        <li><b>Uses:</b> {{ entry.timesUsed }}</li>
+      </ul>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="thumbnailImageOneBase64">
+    <th mat-header-cell *matHeaderCellDef>Thumbnail One</th>
+    <td mat-cell *matCellDef="let entry">
+      <img
+        matTooltip="Click to enlarge image"
+        [src]="entry.thumbnailImageOneBase64"
+        [enlargeImage]="entry.thumbnailImageOneBase64"
+        title="Thumbnail One"
+      />
+      <span *ngIf="!entry.thumbnailImageOneBase64">N/A</span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="thumbnailImageTwoBase64">
+    <th mat-header-cell *matHeaderCellDef>Thumbnail Two</th>
+    <td mat-cell *matCellDef="let entry">
+      <img
+        matTooltip="Click to enlarge image"
+        [src]="entry.thumbnailImageTwoBase64"
+        [enlargeImage]="entry.thumbnailImageTwoBase64"
+        title="Thumbnail Two"
+      />
+      <span *ngIf="!entry.thumbnailImageTwoBase64">N/A</span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let entry">
+      <button mat-stroked-button color="primary" clickStop [cdkCopyToClipboard]="entry.guidId">
+        Copy UGC ID
+      </button>
+
+      <button mat-raised-button color="accent" clickStop (click)="openFeatureUGCModal(entry)">
+        {{ entry.featuredByT10 ? 'Edit Featured Status' : 'Set Featured Status' }}
+      </button>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="exando-ugcInfo">
+    <th mat-header-cell *matHeaderCellDef>UGC Info</th>
+    <td mat-cell *matCellDef="let entry">
+      <ul>
+        <li>
+          <b>Featured:</b>
+          {{ entry.featuredByT10 ? (entry.featuredEndDateUtc | utcDate: 'short') : 'No' }}
+        </li>
+        <li><b>Title:</b> {{ entry.title }}</li>
+        <li><b>Description:</b> {{ entry.description }}</li>
+        <li><b>Created:</b> {{ entry.createdDateUtc | utcDate: 'short' }}</li>
+        <li><b>Car:</b> {{ entry.carDescription }}</li>
+      </ul>
+    </td>
+  </ng-container>
+
+  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+  <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let entry" [attr.colspan]="columnsToDisplay.length">
+      <div
+        class="example-element-detail"
+        [@detailExpand]="entry == expandedElement ? 'expanded' : 'collapsed'"
+      >
+        <ul>
+          <div>
+            <li><b>Id:</b> {{ entry.guidId }}</li>
+            <li><b>Share Code:</b> {{ entry.shareCode || 'N/A' }}</li>
+            <li><b>Popularity:</b> {{ entry.popularityBucket }}/5</li>
+            <li><b>Likes:</b> {{ entry.timesLiked }}</li>
+            <li><b>Dislikes:</b> {{ entry.timesDisliked }}</li>
+            <li><b>Downloads:</b> {{ entry.timesDownloaded }}</li>
+            <li><b>Uses:</b> {{ entry.timesUsed }}</li>
+          </div>
+          <div *ngIf="entry.thumbnailImageTwoBase64">
+            <li>
+              <b>Thumbnail Two:</b><br />
+              <img
+                matTooltip="Click to enlarge image"
+                [src]="entry.thumbnailImageTwoBase64"
+                [enlargeImage]="entry.thumbnailImageTwoBase64"
+                title="Thumbnail Two"
+              />
+            </li>
+          </div>
+        </ul>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr
+    mat-header-row
+    *matHeaderRowDef="useExpandoColumnDef ? expandoColumnDef : columnsToDisplay"
+  ></tr>
+  <tr
+    mat-row
+    *matRowDef="let element; columns: useExpandoColumnDef ? expandoColumnDef : columnsToDisplay"
+    class="example-element-row"
+    [class.example-expanded-row]="expandedElement === element"
+    [class.border-bottom]="!useExpandoColumnDef"
+    [class.cursor-pointer]="useExpandoColumnDef"
+    [class.is-featured-item]="element.featuredByT10"
+    (click)="expandedElement = expandedElement !== element ? element : null"
+  ></tr>
+  <ng-container *ngIf="useExpandoColumnDef">
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </ng-container>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

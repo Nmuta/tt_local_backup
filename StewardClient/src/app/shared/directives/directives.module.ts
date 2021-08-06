@@ -5,6 +5,7 @@ import { DownloadCsvDirective } from './download-csv.directive';
 import { HoverToCopyDirective } from './hover-to-copy.directive';
 import { BeforeDateDirective } from './validators/before-date.directive';
 import { AfterDateDirective } from './validators/after-date.directive';
+import { ClickEnlargeImageDirective } from './click-enlarge-image.directive';
 
 /**
  * Module containing various utility directives.
@@ -16,6 +17,7 @@ import { AfterDateDirective } from './validators/after-date.directive';
     HoverToCopyDirective,
     BeforeDateDirective,
     AfterDateDirective,
+    ClickEnlargeImageDirective,
   ],
   imports: [CommonModule],
   exports: [
@@ -24,6 +26,7 @@ import { AfterDateDirective } from './validators/after-date.directive';
     HoverToCopyDirective,
     BeforeDateDirective,
     AfterDateDirective,
+    ClickEnlargeImageDirective,
   ],
 })
 export class DirectivesModule {}

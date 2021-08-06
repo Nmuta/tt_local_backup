@@ -36,6 +36,10 @@ const routes: Routes = [
         loadChildren: () =>
           import('../../shared/pages/gifting/gifting.module').then(m => m.GiftingsModule),
       },
+      {
+        path: CommunityAppTools.UGCPage.path,
+        loadChildren: () => import('./pages/ugc/ugc.module').then(m => m.UGCModule),
+      },
       ...sidebarRoutes,
       {
         path: '**',

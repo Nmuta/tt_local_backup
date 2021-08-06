@@ -1,0 +1,44 @@
+<div class="steward-layout-with-sidebar">
+  <div class="steward-layout-sidebar-group">
+    <div class="steward-layout-pane player-selection-div steward-layout-vertical-fill">
+      <mat-tab-group
+        mat-stretch-tabs
+        class="steward-layout-vertical-fill"
+        (selectedTabChange)="matTabSelectionChange($event.index)"
+      >
+        <mat-tab label="Player Selection">
+          <mat-card>
+            <player-selection-single
+              [disableLookupTypes]="['t10Id']"
+              [allowSelection]="true"
+              [rejectionFn]="identityRejectionFn"
+              (selected)="playerIdentitySelected($event)"
+              (found)="onPlayerIdentityChange($event)"
+            ></player-selection-single>
+          </mat-card>
+        </mat-tab>
+        <mat-tab label="Share Code">
+          <mat-card>
+            <share-code-input (changes)="onShareCodeChange($event)"></share-code-input>
+          </mat-card>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+
+  <div class="steward-layout-pane steward-layout-main-group">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Player UGC</mat-card-title>
+        <mat-card-subtitle>Sunrise</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <sunrise-player-ugc
+          [identity]="identity"
+          [shareCode]="shareCode"
+          [usingIdentities]="usingPlayerIdentities"
+        ></sunrise-player-ugc>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -21,6 +21,8 @@ import { WoodstockPlayerXuidProfileRollbacksApi } from '@interceptors/fake-api/a
 import { WoodstockPlayerXuidAuctionsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/auctions';
 import { WoodstockPlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/backstagePassHistory';
 import { WoodstockPlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/accountInventory';
+import { WoodstockPlayerXuidUGCFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/ugc';
+import { WoodstockKustoCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
 
 /** Defines the mock for the API Service. */
 export class MockWoodstockService {
@@ -154,6 +156,24 @@ export class MockWoodstockService {
     .createSpy('getPlayerAccountInventoryByXuid')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidAccountInventoryFakeApi.make()))),
+    );
+
+  public getPlayerUGCByXuid$ = jasmine
+    .createSpy('getPlayerUGCByXuid$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidUGCFakeApi.makeMany()))),
+    );
+
+  public getPlayerUGCByShareCode$ = jasmine
+    .createSpy('getPlayerUGCByShareCode$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidUGCFakeApi.makeMany()))),
+    );
+
+  public getDetailedKustoCars$ = jasmine
+    .createSpy('getDetailedKustoCars')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(WoodstockKustoCarsFakeApi.make()))),
     );
 
   constructor(private readonly generator$: () => unknown) {}

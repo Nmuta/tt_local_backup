@@ -6,6 +6,9 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     /// <summary>
     ///     Represents the possible auction review states.
     /// </summary>
+    /// <remarks>
+    ///     Matches values with Services enum ForzaAuctionStatus.
+    /// </remarks>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum AuctionReviewState
     {

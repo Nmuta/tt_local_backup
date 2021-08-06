@@ -8,4 +8,5 @@ export class TitleMemoryModel {
   public giftHistory: GameTitleCodeName;
   public messaging: GameTitleCodeName;
   public userDetails: GameTitleCodeName;
+  public ugc: GameTitleCodeName;
 }

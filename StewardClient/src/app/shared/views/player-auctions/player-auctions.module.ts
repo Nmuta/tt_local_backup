@@ -10,24 +10,22 @@ import { VerifyActionButtonModule } from '@components/verify-action-button/verif
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatIconModule } from '@angular/material/icon';
 import { SunrisePlayerAuctionsComponent } from './sunrise/sunrise-player-auctions.component';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { DirectivesModule } from '@shared/directives/directives.module';
 import { AuctionFiltersModule } from '../auction-filters/auction-filters.module';
-import { ImageModalComponent } from './image-modal/image-modal.component';
 import { LuxonModule } from 'luxon-angular';
+import { ImageModalModule } from '@views/image-modal/image-modal.module';
 
 /** Display for player auctions. */
 @NgModule({
-  declarations: [SunrisePlayerAuctionsComponent, ImageModalComponent],
+  declarations: [SunrisePlayerAuctionsComponent],
   imports: [
     CommonModule,
     MatCardModule,
     MatProgressSpinnerModule,
     MatTableModule,
-    MatDialogModule,
     MatTooltipModule,
     FontAwesomeModule,
     PipesModule,
@@ -41,7 +39,8 @@ import { LuxonModule } from 'luxon-angular';
     AuctionFiltersModule,
     PipesModule,
     LuxonModule,
+    ImageModalModule,
   ],
-  exports: [SunrisePlayerAuctionsComponent, ImageModalComponent],
+  exports: [SunrisePlayerAuctionsComponent],
 })
 export class PlayerAuctionsModule {}

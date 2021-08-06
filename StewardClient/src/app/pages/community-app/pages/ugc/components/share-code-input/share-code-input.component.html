@@ -1,0 +1,31 @@
+<mat-form-field appearance="fill">
+  <mat-label>Share Code</mat-label>
+  <input
+    matInput
+    [(ngModel)]="shareCodeInput"
+    [ngModelOptions]="{ standalone: true }"
+    placeholder="12345..."
+    (enter)="emitShareCodeInput()"
+    (paste)="pastedShareCode()"
+  />
+  <button
+    mat-button
+    matPrefix
+    mat-icon-button
+    aria-label="Search"
+    matTooltip="Search"
+    (click)="emitShareCodeInput()"
+  >
+    <mat-icon>search</mat-icon>
+  </button>
+  <button
+    mat-button
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    matTooltip="Clear"
+    (click)="clearShareCodeInput()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>

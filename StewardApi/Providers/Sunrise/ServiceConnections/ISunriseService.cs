@@ -179,5 +179,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         ///     Gets token transactions.
         /// </summary>
         Task<RareCarShopService.AdminGetTransactionsOutput> GetTokenTransactionsAsync(ulong xuid);
+
+        /// <summary>
+        ///     Get player liveries.
+        /// </summary>
+        Task<StorefrontManagementService.SearchUGCLiveriesOutput> GetPlayerLiveries(ForzaUGCSearchRequest filters);
+
+        /// <summary>
+        ///     Get player photos.
+        /// </summary>
+        Task<StorefrontManagementService.SearchUGCPhotosOutput> GetPlayerPhotos(ForzaUGCSearchRequest filters);
+
+        /// <summary>
+        ///     Get a player livery.
+        /// </summary>
+        Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLivery(Guid liveryId);
+
+        /// <summary>
+        ///     Get a player photo.
+        /// </summary>
+        Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhoto(Guid photoId);
+
+        /// <summary>
+        ///     Sets featured state of a UGC content item.
+        /// </summary>
+        Task SetUGCFeaturedStatus(Guid contentId, bool isFeatured, DateTime featureEndDate);
     }
 }

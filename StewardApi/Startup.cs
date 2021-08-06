@@ -272,6 +272,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IRequestValidator<SunriseGroupGift>, SunriseGroupGiftRequestValidator>();
             services.AddSingleton<ISunriseGiftHistoryProvider, SunriseGiftHistoryProvider>();
             services.AddSingleton<ISunriseBanHistoryProvider, SunriseBanHistoryProvider>();
+            services.AddSingleton<ISunriseStorefrontProvider, SunriseStorefrontProvider>();
 
             services.AddSingleton<IApolloService, ApolloServiceWrapper>();
             services.AddSingleton<IApolloPlayerDetailsProvider, ApolloPlayerDetailsProvider>();

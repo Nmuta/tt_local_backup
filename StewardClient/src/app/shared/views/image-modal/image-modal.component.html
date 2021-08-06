@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>
+  {{ data.title }}
+  <button mat-mini-fab color="accent" (click)="rotate()" matTooltip="Rotate 90 degrees">
+    <mat-icon> rotate_right </mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content>
+  <img #modelImage [src]="data.url" />
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button class="mat-stroked-button mat-warn" (click)="close()">Close</button>
+</mat-dialog-actions>

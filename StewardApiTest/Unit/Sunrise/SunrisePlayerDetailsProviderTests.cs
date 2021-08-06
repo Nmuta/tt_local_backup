@@ -641,7 +641,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<LiveOpsContracts.ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<LiveOpsContracts.ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
                 this.Mapper.Map<ProfileSummary>(Arg.Any<WebServicesContracts.ForzaProfileSummary>()).Returns(Fixture.Create<ProfileSummary>());
-                this.Mapper.Map<IList<CreditUpdate>>(Arg.Any<WebServicesContracts.ForzaCredityUpdateEntry[]>()).Returns(Fixture.Create<IList<CreditUpdate>>());
+                this.Mapper.Map<IList<CreditUpdate>>(Arg.Any<WebServicesContracts.ForzaCreditUpdateEntry[]>()).Returns(Fixture.Create<IList<CreditUpdate>>());
                 this.Mapper.Map<IList<BanResult>>(Arg.Any<LiveOpsContracts.ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.Mapper.Map<IList<BanSummary>>(Arg.Any<LiveOpsContracts.ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
                 this.Mapper.Map<List<BanDescription>>(Arg.Any<LiveOpsContracts.ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());

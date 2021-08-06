@@ -4,8 +4,11 @@ using Newtonsoft.Json.Converters;
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
-    ///     Represents the possible auction sort options.
+    ///     Represents auction sort options.
     /// </summary>
+    /// <remarks>
+    ///     Matches values with Services enum ForzaSearchOrderBy.
+    /// </remarks>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum AuctionSort
     {

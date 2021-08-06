@@ -1,0 +1,69 @@
+@import '/src/styles/mixins';
+
+table {
+  width: 100%;
+
+  span {
+    display: block;
+  }
+
+  img {
+    max-width: $max-table-image-width;
+    cursor: pointer;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  tr.example-detail-row {
+    height: 0;
+  }
+
+  .example-element-row td {
+    border-bottom-width: 0;
+    height: $auction-row-height;
+  }
+
+  .border-bottom td {
+    border-bottom-width: 1px;
+  }
+
+  .mat-column-actions {
+    padding-left: $gap-micro + $gap-small;
+  }
+
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+    flex-flow: row wrap;
+    padding-top: $gap-medium;
+
+    div {
+      flex-grow: 1;
+      margin-bottom: $gap-medium;
+    }
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+    li {
+      list-style: none;
+    }
+  }
+
+  button {
+    min-width: $button-min-size;
+    margin-bottom: $gap-small;
+    display: block;
+  }
+
+  .is-featured-item {
+    background-color: app-color-lighter($app-primary);
+  }
+
+  .mat-stroked-button {
+    background-color: app-color-default-contrast($app-primary);
+  }
+}

@@ -20,6 +20,8 @@ import { SunriseService } from './sunrise.service';
 import { SunrisePlayerXuidProfileNotesApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/profileNotes';
 import { SunrisePlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/backstagePassHistory';
 import { SunrisePlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/accountInventory';
+import { SunrisePlayerXuidUGCFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/ugc';
+import { SunriseKustoCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
 
 /** Defines the mock for the API Service. */
 export class MockSunriseService {
@@ -149,6 +151,22 @@ export class MockSunriseService {
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidAccountInventoryFakeApi.make()))),
     );
+
+  public getPlayerUGCByXuid$ = jasmine
+    .createSpy('getPlayerUGCByXuid$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidUGCFakeApi.makeMany()))),
+    );
+
+  public getPlayerUGCByShareCode$ = jasmine
+    .createSpy('getPlayerUGCByShareCode$')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(SunrisePlayerXuidUGCFakeApi.makeMany()))),
+    );
+
+  public getDetailedKustoCars$ = jasmine
+    .createSpy('getDetailedKustoCars')
+    .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(SunriseKustoCarsFakeApi.make()))));
 
   constructor(private readonly generator: () => unknown) {}
 }

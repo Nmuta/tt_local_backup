@@ -18,6 +18,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.QueryParams;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Logging;
@@ -59,6 +60,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider;
         private readonly ISunriseGiftHistoryProvider giftHistoryProvider;
         private readonly ISunriseBanHistoryProvider banHistoryProvider;
+        private readonly ISunriseStorefrontProvider storefrontProvider;
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
         private readonly IScheduler scheduler;
@@ -80,6 +82,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IKeyVaultProvider keyVaultProvider,
             ISunriseGiftHistoryProvider giftHistoryProvider,
             ISunriseBanHistoryProvider banHistoryProvider,
+            ISunriseStorefrontProvider storefrontProvider,
             IConfiguration configuration,
             IScheduler scheduler,
             IJobTracker jobTracker,
@@ -98,6 +101,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
+            storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
             configuration.ShouldNotBeNull(nameof(configuration));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
@@ -114,6 +118,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.kustoProvider = kustoProvider;
             this.sunrisePlayerDetailsProvider = sunrisePlayerDetailsProvider;
             this.sunrisePlayerInventoryProvider = sunrisePlayerInventoryProvider;
+            this.storefrontProvider = storefrontProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
             this.scheduler = scheduler;
@@ -413,6 +418,136 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             return this.Ok(auctions);
+        }
+
+        /// <summary>
+        ///     Gets player UGC items.
+        /// </summary>
+        [HttpGet("storefront")]
+        [SwaggerResponse(200, type: typeof(IList<UGCItem>))]
+        public async Task<IActionResult> GetUGCItems(
+            [FromQuery] ULongQueryParam xuid,
+            [FromQuery] string shareCode = "",
+            [FromQuery] string ugcType = "Unknown",
+            [FromQuery] int carId = int.MaxValue,
+            [FromQuery] int makeId = int.MaxValue,
+            [FromQuery] string keyword = null,
+            [FromQuery] string accessLevel = "Any",
+            [FromQuery] string orderBy = "CreatedDateDesc")
+        {
+            ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
+            accessLevel.ShouldNotBeNullEmptyOrWhiteSpace(nameof(accessLevel));
+            orderBy.ShouldNotBeNullEmptyOrWhiteSpace(nameof(orderBy));
+
+            if (!Enum.TryParse(ugcType, out UGCType typeEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCType)} provided: {ugcType}");
+            }
+
+            if (!Enum.TryParse(accessLevel, out UGCAccessLevel accessLevelEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCAccessLevel)} provided: {accessLevel}");
+            }
+
+            if (!Enum.TryParse(orderBy, out UGCOrderBy orderByEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCOrderBy)} provided: {orderBy}");
+            }
+
+            var getUgcItems = this.storefrontProvider.SearchUGCItems(typeEnum, new UGCFilters(xuid?.Value ?? ulong.MaxValue, shareCode, carId, makeId, keyword, accessLevelEnum, orderByEnum));
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+
+            await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
+
+            var ugCItems = getUgcItems.Result;
+            var kustoCars = getKustoCars.Result;
+
+            foreach (var item in ugCItems)
+            {
+                var carData = kustoCars.FirstOrDefault(car => car.Id == item.CarId);
+                item.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+            }
+
+            return this.Ok(ugCItems);
+        }
+
+        /// <summary>
+        ///     Gets a UGC livery by ID.
+        /// </summary>
+        [HttpGet("storefront/livery/{id}")]
+        [SwaggerResponse(200, type: typeof(UGCItem))]
+        public async Task<IActionResult> GetUGCLivery(string id)
+        {
+            if (!Guid.TryParse(id, out var idGuid))
+            {
+                throw new InvalidArgumentsStewardException($"Livery id provided is not a valid Guid: {id}");
+            }
+
+            var getLivery = this.storefrontProvider.GetUGCLivery(idGuid);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+
+            await Task.WhenAll(getLivery, getKustoCars).ConfigureAwait(true);
+
+            var livery = getLivery.Result;
+            var kustoCars = getKustoCars.Result;
+
+            var carData = kustoCars.FirstOrDefault(car => car.Id == livery.CarId);
+            livery.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+
+            return this.Ok(livery);
+        }
+
+        /// <summary>
+        ///     Gets a UGC photo by ID.
+        /// </summary>
+        [HttpGet("storefront/photo/{id}")]
+        [SwaggerResponse(200, type: typeof(UGCItem))]
+        public async Task<IActionResult> GetUGCPhoto(string id)
+        {
+            if (!Guid.TryParse(id, out var idGuid))
+            {
+                throw new InvalidArgumentsStewardException($"Photo id provided is not a valid Guid: {id}");
+            }
+
+            var getPhoto = this.storefrontProvider.GetUGCPhoto(idGuid);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+
+            await Task.WhenAll(getPhoto, getKustoCars).ConfigureAwait(true);
+
+            var photo = getPhoto.Result;
+            var kustoCars = getKustoCars.Result;
+
+            var carData = kustoCars.FirstOrDefault(car => car.Id == photo.CarId);
+            photo.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+
+            return this.Ok(photo);
+        }
+
+        /// <summary>
+        ///     Sets featured status of a UGC content item.
+        /// </summary>
+        [HttpPost("storefront/itemId({itemId})/featuredStatus")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> SetUGCFeaturedStatus(string itemId, [FromBody] UGCFeaturedStatus status)
+        {
+            if (!Guid.TryParse(itemId, out var itemIdGuid))
+            {
+                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {itemId}");
+            }
+
+            if (status.IsFeatured && !status.Expiry.HasValue)
+            {
+                throw new InvalidArgumentsStewardException($"Required query param is missing: {nameof(status.Expiry)}");
+            }
+
+            if (status.IsFeatured && status.Expiry.HasValue)
+            {
+                status.Expiry.Value.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.Expiry));
+            }
+
+            await this.storefrontProvider.SetUGCFeaturedStatus(itemIdGuid, status.IsFeatured, status.Expiry).ConfigureAwait(true);
+
+            return this.Ok();
         }
 
         /// <summary>

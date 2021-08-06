@@ -1,0 +1,81 @@
+<h2 mat-dialog-title>
+  Feature {{ gameTitle }} UGC Content
+  <br />
+  <span class="mat-subheading-2">
+    {{
+      ugcItem.featuredByT10
+        ? 'Featured until: ' + (ugcItem.featuredEndDateUtc | utcDate: 'short')
+        : 'Not currently featured'
+    }}
+  </span>
+</h2>
+
+<mat-dialog-content>
+  <ul>
+    <li><b>Id: </b> {{ ugcItem.guidId }}</li>
+    <li><b>Description: </b> {{ ugcItem.carDescription }}</li>
+    <li><b>Owner: </b> {{ ugcItem.owner }}</li>
+  </ul>
+  <img #modelImage [src]="ugcItem.thumbnailImageOneBase64" />
+
+  <ng-container *ngIf="!postMonitor?.isActive && !postMonitor?.status?.error; else failstate">
+    <form [formGroup]="formGroup">
+      <mat-form-field appearance="fill" class="expiry-date">
+        <mat-label>Featured End Date</mat-label>
+        <input matInput [matDatepicker]="picker" [formControl]="formControls.featuredDate" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="formGroup.controls['featuredDate'].hasError('is-after')"
+          >Expiry time must be in the future</mat-error
+        >
+        <mat-error *ngIf="formGroup.controls['featuredDate'].hasError('invalid-format')"
+          >Unrecognized Date (expected mm/dd/yyyy)</mat-error
+        >
+      </mat-form-field>
+    </form>
+  </ng-container>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button
+    [disabled]="!formGroup.valid"
+    stateManager
+    [monitor]="postMonitor"
+    monitorDisable
+    mat-raised-button
+    color="primary"
+    (click)="featureUGC()"
+  >
+    Feature Content
+  </button>
+
+  <button
+    *ngIf="ugcItem.featuredByT10"
+    stateManager
+    [monitor]="postMonitor"
+    monitorDisable
+    mat-raised-button
+    color="warn"
+    (click)="deleteFeatureUGCStatus()"
+  >
+    Delete Featured Status
+  </button>
+
+  <button
+    stateManager
+    [monitor]="postMonitor"
+    monitorDisable
+    mat-stroked-button
+    color="warn"
+    mat-dialog-close
+  >
+    Close
+  </button>
+</mat-dialog-actions>
+
+<ng-template #failstate>
+  <mat-progress-spinner *ngIf="postMonitor?.isActive" mode="indeterminate"></mat-progress-spinner>
+  <json-dump *ngIf="!!postMonitor?.status?.error" [input]="postMonitor?.status?.error"
+    >Failed to get backstage pass history.</json-dump
+  >
+</ng-template>

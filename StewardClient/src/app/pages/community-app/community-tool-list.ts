@@ -16,10 +16,17 @@ export class CommunityAppTools {
     title: 'Community App',
     path: 'home',
   };
+
+  /** The home page for the community app. */
+  public static readonly UGCPage: RouteParams = {
+    title: 'UGC',
+    path: 'ugc',
+  };
 }
 
 /** The list of tools to display in the navbar. */
 export const communityAppToolList: RouterLinkPath[] = [
   createCommunityNavbarPath(SharedNavbarTools.MessagingPage),
   createCommunityNavbarPath(SharedNavbarTools.GiftingPage),
+  createCommunityNavbarPath(CommunityAppTools.UGCPage),
 ];

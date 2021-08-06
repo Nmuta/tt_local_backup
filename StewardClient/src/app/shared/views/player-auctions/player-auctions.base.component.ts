@@ -7,10 +7,10 @@ import { NEVER, Observable, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerAuction } from '@models/player-auction';
 import { MatDialog } from '@angular/material/dialog';
-import { ImageModalComponent, ImageModalData } from './image-modal/image-modal.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuctionFilters, DefaultAuctionFilters } from '@models/auction-filters';
+import { ImageModalComponent, ImageModalData } from '@views/image-modal/image-modal.component';
 
 /** Retreives and displays related Sunrise consoles by XUID. */
 @Component({

@@ -19,6 +19,7 @@ import { WoodstockService } from './woodstock.service';
 import { DateTime } from 'luxon';
 import { DefaultAuctionFilters } from '@models/auction-filters';
 import { HttpParams } from '@angular/common/http';
+import { DefaultUGCFilters } from '@models/ugc-filters';
 
 describe('WoodstockService', () => {
   let injector: TestBed;
@@ -453,6 +454,69 @@ describe('WoodstockService', () => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/player/xuid(${xuid})/accountInventory`,
         );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getPlayerUGCByXuid$', () => {
+    const xuid = fakeXuid();
+    const filters = DefaultUGCFilters;
+    let httpParams = new HttpParams();
+
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      httpParams = new HttpParams()
+        .append('xuid', xuid.toString())
+        .append('ugcType', filters.type.toString())
+        .append('accessLevel', filters.accessLevel.toString())
+        .append('orderBy', filters.orderBy.toString());
+    });
+
+    it('should call apiServiceMock.getRequest', done => {
+      service.getPlayerUGCByXuid$(xuid, filters).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/storefront`,
+          httpParams,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getPlayerUGCByShareCode$', () => {
+    const shareCode = faker.random.word();
+    const filters = DefaultUGCFilters;
+    let httpParams = new HttpParams();
+
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+      httpParams = new HttpParams()
+        .append('shareCode', shareCode.toString())
+        .append('ugcType', filters.type.toString())
+        .append('accessLevel', filters.accessLevel.toString())
+        .append('orderBy', filters.orderBy.toString());
+    });
+
+    it('should call apiServiceMock.getRequest', done => {
+      service.getPlayerUGCByShareCode$(shareCode, filters).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/storefront`,
+          httpParams,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getDetailedKustoCars$', () => {
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getDetailedKustoCars$().subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(`${service.basePath}/kusto/cars`);
         done();
       });
     });
