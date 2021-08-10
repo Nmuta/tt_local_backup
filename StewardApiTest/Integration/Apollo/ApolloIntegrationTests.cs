@@ -818,7 +818,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
         public async Task SetUserFlags_InvalidFlags()
         {
             var userFlags = CreateUserFlags();
-            userFlags.IsCommunityManager = null;
+            userFlags.IsEarlyAccess = null;
 
             try
             {
@@ -1378,7 +1378,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Apollo
             {
                 IsUnderReview = false,
                 IsVip = false,
-                IsCommunityManager = false,
                 IsEarlyAccess = false,
                 IsTurn10Employee = false
             };

@@ -19,7 +19,6 @@ export class ApolloUserFlagsComponent extends UserFlagsBaseComponent<ApolloUserF
   public formControls = {
     isVip: new FormControl(false),
     isTurn10Employee: new FormControl(false),
-    isCommunityManager: new FormControl(false),
     isEarlyAccess: new FormControl(false),
     isUnderReview: new FormControl(false),
   };
@@ -40,7 +39,6 @@ export class ApolloUserFlagsComponent extends UserFlagsBaseComponent<ApolloUserF
     return this.apolloService.putFlagsByXuid$(xuid, {
       isVip: this.formControls.isVip.value,
       isTurn10Employee: this.formControls.isTurn10Employee.value,
-      isCommunityManager: this.formControls.isCommunityManager.value,
       isEarlyAccess: this.formControls.isEarlyAccess.value,
       isUnderReview: this.formControls.isUnderReview.value,
     } as ApolloUserFlags);

@@ -12,11 +12,6 @@ namespace Turn10.LiveOps.StewardApi.Validation.Woodstock
         /// <inheritdoc />
         public void Validate(WoodstockUserFlagsInput model, ModelStateDictionary modelState)
         {
-            if (!model.IsCommunityManager.HasValue)
-            {
-                modelState.AddModelError("UserFlags.IsCommunityManager", $"{nameof(model.IsCommunityManager)} must not be null.");
-            }
-
             if (!model.IsEarlyAccess.HasValue)
             {
                 modelState.AddModelError("UserFlags.IsEarlyAccess", $"{nameof(model.IsEarlyAccess)} must not be null.");

@@ -143,11 +143,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         public bool IsUnderReview { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether player is community manager.
-        /// </summary>
-        public bool IsCommunityManager { get; set; }
-
-        /// <summary>
         ///     Gets or sets a value indicating whether player is on white list.
         /// </summary>
         public bool IsOnWhiteList { get; set; }

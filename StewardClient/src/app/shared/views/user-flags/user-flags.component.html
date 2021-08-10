@@ -30,8 +30,12 @@
             [disabled]="submit.isSubmitting"
             (change)="verifyDirtyStatus()"
           >
-            {{ control.key | humanize }}
-            <span *ngIf="control.key === IS_COMMUNITY_MANAGER">(dangerous! see jeffspr)</span>
+            <ng-container *ngIf="alteredLabels[control.key]">
+              {{ alteredLabels[control.key] }}
+            </ng-container>
+            <ng-container *ngIf="!alteredLabels[control.key]">
+              {{ control.key | humanize }}
+            </ng-container>
           </mat-checkbox>
         </section>
       </ng-container>

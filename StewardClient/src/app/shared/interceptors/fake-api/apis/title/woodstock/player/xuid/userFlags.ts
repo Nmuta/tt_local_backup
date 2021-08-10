@@ -27,7 +27,6 @@ export class WoodstockPlayerXuidUserFlagsFakeApi extends FakeApiBase {
       isVip: false,
       isUltimateVip: false,
       isTurn10Employee: false,
-      isCommunityManager: false,
       isUnderReview: false,
       isEarlyAccess: false,
     };

@@ -22,7 +22,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         private const int DefaultMaxResults = 500;
         private const int VipUserGroupId = 1;
         private const int T10EmployeeUserGroupId = 3;
-        private const int CommunityManagerUserGroupId = 4;
         private const int WhitelistUserGroupId = 5;
 
         private readonly IApolloService apolloService;
@@ -357,7 +356,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 {
                     IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
                     IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
-                    IsCommunityManager = userGroupResults.userGroups.Any(r => r.Id == CommunityManagerUserGroupId),
                     IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
                     IsUnderReview = suspiciousResults.isUnderReview
                 };
@@ -399,7 +397,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             var resultGroupIds = new List<int>();
             if (userFlags.IsVip == toggleOn) { resultGroupIds.Add(VipUserGroupId); }
             if (userFlags.IsTurn10Employee == toggleOn) { resultGroupIds.Add(T10EmployeeUserGroupId); }
-            if (userFlags.IsCommunityManager == toggleOn) { resultGroupIds.Add(CommunityManagerUserGroupId); }
             if (userFlags.IsEarlyAccess == toggleOn) { resultGroupIds.Add(WhitelistUserGroupId); }
 
             return resultGroupIds;

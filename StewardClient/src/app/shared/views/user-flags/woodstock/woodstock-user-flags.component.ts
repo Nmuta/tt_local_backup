@@ -20,7 +20,6 @@ export class WoodstockUserFlagsComponent extends UserFlagsBaseComponent<Woodstoc
     isVip: new FormControl(false),
     isUltimateVip: new FormControl(false),
     isTurn10Employee: new FormControl(false),
-    isCommunityManager: new FormControl(false),
     isEarlyAccess: new FormControl(false),
     isUnderReview: new FormControl(false),
   };
@@ -42,7 +41,6 @@ export class WoodstockUserFlagsComponent extends UserFlagsBaseComponent<Woodstoc
       isVip: this.formControls.isVip.value,
       isUltimateVip: this.formControls.isUltimateVip.value,
       isTurn10Employee: this.formControls.isTurn10Employee.value,
-      isCommunityManager: this.formControls.isCommunityManager.value,
       isEarlyAccess: this.formControls.isEarlyAccess.value,
       isUnderReview: this.formControls.isUnderReview.value,
     } as WoodstockUserFlags);

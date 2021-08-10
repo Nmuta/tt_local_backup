@@ -74,7 +74,6 @@ describe('SunriseUserFlagsComponent', () => {
           isVip: faker.datatype.boolean(),
           isUltimateVip: faker.datatype.boolean(),
           isTurn10Employee: faker.datatype.boolean(),
-          isCommunityManager: faker.datatype.boolean(),
           isEarlyAccess: faker.datatype.boolean(),
           isUnderReview: faker.datatype.boolean(),
         } as SunriseUserFlags;
@@ -92,7 +91,6 @@ describe('SunriseUserFlagsComponent', () => {
           expect(component.formControls.isVip.value).toEqual(flags.isVip);
           expect(component.formControls.isUltimateVip.value).toEqual(flags.isUltimateVip);
           expect(component.formControls.isTurn10Employee.value).toEqual(flags.isTurn10Employee);
-          expect(component.formControls.isCommunityManager.value).toEqual(flags.isCommunityManager);
           expect(component.formControls.isEarlyAccess.value).toEqual(flags.isEarlyAccess);
           expect(component.formControls.isUnderReview.value).toEqual(flags.isUnderReview);
         });

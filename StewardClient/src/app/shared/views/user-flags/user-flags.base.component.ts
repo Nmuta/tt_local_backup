@@ -17,6 +17,7 @@ export type UserFlagsUnion =
   | SteelheadUserFlags
   | SunriseUserFlags
   | ApolloUserFlags;
+
 /** Retreives and displays Sunrise User Flags by XUID. */
 @Component({
   template: '',
@@ -46,7 +47,12 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
   /** The error received when submitting. */
   public submitError: unknown;
 
-  public readonly IS_COMMUNITY_MANAGER = 'isCommunityManager';
+  /** Alternate text per key. */
+  public readonly alteredLabels: { [key in keyof UserFlagsUnion]?: string } = {
+    isEarlyAccess: 'Is Early Access (Unbannable)',
+    isTurn10Employee: 'Is Employee (User Badge + Unbannable)',
+    isUnderReview: 'Is Under Review (Console Banned)',
+  };
 
   public abstract gameTitle: GameTitleCodeName;
   public abstract formControls: unknown;

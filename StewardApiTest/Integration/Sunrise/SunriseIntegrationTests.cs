@@ -430,7 +430,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         public async Task SetUserFlags_InvalidFlags()
         {
             var userFlags = CreateUserFlags();
-            userFlags.IsCommunityManager = null;
+            userFlags.IsEarlyAccess = null;
 
             try
             {
@@ -1930,7 +1930,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
                 IsVip = true,
                 IsUltimateVip = true,
                 IsTurn10Employee = false,
-                IsCommunityManager = false,
                 IsUnderReview = false,
                 IsEarlyAccess = false
             };

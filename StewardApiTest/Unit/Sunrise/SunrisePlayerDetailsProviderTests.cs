@@ -243,7 +243,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Assert.
             Action().Result.Should().BeOfType<SunriseUserFlags>();
             Action().Result.ShouldNotBeNull();
-            Action().Result.IsCommunityManager.Should().Be(false);
+            Action().Result.IsEarlyAccess.Should().Be(false);
         }
 
         [TestMethod]

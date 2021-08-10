@@ -23,7 +23,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         private const int VipUserGroupId = 1;
         private const int UltimateVipUserGroupId = 2;
         private const int T10EmployeeUserGroupId = 4;
-        private const int CommunityManagerUserGroupId = 5;
         private const int WhitelistUserGroupId = 6;
 
         private readonly ISteelheadService steelheadService;
@@ -211,7 +210,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                     IsVip = userGroupResults.userGroups.Any(r => r.Id == VipUserGroupId),
                     IsUltimateVip = userGroupResults.userGroups.Any(r => r.Id == UltimateVipUserGroupId),
                     IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
-                    IsCommunityManager = userGroupResults.userGroups.Any(r => r.Id == CommunityManagerUserGroupId),
                     IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
                     IsUnderReview = suspiciousResults.isUnderReview
                 };
@@ -454,7 +452,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             if (userFlags.IsVip == toggleOn) { resultGroupIds.Add(VipUserGroupId); }
             if (userFlags.IsUltimateVip == toggleOn) { resultGroupIds.Add(UltimateVipUserGroupId); }
             if (userFlags.IsTurn10Employee == toggleOn) { resultGroupIds.Add(T10EmployeeUserGroupId); }
-            if (userFlags.IsCommunityManager == toggleOn) { resultGroupIds.Add(CommunityManagerUserGroupId); }
             if (userFlags.IsEarlyAccess == toggleOn) { resultGroupIds.Add(WhitelistUserGroupId); }
 
             return resultGroupIds;

@@ -249,7 +249,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             // Assert.
             Action().Result.Should().BeOfType<WoodstockUserFlags>();
             Action().Result.ShouldNotBeNull();
-            Action().Result.IsCommunityManager.Should().Be(false);
+            Action().Result.IsEarlyAccess.Should().Be(false);
         }
 
         [TestMethod]

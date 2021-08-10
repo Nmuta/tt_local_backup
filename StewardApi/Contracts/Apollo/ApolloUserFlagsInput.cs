@@ -16,11 +16,6 @@
         public bool? IsTurn10Employee { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the user is a community manager.
-        /// </summary>
-        public bool? IsCommunityManager { get; set; }
-
-        /// <summary>
         ///     Gets or sets a value indicating whether the user is early access.
         /// </summary>
         public bool? IsEarlyAccess { get; set; }

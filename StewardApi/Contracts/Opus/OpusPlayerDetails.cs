@@ -138,11 +138,6 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Opus
         public bool IsFlaggedForSuspiciousActivity { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether player is community manager.
-        /// </summary>
-        public bool IsCommunityManager { get; set; }
-
-        /// <summary>
         ///     Gets or sets a value indicating whether player is under review.
         /// </summary>
         public bool IsUnderReview { get; set; }
