@@ -16,7 +16,6 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -52,6 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IKustoProvider kustoProvider;
         private readonly IWoodstockPlayerInventoryProvider woodstockPlayerInventoryProvider;
         private readonly IWoodstockPlayerDetailsProvider woodstockPlayerDetailsProvider;
+        private readonly IWoodstockServiceManagementProvider woodstockServiceManagementProvider;
         private readonly IWoodstockGiftHistoryProvider giftHistoryProvider;
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
         private readonly IJobTracker jobTracker;
@@ -72,6 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IKustoProvider kustoProvider,
             IWoodstockPlayerDetailsProvider woodstockPlayerDetailsProvider,
             IWoodstockPlayerInventoryProvider woodstockPlayerInventoryProvider,
+            IWoodstockServiceManagementProvider woodstockServiceManagementProvider,
             IKeyVaultProvider keyVaultProvider,
             IWoodstockGiftHistoryProvider giftHistoryProvider,
             IWoodstockBanHistoryProvider banHistoryProvider,
@@ -90,6 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             woodstockPlayerDetailsProvider.ShouldNotBeNull(nameof(woodstockPlayerDetailsProvider));
             woodstockPlayerInventoryProvider.ShouldNotBeNull(nameof(woodstockPlayerInventoryProvider));
+            woodstockServiceManagementProvider.ShouldNotBeNull(nameof(woodstockServiceManagementProvider));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
@@ -109,6 +111,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.kustoProvider = kustoProvider;
             this.woodstockPlayerDetailsProvider = woodstockPlayerDetailsProvider;
             this.woodstockPlayerInventoryProvider = woodstockPlayerInventoryProvider;
+            this.woodstockServiceManagementProvider = woodstockServiceManagementProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
             this.scheduler = scheduler;
@@ -358,9 +361,59 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             // foreach (var auction in results)
             // {
             //    var carData = kustoCarData.FirstOrDefault(car => car.Id == auction.ModelId);
-            //    auction.ItemName = carData != default(KustoCar) ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
+            //    auction.ItemName = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
             // }
             return this.Ok(results);
+        }
+
+        /// <summary>
+        ///     Gets auction house blocklist entries.
+        /// </summary>
+        [HttpGet("auctions/blocklist")]
+        [SwaggerResponse(200, type: typeof(IList<AuctionBlocklistEntry>))]
+        public async Task<IActionResult> GetAuctionBlocklist([FromQuery] int maxResults = DefaultMaxResults)
+        {
+            maxResults.ShouldBeGreaterThanValue(0);
+
+            // TODO: Uncomment once FH5 Kusto tables are placed into GDE003 production. Task: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/745566
+            // var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed);
+            var getBlocklist = this.woodstockServiceManagementProvider.GetAuctionBlocklistAsync(maxResults);
+
+            await Task.WhenAll(getBlocklist/*, getKustoCars*/).ConfigureAwait(true);
+
+            var blocklist = getBlocklist.Result;
+
+            // var kustoCars = getKustoCars.Result;
+            // foreach (var entry in blocklist)
+            // {
+            //     var carData = kustoCars.FirstOrDefault(car => car.Id == entry.CarId);
+            //     entry.Description = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
+            // }
+            return this.Ok(blocklist);
+        }
+
+        /// <summary>
+        ///     Adds entries to auction house blocklist.
+        /// </summary>
+        [HttpPost("auctions/blocklist")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> AddEntriesToAuctionBlocklist([FromBody] IList<AuctionBlocklistEntry> entries)
+        {
+            await this.woodstockServiceManagementProvider.AddAuctionBlocklistEntriesAsync(entries).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Removes an entry from auction house blocklist.
+        /// </summary>
+        [HttpDelete("auctions/blocklist/carId({carId})")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> RemoveEntryFromAuctionBlocklist(int carId)
+        {
+            await this.woodstockServiceManagementProvider.DeleteAuctionBlocklistEntriesAsync(new List<int> { carId }).ConfigureAwait(true);
+
+            return this.Ok();
         }
 
         /// <summary>
@@ -525,7 +578,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.woodstockPlayerDetailsProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
+            var result = await this.woodstockServiceManagementProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -870,7 +923,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
             communityMessage.Duration.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(communityMessage.Duration));
 
-            var groups = await this.woodstockPlayerDetailsProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
+            var groups = await this.woodstockServiceManagementProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
             if (!groups.Any(x => x.Id == groupId))
             {
                 throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");

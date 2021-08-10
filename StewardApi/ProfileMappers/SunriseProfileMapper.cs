@@ -111,7 +111,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.PlayerExists ? src.Gamertag : null))
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.PlayerExists ? src.Xuid : 0))
                 .ReverseMap();
-
             this.CreateMap<AuctionFilters, LiveOpsContracts.ForzaAuctionFilters>()
                 .ForMember(dest => dest.IncludeThumbnail, opt => opt.MapFrom(source => true))
                 .ForMember(dest => dest.IncludeAdminTexture, opt => opt.MapFrom(source => true))
@@ -119,7 +118,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.MakeId, opt => opt.MapFrom(source => source.MakeId))
                 .ForMember(dest => dest.AuctionStatus, opt => opt.MapFrom(source => source.Status))
                 .ForMember(dest => dest.OrderBy, opt => opt.MapFrom(source => source.Sort == AuctionSort.ClosingDateAscending ? LiveOpsContracts.ForzaSearchOrderBy.ClosingDateAsc : LiveOpsContracts.ForzaSearchOrderBy.ClosingDateDesc));
-
             this.CreateMap<LiveOpsContracts.ForzaAuctionWithFileData, PlayerAuction>()
                 .ForMember(dest => dest.TextureMapImageBase64, opt => opt.MapFrom(source => source.AdminTexture.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.AdminTexture) : null))
                 .ForMember(dest => dest.LiveryImageBase64, opt => opt.MapFrom(source => source.LargeThumbnail.Length > 0 ? "data:image/jpeg;base64," + Convert.ToBase64String(source.LargeThumbnail) : null))
@@ -134,7 +132,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Bids, opt => opt.MapFrom(source => source.Auction.BidCount))
                 .ForMember(dest => dest.TotalReports, opt => opt.MapFrom(source => source.Auction.UserReportTotal))
                 .ForMember(dest => dest.TimeFlagged, opt => opt.MapFrom(source => source.Auction.TimeFlagged != default(DateTime) ? source.Auction.TimeFlagged : (DateTime?)null));
-
             this.CreateMap<LiveOpsContracts.ForzaUserAdminComment, SunriseProfileNote>()
                 .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(src => src.date))
                 .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.author))
@@ -209,6 +206,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.TimesLiked, opt => opt.MapFrom(source => source.Metadata.TimesLiked))
                 .ForMember(dest => dest.TimesDownloaded, opt => opt.MapFrom(source => source.Metadata.TimesDownloaded))
                 .ForMember(dest => dest.TimesUsed, opt => opt.MapFrom(source => source.Metadata.TimesUsed))
+                .ReverseMap();
+            this.CreateMap<LiveOpsContracts.ForzaAuctionBlocklistEntry, AuctionBlocklistEntry>()
+                .ForMember(dest => dest.ExpireDateUtc, opt => opt.MapFrom(src => src.ExpireDate))
                 .ReverseMap();
         }
     }

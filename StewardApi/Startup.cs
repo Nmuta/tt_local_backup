@@ -235,6 +235,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IWoodstockService, WoodstockServiceWrapper>();
             services.AddSingleton<IWoodstockPlayerDetailsProvider, WoodstockPlayerDetailsProvider>();
             services.AddSingleton<IWoodstockPlayerInventoryProvider, WoodstockPlayerInventoryProvider>();
+            services.AddSingleton<IWoodstockServiceManagementProvider, WoodstockServiceManagementProvider>();
             services.AddSingleton<IWoodstockBanHistoryProvider, WoodstockBanHistoryProvider>();
             services.AddSingleton<IWoodstockGiftHistoryProvider, WoodstockGiftHistoryProvider>();
             services.AddSingleton<IRequestValidator<WoodstockBanParametersInput>, WoodstockBanParametersRequestValidator>();
@@ -246,6 +247,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<ISteelheadService, SteelheadServiceWrapper>();
             services.AddSingleton<ISteelheadPlayerDetailsProvider, SteelheadPlayerDetailsProvider>();
             services.AddSingleton<ISteelheadPlayerInventoryProvider, SteelheadPlayerInventoryProvider>();
+            services.AddSingleton<ISteelheadServiceManagementProvider, SteelheadServiceManagementProvider>();
             services.AddSingleton<ISteelheadBanHistoryProvider, SteelheadBanHistoryProvider>();
             services.AddSingleton<ISteelheadGiftHistoryProvider, SteelheadGiftHistoryProvider>();
             services.AddSingleton<IRequestValidator<SteelheadBanParametersInput>, SteelheadBanParametersRequestValidator>();
@@ -265,6 +267,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<ISunriseService, SunriseServiceWrapper>();
             services.AddSingleton<ISunrisePlayerDetailsProvider, SunrisePlayerDetailsProvider>();
             services.AddSingleton<ISunrisePlayerInventoryProvider, SunrisePlayerInventoryProvider>();
+            services.AddSingleton<ISunriseServiceManagementProvider, SunriseServiceManagementProvider>();
             services.AddSingleton<IRequestValidator<SunriseMasterInventory>, SunriseMasterInventoryRequestValidator>();
             services.AddSingleton<IRequestValidator<SunriseBanParametersInput>, SunriseBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<SunriseUserFlagsInput>, SunriseUserFlagsRequestValidator>();
@@ -278,6 +281,7 @@ namespace Turn10.LiveOps.StewardApi
             services.AddSingleton<IApolloPlayerDetailsProvider, ApolloPlayerDetailsProvider>();
             services.AddSingleton<IApolloPlayerInventoryProvider, ApolloPlayerInventoryProvider>();
             services.AddSingleton<IApolloBanHistoryProvider, ApolloBanHistoryProvider>();
+            services.AddSingleton<IApolloServiceManagementProvider, ApolloServiceManagementProvider>();
             services.AddSingleton<IRequestValidator<ApolloBanParametersInput>, ApolloBanParametersRequestValidator>();
             services.AddSingleton<IRequestValidator<ApolloMasterInventory>, ApolloMasterInventoryRequestValidator>();
             services.AddSingleton<IRequestValidator<ApolloUserFlagsInput>, ApolloUserFlagsRequestValidator>();

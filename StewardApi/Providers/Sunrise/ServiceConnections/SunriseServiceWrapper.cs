@@ -11,7 +11,6 @@ using Turn10.Contracts.STS;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
@@ -365,6 +364,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 
             // NOTE: User scenario for setting featured state always uses the same DateTime for featureEndDate & forceFeatureEndDate
             await storefrontService.SetFeatured(contentId, isFeatured, featureEndDate, featureEndDate).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockListAsync(int maxResults)
+        {
+            var auctionService = await this.PrepareAuctionManagementServiceAsync().ConfigureAwait(false);
+
+            return await auctionService.GetAuctionBlocklist(maxResults).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task AddAuctionBlocklistEntriesAsync(ForzaAuctionBlocklistEntry[] blockEntries)
+        {
+            var auctionService = await this.PrepareAuctionManagementServiceAsync().ConfigureAwait(false);
+
+            await auctionService.AddToAuctionBlocklist(blockEntries).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteAuctionBlocklistEntriesAsync(int[] carIds)
+        {
+            var auctionService = await this.PrepareAuctionManagementServiceAsync().ConfigureAwait(false);
+
+            await auctionService.DeleteAuctionBlocklistEntries(carIds).ConfigureAwait(false);
         }
 
         private async Task<UserManagementService> PrepareUserManagementServiceAsync()

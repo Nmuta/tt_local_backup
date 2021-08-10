@@ -1781,13 +1781,40 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         [TestMethod]
         [TestCategory("Integration")]
-        [Ignore] //Enable once auction lookup is deployed to FH4 prod.
         public async Task GetPlayerAuctions()
         {
             var result = await stewardClient.GetPlayerAuctionsAsync(xuid, short.MaxValue, short.MaxValue, "Any", "ClosingDateDescending").ConfigureAwait(false);
 
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task GetAuctionBlocklist()
+        {
+            var result = await stewardClient.GetAuctionBlocklistAsync().ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
             Assert.IsTrue(result.Any());
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
+        public async Task AddAndRemoveAuctionBlocklistEntry()
+        {
+            var newEntry = new AuctionBlocklistEntry
+                {CarId = 1301, ExpireDateUtc = DateTime.UtcNow.AddDays(1), DoesExpire = true, Description = ""};
+
+            var beforeResult = await stewardClient.GetAuctionBlocklistAsync().ConfigureAwait(false);
+            Assert.IsFalse(beforeResult.Where(entry => entry.CarId == 1301).Any());
+
+            await stewardClient.PostAuctionBlocklistEntriesAsync(new List<AuctionBlocklistEntry>{ newEntry }).ConfigureAwait(false);
+            var duringResult = await stewardClient.GetAuctionBlocklistAsync().ConfigureAwait(false);
+            Assert.IsTrue(duringResult.Where(entry => entry.CarId == 1301).Any());
+
+            await stewardClient.DeleteAuctionBlocklistEntryAsync(1301).ConfigureAwait(false);
+            var afterResult = await stewardClient.GetAuctionBlocklistAsync().ConfigureAwait(false);
+            Assert.IsFalse(afterResult.Where(entry => entry.CarId == 1301).Any());
         }
 
         private async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, SunriseGroupGift groupGift, BackgroundJobStatus expectedStatus)

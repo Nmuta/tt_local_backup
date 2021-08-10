@@ -179,23 +179,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
         }
 
-        /// <inheritdoc />
-        public async Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults)
-        {
-            try
-            {
-                var result = await this.woodstockService.GetUserGroupsAsync(startIndex, maxResults)
-                    .ConfigureAwait(false);
-                var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
-
-                return lspGroups;
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No LSP groups found for {TitleConstants.WoodstockFullName}", ex);
-            }
-        }
-
         /// <inheritdoc/>
         public async Task<WoodstockUserFlags> GetUserFlagsAsync(ulong xuid)
         {

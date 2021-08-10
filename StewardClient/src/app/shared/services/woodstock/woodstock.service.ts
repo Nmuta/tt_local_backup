@@ -45,8 +45,8 @@ import { PlayerAuction } from '@models/player-auction';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
 import { PlayerUGCItem } from '@models/player-ugc-item';
 import { UGCFilters, UGCType } from '@models/ugc-filters';
-import { KustoCar } from '@models/kusto-car';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
+import { KustoCar } from '@models/kusto-car';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({

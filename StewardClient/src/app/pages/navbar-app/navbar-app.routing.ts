@@ -59,6 +59,13 @@ const routes: Routes = [
         loadChildren: () => import('./pages/kusto/kusto.module').then(m => m.KustoModule),
       },
       {
+        path: NavbarTools.ServiceManagementPage.path,
+        loadChildren: () =>
+          import('./pages/service-management/service-management.module').then(
+            m => m.StewardServiceManagementModule,
+          ),
+      },
+      {
         path: SharedNavbarTools.MessagingPage.path,
         canActivate: [FindUserRoleGuard([UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin])],
         loadChildren: () =>

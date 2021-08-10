@@ -306,6 +306,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             return await auctionService.SearchAuctionHouse(filters).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
+        public async Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockList(int maxResults)
+        {
+            var auctionService = await this.PrepareAuctionManagementServiceAsync().ConfigureAwait(false);
+
+            return await auctionService.GetAuctionBlocklist(maxResults).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task AddAuctionBlocklistEntriesAsync(ForzaAuctionBlocklistEntry[] blockEntries)
+        {
+            var auctionService = await this.PrepareAuctionManagementServiceAsync().ConfigureAwait(false);
+
+            await auctionService.AddToAuctionBlocklist(blockEntries).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteAuctionBlocklistEntries(int[] carIds)
+        {
+            var auctionService = await this.PrepareAuctionManagementServiceAsync().ConfigureAwait(false);
+
+            await auctionService.DeleteAuctionBlocklistEntries(carIds).ConfigureAwait(false);
+        }
+
         private async Task<UserManagementService> PrepareUserManagementServiceAsync()
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)

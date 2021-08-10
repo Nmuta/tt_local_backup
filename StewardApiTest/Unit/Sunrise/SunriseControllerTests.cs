@@ -1745,7 +1745,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
-                this.SunrisePlayerInventoryProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
+                this.SunriseServiceManagementProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
                 this.SunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SunriseGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.SunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SunriseGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
@@ -1771,6 +1771,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             public ISunrisePlayerInventoryProvider SunrisePlayerInventoryProvider { get; set; } = Substitute.For<ISunrisePlayerInventoryProvider>();
 
             public ISunriseStorefrontProvider StorefrontProvider { get; set; } = Substitute.For<ISunriseStorefrontProvider>();
+
+            public ISunriseServiceManagementProvider SunriseServiceManagementProvider { get; set; } = Substitute.For<ISunriseServiceManagementProvider>();
 
             public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
 
@@ -1806,6 +1808,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.KustoProvider,
                 this.SunrisePlayerDetailsProvider,
                 this.SunrisePlayerInventoryProvider,
+                this.SunriseServiceManagementProvider,
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,

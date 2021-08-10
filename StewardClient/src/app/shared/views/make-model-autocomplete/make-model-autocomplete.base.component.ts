@@ -103,7 +103,7 @@ export abstract class MakeModelAutocompleteBaseComponent
 
   /** Mat autocomplete display */
   public autoCompleteDisplayFn(item: KustoCar): string {
-    return !!item ? (!item?.makeOnly ? `${item.make} ${item.model}` : item.make) : '';
+    return !!item ? (!item?.makeOnly ? `${item.make} ${item.model} [${item.id}]` : item.make) : '';
   }
 
   /** Clears the make model input and resubmits the search filters. */
@@ -198,7 +198,11 @@ export abstract class MakeModelAutocompleteBaseComponent
 
   /** Compares a filter string against an InventoryItem, returning true if the string was found. */
   private checkFilterAgainstInventoryItem(item: KustoCar, filter: string): boolean {
-    return item?.make.toLowerCase().includes(filter) || item?.model.toLowerCase().includes(filter);
+    return (
+      item?.make.toLowerCase().includes(filter) ||
+      item?.model.toLowerCase().includes(filter) ||
+      item?.id?.toString().includes(filter)
+    );
   }
 
   private changeFn = (_data: KustoCar) => {

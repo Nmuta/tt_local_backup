@@ -16,7 +16,6 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.QueryParams;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
@@ -58,6 +57,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IKustoProvider kustoProvider;
         private readonly ISunrisePlayerInventoryProvider sunrisePlayerInventoryProvider;
         private readonly ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider;
+        private readonly ISunriseServiceManagementProvider sunriseServiceManagementProvider;
         private readonly ISunriseGiftHistoryProvider giftHistoryProvider;
         private readonly ISunriseBanHistoryProvider banHistoryProvider;
         private readonly ISunriseStorefrontProvider storefrontProvider;
@@ -79,6 +79,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IKustoProvider kustoProvider,
             ISunrisePlayerDetailsProvider sunrisePlayerDetailsProvider,
             ISunrisePlayerInventoryProvider sunrisePlayerInventoryProvider,
+            ISunriseServiceManagementProvider sunriseServiceManagementProvider,
             IKeyVaultProvider keyVaultProvider,
             ISunriseGiftHistoryProvider giftHistoryProvider,
             ISunriseBanHistoryProvider banHistoryProvider,
@@ -98,6 +99,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             sunrisePlayerDetailsProvider.ShouldNotBeNull(nameof(sunrisePlayerDetailsProvider));
             sunrisePlayerInventoryProvider.ShouldNotBeNull(nameof(sunrisePlayerInventoryProvider));
+            sunriseServiceManagementProvider.ShouldNotBeNull(nameof(sunriseServiceManagementProvider));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
@@ -119,6 +121,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.sunrisePlayerDetailsProvider = sunrisePlayerDetailsProvider;
             this.sunrisePlayerInventoryProvider = sunrisePlayerInventoryProvider;
             this.storefrontProvider = storefrontProvider;
+            this.sunriseServiceManagementProvider = sunriseServiceManagementProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
             this.scheduler = scheduler;
@@ -407,14 +410,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             await Task.WhenAll(getAuctions, getKustoCars).ConfigureAwait(true);
 
-            var auctions = await getAuctions.ConfigureAwait(true);
-            var kustoCars = await getKustoCars.ConfigureAwait(true);
-
+            var auctions = getAuctions.Result;
+            var kustoCars = getKustoCars.Result;
 
             foreach (var auction in auctions)
             {
                 var carData = kustoCars.FirstOrDefault(car => car.Id == auction.ModelId);
-                auction.ItemName = carData != default(KustoCar) ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
+                auction.ItemName = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
             }
 
             return this.Ok(auctions);
@@ -546,6 +548,56 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             await this.storefrontProvider.SetUGCFeaturedStatus(itemIdGuid, status.IsFeatured, status.Expiry).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Gets auction house blocklist entries.
+        /// </summary>
+        [HttpGet("auctions/blocklist")]
+        [SwaggerResponse(200, type: typeof(IList<AuctionBlocklistEntry>))]
+        public async Task<IActionResult> GetAuctionBlocklist([FromQuery] int maxResults = DefaultMaxResults)
+        {
+            maxResults.ShouldBeGreaterThanValue(0);
+
+            var getBlocklist = this.sunriseServiceManagementProvider.GetAuctionBlocklistAsync(maxResults);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+
+            await Task.WhenAll(getBlocklist, getKustoCars).ConfigureAwait(true);
+
+            var blocklist = getBlocklist.Result;
+            var kustoCars = getKustoCars.Result;
+
+            foreach (var entry in blocklist)
+            {
+                var carData = kustoCars.FirstOrDefault(car => car.Id == entry.CarId);
+                entry.Description = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
+            }
+
+            return this.Ok(blocklist);
+        }
+
+        /// <summary>
+        ///     Adds entries to auction house blocklist.
+        /// </summary>
+        [HttpPost("auctions/blocklist")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> AddEntriesToAuctionBlocklist([FromBody] IList<AuctionBlocklistEntry> entries)
+        {
+            await this.sunriseServiceManagementProvider.AddAuctionBlocklistEntriesAsync(entries).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Removes an entry from auction house blocklist.
+        /// </summary>
+        [HttpDelete("auctions/blocklist/carId({carId})")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> RemoveEntryFromAuctionBlocklist(int carId)
+        {
+            await this.sunriseServiceManagementProvider.DeleteAuctionBlocklistEntriesAsync(new List<int> { carId }).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -831,7 +883,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.sunrisePlayerInventoryProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
+            var result = await this.sunriseServiceManagementProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -1087,7 +1139,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
             communityMessage.Duration.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(communityMessage.Duration));
 
-            var groups = await this.sunrisePlayerInventoryProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
+            var groups = await this.sunriseServiceManagementProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
             if (!groups.Any(x => x.Id == groupId))
             {
                 throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");

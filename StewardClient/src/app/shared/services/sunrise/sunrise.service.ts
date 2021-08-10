@@ -47,6 +47,7 @@ import { BackstagePassHistory } from '@models/backstage-pass-history';
 import { UGCFilters, UGCType } from '@models/ugc-filters';
 import { PlayerUGCItem } from '@models/player-ugc-item';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
+import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -86,6 +87,27 @@ export class SunriseService {
   /** Gets the sunrise lsp groups. */
   public getLspGroups$(): Observable<LspGroups> {
     return this.apiService.getRequest$<LspGroups>(`${this.basePath}/groups`);
+  }
+
+  /** Gets auction house blocklist. */
+  public getAuctionBlocklist$(): Observable<AuctionBlocklistEntry[]> {
+    return this.apiService.getRequest$<AuctionBlocklistEntry[]>(
+      `${this.basePath}/auctions/blockList`,
+    );
+  }
+
+  /** Adds entries to auction house blocklist. */
+  public postAuctionBlocklistEntries$(
+    entries: AuctionBlocklistEntry[],
+  ): Observable<AuctionBlocklistEntry[]> {
+    return this.apiService.postRequest$(`${this.basePath}/auctions/blockList`, entries);
+  }
+
+  /** Deletes an auction house blocklist entry. */
+  public deleteAuctionBlocklistEntry$(carId: BigNumber): Observable<AuctionBlocklistEntry[]> {
+    return this.apiService.deleteRequest$<AuctionBlocklistEntry[]>(
+      `${this.basePath}/auctions/blockList/carId(${carId})`,
+    );
   }
 
   /** Gets the sunrise master inventory. */

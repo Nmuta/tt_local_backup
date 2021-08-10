@@ -12,7 +12,6 @@ using RareCarShopService = Forza.WebServices.FH4.Generated.RareCarShopService;
 using UserInventoryService = Forza.LiveOps.FH4.Generated.UserInventoryService;
 using UserManagementService = Forza.LiveOps.FH4.Generated.UserManagementService;
 
-
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 {
     /// <summary>
@@ -31,7 +30,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         Task<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput> GetLiveOpsUserDataByGamerTagAsync(string gamertag);
 
         /// <summary>
-        ///     Get user IDs.
+        ///     Gets user IDs.
         /// </summary>
         Task<UserManagementService.GetUserIdsOutput> GetUserIds(ForzaPlayerLookupParameters[] parameters);
 
@@ -164,6 +163,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         ///     Gets player auctions.
         /// </summary>
         Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(ForzaAuctionFilters filters);
+
+        /// <summary>
+        ///     Gets auction house block list.
+        /// </summary>
+        Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockListAsync(int maxResults);
+
+        /// <summary>
+        ///     Adds or updates an entry in the auction house block list.
+        /// </summary>
+        Task AddAuctionBlocklistEntriesAsync(ForzaAuctionBlocklistEntry[] blockEntries);
+
+        /// <summary>
+        ///     Removes an entry from the auction house block list.
+        /// </summary>
+        Task DeleteAuctionBlocklistEntriesAsync(int[] carIds);
 
         /// <summary>
         ///     Gets token balance.

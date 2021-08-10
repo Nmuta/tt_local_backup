@@ -56,6 +56,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IKustoProvider kustoProvider;
         private readonly IApolloPlayerDetailsProvider apolloPlayerDetailsProvider;
         private readonly IApolloPlayerInventoryProvider apolloPlayerInventoryProvider;
+        private readonly IApolloServiceManagementProvider apolloServiceManagementProvider;
         private readonly IApolloGiftHistoryProvider giftHistoryProvider;
         private readonly IApolloBanHistoryProvider banHistoryProvider;
         private readonly IScheduler scheduler;
@@ -75,6 +76,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IKustoProvider kustoProvider,
             IApolloPlayerDetailsProvider apolloPlayerDetailsProvider,
             IApolloPlayerInventoryProvider apolloPlayerInventoryProvider,
+            IApolloServiceManagementProvider apolloServiceManagementProvider,
             IKeyVaultProvider keyVaultProvider,
             IApolloGiftHistoryProvider giftHistoryProvider,
             IApolloBanHistoryProvider banHistoryProvider,
@@ -92,6 +94,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             apolloPlayerDetailsProvider.ShouldNotBeNull(nameof(apolloPlayerDetailsProvider));
             apolloPlayerInventoryProvider.ShouldNotBeNull(nameof(apolloPlayerInventoryProvider));
+            apolloServiceManagementProvider.ShouldNotBeNull(nameof(apolloServiceManagementProvider));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
@@ -110,6 +113,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.kustoProvider = kustoProvider;
             this.apolloPlayerDetailsProvider = apolloPlayerDetailsProvider;
             this.apolloPlayerInventoryProvider = apolloPlayerInventoryProvider;
+            this.apolloServiceManagementProvider = apolloServiceManagementProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
             this.scheduler = scheduler;
@@ -390,7 +394,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.apolloPlayerDetailsProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
+            var result = await this.apolloServiceManagementProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
 
             return this.Ok(result);
         }

@@ -950,7 +950,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<ApolloInventoryProfile>>());
                 this.ApolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<ApolloGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.ApolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<ApolloGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
-                this.ApolloPlayerDetailsProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<LspGroup>>());
+                this.ApolloServiceManagementProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<ApolloGiftHistory>>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
             }
@@ -962,6 +962,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             public IApolloPlayerDetailsProvider ApolloPlayerDetailsProvider { get; set; } = Substitute.For<IApolloPlayerDetailsProvider>();
 
             public IApolloPlayerInventoryProvider ApolloPlayerInventoryProvider { get; set; } = Substitute.For<IApolloPlayerInventoryProvider>();
+
+            public IApolloServiceManagementProvider ApolloServiceManagementProvider { get; set; } = Substitute.For<IApolloServiceManagementProvider>();
 
             public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
 
@@ -995,6 +997,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.KustoProvider,
                 this.ApolloPlayerDetailsProvider,
                 this.ApolloPlayerInventoryProvider,
+                this.ApolloServiceManagementProvider,
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,

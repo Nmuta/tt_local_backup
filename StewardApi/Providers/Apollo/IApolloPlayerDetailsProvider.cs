@@ -67,11 +67,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
-        ///     Gets LSP groups.
-        /// </summary>
-        Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults);
-
-        /// <summary>
         ///     Gets user flags.
         /// </summary>
         Task<ApolloUserFlags> GetUserFlagsAsync(ulong xuid);

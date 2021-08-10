@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Forza.LiveOps.FH4.Generated;
 using Forza.UserInventory.FH4.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
@@ -110,23 +111,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             catch (Exception ex)
             {
                 throw new NotFoundStewardException($"No account found for XUID: {xuid}.", ex);
-            }
-        }
-
-        /// <inheritdoc />
-        public async Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults)
-        {
-            try
-            {
-                var result = await this.sunriseService.GetUserGroupsAsync(startIndex, maxResults)
-                    .ConfigureAwait(false);
-                var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
-
-                return lspGroups;
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No LSP groups found for {TitleConstants.SunriseFullName}", ex);
             }
         }
 

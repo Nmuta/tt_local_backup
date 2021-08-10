@@ -135,21 +135,21 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             action().Result.Should().BeOfType<SunriseAccountInventory>();
         }
 
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetLspGroupsAsync_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var startIndex = Fixture.Create<int>();
-            var maxResults = Fixture.Create<int>();
+        //[TestMethod]
+        //[TestCategory("Unit")]
+        //public void GetLspGroupsAsync_WithValidParameters_ReturnsCorrectType()
+        //{
+        //    // Arrange.
+        //    var provider = new Dependencies().Build();
+        //    var startIndex = Fixture.Create<int>();
+        //    var maxResults = Fixture.Create<int>();
 
-            // Act.
-            Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
+        //    // Act.
+        //    Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
 
-            // Assert.
-            action().Result.Should().BeOfType<List<LspGroup>>();
-        }
+        //    // Assert.
+        //    action().Result.Should().BeOfType<List<LspGroup>>();
+        //}
 
         [TestMethod]
         [TestCategory("Unit")]

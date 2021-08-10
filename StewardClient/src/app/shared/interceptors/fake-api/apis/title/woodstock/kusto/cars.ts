@@ -27,7 +27,7 @@ export class WoodstockKustoCarsFakeApi extends FakeApiBase {
   public static make(): KustoCar[] {
     function makeFakeKustoCars(count: number): KustoCar[] {
       return Array(faker.datatype.number({ min: 5, max: count }))
-        .fill(0)
+        .fill(undefined)
         .map(() => {
           return {
             id: fakeBigNumber(),

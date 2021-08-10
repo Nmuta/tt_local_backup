@@ -22,6 +22,7 @@ import { SunrisePlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fake
 import { SunrisePlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/accountInventory';
 import { SunrisePlayerXuidUGCFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/xuid/ugc';
 import { SunriseKustoCarsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/kusto/cars';
+import { SunriseAuctionBlocklistFakeApi } from '@interceptors/fake-api/apis/title/sunrise/auctionBlocklist';
 
 /** Defines the mock for the API Service. */
 export class MockSunriseService {
@@ -167,6 +168,20 @@ export class MockSunriseService {
   public getDetailedKustoCars$ = jasmine
     .createSpy('getDetailedKustoCars')
     .and.callFake(() => this.waitUntil$.pipe(switchMap(() => of(SunriseKustoCarsFakeApi.make()))));
+
+  public getAuctionBlocklist$ = jasmine
+    .createSpy('getAuctionBlocklist')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(SunriseAuctionBlocklistFakeApi.make()))),
+    );
+
+  public postAuctionBlocklistEntries$ = jasmine
+    .createSpy('postAuctionBlocklistEntries')
+    .and.callFake(() => this.waitUntil$.pipe());
+
+  public deleteAuctionBlocklistEntry$ = jasmine
+    .createSpy('deleteAuctionBlocklistEntry')
+    .and.callFake(() => this.waitUntil$.pipe());
 
   constructor(private readonly generator: () => unknown) {}
 }

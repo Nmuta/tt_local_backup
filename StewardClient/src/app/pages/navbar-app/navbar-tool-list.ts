@@ -46,6 +46,12 @@ export class NavbarTools {
     title: 'Kusto',
     path: 'kusto',
   };
+
+  /** The service management page. */
+  public static readonly ServiceManagementPage: RouteParams = {
+    title: 'Service Management',
+    path: 'service-management',
+  };
 }
 
 /** The list of tools to display in the navbar. */
@@ -55,6 +61,7 @@ export const navbarToolList: RouterLinkPath[] = [
   createNavbarPath(NavbarTools.UserBanningPage),
   createNavbarPath(NavbarTools.GiftHistoryPage),
   createNavbarPath(NavbarTools.KustoPage),
+  createNavbarPath(NavbarTools.ServiceManagementPage),
 ];
 
 /** The list of tools to display in the navbar. */

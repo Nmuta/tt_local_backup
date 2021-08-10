@@ -165,5 +165,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         ///     Gets player auctions.
         /// </summary>
         Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(ForzaAuctionFilters filters);
+
+        /// <summary>
+        ///     Gets auction house block list.
+        /// </summary>
+        Task<AuctionManagementService.GetAuctionBlocklistOutput> GetAuctionBlockList(int maxResults);
+
+        /// <summary>
+        ///     Adds or updates an entry in the auction house block list.
+        /// </summary>
+        Task AddAuctionBlocklistEntriesAsync(ForzaAuctionBlocklistEntry[] blockEntries);
+
+        /// <summary>
+        ///     Removes an entry from the auction house block list.
+        /// </summary>
+        Task DeleteAuctionBlocklistEntries(int[] carIds);
     }
 }

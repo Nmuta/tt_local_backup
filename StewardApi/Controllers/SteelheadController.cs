@@ -16,7 +16,6 @@ using Turn10.LiveOps.StewardApi.Authorization;
 using Turn10.LiveOps.StewardApi.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
-using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Helpers;
@@ -52,6 +51,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IKustoProvider kustoProvider;
         private readonly ISteelheadPlayerInventoryProvider steelheadPlayerInventoryProvider;
         private readonly ISteelheadPlayerDetailsProvider steelheadPlayerDetailsProvider;
+        private readonly ISteelheadServiceManagementProvider steelheadServiceManagementProvider;
         private readonly ISteelheadGiftHistoryProvider giftHistoryProvider;
         private readonly ISteelheadBanHistoryProvider banHistoryProvider;
         private readonly IJobTracker jobTracker;
@@ -72,6 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IKustoProvider kustoProvider,
             ISteelheadPlayerDetailsProvider steelheadPlayerDetailsProvider,
             ISteelheadPlayerInventoryProvider steelheadPlayerInventoryProvider,
+            ISteelheadServiceManagementProvider steelheadServiceManagementProvider,
             IKeyVaultProvider keyVaultProvider,
             ISteelheadGiftHistoryProvider giftHistoryProvider,
             ISteelheadBanHistoryProvider banHistoryProvider,
@@ -90,6 +91,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             steelheadPlayerDetailsProvider.ShouldNotBeNull(nameof(steelheadPlayerDetailsProvider));
             steelheadPlayerInventoryProvider.ShouldNotBeNull(nameof(steelheadPlayerInventoryProvider));
+            steelheadServiceManagementProvider.ShouldNotBeNull(nameof(steelheadServiceManagementProvider));
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
@@ -109,6 +111,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.kustoProvider = kustoProvider;
             this.steelheadPlayerDetailsProvider = steelheadPlayerDetailsProvider;
             this.steelheadPlayerInventoryProvider = steelheadPlayerInventoryProvider;
+            this.steelheadServiceManagementProvider = steelheadServiceManagementProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
             this.scheduler = scheduler;
@@ -438,7 +441,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.steelheadPlayerDetailsProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
+            var result = await this.steelheadServiceManagementProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -553,7 +556,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             foreach (var auction in auctions)
             {
                 var carData = kustoCars.FirstOrDefault(car => car.Id == auction.ModelId);
-                auction.ItemName = carData != default(KustoCar) ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
+                auction.ItemName = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
             }
 
             return this.Ok(auctions);
@@ -810,7 +813,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
             communityMessage.Duration.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(communityMessage.Duration));
 
-            var groups = await this.steelheadPlayerDetailsProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
+            var groups = await this.steelheadServiceManagementProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
             if (!groups.Any(x => x.Id == groupId))
             {
                 throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");

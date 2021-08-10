@@ -318,22 +318,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetLspGroupsAsync_WithValidParameters_ReturnsCorrectType()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var startIndex = Fixture.Create<int>();
-            var maxResults = Fixture.Create<int>();
-
-            // Act.
-            async Task<IList<LspGroup>> Action() => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
-
-            // Assert.
-            Action().Result.Should().BeOfType<List<LspGroup>>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void GetUserFlagsAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.

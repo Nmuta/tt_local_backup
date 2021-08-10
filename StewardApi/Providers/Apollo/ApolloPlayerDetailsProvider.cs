@@ -324,23 +324,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             }
         }
 
-        /// <inheritdoc />
-        public async Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults)
-        {
-            try
-            {
-                var result = await this.apolloService.GetUserGroupsAsync(startIndex, maxResults)
-                    .ConfigureAwait(false);
-                var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
-
-                return lspGroups;
-            }
-            catch (Exception ex)
-            {
-                throw new NotFoundStewardException($"No LSP groups found for {TitleConstants.ApolloFullName}", ex);
-            }
-        }
-
         /// <inheritdoc/>
         public async Task<ApolloUserFlags> GetUserFlagsAsync(ulong xuid)
         {

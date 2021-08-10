@@ -53,11 +53,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);
 
         /// <summary>
-        ///     Gets LSP groups.
-        /// </summary>
-        Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults);
-
-        /// <summary>
         ///     Gets user flags.
         /// </summary>
         Task<SteelheadUserFlags> GetUserFlagsAsync(ulong xuid);

@@ -1,0 +1,22 @@
+@import '/src/styles/mixins';
+
+table {
+  width: 100%;
+}
+
+div.input {
+  flex-flow: row wrap;
+  > * {
+    flex: 1 0;
+  }
+
+  .options {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin: -0.5em;
+    > * {
+      margin: 0.5em;
+    }
+  }
+}

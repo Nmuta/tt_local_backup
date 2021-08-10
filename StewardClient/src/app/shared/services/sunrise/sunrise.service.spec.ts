@@ -18,6 +18,7 @@ import { HttpParams } from '@angular/common/http';
 import { DateTime } from 'luxon';
 import { DefaultUGCFilters } from '@models/ugc-filters';
 import faker from 'faker';
+import { SunriseAuctionBlocklistFakeApi } from '@interceptors/fake-api/apis/title/sunrise/auctionBlocklist';
 
 describe('SunriseService', () => {
   let injector: TestBed;
@@ -527,6 +528,56 @@ describe('SunriseService', () => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
           `${service.basePath}/storefront`,
           httpParams,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: getAuctionBlocklist', () => {
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest$ with the expected params', done => {
+      service.getAuctionBlocklist$().subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/auctions/blockList`,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: postAuctionBlocklistEntries', () => {
+    const entries = SunriseAuctionBlocklistFakeApi.make();
+
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest$ with the expected params', done => {
+      service.postAuctionBlocklistEntries$(entries).subscribe(() => {
+        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/auctions/blockList`,
+          entries,
+        );
+        done();
+      });
+    });
+  });
+
+  describe('Method: deleteAuctionBlocklistEntry', () => {
+    const carId: BigNumber = new BigNumber(0);
+
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest$ with the expected params', done => {
+      service.deleteAuctionBlocklistEntry$(carId).subscribe(() => {
+        expect(apiServiceMock.deleteRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/auctions/blockList/carId(${carId})`,
         );
         done();
       });

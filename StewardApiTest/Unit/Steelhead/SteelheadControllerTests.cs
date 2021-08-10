@@ -1154,7 +1154,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.SteelheadPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<SteelheadInventoryProfile>>());
-                this.SteelheadPlayerDetailsProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup> { new LspGroup { Id = TestConstants.InvalidProfileId, Name = "UnitTesting" } });
+                this.SteelheadServiceManagementProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup> { new LspGroup { Id = TestConstants.InvalidProfileId, Name = "UnitTesting" } });
                 this.SteelheadPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SteelheadGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.SteelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SteelheadGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
@@ -1168,6 +1168,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             public ISteelheadPlayerDetailsProvider SteelheadPlayerDetailsProvider { get; set; } = Substitute.For<ISteelheadPlayerDetailsProvider>();
 
             public ISteelheadPlayerInventoryProvider SteelheadPlayerInventoryProvider { get; set; } = Substitute.For<ISteelheadPlayerInventoryProvider>();
+
+            public ISteelheadServiceManagementProvider SteelheadServiceManagementProvider { get; set; } = Substitute.For<ISteelheadServiceManagementProvider>();
 
             public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
 
@@ -1203,6 +1205,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.KustoProvider,
                 this.SteelheadPlayerDetailsProvider,
                 this.SteelheadPlayerInventoryProvider,
+                this.SteelheadServiceManagementProvider,
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,

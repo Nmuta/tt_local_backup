@@ -127,6 +127,9 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.PlayerExists ? src.Gamertag : null))
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.PlayerExists ? src.Xuid : 0))
                 .ReverseMap();
+            this.CreateMap<ForzaAuctionBlocklistEntry, AuctionBlocklistEntry>()
+                .ForMember(dest => dest.ExpireDateUtc, opt => opt.MapFrom(src => src.ExpireDate))
+                .ReverseMap();
         }
     }
 }

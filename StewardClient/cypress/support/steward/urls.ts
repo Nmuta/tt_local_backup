@@ -37,6 +37,9 @@ export const stewardUrls = {
       sunrise: '/support/navbar-app/tools/gift-history/sunrise',
       apollo: '/support/navbar-app/tools/gift-history/apollo',
     },
+    serviceManagement: {
+      sunrise: '/support/navbar-app/tools/service-management/sunrise',
+    },
     kusto: '/support/navbar-app/tools/kusto',
     messaging: {
       default: '/support/navbar-app/tools/messaging',

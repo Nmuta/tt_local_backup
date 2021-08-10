@@ -1285,7 +1285,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.WoodstockPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
-                this.WoodstockPlayerDetailsProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
+                this.WoodstockServiceManagementProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
                 this.WoodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<WoodstockGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.WoodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<WoodstockGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
@@ -1299,6 +1299,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             public IWoodstockPlayerDetailsProvider WoodstockPlayerDetailsProvider { get; set; } = Substitute.For<IWoodstockPlayerDetailsProvider>();
 
             public IWoodstockPlayerInventoryProvider WoodstockPlayerInventoryProvider { get; set; } = Substitute.For<IWoodstockPlayerInventoryProvider>();
+
+            public IWoodstockServiceManagementProvider WoodstockServiceManagementProvider { get; set; } = Substitute.For<IWoodstockServiceManagementProvider>();
 
             public IKeyVaultProvider KeyVaultProvider { get; set; } = Substitute.For<IKeyVaultProvider>();
 
@@ -1334,6 +1336,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.KustoProvider,
                 this.WoodstockPlayerDetailsProvider,
                 this.WoodstockPlayerInventoryProvider,
+                this.WoodstockServiceManagementProvider,
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,
