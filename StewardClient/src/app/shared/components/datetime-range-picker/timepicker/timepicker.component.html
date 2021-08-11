@@ -6,7 +6,7 @@
   placeholder="24h UTC"
   [value]="valueInternal"
   [disableClick]="true"
-  [(ngModel)]="valueInternal"
+  [ngModel]="valueInternal"
   (ngModelChange)="onValueChange($event)"
 />
-<ngx-material-timepicker #picker></ngx-material-timepicker>
+<ngx-material-timepicker #picker (timeSet)="onValueChange($event)"></ngx-material-timepicker>
