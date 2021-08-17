@@ -4,6 +4,37 @@
     <base href="/" />
     <meta charset="utf-8" />
     <link rel="icon" type="image/ping" href="/assets/favicon.png" />
+    <script type="text/javascript">
+      // This script allows Cypress to function against the site
+      // Without this, SRI script-loading will fail, and Cypress will be unable to test the site.
+      // Since this conditionally modifies further script tags, it must be the first script tag loaded.
+      // https://github.com/cypress-io/cypress/issues/2393#issuecomment-465377636
+      if (window.Cypress) {
+        const MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+        if (MutationObserver) {
+          new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+              mutation.addedNodes.forEach(processNode);
+            });
+          }).observe(document, { childList: true, subtree: true });
+        }
+
+        const processNode = function (node) {
+          const tagName = (node.tagName || '').toLowerCase();
+          if (tagName === 'script' && node.integrity) {
+            node.onerror = function (e) {
+              const newNode = document.createElement(tagName);
+              const parent = node.parentNode;
+              if (node.src) {
+                newNode.setAttribute('src', node.getAttribute('src'));
+              }
+              parent.appendChild(newNode);
+              node.remove();
+            };
+          }
+        };
+      }
+    </script>
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
