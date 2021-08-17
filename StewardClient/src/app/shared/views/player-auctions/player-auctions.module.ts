@@ -17,10 +17,11 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { AuctionFiltersModule } from '../auction-filters/auction-filters.module';
 import { LuxonModule } from 'luxon-angular';
 import { ImageModalModule } from '@views/image-modal/image-modal.module';
+import { WoodstockPlayerAuctionsComponent } from './woodstock/woodstock-player-auctions.component';
 
 /** Display for player auctions. */
 @NgModule({
-  declarations: [SunrisePlayerAuctionsComponent],
+  declarations: [SunrisePlayerAuctionsComponent, WoodstockPlayerAuctionsComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -41,6 +42,6 @@ import { ImageModalModule } from '@views/image-modal/image-modal.module';
     LuxonModule,
     ImageModalModule,
   ],
-  exports: [SunrisePlayerAuctionsComponent],
+  exports: [SunrisePlayerAuctionsComponent, WoodstockPlayerAuctionsComponent],
 })
 export class PlayerAuctionsModule {}
