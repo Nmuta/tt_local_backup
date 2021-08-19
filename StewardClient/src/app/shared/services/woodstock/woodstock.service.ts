@@ -195,7 +195,7 @@ export class WoodstockService {
   /** Updates a console's ban status by the Console's ID. */
   public putBanStatusByConsoleId$(consoleId: string, isBanned: boolean): Observable<void> {
     return this.apiService.putRequest$<void>(
-      `${this.basePath}/console/consoleId(${consoleId})/isBanned(${isBanned})`,
+      `${this.basePath}/console/consoleId(${consoleId})/consoleBanStatus/isBanned(${isBanned})`,
       null,
     );
   }
