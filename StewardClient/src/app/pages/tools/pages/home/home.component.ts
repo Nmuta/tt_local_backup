@@ -37,7 +37,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   public ngOnInit(): void {
     this.profile$.pipe(takeUntil(this.onDestroy$)).subscribe(profile => {
       this.hasAccess = chain(this.possibleNavbarItems)
-        .map(v => [v.tool, v.accessList.includes(profile.role)])
+        .map(v => [v.tool, v.accessList.includes(profile?.role)])
         .fromPairs()
         .value();
 

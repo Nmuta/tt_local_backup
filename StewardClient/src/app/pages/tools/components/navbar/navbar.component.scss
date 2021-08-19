@@ -31,3 +31,13 @@
 .edit-mode-instructions {
   vertical-align: middle;
 }
+
+.drop-list-wrapper,
+.link-list-wrapper {
+  display: flex;
+  flex-shrink: 1;
+  overflow: hidden;
+  a {
+    flex-shrink: 0;
+  }
+}

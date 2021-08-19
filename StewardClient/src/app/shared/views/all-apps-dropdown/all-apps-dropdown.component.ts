@@ -22,6 +22,7 @@ import { UserState } from '@shared/state/user/user.state';
 export class AllAppsDropdownComponent implements OnInit {
   public moreAppsIcon = faEllipsisV;
   public allApps: RouterLinkPath[] = [
+    { title: 'User Selected', routerLink: ['/app/tools'] },
     createLiveOpsNavbarPath(LiveOpsAppTools.HomePage),
     createNavbarPath(NavbarTools.HomePage),
     createCommunityNavbarPath(CommunityAppTools.HomePage),

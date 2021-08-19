@@ -61,15 +61,16 @@ export class NavbarComponent extends BaseComponent implements OnInit {
     const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
     this.role = profile?.role;
     this.profile$.pipe(takeUntil(this.onDestroy$)).subscribe(profile => {
-      this.role = profile.role;
+      this.role = profile?.role;
       this.standardTools = standardRoleTools[this.role];
     });
 
     const settings = this.store.selectSnapshot<UserSettingsStateModel>(UserSettingsState);
     this.settings$.pipe(takeUntil(this.onDestroy$), startWith(settings)).subscribe(settings => {
+      const navbarTools = settings.navbarTools || {};
       this.listedTools = chain(toolList)
-        .filter(tool => !!settings.navbarTools[tool.tool])
-        .orderBy(tool => settings.navbarTools[tool.tool])
+        .filter(tool => !!navbarTools[tool.tool])
+        .orderBy(tool => navbarTools[tool.tool])
         .value();
     });
 
