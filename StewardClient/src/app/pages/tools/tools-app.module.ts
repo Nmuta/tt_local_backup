@@ -22,6 +22,7 @@ import { FourOhFourModule } from '@views/four-oh-four/four-oh-four.module';
 import { SidebarIconsModule } from '@views/sidebar-icons/sidebar-icons.module';
 import { SidebarsModule } from 'app/sidebars/sidebars.module';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { DirectivesModule } from '@shared/directives/directives.module';
 
 /** A module for all tools, with a configurable navbar. */
 @NgModule({
@@ -52,6 +53,7 @@ import { PipesModule } from '@shared/pipes/pipes.module';
     MatCheckboxModule,
     FormsModule,
     PipesModule,
+    DirectivesModule,
   ],
 })
 export class ToolsAppModule {}

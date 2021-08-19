@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { HomeTileInfo, NavbarTool, toolList } from '@environments/environment';
+import { environment, HomeTileInfo, NavbarTool } from '@environments/environment';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
 import { SetNavbarTools } from '@shared/state/user-settings/user-settings.actions';
@@ -27,7 +27,7 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
 
   public parentRoute: string = '/app/tools/';
 
-  public possibleNavbarItems: HomeTileInfo[] = toolList;
+  public possibleNavbarItems: HomeTileInfo[] = environment.tools;
 
   constructor(private readonly store: Store) {
     super();
@@ -42,8 +42,8 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
         .value();
 
       // show the usable tools above the unusable tools
-      const accessibleTools = toolList.filter(t => this.hasAccess[t.tool]);
-      const inaccessibleTools = toolList.filter(t => !this.hasAccess[t.tool]);
+      const accessibleTools = environment.tools.filter(t => this.hasAccess[t.tool]);
+      const inaccessibleTools = environment.tools.filter(t => !this.hasAccess[t.tool]);
       this.possibleNavbarItems = [...accessibleTools, ...inaccessibleTools];
     });
 

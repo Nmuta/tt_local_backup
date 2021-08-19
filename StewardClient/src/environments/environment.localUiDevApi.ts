@@ -1,4 +1,7 @@
 import { LogLevel } from '@services/logger/log-level';
+import { cloneDeep } from 'lodash';
+import { overrideExternalTools, externalToolUrls } from './app-data/external-tool-urls';
+import { unprocessedToolList } from './app-data/tool-list';
 
 import { StewardEnvironment } from './steward-environment';
 
@@ -24,5 +27,5 @@ export const environment: StewardEnvironment = {
     appInsightsLogLevel: LogLevel.Nothing,
     consoleLogLevel: LogLevel.Everything,
   },
-  salusUrl: 'https://gmx-dev.azureedge.net/#/dashboard',
+  tools: overrideExternalTools(cloneDeep(unprocessedToolList), externalToolUrls.dev),
 };

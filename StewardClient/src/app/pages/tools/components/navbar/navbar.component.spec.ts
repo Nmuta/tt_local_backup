@@ -13,7 +13,7 @@ import { of } from 'rxjs';
 
 import { NavbarComponent } from './navbar.component';
 
-describe('NavbarComponent', () => {
+describe('ToolsNavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
 

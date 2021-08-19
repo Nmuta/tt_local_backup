@@ -14,6 +14,7 @@ export enum NavbarTool {
   ServiceManagement = 'service-management',
   StewardUserHistory = 'steward-user-history',
   Messaging = 'messaging',
+  Salus = 'salus',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -55,8 +56,15 @@ export enum AppIcon {
   Admin = 'shield',
 }
 
-export interface HomeTileInfo {
+/** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
+export enum ExtraIcon {
+  External = 'open_in_new',
+}
+
+/** Base model for Home Tiles. */
+export interface HomeTileInfoBase {
   readonly icon: string;
+  readonly extraIcon?: string;
   readonly tool: NavbarTool;
   readonly title: string;
   readonly subtitle: string;
@@ -69,15 +77,39 @@ export interface HomeTileInfo {
   /** A short description for the home page. Each element is a paragraph. */
   readonly shortDescription: string[];
 
-  // readonly routerLink: string[];
-  readonly loadChildren: LoadChildren;
-
   /** The list of roles allowed access to this tool. */
   readonly accessList: UserRole[];
-  // inNav: boolean;
 }
 
-export const toolList: HomeTileInfo[] = [
+/** Model for Home Tiles that send the user to internal tools. */
+export interface HomeTileInfoInternal extends HomeTileInfoBase {
+  readonly loadChildren: LoadChildren;
+}
+
+/** Model for Home Tiles that send the user to external tools. */
+export interface HomeTileInfoExternal extends HomeTileInfoBase {
+  externalUrl: string;
+}
+
+/** Union type for home tiles. */
+export type HomeTileInfo = HomeTileInfoInternal | HomeTileInfoExternal;
+
+/** True if the given tile is an external tool. */
+export function isHomeTileInfoExternal(
+  homeTileInfo: HomeTileInfo,
+): homeTileInfo is HomeTileInfoExternal {
+  return !!(homeTileInfo as HomeTileInfoExternal).externalUrl;
+}
+
+/** True if the given tile is an internal tool. */
+export function isHomeTileInfoInternal(
+  homeTileInfo: HomeTileInfo,
+): homeTileInfo is HomeTileInfoInternal {
+  return !!(homeTileInfo as HomeTileInfoInternal).loadChildren;
+}
+
+/** The unprocessed tool list. Use @see environment.tools instead. */
+export const unprocessedToolList: HomeTileInfo[] = [
   {
     icon: AppIcon.PlayerInfo,
     tool: NavbarTool.UGC,
@@ -222,10 +254,23 @@ export const toolList: HomeTileInfo[] = [
         m => m.DataPipelineObligationModule,
       ),
   },
+  {
+    icon: AppIcon.DeveloperTool,
+    extraIcon: ExtraIcon.External,
+    tool: NavbarTool.Salus,
+    accessList: CommonAccessLevels.OldNavbarAppOnly,
+    title: 'Salus',
+    subtitle: 'An external UGC moderation tool',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'External UGC Moderation Tool',
+    shortDescription: [`External UGC Moderation Tool`],
+    externalUrl: 'https://gmx-dev.azureedge.net/#/dashboard',
+  },
 ];
 
 function allToolsForRole(role: UserRole): Partial<Record<NavbarTool, number>> {
-  return chain(toolList)
+  return chain(unprocessedToolList)
     .filter(t => t.accessList.includes(role))
     .map(t => [t.tool, 1])
     .fromPairs()

@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
-import { Route, RouterModule, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, Route, RouterModule, Routes } from '@angular/router';
 import { sidebarRoutes } from 'app/sidebars/sidebars.module';
 import { FourOhFourComponent } from '@shared/views/four-oh-four/four-oh-four.component';
 import { AuthGuard } from 'app/route-guards/auth.guard';
 import { ToolsAppComponent } from './tools-app.component';
 import { ToolsAppHomeComponent } from './pages/home/home.component';
-import { toolList } from '@environments/environment';
+import {
+  environment,
+  isHomeTileInfoExternal,
+  isHomeTileInfoInternal,
+} from '@environments/environment';
 import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
+import { HomeTileInfoExternal, HomeTileInfoInternal } from '@environments/environment.dev';
 
 const routes: Routes = [
   {
@@ -24,14 +29,29 @@ const routes: Routes = [
         path: 'home',
         component: ToolsAppHomeComponent,
       },
-      ...toolList.map(tool => {
-        return <Route>{
-          path: tool.tool,
-          loadChildren: tool.loadChildren,
-          canActivate: [AuthGuard, FindUserRoleGuard(tool.accessList)],
-          canActivateChild: [AuthGuard],
-        };
-      }),
+      // internal tools
+      ...environment.tools
+        .filter(tool => isHomeTileInfoInternal(tool))
+        .map((tool: HomeTileInfoInternal) => {
+          return <Route>{
+            path: tool.tool,
+            loadChildren: tool.loadChildren,
+            canActivate: [AuthGuard, FindUserRoleGuard(tool.accessList)],
+            canActivateChild: [AuthGuard],
+          };
+        }),
+      // external tools
+      ...environment.tools
+        .filter(tool => isHomeTileInfoExternal(tool))
+        .map((tool: HomeTileInfoExternal) => {
+          return <Route>{
+            path: tool.tool,
+            resolve: { url: 'externalUrlRedirectResolver' },
+            data: { externalUrl: tool.externalUrl },
+            canActivate: [AuthGuard, FindUserRoleGuard(tool.accessList)],
+            canActivateChild: [AuthGuard],
+          };
+        }),
       ...sidebarRoutes,
       {
         path: '**',
@@ -45,5 +65,14 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
+  providers: [
+    {
+      provide: 'externalUrlRedirectResolver',
+      useValue: (route: ActivatedRouteSnapshot) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        window.location.href = (route.data as any).externalUrl;
+      },
+    },
+  ],
 })
 export class ToolsAppRouterModule {}

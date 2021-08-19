@@ -10,8 +10,9 @@ import { NavbarComponent } from './navbar.component';
 import { createMockWindowService } from '@services/window';
 import { createMockZendeskService } from '@services/zendesk';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
+import { MatMenuModule } from '@angular/material/menu';
 
-describe('NavbarComponent', () => {
+describe('SupportNavbarComponent', () => {
   let fixture: ComponentFixture<NavbarComponent>;
   let component: NavbarComponent;
 
@@ -22,6 +23,7 @@ describe('NavbarComponent', () => {
           RouterTestingModule.withRoutes([]),
           HttpClientTestingModule,
           NgxsModule.forRoot([UserState]),
+          MatMenuModule,
         ],
         declarations: [NavbarComponent],
         schemas: [NO_ERRORS_SCHEMA],

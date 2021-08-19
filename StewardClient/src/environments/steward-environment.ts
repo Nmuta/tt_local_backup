@@ -1,5 +1,6 @@
 import { IConfig, IConfiguration } from '@microsoft/applicationinsights-web';
 import { LogLevel } from '@services/logger';
+import { HomeTileInfo } from './app-data/tool-list';
 
 /** Type verification for Environment. */
 export interface StewardEnvironment {
@@ -11,7 +12,7 @@ export interface StewardEnvironment {
   stewardApiUrl: string;
   stewardApiStagingUrl: string;
   oldScrutineerApiUrl: string;
-  salusUrl: string;
+
   /** Placeholder value replaced in ADO pipeline. */
   adoVersion: string;
 
@@ -29,4 +30,7 @@ export interface StewardEnvironment {
     /** The maximum level of logs to dump to console. */
     consoleLogLevel: LogLevel;
   };
+
+  /** The list of tools to show in the nav and homepage */
+  tools: HomeTileInfo[];
 }

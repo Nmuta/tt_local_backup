@@ -12,7 +12,14 @@
       routerLinkActive="mat-stroked-button"
       [matTooltip]="item.tooltipDescription"
     >
-      {{ item.title }}
+      <span
+        *ngIf="!!item.extraIcon"
+        [matBadge]="item.extraIcon"
+        matBadgeIcon
+        matBadgeOverlap="false"
+        >{{ item.title }}</span
+      >
+      <span *ngIf="!item.extraIcon">{{ item.title }}</span>
     </a>
   </div>
   <div
@@ -29,7 +36,14 @@
       [matTooltip]="item.tooltipDescription"
       cdkDrag
     >
-      {{ item.title }}
+      <span
+        *ngIf="!!item.extraIcon"
+        [matBadge]="item.extraIcon"
+        matBadgeIcon
+        matBadgeOverlap="false"
+        >{{ item.title }}</span
+      >
+      <span *ngIf="!item.extraIcon">{{ item.title }}</span>
     </a>
     <mat-icon
       class="edit-mode-instructions"

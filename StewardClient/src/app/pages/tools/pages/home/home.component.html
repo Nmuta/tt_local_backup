@@ -38,7 +38,10 @@
             In Nav
           </mat-checkbox>
           <div class="spacer"></div>
-          <a *ngIf="hasAccess[item.tool]" mat-button [routerLink]="parentRoute + item.tool">Open</a>
+          <a *ngIf="hasAccess[item.tool]" mat-button [routerLink]="parentRoute + item.tool">
+            <mat-icon inline="true" *ngIf="!!item.extraIcon">{{ item.extraIcon }}</mat-icon>
+            Open
+          </a>
         </mat-card-actions>
       </mat-card>
     </div>

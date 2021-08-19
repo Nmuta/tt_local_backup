@@ -6,6 +6,7 @@ import { HoverToCopyDirective } from './hover-to-copy.directive';
 import { BeforeDateDirective } from './validators/before-date.directive';
 import { AfterDateDirective } from './validators/after-date.directive';
 import { ClickEnlargeImageDirective } from './click-enlarge-image.directive';
+import { MatBadgeIconDirective } from './mat-badge-icon.directive';
 
 /**
  * Module containing various utility directives.
@@ -18,6 +19,7 @@ import { ClickEnlargeImageDirective } from './click-enlarge-image.directive';
     BeforeDateDirective,
     AfterDateDirective,
     ClickEnlargeImageDirective,
+    MatBadgeIconDirective,
   ],
   imports: [CommonModule],
   exports: [
@@ -27,6 +29,7 @@ import { ClickEnlargeImageDirective } from './click-enlarge-image.directive';
     BeforeDateDirective,
     AfterDateDirective,
     ClickEnlargeImageDirective,
+    MatBadgeIconDirective,
   ],
 })
 export class DirectivesModule {}

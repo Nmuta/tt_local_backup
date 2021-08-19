@@ -10,7 +10,12 @@ import { UserModel } from '@models/user.model';
 import { UserState } from '@shared/state/user/user.state';
 import { UserRole } from '@models/enums';
 import { ThemePalette } from '@angular/material/core';
-import { HomeTileInfo, NavbarTool, standardRoleTools, toolList } from '@environments/environment';
+import {
+  environment,
+  HomeTileInfo,
+  NavbarTool,
+  standardRoleTools,
+} from '@environments/environment';
 import {
   UserSettingsState,
   UserSettingsStateModel,
@@ -68,7 +73,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
     const settings = this.store.selectSnapshot<UserSettingsStateModel>(UserSettingsState);
     this.settings$.pipe(takeUntil(this.onDestroy$), startWith(settings)).subscribe(settings => {
       const navbarTools = settings.navbarTools || {};
-      this.listedTools = chain(toolList)
+      this.listedTools = chain(environment.tools)
         .filter(tool => !!navbarTools[tool.tool])
         .orderBy(tool => navbarTools[tool.tool])
         .value();

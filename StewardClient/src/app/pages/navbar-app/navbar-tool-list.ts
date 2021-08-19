@@ -1,4 +1,4 @@
-import { environment } from '@environments/environment';
+import { externalToolUrls } from '@environments/app-data/external-tool-urls';
 import {
   RouteParams,
   RouterLinkPath,
@@ -73,6 +73,6 @@ export const navbarToolListAdminOnly: RouterLinkPath[] = [
 export const navbarExternalList: ExternalLinkPath[] = [
   {
     title: 'Salus Enforcement Tool',
-    url: environment.salusUrl,
+    url: externalToolUrls.prod.salus,
   },
 ];
