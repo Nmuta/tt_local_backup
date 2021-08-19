@@ -3,6 +3,8 @@ import { environment as baseEnvProd } from './environment.prod';
 import { environment as baseEnvLocal } from './environment.localUiDevApi';
 import { cloneDeep } from 'lodash';
 
+export * from './app-data/tool-list';
+
 /** Dev in a prod-like configuration. */
 const modifiedEnvironment: StewardEnvironment = cloneDeep(baseEnvLocal);
 modifiedEnvironment.production = baseEnvProd.production;

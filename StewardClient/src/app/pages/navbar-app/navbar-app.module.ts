@@ -20,6 +20,9 @@ import { AllAppsDropdownModule } from '@shared/views/all-apps-dropdown/all-apps-
 import { MatBadgeModule } from '@angular/material/badge';
 import { SidebarIconsModule } from '@shared/views/sidebar-icons/sidebar-icons.module';
 import { MatMenuModule } from '@angular/material/menu';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
 
 /** Defines the sidebar module. */
 @NgModule({
@@ -44,6 +47,10 @@ import { MatMenuModule } from '@angular/material/menu';
     NavbarAppRouterModule,
     SidebarsModule,
     UserDetailsModule,
+    MatCardModule,
+    DragDropModule,
+    MatCheckboxModule,
+    FormsModule,
   ],
   providers: [],
   declarations: [NavbarAppComponent, HomeComponent, NavbarComponent],

@@ -1,0 +1,127 @@
+<!-- Useful example https://stackblitz.com/edit/angular-v6xwte?file=src%2Fapp%2Fapp.component.html -->
+<mat-toolbar color="primary">
+  <all-apps-dropdown></all-apps-dropdown>
+  <a [routerLink]="parentRoute + '/home'" mat-icon-button routerLinkActive="mat-stroked-button">
+    <mat-icon>home</mat-icon>
+  </a>
+  <div *ngIf="!inEditMode" class="link-list-wrapper">
+    <a
+      *ngFor="let item of listedTools"
+      mat-button
+      [routerLink]="parentRoute + item.tool"
+      routerLinkActive="mat-stroked-button"
+      [matTooltip]="item.tooltipDescription"
+    >
+      {{ item.title }}
+    </a>
+  </div>
+  <div
+    *ngIf="inEditMode"
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    class="drop-list-wrapper"
+    (cdkDropListDropped)="onDrop($event)"
+  >
+    <a
+      *ngFor="let item of listedTools"
+      mat-raised-button
+      routerLinkActive="mat-stroked-button"
+      [matTooltip]="item.tooltipDescription"
+      cdkDrag
+    >
+      {{ item.title }}
+    </a>
+    <mat-icon
+      class="edit-mode-instructions"
+      matTooltip="Currently in edit mode. Links are disabled. Drag and drop to re-order items. Changes are saved immediately."
+    >
+      help</mat-icon
+    >
+  </div>
+
+  <button
+    mat-stroked-button
+    class="configure-defaults"
+    color="default"
+    *ngIf="(!listedTools || listedTools.length === 0) && standardTools"
+    [matTooltip]="'Click to enable default navbar for ' + (role | humanize) + ' role'"
+    (click)="setRoleDefaultNav()"
+  >
+    Click to set standard tools
+  </button>
+
+  <a
+    mat-stroked-button
+    class="configure-defaults"
+    color="accent"
+    *ngIf="!listedTools || listedTools.length === 0"
+    [matTooltip]="
+      !standardTools
+        ? 'There is no standard nav for your role. Click to configure'
+        : 'Click to configure your tools list'
+    "
+    [routerLink]="parentRoute + '/home'"
+    routerLinkActive="hidden"
+    >Click to customize tools</a
+  >
+
+  <span class="spacer"></span>
+  <button
+    mat-icon-button
+    color="default"
+    class="edit-button edit-button-begin"
+    *ngIf="!inEditMode"
+    (click)="setEditMode(true)"
+    matTooltip="Click to allow re-ordering the navbar (disables links)"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button
+    mat-mini-fab
+    color="warn"
+    class="edit-button edit-button-end"
+    *ngIf="inEditMode"
+    (click)="setEditMode(false)"
+    matTooltip="Click to lock the navbar (enables links)"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+  <span *ngIf="missingZendesk$ | async" class="warnings">
+    <mat-icon
+      svgIcon="steward-warning"
+      aria-label="Zendesk API missing"
+      matTooltip="Zendesk API missing"
+    ></mat-icon>
+    <mat-icon
+      svgIcon="steward-refresh"
+      aria-label="Refresh page"
+      matTooltip="Refresh page"
+    ></mat-icon>
+  </span>
+  <span class="info">
+    <mat-icon
+      svgIcon="steward-info"
+      aria-label="Show route location"
+      [matTooltip]="location"
+    ></mat-icon>
+  </span>
+  <span class="short-spacer"></span>
+  <span>
+    <a
+      [routerLink]="[{ outlets: { sidebar: 'notifications' } }]"
+      queryParamsHandling="preserve"
+      mat-icon-button
+      routerLinkActive="navbar-button-active"
+      matTooltip="Notifications"
+      aria-label="Notifications"
+    >
+      <mat-icon
+        svgIcon="steward-notifications"
+        [matBadge]="notificationCount"
+        [matBadgeColor]="notificationColor"
+        matBadgeSize="small"
+      ></mat-icon>
+    </a>
+  </span>
+  <sidebar-icons></sidebar-icons>
+</mat-toolbar>

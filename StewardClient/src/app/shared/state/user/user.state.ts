@@ -211,10 +211,10 @@ export class UserState {
     action: SetLiveOpsAdminSecondaryRole,
   ): void {
     const state = ctx.getState();
-    const profile = state.profile;
+    const profile = cloneDeep(state.profile);
     if (profile?.role === UserRole.LiveOpsAdmin) {
       profile.liveOpsAdminSecondaryRole = action.secondaryRole;
-      ctx.patchState({ profile: cloneDeep(profile) });
+      ctx.patchState({ profile: profile });
     }
   }
 

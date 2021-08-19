@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { GameTitleCodeName } from '@models/enums';
-import { createNavbarPath, NavbarTools } from '@navbar-app/navbar-tool-list';
 
 /**
  *
@@ -14,15 +12,12 @@ import { createNavbarPath, NavbarTools } from '@navbar-app/navbar-tool-list';
 export class ServiceManagementComponent implements OnInit {
   public navbarRouterLinks = [];
 
-  constructor(private readonly router: Router) {}
-
   /** Lifecycle hook */
   public ngOnInit(): void {
-    const rootRouterLink = createNavbarPath(NavbarTools.ServiceManagementPage).routerLink;
     this.navbarRouterLinks = [
       {
         name: GameTitleCodeName.FH4,
-        route: [...rootRouterLink, GameTitleCodeName.FH4.toLowerCase()],
+        route: ['.', GameTitleCodeName.FH4.toLowerCase()],
       },
     ];
   }

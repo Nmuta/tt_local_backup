@@ -18,19 +18,29 @@
 <ng-container *ngIf="!!userProfile">
   <p>Hi, {{ userProfile.name || userProfile.emailAddress }}.</p>
   <p>Your role is: {{ userProfile.role }}.</p>
-  <a mat-raised-button color="accent" [routerLink]="['/auth/logout']" [queryParams]="{ from: '' }"
-    >Logout</a
-  >
-
   <div class="app-list">
-    <h2>Steward App List</h2>
+    <h2>Which Toolset?</h2>
+    <a
+      [disabled]="!areAnyAppsAccessible"
+      mat-raised-button
+      color="primary"
+      routerLink="/app/tools/home"
+    >
+      User Selected Tools
+
+      <mat-icon
+        [svgIcon]="areAnyAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
+        [matTooltip]="areAnyAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
+      ></mat-icon>
+    </a>
+
     <a
       [disabled]="!areLiveOpsAppsAccessible"
       mat-raised-button
-      color="primary"
+      color="accent"
       routerLink="/live-ops/live-ops-app/tools/home"
     >
-      Live Ops App
+      Live Ops Tools
 
       <mat-icon
         [svgIcon]="areLiveOpsAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
@@ -40,10 +50,10 @@
     <a
       [disabled]="!areSupportAppsAccessible"
       mat-raised-button
-      color="primary"
+      color="accent"
       routerLink="/support/navbar-app/tools/home"
     >
-      Support App
+      Support Tools
 
       <mat-icon
         [svgIcon]="areSupportAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
@@ -53,10 +63,10 @@
     <a
       [disabled]="!areSupportAppsAccessible"
       mat-raised-button
-      color="primary"
+      color="accent"
       routerLink="/support/ticket-app/title"
     >
-      Support Ticket App
+      Support Ticket Tools
 
       <mat-icon
         [svgIcon]="areSupportAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
@@ -66,10 +76,10 @@
     <a
       [disabled]="!areCommunityAppsAccessible"
       mat-raised-button
-      color="primary"
+      color="accent"
       routerLink="/community/community-app/tools/home"
     >
-      Community Manager App
+      Community Manager Tools
 
       <mat-icon
         [svgIcon]="areCommunityAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
@@ -80,17 +90,19 @@
     <a
       [disabled]="!areDataAppsAccessible"
       mat-raised-button
-      color="primary"
+      color="accent"
       routerLink="/data-pipeline/data-pipeline-app/tools/home"
     >
-      Data Pipeline App
+      Data Pipeline Tools
 
       <mat-icon
         [svgIcon]="areDataAppsAccessible ? 'steward-approve-circle' : 'steward-close-circle'"
         [matTooltip]="areDataAppsAccessible ? appAvailableTooltip : appUnavailableTooltip"
       ></mat-icon>
     </a>
-
-    <p>More coming soon...</p>
   </div>
+  <div class="spacer"><mat-divider></mat-divider></div>
+  <a mat-raised-button color="warn" [routerLink]="['/auth/logout']" [queryParams]="{ from: '' }"
+    >Logout</a
+  >
 </ng-container>

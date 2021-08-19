@@ -8,6 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
+import { MatDividerModule } from '@angular/material/divider';
 
 /** Module for displaying the available apps, or a login button. */
 @NgModule({
@@ -21,6 +22,7 @@ import { FormsModule } from '@angular/forms';
     MatTooltipModule,
     MatIconModule,
     MatSlideToggleModule,
+    MatDividerModule,
   ],
   exports: [AvailableAppsComponent],
 })

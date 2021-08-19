@@ -2,6 +2,8 @@ import { LogLevel } from '@services/logger/log-level';
 
 import { StewardEnvironment } from './steward-environment';
 
+export * from './app-data/tool-list';
+
 /** Local with Dev API */
 export const environment: StewardEnvironment = {
   production: false,

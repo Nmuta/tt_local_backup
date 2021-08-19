@@ -4,6 +4,7 @@ import { UserRole } from '@models/enums';
 import { chain, sortBy, values } from 'lodash';
 import { combinations } from '@helpers/combinations';
 import { UserRoleGuard } from './user-role.guard';
+import { CommonAccessLevels } from '@environments/environment';
 
 export function MakeKey(allowedRoles: UserRole[]): string {
   const roles = chain(allowedRoles)
@@ -45,6 +46,7 @@ export const USER_GUARD_TOKENS = [
   // map all the singular values
   ...values(UserRole).map(r => GenerateUserRoleGuard([r])),
   // add in the customized extras
+  ...values(CommonAccessLevels).map(set => GenerateUserRoleGuard(set)),
   GenerateUserRoleGuard([UserRole.LiveOpsAdmin, UserRole.SupportAgentAdmin]),
   GenerateUserRoleGuard([
     UserRole.LiveOpsAdmin,

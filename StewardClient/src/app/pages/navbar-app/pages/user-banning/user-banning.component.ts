@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
-import { createNavbarPath, NavbarTools } from '@navbar-app/navbar-tool-list';
 
 /** The user banning component. */
 @Component({
@@ -10,15 +9,14 @@ import { createNavbarPath, NavbarTools } from '@navbar-app/navbar-tool-list';
   styleUrls: ['./user-banning.component.scss'],
 })
 export class UserBanningComponent implements OnInit {
-  public rootRouterLink = createNavbarPath(NavbarTools.UserBanningPage).routerLink;
   public navbarRouterLinks = [
     {
       name: GameTitleCodeName.FH4,
-      route: [...this.rootRouterLink, GameTitleCodeName.FH4.toLowerCase()],
+      route: ['.', GameTitleCodeName.FH4.toLowerCase()],
     },
     {
       name: GameTitleCodeName.FM7,
-      route: [...this.rootRouterLink, GameTitleCodeName.FM7.toLowerCase()],
+      route: ['.', GameTitleCodeName.FM7.toLowerCase()],
     },
   ];
 
@@ -28,11 +26,11 @@ export class UserBanningComponent implements OnInit {
     if (!environment.production) {
       this.navbarRouterLinks.unshift({
         name: GameTitleCodeName.FM8,
-        route: [...this.rootRouterLink, GameTitleCodeName.FM8.toLowerCase()],
+        route: ['.', GameTitleCodeName.FM8.toLowerCase()],
       });
       this.navbarRouterLinks.unshift({
         name: GameTitleCodeName.FH5,
-        route: [...this.rootRouterLink, GameTitleCodeName.FH5.toLowerCase()],
+        route: ['.', GameTitleCodeName.FH5.toLowerCase()],
       });
     }
   }

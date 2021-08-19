@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
-import { generateSharedPageRouterLink } from '../generate-shared-router-link';
-import { SharedNavbarTools } from '../shared-tool-list';
 
 /** The gifting page for the Navbar app. */
 @Component({
@@ -13,23 +10,20 @@ import { SharedNavbarTools } from '../shared-tool-list';
 export class GiftingComponent implements OnInit {
   public navbarRouterLinks = [];
 
-  constructor(private readonly router: Router) {}
-
   /** Lifecycle hook */
   public ngOnInit(): void {
-    const rootRouterLink = generateSharedPageRouterLink(this.router, SharedNavbarTools.GiftingPage);
     this.navbarRouterLinks = [
       {
         name: GameTitleCodeName.Street,
-        route: [...rootRouterLink, GameTitleCodeName.Street.toLowerCase()],
+        route: ['.', GameTitleCodeName.Street.toLowerCase()],
       },
       {
         name: GameTitleCodeName.FH4,
-        route: [...rootRouterLink, GameTitleCodeName.FH4.toLowerCase()],
+        route: ['.', GameTitleCodeName.FH4.toLowerCase()],
       },
       {
         name: GameTitleCodeName.FM7,
-        route: [...rootRouterLink, GameTitleCodeName.FM7.toLowerCase()],
+        route: ['.', GameTitleCodeName.FM7.toLowerCase()],
       },
     ];
 
@@ -37,7 +31,7 @@ export class GiftingComponent implements OnInit {
     if (!environment.production) {
       this.navbarRouterLinks.unshift({
         name: GameTitleCodeName.FM8,
-        route: [...rootRouterLink, GameTitleCodeName.FM8.toLowerCase()],
+        route: ['.', GameTitleCodeName.FM8.toLowerCase()],
       });
     }
 
@@ -45,7 +39,7 @@ export class GiftingComponent implements OnInit {
     if (!environment.production) {
       this.navbarRouterLinks.unshift({
         name: GameTitleCodeName.FH5,
-        route: [...rootRouterLink, GameTitleCodeName.FH5.toLowerCase()],
+        route: ['.', GameTitleCodeName.FH5.toLowerCase()],
       });
     }
   }

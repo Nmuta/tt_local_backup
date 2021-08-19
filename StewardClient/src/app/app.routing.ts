@@ -91,6 +91,12 @@ const routes: Routes = [
     ],
   },
   {
+    path: 'app',
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    loadChildren: () => import('./pages/tools/tools-app.module').then(m => m.ToolsAppModule),
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
   },

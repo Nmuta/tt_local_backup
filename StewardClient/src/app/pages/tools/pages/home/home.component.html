@@ -1,0 +1,52 @@
+<main class="app-tiles-wrapper">
+  <div
+    class="tile-container"
+    *ngFor="let item of possibleNavbarItems; let i = index"
+    [class.activated]="isEnabled[item.tool]"
+    [class.no-access]="!hasAccess[item.tool]"
+  >
+    <div class="tile-aspect"></div>
+    <div class="tile-content">
+      <mat-card>
+        <mat-card-header>
+          <mat-icon mat-card-avatar>{{ item.icon }}</mat-icon>
+          <mat-card-title>{{ item.title }}</mat-card-title>
+          <mat-card-subtitle [matTooltip]="item.subtitle">{{ item.subtitle }}</mat-card-subtitle>
+        </mat-card-header>
+        <img
+          *ngIf="item.imageUrl && item.imageAlt"
+          mat-card-image
+          [src]="item.imageUrl"
+          [alt]="item.imageAlt"
+        />
+        <mat-card-content>
+          <p *ngFor="let paragraph of item.shortDescription">{{ paragraph }}</p>
+          <div *ngIf="!hasAccess[item.tool]" class="no-access-warning">
+            <span><mat-icon>gpp_bad</mat-icon>Allowed Roles<mat-icon>gpp_bad</mat-icon></span>
+            <ul>
+              <li *ngFor="let role of item.accessList">{{ role | humanize }}</li>
+            </ul>
+          </div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <mat-checkbox
+            [matTooltip]="hasAccess[item.tool] ? 'Check to include in nav' : undefined"
+            [disabled]="!isEnabled[item.tool] && !hasAccess[item.tool]"
+            [ngModel]="isEnabled[item.tool]"
+            (ngModelChange)="onCheckboxChecked(item.tool, $event)"
+          >
+            In Nav
+          </mat-checkbox>
+          <div class="spacer"></div>
+          <a *ngIf="hasAccess[item.tool]" mat-button [routerLink]="parentRoute + item.tool">Open</a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  <div class="tile-container no-access">
+    <div class="tile-aspect"></div>
+    <div class="tile-content single-button">
+      <button mat-raised-button (click)="clearTools()">Reset</button>
+    </div>
+  </div>
+</main>

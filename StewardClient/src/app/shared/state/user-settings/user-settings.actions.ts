@@ -1,3 +1,5 @@
+import { NavbarTool } from '@environments/environment';
+
 /** Sets the Fake API to on or off. Only available in non-prod environments. */
 export class SetFakeApi {
   public static readonly type = '[Settings] Toggle Fake API';
@@ -14,4 +16,10 @@ export class SetStagingApi {
 export class SetAppVersion {
   public static readonly type = '[Settings] Set App Version';
   constructor(public readonly version: string) {}
+}
+
+/** Sets the current list of tools to show in the navbar. */
+export class SetNavbarTools {
+  public static readonly type = '[Settings] Set Navbar Tools';
+  constructor(public readonly navbarTools: Partial<Record<NavbarTool, number>>) {}
 }

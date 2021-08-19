@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CommunityAppTools, createCommunityNavbarPath } from '@community-app/community-tool-list';
 import { environment } from '@environments/environment';
 import { GameTitleCodeName } from '@models/enums';
 
@@ -9,11 +8,10 @@ import { GameTitleCodeName } from '@models/enums';
   styleUrls: ['./ugc.component.scss'],
 })
 export class UGCComponent implements OnInit {
-  public rootRouterLink = createCommunityNavbarPath(CommunityAppTools.UGCPage).routerLink;
   public navbarRouterLinks = [
     {
       name: GameTitleCodeName.FH4,
-      route: [...this.rootRouterLink, GameTitleCodeName.FH4.toLowerCase()],
+      route: ['.', GameTitleCodeName.FH4.toLowerCase()],
     },
   ];
 
@@ -23,11 +21,11 @@ export class UGCComponent implements OnInit {
     if (!environment.production) {
       this.navbarRouterLinks.unshift({
         name: GameTitleCodeName.FM8,
-        route: [...this.rootRouterLink, GameTitleCodeName.FM8.toLowerCase()],
+        route: ['.', GameTitleCodeName.FM8.toLowerCase()],
       });
       this.navbarRouterLinks.unshift({
         name: GameTitleCodeName.FH5,
-        route: [...this.rootRouterLink, GameTitleCodeName.FH5.toLowerCase()],
+        route: ['.', GameTitleCodeName.FH5.toLowerCase()],
       });
     }
   }

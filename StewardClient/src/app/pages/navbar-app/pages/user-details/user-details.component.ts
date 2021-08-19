@@ -8,7 +8,6 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { first } from 'lodash';
 import { filter, takeUntil } from 'rxjs/operators';
-import { createNavbarPath, NavbarTools } from '@navbar-app/navbar-tool-list';
 
 /** User Details page. */
 @Component({
@@ -28,29 +27,12 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     return first(this.lookupList) ?? '';
   }
 
-  public woodstockRouterLink = [
-    ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
-    'woodstock',
-  ];
-
-  public steelheadRouterLink = [
-    ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
-    'steelhead',
-  ];
-
-  public sunriseRouterLink = [
-    ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
-    'sunrise',
-  ];
-
-  public opusRouterLink = [...createNavbarPath(NavbarTools.UserDetailsPage).routerLink, 'opus'];
-
-  public apolloRouterLink = [...createNavbarPath(NavbarTools.UserDetailsPage).routerLink, 'apollo'];
-
-  public gravityRouterLink = [
-    ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
-    'gravity',
-  ];
+  public woodstockRouterLink = ['.', 'woodstock'];
+  public steelheadRouterLink = ['.', 'steelhead'];
+  public sunriseRouterLink = ['.', 'sunrise'];
+  public opusRouterLink = ['.', 'opus'];
+  public apolloRouterLink = ['.', 'apollo'];
+  public gravityRouterLink = ['.', 'gravity'];
 
   /** Generates a nav tooltip */
   public get woodstockTooltip(): string {

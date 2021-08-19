@@ -1,4 +1,4 @@
-import { RouteParams } from '@models/routing';
+import { createRouterLinkPath, RouteParams } from '@models/routing';
 import { Router } from '@angular/router';
 import { createNavbarPath } from '@navbar-app/navbar-tool-list';
 import { createCommunityNavbarPath } from '@community-app/community-tool-list';
@@ -19,6 +19,9 @@ export function generateSharedPageRouterLink(router: Router, routeParams: RouteP
       break;
     case 'data-pipeline':
       rootRouterLink = createDataPipelineNavbarPath(routeParams).routerLink;
+      break;
+    case 'app':
+      rootRouterLink = createRouterLinkPath(['/app', 'tools'], routeParams).routerLink;
       break;
     default:
       throw new Error('Page URL does not have a valid path to pull shared router link from.');

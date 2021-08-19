@@ -1,0 +1,33 @@
+@import '/src/styles/mixins';
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.short-spacer {
+  flex: 0 1 2em;
+}
+
+.location {
+  overflow: hidden;
+}
+
+.mat-stroked-button {
+  border-color: app-color-default-contrast($app-primary, 0.333);
+}
+
+.configure-defaults {
+  margin-left: 1em;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.edit-button {
+  margin-right: 0.5em;
+}
+
+.edit-mode-instructions {
+  vertical-align: middle;
+}

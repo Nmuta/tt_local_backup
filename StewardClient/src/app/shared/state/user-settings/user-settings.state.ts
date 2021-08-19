@@ -1,27 +1,28 @@
 import { Injectable } from '@angular/core';
-import { environment } from '@environments/environment';
+import { environment, NavbarTool } from '@environments/environment';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { clone } from 'lodash';
 import { Observable, of } from 'rxjs';
-import { SetAppVersion, SetStagingApi, SetFakeApi } from './user-settings.actions';
+import { SetAppVersion, SetStagingApi, SetFakeApi, SetNavbarTools } from './user-settings.actions';
 
 /** Defines the user state model. */
 export class UserSettingsStateModel {
   public enableFakeApi: boolean;
   public enableStagingApi: boolean;
   public appVersion: string;
+  public navbarTools: Partial<Record<NavbarTool, number>>;
 }
 
 /** Defines the current users' settings. */
 @Injectable({
   providedIn: 'root',
 })
-@State<Partial<UserSettingsStateModel>>({
+@State<UserSettingsStateModel>({
   name: 'userSettings',
   defaults: {
     enableFakeApi: !environment.production,
     enableStagingApi: false,
     appVersion: undefined,
+    navbarTools: {},
   },
 })
 export class UserSettingsState {
@@ -31,7 +32,7 @@ export class UserSettingsState {
     ctx: StateContext<UserSettingsStateModel>,
     action: SetFakeApi,
   ): Observable<UserSettingsStateModel> {
-    return of(ctx.patchState({ enableFakeApi: clone(action.enabled) }));
+    return of(ctx.patchState({ enableFakeApi: action.enabled }));
   }
 
   /** Sets the state of the current API. */
@@ -40,7 +41,7 @@ export class UserSettingsState {
     ctx: StateContext<UserSettingsStateModel>,
     action: SetStagingApi,
   ): Observable<UserSettingsStateModel> {
-    return of(ctx.patchState({ enableStagingApi: clone(action.enabled) }));
+    return of(ctx.patchState({ enableStagingApi: action.enabled }));
   }
 
   /** Sets the state of the current app version. */
@@ -49,7 +50,16 @@ export class UserSettingsState {
     ctx: StateContext<UserSettingsStateModel>,
     action: SetAppVersion,
   ): Observable<UserSettingsStateModel> {
-    return of(ctx.patchState({ appVersion: clone(action.version) }));
+    return of(ctx.patchState({ appVersion: action.version }));
+  }
+
+  /** Sets the state of the current app version. */
+  @Action(SetNavbarTools, { cancelUncompleted: true })
+  public setNavbarTools$(
+    ctx: StateContext<UserSettingsStateModel>,
+    action: SetNavbarTools,
+  ): Observable<UserSettingsStateModel> {
+    return of(ctx.patchState({ navbarTools: action.navbarTools }));
   }
 
   /** Selector for whether the state has fake api enabled. */

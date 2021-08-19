@@ -1,0 +1,192 @@
+@import '/src/styles/mixins';
+
+:host {
+  display: block;
+  margin: $gap-medium;
+}
+
+.app-tiles-wrapper {
+  // horizontal positioning and sizing of the box
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+
+  // aspect ratio trickery
+  & > * {
+    // background-color: magenta;
+    position: relative;
+
+    .tile-aspect {
+      // background-color: lime;
+      width: 100%;
+      padding-top: 100%;
+    }
+
+    .tile-content {
+      // background-color: black;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+    }
+  }
+
+  // getting the cards to play inside the box
+  & > * {
+    .tile-content {
+      overflow: hidden;
+      mat-card {
+        max-height: unset;
+        // constrain to container
+        height: 100%;
+
+        // fixes vertical & horizontal overflow
+        padding: 0;
+
+        // fixes vertical & horizontal overflow
+        img[mat-card-image] {
+          width: 100%;
+          margin-left: 0;
+          margin-right: 0;
+        }
+
+        // fixes vertical & horizontal overflow
+        mat-card-actions {
+          margin-left: 0;
+          margin-right: 0;
+        }
+
+        // make header sticky with scroll bar
+        mat-card-header {
+          position: sticky;
+          top: 0;
+
+          ::ng-deep & > .mat-card-header-text {
+            // this highlights badly but it definitely works
+            flex-shrink: 1;
+            min-width: 0;
+          }
+
+          // needs some help covering up the content as it scrolls by
+          padding-top: 1em;
+          padding-left: 1em;
+          padding-right: 1em;
+          background-color: white; // TODO: Base this off theme color
+
+          mat-card-subtitle {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+        }
+
+        // make footer sticky with scroll bar
+        mat-card-actions {
+          position: sticky;
+          bottom: 0;
+          background-color: white; // TODO: Base this off theme color
+
+          // baseline fix for checkbox
+          align-items: center;
+
+          // otherwise this produces a scrollbar when none is needed
+          overflow: hidden;
+
+          // otherwise this produces a scrollbar when none is needed
+          ::ng-deep .mat-checkbox-layout {
+            overflow: hidden;
+            margin-left: 0.5em;
+          }
+        }
+      }
+
+      // grow the content to lay out nicely inside the tile}
+      mat-card {
+        display: flex;
+        flex-flow: column nowrap;
+
+        > * {
+          margin-top: 0;
+          margin-bottom: 0;
+        }
+
+        img[mat-card-image] {
+          flex-shrink: 1;
+          padding-bottom: 1em;
+        }
+
+        mat-card-content {
+          flex-grow: 1;
+          padding-left: 1em;
+          padding-right: 1em;
+        }
+
+        mat-card-actions {
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+}
+
+// this should probably just be global
+mat-icon[mat-card-avatar] {
+  font-size: 2.5rem;
+}
+
+.spacer {
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.tile-container {
+  @include mat-elevation-transition();
+  @include mat-elevation(2);
+  mat-card,
+  mat-card-actions,
+  mat-card-header {
+    transition: color 0.5s ease, background-color 0.5s ease;
+  }
+}
+
+.activated {
+  @include mat-elevation(6);
+  mat-card,
+  mat-card-actions,
+  mat-card-header {
+    background-color: app-color-lighter($app-accent) !important;
+    color: app-color-lighter-contrast($app-accent) !important;
+  }
+}
+
+.no-access {
+  @include mat-elevation(0);
+  mat-card,
+  mat-card-actions,
+  mat-card-header {
+    background-color: app-color-text-contrast($app-background) !important;
+    color: app-color-text($app-background) !important;
+  }
+}
+
+.no-access-warning {
+  mat-icon {
+    font-size: 1em;
+    width: 1em;
+    height: 1em;
+  }
+
+  ul {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style-type: none;
+  }
+}
+
+.tile-content.single-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
