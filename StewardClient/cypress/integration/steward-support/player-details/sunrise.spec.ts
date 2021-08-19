@@ -1,16 +1,44 @@
 import { checkboxHasValue } from '@support/mat-form/checkbox-has-value';
 import { tableHasEntry } from '@support/mat-form/table-has-entry';
+import { verifyPlayerIdentityResults } from '@support/steward/component/player-identity-results';
+import { login } from '@support/steward/auth/login';
+import { disableFakeApi } from '@support/steward/util/disable-fake-api';
+import { searchByGtag, searchByXuid, selectSunrise } from './page';
+import { jordan } from '@support/steward/common/account-info';
 
-/** Shared tests for Sunrise Player Details. */
-export function playerDetailsSunriseSharedTests(): void {
+context('Steward / Support / Player Details / Sunrise', () => {
+  beforeEach(() => {
+    login();
+    disableFakeApi();
+  });
+
+  context('GTAG Lookup', () => {
+    beforeEach(() => {
+      searchByGtag(jordan.gtag);
+      selectSunrise();
+    });
+
+    foundUserDataTest();
+  });
+
+  context('XUID Lookup', () => {
+    beforeEach(() => {
+      searchByXuid(jordan.xuid);
+      selectSunrise();
+    });
+
+    foundUserDataTest();
+  });
+});
+
+function foundUserDataTest(): void {
   it('should have found data', () => {
     // found user
-    cy.contains('.identifier', 'FuriKuriFan5').should('exist');
-    cy.contains('.identifier', '2535435129485725').should('exist');
+    verifyPlayerIdentityResults({ gtag: jordan.gtag, xuid: jordan.xuid, t10Id: false });
 
     // found flag data
     checkboxHasValue('Is Vip', true);
-    checkboxHasValue('Is Community Manager', false);
+    checkboxHasValue('Is Under Review', false);
 
     // found bans
     cy.contains('mat-card', 'Ban History').within(() => {

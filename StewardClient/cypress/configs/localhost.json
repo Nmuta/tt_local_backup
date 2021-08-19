@@ -7,5 +7,9 @@
     "TEST_WOODSTOCK": true,
     "TEST_STEELHEAD": true
   },
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
+  },
   "supportFile": "cypress/support/commands.ts"
 }
