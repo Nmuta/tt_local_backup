@@ -5,7 +5,7 @@ import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Store } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
-import { first } from 'lodash';
+import { clone, first } from 'lodash';
 import { DateTime, Duration } from 'luxon';
 
 interface DurationOption {
@@ -48,12 +48,18 @@ export class DurationPickerComponent implements OnInit, ControlValueAccessor {
   /** Lifecycle hook. */
   public ngOnInit(): void {
     const profile = this.store.selectSnapshot<UserModel>(UserState.profile);
-    this.options = DurationPickerOptions;
+    this.options = clone(DurationPickerOptions);
     if (profile && profile.role === UserRole.LiveOpsAdmin) {
-      this.options.unshift({
-        duration: Duration.fromObject({ minutes: 1 }),
-        humanized: '1 minute',
-      } as DurationOption);
+      this.options.unshift(
+        {
+          duration: Duration.fromObject({ minutes: 1 }),
+          humanized: '1 minute',
+        } as DurationOption,
+        {
+          duration: Duration.fromObject({ minutes: 30 }),
+          humanized: '30 minutes',
+        } as DurationOption,
+      );
     }
   }
 

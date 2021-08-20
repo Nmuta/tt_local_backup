@@ -61,7 +61,7 @@ describe('DurationPickerComponent', () => {
         } as UserModel);
       });
 
-      it('should not set 1 minute duration options', () => {
+      it('should not set test duration options', () => {
         component.ngOnInit();
 
         expect(component.options.length).toEqual(3);
@@ -78,11 +78,12 @@ describe('DurationPickerComponent', () => {
         } as UserModel);
       });
 
-      it('should set 1 minute option duration options', () => {
+      it('should set test duration options', () => {
         component.ngOnInit();
 
-        expect(component.options.length).toEqual(4);
+        expect(component.options.length).toEqual(5);
         expect(component.options[0].humanized).toEqual('1 minute');
+        expect(component.options[1].humanized).toEqual('30 minutes');
       });
     });
   });
