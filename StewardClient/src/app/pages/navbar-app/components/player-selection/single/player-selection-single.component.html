@@ -70,7 +70,7 @@
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
     <input
-      [disabled]="this.disable"
+      [hidden]="this.disable"
       [placeholder]="this.disable ? '' : 'New ' + (this.lookupType | humanize)"
       [matChipInputFor]="chipList"
       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
