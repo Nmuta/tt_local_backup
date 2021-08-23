@@ -22,6 +22,7 @@ import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inv
 import { PlayerInventoryProfilesModule } from '@shared/views/player-inventory-profiles/player-inventory-profiles.module';
 import { SteelheadGiftHistoryComponent } from './steelhead/steelhead-gift-history.component';
 import { WoodstockGiftHistoryComponent } from './woodstock/woodstock-gift-history.component';
+import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -50,6 +51,7 @@ import { WoodstockGiftHistoryComponent } from './woodstock/woodstock-gift-histor
     MatTabsModule,
     PlayerInventoryModule,
     PlayerInventoryProfilesModule,
+    EndpointSelectionModule,
   ],
 })
 export class GiftHistoryModule {}

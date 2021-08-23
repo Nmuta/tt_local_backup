@@ -8,6 +8,8 @@
         public const string ArgumentDurationTooShortMessagePartial = "{0} cannot be less than {1}.";
         public const string ArgumentExceptionMissingSettingMessagePartial = "The following setting is required but is missing from the settings source: ";
         public const string ArgumentExceptionMissingSettingsMessagePartial = "The following settings are required and not found in the settings source: ";
+        public const string BadHeaderStewardExceptionBadTitleMessagePartial = "Endpoint key designated for title: {0}, but expected {1}.";
+        public const string BadHeaderStewardExceptionBadEndpointKeyMessagePartial = "Failed to parse key: {0} for title: {1}.";
         public const string NotImplementedMessage = "{0} not supported for {1}.";
         public const string TitleNotValidPartial = "{0} is not a valid title.";
         public const string EnvironmentNotValidPartial = "{0} is not a valid environment.";

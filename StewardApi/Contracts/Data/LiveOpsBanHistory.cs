@@ -11,13 +11,23 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="LiveOpsBanHistory"/> class.
         /// </summary>
-        public LiveOpsBanHistory(long xuid, string title, string requesterObjectId, DateTime startTimeUtc, DateTime expireTimeUtc, string featureArea, string reason, string banParameters)
+        public LiveOpsBanHistory(
+            long xuid,
+            string title,
+            string requesterObjectId,
+            DateTime startTimeUtc,
+            DateTime expireTimeUtc,
+            string featureArea,
+            string reason,
+            string banParameters,
+            string endpoint)
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             featureArea.ShouldNotBeNullEmptyOrWhiteSpace(nameof(featureArea));
             reason.ShouldNotBeNullEmptyOrWhiteSpace(nameof(reason));
             banParameters.ShouldNotBeNullEmptyOrWhiteSpace(nameof(banParameters));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             this.Xuid = xuid;
             this.Title = title;
@@ -27,6 +37,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
             this.FeatureArea = featureArea;
             this.Reason = reason;
             this.BanParameters = banParameters;
+            this.Endpoint = endpoint;
         }
 
         /// <summary>
@@ -83,5 +94,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         ///     Gets or sets the ban parameters.
         /// </summary>
         public string BanParameters { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the LSP endpoint key.
+        /// </summary>
+        public string Endpoint { get; set; }
     }
 }

@@ -88,10 +88,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var requesterObjectId = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
             var giftInventory = Fixture.Create<SteelheadGift>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             Func<Task> act = async () =>
-                await provider.UpdateGiftHistoryAsync(id, title, requesterObjectId, antecedent, giftInventory).ConfigureAwait(false);
+                await provider.UpdateGiftHistoryAsync(id, title, requesterObjectId, antecedent, giftInventory, endpoint).ConfigureAwait(false);
 
             // Assert.
             act.Should().NotThrow();
@@ -107,13 +108,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var requesterObjectId = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
             var giftInventory = Fixture.Create<SteelheadGift>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdateGiftHistoryAsync(null, title, requesterObjectId, antecedent, giftInventory).ConfigureAwait(false),
-                async () => await provider.UpdateGiftHistoryAsync(TestConstants.Empty, title, requesterObjectId, antecedent, giftInventory).ConfigureAwait(false),
-                async () => await provider.UpdateGiftHistoryAsync(TestConstants.WhiteSpace, title, requesterObjectId, antecedent, giftInventory).ConfigureAwait(false)
+                async () => await provider.UpdateGiftHistoryAsync(null, title, requesterObjectId, antecedent, giftInventory, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGiftHistoryAsync(TestConstants.Empty, title, requesterObjectId, antecedent, giftInventory, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGiftHistoryAsync(TestConstants.WhiteSpace, title, requesterObjectId, antecedent, giftInventory, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -133,13 +135,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var requesterObjectId = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
             var giftInventory = Fixture.Create<SteelheadGift>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdateGiftHistoryAsync(id, null, requesterObjectId, antecedent, giftInventory).ConfigureAwait(false),
-                async () => await provider.UpdateGiftHistoryAsync(id, TestConstants.Empty, requesterObjectId, antecedent, giftInventory).ConfigureAwait(false),
-                async () => await provider.UpdateGiftHistoryAsync(id, TestConstants.WhiteSpace, requesterObjectId, antecedent, giftInventory).ConfigureAwait(false)
+                async () => await provider.UpdateGiftHistoryAsync(id, null, requesterObjectId, antecedent, giftInventory, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGiftHistoryAsync(id, TestConstants.Empty, requesterObjectId, antecedent, giftInventory, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGiftHistoryAsync(id, TestConstants.WhiteSpace, requesterObjectId, antecedent, giftInventory, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -159,13 +162,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var title = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
             var giftInventory = Fixture.Create<SteelheadGift>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdateGiftHistoryAsync(id, title, null, antecedent, giftInventory).ConfigureAwait(false),
-                async () => await provider.UpdateGiftHistoryAsync(id, title, TestConstants.Empty, antecedent, giftInventory).ConfigureAwait(false),
-                async () => await provider.UpdateGiftHistoryAsync(id, title, TestConstants.WhiteSpace, antecedent, giftInventory).ConfigureAwait(false)
+                async () => await provider.UpdateGiftHistoryAsync(id, title, null, antecedent, giftInventory, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGiftHistoryAsync(id, title, TestConstants.Empty, antecedent, giftInventory, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGiftHistoryAsync(id, title, TestConstants.WhiteSpace, antecedent, giftInventory, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -185,9 +189,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var title = Fixture.Create<string>();
             var requesterObjectId = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.UpdateGiftHistoryAsync(id, title, requesterObjectId, antecedent, null).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.UpdateGiftHistoryAsync(id, title, requesterObjectId, antecedent, null, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "gift"));
@@ -202,10 +207,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var id = Fixture.Create<string>();
             var title = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             Func<Task<IList<SteelheadGiftHistory>>> act = async () =>
-                await provider.GetGiftHistoriesAsync(id, title, antecedent).ConfigureAwait(false);
+                await provider.GetGiftHistoriesAsync(id, title, antecedent, endpoint).ConfigureAwait(false);
 
             // Assert.
             act().Result.Should().BeOfType<List<SteelheadGiftHistory>>();
@@ -219,13 +225,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var provider = new Dependencies().Build();
             var title = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.GetGiftHistoriesAsync(null, title, antecedent).ConfigureAwait(false),
-                async () => await provider.GetGiftHistoriesAsync(TestConstants.WhiteSpace, title, antecedent).ConfigureAwait(false),
-                async () => await provider.GetGiftHistoriesAsync(TestConstants.WhiteSpace, title, antecedent).ConfigureAwait(false)
+                async () => await provider.GetGiftHistoriesAsync(null, title, antecedent, endpoint).ConfigureAwait(false),
+                async () => await provider.GetGiftHistoriesAsync(TestConstants.WhiteSpace, title, antecedent, endpoint).ConfigureAwait(false),
+                async () => await provider.GetGiftHistoriesAsync(TestConstants.WhiteSpace, title, antecedent, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -243,13 +250,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var provider = new Dependencies().Build();
             var id = Fixture.Create<string>();
             var antecedent = Fixture.Create<GiftIdentityAntecedent>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.GetGiftHistoriesAsync(id, null, antecedent).ConfigureAwait(false),
-                async () => await provider.GetGiftHistoriesAsync(id, TestConstants.Empty, antecedent).ConfigureAwait(false),
-                async () => await provider.GetGiftHistoriesAsync(id, TestConstants.WhiteSpace, antecedent).ConfigureAwait(false)
+                async () => await provider.GetGiftHistoriesAsync(id, null, antecedent, endpoint).ConfigureAwait(false),
+                async () => await provider.GetGiftHistoriesAsync(id, TestConstants.Empty, antecedent, endpoint).ConfigureAwait(false),
+                async () => await provider.GetGiftHistoriesAsync(id, TestConstants.WhiteSpace, antecedent, endpoint).ConfigureAwait(false)
             };
 
             // Assert.

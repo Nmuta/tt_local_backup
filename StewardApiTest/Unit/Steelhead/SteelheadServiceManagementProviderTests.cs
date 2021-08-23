@@ -55,9 +55,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var provider = new Dependencies().Build();
             var startIndex = Fixture.Create<int>();
             var maxResults = Fixture.Create<int>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<LspGroup>> Action() => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
+            async Task<IList<LspGroup>> Action() => await provider.GetLspGroupsAsync(startIndex, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<List<LspGroup>>();
@@ -71,9 +72,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var provider = new Dependencies().Build();
             var startIndex = -1;
             var maxResults = Fixture.Create<int>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
+            Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
@@ -87,9 +89,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var provider = new Dependencies().Build();
             var startIndex = Fixture.Create<int>();
             var maxResults = -1;
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
+            Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
@@ -99,7 +102,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             public Dependencies()
             {
-                this.SteelheadService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
+                this.SteelheadService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
             }
 

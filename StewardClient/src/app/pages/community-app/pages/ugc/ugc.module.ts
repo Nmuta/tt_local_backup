@@ -27,6 +27,7 @@ import { WoodstockUGCComponent } from './pages/woodstock/woodstock-ugc.component
 import { PlayerUGCModule } from '@views/player-ugc/player-ugc.module';
 import { MatIconModule } from '@angular/material/icon';
 import { ShareCodeInputModule } from './components/share-code-input/share-code-input.module';
+import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 
 /** Routed module for ugc users. */
 @NgModule({
@@ -58,6 +59,7 @@ import { ShareCodeInputModule } from './components/share-code-input/share-code-i
     PlayerUGCModule,
     MatIconModule,
     ShareCodeInputModule,
+    EndpointSelectionModule,
   ],
 })
 export class UGCModule {}

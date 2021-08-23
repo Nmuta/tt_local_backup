@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -33,12 +34,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     [Route("api/v1/title/steelhead")]
     [ApiController]
     [AuthorizeRoles(UserRole.LiveOpsAdmin)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This can't be avoided.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Microsoft.Maintainability",
+        "CA1506:AvoidExcessiveClassCoupling",
+        Justification = "This can't be avoided.")]
     public class SteelheadController : ControllerBase
     {
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 100;
         private const KustoGameDbSupportedTitle Title = KustoGameDbSupportedTitle.Steelhead;
+        private const string DefaultEndpointKey = "Steelhead|Development";
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -141,11 +146,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/identities")]
         [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
         [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
-        public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
+        public async Task<IActionResult> GetPlayerIdentity(
+            [FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             string MakeKey(IdentityQueryAlpha identityQuery)
             {
-                return $"steelhead:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
+                return $"steelhead|{endpoint}:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
             }
 
             var cachedResults = identityQueries.Select(v => this.memoryCache.Get<IdentityResultAlpha>(MakeKey(v)));
@@ -154,7 +161,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.Ok(cachedResults.ToList());
             }
 
-            var results = await this.steelheadPlayerDetailsProvider.GetPlayerIdentitiesAsync(identityQueries.ToList()).ConfigureAwait(true);
+            var results = await this.steelheadPlayerDetailsProvider.GetPlayerIdentitiesAsync(
+                identityQueries.ToList(),
+                endpoint).ConfigureAwait(true);
 
             foreach (var result in results)
             {
@@ -180,11 +189,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/gamertag({gamertag})/details")]
         [SwaggerResponse(200, type: typeof(SteelheadPlayerDetails))]
-        public async Task<IActionResult> GetPlayerDetails(string gamertag)
+        public async Task<IActionResult> GetPlayerDetails(
+            string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var playerDetails = await this.steelheadPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var playerDetails = await this.steelheadPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag, endpoint)
+                .ConfigureAwait(true);
             if (playerDetails == null)
             {
                 throw new NotFoundStewardException($"Player {gamertag} was not found.");
@@ -198,9 +210,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/details")]
         [SwaggerResponse(200, type: typeof(SteelheadPlayerDetails))]
-        public async Task<IActionResult> GetPlayerDetails(ulong xuid)
+        public async Task<IActionResult> GetPlayerDetails(
+            ulong xuid)
         {
-            var playerDetails = await this.steelheadPlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var playerDetails = await this.steelheadPlayerDetailsProvider.GetPlayerDetailsAsync(xuid, endpoint)
+                .ConfigureAwait(true);
             if (playerDetails == null)
             {
                throw new NotFoundStewardException($"Player {xuid} was not found.");
@@ -214,11 +229,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/consoleDetails")]
         [SwaggerResponse(200, type: typeof(List<ConsoleDetails>))]
-        public async Task<IActionResult> GetConsoles(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetConsoles(
+            ulong xuid,
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.steelheadPlayerDetailsProvider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var result = await this.steelheadPlayerDetailsProvider.GetConsolesAsync(xuid, maxResults, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -228,9 +247,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, bool isBanned)
+        public async Task<IActionResult> SetConsoleBanStatus(
+            ulong consoleId,
+            bool isBanned)
         {
-            await this.steelheadPlayerDetailsProvider.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            await this.steelheadPlayerDetailsProvider.SetConsoleBanStatusAsync(consoleId, isBanned, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -240,12 +263,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/sharedConsoleUsers")]
         [SwaggerResponse(200, type: typeof(List<SharedConsoleUser>))]
-        public async Task<IActionResult> GetSharedConsoleUsers(ulong xuid, [FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetSharedConsoleUsers(
+            ulong xuid,
+            [FromQuery] int startIndex = DefaultStartIndex,
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.steelheadPlayerDetailsProvider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var result = await this.steelheadPlayerDetailsProvider.GetSharedConsoleUsersAsync(
+                xuid,
+                startIndex,
+                maxResults,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -255,14 +286,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SteelheadUserFlags))]
-        public async Task<IActionResult> GetUserFlags(ulong xuid)
+        public async Task<IActionResult> GetUserFlags(
+            ulong xuid)
         {
-            if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var result = await this.steelheadPlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
+            var result = await this.steelheadPlayerDetailsProvider.GetUserFlagsAsync(xuid, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -272,10 +307,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SteelheadUserFlags))]
-        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] SteelheadUserFlagsInput userFlags)
+        public async Task<IActionResult> SetUserFlags(
+            ulong xuid,
+            [FromBody] SteelheadUserFlagsInput userFlags)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
 
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
             if (!this.ModelState.IsValid)
             {
@@ -283,15 +321,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
             var validatedFlags = this.mapper.Map<SteelheadUserFlags>(userFlags);
-            await this.steelheadPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags).ConfigureAwait(true);
+            await this.steelheadPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags, endpoint)
+                .ConfigureAwait(true);
 
-            var results = await this.steelheadPlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
+            var results = await this.steelheadPlayerDetailsProvider.GetUserFlagsAsync(xuid, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -310,6 +351,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             foreach (var banParam in banInput)
             {
                 this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
@@ -324,7 +366,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), requesterObjectId, $"Steelhead Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(
+                banParameters.ToJson(),
+                requesterObjectId,
+                $"Steelhead Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -332,14 +377,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var results = await this.steelheadPlayerDetailsProvider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(true);
+                    var results = await this.steelheadPlayerDetailsProvider.BanUsersAsync(
+                        banParameters,
+                        requesterObjectId,
+                        endpoint).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(results);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
+                        .ConfigureAwait(true);
                 }
             }
 
@@ -365,6 +415,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             foreach (var banParam in banInput)
             {
                 this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
@@ -379,7 +430,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var results = await this.steelheadPlayerDetailsProvider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(true);
+            var results = await this.steelheadPlayerDetailsProvider.BanUsersAsync(
+                banParameters,
+                requesterObjectId,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -389,11 +443,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("players/banSummaries")]
         [SwaggerResponse(200, type: typeof(IList<BanSummary>))]
-        public async Task<IActionResult> GetBanSummaries([FromBody] IList<ulong> xuids)
+        public async Task<IActionResult> GetBanSummaries(
+            [FromBody] IList<ulong> xuids)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
 
-            var result = await this.steelheadPlayerDetailsProvider.GetUserBanSummariesAsync(xuids).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var result = await this.steelheadPlayerDetailsProvider.GetUserBanSummariesAsync(xuids, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -403,9 +460,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
-        public async Task<IActionResult> GetBanHistory(ulong xuid)
+        public async Task<IActionResult> GetBanHistory(
+            ulong xuid)
         {
-            var result = await this.GetBanHistoryAsync(xuid).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var result = await this.GetBanHistoryAsync(xuid, endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -415,18 +474,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/gamertag({gamertag})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
-        public async Task<IActionResult> GetBanHistory(string gamertag)
+        public async Task<IActionResult> GetBanHistory(
+            string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var playerDetails = await this.steelheadPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var playerDetails = await this.steelheadPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag, endpoint)
+                .ConfigureAwait(true);
 
             if (playerDetails == null)
             {
                 throw new NotFoundStewardException($"Player {gamertag} was not found.");
             }
 
-            var result = await this.GetBanHistoryAsync(playerDetails.Xuid).ConfigureAwait(true);
+            var result = await this.GetBanHistoryAsync(playerDetails.Xuid, endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -436,12 +498,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("groups")]
         [SwaggerResponse(200, type: typeof(IList<LspGroup>))]
-        public async Task<IActionResult> GetGroups([FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetGroups(
+            [FromQuery] int startIndex = DefaultStartIndex,
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.steelheadServiceManagementProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var result = await this.steelheadServiceManagementProvider.GetLspGroupsAsync(
+                startIndex,
+                maxResults,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -451,14 +519,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventory")]
         [SwaggerResponse(200, type: typeof(SteelheadPlayerInventory))]
-        public async Task<IActionResult> GetPlayerInventory(ulong xuid)
+        public async Task<IActionResult> GetPlayerInventory(
+            ulong xuid)
         {
-            if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var getPlayerInventory = this.steelheadPlayerInventoryProvider.GetPlayerInventoryAsync(xuid);
+            var getPlayerInventory = this.steelheadPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, endpoint);
             var getMasterInventory = this.RetrieveMasterInventoryList();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
@@ -471,7 +542,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}.");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(
+                playerInventory,
+                masterInventory,
+                this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -480,9 +554,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/profileId({profileId})/inventory")]
         [SwaggerResponse(200, type: typeof(SteelheadPlayerInventory))]
-        public async Task<IActionResult> GetPlayerInventoryByProfileId(int profileId)
+        public async Task<IActionResult> GetPlayerInventoryByProfileId(
+            int profileId)
         {
-            var getPlayerInventory = this.steelheadPlayerInventoryProvider.GetPlayerInventoryAsync(profileId);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var getPlayerInventory = this.steelheadPlayerInventoryProvider.GetPlayerInventoryAsync(
+                profileId,
+                endpoint);
             var getMasterInventory = this.RetrieveMasterInventoryList();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
@@ -495,7 +573,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(
+                playerInventory,
+                masterInventory,
+                this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -505,9 +586,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("player/xuid({xuid})/inventoryProfiles")]
         [SwaggerResponse(200, type: typeof(IList<SteelheadInventoryProfile>))]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> GetPlayerInventoryProfiles(ulong xuid)
+        public async Task<IActionResult> GetPlayerInventoryProfiles(
+            ulong xuid)
         {
-            var inventoryProfileSummary = await this.steelheadPlayerInventoryProvider.GetInventoryProfilesAsync(xuid).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var inventoryProfileSummary = await this.steelheadPlayerInventoryProvider.GetInventoryProfilesAsync(
+                xuid,
+                endpoint).ConfigureAwait(true);
 
             if (inventoryProfileSummary == null)
             {
@@ -535,6 +620,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             status.ShouldNotBeNull(nameof(status));
             sort.ShouldNotBeNull(nameof(sort));
 
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             if (!Enum.TryParse(status, out AuctionStatus statusEnum))
             {
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionStatus)} provided: {status}");
@@ -545,7 +631,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionSort)} provided: {status}");
             }
 
-            var getAuctions = this.steelheadPlayerDetailsProvider.GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum));
+            var getAuctions = this.steelheadPlayerDetailsProvider.GetPlayerAuctionsAsync(
+                xuid,
+                new AuctionFilters(carId, makeId, statusEnum, sortEnum),
+                endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFM8CarsDetailed);
 
             await Task.WhenAll(getAuctions, getKustoCars).ConfigureAwait(true);
@@ -567,7 +656,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
-        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] SteelheadGroupGift groupGift)
+        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
+            [FromBody] SteelheadGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -578,6 +668,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
 
             this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
@@ -591,7 +682,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                    .ConfigureAwait(true))
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -602,13 +694,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Players with XUIDs: {stringBuilder} were not found.");
             }
 
-            var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory).ConfigureAwait(true);
+            var invalidItems = await this.VerifyGiftAgainstMasterInventory(groupGift.Inventory)
+                .ConfigureAwait(true);
             if (invalidItems.Length > 0)
             {
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Steelhead Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(
+                groupGift.ToJson(),
+                requesterObjectId,
+                $"Steelhead Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -616,15 +712,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-                    var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+                    var allowedToExceedCreditLimit =
+                        userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+                    var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
+                        groupGift,
+                        requesterObjectId,
+                        allowedToExceedCreditLimit,
+                        endpoint).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
+                        .ConfigureAwait(true);
                 }
             }
 
@@ -640,7 +743,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
-        public async Task<IActionResult> UpdateGroupInventories([FromBody] SteelheadGroupGift groupGift)
+        public async Task<IActionResult> UpdateGroupInventories(
+            [FromBody] SteelheadGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -651,6 +755,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
 
             this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
@@ -664,7 +769,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                    .ConfigureAwait(true))
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -681,8 +787,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+            var allowedToExceedCreditLimit =
+                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var response = await this.steelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
+                groupGift,
+                requesterObjectId,
+                allowedToExceedCreditLimit,
+                endpoint).ConfigureAwait(true);
             return this.Ok(response);
         }
 
@@ -694,7 +805,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
-        public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] SteelheadGift gift)
+        public async Task<IActionResult> UpdateGroupInventories(
+            int groupId,
+            [FromBody] SteelheadGift gift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -702,6 +815,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             gift.ShouldNotBeNull(nameof(gift));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             this.giftRequestValidator.Validate(gift, this.ModelState);
 
             if (!this.ModelState.IsValid)
@@ -717,8 +831,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.steelheadPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+            var allowedToExceedCreditLimit =
+                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var response = await this.steelheadPlayerInventoryProvider.UpdateGroupInventoriesAsync(
+                groupId,
+                gift,
+                requesterObjectId,
+                allowedToExceedCreditLimit,
+                endpoint).ConfigureAwait(true);
             return this.Ok(response);
         }
 
@@ -727,9 +847,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<SteelheadGiftHistory>))]
-        public async Task<IActionResult> GetGiftHistoriesAsync(ulong xuid)
+        public async Task<IActionResult> GetGiftHistoriesAsync(
+            ulong xuid)
         {
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.SteelheadCodeName, GiftIdentityAntecedent.Xuid).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
+                xuid.ToString(CultureInfo.InvariantCulture),
+                TitleConstants.SteelheadCodeName,
+                GiftIdentityAntecedent.Xuid,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }
@@ -739,9 +865,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("group/groupId({groupId})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<SteelheadGiftHistory>))]
-        public async Task<IActionResult> GetGiftHistoriesAsync(int groupId)
+        public async Task<IActionResult> GetGiftHistoriesAsync(
+            int groupId)
         {
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.SteelheadCodeName, GiftIdentityAntecedent.LspGroupId).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
+                groupId.ToString(CultureInfo.InvariantCulture),
+                TitleConstants.SteelheadCodeName,
+                GiftIdentityAntecedent.LspGroupId,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }
@@ -751,11 +883,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/notifications")]
         [SwaggerResponse(200, type: typeof(IList<Notification>))]
-        public async Task<IActionResult> GetPlayerNotifications(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetPlayerNotifications(
+            ulong xuid,
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var notifications = await this.steelheadPlayerDetailsProvider.GetPlayerNotificationsAsync(xuid, maxResults).ConfigureAwait(true);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var notifications = await this.steelheadPlayerDetailsProvider.GetPlayerNotificationsAsync(
+                xuid,
+                maxResults,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(notifications);
         }
@@ -769,18 +907,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
-        public async Task<IActionResult> SendPlayerNotifications([FromBody] BulkCommunityMessage communityMessage)
+        public async Task<IActionResult> SendPlayerNotifications(
+            [FromBody] BulkCommunityMessage communityMessage)
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(communityMessage.Duration));
+            communityMessage.Duration.ShouldBeOverMinimumDuration(
+                TimeSpan.FromDays(1),
+                nameof(communityMessage.Duration));
 
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
 
             foreach (var xuid in communityMessage.Xuids)
             {
-                if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                if (!await this.steelheadPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                    .ConfigureAwait(true))
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -792,7 +935,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
-            var notifications = await this.steelheadPlayerDetailsProvider.SendCommunityMessageAsync(communityMessage.Xuids, communityMessage.Message, expireTime).ConfigureAwait(true);
+            var notifications = await this.steelheadPlayerDetailsProvider.SendCommunityMessageAsync(
+                communityMessage.Xuids,
+                communityMessage.Message,
+                expireTime,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(notifications);
         }
@@ -806,21 +953,33 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
-        public async Task<IActionResult> SendGroupNotifications(int groupId, [FromBody] CommunityMessage communityMessage)
+        public async Task<IActionResult> SendGroupNotifications(
+            int groupId,
+            [FromBody] CommunityMessage communityMessage)
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(communityMessage.Duration));
+            communityMessage.Duration.ShouldBeOverMinimumDuration(
+                TimeSpan.FromDays(1),
+                nameof(communityMessage.Duration));
 
-            var groups = await this.steelheadServiceManagementProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
+            var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
+            var groups = await this.steelheadServiceManagementProvider.GetLspGroupsAsync(
+                DefaultStartIndex,
+                DefaultMaxResults,
+                endpoint).ConfigureAwait(false);
             if (!groups.Any(x => x.Id == groupId))
             {
                 throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");
             }
 
             var expireTime = DateTime.Now.Add(communityMessage.Duration);
-            var result = await this.steelheadPlayerDetailsProvider.SendCommunityMessageAsync(groupId, communityMessage.Message, expireTime).ConfigureAwait(true);
+            var result = await this.steelheadPlayerDetailsProvider.SendCommunityMessageAsync(
+                groupId,
+                communityMessage.Message,
+                expireTime,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -830,7 +989,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
         {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
+                .ConfigureAwait(true);
 
             this.Response.Headers.Add("jobId", jobId);
 
@@ -840,10 +1000,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets ban history.
         /// </summary>
-        private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid)
+        private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string endpoint)
         {
-            var getServicesBanHistory = this.steelheadPlayerDetailsProvider.GetUserBanHistoryAsync(xuid);
-            var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(xuid, Title.ToString());
+            var getServicesBanHistory = this.steelheadPlayerDetailsProvider.GetUserBanHistoryAsync(xuid, endpoint);
+            var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(
+                xuid,
+                Title.ToString(),
+                endpoint);
 
             await Task.WhenAll(getServicesBanHistory, getLiveOpsBanHistory).ConfigureAwait(true);
 
@@ -906,10 +1069,34 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             foreach (var vanityItem in gift.VanityItems)
             {
                 var validItem = masterInventoryItem.VanityItems.Any(data => { return data.Id == vanityItem.Id; });
-                error += validItem ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
+                error += validItem
+                    ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             return error;
+        }
+
+        private string GetSteelheadEndpoint(IHeaderDictionary headers)
+        {
+            if (!headers.TryGetValue("endpointKey", out var headerValue))
+            {
+                headerValue = DefaultEndpointKey;
+            }
+
+            var endpointKeyValue = headerValue.ToString();
+            endpointKeyValue.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpointKeyValue));
+
+            var splitValue = endpointKeyValue.Split('|');
+            var title = splitValue.ElementAtOrDefault(0);
+            var key = splitValue.ElementAtOrDefault(1);
+
+            if (title != TitleConstants.SteelheadCodeName)
+            {
+                throw new BadHeaderStewardException(
+                    $"Endpoint key designated for title: {title}, but expected {TitleConstants.SteelheadCodeName}.");
+            }
+
+            return SteelheadSupportedEndpoint.GetEndpoint(key);
         }
     }
 }

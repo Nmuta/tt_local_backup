@@ -45,7 +45,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
         }
 
         /// <inheritdoc />
-        public async Task UpdateGiftHistoryAsync(string id, string title, string requesterObjectId, GiftIdentityAntecedent giftHistoryAntecedent, GravityGift gift)
+        public async Task UpdateGiftHistoryAsync(
+            string id,
+            string title,
+            string requesterObjectId,
+            GiftIdentityAntecedent giftHistoryAntecedent,
+            GravityGift gift)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
@@ -54,7 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
 
             var playerId = $"{giftHistoryAntecedent}:{id}";
-            var giftHistory = new GiftHistory(playerId, title, requesterObjectId, DateTime.UtcNow, gift.ToJson());
+            var giftHistory = new GiftHistory(playerId, title, requesterObjectId, DateTime.UtcNow, gift.ToJson(), GravitySupportedEndpoint.Retail);
             var kustoColumnMappings = giftHistory.ToJsonColumnMappings();
             var tableName = typeof(GiftHistory).Name;
             var giftHistories = new List<GiftHistory> { giftHistory };
@@ -91,7 +96,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
             playerId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
 
-            var giftHistoryResult = await this.kustoProvider.GetGiftHistoryAsync(playerId, title).ConfigureAwait(false);
+            var giftHistoryResult = await this.kustoProvider.GetGiftHistoryAsync(playerId, title, GravitySupportedEndpoint.Retail).ConfigureAwait(false);
             var results = new List<GravityGiftHistory>();
 
             foreach (var history in giftHistoryResult)

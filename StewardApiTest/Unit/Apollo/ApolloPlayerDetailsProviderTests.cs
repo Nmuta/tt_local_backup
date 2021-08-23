@@ -86,9 +86,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var query = Fixture.Create<IdentityQueryAlpha>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IdentityResultAlpha> Action() => await provider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+            async Task<IdentityResultAlpha> Action() => await provider.GetPlayerIdentityAsync(query, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<IdentityResultAlpha>();
@@ -100,9 +101,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var provider = new Dependencies().Build();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IdentityResultAlpha>> action = async () => await provider.GetPlayerIdentityAsync(null).ConfigureAwait(false);
+            Func<Task<IdentityResultAlpha>> action = async () => await provider.GetPlayerIdentityAsync(null, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "query"));
@@ -116,12 +118,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var provider = new Dependencies().Build();
             var gamertag = Fixture.Create<string>();
             var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task<ApolloPlayerDetails>>>
             {
-                async () => await provider.GetPlayerDetailsAsync(xuid).ConfigureAwait(false),
-                async () => await provider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(false)
+                async () => await provider.GetPlayerDetailsAsync(xuid, endpoint).ConfigureAwait(false),
+                async () => await provider.GetPlayerDetailsAsync(gamertag, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -137,13 +140,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var provider = new Dependencies().Build();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.GetPlayerDetailsAsync(null).ConfigureAwait(false),
-                async () => await provider.GetPlayerDetailsAsync(TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.GetPlayerDetailsAsync(TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await provider.GetPlayerDetailsAsync(null, endpoint).ConfigureAwait(false),
+                async () => await provider.GetPlayerDetailsAsync(TestConstants.Empty, endpoint).ConfigureAwait(false),
+                async () => await provider.GetPlayerDetailsAsync(TestConstants.WhiteSpace, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -161,12 +165,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var gamertag = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task<bool>>>
             {
-                async () => await provider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(false),
-                async () => await provider.EnsurePlayerExistsAsync(gamertag).ConfigureAwait(false)
+                async () => await provider.EnsurePlayerExistsAsync(xuid, endpoint).ConfigureAwait(false),
+                async () => await provider.EnsurePlayerExistsAsync(gamertag, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -184,9 +189,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var provider = new Dependencies().Build();
             var banParameters = GenerateBanParameters();
             var requesterObjectId = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<BanResult>> Action() => await provider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(false);
+            async Task<IList<BanResult>> Action() => await provider.BanUsersAsync(banParameters, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<List<BanResult>>();
@@ -199,13 +205,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var banParameters = GenerateBanParameters();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task<IList<BanResult>>>>
             {
-                async () => await provider.BanUsersAsync(banParameters, null).ConfigureAwait(false),
-                async () => await provider.BanUsersAsync(banParameters, TestConstants.WhiteSpace).ConfigureAwait(false),
-                async () => await provider.BanUsersAsync(banParameters, TestConstants.Empty).ConfigureAwait(false)
+                async () => await provider.BanUsersAsync(banParameters, null, endpoint).ConfigureAwait(false),
+                async () => await provider.BanUsersAsync(banParameters, TestConstants.WhiteSpace, endpoint).ConfigureAwait(false),
+                async () => await provider.BanUsersAsync(banParameters, TestConstants.Empty, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -222,9 +229,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var requesterObjectId = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<BanResult>>> action = async () => await provider.BanUsersAsync(null, requesterObjectId).ConfigureAwait(false);
+            Func<Task<IList<BanResult>>> action = async () => await provider.BanUsersAsync(null, requesterObjectId, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParameters"));
@@ -237,11 +245,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task<IList<LiveOpsBanHistory>>>>
             {
-                async () => await provider.GetUserBanHistoryAsync(xuid).ConfigureAwait(false)
+                async () => await provider.GetUserBanHistoryAsync(xuid, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -259,9 +268,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var xuids = Fixture.Create<List<ulong>>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<BanSummary>> Action() => await provider.GetUserBanSummariesAsync(xuids).ConfigureAwait(false);
+            async Task<IList<BanSummary>> Action() => await provider.GetUserBanSummariesAsync(xuids, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<List<BanSummary>>();
@@ -275,9 +285,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var maxResults = Fixture.Create<int>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<ConsoleDetails>> Action() => await provider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+            async Task<IList<ConsoleDetails>> Action() => await provider.GetConsolesAsync(xuid, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<List<ConsoleDetails>>();
@@ -291,9 +302,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var banStatus = Fixture.Create<bool>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.SetConsoleBanStatusAsync(xuid, banStatus).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.SetConsoleBanStatusAsync(xuid, banStatus, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -308,9 +320,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var xuid = Fixture.Create<ulong>();
             var startIndex = Fixture.Create<int>();
             var maxResults = Fixture.Create<int>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<SharedConsoleUser>> Action() => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(false);
+            async Task<IList<SharedConsoleUser>> Action() => await provider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<List<SharedConsoleUser>>();
@@ -323,9 +336,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<ApolloUserFlags> Action() => await provider.GetUserFlagsAsync(xuid).ConfigureAwait(false);
+            async Task<ApolloUserFlags> Action() => await provider.GetUserFlagsAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<ApolloUserFlags>();
@@ -339,9 +353,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var userFlags = Fixture.Create<ApolloUserFlags>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.SetUserFlagsAsync(xuid, userFlags).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.SetUserFlagsAsync(xuid, userFlags, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -354,9 +369,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.SetUserFlagsAsync(xuid, null).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.SetUserFlagsAsync(xuid, null, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "userFlags"));
@@ -385,16 +401,16 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             public Dependencies()
             {
-                this.ApolloService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDataByGamertagOutput>());
-                this.ApolloService.LiveOpsGetUserDataByXuidAsync(Arg.Any<ulong>()).Returns(Fixture.Create<LiveOpsGetUserDataByXuidOutput>());
-                this.ApolloService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>()).Returns(GenerateBanUsersOutput());
-                this.ApolloService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
-                this.ApolloService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(this.GenerateGetUserBanHistoryOutput());
-                this.ApolloService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<GetConsolesOutput>());
-                this.ApolloService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
-                this.ApolloService.GetIsUnderReviewAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
-                this.ApolloService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
-                this.ApolloService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<GetUserGroupsOutput>());
+                this.ApolloService.LiveOpsGetUserDataByGamertagAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDataByGamertagOutput>());
+                this.ApolloService.LiveOpsGetUserDataByXuidAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsGetUserDataByXuidOutput>());
+                this.ApolloService.BanUsersAsync(Arg.Any<ForzaUserBanParameters[]>(), Arg.Any<string>()).Returns(GenerateBanUsersOutput());
+                this.ApolloService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
+                this.ApolloService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(this.GenerateGetUserBanHistoryOutput());
+                this.ApolloService.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetConsolesOutput>());
+                this.ApolloService.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetSharedConsoleUsersOutput>());
+                this.ApolloService.GetIsUnderReviewAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetIsUnderReviewOutput>());
+                this.ApolloService.GetUserGroupMembershipsAsync(Arg.Any<ulong>(), Arg.Any<int[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserGroupMembershipsOutput>());
+                this.ApolloService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserGroupsOutput>());
                 this.Mapper.Map<ApolloPlayerDetails>(Arg.Any<CompositeUser>()).Returns(Fixture.Create<ApolloPlayerDetails>());
                 this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
                 this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());

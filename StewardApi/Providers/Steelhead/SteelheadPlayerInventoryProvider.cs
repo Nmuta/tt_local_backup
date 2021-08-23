@@ -44,13 +44,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(ulong xuid, string endpoint)
         {
-            xuid.ShouldNotBeNull(nameof(xuid));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var response = await this.steelheadService.GetAdminUserInventoryAsync(xuid)
+                var response = await this.steelheadService.GetAdminUserInventoryAsync(xuid, endpoint)
                     .ConfigureAwait(false);
                 var playerInventoryDetails = this.mapper.Map<SteelheadPlayerInventory>(response.summary);
 
@@ -63,11 +63,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(int profileId)
+        public async Task<SteelheadPlayerInventory> GetPlayerInventoryAsync(int profileId, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var response = await this.steelheadService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                var response = await this.steelheadService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
                     .ConfigureAwait(false);
                 var inventoryProfile = this.mapper.Map<SteelheadPlayerInventory>(response.summary);
 
@@ -80,13 +82,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<IList<SteelheadInventoryProfile>> GetInventoryProfilesAsync(ulong xuid)
+        public async Task<IList<SteelheadInventoryProfile>> GetInventoryProfilesAsync(ulong xuid, string endpoint)
         {
-            xuid.ShouldNotBeNull(nameof(xuid));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var response = await this.steelheadService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+                var response = await this.steelheadService.GetAdminUserProfilesAsync(
+                    xuid,
+                    MaxProfileResults,
+                    endpoint).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SteelheadInventoryProfile>>(response.profiles);
             }
@@ -97,11 +102,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SteelheadGift gift, string requesterObjectId, bool useAdminCreditLimit)
+        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(
+            ulong xuid,
+            SteelheadGift gift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint)
         {
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var giftResponse = new GiftResponse<ulong>
             {
@@ -115,16 +126,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
                 var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
-                currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
+                currencyGifts[InventoryItemType.Credits] =
+                    Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.steelheadService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.steelheadService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId, endpoint)
+                        .ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), Title, requesterObjectId, GiftIdentityAntecedent.Xuid, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(
+                    xuid.ToString(CultureInfo.InvariantCulture),
+                    Title,
+                    requesterObjectId,
+                    GiftIdentityAntecedent.Xuid,
+                    gift,
+                    endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -135,30 +154,46 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SteelheadGroupGift groupGift, string requesterObjectId, bool useAdminCreditLimit)
+        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(
+            SteelheadGroupGift groupGift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint)
         {
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var response = new List<GiftResponse<ulong>>();
             var gift = this.mapper.Map<SteelheadGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
-                response.Add(await this.UpdatePlayerInventoryAsync(xuid, gift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false));
+                response.Add(await this.UpdatePlayerInventoryAsync(
+                    xuid,
+                    gift,
+                    requesterObjectId,
+                    useAdminCreditLimit,
+                    endpoint).ConfigureAwait(false));
             }
 
             return response;
         }
 
         /// <inheritdoc/>
-        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SteelheadGift gift, string requesterObjectId, bool useAdminCreditLimit)
+        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(
+            int groupId,
+            SteelheadGift gift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint)
         {
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var giftResponse = new GiftResponse<int>
             {
@@ -172,16 +207,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
                 var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
-                currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
+                currencyGifts[InventoryItemType.Credits] =
+                    Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.steelheadService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.steelheadService.AdminSendItemGroupGiftAsync(
+                        groupId,
+                        inventoryItemType,
+                        itemId,
+                        endpoint).ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), Title, requesterObjectId, GiftIdentityAntecedent.LspGroupId, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(
+                    groupId.ToString(CultureInfo.InvariantCulture),
+                    Title,
+                    requesterObjectId,
+                    GiftIdentityAntecedent.LspGroupId,
+                    gift,
+                    endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -191,7 +237,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             return giftResponse;
         }
 
-        private async Task SendGifts(Func<InventoryItemType, int, Task> serviceCall, IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts, IDictionary<InventoryItemType, int> currencyGifts)
+        private async Task SendGifts(
+            Func<InventoryItemType, int, Task> serviceCall,
+            IDictionary<InventoryItemType,IList<MasterInventoryItem>> inventoryGifts,
+            IDictionary<InventoryItemType, int> currencyGifts)
         {
             foreach (var (key, value) in inventoryGifts)
             {
@@ -224,7 +273,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
             }
         }
 
-        private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(SteelheadMasterInventory giftInventory)
+        private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(
+            SteelheadMasterInventory giftInventory)
         {
             return new Dictionary<InventoryItemType, IList<MasterInventoryItem>>
             {

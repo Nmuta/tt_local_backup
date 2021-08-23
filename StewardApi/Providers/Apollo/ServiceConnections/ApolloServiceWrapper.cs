@@ -20,14 +20,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
     {
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.ApolloUri,
             ConfigurationKeyConstants.ApolloClientVersion,
             ConfigurationKeyConstants.ApolloAdminXuid,
             ConfigurationKeyConstants.ApolloCertificateKeyVaultName,
             ConfigurationKeyConstants.ApolloCertificateSecretName
         };
 
-        private readonly string environmentUri;
         private readonly X509Certificate2 lspCertificate;
         private readonly string clientVersion;
         private readonly ulong adminXuid;
@@ -42,13 +40,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             configuration.ShouldContainSettings(RequiredSettings);
 
-            this.environmentUri = configuration[ConfigurationKeyConstants.ApolloUri];
             this.clientVersion = configuration[ConfigurationKeyConstants.ApolloClientVersion];
-            this.adminXuid = Convert.ToUInt64(configuration[ConfigurationKeyConstants.ApolloAdminXuid], CultureInfo.InvariantCulture);
+            this.adminXuid = Convert.ToUInt64(
+                configuration[ConfigurationKeyConstants.ApolloAdminXuid],
+                CultureInfo.InvariantCulture);
             var keyVaultName = configuration[ConfigurationKeyConstants.ApolloCertificateKeyVaultName];
             var secretName = configuration[ConfigurationKeyConstants.ApolloCertificateSecretName];
 
-            var certificateSecret = keyVaultProvider.GetSecretAsync(keyVaultName, secretName).GetAwaiter().GetResult();
+            var certificateSecret = keyVaultProvider.GetSecretAsync(keyVaultName, secretName)
+                .GetAwaiter().GetResult();
             this.lspCertificate = this.ConvertToCertificate(certificateSecret);
 
             this.forzaClient = new Client(
@@ -60,163 +60,207 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.LiveOpsGetUserDataByGamertagOutput> LiveOpsGetUserDataByGamertagAsync(string gamertag)
+        public async Task<UserService.LiveOpsGetUserDataByGamertagOutput> LiveOpsGetUserDataByGamertagAsync(
+            string gamertag,
+            string endpoint)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var userService = this.GetUserService();
+            var userService = this.GetUserService(endpoint);
 
             return await userService.LiveOpsGetUserDataByGamertag(gamertag).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.LiveOpsGetUserDataByXuidOutput> LiveOpsGetUserDataByXuidAsync(ulong xuid)
+        public async Task<UserService.LiveOpsGetUserDataByXuidOutput> LiveOpsGetUserDataByXuidAsync(
+            ulong xuid,
+            string endpoint)
         {
-            var userService = this.GetUserService();
+            var userService = this.GetUserService(endpoint);
 
             return await userService.LiveOpsGetUserDataByXuid(xuid).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.BanUsersOutput> BanUsersAsync(ForzaUserBanParameters[] banParameters)
+        public async Task<UserService.BanUsersOutput> BanUsersAsync(
+            ForzaUserBanParameters[] banParameters,
+            string endpoint)
         {
-            var userService = this.GetUserService();
+            var userService = this.GetUserService(endpoint);
 
             return await userService.BanUsers(banParameters, banParameters.Length).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<UserService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(
+            ulong xuid,
+            int startIndex,
+            int maxResults,
+            string endpoint)
         {
-            var userService = this.GetUserService();
+            var userService = this.GetUserService(endpoint);
 
             return await userService.GetUserBanHistory(xuid, startIndex, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(ulong[] xuids, int xuidCount)
+        public async Task<UserService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(
+            ulong[] xuids,
+            int xuidCount,
+            string endpoint)
         {
-            var userService = this.GetUserService();
+            var userService = this.GetUserService(endpoint);
 
             return await userService.GetUserBanSummaries(xuids, xuidCount).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults)
+        public async Task<UserService.GetConsolesOutput> GetConsolesAsync(
+            ulong xuid,
+            int maxResults,
+            string endpoint)
         {
-            var userService = this.GetUserService();
+            var userService = this.GetUserService(endpoint);
 
             return await userService.GetConsoles(xuid, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned)
+        public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned, string endpoint)
         {
-            var userService = this.GetUserService();
+            var userService = this.GetUserService(endpoint);
 
             await userService.SetConsoleBanStatus(consoleId, isBanned).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<UserService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(
+            ulong xuid,
+            int startIndex,
+            int maxResults,
+            string endpoint)
         {
-            var userService = this.GetUserService();
+            var userService = this.GetUserService(endpoint);
 
             return await userService.GetSharedConsoleUsers(xuid, startIndex, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(ulong xuid)
+        public async Task<UserService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(ulong xuid, string endpoint)
         {
-            var userService = this.GetUserService();
+            var userService = this.GetUserService(endpoint);
 
             return await userService.GetIsUnderReview(xuid).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task SetIsUnderReviewAsync(ulong xuid, bool isUnderReview)
+        public async Task SetIsUnderReviewAsync(ulong xuid, bool isUnderReview, string endpoint)
         {
-            var userService = this.GetUserService();
+            var userService = this.GetUserService(endpoint);
 
             await userService.SetIsUnderReview(xuid, isUnderReview).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserInventoryService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(ulong xuid)
+        public async Task<UserInventoryService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(
+            ulong xuid,
+            string endpoint)
         {
-            var userInventoryService = this.GetUserInventoryService();
+            var userInventoryService = this.GetUserInventoryService(endpoint);
 
             return await userInventoryService.GetAdminUserInventory(xuid).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserInventoryService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileIdAsync(int profileId)
+        public async Task<UserInventoryService.GetAdminUserInventoryByProfileIdOutput>
+            GetAdminUserInventoryByProfileIdAsync(int profileId, string endpoint)
         {
-            var userInventoryService = this.GetUserInventoryService();
+            var userInventoryService = this.GetUserInventoryService(endpoint);
 
             return await userInventoryService.GetAdminUserInventoryByProfileId(profileId).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserInventoryService.GetAdminUserProfilesOutput> GetAdminUserProfilesAsync(ulong xuid, uint maxProfiles)
+        public async Task<UserInventoryService.GetAdminUserProfilesOutput> GetAdminUserProfilesAsync(
+            ulong xuid,
+            uint maxProfiles,
+            string endpoint)
         {
-            var userInventoryService = this.GetUserInventoryService();
+            var userInventoryService = this.GetUserInventoryService(endpoint);
 
             return await userInventoryService.GetAdminUserProfiles(xuid, maxProfiles).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task AddToUserGroupsAsync(ulong xuid, int[] groupIds)
+        public async Task AddToUserGroupsAsync(ulong xuid, int[] groupIds, string endpoint)
         {
-            var groupingService = this.GetGroupingService();
+            var groupingService = this.GetGroupingService(endpoint);
 
             await groupingService.AddToUserGroups(xuid, groupIds).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<GroupingService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(ulong xuid, int[] groupIdFilter, int maxResults)
+        public async Task<GroupingService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(
+            ulong xuid,
+            int[] groupIdFilter,
+            int maxResults,
+            string endpoint)
         {
-            var groupingService = this.GetGroupingService();
+            var groupingService = this.GetGroupingService(endpoint);
 
-            return await groupingService.GetUserGroupMemberships(xuid, groupIdFilter, maxResults).ConfigureAwait(false);
+            return await groupingService.GetUserGroupMemberships(xuid, groupIdFilter, maxResults)
+                .ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<GroupingService.GetUserGroupsOutput> GetUserGroupsAsync(int startIndex, int maxResults)
+        public async Task<GroupingService.GetUserGroupsOutput> GetUserGroupsAsync(
+            int startIndex,
+            int maxResults,
+            string endpoint)
         {
-            var groupingService = this.GetGroupingService();
+            var groupingService = this.GetGroupingService(endpoint);
 
             return await groupingService.GetUserGroups(startIndex, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task RemoveFromUserGroupsAsync(ulong xuid, int[] groupIds)
+        public async Task RemoveFromUserGroupsAsync(ulong xuid, int[] groupIds, string endpoint)
         {
-            var groupingService = this.GetGroupingService();
+            var groupingService = this.GetGroupingService(endpoint);
 
             await groupingService.RemoveFromUserGroups(xuid, groupIds).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<GiftingService.AdminGetSupportedGiftTypesOutput> AdminGetSupportedGiftTypesAsync(int maxResults)
+        public async Task<GiftingService.AdminGetSupportedGiftTypesOutput> AdminGetSupportedGiftTypesAsync(
+            int maxResults,
+            string endpoint)
         {
-            var giftingService = this.GetGiftingService();
+            var giftingService = this.GetGiftingService(endpoint);
 
             return await giftingService.AdminGetSupportedGiftTypes(maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task AdminSendItemGiftAsync(ulong recipientXuid, InventoryItemType itemType, int itemValue)
+        public async Task AdminSendItemGiftAsync(
+            ulong recipientXuid,
+            InventoryItemType itemType,
+            int itemValue,
+            string endpoint)
         {
-            var giftingService = this.GetGiftingService();
+            var giftingService = this.GetGiftingService(endpoint);
 
             await giftingService.AdminSendItemGift(recipientXuid, itemType, itemValue).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue)
+        public async Task AdminSendItemGroupGiftAsync(
+            int groupId,
+            InventoryItemType itemType,
+            int itemValue,
+            string endpoint)
         {
-            var giftingService = this.GetGiftingService();
+            var giftingService = this.GetGiftingService(endpoint);
 
             await giftingService.AdminSendItemGroupGift(groupId, itemType, itemValue).ConfigureAwait(false);
         }
@@ -231,24 +275,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections
             return new X509Certificate2(privateKeyBytes);
         }
 
-        private UserService GetUserService()
+        private UserService GetUserService(string endpoint)
         {
-            return new UserService(this.forzaClient, this.environmentUri, this.adminXuid, null, false);
+            return new UserService(this.forzaClient, endpoint, this.adminXuid, null, false);
         }
 
-        private UserInventoryService GetUserInventoryService()
+        private UserInventoryService GetUserInventoryService(string endpoint)
         {
-            return new UserInventoryService(this.forzaClient, this.environmentUri, this.adminXuid, null, false);
+            return new UserInventoryService(this.forzaClient, endpoint, this.adminXuid, null, false);
         }
 
-        private GroupingService GetGroupingService()
+        private GroupingService GetGroupingService(string endpoint)
         {
-            return new GroupingService(this.forzaClient, this.environmentUri, this.adminXuid, null, false);
+            return new GroupingService(this.forzaClient, endpoint, this.adminXuid, null, false);
         }
 
-        private GiftingService GetGiftingService()
+        private GiftingService GetGiftingService(string endpoint)
         {
-            return new GiftingService(this.forzaClient, this.environmentUri, this.adminXuid, null, false);
+            return new GiftingService(this.forzaClient, endpoint, this.adminXuid, null, false);
         }
     }
 }

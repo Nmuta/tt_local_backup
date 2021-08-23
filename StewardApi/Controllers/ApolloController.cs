@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -39,11 +40,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgent,
         UserRole.SupportAgentNew,
         UserRole.CommunityManager)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This can't be avoided.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Microsoft.Maintainability",
+        "CA1506:AvoidExcessiveClassCoupling",
+        Justification = "This can't be avoided.")]
     public sealed class ApolloController : ControllerBase
     {
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 100;
+        private const string DefaultEndpointKey = "Apollo|Retail";
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -143,11 +148,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/identities")]
         [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
         [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
-        public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
+        public async Task<IActionResult> GetPlayerIdentity(
+            [FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
-            static string MakeKey(IdentityQueryAlpha identityQuery)
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            string MakeKey(IdentityQueryAlpha identityQuery)
             {
-                return $"apollo:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
+                return $"apollo|{endpoint}:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
             }
 
             var results = new List<IdentityResultAlpha>();
@@ -160,8 +167,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                         MakeKey(query),
                         (entry) =>
                         {
-                            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
-                            return this.RetrieveIdentity(query);
+                            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(
+                                CacheSeconds.PlayerIdentity);
+                            return this.RetrieveIdentity(query, endpoint);
                         }));
             }
 
@@ -180,11 +188,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/gamertag({gamertag})/details")]
         [SwaggerResponse(200, type: typeof(ApolloPlayerDetails))]
-        public async Task<IActionResult> GetPlayerDetails(string gamertag)
+        public async Task<IActionResult> GetPlayerDetails(
+            string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var playerDetails = await this.apolloPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            var playerDetails = await this.apolloPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(playerDetails);
         }
@@ -194,9 +205,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/details")]
         [SwaggerResponse(200, type: typeof(ApolloPlayerDetails))]
-        public async Task<IActionResult> GetPlayerDetails(ulong xuid)
+        public async Task<IActionResult> GetPlayerDetails(
+            ulong xuid)
         {
-            var playerDetails = await this.apolloPlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            var playerDetails = await this.apolloPlayerDetailsProvider.GetPlayerDetailsAsync(xuid, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(playerDetails);
         }
@@ -211,7 +225,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPost("players/ban/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
-        public async Task<IActionResult> BanPlayersUseBackgroundProcessing([FromBody] IList<ApolloBanParametersInput> banInput)
+        public async Task<IActionResult> BanPlayersUseBackgroundProcessing(
+            [FromBody] IList<ApolloBanParametersInput> banInput)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -219,6 +234,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
             foreach (var banParam in banInput)
             {
                 this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
@@ -233,7 +249,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), requesterObjectId, $"Apollo Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(
+                banParameters.ToJson(),
+                requesterObjectId,
+                $"Apollo Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -241,14 +260,24 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var results = await this.apolloPlayerDetailsProvider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(true);
+                    var results = await this.apolloPlayerDetailsProvider.BanUsersAsync(
+                        banParameters,
+                        requesterObjectId,
+                        endpoint).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(results);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, results).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(
+                        jobId,
+                        requesterObjectId,
+                        jobStatus,
+                        results).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(
+                        jobId,
+                        requesterObjectId,
+                        BackgroundJobStatus.Failed).ConfigureAwait(true);
                 }
             }
 
@@ -269,7 +298,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPost("players/ban")]
         [SwaggerResponse(201, type: typeof(List<BanResult>))]
-        public async Task<IActionResult> BanPlayers([FromBody] IList<ApolloBanParametersInput> banInput)
+        public async Task<IActionResult> BanPlayers(
+            [FromBody] IList<ApolloBanParametersInput> banInput)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -277,6 +307,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
             foreach (var banParam in banInput)
             {
                 this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
@@ -291,7 +322,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            var results = await this.apolloPlayerDetailsProvider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(true);
+            var results = await this.apolloPlayerDetailsProvider.BanUsersAsync(
+                banParameters,
+                requesterObjectId,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -301,9 +335,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
-        public async Task<IActionResult> GetBanHistory(ulong xuid)
+        public async Task<IActionResult> GetBanHistory(
+            ulong xuid)
         {
-            var result = await this.GetBanHistoryAsync(xuid).ConfigureAwait(true);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            var result = await this.GetBanHistoryAsync(xuid, endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -313,13 +349,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/gamertag({gamertag})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
-        public async Task<IActionResult> GetBanHistory(string gamertag)
+        public async Task<IActionResult> GetBanHistory(
+            string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var playerDetails = await this.apolloPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            var playerDetails = await this.apolloPlayerDetailsProvider.GetPlayerDetailsAsync(gamertag, endpoint)
+                .ConfigureAwait(true);
 
-            var result = await this.GetBanHistoryAsync(playerDetails.Xuid).ConfigureAwait(true);
+            var result = await this.GetBanHistoryAsync(playerDetails.Xuid, endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -329,11 +368,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("players/banSummaries")]
         [SwaggerResponse(200, type: typeof(List<BanSummary>))]
-        public async Task<IActionResult> GetBanSummaries([FromBody] IList<ulong> xuids)
+        public async Task<IActionResult> GetBanSummaries(
+            [FromBody] IList<ulong> xuids)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
 
-            var result = await this.apolloPlayerDetailsProvider.GetUserBanSummariesAsync(xuids).ConfigureAwait(true);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            var result = await this.apolloPlayerDetailsProvider.GetUserBanSummariesAsync(xuids, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -343,11 +385,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/consoleDetails")]
         [SwaggerResponse(200, type: typeof(List<ConsoleDetails>))]
-        public async Task<IActionResult> GetConsoles(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetConsoles(
+            ulong xuid,
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.apolloPlayerDetailsProvider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(true);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            var result = await this.apolloPlayerDetailsProvider.GetConsolesAsync(xuid, maxResults, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -362,9 +408,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, bool isBanned)
+        public async Task<IActionResult> SetConsoleBanStatus(
+            ulong consoleId,
+            bool isBanned)
         {
-            await this.apolloPlayerDetailsProvider.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(true);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            await this.apolloPlayerDetailsProvider.SetConsoleBanStatusAsync(consoleId, isBanned, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -374,12 +424,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/sharedConsoleUsers")]
         [SwaggerResponse(200, type: typeof(List<SharedConsoleUser>))]
-        public async Task<IActionResult> GetSharedConsoleUsers(ulong xuid, [FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetSharedConsoleUsers(
+            ulong xuid,
+            [FromQuery] int startIndex = DefaultStartIndex,
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.apolloPlayerDetailsProvider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            var result = await this.apolloPlayerDetailsProvider.GetSharedConsoleUsersAsync(
+                xuid,
+                startIndex,
+                maxResults,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -389,12 +447,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("groups")]
         [SwaggerResponse(200, type: typeof(IList<LspGroup>))]
-        public async Task<IActionResult> GetGroups([FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetGroups(
+            [FromQuery] int startIndex = DefaultStartIndex,
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.apolloServiceManagementProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            var result = await this.apolloServiceManagementProvider.GetLspGroupsAsync(startIndex, maxResults, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -404,14 +466,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(ApolloUserFlags))]
-        public async Task<IActionResult> GetUserFlags(ulong xuid)
+        public async Task<IActionResult> GetUserFlags(
+            ulong xuid)
         {
-            if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var result = await this.apolloPlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
+            var result = await this.apolloPlayerDetailsProvider.GetUserFlagsAsync(xuid, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -426,10 +492,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(ApolloUserFlags))]
-        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] ApolloUserFlagsInput userFlags)
+        public async Task<IActionResult> SetUserFlags(
+            ulong xuid,
+            [FromBody] ApolloUserFlagsInput userFlags)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
 
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
             this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
             if (!this.ModelState.IsValid)
             {
@@ -437,15 +506,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
             var validatedFlags = this.mapper.Map<ApolloUserFlags>(userFlags);
-            await this.apolloPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags).ConfigureAwait(true);
+            await this.apolloPlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags, endpoint)
+                .ConfigureAwait(true);
 
-            var results = await this.apolloPlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
+            var results = await this.apolloPlayerDetailsProvider.GetUserFlagsAsync(xuid, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -455,14 +527,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventory")]
         [SwaggerResponse(200, type: typeof(ApolloPlayerInventory))]
-        public async Task<IActionResult> GetPlayerInventory(ulong xuid)
+        public async Task<IActionResult> GetPlayerInventory(
+            ulong xuid)
         {
-            if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var getPlayerInventory = this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(xuid);
+            var getPlayerInventory = this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, endpoint);
             var getMasterInventory = this.RetrieveMasterInventoryList();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
@@ -475,7 +550,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}.");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(
+                playerInventory,
+                masterInventory,
+                this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -484,9 +562,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/profileId({profileId})/inventory")]
         [SwaggerResponse(200, type: typeof(ApolloPlayerInventory))]
-        public async Task<IActionResult> GetPlayerInventory(int profileId)
+        public async Task<IActionResult> GetPlayerInventory(
+            int profileId)
         {
-            var getPlayerInventory = this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(profileId);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            var getPlayerInventory = this.apolloPlayerInventoryProvider.GetPlayerInventoryAsync(profileId, endpoint);
             var getMasterInventory = this.RetrieveMasterInventoryList();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
@@ -499,7 +579,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(
+                playerInventory,
+                masterInventory,
+                this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -508,9 +591,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventoryProfiles")]
         [SwaggerResponse(200, type: typeof(IList<ApolloInventoryProfile>))]
-        public async Task<IActionResult> GetPlayerInventoryProfiles(ulong xuid)
+        public async Task<IActionResult> GetPlayerInventoryProfiles(
+            ulong xuid)
         {
-            var profiles = await this.apolloPlayerInventoryProvider.GetInventoryProfilesAsync(xuid).ConfigureAwait(true);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            var profiles = await this.apolloPlayerInventoryProvider.GetInventoryProfilesAsync(xuid, endpoint)
+                .ConfigureAwait(true);
 
             if (profiles == null)
             {
@@ -525,7 +611,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(200, type: typeof(BackgroundJob))]
-        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] ApolloGroupGift groupGift)
+        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
+            [FromBody] ApolloGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -535,6 +622,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
 
             this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
@@ -548,7 +636,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                    .ConfigureAwait(true))
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -565,7 +654,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Apollo Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(
+                groupGift.ToJson(),
+                requesterObjectId,
+                $"Apollo Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -573,15 +665,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-                    var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+                    var allowedToExceedCreditLimit =
+                        userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+                    var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
+                        groupGift,
+                        requesterObjectId,
+                        allowedToExceedCreditLimit,
+                        endpoint).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
+                        .ConfigureAwait(true);
                 }
             }
 
@@ -597,7 +696,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
-        public async Task<IActionResult> UpdateGroupInventories([FromBody] ApolloGroupGift groupGift)
+        public async Task<IActionResult> UpdateGroupInventories(
+            [FromBody] ApolloGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -607,6 +707,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
 
             this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
@@ -620,7 +721,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                if (!await this.apolloPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                    .ConfigureAwait(true))
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -637,8 +739,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+            var allowedToExceedCreditLimit =
+                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var response = await this.apolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(
+                groupGift,
+                requesterObjectId,
+                allowedToExceedCreditLimit,
+                endpoint).ConfigureAwait(true);
             return this.Ok(response);
         }
 
@@ -650,7 +757,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] ApolloGift gift)
+        public async Task<IActionResult> UpdateGroupInventories(
+            int groupId,
+            [FromBody] ApolloGift gift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -659,6 +768,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
             this.giftRequestValidator.Validate(gift, this.ModelState);
 
             if (!this.ModelState.IsValid)
@@ -674,8 +784,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.BadRequest($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+            var allowedToExceedCreditLimit =
+                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var response = await this.apolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(
+                groupId,
+                gift,
+                requesterObjectId,
+                allowedToExceedCreditLimit,
+                endpoint).ConfigureAwait(true);
             return this.Ok(response);
             }
 
@@ -684,9 +800,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<ApolloGiftHistory>))]
-        public async Task<IActionResult> GetGiftHistoriesAsync(ulong xuid)
+        public async Task<IActionResult> GetGiftHistoriesAsync(
+            ulong xuid)
         {
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, GiftIdentityAntecedent.Xuid).ConfigureAwait(true);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
+                xuid.ToString(CultureInfo.InvariantCulture),
+                TitleConstants.ApolloCodeName,
+                GiftIdentityAntecedent.Xuid,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }
@@ -696,26 +818,36 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("group/groupId({groupId})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<ApolloGiftHistory>))]
-        public async Task<IActionResult> GetGiftHistoriesAsync(int groupId)
+        public async Task<IActionResult> GetGiftHistoriesAsync(
+            int groupId)
         {
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, GiftIdentityAntecedent.LspGroupId).ConfigureAwait(true);
+            var endpoint = this.GetApolloEndpoint(this.Request.Headers);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
+                groupId.ToString(CultureInfo.InvariantCulture),
+                TitleConstants.ApolloCodeName,
+                GiftIdentityAntecedent.LspGroupId,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }
 
         private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
         {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
+                .ConfigureAwait(true);
 
             this.Response.Headers.Add("jobId", jobId);
 
             return jobId;
         }
 
-        private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid)
+        private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string endpoint)
         {
-            var getServicesBanHistory = this.apolloPlayerDetailsProvider.GetUserBanHistoryAsync(xuid);
-            var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(xuid, TitleConstants.ApolloCodeName);
+            var getServicesBanHistory = this.apolloPlayerDetailsProvider.GetUserBanHistoryAsync(xuid, endpoint);
+            var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(
+                xuid,
+                TitleConstants.ApolloCodeName,
+                endpoint);
 
             await Task.WhenAll(getServicesBanHistory, getLiveOpsBanHistory).ConfigureAwait(true);
 
@@ -734,11 +866,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             return banHistories;
         }
 
-        private async Task<IdentityResultAlpha> RetrieveIdentity(IdentityQueryAlpha query)
+        private async Task<IdentityResultAlpha> RetrieveIdentity(IdentityQueryAlpha query, string endpoint)
         {
             try
             {
-                return await this.apolloPlayerDetailsProvider.GetPlayerIdentityAsync(query).ConfigureAwait(false);
+                return await this.apolloPlayerDetailsProvider.GetPlayerIdentityAsync(query, endpoint)
+                    .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -804,10 +937,34 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             foreach (var vanityItem in gift.VanityItems)
             {
                 var validItem = masterInventoryItem.VanityItems.Any(data => data.Id == vanityItem.Id);
-                error += validItem ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
+                error += validItem
+                    ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             return error;
+        }
+
+        private string GetApolloEndpoint(IHeaderDictionary headers)
+        {
+            if (!headers.TryGetValue("endpointKey", out var headerValue))
+            {
+                headerValue = DefaultEndpointKey;
+            }
+
+            var endpointKeyValue = headerValue.ToString();
+            endpointKeyValue.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpointKeyValue));
+
+            var splitValue = endpointKeyValue.Split('|');
+            var title = splitValue.ElementAtOrDefault(0);
+            var key = splitValue.ElementAtOrDefault(1);
+
+            if (title != TitleConstants.ApolloCodeName)
+            {
+                throw new BadHeaderStewardException(
+                    $"Endpoint key designated for title: {title}, but expected {TitleConstants.ApolloCodeName}.");
+            }
+
+            return ApolloSupportedEndpoint.GetEndpoint(key);
         }
     }
 }

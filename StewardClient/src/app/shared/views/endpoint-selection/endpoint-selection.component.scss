@@ -1,0 +1,12 @@
+@import '/src/styles/mixins';
+
+span {
+  position: absolute;
+  display: block;
+  font-size: 0.8em;
+  top: 1em;
+  color: app-color-default($app-warn);
+  width: calc(100% - 30px /*This is from the margins on buttons, it was just copied over.*/);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

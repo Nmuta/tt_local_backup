@@ -13,11 +13,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Updates gift history.
         /// </summary>
-        Task UpdateGiftHistoryAsync(string id, string title, string requesterObjectId, GiftIdentityAntecedent giftHistoryAntecedent, ApolloGift gift);
+        Task UpdateGiftHistoryAsync(
+            string id,
+            string title,
+            string requesterObjectId,
+            GiftIdentityAntecedent giftHistoryAntecedent,
+            ApolloGift gift,
+            string endpoint);
 
         /// <summary>
         ///     Gets gift histories.
         /// </summary>
-        Task<IList<ApolloGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftIdentityAntecedent giftHistoryAntecedent);
+        Task<IList<ApolloGiftHistory>> GetGiftHistoriesAsync(
+            string id,
+            string title,
+            GiftIdentityAntecedent giftHistoryAntecedent,
+            string endpoint);
     }
 }

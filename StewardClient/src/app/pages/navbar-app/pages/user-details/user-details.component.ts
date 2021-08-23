@@ -8,6 +8,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Store } from '@ngxs/store';
 import { first } from 'lodash';
 import { filter, takeUntil } from 'rxjs/operators';
+import { GameTitleCodeName } from '@models/enums';
 
 /** User Details page. */
 @Component({
@@ -21,6 +22,8 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
   public lookupType: keyof IdentityQueryBetaIntersection;
   public lookupList: string[] = [];
   public identity: AugmentedCompositeIdentity;
+
+  public gameTitleCodeName = GameTitleCodeName;
 
   /** The only lookup name. */
   public get lookupName(): string {

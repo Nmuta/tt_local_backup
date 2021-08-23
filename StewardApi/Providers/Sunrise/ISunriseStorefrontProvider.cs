@@ -13,21 +13,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Search UGC items.
         /// </summary>
-        Task<IList<UGCItem>> SearchUGCItems(UGCType ugcType, UGCFilters filters);
+        Task<IList<UGCItem>> SearchUGCItems(UGCType ugcType, UGCFilters filters, string endpoint);
 
         /// <summary>
         ///    Get player livery.
         /// </summary>
-        Task<UGCItem> GetUGCLivery(Guid liveryId);
+        Task<UGCItem> GetUGCLivery(Guid liveryId, string endpoint);
 
         /// <summary>
         ///    Get player photo.
         /// </summary>
-        Task<UGCItem> GetUGCPhoto(Guid photoId);
+        Task<UGCItem> GetUGCPhoto(Guid photoId, string endpoint);
 
         /// <summary>
         ///     Sets featured state of a UGC content item.
         /// </summary>
-        Task SetUGCFeaturedStatus(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry);
+        Task SetUGCFeaturedStatus(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint);
     }
 }

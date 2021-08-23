@@ -23,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OverrideManagersModule } from '@shared/modules/state-managers/state-managers.module';
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
+import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
@@ -51,6 +52,7 @@ import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make
     ReactiveFormsModule,
     ServiceManagementRoutingModule,
     MakeModelAutocompleteModule,
+    EndpointSelectionModule,
   ],
 })
 export class StewardServiceManagementModule {}

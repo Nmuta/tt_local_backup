@@ -27,8 +27,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         private const int UltimateVipUserGroupId = 2;
         private const int T10EmployeeUserGroupId = 4;
         private const int WhitelistUserGroupId = 6;
-        private const string CreditUpdatesIdTemplate = "Sunrise|CreditUpdates|{0}|{1}|{2}";
-        private const string BackstagePassUpdatesIdTemplate = "Sunrise|BackstagePassUpdates|{0}";
+        private const string CreditUpdatesIdTemplate = "Sunrise|{0}|CreditUpdates|{1}|{2}|{3}";
+        private const string BackstagePassUpdatesIdTemplate = "Sunrise|{0}|BackstagePassUpdates|{1}";
 
         private readonly ISunriseService sunriseService;
         private readonly ISunriseBanHistoryProvider banHistoryProvider;
@@ -38,7 +38,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunrisePlayerDetailsProvider"/> class.
         /// </summary>
-        public SunrisePlayerDetailsProvider(ISunriseService sunriseService, ISunriseBanHistoryProvider banHistoryProvider, IMapper mapper, IRefreshableCacheStore refreshableCacheStore)
+        public SunrisePlayerDetailsProvider(
+            ISunriseService sunriseService,
+            ISunriseBanHistoryProvider banHistoryProvider,
+            IMapper mapper,
+            IRefreshableCacheStore refreshableCacheStore)
         {
             sunriseService.ShouldNotBeNull(nameof(sunriseService));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
@@ -52,15 +56,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<IdentityResultAlpha>> GetPlayerIdentitiesAsync(IList<IdentityQueryAlpha> queries)
+        public async Task<IList<IdentityResultAlpha>> GetPlayerIdentitiesAsync(
+            IList<IdentityQueryAlpha> queries,
+            string endpoint)
         {
             queries.ShouldNotBeNull(nameof(queries));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
                 var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(queries);
 
-                var result = await this.sunriseService.GetUserIds(convertedQueries).ConfigureAwait(false);
+                var result = await this.sunriseService.GetUserIds(convertedQueries, endpoint).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
             }
@@ -71,13 +78,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<SunrisePlayerDetails> GetPlayerDetailsAsync(string gamertag)
+        public async Task<SunrisePlayerDetails> GetPlayerDetailsAsync(string gamertag, string endpoint)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var response = await this.sunriseService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
+                var response = await this.sunriseService.GetLiveOpsUserDataByGamerTagAsync(gamertag, endpoint)
+                    .ConfigureAwait(false);
 
                 return this.mapper.Map<SunrisePlayerDetails>(response.userData);
             }
@@ -88,11 +97,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<SunrisePlayerDetails> GetPlayerDetailsAsync(ulong xuid)
+        public async Task<SunrisePlayerDetails> GetPlayerDetailsAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var response = await this.sunriseService.GetLiveOpsUserDataByXuidAsync(xuid).ConfigureAwait(false);
+                var response = await this.sunriseService.GetLiveOpsUserDataByXuidAsync(xuid, endpoint)
+                    .ConfigureAwait(false);
 
                 if (response.userData.region <= 0)
                 {
@@ -108,11 +120,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<bool> EnsurePlayerExistsAsync(ulong xuid)
+        public async Task<bool> EnsurePlayerExistsAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var response = await this.sunriseService.GetLiveOpsUserDataByXuidAsync(xuid).ConfigureAwait(false);
+                var response = await this.sunriseService.GetLiveOpsUserDataByXuidAsync(xuid, endpoint)
+                    .ConfigureAwait(false);
 
                 return response.userData.region > 0;
             }
@@ -123,13 +138,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<bool> EnsurePlayerExistsAsync(string gamertag)
+        public async Task<bool> EnsurePlayerExistsAsync(string gamertag, string endpoint)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                await this.sunriseService.GetLiveOpsUserDataByGamerTagAsync(gamertag).ConfigureAwait(false);
+                await this.sunriseService.GetLiveOpsUserDataByGamerTagAsync(gamertag, endpoint)
+                    .ConfigureAwait(false);
 
                 return true;
             }
@@ -140,11 +157,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
+        public async Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var response = await this.sunriseService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+                var response = await this.sunriseService.GetConsolesAsync(xuid, maxResults, endpoint)
+                    .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<ConsoleDetails>>(response.consoles);
             }
@@ -155,11 +175,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseProfileNote>> GetProfileNotesAsync(ulong xuid)
+        public async Task<IList<SunriseProfileNote>> GetProfileNotesAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var response = await this.sunriseService.GetProfileNotesAsync(xuid, 100).ConfigureAwait(false);
+                var response = await this.sunriseService.GetProfileNotesAsync(xuid, 100, endpoint)
+                    .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SunriseProfileNote>>(response.adminComments);
             }
@@ -170,13 +193,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task AddProfileNoteAsync(ulong xuid, SunriseProfileNote note)
+        public async Task AddProfileNoteAsync(ulong xuid, SunriseProfileNote note, string endpoint)
         {
             note.ShouldNotBeNull(nameof(note));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                await this.sunriseService.AddProfileNote(xuid, note.Text, note.Author).ConfigureAwait(false);
+                await this.sunriseService.AddProfileNote(xuid, note.Text, note.Author, endpoint)
+                    .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -185,12 +210,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(
+            ulong xuid,
+            int startIndex,
+            int maxResults,
+            string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var response = await this.sunriseService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults)
-                    .ConfigureAwait(false);
+                var response = await this.sunriseService.GetSharedConsoleUsersAsync(
+                    xuid,
+                    startIndex,
+                    maxResults,
+                    endpoint).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
             }
@@ -201,13 +235,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc/>
-        public async Task<SunriseUserFlags> GetUserFlagsAsync(ulong xuid)
+        public async Task<SunriseUserFlags> GetUserFlagsAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
                 var userGroupResults = await this.sunriseService
-                    .GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(false);
-                var suspiciousResults = await this.sunriseService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
+                    .GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults, endpoint)
+                    .ConfigureAwait(false);
+                var suspiciousResults = await this.sunriseService.GetIsUnderReviewAsync(xuid, endpoint)
+                    .ConfigureAwait(false);
 
                 userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
 
@@ -227,19 +265,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task SetUserFlagsAsync(ulong xuid, SunriseUserFlags userFlags)
+        public async Task SetUserFlagsAsync(ulong xuid, SunriseUserFlags userFlags, string endpoint)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
                 var addGroupList = this.PrepareGroupIds(userFlags, true);
                 var removeGroupList = this.PrepareGroupIds(userFlags, false);
 
-                await this.sunriseService.AddToUserGroupsAsync(xuid, addGroupList.ToArray()).ConfigureAwait(false);
-                await this.sunriseService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray())
+                await this.sunriseService.AddToUserGroupsAsync(xuid, addGroupList.ToArray(), endpoint)
                     .ConfigureAwait(false);
-                await this.sunriseService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview)
+                await this.sunriseService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray(), endpoint)
+                    .ConfigureAwait(false);
+                await this.sunriseService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview, endpoint)
                     .ConfigureAwait(false);
             }
             catch (Exception ex)
@@ -249,11 +289,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<ProfileSummary> GetProfileSummaryAsync(ulong xuid)
+        public async Task<ProfileSummary> GetProfileSummaryAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var result = await this.sunriseService.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
+                var result = await this.sunriseService.GetProfileSummaryAsync(xuid, endpoint).ConfigureAwait(false);
                 var profileSummary = this.mapper.Map<ProfileSummary>(result.forzaProfileSummary);
 
                 return profileSummary;
@@ -265,19 +307,33 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(
+            ulong xuid,
+            int startIndex,
+            int maxResults,
+            string endpoint)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var creditUpdateId = string.Format(CultureInfo.InvariantCulture, CreditUpdatesIdTemplate, xuid, startIndex, maxResults);
+                var creditUpdateId = string.Format(
+                    CultureInfo.InvariantCulture,
+                    CreditUpdatesIdTemplate,
+                    endpoint,
+                    xuid,
+                    startIndex,
+                    maxResults);
 
                 async Task<IList<CreditUpdate>> CreditUpdates()
                 {
-                    var result = await this.sunriseService.GetCreditUpdateEntriesAsync(xuid, startIndex, maxResults)
-                        .ConfigureAwait(false);
+                    var result = await this.sunriseService.GetCreditUpdateEntriesAsync(
+                            xuid,
+                            startIndex,
+                            maxResults,
+                            endpoint).ConfigureAwait(false);
                     var creditUpdates = this.mapper.Map<IList<CreditUpdate>>(result.credityUpdateEntries);
 
                     this.refreshableCacheStore.PutItem(creditUpdateId, TimeSpan.FromHours(1), creditUpdates);
@@ -297,25 +353,35 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<BackstagePassUpdate>> GetBackstagePassUpdatesAsync(ulong xuid)
+        public async Task<IList<BackstagePassUpdate>> GetBackstagePassUpdatesAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var backstagePassUpdateId = string.Format(CultureInfo.InvariantCulture, BackstagePassUpdatesIdTemplate, xuid);
+                var backstagePassUpdateId = string.Format(
+                    CultureInfo.InvariantCulture,
+                    BackstagePassUpdatesIdTemplate,
+                    endpoint,
+                    xuid);
 
                 async Task<IList<BackstagePassUpdate>> BackstagePassUpdates()
                 {
-                    var result = await this.sunriseService.GetTokenTransactionsAsync(xuid)
+                    var result = await this.sunriseService.GetTokenTransactionsAsync(xuid, endpoint)
                         .ConfigureAwait(false);
-                    var backstagePasses = this.mapper.Map<IList<BackstagePassUpdate>>(result.transactions.Transactions);
+                    var backstagePasses =
+                        this.mapper.Map<IList<BackstagePassUpdate>>(result.transactions.Transactions);
 
-                    this.refreshableCacheStore.PutItem(backstagePassUpdateId, TimeSpan.FromHours(1), backstagePasses);
+                    this.refreshableCacheStore.PutItem(
+                        backstagePassUpdateId,
+                        TimeSpan.FromHours(1),
+                        backstagePasses);
 
                     return backstagePasses;
                 }
 
-                var result = this.refreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(backstagePassUpdateId) ??
-                             await BackstagePassUpdates().ConfigureAwait(false);
+                var result = this.refreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(backstagePassUpdateId)
+                             ?? await BackstagePassUpdates().ConfigureAwait(false);
 
                 return result;
             }
@@ -326,10 +392,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<BanResult>> BanUsersAsync(IList<SunriseBanParameters> banParameters, string requesterObjectId)
+        public async Task<IList<BanResult>> BanUsersAsync(
+            IList<SunriseBanParameters> banParameters,
+            string requesterObjectId,
+            string endpoint)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             const int maxXuidsPerRequest = 10;
 
             foreach (var param in banParameters)
@@ -345,8 +416,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
                     try
                     {
-                        var userResult = await this.sunriseService.GetLiveOpsUserDataByGamerTagAsync(param.Gamertag)
-                            .ConfigureAwait(false);
+                        var userResult = await this.sunriseService.GetLiveOpsUserDataByGamerTagAsync(
+                                param.Gamertag,
+                                endpoint).ConfigureAwait(false);
 
                         param.Xuid = userResult.userData.qwXuid;
                     }
@@ -367,7 +439,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                         .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
                     var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
                     var result = await this.sunriseService
-                        .BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count)
+                        .BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count, endpoint)
                         .ConfigureAwait(false);
 
                     banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
@@ -375,7 +447,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
                 foreach (var result in banResults)
                 {
-                    var parameters = banParameters.Where(banAttempt => banAttempt.Xuid == result.Xuid).FirstOrDefault();
+                    var parameters = banParameters
+                        .Where(banAttempt => banAttempt.Xuid == result.Xuid).FirstOrDefault();
 
                     if (result.Error == null)
                     {
@@ -386,7 +459,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                                         parameters.Xuid,
                                         TitleConstants.SunriseCodeName,
                                         requesterObjectId,
-                                        parameters)
+                                        parameters,
+                                        endpoint)
                                     .ConfigureAwait(false);
                         }
                         catch (Exception ex)
@@ -407,8 +481,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)
+        public async Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
                 if (xuids.Count == 0)
@@ -416,7 +492,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     return new List<BanSummary>();
                 }
 
-                var result = await this.sunriseService.GetUserBanSummariesAsync(xuids.ToArray(), xuids.Count).ConfigureAwait(false);
+                var result = await this.sunriseService.GetUserBanSummariesAsync(
+                    xuids.ToArray(),
+                    xuids.Count,
+                    endpoint).ConfigureAwait(false);
 
                 var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
 
@@ -429,20 +508,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid)
+        public async Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
                 var result = await this.sunriseService
-                    .GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
+                    .GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults, endpoint)
+                    .ConfigureAwait(false);
 
                 if (result.availableCount > DefaultMaxResults)
                 {
                     result = await this.sunriseService
-                        .GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
+                        .GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount, endpoint)
+                        .ConfigureAwait(false);
                 }
 
-                var banResults = result.bans.Select(ban => { return LiveOpsBanHistoryMapper.Map(ban); }).ToList();
+                var banResults = result.bans
+                    .Select(ban => { return LiveOpsBanHistoryMapper.Map(ban, endpoint); }).ToList();
                 banResults.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
 
                 return banResults;
@@ -454,11 +538,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned)
+        public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                await this.sunriseService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
+                await this.sunriseService.SetConsoleBanStatusAsync(consoleId, isBanned, endpoint)
+                    .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -467,31 +554,46 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<Notification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults)
+        public async Task<IList<Notification>> GetPlayerNotificationsAsync(
+            ulong xuid,
+            int maxResults,
+            string endpoint)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
             try
             {
-                var notifications = await this.sunriseService.LiveOpsRetrieveForUserAsync(xuid, maxResults).ConfigureAwait(false);
+                var notifications = await this.sunriseService.LiveOpsRetrieveForUserAsync(
+                    xuid,
+                    maxResults,
+                    endpoint).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<Notification>>(notifications.results);
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"Notifications for player with XUID: {xuid} could not be found.", ex);
+                throw new NotFoundStewardException(
+                    $"Notifications for player with XUID: {xuid} could not be found.", ex);
             }
         }
 
         /// <inheritdoc />
-        public async Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc)
+        public async Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(
+            IList<ulong> xuids,
+            string message,
+            DateTime expireTimeUtc,
+            string endpoint)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
 
             try
             {
-                var results = await this.sunriseService.SendMessageNotificationToMultipleUsersAsync(xuids, message, expireTimeUtc).ConfigureAwait(false);
+                var results = await this.sunriseService.SendMessageNotificationToMultipleUsersAsync(
+                    xuids,
+                    message,
+                    expireTimeUtc,
+                    endpoint).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults);
             }
@@ -502,7 +604,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<MessageSendResult<int>> SendCommunityMessageAsync(int groupId, string message, DateTime expireTimeUtc)
+        public async Task<MessageSendResult<int>> SendCommunityMessageAsync(
+            int groupId,
+            string message,
+            DateTime expireTimeUtc,
+            string endpoint)
         {
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
 
@@ -512,19 +618,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                await this.sunriseService.SendGroupMessageNotificationAsync(groupId, message, expireTimeUtc).ConfigureAwait(false);
+                await this.sunriseService.SendGroupMessageNotificationAsync(
+                    groupId,
+                    message,
+                    expireTimeUtc,
+                    endpoint).ConfigureAwait(false);
                 messageResponse.Error = null;
             }
             catch
             {
-                messageResponse.Error = new ServicesFailureStewardError($"LSP failed to message group with ID: {groupId}");
+                messageResponse.Error = new ServicesFailureStewardError(
+                    $"LSP failed to message group with ID: {groupId}");
             }
 
             return messageResponse;
         }
 
         /// <inheritdoc />
-        public async Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, AuctionFilters filters)
+        public async Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(
+            ulong xuid,
+            AuctionFilters filters,
+            string endpoint)
         {
             filters.ShouldNotBeNull(nameof(filters));
 
@@ -532,7 +646,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 var forzaAuctionFilters = this.mapper.Map<ForzaAuctionFilters>(filters);
                 forzaAuctionFilters.Seller = xuid;
-                var forzaAuctions = await this.sunriseService.GetPlayerAuctions(forzaAuctionFilters).ConfigureAwait(false);
+                var forzaAuctions = await this.sunriseService.GetPlayerAuctions(forzaAuctionFilters, endpoint)
+                    .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);
             }

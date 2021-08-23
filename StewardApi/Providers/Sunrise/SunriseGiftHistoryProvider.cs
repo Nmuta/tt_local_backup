@@ -30,7 +30,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Initializes a new instance of the <see cref="SunriseGiftHistoryProvider"/> class.
         /// </summary>
-        public SunriseGiftHistoryProvider(IKustoStreamingLogger kustoStreamingLogger, IKustoProvider kustoProvider, IConfiguration configuration, IMapper mapper)
+        public SunriseGiftHistoryProvider(
+            IKustoStreamingLogger kustoStreamingLogger,
+            IKustoProvider kustoProvider,
+            IConfiguration configuration,
+            IMapper mapper)
         {
             kustoStreamingLogger.ShouldNotBeNull(nameof(kustoStreamingLogger));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
@@ -45,33 +49,55 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task UpdateGiftHistoryAsync(string id, string title, string requesterObjectId, GiftIdentityAntecedent giftHistoryAntecedent, SunriseGift gift)
+        public async Task UpdateGiftHistoryAsync(
+            string id,
+            string title,
+            string requesterObjectId,
+            GiftIdentityAntecedent giftHistoryAntecedent,
+            SunriseGift gift,
+            string endpoint)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             gift.ShouldNotBeNull(nameof(gift));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var playerId = $"{giftHistoryAntecedent}:{id}";
-            var giftHistory = new GiftHistory(playerId, title, requesterObjectId, DateTime.UtcNow, gift.ToJson());
+            var giftHistory = new GiftHistory(
+                playerId,
+                title,
+                requesterObjectId,
+                DateTime.UtcNow,
+                gift.ToJson(),
+                endpoint);
             var kustoColumnMappings = giftHistory.ToJsonColumnMappings();
             var tableName = typeof(GiftHistory).Name;
             var giftHistories = new List<GiftHistory> { giftHistory };
 
-            await this.kustoStreamingLogger.IngestFromStreamAsync(giftHistories, this.kustoDatabase, tableName, kustoColumnMappings).ConfigureAwait(false);
+            await this.kustoStreamingLogger.IngestFromStreamAsync(
+                giftHistories,
+                this.kustoDatabase,
+                tableName,
+                kustoColumnMappings).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftIdentityAntecedent giftHistoryAntecedent)
+        public async Task<IList<SunriseGiftHistory>> GetGiftHistoriesAsync(
+            string id,
+            string title,
+            GiftIdentityAntecedent giftHistoryAntecedent,
+            string endpoint)
         {
             id.ShouldNotBeNullEmptyOrWhiteSpace(nameof(id));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
                 var playerId = $"{giftHistoryAntecedent}:{id}";
 
-                return await this.GetGiftHistoriesAsync(playerId, title).ConfigureAwait(false);
+                return await this.GetGiftHistoriesAsync(playerId, title, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -84,12 +110,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
         }
 
-        private async Task<IList<SunriseGiftHistory>> GetGiftHistoriesAsync(string playerId, string title)
+        private async Task<IList<SunriseGiftHistory>> GetGiftHistoriesAsync(
+            string playerId,
+            string title,
+            string endpoint)
         {
             playerId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var giftHistoryResult = await this.kustoProvider.GetGiftHistoryAsync(playerId, title).ConfigureAwait(false);
+            var giftHistoryResult = await this.kustoProvider.GetGiftHistoryAsync(playerId, title, endpoint)
+                .ConfigureAwait(false);
             var results = new List<SunriseGiftHistory>();
 
             foreach (var history in giftHistoryResult)
@@ -106,7 +137,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 var antecedent = Enum.Parse<GiftIdentityAntecedent>(splitId[0]);
                 var id = splitId[1];
 
-                results.Add(new SunriseGiftHistory(antecedent, id, history.Title, history.RequesterObjectId, history.GiftSendDateUtc, convertedGift));
+                results.Add(new SunriseGiftHistory(
+                    antecedent,
+                    id,
+                    history.Title,
+                    history.RequesterObjectId,
+                    history.GiftSendDateUtc,
+                    convertedGift));
             }
 
             results.Sort((x, y) => DateTime.Compare(y.GiftSendDateUtc, x.GiftSendDateUtc));

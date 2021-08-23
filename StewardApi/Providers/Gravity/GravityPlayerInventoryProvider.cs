@@ -154,7 +154,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 await this.UpdatePlayerInventoryHelperAsync(t10Id, gameSettingsId, gift.Inventory.MasteryKits, ForzaUserInventoryItemType.MasteryKit).ConfigureAwait(true);
                 await this.UpdatePlayerInventoryHelperAsync(t10Id, gameSettingsId, gift.Inventory.RepairKits, ForzaUserInventoryItemType.RepairKit).ConfigureAwait(true);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(t10Id, Title, requesterObjectId, GiftIdentityAntecedent.T10Id, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(
+                    t10Id,
+                    Title,
+                    requesterObjectId,
+                    GiftIdentityAntecedent.T10Id,
+                    gift).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

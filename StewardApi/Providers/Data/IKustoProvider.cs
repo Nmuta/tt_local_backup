@@ -34,11 +34,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         /// <summary>
         ///     Gets gift history.
         /// </summary>
-        Task<IList<GiftHistory>> GetGiftHistoryAsync(string playerId, string title);
+        Task<IList<GiftHistory>> GetGiftHistoryAsync(string playerId, string title, string endpoint);
 
         /// <summary>
         ///     Gets ban history.
         /// </summary>
-        Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string title);
+        Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string title, string endpoint);
     }
 }

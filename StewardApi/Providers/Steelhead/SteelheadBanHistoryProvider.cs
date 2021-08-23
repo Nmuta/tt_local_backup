@@ -28,7 +28,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// <summary>
         ///     Initializes a new instance of the <see cref="SteelheadBanHistoryProvider"/> class.
         /// </summary>
-        public SteelheadBanHistoryProvider(IKustoStreamingLogger kustoStreamingLogger, IKustoProvider kustoProvider, IConfiguration configuration)
+        public SteelheadBanHistoryProvider(
+            IKustoStreamingLogger kustoStreamingLogger,
+            IKustoProvider kustoProvider,
+            IConfiguration configuration)
         {
             kustoStreamingLogger.ShouldNotBeNull(nameof(kustoStreamingLogger));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
@@ -41,11 +44,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         }
 
         /// <inheritdoc />
-        public async Task UpdateBanHistoryAsync(ulong xuid, string title, string requesterObjectId, SteelheadBanParameters banParameters)
+        public async Task UpdateBanHistoryAsync(
+            ulong xuid,
+            string title,
+            string requesterObjectId,
+            SteelheadBanParameters banParameters,
+            string endpoint)
         {
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             banParameters.ShouldNotBeNull(nameof(banParameters));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             // Gamertags must be set to null for NGP. v-joyate 20201123
             var sanitizedBanParameters = new SteelheadBanParameters
@@ -70,23 +79,30 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                 banParameters.ExpireTimeUtc,
                 banParameters.FeatureArea,
                 banParameters.Reason,
-                sanitizedBanParameters.ToJson());
+                sanitizedBanParameters.ToJson(),
+                endpoint);
 
             var kustoColumnMappings = banHistory.ToJsonColumnMappings();
             var tableName = "BanHistory";
             var banHistories = new List<LiveOpsBanHistory> { banHistory };
 
-            await this.kustoStreamingLogger.IngestFromStreamAsync(banHistories, this.kustoDatabase, tableName, kustoColumnMappings).ConfigureAwait(false);
+            await this.kustoStreamingLogger.IngestFromStreamAsync(
+                banHistories,
+                this.kustoDatabase,
+                tableName,
+                kustoColumnMappings).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<IList<LiveOpsBanHistory>> GetBanHistoriesAsync(ulong xuid, string title)
+        public async Task<IList<LiveOpsBanHistory>> GetBanHistoriesAsync(ulong xuid, string title, string endpoint)
         {
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var banHistoryResult = await this.kustoProvider.GetBanHistoryAsync(xuid, title).ConfigureAwait(false);
+                var banHistoryResult = await this.kustoProvider.GetBanHistoryAsync(xuid, title, endpoint)
+                    .ConfigureAwait(false);
                 var results = banHistoryResult.ToList();
 
                 results.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));

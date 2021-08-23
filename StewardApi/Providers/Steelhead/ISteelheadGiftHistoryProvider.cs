@@ -13,11 +13,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// <summary>
         ///     Updates gift history.
         /// </summary>
-        Task UpdateGiftHistoryAsync(string id, string title, string requesterObjectId, GiftIdentityAntecedent giftHistoryAntecedent, SteelheadGift gift);
+        Task UpdateGiftHistoryAsync(
+            string id,
+            string title,
+            string requesterObjectId,
+            GiftIdentityAntecedent giftHistoryAntecedent,
+            SteelheadGift gift,
+            string endpoint);
 
         /// <summary>
         ///     Gets gift histories.
         /// </summary>
-        Task<IList<SteelheadGiftHistory>> GetGiftHistoriesAsync(string id, string title, GiftIdentityAntecedent giftHistoryAntecedent);
+        Task<IList<SteelheadGiftHistory>> GetGiftHistoriesAsync(
+            string id,
+            string title,
+            GiftIdentityAntecedent giftHistoryAntecedent,
+            string endpoint);
     }
 }

@@ -8,6 +8,7 @@ using Forza.LiveOps.FH5.Generated;
 using Forza.WebServices.FH5.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
@@ -54,6 +55,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenWoodstockRefreshableCacheStoreNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { RefreshableCacheStore = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "refreshableCacheStore"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -88,12 +103,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var provider = new Dependencies().Build();
             var profileId = Fixture.Create<int>();
             var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task<WoodstockPlayerInventory>>>
             {
-                async () => await provider.GetPlayerInventoryAsync(xuid).ConfigureAwait(false),
-                async () => await provider.GetPlayerInventoryAsync(profileId).ConfigureAwait(false)
+                async () => await provider.GetPlayerInventoryAsync(xuid, endpoint).ConfigureAwait(false),
+                async () => await provider.GetPlayerInventoryAsync(profileId, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -111,9 +127,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<WoodstockInventoryProfile>>> action = async () => await provider.GetInventoryProfilesAsync(xuid).ConfigureAwait(false);
+            Func<Task<IList<WoodstockInventoryProfile>>> action = async () => await provider.GetInventoryProfilesAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
             action().Result.Should().BeOfType<List<WoodstockInventoryProfile>>();
@@ -126,9 +143,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<WoodstockAccountInventory>> action = async () => await provider.GetAccountInventoryAsync(xuid).ConfigureAwait(false);
+            Func<Task<WoodstockAccountInventory>> action = async () => await provider.GetAccountInventoryAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
             action().Result.Should().BeOfType<WoodstockAccountInventory>();
@@ -146,13 +164,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var gift = Fixture.Create<WoodstockGift>();
             var groupGift = Fixture.Create<WoodstockGroupGift>();
             var requesterObjectId = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -171,11 +190,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var xuid = Fixture.Create<ulong>();
             var requesterObjectId = Fixture.Create<string>();
             var useAdminCreditLimit = Fixture.Create<bool>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, null, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, null, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -193,11 +213,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var provider = new Dependencies().Build();
             var useAdminCreditLimit = Fixture.Create<bool>();
             var requesterObjectId = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoriesAsync(null, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(null, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -216,11 +237,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var groupId = Fixture.Create<int>();
             var requesterObjectId = Fixture.Create<string>();
             var useAdminCreditLimit = Fixture.Create<bool>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, null, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false)
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, null, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -241,19 +263,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var gift = Fixture.Create<WoodstockGift>();
             var groupGift = Fixture.Create<WoodstockGroupGift>();
             var useAdminCreditLimit = Fixture.Create<bool>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, null, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.Empty, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.WhiteSpace, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, null, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.Empty, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.WhiteSpace, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, null, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.Empty, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.WhiteSpace, useAdminCreditLimit).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, null, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.Empty, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.WhiteSpace, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, null, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.Empty, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.WhiteSpace, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, null, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.Empty, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.WhiteSpace, useAdminCreditLimit, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -273,9 +296,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             groupGift.Xuids = null;
             var requesterObjectId = Fixture.Create<string>();
             var useAdminCreditLimit = Fixture.Create<bool>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
@@ -285,10 +309,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
         {
             public Dependencies()
             {
-                this.WoodstockService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
-                this.WoodstockService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
-                this.WoodstockService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
-                this.WoodstockService.GetTokenBalanceAsync(Arg.Any<ulong>()).Returns(Fixture.Create<AdminGetTokenBalanceOutput>());
+                this.WoodstockService.GetAdminUserInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
+                this.WoodstockService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
+                this.WoodstockService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
+                this.WoodstockService.GetTokenBalanceAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<AdminGetTokenBalanceOutput>());
                 this.Mapper.Map<WoodstockPlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.Mapper.Map<IList<WoodstockInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
@@ -300,11 +324,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
+            public IRefreshableCacheStore RefreshableCacheStore { get; set; } =
+                Substitute.For<IRefreshableCacheStore>();
+
             public IWoodstockGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IWoodstockGiftHistoryProvider>();
 
             public WoodstockPlayerInventoryProvider Build() => new WoodstockPlayerInventoryProvider(
                 this.WoodstockService,
                 this.Mapper,
+                this.RefreshableCacheStore,
                 this.GiftHistoryProvider);
         }
     }

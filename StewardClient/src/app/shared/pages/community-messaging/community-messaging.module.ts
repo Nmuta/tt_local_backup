@@ -30,6 +30,7 @@ import { JsonTableResultsModule } from '@components/json-table-results/json-tabl
 import { MatIconModule } from '@angular/material/icon';
 import { LuxonModule } from 'luxon-angular';
 import { MatLuxonDateModule } from 'ngx-material-luxon';
+import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -68,6 +69,7 @@ import { MatLuxonDateModule } from 'ngx-material-luxon';
     TextFieldModule,
     JsonTableResultsModule,
     LuxonModule,
+    EndpointSelectionModule,
   ],
 })
 export class CommunityMessagingModule {}

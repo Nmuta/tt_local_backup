@@ -359,6 +359,127 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void GetPlayerDetails_WithValidEndpointKeyHeader_DoesNotThrows()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            controller.Request.Headers.Add("endpointKey", "Woodstock|Development");
+            var gamertag = Fixture.Create<string>();
+
+            // Act.
+            Func<Task<IActionResult>> action = async () => await controller.GetPlayerDetails(gamertag).ConfigureAwait(false);
+
+            // Assert.
+            action.Should().NotThrow();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerDetails_EmptyStringEndpointKeyHeader_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            controller.Request.Headers.Add("endpointKey", "");
+            var gamertag = Fixture.Create<string>();
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.GetPlayerDetails(gamertag).ConfigureAwait(false),
+            };
+
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "endpointKeyValue"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerDetails_InvalidTitleEndpointKeyHeader_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            controller.Request.Headers.Add("endpointKey", "Opus|Development");
+            var gamertag = Fixture.Create<string>();
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.GetPlayerDetails(gamertag).ConfigureAwait(false),
+            };
+
+            foreach (var action in actions)
+            {
+                action.Should().Throw<BadHeaderStewardException>().WithMessage(string.Format(TestConstants.BadHeaderStewardExceptionBadTitleMessagePartial, "Opus", "Woodstock"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerDetails_InvalidKeyEndpointKeyHeader_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            controller.Request.Headers.Add("endpointKey", "Woodstock|Tiger");
+            var gamertag = Fixture.Create<string>();
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.GetPlayerDetails(gamertag).ConfigureAwait(false),
+            };
+
+            foreach (var action in actions)
+            {
+                action.Should().Throw<BadHeaderStewardException>().WithMessage(string.Format(TestConstants.BadHeaderStewardExceptionBadEndpointKeyMessagePartial, "Tiger", "Woodstock"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerDetails_NoEndpointKeyEndpointKeyHeader_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            controller.Request.Headers.Add("endpointKey", "Woodstock|");
+            var gamertag = Fixture.Create<string>();
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.GetPlayerDetails(gamertag).ConfigureAwait(false),
+            };
+
+            foreach (var action in actions)
+            {
+                action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "key"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public void GetPlayerDetails_NoTitleEndpointKeyHeader_Throws()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            controller.Request.Headers.Add("endpointKey", "|Development");
+            var gamertag = Fixture.Create<string>();
+
+            // Act.
+            var actions = new List<Func<Task<IActionResult>>>
+            {
+                async () => await controller.GetPlayerDetails(gamertag).ConfigureAwait(false),
+            };
+
+            foreach (var action in actions)
+            {
+                action.Should().Throw<BadHeaderStewardException>().WithMessage(string.Format(TestConstants.BadHeaderStewardExceptionBadTitleMessagePartial, "", "Woodstock"));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public async Task GetConsoles_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1265,32 +1386,32 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.ControllerContext = new ControllerContext { HttpContext = httpContext };
 
                 this.KustoProvider.GetMasterInventoryList(Arg.Any<string>()).Returns(new List<MasterInventoryItem> { new MasterInventoryItem { Id = 1, Quantity = 1 } });
-                this.WoodstockPlayerDetailsProvider.GetPlayerIdentitiesAsync(Arg.Any<IList<IdentityQueryAlpha>>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
-                this.WoodstockPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
-                this.WoodstockPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
-                this.WoodstockPlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
-                this.WoodstockPlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
-                this.WoodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>()).Returns(true);
-                this.WoodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>()).Returns(true);
-                this.WoodstockPlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>()).Returns(Fixture.Create<WoodstockUserFlags>());
-                this.WoodstockPlayerDetailsProvider.GetProfileSummaryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<ProfileSummary>());
-                this.WoodstockPlayerDetailsProvider.GetCreditUpdatesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<IList<CreditUpdate>>());
-                this.WoodstockPlayerDetailsProvider.BanUsersAsync(Arg.Any<IList<WoodstockBanParameters>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
-                this.WoodstockPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>()).Returns(Fixture.Create<IList<BanSummary>>());
-                this.WoodstockPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
-                this.WoodstockPlayerDetailsProvider.GetBackstagePassUpdatesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
-                this.WoodstockPlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>()).Returns(Fixture.Create<IList<Notification>>());
-                this.WoodstockPlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.WoodstockPlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>()).Returns(Fixture.Create<MessageSendResult<int>>());
-                this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
-                this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
-                this.WoodstockPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
-                this.WoodstockServiceManagementProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
-                this.WoodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<WoodstockGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
-                this.WoodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<WoodstockGroupGift>(), Arg.Any<string>(), Arg.Any<bool>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
+                this.WoodstockPlayerDetailsProvider.GetPlayerIdentitiesAsync(Arg.Any<IList<IdentityQueryAlpha>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
+                this.WoodstockPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
+                this.WoodstockPlayerDetailsProvider.GetPlayerDetailsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
+                this.WoodstockPlayerDetailsProvider.GetConsolesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
+                this.WoodstockPlayerDetailsProvider.GetSharedConsoleUsersAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
+                this.WoodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(true);
+                this.WoodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+                this.WoodstockPlayerDetailsProvider.GetUserFlagsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockUserFlags>());
+                this.WoodstockPlayerDetailsProvider.GetProfileSummaryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<ProfileSummary>());
+                this.WoodstockPlayerDetailsProvider.GetCreditUpdatesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<CreditUpdate>>());
+                this.WoodstockPlayerDetailsProvider.BanUsersAsync(Arg.Any<IList<WoodstockBanParameters>>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanResult>>());
+                this.WoodstockPlayerDetailsProvider.GetUserBanSummariesAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BanSummary>>());
+                this.WoodstockPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
+                this.WoodstockPlayerDetailsProvider.GetBackstagePassUpdatesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
+                this.WoodstockPlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
+                this.WoodstockPlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
+                this.WoodstockPlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
+                this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
+                this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
+                this.WoodstockPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
+                this.WoodstockServiceManagementProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
+                this.WoodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<WoodstockGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
+                this.WoodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<WoodstockGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
-                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>()).Returns(Fixture.Create<IList<WoodstockGiftHistory>>());
+                this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>()).Returns(Fixture.Create<IList<WoodstockGiftHistory>>());
             }
             public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
 

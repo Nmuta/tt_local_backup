@@ -52,6 +52,7 @@ import { WoodstockGiftingState } from '@shared/pages/gifting/woodstock/state/woo
 import { WoodstockGiftHistoryState } from '@navbar-app/pages/gift-history/woodstock/state/woodstock-gift-history.state';
 import { MatLuxonDateModule } from 'ngx-material-luxon';
 import { LuxonModule } from 'luxon-angular';
+import { EndpointSelectionInterceptor } from '@interceptors/endpoint-selection.interceptor';
 
 const protectedResourceMap: [string, string[]][] = [
   ['https://graph.microsoft.com/v1.0/me', ['user.read']],
@@ -159,6 +160,11 @@ function fakeApiOrNothing(): Provider[] {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: StagingRewriteInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: EndpointSelectionInterceptor,
       multi: true,
     },
     {

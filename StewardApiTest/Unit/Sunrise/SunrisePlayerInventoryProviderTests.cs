@@ -89,12 +89,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
             var profileId = Fixture.Create<int>();
             var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task<SunrisePlayerInventory>>>
             {
-                async () => await provider.GetPlayerInventoryAsync(xuid).ConfigureAwait(false),
-                async () => await provider.GetPlayerInventoryAsync(profileId).ConfigureAwait(false)
+                async () => await provider.GetPlayerInventoryAsync(xuid, endpoint).ConfigureAwait(false),
+                async () => await provider.GetPlayerInventoryAsync(profileId, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -112,9 +113,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<SunriseInventoryProfile>>> action = async () => await provider.GetInventoryProfilesAsync(xuid).ConfigureAwait(false);
+            Func<Task<IList<SunriseInventoryProfile>>> action = async () => await provider.GetInventoryProfilesAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
             action().Result.Should().BeOfType<List<SunriseInventoryProfile>>();
@@ -127,29 +129,15 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<SunriseAccountInventory>> action = async () => await provider.GetAccountInventoryAsync(xuid).ConfigureAwait(false);
+            Func<Task<SunriseAccountInventory>> action = async () => await provider.GetAccountInventoryAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
             action().Result.Should().BeOfType<SunriseAccountInventory>();
         }
 
-        //[TestMethod]
-        //[TestCategory("Unit")]
-        //public void GetLspGroupsAsync_WithValidParameters_ReturnsCorrectType()
-        //{
-        //    // Arrange.
-        //    var provider = new Dependencies().Build();
-        //    var startIndex = Fixture.Create<int>();
-        //    var maxResults = Fixture.Create<int>();
-
-        //    // Act.
-        //    Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
-
-        //    // Assert.
-        //    action().Result.Should().BeOfType<List<LspGroup>>();
-        //}
 
         [TestMethod]
         [TestCategory("Unit")]
@@ -163,13 +151,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var gift = Fixture.Create<SunriseGift>();
             var groupGift = Fixture.Create<SunriseGroupGift>();
             var requesterObjectId = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -188,11 +177,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var xuid = Fixture.Create<ulong>();
             var requesterObjectId = Fixture.Create<string>();
             var useAdminCreditLimit = Fixture.Create<bool>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, null, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, null, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -210,11 +200,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
             var useAdminCreditLimit = Fixture.Create<bool>();
             var requesterObjectId = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoriesAsync(null, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(null, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -233,11 +224,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var groupId = Fixture.Create<int>();
             var requesterObjectId = Fixture.Create<string>();
             var useAdminCreditLimit = Fixture.Create<bool>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, null, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false)
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, null, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -258,19 +250,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var gift = Fixture.Create<SunriseGift>();
             var groupGift = Fixture.Create<SunriseGroupGift>();
             var useAdminCreditLimit = Fixture.Create<bool>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, null, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.Empty, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.WhiteSpace, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, null, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.Empty, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.WhiteSpace, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, null, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.Empty, useAdminCreditLimit).ConfigureAwait(false),
-                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.WhiteSpace, useAdminCreditLimit).ConfigureAwait(false)
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, null, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.Empty, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoryAsync(xuid, gift, TestConstants.WhiteSpace, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, null, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.Empty, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdatePlayerInventoriesAsync(groupGift, TestConstants.WhiteSpace, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, null, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.Empty, useAdminCreditLimit, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateGroupInventoriesAsync(groupId, gift, TestConstants.WhiteSpace, useAdminCreditLimit, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -290,9 +283,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             groupGift.Xuids = null;
             var requesterObjectId = Fixture.Create<string>();
             var useAdminCreditLimit = Fixture.Create<bool>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, useAdminCreditLimit, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "xuids"));
@@ -302,12 +296,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             public Dependencies()
             {
-                this.SunriseService.GetAdminUserInventoryAsync(Arg.Any<ulong>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
-                this.SunriseService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
-                this.SunriseService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
-                this.SunriseService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
-                this.SunriseService.GetLiveOpsUserDataByGamerTagAsync(Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
-                this.SunriseService.GetTokenBalanceAsync(Arg.Any<ulong>()).Returns(Fixture.Create<AdminGetTokenBalanceOutput>());
+                this.SunriseService.GetAdminUserInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryOutput>());
+                this.SunriseService.GetAdminUserInventoryByProfileIdAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserInventoryByProfileIdOutput>());
+                this.SunriseService.GetAdminUserProfilesAsync(Arg.Any<ulong>(), Arg.Any<uint>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminUserProfilesOutput>());
+                this.SunriseService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
+                this.SunriseService.GetLiveOpsUserDataByGamerTagAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<GetLiveOpsUserDataByGamerTagOutput>());
+                this.SunriseService.GetTokenBalanceAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<AdminGetTokenBalanceOutput>());
                 this.Mapper.Map<SunrisePlayerInventory>(Arg.Any<AdminForzaUserInventorySummary>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.Mapper.Map<IList<SunriseInventoryProfile>>(Arg.Any<AdminForzaProfile[]>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());

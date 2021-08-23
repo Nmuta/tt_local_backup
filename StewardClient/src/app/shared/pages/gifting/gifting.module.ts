@@ -24,6 +24,7 @@ import { PlayerInventoryModule } from '@shared/views/player-inventory/player-inv
 import { SteelheadGiftingComponent } from './steelhead/steelhead-gifting.component';
 import { WoodstockGiftingComponent } from './woodstock/woodstock-gifting.component';
 import { PlayerAccountInventoryModule } from '@views/player-account-inventory/player-account-inventory.module';
+import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -54,6 +55,7 @@ import { PlayerAccountInventoryModule } from '@views/player-account-inventory/pl
     PlayerInventoryProfilesModule,
     PlayerInventoryModule,
     PlayerAccountInventoryModule,
+    EndpointSelectionModule,
   ],
 })
 export class GiftingsModule {}

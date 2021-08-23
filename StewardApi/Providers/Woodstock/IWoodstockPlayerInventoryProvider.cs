@@ -13,36 +13,50 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Gets player inventory.
         /// </summary>
-        Task<WoodstockPlayerInventory> GetPlayerInventoryAsync(ulong xuid);
+        Task<WoodstockPlayerInventory> GetPlayerInventoryAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Gets player inventory.
         /// </summary>
-        Task<WoodstockPlayerInventory> GetPlayerInventoryAsync(int profileId);
+        Task<WoodstockPlayerInventory> GetPlayerInventoryAsync(int profileId, string endpoint);
 
         /// <summary>
         ///     Gets inventory profiles.
         /// </summary>
-        Task<IList<WoodstockInventoryProfile>> GetInventoryProfilesAsync(ulong xuid);
+        Task<IList<WoodstockInventoryProfile>> GetInventoryProfilesAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Gets the account inventory.
         /// </summary>
-        Task<WoodstockAccountInventory> GetAccountInventoryAsync(ulong xuid);
+        Task<WoodstockAccountInventory> GetAccountInventoryAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Updates player inventory.
         /// </summary>
-        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, WoodstockGift gift, string requesterObjectId, bool useAdminCreditLimit);
+        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(
+            ulong xuid,
+            WoodstockGift gift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint);
 
         /// <summary>
         ///     Updates player inventories.
         /// </summary>
-        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(WoodstockGroupGift groupGift, string requesterObjectId, bool useAdminCreditLimit);
+        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(
+            WoodstockGroupGift groupGift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint);
 
         /// <summary>
         ///     Updates group inventories.
         /// </summary>
-        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, WoodstockGift gift, string requesterObjectId, bool useAdminCreditLimit);
+        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(
+            int groupId,
+            WoodstockGift gift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint);
     }
 }

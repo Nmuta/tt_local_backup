@@ -7,8 +7,9 @@
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
     routerLinkActive="mat-stroked-button"
-    >Woodstock</a
-  >
+    >Woodstock
+    <endpoint-selection [titleCodeName]="gameTitleCodeName.FH5"> </endpoint-selection>
+  </a>
   <a
     *ngIf="!isProduction"
     [class.mat-button-disabled]="!identity?.extra?.hasSteelhead"
@@ -17,8 +18,9 @@
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
     routerLinkActive="mat-stroked-button"
-    >Steelhead</a
-  >
+    >Steelhead
+    <endpoint-selection [titleCodeName]="gameTitleCodeName.FM8"> </endpoint-selection>
+  </a>
   <a
     [class.mat-button-disabled]="!identity?.extra?.hasGravity"
     [matTooltip]="gravityTooltip"
@@ -35,8 +37,9 @@
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
     routerLinkActive="mat-stroked-button"
-    >Sunrise</a
-  >
+    >Sunrise
+    <endpoint-selection [titleCodeName]="gameTitleCodeName.FH4"> </endpoint-selection>
+  </a>
   <a
     [class.mat-button-disabled]="!identity?.extra?.hasApollo"
     [matTooltip]="apolloTooltip"
@@ -44,8 +47,9 @@
     [queryParams]="{ lookupType: lookupType, lookupName: lookupName }"
     mat-button
     routerLinkActive="mat-stroked-button"
-    >Apollo</a
-  >
+    >Apollo
+    <endpoint-selection [titleCodeName]="gameTitleCodeName.FM7"> </endpoint-selection>
+  </a>
   <a
     [class.mat-button-disabled]="!identity?.extra?.hasOpus"
     [matTooltip]="opusTooltip"

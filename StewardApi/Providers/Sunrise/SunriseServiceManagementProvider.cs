@@ -32,14 +32,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults)
+        public async Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults, string endpoint)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var result = await this.sunriseService.GetUserGroupsAsync(startIndex, maxResults)
+                var result = await this.sunriseService.GetUserGroupsAsync(startIndex, maxResults, endpoint)
                     .ConfigureAwait(false);
                 var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
 
@@ -52,13 +53,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<AuctionBlocklistEntry>> GetAuctionBlocklistAsync(int maxResults)
+        public async Task<IList<AuctionBlocklistEntry>> GetAuctionBlocklistAsync(int maxResults, string endpoint)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var forzaAuctions = await this.sunriseService.GetAuctionBlockListAsync(maxResults).ConfigureAwait(false);
+                var forzaAuctions = await this.sunriseService.GetAuctionBlockListAsync(maxResults, endpoint).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<AuctionBlocklistEntry>>(forzaAuctions.blocklistEntries);
             }
@@ -69,15 +71,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task AddAuctionBlocklistEntriesAsync(IList<AuctionBlocklistEntry> blocklistEntries)
+        public async Task AddAuctionBlocklistEntriesAsync(IList<AuctionBlocklistEntry> blocklistEntries, string endpoint)
         {
             blocklistEntries.ShouldNotBeNull(nameof(blocklistEntries));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
                 var convertedEntries = this.mapper.Map<ForzaAuctionBlocklistEntry[]>(blocklistEntries);
 
-                await this.sunriseService.AddAuctionBlocklistEntriesAsync(convertedEntries).ConfigureAwait(false);
+                await this.sunriseService.AddAuctionBlocklistEntriesAsync(convertedEntries, endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -86,13 +89,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task DeleteAuctionBlocklistEntriesAsync(IList<int> carIds)
+        public async Task DeleteAuctionBlocklistEntriesAsync(IList<int> carIds, string endpoint)
         {
             carIds.ShouldNotBeNull(nameof(carIds));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                await this.sunriseService.DeleteAuctionBlocklistEntriesAsync(carIds.ToArray()).ConfigureAwait(false);
+                await this.sunriseService.DeleteAuctionBlocklistEntriesAsync(carIds.ToArray(), endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

@@ -25,8 +25,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         private const int UltimateVipUserGroupId = 2;
         private const int T10EmployeeUserGroupId = 4;
         private const int WhitelistUserGroupId = 6;
-        private const string CreditUpdatesIdTemplate = "Woodstock|CreditUpdates|{0}|{1}|{2}";
-        private const string BackstagePassUpdatesIdTemplate = "Woodstock|BackstagePassUpdates|{0}";
+        private const string CreditUpdatesIdTemplate = "Woodstock|{0}|CreditUpdates|{1}|{2}|{3}";
+        private const string BackstagePassUpdatesIdTemplate = "Woodstock|{0}|BackstagePassUpdates|{1}";
 
         private readonly IWoodstockService woodstockService;
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
@@ -36,7 +36,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Initializes a new instance of the <see cref="WoodstockPlayerDetailsProvider"/> class.
         /// </summary>
-        public WoodstockPlayerDetailsProvider(IWoodstockService woodstockService, IWoodstockBanHistoryProvider banHistoryProvider, IMapper mapper, IRefreshableCacheStore refreshableCacheStore)
+        public WoodstockPlayerDetailsProvider(
+            IWoodstockService woodstockService,
+            IWoodstockBanHistoryProvider banHistoryProvider,
+            IMapper mapper,
+            IRefreshableCacheStore refreshableCacheStore)
         {
             woodstockService.ShouldNotBeNull(nameof(woodstockService));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
@@ -50,15 +54,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<IdentityResultAlpha>> GetPlayerIdentitiesAsync(IList<IdentityQueryAlpha> queries)
+        public async Task<IList<IdentityResultAlpha>> GetPlayerIdentitiesAsync(
+            IList<IdentityQueryAlpha> queries,
+            string endpoint)
         {
             queries.ShouldNotBeNull(nameof(queries));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
                 var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(queries);
 
-                var result = await this.woodstockService.GetUserIds(convertedQueries).ConfigureAwait(false);
+                var result = await this.woodstockService.GetUserIds(convertedQueries, endpoint)
+                    .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
             }
@@ -69,13 +77,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<WoodstockPlayerDetails> GetPlayerDetailsAsync(string gamertag)
+        public async Task<WoodstockPlayerDetails> GetPlayerDetailsAsync(string gamertag, string endpoint)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var response = await this.woodstockService.GetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
+                var response = await this.woodstockService.GetUserDataByGamertagAsync(gamertag, endpoint)
+                    .ConfigureAwait(false);
 
                 return this.mapper.Map<WoodstockPlayerDetails>(response.userData);
             }
@@ -86,11 +96,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<WoodstockPlayerDetails> GetPlayerDetailsAsync(ulong xuid)
+        public async Task<WoodstockPlayerDetails> GetPlayerDetailsAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var response = await this.woodstockService.GetUserDataByXuidAsync(xuid).ConfigureAwait(false);
+                var response = await this.woodstockService.GetUserDataByXuidAsync(xuid, endpoint)
+                    .ConfigureAwait(false);
 
                 if (response.userData.region <= 0) { return null; }
 
@@ -103,11 +116,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<bool> EnsurePlayerExistsAsync(ulong xuid)
+        public async Task<bool> EnsurePlayerExistsAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var response = await this.woodstockService.GetUserDataByXuidAsync(xuid)
+                var response = await this.woodstockService.GetUserDataByXuidAsync(xuid, endpoint)
                     .ConfigureAwait(false);
 
                 return response.userData.region > 0;
@@ -119,13 +134,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<bool> EnsurePlayerExistsAsync(string gamertag)
+        public async Task<bool> EnsurePlayerExistsAsync(string gamertag, string endpoint)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var response = await this.woodstockService.GetUserDataByGamertagAsync(gamertag).ConfigureAwait(false);
+                var response = await this.woodstockService.GetUserDataByGamertagAsync(gamertag, endpoint)
+                    .ConfigureAwait(false);
 
                 return response.userData.region > 0;
             }
@@ -136,11 +153,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults)
+        public async Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var response = await this.woodstockService.GetConsolesAsync(xuid, maxResults).ConfigureAwait(false);
+                var response = await this.woodstockService.GetConsolesAsync(xuid, maxResults, endpoint)
+                    .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<ConsoleDetails>>(response.consoles);
             }
@@ -151,11 +171,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned)
+        public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                await this.woodstockService.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(false);
+                await this.woodstockService.SetConsoleBanStatusAsync(consoleId, isBanned, endpoint)
+                    .ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -164,12 +187,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(
+            ulong xuid,
+            int startIndex,
+            int maxResults,
+            string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var response = await this.woodstockService.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults)
-                    .ConfigureAwait(false);
+                var response = await this.woodstockService.GetSharedConsoleUsersAsync(
+                        xuid,
+                        startIndex,
+                        maxResults,
+                        endpoint).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SharedConsoleUser>>(response.sharedConsoleUsers);
             }
@@ -180,13 +212,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc/>
-        public async Task<WoodstockUserFlags> GetUserFlagsAsync(ulong xuid)
+        public async Task<WoodstockUserFlags> GetUserFlagsAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
                 var userGroupResults = await this.woodstockService
-                    .GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults).ConfigureAwait(false);
-                var suspiciousResults = await this.woodstockService.GetIsUnderReviewAsync(xuid).ConfigureAwait(false);
+                    .GetUserGroupMembershipsAsync(xuid, Array.Empty<int>(), DefaultMaxResults, endpoint)
+                    .ConfigureAwait(false);
+                var suspiciousResults = await this.woodstockService.GetIsUnderReviewAsync(xuid, endpoint)
+                    .ConfigureAwait(false);
 
                 userGroupResults.userGroups.ShouldNotBeNull(nameof(userGroupResults.userGroups));
 
@@ -206,19 +242,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task SetUserFlagsAsync(ulong xuid, WoodstockUserFlags userFlags)
+        public async Task SetUserFlagsAsync(ulong xuid, WoodstockUserFlags userFlags, string endpoint)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
                 var addGroupList = this.PrepareGroupIds(userFlags, true);
                 var removeGroupList = this.PrepareGroupIds(userFlags, false);
 
-                await this.woodstockService.AddToUserGroupsAsync(xuid, addGroupList.ToArray()).ConfigureAwait(false);
-                await this.woodstockService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray())
+                await this.woodstockService.AddToUserGroupsAsync(xuid, addGroupList.ToArray(), endpoint)
                     .ConfigureAwait(false);
-                await this.woodstockService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview)
+                await this.woodstockService.RemoveFromUserGroupsAsync(xuid, removeGroupList.ToArray(), endpoint)
+                    .ConfigureAwait(false);
+                await this.woodstockService.SetIsUnderReviewAsync(xuid, userFlags.IsUnderReview, endpoint)
                     .ConfigureAwait(false);
             }
             catch (Exception ex)
@@ -228,11 +266,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<ProfileSummary> GetProfileSummaryAsync(ulong xuid)
+        public async Task<ProfileSummary> GetProfileSummaryAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var result = await this.woodstockService.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
+                var result = await this.woodstockService.GetProfileSummaryAsync(xuid, endpoint)
+                    .ConfigureAwait(false);
                 var profileSummary = this.mapper.Map<ProfileSummary>(result.forzaProfileSummary);
 
                 return profileSummary;
@@ -244,18 +285,33 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<IList<CreditUpdate>> GetCreditUpdatesAsync(
+            ulong xuid,
+            int startIndex,
+            int maxResults,
+            string endpoint)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var creditUpdateId = string.Format(CultureInfo.InvariantCulture, CreditUpdatesIdTemplate, xuid, startIndex, maxResults);
+                var creditUpdateId = string.Format(
+                    CultureInfo.InvariantCulture,
+                    CreditUpdatesIdTemplate,
+                    endpoint,
+                    xuid,
+                    startIndex,
+                    maxResults);
 
                 async Task<IList<CreditUpdate>> CreditUpdates()
                 {
-                    var result = await this.woodstockService.GetCreditUpdateEntriesAsync(xuid, startIndex, maxResults)
+                    var result = await this.woodstockService.GetCreditUpdateEntriesAsync(
+                            xuid,
+                            startIndex,
+                            maxResults,
+                            endpoint)
                         .ConfigureAwait(false);
                     var creditUpdates = this.mapper.Map<IList<CreditUpdate>>(result.credityUpdateEntries);
 
@@ -276,19 +332,29 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<BackstagePassUpdate>> GetBackstagePassUpdatesAsync(ulong xuid)
+        public async Task<IList<BackstagePassUpdate>> GetBackstagePassUpdatesAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var backstagePassUpdateId = string.Format(CultureInfo.InvariantCulture, BackstagePassUpdatesIdTemplate, xuid);
+                var backstagePassUpdateId = string.Format(
+                    CultureInfo.InvariantCulture,
+                    endpoint,
+                    BackstagePassUpdatesIdTemplate,
+                    xuid);
 
                 async Task<IList<BackstagePassUpdate>> BackstagePassUpdates()
                 {
-                    var result = await this.woodstockService.GetTokenTransactionsAsync(xuid)
+                    var result = await this.woodstockService.GetTokenTransactionsAsync(xuid, endpoint)
                         .ConfigureAwait(false);
-                    var backstagePasses = this.mapper.Map<IList<BackstagePassUpdate>>(result.transactions.Transactions);
+                    var backstagePasses = this.mapper.Map<IList<BackstagePassUpdate>>(
+                        result.transactions.Transactions);
 
-                    this.refreshableCacheStore.PutItem(backstagePassUpdateId, TimeSpan.FromHours(1), backstagePasses);
+                    this.refreshableCacheStore.PutItem(
+                        backstagePassUpdateId,
+                        TimeSpan.FromHours(1),
+                        backstagePasses);
 
                     return backstagePasses;
                 }
@@ -305,10 +371,15 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<BanResult>> BanUsersAsync(IList<WoodstockBanParameters> banParameters, string requesterObjectId)
+        public async Task<IList<BanResult>> BanUsersAsync(
+            IList<WoodstockBanParameters> banParameters,
+            string requesterObjectId,
+            string endpoint)
         {
             banParameters.ShouldNotBeNull(nameof(banParameters));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             const int maxXuidsPerRequest = 10;
 
             foreach (var param in banParameters)
@@ -324,14 +395,18 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
                     try
                     {
-                        var userResult = await this.woodstockService.GetUserDataByGamertagAsync(param.Gamertag)
+                        var userResult = await this.woodstockService.GetUserDataByGamertagAsync(
+                                param.Gamertag,
+                                endpoint)
                             .ConfigureAwait(false);
 
                         param.Xuid = userResult.userData.qwXuid;
                     }
                     catch (Exception ex)
                     {
-                        throw new NotFoundStewardException($"No profile found for Gamertag: {param.Gamertag}.", ex);
+                        throw new NotFoundStewardException(
+                            $"No profile found for Gamertag: {param.Gamertag}.",
+                            ex);
                     }
                 }
             }
@@ -346,7 +421,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                             .GetRange(i, Math.Min(maxXuidsPerRequest, banParameters.Count - i));
                         var mappedBanParameters = this.mapper.Map<IList<ForzaUserBanParameters>>(paramBatch);
                         var result = await this.woodstockService
-                            .BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count)
+                            .BanUsersAsync(mappedBanParameters.ToArray(), mappedBanParameters.Count, endpoint)
                             .ConfigureAwait(false);
 
                         banResults.AddRange(this.mapper.Map<IList<BanResult>>(result.banResults));
@@ -354,7 +429,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
                 foreach (var result in banResults)
                 {
-                    var parameters = banParameters.Where(banAttempt => banAttempt.Xuid == result.Xuid).FirstOrDefault();
+                    var parameters = banParameters.Where(banAttempt => banAttempt.Xuid == result.Xuid)
+                        .FirstOrDefault();
 
                     if (result.Error == null)
                     {
@@ -365,8 +441,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                                         parameters.Xuid,
                                         TitleConstants.WoodstockCodeName,
                                         requesterObjectId,
-                                        parameters)
-                                    .ConfigureAwait(false);
+                                        parameters,
+                                        endpoint).ConfigureAwait(false);
                         }
                         catch (Exception ex)
                         {
@@ -386,8 +462,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids)
+        public async Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
                 if (xuids.Count == 0)
@@ -395,7 +473,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     return new List<BanSummary>();
                 }
 
-                var result = await this.woodstockService.GetUserBanSummariesAsync(xuids.ToArray()).ConfigureAwait(false);
+                var result = await this.woodstockService.GetUserBanSummariesAsync(xuids.ToArray(), endpoint)
+                    .ConfigureAwait(false);
 
                 var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
 
@@ -408,20 +487,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid)
+        public async Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
                 var result = await this.woodstockService
-                    .GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
+                    .GetUserBanHistoryAsync(xuid, DefaultStartIndex, DefaultMaxResults, endpoint)
+                    .ConfigureAwait(false);
 
                 if (result.availableCount > DefaultMaxResults)
                 {
                     result = await this.woodstockService
-                        .GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount).ConfigureAwait(false);
+                        .GetUserBanHistoryAsync(xuid, DefaultStartIndex, result.availableCount, endpoint)
+                        .ConfigureAwait(false);
                 }
 
-                var banResults = result.bans.Select(ban => { return LiveOpsBanHistoryMapper.Map(ban); }).ToList();
+                var banResults = result.bans
+                    .Select(ban => { return LiveOpsBanHistoryMapper.Map(ban, endpoint); }).ToList();
                 banResults.Sort((x, y) => DateTime.Compare(y.ExpireTimeUtc, x.ExpireTimeUtc));
 
                 return banResults;
@@ -433,15 +517,20 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, AuctionFilters filters)
+        public async Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(
+            ulong xuid,
+            AuctionFilters filters,
+            string endpoint)
         {
             filters.ShouldNotBeNull(nameof(filters));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
                 var forzaAuctionFilters = this.mapper.Map<ForzaAuctionFilters>(filters);
                 forzaAuctionFilters.Seller = xuid;
-                var forzaAuctions = await this.woodstockService.GetPlayerAuctions(forzaAuctionFilters).ConfigureAwait(false);
+                var forzaAuctions = await this.woodstockService.GetPlayerAuctions(forzaAuctionFilters, endpoint)
+                    .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<PlayerAuction>>(forzaAuctions.searchAuctionHouseResult.Auctions);
             }
@@ -452,31 +541,49 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<IList<Notification>> GetPlayerNotificationsAsync(ulong xuid, int maxResults)
+        public async Task<IList<Notification>> GetPlayerNotificationsAsync(
+            ulong xuid,
+            int maxResults,
+            string endpoint)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var notifications = await this.woodstockService.LiveOpsRetrieveForUserAsync(xuid, maxResults).ConfigureAwait(false);
+                var notifications = await this.woodstockService.LiveOpsRetrieveForUserAsync(
+                    xuid,
+                    maxResults,
+                    endpoint).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<Notification>>(notifications.results);
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"Notifications for player with XUID: {xuid} could not be found.", ex);
+                throw new NotFoundStewardException(
+                    $"Notifications for player with XUID: {xuid} could not be found.",
+                    ex);
             }
         }
 
         /// <inheritdoc />
-        public async Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc)
+        public async Task<IList<MessageSendResult<ulong>>> SendCommunityMessageAsync(
+            IList<ulong> xuids,
+            string message,
+            DateTime expireTimeUtc,
+            string endpoint)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var results = await this.woodstockService.SendMessageNotificationToMultipleUsersAsync(xuids, message, expireTimeUtc).ConfigureAwait(false);
+                var results = await this.woodstockService.SendMessageNotificationToMultipleUsersAsync(
+                    xuids,
+                    message,
+                    expireTimeUtc,
+                    endpoint).ConfigureAwait(false);
 
                 return this.mapper.Map<IList<MessageSendResult<ulong>>>(results.messageSendResults);
             }
@@ -487,9 +594,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         }
 
         /// <inheritdoc />
-        public async Task<MessageSendResult<int>> SendCommunityMessageAsync(int groupId, string message, DateTime expireTimeUtc)
+        public async Task<MessageSendResult<int>> SendCommunityMessageAsync(
+            int groupId,
+            string message,
+            DateTime expireTimeUtc,
+            string endpoint)
         {
             message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(message));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var messageResponse = new MessageSendResult<int>();
             messageResponse.PlayerOrLspGroup = groupId;
@@ -497,12 +609,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                await this.woodstockService.SendGroupMessageNotificationAsync(groupId, message, expireTimeUtc).ConfigureAwait(false);
+                await this.woodstockService.SendGroupMessageNotificationAsync(
+                    groupId,
+                    message,
+                    expireTimeUtc,
+                    endpoint).ConfigureAwait(false);
                 messageResponse.Error = null;
             }
             catch
             {
-                messageResponse.Error = new ServicesFailureStewardError($"LSP failed to message group with ID: {groupId}");
+                messageResponse.Error = new ServicesFailureStewardError(
+                    $"LSP failed to message group with ID: {groupId}");
             }
 
             return messageResponse;

@@ -42,3 +42,21 @@ export enum NotificationHubEvents {
   SyncAllJobs = 'NotificationHubSyncAll',
   UpdateJobState = 'NotificationHubUpdateJobState',
 }
+
+export enum ApolloEndpointKey {
+  Retail = 'Retail',
+  Studio = 'Studio',
+}
+
+export enum SunriseEndpointKey {
+  Retail = 'Retail',
+  Studio = 'Studio',
+}
+
+export enum WoodstockEndpointKey {
+  Development = 'Development',
+}
+
+export enum SteelheadEndpointKey {
+  Development = 'Development',
+}

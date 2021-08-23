@@ -14,7 +14,7 @@
 }
 
 :host ::ng-deep {
-  mat-toolbar * {
+  mat-toolbar {
     font-size: $font-size-subnavbar;
   }
   & .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {

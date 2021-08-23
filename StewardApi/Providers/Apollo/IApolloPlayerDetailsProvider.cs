@@ -14,66 +14,73 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Gets player identity.
         /// </summary>
-        Task<IdentityResultAlpha> GetPlayerIdentityAsync(IdentityQueryAlpha query);
+        Task<IdentityResultAlpha> GetPlayerIdentityAsync(IdentityQueryAlpha query, string endpoint);
 
         /// <summary>
         ///     Gets player details.
         /// </summary>
-        Task<ApolloPlayerDetails> GetPlayerDetailsAsync(string gamertag);
+        Task<ApolloPlayerDetails> GetPlayerDetailsAsync(string gamertag, string endpoint);
 
         /// <summary>
         ///     Gets player details.
         /// </summary>
-        Task<ApolloPlayerDetails> GetPlayerDetailsAsync(ulong xuid);
+        Task<ApolloPlayerDetails> GetPlayerDetailsAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Ensures player exists.
         /// </summary>
-        Task<bool> EnsurePlayerExistsAsync(ulong xuid);
+        Task<bool> EnsurePlayerExistsAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Ensures player exists.
         /// </summary>
-        Task<bool> EnsurePlayerExistsAsync(string gamertag);
+        Task<bool> EnsurePlayerExistsAsync(string gamertag, string endpoint);
 
         /// <summary>
         ///     Bans users.
         /// </summary>
-        Task<IList<BanResult>> BanUsersAsync(IList<ApolloBanParameters> banParameters, string requesterObjectId);
+        Task<IList<BanResult>> BanUsersAsync(
+            IList<ApolloBanParameters> banParameters,
+            string requesterObjectId,
+            string endpoint);
 
         /// <summary>
         ///     Gets user ban history.
         /// </summary>
-        Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid);
+        Task<IList<LiveOpsBanHistory>> GetUserBanHistoryAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Gets user ban summaries.
         /// </summary>
-        Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids);
+        Task<IList<BanSummary>> GetUserBanSummariesAsync(IList<ulong> xuids, string endpoint);
 
         /// <summary>
         ///     Gets consoles.
         /// </summary>
-        Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults);
+        Task<IList<ConsoleDetails>> GetConsolesAsync(ulong xuid, int maxResults, string endpoint);
 
         /// <summary>
         ///     Sets console ban status.
         /// </summary>
-        Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned);
+        Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned, string endpoint);
 
         /// <summary>
         ///     Gets shared console users.
         /// </summary>
-        Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(ulong xuid, int startIndex, int maxResults);
+        Task<IList<SharedConsoleUser>> GetSharedConsoleUsersAsync(
+            ulong xuid,
+            int startIndex,
+            int maxResults,
+            string endpoint);
 
         /// <summary>
         ///     Gets user flags.
         /// </summary>
-        Task<ApolloUserFlags> GetUserFlagsAsync(ulong xuid);
+        Task<ApolloUserFlags> GetUserFlagsAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     SetsS user flags.
         /// </summary>
-        Task SetUserFlagsAsync(ulong xuid, ApolloUserFlags userFlags);
+        Task SetUserFlagsAsync(ulong xuid, ApolloUserFlags userFlags, string endpoint);
     }
 }

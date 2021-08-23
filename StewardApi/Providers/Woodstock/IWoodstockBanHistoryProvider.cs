@@ -13,11 +13,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// <summary>
         ///     Updates ban history.
         /// </summary>
-        Task UpdateBanHistoryAsync(ulong xuid, string title, string requesterObjectId, WoodstockBanParameters banParameters);
+        Task UpdateBanHistoryAsync(
+            ulong xuid,
+            string title,
+            string requesterObjectId,
+            WoodstockBanParameters banParameters,
+            string endpoint);
 
         /// <summary>
         ///     Gets ban histories.
         /// </summary>
-        Task<IList<LiveOpsBanHistory>> GetBanHistoriesAsync(ulong xuid, string title);
+        Task<IList<LiveOpsBanHistory>> GetBanHistoriesAsync(
+            ulong xuid,
+            string title,
+            string endpoint);
     }
 }

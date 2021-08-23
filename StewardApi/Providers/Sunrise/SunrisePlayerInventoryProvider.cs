@@ -50,11 +50,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var result = await this.sunriseService.GetAdminUserInventoryAsync(xuid)
+                var result = await this.sunriseService.GetAdminUserInventoryAsync(xuid, endpoint)
                     .ConfigureAwait(false);
 
                 var playerInventoryDetails = this.mapper.Map<SunrisePlayerInventory>(result.summary);
@@ -68,11 +70,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(int profileId)
+        public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(int profileId, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+            
             try
             {
-                var response = await this.sunriseService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                var response = await this.sunriseService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
                     .ConfigureAwait(false);
                 var inventoryProfile = this.mapper.Map<SunrisePlayerInventory>(response.summary);
 
@@ -85,11 +89,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseInventoryProfile>> GetInventoryProfilesAsync(ulong xuid)
+        public async Task<IList<SunriseInventoryProfile>> GetInventoryProfilesAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var response = await this.sunriseService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+                var response = await this.sunriseService.GetAdminUserProfilesAsync(xuid, MaxProfileResults, endpoint)
+                    .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<SunriseInventoryProfile>>(response.profiles);
             }
@@ -100,11 +107,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<SunriseAccountInventory> GetAccountInventoryAsync(ulong xuid)
+        public async Task<SunriseAccountInventory> GetAccountInventoryAsync(ulong xuid, string endpoint)
         {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
             try
             {
-                var response = await this.sunriseService.GetTokenBalanceAsync(xuid).ConfigureAwait(false);
+                var response = await this.sunriseService.GetTokenBalanceAsync(xuid, endpoint).ConfigureAwait(false);
 
                 return this.mapper.Map<SunriseAccountInventory>(response.transactions);
             }
@@ -115,11 +124,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requesterObjectId, bool useAdminCreditLimit)
+        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, SunriseGift gift, string requesterObjectId, bool useAdminCreditLimit, string endpoint)
         {
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var giftResponse = new GiftResponse<ulong>();
             giftResponse.PlayerOrLspGroup = xuid;
@@ -129,23 +139,36 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             {
                 var inventoryGifts = this.BuildInventoryItems(gift.Inventory);
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
-                var backstagePasses = gift.Inventory.CreditRewards.FirstOrDefault(data => { return data.Description == "BackstagePasses"; });
-                var backstagePassDelta = backstagePasses != default(MasterInventoryItem) ? backstagePasses.Quantity : 0;
+                var backstagePasses = gift.Inventory.CreditRewards
+                    .FirstOrDefault(data => { return data.Description == "BackstagePasses"; });
+                var backstagePassDelta = backstagePasses != default(MasterInventoryItem)
+                    ? backstagePasses.Quantity
+                    : 0;
 
                 var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
-                currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
-                currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
-                currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
+                currencyGifts[InventoryItemType.Credits] =
+                    Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
+                currencyGifts[InventoryItemType.WheelSpins] =
+                    Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
+                currencyGifts[InventoryItemType.SuperWheelSpins] =
+                Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.sunriseService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.sunriseService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId, endpoint)
+                        .ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
-                await this.UpdateBackstagePasses(xuid, backstagePassDelta).ConfigureAwait(false);
+                await this.UpdateBackstagePasses(xuid, backstagePassDelta, endpoint).ConfigureAwait(false);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), Title, requesterObjectId, GiftIdentityAntecedent.Xuid, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(
+                    xuid.ToString(CultureInfo.InvariantCulture),
+                    Title,
+                    requesterObjectId,
+                    GiftIdentityAntecedent.Xuid,
+                    gift,
+                    endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -156,30 +179,46 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(SunriseGroupGift groupGift, string requesterObjectId, bool useAdminCreditLimit)
+        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(
+            SunriseGroupGift groupGift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint)
         {
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var response = new List<GiftResponse<ulong>>();
             var gift = this.mapper.Map<SunriseGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
-                response.Add(await this.UpdatePlayerInventoryAsync(xuid, gift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false));
+                response.Add(await this.UpdatePlayerInventoryAsync(
+                    xuid,
+                    gift,
+                    requesterObjectId,
+                    useAdminCreditLimit,
+                    endpoint).ConfigureAwait(false));
             }
 
             return response;
         }
 
         /// <inheritdoc/>
-        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, SunriseGift gift, string requesterObjectId, bool useAdminCreditLimit)
+        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(
+            int groupId,
+            SunriseGift gift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint)
         {
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var giftResponse = new GiftResponse<int>();
             giftResponse.PlayerOrLspGroup = groupId;
@@ -191,28 +230,46 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
                 var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
-                currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
-                currencyGifts[InventoryItemType.WheelSpins] = Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
-                currencyGifts[InventoryItemType.SuperWheelSpins] = Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
+                currencyGifts[InventoryItemType.Credits] =
+                    Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
+                currencyGifts[InventoryItemType.WheelSpins] =
+                    Math.Min(currencyGifts[InventoryItemType.WheelSpins], MaxWheelSpinAmount);
+                currencyGifts[InventoryItemType.SuperWheelSpins] =
+                    Math.Min(currencyGifts[InventoryItemType.SuperWheelSpins], MaxWheelSpinAmount);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.sunriseService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.sunriseService.AdminSendItemGroupGiftAsync(
+                        groupId,
+                        inventoryItemType,
+                        itemId,
+                        endpoint).ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), Title, requesterObjectId, GiftIdentityAntecedent.LspGroupId, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(
+                    groupId.ToString(CultureInfo.InvariantCulture),
+                    Title,
+                    requesterObjectId,
+                    GiftIdentityAntecedent.LspGroupId,
+                    gift,
+                    endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                giftResponse.Error = new FailedToSendStewardError($"Failed to send gift to group ID: {groupId}.", ex);
+                giftResponse.Error = new FailedToSendStewardError(
+                    $"Failed to send gift to group ID: {groupId}.",
+                    ex);
             }
 
             return giftResponse;
         }
 
-        private async Task SendGifts(Func<InventoryItemType, int, Task> serviceCall, IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts, IDictionary<InventoryItemType, int> currencyGifts)
+        private async Task SendGifts(
+            Func<InventoryItemType, int, Task> serviceCall,
+            IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts,
+            IDictionary<InventoryItemType, int> currencyGifts)
         {
             foreach (var (key, value) in inventoryGifts)
             {
@@ -245,25 +302,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             }
         }
 
-        private async Task UpdateBackstagePasses(ulong xuid, int balanceDelta)
+        private async Task UpdateBackstagePasses(ulong xuid, int balanceDelta, string endpoint)
         {
-            const string BackstagePassUpdatesIdTemplate = "Sunrise|BackstagePassUpdates|{0}";
+            const string backstagePassUpdatesIdTemplate = "Sunrise|{0}|BackstagePassUpdates|{1}";
 
             if (balanceDelta <= 0)
             {
                 return;
             }
 
-            var status = await this.sunriseService.GetTokenBalanceAsync(xuid).ConfigureAwait(false);
+            var status = await this.sunriseService.GetTokenBalanceAsync(xuid, endpoint).ConfigureAwait(false);
             var currentBalance = status.transactions.OfflineBalance;
             var newBalance = (uint) Math.Max(0, currentBalance + balanceDelta);
 
-            await this.sunriseService.SetTokenBalanceAsync(xuid, newBalance).ConfigureAwait(false);
+            await this.sunriseService.SetTokenBalanceAsync(xuid, newBalance, endpoint).ConfigureAwait(false);
 
-            this.refreshableCacheStore.ClearItem(string.Format(CultureInfo.InvariantCulture, BackstagePassUpdatesIdTemplate, xuid));
+            this.refreshableCacheStore.ClearItem(
+                string.Format(CultureInfo.InvariantCulture, backstagePassUpdatesIdTemplate, endpoint, xuid));
         }
 
-        private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(SunriseMasterInventory giftInventory)
+        private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(
+            SunriseMasterInventory giftInventory)
         {
             return new Dictionary<InventoryItemType, IList<MasterInventoryItem>>
             {
@@ -277,19 +336,39 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
         private IDictionary<InventoryItemType, int> BuildCurrencyItems(SunriseMasterInventory giftInventory)
         {
-            var credits = giftInventory.CreditRewards.FirstOrDefault(data => { return data.Description == "Credits"; });
-            var forzathonPoints = giftInventory.CreditRewards.FirstOrDefault(data => { return data.Description == "ForzathonPoints"; });
-            var skillPoints = giftInventory.CreditRewards.FirstOrDefault(data => { return data.Description == "SkillPoints"; });
-            var wheelSpins = giftInventory.CreditRewards.FirstOrDefault(data => { return data.Description == "WheelSpins"; });
-            var superWheelSpins = giftInventory.CreditRewards.FirstOrDefault(data => { return data.Description == "SuperWheelSpins"; });
+            var credits = giftInventory.CreditRewards.FirstOrDefault(
+                data => { return data.Description == "Credits"; });
+            var forzathonPoints = giftInventory.CreditRewards.FirstOrDefault(
+                data => { return data.Description == "ForzathonPoints"; });
+            var skillPoints = giftInventory.CreditRewards.FirstOrDefault(
+                data => { return data.Description == "SkillPoints"; });
+            var wheelSpins = giftInventory.CreditRewards.FirstOrDefault(
+                data => { return data.Description == "WheelSpins"; });
+            var superWheelSpins = giftInventory.CreditRewards.FirstOrDefault(
+                data => { return data.Description == "SuperWheelSpins"; });
 
             return new Dictionary<InventoryItemType, int>
             {
-                { InventoryItemType.Credits, credits != default(MasterInventoryItem) ? credits.Quantity : 0 },
-                { InventoryItemType.ForzathonPoints, forzathonPoints != default(MasterInventoryItem) ? forzathonPoints.Quantity : 0 },
-                { InventoryItemType.SkillPoints, skillPoints != default(MasterInventoryItem) ? skillPoints.Quantity : 0 },
-                { InventoryItemType.WheelSpins, wheelSpins != default(MasterInventoryItem) ? wheelSpins.Quantity : 0 },
-                { InventoryItemType.SuperWheelSpins, superWheelSpins != default(MasterInventoryItem) ? superWheelSpins.Quantity : 0 },
+                {
+                    InventoryItemType.Credits, credits != default(MasterInventoryItem)
+                    ? credits.Quantity : 0
+                },
+                {
+                    InventoryItemType.ForzathonPoints, forzathonPoints != default(MasterInventoryItem)
+                    ? forzathonPoints.Quantity : 0
+                },
+                {
+                    InventoryItemType.SkillPoints, skillPoints != default(MasterInventoryItem)
+                        ? skillPoints.Quantity : 0
+                },
+                {
+                    InventoryItemType.WheelSpins, wheelSpins != default(MasterInventoryItem)
+                        ? wheelSpins.Quantity : 0
+                },
+                {
+                    InventoryItemType.SuperWheelSpins, superWheelSpins != default(MasterInventoryItem)
+                        ? superWheelSpins.Quantity : 0
+                },
             };
         }
 

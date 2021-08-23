@@ -9,9 +9,11 @@ using Newtonsoft.Json.Linq;
 using Turn10.Data.Common;
 using Turn10.Data.Kusto;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Apollo;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Helpers;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Data
@@ -215,14 +217,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<GiftHistory>> GetGiftHistoryAsync(string playerId, string title)
+        public async Task<IList<GiftHistory>> GetGiftHistoryAsync(string playerId, string title, string endpoint)
         {
             playerId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetGiftHistory, playerId, title);
+                // TODO Remove conditional, else and NonProd query definitions once entries without endpoint column have dropped off.
+                string query;
+                if (endpoint == SunriseSupportedEndpoint.Retail || endpoint == ApolloSupportedEndpoint.Retail)
+                {
+                    query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetGiftHistory, playerId, title, endpoint);
+                }
+                else
+                {
+                    query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetGiftHistoryNonProd, playerId, title, endpoint);
+                }
 
                 async Task<IList<GiftHistory>> GiftHistories()
                 {
@@ -239,7 +251,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                                 reader.GetString(1),
                                 reader.GetString(2),
                                 reader.GetDateTime(3),
-                                reader.GetString(4)));
+                                reader.GetString(4),
+                                reader.GetString(5)));
                         }
 
                         reader.Close();
@@ -257,13 +270,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
         }
 
         /// <inheritdoc />
-        public async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string title)
+        public async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string title, string endpoint)
         {
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetBanHistory, xuid, title);
+                string query;
+                // TODO Remove conditional, else and NonProd query definitions once entries without endpoint column have dropped off.
+                if (endpoint == SunriseSupportedEndpoint.Retail || endpoint == ApolloSupportedEndpoint.Retail)
+                {
+
+                    query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetBanHistory, xuid, title, endpoint);
+                }
+                else
+                {
+                    query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetBanHistoryNonProd, xuid, title, endpoint);
+                }
 
                 async Task<IList<LiveOpsBanHistory>> BanHistories()
                 {
@@ -283,7 +307,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                                 reader.GetDateTime(4),
                                 reader.GetString(5),
                                 reader.GetString(6),
-                                reader.GetString(7)));
+                                reader.GetString(7),
+                                reader.GetString(8)));
                         }
 
                         reader.Close();
@@ -296,7 +321,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             }
             catch (Exception ex)
             {
-                throw new NotFoundStewardException($"No ban history found for XUID: {xuid} in Title: {title}.", ex);
+                throw new NotFoundStewardException($"No ban history found for XUID: {xuid} with Title: {title} and Endpoint: {endpoint}.", ex);
             }
         }
 

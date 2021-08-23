@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.SunriseUri},{ConfigurationKeyConstants.SunriseClientVersion},{ConfigurationKeyConstants.SunriseAdminXuid},{ConfigurationKeyConstants.SunriseSandbox},{ConfigurationKeyConstants.SunriseTitleId}");
+            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.SunriseClientVersion},{ConfigurationKeyConstants.SunriseAdminXuid},{ConfigurationKeyConstants.SunriseSandbox},{ConfigurationKeyConstants.SunriseTitleId}");
         }
 
         private sealed class Dependencies

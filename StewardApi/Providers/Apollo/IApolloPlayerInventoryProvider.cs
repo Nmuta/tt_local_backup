@@ -13,31 +13,45 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Gets player inventory.
         /// </summary>
-        Task<ApolloPlayerInventory> GetPlayerInventoryAsync(ulong xuid);
+        Task<ApolloPlayerInventory> GetPlayerInventoryAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Gets player inventory.
         /// </summary>
-        Task<ApolloPlayerInventory> GetPlayerInventoryAsync(int profileId);
+        Task<ApolloPlayerInventory> GetPlayerInventoryAsync(int profileId, string endpoint);
 
         /// <summary>
         ///     Gets player inventory.
         /// </summary>
-        Task<IList<ApolloInventoryProfile>> GetInventoryProfilesAsync(ulong xuid);
+        Task<IList<ApolloInventoryProfile>> GetInventoryProfilesAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Updates player inventory.
         /// </summary>
-        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requesterObjectId, bool useAdminCreditLimit);
+        Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(
+            ulong xuid,
+            ApolloGift gift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint);
 
         /// <summary>
         ///     Updates player inventories.
         /// </summary>
-        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requesterObjectId, bool useAdminCreditLimit);
+        Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(
+            ApolloGroupGift groupGift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint);
 
         /// <summary>
         ///     UpdatesS group inventories.
         /// </summary>
-        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requesterObjectId, bool useAdminCreditLimit);
+        Task<GiftResponse<int>> UpdateGroupInventoriesAsync(
+            int groupId,
+            ApolloGift gift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint);
     }
 }

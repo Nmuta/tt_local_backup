@@ -13,11 +13,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         /// <summary>
         ///     Updates ban history.
         /// </summary>
-        Task UpdateBanHistoryAsync(ulong xuid, string title, string requesterObjectId, ApolloBanParameters banParameters);
+        Task UpdateBanHistoryAsync(
+            ulong xuid,
+            string title,
+            string requesterObjectId,
+            ApolloBanParameters banParameters,
+            string endpoint);
 
         /// <summary>
         ///     Gets ban histories.
         /// </summary>
-        Task<IList<LiveOpsBanHistory>> GetBanHistoriesAsync(ulong xuid, string title);
+        Task<IList<LiveOpsBanHistory>> GetBanHistoriesAsync(
+            ulong xuid,
+            string title,
+            string endpoint);
     }
 }

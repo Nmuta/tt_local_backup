@@ -43,13 +43,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc/>
-        public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(ulong xuid)
+        public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(ulong xuid, string endpoint)
         {
-            xuid.ShouldNotBeNull(nameof(xuid));
+            endpoint.ShouldNotBeNull(nameof(endpoint));
 
             try
             {
-                var response = await this.apolloService.GetAdminUserInventoryAsync(xuid)
+                var response = await this.apolloService.GetAdminUserInventoryAsync(xuid, endpoint)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<ApolloPlayerInventory>(response.summary);
@@ -61,11 +61,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc/>
-        public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(int profileId)
+        public async Task<ApolloPlayerInventory> GetPlayerInventoryAsync(int profileId, string endpoint)
         {
+            endpoint.ShouldNotBeNull(nameof(endpoint));
+
             try
             {
-                var response = await this.apolloService.GetAdminUserInventoryByProfileIdAsync(profileId)
+                var response = await this.apolloService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
                     .ConfigureAwait(false);
 
                 return this.mapper.Map<ApolloPlayerInventory>(response.summary);
@@ -77,13 +79,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc/>
-        public async Task<IList<ApolloInventoryProfile>> GetInventoryProfilesAsync(ulong xuid)
+        public async Task<IList<ApolloInventoryProfile>> GetInventoryProfilesAsync(ulong xuid, string endpoint)
         {
-            xuid.ShouldNotBeNull(nameof(xuid));
+            endpoint.ShouldNotBeNull(nameof(endpoint));
 
             try
             {
-                var response = await this.apolloService.GetAdminUserProfilesAsync(xuid, MaxProfileResults).ConfigureAwait(false);
+                var response = await this.apolloService.GetAdminUserProfilesAsync(xuid, MaxProfileResults, endpoint)
+                    .ConfigureAwait(false);
 
                 return this.mapper.Map<IList<ApolloInventoryProfile>>(response.profiles);
             }
@@ -94,11 +97,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(ulong xuid, ApolloGift gift, string requesterObjectId, bool useAdminCreditLimit)
+        public async Task<GiftResponse<ulong>> UpdatePlayerInventoryAsync(
+            ulong xuid,
+            ApolloGift gift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint)
         {
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            endpoint.ShouldNotBeNull(nameof(endpoint));
 
             var giftResponse = new GiftResponse<ulong>();
             giftResponse.PlayerOrLspGroup = xuid;
@@ -110,16 +119,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
                 var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
-                currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
+                currencyGifts[InventoryItemType.Credits] =
+                    Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.apolloService.AdminSendItemGiftAsync(xuid, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.apolloService.AdminSendItemGiftAsync(
+                        xuid,
+                        inventoryItemType,
+                        itemId,
+                        endpoint).ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requesterObjectId, GiftIdentityAntecedent.Xuid, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(
+                    xuid.ToString(CultureInfo.InvariantCulture),
+                    TitleConstants.ApolloCodeName,
+                    requesterObjectId,
+                    GiftIdentityAntecedent.Xuid,
+                    gift,
+                    endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -130,30 +150,46 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         }
 
         /// <inheritdoc />
-        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(ApolloGroupGift groupGift, string requesterObjectId, bool useAdminCreditLimit)
+        public async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesAsync(
+            ApolloGroupGift groupGift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint)
         {
             groupGift.ShouldNotBeNull(nameof(groupGift));
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             groupGift.Inventory.ShouldNotBeNull(nameof(groupGift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
+            endpoint.ShouldNotBeNull(nameof(endpoint));
 
             var response = new List<GiftResponse<ulong>>();
             var gift = this.mapper.Map<ApolloGift>(groupGift);
             foreach (var xuid in groupGift.Xuids)
             {
-                response.Add(await this.UpdatePlayerInventoryAsync(xuid, gift, requesterObjectId, useAdminCreditLimit).ConfigureAwait(false));
+                response.Add(await this.UpdatePlayerInventoryAsync(
+                    xuid,
+                    gift,
+                    requesterObjectId,
+                    useAdminCreditLimit,
+                    endpoint).ConfigureAwait(false));
             }
 
             return response;
         }
 
         /// <inheritdoc/>
-        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(int groupId, ApolloGift gift, string requesterObjectId, bool useAdminCreditLimit)
+        public async Task<GiftResponse<int>> UpdateGroupInventoriesAsync(
+            int groupId,
+            ApolloGift gift,
+            string requesterObjectId,
+            bool useAdminCreditLimit,
+            string endpoint)
         {
             gift.ShouldNotBeNull(nameof(gift));
             gift.Inventory.ShouldNotBeNull(nameof(gift.Inventory));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             groupId.ShouldBeGreaterThanValue(-1, nameof(groupId));
+            endpoint.ShouldNotBeNull(nameof(endpoint));
 
             var giftResponse = new GiftResponse<int>();
             giftResponse.PlayerOrLspGroup = groupId;
@@ -165,26 +201,42 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 var currencyGifts = this.BuildCurrencyItems(gift.Inventory);
 
                 var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
-                currencyGifts[InventoryItemType.Credits] = Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
+                currencyGifts[InventoryItemType.Credits] =
+                    Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
                 {
-                    await this.apolloService.AdminSendItemGroupGiftAsync(groupId, inventoryItemType, itemId).ConfigureAwait(false);
+                    await this.apolloService.AdminSendItemGroupGiftAsync(
+                        groupId,
+                        inventoryItemType,
+                        itemId,
+                        endpoint).ConfigureAwait(false);
                 }
 
                 await this.SendGifts(ServiceCall, inventoryGifts, currencyGifts).ConfigureAwait(false);
 
-                await this.giftHistoryProvider.UpdateGiftHistoryAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.ApolloCodeName, requesterObjectId, GiftIdentityAntecedent.LspGroupId, gift).ConfigureAwait(false);
+                await this.giftHistoryProvider.UpdateGiftHistoryAsync(
+                    groupId.ToString(CultureInfo.InvariantCulture),
+                    TitleConstants.ApolloCodeName,
+                    requesterObjectId,
+                    GiftIdentityAntecedent.LspGroupId,
+                    gift,
+                    endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                giftResponse.Error = new FailedToSendStewardError($"Failed to send gift to group ID: {groupId}.", ex);
+                giftResponse.Error = new FailedToSendStewardError(
+                    $"Failed to send gift to group ID: {groupId}.",
+                    ex);
             }
 
             return giftResponse;
         }
 
-        private async Task SendGifts(Func<InventoryItemType, int, Task> serviceCall, IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts, IDictionary<InventoryItemType, int> currencyGifts)
+        private async Task SendGifts(
+            Func<InventoryItemType, int, Task> serviceCall,
+            IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts,
+            IDictionary<InventoryItemType, int> currencyGifts)
         {
             foreach (var (key, value) in inventoryGifts)
             {
@@ -207,7 +259,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
                 var playerCurrency = value;
                 while (playerCurrency > 0)
                 {
-                    var creditsToSend = playerCurrency >= AgentCreditSendAmount ? AgentCreditSendAmount : playerCurrency;
+                    var creditsToSend = playerCurrency >= AgentCreditSendAmount
+                        ? AgentCreditSendAmount
+                        : playerCurrency;
                     await serviceCall(key, creditsToSend).ConfigureAwait(false);
 
                     playerCurrency -= creditsToSend;
@@ -215,7 +269,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
             }
         }
 
-        private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(ApolloMasterInventory giftInventory)
+        private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(
+            ApolloMasterInventory giftInventory)
         {
             return new Dictionary<InventoryItemType, IList<MasterInventoryItem>>
             {

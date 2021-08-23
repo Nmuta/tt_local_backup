@@ -30,6 +30,7 @@ import { DirectivesModule } from '@shared/directives/directives.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { SteelheadBanningComponent } from './pages/steelhead/steelhead-banning.component';
 import { WoodstockBanningComponent } from './pages/woodstock/woodstock-banning.component';
+import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 
 /** Routed module for banning users. */
 @NgModule({
@@ -68,6 +69,7 @@ import { WoodstockBanningComponent } from './pages/woodstock/woodstock-banning.c
     JsonDumpModule,
     DirectivesModule,
     MatTabsModule,
+    EndpointSelectionModule,
   ],
 })
 export class UserBanningModule {}

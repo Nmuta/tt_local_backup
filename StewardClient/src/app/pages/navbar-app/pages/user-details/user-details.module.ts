@@ -36,6 +36,7 @@ import { WoodstockUserDetailsComponent } from './woodstock/woodstock-user-detail
 import { MatCardModule } from '@angular/material/card';
 import { BackstagePassHistoryModule } from '@views/backstage-pass-history/backstage-pass-history.module';
 import { PlayerAccountInventoryModule } from '@views/player-account-inventory/player-account-inventory.module';
+import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
 
 /** The feature module for the User Details route. */
 @NgModule({
@@ -80,6 +81,7 @@ import { PlayerAccountInventoryModule } from '@views/player-account-inventory/pl
     ProfileNotesModule,
     BackstagePassHistoryModule,
     PlayerAccountInventoryModule,
+    EndpointSelectionModule,
   ],
 })
 export class UserDetailsModule {}

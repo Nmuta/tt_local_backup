@@ -26,14 +26,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
-            ConfigurationKeyConstants.SteelheadUri,
             ConfigurationKeyConstants.SteelheadClientVersion,
             ConfigurationKeyConstants.SteelheadAdminXuid,
             ConfigurationKeyConstants.SteelheadSandbox,
             ConfigurationKeyConstants.SteelheadTitleId
         };
 
-        private readonly string environmentUri;
         private readonly string clientVersion;
         private readonly ulong adminXuid;
         private readonly string sandbox;
@@ -56,7 +54,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             this.refreshableCacheStore = refreshableCacheStore;
             this.stsClient = stsClient;
 
-            this.environmentUri = configuration[ConfigurationKeyConstants.SteelheadUri];
             this.clientVersion = configuration[ConfigurationKeyConstants.SteelheadClientVersion];
             this.adminXuid = Convert.ToUInt64(configuration[ConfigurationKeyConstants.SteelheadAdminXuid], CultureInfo.InvariantCulture);
             this.sandbox = configuration[ConfigurationKeyConstants.SteelheadSandbox];
@@ -66,251 +63,251 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         }
 
         /// <inheritdoc />
-        public async Task<LiveOpsService.GetLiveOpsUserDataByXuidOutput> GetUserDataByXuidAsync(ulong xuid)
+        public async Task<LiveOpsService.GetLiveOpsUserDataByXuidOutput> GetUserDataByXuidAsync(ulong xuid, string endpoint)
         {
-            var userLookupService = await this.PrepareUserLookupServiceAsync().ConfigureAwait(false);
+            var userLookupService = await this.PrepareUserLookupServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userLookupService.GetLiveOpsUserDataByXuid(xuid).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput> GetUserDataByGamertagAsync(string gamertag)
+        public async Task<LiveOpsService.GetLiveOpsUserDataByGamerTagOutput> GetUserDataByGamertagAsync(string gamertag, string endpoint)
         {
-            var userLookupService = await this.PrepareUserLookupServiceAsync().ConfigureAwait(false);
+            var userLookupService = await this.PrepareUserLookupServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userLookupService.GetLiveOpsUserDataByGamerTag(gamertag).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<UserManagementService.GetUserIdsOutput> GetUserIds(ForzaPlayerLookupParameters[] parameters)
+        public async Task<UserManagementService.GetUserIdsOutput> GetUserIds(ForzaPlayerLookupParameters[] parameters, string endpoint)
         {
-            var userService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetUserIds(parameters.Length, parameters).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults)
+        public async Task<UserManagementService.GetConsolesOutput> GetConsolesAsync(ulong xuid, int maxResults, string endpoint)
         {
-            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetConsoles(xuid, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned)
+        public async Task SetConsoleBanStatusAsync(ulong consoleId, bool isBanned, string endpoint)
         {
-            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await userManagementService.SetConsoleBanStatus(consoleId, isBanned).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(ulong xuid, int startAt, int maxResults)
+        public async Task<UserManagementService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(ulong xuid, int startAt, int maxResults, string endpoint)
         {
-            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetSharedConsoleUsers(xuid, startAt, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(int startIndex, int maxResults)
+        public async Task<UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(int startIndex, int maxResults, string endpoint)
         {
-            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetUserGroups(startIndex, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(ulong xuid, int[] groupFilter, int maxResults)
+        public async Task<UserManagementService.GetUserGroupMembershipsOutput> GetUserGroupMembershipsAsync(ulong xuid, int[] groupFilter, int maxResults, string endpoint)
         {
-            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetUserGroupMemberships(xuid, groupFilter, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task RemoveFromUserGroupsAsync(ulong xuid, int[] groupIds)
+        public async Task RemoveFromUserGroupsAsync(ulong xuid, int[] groupIds, string endpoint)
         {
-            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await userManagementService.RemoveFromUserGroups(xuid, groupIds).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task AddToUserGroupsAsync(ulong xuid, int[] groupIds)
+        public async Task AddToUserGroupsAsync(ulong xuid, int[] groupIds, string endpoint)
         {
-            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await userManagementService.AddToUserGroups(xuid, groupIds).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(ulong xuid)
+        public async Task<UserManagementService.GetIsUnderReviewOutput> GetIsUnderReviewAsync(ulong xuid, string endpoint)
         {
-            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetIsUnderReview(xuid).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task SetIsUnderReviewAsync(ulong xuid, bool isUnderReview)
+        public async Task SetIsUnderReviewAsync(ulong xuid, bool isUnderReview, string endpoint)
         {
-            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await userManagementService.SetIsUnderReview(xuid, isUnderReview).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(ulong[] xuids)
+        public async Task<UserManagementService.GetUserBanSummariesOutput> GetUserBanSummariesAsync(ulong[] xuids, string endpoint)
         {
-            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetUserBanSummaries(xuids, xuids.Length).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(ulong xuid, int startIndex, int maxResults)
+        public async Task<UserManagementService.GetUserBanHistoryOutput> GetUserBanHistoryAsync(ulong xuid, int startIndex, int maxResults, string endpoint)
         {
-            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.GetUserBanHistory(xuid, startIndex, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserManagementService.BanUsersOutput> BanUsersAsync(ForzaUserBanParameters[] banParameters, int xuidCount)
+        public async Task<UserManagementService.BanUsersOutput> BanUsersAsync(ForzaUserBanParameters[] banParameters, int xuidCount, string endpoint)
         {
-            var userManagementService = await this.PrepareUserManagementServiceAsync().ConfigureAwait(false);
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userManagementService.BanUsers(banParameters, xuidCount).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserInventoryService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(ulong xuid)
+        public async Task<UserInventoryService.GetAdminUserInventoryOutput> GetAdminUserInventoryAsync(ulong xuid, string endpoint)
         {
-            var userService = await this.PrepareUserInventoryServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserInventoryServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetAdminUserInventory(xuid).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserInventoryService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileIdAsync(int profileId)
+        public async Task<UserInventoryService.GetAdminUserInventoryByProfileIdOutput> GetAdminUserInventoryByProfileIdAsync(int profileId, string endpoint)
         {
-            var userService = await this.PrepareUserInventoryServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserInventoryServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetAdminUserInventoryByProfileId(profileId).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<UserInventoryService.GetAdminUserProfilesOutput> GetAdminUserProfilesAsync(ulong xuid, uint maxProfiles)
+        public async Task<UserInventoryService.GetAdminUserProfilesOutput> GetAdminUserProfilesAsync(ulong xuid, uint maxProfiles, string endpoint)
         {
-            var userService = await this.PrepareUserInventoryServiceAsync().ConfigureAwait(false);
+            var userService = await this.PrepareUserInventoryServiceAsync(endpoint).ConfigureAwait(false);
 
             return await userService.GetAdminUserProfiles(xuid, maxProfiles).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<GiftingService.AdminGetSupportedGiftTypesOutput> AdminGetSupportedGiftTypesAsync(int maxResults)
+        public async Task<GiftingService.AdminGetSupportedGiftTypesOutput> AdminGetSupportedGiftTypesAsync(int maxResults, string endpoint)
         {
-            var giftingService = await this.PrepareGiftingServiceAsync().ConfigureAwait(false);
+            var giftingService = await this.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
 
             return await giftingService.AdminGetSupportedGiftTypes(maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task AdminSendItemGiftAsync(ulong xuid, InventoryItemType itemType, int itemValue)
+        public async Task AdminSendItemGiftAsync(ulong xuid, InventoryItemType itemType, int itemValue, string endpoint)
         {
-            var giftingService = await this.PrepareGiftingServiceAsync().ConfigureAwait(false);
+            var giftingService = await this.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
 
             await giftingService.AdminSendItemGift(xuid, itemType, itemValue).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue)
+        public async Task AdminSendItemGroupGiftAsync(int groupId, InventoryItemType itemType, int itemValue, string endpoint)
         {
-            var giftingService = await this.PrepareGiftingServiceAsync().ConfigureAwait(false);
+            var giftingService = await this.PrepareGiftingServiceAsync(endpoint).ConfigureAwait(false);
 
             await giftingService.AdminSendItemGroupGift(groupId, itemType, itemValue).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService.LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUserAsync(ulong xuid, int maxResults)
+        public async Task<NotificationsManagementService.LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUserAsync(ulong xuid, int maxResults, string endpoint)
         {
-            var notificationsService = await this.PrepareNotificationsManagementServiceAsync().ConfigureAwait(false);
+            var notificationsService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await notificationsService.LiveOpsRetrieveForUser(xuid, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc)
+        public async Task<NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput> SendMessageNotificationToMultipleUsersAsync(IList<ulong> xuids, string message, DateTime expireTimeUtc, string endpoint)
         {
-            var notificationsService = await this.PrepareNotificationsManagementServiceAsync().ConfigureAwait(false);
+            var notificationsService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await notificationsService.SendMessageNotificationToMultipleUsers(xuids.ToArray(), xuids.Count, message, expireTimeUtc).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task SendGroupMessageNotificationAsync(int groupId, string message, DateTime expireTimeUtc)
+        public async Task SendGroupMessageNotificationAsync(int groupId, string message, DateTime expireTimeUtc, string endpoint)
         {
-            var notificationsService = await this.PrepareNotificationsManagementServiceAsync().ConfigureAwait(false);
+            var notificationsService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(ForzaAuctionFilters filters)
+        public async Task<AuctionManagementService.SearchAuctionHouseOutput> GetPlayerAuctions(ForzaAuctionFilters filters, string endpoint)
         {
-            var auctionService = await this.PrepareAuctionManagementServiceAsync().ConfigureAwait(false);
+            var auctionService = await this.PrepareAuctionManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await auctionService.SearchAuctionHouse(filters).ConfigureAwait(false);
         }
 
-        private async Task<UserManagementService> PrepareUserManagementServiceAsync()
+        private async Task<UserManagementService> PrepareUserManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new UserManagementService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+            return new UserManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
-        private async Task<LiveOpsService> PrepareUserLookupServiceAsync()
+        private async Task<LiveOpsService> PrepareUserLookupServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new LiveOpsService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+            return new LiveOpsService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
-        private async Task<UserInventoryService> PrepareUserInventoryServiceAsync()
+        private async Task<UserInventoryService> PrepareUserInventoryServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new UserInventoryService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+            return new UserInventoryService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
-        private async Task<GiftingService> PrepareGiftingServiceAsync()
+        private async Task<GiftingService> PrepareGiftingServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new GiftingService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+            return new GiftingService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
-        private async Task<NotificationsManagementService> PrepareNotificationsManagementServiceAsync()
+        private async Task<NotificationsManagementService> PrepareNotificationsManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new NotificationsManagementService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+            return new NotificationsManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
-        private async Task<AuctionManagementService> PrepareAuctionManagementServiceAsync()
+        private async Task<AuctionManagementService> PrepareAuctionManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new AuctionManagementService(this.forzaClient, this.environmentUri, this.adminXuid, authToken, false);
+            return new AuctionManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         private async Task<string> GetAuthTokenAsync()

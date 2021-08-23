@@ -54,9 +54,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
             var startIndex = Fixture.Create<int>();
             var maxResults = Fixture.Create<int>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<LspGroup>> Action() => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
+            async Task<IList<LspGroup>> Action() => await provider.GetLspGroupsAsync(startIndex, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<List<LspGroup>>();
@@ -70,9 +71,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
             var startIndex = -1;
             var maxResults = Fixture.Create<int>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
+            Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
@@ -86,9 +88,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var provider = new Dependencies().Build();
             var startIndex = Fixture.Create<int>();
             var maxResults = -1;
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(false);
+            Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
@@ -101,9 +104,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var provider = new Dependencies().Build();
             var maxResults = Fixture.Create<int>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<AuctionBlocklistEntry>> Action() => await provider.GetAuctionBlocklistAsync(maxResults).ConfigureAwait(false);
+            async Task<IList<AuctionBlocklistEntry>> Action() => await provider.GetAuctionBlocklistAsync(maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<List<AuctionBlocklistEntry>>();
@@ -116,9 +120,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var provider = new Dependencies().Build();
             var maxResults = -1;
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task<IList<AuctionBlocklistEntry>>> action = async () => await provider.GetAuctionBlocklistAsync(maxResults).ConfigureAwait(false);
+            Func<Task<IList<AuctionBlocklistEntry>>> action = async () => await provider.GetAuctionBlocklistAsync(maxResults, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
@@ -131,11 +136,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var provider = new Dependencies().Build();
             var blocklistEntries = Fixture.Create<IList<AuctionBlocklistEntry>>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.AddAuctionBlocklistEntriesAsync(blocklistEntries).ConfigureAwait(false)
+                async () => await provider.AddAuctionBlocklistEntriesAsync(blocklistEntries, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -151,11 +157,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.AddAuctionBlocklistEntriesAsync(null).ConfigureAwait(false),
+                async () => await provider.AddAuctionBlocklistEntriesAsync(null, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -172,11 +179,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var provider = new Dependencies().Build();
             var carIds = Fixture.Create<IList<int>>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.DeleteAuctionBlocklistEntriesAsync(carIds).ConfigureAwait(false)
+                async () => await provider.DeleteAuctionBlocklistEntriesAsync(carIds, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -192,11 +200,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.DeleteAuctionBlocklistEntriesAsync(null).ConfigureAwait(false),
+                async () => await provider.DeleteAuctionBlocklistEntriesAsync(null, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -210,8 +219,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             public Dependencies()
             {
-                this.SunriseService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
-                this.SunriseService.GetAuctionBlockListAsync(Arg.Any<int>()).Returns(Fixture.Create<AuctionManagementService.GetAuctionBlocklistOutput>());
+                this.SunriseService.GetUserGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<UserManagementService.GetUserGroupsOutput>());
+                this.SunriseService.GetAuctionBlockListAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<AuctionManagementService.GetAuctionBlocklistOutput>());
                 this.Mapper.Map<IList<LspGroup>>(Arg.Any<ForzaUserGroup[]>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.Mapper.Map<IList<AuctionBlocklistEntry>>(Arg.Any<ForzaAuctionBlocklistEntry[]>()).Returns(Fixture.Create<IList<AuctionBlocklistEntry>>());
             }

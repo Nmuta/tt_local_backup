@@ -87,9 +87,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var title = Fixture.Create<string>();
             var requesterObjectId = Fixture.Create<string>();
             var banParameters = Fixture.Create<ApolloBanParameters>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> act = async () => await provider.UpdateBanHistoryAsync(xuid, title, requesterObjectId, banParameters).ConfigureAwait(false);
+            Func<Task> act = async () => await provider.UpdateBanHistoryAsync(xuid, title, requesterObjectId, banParameters, endpoint).ConfigureAwait(false);
 
             // Assert.
             act.Should().NotThrow();
@@ -104,13 +105,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var xuid = Fixture.Create<ulong>();
             var requesterObjectId = Fixture.Create<string>();
             var banParameters = Fixture.Create<ApolloBanParameters>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdateBanHistoryAsync(xuid, null, requesterObjectId, banParameters).ConfigureAwait(false),
-                async () => await provider.UpdateBanHistoryAsync(xuid, TestConstants.Empty, requesterObjectId, banParameters).ConfigureAwait(false),
-                async () => await provider.UpdateBanHistoryAsync(xuid, TestConstants.WhiteSpace, requesterObjectId, banParameters).ConfigureAwait(false)
+                async () => await provider.UpdateBanHistoryAsync(xuid, null, requesterObjectId, banParameters, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateBanHistoryAsync(xuid, TestConstants.Empty, requesterObjectId, banParameters, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateBanHistoryAsync(xuid, TestConstants.WhiteSpace, requesterObjectId, banParameters, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -129,13 +131,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var xuid = Fixture.Create<ulong>();
             var title = Fixture.Create<string>();
             var banParameters = Fixture.Create<ApolloBanParameters>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.UpdateBanHistoryAsync(xuid, title, null, banParameters).ConfigureAwait(false),
-                async () => await provider.UpdateBanHistoryAsync(xuid, title, TestConstants.Empty, banParameters).ConfigureAwait(false),
-                async () => await provider.UpdateBanHistoryAsync(xuid, title, TestConstants.WhiteSpace, banParameters).ConfigureAwait(false)
+                async () => await provider.UpdateBanHistoryAsync(xuid, title, null, banParameters, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateBanHistoryAsync(xuid, title, TestConstants.Empty, banParameters, endpoint).ConfigureAwait(false),
+                async () => await provider.UpdateBanHistoryAsync(xuid, title, TestConstants.WhiteSpace, banParameters, endpoint).ConfigureAwait(false)
             };
 
             // Assert.
@@ -154,9 +157,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var xuid = Fixture.Create<ulong>();
             var title = Fixture.Create<string>();
             var requesterObjectId = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            Func<Task> action = async () => await provider.UpdateBanHistoryAsync(xuid, title, requesterObjectId, null).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.UpdateBanHistoryAsync(xuid, title, requesterObjectId, null, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "banParameters"));
@@ -170,9 +174,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
             var title = Fixture.Create<string>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<LiveOpsBanHistory>> Action() => await provider.GetBanHistoriesAsync(xuid, title).ConfigureAwait(false);
+            async Task<IList<LiveOpsBanHistory>> Action() => await provider.GetBanHistoriesAsync(xuid, title, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<List<LiveOpsBanHistory>>();
@@ -185,13 +190,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
+            var endpoint = Fixture.Create<string>();
 
             // Act.
             var actions = new List<Func<Task>>
             {
-                async () => await provider.GetBanHistoriesAsync(xuid, null).ConfigureAwait(false),
-                async () => await provider.GetBanHistoriesAsync(xuid, TestConstants.Empty).ConfigureAwait(false),
-                async () => await provider.GetBanHistoriesAsync(xuid, TestConstants.WhiteSpace).ConfigureAwait(false)
+                async () => await provider.GetBanHistoriesAsync(xuid, null, endpoint).ConfigureAwait(false),
+                async () => await provider.GetBanHistoriesAsync(xuid, TestConstants.Empty, endpoint).ConfigureAwait(false),
+                async () => await provider.GetBanHistoriesAsync(xuid, TestConstants.WhiteSpace, endpoint).ConfigureAwait(false)
             };
 
             // Assert.

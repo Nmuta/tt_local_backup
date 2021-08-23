@@ -11,18 +11,20 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         /// <summary>
         ///     Initializes a new instance of the <see cref="GiftHistory"/> class.
         /// </summary>
-        public GiftHistory(string playerId, string title, string requesterObjectId, DateTime giftSendDateUtc, string giftInventory)
+        public GiftHistory(string playerId, string title, string requesterObjectId, DateTime giftSendDateUtc, string giftInventory, string endpoint)
         {
             playerId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(playerId));
             title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             giftInventory.ShouldNotBeNullEmptyOrWhiteSpace(nameof(giftInventory));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             this.PlayerId = playerId;
             this.Title = title;
             this.RequesterObjectId = requesterObjectId;
             this.GiftSendDateUtc = giftSendDateUtc;
             this.GiftInventory = giftInventory;
+            this.Endpoint = endpoint;
         }
 
         /// <summary>
@@ -49,5 +51,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         ///     Gets or sets gift inventory.
         /// </summary>
         public string GiftInventory { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the LSP endpoint.
+        /// </summary>
+        public string Endpoint { get; set; }
     }
 }

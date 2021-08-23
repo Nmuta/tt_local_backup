@@ -12,6 +12,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
         /// <summary>
         ///     Gets LSP groups.
         /// </summary>
-        Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults);
+        Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults, string endpoint);
     }
 }

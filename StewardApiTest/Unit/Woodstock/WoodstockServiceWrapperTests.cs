@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.WoodstockUri},{ConfigurationKeyConstants.WoodstockClientVersion},{ConfigurationKeyConstants.WoodstockAdminXuid},{ConfigurationKeyConstants.WoodstockSandbox},{ConfigurationKeyConstants.WoodstockTitleId}");
+            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.WoodstockClientVersion},{ConfigurationKeyConstants.WoodstockAdminXuid},{ConfigurationKeyConstants.WoodstockSandbox},{ConfigurationKeyConstants.WoodstockTitleId}");
         }
 
         private sealed class Dependencies

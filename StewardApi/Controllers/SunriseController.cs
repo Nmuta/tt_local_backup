@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
@@ -39,12 +40,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         UserRole.SupportAgent,
         UserRole.SupportAgentNew,
         UserRole.CommunityManager)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "This can't be avoided.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Microsoft.Maintainability",
+        "CA1506:AvoidExcessiveClassCoupling",
+        Justification = "This can't be avoided.")]
     public sealed class SunriseController : ControllerBase
     {
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 100;
         private const KustoGameDbSupportedTitle Title = KustoGameDbSupportedTitle.Sunrise;
+        private const string DefaultEndpointKey = "Sunrise|Retail";
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {
@@ -162,13 +167,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpPost("players/identities")]
         [SwaggerResponse(200, type: typeof(List<IdentityResultAlpha>))]
         [ResponseCache(Duration = CacheSeconds.PlayerIdentity, Location = ResponseCacheLocation.Any)]
-        public async Task<IActionResult> GetPlayerIdentity([FromBody] IList<IdentityQueryAlpha> identityQueries)
+        public async Task<IActionResult> GetPlayerIdentity(
+            [FromBody] IList<IdentityQueryAlpha> identityQueries)
         {
             identityQueries.ShouldNotBeNull(nameof(identityQueries));
 
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             string MakeKey(IdentityQueryAlpha identityQuery)
             {
-                return $"sunrise:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
+                return $"sunrise|{endpoint}:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
             }
 
             var cachedResults = identityQueries.Select(v => this.memoryCache.Get<IdentityResultAlpha>(MakeKey(v)));
@@ -177,7 +184,9 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 return this.Ok(cachedResults.ToList());
             }
 
-            var results = await this.sunrisePlayerDetailsProvider.GetPlayerIdentitiesAsync(identityQueries.ToList()).ConfigureAwait(true);
+            var results = await this.sunrisePlayerDetailsProvider.GetPlayerIdentitiesAsync(
+                identityQueries.ToList(),
+                endpoint).ConfigureAwait(true);
 
             foreach (var result in results)
             {
@@ -203,11 +212,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/gamertag({gamertag})/details")]
         [SwaggerResponse(200, type: typeof(SunrisePlayerDetails))]
-        public async Task<IActionResult> GetPlayerDetails(string gamertag)
+        public async Task<IActionResult> GetPlayerDetails(
+            string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(gamertag, endpoint)
+                .ConfigureAwait(true);
             if (playerDetails == null)
             {
                 throw new NotFoundStewardException($"Player {gamertag} was not found.");
@@ -221,9 +233,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/details")]
         [SwaggerResponse(200, type: typeof(SunrisePlayerDetails))]
-        public async Task<IActionResult> GetPlayerDetails(ulong xuid)
+        public async Task<IActionResult> GetPlayerDetails(
+            ulong xuid)
         {
-            var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(xuid).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(xuid, endpoint)
+                .ConfigureAwait(true);
             if (playerDetails == null)
             {
                 throw new NotFoundStewardException($"Player {xuid} was not found.");
@@ -237,11 +252,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/consoleDetails")]
         [SwaggerResponse(200, type: typeof(List<ConsoleDetails>))]
-        public async Task<IActionResult> GetConsoles(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetConsoles(
+            ulong xuid,
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.sunrisePlayerDetailsProvider.GetConsolesAsync(xuid, maxResults).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var result = await this.sunrisePlayerDetailsProvider.GetConsolesAsync(xuid, maxResults, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -251,12 +270,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/sharedConsoleUsers")]
         [SwaggerResponse(200, type: typeof(List<SharedConsoleUser>))]
-        public async Task<IActionResult> GetSharedConsoleUsers(ulong xuid, [FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetSharedConsoleUsers(
+            ulong xuid,
+            [FromQuery] int startIndex = DefaultStartIndex,
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.sunrisePlayerDetailsProvider.GetSharedConsoleUsersAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var result = await this.sunrisePlayerDetailsProvider.GetSharedConsoleUsersAsync(
+                xuid,
+                startIndex,
+                maxResults,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -266,14 +293,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
-        public async Task<IActionResult> GetUserFlags(ulong xuid)
+        public async Task<IActionResult> GetUserFlags(
+            ulong xuid)
         {
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var result = await this.sunrisePlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
+            var result = await this.sunrisePlayerDetailsProvider.GetUserFlagsAsync(xuid, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -287,10 +318,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgent)]
         [HttpPut("player/xuid({xuid})/userFlags")]
         [SwaggerResponse(200, type: typeof(SunriseUserFlags))]
-        public async Task<IActionResult> SetUserFlags(ulong xuid, [FromBody] SunriseUserFlagsInput userFlags)
+        public async Task<IActionResult> SetUserFlags(
+            ulong xuid,
+            [FromBody] SunriseUserFlagsInput userFlags)
         {
             userFlags.ShouldNotBeNull(nameof(userFlags));
 
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             this.userFlagsRequestValidator.Validate(userFlags, this.ModelState);
             if (!this.ModelState.IsValid)
             {
@@ -298,15 +332,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException(result);
             }
 
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
             var validatedFlags = this.mapper.Map<SunriseUserFlags>(userFlags);
-            await this.sunrisePlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags).ConfigureAwait(true);
+            await this.sunrisePlayerDetailsProvider.SetUserFlagsAsync(xuid, validatedFlags, endpoint)
+                .ConfigureAwait(true);
 
-            var results = await this.sunrisePlayerDetailsProvider.GetUserFlagsAsync(xuid).ConfigureAwait(true);
+            var results = await this.sunrisePlayerDetailsProvider.GetUserFlagsAsync(xuid, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -316,9 +353,12 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/profileSummary")]
         [SwaggerResponse(200, type: typeof(ProfileSummary))]
-        public async Task<IActionResult> GetProfileSummary(ulong xuid)
+        public async Task<IActionResult> GetProfileSummary(
+            ulong xuid)
         {
-            var result = await this.sunrisePlayerDetailsProvider.GetProfileSummaryAsync(xuid).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var result = await this.sunrisePlayerDetailsProvider.GetProfileSummaryAsync(xuid, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -328,14 +368,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/profileNotes")]
         [SwaggerResponse(200, type: typeof(IList<SunriseProfileNote>))]
-        public async Task<IActionResult> GetProfileNotesAsync(ulong xuid)
+        public async Task<IActionResult> GetProfileNotesAsync(
+            ulong xuid)
         {
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var result = await this.sunrisePlayerDetailsProvider.GetProfileNotesAsync(xuid).ConfigureAwait(true);
+            var result = await this.sunrisePlayerDetailsProvider.GetProfileNotesAsync(xuid, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -348,11 +392,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin)]
         [HttpPost("player/xuid({xuid})/profileNotes")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> AddProfileNoteAsync(ulong xuid, [FromBody] SunriseProfileNote profileNote)
+        public async Task<IActionResult> AddProfileNoteAsync(
+            ulong xuid,
+            [FromBody] SunriseProfileNote profileNote)
         {
             profileNote.ShouldNotBeNull(nameof(profileNote));
 
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
@@ -360,7 +408,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var userClaims = this.User.UserClaims();
             profileNote.Author = userClaims.EmailAddress;
 
-            await this.sunrisePlayerDetailsProvider.AddProfileNoteAsync(xuid, profileNote).ConfigureAwait(true);
+            await this.sunrisePlayerDetailsProvider.AddProfileNoteAsync(xuid, profileNote, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -370,12 +419,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/creditUpdates")]
         [SwaggerResponse(200, type: typeof(List<CreditUpdate>))]
-        public async Task<IActionResult> GetCreditUpdates(ulong xuid, [FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetCreditUpdates(
+            ulong xuid,
+            [FromQuery] int startIndex = DefaultStartIndex,
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.sunrisePlayerDetailsProvider.GetCreditUpdatesAsync(xuid, startIndex, maxResults).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var result = await this.sunrisePlayerDetailsProvider.GetCreditUpdatesAsync(
+                xuid,
+                startIndex,
+                maxResults,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -395,6 +452,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             status.ShouldNotBeNullEmptyOrWhiteSpace(nameof(status));
             sort.ShouldNotBeNullEmptyOrWhiteSpace(nameof(sort));
 
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             if (!Enum.TryParse(status, out AuctionStatus statusEnum))
             {
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionStatus)} provided: {status}");
@@ -405,7 +463,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(AuctionSort)} provided: {sort}");
             }
 
-            var getAuctions = this.sunrisePlayerDetailsProvider.GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum));
+            var getAuctions = this.sunrisePlayerDetailsProvider.GetPlayerAuctionsAsync(
+                xuid,
+                new AuctionFilters(carId, makeId, statusEnum, sortEnum),
+                endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getAuctions, getKustoCars).ConfigureAwait(true);
@@ -441,6 +502,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             accessLevel.ShouldNotBeNullEmptyOrWhiteSpace(nameof(accessLevel));
             orderBy.ShouldNotBeNullEmptyOrWhiteSpace(nameof(orderBy));
 
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             if (!Enum.TryParse(ugcType, out UGCType typeEnum))
             {
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCType)} provided: {ugcType}");
@@ -456,7 +518,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCOrderBy)} provided: {orderBy}");
             }
 
-            var getUgcItems = this.storefrontProvider.SearchUGCItems(typeEnum, new UGCFilters(xuid?.Value ?? ulong.MaxValue, shareCode, carId, makeId, keyword, accessLevelEnum, orderByEnum));
+            var getUgcItems = this.storefrontProvider.SearchUGCItems(
+                typeEnum,
+                new UGCFilters(xuid?.Value ?? ulong.MaxValue, shareCode, carId, makeId, keyword, accessLevelEnum, orderByEnum),
+                endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
@@ -478,14 +543,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/livery/{id}")]
         [SwaggerResponse(200, type: typeof(UGCItem))]
-        public async Task<IActionResult> GetUGCLivery(string id)
+        public async Task<IActionResult> GetUGCLivery(
+            string id)
         {
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             if (!Guid.TryParse(id, out var idGuid))
             {
                 throw new InvalidArgumentsStewardException($"Livery id provided is not a valid Guid: {id}");
             }
 
-            var getLivery = this.storefrontProvider.GetUGCLivery(idGuid);
+            var getLivery = this.storefrontProvider.GetUGCLivery(idGuid, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getLivery, getKustoCars).ConfigureAwait(true);
@@ -504,14 +571,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("storefront/photo/{id}")]
         [SwaggerResponse(200, type: typeof(UGCItem))]
-        public async Task<IActionResult> GetUGCPhoto(string id)
+        public async Task<IActionResult> GetUGCPhoto(
+            string id)
         {
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             if (!Guid.TryParse(id, out var idGuid))
             {
                 throw new InvalidArgumentsStewardException($"Photo id provided is not a valid Guid: {id}");
             }
 
-            var getPhoto = this.storefrontProvider.GetUGCPhoto(idGuid);
+            var getPhoto = this.storefrontProvider.GetUGCPhoto(idGuid, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getPhoto, getKustoCars).ConfigureAwait(true);
@@ -530,8 +599,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("storefront/itemId({itemId})/featuredStatus")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> SetUGCFeaturedStatus(string itemId, [FromBody] UGCFeaturedStatus status)
+        public async Task<IActionResult> SetUGCFeaturedStatus(
+            string itemId,
+            [FromBody] UGCFeaturedStatus status)
         {
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             if (!Guid.TryParse(itemId, out var itemIdGuid))
             {
                 throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {itemId}");
@@ -547,7 +619,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 status.Expiry.Value.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.Expiry));
             }
 
-            await this.storefrontProvider.SetUGCFeaturedStatus(itemIdGuid, status.IsFeatured, status.Expiry).ConfigureAwait(true);
+            await this.storefrontProvider.SetUGCFeaturedStatus(
+                itemIdGuid,
+                status.IsFeatured,
+                status.Expiry,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -557,11 +633,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("auctions/blocklist")]
         [SwaggerResponse(200, type: typeof(IList<AuctionBlocklistEntry>))]
-        public async Task<IActionResult> GetAuctionBlocklist([FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetAuctionBlocklist(
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0);
 
-            var getBlocklist = this.sunriseServiceManagementProvider.GetAuctionBlocklistAsync(maxResults);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var getBlocklist = this.sunriseServiceManagementProvider.GetAuctionBlocklistAsync(maxResults, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getBlocklist, getKustoCars).ConfigureAwait(true);
@@ -583,9 +661,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("auctions/blocklist")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> AddEntriesToAuctionBlocklist([FromBody] IList<AuctionBlocklistEntry> entries)
+        public async Task<IActionResult> AddEntriesToAuctionBlocklist(
+            [FromBody] IList<AuctionBlocklistEntry> entries)
         {
-            await this.sunriseServiceManagementProvider.AddAuctionBlocklistEntriesAsync(entries).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            await this.sunriseServiceManagementProvider.AddAuctionBlocklistEntriesAsync(entries, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -595,9 +675,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpDelete("auctions/blocklist/carId({carId})")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> RemoveEntryFromAuctionBlocklist(int carId)
+        public async Task<IActionResult> RemoveEntryFromAuctionBlocklist(
+            int carId)
         {
-            await this.sunriseServiceManagementProvider.DeleteAuctionBlocklistEntriesAsync(new List<int> { carId }).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            await this.sunriseServiceManagementProvider.DeleteAuctionBlocklistEntriesAsync(new List<int> { carId }, endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -607,14 +689,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/backstagePassUpdates")]
         [SwaggerResponse(200, type: typeof(List<BackstagePassUpdate>))]
-        public async Task<IActionResult> GetBackstagePassUpdates(ulong xuid)
+        public async Task<IActionResult> GetBackstagePassUpdates(
+            ulong xuid)
         {
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No account inventory found for XUID: {xuid}");
             }
 
-            var result = await this.sunrisePlayerDetailsProvider.GetBackstagePassUpdatesAsync(xuid).ConfigureAwait(true);
+            var result = await this.sunrisePlayerDetailsProvider.GetBackstagePassUpdatesAsync(xuid, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -638,6 +724,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             foreach (var banParam in banInput)
             {
                 this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
@@ -651,7 +738,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var banParameters = this.mapper.Map<IList<SunriseBanParameters>>(banInput);
-            var jobId = await this.AddJobIdToHeaderAsync(banParameters.ToJson(), requesterObjectId, $"Sunrise Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(
+                banParameters.ToJson(),
+                requesterObjectId,
+                $"Sunrise Banning: {banParameters.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -659,7 +749,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var results = await this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(true);
+                    var results = await this.sunrisePlayerDetailsProvider.BanUsersAsync(
+                        banParameters,
+                        requesterObjectId,
+                        endpoint).ConfigureAwait(true);
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus(results);
                     await this.jobTracker
                         .UpdateJobAsync(
@@ -671,7 +764,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
+                        .ConfigureAwait(true);
                 }
             }
 
@@ -702,6 +796,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
             banInput.ShouldNotBeNull(nameof(banInput));
 
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             foreach (var banParam in banInput)
             {
                 this.banParametersRequestValidator.ValidateIds(banParam, this.ModelState);
@@ -715,7 +810,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var banParameters = this.mapper.Map<IList<SunriseBanParameters>>(banInput);
-            var results = await this.sunrisePlayerDetailsProvider.BanUsersAsync(banParameters, requesterObjectId).ConfigureAwait(true);
+            var results = await this.sunrisePlayerDetailsProvider.BanUsersAsync(
+                banParameters,
+                requesterObjectId,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(results);
         }
@@ -725,11 +823,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("players/banSummaries")]
         [SwaggerResponse(200, type: typeof(IList<BanSummary>))]
-        public async Task<IActionResult> GetBanSummaries([FromBody] IList<ulong> xuids)
+        public async Task<IActionResult> GetBanSummaries(
+            [FromBody] IList<ulong> xuids)
         {
             xuids.ShouldNotBeNull(nameof(xuids));
 
-            var result = await this.sunrisePlayerDetailsProvider.GetUserBanSummariesAsync(xuids).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var result = await this.sunrisePlayerDetailsProvider.GetUserBanSummariesAsync(xuids, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -739,9 +840,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
-        public async Task<IActionResult> GetBanHistory(ulong xuid)
+        public async Task<IActionResult> GetBanHistory(
+            ulong xuid)
         {
-            var result = await this.GetBanHistoryAsync(xuid).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var result = await this.GetBanHistoryAsync(xuid, endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -751,18 +854,21 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/gamertag({gamertag})/banHistory")]
         [SwaggerResponse(200, type: typeof(IList<LiveOpsBanHistory>))]
-        public async Task<IActionResult> GetBanHistory(string gamertag)
+        public async Task<IActionResult> GetBanHistory(
+            string gamertag)
         {
             gamertag.ShouldNotBeNullEmptyOrWhiteSpace(nameof(gamertag));
 
-            var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(gamertag).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var playerDetails = await this.sunrisePlayerDetailsProvider.GetPlayerDetailsAsync(gamertag, endpoint)
+                .ConfigureAwait(true);
 
             if (playerDetails == null)
             {
                 throw new NotFoundStewardException($"Player {gamertag} was not found.");
             }
 
-            var result = await this.GetBanHistoryAsync(playerDetails.Xuid).ConfigureAwait(true);
+            var result = await this.GetBanHistoryAsync(playerDetails.Xuid, endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -777,9 +883,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentNew)]
         [HttpPut("console/consoleId({consoleId})/consoleBanStatus/isBanned({isBanned})")]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> SetConsoleBanStatus(ulong consoleId, bool isBanned)
+        public async Task<IActionResult> SetConsoleBanStatus(
+            ulong consoleId,
+            bool isBanned)
         {
-            await this.sunrisePlayerDetailsProvider.SetConsoleBanStatusAsync(consoleId, isBanned).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            await this.sunrisePlayerDetailsProvider.SetConsoleBanStatusAsync(consoleId, isBanned, endpoint)
+                .ConfigureAwait(true);
 
             return this.Ok();
         }
@@ -789,14 +899,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/inventory")]
         [SwaggerResponse(200, type: typeof(SunrisePlayerInventory))]
-        public async Task<IActionResult> GetPlayerInventory(ulong xuid)
+        public async Task<IActionResult> GetPlayerInventory(
+            ulong xuid)
         {
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
             }
 
-            var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(xuid);
+            var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(xuid, endpoint);
             var getMasterInventory = this.RetrieveMasterInventoryList();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
@@ -809,7 +922,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No inventory found for XUID: {xuid}.");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(
+                playerInventory,
+                masterInventory,
+                this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -818,9 +934,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/profileId({profileId})/inventory")]
         [SwaggerResponse(200, type: typeof(SunrisePlayerInventory))]
-        public async Task<IActionResult> GetPlayerInventoryByProfileId(int profileId)
+        public async Task<IActionResult> GetPlayerInventoryByProfileId(
+            int profileId)
         {
-            var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(profileId);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var getPlayerInventory = this.sunrisePlayerInventoryProvider.GetPlayerInventoryAsync(
+                profileId,
+                endpoint);
             var getMasterInventory = this.RetrieveMasterInventoryList();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
@@ -833,7 +953,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new NotFoundStewardException($"No inventory found for Profile ID: {profileId}.");
             }
 
-            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(playerInventory, masterInventory, this.loggingService);
+            playerInventory = StewardMasterItemHelpers.SetItemDescriptions(
+                playerInventory,
+                masterInventory,
+                this.loggingService);
             return this.Ok(playerInventory);
         }
 
@@ -843,9 +966,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("player/xuid({xuid})/inventoryProfiles")]
         [SwaggerResponse(200, type: typeof(IList<SunriseInventoryProfile>))]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> GetPlayerInventoryProfiles(ulong xuid)
+        public async Task<IActionResult> GetPlayerInventoryProfiles(
+            ulong xuid)
         {
-            var inventoryProfileSummary = await this.sunrisePlayerInventoryProvider.GetInventoryProfilesAsync(xuid).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var inventoryProfileSummary = await this.sunrisePlayerInventoryProvider.GetInventoryProfilesAsync(
+                xuid,
+                endpoint).ConfigureAwait(true);
 
             if (inventoryProfileSummary == null)
             {
@@ -861,14 +988,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [HttpGet("player/xuid({xuid})/accountInventory")]
         [SwaggerResponse(200, type: typeof(SunriseAccountInventory))]
         [SwaggerResponse(200)]
-        public async Task<IActionResult> GetAccountInventory(ulong xuid)
+        public async Task<IActionResult> GetAccountInventory(
+            ulong xuid)
         {
-            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+
+            if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
             {
                 throw new NotFoundStewardException($"No account inventory found for XUID: {xuid}");
             }
 
-            var accountInventory = await this.sunrisePlayerInventoryProvider.GetAccountInventoryAsync(xuid).ConfigureAwait(true);
+            var accountInventory = await this.sunrisePlayerInventoryProvider.GetAccountInventoryAsync(
+                xuid,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(accountInventory);
         }
@@ -878,12 +1011,18 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("groups")]
         [SwaggerResponse(200, type: typeof(IList<LspGroup>))]
-        public async Task<IActionResult> GetGroups([FromQuery] int startIndex = DefaultStartIndex, [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetGroups(
+            [FromQuery] int startIndex = DefaultStartIndex,
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var result = await this.sunriseServiceManagementProvider.GetLspGroupsAsync(startIndex, maxResults).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var result = await this.sunriseServiceManagementProvider.GetLspGroupsAsync(
+                startIndex,
+                maxResults,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
@@ -893,7 +1032,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players/useBackgroundProcessing")]
         [SwaggerResponse(202, type: typeof(BackgroundJob))]
-        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing([FromBody] SunriseGroupGift groupGift)
+        public async Task<IActionResult> UpdateGroupInventoriesUseBackgroundProcessing(
+            [FromBody] SunriseGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -905,6 +1045,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
             var stringBuilder = new StringBuilder();
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
             this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
             this.groupGiftRequestValidator.Validate(groupGift, this.ModelState);
@@ -917,7 +1058,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                    .ConfigureAwait(true))
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -934,7 +1076,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var jobId = await this.AddJobIdToHeaderAsync(groupGift.ToJson(), requesterObjectId, $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
+            var jobId = await this.AddJobIdToHeaderAsync(
+                groupGift.ToJson(),
+                requesterObjectId,
+                $"Sunrise Gifting: {groupGift.Xuids.Count} recipients.").ConfigureAwait(true);
 
             async Task BackgroundProcessing(CancellationToken cancellationToken)
             {
@@ -942,15 +1087,22 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 // Do not throw.
                 try
                 {
-                    var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-                    var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+                    var allowedToExceedCreditLimit =
+                        userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+                    var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(
+                        groupGift,
+                        requesterObjectId,
+                        allowedToExceedCreditLimit,
+                        endpoint).ConfigureAwait(true);
 
                     var jobStatus = BackgroundJobExtensions.GetBackgroundJobStatus<ulong>(response);
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, jobStatus, response)
+                        .ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
-                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed).ConfigureAwait(true);
+                    await this.jobTracker.UpdateJobAsync(jobId, requesterObjectId, BackgroundJobStatus.Failed)
+                        .ConfigureAwait(true);
                 }
             }
 
@@ -966,7 +1118,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpPost("gifting/players")]
         [SwaggerResponse(200, type: typeof(IList<GiftResponse<ulong>>))]
-        public async Task<IActionResult> UpdateGroupInventories([FromBody] SunriseGroupGift groupGift)
+        public async Task<IActionResult> UpdateGroupInventories(
+            [FromBody] SunriseGroupGift groupGift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
@@ -977,6 +1130,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             groupGift.Xuids.ShouldNotBeNull(nameof(groupGift.Xuids));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             var stringBuilder = new StringBuilder();
 
             this.groupGiftRequestValidator.ValidateIds(groupGift, this.ModelState);
@@ -990,7 +1144,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             foreach (var xuid in groupGift.Xuids)
             {
-                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                    .ConfigureAwait(true))
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -1007,8 +1162,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(groupGift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+            var allowedToExceedCreditLimit =
+                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var response = await this.sunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(
+                groupGift,
+                requesterObjectId,
+                allowedToExceedCreditLimit,
+                endpoint).ConfigureAwait(true);
             return this.Ok(response);
         }
 
@@ -1020,14 +1180,16 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin)]
         [HttpPost("gifting/groupId({groupId})")]
         [SwaggerResponse(200, type: typeof(GiftResponse<int>))]
-        public async Task<IActionResult> UpdateGroupInventories(int groupId, [FromBody] SunriseGift gift)
+        public async Task<IActionResult> UpdateGroupInventories(
+            int groupId,
+            [FromBody] SunriseGift gift)
         {
             var userClaims = this.User.UserClaims();
             var requesterObjectId = userClaims.ObjectId;
-
             gift.ShouldNotBeNull(nameof(gift));
             requesterObjectId.ShouldNotBeNullEmptyOrWhiteSpace(nameof(requesterObjectId));
 
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             this.giftRequestValidator.Validate(gift, this.ModelState);
 
             if (!this.ModelState.IsValid)
@@ -1043,8 +1205,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid items found. {invalidItems}");
             }
 
-            var allowedToExceedCreditLimit = userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
-            var response = await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(groupId, gift, requesterObjectId, allowedToExceedCreditLimit).ConfigureAwait(true);
+            var allowedToExceedCreditLimit =
+                userClaims.Role == UserRole.SupportAgentAdmin || userClaims.Role == UserRole.LiveOpsAdmin;
+            var response = await this.sunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(
+                groupId,
+                gift,
+                requesterObjectId,
+                allowedToExceedCreditLimit,
+                endpoint).ConfigureAwait(true);
             return this.Ok(response);
         }
 
@@ -1053,9 +1221,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<SunriseGiftHistory>))]
-        public async Task<IActionResult> GetGiftHistoriesAsync(ulong xuid)
+        public async Task<IActionResult> GetGiftHistoriesAsync(
+            ulong xuid)
         {
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(xuid.ToString(CultureInfo.InvariantCulture), TitleConstants.SunriseCodeName, GiftIdentityAntecedent.Xuid).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
+                xuid.ToString(CultureInfo.InvariantCulture),
+                TitleConstants.SunriseCodeName,
+                GiftIdentityAntecedent.Xuid,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }
@@ -1065,9 +1239,15 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("group/groupId({groupId})/giftHistory")]
         [SwaggerResponse(200, type: typeof(IList<SunriseGiftHistory>))]
-        public async Task<IActionResult> GetGiftHistoriesAsync(int groupId)
+        public async Task<IActionResult> GetGiftHistoriesAsync(
+            int groupId)
         {
-            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(groupId.ToString(CultureInfo.InvariantCulture), TitleConstants.SunriseCodeName, GiftIdentityAntecedent.LspGroupId).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var giftHistory = await this.giftHistoryProvider.GetGiftHistoriesAsync(
+                groupId.ToString(CultureInfo.InvariantCulture),
+                TitleConstants.SunriseCodeName,
+                GiftIdentityAntecedent.LspGroupId,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(giftHistory);
         }
@@ -1077,11 +1257,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("player/xuid({xuid})/notifications")]
         [SwaggerResponse(200, type: typeof(IList<Notification>))]
-        public async Task<IActionResult> GetPlayerNotifications(ulong xuid, [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetPlayerNotifications(
+            ulong xuid,
+            [FromQuery] int maxResults = DefaultMaxResults)
         {
             maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
 
-            var notifications = await this.sunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(xuid, maxResults).ConfigureAwait(true);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var notifications = await this.sunrisePlayerDetailsProvider.GetPlayerNotificationsAsync(
+                xuid,
+                maxResults,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(notifications);
         }
@@ -1095,18 +1281,23 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(IList<MessageSendResult<ulong>>))]
-        public async Task<IActionResult> SendPlayerNotifications([FromBody] BulkCommunityMessage communityMessage)
+        public async Task<IActionResult> SendPlayerNotifications(
+            [FromBody] BulkCommunityMessage communityMessage)
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(communityMessage.Duration));
+            communityMessage.Duration.ShouldBeOverMinimumDuration(
+                TimeSpan.FromDays(1),
+                nameof(communityMessage.Duration));
 
             var stringBuilder = new StringBuilder();
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
 
             foreach (var xuid in communityMessage.Xuids)
             {
-                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid).ConfigureAwait(true))
+                if (!await this.sunrisePlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                    .ConfigureAwait(true))
                 {
                     stringBuilder.Append($"{xuid} ");
                 }
@@ -1118,7 +1309,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var expireTime = DateTime.UtcNow.Add(communityMessage.Duration);
-            var notifications = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(communityMessage.Xuids, communityMessage.Message, expireTime).ConfigureAwait(true);
+            var notifications = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(
+                communityMessage.Xuids,
+                communityMessage.Message,
+                expireTime,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(notifications);
         }
@@ -1132,45 +1327,62 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             UserRole.SupportAgentAdmin,
             UserRole.CommunityManager)]
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
-        public async Task<IActionResult> SendGroupNotifications(int groupId, [FromBody] CommunityMessage communityMessage)
+        public async Task<IActionResult> SendGroupNotifications(
+            int groupId,
+            [FromBody] CommunityMessage communityMessage)
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
             communityMessage.Message.ShouldBeUnderMaxLength(512, nameof(communityMessage.Message));
-            communityMessage.Duration.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(communityMessage.Duration));
+            communityMessage.Duration.ShouldBeOverMinimumDuration(
+                TimeSpan.FromDays(1),
+                nameof(communityMessage.Duration));
 
-            var groups = await this.sunriseServiceManagementProvider.GetLspGroupsAsync(DefaultStartIndex, DefaultMaxResults).ConfigureAwait(false);
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var groups = await this.sunriseServiceManagementProvider.GetLspGroupsAsync(
+                DefaultStartIndex,
+                DefaultMaxResults,
+                endpoint).ConfigureAwait(false);
             if (!groups.Any(x => x.Id == groupId))
             {
                 throw new InvalidArgumentsStewardException($"Group ID: {groupId} could not be found.");
             }
 
             var expireTime = DateTime.Now.Add(communityMessage.Duration);
-            var result = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(groupId, communityMessage.Message, expireTime).ConfigureAwait(true);
+            var result = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(groupId,
+                communityMessage.Message,
+                expireTime,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
         }
 
         private async Task<string> AddJobIdToHeaderAsync(string requestBody, string userObjectId, string reason)
         {
-            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason).ConfigureAwait(true);
+            var jobId = await this.jobTracker.CreateNewJobAsync(requestBody, userObjectId, reason)
+                .ConfigureAwait(true);
 
             this.Response.Headers.Add("jobId", jobId);
 
             return jobId;
         }
 
-        private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid)
+        private async Task<IList<LiveOpsBanHistory>> GetBanHistoryAsync(ulong xuid, string endpoint)
         {
-            var getServicesBanHistory = this.sunrisePlayerDetailsProvider.GetUserBanHistoryAsync(xuid);
-            var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(xuid, Title.ToString());
+            var getServicesBanHistory = this.sunrisePlayerDetailsProvider.GetUserBanHistoryAsync(xuid, endpoint);
+            var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(
+                xuid,
+                Title.ToString(),
+                endpoint);
 
             await Task.WhenAll(getServicesBanHistory, getLiveOpsBanHistory).ConfigureAwait(true);
 
             var servicesBanHistory = await getServicesBanHistory.ConfigureAwait(true);
             var liveOpsBanHistory = await getLiveOpsBanHistory.ConfigureAwait(true);
 
-            var banHistories = liveOpsBanHistory.Union(servicesBanHistory, new LiveOpsBanHistoryComparer()).ToList();
+            var banHistories = liveOpsBanHistory.Union(
+                servicesBanHistory,
+                new LiveOpsBanHistoryComparer()).ToList();
 
             foreach (var banHistory in banHistories)
             {
@@ -1233,28 +1445,55 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             foreach (var carHorn in gift.CarHorns)
             {
                 var validItem = masterInventoryItem.CarHorns.Any(data => { return data.Id == carHorn.Id; });
-                error += validItem ? string.Empty : $"CarHorn: {carHorn.Id.ToString(CultureInfo.InvariantCulture)}, ";
+                error += validItem
+                    ? string.Empty : $"CarHorn: {carHorn.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var vanityItem in gift.VanityItems)
             {
                 var validItem = masterInventoryItem.VanityItems.Any(data => { return data.Id == vanityItem.Id; });
-                error += validItem ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
+                error += validItem
+                    ? string.Empty : $"VanityItem: {vanityItem.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var emote in gift.Emotes)
             {
                 var validItem = masterInventoryItem.Emotes.Any(data => { return data.Id == emote.Id; });
-                error += validItem ? string.Empty : $"Emote: {emote.Id.ToString(CultureInfo.InvariantCulture)}, ";
+                error += validItem
+                    ? string.Empty : $"Emote: {emote.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             foreach (var quickChatLine in gift.QuickChatLines)
             {
                 var validItem = masterInventoryItem.QuickChatLines.Any(data => { return data.Id == quickChatLine.Id; });
-                error += validItem ? string.Empty : $"QuickChatLine: {quickChatLine.Id.ToString(CultureInfo.InvariantCulture)}, ";
+                error += validItem
+                    ? string.Empty : $"QuickChatLine: {quickChatLine.Id.ToString(CultureInfo.InvariantCulture)}, ";
             }
 
             return error;
+        }
+
+        private string GetSunriseEndpoint(IHeaderDictionary headers)
+        {
+            if (!headers.TryGetValue("endpointKey", out var headerValue))
+            {
+                headerValue = DefaultEndpointKey;
+            }
+
+            var endpointKeyValue = headerValue.ToString();
+            endpointKeyValue.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpointKeyValue));
+
+            var splitValue = endpointKeyValue.Split('|');
+            var title = splitValue.ElementAtOrDefault(0);
+            var key = splitValue.ElementAtOrDefault(1);
+
+            if (title != TitleConstants.SunriseCodeName)
+            {
+                throw new BadHeaderStewardException(
+                    $"Endpoint key designated for title: {title}, but expected {TitleConstants.SunriseCodeName}.");
+            }
+
+            return SunriseSupportedEndpoint.GetEndpoint(key);
         }
     }
 }

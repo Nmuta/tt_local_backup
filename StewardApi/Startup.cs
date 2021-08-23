@@ -166,6 +166,7 @@ namespace Turn10.LiveOps.StewardApi
                     }
                 });
 
+                options.OperationFilter<AddRequiredHeaderParameter>();
                 options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
                 options.OperationFilter<SessionIdHeaderParameterOperationFilter>();
             });

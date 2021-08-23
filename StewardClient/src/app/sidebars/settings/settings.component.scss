@@ -15,6 +15,15 @@ mat-slide-toggle {
   display: block;
 }
 
+span.endpoint-selectors {
+  margin-top: $gap-large;
+  display: block;
+}
+
 mat-form-field.set-active-role {
   margin-top: $gap-large;
+}
+
+.endpoint-selection-warning {
+  display: block;
 }

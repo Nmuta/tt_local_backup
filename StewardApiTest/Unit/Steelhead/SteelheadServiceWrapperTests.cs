@@ -99,7 +99,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             Action act = () => dependencies.Build();
 
             // Assert.
-            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.SteelheadUri},{ConfigurationKeyConstants.SteelheadClientVersion},{ConfigurationKeyConstants.SteelheadAdminXuid},{ConfigurationKeyConstants.SteelheadSandbox},{ConfigurationKeyConstants.SteelheadTitleId}");
+            act.Should().Throw<ArgumentException>().WithMessage($"{TestConstants.ArgumentExceptionMissingSettingsMessagePartial}{ConfigurationKeyConstants.SteelheadClientVersion},{ConfigurationKeyConstants.SteelheadAdminXuid},{ConfigurationKeyConstants.SteelheadSandbox},{ConfigurationKeyConstants.SteelheadTitleId}");
         }
 
         private sealed class Dependencies
