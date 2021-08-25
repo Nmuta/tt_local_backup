@@ -19,4 +19,10 @@ export class SharedNavbarTools {
     title: 'Steward User History',
     path: 'steward-user-history',
   };
+
+  /** The bulk ban history tool page. */
+  public static readonly BulkBanHistoryPage: RouteParams = {
+    title: 'Bulk Ban History',
+    path: 'bulk-ban-history',
+  };
 }

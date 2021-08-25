@@ -62,6 +62,7 @@ export const navbarToolList: RouterLinkPath[] = [
   createNavbarPath(NavbarTools.GiftHistoryPage),
   createNavbarPath(NavbarTools.KustoPage),
   createNavbarPath(NavbarTools.ServiceManagementPage),
+  createNavbarPath(SharedNavbarTools.BulkBanHistoryPage),
 ];
 
 /** The list of tools to display in the navbar. */

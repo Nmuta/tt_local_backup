@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Forza.WebServices.FM7.Generated;
 using Turn10.LiveOps.StewardApi.Contracts.Apollo;
@@ -45,7 +46,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(des => des.IsUnderReview, opt => opt.MapFrom(src => src.IsUserUnderReview))
                 .ForMember(des => des.AgeGroup, opt => opt.MapFrom(src => src.UserAgeGroup));
             this.CreateMap<AdminForzaProfile, ApolloInventoryProfile>().ReverseMap();
-            this.CreateMap<ForzaUserBanSummary, BanSummary>();
+            this.CreateMap<ForzaUserBanSummary, BanSummary>()
+                .ForMember(dest => dest.BannedAreas, opt => opt.MapFrom(src =>
+                    src.BannedAreas.Select(banArea => Enum.GetName(typeof(FeatureAreas), banArea))))
+                .ReverseMap();
             this.CreateMap<ApolloBanParametersInput, ApolloBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));

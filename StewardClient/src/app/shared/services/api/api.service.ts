@@ -26,9 +26,15 @@ export class ApiService {
   }
 
   /** Sends a POST request. */
-  public postRequest$<T>(url: string, object: any, params?: HttpParams): Observable<T> {
+  public postRequest$<T>(
+    url: string,
+    object: any,
+    params?: HttpParams,
+    headers?: HttpHeaders,
+  ): Observable<T> {
     const apiUrl = `${environment.stewardApiUrl}/api/${url}`;
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    headers = headers || new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
 
     const post = this.http.post<T>(apiUrl, object, {
       headers,

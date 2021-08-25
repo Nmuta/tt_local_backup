@@ -40,6 +40,13 @@ const routes: Routes = [
         path: CommunityAppTools.UGCPage.path,
         loadChildren: () => import('./pages/ugc/ugc.module').then(m => m.UGCModule),
       },
+      {
+        path: SharedNavbarTools.BulkBanHistoryPage.path,
+        loadChildren: () =>
+          import('../../shared/pages/bulk-ban-history/bulk-ban-history.module').then(
+            m => m.BulkBanHistoryModule,
+          ),
+      },
       ...sidebarRoutes,
       {
         path: '**',

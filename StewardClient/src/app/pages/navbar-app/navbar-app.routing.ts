@@ -73,6 +73,13 @@ const routes: Routes = [
             m => m.CommunityMessagingModule,
           ),
       },
+      {
+        path: SharedNavbarTools.BulkBanHistoryPage.path,
+        loadChildren: () =>
+          import('../../shared/pages/bulk-ban-history/bulk-ban-history.module').then(
+            m => m.BulkBanHistoryModule,
+          ),
+      },
       ...sidebarRoutes,
       {
         path: '**',

@@ -7,6 +7,9 @@ $app-primary: mat-palette($mat-indigo);
 /// use for "secondary action" buttons that (1) are not the default, and (2) perform irrevocable actions
 $app-accent: mat-palette($mat-light-blue, A200, A100, A400);
 
+/// use as a success color
+$app-success: mat-palette($mat-green);
+
 /// use for "error state" warnings
 $app-warn: mat-palette($mat-red);
 

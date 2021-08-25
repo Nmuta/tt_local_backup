@@ -54,7 +54,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LiveOpsContracts.ForzaUserBanResult, BanResult>()
                 .ForMember(dest => dest.Error, opt => opt.MapFrom(
                     src => src.Success ? null : new ServicesFailureStewardError($"LSP failed to ban player with XUID: {src.Xuid}")));
-            this.CreateMap<LiveOpsContracts.ForzaUserBanSummary, BanSummary>();
+            this.CreateMap<LiveOpsContracts.ForzaUserBanSummary, BanSummary>()
+                .ForMember(dest => dest.BannedAreas, opt => opt.MapFrom(src =>
+                    src.BannedAreas.Select(banArea => Enum.GetName(typeof(FeatureAreas), banArea))))
+                .ReverseMap();
             this.CreateMap<SunriseBanParametersInput, SunriseBanParameters>()
                 .ForMember(dest => dest.StartTimeUtc, opt => opt.MapFrom(src => src.StartTimeUtc ?? DateTime.UtcNow))
                 .ForMember(dest => dest.ExpireTimeUtc, opt => opt.MapFrom(src => (src.StartTimeUtc ?? DateTime.UtcNow) + src.Duration));

@@ -29,4 +29,5 @@ export const communityAppToolList: RouterLinkPath[] = [
   createCommunityNavbarPath(SharedNavbarTools.MessagingPage),
   createCommunityNavbarPath(SharedNavbarTools.GiftingPage),
   createCommunityNavbarPath(CommunityAppTools.UGCPage),
+  createCommunityNavbarPath(SharedNavbarTools.BulkBanHistoryPage),
 ];

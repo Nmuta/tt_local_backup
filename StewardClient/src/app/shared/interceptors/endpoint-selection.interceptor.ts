@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Store } from '@ngxs/store';
 import { AppState } from '@shared/state/app-state';
-import { keys } from 'lodash';
 import { Observable } from 'rxjs';
 
 /** Intercepts requests to Steward and attaches endpoint header based on user's endpoint selection. */
@@ -28,7 +27,7 @@ export class EndpointSelectionInterceptor implements HttpInterceptor {
   /** Called when we attempt to handle the request. */
   public handle(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     /** Allow passthrough if the endpointKey header is already set. */
-    if (keys(request.headers).includes(this.headerName)) {
+    if (request.headers.has(this.headerName)) {
       return next.handle(request);
     }
 

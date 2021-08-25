@@ -307,6 +307,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                 var banSummaryResults = this.mapper.Map<IList<BanSummary>>(result.banSummaries);
 
+                banSummaryResults = banSummaryResults.Select(data =>
+                {
+                    data.UserExists = !string.IsNullOrWhiteSpace(data.Gamertag);
+                    return data;
+                }).ToList();
+
                 return banSummaryResults;
             }
             catch (Exception ex)

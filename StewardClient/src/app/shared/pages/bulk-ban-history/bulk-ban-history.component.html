@@ -1,0 +1,167 @@
+<mat-card>
+  <mat-card-header>
+    <mat-icon mat-card-avatar svgIcon="steward-notifications"></mat-icon>
+    <mat-card-title> Bulk Ban History </mat-card-title>
+    <mat-card-subtitle>View & Export Lists</mat-card-subtitle>
+  </mat-card-header>
+  <ng-container *ngIf="banHistoryList.data?.length > 0; else inputState">
+    <h3>Results Overview</h3>
+    <ul>
+      <li>Total players: {{ banHistoryList.data?.length }}</li>
+      <li>Players in review: {{ playersInReview }}</li>
+      <li>Players removed: {{ removedPlayers?.length }}</li>
+      <li>Environments Searched: {{ totalEnvironmentsSearched }}</li>
+      <li>
+        NOTE: Players are auto-approved if they are found in at least one environment and with zero
+        bans.
+      </li>
+    </ul>
+
+    <div class="user-list-actions">
+      <button
+        [downloadCsv]="currentUserListCsvData"
+        filname="BulkBanHistory_CurrentPlayers"
+        mat-stroked-button
+        color="primary"
+        matTooltip="Downloads current user list"
+      >
+        Download Current List
+      </button>
+      <button
+        [downloadCsv]="approvedUserListCsvData"
+        filname="BulkBanHistory_ApprovedPlayers"
+        mat-stroked-button
+        color="primary"
+        matTooltip="Downloads approved-only user list"
+      >
+        Download Approved Players List
+      </button>
+      <button
+        [downloadCsv]="removedUserListCsvData"
+        filname="BulkBanHistory_RemovedPlayers"
+        mat-stroked-button
+        color="primary"
+        matTooltip="Downloads removed user list"
+      >
+        Download Removed Players List
+      </button>
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="reset()"
+        matTooltip="Resets the UI back to XUID list input (ALL PROGRESS WILL BE LOST)"
+      >
+        Reset (Careful)
+      </button>
+    </div>
+
+    <table mat-table [dataSource]="banHistoryList">
+      <ng-container matColumnDef="player">
+        <th mat-header-cell *matHeaderCellDef>Player Info</th>
+        <td mat-cell *matCellDef="let element">
+          <ul>
+            <li>{{ element.xuid }}</li>
+            <li><b>Gamertag:</b> {{ element.gamertag || 'NOT_FOUND' }}</li>
+            <li><b>Status:</b> {{ element.approved ? 'Approved' : 'In Review' }}</li>
+            <li><b>Total Bans:</b> {{ element.totalBans }}</li>
+          </ul>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="banDetails">
+        <th mat-header-cell *matHeaderCellDef>Ban Details</th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngFor="let item of element.summaries" class="ban-history-environment">
+            <a
+              [class.has-bans]="item?.banCount > 0"
+              [class.not-found]="!item.userExists"
+              [routerLink]="item?.userDetailsRouterLink"
+              [relativeTo]="toolsRoute"
+              [queryParams]="{ lookupType: 'xuid', lookupName: element.xuid }"
+              target="_blank"
+              [matTooltip]="'Opens ' + item?.title + ' player details in a new tab'"
+            >
+              <h4>
+                {{ item?.title }} {{ item?.environment }}
+                <mat-icon>open_in_new</mat-icon>
+              </h4>
+            </a>
+            <ul>
+              <li *ngIf="!item.userExists">
+                {{ !!item?.error ? 'Lookup failed' : 'Player not found' }}
+              </li>
+              <li *ngIf="item.userExists"><b>Ban Count:</b> {{ item?.banCount }}</li>
+              <ng-container *ngIf="item?.banCount > 0">
+                <li><b>Banned Areas:</b> {{ item?.bannedAreas }}</li>
+                <li><b>Last Ban Details:</b></li>
+                <li [class.is-ban-active]="item?.lastBanDescription?.isActive">
+                  {{ item?.lastBanDescription?.startTimeUtc | utcDate: 'short' }} -
+                  {{ item?.lastBanDescription?.expireTimeUtc | utcDate: 'short' }}
+                  <mat-icon
+                    *ngIf="item?.lastBanDescription?.isActive"
+                    [matTooltip]="
+                      'Player is currently banned in ' + item?.title + ' ' + item?.environment
+                    "
+                  >
+                    warning
+                  </mat-icon>
+                </li>
+                <li>{{ item?.lastBanDescription?.reason }}</li>
+                <li *ngIf="item?.lastBanDescription?.countOfTimesExtended > 0">
+                  Extended {{ item?.lastBanDescription?.countOfTimesExtended }} times for
+                  {{ item?.lastBanDescription?.lastExtendedReason }}. Expires:
+                  {{ item?.lastBanDescription?.lastExtendedTimeUtc | utcDate: 'short' }}
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <button
+            *ngIf="!element.approved"
+            mat-raised-button
+            color="accent"
+            (click)="approvePlayer(i)"
+            matTooltip="Approves the player in the list"
+          >
+            Approve player
+          </button>
+          <button
+            mat-raised-button
+            color="warn"
+            (click)="removePlayer(i)"
+            matTooltip="Removes player from the list"
+          >
+            Remove player
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['player', 'banDetails', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['player', 'banDetails', 'actions']"></tr>
+    </table>
+  </ng-container>
+  <div [hidden]="banHistoryList.data?.length <= 0">
+    <mat-paginator
+      [hidden]="true"
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 25, 50]"
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
+</mat-card>
+
+<ng-template #inputState>
+  <ng-container *ngIf="!getBanSummaries?.isActive; else waitingState">
+    <bulk-ban-history-input (selection)="lookupXuids($event)"></bulk-ban-history-input>
+  </ng-container>
+</ng-template>
+
+<ng-template #waitingState>
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</ng-template>

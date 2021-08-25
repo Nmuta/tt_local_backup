@@ -1,0 +1,26 @@
+@import '/src/styles/mixins';
+
+:host {
+  @include flex-column-fill();
+}
+
+form {
+  mat-form-field.env-selection {
+    margin-right: $gap-small;
+  }
+
+  mat-form-field.xuids {
+    max-width: 500px;
+    width: 100%;
+    display: block;
+
+    textarea {
+      min-height: 200px;
+      max-height: 500px;
+    }
+  }
+
+  .lookup-xuids-form button {
+    display: block;
+  }
+}

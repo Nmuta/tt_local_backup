@@ -15,6 +15,7 @@ export enum NavbarTool {
   StewardUserHistory = 'steward-user-history',
   Messaging = 'messaging',
   Salus = 'salus',
+  BulkBanHistory = 'bulk-ban-history',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -54,6 +55,7 @@ export enum AppIcon {
   Danger = 'gpp_maybe',
   AdminInfo = 'policy',
   Admin = 'shield',
+  BulkBanHistory = 'manage_search',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -266,6 +268,24 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'External UGC Moderation Tool',
     shortDescription: [`External UGC Moderation Tool`],
     externalUrl: 'https://gmx-dev.azureedge.net/#/dashboard',
+  },
+  {
+    icon: AppIcon.BulkBanHistory,
+    tool: NavbarTool.BulkBanHistory,
+    accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
+    title: 'Bulk Ban History',
+    subtitle: 'A tool to lookup player ban summaries in multiple environments',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription:
+      'Review, approve, and remove players from a list based on their ban summaries in different environments',
+    shortDescription: [
+      `Review, approve, and remove players from a list based on their ban summaries in different environments`,
+    ],
+    loadChildren: () =>
+      import('../../app/shared/pages/bulk-ban-history/bulk-ban-history.module').then(
+        m => m.BulkBanHistoryModule,
+      ),
   },
 ];
 

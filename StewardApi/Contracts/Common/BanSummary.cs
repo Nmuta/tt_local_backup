@@ -31,5 +31,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets the last ban's description.
         /// </summary>
         public BanDescription LastBanDescription { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the user exists.
+        /// </summary>
+        public bool UserExists { get; set; }
     }
 }

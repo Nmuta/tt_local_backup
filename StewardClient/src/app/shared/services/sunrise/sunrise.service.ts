@@ -33,7 +33,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { chain } from 'lodash';
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJob } from '@models/background-job';
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import {
   BulkCommunityMessage,
   CommunityMessage,
@@ -48,6 +48,8 @@ import { UGCFilters, UGCType } from '@models/ugc-filters';
 import { PlayerUGCItem } from '@models/player-ugc-item';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
+import { SunriseEndpointKey } from '@models/enums';
+import { overrideSunriseEndpointKey } from '@helpers/override-endpoint-key';
 
 /** Handles calls to Sunrise API routes. */
 @Injectable({
@@ -164,10 +166,20 @@ export class SunriseService {
   }
 
   /** Gets ban summaries by a list of XUIDs. */
-  public getBanSummariesByXuids$(xuids: BigNumber[]): Observable<SunriseBanSummary[]> {
+  public getBanSummariesByXuids$(
+    xuids: BigNumber[],
+    endpointKeyOverride?: SunriseEndpointKey,
+  ): Observable<SunriseBanSummary[]> {
+    let headers = new HttpHeaders();
+    if (!!endpointKeyOverride) {
+      headers = overrideSunriseEndpointKey(endpointKeyOverride, headers);
+    }
+
     return this.apiService.postRequest$<SunriseBanSummary[]>(
       `${this.basePath}/players/banSummaries`,
       xuids,
+      undefined,
+      headers,
     );
   }
 
