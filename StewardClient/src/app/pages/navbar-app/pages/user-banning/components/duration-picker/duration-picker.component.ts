@@ -14,7 +14,7 @@ interface DurationOption {
 }
 
 export const DurationPickerOptions: DurationOption[] = [
-  { duration: Duration.fromObject({ week: 1 }), humanized: '1 week' },
+  { duration: Duration.fromObject({ days: 7 }), humanized: '1 week' },
   { duration: Duration.fromObject({ month: 1 }), humanized: '1 month' },
   { duration: Duration.fromObject({ years: 20 }), humanized: '20 years' },
 ];
