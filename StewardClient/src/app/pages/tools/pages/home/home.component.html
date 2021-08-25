@@ -22,10 +22,12 @@
         <mat-card-content>
           <p *ngFor="let paragraph of item.shortDescription">{{ paragraph }}</p>
           <div *ngIf="!hasAccess[item.tool]" class="no-access-warning">
-            <span><mat-icon>gpp_bad</mat-icon>Allowed Roles<mat-icon>gpp_bad</mat-icon></span>
-            <ul>
-              <li *ngFor="let role of item.accessList">{{ role | humanize }}</li>
-            </ul>
+            <ng-container *ngIf="isLiveOpsAdmin; else noAccessTemplate">
+              <span><mat-icon>gpp_bad</mat-icon>Allowed Roles<mat-icon>gpp_bad</mat-icon></span>
+              <ul>
+                <li *ngFor="let role of item.accessList">{{ role | humanize }}</li>
+              </ul>
+            </ng-container>
           </div>
         </mat-card-content>
         <mat-card-actions align="end">
@@ -53,3 +55,9 @@
     </div>
   </div>
 </main>
+
+<ng-template #noAccessTemplate>
+  <span
+    ><mat-icon>gpp_bad</mat-icon>Role <b>{{ userRole }}</b> does not have access.</span
+  >
+</ng-template>

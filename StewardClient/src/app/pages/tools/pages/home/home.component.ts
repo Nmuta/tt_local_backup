@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { environment, HomeTileInfo, NavbarTool } from '@environments/environment';
+import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
 import { SetNavbarTools } from '@shared/state/user-settings/user-settings.actions';
@@ -24,6 +25,8 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
 
   public isEnabled: Partial<Record<NavbarTool, number>> = {};
   public hasAccess: Partial<Record<NavbarTool, boolean>> = {};
+  public isLiveOpsAdmin: boolean = false;
+  public userRole: UserRole;
 
   public parentRoute: string = '/app/tools/';
 
@@ -36,6 +39,11 @@ export class ToolsAppHomeComponent extends BaseComponent implements OnInit {
   /** Initialization hook. */
   public ngOnInit(): void {
     this.profile$.pipe(takeUntil(this.onDestroy$)).subscribe(profile => {
+      this.userRole = profile.role;
+      // The state replaces profile.role with profile.liveOpsAdminSecondaryRole to trick the app.
+      // We must check for liveOpsAdminSecondaryRole instead of role to know if the user is a LiveOpsAdmin.
+      this.isLiveOpsAdmin =
+        !!profile.liveOpsAdminSecondaryRole && profile.liveOpsAdminSecondaryRole === profile.role;
       this.hasAccess = chain(this.possibleNavbarItems)
         .map(v => [v.tool, v.accessList.includes(profile?.role)])
         .fromPairs()
