@@ -30,7 +30,7 @@ export class EndpointSelectionComponent extends BaseComponent implements OnInit 
   /** Initialization hook. */
   ngOnInit(): void {
     this.settings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
-      const stateKey = `${camelCase(this.titleCodeName)?.toLowerCase()}EndpointKey`;
+      const stateKey = `${camelCase(this.titleCodeName)}EndpointKey`;
 
       let displayName = latest[stateKey];
       displayName ??= '';
