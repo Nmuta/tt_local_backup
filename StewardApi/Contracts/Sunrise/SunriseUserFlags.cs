@@ -26,6 +26,11 @@
         public bool IsEarlyAccess { get; set; }
 
         /// <summary>
+        ///     Gets or sets a value indicating whether the user needs statistics repaired.
+        /// </summary>
+        public bool NeedsStatisticsRepaired { get; set; }
+
+        /// <summary>
         ///     Gets or sets a value indicating whether the user is under review.
         /// </summary>
         public bool IsUnderReview { get; set; }

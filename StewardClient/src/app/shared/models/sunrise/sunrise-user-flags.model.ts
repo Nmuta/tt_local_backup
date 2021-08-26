@@ -4,5 +4,6 @@ export interface SunriseUserFlags {
   isUltimateVip: boolean;
   isTurn10Employee: boolean;
   isEarlyAccess: boolean;
+  needsStatisticsRepaired: boolean;
   isUnderReview: boolean;
 }

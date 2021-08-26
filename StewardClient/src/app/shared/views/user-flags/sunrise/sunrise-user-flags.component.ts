@@ -21,6 +21,7 @@ export class SunriseUserFlagsComponent extends UserFlagsBaseComponent<SunriseUse
     isUltimateVip: new FormControl(false),
     isTurn10Employee: new FormControl(false),
     isEarlyAccess: new FormControl(false),
+    needsStatisticsRepaired: new FormControl(false),
     isUnderReview: new FormControl(false),
   };
 
@@ -42,6 +43,7 @@ export class SunriseUserFlagsComponent extends UserFlagsBaseComponent<SunriseUse
       isUltimateVip: this.formControls.isUltimateVip.value,
       isTurn10Employee: this.formControls.isTurn10Employee.value,
       isEarlyAccess: this.formControls.isEarlyAccess.value,
+      needsStatisticsRepaired: this.formControls.needsStatisticsRepaired.value,
       isUnderReview: this.formControls.isUnderReview.value,
     } as SunriseUserFlags);
   }

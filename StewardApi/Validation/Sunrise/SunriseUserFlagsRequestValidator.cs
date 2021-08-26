@@ -36,6 +36,11 @@ namespace Turn10.LiveOps.StewardApi.Validation.Sunrise
             {
                 modelState.AddModelError("UserFlags.IsUltimateVip", $"{nameof(model.IsUltimateVip)} must not be null.");
             }
+
+            if (!model.NeedsStatisticsRepaired.HasValue)
+            {
+                modelState.AddModelError("UserFlags.NeedsStatisticsRepaired", $"{nameof(model.NeedsStatisticsRepaired)} must not be null.");
+            }
         }
 
         /// <inheritdoc />

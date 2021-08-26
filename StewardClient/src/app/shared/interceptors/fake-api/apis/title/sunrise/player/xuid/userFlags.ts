@@ -29,6 +29,7 @@ export class SunrisePlayerXuidUserFlagsFakeApi extends FakeApiBase {
       isTurn10Employee: false,
       isUnderReview: false,
       isEarlyAccess: false,
+      needsStatisticsRepaired: false,
     };
   }
 }

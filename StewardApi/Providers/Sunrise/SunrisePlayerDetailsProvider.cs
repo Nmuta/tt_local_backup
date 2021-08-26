@@ -27,6 +27,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         private const int UltimateVipUserGroupId = 2;
         private const int T10EmployeeUserGroupId = 4;
         private const int WhitelistUserGroupId = 6;
+        private const int RepairStatsId = 91;
         private const string CreditUpdatesIdTemplate = "Sunrise|{0}|CreditUpdates|{1}|{2}|{3}";
         private const string BackstagePassUpdatesIdTemplate = "Sunrise|{0}|BackstagePassUpdates|{1}";
 
@@ -255,6 +256,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                     IsUltimateVip = userGroupResults.userGroups.Any(r => r.Id == UltimateVipUserGroupId),
                     IsTurn10Employee = userGroupResults.userGroups.Any(r => r.Id == T10EmployeeUserGroupId),
                     IsEarlyAccess = userGroupResults.userGroups.Any(r => r.Id == WhitelistUserGroupId),
+                    NeedsStatisticsRepaired = userGroupResults.userGroups.Any(r => r.Id == RepairStatsId),
                     IsUnderReview = suspiciousResults.isUnderReview
                 };
             }
@@ -664,6 +666,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             if (userFlags.IsUltimateVip == toggleOn) { resultGroupIds.Add(UltimateVipUserGroupId); }
             if (userFlags.IsTurn10Employee == toggleOn) { resultGroupIds.Add(T10EmployeeUserGroupId); }
             if (userFlags.IsEarlyAccess == toggleOn) { resultGroupIds.Add(WhitelistUserGroupId); }
+            if (userFlags.NeedsStatisticsRepaired == toggleOn) { resultGroupIds.Add(RepairStatsId); }
 
             return resultGroupIds;
         }
