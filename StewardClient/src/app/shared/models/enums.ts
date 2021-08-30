@@ -45,12 +45,14 @@ export enum NotificationHubEvents {
 
 export enum ApolloEndpointKey {
   Retail = 'Retail',
-  Studio = 'Studio',
+  // Removed while identity chips are being reworked
+  // Studio = 'Studio',
 }
 
 export enum SunriseEndpointKey {
   Retail = 'Retail',
-  Studio = 'Studio',
+  // Removed while identity chips are being reworked
+  // Studio = 'Studio',
 }
 
 export enum WoodstockEndpointKey {
