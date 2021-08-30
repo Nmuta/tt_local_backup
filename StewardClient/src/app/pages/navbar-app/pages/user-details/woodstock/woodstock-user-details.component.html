@@ -1,7 +1,7 @@
 <ng-container *ngIf="identity && !identity?.error; else noIdentity">
   <h1><player-identity-results [identity]="identity"></player-identity-results></h1>
   <section>
-    <mat-tab-group animationDuration="0ms">
+    <mat-tab-group animationDuration="0ms" (selectedTabChange)="tabChanged($event)">
       <mat-tab label="User Details">
         <div class="tab-container">
           <woodstock-user-flags [identity]="identity"></woodstock-user-flags>

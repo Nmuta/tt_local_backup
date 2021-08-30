@@ -9,6 +9,8 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatButtonModule } from '@angular/material/button';
+import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 /** A domain module for displaying credit histories. */
 @NgModule({
@@ -22,6 +24,8 @@ import { MatButtonModule } from '@angular/material/button';
     ErrorSpinnerModule,
     JsonDumpModule,
     MatButtonModule,
+    TableVirtualScrollModule,
+    ScrollingModule,
   ],
   exports: [WoodstockCreditHistoryComponent, SunriseCreditHistoryComponent],
 })

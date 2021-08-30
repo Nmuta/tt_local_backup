@@ -3,6 +3,7 @@ import { Component, forwardRef, Inject } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
 import { first } from 'lodash';
 import { UserDetailsComponent } from '../user-details.component';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 /** Component for displaying routed Sunrise user details. */
 @Component({
@@ -34,5 +35,14 @@ export class SunriseUserDetailsComponent {
   /** Called when a new profile ID is picked. */
   public onProfileIdChange(_newId: string | BigNumber): void {
     // TODO: Handle routing to this with the URL https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/652013
+  }
+
+  /** Hook when mat-tab changes. */
+  public tabChanged($event: MatTabChangeEvent): void {
+    // DO NOT REMOVE - our virtual scroller on mat-table is finnicky
+    // and only displays data after resize event occurs
+    if ($event.tab.textLabel === 'Deep Dive') {
+      window.dispatchEvent(new Event('resize'));
+    }
   }
 }

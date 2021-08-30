@@ -5,7 +5,7 @@
   </mat-card-header>
   <mat-card-content>
     <ng-container *ngIf="!isLoading && !loadError; else failstate">
-      <div class="table-container">
+      <cdk-virtual-scroll-viewport tvsItemSize="48" headerHeight="56" class="cdk-wrapper">
         <table mat-table [dataSource]="creditHistory">
           <ng-container matColumnDef="eventTimestampUtc">
             <th mat-header-cell *matHeaderCellDef>Timestamp</th>
@@ -46,7 +46,7 @@
           <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
           <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
         </table>
-      </div>
+      </cdk-virtual-scroll-viewport>
 
       <div class="load-more-container">
         <button

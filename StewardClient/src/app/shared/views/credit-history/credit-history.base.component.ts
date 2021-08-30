@@ -7,6 +7,7 @@ import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitleCodeName } from '@models/enums';
 import BigNumber from 'bignumber.js';
 import { SunriseCreditDetailsEntry } from '@models/sunrise';
+import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
 
 export type CreditDetailsEntryUnion = SunriseCreditDetailsEntry | WoodstockCreditDetailsEntry;
 /** Retreives and displays a player's credit history by XUID. */
@@ -19,7 +20,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   @Input() public identity?: IdentityResultUnion;
 
   /** A list of player credit events. */
-  public creditHistory: T[];
+  public creditHistory = new TableVirtualScrollDataSource([]);
 
   /** True while waiting on a request. */
   public isLoading = true;
@@ -48,7 +49,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
     maxResults: number,
   ): Observable<T[]>;
 
-  /** Lifecycle hook. */
+  /** Lifecycle hook */
   public ngOnInit(): void {
     this.getCreditUpdates$
       .pipe(
@@ -70,11 +71,11 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
           );
         }),
       )
-      .subscribe(creditUpdates => {
+      .subscribe((creditUpdates: T[]) => {
         this.loadingMore = false;
         this.isLoading = false;
-        this.creditHistory = this.creditHistory.concat(creditUpdates);
-        this.startIndex += this.creditHistory.length;
+        this.creditHistory.data = this.creditHistory.data.concat(creditUpdates);
+        this.startIndex = this.creditHistory.data.length;
         this.showLoadMore = creditUpdates.length >= this.maxResultsPerRequest;
       });
 
@@ -92,7 +93,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
     this.isLoading = true;
     this.loadError = undefined;
     this.startIndex = 0;
-    this.creditHistory = [];
+    this.creditHistory.data = [];
     this.getCreditUpdates$.next();
   }
 

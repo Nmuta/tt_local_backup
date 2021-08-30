@@ -4,13 +4,13 @@ mat-card {
   @include flex-column-fill;
 }
 
-.table-container {
-  width: 100%;
-  overflow: auto;
+.cdk-wrapper {
+  height: 70vh;
+}
 
-  table {
-    width: 100%;
-  }
+table {
+  width: 100%;
+  table-layout: fixed;
 }
 
 .load-more-container {
