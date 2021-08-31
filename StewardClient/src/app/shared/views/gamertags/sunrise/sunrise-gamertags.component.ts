@@ -2,10 +2,10 @@ import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
 import { SunriseSharedConsoleUser } from '@models/sunrise';
 import { SunriseService } from '@services/sunrise/sunrise.service';
-import { createNavbarPath, NavbarTools } from '@navbar-app/navbar-tool-list';
 import { GamertagsBaseComponent } from '../gamertags.base.component';
 import { Observable } from 'rxjs';
 import { GameTitleCodeName } from '@models/enums';
+import { ActivatedRoute } from '@angular/router';
 
 /** Retreives and displays related Sunrise accounts by XUID. */
 @Component({
@@ -15,13 +15,9 @@ import { GameTitleCodeName } from '@models/enums';
 })
 export class SunriseGamertagsComponent extends GamertagsBaseComponent<SunriseSharedConsoleUser> {
   public gameTitle = GameTitleCodeName.FH4;
-  public userDetailsRouterLink = [
-    ...createNavbarPath(NavbarTools.UserDetailsPage).routerLink,
-    'sunrise',
-  ];
 
-  constructor(private readonly sunriseService: SunriseService) {
-    super();
+  constructor(private readonly sunriseService: SunriseService, route: ActivatedRoute) {
+    super(route);
   }
 
   /** Gets the shared console gamertag list. */

@@ -6,8 +6,16 @@ import { SunriseService } from '@services/sunrise';
 import { createMockSunriseService } from '@services/sunrise/sunrise.service.mock';
 import faker from 'faker';
 import { of, throwError } from 'rxjs';
-
 import { SunriseGamertagsComponent } from './sunrise-gamertags.component';
+import { ActivatedRoute } from '@angular/router';
+
+const activatedRouteMock = {
+  pathFromRoot: [
+    {
+      snapshot: { url: [{ path: 'tools' }] },
+    } as ActivatedRoute,
+  ] as ActivatedRoute[],
+};
 
 describe('SunriseGamertagsComponent', () => {
   let component: SunriseGamertagsComponent;
@@ -18,7 +26,13 @@ describe('SunriseGamertagsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseGamertagsComponent],
-      providers: [createMockSunriseService()],
+      providers: [
+        createMockSunriseService(),
+        {
+          provide: ActivatedRoute,
+          useValue: activatedRouteMock,
+        },
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -107,7 +121,7 @@ describe('SunriseGamertagsComponent', () => {
           component.ngOnChanges();
 
           expect(component.sharedConsoleUsers).toBeUndefined();
-          expect(component.loadError).toEqual(error);
+          expect(component.getMonitor?.status?.error).toEqual(error);
         });
       });
     });

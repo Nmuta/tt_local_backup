@@ -9,12 +9,13 @@ import { catchError, map as rxjsMap, mergeAll, takeUntil, toArray } from 'rxjs/o
 import BigNumber from 'bignumber.js';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { ApolloEndpointKey, GameTitleCodeName, SunriseEndpointKey } from '@models/enums';
-import { chunk, clone, flatten, head, orderBy } from 'lodash';
+import { chunk, clone, flatten, orderBy } from 'lodash';
 import { SunriseService } from '@services/sunrise';
 import { ApolloService } from '@services/apollo';
 import { BulkBanHistoryInput } from './components/bulk-ban-history-input.component';
 import { NavbarTools } from '@navbar-app/navbar-tool-list';
 import { ActivatedRoute } from '@angular/router';
+import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
 
 export type ErrorBanSummary = {
   xuid: BigNumber;
@@ -78,12 +79,7 @@ export class BulkBanHistoryComponent extends BaseComponent implements AfterViewI
   /** Lifecycle hook */
   public ngAfterViewInit(): void {
     this.banHistoryList.paginator = this.paginator;
-    this.toolsRoute = head(
-      this.route.pathFromRoot.filter(p => p.snapshot.url.some(url => url.path == 'tools')),
-    );
-    if (!this.toolsRoute) {
-      throw new Error('No valid "/tools" route found in ActivatedRoute path.');
-    }
+    this.toolsRoute = getToolsActivatedRoute(this.route);
   }
 
   /** Looks up XUIDs ban history. */

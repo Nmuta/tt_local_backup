@@ -6,6 +6,15 @@ import { of, throwError } from 'rxjs';
 import { ApolloGamertagsComponent } from './apollo-gamertags.component';
 import faker from 'faker';
 import { ApolloSharedConsoleUser } from '@models/apollo';
+import { ActivatedRoute } from '@angular/router';
+
+const activatedRouteMock = {
+  pathFromRoot: [
+    {
+      snapshot: { url: [{ path: 'tools' }] },
+    } as ActivatedRoute,
+  ] as ActivatedRoute[],
+};
 
 describe('ApolloGamertagsComponent', () => {
   let component: ApolloGamertagsComponent;
@@ -16,7 +25,13 @@ describe('ApolloGamertagsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloGamertagsComponent],
-      providers: [createMockApolloService()],
+      providers: [
+        createMockApolloService(),
+        {
+          provide: ActivatedRoute,
+          useValue: activatedRouteMock,
+        },
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -105,7 +120,7 @@ describe('ApolloGamertagsComponent', () => {
           component.ngOnChanges();
 
           expect(component.sharedConsoleUsers).toBeUndefined();
-          expect(component.loadError).toEqual(error);
+          expect(component.getMonitor?.status?.error).toEqual(error);
         });
       });
     });

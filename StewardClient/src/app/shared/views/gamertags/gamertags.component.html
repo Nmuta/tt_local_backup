@@ -4,41 +4,47 @@
     <mat-card-subtitle>{{ gameTitle }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <ng-container *ngIf="!isLoading && !loadError; else failstate">
-      <table mat-table [dataSource]="sharedConsoleUsers">
-        <ng-container matColumnDef="everBanned">
-          <th mat-header-cell *matHeaderCellDef>Ever Banned</th>
-          <td mat-cell *matCellDef="let entry">
-            <mat-icon *ngIf="entry.everBanned" svgIcon="steward-gavel"></mat-icon>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="gamertag">
-          <th mat-header-cell *matHeaderCellDef>Gamertag</th>
-          <td mat-cell *matCellDef="let entry">
-            <a
-              [routerLink]="userDetailsRouterLink"
-              [queryParams]="{ lookupType: 'gamertag', lookupName: entry.gamertag }"
-            >
-              {{ entry.gamertag }}
-            </a>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="sharedConsoleId">
-          <th mat-header-cell *matHeaderCellDef>Console Id</th>
-          <td mat-cell *matCellDef="let entry">{{ entry.sharedConsoleId }}</td>
-        </ng-container>
-        <ng-container matColumnDef="xuid">
-          <th mat-header-cell *matHeaderCellDef>XUID</th>
-          <td mat-cell *matCellDef="let entry">{{ entry.xuid }}</td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
-      </table>
+    <ng-container *ngIf="!getMonitor?.isActive; else waitingState">
+      <ng-container *ngIf="!getMonitor?.status?.error; else failState">
+        <table mat-table [dataSource]="sharedConsoleUsers">
+          <ng-container matColumnDef="everBanned">
+            <th mat-header-cell *matHeaderCellDef>Ever Banned</th>
+            <td mat-cell *matCellDef="let entry">
+              <mat-icon *ngIf="entry.everBanned" svgIcon="steward-gavel"></mat-icon>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="gamertag">
+            <th mat-header-cell *matHeaderCellDef>Gamertag</th>
+            <td mat-cell *matCellDef="let entry">
+              <a
+                [routerLink]="userDetailsRouterLink"
+                [relativeTo]="toolsRoute"
+                [queryParams]="{ lookupType: 'gamertag', lookupName: entry.gamertag }"
+              >
+                {{ entry.gamertag }}
+              </a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="sharedConsoleId">
+            <th mat-header-cell *matHeaderCellDef>Console Id</th>
+            <td mat-cell *matCellDef="let entry">{{ entry.sharedConsoleId }}</td>
+          </ng-container>
+          <ng-container matColumnDef="xuid">
+            <th mat-header-cell *matHeaderCellDef>XUID</th>
+            <td mat-cell *matCellDef="let entry">{{ entry.xuid }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let element; columns: columnsToDisplay"></tr>
+        </table>
+      </ng-container>
     </ng-container>
   </mat-card-content>
 </mat-card>
 
-<ng-template #failstate>
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-  <json-dump *ngIf="loadError" [input]="loadError">Failed to load.</json-dump>
+<ng-template #waitingState>
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</ng-template>
+
+<ng-template #failState>
+  <json-dump [input]="getMonitor?.status?.error">Failed to load.</json-dump>
 </ng-template>

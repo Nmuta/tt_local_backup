@@ -6,6 +6,15 @@ import { of, throwError } from 'rxjs';
 import { SteelheadGamertagsComponent } from './steelhead-gamertags.component';
 import faker from 'faker';
 import { SteelheadSharedConsoleUser } from '@models/steelhead';
+import { ActivatedRoute } from '@angular/router';
+
+const activatedRouteMock = {
+  pathFromRoot: [
+    {
+      snapshot: { url: [{ path: 'tools' }] },
+    } as ActivatedRoute,
+  ] as ActivatedRoute[],
+};
 
 describe('SteelheadGamertagsComponent', () => {
   let component: SteelheadGamertagsComponent;
@@ -16,7 +25,13 @@ describe('SteelheadGamertagsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SteelheadGamertagsComponent],
-      providers: [createMockSteelheadService()],
+      providers: [
+        createMockSteelheadService(),
+        {
+          provide: ActivatedRoute,
+          useValue: activatedRouteMock,
+        },
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -105,7 +120,7 @@ describe('SteelheadGamertagsComponent', () => {
           component.ngOnChanges();
 
           expect(component.sharedConsoleUsers).toBeUndefined();
-          expect(component.loadError).toEqual(error);
+          expect(component.getMonitor?.status?.error).toEqual(error);
         });
       });
     });

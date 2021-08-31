@@ -6,8 +6,16 @@ import { WoodstockService } from '@services/woodstock';
 import { createMockWoodstockService } from '@services/woodstock/woodstock.service.mock';
 import faker from 'faker';
 import { of, throwError } from 'rxjs';
-
 import { WoodstockGamertagsComponent } from './woodstock-gamertags.component';
+import { ActivatedRoute } from '@angular/router';
+
+const activatedRouteMock = {
+  pathFromRoot: [
+    {
+      snapshot: { url: [{ path: 'tools' }] },
+    } as ActivatedRoute,
+  ] as ActivatedRoute[],
+};
 
 describe('WoodstockGamertagsComponent', () => {
   let component: WoodstockGamertagsComponent;
@@ -18,7 +26,13 @@ describe('WoodstockGamertagsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockGamertagsComponent],
-      providers: [createMockWoodstockService()],
+      providers: [
+        createMockWoodstockService(),
+        {
+          provide: ActivatedRoute,
+          useValue: activatedRouteMock,
+        },
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -107,7 +121,7 @@ describe('WoodstockGamertagsComponent', () => {
           component.ngOnChanges();
 
           expect(component.sharedConsoleUsers).toBeUndefined();
-          expect(component.loadError).toEqual(error);
+          expect(component.getMonitor?.status?.error).toEqual(error);
         });
       });
     });
