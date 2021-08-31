@@ -21,6 +21,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { HideChangelogModalCheckboxModule } from '@views/hide-changelog-modal-checkbox/hide-changelog-modal-checkbox.module';
 
 /** Routes for inclusion via ...sidebarRoutes in lazy-loaded child paths. */
 export const sidebarRoutes = [
@@ -63,6 +64,7 @@ export const sidebarRoutes = [
     LocationDetailsModule,
     ChangelogModule,
     HubsModule,
+    HideChangelogModalCheckboxModule,
     RouterModule.forChild(sidebarRoutes),
   ],
   exports: [RouterModule],

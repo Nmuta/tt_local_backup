@@ -7,6 +7,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SidebarIconsComponent } from './sidebar-icons.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
+import { ChangelogModalModule } from '@views/changelog-modal/changelog-modal.module';
 
 /** Module for a menu drop with links to all Steward apps. */
 @NgModule({
@@ -19,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatTooltipModule,
     MatBadgeModule,
     MatIconModule,
+    ChangelogModalModule,
   ],
   exports: [SidebarIconsComponent],
 })

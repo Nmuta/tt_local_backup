@@ -1,11 +1,10 @@
+import { NavbarTool } from '@environments/environment';
 import {
   ApolloEndpointKey,
   SteelheadEndpointKey,
   SunriseEndpointKey,
   WoodstockEndpointKey,
 } from '@models/enums';
-
-import { NavbarTool } from '@environments/environment';
 
 /** Sets the Fake API to on or off. Only available in non-prod environments. */
 export class SetFakeApi {
@@ -23,6 +22,12 @@ export class SetStagingApi {
 export class SetAppVersion {
   public static readonly type = '[Settings] Set App Version';
   constructor(public readonly version: string) {}
+}
+
+/** Sets whether or not app update popup should show to users. */
+export class ConfigureAppUpdatePopup {
+  public static readonly type = '[Settings] Configure App Update Popup';
+  constructor(public readonly show: boolean) {}
 }
 
 /** Sets endpoint key defaults if none are present in local storage.. */

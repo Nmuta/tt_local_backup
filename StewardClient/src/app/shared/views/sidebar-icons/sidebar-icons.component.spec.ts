@@ -12,12 +12,16 @@ import { SidebarIconsComponent } from './sidebar-icons.component';
 import { environment } from '@environments/environment';
 import { SetAppVersion } from '@shared/state/user-settings/user-settings.actions';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SidebarIconsComponent', () => {
   let fixture: ComponentFixture<SidebarIconsComponent>;
   let component: SidebarIconsComponent;
 
   let mockStore: Store;
+  let appVersionReturnValue: string;
+  let showAppUpdatePopupReturnValue: boolean;
 
   beforeEach(
     waitForAsync(() => {
@@ -26,6 +30,8 @@ describe('SidebarIconsComponent', () => {
           RouterTestingModule.withRoutes([]),
           HttpClientTestingModule,
           NgxsModule.forRoot([UserSettingsState]),
+          MatDialogModule,
+          BrowserAnimationsModule,
         ],
         declarations: [SidebarIconsComponent],
         schemas: [NO_ERRORS_SCHEMA],
@@ -41,6 +47,11 @@ describe('SidebarIconsComponent', () => {
       component = fixture.debugElement.componentInstance;
 
       mockStore = TestBed.inject(Store);
+      mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.callFake(param => {
+        if (param === UserSettingsState.appVersion) return appVersionReturnValue;
+        if (param === UserSettingsState.showAppUpdatePopup) return showAppUpdatePopupReturnValue;
+        return null;
+      });
     }),
   );
 
@@ -57,7 +68,7 @@ describe('SidebarIconsComponent', () => {
       const environmentAdoVerion: string = 'env-ado-verion';
 
       beforeEach(() => {
-        mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue(undefined);
+        appVersionReturnValue = undefined;
         environment.adoVersion = environmentAdoVerion;
       });
 
@@ -74,9 +85,7 @@ describe('SidebarIconsComponent', () => {
       const defaultSettingsNotificationCount = 0;
 
       beforeEach(() => {
-        mockStore.selectSnapshot = jasmine
-          .createSpy('selectSnapshot')
-          .and.returnValue(testAdoVerion);
+        appVersionReturnValue = testAdoVerion;
         component.settingsNotificationCount = defaultSettingsNotificationCount;
       });
 
@@ -103,10 +112,30 @@ describe('SidebarIconsComponent', () => {
           environment.adoVersion = oldtAdoVerion;
         });
 
-        it('should add one to the settingsNotificationCount', () => {
-          component.ngOnInit();
+        describe('And showAppUpdatePopup is true', () => {
+          beforeEach(() => {
+            showAppUpdatePopupReturnValue = true;
+          });
 
-          expect(component.settingsNotificationCount).toEqual(defaultSettingsNotificationCount + 1);
+          it('should not add o the settingsNotificationCount', () => {
+            component.ngOnInit();
+
+            expect(component.settingsNotificationCount).toEqual(0);
+          });
+        });
+
+        describe('And showAppUpdatePopup is false', () => {
+          beforeEach(() => {
+            showAppUpdatePopupReturnValue = false;
+          });
+
+          it('should add one to the settingsNotificationCount', () => {
+            component.ngOnInit();
+
+            expect(component.settingsNotificationCount).toEqual(
+              defaultSettingsNotificationCount + 1,
+            );
+          });
         });
       });
     });

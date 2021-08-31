@@ -19,6 +19,7 @@ import {
   SetWoodstockEndpointKey,
   SetSteelheadEndpointKey,
   VerifyEndpointKeyDefaults,
+  ConfigureAppUpdatePopup,
 } from './user-settings.actions';
 
 /** Defines the user state model. */
@@ -26,6 +27,7 @@ export class UserSettingsStateModel {
   public enableFakeApi: boolean;
   public enableStagingApi: boolean;
   public appVersion: string;
+  public showAppUpdatePopup: boolean;
   public apolloEndpointKey: ApolloEndpointKey;
   public sunriseEndpointKey: SunriseEndpointKey;
   public woodstockEndpointKey: WoodstockEndpointKey;
@@ -55,6 +57,7 @@ const defaultEndpointKey = {
     sunriseEndpointKey: defaultEndpointKey.sunrise,
     woodstockEndpointKey: defaultEndpointKey.woodstock,
     steelheadEndpointKey: defaultEndpointKey.steelhead,
+    showAppUpdatePopup: true,
   },
 })
 export class UserSettingsState {
@@ -83,6 +86,15 @@ export class UserSettingsState {
     action: SetAppVersion,
   ): Observable<UserSettingsStateModel> {
     return of(ctx.patchState({ appVersion: action.version }));
+  }
+
+  /** Sets the state of whether the app update popup should show. */
+  @Action(ConfigureAppUpdatePopup, { cancelUncompleted: true })
+  public setShowAppUpdatePopup$(
+    ctx: StateContext<UserSettingsStateModel>,
+    action: ConfigureAppUpdatePopup,
+  ): Observable<UserSettingsStateModel> {
+    return of(ctx.patchState({ showAppUpdatePopup: action.show }));
   }
 
   /** Sets the state of the current app version. */
@@ -162,6 +174,12 @@ export class UserSettingsState {
   @Selector()
   public static appVersion(state: UserSettingsStateModel): string {
     return state.appVersion;
+  }
+
+  /** Selector for state show app update popupe. */
+  @Selector()
+  public static showAppUpdatePopup(state: UserSettingsStateModel): boolean {
+    return state.showAppUpdatePopup;
   }
 
   /** Selector for app's apollo endpoint. */
