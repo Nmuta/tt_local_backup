@@ -2,6 +2,7 @@ import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 
+// Test disabled against Retail, needs minor refactor and re-enable against Studio.
 context('Steward / Support / Service Management / Sunrise', () => {
   beforeEach(() => {
     login();
@@ -20,7 +21,7 @@ context('Steward / Support / Service Management / Sunrise', () => {
       cy.contains('button', 'Submit').should('be.disabled');
     });
 
-    context('Creating, manipulating, and deleting an entry', () => {
+    xcontext('Creating, manipulating, and deleting an entry', () => {
       beforeEach(() => {
         cy.visit(stewardUrls.support.serviceManagement.sunrise);
         cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
