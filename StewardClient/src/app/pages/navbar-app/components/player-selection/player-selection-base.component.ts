@@ -22,6 +22,7 @@ import { OpusService } from '@services/opus';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { SteelheadService } from '@services/steelhead';
 import { WoodstockService } from '@services/woodstock';
+import BigNumber from 'bignumber.js';
 
 export interface AugmentedCompositeIdentity {
   query: IdentityQueryBeta & IdentityQueryAlpha;
@@ -148,16 +149,21 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       .subscribe(v => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [previousType, currentType] = v;
-        const values = this.foundIdentities.map(i =>
-          chain(i)
-            .values()
-            .filter(v => !!v) // Filter here to handle T10Id not available in Alpha identities
-            .map(v => v[currentType])
-            .filter(v => !!v) // Filter again to verify the new type lookup is a valid object
-            .uniq()
-            .first()
-            .value(),
-        );
+        const values = this.foundIdentities
+          .map(i =>
+            chain(i)
+              .values()
+              .filter(v => !!v) // Handle T10Id not available in Alpha identities
+              .map(v => v[currentType])
+              .filter(v => !!v) // Verify the new type lookup is a valid object
+              .filter(v =>
+                v instanceof BigNumber ? (v as BigNumber).isGreaterThan(new BigNumber(0)) : true,
+              ) // Ignore invalid GTs converted to XUIDs (BigNumber(0))
+              .uniq()
+              .first()
+              .value(),
+          )
+          .filter(v => !!v);
         this.foundIdentities = [];
         this.knownIdentities.clear();
 
