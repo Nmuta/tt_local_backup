@@ -14,7 +14,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { GravityService } from '@services/gravity';
 import { GetGravityMasterInventoryList } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.actions';
 import { MasterInventoryListMemoryState } from '@shared/state/master-inventory-list-memory/master-inventory-list-memory.state';
-import { NEVER, Observable, Subject, throwError } from 'rxjs';
+import { EMPTY, Observable, Subject, throwError } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { GiftBasketBaseComponent, GiftBasketModel } from '../gift-basket.base.component';
 import { ONE, ZERO } from '@helpers/bignumbers';
@@ -69,7 +69,7 @@ export class GravityGiftBasketComponent
             catchError(error => {
               this.isLoading = false;
               this.loadError = error;
-              return NEVER;
+              return EMPTY;
             }),
           );
         }),
@@ -81,7 +81,7 @@ export class GravityGiftBasketComponent
               catchError(error => {
                 this.isLoading = false;
                 this.loadError = error;
-                return NEVER;
+                return EMPTY;
               }),
             );
         }),

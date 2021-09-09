@@ -3,7 +3,7 @@ import { AfterViewInit, Component, Input, OnChanges, ViewChild } from '@angular/
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
-import { NEVER, Observable, Subject } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerAuction } from '@models/player-auction';
 import { MatDialog } from '@angular/material/dialog';
@@ -62,7 +62,7 @@ export abstract class PlayerAuctionsBaseComponent
             catchError(error => {
               this.isLoading = false;
               this.loadError = error;
-              return NEVER;
+              return EMPTY;
             }),
           );
         }),

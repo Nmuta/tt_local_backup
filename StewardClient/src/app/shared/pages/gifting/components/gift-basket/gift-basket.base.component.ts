@@ -11,7 +11,7 @@ import { MasterInventoryItem, MasterInventoryUnion } from '@models/master-invent
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
-import { NEVER, Observable, timer } from 'rxjs';
+import { EMPTY, Observable, timer } from 'rxjs';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { GravityGift } from '@models/gravity';
 import { SunriseGift } from '@models/sunrise';
@@ -213,7 +213,7 @@ export abstract class GiftBasketBaseComponent<
         catchError(error => {
           this.loadError = error;
           this.isLoading = false;
-          return NEVER;
+          return EMPTY;
         }),
         take(1),
         tap(response => {
@@ -239,7 +239,7 @@ export abstract class GiftBasketBaseComponent<
         catchError(_error => {
           this.loadError = _error;
           this.isLoading = false;
-          return NEVER;
+          return EMPTY;
         }),
         take(1),
         tap(job => {

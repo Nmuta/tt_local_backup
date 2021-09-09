@@ -4,7 +4,7 @@ import { ApolloBanResult } from '@models/apollo';
 import { BackgroundJob, BackgroundJobStatus } from '@models/background-job';
 import { SunriseBanResult } from '@models/sunrise';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
-import { NEVER, timer } from 'rxjs';
+import { EMPTY, timer } from 'rxjs';
 import { catchError, delayWhen, retryWhen, take, takeUntil, tap } from 'rxjs/operators';
 
 export type BanResultsUnion = SunriseBanResult | ApolloBanResult;
@@ -34,7 +34,7 @@ export class UserBanningBaseComponent extends BaseComponent {
         catchError(_error => {
           this.loadError = _error;
           this.isLoading = false;
-          return NEVER;
+          return EMPTY;
         }),
         take(1),
         tap(job => {

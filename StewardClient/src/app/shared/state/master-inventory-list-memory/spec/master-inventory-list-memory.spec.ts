@@ -14,7 +14,7 @@ import {
   GetSunriseMasterInventoryList,
   GetWoodstockMasterInventoryList,
 } from '../master-inventory-list-memory.actions';
-import { NEVER } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { createMockSteelheadService, SteelheadService } from '@services/steelhead';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
@@ -79,7 +79,7 @@ describe('State: MasterInventoryListMemoryState', () => {
               expect(err).toEqual(
                 'Game settings ID is required to get a gravity master inventory list.',
               );
-              return NEVER;
+              return EMPTY;
             }),
             tap(() => {
               expect(false).toBeTruthy();
@@ -105,7 +105,7 @@ describe('State: MasterInventoryListMemoryState', () => {
             .pipe(
               catchError(() => {
                 expect(false).toBeTruthy();
-                return NEVER;
+                return EMPTY;
               }),
               tap(() => {
                 expect(mockGravityService.getMasterInventory$).not.toHaveBeenCalledWith(
@@ -124,7 +124,7 @@ describe('State: MasterInventoryListMemoryState', () => {
             .pipe(
               catchError(() => {
                 expect(false).toBeTruthy();
-                return NEVER;
+                return EMPTY;
               }),
               tap(() => {
                 expect(mockGravityService.getMasterInventory$).toHaveBeenCalledWith(gameSettingsId);
@@ -152,7 +152,7 @@ describe('State: MasterInventoryListMemoryState', () => {
           .pipe(
             catchError(() => {
               expect(false).toBeTruthy();
-              return NEVER;
+              return EMPTY;
             }),
             tap(() => {
               expect(mockSunriseService.getMasterInventory$).not.toHaveBeenCalled();
@@ -169,7 +169,7 @@ describe('State: MasterInventoryListMemoryState', () => {
           .pipe(
             catchError(() => {
               expect(false).toBeTruthy();
-              return NEVER;
+              return EMPTY;
             }),
             tap(() => {
               expect(mockSunriseService.getMasterInventory$).toHaveBeenCalled();
@@ -196,7 +196,7 @@ describe('State: MasterInventoryListMemoryState', () => {
           .pipe(
             catchError(() => {
               expect(false).toBeTruthy();
-              return NEVER;
+              return EMPTY;
             }),
             tap(() => {
               expect(mockApolloService.getMasterInventory$).not.toHaveBeenCalled();
@@ -213,7 +213,7 @@ describe('State: MasterInventoryListMemoryState', () => {
           .pipe(
             catchError(() => {
               expect(false).toBeTruthy();
-              return NEVER;
+              return EMPTY;
             }),
             tap(() => {
               expect(mockApolloService.getMasterInventory$).toHaveBeenCalled();
@@ -240,7 +240,7 @@ describe('State: MasterInventoryListMemoryState', () => {
           .pipe(
             catchError(() => {
               expect(false).toBeTruthy();
-              return NEVER;
+              return EMPTY;
             }),
             tap(() => {
               expect(mockSteelheadService.getMasterInventory$).not.toHaveBeenCalled();
@@ -257,7 +257,7 @@ describe('State: MasterInventoryListMemoryState', () => {
           .pipe(
             catchError(() => {
               expect(false).toBeTruthy();
-              return NEVER;
+              return EMPTY;
             }),
             tap(() => {
               expect(mockSteelheadService.getMasterInventory$).toHaveBeenCalled();
@@ -283,7 +283,7 @@ describe('State: MasterInventoryListMemoryState', () => {
             .pipe(
               catchError(() => {
                 expect(false).toBeTruthy();
-                return NEVER;
+                return EMPTY;
               }),
               tap(() => {
                 expect(mockWoodstockService.getMasterInventory$).not.toHaveBeenCalled();
@@ -300,7 +300,7 @@ describe('State: MasterInventoryListMemoryState', () => {
             .pipe(
               catchError(() => {
                 expect(false).toBeTruthy();
-                return NEVER;
+                return EMPTY;
               }),
               tap(() => {
                 expect(mockWoodstockService.getMasterInventory$).toHaveBeenCalled();

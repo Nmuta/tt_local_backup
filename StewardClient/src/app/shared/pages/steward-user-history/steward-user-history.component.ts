@@ -12,7 +12,7 @@ import { BackgroundJobService } from '@services/background-job/background-job.se
 import { UserState } from '@shared/state/user/user.state';
 import { sortBy } from 'lodash';
 import { Duration } from 'luxon';
-import { NEVER, Subject } from 'rxjs';
+import { EMPTY, Subject } from 'rxjs';
 import { takeUntil, switchMap, catchError, tap, map } from 'rxjs/operators';
 
 export type JsonTableAndBackgroundJob = BackgroundJob<unknown> & {
@@ -70,7 +70,7 @@ export class StewardUserHistoryComponent extends BaseComponent implements OnInit
             catchError(error => {
               this.isLoading = false;
               this.loadError = error;
-              return NEVER;
+              return EMPTY;
             }),
           );
         }),

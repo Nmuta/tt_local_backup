@@ -4,7 +4,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { faGavel } from '@fortawesome/free-solid-svg-icons';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
-import { NEVER, Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 
 /** Retreives and displays related Sunrise consoles by XUID. */
@@ -32,12 +32,12 @@ export abstract class ConsolesBaseComponent<T> extends BaseComponent implements 
 
   /** Creates the action for the ban verify checkbox. */
   public makeBanAction(..._params: unknown[]): () => Observable<void> {
-    return () => NEVER;
+    return () => EMPTY;
   }
 
   /** Creates the action for the unban verify checkbox. */
   public makeUnbanAction(..._params: unknown[]): () => Observable<void> {
-    return () => NEVER;
+    return () => EMPTY;
   }
 
   /** Initialization hook. */
@@ -57,7 +57,7 @@ export abstract class ConsolesBaseComponent<T> extends BaseComponent implements 
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
-          return NEVER;
+          return EMPTY;
         }),
       )
       .subscribe(consoleDetails => {

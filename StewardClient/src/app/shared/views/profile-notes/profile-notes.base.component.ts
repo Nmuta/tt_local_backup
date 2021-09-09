@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { NEVER, Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
@@ -45,7 +45,7 @@ export abstract class ProfileNotesBaseComponent extends BaseComponent implements
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
-          return NEVER;
+          return EMPTY;
         }),
       )
       .subscribe(notes => {

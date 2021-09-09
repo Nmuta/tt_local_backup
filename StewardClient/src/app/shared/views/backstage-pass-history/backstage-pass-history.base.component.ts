@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { NEVER, Observable, Subject } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitleCodeName } from '@models/enums';
@@ -40,7 +40,7 @@ export abstract class BackstagePassHistoryBaseComponent
           this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
           return this.getBackstagePassHistoryByXuid$(this.identity.xuid).pipe(
             this.getMonitor.monitorSingleFire(),
-            catchError(() => NEVER),
+            catchError(() => EMPTY),
           );
         }),
         map(history => sortBy(history, history => history.createdAtUtc).reverse()),

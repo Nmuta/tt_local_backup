@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { BaseComponent } from '@components/base-component/base.component';
 import { IdentityResultAlpha, IdentityResultBeta } from '@models/identity-query.model';
 import { LspGroup } from '@models/lsp-group';
-import { NEVER, Observable, of, Subject } from 'rxjs';
+import { EMPTY, Observable, of, Subject } from 'rxjs';
 import { GravityGiftHistory } from '@models/gravity';
 import { SunriseGiftHistory } from '@models/sunrise';
 import { ApolloGiftHistory } from '@models/apollo';
@@ -92,7 +92,7 @@ export abstract class GiftHistoryResultsBaseComponent<
               this.isLoading = false;
               this.loadError = error;
               this.giftHistoryList = undefined;
-              return NEVER;
+              return EMPTY;
             }),
           );
         }),

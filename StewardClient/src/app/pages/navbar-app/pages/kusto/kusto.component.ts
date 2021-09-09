@@ -4,7 +4,7 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { JsonTableResult } from '@models/json-table-result';
 import { KustoQuery } from '@models/kusto/kusto-query';
 import { KustoService } from '@services/kusto';
-import { NEVER } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
 /** Displays the kusto query feature. */
@@ -59,7 +59,7 @@ export class KustoComponent extends BaseComponent {
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
-          return NEVER;
+          return EMPTY;
         }),
       )
       .subscribe(response => {

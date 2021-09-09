@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { WoodstockCreditDetailsEntry } from '@models/woodstock';
-import { NEVER, Observable, Subject } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { GameTitleCodeName } from '@models/enums';
@@ -66,7 +66,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
               this.loadingMore = false;
               this.isLoading = false;
               this.loadError = error;
-              return NEVER;
+              return EMPTY;
             }),
           );
         }),

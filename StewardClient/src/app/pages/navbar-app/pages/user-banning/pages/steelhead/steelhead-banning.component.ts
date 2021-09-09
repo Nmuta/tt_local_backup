@@ -8,7 +8,7 @@ import { BackgroundJob } from '@models/background-job';
 import { SteelheadService } from '@services/steelhead';
 import { BackgroundJobService } from '@services/background-job/background-job.service';
 import { chain, Dictionary, filter, keyBy } from 'lodash';
-import { NEVER, Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { EMPTY, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BanOptions } from '../../components/ban-options/ban-options.component';
 import { UserBanningBaseComponent } from '../base/user-banning.base.component';
@@ -110,7 +110,7 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
       catchError(error => {
         this.loadError = error;
         this.isLoading = false;
-        return NEVER;
+        return EMPTY;
       }),
       take(1),
       tap((backgroundJob: BackgroundJob<void>) => {

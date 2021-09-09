@@ -15,7 +15,7 @@ import { IdentityResultUnion } from '@models/identity-query.model';
 import { MasterInventoryItem } from '@models/master-inventory-item';
 import { OpusMasterInventory } from '@models/opus';
 import { SunriseMasterInventory } from '@models/sunrise';
-import { combineLatest, NEVER, Observable, Subject } from 'rxjs';
+import { combineLatest, EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerInventoryItemList } from '@models/master-inventory-item-list';
 
@@ -103,13 +103,13 @@ export abstract class PlayerInventoryBaseComponent<
           return request$.pipe(
             catchError((error, _observable) => {
               this.error = error;
-              return NEVER;
+              return EMPTY;
             }),
           );
         }),
         catchError((error, _observable) => {
           this.error = error;
-          return NEVER;
+          return EMPTY;
         }),
       )
       .subscribe(inventory => {

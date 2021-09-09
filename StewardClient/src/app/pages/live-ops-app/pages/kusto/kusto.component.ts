@@ -5,7 +5,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { GuidLikeString } from '@models/extended-types';
 import { KustoQuery } from '@models/kusto';
 import { KustoService } from '@services/kusto';
-import { NEVER, Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 
 /** Displays the live ops kusto feature. */
@@ -79,7 +79,7 @@ export class LiveOpsKustoComponent extends BaseComponent {
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
-          return NEVER;
+          return EMPTY;
         }),
         take(1),
       )
@@ -107,7 +107,7 @@ export class LiveOpsKustoComponent extends BaseComponent {
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
-          return NEVER;
+          return EMPTY;
         }),
         take(1),
       )

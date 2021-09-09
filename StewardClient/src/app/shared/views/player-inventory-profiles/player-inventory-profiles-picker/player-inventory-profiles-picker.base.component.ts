@@ -18,7 +18,7 @@ import { SunrisePlayerInventoryProfile } from '@models/sunrise';
 import { SteelheadPlayerInventoryProfile } from '@models/steelhead';
 import { WoodstockPlayerInventoryProfile } from '@models/woodstock';
 import { chain, isEmpty, sortBy } from 'lodash';
-import { NEVER, Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { catchError, filter, switchMap, takeUntil, tap, map } from 'rxjs/operators';
 
@@ -86,7 +86,7 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
           this.getPlayerProfilesByIdentity$(i).pipe(
             catchError((error, _observable) => {
               this.error = error;
-              return NEVER;
+              return EMPTY;
             }),
           ),
         ),

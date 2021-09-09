@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
-import { NEVER, Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
@@ -80,7 +80,7 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
-          return NEVER;
+          return EMPTY;
         }),
       )
       .subscribe(flags => {
@@ -98,7 +98,7 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
       catchError(error => {
         this.isLoading = false;
         this.loadError = error;
-        return NEVER;
+        return EMPTY;
       }),
       take(1),
       tap(value => {

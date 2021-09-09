@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
-import { NEVER, Observable, of, Subject } from 'rxjs';
+import { EMPTY, Observable, of, Subject } from 'rxjs';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { PlayerUGCItem } from '@models/player-ugc-item';
 import { DefaultUGCFilters, UGCFilters } from '@models/ugc-filters';
@@ -51,7 +51,7 @@ export abstract class PlayerUGCBaseComponent
 
           return this.getPlayerUGC$(this.currentFilters).pipe(
             this.getMonitor.monitorSingleFire(),
-            catchError(() => NEVER),
+            catchError(() => EMPTY),
           );
         }),
       )

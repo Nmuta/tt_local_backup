@@ -6,7 +6,7 @@ import { GravityPlayerDetails } from '@models/gravity';
 import { OpusPlayerDetails } from '@models/opus';
 import { SunrisePlayerDetails } from '@models/sunrise';
 import BigNumber from 'bignumber.js';
-import { NEVER, Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil, tap } from 'rxjs/operators';
 
 type PlayerDetailsTitleUnion =
@@ -83,7 +83,7 @@ export abstract class PlayerSidebarDetailsBaseComponent<T extends PlayerDetailsU
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
-          return NEVER;
+          return EMPTY;
         }),
         take(1),
         tap(details => {

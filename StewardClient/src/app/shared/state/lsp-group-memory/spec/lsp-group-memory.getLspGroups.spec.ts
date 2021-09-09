@@ -9,7 +9,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { GameTitleCodeName } from '@models/enums';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { createMockApolloService } from '@services/apollo';
-import { NEVER } from 'rxjs';
+import { EMPTY } from 'rxjs';
 
 describe('State: LspGroupMemoryState', () => {
   let service: LspGroupMemoryState;
@@ -103,7 +103,7 @@ describe('State: LspGroupMemoryState', () => {
           .pipe(
             catchError(error => {
               expect(error).toEqual('Gravity is not currently setup to handle LSP groups.');
-              return NEVER;
+              return EMPTY;
             }),
             tap(() => {
               expect(false).toBeTruthy();

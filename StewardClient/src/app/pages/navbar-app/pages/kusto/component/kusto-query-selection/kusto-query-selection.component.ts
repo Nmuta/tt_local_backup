@@ -7,7 +7,7 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { NEVER, Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { KustoQuery } from '@models/kusto';
 import { KustoService } from '@services/kusto';
 import { catchError, map, startWith, take, takeUntil } from 'rxjs/operators';
@@ -69,7 +69,7 @@ export class KustoQuerySelectionComponent extends BaseComponent implements OnIni
           this.isLoading = false;
           this.loadError = error;
           this.querySelectionForm.markAllAsTouched();
-          return NEVER;
+          return EMPTY;
         }),
       )
       .subscribe(response => {

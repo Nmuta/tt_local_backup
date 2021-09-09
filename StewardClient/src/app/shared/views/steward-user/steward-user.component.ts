@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { GuidLikeString } from '@models/extended-types';
 import { UserService } from '@services/user';
-import { NEVER, Subject } from 'rxjs';
+import { EMPTY, Subject } from 'rxjs';
 import { UserModel } from '@models/user.model';
 import { catchError, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -36,7 +36,7 @@ export class StewardUserComponent extends BaseComponent implements OnInit, OnCha
         }),
         catchError(() => {
           this.user = undefined;
-          return NEVER;
+          return EMPTY;
         }),
         tap(returnUsers => {
           this.user = returnUsers[0];

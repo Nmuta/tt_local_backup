@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Component, Input, OnChanges } from '@angular/core';
-import { NEVER, Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { GameTitleCodeName } from '@models/enums';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
@@ -42,7 +42,7 @@ export abstract class PlayerAccountInventoryBaseComponent<T extends AccountInven
         takeUntil(this.onDestroy$),
         take(1),
         this.getMonitor.monitorSingleFire(),
-        catchError(() => NEVER),
+        catchError(() => EMPTY),
       )
       .subscribe(accountInventory => {
         this.accountInventory = accountInventory;
