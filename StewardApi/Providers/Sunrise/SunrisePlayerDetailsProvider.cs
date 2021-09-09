@@ -11,6 +11,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using ForzaAuctionFilters = Forza.LiveOps.FH4.Generated.ForzaAuctionFilters;
@@ -69,8 +70,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 var convertedQueries = this.mapper.Map<ForzaPlayerLookupParameters[]>(queries);
 
                 var result = await this.sunriseService.GetUserIds(convertedQueries, endpoint).ConfigureAwait(false);
+                var identityResults = this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
+                identityResults.SetErrorsForInvalidXuids();
 
-                return this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
+                return identityResults;
             }
             catch (Exception ex)
             {

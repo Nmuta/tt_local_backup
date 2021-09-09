@@ -5,6 +5,7 @@ using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Opus;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Opus.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Opus
@@ -58,6 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Opus
 
                 var identity = this.mapper.Map<IdentityResultAlpha>(result);
                 identity.Query = query;
+                identity.SetErrorForInvalidXuid();
 
                 return identity;
             }

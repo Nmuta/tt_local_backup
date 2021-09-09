@@ -10,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Apollo.ServiceConnections;
 
@@ -78,6 +79,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
                 var identity = this.mapper.Map<IdentityResultAlpha>(result);
                 identity.Query = query;
+                identity.SetErrorForInvalidXuid();
 
                 return identity;
             }

@@ -10,6 +10,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Data;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.ProfileMappers;
 using Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections;
 
@@ -61,7 +62,10 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
                 var result = await this.steelheadService.GetUserIds(convertedQueries, endpoint)
                     .ConfigureAwait(false);
 
-                return this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
+                var identityResults = this.mapper.Map<IList<IdentityResultAlpha>>(result.playerLookupResult);
+                identityResults.SetErrorsForInvalidXuids();
+
+                return identityResults;
             }
             catch (Exception ex)
             {

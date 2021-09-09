@@ -204,7 +204,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 }
             }
 
-            return this.Ok(results.ToList());
+            return this.Ok(results);
         }
 
         /// <summary>

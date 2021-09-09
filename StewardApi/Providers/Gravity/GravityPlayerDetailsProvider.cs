@@ -8,6 +8,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Gravity;
+using Turn10.LiveOps.StewardApi.Helpers;
 using Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Gravity
@@ -53,16 +54,24 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 }
                 else if (query.Xuid != null)
                 {
-                    var details = await this.GetUserDetailsByXuid(query.Xuid.Value).ConfigureAwait(false);
-
-                    result.T10Ids = details;
-
-                    var activePlayer = details.OrderByDescending(e => e.LastLogin).FirstOrDefault();
-                    if (activePlayer != null)
+                    // XUID lookup of 0 always results in a timeout with LSP. (9/9/21) (lugeiken)
+                    if (query.Xuid.Value != 0UL)
                     {
-                        result.Xuid = activePlayer.Xuid;
-                        result.Gamertag = activePlayer.GamerTag;
-                        result.T10Id = activePlayer.Turn10Id;
+                        var details = await this.GetUserDetailsByXuid(query.Xuid.Value).ConfigureAwait(false);
+
+                        result.T10Ids = details;
+
+                        var activePlayer = details.OrderByDescending(e => e.LastLogin).FirstOrDefault();
+                        if (activePlayer != null)
+                        {
+                            result.Xuid = activePlayer.Xuid;
+                            result.Gamertag = activePlayer.GamerTag;
+                            result.T10Id = activePlayer.Turn10Id;
+                        }
+                    }
+                    else
+                    {
+                        result.Error = new InvalidArgumentsStewardError($"Invalid XUID provided for lookup: {query.Xuid.Value}.");
                     }
                 }
                 else if (!string.IsNullOrWhiteSpace(query.Gamertag))
@@ -81,6 +90,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
                 }
 
                 result.Query = query;
+                result.SetErrorForInvalidXuid();
 
                 return result;
             }

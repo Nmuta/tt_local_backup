@@ -112,6 +112,20 @@ namespace Turn10.LiveOps.StewardTest.Integration.Gravity
 
         [TestMethod]
         [TestCategory("Integration")]
+        public async Task GetPlayerIdentityByXuid_XuidBelow100()
+        {
+            var query = new IdentityQueryBeta { Xuid = TestConstants.InvalidXuidBelow100 };
+
+            var result = await stewardClient.GetPlayerIdentitiesAsync(new List<IdentityQueryBeta> { query }).ConfigureAwait(false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result[0].Error);
+            Assert.IsTrue(result[0].Xuid == default);
+            Assert.AreEqual(result[0].Query.Xuid, TestConstants.InvalidXuidBelow100);
+        }
+
+        [TestMethod]
+        [TestCategory("Integration")]
         public async Task GetPlayerIdentityByGamertag()
         {
             var query = new IdentityQueryBeta { Gamertag = gamertag };
