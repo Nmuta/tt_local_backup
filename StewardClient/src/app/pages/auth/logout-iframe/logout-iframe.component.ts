@@ -22,8 +22,8 @@ export class LogoutIframeComponent extends BaseComponent implements OnInit {
   /** Initialization hook. */
   public ngOnInit(): void {
     const whenLoggedOut$ = this.profile$.pipe(
-      takeUntil(this.onDestroy$),
       filter(v => !v),
+      takeUntil(this.onDestroy$),
     );
     whenLoggedOut$.subscribe(() => this.store.dispatch(new Navigate(['/auth/aad-logout'])));
   }

@@ -55,12 +55,12 @@ export class KustoComponent extends BaseComponent {
     this.kustoService
       .postRunKustoQuery$(queryInputValue)
       .pipe(
-        takeUntil(this.onDestroy$),
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(response => {
         this.isLoading = false;

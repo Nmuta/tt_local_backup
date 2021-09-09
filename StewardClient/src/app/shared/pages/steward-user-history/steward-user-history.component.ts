@@ -60,7 +60,6 @@ export class StewardUserHistoryComponent extends BaseComponent implements OnInit
 
     this.getBackgroundJobs$
       .pipe(
-        takeUntil(this.onDestroy$),
         tap(() => {
           this.isLoading = true;
         }),
@@ -75,6 +74,7 @@ export class StewardUserHistoryComponent extends BaseComponent implements OnInit
           );
         }),
         map(jobs => sortBy(jobs, job => job.createdDateUtc).reverse()),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(jobs => {
         this.isLoading = false;

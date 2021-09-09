@@ -19,7 +19,7 @@ export class AadLogoutComponent extends BaseComponent implements OnInit {
   public ngOnInit(): void {
     // TODO: this should attempt to detect which type of app it should redirect to, depending on context. for now, 'let the user decide later' is the easy+reliable way
     of(true)
-      .pipe(takeUntil(this.onDestroy$), delay(3_000))
+      .pipe(delay(3_000), takeUntil(this.onDestroy$))
       .subscribe(() => this.store.dispatch(new Navigate(['/'])));
   }
 }

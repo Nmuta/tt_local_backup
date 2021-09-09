@@ -52,13 +52,13 @@ export abstract class ConsolesBaseComponent<T> extends BaseComponent implements 
     const getConsoleDetailsByXuid$ = this.getConsoleDetailsByXuid$(this.identity.xuid);
     getConsoleDetailsByXuid$
       .pipe(
-        takeUntil(this.onDestroy$),
         take(1),
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(consoleDetails => {
         this.isLoading = false;

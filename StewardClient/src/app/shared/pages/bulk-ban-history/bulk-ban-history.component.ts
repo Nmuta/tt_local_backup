@@ -247,7 +247,6 @@ export class BulkBanHistoryComponent extends BaseComponent implements AfterViewI
     // Generate batches of ban summary queries to not overload the LSP
     chunk(xuids, this.XUID_LOOKUP_BATCH_SIZE).forEach(batch => {
       const query = this.generateBanHistoryLookup$(title, environment, batch).pipe(
-        takeUntil(this.onDestroy$),
         catchError(error => {
           return of(
             // We DO NOT want to return an error.
@@ -263,13 +262,13 @@ export class BulkBanHistoryComponent extends BaseComponent implements AfterViewI
             }),
           );
         }),
+        takeUntil(this.onDestroy$),
       );
 
       batchedQueries.push(query);
     });
 
     return from(batchedQueries).pipe(
-      takeUntil(this.onDestroy$),
       mergeAll(this.XUID_LOOKUP_MAX_CONCURRENCY), // Set max concurrency for requesting ban summaries
       toArray(), // Wait for all requests to complete
       rxjsMap((summaries: BanSummariesUnion[][]) => {
@@ -288,6 +287,7 @@ export class BulkBanHistoryComponent extends BaseComponent implements AfterViewI
           return summaryPlusEnv;
         }),
       ),
+      takeUntil(this.onDestroy$),
     );
   }
 

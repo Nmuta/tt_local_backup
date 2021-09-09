@@ -29,7 +29,6 @@ export class StewardUserComponent extends BaseComponent implements OnInit, OnCha
   public ngOnInit(): void {
     this.getStewardUser$
       .pipe(
-        takeUntil(this.onDestroy$),
         switchMap(() => {
           this.user = undefined;
           return this.userService.getStewardUsers$({ userObjectIds: [this.objectId] });
@@ -41,6 +40,7 @@ export class StewardUserComponent extends BaseComponent implements OnInit, OnCha
         tap(returnUsers => {
           this.user = returnUsers[0];
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe();
 

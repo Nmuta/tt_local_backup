@@ -78,7 +78,6 @@ export class SunriseServiceManagementComponent extends BaseComponent implements 
 
     this.getBlocklist$
       .pipe(
-        takeUntil(this.onDestroy$),
         tap(() => (this.getMonitor = this.updateMonitors(this.getMonitor))),
         switchMap(() => {
           this.blocklist.data = undefined;
@@ -90,6 +89,7 @@ export class SunriseServiceManagementComponent extends BaseComponent implements 
             }),
           );
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(returnList => {
         const controls: FormGroupBlocklistEntry[] = returnList.map(entry => {

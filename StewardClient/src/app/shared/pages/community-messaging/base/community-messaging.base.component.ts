@@ -61,7 +61,6 @@ export abstract class CommunityMessagingBaseComponent extends BaseComponent {
     const submitCommunityMessage$ = this.submitCommunityMessage$();
     submitCommunityMessage$
       .pipe(
-        takeUntil(this.onDestroy$),
         take(1),
         catchError(error => {
           this.isLoading = false;
@@ -73,6 +72,7 @@ export abstract class CommunityMessagingBaseComponent extends BaseComponent {
             return item.error;
           }),
         ),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(data => {
         this.isLoading = false;

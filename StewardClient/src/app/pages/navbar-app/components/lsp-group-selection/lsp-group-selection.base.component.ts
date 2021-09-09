@@ -48,7 +48,6 @@ export abstract class LspGroupSelectionBaseComponent
     const selector$ = this.lspGroupSelector$();
     selector$
       .pipe(
-        takeUntil(this.onDestroy$),
         filter(data => data.length > 0),
         tap((data: LspGroups) => {
           this.isLoading = false;
@@ -59,6 +58,7 @@ export abstract class LspGroupSelectionBaseComponent
           this.loadError = error;
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe();
 

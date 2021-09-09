@@ -53,7 +53,6 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
   public ngOnInit(): void {
     this.getCreditUpdates$
       .pipe(
-        takeUntil(this.onDestroy$),
         switchMap(() => {
           this.loadingMore = true;
           const getCreditHistoryByXuid$ = this.getCreditHistoryByXuid$(
@@ -70,6 +69,7 @@ export abstract class CreditHistoryBaseComponent<T extends CreditDetailsEntryUni
             }),
           );
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe((creditUpdates: T[]) => {
         this.loadingMore = false;

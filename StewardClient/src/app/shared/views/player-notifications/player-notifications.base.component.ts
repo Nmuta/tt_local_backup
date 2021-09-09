@@ -53,13 +53,13 @@ export abstract class PlayerNotificationsBaseComponent<T extends NotificationUni
     const getPlayerNotificationsByXuid$ = this.getPlayerNotificationsByXuid$(this.identity.xuid);
     getPlayerNotificationsByXuid$
       .pipe(
-        takeUntil(this.onDestroy$),
         take(1),
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(notifications => {
         this.isLoading = false;

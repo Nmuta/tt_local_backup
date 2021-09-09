@@ -209,7 +209,6 @@ export abstract class GiftBasketBaseComponent<
 
     sendGift$
       .pipe(
-        takeUntil(this.onDestroy$),
         catchError(error => {
           this.loadError = error;
           this.isLoading = false;
@@ -226,6 +225,7 @@ export abstract class GiftBasketBaseComponent<
           this.giftResponse = [response as GiftResponse<BigNumber>];
           this.isLoading = false;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe();
   }
@@ -235,7 +235,6 @@ export abstract class GiftBasketBaseComponent<
     this.backgroundJobService
       .getBackgroundJob$<GiftResponse<BigNumber | string>[]>(job.jobId)
       .pipe(
-        takeUntil(this.onDestroy$),
         catchError(_error => {
           this.loadError = _error;
           this.isLoading = false;
@@ -256,6 +255,7 @@ export abstract class GiftBasketBaseComponent<
           this.isLoading = false;
         }),
         retryWhen(errors$ => errors$.pipe(delayWhen(() => timer(3_000)))),
+        takeUntil(this.onDestroy$),
       )
       .subscribe();
   }

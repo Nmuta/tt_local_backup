@@ -57,9 +57,9 @@ export abstract class AuctionsFiltersBaseComponent extends BaseComponent impleme
       .subscribe(cars => {
         this.makeModelFilterGroups = this.buildMatAutocompleteState(cars);
         this.stateGroupOptions$ = this.formGroup.get('makeModelInput')?.valueChanges.pipe(
-          takeUntil(this.onDestroy$),
           startWith(''),
           map(value => this.filterGroup(value)),
+          takeUntil(this.onDestroy$),
         );
       });
   }

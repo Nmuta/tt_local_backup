@@ -52,7 +52,6 @@ export abstract class MonitorBaseDirective extends BaseDirective implements Disa
 
     this.waitOnMonitors$
       .pipe(
-        takeUntil(this.onDestroy$),
         mergeMap(otherMonitors => {
           let otherStatuses$: Observable<ActionStatus<unknown>[]> = of([]);
           if (isArray(otherMonitors)) {
@@ -63,6 +62,7 @@ export abstract class MonitorBaseDirective extends BaseDirective implements Disa
 
           return otherStatuses$.pipe(catchError(() => EMPTY));
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(otherStatuses => {
         this.otherMonitorIsActive = otherStatuses.some(m => m.state === 'active');
@@ -71,7 +71,6 @@ export abstract class MonitorBaseDirective extends BaseDirective implements Disa
 
     this.monitor$
       .pipe(
-        takeUntil(this.onDestroy$),
         mergeMap(monitor => {
           if (!monitor) {
             return of(undefined as ActionStatus<undefined>);
@@ -82,6 +81,7 @@ export abstract class MonitorBaseDirective extends BaseDirective implements Disa
             catchError(() => EMPTY),
           );
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(status => {
         this.monitorIsActive = status ? status.state === 'active' : false;

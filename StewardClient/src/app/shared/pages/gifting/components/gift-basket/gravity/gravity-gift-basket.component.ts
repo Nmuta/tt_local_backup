@@ -55,7 +55,6 @@ export class GravityGiftBasketComponent
   public ngOnInit(): void {
     this.newIdentitySelectedSubject$
       .pipe(
-        takeUntil(this.onDestroy$),
         tap(() => {
           this.isLoading = false;
           this.loadError = undefined;
@@ -85,6 +84,7 @@ export class GravityGiftBasketComponent
               }),
             );
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
         this.isLoading = false;
@@ -102,11 +102,11 @@ export class GravityGiftBasketComponent
 
     this.giftBasket$
       .pipe(
-        takeUntil(this.onDestroy$),
         tap(basket => {
           this.giftBasket.data = cloneDeep(basket);
           this.giftBasketHasErrors = basket.some(item => !!item.error);
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe();
 

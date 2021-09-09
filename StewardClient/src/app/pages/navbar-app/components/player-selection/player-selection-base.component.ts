@@ -120,8 +120,8 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
     super();
     this.foundIdentities$
       .pipe(
-        takeUntil(this.onDestroy$),
         switchMap(i => this.sortFn(i)),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(i => (this.foundIdentities = i));
   }
@@ -138,12 +138,12 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   public ngAfterViewInit(): void {
     this.lookupTypeGroup.change
       .pipe(
-        takeUntil(this.onDestroy$),
         map(v => v.value as keyof IdentityQueryBetaIntersection),
         tap(v => this.lookupTypeChange.next(v)),
         tap(_ => this.lookupTypeGroupChange$.next()),
         startWith(this.lookupType),
         pairwise(),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(v => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

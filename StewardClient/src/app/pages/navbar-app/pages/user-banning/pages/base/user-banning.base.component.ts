@@ -30,7 +30,6 @@ export class UserBanningBaseComponent extends BaseComponent {
     this.backgroundJobService
       .getBackgroundJob$<BanResultsUnion[]>(job.jobId)
       .pipe(
-        takeUntil(this.onDestroy$),
         catchError(_error => {
           this.loadError = _error;
           this.isLoading = false;
@@ -52,6 +51,7 @@ export class UserBanningBaseComponent extends BaseComponent {
           this.isLoading = false;
         }),
         retryWhen(errors$ => errors$.pipe(delayWhen(() => timer(3_000)))),
+        takeUntil(this.onDestroy$),
       )
       .subscribe();
   }

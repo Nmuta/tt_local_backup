@@ -39,10 +39,10 @@ export abstract class PlayerAccountInventoryBaseComponent<T extends AccountInven
     );
     getPlayerAccountInventoryByXuid$
       .pipe(
-        takeUntil(this.onDestroy$),
         take(1),
         this.getMonitor.monitorSingleFire(),
         catchError(() => EMPTY),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(accountInventory => {
         this.accountInventory = accountInventory;

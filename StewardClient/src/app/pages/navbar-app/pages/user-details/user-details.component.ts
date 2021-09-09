@@ -113,7 +113,6 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
     this.isProduction = environment.production;
     this.route.queryParamMap
       .pipe(
-        takeUntil(this.onDestroy$),
         filter(params => {
           const lookupName = params.get('lookupName');
           const hasLookupList = !!this.lookupList[0]?.toString();
@@ -128,6 +127,7 @@ export class UserDetailsComponent extends BaseComponent implements OnInit {
 
           return true;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(params => {
         if (params.has('lookupType')) {

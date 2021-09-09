@@ -104,7 +104,6 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
     });
 
     return this.woodstock.postBanPlayersWithBackgroundProcessing$(bans).pipe(
-      takeUntil(this.onDestroy$),
       catchError(error => {
         this.loadError = error;
         this.isLoading = false;
@@ -114,6 +113,7 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
       tap((backgroundJob: BackgroundJob<void>) => {
         this.waitForBackgroundJobToComplete(backgroundJob);
       }),
+      takeUntil(this.onDestroy$),
     );
   }
 

@@ -44,6 +44,7 @@ export abstract class BackstagePassHistoryBaseComponent
           );
         }),
         map(history => sortBy(history, history => history.createdAtUtc).reverse()),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(history => {
         this.backstagePassHistory = history;

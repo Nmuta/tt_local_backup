@@ -33,7 +33,6 @@ export abstract class TicketAppBaseComponent extends BaseComponent implements On
     this.ticketService
       .getForzaTitle$()
       .pipe(
-        takeUntil(this.onDestroy$),
         take(1),
         tap(title => {
           this.gameTitle = title;
@@ -43,13 +42,13 @@ export abstract class TicketAppBaseComponent extends BaseComponent implements On
             );
           }
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe();
 
     this.ticketService
       .getTicketRequestorGamertag$()
       .pipe(
-        takeUntil(this.onDestroy$),
         switchMap(gamertag => {
           this.lookupGamertag = gamertag;
           return this.requestPlayerIdentity$(this.lookupGamertag);
@@ -58,6 +57,7 @@ export abstract class TicketAppBaseComponent extends BaseComponent implements On
         tap(identity => {
           this.playerIdentity = identity;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe();
   }

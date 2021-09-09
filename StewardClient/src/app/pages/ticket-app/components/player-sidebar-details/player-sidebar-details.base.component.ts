@@ -79,7 +79,6 @@ export abstract class PlayerSidebarDetailsBaseComponent<T extends PlayerDetailsU
     const details$ = this.makeRequest$();
     details$
       .pipe(
-        takeUntil(this.onDestroy$),
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
@@ -90,6 +89,7 @@ export abstract class PlayerSidebarDetailsBaseComponent<T extends PlayerDetailsU
           this.isLoading = false;
           this.playerDetails = details;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe();
   }

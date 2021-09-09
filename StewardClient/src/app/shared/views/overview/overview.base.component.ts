@@ -41,13 +41,13 @@ export abstract class ProfileOverviewBaseComponent<T extends ProfileSummaryUnion
     const getProfileSummaryByXuid$ = this.getProfileSummaryByXuid$(this.identity.xuid);
     getProfileSummaryByXuid$
       .pipe(
-        takeUntil(this.onDestroy$),
         take(1),
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(summary => {
         this.isLoading = false;

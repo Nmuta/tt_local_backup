@@ -75,13 +75,13 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
     const getFlagsByXuid$ = this.getFlagsByXuid$(this.identity.xuid);
     getFlagsByXuid$
       .pipe(
-        takeUntil(this.onDestroy$),
         take(1),
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(flags => {
         this.isLoading = false;
@@ -94,7 +94,6 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
   public makeAction$(): Observable<T> {
     const putFlagsByXuid$ = this.putFlagsByXuid$(this.identity.xuid);
     return putFlagsByXuid$.pipe(
-      takeUntil(this.onDestroy$),
       catchError(error => {
         this.isLoading = false;
         this.loadError = error;
@@ -105,6 +104,7 @@ export abstract class UserFlagsBaseComponent<T extends UserFlagsUnion>
         this.currentFlags = value;
         this.setFlagsToCurrent();
       }),
+      takeUntil(this.onDestroy$),
     );
   }
 

@@ -75,13 +75,13 @@ export class LiveOpsKustoComponent extends BaseComponent {
       : this.editKustoQuery$(this.editKustoQueryId, kustoQuery);
     request$
       .pipe(
-        takeUntil(this.onDestroy$),
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
           return EMPTY;
         }),
         take(1),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
         this.isLoading = false;
@@ -103,13 +103,13 @@ export class LiveOpsKustoComponent extends BaseComponent {
     this.kustoService
       .deleteKustoQuery$(this.editKustoQueryId)
       .pipe(
-        takeUntil(this.onDestroy$),
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
           return EMPTY;
         }),
         take(1),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(() => {
         this.isLoading = false;

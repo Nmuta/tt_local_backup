@@ -104,7 +104,6 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
     });
 
     return this.sunrise.postBanPlayersWithBackgroundProcessing$(bans).pipe(
-      takeUntil(this.onDestroy$),
       catchError(error => {
         this.loadError = error;
         this.isLoading = false;
@@ -114,6 +113,7 @@ export class SunriseBanningComponent extends UserBanningBaseComponent {
       tap((backgroundJob: BackgroundJob<void>) => {
         this.waitForBackgroundJobToComplete(backgroundJob);
       }),
+      takeUntil(this.onDestroy$),
     );
   }
 

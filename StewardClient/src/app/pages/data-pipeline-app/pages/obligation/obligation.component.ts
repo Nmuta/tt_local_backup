@@ -91,7 +91,6 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
     this.obligationsService
       .get$(this.options.name)
       .pipe(
-        takeUntil(this.onDestroy$),
         this.getMonitor.monitorSingleFire(),
         map(model => this.apiObligationToObligationOptions(model)),
         catchError(() => {
@@ -99,6 +98,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
           newValue.name = this.options.name;
           return of(newValue);
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(mapped => {
         this.setValue(mapped);
@@ -117,7 +117,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
 
     this.obligationsService
       .put$(this.obligationOptionsToApiObligation(this.options))
-      .pipe(takeUntil(this.onDestroy$), delay(5_000 /*ms*/), this.putMonitor.monitorSingleFire())
+      .pipe(delay(5_000 /*ms*/), this.putMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
         this.onGetClick();
@@ -133,7 +133,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
     this.postMonitor = this.updateMonitors(this.postMonitor);
     this.obligationsService
       .post$(this.obligationOptionsToApiObligation(this.options))
-      .pipe(takeUntil(this.onDestroy$), delay(5_000 /*ms*/), this.postMonitor.monitorSingleFire())
+      .pipe(delay(5_000 /*ms*/), this.postMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
         this.onGetClick();
@@ -149,7 +149,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
     this.createMonitor = this.updateMonitors(this.createMonitor);
     this.obligationsService
       .create$(this.obligationOptionsToApiObligation(this.options))
-      .pipe(takeUntil(this.onDestroy$), delay(5_000 /*ms*/), this.createMonitor.monitorSingleFire())
+      .pipe(delay(5_000 /*ms*/), this.createMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
         this.onGetClick();
@@ -166,7 +166,7 @@ export class DataPipelineObligationComponent extends BaseComponent implements Af
 
     this.obligationsService
       .delete$(this.options.name)
-      .pipe(takeUntil(this.onDestroy$), this.deleteMonitor.monitorSingleFire())
+      .pipe(this.deleteMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(_model => {
         this.clearVerificationCheckboxes();
         this.setValue(cloneDeep(FullObligationInputComponent.defaults));

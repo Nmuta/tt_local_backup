@@ -40,13 +40,13 @@ export abstract class ProfileNotesBaseComponent extends BaseComponent implements
     const getProfileNotesXuid$ = this.getProfileNotesXuid$(this.identity.xuid);
     getProfileNotesXuid$
       .pipe(
-        takeUntil(this.onDestroy$),
         take(1),
         catchError(error => {
           this.isLoading = false;
           this.loadError = error;
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(notes => {
         this.isLoading = false;

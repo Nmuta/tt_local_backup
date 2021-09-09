@@ -69,9 +69,9 @@ export class KustoDataActivitiesComponent
     this.formArray$
       .pipe(
         switchMap(formArray => formArray.valueChanges),
-        takeUntil(this.onDestroy$),
         startWith(this.formArray.value),
         map(value => value as KustoDataActivityBundles),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(this.onChange$);
 

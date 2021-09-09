@@ -113,16 +113,16 @@ export class FullObligationInputComponent
 
     // filter autocomplete when the GET form value is changed or the autocomplete list changes
     this.filteredOptions = this.formControls.name.valueChanges.pipe(
-      takeUntil(this.onDestroy$),
       startWith(''),
       switchMap(v =>
         this.options$.pipe(
-          takeUntil(this.onDestroy$),
           startWith(v),
           map(_ => v),
+          takeUntil(this.onDestroy$),
         ),
       ),
       map(value => this.filterAutocomplete(value)),
+      takeUntil(this.onDestroy$),
     );
   }
 

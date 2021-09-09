@@ -79,12 +79,12 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
 
     setFeaturedStatus$
       .pipe(
-        takeUntil(this.onDestroy$),
         this.postMonitor.monitorSingleFire(),
         catchError(() => EMPTY),
         switchMap(() => {
           return this.getUGCItem$(this.ugcItem.guidId, this.ugcItem.type);
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe((ugcItem: PlayerUGCItem) => {
         this.dialogRef.disableClose = false;
@@ -104,12 +104,12 @@ export abstract class FeatureUGCModalBaseComponent extends BaseComponent {
 
     deleteFeaturedStatus$
       .pipe(
-        takeUntil(this.onDestroy$),
         this.postMonitor.monitorSingleFire(),
         catchError(() => EMPTY),
         switchMap(() => {
           return this.getUGCItem$(this.ugcItem.guidId, this.ugcItem.type);
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe((ugcItem: PlayerUGCItem) => {
         this.dialogRef.disableClose = false;

@@ -83,10 +83,10 @@ export abstract class PlayerInventoryBaseComponent<
   /** Lifecycle hook. */
   public ngOnInit(): void {
     const identityOrProfile$ = combineLatest([this.identity$, this.profileId$]).pipe(
-      takeUntil(this.onDestroy$),
       map(([identity, profileId]) => {
         return { identity: identity, profileId: profileId };
       }),
+      takeUntil(this.onDestroy$),
     );
 
     identityOrProfile$
@@ -111,6 +111,7 @@ export abstract class PlayerInventoryBaseComponent<
           this.error = error;
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(inventory => {
         this.inventory = inventory;

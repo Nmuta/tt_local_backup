@@ -51,7 +51,6 @@ export abstract class PlayerAuctionsBaseComponent
 
     this.getAuctionsByXuid$
       .pipe(
-        takeUntil(this.onDestroy$),
         tap(() => {
           this.isLoading = true;
           this.loadError = undefined;
@@ -66,6 +65,7 @@ export abstract class PlayerAuctionsBaseComponent
             }),
           );
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(results => {
         this.isLoading = false;

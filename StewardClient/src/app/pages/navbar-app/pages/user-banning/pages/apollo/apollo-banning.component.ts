@@ -103,7 +103,6 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
     });
 
     return this.apollo.postBanPlayersWithBackgroundProcessing$(bans).pipe(
-      takeUntil(this.onDestroy$),
       catchError(error => {
         this.loadError = error;
         this.isLoading = false;
@@ -113,6 +112,7 @@ export class ApolloBanningComponent extends UserBanningBaseComponent {
       tap((backgroundJob: BackgroundJob<void>) => {
         this.waitForBackgroundJobToComplete(backgroundJob);
       }),
+      takeUntil(this.onDestroy$),
     );
   }
 

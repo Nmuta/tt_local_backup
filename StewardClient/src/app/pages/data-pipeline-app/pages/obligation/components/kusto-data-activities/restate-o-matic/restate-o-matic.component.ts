@@ -71,9 +71,9 @@ export class RestateOMaticComponent
   private readonly attachedToFormControlValue$: Observable<
     KustoDataActivityOptions
   > = this.attachedToFormControl$.pipe(
-    takeUntil(this.onDestroy$),
     mergeMap(fc => fc?.valueChanges.pipe(startWith(fc.value)) ?? of([null])),
     map(value => value as KustoDataActivityOptions),
+    takeUntil(this.onDestroy$),
   );
 
   /** Sets the attached form control. Used for populating some values. */
@@ -156,8 +156,8 @@ export class RestateOMaticComponent
     // pipe value changes to the parent form
     this.formGroup.valueChanges
       .pipe(
-        takeUntil(this.onDestroy$),
         map(_ => this.formGroup.getRawValue()), // we need to map this to the raw value to include the disabled form controls
+        takeUntil(this.onDestroy$),
       )
       .subscribe(data => this.changeFn(data));
 

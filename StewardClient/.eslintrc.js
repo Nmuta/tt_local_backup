@@ -25,7 +25,7 @@ module.exports = {
       parser: '@typescript-eslint/parser',
       parserOptions: {
         project: [
-          'tsconfig.*?.json',
+          './src/tsconfig.eslint.json',
           // "e2e/tsconfig.json" // we deleted this
         ],
         createDefaultProgram: true,
@@ -37,7 +37,7 @@ module.exports = {
         'prettier/@typescript-eslint',
         'plugin:jsdoc/recommended',
       ],
-      plugins: ['jsdoc'],
+      plugins: ['jsdoc', 'rxjs'],
       rules: {
         /**
          * Any TypeScript related rules you wish to use/reconfigure over and above the
@@ -150,6 +150,11 @@ module.exports = {
             },
           },
         ],
+        /**
+         * RXJS rules.
+         * List of rules: https://yarnpkg.com/package/eslint-plugin-rxjs
+         */
+        'rxjs/no-unsafe-takeuntil': 'error',
       },
       settings: {
         jsdoc: {

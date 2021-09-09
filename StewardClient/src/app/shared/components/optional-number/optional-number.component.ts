@@ -100,7 +100,7 @@ export class OptionalNumberComponent
 
     // when there are unstable changes, update the enabled state of the number control
     this.formGroup.valueChanges
-      .pipe(takeUntil(this.onDestroy$), startWith(this.formGroup.value), pairwise())
+      .pipe(startWith(this.formGroup.value), pairwise(), takeUntil(this.onDestroy$))
       .subscribe(([oldValue, newValue]) => {
         if (!isEqual(oldValue, newValue)) {
           this.syncEnabledState(newValue);
@@ -109,8 +109,8 @@ export class OptionalNumberComponent
 
     this.formGroup.valueChanges
       .pipe(
-        takeUntil(this.onDestroy$),
         map(internalValue => this.makeValue(internalValue)),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(data => this.changeFn(data));
   }

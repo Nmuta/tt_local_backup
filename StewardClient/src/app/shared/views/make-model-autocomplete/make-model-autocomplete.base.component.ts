@@ -45,20 +45,20 @@ export abstract class MakeModelAutocompleteBaseComponent
   public ngOnInit(): void {
     this.getMonitor = new ActionMonitor(this.getMonitor.dispose().label);
     this.getKustoCars$()
-      .pipe(takeUntil(this.onDestroy$), this.getMonitor.monitorSingleFire())
+      .pipe(this.getMonitor.monitorSingleFire(), takeUntil(this.onDestroy$))
       .subscribe(cars => {
         this.makeModelFilterGroups = this.buildMatAutocompleteState(cars);
         this.stateGroupOptions$ = this.formControls.makeModelInput?.valueChanges.pipe(
-          takeUntil(this.onDestroy$),
           startWith(''),
           map(value => this.filterGroup(value)),
+          takeUntil(this.onDestroy$),
         );
       });
 
     this.formGroup.valueChanges
       .pipe(
-        takeUntil(this.onDestroy$),
         map(internal => this.makeValue(internal)),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(data => this.changeFn(data));
   }

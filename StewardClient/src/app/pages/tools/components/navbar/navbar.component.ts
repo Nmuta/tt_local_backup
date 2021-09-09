@@ -71,7 +71,7 @@ export class NavbarComponent extends BaseComponent implements OnInit {
     });
 
     const settings = this.store.selectSnapshot<UserSettingsStateModel>(UserSettingsState);
-    this.settings$.pipe(takeUntil(this.onDestroy$), startWith(settings)).subscribe(settings => {
+    this.settings$.pipe(startWith(settings), takeUntil(this.onDestroy$)).subscribe(settings => {
       const navbarTools = settings.navbarTools || {};
       this.listedTools = chain(environment.tools)
         .filter(tool => !!navbarTools[tool.tool])

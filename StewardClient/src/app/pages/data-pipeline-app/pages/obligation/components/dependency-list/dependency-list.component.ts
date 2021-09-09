@@ -79,9 +79,9 @@ export class DependencyListComponent
       ),
       this.activePipeline.activityNames$.pipe(startWith(this.activePipeline.activityNames)),
     ]).pipe(
-      takeUntil(this.onDestroy$),
       map(([values, activityNames]) => activityNames.filter(an => !values.includes(an))),
       map(activityNames => orderBy(activityNames)),
+      takeUntil(this.onDestroy$),
     );
 
     // pass on updated values to the parent form
@@ -91,8 +91,8 @@ export class DependencyListComponent
     this.formArray$
       .pipe(
         switchMap(formArray => formArray.valueChanges.pipe(startWith(formArray.value))),
-        takeUntil(this.onDestroy$),
         map(value => value as DependencyListOptions),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(this.onChange$);
 

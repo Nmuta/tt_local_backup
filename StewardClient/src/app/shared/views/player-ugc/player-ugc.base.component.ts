@@ -38,7 +38,6 @@ export abstract class PlayerUGCBaseComponent
 
     this.searchUGC$
       .pipe(
-        takeUntil(this.onDestroy$),
         tap(() => {
           this.ugcContent = [];
         }),
@@ -54,6 +53,7 @@ export abstract class PlayerUGCBaseComponent
             catchError(() => EMPTY),
           );
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(results => {
         this.ugcContent = results;

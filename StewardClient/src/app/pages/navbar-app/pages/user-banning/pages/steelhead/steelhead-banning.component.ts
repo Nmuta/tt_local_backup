@@ -106,7 +106,6 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
     });
 
     return this.steelhead.postBanPlayersWithBackgroundProcessing$(bans).pipe(
-      takeUntil(this.onDestroy$),
       catchError(error => {
         this.loadError = error;
         this.isLoading = false;
@@ -116,6 +115,7 @@ export class SteelheadBanningComponent extends UserBanningBaseComponent {
       tap((backgroundJob: BackgroundJob<void>) => {
         this.waitForBackgroundJobToComplete(backgroundJob);
       }),
+      takeUntil(this.onDestroy$),
     );
   }
 

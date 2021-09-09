@@ -27,8 +27,8 @@ export class SunriseUGCTableComponent extends UGCTableBaseComponent implements O
       })
       .afterClosed()
       .pipe(
-        takeUntil(this.onDestroy$),
         filter(data => !!data),
+        takeUntil(this.onDestroy$),
       )
       .subscribe((response: PlayerUGCItem) => {
         const updatedData = this.ugcTableDataSource.data;

@@ -71,7 +71,6 @@ export abstract class GiftHistoryResultsBaseComponent<
   public ngOnInit(): void {
     this.getGiftHistory$
       .pipe(
-        takeUntil(this.onDestroy$),
         tap(() => {
           this.giftHistoryList = undefined;
           this.loadError = undefined;
@@ -106,6 +105,7 @@ export abstract class GiftHistoryResultsBaseComponent<
           });
           return of(giftHistoriesView);
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(giftHistories => {
         this.isLoading = false;

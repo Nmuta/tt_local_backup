@@ -37,8 +37,8 @@ export class StewardAppBaseComponent extends BaseComponent implements OnInit {
   private registerSidebarStateMachine() {
     this.router.events
       .pipe(
-        takeUntil(this.onDestroy$),
         filter(e => e instanceof RoutesRecognized),
+        takeUntil(this.onDestroy$),
       )
       .subscribe((e: RoutesRecognized) => this.setSidebarState(e.state.root));
   }

@@ -63,7 +63,6 @@ export class KustoQuerySelectionComponent extends BaseComponent implements OnIni
     this.kustoService
       .getKustoQueries$()
       .pipe(
-        takeUntil(this.onDestroy$),
         take(1),
         catchError(error => {
           this.isLoading = false;
@@ -71,14 +70,15 @@ export class KustoQuerySelectionComponent extends BaseComponent implements OnIni
           this.querySelectionForm.markAllAsTouched();
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(response => {
         this.isLoading = false;
         this.queryGroups = this.buildMatAutocompleteState(response);
         this.stateGroupOptions$ = this.querySelectionForm.get('queryInput')?.valueChanges.pipe(
-          takeUntil(this.onDestroy$),
           startWith(''),
           map(value => this.filterGroup(value)),
+          takeUntil(this.onDestroy$),
         );
       });
   }

@@ -76,7 +76,6 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
   public ngOnInit(): void {
     this.identity$
       .pipe(
-        takeUntil(this.onDestroy$),
         tap(_ => {
           this.profiles = [];
           this.error = null;
@@ -91,6 +90,7 @@ export abstract class PlayerInventoryProfilesPickerBaseComponent<
           ),
         ),
         map(profiles => sortBy(profiles, profile => profile.isCurrent).reverse()),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(profiles => {
         this.profiles = (profiles as unknown) as AcceptableInventoryProfileTypesIntersection[];

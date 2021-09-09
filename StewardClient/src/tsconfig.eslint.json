@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "baseUrl": "./",
+    "types": ["node", "jasmine"]
+  },
+  "files": ["main.ts", "polyfills.ts", "app/shared/interceptors/fake-api/fake-api.interceptor.ts"],
+  "include": ["**/*.ts"],
+  "exclude": ["./test.ts", "**/*.mock.ts", "**/*.d.ts"]
+}

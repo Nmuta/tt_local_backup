@@ -40,13 +40,13 @@ export abstract class BanHistoryBaseComponent extends BaseComponent implements O
     const getBanHistoryByXuid$ = this.getBanHistoryByXuid$(this.xuid);
     getBanHistoryByXuid$
       .pipe(
-        takeUntil(this.onDestroy$),
         take(1),
         catchError(error => {
           this.isLoading = false;
           this.loadError = error; // TODO: Display something useful to the user
           return EMPTY;
         }),
+        takeUntil(this.onDestroy$),
       )
       .subscribe(banHistory => {
         this.isLoading = false;

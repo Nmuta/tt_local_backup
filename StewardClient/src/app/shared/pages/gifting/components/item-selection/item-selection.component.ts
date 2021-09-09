@@ -67,9 +67,9 @@ export class ItemSelectionComponent extends BaseComponent implements OnChanges {
     if (!!this.masterInventory) {
       this.inventoryItemGroups = this.buildMatAutocompleteState();
       this.stateGroupOptions$ = this.itemSelectionForm.get('itemInput')?.valueChanges.pipe(
-        takeUntil(this.onDestroy$),
         startWith(''),
         map(value => this.filterGroup(value)),
+        takeUntil(this.onDestroy$),
       );
     }
   }

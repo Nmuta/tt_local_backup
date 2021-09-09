@@ -27,8 +27,8 @@ export class WoodstockUGCTableComponent extends UGCTableBaseComponent implements
       })
       .afterClosed()
       .pipe(
-        takeUntil(this.onDestroy$),
         filter(data => !!data),
+        takeUntil(this.onDestroy$),
       )
       .subscribe((response: PlayerUGCItem) => {
         const updatedData = this.ugcTableDataSource.data;
