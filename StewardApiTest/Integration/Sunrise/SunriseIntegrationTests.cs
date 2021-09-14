@@ -1972,6 +1972,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
                 IsUltimateVip = true,
                 IsTurn10Employee = false,
                 IsUnderReview = false,
+                NeedsStatisticsRepaired = false,
                 IsEarlyAccess = false
             };
         }

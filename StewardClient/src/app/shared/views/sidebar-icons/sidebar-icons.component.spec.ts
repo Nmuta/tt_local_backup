@@ -12,6 +12,7 @@ import { SidebarIconsComponent } from './sidebar-icons.component';
 import { environment } from '@environments/environment';
 import { SetAppVersion } from '@shared/state/user-settings/user-settings.actions';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -30,6 +31,7 @@ describe('SidebarIconsComponent', () => {
           RouterTestingModule.withRoutes([]),
           HttpClientTestingModule,
           NgxsModule.forRoot([UserSettingsState]),
+          MatMenuModule,
           MatDialogModule,
           BrowserAnimationsModule,
         ],

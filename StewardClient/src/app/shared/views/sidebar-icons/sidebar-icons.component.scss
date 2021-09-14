@@ -1,0 +1,6 @@
+@import '/src/styles/mixins';
+
+.mat-menu-trigger {
+  padding: 0;
+  min-width: $gap-medium + $gap-medium;
+}

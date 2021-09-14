@@ -97,6 +97,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tools/tools-app.module').then(m => m.ToolsAppModule),
   },
   {
+    path: 'external',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./shared/pages/external-redirect/external-redirect.module').then(
+        m => m.ExternalRedirectModule,
+      ),
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule),
   },
