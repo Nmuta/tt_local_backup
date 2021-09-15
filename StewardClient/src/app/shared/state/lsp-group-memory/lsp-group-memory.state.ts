@@ -21,7 +21,6 @@ export class LspGroupMemoryModel {
   public [GameTitleCodeName.FH5]: LspGroup[];
 }
 
-@Injectable()
 @State<LspGroupMemoryModel>({
   name: 'lspGroupMemory',
   defaults: {
@@ -31,6 +30,7 @@ export class LspGroupMemoryModel {
     [GameTitleCodeName.FH5]: [],
   },
 })
+@Injectable()
 /** Defines the lsp group memoty state. */
 export class LspGroupMemoryState {
   constructor(

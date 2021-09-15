@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute, ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { createMockMsalService } from '@mocks/msal.service.mock';
+import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
@@ -36,7 +36,11 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([]), RouterTestingModule.withRoutes([])],
       declarations: [LoginComponent],
-      providers: [createMockMsalService(), createMockLoggerService(), createMockWindowService()],
+      providers: [
+        ...createMockMsalServices(),
+        createMockLoggerService(),
+        createMockWindowService(),
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

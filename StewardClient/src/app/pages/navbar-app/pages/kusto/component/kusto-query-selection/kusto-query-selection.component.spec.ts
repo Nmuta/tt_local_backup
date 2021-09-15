@@ -5,16 +5,19 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormBuilder, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { KustoQuerySelectionComponent } from './kusto-query-selection.component';
+import { KustoQueryGroup, KustoQuerySelectionComponent } from './kusto-query-selection.component';
 import faker from 'faker';
 import { KustoQuery } from '@models/kusto';
 import { GameTitleCodeName } from '@models/enums';
+import { createMockKustoService, KustoService } from '@services/kusto';
+import { of, throwError } from 'rxjs';
 
 describe('KustoQuerySelectionComponent', () => {
   let fixture: ComponentFixture<KustoQuerySelectionComponent>;
   let component: KustoQuerySelectionComponent;
 
   const formBuilder: FormBuilder = new FormBuilder();
+  let mockKustoService: KustoService;
 
   beforeEach(
     waitForAsync(() => {
@@ -28,16 +31,69 @@ describe('KustoQuerySelectionComponent', () => {
         ],
         declarations: [KustoQuerySelectionComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [{ provide: FormBuilder, useValue: formBuilder }],
+        providers: [{ provide: FormBuilder, useValue: formBuilder }, createMockKustoService()],
       }).compileComponents();
 
       fixture = TestBed.createComponent(KustoQuerySelectionComponent);
       component = fixture.debugElement.componentInstance;
+      mockKustoService = TestBed.inject(KustoService);
     }),
   );
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Method: ngOnInit', () => {
+    describe('When kustoService.getKustoQueries$() returns valid data', () => {
+      const query: KustoQuery = {
+        id: faker.datatype.uuid(),
+        name: faker.random.word(),
+        query: faker.random.word(),
+        title: GameTitleCodeName.FH4,
+      };
+
+      const queryGroup = {
+        category: faker.random.word(),
+        items: [],
+      };
+
+      beforeEach(() => {
+        mockKustoService.getKustoQueries$ = jasmine
+          .createSpy('getKustoQueries$')
+          .and.returnValue(of([query] as KustoQuery[]));
+        component.buildMatAutocompleteState = jasmine
+          .createSpy('buildMatAutocompleteState')
+          .and.returnValue([queryGroup] as KustoQueryGroup[]);
+      });
+
+      it('should build dropdown properties', () => {
+        component.ngOnInit();
+
+        expect(component.buildMatAutocompleteState).toHaveBeenCalledWith([query]);
+        expect(component.queryGroups).toEqual([queryGroup]);
+      });
+    });
+
+    describe('When kustoService.getKustoQueries$() throws error', () => {
+      const error = 'Test error';
+
+      beforeEach(() => {
+        mockKustoService.getKustoQueries$ = jasmine
+          .createSpy('getKustoQueries$')
+          .and.returnValue(throwError(error));
+        component.querySelectionForm.markAllAsTouched = jasmine.createSpy(
+          'querySelectionForm.markAllAsTouched',
+        );
+      });
+
+      it('should handle error', () => {
+        component.ngOnInit();
+
+        expect(component.loadError).toEqual(error);
+        expect(component.querySelectionForm.markAllAsTouched).toHaveBeenCalled();
+      });
+    });
   });
 
   describe('Method: addItemEmit', () => {

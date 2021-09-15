@@ -15,15 +15,15 @@ export class ApolloGiftHistoryStateModel {
 }
 
 /** Defines the apollo gift history page state. */
-@Injectable({
-  providedIn: 'root',
-})
 @State<Partial<ApolloGiftHistoryStateModel>>({
   name: 'apolloGiftHistory',
   defaults: {
     selectedPlayerIdentities: [],
     selectedMatIndex: 0,
   },
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class ApolloGiftHistoryState {
   /** Sets the gift history page's selected player identities. */

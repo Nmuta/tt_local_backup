@@ -15,15 +15,15 @@ export class WoodstockGiftHistoryStateModel {
 }
 
 /** Defines the woodstock gift history page state. */
-@Injectable({
-  providedIn: 'root',
-})
 @State<Partial<WoodstockGiftHistoryStateModel>>({
   name: 'woodstockGiftHistory',
   defaults: {
     selectedPlayerIdentities: [],
     selectedMatIndex: 0,
   },
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class WoodstockGiftHistoryState {
   /** Sets the gift history page's selected player identities. */

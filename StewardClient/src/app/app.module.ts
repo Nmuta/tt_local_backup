@@ -2,7 +2,18 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, Provider } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
+import {
+  MsalBroadcastService,
+  MsalGuard,
+  MsalGuardConfiguration,
+  MsalInterceptor,
+  MsalInterceptorConfiguration,
+  MsalModule,
+  MsalService,
+  MSAL_GUARD_CONFIG,
+  MSAL_INSTANCE,
+  MSAL_INTERCEPTOR_CONFIG,
+} from '@azure/msal-angular';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCopy, faUser } from '@fortawesome/free-solid-svg-icons';
 import { BigNumberInterceptor } from '@interceptors/bigint.interceptor';
@@ -16,7 +27,7 @@ import { AccessTokenInterceptor } from '@shared/interceptors/access-token.interc
 import { FourOhFourModule } from '@shared/views/four-oh-four/four-oh-four.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { environment } from '../environments/environment';
+import { environment, SecondaryAADScopes, AllAADScopes } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
@@ -44,7 +55,6 @@ import { AvailableAppsModule } from '@shared/views/available-apps/available-apps
 import { StoreForeverStrategy } from '@helpers/route-reuse-strategy/store-forever-strategy';
 import { RouteReuseStrategy } from '@angular/router';
 import { HubsModule } from '@shared/hubs/hubs.module';
-import { StagingRewriteInterceptor } from '@interceptors/staging-rewrite.interceptor';
 import { SteelheadGiftingState } from '@shared/pages/gifting/steelhead/state/steelhead-gifting.state';
 import { SteelheadGiftHistoryState } from '@navbar-app/pages/gift-history/steelhead/state/steelhead-gift-history.state';
 import { USER_GUARD_PROVIDERS } from './route-guards/user-role.guards';
@@ -52,11 +62,11 @@ import { WoodstockGiftingState } from '@shared/pages/gifting/woodstock/state/woo
 import { WoodstockGiftHistoryState } from '@navbar-app/pages/gift-history/woodstock/state/woodstock-gift-history.state';
 import { MatLuxonDateModule } from 'ngx-material-luxon';
 import { LuxonModule } from 'luxon-angular';
-import { EndpointSelectionInterceptor } from '@interceptors/endpoint-selection.interceptor';
-
-const protectedResourceMap: [string, string[]][] = [
-  ['https://graph.microsoft.com/v1.0/me', ['user.read']],
-];
+import {
+  InteractionType,
+  IPublicClientApplication,
+  PublicClientApplication,
+} from '@azure/msal-browser';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -72,6 +82,43 @@ function fakeApiOrNothing(): Provider[] {
       multi: true,
     },
   ];
+}
+
+export function MSALInstanceFactory(): IPublicClientApplication {
+  return new PublicClientApplication({
+    auth: {
+      clientId: environment.azureAppId,
+      authority: 'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/',
+      navigateToLoginRequestUrl: false,
+      redirectUri: `${environment.stewardUiUrl}/auth/aad-login`,
+      postLogoutRedirectUri: `${environment.stewardUiUrl}/auth/aad-logout`,
+    },
+    cache: {
+      cacheLocation: 'localStorage',
+      storeAuthStateInCookie: false, // set to true for IE 11
+    },
+  });
+}
+
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+  const protectedResourceMap = new Map<string, Array<string>>();
+  protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', [SecondaryAADScopes.UserRead]); // Prod environment. Uncomment to use.
+  // protectedResourceMap.set('https://graph.microsoft-ppe.com/v1.0/me', [ SecondaryAADScopes.UserRead ]);
+
+  return {
+    interactionType: InteractionType.Redirect,
+    protectedResourceMap,
+  };
+}
+
+export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+  return {
+    interactionType: InteractionType.Popup,
+    authRequest: {
+      scopes: AllAADScopes,
+    },
+    loginFailedRoute: '/login-failed',
+  };
 }
 
 /** Defines the app module. */
@@ -116,31 +163,27 @@ function fakeApiOrNothing(): Provider[] {
     ),
     NgxsStoragePluginModule.forRoot({ key: [UserSettingsState, UserState] }),
     NgxsRouterPluginModule.forRoot(),
-    MsalModule.forRoot(
-      {
-        auth: {
-          clientId: environment.azureAppId,
-          authority: 'https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/',
-          navigateToLoginRequestUrl: false,
-          redirectUri: `${environment.stewardUiUrl}/auth/aad-login`,
-          postLogoutRedirectUri: `${environment.stewardUiUrl}/auth/aad-logout`,
-        },
-        cache: {
-          cacheLocation: 'localStorage',
-          storeAuthStateInCookie: false, // set to true for IE 11
-        },
-      },
-      {
-        popUp: false,
-        consentScopes: ['user.read', 'openid', 'profile', environment.azureAppScope],
-        unprotectedResources: [],
-        protectedResourceMap,
-        extraQueryParameters: {},
-      },
-    ),
+    MsalModule,
   ],
   providers: [
     ZafClientService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
+      multi: true,
+    },
+    {
+      provide: MSAL_INSTANCE,
+      useFactory: MSALInstanceFactory,
+    },
+    {
+      provide: MSAL_GUARD_CONFIG,
+      useFactory: MSALGuardConfigFactory,
+    },
+    {
+      provide: MSAL_INTERCEPTOR_CONFIG,
+      useFactory: MSALInterceptorConfigFactory,
+    },
     {
       provide: ApplicationInsights,
       useFactory: () => {
@@ -152,6 +195,9 @@ function fakeApiOrNothing(): Provider[] {
       },
       multi: false,
     },
+    MsalService,
+    MsalGuard,
+    MsalBroadcastService,
     LoggerService,
     { provide: RouteReuseStrategy, useClass: StoreForeverStrategy },
     Clipboard,
@@ -159,12 +205,7 @@ function fakeApiOrNothing(): Provider[] {
     ...USER_GUARD_PROVIDERS,
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: StagingRewriteInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: EndpointSelectionInterceptor,
+      useClass: MsalInterceptor,
       multi: true,
     },
     {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
-import { environment } from '@environments/environment';
+import { AllAADScopes, environment } from '@environments/environment';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { Select, Store } from '@ngxs/store';
@@ -46,12 +46,14 @@ export class LoginComponent implements OnInit {
       this.store.selectSnapshot<boolean>(UserSettingsState.enableStagingApi) &&
       location?.origin === environment.stewardUiStagingUrl;
     try {
-      await this.msalService.loginPopup({
-        extraScopesToConsent: [environment.azureAppScope],
-        redirectUri: `${
-          useStaging ? environment.stewardUiStagingUrl : environment.stewardUiUrl
-        }/auth/aad-login`,
-      });
+      await this.msalService
+        .loginPopup({
+          scopes: AllAADScopes,
+          redirectUri: `${
+            useStaging ? environment.stewardUiStagingUrl : environment.stewardUiUrl
+          }/auth/aad-login`,
+        })
+        .toPromise();
 
       await this.store.dispatch(new RecheckAuth()).toPromise();
 

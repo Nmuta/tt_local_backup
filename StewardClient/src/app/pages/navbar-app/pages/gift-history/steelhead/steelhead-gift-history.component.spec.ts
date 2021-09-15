@@ -2,13 +2,16 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { createMockMsalService } from '@mocks/msal.service.mock';
+import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
 import { SteelheadGiftHistoryComponent } from './steelhead-gift-history.component';
 import { SteelheadGiftHistoryState } from './state/steelhead-gift-history.state';
 import { SetSteelheadGiftHistoryMatTabIndex } from './state/steelhead-gift-history.state.actions';
+import { faker } from '@interceptors/fake-api/utility';
+import { of } from 'rxjs';
+import { IdentityResultAlphaBatch } from '@models/identity-query.model';
 
 describe('SteelheadGiftHistoryComponent', () => {
   let component: SteelheadGiftHistoryComponent;
@@ -26,7 +29,7 @@ describe('SteelheadGiftHistoryComponent', () => {
         ],
         declarations: [SteelheadGiftHistoryComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockMsalService(), createMockLoggerService()],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
       }).compileComponents();
 
       fixture = TestBed.createComponent(SteelheadGiftHistoryComponent);
@@ -38,6 +41,30 @@ describe('SteelheadGiftHistoryComponent', () => {
   );
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('Method: ngOnInit', () => {
+    describe('When selectedPlayerIdentities$ outputs a selection', () => {
+      const gamertag = faker.random.word();
+
+      beforeEach(() => {
+        Object.defineProperty(component, 'selectedPlayerIdentities$', { writable: true });
+        component.selectedPlayerIdentities$ = of([
+          {
+            query: null,
+            gamertag: gamertag,
+          },
+        ] as IdentityResultAlphaBatch);
+      });
+
+      it('should set selected player', () => {
+        component.ngOnInit();
+
+        expect(component.selectedPlayer).not.toBeUndefined();
+        expect(component.selectedPlayer).not.toBeNull();
+        expect(component.selectedPlayer.gamertag).toEqual(gamertag);
+      });
+    });
   });
 
   describe('Method: matTabSelectionChange', () => {

@@ -14,7 +14,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Store, NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
 import { LogoutUser } from '@shared/state/user/user.actions';
 import { of } from 'rxjs';
 import { UserModel } from '@models/user.model';
@@ -40,7 +40,11 @@ describe('ProfileComponent', () => {
         ],
         declarations: [ProfileComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockWindowService(), createMockMsalService(), createMockLoggerService()],
+        providers: [
+          createMockWindowService(),
+          ...createMockMsalServices(),
+          createMockLoggerService(),
+        ],
       }).compileComponents();
 
       const injector = getTestBed();

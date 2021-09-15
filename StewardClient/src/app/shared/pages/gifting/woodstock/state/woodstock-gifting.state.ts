@@ -18,9 +18,6 @@ export class WoodstockGiftingStateModel {
 }
 
 /** Defines the woodstock gifting page state. */
-@Injectable({
-  providedIn: 'root',
-})
 @State<WoodstockGiftingStateModel>({
   name: 'woodstockGifting',
   defaults: {
@@ -28,6 +25,9 @@ export class WoodstockGiftingStateModel {
     selectedMatIndex: 0,
     giftBasket: [],
   },
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class WoodstockGiftingState {
   /** Sets the gifting page's selected player identities. */

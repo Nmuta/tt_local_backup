@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
 import { createMockWindowService } from '@services/window';
 import { createMockZendeskService } from '@services/zendesk';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
@@ -39,7 +39,7 @@ describe('SidebarIconsComponent', () => {
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           createMockWindowService(),
-          createMockMsalService(),
+          ...createMockMsalServices(),
           createMockZendeskService(),
           createMockLoggerService(),
         ],

@@ -11,14 +11,14 @@ export class GravityGiftHistoryStateModel {
 }
 
 /** Defines the gravity gift history page state. */
-@Injectable({
-  providedIn: 'root',
-})
 @State<GravityGiftHistoryStateModel>({
   name: 'gravityGiftHistory',
   defaults: {
     selectedPlayerIdentities: [],
   },
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class GravityGiftHistoryState {
   /** Sets the gift history page's selected player identities. */

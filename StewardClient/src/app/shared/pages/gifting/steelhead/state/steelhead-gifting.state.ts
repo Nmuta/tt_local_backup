@@ -18,9 +18,6 @@ export class SteelheadGiftingStateModel {
 }
 
 /** Defines the steelhead gifting page state. */
-@Injectable({
-  providedIn: 'root',
-})
 @State<Partial<SteelheadGiftingStateModel>>({
   name: 'steelheadGifting',
   defaults: {
@@ -28,6 +25,9 @@ export class SteelheadGiftingStateModel {
     selectedMatIndex: 0,
     giftBasket: [],
   },
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class SteelheadGiftingState {
   /** Sets the gifting page's selected player identities. */

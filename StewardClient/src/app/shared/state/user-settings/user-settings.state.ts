@@ -43,9 +43,6 @@ const defaultEndpointKey = {
 };
 
 /** Defines the current users' settings. */
-@Injectable({
-  providedIn: 'root',
-})
 @State<UserSettingsStateModel>({
   name: 'userSettings',
   defaults: {
@@ -59,6 +56,9 @@ const defaultEndpointKey = {
     steelheadEndpointKey: defaultEndpointKey.steelhead,
     showAppUpdatePopup: true,
   },
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class UserSettingsState {
   /** Sets the state of the current API. */

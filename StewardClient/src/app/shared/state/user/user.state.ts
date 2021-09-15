@@ -1,5 +1,11 @@
-import { Injectable } from '@angular/core';
-import { MsalService } from '@azure/msal-angular';
+import { Inject, Injectable } from '@angular/core';
+import { MsalBroadcastService, MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import {
+  EventMessage,
+  EventType,
+  IPublicClientApplication,
+  PopupRequest,
+} from '@azure/msal-browser';
 import { environment } from '@environments/environment';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
@@ -16,7 +22,7 @@ import {
 import { LoggerService, LogTopic } from '@services/logger';
 import { WindowService } from '@services/window';
 import { UserService } from '@shared/services/user';
-import { clone, cloneDeep } from 'lodash';
+import { clone, cloneDeep, first as _first } from 'lodash';
 import { concat, from, Observable, of, throwError } from 'rxjs';
 import { catchError, filter, first, map, switchMap, take, tap, timeout } from 'rxjs/operators';
 import { UserSettingsState } from '../user-settings/user-settings.state';
@@ -39,7 +45,6 @@ import { UserStateModel } from './user.state.model';
  * Defines the user state.
  * Manages information about a user's identity and their roles.
  */
-@Injectable()
 @State<UserStateModel>({
   name: 'user',
   defaults: {
@@ -50,15 +55,33 @@ import { UserStateModel } from './user.state.model';
     accessToken: undefined,
   },
 })
+@Injectable()
 export class UserState {
   constructor(
     private readonly userService: UserService,
-    private readonly authService: MsalService,
+    private readonly broadcastService: MsalBroadcastService,
+    private readonly msalService: MsalService,
+    @Inject(MSAL_INSTANCE) private readonly msalClientApp: IPublicClientApplication,
     private readonly logger: LoggerService,
     private readonly store: Store,
     private readonly windowService: WindowService,
     private readonly actions$: Actions,
-  ) {}
+  ) {
+    // if we have an account in the cache, set it as the active account (may be an issue if there's more than one?)
+    const accounts = this.msalClientApp.getAllAccounts();
+    const firstAccount = _first(accounts);
+    if (firstAccount) {
+      this.msalClientApp.setActiveAccount(firstAccount);
+    }
+
+    // when a popup flow completes, update the active account
+    this.broadcastService.msalSubject$
+      .pipe(filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS))
+      .subscribe(event => {
+        const popupRequest = event.payload as PopupRequest;
+        this.msalClientApp.setActiveAccount(popupRequest.account);
+      });
+  }
 
   /** Logs out the current user and directs them to the auth page. */
   @Action(LogoutUser, { cancelUncompleted: true })
@@ -128,7 +151,7 @@ export class UserState {
       return of();
     }
 
-    const isLoggedIn = !!this.authService.getAccount();
+    const isLoggedIn = !!this.msalClientApp.getActiveAccount();
     if (!isLoggedIn) {
       this.logger.log(
         [LogTopic.AuthInterception],
@@ -148,7 +171,7 @@ export class UserState {
       this.store.selectSnapshot<boolean>(UserSettingsState.enableStagingApi) &&
       location?.origin === environment.stewardUiStagingUrl;
     return from(
-      this.authService.acquireTokenSilent({
+      this.msalService.acquireTokenSilent({
         scopes: [environment.azureAppScope],
         redirectUri: `${
           useStaging ? environment.stewardUiStagingUrl : environment.stewardUiUrl
@@ -260,7 +283,10 @@ export class UserState {
   /** Sets the live ops secondary role to the returned profile's role property. */
   private static useSecondaryRoleIfAllowed(profile: UserModel): UserModel {
     const clonedProfile = cloneDeep(profile); // Clone required, selectors can mutate local storage of referenced state object
-    if (clonedProfile.role === UserRole.LiveOpsAdmin && !!clonedProfile.liveOpsAdminSecondaryRole) {
+    if (
+      clonedProfile?.role === UserRole.LiveOpsAdmin &&
+      !!clonedProfile?.liveOpsAdminSecondaryRole
+    ) {
       clonedProfile.role = profile.liveOpsAdminSecondaryRole;
     }
 

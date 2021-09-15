@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
 import { of } from 'rxjs';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { SunrisePlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/sunrise/player/gamertag/details';
@@ -30,7 +30,7 @@ describe('SunrisePlayerSidebarDetailsComponent', () => {
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           createMockWindowService(),
-          createMockMsalService(),
+          ...createMockMsalServices(),
           createMockSunriseService(),
           createMockLoggerService(),
         ],

@@ -16,15 +16,15 @@ export class GravityGiftingStateModel {
 }
 
 /** Defines the gravity gifting page state. */
-@Injectable({
-  providedIn: 'root',
-})
 @State<GravityGiftingStateModel>({
   name: 'gravityGifting',
   defaults: {
     selectedPlayerIdentities: [],
     giftBasket: [],
   },
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class GravityGiftingState {
   /** Sets the gifting page's selected player identities. */

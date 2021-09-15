@@ -1,7 +1,8 @@
 // file of standardized color aliases
+@use '~@angular/material' as mat;
 @import './theme.scss';
 
-$table-tr-hover: mat-color($app-background, 100);
-$table-tr-active: mat-color($app-background, 200);
+$table-tr-hover: mat.get-color-from-palette($app-background, 100);
+$table-tr-active: mat.get-color-from-palette($app-background, 200);
 $table-row-separator: rgb(197, 197, 197);
 $sidebar-background: rgb(247 247 247 / 87%);

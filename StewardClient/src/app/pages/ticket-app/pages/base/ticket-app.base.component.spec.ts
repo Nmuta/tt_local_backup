@@ -17,7 +17,7 @@ import { createMockZendeskService, TicketService } from '@shared/services/zendes
 
 // State
 import { UserState } from '@shared/state/user/user.state';
-import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { of } from 'rxjs';
 import { GameTitleCodeName } from '@models/enums';
@@ -46,7 +46,7 @@ describe('TicketAppBaseComponent', () => {
           createMockZendeskService(),
           createMockScrutineerDataParser(),
           createMockClipboard(),
-          createMockMsalService(),
+          ...createMockMsalServices(),
           createMockLoggerService(),
         ],
       }).compileComponents();

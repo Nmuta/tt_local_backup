@@ -2,10 +2,11 @@ import { LogLevel } from '@services/logger/log-level';
 import { cloneDeep } from 'lodash';
 import { overrideExternalTools, externalToolUrls } from './app-data/external-tool-urls';
 import { unprocessedToolList } from './app-data/tool-list';
-
+import { AllSecondaryAADScopes } from './app-data/aad';
 import { StewardEnvironment } from './steward-environment';
 
 export * from './app-data/tool-list';
+export * from './app-data/aad';
 
 /** Deployed to Dev */
 export const environment: StewardEnvironment = {
@@ -29,3 +30,5 @@ export const environment: StewardEnvironment = {
   },
   tools: overrideExternalTools(cloneDeep(unprocessedToolList), externalToolUrls.dev),
 };
+
+export const AllAADScopes: string[] = [...AllSecondaryAADScopes, environment.azureAppScope];

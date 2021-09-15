@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MsalService } from '@azure/msal-angular';
 import { environment } from '@environments/environment';
-import { createMockMsalService } from '@mocks/msal.service.mock';
+import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { Navigate } from '@ngxs/router-plugin';
 import { NgxsModule, Store } from '@ngxs/store';
 import {
@@ -25,7 +25,7 @@ describe('LogoutComponent:', () => {
     await TestBed.configureTestingModule({
       imports: [NgxsModule.forRoot([])],
       declarations: [LogoutComponent],
-      providers: [createMockMsalService(), createMockWindowService()],
+      providers: [...createMockMsalServices(), createMockWindowService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

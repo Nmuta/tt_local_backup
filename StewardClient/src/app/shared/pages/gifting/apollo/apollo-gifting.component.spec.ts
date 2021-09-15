@@ -2,10 +2,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { createMockMsalService } from '@mocks/msal.service.mock';
+import { faker } from '@interceptors/fake-api/utility';
+import { createMockMsalServices } from '@mocks/msal.service.mock';
+import { UserRole } from '@models/enums';
+import { IdentityResultAlpha, IdentityResultAlphaBatch } from '@models/identity-query.model';
+import { UserModel } from '@models/user.model';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
+import { of } from 'rxjs';
 import { ApolloGiftingComponent } from './apollo-gifting.component';
 import { ApolloGiftingState } from './state/apollo-gifting.state';
 import { SetApolloGiftingMatTabIndex } from './state/apollo-gifting.state.actions';
@@ -26,7 +31,7 @@ describe('ApolloGiftingComponent', () => {
         ],
         declarations: [ApolloGiftingComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockMsalService(), createMockLoggerService()],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
       }).compileComponents();
 
       fixture = TestBed.createComponent(ApolloGiftingComponent);
@@ -50,22 +55,35 @@ describe('ApolloGiftingComponent', () => {
     });
   });
 
-  // describe('Method: onPlayerIdentitiesChange', () => {
-  //   let event: IdentityResultAlphaBatch;
-  //   beforeEach(() => {
-  //     event = [
-  //       {
-  //         query: undefined,
-  //         xuid: new BigNumber(123456789),
-  //       },
-  //     ];
-  //   });
-  //   it('should displatch SetApolloGiftingSelectedPlayerIdentities with correct data', () => {
-  //     component.onPlayerIdentitiesChange(event);
+  describe('Method: ngOnInit', () => {
+    beforeEach(() => {
+      mockStore.selectSnapshot = jasmine.createSpy('selectSnapshot').and.returnValue({
+        emailAddress: faker.internet.email(),
+        role: UserRole.LiveOpsAdmin,
+        name: faker.random.word(),
+        objectId: faker.datatype.uuid(),
+      } as UserModel);
+    });
 
-  //     expect(mockStore.dispatch).toHaveBeenCalledWith(
-  //       new SetApolloGiftingSelectedPlayerIdentities(event),
-  //     );
-  //   });
-  // });
+    describe('When selectedPlayerIdentities$ outputs a selection', () => {
+      const gamertag = faker.random.word();
+      const identity: IdentityResultAlpha = {
+        query: null,
+        gamertag: gamertag,
+      };
+
+      beforeEach(() => {
+        Object.defineProperty(component, 'selectedPlayerIdentities$', { writable: true });
+        component.selectedPlayerIdentities$ = of([identity] as IdentityResultAlphaBatch);
+      });
+
+      it('should set selected player', () => {
+        component.ngOnInit();
+
+        expect(component.selectedPlayerIdentities).not.toBeUndefined();
+        expect(component.selectedPlayerIdentities.length).toEqual(1);
+        expect(component.selectedPlayerIdentities[0].gamertag).toEqual(gamertag);
+      });
+    });
+  });
 });

@@ -15,15 +15,15 @@ export class SunriseGiftHistoryStateModel {
 }
 
 /** Defines the sunrise gift history page state. */
-@Injectable({
-  providedIn: 'root',
-})
 @State<Partial<SunriseGiftHistoryStateModel>>({
   name: 'sunriseGiftHistory',
   defaults: {
     selectedPlayerIdentities: [],
     selectedMatIndex: 0,
   },
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class SunriseGiftHistoryState {
   /** Sets the gift history page's selected player identities. */

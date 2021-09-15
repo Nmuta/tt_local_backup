@@ -33,7 +33,6 @@ export class MasterInventoryListMemoryModel {
   public [GameTitleCodeName.FH5]: WoodstockMasterInventory;
 }
 
-@Injectable()
 @State<MasterInventoryListMemoryModel>({
   name: 'giftingMasterListMemory',
   defaults: {
@@ -44,6 +43,7 @@ export class MasterInventoryListMemoryModel {
     [GameTitleCodeName.FH5]: undefined,
   },
 })
+@Injectable()
 /** Defines the lsp group memoty state. */
 export class MasterInventoryListMemoryState {
   constructor(

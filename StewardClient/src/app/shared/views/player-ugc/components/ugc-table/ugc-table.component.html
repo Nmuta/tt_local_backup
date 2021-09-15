@@ -100,7 +100,7 @@
     <td mat-cell *matCellDef="let entry" [attr.colspan]="columnsToDisplay.length">
       <div
         class="example-element-detail"
-        [@detailExpand]="entry == expandedElement ? 'expanded' : 'collapsed'"
+        [@detailExpand]="entry === expandedElement ? 'expanded' : 'collapsed'"
       >
         <ul>
           <div>

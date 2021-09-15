@@ -4,8 +4,8 @@ import { Observable, of } from 'rxjs';
 import { WindowOpen } from './window.actions';
 
 /** Defines the Window Service. */
-@Injectable({ providedIn: 'root' })
 @State<void>({ name: 'window' })
+@Injectable({ providedIn: 'root' })
 export class WindowService {
   /** Checks if this window is in an iframe. */
   public get isInIframe(): boolean {

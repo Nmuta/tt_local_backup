@@ -2,12 +2,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { createMockMsalService } from '@mocks/msal.service.mock';
+import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { NgxsModule, Store } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { UserState } from '@shared/state/user/user.state';
+import { of } from 'rxjs';
 import { GravityGiftHistoryComponent } from './gravity-gift-history.component';
 import { GravityGiftHistoryState } from './state/gravity-gift-history.state';
+import { IdentityResultBetaBatch } from '@models/identity-query.model';
+import { faker } from '@interceptors/fake-api/utility';
 
 describe('GravityGiftHistoryComponent', () => {
   let component: GravityGiftHistoryComponent;
@@ -25,7 +28,7 @@ describe('GravityGiftHistoryComponent', () => {
         ],
         declarations: [GravityGiftHistoryComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockMsalService(), createMockLoggerService()],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
       }).compileComponents();
 
       fixture = TestBed.createComponent(GravityGiftHistoryComponent);
@@ -35,25 +38,32 @@ describe('GravityGiftHistoryComponent', () => {
       mockStore.dispatch = jasmine.createSpy('dispatch');
     }),
   );
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  // describe('Method: onPlayerIdentityChange', () => {
-  //   let event: IdentityResultAlpha;
-  //   beforeEach(() => {
-  //     event =
-  //       {
-  //         query: undefined,
-  //         xuid: new BigNumber(123456789),
-  //       };
-  //   });
-  //   it('should displatch SetGravitySelectedPlayerIdentities with correct data', () => {
-  //     component.onPlayerIdentityChange(event);
+  describe('Method: ngOnInit', () => {
+    describe('When selectedPlayerIdentities$ outputs a selection', () => {
+      const gamertag = faker.random.word();
 
-  //     expect(mockStore.dispatch).toHaveBeenCalledWith(
-  //       new SetGravitySelectedPlayerIdentities(event),
-  //     );
-  //   });
-  // });
+      beforeEach(() => {
+        Object.defineProperty(component, 'selectedPlayerIdentities$', { writable: true });
+        component.selectedPlayerIdentities$ = of([
+          {
+            query: null,
+            gamertag: gamertag,
+          },
+        ] as IdentityResultBetaBatch);
+      });
+
+      it('should set selected player', () => {
+        component.ngOnInit();
+
+        expect(component.selectedPlayer).not.toBeUndefined();
+        expect(component.selectedPlayer).not.toBeNull();
+        expect(component.selectedPlayer.gamertag).toEqual(gamertag);
+      });
+    });
+  });
 });

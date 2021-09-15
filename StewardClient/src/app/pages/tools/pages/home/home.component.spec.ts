@@ -2,7 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { createMockMsalService } from '@mocks/msal.service.mock';
+import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { NgxsModule } from '@ngxs/store';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { createMockWindowService } from '@services/window';
@@ -30,7 +30,7 @@ describe('ToolsAppHomeComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         createMockWindowService(),
-        createMockMsalService(),
+        ...createMockMsalServices(),
         createMockZendeskService(),
         createMockLoggerService(),
       ],

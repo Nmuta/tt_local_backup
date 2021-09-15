@@ -2,8 +2,10 @@ import { StewardEnvironment } from './steward-environment';
 import { environment as baseEnvProd } from './environment.prod';
 import { environment as baseEnvLocal } from './environment.localUiDevApi';
 import { cloneDeep } from 'lodash';
+import { AllSecondaryAADScopes } from './app-data/aad';
 
 export * from './app-data/tool-list';
+export * from './app-data/aad';
 
 /** Dev in a prod-like configuration. */
 const modifiedEnvironment: StewardEnvironment = cloneDeep(baseEnvLocal);
@@ -16,3 +18,4 @@ modifiedEnvironment.azureAppScope = baseEnvProd.azureAppScope;
 modifiedEnvironment.tools = baseEnvProd.tools;
 
 export const environment = modifiedEnvironment;
+export const AllAADScopes: string[] = [...AllSecondaryAADScopes, environment.azureAppScope];

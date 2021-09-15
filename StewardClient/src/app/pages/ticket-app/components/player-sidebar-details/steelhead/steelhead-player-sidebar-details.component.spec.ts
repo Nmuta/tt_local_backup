@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
 import { of } from 'rxjs';
 import { SteelheadService, createMockSteelheadService } from '@services/steelhead';
 import { SteelheadPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/steelhead/player/gamertag/details';
@@ -30,7 +30,7 @@ describe('SteelheadPlayerSidebarDetailsComponent', () => {
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           createMockWindowService(),
-          createMockMsalService(),
+          ...createMockMsalServices(),
           createMockSteelheadService(),
           createMockLoggerService(),
         ],

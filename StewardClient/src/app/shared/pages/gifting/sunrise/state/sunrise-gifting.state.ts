@@ -18,9 +18,6 @@ export class SunriseGiftingStateModel {
 }
 
 /** Defines the sunrise gifting page state. */
-@Injectable({
-  providedIn: 'root',
-})
 @State<SunriseGiftingStateModel>({
   name: 'sunriseGifting',
   defaults: {
@@ -28,6 +25,9 @@ export class SunriseGiftingStateModel {
     selectedMatIndex: 0,
     giftBasket: [],
   },
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class SunriseGiftingState {
   /** Sets the gifting page's selected player identities. */

@@ -15,15 +15,15 @@ export class SteelheadGiftHistoryStateModel {
 }
 
 /** Defines the steelhead gift history page state. */
-@Injectable({
-  providedIn: 'root',
-})
 @State<Partial<SteelheadGiftHistoryStateModel>>({
   name: 'steelheadGiftHistory',
   defaults: {
     selectedPlayerIdentities: [],
     selectedMatIndex: 0,
   },
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class SteelheadGiftHistoryState {
   /** Sets the gift history page's selected player identities. */

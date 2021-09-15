@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
 import { of } from 'rxjs';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { WoodstockPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/gamertag/details';
@@ -30,7 +30,7 @@ describe('WoodstockPlayerSidebarDetailsComponent', () => {
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           createMockWindowService(),
-          createMockMsalService(),
+          ...createMockMsalServices(),
           createMockWoodstockService(),
           createMockLoggerService(),
         ],

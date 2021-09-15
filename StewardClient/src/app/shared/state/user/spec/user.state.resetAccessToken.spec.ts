@@ -3,7 +3,7 @@ import { Store, NgxsModule, Actions } from '@ngxs/store';
 import { UserState } from '../user.state';
 import { ResetAccessToken } from '../user.actions';
 import { of } from 'rxjs';
-import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
 import { MsalService } from '@azure/msal-angular';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -20,7 +20,11 @@ describe('State: User', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, NgxsModule.forRoot([UserState])],
-        providers: [createMockMsalService(), createMockLoggerService(), createMockWindowService()],
+        providers: [
+          ...createMockMsalServices(),
+          createMockLoggerService(),
+          createMockWindowService(),
+        ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
 

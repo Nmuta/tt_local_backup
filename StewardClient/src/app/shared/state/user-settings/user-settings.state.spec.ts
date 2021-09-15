@@ -2,9 +2,25 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { NgxsModule, Store } from '@ngxs/store';
 import { AppState } from '../app-state';
-import { SetFakeApi, SetStagingApi } from './user-settings.actions';
+import {
+  ConfigureAppUpdatePopup,
+  SetApolloEndpointKey,
+  SetAppVersion,
+  SetFakeApi,
+  SetStagingApi,
+  SetSteelheadEndpointKey,
+  SetSunriseEndpointKey,
+  SetWoodstockEndpointKey,
+} from './user-settings.actions';
+import faker from 'faker';
 
 import { UserSettingsState } from './user-settings.state';
+import {
+  ApolloEndpointKey,
+  SteelheadEndpointKey,
+  SunriseEndpointKey,
+  WoodstockEndpointKey,
+} from '@models/enums';
 
 describe('UserSettingsService', () => {
   let store: Store;
@@ -59,6 +75,78 @@ describe('UserSettingsService', () => {
         .selectOnce((state: AppState) => state.userSettings.enableStagingApi)
         .subscribe(enableFakeApi => {
           expect(enableFakeApi).toBe(false);
+        });
+    });
+  });
+
+  describe('Action: SetAppVersion', () => {
+    const newAppVersion = faker.random.word();
+    it('should sync setting: SetAppVersion()', () => {
+      store.dispatch(new SetAppVersion(newAppVersion));
+      store
+        .selectOnce((state: AppState) => state.userSettings.appVersion)
+        .subscribe(version => {
+          expect(version).toBe(newAppVersion);
+        });
+    });
+  });
+
+  describe('Action: ConfigureAppUpdatePopup', () => {
+    const showPopup = faker.datatype.boolean();
+    it('should sync setting: ConfigureAppUpdatePopup()', () => {
+      store.dispatch(new ConfigureAppUpdatePopup(showPopup));
+      store
+        .selectOnce((state: AppState) => state.userSettings.showAppUpdatePopup)
+        .subscribe(showPopup => {
+          expect(showPopup).toBe(showPopup);
+        });
+    });
+  });
+
+  describe('Action: SetSunriseEndpointKey', () => {
+    const endpoint = SunriseEndpointKey.Retail;
+    it('should sync setting: SetSunriseEndpointKey()', () => {
+      store.dispatch(new SetSunriseEndpointKey(endpoint));
+      store
+        .selectOnce((state: AppState) => state.userSettings.sunriseEndpointKey)
+        .subscribe(endpoint => {
+          expect(endpoint).toBe(endpoint);
+        });
+    });
+  });
+
+  describe('Action: SetApolloEndpointKey', () => {
+    const endpoint = ApolloEndpointKey.Retail;
+    it('should sync setting: SetApolloEndpointKey()', () => {
+      store.dispatch(new SetApolloEndpointKey(endpoint));
+      store
+        .selectOnce((state: AppState) => state.userSettings.apolloEndpointKey)
+        .subscribe(endpoint => {
+          expect(endpoint).toBe(endpoint);
+        });
+    });
+  });
+
+  describe('Action: SetWoodstockEndpointKey', () => {
+    const endpoint = WoodstockEndpointKey.Development;
+    it('should sync setting: SetWoodstockEndpointKey()', () => {
+      store.dispatch(new SetWoodstockEndpointKey(endpoint));
+      store
+        .selectOnce((state: AppState) => state.userSettings.woodstockEndpointKey)
+        .subscribe(endpoint => {
+          expect(endpoint).toBe(endpoint);
+        });
+    });
+  });
+
+  describe('Action: SetSteelheadEndpointKey', () => {
+    const endpoint = SteelheadEndpointKey.Development;
+    it('should sync setting: SetSteelheadEndpointKey()', () => {
+      store.dispatch(new SetSteelheadEndpointKey(endpoint));
+      store
+        .selectOnce((state: AppState) => state.userSettings.steelheadEndpointKey)
+        .subscribe(endpoint => {
+          expect(endpoint).toBe(endpoint);
         });
     });
   });

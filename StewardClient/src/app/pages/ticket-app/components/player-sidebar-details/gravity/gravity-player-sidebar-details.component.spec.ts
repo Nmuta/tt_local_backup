@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from '@shared/state/user/user.state';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
 import { createMockGravityService, GravityService } from '@services/gravity';
 import { of } from 'rxjs';
 import { GravityPlayerGamertagDetailsFakeApi } from '@interceptors/fake-api/apis/title/gravity/player/gamertag/details';
@@ -30,7 +30,7 @@ describe('GravityPlayerSidebarDetailsComponent', () => {
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           createMockWindowService(),
-          createMockMsalService(),
+          ...createMockMsalServices(),
           createMockGravityService(),
           createMockLoggerService(),
         ],

@@ -6,7 +6,6 @@ import { Observable, of } from 'rxjs';
 import { UpdateTitleMemory } from './title-memory.actions';
 import { TitleMemoryModel } from './title-memory.model';
 
-@Injectable()
 @State<TitleMemoryModel>({
   name: 'titleMemory',
   defaults: {
@@ -19,6 +18,7 @@ import { TitleMemoryModel } from './title-memory.model';
     serviceManagement: GameTitleCodeName.FH4,
   },
 })
+@Injectable()
 /** Defines the user state. */
 export class TitleMemoryState {
   /** Updates the last gifting page title. */

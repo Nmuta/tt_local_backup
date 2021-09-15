@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '/src/styles/mixins';
 
 ::-webkit-scrollbar {
@@ -5,9 +6,9 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: mat-color($app-theme, 50);
+  background: mat.get-color-from-palette($app-theme, 50);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: mat-color($app-theme, 800);
+  background: mat.get-color-from-palette($app-theme, 800);
 }

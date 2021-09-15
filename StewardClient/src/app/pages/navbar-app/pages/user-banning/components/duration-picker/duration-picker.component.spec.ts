@@ -10,7 +10,7 @@ import { DurationPickerComponent } from './duration-picker.component';
 import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { createMockMsalService } from '@mocks/msal.service.mock';
+import { createMockMsalServices } from '@mocks/msal.service.mock';
 import { createMockLoggerService } from '@services/logger/logger.service.mock';
 import { last } from 'lodash';
 
@@ -31,7 +31,7 @@ describe('DurationPickerComponent', () => {
         ],
         declarations: [DurationPickerComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [createMockMsalService(), createMockLoggerService()],
+        providers: [...createMockMsalServices(), createMockLoggerService()],
       }).compileComponents();
 
       fixture = TestBed.createComponent(DurationPickerComponent);

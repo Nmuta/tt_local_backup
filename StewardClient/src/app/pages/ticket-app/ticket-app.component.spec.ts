@@ -24,7 +24,7 @@ import { createMockZendeskService, ZendeskService } from '@shared/services/zende
 
 // State
 import { UserState } from '@shared/state/user/user.state';
-import { createMockMsalService } from '@shared/mocks/msal.service.mock';
+import { createMockMsalServices } from '@shared/mocks/msal.service.mock';
 import { UserModel } from '@shared/models/user.model';
 import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -50,7 +50,7 @@ describe('TicketAppComponent', () => {
           createMockZendeskService(),
           createMockScrutineerDataParser(),
           createMockClipboard(),
-          createMockMsalService(),
+          ...createMockMsalServices(),
           createMockLoggerService(),
         ],
       }).compileComponents();

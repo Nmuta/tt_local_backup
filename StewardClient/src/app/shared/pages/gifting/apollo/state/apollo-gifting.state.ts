@@ -18,9 +18,6 @@ export class ApolloGiftingStateModel {
 }
 
 /** Defines the apollo gifting page state. */
-@Injectable({
-  providedIn: 'root',
-})
 @State<Partial<ApolloGiftingStateModel>>({
   name: 'apolloGifting',
   defaults: {
@@ -28,6 +25,9 @@ export class ApolloGiftingStateModel {
     selectedMatIndex: 0,
     giftBasket: [],
   },
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class ApolloGiftingState {
   /** Sets the gifting page's selected player identities. */

@@ -25,4 +25,13 @@ describe('CommunityMessagingComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('Method: ngOnInit', () => {
+    it('should set navbarRouterLinks', () => {
+      expect(component.navbarRouterLinks.length).toEqual(0);
+      component.ngOnInit();
+
+      expect(component.navbarRouterLinks.length).toEqual(1);
+    });
+  });
 });
