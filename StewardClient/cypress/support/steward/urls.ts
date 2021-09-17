@@ -46,4 +46,14 @@ export const stewardUrls = {
       sunrise: '/support/navbar-app/tools/messaging/sunrise',
     },
   },
+  tools: {
+    gifting: {
+      default: '/app/tools/gifting',
+      gravity: '/app/tools/gifting/gravity',
+      woodstock: '/app/tools/gifting/woodstock',
+      steelhead: '/app/tools/gifting/steelhead',
+      sunrise: '/app/tools/gifting/sunrise',
+      apollo: '/app/tools/gifting/apollo',
+    },
+  },
 };
