@@ -17,7 +17,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
     /// <inheritdoc />
     public sealed class WoodstockPlayerInventoryProvider : IWoodstockPlayerInventoryProvider
     {
-        private const string Title = "Woodstock";
         private const int MaxProfileResults = 50;
         private const int AgentCreditSendAmount = 500_000_000;
         private const int AdminCreditSendAmount = 999_999_999;
@@ -153,7 +152,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
                     : 0;
 
                 var creditSendLimit = useAdminCreditLimit ? AdminCreditSendAmount : AgentCreditSendAmount;
-                currencyGifts[InventoryItemType.Credits] = 
+                currencyGifts[InventoryItemType.Credits] =
                     Math.Min(currencyGifts[InventoryItemType.Credits], creditSendLimit);
 
                 async Task ServiceCall(InventoryItemType inventoryItemType, int itemId)
@@ -167,11 +166,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     xuid.ToString(CultureInfo.InvariantCulture),
-                    Title,
+                    TitleConstants.WoodstockCodeName,
                     requesterObjectId,
                     GiftIdentityAntecedent.Xuid,
                     gift,
-                    endpoint).ConfigureAwait(false); 
+                    endpoint).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -251,7 +250,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     groupId.ToString(CultureInfo.InvariantCulture),
-                    Title,
+                    TitleConstants.WoodstockCodeName,
                     requesterObjectId,
                     GiftIdentityAntecedent.LspGroupId,
                     gift,
@@ -305,8 +304,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
         private async Task UpdateBackstagePasses(ulong xuid, int balanceDelta, string endpoint)
         {
-            const string backstagePassUpdatesIdTemplate = "Woodstock|{0}|BackstagePassUpdates|{1}";
-
             if (balanceDelta <= 0)
             {
                 return;
@@ -318,8 +315,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             await this.woodstockService.SetTokenBalanceAsync(xuid, newBalance, endpoint).ConfigureAwait(false);
 
-            this.refreshableCacheStore.ClearItem(
-                string.Format(CultureInfo.InvariantCulture, backstagePassUpdatesIdTemplate, endpoint, xuid));
+            this.refreshableCacheStore.ClearItem(WoodstockCacheKey.MakeBackstagePassKey(endpoint, xuid));
         }
 
         private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(

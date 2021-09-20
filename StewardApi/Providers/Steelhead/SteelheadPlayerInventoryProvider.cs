@@ -17,7 +17,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
     /// <inheritdoc />
     public class SteelheadPlayerInventoryProvider : ISteelheadPlayerInventoryProvider
     {
-        private const string Title = "Steelhead";
         private const int MaxProfileResults = 50;
         private const int AgentCreditSendAmount = 500_000_000;
         private const int AdminCreditSendAmount = 999_999_999;
@@ -139,7 +138,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     xuid.ToString(CultureInfo.InvariantCulture),
-                    Title,
+                    TitleConstants.SteelheadCodeName,
                     requesterObjectId,
                     GiftIdentityAntecedent.Xuid,
                     gift,
@@ -223,7 +222,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     groupId.ToString(CultureInfo.InvariantCulture),
-                    Title,
+                    TitleConstants.SteelheadCodeName,
                     requesterObjectId,
                     GiftIdentityAntecedent.LspGroupId,
                     gift,
@@ -239,7 +238,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead
 
         private async Task SendGifts(
             Func<InventoryItemType, int, Task> serviceCall,
-            IDictionary<InventoryItemType,IList<MasterInventoryItem>> inventoryGifts,
+            IDictionary<InventoryItemType, IList<MasterInventoryItem>> inventoryGifts,
             IDictionary<InventoryItemType, int> currencyGifts)
         {
             foreach (var (key, value) in inventoryGifts)

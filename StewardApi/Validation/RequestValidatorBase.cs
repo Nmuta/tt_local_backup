@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Turn10.Data.Common;
 
 namespace Turn10.LiveOps.StewardApi.Validation
 {
@@ -31,24 +28,6 @@ namespace Turn10.LiveOps.StewardApi.Validation
             }
 
             return string.Join(",", modelStateErrors);
-        }
-
-        /// <summary>
-        ///     Validates title value.
-        /// </summary>
-        public string ValidateTitleValue(ModelStateDictionary modelState)
-        {
-            var title = modelState["title"]?.AttemptedValue;
-            title.ShouldNotBeNullEmptyOrWhiteSpace(nameof(title));
-
-            var acceptedTitles = ApplicationSettings.SupportedTitles.Select(x => x.Codename);
-
-            if (!acceptedTitles.Contains(title, StringComparer.CurrentCultureIgnoreCase))
-            {
-                throw new NotSupportedException($"{title} is not a valid title.");
-            }
-
-            return title;
         }
     }
 }

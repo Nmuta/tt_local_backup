@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -60,7 +61,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             string MakeKey(IdentityQueryAlpha identityQuery)
             {
-                return $"opus:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
+                return OpusCacheKey.MakeIdentityLookupKey(identityQuery.Gamertag, identityQuery.Xuid);
             }
 
             var results = new List<IdentityResultAlpha>();

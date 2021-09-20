@@ -6,6 +6,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
     /// <summary>
     ///     Represents an Apollo base inventory.
     /// </summary>
+    /// <typeparam name="T">Type of item for use in the inventory.</typeparam>
     public class ApolloBaseInventory<T>
         where T : MasterInventoryItem
     {

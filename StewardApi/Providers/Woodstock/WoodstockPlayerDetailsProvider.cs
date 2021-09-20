@@ -26,8 +26,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         private const int UltimateVipUserGroupId = 2;
         private const int T10EmployeeUserGroupId = 4;
         private const int WhitelistUserGroupId = 6;
-        private const string CreditUpdatesIdTemplate = "Woodstock|{0}|CreditUpdates|{1}|{2}|{3}";
-        private const string BackstagePassUpdatesIdTemplate = "Woodstock|{0}|BackstagePassUpdates|{1}";
 
         private readonly IWoodstockService woodstockService;
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
@@ -301,13 +299,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                var creditUpdateId = string.Format(
-                    CultureInfo.InvariantCulture,
-                    CreditUpdatesIdTemplate,
-                    endpoint,
-                    xuid,
-                    startIndex,
-                    maxResults);
+                var creditUpdateId = WoodstockCacheKey.MakeCreditUpdatesKey(endpoint, xuid, startIndex, maxResults);
 
                 async Task<IList<CreditUpdate>> CreditUpdates()
                 {
@@ -342,11 +334,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
 
             try
             {
-                var backstagePassUpdateId = string.Format(
-                    CultureInfo.InvariantCulture,
-                    endpoint,
-                    BackstagePassUpdatesIdTemplate,
-                    xuid);
+                var backstagePassUpdateId = WoodstockCacheKey.MakeBackstagePassKey(endpoint, xuid);
 
                 async Task<IList<BackstagePassUpdate>> BackstagePassUpdates()
                 {

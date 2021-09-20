@@ -11,6 +11,7 @@ using Turn10.Contracts.STS;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using GiftingService = Forza.LiveOps.FM8.Generated.GiftingService;
@@ -22,8 +23,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
     /// <inheritdoc />
     public sealed class SteelheadServiceWrapper : ISteelheadService
     {
-        private const string AuthTokenKey = "SteelheadServiceAuthToken";
-
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.SteelheadClientVersion,
@@ -264,7 +263,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
         private async Task<UserManagementService> PrepareUserManagementServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SteelheadCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new UserManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -272,7 +271,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
         private async Task<LiveOpsService> PrepareUserLookupServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SteelheadCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new LiveOpsService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -280,7 +279,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
         private async Task<UserInventoryService> PrepareUserInventoryServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SteelheadCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new UserInventoryService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -288,7 +287,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
         private async Task<GiftingService> PrepareGiftingServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SteelheadCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new GiftingService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -296,7 +295,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
         private async Task<NotificationsManagementService> PrepareNotificationsManagementServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SteelheadCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new NotificationsManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -304,7 +303,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
 
         private async Task<AuctionManagementService> PrepareAuctionManagementServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SteelheadCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new AuctionManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -328,7 +327,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
             };
 
             var result = await this.stsClient.ForgeUserTokenAsync(tokenForgeryParameters).ConfigureAwait(false);
-            this.refreshableCacheStore.PutItem(AuthTokenKey, TimeSpan.FromMinutes(55), result.Token);
+            this.refreshableCacheStore.PutItem(SteelheadCacheKey.MakeAuthTokenKey(), TimeSpan.FromMinutes(55), result.Token);
 
             return result.Token;
         }

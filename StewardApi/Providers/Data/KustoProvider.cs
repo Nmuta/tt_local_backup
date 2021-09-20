@@ -155,8 +155,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                     {
                         items.Add(new KustoCar
                         {
-                            Id = (int) reader.GetInt64(0),
-                            MakeId = (int) reader.GetInt64(1),
+                            Id = (int)reader.GetInt64(0),
+                            MakeId = (int)reader.GetInt64(1),
                             Make = reader.GetString(2),
                             Model = reader.GetString(3),
                         });
@@ -281,7 +281,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
                 // TODO Remove conditional, else and NonProd query definitions once entries without endpoint column have dropped off.
                 if (endpoint == SunriseSupportedEndpoint.Retail || endpoint == ApolloSupportedEndpoint.Retail)
                 {
-
                     query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetBanHistory, xuid, title, endpoint);
                 }
                 else

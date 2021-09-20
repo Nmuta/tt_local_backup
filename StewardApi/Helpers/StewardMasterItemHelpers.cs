@@ -9,6 +9,7 @@ using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardApi.Logging;
+using Turn10.LiveOps.StewardApi.Providers;
 
 namespace Turn10.LiveOps.StewardApi.Helpers
 {
@@ -25,7 +26,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
             GravityMasterInventory masterInventory,
             ILoggingService loggingService)
         {
-            var title = "Gravity";
+            var title = TitleConstants.GravityCodeName;
             playerInventory.CreditRewards = SetPlayerInventoryItemDescription(playerInventory.CreditRewards, masterInventory.CreditRewards, $"{title} CreditReward", loggingService);
             playerInventory.Cars = SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars, $"{title} Car", loggingService);
             playerInventory.EnergyRefills = SetPlayerInventoryItemDescription(playerInventory.EnergyRefills, masterInventory.EnergyRefills, $"{title} EnergyRefill", loggingService);
@@ -42,7 +43,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         public static SunrisePlayerInventory SetItemDescriptions(
             SunrisePlayerInventory playerInventory, SunriseMasterInventory masterInventory, ILoggingService loggingService)
         {
-            var title = "Sunrise";
+            var title = TitleConstants.SunriseCodeName;
             playerInventory.Cars = SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars, $"{title} Car", loggingService);
             playerInventory.CarHorns = SetPlayerInventoryItemDescription(playerInventory.CarHorns, masterInventory.CarHorns, $"{title} CarHorn", loggingService);
             playerInventory.VanityItems = SetPlayerInventoryItemDescription(playerInventory.VanityItems, masterInventory.VanityItems, $"{title} VanityItem", loggingService);
@@ -57,7 +58,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// </summary>
         public static ApolloPlayerInventory SetItemDescriptions(ApolloPlayerInventory playerInventory, ApolloMasterInventory masterInventory, ILoggingService loggingService)
         {
-            var title = "Apollo";
+            var title = TitleConstants.ApolloCodeName;
             playerInventory.Cars = SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars, $"{title} Car", loggingService);
             playerInventory.VanityItems = SetPlayerInventoryItemDescription(playerInventory.VanityItems, masterInventory.VanityItems, $"{title} VanityItem", loggingService);
 
@@ -69,7 +70,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// </summary>
         public static SteelheadPlayerInventory SetItemDescriptions(SteelheadPlayerInventory playerInventory, SteelheadMasterInventory masterInventory, ILoggingService loggingService)
         {
-            var title = "Steelhead";
+            var title = TitleConstants.SteelheadCodeName;
             playerInventory.Cars = SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars, $"{title} Car", loggingService);
             playerInventory.VanityItems = SetPlayerInventoryItemDescription(playerInventory.VanityItems, masterInventory.VanityItems, $"{title} VanityItem", loggingService);
 
@@ -81,7 +82,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// </summary>
         public static WoodstockPlayerInventory SetItemDescriptions(WoodstockPlayerInventory playerInventory, WoodstockMasterInventory masterInventory, ILoggingService loggingService)
         {
-            var title = "Woodstock";
+            var title = TitleConstants.WoodstockCodeName;
             playerInventory.Cars = SetPlayerInventoryItemDescription(playerInventory.Cars, masterInventory.Cars, $"{title} Car", loggingService);
             playerInventory.CarHorns = SetPlayerInventoryItemDescription(playerInventory.CarHorns, masterInventory.CarHorns, $"{title} CarHorn", loggingService);
             playerInventory.VanityItems = SetPlayerInventoryItemDescription(playerInventory.VanityItems, masterInventory.VanityItems, $"{title} VanityItem", loggingService);

@@ -16,7 +16,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
     /// <inheritdoc />
     public sealed class GravityPlayerInventoryProvider : IGravityPlayerInventoryProvider
     {
-        private const string Title = "Gravity";
         private const int MaxLookupResults = 5;
         private const int HardCurrencyLimit = 15000;
         private const int AgentSoftCurrencyLimit = 500_000_000;
@@ -156,7 +155,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     t10Id,
-                    Title,
+                    TitleConstants.GravityCodeName,
                     requesterObjectId,
                     GiftIdentityAntecedent.T10Id,
                     gift).ConfigureAwait(false);

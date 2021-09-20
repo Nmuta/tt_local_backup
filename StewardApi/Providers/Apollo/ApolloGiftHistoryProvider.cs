@@ -24,7 +24,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
 
         private readonly IKustoStreamingLogger kustoStreamingLogger;
         private readonly IKustoProvider kustoProvider;
-        private readonly IMapper mapper;
         private readonly string kustoDatabase;
 
         /// <summary>
@@ -33,19 +32,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Apollo
         public ApolloGiftHistoryProvider(
             IKustoStreamingLogger kustoStreamingLogger,
             IKustoProvider kustoProvider,
-            IConfiguration configuration,
-            IMapper mapper)
+            IConfiguration configuration)
         {
             kustoStreamingLogger.ShouldNotBeNull(nameof(kustoStreamingLogger));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             configuration.ShouldNotBeNull(nameof(configuration));
-            mapper.ShouldNotBeNull(nameof(mapper));
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.kustoStreamingLogger = kustoStreamingLogger;
             this.kustoProvider = kustoProvider;
             this.kustoDatabase = configuration[ConfigurationKeyConstants.KustoLoggerDatabase];
-            this.mapper = mapper;
         }
 
         /// <inheritdoc />

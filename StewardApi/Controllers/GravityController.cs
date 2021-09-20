@@ -89,7 +89,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             string MakeKey(IdentityQueryBeta identityQuery)
             {
-                return $"gravity:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid},t:{identityQuery.T10Id})";
+                return GravityCacheKey.MakeIdentityLookupKey(
+                    identityQuery.Gamertag,
+                    identityQuery.Xuid,
+                    identityQuery.T10Id);
             }
 
             var results = new List<IdentityResultBeta>();

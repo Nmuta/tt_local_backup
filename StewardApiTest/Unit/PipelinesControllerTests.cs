@@ -47,7 +47,7 @@ namespace Turn10.LiveOps.StewardTest.Unit
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task DeletePipeline_WhenPipelineNameNullEmptyWhitespace_Return400()
+        public void DeletePipeline_WhenPipelineNameNullEmptyWhitespace_Return400()
         {
             // Arrange.
             var controller = new Dependencies().Build();

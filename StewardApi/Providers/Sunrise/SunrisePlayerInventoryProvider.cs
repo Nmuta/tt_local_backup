@@ -18,7 +18,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
     /// <inheritdoc />
     public sealed class SunrisePlayerInventoryProvider : ISunrisePlayerInventoryProvider
     {
-        private const string Title = "Sunrise";
         private const int MaxProfileResults = 50;
         private const int AgentCreditSendAmount = 500_000_000;
         private const int AdminCreditSendAmount = 999_999_999;
@@ -73,7 +72,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         public async Task<SunrisePlayerInventory> GetPlayerInventoryAsync(int profileId, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
-            
+
             try
             {
                 var response = await this.sunriseService.GetAdminUserInventoryByProfileIdAsync(profileId, endpoint)
@@ -164,7 +163,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     xuid.ToString(CultureInfo.InvariantCulture),
-                    Title,
+                    TitleConstants.SunriseCodeName,
                     requesterObjectId,
                     GiftIdentityAntecedent.Xuid,
                     gift,
@@ -250,7 +249,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
                 await this.giftHistoryProvider.UpdateGiftHistoryAsync(
                     groupId.ToString(CultureInfo.InvariantCulture),
-                    Title,
+                    TitleConstants.SunriseCodeName,
                     requesterObjectId,
                     GiftIdentityAntecedent.LspGroupId,
                     gift,
@@ -304,8 +303,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
         private async Task UpdateBackstagePasses(ulong xuid, int balanceDelta, string endpoint)
         {
-            const string backstagePassUpdatesIdTemplate = "Sunrise|{0}|BackstagePassUpdates|{1}";
-
             if (balanceDelta <= 0)
             {
                 return;
@@ -313,12 +310,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             var status = await this.sunriseService.GetTokenBalanceAsync(xuid, endpoint).ConfigureAwait(false);
             var currentBalance = status.transactions.OfflineBalance;
-            var newBalance = (uint) Math.Max(0, currentBalance + balanceDelta);
+            var newBalance = (uint)Math.Max(0, currentBalance + balanceDelta);
 
             await this.sunriseService.SetTokenBalanceAsync(xuid, newBalance, endpoint).ConfigureAwait(false);
 
-            this.refreshableCacheStore.ClearItem(
-                string.Format(CultureInfo.InvariantCulture, backstagePassUpdatesIdTemplate, endpoint, xuid));
+            this.refreshableCacheStore.ClearItem(SunriseCacheKey.MakeBackstagePassKey(endpoint, xuid));
         }
 
         private IDictionary<InventoryItemType, IList<MasterInventoryItem>> BuildInventoryItems(

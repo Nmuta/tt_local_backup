@@ -11,6 +11,7 @@ using Turn10.Contracts.STS;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using GiftingService = Forza.LiveOps.FH5.Generated.GiftingService;
@@ -23,8 +24,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
     /// <inheritdoc />
     public sealed class WoodstockServiceWrapper : IWoodstockService
     {
-        private const string AuthTokenKey = "WoodstockServiceAuthToken";
-
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.WoodstockClientVersion,
@@ -117,13 +116,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         /// <inheritdoc />
         public async Task<LiveOpsService.GetCreditUpdateEntriesOutput> GetCreditUpdateEntriesAsync(
             ulong xuid,
-            int startAt,
+            int startIndex,
             int maxResults,
             string endpoint)
         {
             var liveOpsService = await this.PrepareLiveOpsServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await liveOpsService.GetCreditUpdateEntries(xuid, startAt, maxResults).ConfigureAwait(false);
+            return await liveOpsService.GetCreditUpdateEntries(xuid, startIndex, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -149,7 +148,8 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         public async Task<UserManagementService.GetSharedConsoleUsersOutput> GetSharedConsoleUsersAsync(
             ulong xuid,
             int startAt,
-            int maxResults, string endpoint)
+            int maxResults,
+            string endpoint)
         {
             var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
 
@@ -414,7 +414,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
         private async Task<UserManagementService> PrepareUserManagementServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new UserManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -422,7 +422,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
         private async Task<LiveOpsService> PrepareUserLookupServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new LiveOpsService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -430,7 +430,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
         private async Task<UserInventoryService> PrepareUserInventoryServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new UserInventoryService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -438,7 +438,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
         private async Task<GiftingService> PrepareGiftingServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new GiftingService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -446,7 +446,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
         private async Task<LiveOpsService> PrepareLiveOpsServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new LiveOpsService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -454,7 +454,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
         private async Task<RareCarShopService> PrepareRareCarShopServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new RareCarShopService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -463,7 +463,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         private async Task<NotificationsManagementService> PrepareNotificationsManagementServiceAsync(
             string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new NotificationsManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -471,7 +471,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
 
         private async Task<AuctionManagementService> PrepareAuctionManagementServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new AuctionManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -495,7 +495,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             };
 
             var result = await this.stsClient.ForgeUserTokenAsync(tokenForgeryParameters).ConfigureAwait(false);
-            this.refreshableCacheStore.PutItem(AuthTokenKey, TimeSpan.FromMinutes(55), result.Token);
+            this.refreshableCacheStore.PutItem(WoodstockCacheKey.MakeAuthTokenKey(), TimeSpan.FromMinutes(55), result.Token);
 
             return result.Token;
         }

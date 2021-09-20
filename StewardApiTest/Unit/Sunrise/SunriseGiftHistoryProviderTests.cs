@@ -66,20 +66,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void Ctor_WhenMapperNull_Throws()
-        {
-            // Arrange.
-            var dependencies = new Dependencies { Mapper = null };
-
-            // Act.
-            Action act = () => dependencies.Build();
-
-            // Assert.
-            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "mapper"));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void Ctor_WhenConfigurationValuesNull_Throws()
         {
             // Arrange.
@@ -300,11 +286,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
             public IKustoProvider KustoProvider { get; set; } = Substitute.For<IKustoProvider>();
 
-            public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
-
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 
-            public SunriseGiftHistoryProvider Build() => new SunriseGiftHistoryProvider(this.KustoStreamingLogger, this.KustoProvider, this.Configuration, this.Mapper);
+            public SunriseGiftHistoryProvider Build() => new SunriseGiftHistoryProvider(this.KustoStreamingLogger, this.KustoProvider, this.Configuration);
         }
     }
 }

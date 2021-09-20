@@ -152,7 +152,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = this.GetSteelheadEndpoint(this.Request.Headers);
             string MakeKey(IdentityQueryAlpha identityQuery)
             {
-                return $"steelhead|{endpoint}:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
+                return SteelheadCacheKey.MakeIdentityLookupKey(endpoint, identityQuery.Gamertag, identityQuery.Xuid);
             }
 
             var cachedResults = identityQueries.Select(v => this.memoryCache.Get<IdentityResultAlpha>(MakeKey(v)));
@@ -176,8 +176,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                             entry.AbsoluteExpirationRelativeToNow =
                                 TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
                             return result;
-                        }
-                    );
+                        });
                 }
             }
 

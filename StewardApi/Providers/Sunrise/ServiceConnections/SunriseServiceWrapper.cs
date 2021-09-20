@@ -11,6 +11,7 @@ using Turn10.Contracts.STS;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
@@ -24,8 +25,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
     /// <inheritdoc />
     public sealed class SunriseServiceWrapper : ISunriseService
     {
-        private const string AuthTokenKey = "SunriseServiceAuthToken";
-
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.SunriseClientVersion,
@@ -490,7 +489,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 
         private async Task<UserManagementService> PrepareUserManagementServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SunriseCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new UserManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -498,7 +497,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 
         private async Task<UserInventoryService> PrepareUserInventoryServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SunriseCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new UserInventoryService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -506,7 +505,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 
         private async Task<NotificationsService> PrepareNotificationsServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SunriseCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new NotificationsService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -514,7 +513,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 
         private async Task<GiftingService> PrepareGiftingServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SunriseCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new GiftingService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -522,7 +521,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 
         private async Task<LiveOpsService> PrepareLiveOpsServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SunriseCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new LiveOpsService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -530,7 +529,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 
         private async Task<AuctionManagementService> PrepareAuctionManagementServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SunriseCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new AuctionManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -538,7 +537,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 
         private async Task<RareCarShopService> PrepareRareCarShopServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SunriseCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new RareCarShopService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -546,7 +545,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
 
         private async Task<StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint)
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(SunriseCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new StorefrontManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
@@ -570,7 +569,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             };
 
             var result = await this.stsClient.ForgeUserTokenAsync(tokenForgeryParameters).ConfigureAwait(false);
-            this.refreshableCacheStore.PutItem(AuthTokenKey, TimeSpan.FromMinutes(55), result.Token);
+            this.refreshableCacheStore.PutItem(SunriseCacheKey.MakeAuthTokenKey(), TimeSpan.FromMinutes(55), result.Token);
 
             return result.Token;
         }

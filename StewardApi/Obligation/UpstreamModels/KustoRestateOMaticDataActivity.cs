@@ -184,8 +184,6 @@ namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
 
         /// <summary>
         ///     Gets or sets a value indicating whether to include all the dependent
-        ///     
-        /// 
         ///     dataActivities of the dataActivities given via the dataActivities property.
         /// </summary>
         [JsonProperty("include_children")]

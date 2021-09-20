@@ -154,7 +154,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = this.GetApolloEndpoint(this.Request.Headers);
             string MakeKey(IdentityQueryAlpha identityQuery)
             {
-                return $"apollo|{endpoint}:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
+                return ApolloCacheKey.MakeIdentityLookupKey(endpoint, identityQuery.Gamertag, identityQuery.Xuid);
             }
 
             var results = new List<IdentityResultAlpha>();

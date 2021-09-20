@@ -28,7 +28,6 @@ namespace Turn10.LiveOps.StewardApi.Validation
             {
                 throw new InvalidArgumentsStewardException($"{durationName} cannot be less than {minimumTime}.");
             }
-
         }
     }
 }

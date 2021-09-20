@@ -24,24 +24,21 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity
 
         private readonly IKustoStreamingLogger kustoStreamingLogger;
         private readonly IKustoProvider kustoProvider;
-        private readonly IMapper mapper;
         private readonly string kustoDatabase;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="GravityGiftHistoryProvider"/> class.
         /// </summary>
-        public GravityGiftHistoryProvider(IKustoStreamingLogger kustoStreamingLogger, IKustoProvider kustoProvider, IConfiguration configuration, IMapper mapper)
+        public GravityGiftHistoryProvider(IKustoStreamingLogger kustoStreamingLogger, IKustoProvider kustoProvider, IConfiguration configuration)
         {
             kustoStreamingLogger.ShouldNotBeNull(nameof(kustoStreamingLogger));
             kustoProvider.ShouldNotBeNull(nameof(kustoProvider));
             configuration.ShouldNotBeNull(nameof(configuration));
-            mapper.ShouldNotBeNull(nameof(mapper));
             configuration.ShouldContainSettings(RequiredSettings);
 
             this.kustoStreamingLogger = kustoStreamingLogger;
             this.kustoProvider = kustoProvider;
             this.kustoDatabase = configuration[ConfigurationKeyConstants.KustoLoggerDatabase];
-            this.mapper = mapper;
         }
 
         /// <inheritdoc />

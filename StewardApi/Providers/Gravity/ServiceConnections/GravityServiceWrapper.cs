@@ -8,14 +8,13 @@ using Turn10.Contracts.STS;
 using Turn10.Data.Common;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Gravity;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections
 {
     /// <inheritdoc />
     public sealed class GravityServiceWrapper : IGravityService
     {
-        private const string AuthTokenKey = "GravityServiceAuthToken";
-
         private static readonly IList<string> RequiredSettings = new List<string>
         {
             ConfigurationKeyConstants.GravityUri,
@@ -155,7 +154,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections
 
         private async Task<UserService> PrepareUserServiceAsync()
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(GravityCacheKey.MakeAuthTokenKey())
                                 ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new UserService(this.environmentUri, this.adminXuid, authToken, false);
@@ -163,7 +162,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections
 
         private async Task<UserInventoryService> PrepareUserInventoryServiceAsync()
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(GravityCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new UserInventoryService(this.environmentUri, this.adminXuid, authToken, false);
@@ -171,7 +170,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections
 
         private async Task<GameSettingsService> PrepareGameSettingsServiceAsync()
         {
-            var authToken = this.refreshableCacheStore.GetItem<string>(AuthTokenKey)
+            var authToken = this.refreshableCacheStore.GetItem<string>(GravityCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new GameSettingsService(this.environmentUri, this.adminXuid, authToken, false);
@@ -195,7 +194,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Gravity.ServiceConnections
             };
 
             var result = await this.stsClient.ForgeUserTokenAsync(tokenForgeryParameters).ConfigureAwait(false);
-            this.refreshableCacheStore.PutItem(AuthTokenKey, TimeSpan.FromMinutes(55), result.Token);
+            this.refreshableCacheStore.PutItem(GravityCacheKey.MakeAuthTokenKey(), TimeSpan.FromMinutes(55), result.Token);
 
             return result.Token;
         }

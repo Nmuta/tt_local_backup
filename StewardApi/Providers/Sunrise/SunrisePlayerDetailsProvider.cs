@@ -29,8 +29,6 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         private const int T10EmployeeUserGroupId = 4;
         private const int WhitelistUserGroupId = 6;
         private const int RepairStatsId = 91;
-        private const string CreditUpdatesIdTemplate = "Sunrise|{0}|CreditUpdates|{1}|{2}|{3}";
-        private const string BackstagePassUpdatesIdTemplate = "Sunrise|{0}|BackstagePassUpdates|{1}";
 
         private readonly ISunriseService sunriseService;
         private readonly ISunriseBanHistoryProvider banHistoryProvider;
@@ -324,13 +322,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                var creditUpdateId = string.Format(
-                    CultureInfo.InvariantCulture,
-                    CreditUpdatesIdTemplate,
-                    endpoint,
-                    xuid,
-                    startIndex,
-                    maxResults);
+                var creditUpdateId = SunriseCacheKey.MakeCreditUpdatesKey(endpoint, xuid, startIndex, maxResults);
 
                 async Task<IList<CreditUpdate>> CreditUpdates()
                 {
@@ -364,11 +356,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
 
             try
             {
-                var backstagePassUpdateId = string.Format(
-                    CultureInfo.InvariantCulture,
-                    BackstagePassUpdatesIdTemplate,
-                    endpoint,
-                    xuid);
+                var backstagePassUpdateId = SunriseCacheKey.MakeBackstagePassKey(endpoint, xuid);
 
                 async Task<IList<BackstagePassUpdate>> BackstagePassUpdates()
                 {

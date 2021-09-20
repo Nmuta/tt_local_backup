@@ -12,6 +12,7 @@ namespace Turn10.LiveOps.StewardApi.Helpers
         /// <summary>
         ///     Generates a background job status based on a list of gift responses.
         /// </summary>
+        /// <typeparam name="T">Type of the value in the <see cref="GiftResponse{T}"/> to be returned.</typeparam>
         public static BackgroundJobStatus GetBackgroundJobStatus<T>(
             IList<GiftResponse<T>> results)
         {

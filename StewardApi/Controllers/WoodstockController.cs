@@ -42,7 +42,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     {
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 100;
-        private const KustoGameDbSupportedTitle Title = KustoGameDbSupportedTitle.Woodstock;
         private const string DefaultEndpointKey = "Woodstock|Development";
 
         private static readonly IList<string> RequiredSettings = new List<string>
@@ -152,7 +151,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
             string MakeKey(IdentityQueryAlpha identityQuery)
             {
-                return $"woodstock|{endpoint}:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
+                return WoodstockCacheKey.MakeIdentityLookupKey(endpoint, identityQuery.Gamertag, identityQuery.Xuid);
             }
 
             var cachedResults = identityQueries.Select(v => this.memoryCache.Get<IdentityResultAlpha>(MakeKey(v)));
@@ -176,8 +175,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                             entry.AbsoluteExpirationRelativeToNow =
                                 TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
                             return result;
-                        }
-                    );
+                        });
                 }
             }
 
@@ -1139,7 +1137,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var getServicesBanHistory = this.woodstockPlayerDetailsProvider.GetUserBanHistoryAsync(xuid, endpoint);
             var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(
                 xuid,
-                Title.ToString(),
+                TitleConstants.WoodstockCodeName,
                 endpoint);
 
             await Task.WhenAll(getServicesBanHistory, getLiveOpsBanHistory).ConfigureAwait(true);

@@ -4,8 +4,6 @@ using System.Globalization;
 using AutoMapper;
 using Forza.LiveOps.FM8.Generated;
 using Forza.UserInventory.FM8.Generated;
-using Turn10.LiveOps.StewardApi.Contracts;
-using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Steelhead;
@@ -79,7 +77,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid));
-
 
             this.CreateMap<AuctionFilters, ForzaAuctionFilters>()
                 .ForMember(dest => dest.IncludeThumbnail, opt => opt.MapFrom(source => true))

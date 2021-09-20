@@ -1248,7 +1248,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task SendPlayerNotifications_WithTooLongMessage_Throws()
+        public void SendPlayerNotifications_WithTooLongMessage_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
@@ -1272,7 +1272,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        public async Task SendPlayerNotifications_WithTooShortDuration_Throws()
+        public void SendPlayerNotifications_WithTooShortDuration_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();

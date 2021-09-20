@@ -6,6 +6,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
     /// <summary>
     ///     Represents a Sunrise base inventory.
     /// </summary>
+    /// <typeparam name="T">Type of item for use in the inventory.</typeparam>
     public class SunriseBaseInventory<T>
         where T : MasterInventoryItem
     {

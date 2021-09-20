@@ -6,6 +6,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
     /// <summary>
     ///     Represents a Woodstock base inventory.
     /// </summary>
+    /// <typeparam name="T">Type of item for use in the inventory.</typeparam>
     public class WoodstockBaseInventory<T>
         where T : MasterInventoryItem
     {

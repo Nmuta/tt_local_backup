@@ -48,7 +48,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     {
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 100;
-        private const KustoGameDbSupportedTitle Title = KustoGameDbSupportedTitle.Sunrise;
         private const string DefaultEndpointKey = "Sunrise|Retail";
 
         private static readonly IList<string> RequiredSettings = new List<string>
@@ -175,7 +174,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             string MakeKey(IdentityQueryAlpha identityQuery)
             {
-                return $"sunrise|{endpoint}:(g:{identityQuery.Gamertag},x:{identityQuery.Xuid})";
+                return SunriseCacheKey.MakeIdentityLookupKey(endpoint, identityQuery.Gamertag, identityQuery.Xuid);
             }
 
             var cachedResults = identityQueries.Select(v => this.memoryCache.Get<IdentityResultAlpha>(MakeKey(v)));
@@ -199,8 +198,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                             entry.AbsoluteExpirationRelativeToNow =
                                 TimeSpan.FromSeconds(CacheSeconds.PlayerIdentity);
                             return result;
-                        }
-                    );
+                        });
                 }
             }
 
@@ -1349,7 +1347,8 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var expireTime = DateTime.Now.Add(communityMessage.Duration);
-            var result = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(groupId,
+            var result = await this.sunrisePlayerDetailsProvider.SendCommunityMessageAsync(
+                groupId,
                 communityMessage.Message,
                 expireTime,
                 endpoint).ConfigureAwait(true);
@@ -1372,7 +1371,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var getServicesBanHistory = this.sunrisePlayerDetailsProvider.GetUserBanHistoryAsync(xuid, endpoint);
             var getLiveOpsBanHistory = this.banHistoryProvider.GetBanHistoriesAsync(
                 xuid,
-                Title.ToString(),
+                TitleConstants.SunriseCodeName,
                 endpoint);
 
             await Task.WhenAll(getServicesBanHistory, getLiveOpsBanHistory).ConfigureAwait(true);

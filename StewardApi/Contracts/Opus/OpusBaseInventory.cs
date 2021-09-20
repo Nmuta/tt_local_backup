@@ -6,6 +6,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Opus
     /// <summary>
     ///     Represents an Opus base inventory.
     /// </summary>
+    /// <typeparam name="T">Type of item for use in the inventory.</typeparam>
     public class OpusBaseInventory<T>
         where T : MasterInventoryItem
     {

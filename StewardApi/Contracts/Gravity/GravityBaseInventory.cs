@@ -6,6 +6,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Gravity
     /// <summary>
     ///     Represents a Gravity base inventory.
     /// </summary>
+    /// <typeparam name="T">Type of item for use in the inventory.</typeparam>
     public class GravityBaseInventory<T>
         where T : MasterInventoryItem
     {
