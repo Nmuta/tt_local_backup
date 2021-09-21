@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
-import { AllAADScopes, environment } from '@environments/environment';
+import { environment } from '@environments/environment';
 import { UserModel } from '@models/user.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { Select, Store } from '@ngxs/store';
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     try {
       await this.msalService
         .loginPopup({
-          scopes: AllAADScopes,
+          scopes: [environment.azureAppScope],
           redirectUri: `${
             useStaging ? environment.stewardUiStagingUrl : environment.stewardUiUrl
           }/auth/aad-login`,
