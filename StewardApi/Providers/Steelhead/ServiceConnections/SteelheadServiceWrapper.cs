@@ -250,7 +250,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Steelhead.ServiceConnections
         {
             var notificationsService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc).ConfigureAwait(false);
+            await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc, false, ForzaLiveDeviceType.Invalid).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

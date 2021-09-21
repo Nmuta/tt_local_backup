@@ -363,7 +363,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            controller.Request.Headers.Add("endpointKey", "Woodstock|Development");
+            controller.Request.Headers.Add("endpointKey", "Woodstock|Retail");
             var gamertag = Fixture.Create<string>();
 
             // Act.

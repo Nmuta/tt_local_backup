@@ -42,7 +42,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
     {
         private const int DefaultStartIndex = 0;
         private const int DefaultMaxResults = 100;
-        private const string DefaultEndpointKey = "Woodstock|Development";
+        private const string DefaultEndpointKey = "Woodstock|Retail";
 
         private static readonly IList<string> RequiredSettings = new List<string>
         {

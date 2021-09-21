@@ -374,7 +374,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             var notificationsService = await this.PrepareNotificationsManagementServiceAsync(endpoint)
                 .ConfigureAwait(false);
 
-            await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc)
+            await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc, false, ForzaLiveDeviceType.Invalid)
                 .ConfigureAwait(false);
         }
 

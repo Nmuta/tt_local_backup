@@ -149,11 +149,6 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ReverseMap();
 
             this.CreateMap<UGCFilters, LiveOpsContracts.ForzaUGCSearchRequest>()
-                .ForMember(dest => dest.ShareStatus, opt => opt.MapFrom(source => source.AccessLevel))
-                .ForMember(dest => dest.ManualKeywords, opt => opt.MapFrom(source => source.ManualKeyword))
-                .ForMember(dest => dest.OrderBy, opt => opt.MapFrom(source => source.OrderBy))
-                .ForMember(dest => dest.KeywordOneId, opt => opt.MapFrom(source => int.MaxValue))
-                .ForMember(dest => dest.KeywordTwoId, opt => opt.MapFrom(source => int.MaxValue))
                 .ReverseMap();
 
             this.CreateMap<LiveOpsContracts.ForzaLiveryData, UGCItem>()

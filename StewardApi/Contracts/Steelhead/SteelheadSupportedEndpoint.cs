@@ -15,7 +15,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         /// </summary>
         public static string Development
         {
-            get => "https://Steelhead-LiveOpsTest.dev.Services.forzamotorsport.net/Services/o.xtsw";
+            get => "https://Steelhead-Flight-12.dev.services.forzamotorsport.net/Services/o.xtsw";
         }
 
         /// <summary>

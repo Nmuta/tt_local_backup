@@ -13,9 +13,17 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
     public static class WoodstockSupportedEndpoint
     {
         /// <summary>
-        ///     Gets Woodstock development LSP endpoint.
+        ///     Gets Woodstock retail LSP endpoint.
         /// </summary>
-        public static string Development
+        public static string Retail
+        {
+            get => "https://gameservices.fh5.forzamotorsport.net/Services/o.xtsw";
+        }
+
+        /// <summary>
+        ///     Gets Woodstock studio LSP endpoint.
+        /// </summary>
+        public static string Studio
         {
             get => "https://woodstock-final.dev.services.forzamotorsport.net/Services/o.xtsw";
         }
