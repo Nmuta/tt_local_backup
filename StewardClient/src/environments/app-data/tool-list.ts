@@ -171,7 +171,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   {
     icon: AppIcon.PlayerInfo,
     tool: NavbarTool.GiftHistory,
-    accessList: CommonAccessLevels.OldNavbarAppOnly,
+    accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
     title: 'Gift History',
     subtitle: 'A support agent tool',
     imageUrl: undefined,
