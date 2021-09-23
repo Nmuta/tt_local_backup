@@ -2,16 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { BaseComponent } from '@components/base-component/base.component';
 import { environment } from '@environments/environment';
-import {
-  ApolloEndpointKey,
-  SteelheadEndpointKey,
-  SunriseEndpointKey,
-  UserRole,
-  WoodstockEndpointKey,
-} from '@models/enums';
+import { UserRole } from '@models/enums';
 import { UserModel } from '@models/user.model';
 import { Select, Store } from '@ngxs/store';
 import { WindowService } from '@services/window';
+import {
+  EndpointKeyMemoryModel,
+  EndpointKeyMemoryState,
+} from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import {
   SetApolloEndpointKey,
   SetFakeApi,
@@ -28,7 +26,7 @@ import { SetLiveOpsAdminSecondaryRole } from '@shared/state/user/user.actions';
 import { UserState } from '@shared/state/user/user.state';
 import { keys } from 'lodash';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 
 /** Component for handling user settings. */
 @Component({
@@ -36,32 +34,25 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent extends BaseComponent implements OnInit {
-  @Select(UserSettingsState) public settings$: Observable<UserSettingsStateModel>;
+  @Select(UserSettingsState) public userSettings$: Observable<UserSettingsStateModel>;
+  @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
 
   public activeRole: UserRole;
   public enableFakeApi: boolean;
   public enableStagingApi: boolean;
-  public apolloEndpointKey: ApolloEndpointKey;
-  public sunriseEndpointKey: SunriseEndpointKey;
-  public woodstockEndpointKey: WoodstockEndpointKey;
-  public steelheadEndpointKey: SteelheadEndpointKey;
+  public apolloEndpointKey: string;
+  public sunriseEndpointKey: string;
+  public woodstockEndpointKey: string;
+  public steelheadEndpointKey: string;
   public showRoleSelectionDropdown: boolean;
   public showFakeApiToggle: boolean; // Only show on dev or if user is a live ops admin
   public showStagingApiToggle: boolean; // Only show on staging slot
 
   public roleList: UserRole[] = keys(UserRole).map(key => UserRole[key]);
-  public apolloEndpointKeyList: ApolloEndpointKey[] = keys(ApolloEndpointKey).map(
-    key => ApolloEndpointKey[key],
-  );
-  public sunriseEndpointKeyList: SunriseEndpointKey[] = keys(SunriseEndpointKey).map(
-    key => SunriseEndpointKey[key],
-  );
-  public woodstockEndpointKeyList: SunriseEndpointKey[] = keys(WoodstockEndpointKey).map(
-    key => WoodstockEndpointKey[key],
-  );
-  public steelheadEndpointKeyList: SunriseEndpointKey[] = keys(SteelheadEndpointKey).map(
-    key => SteelheadEndpointKey[key],
-  );
+  public apolloEndpointKeyList: string[];
+  public sunriseEndpointKeyList: string[];
+  public woodstockEndpointKeyList: string[];
+  public steelheadEndpointKeyList: string[];
 
   constructor(private readonly store: Store, private readonly windowService: WindowService) {
     super();
@@ -81,7 +72,26 @@ export class SettingsComponent extends BaseComponent implements OnInit {
     const location = this.windowService.location();
     this.showStagingApiToggle = location?.origin === environment.stewardUiStagingUrl;
 
-    this.settings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
+    this.endpointKeys$
+      .pipe(
+        filter(latest => {
+          return (
+            latest.Apollo.length > 0 &&
+            latest.Sunrise.length > 0 &&
+            latest.Woodstock.length > 0 &&
+            latest.Steelhead.length > 0
+          );
+        }),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(latest => {
+        this.apolloEndpointKeyList = latest.Apollo;
+        this.sunriseEndpointKeyList = latest.Sunrise;
+        this.woodstockEndpointKeyList = latest.Woodstock;
+        this.steelheadEndpointKeyList = latest.Steelhead;
+      });
+
+    this.userSettings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
       this.enableFakeApi = latest.enableFakeApi;
       this.enableStagingApi = latest.enableStagingApi;
       this.apolloEndpointKey = latest.apolloEndpointKey;

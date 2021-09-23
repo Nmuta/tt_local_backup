@@ -1,9 +1,9 @@
-import { ApolloEndpointKey, GameTitleCodeName, SunriseEndpointKey } from '@models/enums';
+import { GameTitleCodeName } from '@models/enums';
 import { overrideApolloEndpointKey, overrideSunriseEndpointKey } from './override-endpoint-key';
 
 describe('Helper: override-endpoint-key', () => {
   describe('Method: overrideSunriseEndpointKey', () => {
-    const endpointKey = SunriseEndpointKey.Retail;
+    const endpointKey = 'Retail';
 
     it('should set correct endpoint key header', () => {
       const headers = overrideSunriseEndpointKey(endpointKey);
@@ -14,7 +14,7 @@ describe('Helper: override-endpoint-key', () => {
   });
 
   describe('Method: overrideApolloEndpointKey', () => {
-    const endpointKey = ApolloEndpointKey.Retail;
+    const endpointKey = 'Retail';
 
     it('should set correct endpoint key header', () => {
       const headers = overrideApolloEndpointKey(endpointKey);

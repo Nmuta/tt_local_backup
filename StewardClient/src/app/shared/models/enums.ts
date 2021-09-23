@@ -43,22 +43,7 @@ export enum NotificationHubEvents {
   UpdateJobState = 'NotificationHubUpdateJobState',
 }
 
-export enum ApolloEndpointKey {
-  Retail = 'Retail',
-  // Removed while identity chips are being reworked
-  // Studio = 'Studio',
-}
-
-export enum SunriseEndpointKey {
-  Retail = 'Retail',
-  // Removed while identity chips are being reworked
-  // Studio = 'Studio',
-}
-
-export enum WoodstockEndpointKey {
-  Development = 'Development',
-}
-
-export enum SteelheadEndpointKey {
-  Development = 'Development',
+export enum InitEndpointKeysError {
+  LookupFailed,
+  SelectionRemoved,
 }

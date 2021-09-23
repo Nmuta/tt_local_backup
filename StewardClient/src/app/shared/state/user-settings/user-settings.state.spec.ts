@@ -15,12 +15,6 @@ import {
 import faker from 'faker';
 
 import { UserSettingsState } from './user-settings.state';
-import {
-  ApolloEndpointKey,
-  SteelheadEndpointKey,
-  SunriseEndpointKey,
-  WoodstockEndpointKey,
-} from '@models/enums';
 
 describe('UserSettingsService', () => {
   let store: Store;
@@ -104,7 +98,7 @@ describe('UserSettingsService', () => {
   });
 
   describe('Action: SetSunriseEndpointKey', () => {
-    const endpoint = SunriseEndpointKey.Retail;
+    const endpoint = 'Retail';
     it('should sync setting: SetSunriseEndpointKey()', () => {
       store.dispatch(new SetSunriseEndpointKey(endpoint));
       store
@@ -116,7 +110,7 @@ describe('UserSettingsService', () => {
   });
 
   describe('Action: SetApolloEndpointKey', () => {
-    const endpoint = ApolloEndpointKey.Retail;
+    const endpoint = 'Retail';
     it('should sync setting: SetApolloEndpointKey()', () => {
       store.dispatch(new SetApolloEndpointKey(endpoint));
       store
@@ -128,7 +122,7 @@ describe('UserSettingsService', () => {
   });
 
   describe('Action: SetWoodstockEndpointKey', () => {
-    const endpoint = WoodstockEndpointKey.Development;
+    const endpoint = 'Development';
     it('should sync setting: SetWoodstockEndpointKey()', () => {
       store.dispatch(new SetWoodstockEndpointKey(endpoint));
       store
@@ -140,7 +134,7 @@ describe('UserSettingsService', () => {
   });
 
   describe('Action: SetSteelheadEndpointKey', () => {
-    const endpoint = SteelheadEndpointKey.Development;
+    const endpoint = 'Development';
     it('should sync setting: SetSteelheadEndpointKey()', () => {
       store.dispatch(new SetSteelheadEndpointKey(endpoint));
       store

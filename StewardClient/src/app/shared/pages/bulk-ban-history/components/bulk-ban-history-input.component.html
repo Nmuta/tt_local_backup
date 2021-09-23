@@ -1,29 +1,35 @@
-<form [formGroup]="formGroup" class="lookup-xuids-form">
-  <mat-form-field appearance="fill" class="env-selection">
-    <mat-label>Sunrise Envrionments</mat-label>
-    <mat-select [formControl]="formControls.sunriseEnvs" multiple>
-      <mat-option *ngFor="let env of sunriseEnvs" [value]="env">{{ env }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+<ng-container *ngIf="!getEndpoints?.isActive; else loadingState">
+  <form [formGroup]="formGroup" class="lookup-xuids-form">
+    <mat-form-field appearance="fill" class="env-selection">
+      <mat-label>Sunrise Envrionments</mat-label>
+      <mat-select [formControl]="formControls?.sunriseEnvs" multiple>
+        <mat-option *ngFor="let env of sunriseEnvs" [value]="env">{{ env }}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field appearance="fill" class="env-selection">
-    <mat-label>Apollo Envrionments</mat-label>
-    <mat-select [formControl]="formControls.apolloEnvs" multiple>
-      <mat-option *ngFor="let env of apolloEnvs" [value]="env">{{ env }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field appearance="fill" class="env-selection">
+      <mat-label>Apollo Envrionments</mat-label>
+      <mat-select [formControl]="formControls?.apolloEnvs" multiple>
+        <mat-option *ngFor="let env of apolloEnvs" [value]="env">{{ env }}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field class="xuids" appearance="fill">
-    <mat-label>Player XUIDs</mat-label>
-    <textarea matInput [formControl]="formControls.xuids" cdkTextareaAutosize></textarea>
-  </mat-form-field>
+    <mat-form-field class="xuids" appearance="fill">
+      <mat-label>Player XUIDs</mat-label>
+      <textarea matInput [formControl]="formControls?.xuids" cdkTextareaAutosize></textarea>
+    </mat-form-field>
 
-  <button
-    [disabled]="!isLookupReady()"
-    (click)="emitInputChanges()"
-    mat-raised-button
-    color="primary"
-  >
-    Lookup XUIDs
-  </button>
-</form>
+    <button
+      [disabled]="!isLookupReady()"
+      (click)="emitInputChanges()"
+      mat-raised-button
+      color="primary"
+    >
+      Lookup XUIDs
+    </button>
+  </form>
+</ng-container>
+
+<ng-template #loadingState>
+  <mat-progress-spinner mode="indeterminate"> </mat-progress-spinner>
+</ng-template>

@@ -163,6 +163,7 @@ export class ActionMonitor {
     this.setMode('single-fire');
     this.updateStatus(s => {
       s.value = next;
+      s.state = 'inactive';
       s.error = null;
     });
   }

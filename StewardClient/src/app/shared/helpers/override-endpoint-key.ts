@@ -1,10 +1,10 @@
 import { HttpHeaders } from '@angular/common/http';
-import { ApolloEndpointKey, GameTitleCodeName, SunriseEndpointKey } from '@models/enums';
+import { GameTitleCodeName } from '@models/enums';
 
 const endpointKeyParam = 'endpointKey';
 
 export function overrideSunriseEndpointKey(
-  endpoint: SunriseEndpointKey,
+  endpoint: string,
   existingHeaders?: HttpHeaders,
 ): HttpHeaders {
   existingHeaders = existingHeaders || new HttpHeaders();
@@ -12,7 +12,7 @@ export function overrideSunriseEndpointKey(
 }
 
 export function overrideApolloEndpointKey(
-  endpoint: ApolloEndpointKey,
+  endpoint: string,
   existingHeaders?: HttpHeaders,
 ): HttpHeaders {
   existingHeaders = existingHeaders || new HttpHeaders();

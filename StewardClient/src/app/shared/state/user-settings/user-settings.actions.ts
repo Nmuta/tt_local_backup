@@ -1,10 +1,4 @@
 import { NavbarTool } from '@environments/environment';
-import {
-  ApolloEndpointKey,
-  SteelheadEndpointKey,
-  SunriseEndpointKey,
-  WoodstockEndpointKey,
-} from '@models/enums';
 
 /** Sets the Fake API to on or off. Only available in non-prod environments. */
 export class SetFakeApi {
@@ -41,25 +35,25 @@ export class VerifyEndpointKeyDefaults {
 /** Sets the current Apollo endpoint key of the Steward app the client is running. */
 export class SetApolloEndpointKey {
   public static readonly type = '[Settings] Set Apollo Endpoint Key';
-  constructor(public readonly apolloEndpointKey: ApolloEndpointKey) {}
+  constructor(public readonly apolloEndpointKey: string) {}
 }
 
 /** Sets the current Sunrise endpoint key of the Steward app the client is running. */
 export class SetSunriseEndpointKey {
   public static readonly type = '[Settings] Set Sunrise Endpoint Key';
-  constructor(public readonly sunriseEndpointKey: SunriseEndpointKey) {}
+  constructor(public readonly sunriseEndpointKey: string) {}
 }
 
 /** Sets the current Woodstock endpoint key of the Steward app the client is running. */
 export class SetWoodstockEndpointKey {
   public static readonly type = '[Settings] Set Woodstock Endpoint Key';
-  constructor(public readonly woodstockEndpointKey: WoodstockEndpointKey) {}
+  constructor(public readonly woodstockEndpointKey: string) {}
 }
 
 /** Sets the current Steelhead endpoint key of the Steward app the client is running. */
 export class SetSteelheadEndpointKey {
   public static readonly type = '[Settings] Set Steelhead Endpoint Key';
-  constructor(public readonly steelheadEndpointKey: SteelheadEndpointKey) {}
+  constructor(public readonly steelheadEndpointKey: string) {}
 }
 
 /** Sets the current list of tools to show in the navbar. */

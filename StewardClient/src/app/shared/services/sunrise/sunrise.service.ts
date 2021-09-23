@@ -48,7 +48,6 @@ import { UGCFilters, UGCType } from '@models/ugc-filters';
 import { PlayerUGCItem } from '@models/player-ugc-item';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
-import { SunriseEndpointKey } from '@models/enums';
 import { overrideSunriseEndpointKey } from '@helpers/override-endpoint-key';
 
 /** Handles calls to Sunrise API routes. */
@@ -168,7 +167,7 @@ export class SunriseService {
   /** Gets ban summaries by a list of XUIDs. */
   public getBanSummariesByXuids$(
     xuids: BigNumber[],
-    endpointKeyOverride?: SunriseEndpointKey,
+    endpointKeyOverride?: string,
   ): Observable<SunriseBanSummary[]> {
     let headers = new HttpHeaders();
     if (!!endpointKeyOverride) {

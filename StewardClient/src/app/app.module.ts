@@ -62,11 +62,14 @@ import { WoodstockGiftingState } from '@shared/pages/gifting/woodstock/state/woo
 import { WoodstockGiftHistoryState } from '@navbar-app/pages/gift-history/woodstock/state/woodstock-gift-history.state';
 import { MatLuxonDateModule } from 'ngx-material-luxon';
 import { LuxonModule } from 'luxon-angular';
+import { EndpointKeyMemoryState } from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {
   InteractionType,
   IPublicClientApplication,
   PublicClientApplication,
 } from '@azure/msal-browser';
+import { EndpointSelectionInterceptor } from '@interceptors/endpoint-selection.interceptor';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -132,6 +135,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     HttpClientModule,
     FourOhFourModule,
     MatCardModule,
+    MatSnackBarModule, //App component uses this to display init errors.
     MatLuxonDateModule,
     LuxonModule,
     MatNativeDateModule,
@@ -146,6 +150,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
         TitleMemoryState,
         MasterInventoryListMemoryState,
         LspGroupMemoryState,
+        EndpointKeyMemoryState,
         // Gifting page states
         WoodstockGiftingState,
         SteelheadGiftingState,
@@ -161,7 +166,9 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
       ],
       { developmentMode: !environment.production },
     ),
-    NgxsStoragePluginModule.forRoot({ key: [UserSettingsState, UserState] }),
+    NgxsStoragePluginModule.forRoot({
+      key: [UserSettingsState, UserState],
+    }),
     NgxsRouterPluginModule.forRoot(),
     MsalModule,
   ],
@@ -203,6 +210,11 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     Clipboard,
     ...fakeApiOrNothing(),
     ...USER_GUARD_PROVIDERS,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: EndpointSelectionInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,

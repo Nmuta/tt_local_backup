@@ -94,6 +94,7 @@ import { PipelineGetFakeApi } from './apis/pipeline/get';
 import { PipelinePutFakeApi } from './apis/pipeline/put';
 import { PipelinePostFakeApi } from './apis/pipeline/post';
 import { PipelineDeleteFakeApi } from './apis/pipeline/delete';
+import { SettingsGetEndpointsFakeApi } from './apis/title/settings/lspEndpoints';
 
 /** The list of Fake APIs to query, in order. */
 const fakeApiConstructors = [
@@ -190,6 +191,9 @@ const fakeApiConstructors = [
   PipelinePutFakeApi,
   PipelinePostFakeApi,
   PipelineDeleteFakeApi,
+
+  //Settings
+  SettingsGetEndpointsFakeApi,
 ];
 
 /** The URLs this interceptor will not block. */

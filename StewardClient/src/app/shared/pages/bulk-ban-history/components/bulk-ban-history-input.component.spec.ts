@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { BulkBanHistoryInputComponent } from './bulk-ban-history-input.component';
-import { ApolloEndpointKey, SunriseEndpointKey } from '@models/enums';
 import { fakeXuid } from '@interceptors/fake-api/utility';
 
 describe('BulkBanHistoryInputComponent', () => {
@@ -40,8 +39,8 @@ describe('BulkBanHistoryInputComponent', () => {
       component.selection.emit = jasmine.createSpy('changes.emit');
 
       // Initialize with valid form controls
-      component.formControls.sunriseEnvs.setValue([SunriseEndpointKey.Retail]);
-      component.formControls.apolloEnvs.setValue([ApolloEndpointKey.Retail]);
+      component.formControls.sunriseEnvs.setValue(['Retail']);
+      component.formControls.apolloEnvs.setValue(['Retail']);
       component.formControls.xuids.setValue(`${fakeXuid()},${fakeXuid()},${fakeXuid()}`);
     });
     describe('When isLookupReady returns false', () => {
@@ -70,8 +69,8 @@ describe('BulkBanHistoryInputComponent', () => {
   describe('Method: isLookupReady', () => {
     beforeEach(() => {
       // Initialize with valid form controls
-      component.formControls.sunriseEnvs.setValue([SunriseEndpointKey.Retail]);
-      component.formControls.apolloEnvs.setValue([ApolloEndpointKey.Retail]);
+      component.formControls.sunriseEnvs.setValue(['Retail']);
+      component.formControls.apolloEnvs.setValue(['Retail']);
       component.formControls.xuids.setValue(`${fakeXuid()},${fakeXuid()},${fakeXuid()}`);
     });
 

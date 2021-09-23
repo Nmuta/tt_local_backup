@@ -1095,7 +1095,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     $"Endpoint key designated for title: {title}, but expected {TitleConstants.SteelheadCodeName}.");
             }
 
-            return SteelheadSupportedEndpoint.GetEndpoint(key);
+            return SteelheadEndpoint.GetEndpoint(key);
         }
     }
 }

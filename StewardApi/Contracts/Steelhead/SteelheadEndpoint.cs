@@ -8,7 +8,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
     /// <summary>
     ///     Represents an endpoint for use by Steelhead service wrapper.
     /// </summary>
-    public static class SteelheadSupportedEndpoint
+    public static class SteelheadEndpoint
     {
         /// <summary>
         ///     Gets Steelhead development LSP endpoint.
@@ -25,7 +25,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Steelhead
         {
             key.ShouldNotBeNullEmptyOrWhiteSpace(nameof(key));
 
-            var property = typeof(SteelheadSupportedEndpoint).GetProperty(key, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.IgnoreCase);
+            var property = typeof(SteelheadEndpoint).GetProperty(key, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.IgnoreCase);
             if (property == null)
             {
                 throw new BadHeaderStewardException($"Failed to parse key: {key} for title: {TitleConstants.SteelheadCodeName}.");

@@ -30,7 +30,6 @@ import { chain } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
-import { ApolloEndpointKey } from '@models/enums';
 import { overrideApolloEndpointKey } from '@helpers/override-endpoint-key';
 
 /** Handles calls to Sunrise API routes. */
@@ -66,7 +65,7 @@ export class ApolloService {
   /** Gets ban summaries by a list of XUIDs. */
   public getBanSummariesByXuids$(
     xuids: BigNumber[],
-    endpointKeyOverride?: ApolloEndpointKey,
+    endpointKeyOverride?: string,
   ): Observable<ApolloBanSummary[]> {
     let headers = new HttpHeaders();
     if (!!endpointKeyOverride) {

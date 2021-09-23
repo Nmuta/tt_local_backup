@@ -1258,7 +1258,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     $"Endpoint key designated for title: {title}, but expected {TitleConstants.WoodstockCodeName}.");
             }
 
-            return WoodstockSupportedEndpoint.GetEndpoint(key);
+            return WoodstockEndpoint.GetEndpoint(key);
         }
     }
 }

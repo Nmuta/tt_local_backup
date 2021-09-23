@@ -227,7 +227,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             {
                 // TODO Remove conditional, else and NonProd query definitions once entries without endpoint column have dropped off.
                 string query;
-                if (endpoint == SunriseSupportedEndpoint.Retail || endpoint == ApolloSupportedEndpoint.Retail)
+                if (endpoint == SunriseEndpoint.Retail || endpoint == ApolloEndpoint.Retail)
                 {
                     query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetGiftHistory, playerId, title, endpoint);
                 }
@@ -279,7 +279,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Data
             {
                 string query;
                 // TODO Remove conditional, else and NonProd query definitions once entries without endpoint column have dropped off.
-                if (endpoint == SunriseSupportedEndpoint.Retail || endpoint == ApolloSupportedEndpoint.Retail)
+                if (endpoint == SunriseEndpoint.Retail || endpoint == ApolloEndpoint.Retail)
                 {
                     query = string.Format(CultureInfo.InvariantCulture, KustoQueries.GetBanHistory, xuid, title, endpoint);
                 }

@@ -12,7 +12,6 @@ import { ApolloService, createMockApolloService } from '@services/apollo';
 import { BrowserModule } from '@angular/platform-browser';
 import { fakeBigNumber, fakeXuid } from '@interceptors/fake-api/utility';
 import { BulkBanHistoryInput } from './components/bulk-ban-history-input.component';
-import { ApolloEndpointKey, SunriseEndpointKey } from '@models/enums';
 import faker from 'faker';
 import { of } from 'rxjs';
 import BigNumber from 'bignumber.js';
@@ -127,8 +126,8 @@ describe('BulkBanHistoryComponent', () => {
 
     describe('If input is valid', () => {
       const input = {
-        sunriseEnvironments: [SunriseEndpointKey.Retail],
-        apolloEnvironments: [ApolloEndpointKey.Retail],
+        sunriseEnvironments: ['Retail'],
+        apolloEnvironments: ['Retail'],
         xuids: xuids,
       } as BulkBanHistoryInput;
 

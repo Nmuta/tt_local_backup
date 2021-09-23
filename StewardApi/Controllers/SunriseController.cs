@@ -1492,7 +1492,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     $"Endpoint key designated for title: {title}, but expected {TitleConstants.SunriseCodeName}.");
             }
 
-            return SunriseSupportedEndpoint.GetEndpoint(key);
+            return SunriseEndpoint.GetEndpoint(key);
         }
     }
 }

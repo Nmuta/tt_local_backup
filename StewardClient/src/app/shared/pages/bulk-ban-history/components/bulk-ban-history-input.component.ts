@@ -1,13 +1,21 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ApolloEndpointKey, SunriseEndpointKey } from '@models/enums';
+import { BaseComponent } from '@components/base-component/base.component';
+import { Select } from '@ngxs/store';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import {
+  EndpointKeyMemoryModel,
+  EndpointKeyMemoryState,
+} from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
 import BigNumber from 'bignumber.js';
 import { uniqBy } from 'lodash';
+import { Observable } from 'rxjs';
+import { first, takeUntil } from 'rxjs/operators';
 
 export type BulkBanHistoryInput = {
   xuids: BigNumber[];
-  sunriseEnvironments: SunriseEndpointKey[];
-  apolloEnvironments: ApolloEndpointKey[];
+  sunriseEnvironments: string[];
+  apolloEnvironments: string[];
 };
 
 /** The bulk ban history input component. */
@@ -16,21 +24,43 @@ export type BulkBanHistoryInput = {
   templateUrl: './bulk-ban-history-input.component.html',
   styleUrls: ['./bulk-ban-history-input.component.scss'],
 })
-export class BulkBanHistoryInputComponent {
+export class BulkBanHistoryInputComponent extends BaseComponent implements OnInit {
+  @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
   @Output() selection = new EventEmitter<BulkBanHistoryInput>();
 
-  public sunriseEnvs: SunriseEndpointKey[] = [SunriseEndpointKey.Retail];
-  public apolloEnvs: ApolloEndpointKey[] = [ApolloEndpointKey.Retail];
+  public sunriseEnvs: string[];
+  public apolloEnvs: string[];
+  public getEndpoints = new ActionMonitor('Retrieve Endpoint Keys');
 
   public formControls = {
-    sunriseEnvs: new FormControl([this.sunriseEnvs[0]]),
-    apolloEnvs: new FormControl([this.apolloEnvs[0]]),
+    sunriseEnvs: new FormControl([]),
+    apolloEnvs: new FormControl([]),
     xuids: new FormControl('', Validators.required),
   };
 
-  public formGroup = new FormGroup({
-    xuids: this.formControls.xuids,
-  });
+  public formGroup = new FormGroup(this.formControls);
+
+  /** Initialization hook. */
+  public ngOnInit(): void {
+    this.getEndpoints = new ActionMonitor(this.getEndpoints.dispose().label);
+
+    this.endpointKeys$
+      .pipe(
+        first(latest => {
+          return latest.Apollo.length > 0 && latest.Sunrise.length > 0;
+        }),
+        this.getEndpoints.monitorSingleFire(),
+        takeUntil(this.onDestroy$),
+      )
+      .subscribe(latest => {
+        this.apolloEnvs = latest.Apollo;
+        this.sunriseEnvs = latest.Sunrise;
+
+        this.formControls.sunriseEnvs.setValue([this.sunriseEnvs[0]]);
+        this.formControls.apolloEnvs.setValue([this.apolloEnvs[0]]);
+        this.formControls.xuids.setValue('');
+      });
+  }
 
   /** Gets list of all selected sunrise environments. */
   public get sunriseEnvironments(): string[] {
@@ -74,6 +104,6 @@ export class BulkBanHistoryInputComponent {
     const apolloEnvs = this.apolloEnvironments;
     const atLeastOneEnvFound = sunriseEnvs.length > 0 || apolloEnvs.length > 0;
 
-    return this.formGroup.valid && atLeastOneEnvFound;
+    return this.formGroup?.valid && atLeastOneEnvFound;
   }
 }

@@ -8,7 +8,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
     /// <summary>
     ///     Represents an endpoint for use by Apollo service wrapper.
     /// </summary>
-    public static class ApolloSupportedEndpoint
+    public static class ApolloEndpoint
     {
         /// <summary>
         ///     Gets Apollo production LSP endpoint.
@@ -21,10 +21,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         /// <summary>
         ///     Gets Apollo studio LSP endpoint.
         /// </summary>
-        public static string Studio
-        {
-            get => "https://test-ss.fm7.forzamotorsport.net/ServerServices.FM7/o.xtsw";
-        }
+        // TODO uncomment after player chip work is in: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/850499
+        //public static string Studio
+        //{
+        //    get => "https://test-ss.fm7.forzamotorsport.net/ServerServices.FM7/o.xtsw";
+        //}
 
         /// <summary>
         ///     Converts endpoint key into endpoint.
@@ -33,7 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Apollo
         {
             key.ShouldNotBeNullEmptyOrWhiteSpace(nameof(key));
 
-            var property = typeof(ApolloSupportedEndpoint).GetProperty(key, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.IgnoreCase);
+            var property = typeof(ApolloEndpoint).GetProperty(key, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.IgnoreCase);
             if (property == null)
             {
                 throw new BadHeaderStewardException($"Failed to parse key: {key} for title: {TitleConstants.ApolloCodeName}.");

@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment, NavbarTool } from '@environments/environment';
-import {
-  ApolloEndpointKey,
-  SteelheadEndpointKey,
-  SunriseEndpointKey,
-  WoodstockEndpointKey,
-} from '@models/enums';
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { InitEndpointKeysError } from '@models/enums';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { cloneDeep } from 'lodash';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
+import { EndpointKeyMemoryState } from '../endpoint-key-memory/endpoint-key-memory.state';
 import {
   SetAppVersion,
   SetStagingApi,
@@ -28,19 +24,12 @@ export class UserSettingsStateModel {
   public enableStagingApi: boolean;
   public appVersion: string;
   public showAppUpdatePopup: boolean;
-  public apolloEndpointKey: ApolloEndpointKey;
-  public sunriseEndpointKey: SunriseEndpointKey;
-  public woodstockEndpointKey: WoodstockEndpointKey;
-  public steelheadEndpointKey: SteelheadEndpointKey;
+  public apolloEndpointKey: string;
+  public sunriseEndpointKey: string;
+  public woodstockEndpointKey: string;
+  public steelheadEndpointKey: string;
   public navbarTools: Partial<Record<NavbarTool, number>>;
 }
-
-const defaultEndpointKey = {
-  apollo: ApolloEndpointKey.Retail,
-  sunrise: SunriseEndpointKey.Retail,
-  woodstock: WoodstockEndpointKey.Development,
-  steelhead: SteelheadEndpointKey.Development,
-};
 
 /** Defines the current users' settings. */
 @State<UserSettingsStateModel>({
@@ -50,10 +39,10 @@ const defaultEndpointKey = {
     enableStagingApi: false,
     appVersion: undefined,
     navbarTools: {},
-    apolloEndpointKey: defaultEndpointKey.apollo,
-    sunriseEndpointKey: defaultEndpointKey.sunrise,
-    woodstockEndpointKey: defaultEndpointKey.woodstock,
-    steelheadEndpointKey: defaultEndpointKey.steelhead,
+    apolloEndpointKey: undefined,
+    sunriseEndpointKey: undefined,
+    woodstockEndpointKey: undefined,
+    steelheadEndpointKey: undefined,
     showAppUpdatePopup: true,
   },
 })
@@ -61,6 +50,7 @@ const defaultEndpointKey = {
   providedIn: 'root',
 })
 export class UserSettingsState {
+  constructor(private readonly store: Store) {}
   /** Sets the state of the current API. */
   @Action(SetFakeApi, { cancelUncompleted: true })
   public setFakeApi$(
@@ -142,7 +132,7 @@ export class UserSettingsState {
     return of(ctx.patchState({ steelheadEndpointKey: action.steelheadEndpointKey }));
   }
 
-  /** Sets the state of the current Steelhead endpoint key. */
+  /** Sets the state of the current endpoint key selections. */
   @Action(VerifyEndpointKeyDefaults, { cancelUncompleted: true })
   public verifyEndpointKeyDefaults$(
     ctx: StateContext<UserSettingsStateModel>,
@@ -150,12 +140,52 @@ export class UserSettingsState {
   ): Observable<UserSettingsStateModel> {
     const state = cloneDeep(ctx.getState());
 
-    state.apolloEndpointKey = state.apolloEndpointKey ?? defaultEndpointKey.apollo;
-    state.sunriseEndpointKey = state.sunriseEndpointKey ?? defaultEndpointKey.sunrise;
-    state.woodstockEndpointKey = state.woodstockEndpointKey ?? defaultEndpointKey.woodstock;
-    state.steelheadEndpointKey = state.steelheadEndpointKey ?? defaultEndpointKey.steelhead;
+    const apolloEndpointKeys = this.store.selectSnapshot<string[]>(
+      EndpointKeyMemoryState.apolloEndpointKeys,
+    );
+    const sunriseEndpointKeys = this.store.selectSnapshot<string[]>(
+      EndpointKeyMemoryState.sunriseEndpointKeys,
+    );
+    const woodstockEndpointKeys = this.store.selectSnapshot<string[]>(
+      EndpointKeyMemoryState.woodstockEndpointKeys,
+    );
+    const steelheadEndpointKeys = this.store.selectSnapshot<string[]>(
+      EndpointKeyMemoryState.steelheadEndpointKeys,
+    );
 
-    return of(ctx.setState(state));
+    const isValidEndpointSelection = {
+      apollo: apolloEndpointKeys.includes(state.apolloEndpointKey),
+      sunrise: sunriseEndpointKeys.includes(state.sunriseEndpointKey),
+      woodstock: woodstockEndpointKeys.includes(state.woodstockEndpointKey),
+      steelhead: steelheadEndpointKeys.includes(state.steelheadEndpointKey),
+    };
+
+    //First endpoint key returned by API is the default, clear out any state values for endpoints that no longer exist.
+    state.apolloEndpointKey = isValidEndpointSelection.apollo
+      ? state.apolloEndpointKey
+      : apolloEndpointKeys[0];
+    state.sunriseEndpointKey = isValidEndpointSelection.sunrise
+      ? state.sunriseEndpointKey
+      : sunriseEndpointKeys[0];
+    state.woodstockEndpointKey = isValidEndpointSelection.woodstock
+      ? state.woodstockEndpointKey
+      : woodstockEndpointKeys[0];
+    state.steelheadEndpointKey = isValidEndpointSelection.steelhead
+      ? state.steelheadEndpointKey
+      : steelheadEndpointKeys[0];
+
+    ctx.setState(state);
+
+    if (
+      !isValidEndpointSelection.apollo ||
+      !isValidEndpointSelection.sunrise ||
+      !isValidEndpointSelection.woodstock ||
+      !isValidEndpointSelection.steelhead
+    ) {
+      return throwError(InitEndpointKeysError.SelectionRemoved);
+    }
+
+    return of(state);
   }
 
   /** Selector for whether the state has fake api enabled. */

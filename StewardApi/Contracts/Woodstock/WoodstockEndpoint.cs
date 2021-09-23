@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Threading;
+﻿using System.Reflection;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 using Turn10.LiveOps.StewardApi.Providers;
@@ -10,7 +8,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
     /// <summary>
     ///     Represents an endpoint for use by Woodstock service wrapper.
     /// </summary>
-    public static class WoodstockSupportedEndpoint
+    public static class WoodstockEndpoint
     {
         /// <summary>
         ///     Gets Woodstock retail LSP endpoint.
@@ -23,10 +21,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
         /// <summary>
         ///     Gets Woodstock studio LSP endpoint.
         /// </summary>
-        public static string Studio
-        {
-            get => "https://woodstock-final.dev.services.forzamotorsport.net/Services/o.xtsw";
-        }
+        // TODO uncomment after player chip work is in: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/850499
+        //public static string Studio
+        //{
+        //    get => "https://woodstock-final.dev.services.forzamotorsport.net/Services/o.xtsw";
+        //}
 
         /// <summary>
         ///     Converts endpoint key into endpoint.
@@ -35,7 +34,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
         {
             key.ShouldNotBeNullEmptyOrWhiteSpace(nameof(key));
 
-            var property = typeof(WoodstockSupportedEndpoint).GetProperty(key, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.IgnoreCase);
+            var property = typeof(WoodstockEndpoint).GetProperty(key, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.IgnoreCase);
             if (property == null)
             {
                 throw new BadHeaderStewardException($"Failed to parse key: {key} for title: {TitleConstants.WoodstockCodeName}.");

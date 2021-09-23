@@ -964,7 +964,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     $"Endpoint key designated for title: {title}, but expected {TitleConstants.ApolloCodeName}.");
             }
 
-            return ApolloSupportedEndpoint.GetEndpoint(key);
+            return ApolloEndpoint.GetEndpoint(key);
         }
     }
 }

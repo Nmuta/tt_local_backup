@@ -10,6 +10,11 @@ import { UserModel } from '@models/user.model';
 import { UserRole } from '@models/enums';
 import { createMockWindowService, WindowService } from '@services/window';
 import { SetFakeApi, SetStagingApi } from '@shared/state/user-settings/user-settings.actions';
+import {
+  EndpointKeyMemoryModel,
+  EndpointKeyMemoryState,
+} from '@shared/state/endpoint-key-memory/endpoint-key-memory.state';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -20,7 +25,10 @@ describe('SettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgxsModule.forRoot([UserSettingsState])],
+      imports: [
+        NgxsModule.forRoot([UserSettingsState, EndpointKeyMemoryState]),
+        HttpClientTestingModule,
+      ],
       declarations: [SettingsComponent],
       providers: [createMockWindowService()],
       schemas: [NO_ERRORS_SCHEMA],
@@ -28,9 +36,21 @@ describe('SettingsComponent', () => {
 
     fixture = TestBed.createComponent(SettingsComponent);
     component = fixture.componentInstance;
-    Object.defineProperty(component, 'settings$', { writable: true });
-    component.settings$ = of(<UserSettingsStateModel>{
+    Object.defineProperty(component, 'userSettings$', { writable: true });
+    component.userSettings$ = of(<UserSettingsStateModel>{
       enableFakeApi: false,
+      apolloEndpointKey: '',
+      sunriseEndpointKey: '',
+      woodstockEndpointKey: '',
+      steelheadEndpointKey: '',
+    });
+
+    Object.defineProperty(component, 'endpointKeys$', { writable: true });
+    component.endpointKeys$ = of(<EndpointKeyMemoryModel>{
+      Apollo: [],
+      Sunrise: [],
+      Woodstock: [],
+      Steelhead: [],
     });
 
     mockStore = TestBed.inject(Store);

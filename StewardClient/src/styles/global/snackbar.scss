@@ -3,9 +3,23 @@
 .snackbar-warn {
   background-color: app-color-lighter($app-warn);
   color: app-color-lighter-contrast($app-warn);
+  button {
+    color: app-color-lighter-contrast($app-warn);
+  }
 }
 
 .snackbar-success {
   background-color: app-color-lighter($app-primary);
   color: app-color-lighter-contrast($app-primary);
+  button {
+    color: app-color-lighter-contrast($app-primary);
+  }
+}
+
+.snackbar-info {
+  background-color: app-color-lighter($app-accent);
+  color: app-color-lighter-contrast($app-accent);
+  button {
+    color: app-color-lighter-contrast($app-accent);
+  }
 }
