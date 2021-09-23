@@ -55,5 +55,11 @@ export const stewardUrls = {
       sunrise: '/app/tools/gifting/sunrise',
       apollo: '/app/tools/gifting/apollo',
     },
+    ugc: {
+      default: '/app/tools/ugc',
+      woodstock: '/app/tools/ugc/woodstock',
+      steelhead: '/app/tools/ugc/steelhead',
+      sunrise: '/app/tools/ugc/sunrise',
+    },
   },
 };

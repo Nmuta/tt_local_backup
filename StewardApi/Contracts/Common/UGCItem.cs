@@ -138,5 +138,10 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets the number of times the item was downloaded.
         /// </summary>
         public int TimesDownloaded { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the UGC item is public.
+        /// </summary>
+        public bool IsPublic { get; set; }
     }
 }

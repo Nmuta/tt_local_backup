@@ -484,21 +484,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets player UGC items.
         /// </summary>
-        [HttpGet("storefront")]
+        [HttpGet("storefront/xuid({xuid})")]
         [SwaggerResponse(200, type: typeof(IList<UGCItem>))]
-        public async Task<IActionResult> GetUGCItems(
-            [FromQuery] ULongQueryParam xuid,
-            [FromQuery] string shareCode = "",
-            [FromQuery] string ugcType = "Unknown",
-            [FromQuery] int carId = int.MaxValue,
-            [FromQuery] int makeId = int.MaxValue,
-            [FromQuery] string keyword = null,
-            [FromQuery] string accessLevel = "Any",
-            [FromQuery] string orderBy = "CreatedDateDesc")
+        public async Task<IActionResult> GetUGCItems(ulong xuid, [FromQuery] string ugcType = "Unknown")
         {
             ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
-            accessLevel.ShouldNotBeNullEmptyOrWhiteSpace(nameof(accessLevel));
-            orderBy.ShouldNotBeNullEmptyOrWhiteSpace(nameof(orderBy));
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             if (!Enum.TryParse(ugcType, out UGCType typeEnum))
@@ -506,19 +496,44 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCType)} provided: {ugcType}");
             }
 
-            if (!Enum.TryParse(accessLevel, out UGCAccessLevel accessLevelEnum))
+            var getUgcItems = this.storefrontProvider.SearchUGCItems(
+                typeEnum,
+                new UGCFilters(xuid, null),
+                endpoint);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+
+            await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
+
+            var ugCItems = getUgcItems.Result;
+            var kustoCars = getKustoCars.Result;
+
+            foreach (var item in ugCItems)
             {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCAccessLevel)} provided: {accessLevel}");
+                var carData = kustoCars.FirstOrDefault(car => car.Id == item.CarId);
+                item.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
             }
 
-            if (!Enum.TryParse(orderBy, out UGCOrderBy orderByEnum))
+            return this.Ok(ugCItems);
+        }
+
+        /// <summary>
+        ///     Gets UGC item by share code.
+        /// </summary>
+        [HttpGet("storefront/shareCode({shareCode})")]
+        [SwaggerResponse(200, type: typeof(IList<UGCItem>))]
+        public async Task<IActionResult> GetUGCItems(string shareCode, [FromQuery] string ugcType = "Unknown")
+        {
+            ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
+
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            if (!Enum.TryParse(ugcType, out UGCType typeEnum))
             {
-                throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCOrderBy)} provided: {orderBy}");
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCType)} provided: {ugcType}");
             }
 
             var getUgcItems = this.storefrontProvider.SearchUGCItems(
                 typeEnum,
-                new UGCFilters(xuid?.Value ?? ulong.MaxValue, shareCode, carId, makeId, keyword, accessLevelEnum, orderByEnum),
+                new UGCFilters(ulong.MaxValue, shareCode),
                 endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
 
@@ -539,18 +554,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets a UGC livery by ID.
         /// </summary>
-        [HttpGet("storefront/livery/{id}")]
+        [HttpGet("storefront/livery({id})")]
         [SwaggerResponse(200, type: typeof(UGCItem))]
-        public async Task<IActionResult> GetUGCLivery(
-            string id)
+        public async Task<IActionResult> GetUGCLivery(Guid id)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            if (!Guid.TryParse(id, out var idGuid))
-            {
-                throw new InvalidArgumentsStewardException($"Livery id provided is not a valid Guid: {id}");
-            }
 
-            var getLivery = this.storefrontProvider.GetUGCLivery(idGuid, endpoint);
+            var getLivery = this.storefrontProvider.GetUGCLivery(id, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getLivery, getKustoCars).ConfigureAwait(true);
@@ -567,18 +577,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets a UGC photo by ID.
         /// </summary>
-        [HttpGet("storefront/photo/{id}")]
+        [HttpGet("storefront/photo({id})")]
         [SwaggerResponse(200, type: typeof(UGCItem))]
-        public async Task<IActionResult> GetUGCPhoto(
-            string id)
+        public async Task<IActionResult> GetUGCPhoto(Guid id)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
-            if (!Guid.TryParse(id, out var idGuid))
-            {
-                throw new InvalidArgumentsStewardException($"Photo id provided is not a valid Guid: {id}");
-            }
 
-            var getPhoto = this.storefrontProvider.GetUGCPhoto(idGuid, endpoint);
+            var getPhoto = this.storefrontProvider.GetUGCPhoto(id, endpoint);
             var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
 
             await Task.WhenAll(getPhoto, getKustoCars).ConfigureAwait(true);
@@ -590,6 +595,29 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             photo.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
 
             return this.Ok(photo);
+        }
+
+        /// <summary>
+        ///     Gets a UGC photo by ID.
+        /// </summary>
+        [HttpGet("storefront/tune({id})")]
+        [SwaggerResponse(200, type: typeof(UGCItem))]
+        public async Task<IActionResult> GetUGCTune(Guid id)
+        {
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+
+            var getTune = this.storefrontProvider.GetUGCTune(id, endpoint);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed);
+
+            await Task.WhenAll(getTune, getKustoCars).ConfigureAwait(true);
+
+            var tune = getTune.Result;
+            var kustoCars = getKustoCars.Result;
+
+            var carData = kustoCars.FirstOrDefault(car => car.Id == tune.CarId);
+            tune.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+
+            return this.Ok(tune);
         }
 
         /// <summary>

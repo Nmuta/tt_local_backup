@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { PlayerUGCBaseComponent } from '../player-ugc.base.component';
 import { WoodstockService } from '@services/woodstock';
 import { PlayerUGCItem } from '@models/player-ugc-item';
-import { UGCFilters } from '@models/ugc-filters';
+import { UGCType } from '@models/ugc-filters';
 
 /** Retreives and displays Woodstock ugc by XUID. */
 @Component({
@@ -20,9 +20,9 @@ export class WoodstockPlayerUGCComponent extends PlayerUGCBaseComponent implemen
   }
 
   /** Searches player UGC content. */
-  public getPlayerUGC$(filters: UGCFilters): Observable<PlayerUGCItem[]> {
+  public getPlayerUGC$(contentType: UGCType): Observable<PlayerUGCItem[]> {
     return this.usingIdentities
-      ? this.woodstockService.getPlayerUGCByXuid$(this.identity?.xuid, filters)
-      : this.woodstockService.getPlayerUGCByShareCode$(this.shareCode, filters);
+      ? this.woodstockService.getPlayerUGCByXuid$(this.identity?.xuid, contentType)
+      : this.woodstockService.getPlayerUGCByShareCode$(this.shareCode, contentType);
   }
 }

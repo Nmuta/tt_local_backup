@@ -1,7 +1,6 @@
 import BigNumber from 'bignumber.js';
 
 export interface UGCFilters {
-  type: UGCType;
   carId: BigNumber;
   makeId: BigNumber;
   keyword: string;
@@ -19,6 +18,7 @@ export enum UGCType {
   Unknown = 'Unknown',
   Livery = 'Livery',
   Photo = 'Photo',
+  Tune = 'Tune',
 }
 
 export enum UGCOrderBy {
@@ -29,7 +29,6 @@ export enum UGCOrderBy {
 }
 
 export const DefaultUGCFilters: UGCFilters = {
-  type: UGCType.Livery,
   makeId: undefined,
   carId: undefined,
   keyword: null,

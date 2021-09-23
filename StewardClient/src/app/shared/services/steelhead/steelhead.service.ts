@@ -37,7 +37,7 @@ import {
   CommunityMessage,
   CommunityMessageResult,
 } from '@models/community-message';
-import { UGCFilters } from '@models/ugc-filters';
+import { UGCType } from '@models/ugc-filters';
 import { PlayerUGCItem } from '@models/player-ugc-item';
 
 /** Handles calls to Sunrise API routes. */
@@ -277,40 +277,25 @@ export class SteelheadService {
   }
 
   /** Gets player UGC items by XUID. */
-  public getPlayerUGCByXuid$(xuid: BigNumber, filters: UGCFilters): Observable<PlayerUGCItem[]> {
-    const httpParams = new HttpParams().append('xuid', xuid.toString());
+  public getPlayerUGCByXuid$(xuid: BigNumber, contentType: UGCType): Observable<PlayerUGCItem[]> {
+    const httpParams = new HttpParams().append('ugcType', contentType.toString());
 
-    return this.getPlayerUGC$(filters, httpParams);
+    return this.apiService.getRequest$<PlayerUGCItem[]>(
+      `${this.basePath}/storefront/xuid(${xuid})`,
+      httpParams,
+    );
   }
 
   /** Gets player UGC items by share code. */
   public getPlayerUGCByShareCode$(
     shareCode: string,
-    filters: UGCFilters,
+    contentType: UGCType,
   ): Observable<PlayerUGCItem[]> {
-    const httpParams = new HttpParams().append('shareCode', shareCode);
+    const httpParams = new HttpParams().append('ugcType', contentType.toString());
 
-    return this.getPlayerUGC$(filters, httpParams);
-  }
-
-  /** Sends search request to lookup player ugc item. */
-  private getPlayerUGC$(
-    filters: UGCFilters,
-    httpParams: HttpParams = new HttpParams(),
-  ): Observable<PlayerUGCItem[]> {
-    httpParams = httpParams
-      .append('ugcType', filters.type.toString())
-      .append('accessLevel', filters.accessLevel.toString())
-      .append('orderBy', filters.orderBy.toString());
-
-    if (filters?.carId) {
-      httpParams = httpParams.append('carId', filters.carId.toString());
-    }
-
-    if (filters?.makeId) {
-      httpParams = httpParams.append('makeId', filters.makeId.toString());
-    }
-
-    return this.apiService.getRequest$<PlayerUGCItem[]>(`${this.basePath}/storefront`, httpParams);
+    return this.apiService.getRequest$<PlayerUGCItem[]>(
+      `${this.basePath}/storefront/sharecode(${shareCode})`,
+      httpParams,
+    );
   }
 }

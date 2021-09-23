@@ -411,23 +411,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<StorefrontManagementService.SearchUGCLiveriesOutput> GetPlayerLiveries(
+        public async Task<StorefrontManagementService.SearchUGCOutput> SearchUgcLiveries(
             ForzaUGCSearchRequest filters,
+            ForzaUGCContentType contentType,
             string endpoint)
         {
             var storefrontService = await this.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await storefrontService.SearchUGCLiveries(filters).ConfigureAwait(false);
-        }
-
-        /// <inheritdoc/>
-        public async Task<StorefrontManagementService.SearchUGCPhotosOutput> GetPlayerPhotos(
-            ForzaUGCSearchRequest filters,
-            string endpoint)
-        {
-            var storefrontService = await this.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
-
-            return await storefrontService.SearchUGCPhotos(filters).ConfigureAwait(false);
+            return await storefrontService.SearchUGC(filters, contentType, false, 1_000).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
@@ -448,6 +439,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             var storefrontService = await this.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
 
             return await storefrontService.GetUGCPhoto(photoId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTune(
+            Guid tuneId,
+            string endpoint)
+        {
+            var storefrontService = await this.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await storefrontService.GetUGCTune(tuneId).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

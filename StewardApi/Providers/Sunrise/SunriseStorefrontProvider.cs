@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Forza.LiveOps.FH4.Generated;
@@ -36,23 +37,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             filters.ShouldNotBeNull(nameof(filters));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
-            var mappedFilters = this.mapper.Map<ForzaUGCSearchRequest>(filters);
-            List<UGCItem> ugcItems;
-            switch (ugcType)
+            if (ugcType == UGCType.Unknown)
             {
-                case UGCType.Livery:
-                    var nonMappedLiveries = await this.sunriseService.GetPlayerLiveries(mappedFilters, endpoint).ConfigureAwait(false);
-                    ugcItems = this.mapper.Map<List<UGCItem>>(nonMappedLiveries.result);
-                    break;
-                case UGCType.Photo:
-                    var nonMappedPhotos = await this.sunriseService.GetPlayerPhotos(mappedFilters, endpoint).ConfigureAwait(false);
-                    ugcItems = this.mapper.Map<List<UGCItem>>(nonMappedPhotos.result);
-                    break;
-                default:
-                    throw new InvalidArgumentsStewardException($"Invalid UGC item type to search: {ugcType.ToString()}");
+                throw new InvalidArgumentsStewardException("Invalid UGC item type to search: Unknown");
             }
 
-            return ugcItems;
+            var mappedFilters = this.mapper.Map<ForzaUGCSearchRequest>(filters);
+            var mappedContentType = this.mapper.Map<ForzaUGCContentType>(ugcType);
+            var results = await this.sunriseService.SearchUgcLiveries(mappedFilters, mappedContentType, endpoint).ConfigureAwait(false);
+
+            return this.mapper.Map<IList<UGCItem>>(results.result);
         }
 
         /// <inheritdoc />
@@ -71,6 +65,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             var photoOutput = await this.sunriseService.GetPlayerPhoto(photoId, endpoint).ConfigureAwait(false);
+
+            return this.mapper.Map<UGCItem>(photoOutput.result);
+        }
+
+        /// <inheritdoc />
+        public async Task<UGCItem> GetUGCTune(Guid tuneId, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            var photoOutput = await this.sunriseService.GetPlayerPhoto(tuneId, endpoint).ConfigureAwait(false);
 
             return this.mapper.Map<UGCItem>(photoOutput.result);
         }

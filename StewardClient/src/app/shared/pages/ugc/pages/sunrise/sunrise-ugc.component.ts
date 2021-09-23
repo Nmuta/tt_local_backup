@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IdentityResultAlpha } from '@models/identity-query.model';
+import { UGCType } from '@models/ugc-filters';
 import { AugmentedCompositeIdentity } from '@navbar-app/components/player-selection/player-selection-base.component';
+import { keys } from 'lodash';
 
 /** Routed Component; Sunrise UGC Tool. */
 @Component({
@@ -12,6 +14,11 @@ export class SunriseUGCComponent {
   public shareCode: string = null;
   public selectedPlayer: IdentityResultAlpha = null;
   public usingPlayerIdentities: boolean = true;
+
+  public contentTypeOptions: UGCType[] = keys(UGCType).filter(
+    x => x !== UGCType.Unknown,
+  ) as UGCType[];
+  public contentType = this.contentTypeOptions[0];
 
   /** Logic when player selection outputs identities. */
   public onPlayerIdentityChange(identity: AugmentedCompositeIdentity): void {

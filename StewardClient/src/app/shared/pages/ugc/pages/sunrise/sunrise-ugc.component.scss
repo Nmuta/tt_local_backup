@@ -8,3 +8,11 @@ verify-action-button {
   margin-top: $gap-large;
   display: block;
 }
+
+mat-card.content-type-filter {
+  margin-top: $gap-small;
+
+  mat-form-field {
+    width: 100%;
+  }
+}

@@ -1,12 +1,4 @@
 <form [formGroup]="formGroup" (submit)="searchFilters()">
-  <!-- UGC Content Type Filter -->
-  <mat-form-field appearance="fill">
-    <mat-label>Content Type</mat-label>
-    <mat-select matInput [formControl]="formControls.type" (selectionChange)="searchFilters()">
-      <mat-option *ngFor="let type of typeOptions" [value]="type">{{ type }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-
   <!-- Car Make & Model Filter -->
   <sunrise-make-model-autocomplete
     (changes)="searchFilters()"
@@ -16,7 +8,12 @@
   <!-- UGC Access Level Filter -->
   <mat-form-field appearance="fill">
     <mat-label>Keyword</mat-label>
-    <input type="text" matInput [formControl]="formControls.keyword" (enter)="searchFilters()" />
+    <input
+      type="text"
+      matInput
+      [formControl]="formControls.keyword"
+      (keyup.enter)="searchFilters()"
+    />
     <button
       type="button"
       mat-button

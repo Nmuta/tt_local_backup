@@ -8,17 +8,17 @@ export interface PlayerUGCItem {
   id: string;
   guidId: string;
   type: UGCType;
-  gameTitle: number;
+  gameTitle: BigNumber;
   owner: BigNumber;
-  popularityBucket: number;
+  popularityBucket: BigNumber;
   thumbnailImageOneBase64: string;
   thumbnailImageTwoBase64: string;
-  keywordIdOne: number;
-  keywordIdTwo: number;
+  keywordIdOne: BigNumber;
+  keywordIdTwo: BigNumber;
   carDescription: string;
-  makeId: number;
-  carId: number;
-  reportingState: number;
+  makeId: BigNumber;
+  carId: BigNumber;
+  reportingState: BigNumber;
   searchable: boolean;
   forceFeaturedEndDateUtc: DateTime;
   featuredEndDateUtc: DateTime;
@@ -27,10 +27,11 @@ export interface PlayerUGCItem {
   description: string;
   createdDateUtc: DateTime;
   shareCode: string;
-  timesDisliked: number;
-  timesUsed: number;
-  timesLiked: number;
-  timesDownloaded: number;
+  timesDisliked: BigNumber;
+  timesUsed: BigNumber;
+  timesLiked: BigNumber;
+  timesDownloaded: BigNumber;
+  isPublic: boolean;
 }
 
 /** Creates a fake player UGC item */
@@ -40,17 +41,17 @@ export function fakePlayerUGCItem(): PlayerUGCItem {
     id: faker.datatype.uuid(),
     guidId: id.toString(),
     type: UGCType.Livery,
-    gameTitle: 0,
+    gameTitle: new BigNumber(0),
     owner: fakeBigNumber(),
-    popularityBucket: 0,
+    popularityBucket: new BigNumber(0),
     thumbnailImageOneBase64: faker.image.imageUrl(),
     thumbnailImageTwoBase64: faker.image.imageUrl(),
-    keywordIdOne: 0,
-    keywordIdTwo: 0,
+    keywordIdOne: new BigNumber(0),
+    keywordIdTwo: new BigNumber(0),
     carDescription: faker.random.words(10),
-    makeId: 0,
-    carId: 0,
-    reportingState: 0,
+    makeId: new BigNumber(0),
+    carId: new BigNumber(0),
+    reportingState: new BigNumber(0),
     searchable: true,
     forceFeaturedEndDateUtc: null,
     featuredEndDateUtc: null,
@@ -59,9 +60,10 @@ export function fakePlayerUGCItem(): PlayerUGCItem {
     description: faker.random.words(10),
     createdDateUtc: null,
     shareCode: faker.random.word(),
-    timesDisliked: 0,
-    timesUsed: 0,
-    timesLiked: 0,
-    timesDownloaded: 0,
+    timesDisliked: new BigNumber(0),
+    timesUsed: new BigNumber(0),
+    timesLiked: new BigNumber(0),
+    timesDownloaded: new BigNumber(0),
+    isPublic: true,
   };
 }

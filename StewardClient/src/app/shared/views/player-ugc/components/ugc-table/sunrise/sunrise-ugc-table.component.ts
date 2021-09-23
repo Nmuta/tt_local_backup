@@ -5,6 +5,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { SunriseFeatureUGCModalComponent } from '@views/feature-ugc-modal/sunrise/sunrise-feature-ugc-modal.component';
 import { filter, takeUntil } from 'rxjs/operators';
 import { UGCTableBaseComponent } from '../ugc-table.component';
+import { SunriseService } from '@services/sunrise';
+import { UGCType } from '@models/ugc-filters';
+import { Observable } from 'rxjs';
 
 /** Displays sunrise UGC content in a table. */
 @Component({
@@ -15,7 +18,7 @@ import { UGCTableBaseComponent } from '../ugc-table.component';
 export class SunriseUGCTableComponent extends UGCTableBaseComponent implements OnChanges {
   public gameTitle = GameTitleCodeName.FH4;
 
-  constructor(protected dialog: MatDialog) {
+  constructor(protected dialog: MatDialog, private readonly sunriseService: SunriseService) {
     super();
   }
 
@@ -39,5 +42,10 @@ export class SunriseUGCTableComponent extends UGCTableBaseComponent implements O
           this.ugcTableDataSource.data = updatedData;
         }
       });
+  }
+
+  /** Gets player UGC item. */
+  public getUGCItem(id: string, type: UGCType): Observable<PlayerUGCItem> {
+    return this.sunriseService.getPlayerUGCItem(id, type);
   }
 }

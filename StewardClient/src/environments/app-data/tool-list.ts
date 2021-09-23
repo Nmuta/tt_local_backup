@@ -122,8 +122,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     imageAlt: undefined,
     tooltipDescription: 'View information about a player',
     shortDescription: [`View information about a player`],
-    loadChildren: () =>
-      import('../../app/pages/community-app/pages/ugc/ugc.module').then(m => m.UGCModule),
+    loadChildren: () => import('../../app/shared/pages/ugc/ugc.module').then(m => m.UGCModule),
   },
   {
     icon: AppIcon.PlayerInfo,

@@ -4,7 +4,7 @@ import { SunriseService } from '@services/sunrise/sunrise.service';
 import { Observable } from 'rxjs';
 import { PlayerUGCBaseComponent } from '../player-ugc.base.component';
 import { PlayerUGCItem } from '@models/player-ugc-item';
-import { UGCFilters } from '@models/ugc-filters';
+import { UGCType } from '@models/ugc-filters';
 
 /** Retreives and displays Sunrise ugc by XUID. */
 @Component({
@@ -20,9 +20,9 @@ export class SunrisePlayerUGCComponent extends PlayerUGCBaseComponent implements
   }
 
   /** Searches player UGC content. */
-  public getPlayerUGC$(filters: UGCFilters): Observable<PlayerUGCItem[]> {
+  public getPlayerUGC$(contentType: UGCType): Observable<PlayerUGCItem[]> {
     return this.usingIdentities
-      ? this.sunriseSerice.getPlayerUGCByXuid$(this.identity?.xuid, filters)
-      : this.sunriseSerice.getPlayerUGCByShareCode$(this.shareCode, filters);
+      ? this.sunriseSerice.getPlayerUGCByXuid$(this.identity?.xuid, contentType)
+      : this.sunriseSerice.getPlayerUGCByShareCode$(this.shareCode, contentType);
   }
 }

@@ -74,7 +74,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var ugcType = Fixture.Create<UGCType>();
+            var ugcType = UGCType.Livery;
             var filters = Fixture.Create<UGCFilters>();
             var endpointKey = Fixture.Create<string>();
 
@@ -182,8 +182,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             public Dependencies()
             {
-                this.SunriseService.GetPlayerLiveries(Arg.Any<ForzaUGCSearchRequest>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.SearchUGCLiveriesOutput>());
-                this.SunriseService.GetPlayerPhotos(Arg.Any<ForzaUGCSearchRequest>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.SearchUGCPhotosOutput>());
+                this.SunriseService.SearchUgcLiveries(Arg.Any<ForzaUGCSearchRequest>(), Arg.Any<ForzaUGCContentType>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.SearchUGCOutput>());
                 this.SunriseService.GetPlayerLivery(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCLiveryOutput>());
                 this.SunriseService.GetPlayerPhoto(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<StorefrontManagementService.GetUGCPhotoOutput>());
                 this.Mapper.Map<IList<UGCItem>>(Arg.Any<ForzaPhotoData[]>()).Returns(Fixture.Create<IList<UGCItem>>());

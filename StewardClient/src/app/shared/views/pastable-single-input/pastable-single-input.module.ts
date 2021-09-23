@@ -5,14 +5,14 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
-import { ShareCodeInputComponent } from './share-code-input.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { PastableSingleInputComponent } from './pastable-single-input.component';
 
-/** Module for a share code input. */
+/** Module for a pastable single input. */
 @NgModule({
-  declarations: [ShareCodeInputComponent],
+  declarations: [PastableSingleInputComponent],
   imports: [
     CommonModule,
     MatTooltipModule,
@@ -24,6 +24,6 @@ import { MatInputModule } from '@angular/material/input';
     FormsModule,
     MatInputModule,
   ],
-  exports: [ShareCodeInputComponent],
+  exports: [PastableSingleInputComponent],
 })
-export class ShareCodeInputModule {}
+export class PastableSingleInputModule {}

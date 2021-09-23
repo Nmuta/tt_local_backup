@@ -26,8 +26,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { WoodstockUGCComponent } from './pages/woodstock/woodstock-ugc.component';
 import { PlayerUGCModule } from '@views/player-ugc/player-ugc.module';
 import { MatIconModule } from '@angular/material/icon';
-import { ShareCodeInputModule } from './components/share-code-input/share-code-input.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
+import { PastableSingleInputModule } from '@views/pastable-single-input/pastable-single-input.module';
 
 /** Routed module for ugc users. */
 @NgModule({
@@ -58,7 +58,7 @@ import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-sele
     MatTabsModule,
     PlayerUGCModule,
     MatIconModule,
-    ShareCodeInputModule,
+    PastableSingleInputModule,
     EndpointSelectionModule,
   ],
 })

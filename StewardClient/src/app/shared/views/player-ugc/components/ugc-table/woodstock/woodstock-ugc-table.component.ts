@@ -5,6 +5,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { WoodstockFeatureUGCModalComponent } from '@views/feature-ugc-modal/woodstock/woodstock-feature-ugc-modal.component';
 import { filter, takeUntil } from 'rxjs/operators';
 import { UGCTableBaseComponent } from '../ugc-table.component';
+import { UGCType } from '@models/ugc-filters';
+import { Observable } from 'rxjs';
+import { WoodstockService } from '@services/woodstock';
 
 /** Displays sunrise UGC content in a table. */
 @Component({
@@ -15,7 +18,7 @@ import { UGCTableBaseComponent } from '../ugc-table.component';
 export class WoodstockUGCTableComponent extends UGCTableBaseComponent implements OnChanges {
   public gameTitle = GameTitleCodeName.FH5;
 
-  constructor(protected dialog: MatDialog) {
+  constructor(protected dialog: MatDialog, private readonly woodstockService: WoodstockService) {
     super();
   }
 
@@ -39,5 +42,10 @@ export class WoodstockUGCTableComponent extends UGCTableBaseComponent implements
           this.ugcTableDataSource.data = updatedData;
         }
       });
+  }
+
+  /** Gets player UGC item. */
+  public getUGCItem(id: string, type: UGCType): Observable<PlayerUGCItem> {
+    return this.woodstockService.getPlayerUGCItem(id, type);
   }
 }

@@ -12,7 +12,7 @@ import { of } from 'rxjs';
 import { SteelheadService } from './steelhead.service';
 import { DefaultAuctionFilters } from '@models/auction-filters';
 import { HttpParams } from '@angular/common/http';
-import { DefaultUGCFilters } from '@models/ugc-filters';
+import { UGCType } from '@models/ugc-filters';
 import faker from 'faker';
 
 describe('SteelheadService', () => {
@@ -292,22 +292,18 @@ describe('SteelheadService', () => {
 
   describe('Method: getPlayerUGCByXuid$', () => {
     const xuid = fakeXuid();
-    const filters = DefaultUGCFilters;
+    const contentType = UGCType.Livery;
     let httpParams = new HttpParams();
 
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
-      httpParams = new HttpParams()
-        .append('xuid', xuid.toString())
-        .append('ugcType', filters.type.toString())
-        .append('accessLevel', filters.accessLevel.toString())
-        .append('orderBy', filters.orderBy.toString());
+      httpParams = new HttpParams().append('ugcType', contentType);
     });
 
     it('should call apiServiceMock.getRequest', done => {
-      service.getPlayerUGCByXuid$(xuid, filters).subscribe(() => {
+      service.getPlayerUGCByXuid$(xuid, contentType).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/storefront`,
+          `${service.basePath}/storefront/xuid(${xuid})`,
           httpParams,
         );
         done();
@@ -317,22 +313,18 @@ describe('SteelheadService', () => {
 
   describe('Method: getPlayerUGCByShareCode$', () => {
     const shareCode = faker.random.word();
-    const filters = DefaultUGCFilters;
+    const contentType = UGCType.Livery;
     let httpParams = new HttpParams();
 
     beforeEach(() => {
       apiServiceMock.getRequest$ = jasmine.createSpy('getRequest').and.returnValue(of([]));
-      httpParams = new HttpParams()
-        .append('shareCode', shareCode.toString())
-        .append('ugcType', filters.type.toString())
-        .append('accessLevel', filters.accessLevel.toString())
-        .append('orderBy', filters.orderBy.toString());
+      httpParams = new HttpParams().append('ugcType', contentType);
     });
 
     it('should call apiServiceMock.getRequest', done => {
-      service.getPlayerUGCByShareCode$(shareCode, filters).subscribe(() => {
+      service.getPlayerUGCByShareCode$(shareCode, contentType).subscribe(() => {
         expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
-          `${service.basePath}/storefront`,
+          `${service.basePath}/storefront/sharecode(${shareCode})`,
           httpParams,
         );
         done();

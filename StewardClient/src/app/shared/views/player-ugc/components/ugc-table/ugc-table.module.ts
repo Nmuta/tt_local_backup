@@ -16,6 +16,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ImageModalModule } from '@views/image-modal/image-modal.module';
 import { SunriseUGCTableComponent } from './sunrise/sunrise-ugc-table.component';
 import { WoodstockUGCTableComponent } from './woodstock/woodstock-ugc-table.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 /** Module for a UGC table. */
 @NgModule({
@@ -36,6 +37,7 @@ import { WoodstockUGCTableComponent } from './woodstock/woodstock-ugc-table.comp
     LuxonModule,
     ClipboardModule,
     ImageModalModule,
+    MatProgressSpinnerModule,
   ],
   exports: [SunriseUGCTableComponent, WoodstockUGCTableComponent],
 })

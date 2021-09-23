@@ -29,7 +29,7 @@ describe('WoodstockUGCComponent', () => {
   });
 
   describe('Method: onPlayerIdentityChange', () => {
-    describe('When identity has sunrise identity', () => {
+    describe('When identity has woodstock identity', () => {
       const woodstockIdentity: IdentityResultAlpha = { gamertag: faker.random.word(), query: null };
       const identity: AugmentedCompositeIdentity = {
         query: null,
@@ -97,7 +97,7 @@ describe('WoodstockUGCComponent', () => {
       });
     });
 
-    describe('When identity does not have a sunrise identity', () => {
+    describe('When identity does not have a woodstock identity', () => {
       const woodstockIdentity: IdentityResultAlpha = { gamertag: faker.random.word(), query: null };
       const identity: AugmentedCompositeIdentity = {
         query: null,

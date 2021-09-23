@@ -1513,8 +1513,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ULongQueryParam>();
-            xuid.Value = Fixture.Create<ulong>();
+            var xuid = Fixture.Create<ulong>();
 
             // Act.
             async Task<IActionResult> Action() => await controller.GetUGCItems(xuid).ConfigureAwait(false);
@@ -1534,8 +1533,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ULongQueryParam>();
-            xuid.Value = Fixture.Create<ulong>();
+            var xuid = Fixture.Create<ulong>();
 
             // Act.
             var actions = new List<Func<Task>>
@@ -1552,56 +1550,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUGCItems_WithEmptyAccessLevel_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ULongQueryParam>();
-            xuid.Value = Fixture.Create<ulong>();
-
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await controller.GetUGCItems(xuid, accessLevel: "").ConfigureAwait(false),
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage($"Value cannot be null. (Parameter 'accessLevel')");
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetUGCItems_WithEmptyOrderBy_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ULongQueryParam>();
-            xuid.Value = Fixture.Create<ulong>();
-
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await controller.GetUGCItems(xuid, orderBy: "").ConfigureAwait(false),
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<ArgumentNullException>().WithMessage($"Value cannot be null. (Parameter 'orderBy')");
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public void GetUGCItems_WithBadUGCType_Throws()
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ULongQueryParam>();
-            xuid.Value = Fixture.Create<ulong>();
+            var xuid = Fixture.Create<ulong>();
             var ugcType = "BAD_ENUM_STRING";
 
             // Act.
@@ -1619,52 +1572,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
-        public void GetUGCItems_WithBadAccessLevel_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ULongQueryParam>();
-            xuid.Value = Fixture.Create<ulong>();
-            var accessLevel = "BAD_ENUM_STRING";
-
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await controller.GetUGCItems(xuid, accessLevel: accessLevel).ConfigureAwait(false),
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage($"Invalid UGCAccessLevel provided: {accessLevel}");
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetUGCItems_WithBadOrderBy_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var xuid = Fixture.Create<ULongQueryParam>();
-            xuid.Value = Fixture.Create<ulong>();
-            var orderBy = "BAD_ENUM_STRING";
-
-            // Act.
-            var actions = new List<Func<Task>>
-            {
-                async () => await controller.GetUGCItems(xuid, orderBy: orderBy).ConfigureAwait(false),
-            };
-
-            // Assert.
-            foreach (var action in actions)
-            {
-                action.Should().Throw<InvalidArgumentsStewardException>().WithMessage($"Invalid UGCOrderBy provided: {orderBy}");
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
         public async Task GetUGCLivery_WithValidParams_ReturnsCorrectType()
         {
             // Arrange.
@@ -1672,7 +1579,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var contentId = Fixture.Create<Guid>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetUGCLivery(contentId.ToString()).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetUGCLivery(contentId).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -1692,7 +1599,27 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var contentId = Fixture.Create<Guid>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetUGCPhoto(contentId.ToString()).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetUGCPhoto(contentId).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as UGCItem;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<UGCItem>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
+        public async Task GetUGCTune_WithValidParams_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var contentId = Fixture.Create<Guid>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.GetUGCTune(contentId).ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -1877,6 +1804,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.StorefrontProvider.SearchUGCItems(Arg.Any<UGCType>(), Arg.Any<UGCFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UGCItem>>());
                 this.StorefrontProvider.GetUGCLivery(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UGCItem>());
                 this.StorefrontProvider.GetUGCPhoto(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UGCItem>());
+                this.StorefrontProvider.GetUGCTune(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UGCItem>());
                 this.StorefrontProvider.SetUGCFeaturedStatus(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);

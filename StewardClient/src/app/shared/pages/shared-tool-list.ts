@@ -25,4 +25,10 @@ export class SharedNavbarTools {
     title: 'Bulk Ban History',
     path: 'bulk-ban-history',
   };
+
+  /** The home page for the community app. */
+  public static readonly UGCPage: RouteParams = {
+    title: 'UGC',
+    path: 'ugc',
+  };
 }

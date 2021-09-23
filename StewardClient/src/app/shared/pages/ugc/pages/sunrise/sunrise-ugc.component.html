@@ -19,10 +19,24 @@
         </mat-tab>
         <mat-tab label="Share Code">
           <mat-card>
-            <share-code-input (changes)="onShareCodeChange($event)"></share-code-input>
+            <pastable-single-input
+              label="Share code"
+              (changes)="onShareCodeChange($event)"
+            ></pastable-single-input>
           </mat-card>
         </mat-tab>
       </mat-tab-group>
+
+      <mat-card class="content-type-filter">
+        <mat-form-field appearance="fill">
+          <mat-label>Content Type</mat-label>
+          <mat-select matInput [(value)]="contentType">
+            <mat-option *ngFor="let type of contentTypeOptions" [value]="type">
+              {{ type }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-card>
     </div>
   </div>
 
@@ -36,6 +50,7 @@
         <sunrise-player-ugc
           [identity]="identity"
           [shareCode]="shareCode"
+          [contentType]="contentType"
           [usingIdentities]="usingPlayerIdentities"
         ></sunrise-player-ugc>
       </mat-card-content>

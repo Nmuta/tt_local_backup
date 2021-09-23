@@ -259,17 +259,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         Task<RareCarShopService.AdminGetTransactionsOutput> GetTokenTransactionsAsync(ulong xuid, string endpoint);
 
         /// <summary>
-        ///     Get player liveries.
+        ///     Search player UGC content.
         /// </summary>
-        Task<StorefrontManagementService.SearchUGCLiveriesOutput> GetPlayerLiveries(
+        Task<StorefrontManagementService.SearchUGCOutput> SearchUgcLiveries(
             ForzaUGCSearchRequest filters,
-            string endpoint);
-
-        /// <summary>
-        ///     Get player photos.
-        /// </summary>
-        Task<StorefrontManagementService.SearchUGCPhotosOutput> GetPlayerPhotos(
-            ForzaUGCSearchRequest filters,
+            ForzaUGCContentType contentType,
             string endpoint);
 
         /// <summary>
@@ -284,6 +278,13 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// </summary>
         Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhoto(
             Guid photoId,
+            string endpoint);
+
+        /// <summary>
+        ///     Get a player tune.
+        /// </summary>
+        Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTune(
+            Guid tuneId,
             string endpoint);
 
         /// <summary>

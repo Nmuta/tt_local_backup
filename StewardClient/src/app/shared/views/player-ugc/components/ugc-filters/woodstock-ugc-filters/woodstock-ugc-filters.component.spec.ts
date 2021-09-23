@@ -69,7 +69,6 @@ describe('WoodstockUGCFiltersComponent', () => {
       carInput = fakeKustoCars[0];
       component.formControls.makeModelInput.setValue('');
       component.formControls.keyword.setValue(testUgcFilters.keyword);
-      component.formControls.type.setValue(testUgcFilters.type);
       component.formControls.accessLevel.setValue(testUgcFilters.accessLevel);
       component.formControls.orderBy.setValue(testUgcFilters.orderBy);
     });
@@ -82,7 +81,6 @@ describe('WoodstockUGCFiltersComponent', () => {
           carId: undefined,
           makeId: undefined,
           keyword: testUgcFilters.keyword,
-          type: testUgcFilters.type,
           accessLevel: testUgcFilters.accessLevel,
           orderBy: testUgcFilters.orderBy,
         } as UGCFilters);
@@ -101,7 +99,6 @@ describe('WoodstockUGCFiltersComponent', () => {
           carId: carInput.id,
           makeId: undefined,
           keyword: testUgcFilters.keyword,
-          type: testUgcFilters.type,
           accessLevel: testUgcFilters.accessLevel,
           orderBy: testUgcFilters.orderBy,
         } as UGCFilters);
@@ -121,7 +118,6 @@ describe('WoodstockUGCFiltersComponent', () => {
           carId: undefined,
           makeId: carInput.makeId,
           keyword: testUgcFilters.keyword,
-          type: testUgcFilters.type,
           accessLevel: testUgcFilters.accessLevel,
           orderBy: testUgcFilters.orderBy,
         } as UGCFilters);

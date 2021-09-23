@@ -67,3 +67,8 @@ table {
     background-color: app-color-default-contrast($app-primary);
   }
 }
+
+mat-progress-spinner {
+  margin: auto;
+  margin-top: $gap-small;
+}

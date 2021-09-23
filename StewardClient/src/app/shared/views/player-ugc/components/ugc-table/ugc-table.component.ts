@@ -12,20 +12,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatColumnDef, MatTable, MatTableDataSource } from '@angular/material/table';
 import { PlayerUGCItem } from '@models/player-ugc-item';
 import { state, style, trigger } from '@angular/animations';
-import { fromEvent } from 'rxjs';
+import { fromEvent, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BaseComponent } from '@components/base-component/base.component';
 import { UGCType } from '@models/ugc-filters';
 
-export const UGC_TABLE_COLUMNS_ONE_IMAGE: string[] = [
-  'ugcInfo',
-  'metadata',
-  'stats',
-  'thumbnailImageOneBase64',
-  'actions',
-];
-
-export const UGC_TABLE_COLUMNS_TWO_IMAGE: string[] = [
+export const UGC_TABLE_COLUMNS_TWO_IMAGES: string[] = [
   'ugcInfo',
   'metadata',
   'stats',
@@ -52,16 +44,17 @@ export abstract class UGCTableBaseComponent
   @ViewChild(MatTable, { read: ElementRef }) table: ElementRef;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() content: PlayerUGCItem[];
-  @Input() type: UGCType;
 
   public ugcTableDataSource = new MatTableDataSource<PlayerUGCItem>([]);
-  public columnsToDisplay: string[];
+  public columnsToDisplay: string[] = UGC_TABLE_COLUMNS_TWO_IMAGES;
   public expandedElement: MatColumnDef;
   public useExpandoColumnDef: boolean = false;
   public expandoColumnDef = UGC_TABLE_COLUMNS_EXPANDO;
+  public waitingForThumbnails = false;
 
   /** Opens the feature UGC modal. */
   public abstract openFeatureUGCModal(item: PlayerUGCItem): void;
+  public abstract getUGCItem(id: string, type: UGCType): Observable<PlayerUGCItem>;
 
   /** Angular hook. */
   public ngOnInit(): void {
@@ -83,17 +76,41 @@ export abstract class UGCTableBaseComponent
       if (this.paginator) {
         this.paginator.pageIndex = 0;
       }
-    }
 
-    if (!!changes.type) {
-      this.columnsToDisplay =
-        this.type === UGCType.Livery ? UGC_TABLE_COLUMNS_TWO_IMAGE : UGC_TABLE_COLUMNS_ONE_IMAGE;
+      // Check paginator for page length and get thumbnails for first 'X' amount of content
+      if (this.ugcTableDataSource.data.length > 0) {
+        this.getUGCThumbnailsForActiveDataset();
+      }
     }
   }
 
   /** Angular hook. */
   public ngAfterViewInit(): void {
     this.ugcTableDataSource.paginator = this.paginator;
+  }
+
+  /** Looks up thumbnails for items in the active paginated page. Ignores items with thumbnails already present. */
+  public async getUGCThumbnailsForActiveDataset(): Promise<void> {
+    const activeLength = this.paginator.pageSize;
+    const activeIndex = this.paginator.pageIndex * activeLength;
+    const dataSource = this.ugcTableDataSource.data;
+    this.waitingForThumbnails = true;
+
+    for (let i = activeIndex; i < activeIndex + activeLength; i++) {
+      const ugcItem = dataSource[i];
+      if (this.shouldLookupThumbnails(ugcItem)) {
+        const fullUGCItem = await this.getUGCItem(ugcItem.guidId, ugcItem.type).toPromise();
+        dataSource[i].thumbnailImageOneBase64 = fullUGCItem.thumbnailImageOneBase64;
+        dataSource[i].thumbnailImageTwoBase64 = fullUGCItem.thumbnailImageTwoBase64;
+      }
+    }
+
+    this.ugcTableDataSource.data = dataSource;
+    this.waitingForThumbnails = false;
+  }
+
+  private shouldLookupThumbnails(item: PlayerUGCItem): boolean {
+    return !!item && item.type !== UGCType.Tune && !item.thumbnailImageOneBase64;
   }
 
   private shouldUseCondensedTableView(): boolean {

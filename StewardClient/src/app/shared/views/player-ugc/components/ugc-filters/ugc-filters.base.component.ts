@@ -3,13 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
 import { KustoCar } from '@models/kusto-car';
-import {
-  DefaultUGCFilters,
-  UGCAccessLevel,
-  UGCFilters,
-  UGCOrderBy,
-  UGCType,
-} from '@models/ugc-filters';
+import { DefaultUGCFilters, UGCAccessLevel, UGCFilters, UGCOrderBy } from '@models/ugc-filters';
 import BigNumber from 'bignumber.js';
 import { keys } from 'lodash';
 import { Observable } from 'rxjs';
@@ -26,14 +20,12 @@ export type MakeModelFilterGroup = {
 export abstract class UGCFiltersBaseComponent extends BaseComponent {
   @Output() public changes = new EventEmitter<UGCFilters>();
 
-  public typeOptions = [UGCType.Livery, UGCType.Photo];
   public accessLevelOptions = keys(UGCAccessLevel) as UGCAccessLevel[];
   public orderByOptions = keys(UGCOrderBy) as UGCOrderBy[];
 
   public formControls = {
     makeModelInput: new FormControl(null),
     keyword: new FormControl(''),
-    type: new FormControl(DefaultUGCFilters.type, Validators.required),
     accessLevel: new FormControl(DefaultUGCFilters.accessLevel, Validators.required),
     orderBy: new FormControl(DefaultUGCFilters.orderBy, Validators.required),
   };
@@ -64,7 +56,6 @@ export abstract class UGCFiltersBaseComponent extends BaseComponent {
       carId: carId,
       makeId: makeId,
       keyword: this.formControls.keyword.value,
-      type: this.formControls.type.value,
       accessLevel: this.formControls.accessLevel.value,
       orderBy: this.formControls.orderBy.value,
     } as UGCFilters);

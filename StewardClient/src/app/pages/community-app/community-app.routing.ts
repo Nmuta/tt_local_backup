@@ -37,8 +37,8 @@ const routes: Routes = [
           import('../../shared/pages/gifting/gifting.module').then(m => m.GiftingsModule),
       },
       {
-        path: CommunityAppTools.UGCPage.path,
-        loadChildren: () => import('./pages/ugc/ugc.module').then(m => m.UGCModule),
+        path: SharedNavbarTools.UGCPage.path,
+        loadChildren: () => import('../../shared/pages/ugc/ugc.module').then(m => m.UGCModule),
       },
       {
         path: SharedNavbarTools.BulkBanHistoryPage.path,

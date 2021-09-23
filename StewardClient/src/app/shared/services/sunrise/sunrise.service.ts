@@ -44,7 +44,7 @@ import { KustoCar } from '@models/kusto-car';
 import { PlayerAuction } from '@models/player-auction';
 import { ProfileNote } from '@models/profile-note.model';
 import { BackstagePassHistory } from '@models/backstage-pass-history';
-import { UGCFilters, UGCType } from '@models/ugc-filters';
+import { UGCType } from '@models/ugc-filters';
 import { PlayerUGCItem } from '@models/player-ugc-item';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
@@ -381,36 +381,37 @@ export class SunriseService {
   }
 
   /** Gets player UGC items by XUID. */
-  public getPlayerUGCByXuid$(xuid: BigNumber, filters: UGCFilters): Observable<PlayerUGCItem[]> {
-    const httpParams = new HttpParams().append('xuid', xuid.toString());
+  public getPlayerUGCByXuid$(xuid: BigNumber, contentType: UGCType): Observable<PlayerUGCItem[]> {
+    const httpParams = new HttpParams().append('ugcType', contentType.toString());
 
-    return this.getPlayerUGC$(filters, httpParams);
+    return this.apiService.getRequest$<PlayerUGCItem[]>(
+      `${this.basePath}/storefront/xuid(${xuid})`,
+      httpParams,
+    );
   }
 
   /** Gets player UGC items by share code. */
   public getPlayerUGCByShareCode$(
     shareCode: string,
-    filters: UGCFilters,
+    contentType: UGCType,
   ): Observable<PlayerUGCItem[]> {
-    const httpParams = new HttpParams().append('shareCode', shareCode);
+    const httpParams = new HttpParams().append('ugcType', contentType.toString());
 
-    return this.getPlayerUGC$(filters, httpParams);
+    return this.apiService.getRequest$<PlayerUGCItem[]>(
+      `${this.basePath}/storefront/sharecode(${shareCode})`,
+      httpParams,
+    );
   }
 
   /** Gets a player's UGC item.  */
-  public getPlayerUGCItem(id: string, type: UGCType): Observable<PlayerUGCItem> {
-    switch (type) {
-      case UGCType.Livery:
-        return this.apiService.getRequest$<PlayerUGCItem>(
-          `${this.basePath}/storefront/livery/${id}`,
-        );
-      case UGCType.Photo:
-        return this.apiService.getRequest$<PlayerUGCItem>(
-          `${this.basePath}/storefront/photo/${id}`,
-        );
-      default:
-        throw new Error(`Invalid UGC item type for lookup: ${type}}`);
+  public getPlayerUGCItem(id: string, ugcType: UGCType): Observable<PlayerUGCItem> {
+    if (ugcType === UGCType.Unknown) {
+      throw new Error(`Invalid UGC item type for lookup: ${ugcType}}`);
     }
+
+    return this.apiService.getRequest$<PlayerUGCItem>(
+      `${this.basePath}/storefront/${ugcType.toLowerCase()}(${id})`,
+    );
   }
 
   /** Sets a UGC item's feature status.  */
@@ -423,30 +424,5 @@ export class SunriseService {
       `${this.basePath}/storefront/itemId(${status.itemId})/featuredStatus`,
       status,
     );
-  }
-
-  /** Sends search request to lookup player ugc item. */
-  private getPlayerUGC$(
-    filters: UGCFilters,
-    httpParams: HttpParams = new HttpParams(),
-  ): Observable<PlayerUGCItem[]> {
-    httpParams = httpParams
-      .append('ugcType', filters.type.toString())
-      .append('accessLevel', filters.accessLevel.toString())
-      .append('orderBy', filters.orderBy.toString());
-
-    if (filters?.carId) {
-      httpParams = httpParams.append('carId', filters.carId.toString());
-    }
-
-    if (filters?.makeId) {
-      httpParams = httpParams.append('makeId', filters.makeId.toString());
-    }
-
-    if (filters?.keyword) {
-      httpParams = httpParams.append('keyword', filters.keyword.toString());
-    }
-
-    return this.apiService.getRequest$<PlayerUGCItem[]>(`${this.basePath}/storefront`, httpParams);
   }
 }

@@ -6,22 +6,28 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     /// <summary>
     ///     Represents UGC type options.
     /// </summary>
+    /// <remarks>Copies enum values from ForzaUGCContentType.</remarks>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum UGCType
     {
         /// <summary>
         ///     Unknown UGC item type.
         /// </summary>
-        Unknown,
+        Unknown = 0,
 
         /// <summary>
         ///     Livery UGC item type.
         /// </summary>
-        Livery,
+        Livery = 1,
+
+        /// <summary>
+        ///     Tune UGC item type.
+        /// </summary>
+        Tune = 3,
 
         /// <summary>
         ///     Photo UGC item type.
         /// </summary>
-        Photo,
+        Photo = 5,
     }
 }

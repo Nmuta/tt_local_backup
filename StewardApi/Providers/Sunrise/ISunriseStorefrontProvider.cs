@@ -26,6 +26,11 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         Task<UGCItem> GetUGCPhoto(Guid photoId, string endpoint);
 
         /// <summary>
+        ///    Get player tune.
+        /// </summary>
+        Task<UGCItem> GetUGCTune(Guid tuneId, string endpoint);
+
+        /// <summary>
         ///     Sets featured state of a UGC content item.
         /// </summary>
         Task SetUGCFeaturedStatus(Guid contentId, bool isFeatured, TimeSpan? featuredExpiry, string endpoint);
