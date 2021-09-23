@@ -70,6 +70,7 @@ import {
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { EndpointSelectionInterceptor } from '@interceptors/endpoint-selection.interceptor';
+import { StagingRewriteInterceptor } from '@interceptors/staging-rewrite.interceptor';
 
 function fakeApiOrNothing(): Provider[] {
   if (!environment.enableFakeApi) {
@@ -217,7 +218,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
+      useClass: StagingRewriteInterceptor,
       multi: true,
     },
     {
