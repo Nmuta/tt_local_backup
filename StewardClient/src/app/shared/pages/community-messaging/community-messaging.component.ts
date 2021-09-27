@@ -16,6 +16,11 @@ export class CommunityMessagingComponent implements OnInit {
         name: GameTitleCodeName.FH4,
         route: ['.', GameTitleCodeName.FH4.toLowerCase()],
       },
+
+      {
+        name: GameTitleCodeName.FH5,
+        route: ['.', GameTitleCodeName.FH5.toLowerCase()],
+      },
     ];
   }
 }

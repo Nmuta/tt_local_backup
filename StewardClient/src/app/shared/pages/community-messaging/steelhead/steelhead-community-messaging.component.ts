@@ -12,7 +12,7 @@ import { GameTitleCodeName } from '@models/enums';
  *  Steelhead community messaging component.
  */
 @Component({
-  templateUrl: '../base/community-messaging.base.component.html',
+  templateUrl: './steelhead-community-messaging.component.html',
   styleUrls: ['../base/community-messaging.base.component.scss'],
 })
 export class SteelheadCommunityMessagingComponent extends CommunityMessagingBaseComponent {
@@ -38,5 +38,14 @@ export class SteelheadCommunityMessagingComponent extends CommunityMessagingBase
   public onPlayerIdentitiesChange(identities: AugmentedCompositeIdentity[]): void {
     const newIdentities = identities.filter(i => i?.extra?.hasSteelhead).map(i => i.steelhead);
     this.playerIdentities = newIdentities;
+  }
+
+  /** Produces a rejection message from a given identity, if it is rejected. */
+  public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
+    if (!identity?.extra?.hasSteelhead) {
+      return `Player does not have a Steelhead account. Player will be ignored.`;
+    }
+
+    return null;
   }
 }

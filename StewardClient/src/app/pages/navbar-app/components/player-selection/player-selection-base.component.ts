@@ -298,12 +298,9 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       //  : of([] as IdentityResultAlpha[]),
       of([] as IdentityResultAlpha[]),
 
-      // TODO: Uncomment this when Woodstock endpoint is ready for production use.
-      // Using empty array for now to stop failures
-      //queryIsAlphaCompatible
-      //  ? this.woodstock.getPlayerIdentities(newQueries as IdentityQueryAlpha[])
-      //  : of([] as IdentityResultAlpha[]),
-      of([] as IdentityResultAlpha[]),
+      queryIsAlphaCompatible
+        ? this.woodstock.getPlayerIdentities$(newQueries as IdentityQueryAlpha[])
+        : of([] as IdentityResultAlpha[]),
     ];
 
     // get the value and replace it in the source if it's still there

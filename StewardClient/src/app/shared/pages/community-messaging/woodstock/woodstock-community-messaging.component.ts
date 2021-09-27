@@ -12,7 +12,7 @@ import { GameTitleCodeName } from '@models/enums';
  *  Woodstock community messaging component.
  */
 @Component({
-  templateUrl: '../base/community-messaging.base.component.html',
+  templateUrl: './woodstock-community-messaging.component.html',
   styleUrls: ['../base/community-messaging.base.component.scss'],
 })
 export class WoodstockCommunityMessagingComponent extends CommunityMessagingBaseComponent {
@@ -38,5 +38,14 @@ export class WoodstockCommunityMessagingComponent extends CommunityMessagingBase
   public onPlayerIdentitiesChange(identities: AugmentedCompositeIdentity[]): void {
     const newIdentities = identities.filter(i => i?.extra?.hasWoodstock).map(i => i.woodstock);
     this.playerIdentities = newIdentities;
+  }
+
+  /** Produces a rejection message from a given identity, if it is rejected. */
+  public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
+    if (!identity?.extra?.hasWoodstock) {
+      return `Player does not have a Woodstock account. Player will be ignored.`;
+    }
+
+    return null;
   }
 }

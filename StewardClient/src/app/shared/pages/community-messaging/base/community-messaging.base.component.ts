@@ -47,6 +47,7 @@ export abstract class CommunityMessagingBaseComponent extends BaseComponent {
   public abstract gameTitle: GameTitleCodeName;
   public abstract submitCommunityMessage$(): Observable<CommunityMessageResult<BigNumber>[]>;
   public abstract onPlayerIdentitiesChange(identities: AugmentedCompositeIdentity[]): void;
+  public abstract identityRejectionFn(identity: AugmentedCompositeIdentity): string;
 
   /** New community message created. */
   public setNewCommunityMessage($event: CommunityMessage): void {
@@ -102,15 +103,6 @@ export abstract class CommunityMessagingBaseComponent extends BaseComponent {
       !!this.newCommunityMessage &&
       (this.isUsingPlayerIdentities ? this.playerIdentities?.length > 0 : !!this.selectedLspGroup)
     );
-  }
-
-  /** Produces a rejection message from a given identity, if it is rejected. */
-  public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
-    if (!identity?.extra?.hasSunrise) {
-      return `Player does not have a ${this.gameTitle} account. Player will be ignored.`;
-    }
-
-    return null;
   }
 
   /** Sets if tool is using player identities as selection type; */

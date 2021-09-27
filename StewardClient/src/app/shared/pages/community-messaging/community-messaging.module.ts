@@ -31,12 +31,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { LuxonModule } from 'luxon-angular';
 import { MatLuxonDateModule } from 'ngx-material-luxon';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
+import { WoodstockCommunityMessagingComponent } from './woodstock/woodstock-community-messaging.component';
 
 /** Routed module for banning users. */
 @NgModule({
   declarations: [
     CommunityMessagingComponent,
     SunriseCommunityMessagingComponent,
+    WoodstockCommunityMessagingComponent,
     NewCommunityMessageComponent,
   ],
   imports: [

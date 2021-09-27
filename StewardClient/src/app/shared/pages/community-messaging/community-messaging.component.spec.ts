@@ -31,7 +31,7 @@ describe('CommunityMessagingComponent', () => {
       expect(component.navbarRouterLinks.length).toEqual(0);
       component.ngOnInit();
 
-      expect(component.navbarRouterLinks.length).toEqual(1);
+      expect(component.navbarRouterLinks.length).toEqual(2);
     });
   });
 });

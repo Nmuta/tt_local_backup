@@ -12,7 +12,7 @@ import { GameTitleCodeName } from '@models/enums';
  *  Sunrise community messaging component.
  */
 @Component({
-  templateUrl: '../base/community-messaging.base.component.html',
+  templateUrl: './sunrise-community-messaging.component.html',
   styleUrls: ['../base/community-messaging.base.component.scss'],
 })
 export class SunriseCommunityMessagingComponent extends CommunityMessagingBaseComponent {
@@ -38,5 +38,14 @@ export class SunriseCommunityMessagingComponent extends CommunityMessagingBaseCo
   public onPlayerIdentitiesChange(identities: AugmentedCompositeIdentity[]): void {
     const newIdentities = identities.filter(i => i?.extra?.hasSunrise).map(i => i.sunrise);
     this.playerIdentities = newIdentities;
+  }
+
+  /** Produces a rejection message from a given identity, if it is rejected. */
+  public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
+    if (!identity?.extra?.hasSunrise) {
+      return `Player does not have a Sunrise account. Player will be ignored.`;
+    }
+
+    return null;
   }
 }
