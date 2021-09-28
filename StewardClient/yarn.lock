@@ -10,24 +10,24 @@
     "@jridgewell/resolve-uri" "1.0.0"
     sourcemap-codec "1.4.8"
 
-"@angular-devkit/architect@0.1202.5":
-  version "0.1202.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-devkit/architect/-/architect-0.1202.5.tgz#6e08b4b5d629a37479fb7aacda08e755541809ae"
-  integrity sha1-bgi0tdYpo3R5+3qs2gjnVVQYCa4=
+"@angular-devkit/architect@0.1202.7":
+  version "0.1202.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-devkit/architect/-/architect-0.1202.7.tgz#0f25851c72d45dd15e86c92cd72c6390e88be432"
+  integrity sha1-DyWFHHLUXdFehsks1yxjkOiL5DI=
   dependencies:
-    "@angular-devkit/core" "12.2.5"
+    "@angular-devkit/core" "12.2.7"
     rxjs "6.6.7"
 
-"@angular-devkit/build-angular@^12.0.2":
-  version "12.2.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-devkit/build-angular/-/build-angular-12.2.5.tgz#800c79e56b6f473c8fc0a2465e242f0b490c3854"
-  integrity sha1-gAx55WtvRzyPwKJGXiQvC0kMOFQ=
+"@angular-devkit/build-angular@^12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-devkit/build-angular/-/build-angular-12.2.7.tgz#0ac0576c72a238d0a4cb2b2339e910720fe9c155"
+  integrity sha1-CsBXbHKiONCkyysjOekQcg/pwVU=
   dependencies:
     "@ampproject/remapping" "1.0.1"
-    "@angular-devkit/architect" "0.1202.5"
-    "@angular-devkit/build-optimizer" "0.1202.5"
-    "@angular-devkit/build-webpack" "0.1202.5"
-    "@angular-devkit/core" "12.2.5"
+    "@angular-devkit/architect" "0.1202.7"
+    "@angular-devkit/build-optimizer" "0.1202.7"
+    "@angular-devkit/build-webpack" "0.1202.7"
+    "@angular-devkit/core" "12.2.7"
     "@babel/core" "7.14.8"
     "@babel/generator" "7.14.8"
     "@babel/helper-annotate-as-pure" "7.14.5"
@@ -39,7 +39,7 @@
     "@babel/template" "7.14.5"
     "@discoveryjs/json-ext" "0.5.3"
     "@jsdevtools/coverage-istanbul-loader" "3.0.5"
-    "@ngtools/webpack" "12.2.5"
+    "@ngtools/webpack" "12.2.7"
     ansi-colors "4.1.1"
     babel-loader "8.2.2"
     browserslist "^4.9.1"
@@ -51,7 +51,7 @@
     critters "0.0.10"
     css-loader "6.2.0"
     css-minimizer-webpack-plugin "3.0.2"
-    esbuild "0.12.24"
+    esbuild-wasm "0.12.29"
     find-cache-dir "3.3.1"
     glob "7.1.7"
     https-proxy-agent "5.0.0"
@@ -92,28 +92,30 @@
     webpack-dev-server "3.11.2"
     webpack-merge "5.8.0"
     webpack-subresource-integrity "1.5.2"
+  optionalDependencies:
+    esbuild "0.12.29"
 
-"@angular-devkit/build-optimizer@0.1202.5":
-  version "0.1202.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-devkit/build-optimizer/-/build-optimizer-0.1202.5.tgz#c5eb6a5f453750fdf50af92df33dea65884ea835"
-  integrity sha1-xetqX0U3UP31Cvkt8z3qZYhOqDU=
+"@angular-devkit/build-optimizer@0.1202.7":
+  version "0.1202.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-devkit/build-optimizer/-/build-optimizer-0.1202.7.tgz#e9d2239fd49b81ec2c020cc584caaa4219ba4aa2"
+  integrity sha1-6dIjn9SbgewsAgzFhMqqQhm6SqI=
   dependencies:
     source-map "0.7.3"
     tslib "2.3.0"
     typescript "4.3.5"
 
-"@angular-devkit/build-webpack@0.1202.5":
-  version "0.1202.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-devkit/build-webpack/-/build-webpack-0.1202.5.tgz#96f345e78f71744b22e1c64ddfda9c93c98cc3e3"
-  integrity sha1-lvNF549xdEsi4cZN39qck8mMw+M=
+"@angular-devkit/build-webpack@0.1202.7":
+  version "0.1202.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-devkit/build-webpack/-/build-webpack-0.1202.7.tgz#d0db1912c6ee8fba1f7a1483b577088273b5d696"
+  integrity sha1-0NsZEsbuj7ofehSDtXcIgnO11pY=
   dependencies:
-    "@angular-devkit/architect" "0.1202.5"
+    "@angular-devkit/architect" "0.1202.7"
     rxjs "6.6.7"
 
-"@angular-devkit/core@12.2.5":
-  version "12.2.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-devkit/core/-/core-12.2.5.tgz#928fc35b28e1ed84243b0c09db97be1a9c85acdb"
-  integrity sha1-ko/DWyjh7YQkOwwJ25e+GpyFrNs=
+"@angular-devkit/core@12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-devkit/core/-/core-12.2.7.tgz#f114b12d81797c84c9adf6ced7e355565cd4a54a"
+  integrity sha1-8RSxLYF5fITJrfbO1+NVVlzUpUo=
   dependencies:
     ajv "8.6.2"
     ajv-formats "2.1.0"
@@ -122,12 +124,12 @@
     rxjs "6.6.7"
     source-map "0.7.3"
 
-"@angular-devkit/schematics@12.2.5":
-  version "12.2.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-devkit/schematics/-/schematics-12.2.5.tgz#2ca20be4bf5b411e1e29eceb479cb745bda50e16"
-  integrity sha1-LKIL5L9bQR4eKezrR5y3Rb2lDhY=
+"@angular-devkit/schematics@12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-devkit/schematics/-/schematics-12.2.7.tgz#46df2cb7a5917ff59ebcb47028b69b75572b12f6"
+  integrity sha1-Rt8st6WRf/WevLRwKLabdVcrEvY=
   dependencies:
-    "@angular-devkit/core" "12.2.5"
+    "@angular-devkit/core" "12.2.7"
     ora "5.4.1"
     rxjs "6.6.7"
 
@@ -138,7 +140,16 @@
   dependencies:
     "@nrwl/devkit" "12.6.0"
 
-"@angular-eslint/eslint-plugin-template@12.4.1", "@angular-eslint/eslint-plugin-template@^12.1.0":
+"@angular-eslint/eslint-plugin-template@12.5.0":
+  version "12.5.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-eslint/eslint-plugin-template/-/eslint-plugin-template-12.5.0.tgz#9b77647c7d850a956d4e2fc8343230f3076e5892"
+  integrity sha1-m3dkfH2FCpVtTi/INDIw8wduWJI=
+  dependencies:
+    "@typescript-eslint/experimental-utils" "4.28.2"
+    aria-query "^4.2.2"
+    axobject-query "^2.2.0"
+
+"@angular-eslint/eslint-plugin-template@^12.1.0":
   version "12.4.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-eslint/eslint-plugin-template/-/eslint-plugin-template-12.4.1.tgz#7107db958995758c397431ef03b1316f0c800536"
   integrity sha1-cQfblYmVdYw5dDHvA7ExbwyABTY=
@@ -147,20 +158,28 @@
     aria-query "^4.2.2"
     axobject-query "^2.2.0"
 
-"@angular-eslint/eslint-plugin@12.4.1", "@angular-eslint/eslint-plugin@^12.1.0":
+"@angular-eslint/eslint-plugin@12.5.0":
+  version "12.5.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-eslint/eslint-plugin/-/eslint-plugin-12.5.0.tgz#cb4eca50338bf41398bd62796c1068b937ff53a1"
+  integrity sha1-y07KUDOL9BOYvWJ5bBBouTf/U6E=
+  dependencies:
+    "@angular-eslint/utils" "12.5.0"
+    "@typescript-eslint/experimental-utils" "4.28.2"
+
+"@angular-eslint/eslint-plugin@^12.1.0":
   version "12.4.1"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-eslint/eslint-plugin/-/eslint-plugin-12.4.1.tgz#333ba1884d2d9436f85d93f1dab3f917ff987e99"
   integrity sha1-MzuhiE0tlDb4XZPx2rP5F/+Yfpk=
   dependencies:
     "@typescript-eslint/experimental-utils" "4.28.2"
 
-"@angular-eslint/schematics@^12.1.0":
-  version "12.4.1"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-eslint/schematics/-/schematics-12.4.1.tgz#7a82758048b54f139f8cc781c0618eee871f5ad5"
-  integrity sha1-eoJ1gEi1TxOfjMeBwGGO7ocfWtU=
+"@angular-eslint/schematics@^12.5.0":
+  version "12.5.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-eslint/schematics/-/schematics-12.5.0.tgz#bbfe5f543f26ddb38727163a7426fcd99572b282"
+  integrity sha1-u/5fVD8m3bOHJxY6dCb82ZVysoI=
   dependencies:
-    "@angular-eslint/eslint-plugin" "12.4.1"
-    "@angular-eslint/eslint-plugin-template" "12.4.1"
+    "@angular-eslint/eslint-plugin" "12.5.0"
+    "@angular-eslint/eslint-plugin-template" "12.5.0"
     ignore "5.1.8"
     strip-json-comments "3.1.1"
     tmp "0.2.1"
@@ -172,31 +191,38 @@
   dependencies:
     eslint-scope "^5.1.0"
 
-"@angular/animations@^12.0.2":
-  version "12.2.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/animations/-/animations-12.2.5.tgz#b5b534f9f6ba65d1249d937bbad01de6cc9adcac"
-  integrity sha1-tbU0+fa6ZdEknZN7utAd5sya3Kw=
+"@angular-eslint/utils@12.5.0":
+  version "12.5.0"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular-eslint/utils/-/utils-12.5.0.tgz#9e1164de3ceffc1b79d24bd5e5788d6bb63bc905"
+  integrity sha1-nhFk3jzv/Bt50kvV5XiNa7Y7yQU=
+  dependencies:
+    "@typescript-eslint/experimental-utils" "4.28.2"
+
+"@angular/animations@^12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/animations/-/animations-12.2.7.tgz#7000cd81ae3d84a09082c3e6576f1b75a72cf629"
+  integrity sha1-cADNga49hKCQgsPmV28bdacs9ik=
   dependencies:
     tslib "^2.2.0"
 
-"@angular/cdk@^12.0.2":
-  version "12.2.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/cdk/-/cdk-12.2.5.tgz#005c91eba34aa015a5a67b309b046008f8e69a5d"
-  integrity sha1-AFyR66NKoBWlpnswmwRgCPjmml0=
+"@angular/cdk@^12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/cdk/-/cdk-12.2.7.tgz#df8636bc81cbe2f8ceaa69feed46fbb99a2b7183"
+  integrity sha1-34Y2vIHL4vjOqmn+7Ub7uZorcYM=
   dependencies:
     tslib "^2.2.0"
   optionalDependencies:
     parse5 "^5.0.0"
 
-"@angular/cli@^12.0.2":
-  version "12.2.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/cli/-/cli-12.2.5.tgz#72e66fd6c9b503eace1644daf49731024567d061"
-  integrity sha1-cuZv1sm1A+rOFkTa9JcxAkVn0GE=
+"@angular/cli@^12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/cli/-/cli-12.2.7.tgz#609b68dbe3887163957728d94f84d32182669871"
+  integrity sha1-YJto2+OIcWOVdyjZT4TTIYJmmHE=
   dependencies:
-    "@angular-devkit/architect" "0.1202.5"
-    "@angular-devkit/core" "12.2.5"
-    "@angular-devkit/schematics" "12.2.5"
-    "@schematics/angular" "12.2.5"
+    "@angular-devkit/architect" "0.1202.7"
+    "@angular-devkit/core" "12.2.7"
+    "@angular-devkit/schematics" "12.2.7"
+    "@schematics/angular" "12.2.7"
     "@yarnpkg/lockfile" "1.1.0"
     ansi-colors "4.1.1"
     debug "4.3.2"
@@ -213,17 +239,17 @@
     symbol-observable "4.0.0"
     uuid "8.3.2"
 
-"@angular/common@~12.0.2":
-  version "12.0.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/common/-/common-12.0.5.tgz#05cd8fc14a0378dedcd84a6fc3024c4d0a897c0d"
-  integrity sha1-Bc2PwUoDeN7c2EpvwwJMTQqJfA0=
+"@angular/common@~12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/common/-/common-12.2.7.tgz#4cc6573fb29d32b6fe5513f6150a18a00381b9af"
+  integrity sha1-TMZXP7KdMrb+VRP2FQoYoAOBua8=
   dependencies:
-    tslib "^2.1.0"
+    tslib "^2.2.0"
 
-"@angular/compiler-cli@~12.0.2":
-  version "12.0.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/compiler-cli/-/compiler-cli-12.0.5.tgz#c890d815da95b9b84ad8cb8be7b89baeab67f971"
-  integrity sha1-yJDYFdqVubhK2MuL57ibrqtn+XE=
+"@angular/compiler-cli@~12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/compiler-cli/-/compiler-cli-12.2.7.tgz#3781100124a68b43d379a033ab4b5eff2f2b9eac"
+  integrity sha1-N4EQASSmi0PTeaAzq0te/y8rnqw=
   dependencies:
     "@babel/core" "^7.8.6"
     "@babel/types" "^7.8.6"
@@ -237,32 +263,32 @@
     semver "^7.0.0"
     source-map "^0.6.1"
     sourcemap-codec "^1.4.8"
-    tslib "^2.1.0"
-    yargs "^16.2.0"
+    tslib "^2.2.0"
+    yargs "^17.0.0"
 
 "@angular/compiler@9.0.0":
   version "9.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/compiler/-/compiler-9.0.0.tgz#87e0bef4c369b6cadae07e3a4295778fc93799d5"
   integrity sha1-h+C+9MNptsra4H46QpV3j8k3mdU=
 
-"@angular/compiler@~12.0.2":
-  version "12.0.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/compiler/-/compiler-12.0.5.tgz#b69a1927253b18dcaf4bac2c1107b8552ee6649e"
-  integrity sha1-tpoZJyU7GNyvS6wsEQe4VS7mZJ4=
+"@angular/compiler@~12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/compiler/-/compiler-12.2.7.tgz#bd0e9071bc0a07261b8ba3e63fdd640853aa0659"
+  integrity sha1-vQ6QcbwKByYbi6PmP91kCFOqBlk=
   dependencies:
-    tslib "^2.1.0"
+    tslib "^2.2.0"
 
 "@angular/core@9.0.0":
   version "9.0.0"
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/core/-/core-9.0.0.tgz#227dc53e1ac81824f998c6e76000b7efc522641e"
   integrity sha1-In3FPhrIGCT5mMbnYAC378UiZB4=
 
-"@angular/core@~12.0.2":
-  version "12.0.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/core/-/core-12.0.5.tgz#a91751a13f575fd893abbdee257f60d0747038e7"
-  integrity sha1-qRdRoT9XX9iTq73uJX9g0HRwOOc=
+"@angular/core@~12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/core/-/core-12.2.7.tgz#92af3daf79a7656745323c13226dbb839bffddf9"
+  integrity sha1-kq89r3mnZWdFMjwTIm27g5v/3fk=
   dependencies:
-    tslib "^2.1.0"
+    tslib "^2.2.0"
 
 "@angular/flex-layout@^12.0.0-beta.34":
   version "12.0.0-beta.34"
@@ -271,74 +297,74 @@
   dependencies:
     tslib "^2.1.0"
 
-"@angular/forms@~12.0.2":
-  version "12.0.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/forms/-/forms-12.0.5.tgz#17e888667d644b03f4d67928f47bbf227fc6b4ee"
-  integrity sha1-F+iIZn1kSwP01nko9Hu/In/GtO4=
+"@angular/forms@~12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/forms/-/forms-12.2.7.tgz#3e904cc388ab1da4a0977de3b3cd753c2748a4f6"
+  integrity sha1-PpBMw4irHaSgl33js811PCdIpPY=
   dependencies:
-    tslib "^2.1.0"
+    tslib "^2.2.0"
 
-"@angular/localize@^12.0.2":
-  version "12.2.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/localize/-/localize-12.2.5.tgz#e8246417a338f7561ce147fbe47b705fa7c8eac3"
-  integrity sha1-6CRkF6M491Yc4Uf75HtwX6fI6sM=
+"@angular/localize@^12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/localize/-/localize-12.2.7.tgz#fd9163e93fbc09304837e1fc2019c91c41653e35"
+  integrity sha1-/ZFj6T+8CTBIN+H8IBnJHEFlPjU=
   dependencies:
     "@babel/core" "7.8.3"
     glob "7.1.7"
     yargs "^17.0.0"
 
-"@angular/material@^12.0.2":
-  version "12.2.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/material/-/material-12.2.5.tgz#5f95084a963a1c0d04b83f7798e53e8f596af54e"
-  integrity sha1-X5UISpY6HA0EuD93mOU+j1lq9U4=
+"@angular/material@^12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/material/-/material-12.2.7.tgz#c81a10654776be80793c95758255baa1d3f86529"
+  integrity sha1-yBoQZUd2voB5PJV1glW6odP4ZSk=
   dependencies:
     tslib "^2.2.0"
 
-"@angular/platform-browser-dynamic@~12.0.2":
-  version "12.0.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/platform-browser-dynamic/-/platform-browser-dynamic-12.0.5.tgz#b55f6c739c15270902ae7b7f8a6ff56b8ae16b01"
-  integrity sha1-tV9sc5wVJwkCrnt/im/1a4rhawE=
+"@angular/platform-browser-dynamic@~12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/platform-browser-dynamic/-/platform-browser-dynamic-12.2.7.tgz#ae0a70d9d13e4a95b8af4b5f526c5a937c9dd369"
+  integrity sha1-rgpw2dE+SpW4r0tfUmxak3yd02k=
   dependencies:
-    tslib "^2.1.0"
+    tslib "^2.2.0"
 
-"@angular/platform-browser@~12.0.2":
-  version "12.0.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/platform-browser/-/platform-browser-12.0.5.tgz#133c831acd00384651b2544a1c3df4d091c2218e"
-  integrity sha1-EzyDGs0AOEZRslRKHD300JHCIY4=
+"@angular/platform-browser@~12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/platform-browser/-/platform-browser-12.2.7.tgz#0eeebf2888f21bc42bcdc604dfff3cc312382ced"
+  integrity sha1-Du6/KIjyG8QrzcYE3/88wxI4LO0=
   dependencies:
-    tslib "^2.1.0"
+    tslib "^2.2.0"
 
-"@angular/platform-server@12.0.2":
-  version "12.0.2"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/platform-server/-/platform-server-12.0.2.tgz#d8e0d470704cbdcfe990f5612ced590194467919"
-  integrity sha1-2ODUcHBMvc/pkPVhLO1ZAZRGeRk=
+"@angular/platform-server@12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/platform-server/-/platform-server-12.2.7.tgz#a302c8c189d8fc009011d5bd5cf2bcf84139752f"
+  integrity sha1-owLIwYnY/ACQEdW9XPK8+EE5dS8=
   dependencies:
     domino "^2.1.2"
-    tslib "^2.1.0"
+    tslib "^2.2.0"
     xhr2 "^0.2.0"
 
-"@angular/pwa@^12.0.2":
-  version "12.2.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/pwa/-/pwa-12.2.5.tgz#a4b0bbb8af6afa30ca05037a1fb50493726342fd"
-  integrity sha1-pLC7uK9q+jDKBQN6H7UEk3JjQv0=
+"@angular/pwa@^12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/pwa/-/pwa-12.2.7.tgz#44c9efaa9f6bb21c791d1938983d4032620df50a"
+  integrity sha1-RMnvqp9rshx5HRk4mD1AMmIN9Qo=
   dependencies:
-    "@angular-devkit/schematics" "12.2.5"
-    "@schematics/angular" "12.2.5"
+    "@angular-devkit/schematics" "12.2.7"
+    "@schematics/angular" "12.2.7"
     parse5-html-rewriting-stream "6.0.1"
 
-"@angular/router@~12.0.2":
-  version "12.0.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/router/-/router-12.0.5.tgz#c75dbbb1542e95d2922434f21097285927056f54"
-  integrity sha1-x127sVQuldKSJDTyEJcoWScFb1Q=
+"@angular/router@~12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/router/-/router-12.2.7.tgz#15c8707e98c29beb8216733a79b4f95c490324b0"
+  integrity sha1-FchwfpjCm+uCFnM6ebT5XEkDJLA=
   dependencies:
-    tslib "^2.1.0"
+    tslib "^2.2.0"
 
-"@angular/service-worker@~12.0.2":
-  version "12.0.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/service-worker/-/service-worker-12.0.5.tgz#13614e37311f7a7e1dcec9c56bf724812412891a"
-  integrity sha1-E2FONzEfen4dzsnFa/ckgSQSiRo=
+"@angular/service-worker@~12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@angular/service-worker/-/service-worker-12.2.7.tgz#0dc65594e154f95703cb74dbde219297b838bbe7"
+  integrity sha1-DcZVlOFU+VcDy3Tb3iGSl7g4u+c=
   dependencies:
-    tslib "^2.1.0"
+    tslib "^2.2.0"
 
 "@assemblyscript/loader@^0.10.1":
   version "0.10.1"
@@ -1666,10 +1692,10 @@
     node-fetch "^2.6.0"
     ws "^6.0.0"
 
-"@ngtools/webpack@12.2.5":
-  version "12.2.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@ngtools/webpack/-/webpack-12.2.5.tgz#f0077e302434b00bc67924142c88a844f320f7b9"
-  integrity sha1-8Ad+MCQ0sAvGeSQULIioRPMg97k=
+"@ngtools/webpack@12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@ngtools/webpack/-/webpack-12.2.7.tgz#864b66c0c80acbe6b0cb15ff205b7fbbca7f8d0e"
+  integrity sha1-hktmwMgKy+awyxX/IFt/u8p/jQ4=
 
 "@nguniversal/common@12.1.0":
   version "12.1.0"
@@ -1825,13 +1851,13 @@
     tslib "^2.0.0"
     yargs-parser "20.0.0"
 
-"@schematics/angular@12.2.5":
-  version "12.2.5"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@schematics/angular/-/angular-12.2.5.tgz#5ff5f0fdd219a5994f9f4b94ec4f6b24f63d672b"
-  integrity sha1-X/Xw/dIZpZlPn0uU7E9rJPY9Zys=
+"@schematics/angular@12.2.7":
+  version "12.2.7"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/@schematics/angular/-/angular-12.2.7.tgz#f384baddbe996b1929d755f4a495d144b5c15833"
+  integrity sha1-84S63b6Zaxkp11X0pJXRRLXBWDM=
   dependencies:
-    "@angular-devkit/core" "12.2.5"
-    "@angular-devkit/schematics" "12.2.5"
+    "@angular-devkit/core" "12.2.7"
+    "@angular-devkit/schematics" "12.2.7"
     jsonc-parser "3.0.0"
 
 "@tootallnate/once@1":
@@ -4524,10 +4550,15 @@ es6-promise@^4.0.5:
   resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/es6-promise/-/es6-promise-4.2.8.tgz#4eb21594c972bc40553d276e510539143db53e0a"
   integrity sha1-TrIVlMlyvEBVPSduUQU5FD21Pgo=
 
-esbuild@0.12.24:
-  version "0.12.24"
-  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/esbuild/-/esbuild-0.12.24.tgz#21966fad25a80f368ed308101e88102bce0dc68f"
-  integrity sha1-IZZvrSWoDzaO0wgQHogQK84Nxo8=
+esbuild-wasm@0.12.29:
+  version "0.12.29"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/esbuild-wasm/-/esbuild-wasm-0.12.29.tgz#1d210bb7d463b2ca51c54d69bb4192d9709f6100"
+  integrity sha1-HSELt9RjsspRxU1pu0GS2XCfYQA=
+
+esbuild@0.12.29:
+  version "0.12.29"
+  resolved "https://pkgs.dev.azure.com/turn10/_packaging/Turn10-Services/npm/registry/esbuild/-/esbuild-0.12.29.tgz#be602db7c4dc78944a9dbde0d1ea19d36c1f882d"
+  integrity sha1-vmAtt8TceJRKnb3g0eoZ02wfiC0=
 
 escalade@^3.1.1:
   version "3.1.1"

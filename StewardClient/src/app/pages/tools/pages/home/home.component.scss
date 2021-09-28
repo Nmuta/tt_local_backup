@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '/src/styles/mixins';
 
 :host {
@@ -141,8 +142,8 @@ mat-icon[mat-card-avatar] {
 }
 
 .tile-container {
-  @include mat-elevation-transition();
-  @include mat-elevation(2);
+  @include mat.elevation-transition();
+  @include mat.elevation(2);
   mat-card,
   mat-card-actions,
   mat-card-header {
@@ -151,7 +152,7 @@ mat-icon[mat-card-avatar] {
 }
 
 .activated {
-  @include mat-elevation(6);
+  @include mat.elevation(6);
   mat-card,
   mat-card-actions,
   mat-card-header {
@@ -161,7 +162,7 @@ mat-icon[mat-card-avatar] {
 }
 
 .no-access {
-  @include mat-elevation(0);
+  @include mat.elevation(0);
   mat-card,
   mat-card-actions,
   mat-card-header {
