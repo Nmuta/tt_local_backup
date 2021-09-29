@@ -34,7 +34,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { chain } from 'lodash';
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJob } from '@models/background-job';
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 import {
   BulkCommunityMessage,
   CommunityMessage,
@@ -47,6 +47,7 @@ import { PlayerUGCItem } from '@models/player-ugc-item';
 import { UGCType } from '@models/ugc-filters';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
 import { KustoCar } from '@models/kusto-car';
+import { overrideWoodstockEndpointKey } from '@helpers/override-endpoint-key';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -142,10 +143,20 @@ export class WoodstockService {
   }
 
   /** Gets ban summaries by a list of XUIDs. */
-  public getBanSummariesByXuids$(xuids: BigNumber[]): Observable<WoodstockBanSummary[]> {
+  public getBanSummariesByXuids$(
+    xuids: BigNumber[],
+    endpointKeyOverride?: string,
+  ): Observable<WoodstockBanSummary[]> {
+    let headers = new HttpHeaders();
+    if (!!endpointKeyOverride) {
+      headers = overrideWoodstockEndpointKey(endpointKeyOverride, headers);
+    }
+
     return this.apiService.postRequest$<WoodstockBanSummary[]>(
       `${this.basePath}/players/banSummaries`,
       xuids,
+      undefined,
+      headers,
     );
   }
 

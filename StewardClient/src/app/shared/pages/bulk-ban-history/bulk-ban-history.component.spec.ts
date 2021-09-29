@@ -16,6 +16,7 @@ import faker from 'faker';
 import { of } from 'rxjs';
 import BigNumber from 'bignumber.js';
 import { ActivatedRoute } from '@angular/router';
+import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 
 const activatedRouteMock = {
   pathFromRoot: [
@@ -29,6 +30,7 @@ describe('BulkBanHistoryComponent', () => {
   let component: BulkBanHistoryComponent;
   let fixture: ComponentFixture<BulkBanHistoryComponent>;
 
+  let mockWoodstockService: WoodstockService;
   let mockSunriseService: SunriseService;
   let mockApolloService: ApolloService;
 
@@ -46,6 +48,7 @@ describe('BulkBanHistoryComponent', () => {
         declarations: [BulkBanHistoryComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
+          createMockWoodstockService(),
           createMockSunriseService(),
           createMockApolloService(),
           {
@@ -59,6 +62,7 @@ describe('BulkBanHistoryComponent', () => {
       component = fixture.debugElement.componentInstance;
       component.banHistoryList = new MatTableDataSource<BanSummariesTableData>();
 
+      mockWoodstockService = TestBed.inject(WoodstockService);
       mockSunriseService = TestBed.inject(SunriseService);
       mockApolloService = TestBed.inject(ApolloService);
 
@@ -80,6 +84,23 @@ describe('BulkBanHistoryComponent', () => {
       component.buildCsvDownloadData = jasmine.createSpy('buildCsvDownloadData');
       component.sortNonApprovedPlayers = jasmine.createSpy('sortNonApprovedPlayers');
       component.calculateStatistics = jasmine.createSpy('calculateStatistics');
+
+      mockWoodstockService.getBanSummariesByXuids$ = jasmine
+        .createSpy('mockSunriseService.getBanSummariesByXuids$')
+        .and.returnValue(
+          of(
+            xuids.map(xuid => {
+              return {
+                xuid: xuid,
+                gamertag: faker.random.word(),
+                banCount: fakeBigNumber(),
+                bannedAreas: [],
+                lastBanDescription: undefined,
+                userExists: true,
+              };
+            }),
+          ),
+        );
 
       mockSunriseService.getBanSummariesByXuids$ = jasmine
         .createSpy('mockSunriseService.getBanSummariesByXuids$')
@@ -126,6 +147,7 @@ describe('BulkBanHistoryComponent', () => {
 
     describe('If input is valid', () => {
       const input = {
+        woodstockEnvironments: ['Retail'],
         sunriseEnvironments: ['Retail'],
         apolloEnvironments: ['Retail'],
         xuids: xuids,
@@ -135,7 +157,9 @@ describe('BulkBanHistoryComponent', () => {
         component.lookupXuids(input);
 
         expect(component.totalEnvironmentsSearched).toEqual(
-          input.sunriseEnvironments.length + input.apolloEnvironments.length,
+          input.woodstockEnvironments.length +
+            input.sunriseEnvironments.length +
+            input.apolloEnvironments.length,
         );
       });
 

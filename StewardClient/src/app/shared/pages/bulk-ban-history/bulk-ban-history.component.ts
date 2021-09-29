@@ -16,6 +16,8 @@ import { BulkBanHistoryInput } from './components/bulk-ban-history-input.compone
 import { NavbarTools } from '@navbar-app/navbar-tool-list';
 import { ActivatedRoute } from '@angular/router';
 import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
+import { WoodstockService } from '@services/woodstock';
+import { WoodstockBanSummary } from '@models/woodstock';
 
 export type ErrorBanSummary = {
   xuid: BigNumber;
@@ -24,7 +26,11 @@ export type ErrorBanSummary = {
   userExists: boolean;
   error: unknown;
 };
-export type BanSummariesUnion = SunriseBanSummary | ApolloBanSummary | ErrorBanSummary;
+export type BanSummariesUnion =
+  | SunriseBanSummary
+  | ApolloBanSummary
+  | WoodstockBanSummary
+  | ErrorBanSummary;
 export type BanSummaryPlusEnvironment = BanSummariesUnion & {
   title: GameTitleCodeName;
   environment: string;
@@ -70,6 +76,7 @@ export class BulkBanHistoryComponent extends BaseComponent implements AfterViewI
   constructor(
     private readonly sunriseService: SunriseService,
     private readonly apolloService: ApolloService,
+    private readonly woodstockService: WoodstockService,
     private readonly route: ActivatedRoute,
   ) {
     super();
@@ -89,6 +96,9 @@ export class BulkBanHistoryComponent extends BaseComponent implements AfterViewI
 
     // Build all the observables for each title/environment lookup
     const queries: Observable<BanSummaryPlusEnvironment[]>[] = [
+      ...input.woodstockEnvironments.map(env => {
+        return this.lookupBanHistory(GameTitleCodeName.FH5, env as never, clone(input.xuids));
+      }),
       ...input.sunriseEnvironments.map(env => {
         return this.lookupBanHistory(GameTitleCodeName.FH4, env as never, clone(input.xuids));
       }),
@@ -300,6 +310,8 @@ export class BulkBanHistoryComponent extends BaseComponent implements AfterViewI
         return this.sunriseService.getBanSummariesByXuids$(xuids, environment);
       case GameTitleCodeName.FM7:
         return this.apolloService.getBanSummariesByXuids$(xuids, environment);
+      case GameTitleCodeName.FH5:
+        return this.woodstockService.getBanSummariesByXuids$(xuids, environment);
       default:
         throw new Error(`Unsupported game title used: ${title}`);
     }

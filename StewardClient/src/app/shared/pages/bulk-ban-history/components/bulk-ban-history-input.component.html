@@ -1,6 +1,13 @@
 <ng-container *ngIf="!getEndpoints?.isActive; else loadingState">
   <form [formGroup]="formGroup" class="lookup-xuids-form">
     <mat-form-field appearance="fill" class="env-selection">
+      <mat-label>Woodstock Envrionments</mat-label>
+      <mat-select [formControl]="formControls?.woodstockEnvs" multiple>
+        <mat-option *ngFor="let env of woodstockEnvs" [value]="env">{{ env }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="env-selection">
       <mat-label>Sunrise Envrionments</mat-label>
       <mat-select [formControl]="formControls?.sunriseEnvs" multiple>
         <mat-option *ngFor="let env of sunriseEnvs" [value]="env">{{ env }}</mat-option>

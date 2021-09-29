@@ -14,6 +14,7 @@ import { first, takeUntil } from 'rxjs/operators';
 
 export type BulkBanHistoryInput = {
   xuids: BigNumber[];
+  woodstockEnvironments: string[];
   sunriseEnvironments: string[];
   apolloEnvironments: string[];
 };
@@ -28,11 +29,13 @@ export class BulkBanHistoryInputComponent extends BaseComponent implements OnIni
   @Select(EndpointKeyMemoryState) public endpointKeys$: Observable<EndpointKeyMemoryModel>;
   @Output() selection = new EventEmitter<BulkBanHistoryInput>();
 
+  public woodstockEnvs: string[];
   public sunriseEnvs: string[];
   public apolloEnvs: string[];
   public getEndpoints = new ActionMonitor('Retrieve Endpoint Keys');
 
   public formControls = {
+    woodstockEnvs: new FormControl([]),
     sunriseEnvs: new FormControl([]),
     apolloEnvs: new FormControl([]),
     xuids: new FormControl('', Validators.required),
@@ -46,20 +49,28 @@ export class BulkBanHistoryInputComponent extends BaseComponent implements OnIni
 
     this.endpointKeys$
       .pipe(
-        first(latest => {
-          return latest.Apollo.length > 0 && latest.Sunrise.length > 0;
-        }),
+        first(
+          latest =>
+            latest.Apollo.length > 0 && latest.Sunrise.length > 0 && latest.Woodstock.length > 0,
+        ),
         this.getEndpoints.monitorSingleFire(),
         takeUntil(this.onDestroy$),
       )
       .subscribe(latest => {
+        this.woodstockEnvs = latest.Woodstock;
         this.apolloEnvs = latest.Apollo;
         this.sunriseEnvs = latest.Sunrise;
 
+        this.formControls.woodstockEnvs.setValue([this.woodstockEnvs[0]]);
         this.formControls.sunriseEnvs.setValue([this.sunriseEnvs[0]]);
         this.formControls.apolloEnvs.setValue([this.apolloEnvs[0]]);
         this.formControls.xuids.setValue('');
       });
+  }
+
+  /** Gets list of all selected woodstock environments. */
+  public get woodstockEnvironments(): string[] {
+    return this.formControls.woodstockEnvs.value || [];
   }
 
   /** Gets list of all selected sunrise environments. */
@@ -78,6 +89,7 @@ export class BulkBanHistoryInputComponent extends BaseComponent implements OnIni
       return;
     }
 
+    const woodstockEnvironments: string[] = this.woodstockEnvironments;
     const sunriseEnvironments: string[] = this.sunriseEnvironments;
     const apolloEnvironments: string[] = this.apolloEnvironments;
     const xuidsInput: string = this.formControls.xuids.value;
@@ -93,6 +105,7 @@ export class BulkBanHistoryInputComponent extends BaseComponent implements OnIni
 
     this.selection.emit({
       xuids: xuids,
+      woodstockEnvironments: woodstockEnvironments,
       sunriseEnvironments: sunriseEnvironments,
       apolloEnvironments: apolloEnvironments,
     } as BulkBanHistoryInput);
@@ -100,9 +113,11 @@ export class BulkBanHistoryInputComponent extends BaseComponent implements OnIni
 
   /** Returns true if XUID lookup is ready. */
   public isLookupReady(): boolean {
+    const woodstockEnvs = this.woodstockEnvironments;
     const sunriseEnvs = this.sunriseEnvironments;
     const apolloEnvs = this.apolloEnvironments;
-    const atLeastOneEnvFound = sunriseEnvs.length > 0 || apolloEnvs.length > 0;
+    const atLeastOneEnvFound =
+      woodstockEnvs.length > 0 || sunriseEnvs.length > 0 || apolloEnvs.length > 0;
 
     return this.formGroup?.valid && atLeastOneEnvFound;
   }

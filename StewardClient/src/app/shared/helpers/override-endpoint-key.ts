@@ -3,6 +3,14 @@ import { GameTitleCodeName } from '@models/enums';
 
 const endpointKeyParam = 'endpointKey';
 
+export function overrideWoodstockEndpointKey(
+  endpoint: string,
+  existingHeaders?: HttpHeaders,
+): HttpHeaders {
+  existingHeaders = existingHeaders || new HttpHeaders();
+  return existingHeaders.set(endpointKeyParam, `${GameTitleCodeName.FH5}|${endpoint}`);
+}
+
 export function overrideSunriseEndpointKey(
   endpoint: string,
   existingHeaders?: HttpHeaders,

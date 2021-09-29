@@ -39,6 +39,7 @@ describe('BulkBanHistoryInputComponent', () => {
       component.selection.emit = jasmine.createSpy('changes.emit');
 
       // Initialize with valid form controls
+      component.formControls.woodstockEnvs.setValue(['Retail']);
       component.formControls.sunriseEnvs.setValue(['Retail']);
       component.formControls.apolloEnvs.setValue(['Retail']);
       component.formControls.xuids.setValue(`${fakeXuid()},${fakeXuid()},${fakeXuid()}`);
@@ -69,6 +70,7 @@ describe('BulkBanHistoryInputComponent', () => {
   describe('Method: isLookupReady', () => {
     beforeEach(() => {
       // Initialize with valid form controls
+      component.formControls.woodstockEnvs.setValue(['Retail']);
       component.formControls.sunriseEnvs.setValue(['Retail']);
       component.formControls.apolloEnvs.setValue(['Retail']);
       component.formControls.xuids.setValue(`${fakeXuid()},${fakeXuid()},${fakeXuid()}`);
@@ -94,6 +96,7 @@ describe('BulkBanHistoryInputComponent', () => {
 
     describe('If no environment is selected', () => {
       beforeEach(() => {
+        component.formControls.woodstockEnvs.setValue([]);
         component.formControls.sunriseEnvs.setValue([]);
         component.formControls.apolloEnvs.setValue([]);
       });
