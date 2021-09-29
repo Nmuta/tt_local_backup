@@ -9,7 +9,7 @@ import { TitleMemoryModel } from './title-memory.model';
 @State<TitleMemoryModel>({
   name: 'titleMemory',
   defaults: {
-    gifting: GameTitleCodeName.Street,
+    gifting: GameTitleCodeName.FH5,
     banning: GameTitleCodeName.FH4,
     giftHistory: GameTitleCodeName.Street,
     messaging: GameTitleCodeName.FH4,

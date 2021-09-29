@@ -48,9 +48,9 @@ describe('GiftingComponent', () => {
       });
 
       it('should set production navbarRouterLinks', () => {
-        component.ngOnInit();
+        fixture.detectChanges();
 
-        expect(component.navbarRouterLinks?.length).toEqual(3);
+        expect(component.navbarRouterLinks?.length).toEqual(4);
       });
     });
 
@@ -60,7 +60,7 @@ describe('GiftingComponent', () => {
       });
 
       it('should set production navbarRouterLinks', () => {
-        component.ngOnInit();
+        fixture.detectChanges();
 
         expect(component.navbarRouterLinks?.length).toEqual(5);
       });

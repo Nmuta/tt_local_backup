@@ -14,6 +14,10 @@ export class GiftingComponent implements OnInit {
   public ngOnInit(): void {
     this.navbarRouterLinks = [
       {
+        name: GameTitleCodeName.FH5,
+        route: ['.', GameTitleCodeName.FH5.toLowerCase()],
+      },
+      {
         name: GameTitleCodeName.Street,
         route: ['.', GameTitleCodeName.Street.toLowerCase()],
       },
@@ -32,14 +36,6 @@ export class GiftingComponent implements OnInit {
       this.navbarRouterLinks.unshift({
         name: GameTitleCodeName.FM8,
         route: ['.', GameTitleCodeName.FM8.toLowerCase()],
-      });
-    }
-
-    // TODO: Make this a permanent route after Woodstock is fully integrated.
-    if (!environment.production) {
-      this.navbarRouterLinks.unshift({
-        name: GameTitleCodeName.FH5,
-        route: ['.', GameTitleCodeName.FH5.toLowerCase()],
       });
     }
   }
