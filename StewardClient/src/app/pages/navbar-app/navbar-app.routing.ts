@@ -45,9 +45,11 @@ const routes: Routes = [
           import('../../shared/pages/gifting/gifting.module').then(m => m.GiftingsModule),
       },
       {
-        path: NavbarTools.GiftHistoryPage.path,
+        path: SharedNavbarTools.GiftHistoryPage.path,
         loadChildren: () =>
-          import('./pages/gift-history/gift-history.module').then(m => m.GiftHistoryModule),
+          import('../../shared/pages/gift-history/gift-history.module').then(
+            m => m.GiftHistoryModule,
+          ),
       },
       {
         path: SharedNavbarTools.UserBanningPage.path,

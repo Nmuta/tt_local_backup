@@ -178,7 +178,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'View the gifting history of individual users',
     shortDescription: [`View the gifting history of individual users`],
     loadChildren: () =>
-      import('../../app/pages/navbar-app/pages/gift-history/gift-history.module').then(
+      import('../../app/shared/pages/gift-history/gift-history.module').then(
         m => m.GiftHistoryModule,
       ),
   },
