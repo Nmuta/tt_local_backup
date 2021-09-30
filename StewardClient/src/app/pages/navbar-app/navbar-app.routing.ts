@@ -50,9 +50,11 @@ const routes: Routes = [
           import('./pages/gift-history/gift-history.module').then(m => m.GiftHistoryModule),
       },
       {
-        path: NavbarTools.UserBanningPage.path,
+        path: SharedNavbarTools.UserBanningPage.path,
         loadChildren: () =>
-          import('./pages/user-banning/user-banning.module').then(m => m.UserBanningModule),
+          import('../../shared/pages/user-banning/user-banning.module').then(
+            m => m.UserBanningModule,
+          ),
       },
       {
         path: NavbarTools.KustoPage.path,

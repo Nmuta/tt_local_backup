@@ -23,10 +23,7 @@ const routes: Routes = [
       },
       {
         path: 'woodstock',
-        canActivate: [
-          TitleMemorySetGuard,
-          FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Woodstock is ready
-        ],
+        canActivate: [TitleMemorySetGuard],
         component: WoodstockBanningComponent,
         pathMatch: 'full',
       },

@@ -31,4 +31,10 @@ export class SharedNavbarTools {
     title: 'UGC',
     path: 'ugc',
   };
+
+  /** The user banning tool page. */
+  public static readonly UserBanningPage: RouteParams = {
+    title: 'Banning',
+    path: 'user-banning',
+  };
 }

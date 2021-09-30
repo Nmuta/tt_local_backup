@@ -163,7 +163,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Ban users by XUID or Gamertag',
     shortDescription: [`Ban users by XUID or Gamertag`],
     loadChildren: () =>
-      import('../../app/pages/navbar-app/pages/user-banning/user-banning.module').then(
+      import('../../app/shared/pages/user-banning/user-banning.module').then(
         m => m.UserBanningModule,
       ),
   },
