@@ -82,7 +82,7 @@ export class SunriseGiftingComponent extends GiftingBaseComponent<BigNumber> imp
   /** Produces a rejection message from a given identity, if it is rejected. */
   public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
     if (!identity?.extra?.hasSunrise) {
-      return 'Player does not have a sunrise account. Player will be ignored.';
+      return 'Player does not have a sunrise account at the selected endpoint. Player will be ignored.';
     }
 
     return null;

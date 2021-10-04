@@ -7,13 +7,16 @@ import { OpusPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/
 import { SteelheadPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/steelhead/players/identities';
 import { SunrisePlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/sunrise/players/identities';
 import { WoodstockPlayersIdentitiesFakeApi } from '@interceptors/fake-api/apis/title/woodstock/players/identities';
+import { NgxsModule } from '@ngxs/store';
 import { ApolloService, createMockApolloService } from '@services/apollo';
 import { createMockGravityService, GravityService } from '@services/gravity';
+import { MultiEnvironmentService } from '@services/multi-environment/multi-environment.service';
 import { createMockOpusService, OpusService } from '@services/opus';
 import { createMockSteelheadService, SteelheadService } from '@services/steelhead';
 import { createMockSunriseService, SunriseService } from '@services/sunrise';
 import { createMockWoodstockService, WoodstockService } from '@services/woodstock';
 import { PipesModule } from '@shared/pipes/pipes.module';
+import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { first } from 'lodash';
 import { of, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -36,8 +39,9 @@ describe('PlayerSelectionSingleComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [PlayerSelectionSingleComponent],
-      imports: [MatButtonToggleModule, PipesModule],
+      imports: [MatButtonToggleModule, PipesModule, NgxsModule.forRoot([UserSettingsState])],
       providers: [
+        MultiEnvironmentService,
         createMockSunriseService(),
         createMockGravityService(),
         createMockApolloService(),
@@ -56,37 +60,37 @@ describe('PlayerSelectionSingleComponent', () => {
     woodstock = TestBed.inject(WoodstockService);
 
     sunrise.getPlayerIdentities$ = jasmine
-      .createSpy('getPlayerIdentities$')
+      .createSpy('sunrise.getPlayerIdentities$')
       .and.callFake(q =>
         deferUntil$.pipe(switchMap(_ => of(SunrisePlayersIdentitiesFakeApi.make(q)))),
       );
 
     opus.getPlayerIdentities$ = jasmine
-      .createSpy('getPlayerIdentities$')
+      .createSpy('opus.getPlayerIdentities$')
       .and.callFake(q =>
         deferUntil$.pipe(switchMap(_ => of(OpusPlayersIdentitiesFakeApi.make(q)))),
       );
 
     gravity.getPlayerIdentities$ = jasmine
-      .createSpy('getPlayerIdentities$')
+      .createSpy('gravity.getPlayerIdentities$')
       .and.callFake(q =>
         deferUntil$.pipe(switchMap(_ => of(GravityPlayersIdentitiesFakeApi.make(q)))),
       );
 
     apollo.getPlayerIdentities$ = jasmine
-      .createSpy('getPlayerIdentities$')
+      .createSpy('apollo.getPlayerIdentities$')
       .and.callFake(q =>
         deferUntil$.pipe(switchMap(_ => of(ApolloPlayersIdentitiesFakeApi.make(q)))),
       );
 
     steelhead.getPlayerIdentities$ = jasmine
-      .createSpy('getPlayerIdentities$')
+      .createSpy('steelhead.getPlayerIdentities$')
       .and.callFake(q =>
         deferUntil$.pipe(switchMap(_ => of(SteelheadPlayersIdentitiesFakeApi.make(q)))),
       );
 
     woodstock.getPlayerIdentities$ = jasmine
-      .createSpy('getPlayerIdentities')
+      .createSpy('woodstock.getPlayerIdentities$')
       .and.callFake(q =>
         deferUntil$.pipe(switchMap(_ => of(WoodstockPlayersIdentitiesFakeApi.make(q)))),
       );
@@ -163,10 +167,10 @@ describe('PlayerSelectionSingleComponent', () => {
       it(
         'should call getPlayerIdentities$',
         waitForAsync(() => {
-          expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+          expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(2);
           expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(1);
           expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-          expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+          expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(2);
           // expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(1);
           // expect(woodstock.getPlayerIdentities$).toHaveBeenCalledTimes(1);
         }),
@@ -212,10 +216,10 @@ describe('PlayerSelectionSingleComponent', () => {
       it(
         'should call getPlayerIdentities$',
         waitForAsync(() => {
-          expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+          expect(sunrise.getPlayerIdentities$).toHaveBeenCalledTimes(2);
           expect(opus.getPlayerIdentities$).toHaveBeenCalledTimes(1);
           expect(gravity.getPlayerIdentities$).toHaveBeenCalledTimes(1);
-          expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(1);
+          expect(apollo.getPlayerIdentities$).toHaveBeenCalledTimes(2);
           // expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(1);
           // expect(steelhead.getPlayerIdentities$).toHaveBeenCalledTimes(1);
         }),

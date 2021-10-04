@@ -157,6 +157,8 @@
             "karmaConfig": "src/karma.conf.js",
             "styles": ["src/global.scss"],
             "scripts": [],
+            "sourceMap": false,
+            "watch": true,
             "assets": ["src/assets"],
             "codeCoverageExclude": [
               "/**/fake-api/**/*.ts",

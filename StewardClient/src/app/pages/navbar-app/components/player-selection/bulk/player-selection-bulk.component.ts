@@ -7,12 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatChipList, MatChipListChange } from '@angular/material/chips';
-import { ApolloService } from '@services/apollo';
-import { GravityService } from '@services/gravity';
-import { OpusService } from '@services/opus';
-import { SteelheadService } from '@services/steelhead';
-import { SunriseService } from '@services/sunrise';
-import { WoodstockService } from '@services/woodstock';
+import { MultiEnvironmentService } from '@services/multi-environment/multi-environment.service';
 import { takeUntil } from 'rxjs/operators';
 import {
   AugmentedCompositeIdentity,
@@ -38,16 +33,8 @@ export class PlayerSelectionBulkComponent extends PlayerSelectionBaseComponent {
     return this.knownIdentities.size >= 500;
   }
 
-  constructor(
-    woodstock: WoodstockService,
-    steelhead: SteelheadService,
-    sunrise: SunriseService,
-    gravity: GravityService,
-    apollo: ApolloService,
-    opus: OpusService,
-  ) {
-    // normally, this could be deleted. but this fails to inject to the base class during code coverage checks. https://github.com/angular/angular-cli/issues/14860
-    super(woodstock, steelhead, sunrise, gravity, apollo, opus);
+  constructor(multi: MultiEnvironmentService) {
+    super(multi);
     this.foundIdentities$.pipe(takeUntil(this.onDestroy$)).subscribe(foundIdentities => {
       this.found.emit(foundIdentities);
       const selectedItemInFoundIdentities = foundIdentities.includes(this.selectedValue);

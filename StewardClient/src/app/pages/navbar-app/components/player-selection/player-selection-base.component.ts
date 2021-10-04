@@ -8,20 +8,18 @@ import {
   IdentityQueryBetaIntersection,
   IdentityResultAlpha,
   IdentityResultBeta,
-  isValidAlphaQuery,
-  isValidBetaQuery,
   makeBetaQuery,
 } from '@models/identity-query.model';
 import { COMMA, ENTER, SEMICOLON } from '@angular/cdk/keycodes';
-import { SunriseService } from '@services/sunrise';
-import { chain, every, find, isEmpty, isEqual, keyBy, uniqBy } from 'lodash';
+import { chain, find, isEmpty, isEqual } from 'lodash';
 import { map, pairwise, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { GravityService } from '@services/gravity';
-import { ApolloService } from '@services/apollo';
-import { OpusService } from '@services/opus';
-import { combineLatest, Observable, of, Subject } from 'rxjs';
-import { SteelheadService } from '@services/steelhead';
-import { WoodstockService } from '@services/woodstock';
+import { Observable, of, Subject } from 'rxjs';
+import {
+  AnyIdentityQuery,
+  MultiEnvironmentService,
+  SingleUserResult,
+  SingleUserResultSet,
+} from '@services/multi-environment/multi-environment.service';
 
 export interface AugmentedCompositeIdentity {
   query: IdentityQueryBeta & IdentityQueryAlpha;
@@ -31,6 +29,8 @@ export interface AugmentedCompositeIdentity {
   gravity: IdentityResultBeta;
   apollo: IdentityResultAlpha;
   opus: IdentityResultAlpha;
+
+  result: SingleUserResult;
 
   extra?: {
     lookupType: keyof IdentityQueryBetaIntersection;
@@ -109,14 +109,7 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
   // this has to be its own value because we don't have the actual thing until ngAfterViewInit, and lookupList is called before that
   private lookupTypeGroupChange$ = new Subject<void>();
 
-  constructor(
-    private readonly woodstock: WoodstockService,
-    private readonly steelhead: SteelheadService,
-    private readonly sunrise: SunriseService,
-    private readonly gravity: GravityService,
-    private readonly apollo: ApolloService,
-    private readonly opus: OpusService,
-  ) {
+  constructor(private readonly multi: MultiEnvironmentService) {
     super();
     this.foundIdentities$
       .pipe(
@@ -148,11 +141,13 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
       .subscribe(v => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const [previousType, currentType] = v;
+
+        // TODO: If you switch to XUID from Gamertag, the behavior is now the same as if you had tried to search for a gamertag as a xuid. string is not convertable to BigNumber, and as a result, user input is replaced with NaN.
         const values = this.foundIdentities.map(i =>
           chain(i)
             .values()
             .filter(v => !!v) // Handle T10Id not available in Alpha identities
-            .map(v => v[currentType])
+            .map(v => v[previousType])
             .filter(v => !!v) // Verify the new type lookup is a valid object
             .uniq()
             .first()
@@ -267,115 +262,32 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
 
     this.foundIdentities$.next(this.foundIdentities);
 
-    const queryIsAlphaCompatible = every(newQueries, q => isValidAlphaQuery(q));
-    const queryIsBetaCompatible = every(newQueries, q => isValidBetaQuery(q));
-
-    const queries: [
-      a$: Observable<IdentityResultAlpha[]>, // Sunrise
-      b$: Observable<IdentityResultAlpha[]>, // Opus
-      c$: Observable<IdentityResultAlpha[]>, // Apollo
-      d$: Observable<IdentityResultBeta[]>, // Gravity
-      e$: Observable<IdentityResultAlpha[]>, // Steelhead
-      f$: Observable<IdentityResultAlpha[]>, // Woodstock
-    ] = [
-      queryIsAlphaCompatible
-        ? this.sunrise.getPlayerIdentities$(newQueries as IdentityQueryAlpha[])
-        : of([] as IdentityResultAlpha[]),
-      queryIsAlphaCompatible
-        ? this.opus.getPlayerIdentities$(newQueries as IdentityQueryAlpha[])
-        : of([] as IdentityResultAlpha[]),
-      queryIsAlphaCompatible
-        ? this.apollo.getPlayerIdentities$(newQueries as IdentityQueryAlpha[])
-        : of([] as IdentityResultAlpha[]),
-      queryIsBetaCompatible
-        ? this.gravity.getPlayerIdentities$(newQueries as IdentityQueryBeta[])
-        : of([] as IdentityResultBeta[]),
-
-      // TODO: Uncomment this when Steelhead endpoint is ready for production use.
-      // Using empty array for now to stop failures
-      //queryIsAlphaCompatible
-      //  ? this.steelhead.getPlayerIdentities$(newQueries as IdentityQueryAlpha[])
-      //  : of([] as IdentityResultAlpha[]),
-      of([] as IdentityResultAlpha[]),
-
-      queryIsAlphaCompatible
-        ? this.woodstock.getPlayerIdentities$(newQueries as IdentityQueryAlpha[])
-        : of([] as IdentityResultAlpha[]),
-    ];
-
-    // get the value and replace it in the source if it's still there
-    combineLatest(queries)
+    this.multi
+      .getPlayerIdentities$(this.lookupType, newQueries as AnyIdentityQuery[])
       .pipe(takeUntil(this.onDestroy$), takeUntil(this.lookupTypeGroupChange$))
-      .subscribe(results => {
-        // destructure
-        const [
-          sunriseIdentities,
-          opusIdentities,
-          apolloIdentities,
-          gravityIdentities,
-          steelheadIdentities,
-          woodstockIdentities,
-        ] = results;
-
-        // make lookup for faster operations later
-        const sunriseLookup = keyBy<IdentityResultAlpha>(
-          sunriseIdentities,
-          r => r.query[this.lookupType],
-        );
-        const opusLookup = keyBy<IdentityResultAlpha>(
-          opusIdentities,
-          r => r.query[this.lookupType],
-        );
-        const apolloLookup = keyBy<IdentityResultAlpha>(
-          apolloIdentities,
-          r => r.query[this.lookupType],
-        );
-        const gravityLookup = keyBy<IdentityResultBeta>(
-          gravityIdentities,
-          r => r.query[this.lookupType],
-        );
-        const steelheadLookup = keyBy<IdentityResultAlpha>(
-          steelheadIdentities,
-          r => r.query[this.lookupType],
-        );
-        const woodstockLookup = keyBy<IdentityResultAlpha>(
-          woodstockIdentities,
-          r => r.query[this.lookupType],
-        );
-
-        // get all unique queries that came back
-        const allQueries = uniqBy(
-          [
-            ...sunriseIdentities.map(q => q.query),
-            ...opusIdentities.map(q => q.query),
-            ...apolloIdentities.map(q => q.query),
-            ...gravityIdentities.map(q => q.query),
-            ...steelheadIdentities.map(q => q.query),
-            ...woodstockIdentities.map(q => q.query),
-          ],
-          q => q[this.lookupType],
-        );
-
+      .subscribe(allResults => {
         // replace the results inline
-        for (const query of allQueries) {
-          const key = query[this.lookupType];
+        for (const result of allResults) {
+          const key = result.query[this.lookupType];
 
           // find our index
           const compositeIdentity = find(this.foundIdentities, i =>
             isEqual(i.query[this.lookupType], key),
           );
 
+          // skip results we no longer care about
           if (!compositeIdentity) {
             continue;
           }
 
           //populate the existing entry
-          compositeIdentity.sunrise = sunriseLookup[key];
-          compositeIdentity.apollo = apolloLookup[key];
-          compositeIdentity.opus = opusLookup[key];
-          compositeIdentity.gravity = gravityLookup[key];
-          compositeIdentity.steelhead = steelheadLookup[key];
-          compositeIdentity.woodstock = woodstockLookup[key];
+          compositeIdentity.result = result;
+          compositeIdentity.sunrise = result.standard.sunrise;
+          compositeIdentity.apollo = result.standard.apollo;
+          compositeIdentity.opus = result.standard.opus;
+          compositeIdentity.gravity = result.standard.gravity;
+          compositeIdentity.steelhead = result.standard.steelhead;
+          compositeIdentity.woodstock = result.standard.woodstock;
 
           const allRequestsErrored =
             compositeIdentity.sunrise?.error &&
@@ -402,27 +314,40 @@ export abstract class PlayerSelectionBaseComponent extends BaseComponent impleme
             rejectionReason: undefined,
           };
 
+          function hasRetailTitle(title: keyof SingleUserResultSet): boolean {
+            const result = compositeIdentity.result.retail[title];
+            if (!result) {
+              return false;
+            }
+            if (result.error) {
+              return false;
+            }
+            return true;
+          }
+
           compositeIdentity.extra.label = [
-            compositeIdentity.extra.hasWoodstock ? 'W' : undefined,
-            compositeIdentity.extra.hasSteelhead ? 'Sh' : undefined,
-            compositeIdentity.extra.hasApollo ? 'A' : undefined,
-            compositeIdentity.extra.hasGravity ? 'G' : undefined,
-            compositeIdentity.extra.hasOpus ? 'O' : undefined,
-            compositeIdentity.extra.hasSunrise ? 'S' : undefined,
+            hasRetailTitle('woodstock') ? 'W' : undefined,
+            hasRetailTitle('steelhead') ? 'Sh' : undefined,
+            hasRetailTitle('apollo') ? 'A' : undefined,
+            hasRetailTitle('gravity') ? 'G' : undefined,
+            hasRetailTitle('opus') ? 'O' : undefined,
+            hasRetailTitle('sunrise') ? 'S' : undefined,
           ]
             .filter(v => !!v)
             .join('');
 
-          compositeIdentity.extra.labelTooltip = [
-            compositeIdentity.extra.hasWoodstock ? 'Woodstock' : undefined,
-            compositeIdentity.extra.hasSteelhead ? 'Steelhead' : undefined,
-            compositeIdentity.extra.hasApollo ? 'Apollo' : undefined,
-            compositeIdentity.extra.hasGravity ? 'Gravity' : undefined,
-            compositeIdentity.extra.hasOpus ? 'Opus' : undefined,
-            compositeIdentity.extra.hasSunrise ? 'Sunrise' : undefined,
-          ]
-            .filter(v => !!v)
-            .join(', ');
+          compositeIdentity.extra.labelTooltip =
+            'Retail Titles: ' +
+            [
+              hasRetailTitle('woodstock') ? 'Woodstock' : undefined,
+              hasRetailTitle('steelhead') ? 'Steelhead' : undefined,
+              hasRetailTitle('apollo') ? 'Apollo' : undefined,
+              hasRetailTitle('gravity') ? 'Gravity' : undefined,
+              hasRetailTitle('opus') ? 'Opus' : undefined,
+              hasRetailTitle('sunrise') ? 'Sunrise' : undefined,
+            ]
+              .filter(v => !!v)
+              .join(', ');
 
           const rejectionReason = this.rejectionFn ? this.rejectionFn(compositeIdentity) : null;
           compositeIdentity.extra.isAcceptable = !rejectionReason;

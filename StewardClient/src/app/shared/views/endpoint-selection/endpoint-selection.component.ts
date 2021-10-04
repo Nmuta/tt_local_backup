@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
+import { RetailEndpoint } from '@models/lsp-endpoints';
 import { Select } from '@ngxs/store';
 import {
   UserSettingsState,
@@ -21,14 +22,14 @@ export class EndpointSelectionComponent extends BaseComponent implements OnInit 
   @Select(UserSettingsState) public settings$: Observable<UserSettingsStateModel>;
 
   public displayEndpointName: string;
-  private readonly retailEndpointName: string = 'Retail';
+  private readonly retailEndpointName: string = RetailEndpoint;
 
   constructor() {
     super();
   }
 
   /** Initialization hook. */
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.settings$.pipe(takeUntil(this.onDestroy$)).subscribe(latest => {
       const stateKey = `${camelCase(this.titleCodeName)}EndpointKey`;
 

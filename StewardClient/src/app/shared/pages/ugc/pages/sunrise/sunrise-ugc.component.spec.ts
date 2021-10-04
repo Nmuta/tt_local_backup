@@ -33,6 +33,7 @@ describe('SunriseUGCComponent', () => {
       const sunriseIdentity: IdentityResultAlpha = { gamertag: faker.random.word(), query: null };
       const identity: AugmentedCompositeIdentity = {
         query: null,
+        result: null,
         woodstock: null,
         steelhead: null,
         sunrise: sunriseIdentity,
@@ -55,6 +56,7 @@ describe('SunriseUGCComponent', () => {
       const sunriseIdentity: IdentityResultAlpha = { gamertag: faker.random.word(), query: null };
       const identity: AugmentedCompositeIdentity = {
         query: null,
+        result: null,
         woodstock: null,
         steelhead: null,
         sunrise: sunriseIdentity,
@@ -79,6 +81,7 @@ describe('SunriseUGCComponent', () => {
       const sunriseIdentity: IdentityResultAlpha = { gamertag: faker.random.word(), query: null };
       const identity: AugmentedCompositeIdentity = {
         query: null,
+        result: null,
         woodstock: null,
         steelhead: null,
         sunrise: sunriseIdentity,
@@ -107,6 +110,7 @@ describe('SunriseUGCComponent', () => {
         gravity: null,
         apollo: null,
         opus: null,
+        result: null,
         extra: {
           hasSunrise: false,
         } as never,

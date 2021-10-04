@@ -12,7 +12,7 @@ export class SettingsService {
 
   constructor(private readonly apiService: ApiService) {}
 
-  /** Gets supported LSP endpoints.  */
+  /** Gets supported LSP endpoints. */
   public getLspEndpoints$(): Observable<LspEndpoints> {
     return this.apiService.getRequest$<LspEndpoints>(`${this.basePath}/lspEndpoints`);
   }

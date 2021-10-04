@@ -33,6 +33,7 @@ describe('WoodstockUGCComponent', () => {
       const woodstockIdentity: IdentityResultAlpha = { gamertag: faker.random.word(), query: null };
       const identity: AugmentedCompositeIdentity = {
         query: null,
+        result: null,
         woodstock: woodstockIdentity,
         steelhead: null,
         sunrise: null,
@@ -55,6 +56,7 @@ describe('WoodstockUGCComponent', () => {
       const woodstockIdentity: IdentityResultAlpha = { gamertag: faker.random.word(), query: null };
       const identity: AugmentedCompositeIdentity = {
         query: null,
+        result: null,
         woodstock: woodstockIdentity,
         steelhead: null,
         sunrise: null,
@@ -79,6 +81,7 @@ describe('WoodstockUGCComponent', () => {
       const woodstockIdentity: IdentityResultAlpha = { gamertag: faker.random.word(), query: null };
       const identity: AugmentedCompositeIdentity = {
         query: null,
+        result: null,
         woodstock: woodstockIdentity,
         steelhead: null,
         sunrise: null,
@@ -101,6 +104,7 @@ describe('WoodstockUGCComponent', () => {
       const woodstockIdentity: IdentityResultAlpha = { gamertag: faker.random.word(), query: null };
       const identity: AugmentedCompositeIdentity = {
         query: null,
+        result: null,
         woodstock: woodstockIdentity,
         steelhead: null,
         sunrise: null,

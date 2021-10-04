@@ -13,7 +13,7 @@ import { environment } from '@environments/environment';
 import { SetAppVersion } from '@shared/state/user-settings/user-settings.actions';
 import { UserSettingsState } from '@shared/state/user-settings/user-settings.state';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('SidebarIconsComponent', () => {
@@ -45,6 +45,7 @@ describe('SidebarIconsComponent', () => {
         ],
       }).compileComponents();
 
+      TestBed.inject(MatDialog).open = jasmine.createSpy('open');
       fixture = TestBed.createComponent(SidebarIconsComponent);
       component = fixture.debugElement.componentInstance;
 

@@ -25,7 +25,7 @@ export function makeAlphaQuery(
 ): IdentityQueryAlpha {
   switch (type) {
     case 'gamertag':
-      return { gamertag: value.toString() };
+      return { gamertag: value?.toString() };
     case 'xuid':
       return { xuid: new BigNumber(value) };
     default:
@@ -40,11 +40,11 @@ export function makeBetaQuery(
 ): IdentityQueryBeta {
   switch (type) {
     case 'gamertag':
-      return { gamertag: value.toString() };
+      return { gamertag: value?.toString() };
     case 'xuid':
       return { xuid: new BigNumber(value) };
     case 't10Id':
-      return { t10Id: value.toString() };
+      return { t10Id: value?.toString() };
     default:
       throw new Error(`Unacceptable type for makeBetaQuery: ${type} (value: ${value})`);
   }

@@ -29,7 +29,6 @@ import { ApiService } from '@services/api';
 import { chain } from 'lodash';
 import { Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { HttpHeaders } from '@angular/common/http';
 import { overrideApolloEndpointKey } from '@helpers/override-endpoint-key';
 
 /** Handles calls to Sunrise API routes. */
@@ -55,10 +54,13 @@ export class ApolloService {
   /** Gets identities within this service. */
   public getPlayerIdentities$(
     identityQueries: IdentityQueryAlphaBatch,
+    endpointKeyOverride?: string,
   ): Observable<IdentityResultAlphaBatch> {
     return this.apiService.postRequest$<IdentityResultAlphaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
+      undefined,
+      overrideApolloEndpointKey(endpointKeyOverride),
     );
   }
 
@@ -67,16 +69,11 @@ export class ApolloService {
     xuids: BigNumber[],
     endpointKeyOverride?: string,
   ): Observable<ApolloBanSummary[]> {
-    let headers = new HttpHeaders();
-    if (!!endpointKeyOverride) {
-      headers = overrideApolloEndpointKey(endpointKeyOverride, headers);
-    }
-
     return this.apiService.postRequest$<ApolloBanSummary[]>(
       `${this.basePath}/players/banSummaries`,
       xuids,
       undefined,
-      headers,
+      overrideApolloEndpointKey(endpointKeyOverride),
     );
   }
 

@@ -137,7 +137,7 @@ export class WoodstockBanningComponent extends UserBanningBaseComponent {
   /** Produces a rejection message from a given identity, if it is rejected. */
   public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
     if (!identity?.extra?.hasWoodstock) {
-      return 'Player does not have a woodstock account. Player will be ignored.';
+      return 'Player does not have a woodstock account at the selected endpoint. Player will be ignored.';
     }
 
     return null;

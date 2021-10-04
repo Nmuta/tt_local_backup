@@ -33,7 +33,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { chain } from 'lodash';
 import { GiftResponse } from '@models/gift-response';
 import { BackgroundJob } from '@models/background-job';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import {
   BulkCommunityMessage,
   CommunityMessage,
@@ -78,10 +78,13 @@ export class SunriseService {
   /** Gets identities within this service. */
   public getPlayerIdentities$(
     identityQueries: IdentityQueryAlphaBatch,
+    endpointKeyOverride?: string,
   ): Observable<IdentityResultAlphaBatch> {
     return this.apiService.postRequest$<IdentityResultAlphaBatch>(
       `${this.basePath}/players/identities`,
       identityQueries,
+      undefined,
+      overrideSunriseEndpointKey(endpointKeyOverride),
     );
   }
 
@@ -169,16 +172,11 @@ export class SunriseService {
     xuids: BigNumber[],
     endpointKeyOverride?: string,
   ): Observable<SunriseBanSummary[]> {
-    let headers = new HttpHeaders();
-    if (!!endpointKeyOverride) {
-      headers = overrideSunriseEndpointKey(endpointKeyOverride, headers);
-    }
-
     return this.apiService.postRequest$<SunriseBanSummary[]>(
       `${this.basePath}/players/banSummaries`,
       xuids,
       undefined,
-      headers,
+      overrideSunriseEndpointKey(endpointKeyOverride),
     );
   }
 

@@ -91,9 +91,9 @@ describe('SunriseService', () => {
 
     it('should call apiServiceMock.postRequest', done => {
       service.getPlayerIdentities$([]).subscribe(() => {
-        expect(apiServiceMock.postRequest$).toHaveBeenCalledWith(
+        expect(apiServiceMock.postRequest$).toHaveBeenCalled();
+        expect((apiServiceMock.postRequest$ as jasmine.Spy).calls.mostRecent().args[0]).toBe(
           `${service.basePath}/players/identities`,
-          jasmine.any(Object),
         );
         done();
       });

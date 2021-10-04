@@ -60,7 +60,7 @@ export class GravityGiftingComponent extends GiftingBaseComponent<string> implem
   /** Produces a rejection message from a given identity, if it is rejected. */
   public identityRejectionFn(identity: AugmentedCompositeIdentity): string {
     if (!identity?.extra?.hasGravity) {
-      return 'Player does not have a gravity account. Player will be ignored.';
+      return 'Player does not have a gravity account at the selected endpoint. Player will be ignored.';
     }
 
     return null;
