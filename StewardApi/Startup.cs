@@ -344,6 +344,7 @@ namespace Turn10.LiveOps.StewardApi
             applicationBuilder.UseSwagger();
             applicationBuilder.UseSwaggerUI(c =>
             {
+                c.OAuthScopes(new[] { $"api://{this.configuration[ConfigurationKeyConstants.AzureClientId]}/api_access" });
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.OAuthClientId(this.configuration[ConfigurationKeyConstants.AzureClientId]);
                 c.OAuthScopeSeparator(" ");

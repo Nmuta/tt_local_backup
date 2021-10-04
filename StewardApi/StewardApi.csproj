@@ -13,6 +13,7 @@
     <StartupObject>Turn10.LiveOps.StewardApi.Program</StartupObject>
     <UserSecretsId>69aa9e39-2604-4e97-b974-f3707268e684</UserSecretsId>
     <InformationalVersion>Localhost</InformationalVersion>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -22,8 +23,29 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3-warnings.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\Data-BuildModule\CodeAnalysis\Level3.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Turn10.LiveOps.StewardApi.xml</DocumentationFile>
+    <DefineConstants>DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
@@ -58,9 +80,8 @@
     <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="1.8.2" />
     <PackageReference Include="Microsoft.NETCore.App" Version="2.2.0" />
-    <PackageReference Include="Microsoft.OpenApi" Version="1.1.4" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
 	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -69,23 +90,38 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
 	<PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" />
     <PackageReference Include="Turn10.Data.Common" Version="2.1.0" />
     <PackageReference Include="Turn10.Data.SecretProvider" Version="2.0.0" />
-	<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.0.0-beta" />
+	<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.2" />
 	<PackageReference Include="Turn10.Data.Azure" Version="2.5.0" />
     <PackageReference Include="Turn10.Data.Common" Version="2.1.0" />
     <PackageReference Include="Turn10.Data.KustoLogger" Version="4.0.0" />
     <PackageReference Include="Turn10.Services.ForzaClient" Version="2.1.1" />
-    <PackageReference Include="Turn10.Services.ForzaClient.FH3" Version="1.2.0" />
-    <PackageReference Include="Turn10.Services.ForzaClient.FH4" Version="3.2.15" />
-    <PackageReference Include="Turn10.Services.ForzaClient.FH5" Version="4.3.0" />
-    <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.4.0" />
-    <PackageReference Include="Turn10.Services.ForzaClient.FM8" Version="2.3.1" />
-    <PackageReference Include="Turn10.Services.ForzaClient.FMG" Version="1.0.4" />
+    <PackageReference Include="Turn10.Services.ForzaClient.FH3" Version="1.2.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Turn10.Services.ForzaClient.FH4" Version="3.2.15">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Turn10.Services.ForzaClient.FH5" Version="4.3.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Turn10.Services.ForzaClient.FM7" Version="2.4.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Turn10.Services.ForzaClient.FM8" Version="2.3.1">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Turn10.Services.ForzaClient.FMG" Version="1.0.4">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
     <PackageReference Include="Turn10.Services.Serialization" Version="1.2.1" />
     <PackageReference Include="Turn10.Services.ServiceClient" Version="1.2.5" />
-    <PackageReference Include="Turn10.Services.STS.Contracts" Version="1.2.0" />
+    <PackageReference Include="Turn10.Services.STS.Contracts" Version="1.2.0">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
     <PackageReference Include="Turn10.Services.WebApi-Core" Version="1.2.1" />
   </ItemGroup>
 

@@ -19,6 +19,7 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
     ///     Mapper for Sunrise DTO's.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "High class coupling by design.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1505:AvoidUnmaintainableCode", Justification = "High class coupling by design.")]
     public sealed class SunriseProfileMapper : AutoMapper.Profile
     {
         /// <summary>
@@ -152,12 +153,14 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<UGCType, LiveOpsContracts.ForzaUGCContentType>().ReverseMap();
             this.CreateMap<LiveOpsContracts.ForzaUGCData, UGCItem>()
                 .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(source => source.Metadata.Searchable))
-                .ForMember(dest => dest.ThumbnailImageOneBase64,
+                .ForMember(
+                    dest => dest.ThumbnailImageOneBase64,
                     opt => opt.MapFrom(source =>
                         source.Payloads.Length > 0
                             ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Payloads[0].Payload)
                             : null))
-                .ForMember(dest => dest.ThumbnailImageTwoBase64,
+                .ForMember(
+                    dest => dest.ThumbnailImageTwoBase64,
                     opt => opt.MapFrom(source =>
                         source.Payloads.Length > 1
                             ? "data:image/jpeg;base64," + Convert.ToBase64String(source.Payloads[1].Payload)
@@ -172,15 +175,18 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(source => source.Metadata.Title))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(source => source.Metadata.Description))
                 .ForMember(dest => dest.FeaturedByT10, opt => opt.MapFrom(source => source.Metadata.FeaturedByT10))
-                .ForMember(dest => dest.ForceFeaturedEndDateUtc,
+                .ForMember(
+                    dest => dest.ForceFeaturedEndDateUtc,
                     opt => opt.MapFrom(source => source.Metadata.ForceFeaturedEndDate))
-                .ForMember(dest => dest.FeaturedEndDateUtc,
+                .ForMember(
+                    dest => dest.FeaturedEndDateUtc,
                     opt => opt.MapFrom(source => source.Metadata.FeaturedEndDate))
                 .ForMember(dest => dest.GameTitle, opt => opt.MapFrom(source => source.Metadata.GameTitle))
                 .ForMember(dest => dest.Owner, opt => opt.MapFrom(source => source.Metadata.Owner))
                 .ForMember(dest => dest.KeywordIdOne, opt => opt.MapFrom(source => source.Metadata.KeywordIdOne))
                 .ForMember(dest => dest.KeywordIdTwo, opt => opt.MapFrom(source => source.Metadata.KeywordIdTwo))
-                .ForMember(dest => dest.PopularityBucket,
+                .ForMember(
+                    dest => dest.PopularityBucket,
                     opt => opt.MapFrom(source => source.Metadata.PopularityBucket))
                 .ForMember(dest => dest.ReportingState, opt => opt.MapFrom(source => source.Metadata.ReportingState))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source.Metadata.ContentType))

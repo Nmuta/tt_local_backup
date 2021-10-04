@@ -135,7 +135,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(WoodstockMasterInventory))]
         public async Task<IActionResult> GetMasterInventoryList()
         {
-            var masterInventory = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
+            var masterInventory = await this.RetrieveMasterInventoryListAsync().ConfigureAwait(true);
             return this.Ok(masterInventory);
         }
 
@@ -688,7 +688,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             }
 
             var getPlayerInventory = this.woodstockPlayerInventoryProvider.GetPlayerInventoryAsync(xuid, endpoint);
-            var getMasterInventory = this.RetrieveMasterInventoryList();
+            var getMasterInventory = this.RetrieveMasterInventoryListAsync();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
@@ -719,7 +719,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var getPlayerInventory = this.woodstockPlayerInventoryProvider.GetPlayerInventoryAsync(
                 profileId,
                 endpoint);
-            var getMasterInventory = this.RetrieveMasterInventoryList();
+            var getMasterInventory = this.RetrieveMasterInventoryListAsync();
 
             await Task.WhenAll(getPlayerInventory, getMasterInventory).ConfigureAwait(true);
 
@@ -1162,20 +1162,20 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the master inventory list.
         /// </summary>
-        private async Task<WoodstockMasterInventory> RetrieveMasterInventoryList()
+        private Task<WoodstockMasterInventory> RetrieveMasterInventoryListAsync()
         {
             // TODO: Uncomment when Game DB tables are ready to be queried.
             // TODO: Ask Services what CreditRewards are available to gift with.
             // TODO: Determine if backstage passes are available to gift in FH5.
             // https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/871391
 
-            // var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5Cars);
-            // var carHorns = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5CarHorns);
-            // var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5VanityItems);
-            // var emotes = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5Emotes);
-            // var quickChatLines = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5QuickChatLines);
+            ////var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5Cars);
+            ////var carHorns = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5CarHorns);
+            ////var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5VanityItems);
+            ////var emotes = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5Emotes);
+            ////var quickChatLines = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5QuickChatLines);
 
-            // await Task.WhenAll(cars, carHorns, vanityItems, emotes, quickChatLines).ConfigureAwait(true);
+            ////await Task.WhenAll(cars, carHorns, vanityItems, emotes, quickChatLines).ConfigureAwait(true);
 
             var masterInventory = new WoodstockMasterInventory
             {
@@ -1200,7 +1200,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 QuickChatLines = new List<MasterInventoryItem>(),
             };
 
-            return masterInventory;
+            return Task.FromResult(masterInventory);
         }
 
         /// <summary>
@@ -1208,7 +1208,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         private async Task<string> VerifyGiftAgainstMasterInventory(WoodstockMasterInventory gift)
         {
-            var masterInventoryItem = await this.RetrieveMasterInventoryList().ConfigureAwait(true);
+            var masterInventoryItem = await this.RetrieveMasterInventoryListAsync().ConfigureAwait(true);
             var error = string.Empty;
 
             foreach (var car in gift.Cars)

@@ -35,6 +35,7 @@ namespace Turn10.LiveOps.StewardApi.Middleware
         /// <summary>
         ///     Invokes the Easy Auth Swagger middleware.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Scope is entire request lifetime")]
         public async Task InvokeAsync(HttpContext context)
         {
             var uriString = $"{context.Request.Scheme}://{context.Request.Host}";

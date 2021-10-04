@@ -7,7 +7,7 @@ namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
     ///     Represents the space between a start and end date.
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public struct TimeRange
+    public struct TimeRange : IEquatable<TimeRange>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="TimeRange"/> struct.
@@ -43,5 +43,41 @@ namespace Turn10.LiveOps.StewardApi.Obligation.UpstreamModels
         /// </summary>
         [JsonProperty("end")]
         public DateTimeOffset End { get; set; }
+
+        /// <summary>
+        ///     Operator overload for comparing timeranges by value.
+        /// </summary>
+        public static bool operator ==(TimeRange left, TimeRange right)
+        {
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        ///     Operator overload for comparing timeranges by value.
+        /// </summary>
+        public static bool operator !=(TimeRange left, TimeRange right)
+        {
+            return !(left == right);
+        }
+
+        /// <inheritdoc />
+        public override bool Equals(object obj)
+        {
+            return obj is TimeRange range
+                && this.Start.Equals(range.Start)
+                && this.End.Equals(range.End);
+        }
+
+        /// <inheritdoc />
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(this.Start, this.End);
+        }
+
+        /// <inheritdoc />
+        public bool Equals(TimeRange other)
+        {
+            return this.Equals(other);
+        }
     }
 }

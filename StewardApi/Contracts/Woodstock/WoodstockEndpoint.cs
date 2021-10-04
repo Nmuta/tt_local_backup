@@ -18,14 +18,14 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Woodstock
             get => "https://gameservices.fh5.forzamotorsport.net/Services/o.xtsw";
         }
 
-        /// <summary>
-        ///     Gets Woodstock studio LSP endpoint.
-        /// </summary>
-        // TODO uncomment after player chip work is in: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/850499
-        //public static string Studio
-        //{
-        //    get => "https://woodstock-final.dev.services.forzamotorsport.net/Services/o.xtsw";
-        //}
+        /////// <summary>
+        ///////     Gets Woodstock studio LSP endpoint.
+        /////// </summary>
+        ////// TODO uncomment after player chip work is in: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/850499
+        ////public static string Studio
+        ////{
+        ////    get => "https://woodstock-final.dev.services.forzamotorsport.net/Services/o.xtsw";
+        ////}
 
         /// <summary>
         ///     Converts endpoint key into endpoint.
