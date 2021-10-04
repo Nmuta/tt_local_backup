@@ -13,9 +13,9 @@ import { chunk, clone, flatten, orderBy } from 'lodash';
 import { SunriseService } from '@services/sunrise';
 import { ApolloService } from '@services/apollo';
 import { BulkBanHistoryInput } from './components/bulk-ban-history-input.component';
-import { NavbarTools } from '@navbar-app/navbar-tool-list';
 import { ActivatedRoute } from '@angular/router';
 import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
+import { SharedNavbarTools } from '../shared-tool-list';
 import { WoodstockService } from '@services/woodstock';
 import { WoodstockBanSummary } from '@models/woodstock';
 
@@ -290,7 +290,7 @@ export class BulkBanHistoryComponent extends BaseComponent implements AfterViewI
           summaryPlusEnv.title = title;
           summaryPlusEnv.environment = environment;
           summaryPlusEnv.userDetailsRouterLink = [
-            NavbarTools.UserDetailsPage.path,
+            SharedNavbarTools.UserDetailsPage.path,
             title.toLowerCase(),
           ];
           return summaryPlusEnv;

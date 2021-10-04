@@ -127,7 +127,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
   {
     icon: AppIcon.PlayerInfo,
     tool: NavbarTool.UserDetails,
-    accessList: CommonAccessLevels.OldNavbarAppOnly,
+    accessList: CommonAccessLevels.OldCommunityAndNavbarAppOnly,
     title: 'Player Details',
     subtitle: 'A support agent tool',
     imageUrl: undefined,
@@ -135,7 +135,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'View information about a player',
     shortDescription: [`View information about a player`],
     loadChildren: () =>
-      import('../../app/pages/navbar-app/pages/user-details/user-details.module').then(
+      import('../../app/shared/pages/user-details/user-details.module').then(
         m => m.UserDetailsModule,
       ),
   },

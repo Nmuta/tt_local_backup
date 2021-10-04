@@ -6,17 +6,19 @@ import { of, throwError } from 'rxjs';
 import { ApolloUserFlagsComponent } from './apollo-user-flags.component';
 import faker from 'faker';
 import { ApolloUserFlags } from '@models/apollo';
+import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 
 describe('ApolloUserFlagsComponent', () => {
   let component: ApolloUserFlagsComponent;
   let fixture: ComponentFixture<ApolloUserFlagsComponent>;
 
   let mockApolloService: ApolloService;
+  let mockPermissionsService: PermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloUserFlagsComponent],
-      providers: [createMockApolloService()],
+      providers: [createMockApolloService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -25,6 +27,11 @@ describe('ApolloUserFlagsComponent', () => {
     fixture = TestBed.createComponent(ApolloUserFlagsComponent);
     component = fixture.componentInstance;
     mockApolloService = TestBed.inject(ApolloService);
+    mockPermissionsService = TestBed.inject(PermissionsService);
+
+    mockPermissionsService.currentUserHasWritePermission = jasmine
+      .createSpy('currentUserHasWritePermission ')
+      .and.returnValue(true);
     fixture.detectChanges();
   });
 

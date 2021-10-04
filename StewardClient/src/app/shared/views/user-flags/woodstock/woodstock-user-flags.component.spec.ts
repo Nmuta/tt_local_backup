@@ -8,17 +8,19 @@ import faker from 'faker';
 import { of, throwError } from 'rxjs';
 
 import { WoodstockUserFlagsComponent } from './woodstock-user-flags.component';
+import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 
 describe('WoodstockUserFlagsComponent', () => {
   let component: WoodstockUserFlagsComponent;
   let fixture: ComponentFixture<WoodstockUserFlagsComponent>;
 
   let mockWoodstockService: WoodstockService;
+  let mockPermissionsService: PermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [WoodstockUserFlagsComponent],
-      providers: [createMockWoodstockService()],
+      providers: [createMockWoodstockService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -27,6 +29,11 @@ describe('WoodstockUserFlagsComponent', () => {
     fixture = TestBed.createComponent(WoodstockUserFlagsComponent);
     component = fixture.componentInstance;
     mockWoodstockService = TestBed.inject(WoodstockService);
+    mockPermissionsService = TestBed.inject(PermissionsService);
+
+    mockPermissionsService.currentUserHasWritePermission = jasmine
+      .createSpy('currentUserHasWritePermission ')
+      .and.returnValue(true);
     fixture.detectChanges();
   });
 

@@ -6,6 +6,8 @@ import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil } from 'rxjs/operators';
+import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
+import { PermissionServiceTool, PermissionsService } from '@services/permissions';
 
 /** Retreives and displays related Sunrise consoles by XUID. */
 @Component({
@@ -13,19 +15,20 @@ import { catchError, take, takeUntil } from 'rxjs/operators';
 })
 export abstract class ConsolesBaseComponent<T> extends BaseComponent implements OnChanges {
   @Input() public identity?: IdentityResultUnion;
+  @Input() public disabled: boolean = false;
 
   public consoleDetails: T[];
   public columnsToDisplay = ['isBanned', 'consoleId', 'deviceType', 'actions'];
+  public getConsoles = new ActionMonitor('Get consoles');
 
   public bannedIcon = faGavel;
 
-  /** True while waiting on a request. */
-  public isLoading = true;
-  /** The error received while loading. */
-  public loadError: unknown;
-
   public abstract gameTitle: GameTitleCodeName;
   public abstract supportsConsoleBanning: boolean;
+
+  constructor(private readonly permissionsService: PermissionsService) {
+    super();
+  }
 
   /** Gets the console details list from XUID. */
   public abstract getConsoleDetailsByXuid$(xuid: BigNumber): Observable<T[]>;
@@ -40,28 +43,27 @@ export abstract class ConsolesBaseComponent<T> extends BaseComponent implements 
     return () => EMPTY;
   }
 
-  /** Initialization hook. */
+  /** Lifecycle hook. */
   public ngOnChanges(): void {
     if (!this.identity?.xuid) {
       return;
     }
 
-    this.isLoading = true;
-    this.loadError = undefined;
+    // Ignore permission service if disabled input is set to true
+    this.disabled =
+      this.disabled ||
+      !this.permissionsService.currentUserHasWritePermission(PermissionServiceTool.ConsoleBan);
 
+    this.getConsoles = new ActionMonitor(this.getConsoles.dispose().label);
     const getConsoleDetailsByXuid$ = this.getConsoleDetailsByXuid$(this.identity.xuid);
     getConsoleDetailsByXuid$
       .pipe(
         take(1),
-        catchError(error => {
-          this.isLoading = false;
-          this.loadError = error;
-          return EMPTY;
-        }),
+        this.getConsoles.monitorSingleFire(),
+        catchError(() => EMPTY),
         takeUntil(this.onDestroy$),
       )
       .subscribe(consoleDetails => {
-        this.isLoading = false;
         this.consoleDetails = consoleDetails;
       });
   }

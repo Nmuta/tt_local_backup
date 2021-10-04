@@ -7,6 +7,7 @@ import _ from 'lodash';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ConsolesBaseComponent } from '../consoles.base.component';
+import { PermissionsService } from '@services/permissions';
 
 /** Retreives and displays related Sunrise consoles by XUID. */
 @Component({
@@ -20,8 +21,11 @@ export class SunriseConsolesComponent
   public gameTitle = GameTitleCodeName.FH4;
   public supportsConsoleBanning = true;
 
-  constructor(private readonly sunriseSerice: SunriseService) {
-    super();
+  constructor(
+    private readonly sunriseSerice: SunriseService,
+    permissionsService: PermissionsService,
+  ) {
+    super(permissionsService);
   }
 
   /** Gets the console details list from XUID. */

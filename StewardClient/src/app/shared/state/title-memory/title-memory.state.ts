@@ -13,7 +13,7 @@ import { TitleMemoryModel } from './title-memory.model';
     banning: GameTitleCodeName.FH4,
     giftHistory: GameTitleCodeName.Street,
     messaging: GameTitleCodeName.FH4,
-    userDetails: GameTitleCodeName.FH4,
+    userDetails: GameTitleCodeName.FH5,
     ugc: GameTitleCodeName.FH4,
     serviceManagement: GameTitleCodeName.FH4,
   },

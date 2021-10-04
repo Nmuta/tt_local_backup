@@ -10,17 +10,19 @@ import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { SteelheadConsolesComponent } from './steelhead-consoles.component';
 import { SteelheadConsoleDetailsEntry } from '@models/steelhead';
 import { SteelheadService, createMockSteelheadService } from '@services/steelhead';
+import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 
 describe('SteelheadConsolesComponent', () => {
   let component: SteelheadConsolesComponent;
   let fixture: ComponentFixture<SteelheadConsolesComponent>;
 
   let mockSteelheadService: SteelheadService;
+  let mockPermissionsService: PermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SteelheadConsolesComponent, BigJsonPipe],
-      providers: [createMockSteelheadService()],
+      providers: [createMockSteelheadService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -29,6 +31,11 @@ describe('SteelheadConsolesComponent', () => {
     fixture = TestBed.createComponent(SteelheadConsolesComponent);
     component = fixture.componentInstance;
     mockSteelheadService = TestBed.inject(SteelheadService);
+    mockPermissionsService = TestBed.inject(PermissionsService);
+
+    mockPermissionsService.currentUserHasWritePermission = jasmine
+      .createSpy('currentUserHasWritePermission ')
+      .and.returnValue(true);
     fixture.detectChanges();
   });
 
@@ -61,8 +68,8 @@ describe('SteelheadConsolesComponent', () => {
       it(
         'should skip undefined xuids',
         waitForAsync(() => {
-          expect(component.isLoading).toBe(true);
-          expect(component.loadError).toBeFalsy();
+          expect(component.getConsoles?.isActive).toBe(false);
+          expect(component.getConsoles?.status?.error).toBeUndefined();
         }),
       );
 
@@ -79,15 +86,15 @@ describe('SteelheadConsolesComponent', () => {
 
           // waiting on value
           fixture.detectChanges();
-          expect(component.isLoading).toBe(true);
+          expect(component.getConsoles?.isActive).toBe(true);
 
           // value received
           consoleDetails$.next(consoleDetailsValue);
           consoleDetails$.complete();
           await fixture.whenStable();
           fixture.detectChanges();
-          expect(component.isLoading).toBe(false);
-          expect(component.loadError).toBeFalsy();
+          expect(component.getConsoles?.isActive).toBe(false);
+          expect(component.getConsoles?.status?.error).toBeNull();
         }),
       );
 
@@ -104,14 +111,14 @@ describe('SteelheadConsolesComponent', () => {
 
           // waiting on value
           fixture.detectChanges();
-          expect(component.isLoading).toBe(true);
+          expect(component.getConsoles?.isActive).toBe(true);
 
           // error received
           consoleDetails$.error(new HttpErrorResponse({ error: 'hello' }));
           await fixture.whenStable();
           fixture.detectChanges();
-          expect(component.isLoading).toBe(false);
-          expect(component.loadError).toBeTruthy();
+          expect(component.getConsoles?.isActive).toBe(false);
+          expect(component.getConsoles?.status?.error).not.toBeNull();
         }),
       );
     });

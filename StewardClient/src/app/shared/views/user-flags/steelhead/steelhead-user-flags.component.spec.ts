@@ -6,17 +6,19 @@ import { of, throwError } from 'rxjs';
 import { SteelheadUserFlagsComponent } from './steelhead-user-flags.component';
 import faker from 'faker';
 import { SteelheadUserFlags } from '@models/steelhead';
+import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 
 describe('SteelheadUserFlagsComponent', () => {
   let component: SteelheadUserFlagsComponent;
   let fixture: ComponentFixture<SteelheadUserFlagsComponent>;
 
   let mockSteelheadService: SteelheadService;
+  let mockPermissionsService: PermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SteelheadUserFlagsComponent],
-      providers: [createMockSteelheadService()],
+      providers: [createMockSteelheadService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -25,6 +27,11 @@ describe('SteelheadUserFlagsComponent', () => {
     fixture = TestBed.createComponent(SteelheadUserFlagsComponent);
     component = fixture.componentInstance;
     mockSteelheadService = TestBed.inject(SteelheadService);
+    mockPermissionsService = TestBed.inject(PermissionsService);
+
+    mockPermissionsService.currentUserHasWritePermission = jasmine
+      .createSpy('currentUserHasWritePermission ')
+      .and.returnValue(true);
     fixture.detectChanges();
   });
 

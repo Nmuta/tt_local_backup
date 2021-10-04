@@ -35,9 +35,11 @@ const routes: Routes = [
           ),
       },
       {
-        path: NavbarTools.UserDetailsPage.path,
+        path: SharedNavbarTools.UserDetailsPage.path,
         loadChildren: () =>
-          import('./pages/user-details/user-details.module').then(m => m.UserDetailsModule),
+          import('../../shared/pages/user-details/user-details.module').then(
+            m => m.UserDetailsModule,
+          ),
       },
       {
         path: SharedNavbarTools.GiftingPage.path,

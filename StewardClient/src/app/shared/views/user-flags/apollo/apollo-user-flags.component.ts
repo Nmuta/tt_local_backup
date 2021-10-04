@@ -6,6 +6,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { ApolloService } from '@services/apollo';
 import { ApolloUserFlags } from '@models/apollo';
 import { FormControl, FormGroup } from '@angular/forms';
+import { PermissionsService } from '@services/permissions';
 
 /** Retreives and displays Sunrise User Flags by XUID. */
 @Component({
@@ -25,8 +26,11 @@ export class ApolloUserFlagsComponent extends UserFlagsBaseComponent<ApolloUserF
 
   public formGroup = new FormGroup(this.formControls);
 
-  constructor(private readonly apolloService: ApolloService) {
-    super();
+  constructor(
+    private readonly apolloService: ApolloService,
+    permissionsService: PermissionsService,
+  ) {
+    super(permissionsService);
   }
 
   /** Gets Apollo user flags. */

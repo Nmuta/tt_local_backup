@@ -32,6 +32,12 @@ export class SharedNavbarTools {
     path: 'ugc',
   };
 
+  /** The user details tool page. */
+  public static readonly UserDetailsPage: RouteParams = {
+    title: 'Player Details',
+    path: 'user-details',
+  };
+
   /** The gift history tool page. */
   public static readonly GiftHistoryPage: RouteParams = {
     title: 'Gift History',

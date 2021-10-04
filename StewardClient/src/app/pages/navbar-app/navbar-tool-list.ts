@@ -23,12 +23,6 @@ export class NavbarTools {
     path: 'home',
   };
 
-  /** The user details tool page. */
-  public static readonly UserDetailsPage: RouteParams = {
-    title: 'Player Details',
-    path: 'user-details',
-  };
-
   /** The Kusto tool page. */
   public static readonly KustoPage: RouteParams = {
     title: 'Kusto',
@@ -44,7 +38,7 @@ export class NavbarTools {
 
 /** The list of tools to display in the navbar. */
 export const navbarToolList: RouterLinkPath[] = [
-  createNavbarPath(NavbarTools.UserDetailsPage),
+  createNavbarPath(SharedNavbarTools.UserDetailsPage),
   createNavbarPath(SharedNavbarTools.GiftingPage),
   createNavbarPath(SharedNavbarTools.GiftHistoryPage),
   createNavbarPath(SharedNavbarTools.UserBanningPage),

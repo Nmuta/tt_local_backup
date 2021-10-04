@@ -6,8 +6,8 @@
         <div class="tab-container">
           <woodstock-user-flags [identity]="identity"></woodstock-user-flags>
           <woodstock-ban-history [xuid]="identity.xuid"></woodstock-ban-history>
-          <!-- TODO: Uncomment once LSP and Steward API are setup to get profile rollbacks. -->
-          <!-- <woodstock-profile-rollbacks [identity]="identity"></woodstock-profile-rollbacks> -->
+          <!-- TODO: Uncomment when woodstock has profile notes endpoint -->
+          <!-- <woodstock-profile-notes [identity]="identity"></woodstock-profile-notes> -->
           <woodstock-gamertags [identity]="identity"></woodstock-gamertags>
           <woodstock-consoles [identity]="identity"></woodstock-consoles>
         </div>
@@ -50,14 +50,14 @@
           <woodstock-player-notifications [identity]="identity"></woodstock-player-notifications>
         </div>
       </mat-tab>
-      <mat-tab label="JSON">
-        <div class="tab-container">
-          <json-dump [input]="identity">Identity</json-dump>
-        </div>
-      </mat-tab>
       <mat-tab label="Auctions">
         <div class="tab-container">
           <woodstock-player-auctions [identity]="identity"></woodstock-player-auctions>
+        </div>
+      </mat-tab>
+      <mat-tab label="JSON">
+        <div class="tab-container">
+          <json-dump [input]="identity">Identity</json-dump>
         </div>
       </mat-tab>
     </mat-tab-group>

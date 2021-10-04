@@ -8,17 +8,19 @@ import faker from 'faker';
 import { of, throwError } from 'rxjs';
 
 import { SunriseUserFlagsComponent } from './sunrise-user-flags.component';
+import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 
 describe('SunriseUserFlagsComponent', () => {
   let component: SunriseUserFlagsComponent;
   let fixture: ComponentFixture<SunriseUserFlagsComponent>;
 
   let mockSunriseService: SunriseService;
+  let mockPermissionsService: PermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseUserFlagsComponent],
-      providers: [createMockSunriseService()],
+      providers: [createMockSunriseService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -27,6 +29,11 @@ describe('SunriseUserFlagsComponent', () => {
     fixture = TestBed.createComponent(SunriseUserFlagsComponent);
     component = fixture.componentInstance;
     mockSunriseService = TestBed.inject(SunriseService);
+    mockPermissionsService = TestBed.inject(PermissionsService);
+
+    mockPermissionsService.currentUserHasWritePermission = jasmine
+      .createSpy('currentUserHasWritePermission ')
+      .and.returnValue(true);
     fixture.detectChanges();
   });
 

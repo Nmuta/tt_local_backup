@@ -5,6 +5,7 @@ import { GameTitleCodeName } from '@models/enums';
 import { SteelheadService } from '@services/steelhead';
 import { Observable } from 'rxjs';
 import { ConsolesBaseComponent } from '../consoles.base.component';
+import { PermissionsService } from '@services/permissions';
 
 /** Retreives and displays related Sunrise consoles by XUID. */
 @Component({
@@ -18,8 +19,11 @@ export class SteelheadConsolesComponent extends ConsolesBaseComponent<
   public gameTitle = GameTitleCodeName.FM8;
   public supportsConsoleBanning = false;
 
-  constructor(private readonly steelheadService: SteelheadService) {
-    super();
+  constructor(
+    private readonly steelheadService: SteelheadService,
+    permissionsService: PermissionsService,
+  ) {
+    super(permissionsService);
   }
 
   /** Gets the console details list from XUID. */

@@ -10,17 +10,19 @@ import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
 import { ApolloConsolesComponent } from './apollo-consoles.component';
 import { ApolloConsoleDetailsEntry } from '@models/apollo';
 import { ApolloService, createMockApolloService } from '@services/apollo';
+import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 
 describe('ApolloConsolesComponent', () => {
   let component: ApolloConsolesComponent;
   let fixture: ComponentFixture<ApolloConsolesComponent>;
 
   let mockApolloService: ApolloService;
+  let mockPermissionsService: PermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ApolloConsolesComponent, BigJsonPipe],
-      providers: [createMockApolloService()],
+      providers: [createMockApolloService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -29,6 +31,11 @@ describe('ApolloConsolesComponent', () => {
     fixture = TestBed.createComponent(ApolloConsolesComponent);
     component = fixture.componentInstance;
     mockApolloService = TestBed.inject(ApolloService);
+    mockPermissionsService = TestBed.inject(PermissionsService);
+
+    mockPermissionsService.currentUserHasWritePermission = jasmine
+      .createSpy('currentUserHasWritePermission ')
+      .and.returnValue(true);
     fixture.detectChanges();
   });
 
@@ -61,8 +68,8 @@ describe('ApolloConsolesComponent', () => {
       it(
         'should skip undefined xuids',
         waitForAsync(() => {
-          expect(component.isLoading).toBe(true);
-          expect(component.loadError).toBeFalsy();
+          expect(component.getConsoles?.isActive).toBe(false);
+          expect(component.getConsoles?.status?.error).toBeUndefined();
         }),
       );
 
@@ -79,15 +86,15 @@ describe('ApolloConsolesComponent', () => {
 
           // waiting on value
           fixture.detectChanges();
-          expect(component.isLoading).toBe(true);
+          expect(component.getConsoles?.isActive).toBe(true);
 
           // value received
           consoleDetails$.next(consoleDetailsValue);
           consoleDetails$.complete();
           await fixture.whenStable();
           fixture.detectChanges();
-          expect(component.isLoading).toBe(false);
-          expect(component.loadError).toBeFalsy();
+          expect(component.getConsoles?.isActive).toBe(false);
+          expect(component.getConsoles?.status?.error).toBeNull();
         }),
       );
 
@@ -104,14 +111,14 @@ describe('ApolloConsolesComponent', () => {
 
           // waiting on value
           fixture.detectChanges();
-          expect(component.isLoading).toBe(true);
+          expect(component.getConsoles?.isActive).toBe(true);
 
           // error received
           consoleDetails$.error(new HttpErrorResponse({ error: 'hello' }));
           await fixture.whenStable();
           fixture.detectChanges();
-          expect(component.isLoading).toBe(false);
-          expect(component.loadError).toBeTruthy();
+          expect(component.getConsoles?.isActive).toBe(false);
+          expect(component.getConsoles?.status?.error).not.toBeNull();
         }),
       );
     });

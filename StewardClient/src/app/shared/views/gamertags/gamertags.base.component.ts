@@ -5,10 +5,10 @@ import { BaseComponent } from '@components/base-component/base.component';
 import { catchError, takeUntil } from 'rxjs/operators';
 import { GameTitleCodeName } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
-import { NavbarTools } from '@navbar-app/navbar-tool-list';
 import { ActivatedRoute } from '@angular/router';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { getToolsActivatedRoute } from '@helpers/tools-activated-route';
+import { SharedNavbarTools } from '@shared/pages/shared-tool-list';
 
 /** Base component for related gamertags. */
 @Component({
@@ -40,7 +40,7 @@ export abstract class GamertagsBaseComponent<T> extends BaseComponent implements
   /** Lifecycle hook. */
   public ngOnInit(): void {
     this.userDetailsRouterLink = [
-      `./${NavbarTools.UserDetailsPage.path}`,
+      `./${SharedNavbarTools.UserDetailsPage.path}`,
       this.gameTitle.toLowerCase(),
     ];
 

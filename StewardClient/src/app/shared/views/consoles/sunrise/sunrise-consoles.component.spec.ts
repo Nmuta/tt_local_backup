@@ -12,17 +12,19 @@ import { Subject } from 'rxjs';
 
 import { SunriseConsolesComponent } from './sunrise-consoles.component';
 import { BigJsonPipe } from '@shared/pipes/big-json.pipe';
+import { createMockPermissionsService, PermissionsService } from '@services/permissions';
 
 describe('SunriseConsolesComponent', () => {
   let component: SunriseConsolesComponent;
   let fixture: ComponentFixture<SunriseConsolesComponent>;
 
   let mockSunriseService: SunriseService;
+  let mockPermissionsService: PermissionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SunriseConsolesComponent, BigJsonPipe],
-      providers: [createMockSunriseService()],
+      providers: [createMockSunriseService(), createMockPermissionsService()],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
@@ -31,6 +33,11 @@ describe('SunriseConsolesComponent', () => {
     fixture = TestBed.createComponent(SunriseConsolesComponent);
     component = fixture.componentInstance;
     mockSunriseService = TestBed.inject(SunriseService);
+    mockPermissionsService = TestBed.inject(PermissionsService);
+
+    mockPermissionsService.currentUserHasWritePermission = jasmine
+      .createSpy('currentUserHasWritePermission ')
+      .and.returnValue(true);
     fixture.detectChanges();
   });
 
@@ -70,8 +77,8 @@ describe('SunriseConsolesComponent', () => {
       it(
         'should skip undefined xuids',
         waitForAsync(() => {
-          expect(component.isLoading).toBe(true);
-          expect(component.loadError).toBeFalsy();
+          expect(component.getConsoles?.isActive).toBe(false);
+          expect(component.getConsoles?.status?.error).toBeUndefined();
         }),
       );
 
@@ -88,15 +95,15 @@ describe('SunriseConsolesComponent', () => {
 
           // waiting on value
           fixture.detectChanges();
-          expect(component.isLoading).toBe(true);
+          expect(component.getConsoles?.isActive).toBe(true);
 
           // value received
           consoleDetails$.next(consoleDetailsValue);
           consoleDetails$.complete();
           await fixture.whenStable();
           fixture.detectChanges();
-          expect(component.isLoading).toBe(false);
-          expect(component.loadError).toBeFalsy();
+          expect(component.getConsoles?.isActive).toBe(false);
+          expect(component.getConsoles?.status?.error).toBeNull();
         }),
       );
 
@@ -113,14 +120,14 @@ describe('SunriseConsolesComponent', () => {
 
           // waiting on value
           fixture.detectChanges();
-          expect(component.isLoading).toBe(true);
+          expect(component.getConsoles?.isActive).toBe(true);
 
           // error received
           consoleDetails$.error(new HttpErrorResponse({ error: 'hello' }));
           await fixture.whenStable();
           fixture.detectChanges();
-          expect(component.isLoading).toBe(false);
-          expect(component.loadError).toBeTruthy();
+          expect(component.getConsoles?.isActive).toBe(false);
+          expect(component.getConsoles?.status?.error).not.toBeNull();
         }),
       );
     });
@@ -149,7 +156,7 @@ describe('SunriseConsolesComponent', () => {
 
           // waiting on value
           fixture.detectChanges();
-          expect(component.isLoading).toBe(true);
+          expect(component.getConsoles?.isActive).toBe(true);
 
           // value received
           consoleDetails$.next(consoleDetailsValue);
