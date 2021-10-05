@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
+using Forza.LiveOps.FH5.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -1181,6 +1182,26 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
+        public async Task GetGroupNotifications_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var controller = new Dependencies().Build();
+            var groupId = Fixture.Create<int>();
+
+            // Act.
+            async Task<IActionResult> Action() => await controller.GetGroupNotifications(groupId).ConfigureAwait(false);
+
+            // Assert.
+            Action().Should().BeAssignableTo<Task<IActionResult>>();
+            Action().Should().NotBeNull();
+            var result = await Action().ConfigureAwait(false) as OkObjectResult;
+            var details = result.Value as IList<UserGroupNotification>;
+            details.Should().NotBeNull();
+            details.Should().BeOfType<List<UserGroupNotification>>();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public async Task SendPlayerNotifications_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1230,6 +1251,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var controller = new Dependencies().Build();
             var groupId = Fixture.Create<int>();
             var duration = TimeSpan.FromDays(1);
+            var deviceType = DeviceType.All;
 
             // Act.
             var actions = new List<Func<Task<IActionResult>>>
@@ -1237,9 +1259,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = null, Duration = duration}).ConfigureAwait(false),
                 async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.Empty, Duration = duration}).ConfigureAwait(false),
                 async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = TestConstants.WhiteSpace, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = null, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = TestConstants.Empty, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = null, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = TestConstants.Empty, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = TestConstants.WhiteSpace, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1258,12 +1280,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var groupId = Fixture.Create<int>();
             var tooLong = new string('*', 520);
             var duration = TimeSpan.FromDays(1);
+            var deviceType = DeviceType.All;
 
             // Act.
             var actions = new List<Func<Task>>
             {
                 async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = tooLong, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = tooLong, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage(){Message = tooLong, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1282,12 +1305,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var groupId = Fixture.Create<int>();
             var message = Fixture.Create<string>();
             var duration = TimeSpan.FromHours(3);
+            var deviceType = DeviceType.All;
 
             // Act.
             var actions = new List<Func<Task>>
             {
                 async () => await controller.SendPlayerNotifications(new BulkCommunityMessage{Xuids = new List<ulong>(), Message = message, Duration = duration}).ConfigureAwait(false),
-                async () => await controller.SendGroupNotifications(groupId, new CommunityMessage{Message = message, Duration = duration}).ConfigureAwait(false),
+                async () => await controller.SendGroupNotifications(groupId, new LspGroupCommunityMessage{Message = message, Duration = duration, DeviceType = deviceType}).ConfigureAwait(false),
             };
 
             // Assert.
@@ -1304,8 +1328,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             // Arrange.
             var controller = new Dependencies().Build();
             var groupId = TestConstants.InvalidProfileId;
-            var communityMessage = Fixture.Create<CommunityMessage>();
+            var communityMessage = Fixture.Create<LspGroupCommunityMessage>();
             communityMessage.Duration = TimeSpan.FromDays(1);
+            communityMessage.DeviceType = DeviceType.All;
 
             // Act.
             async Task<IActionResult> Action() => await controller.SendGroupNotifications(groupId, communityMessage).ConfigureAwait(false);
@@ -1404,8 +1429,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockPlayerDetailsProvider.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<LiveOpsBanHistory>>());
                 this.WoodstockPlayerDetailsProvider.GetBackstagePassUpdatesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
                 this.WoodstockPlayerDetailsProvider.GetPlayerNotificationsAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<Notification>>());
+                this.WoodstockPlayerDetailsProvider.GetGroupNotificationsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.WoodstockPlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.WoodstockPlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
+                this.WoodstockPlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<DeviceType>(), Arg.Any<string>()).Returns(Fixture.Create<MessageSendResult<int>>());
                 this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.WoodstockPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());

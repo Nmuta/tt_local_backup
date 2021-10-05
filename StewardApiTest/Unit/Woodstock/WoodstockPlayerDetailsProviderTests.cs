@@ -459,6 +459,24 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void GetGroupNotificationsAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var groupId = Fixture.Create<int>();
+            var maxResults = Fixture.Create<int>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            async Task<IList<UserGroupNotification>> Action() => await provider.GetGroupNotificationsAsync(groupId, maxResults, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<List<UserGroupNotification>>();
+            Action().Result.ShouldNotBeNull();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void SendCommunityMessageAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -503,6 +521,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var groupId = Fixture.Create<int>();
             var expireTime = Fixture.Create<DateTime>();
             var endpoint = Fixture.Create<string>();
+            var deviceType = Fixture.Create<DeviceType>();
 
             // Act.
             var actions = new List<Func<Task>>
@@ -510,9 +529,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 async () => await provider.SendCommunityMessageAsync(xuids, null, expireTime, endpoint).ConfigureAwait(false),
                 async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.Empty, expireTime, endpoint).ConfigureAwait(false),
                 async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.WhiteSpace, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(groupId, null, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.Empty, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.WhiteSpace, expireTime, endpoint).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, null, expireTime, deviceType, endpoint).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.Empty, expireTime, deviceType, endpoint).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.WhiteSpace, expireTime, deviceType, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -532,9 +551,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             var message = Fixture.Create<string>();
             var expireTime = Fixture.Create<DateTime>();
             var endpoint = Fixture.Create<string>();
+            var deviceType = Fixture.Create<DeviceType>();
 
             // Act.
-            async Task<MessageSendResult<int>> Action() => await provider.SendCommunityMessageAsync(groupId, message, expireTime, endpoint).ConfigureAwait(false);
+            async Task<MessageSendResult<int>> Action() => await provider.SendCommunityMessageAsync(groupId, message, expireTime, deviceType, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<MessageSendResult<int>>();
@@ -542,7 +562,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
 
             // Act.
-            Func<Task> action = async () => await provider.SendCommunityMessageAsync(groupId, message, expireTime, endpoint).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.SendCommunityMessageAsync(groupId, message, expireTime, deviceType, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -586,6 +606,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.WoodstockService.GetTokenTransactionsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<AdminGetTransactionsOutput>());
                 this.WoodstockService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsRetrieveForUserOutput>());
+                this.WoodstockService.GetUserGroupNotificationAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAllUserGroupMessagesOutput>());
                 this.WoodstockService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
                 this.Mapper.Map<WoodstockPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<WoodstockPlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
@@ -598,6 +619,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<WoodstockPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<BackstagePassUpdate>>(Arg.Any<WebServicesContracts.RareCarShopTransaction[]>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
                 this.Mapper.Map<IList<Notification>>(Arg.Any<LiveOpsContracts.LiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
+                this.Mapper.Map<IList<UserGroupNotification>>(Arg.Any<ForzaUserGroupMessage[]>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
                 this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
                 this.RefreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(Arg.Any<string>()).Returns((IList<BackstagePassUpdate>)null);

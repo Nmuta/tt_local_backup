@@ -117,6 +117,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
                 .ForMember(dest => dest.Gamertag, opt => opt.MapFrom(src => src.PlayerExists ? src.Gamertag : null))
                 .ForMember(dest => dest.Xuid, opt => opt.MapFrom(src => src.PlayerExists ? src.Xuid : 0))
                 .ReverseMap();
+            this.CreateMap<ForzaUserGroupMessage, UserGroupNotification>()
+                .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => src.DeviceType))
+                .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
+                .ReverseMap();
+            this.CreateMap<DeviceType, ForzaLiveDeviceType>().ReverseMap();
         }
     }
 }

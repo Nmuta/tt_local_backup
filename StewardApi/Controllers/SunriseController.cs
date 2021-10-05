@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Forza.LiveOps.FH4.Generated;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -1299,6 +1300,26 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets the user group notifications.
+        /// </summary>
+        [HttpGet("group/groupId({groupId})/notifications")]
+        [SwaggerResponse(200, type: typeof(IList<UserGroupNotification>))]
+        public async Task<IActionResult> GetGroupNotifications(
+            int groupId,
+            [FromQuery] int maxResults = DefaultMaxResults)
+        {
+            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
+
+            var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+            var notifications = await this.sunrisePlayerDetailsProvider.GetGroupNotificationsAsync(
+                groupId,
+                maxResults,
+                endpoint).ConfigureAwait(true);
+
+            return this.Ok(notifications);
+        }
+
+        /// <summary>
         ///     Sends the players notifications.
         /// </summary>
         [HttpPost("notifications/send")]
@@ -1355,7 +1376,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200, type: typeof(MessageSendResult<int>))]
         public async Task<IActionResult> SendGroupNotifications(
             int groupId,
-            [FromBody] CommunityMessage communityMessage)
+            [FromBody] LspGroupCommunityMessage communityMessage)
         {
             communityMessage.ShouldNotBeNull(nameof(communityMessage));
             communityMessage.Message.ShouldNotBeNullEmptyOrWhiteSpace(nameof(communityMessage.Message));
@@ -1365,6 +1386,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 nameof(communityMessage.Duration));
 
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
+
             var groups = await this.sunriseServiceManagementProvider.GetLspGroupsAsync(
                 DefaultStartIndex,
                 DefaultMaxResults,
@@ -1379,6 +1401,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 groupId,
                 communityMessage.Message,
                 expireTime,
+                communityMessage.DeviceType,
                 endpoint).ConfigureAwait(true);
 
             return this.Ok(result);

@@ -130,6 +130,11 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaAuctionBlocklistEntry, AuctionBlocklistEntry>()
                 .ForMember(dest => dest.ExpireDateUtc, opt => opt.MapFrom(src => src.ExpireDate))
                 .ReverseMap();
+            this.CreateMap<ForzaUserGroupMessage, UserGroupNotification>()
+                .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => src.DeviceType))
+                .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
+                .ReverseMap();
+            this.CreateMap<DeviceType, ForzaLiveDeviceType>().ReverseMap();
         }
     }
 }

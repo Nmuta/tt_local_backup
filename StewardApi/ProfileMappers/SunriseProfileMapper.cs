@@ -9,7 +9,6 @@ using Turn10.LiveOps.StewardApi.Contracts.Errors;
 using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Xls.Security.FH4.Generated;
 using Xls.WebServices.FH4.Generated;
-using Xls.WebServices.NotificationsObjects.FH4.Generated;
 using LiveOpsContracts = Forza.LiveOps.FH4.Generated;
 using WebServicesContracts = Forza.WebServices.FH4.Generated;
 
@@ -83,13 +82,13 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LiveOpsContracts.ForzaUserGroup, LspGroup>();
             this.CreateMap<SunrisePlayerDetails, IdentityResultAlpha>().ReverseMap();
             this.CreateMap<SunriseGroupGift, SunriseGift>().ReverseMap();
-            this.CreateMap<LiveOpsNotification, Notification>()
-                .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(src => src.id))
-                .ForMember(dest => dest.SendDateUtc, opt => opt.MapFrom(src => src.sentDate))
-                .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.expirationDate))
+            this.CreateMap<LiveOpsContracts.LiveOpsNotification, Notification>()
+                .ForMember(dest => dest.NotificationId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.SendDateUtc, opt => opt.MapFrom(src => src.SentDate))
+                .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
                 .ReverseMap();
             this.CreateMap<SunriseUserFlagsInput, SunriseUserFlags>().ReverseMap();
-            this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
+            this.CreateMap<LiveOpsContracts.ForzaUserMessageSendResult, MessageSendResult<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid))
                 .ForMember(dest => dest.Error, opt => opt.MapFrom(
@@ -283,6 +282,12 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<LiveOpsContracts.ForzaAuctionBlocklistEntry, AuctionBlocklistEntry>()
                 .ForMember(dest => dest.ExpireDateUtc, opt => opt.MapFrom(src => src.ExpireDate))
                 .ReverseMap();
+
+            this.CreateMap<LiveOpsContracts.ForzaUserGroupMessage, UserGroupNotification>()
+                .ForMember(dest => dest.DeviceType, opt => opt.MapFrom(src => src.DeviceType))
+                .ForMember(dest => dest.ExpirationDateUtc, opt => opt.MapFrom(src => src.ExpirationDate))
+                .ReverseMap();
+            this.CreateMap<DeviceType, LiveOpsContracts.ForzaLiveDeviceType>().ReverseMap();
         }
     }
 }

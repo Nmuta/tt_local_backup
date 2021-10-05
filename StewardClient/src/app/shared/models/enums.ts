@@ -62,3 +62,20 @@ export enum InitEndpointKeysError {
   LookupFailed,
   SelectionRemoved,
 }
+
+/** Enum for device types. */
+export enum DeviceType {
+  All = 'All',
+  MoLive = 'MoLive',
+  PC = 'PC',
+  Web = 'Web',
+  WindowsOneCore = 'WindowsOneCore',
+  WindowsOneCoreMobile = 'WindowsOneCoreMobile',
+  WindowsPhone = 'WindowsPhone',
+  WindowsPhone7 = 'WindowsPhone7',
+  Xbox360 = 'Xbox360',
+  XboxOne = 'XboxOne',
+  Scarlett = 'Scarlett',
+  XboxCloud = 'XboxCloud',
+  Wind32 = 'Win32',
+}

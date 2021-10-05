@@ -39,6 +39,7 @@
           >
             <ng-container *ngIf="!waitingForVerification; else pendingCommunityMessageTemplate">
               <new-community-message
+                [allowDeviceTypeFilter]="!isUsingPlayerIdentities"
                 [pendingCommunityMessage]="newCommunityMessage"
                 (emitNewCommunityMessage)="setNewCommunityMessage($event)"
               ></new-community-message>

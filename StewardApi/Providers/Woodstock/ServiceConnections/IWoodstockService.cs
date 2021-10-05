@@ -208,7 +208,17 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             int groupId,
             string message,
             DateTime expireTimeUtc,
+            ForzaLiveDeviceType deviceType,
             string endpoint);
+
+        /// <summary>
+        ///     Retrieves user group messages.
+        /// </summary>
+        public Task<NotificationsManagementService.GetAllUserGroupMessagesOutput>
+            GetUserGroupNotificationAsync(
+                int groupId,
+                int maxResults,
+                string endpoint);
 
         /// <summary>
         ///     Gets player auctions.

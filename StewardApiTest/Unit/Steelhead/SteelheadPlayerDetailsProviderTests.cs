@@ -386,6 +386,24 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void GetGroupNotificationsAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var groupId = Fixture.Create<int>();
+            var maxResults = Fixture.Create<int>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            async Task<IList<UserGroupNotification>> Action() => await provider.GetGroupNotificationsAsync(groupId, maxResults, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<List<UserGroupNotification>>();
+            Action().Result.ShouldNotBeNull();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void SendCommunityMessageAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -429,6 +447,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var xuids = Fixture.Create<List<ulong>>();
             var groupId = Fixture.Create<int>();
             var expireTime = Fixture.Create<DateTime>();
+            var deviceType = Fixture.Create<DeviceType>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
@@ -437,9 +456,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 async () => await provider.SendCommunityMessageAsync(xuids, null, expireTime, endpoint).ConfigureAwait(false),
                 async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.Empty, expireTime, endpoint).ConfigureAwait(false),
                 async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.WhiteSpace, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(groupId, null, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.Empty, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.WhiteSpace, expireTime, endpoint).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, null, expireTime, deviceType, endpoint).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.Empty, expireTime, deviceType, endpoint).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.WhiteSpace, expireTime, deviceType, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -458,9 +477,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var groupId = Fixture.Create<int>();
             var message = Fixture.Create<string>();
             var expireTime = Fixture.Create<DateTime>();
+            var deviceType = Fixture.Create<DeviceType>();
             var endpoint = Fixture.Create<string>();
 
-            async Task<MessageSendResult<int>> Action() => await provider.SendCommunityMessageAsync(groupId, message, expireTime, endpoint).ConfigureAwait(false);
+            async Task<MessageSendResult<int>> Action() => await provider.SendCommunityMessageAsync(groupId, message, expireTime, deviceType, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<MessageSendResult<int>>();
@@ -468,7 +488,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
 
 
             // Act.
-            Func<Task> action = async () => await provider.SendCommunityMessageAsync(groupId, message, expireTime, endpoint).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.SendCommunityMessageAsync(groupId, message, expireTime, deviceType, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -509,6 +529,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadUserService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.SteelheadUserService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateGetUserBanHistoryOutput());
                 this.SteelheadUserService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsRetrieveForUserOutput>());
+                this.SteelheadUserService.GetUserGroupNotificationAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAllUserGroupMessagesOutput>());
                 this.SteelheadUserService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
                 this.Mapper.Map<SteelheadPlayerDetails>(Arg.Any<UserData>()).Returns(Fixture.Create<SteelheadPlayerDetails>());
                 this.Mapper.Map<IList<ConsoleDetails>>(Arg.Any<ForzaConsole[]>()).Returns(Fixture.Create<IList<ConsoleDetails>>());
@@ -518,6 +539,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SteelheadPlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
                 this.Mapper.Map<IList<Notification>>(Arg.Any<LiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
+                this.Mapper.Map<IList<UserGroupNotification>>(Arg.Any<ForzaUserGroupMessage[]>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
                 this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
             }

@@ -16,7 +16,6 @@ using Turn10.Services.ForzaClient;
 using Turn10.Services.MessageEncryption;
 using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
 using GiftingService = Forza.LiveOps.FH4.Generated.GiftingService;
-using NotificationsService = Xls.WebServices.FH4.Generated.NotificationsService;
 using RareCarShopService = Forza.WebServices.FH4.Generated.RareCarShopService;
 using UserInventoryService = Forza.LiveOps.FH4.Generated.UserInventoryService;
 
@@ -264,27 +263,27 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsService.LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUserAsync(
+        public async Task<NotificationsManagementService.LiveOpsRetrieveForUserExOutput> LiveOpsRetrieveForUserAsync(
             ulong xuid,
             int maxResults,
             string endpoint)
         {
-            var notificationsService = await this.PrepareNotificationsServiceAsync(endpoint).ConfigureAwait(false);
+            var notificationsManagementService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await notificationsService.LiveOpsRetrieveForUser(xuid, maxResults).ConfigureAwait(false);
+            return await notificationsManagementService.LiveOpsRetrieveForUserEx(xuid, maxResults).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>
-        public async Task<NotificationsService.SendMessageNotificationToMultipleUsersOutput>
+        public async Task<NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput>
             SendMessageNotificationToMultipleUsersAsync(
                 IList<ulong> xuids,
                 string message,
                 DateTime expireTimeUtc,
                 string endpoint)
         {
-            var notificationsService = await this.PrepareNotificationsServiceAsync(endpoint).ConfigureAwait(false);
+            var notificationsManagementService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            return await notificationsService.SendMessageNotificationToMultipleUsers(
+            return await notificationsManagementService.SendMessageNotificationToMultipleUsers(
                 xuids.ToArray(),
                 xuids.Count,
                 message,
@@ -292,15 +291,32 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         }
 
         /// <inheritdoc/>
-        public async Task SendGroupMessageNotificationAsync(
+        public async Task<NotificationsManagementService.SendGroupMessageNotificationOutput> SendGroupMessageNotificationAsync(
             int groupId,
             string message,
             DateTime expireTimeUtc,
+            ForzaLiveDeviceType deviceType,
             string endpoint)
         {
-            var notificationsService = await this.PrepareNotificationsServiceAsync(endpoint).ConfigureAwait(false);
+            var notificationsManagementService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
 
-            await notificationsService.SendGroupMessageNotification(groupId, message, expireTimeUtc)
+            return await notificationsManagementService.SendGroupMessageNotification(
+                    groupId,
+                    message,
+                    expireTimeUtc,
+                    deviceType != ForzaLiveDeviceType.Invalid,
+                    deviceType).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<NotificationsManagementService.GetAllUserGroupMessagesOutput> GetUserGroupNotificationAsync(
+            int groupId,
+            int maxResults,
+            string endpoint)
+        {
+            var notificationsManagementService = await this.PrepareNotificationsManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await notificationsManagementService.GetAllUserGroupMessages(groupId, maxResults)
                 .ConfigureAwait(false);
         }
 
@@ -504,12 +520,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
             return new UserInventoryService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
-        private async Task<NotificationsService> PrepareNotificationsServiceAsync(string endpoint)
+        private async Task<NotificationsManagementService> PrepareNotificationsManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(SunriseCacheKey.MakeAuthTokenKey())
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
-            return new NotificationsService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+            return new NotificationsManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         private async Task<GiftingService> PrepareGiftingServiceAsync(string endpoint)

@@ -241,7 +241,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<IList<MessageSendResult<ulong>>>(HttpMethod.Post, path, this.authKey, Version, message).ConfigureAwait(false);
         }
 
-        public async Task<MessageSendResult<int>> SendGroupNotificationsAsync(int groupId, CommunityMessage message)
+        public async Task<MessageSendResult<int>> SendGroupNotificationsAsync(int groupId, LspGroupCommunityMessage message)
         {
             message.ShouldNotBeNull(nameof(message));
 

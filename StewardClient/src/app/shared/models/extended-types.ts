@@ -11,3 +11,6 @@ export type T10IdString = XuidString | GuidLikeString;
 
 /** For typing Gamertag strings. */
 export type GamertagString = string;
+
+/** For merging extended types. */
+export type Merge<X, Y> = (X | Y) & Partial<X & Y>;

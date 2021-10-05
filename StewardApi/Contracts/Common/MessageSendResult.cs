@@ -1,4 +1,5 @@
-﻿using Turn10.LiveOps.StewardApi.Contracts.Errors;
+﻿using System;
+using Turn10.LiveOps.StewardApi.Contracts.Errors;
 
 namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
@@ -17,6 +18,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
         ///     Gets or sets the gift identifier antecedent.
         /// </summary>
         public GiftIdentityAntecedent IdentityAntecedent { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the notification ID.
+        /// </summary>
+        public Guid NotificationId { get; set; }
 
         /// <summary>
         ///     Gets or sets the error.

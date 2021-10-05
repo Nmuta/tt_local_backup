@@ -7,7 +7,6 @@ using Forza.WebServices.FH4.Generated;
 using AuctionManagementService = Forza.LiveOps.FH4.Generated.AuctionManagementService;
 using ForzaUserBanParameters = Forza.LiveOps.FH4.Generated.ForzaUserBanParameters;
 using GiftingService = Forza.LiveOps.FH4.Generated.GiftingService;
-using NotificationsService = Xls.WebServices.FH4.Generated.NotificationsService;
 using RareCarShopService = Forza.WebServices.FH4.Generated.RareCarShopService;
 using UserInventoryService = Forza.LiveOps.FH4.Generated.UserInventoryService;
 using UserManagementService = Forza.LiveOps.FH4.Generated.UserManagementService;
@@ -151,7 +150,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Retrieves notifications for a user.
         /// </summary>
-        public Task<NotificationsService.LiveOpsRetrieveForUserOutput> LiveOpsRetrieveForUserAsync(
+        public Task<NotificationsManagementService.LiveOpsRetrieveForUserExOutput> LiveOpsRetrieveForUserAsync(
             ulong xuid,
             int maxResults,
             string endpoint);
@@ -159,7 +158,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Sends message to multiple xuids.
         /// </summary>
-        Task<NotificationsService.SendMessageNotificationToMultipleUsersOutput>
+        Task<NotificationsManagementService.SendMessageNotificationToMultipleUsersOutput>
             SendMessageNotificationToMultipleUsersAsync(
                 IList<ulong> xuids,
                 string message,
@@ -169,11 +168,22 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections
         /// <summary>
         ///     Sends group message.
         /// </summary>
-        public Task SendGroupMessageNotificationAsync(
-            int groupId,
-            string message,
-            DateTime expireTimeUtc,
-            string endpoint);
+        public Task<NotificationsManagementService.SendGroupMessageNotificationOutput>
+            SendGroupMessageNotificationAsync(
+                int groupId,
+                string message,
+                DateTime expireTimeUtc,
+                ForzaLiveDeviceType deviceType,
+                string endpoint);
+
+        /// <summary>
+        ///     Retrieves user group messages.
+        /// </summary>
+        public Task<NotificationsManagementService.GetAllUserGroupMessagesOutput>
+            GetUserGroupNotificationAsync(
+                int groupId,
+                int maxResults,
+                string endpoint);
 
         /// <summary>
         ///     Gets supported gift types using the admin endpoint.

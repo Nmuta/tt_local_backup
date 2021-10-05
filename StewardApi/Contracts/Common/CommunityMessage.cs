@@ -5,7 +5,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Common
     /// <summary>
     ///     Represents a message to send.
     /// </summary>
-    public sealed class CommunityMessage
+    public class CommunityMessage
     {
         /// <summary>
         ///     Gets or sets the message.

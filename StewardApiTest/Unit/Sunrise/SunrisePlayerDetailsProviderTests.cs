@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
+using Forza.LiveOps.FH4.Generated;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Turn10.Data.Common;
@@ -13,11 +14,10 @@ using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 using Xls.WebServices.FH4.Generated;
-using Xls.WebServices.NotificationsObjects.FH4.Generated;
+using static Forza.LiveOps.FH4.Generated.NotificationsManagementService;
 using static Forza.LiveOps.FH4.Generated.UserManagementService;
 using static Forza.WebServices.FH4.Generated.LiveOpsService;
 using static Forza.WebServices.FH4.Generated.RareCarShopService;
-using static Xls.WebServices.FH4.Generated.NotificationsService;
 using LiveOpsContracts = Forza.LiveOps.FH4.Generated;
 using WebServicesContracts = Forza.WebServices.FH4.Generated;
 
@@ -502,6 +502,24 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void GetGroupNotificationsAsync_WithValidParameters_ReturnsCorrectType()
+        {
+            // Arrange.
+            var provider = new Dependencies().Build();
+            var groupId = Fixture.Create<int>();
+            var maxResults = Fixture.Create<int>();
+            var endpoint = Fixture.Create<string>();
+
+            // Act.
+            async Task<IList<UserGroupNotification>> Action() => await provider.GetGroupNotificationsAsync(groupId, maxResults, endpoint).ConfigureAwait(false);
+
+            // Assert.
+            Action().Result.Should().BeOfType<List<UserGroupNotification>>();
+            Action().Result.ShouldNotBeNull();
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void SendCommunityMessageAsync_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -546,6 +564,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var groupId = Fixture.Create<int>();
             var expireTime = Fixture.Create<DateTime>();
             var endpoint = Fixture.Create<string>();
+            var deviceType = Fixture.Create<DeviceType>();
 
             // Act.
             var actions = new List<Func<Task>>
@@ -553,9 +572,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 async () => await provider.SendCommunityMessageAsync(xuids, null, expireTime, endpoint).ConfigureAwait(false),
                 async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.Empty, expireTime, endpoint).ConfigureAwait(false),
                 async () => await provider.SendCommunityMessageAsync(xuids, TestConstants.WhiteSpace, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(groupId, null, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.Empty, expireTime, endpoint).ConfigureAwait(false),
-                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.WhiteSpace, expireTime, endpoint).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, null, expireTime, deviceType, endpoint).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.Empty, expireTime, deviceType, endpoint).ConfigureAwait(false),
+                async () => await provider.SendCommunityMessageAsync(groupId, TestConstants.WhiteSpace, expireTime, deviceType, endpoint).ConfigureAwait(false),
             };
 
             // Assert.
@@ -575,8 +594,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var message = Fixture.Create<string>();
             var expireTime = Fixture.Create<DateTime>();
             var endpoint = Fixture.Create<string>();
+            var deviceType = Fixture.Create<DeviceType>();
 
-            async Task<MessageSendResult<int>> Action() => await provider.SendCommunityMessageAsync(groupId, message, expireTime, endpoint).ConfigureAwait(false);
+            async Task<MessageSendResult<int>> Action() => await provider.SendCommunityMessageAsync(groupId, message, expireTime, deviceType, endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<MessageSendResult<int>>();
@@ -584,7 +604,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
 
 
             // Act.
-            Func<Task> action = async () => await provider.SendCommunityMessageAsync(groupId, message, expireTime, endpoint).ConfigureAwait(false);
+            Func<Task> action = async () => await provider.SendCommunityMessageAsync(groupId, message, expireTime, deviceType, endpoint).ConfigureAwait(false);
 
             // Assert.
             action.Should().NotThrow();
@@ -658,11 +678,12 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunriseService.GetProfileSummaryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<GetProfileSummaryOutput>());
                 this.SunriseService.GetProfileNotesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAdminCommentsOutput>());
                 this.SunriseService.GetCreditUpdateEntriesAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetCreditUpdateEntriesOutput>());
-                this.SunriseService.GetUserIds(Arg.Any<LiveOpsContracts.ForzaPlayerLookupParameters[]>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserIdsOutput>());
+                this.SunriseService.GetUserIds(Arg.Any<ForzaPlayerLookupParameters[]>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserIdsOutput>());
                 this.SunriseService.BanUsersAsync(Arg.Any<LiveOpsContracts.ForzaUserBanParameters[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateBanUsersOutput());
                 this.SunriseService.GetUserBanSummariesAsync(Arg.Any<ulong[]>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetUserBanSummariesOutput>());
                 this.SunriseService.GetUserBanHistoryAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(GenerateGetUserBanHistoryOutput());
-                this.SunriseService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsRetrieveForUserOutput>());
+                this.SunriseService.LiveOpsRetrieveForUserAsync(Arg.Any<ulong>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsRetrieveForUserExOutput>());
+                this.SunriseService.GetUserGroupNotificationAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<GetAllUserGroupMessagesOutput>());
                 this.SunriseService.SendMessageNotificationToMultipleUsersAsync(Arg.Any<List<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<SendMessageNotificationToMultipleUsersOutput>());
                 this.SunriseService.GetTokenTransactionsAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<AdminGetTransactionsOutput>());
                 this.SunriseService.GetPlayerAuctions(Arg.Any<LiveOpsContracts.ForzaAuctionFilters>(), Arg.Any<string>()).Returns(Fixture.Create<LiveOpsContracts.AuctionManagementService.SearchAuctionHouseOutput>());
@@ -671,20 +692,21 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper.Map<IList<SharedConsoleUser>>(Arg.Any<LiveOpsContracts.ForzaSharedConsoleUser[]>()).Returns(Fixture.Create<IList<SharedConsoleUser>>());
                 this.Mapper.Map<ProfileSummary>(Arg.Any<WebServicesContracts.ForzaProfileSummary>()).Returns(Fixture.Create<ProfileSummary>());
                 this.Mapper.Map<IList<CreditUpdate>>(Arg.Any<WebServicesContracts.ForzaCreditUpdateEntry[]>()).Returns(Fixture.Create<IList<CreditUpdate>>());
-                this.Mapper.Map<IList<BanResult>>(Arg.Any<LiveOpsContracts.ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
-                this.Mapper.Map<IList<BanSummary>>(Arg.Any<LiveOpsContracts.ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
-                this.Mapper.Map<List<BanDescription>>(Arg.Any<LiveOpsContracts.ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
+                this.Mapper.Map<IList<BanResult>>(Arg.Any<ForzaUserBanResult[]>()).Returns(Fixture.Create<IList<BanResult>>());
+                this.Mapper.Map<IList<BanSummary>>(Arg.Any<ForzaUserBanSummary[]>()).Returns(Fixture.Create<IList<BanSummary>>());
+                this.Mapper.Map<List<BanDescription>>(Arg.Any<ForzaUserBanDescription[]>()).Returns(Fixture.Create<IList<BanDescription>>());
                 this.Mapper.Map<IdentityResultAlpha>(Arg.Any<SunrisePlayerDetails>()).Returns(Fixture.Create<IdentityResultAlpha>());
-                this.Mapper.Map<IList<Notification>>(Arg.Any<LiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
+                this.Mapper.Map<IList<Notification>>(Arg.Any<LiveOpsContracts.LiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
+                this.Mapper.Map<IList<UserGroupNotification>>(Arg.Any<ForzaUserGroupMessage[]>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.Mapper.Map<IList<SunriseProfileNote>>(Arg.Any<LiveOpsContracts.ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<SunriseProfileNote>>());
+                this.Mapper.Map<IList<SunriseProfileNote>>(Arg.Any<ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<SunriseProfileNote>>());
                 this.Mapper.Map<IList<BackstagePassUpdate>>(Arg.Any<WebServicesContracts.RareCarShopTransaction[]>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
                 this.Mapper.Map<LiveOpsContracts.ForzaAuctionFilters>(Arg.Any<AuctionFilters>()).Returns(Fixture.Create<LiveOpsContracts.ForzaAuctionFilters>());
-                this.Mapper.Map<IList<PlayerAuction>>(Arg.Any<LiveOpsContracts.ForzaAuctionWithFileData[]>()).Returns(Fixture.Create<IList<PlayerAuction>>());
+                this.Mapper.Map<IList<PlayerAuction>>(Arg.Any<ForzaAuctionWithFileData[]>()).Returns(Fixture.Create<IList<PlayerAuction>>());
                 this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
                 this.RefreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(Arg.Any<string>()).Returns((IList<BackstagePassUpdate>)null);
-                this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<LiveOpsContracts.ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
-                this.Mapper.Map<IList<SunriseProfileNote>>(Arg.Any<LiveOpsContracts.ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<SunriseProfileNote>>());
+                this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
+                this.Mapper.Map<IList<SunriseProfileNote>>(Arg.Any<ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<SunriseProfileNote>>());
             }
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();

@@ -1658,10 +1658,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendGroupNotifications()
         {
-            var message = new CommunityMessage
+            var message = new LspGroupCommunityMessage
             {
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromDays(1)
+                Duration = TimeSpan.FromDays(1),
+                DeviceType = DeviceType.All,
             };
 
             await stewardClient.SendGroupNotificationsAsync(lspGroupId, message).ConfigureAwait(false);
@@ -1671,10 +1672,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendGroupNotificationsUnauthorized()
         {
-            var message = new CommunityMessage
+            var message = new LspGroupCommunityMessage
             {
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromDays(1)
+                Duration = TimeSpan.FromDays(1),
+                DeviceType = DeviceType.All,
             };
 
             try
@@ -1692,10 +1694,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendGroupNotificationsMessageTooLong()
         {
-            var message = new CommunityMessage
+            var message = new LspGroupCommunityMessage
             {
                 Message = new string('*', 520),
-                Duration = TimeSpan.FromDays(1)
+                Duration = TimeSpan.FromDays(1),
+                DeviceType = DeviceType.All,
             };
 
             try
@@ -1713,10 +1716,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendGroupNotificationsDurationTooShort()
         {
-            var message = new CommunityMessage
+            var message = new LspGroupCommunityMessage
             {
                 Message = "Integration Test Message",
-                Duration = TimeSpan.FromMinutes(5)
+                Duration = TimeSpan.FromMinutes(5),
+                DeviceType = DeviceType.All,
             };
 
             try
@@ -1734,10 +1738,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendGroupNotificationsInvalidGroupId()
         {
-            var message = new CommunityMessage
+            var message = new LspGroupCommunityMessage
             {
                 Message = new string('*', 520),
-                Duration = TimeSpan.FromDays(1)
+                Duration = TimeSpan.FromDays(1),
+                DeviceType = DeviceType.All,
             };
 
             try

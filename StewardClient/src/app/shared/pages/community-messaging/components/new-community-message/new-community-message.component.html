@@ -29,6 +29,15 @@
     >
   </mat-form-field>
 
+  <mat-form-field *ngIf="allowDeviceTypeFilter" appearance="fill" class="device-type">
+    <mat-label>Device Type</mat-label>
+    <mat-select formControlName="deviceType">
+      <mat-option *ngFor="let type of deviceTypes" [value]="type">
+        {{ type }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <button
     mat-raised-button
     color="accent"
