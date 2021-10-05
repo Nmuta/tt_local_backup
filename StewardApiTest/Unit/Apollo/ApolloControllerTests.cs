@@ -812,11 +812,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var startIndex = Fixture.Create<int>();
-            var maxResults = Fixture.Create<int>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGroups().ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -825,38 +823,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
             var details = result.Value as IList<LspGroup>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<LspGroup>>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetGroups_WithNegativeStartIndex_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var startIndex = -1;
-            var maxResults = Fixture.Create<int>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetGroups_WithNegativeMaxResults_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var startIndex = Fixture.Create<int>();
-            var maxResults = -1;
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
         }
 
         [TestMethod]
@@ -1072,7 +1038,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Apollo
                 this.ApolloPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ApolloInventoryProfile>>());
                 this.ApolloPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<ApolloGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.ApolloPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<ApolloGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
-                this.ApolloServiceManagementProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<IList<LspGroup>>());
+                this.ApolloServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(Fixture.Create<IList<LspGroup>>());
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>()).Returns(Fixture.Create<IList<ApolloGiftHistory>>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
             }

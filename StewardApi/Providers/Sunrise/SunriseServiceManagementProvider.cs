@@ -7,6 +7,7 @@ using Forza.LiveOps.FH4.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Sunrise.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
@@ -14,7 +15,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
     /// <inheritdoc />
     public sealed class SunriseServiceManagementProvider : ISunriseServiceManagementProvider
     {
+        private const int GroupLookupMaxResults = 1000;
         private readonly ISunriseService sunriseService;
+        private readonly ILoggingService loggingService;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -22,27 +25,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// </summary>
         public SunriseServiceManagementProvider(
             ISunriseService sunriseService,
+            ILoggingService loggingService,
             IMapper mapper)
         {
             sunriseService.ShouldNotBeNull(nameof(sunriseService));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             mapper.ShouldNotBeNull(nameof(mapper));
 
             this.sunriseService = sunriseService;
+            this.loggingService = loggingService;
             this.mapper = mapper;
         }
 
         /// <inheritdoc />
-        public async Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults, string endpoint)
+        public async Task<IList<LspGroup>> GetLspGroupsAsync(string endpoint)
         {
-            startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
-            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var result = await this.sunriseService.GetUserGroupsAsync(startIndex, maxResults, endpoint)
+                var result = await this.sunriseService.GetUserGroupsAsync(0, GroupLookupMaxResults, endpoint)
                     .ConfigureAwait(false);
                 var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
+
+                if (lspGroups.Count > GroupLookupMaxResults - 50)
+                {
+                    this.loggingService.LogException(new ApproachingLimitAppInsightsException(
+                        $"LSP group lookup for {TitleConstants.SunriseFullName} is nearing the maximum lookup value."));
+                }
 
                 return lspGroups;
             }

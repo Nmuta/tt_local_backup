@@ -835,11 +835,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var startIndex = Fixture.Create<int>();
-            var maxResults = Fixture.Create<int>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGroups().ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -848,38 +846,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
             var details = result.Value as IList<LspGroup>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<LspGroup>>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetGroups_WithNegativeStartIndex_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            const int startIndex = -1;
-            var maxResults = Fixture.Create<int>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetGroups_WithNegativeMaxResults_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var startIndex = Fixture.Create<int>();
-            const int maxResults = -1;
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
         }
 
         [TestMethod]
@@ -1301,7 +1267,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Steelhead
                 this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.SteelheadPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<SteelheadPlayerInventory>());
                 this.SteelheadPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SteelheadInventoryProfile>>());
-                this.SteelheadServiceManagementProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(new List<LspGroup> { new LspGroup { Id = TestConstants.InvalidProfileId, Name = "UnitTesting" } });
+                this.SteelheadServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(new List<LspGroup> { new LspGroup { Id = TestConstants.InvalidProfileId, Name = "UnitTesting" } });
                 this.SteelheadPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SteelheadGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.SteelheadPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SteelheadGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());

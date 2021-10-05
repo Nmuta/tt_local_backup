@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 
@@ -35,6 +36,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenLoggingServiceNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { LoggingService = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "loggingService"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenMapperNull_Throws()
         {
             // Arrange.
@@ -53,49 +68,13 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
         {
             // Arrange.
             var provider = new Dependencies().Build();
-            var startIndex = Fixture.Create<int>();
-            var maxResults = Fixture.Create<int>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<LspGroup>> Action() => await provider.GetLspGroupsAsync(startIndex, maxResults, endpoint).ConfigureAwait(false);
+            async Task<IList<LspGroup>> Action() => await provider.GetLspGroupsAsync(endpoint).ConfigureAwait(false);
 
             // Assert.
             Action().Result.Should().BeOfType<List<LspGroup>>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetLspGroupsAsync_WithNegativeStartIndex_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var startIndex = -1;
-            var maxResults = Fixture.Create<int>();
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetLspGroupsAsync_WithInvalidMaxResults_Throws()
-        {
-            // Arrange.
-            var provider = new Dependencies().Build();
-            var startIndex = Fixture.Create<int>();
-            var maxResults = -1;
-            var endpoint = Fixture.Create<string>();
-
-            // Act.
-            Func<Task<IList<LspGroup>>> action = async () => await provider.GetLspGroupsAsync(startIndex, maxResults, endpoint).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
         }
 
         private sealed class Dependencies
@@ -108,9 +87,11 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
             public IWoodstockService WoodstockService { get; set; } = Substitute.For<IWoodstockService>();
 
+            public ILoggingService LoggingService { get; set; } = Substitute.For<ILoggingService>();
+
             public IMapper Mapper { get; set; } = Substitute.For<IMapper>();
 
-            public WoodstockServiceManagementProvider Build() => new WoodstockServiceManagementProvider(this.WoodstockService, this.Mapper);
+            public WoodstockServiceManagementProvider Build() => new WoodstockServiceManagementProvider(this.WoodstockService, this.LoggingService, this.Mapper);
         }
     }
 }

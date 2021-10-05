@@ -1012,11 +1012,9 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
         {
             // Arrange.
             var controller = new Dependencies().Build();
-            var startIndex = Fixture.Create<int>();
-            var maxResults = Fixture.Create<int>();
 
             // Act.
-            async Task<IActionResult> Action() => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
+            async Task<IActionResult> Action() => await controller.GetGroups().ConfigureAwait(false);
 
             // Assert.
             Action().Should().BeAssignableTo<Task<IActionResult>>();
@@ -1025,38 +1023,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var details = result.Value as IList<LspGroup>;
             details.Should().NotBeNull();
             details.Should().BeOfType<List<LspGroup>>();
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetGroups_WithNegativeStartIndex_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            const int startIndex = -1;
-            var maxResults = Fixture.Create<int>();
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(startIndex), -1, startIndex));
-        }
-
-        [TestMethod]
-        [TestCategory("Unit")]
-        public void GetGroups_WithNegativeMaxResults_Throws()
-        {
-            // Arrange.
-            var controller = new Dependencies().Build();
-            var startIndex = Fixture.Create<int>();
-            const int maxResults = -1;
-
-            // Act.
-            Func<Task<IActionResult>> action = async () => await controller.GetGroups(startIndex, maxResults).ConfigureAwait(false);
-
-            // Assert.
-            action.Should().Throw<ArgumentOutOfRangeException>().WithMessage(string.Format(TestConstants.ArgumentOutOfRangeExceptionMessagePartial, nameof(maxResults), 0, maxResults));
         }
 
         [TestMethod]
@@ -1819,7 +1785,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<SunrisePlayerInventory>());
                 this.SunrisePlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<SunriseInventoryProfile>>());
-                this.SunriseServiceManagementProvider.GetLspGroupsAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
+                this.SunriseServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
                 this.SunrisePlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<SunriseGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
                 this.SunrisePlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<SunriseGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
                 this.SunrisePlayerDetailsProvider.SendCommunityMessageAsync(Arg.Any<IList<ulong>>(), Arg.Any<string>(), Arg.Any<DateTime>(), Arg.Any<string>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());

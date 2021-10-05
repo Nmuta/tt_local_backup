@@ -7,6 +7,7 @@ using Forza.LiveOps.FH5.Generated;
 using Turn10.Data.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
 using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
+using Turn10.LiveOps.StewardApi.Logging;
 using Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections;
 
 namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
@@ -14,7 +15,9 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
     /// <inheritdoc />
     public sealed class WoodstockServiceManagementProvider : IWoodstockServiceManagementProvider
     {
+        private const int GroupLookupMaxResults = 1000;
         private readonly IWoodstockService woodstockService;
+        private readonly ILoggingService loggingService;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -22,27 +25,34 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
         /// </summary>
         public WoodstockServiceManagementProvider(
             IWoodstockService woodstockService,
+            ILoggingService loggingService,
             IMapper mapper)
         {
             woodstockService.ShouldNotBeNull(nameof(woodstockService));
+            loggingService.ShouldNotBeNull(nameof(loggingService));
             mapper.ShouldNotBeNull(nameof(mapper));
 
             this.woodstockService = woodstockService;
+            this.loggingService = loggingService;
             this.mapper = mapper;
         }
 
         /// <inheritdoc />
-        public async Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults, string endpoint)
+        public async Task<IList<LspGroup>> GetLspGroupsAsync(string endpoint)
         {
-            startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
-            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
             try
             {
-                var result = await this.woodstockService.GetUserGroupsAsync(startIndex, maxResults, endpoint)
+                var result = await this.woodstockService.GetUserGroupsAsync(0, GroupLookupMaxResults, endpoint)
                     .ConfigureAwait(false);
                 var lspGroups = this.mapper.Map<IList<LspGroup>>(result.userGroups);
+
+                if (lspGroups.Count > GroupLookupMaxResults - 50)
+                {
+                    this.loggingService.LogException(new ApproachingLimitAppInsightsException(
+                        $"LSP group lookup for {TitleConstants.WoodstockFullName} is nearing the maximum lookup value."));
+                }
 
                 return lspGroups;
             }

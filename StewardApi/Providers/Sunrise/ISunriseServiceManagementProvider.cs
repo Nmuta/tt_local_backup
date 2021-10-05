@@ -14,7 +14,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Gets LSP groups.
         /// </summary>
-        Task<IList<LspGroup>> GetLspGroupsAsync(int startIndex, int maxResults, string endpoint);
+        Task<IList<LspGroup>> GetLspGroupsAsync(string endpoint);
 
         /// <summary>
         ///     Gets auction house blocklist.

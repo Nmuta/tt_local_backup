@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.ApplicationInsights;
 using Turn10.Data.Common;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
 namespace Turn10.LiveOps.StewardApi.Logging
 {
@@ -21,7 +22,7 @@ namespace Turn10.LiveOps.StewardApi.Logging
         }
 
         /// <inheritdoc />
-        public void LogException(Exception ex)
+        public void LogException(AppInsightsException ex)
         {
             this.telemetryClient.TrackException(ex);
         }

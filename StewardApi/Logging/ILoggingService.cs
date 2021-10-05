@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Turn10.LiveOps.StewardApi.Contracts.Exceptions;
 
 namespace Turn10.LiveOps.StewardApi.Logging
 {
@@ -16,6 +17,6 @@ namespace Turn10.LiveOps.StewardApi.Logging
         /// <summary>
         ///     Logs an exception to application insights.
         /// </summary>
-        void LogException(Exception ex);
+        void LogException(AppInsightsException ex);
     }
 }

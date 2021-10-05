@@ -657,17 +657,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("groups")]
         [SwaggerResponse(200, type: typeof(IList<LspGroup>))]
-        public async Task<IActionResult> GetGroups(
-            [FromQuery] int startIndex = DefaultStartIndex,
-            [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetGroups()
         {
-            startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
-            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
-
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
             var result = await this.woodstockServiceManagementProvider.GetLspGroupsAsync(
-                startIndex,
-                maxResults,
                 endpoint).ConfigureAwait(true);
 
             return this.Ok(result);
@@ -1120,8 +1113,6 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
 
             var groups = await this.woodstockServiceManagementProvider.GetLspGroupsAsync(
-                DefaultStartIndex,
-                DefaultMaxResults,
                 endpoint).ConfigureAwait(false);
             if (!groups.Any(x => x.Id == groupId))
             {

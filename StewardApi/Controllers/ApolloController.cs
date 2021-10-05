@@ -447,15 +447,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// </summary>
         [HttpGet("groups")]
         [SwaggerResponse(200, type: typeof(IList<LspGroup>))]
-        public async Task<IActionResult> GetGroups(
-            [FromQuery] int startIndex = DefaultStartIndex,
-            [FromQuery] int maxResults = DefaultMaxResults)
+        public async Task<IActionResult> GetGroups()
         {
-            startIndex.ShouldBeGreaterThanValue(-1, nameof(startIndex));
-            maxResults.ShouldBeGreaterThanValue(0, nameof(maxResults));
-
             var endpoint = this.GetApolloEndpoint(this.Request.Headers);
-            var result = await this.apolloServiceManagementProvider.GetLspGroupsAsync(startIndex, maxResults, endpoint)
+            var result = await this.apolloServiceManagementProvider.GetLspGroupsAsync(endpoint)
                 .ConfigureAwait(true);
 
             return this.Ok(result);
