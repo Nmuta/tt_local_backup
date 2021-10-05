@@ -478,6 +478,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets backstage pass updates.
         /// </summary>
+        [NonAction] // TODO: Remove when ready (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/888818)
         [HttpGet("player/xuid({xuid})/backstagePassUpdates")]
         [SwaggerResponse(200, type: typeof(List<BackstagePassUpdate>))]
         public async Task<IActionResult> GetBackstagePassUpdates(
@@ -757,6 +758,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         /// <summary>
         ///     Gets the account inventory.
         /// </summary>
+        [NonAction] // TODO: Remove when ready (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/888818)
         [HttpGet("player/xuid({xuid})/accountInventory")]
         [SwaggerResponse(200, type: typeof(WoodstockAccountInventory))]
         [SwaggerResponse(200)]

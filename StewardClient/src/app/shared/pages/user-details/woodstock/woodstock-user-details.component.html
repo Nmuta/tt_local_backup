@@ -15,9 +15,10 @@
       <mat-tab label="Deep Dive">
         <div class="tab-container">
           <woodstock-overview [identity]="identity"></woodstock-overview>
-          <woodstock-backstage-pass-history
+          <!-- TODO: Remove when ready (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/888818) -->
+          <!-- <woodstock-backstage-pass-history
             [identity]="identity"
-          ></woodstock-backstage-pass-history>
+          ></woodstock-backstage-pass-history> -->
           <woodstock-credit-history [identity]="identity"></woodstock-credit-history>
         </div>
       </mat-tab>
@@ -29,9 +30,10 @@
               <mat-card-subtitle>Woodstock</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-              <woodstock-player-account-inventory
+              <!-- TODO: Remove when ready (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/888818) -->
+              <!-- <woodstock-player-account-inventory
                 [identity]="identity"
-              ></woodstock-player-account-inventory>
+              ></woodstock-player-account-inventory> -->
               <woodstock-player-inventory-profile-picker
                 [identity]="identity"
                 [(profileId)]="profileId"

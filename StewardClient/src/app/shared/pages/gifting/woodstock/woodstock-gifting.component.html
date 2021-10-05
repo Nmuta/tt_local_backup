@@ -39,9 +39,10 @@
         </mat-card-header>
         <mat-card-content>
           <ng-container *ngIf="selectedPlayerIdentity; else selectPlayerExplanation">
-            <woodstock-player-account-inventory
+            <!-- TODO: Remove when ready (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/888818) -->
+            <!-- <woodstock-player-account-inventory
               [identity]="selectedPlayerIdentity"
-            ></woodstock-player-account-inventory>
+            ></woodstock-player-account-inventory> -->
 
             <woodstock-player-inventory-profile-picker
               [identity]="selectedPlayerIdentity"
