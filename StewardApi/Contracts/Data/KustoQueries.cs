@@ -69,7 +69,7 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         ///     Basic query for getting the details FH5 Car data.
         /// </summary>
         public const string GetFH5CarsDetailed =
-            "FH5_DataCars | join kind = leftouter(FH5_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id, MakeID, Make = MakeDisplayName, Model = DisplayName";
+            "FH5_DataCars | join kind = leftouter(FH5_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, MakeID, Make = MakeDisplayName, Model = DisplayName";
 
         /// <summary>
         ///     Basic query for getting the details FM8 Car data.
@@ -121,28 +121,27 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Data
         ///     Basic query for getting the FH5 Car data.
         /// </summary>
         public const string GetFH5Cars =
-            "FH5_DataCars | join kind = leftouter(FH5_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id, Description = strcat_delim(' ', MakeDisplayName, DisplayName, strcat(\"(\", Year, \")\"))";
+            "FH5_DataCars | join kind = leftouter(FH5_ListCarMake | project MakeDisplayName = DisplayName, MakeID = ID) on MakeID | project Id = CarId, Description = strcat_delim(' ', MakeDisplayName, DisplayName, strcat(\"(\", Year, \")\"))";
 
         /// <summary>
         ///     Basic query for getting the FH5 CarHorn data.
         /// </summary>
-        public const string GetFH5CarHorns = "FH5_CarHorns | project Id=['id'], column_ifexists('DisplayNameEnglish', column_ifexists('DisplayName', ''))";
+        public const string GetFH5CarHorns = "FH5_CarHorns | project Id=['id'], column_ifexists('DisplayNameEnglish', '')";
 
-        //// <summary>
-        ////     Basic query for getting the FH5 VanityItem data.
-        //// </summary>
-        //// TODO: Uncomment when FH5 vanity table exists (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/871391)
-        //// public const string GetFH5VanityItems = "FH5_VanityItems | project Id=['id'], DisplayNameEnglish=coalesce(DisplayNameEnglish, ItemID)";
+        /// <summary>
+        ///     Basic query for getting the FH5 VanityItem data.
+        /// </summary>
+        public const string GetFH5VanityItems = "FH5_VanityItems | project Id=['id'], DisplayNameEnglish=coalesce(DisplayNameEnglish, ItemID)";
 
         /// <summary>
         ///     Basic query for getting the FH5 Emote data.
         /// </summary>
-        public const string GetFH5Emotes = "FH5_EmoteData | project Id=['id'], column_ifexists('NameEnglish', column_ifexists('Name', ''))";
+        public const string GetFH5Emotes = "FH5_EmoteData | project Id=['id'], column_ifexists('NameEnglish', '')";
 
         /// <summary>
         ///     Basic query for getting the FH5 QuickChatLine data.
         /// </summary>
-        public const string GetFH5QuickChatLines = "FH5_QuickChatData | project Id=['id'], column_ifexists('ChatMessageEnglish', column_ifexists('ChatMessage', ''))";
+        public const string GetFH5QuickChatLines = "FH5_QuickChatData | project Id=['id'], column_ifexists('ChatMessageEnglish', '')";
 
         /// <summary>
         ///     Allowed queries to get detailed car lists from Kusto.

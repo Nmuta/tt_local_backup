@@ -1182,12 +1182,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var cars = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5Cars);
             var carHorns = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5CarHorns);
-            //// TODO: Uncomment when FH5 vanity table exists (https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/871391)
-            //// var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5VanityItems);
+            var vanityItems = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5VanityItems);
             var emotes = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5Emotes);
             var quickChatLines = this.kustoProvider.GetMasterInventoryList(KustoQueries.GetFH5QuickChatLines);
 
-            await Task.WhenAll(cars, carHorns, /* vanityItems, */ emotes, quickChatLines).ConfigureAwait(true);
+            await Task.WhenAll(cars, carHorns, vanityItems, emotes, quickChatLines).ConfigureAwait(true);
 
             var masterInventory = new WoodstockMasterInventory
             {
@@ -1198,12 +1197,11 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                     new MasterInventoryItem { Id = -1, Description = "SkillPoints" },
                     new MasterInventoryItem { Id = -1, Description = "WheelSpins" },
                     new MasterInventoryItem { Id = -1, Description = "SuperWheelSpins" },
-                    // new MasterInventoryItem { Id = -1, Description = "BackstagePasses" }
+                    //// new MasterInventoryItem { Id = -1, Description = "BackstagePasses" }
                 },
                 Cars = await cars.ConfigureAwait(true),
                 CarHorns = await carHorns.ConfigureAwait(true),
-                // VanityItems = await vanityItems.ConfigureAwait(true),
-                VanityItems = new List<MasterInventoryItem>(),
+                VanityItems = await vanityItems.ConfigureAwait(true),
                 Emotes = await emotes.ConfigureAwait(true),
                 QuickChatLines = await quickChatLines.ConfigureAwait(true),
             };
