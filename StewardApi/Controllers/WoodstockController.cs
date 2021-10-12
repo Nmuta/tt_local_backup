@@ -59,6 +59,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         private readonly IWoodstockServiceManagementProvider woodstockServiceManagementProvider;
         private readonly IWoodstockGiftHistoryProvider giftHistoryProvider;
         private readonly IWoodstockBanHistoryProvider banHistoryProvider;
+        private readonly IWoodstockStorefrontProvider storefrontProvider;
         private readonly IJobTracker jobTracker;
         private readonly IMapper mapper;
         private readonly IScheduler scheduler;
@@ -81,6 +82,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             IKeyVaultProvider keyVaultProvider,
             IWoodstockGiftHistoryProvider giftHistoryProvider,
             IWoodstockBanHistoryProvider banHistoryProvider,
+            IWoodstockStorefrontProvider storefrontProvider,
             IConfiguration configuration,
             IScheduler scheduler,
             IJobTracker jobTracker,
@@ -100,6 +102,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             keyVaultProvider.ShouldNotBeNull(nameof(keyVaultProvider));
             giftHistoryProvider.ShouldNotBeNull(nameof(giftHistoryProvider));
             banHistoryProvider.ShouldNotBeNull(nameof(banHistoryProvider));
+            storefrontProvider.ShouldNotBeNull(nameof(storefrontProvider));
             configuration.ShouldNotBeNull(nameof(configuration));
             scheduler.ShouldNotBeNull(nameof(scheduler));
             jobTracker.ShouldNotBeNull(nameof(jobTracker));
@@ -119,6 +122,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
             this.woodstockServiceManagementProvider = woodstockServiceManagementProvider;
             this.giftHistoryProvider = giftHistoryProvider;
             this.banHistoryProvider = banHistoryProvider;
+            this.storefrontProvider = storefrontProvider;
             this.scheduler = scheduler;
             this.jobTracker = jobTracker;
             this.mapper = mapper;
@@ -471,6 +475,179 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         {
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
             await this.woodstockServiceManagementProvider.DeleteAuctionBlocklistEntriesAsync(new List<int> { carId }, endpoint).ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
+        ///     Gets player UGC items.
+        /// </summary>
+        [HttpGet("storefront/xuid({xuid})")]
+        [SwaggerResponse(200, type: typeof(IList<UGCItem>))]
+        public async Task<IActionResult> GetUGCItems(ulong xuid, [FromQuery] string ugcType = "Unknown")
+        {
+            ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
+
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            if (!Enum.TryParse(ugcType, out UGCType typeEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCType)} provided: {ugcType}");
+            }
+
+            var getUgcItems = this.storefrontProvider.SearchUGCItems(
+                typeEnum,
+                new UGCFilters(xuid, null),
+                endpoint);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed);
+
+            await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
+
+            var ugCItems = getUgcItems.Result;
+            var kustoCars = getKustoCars.Result;
+
+            foreach (var item in ugCItems)
+            {
+                var carData = kustoCars.FirstOrDefault(car => car.Id == item.CarId);
+                item.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+            }
+
+            return this.Ok(ugCItems);
+        }
+
+        /// <summary>
+        ///     Gets UGC item by share code.
+        /// </summary>
+        [HttpGet("storefront/shareCode({shareCode})")]
+        [SwaggerResponse(200, type: typeof(IList<UGCItem>))]
+        public async Task<IActionResult> GetUGCItems(string shareCode, [FromQuery] string ugcType = "Unknown")
+        {
+            ugcType.ShouldNotBeNullEmptyOrWhiteSpace(nameof(ugcType));
+
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            if (!Enum.TryParse(ugcType, out UGCType typeEnum))
+            {
+                throw new InvalidArgumentsStewardException($"Invalid {nameof(UGCType)} provided: {ugcType}");
+            }
+
+            var getUgcItems = this.storefrontProvider.SearchUGCItems(
+                typeEnum,
+                new UGCFilters(ulong.MaxValue, shareCode),
+                endpoint);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed);
+
+            await Task.WhenAll(getUgcItems, getKustoCars).ConfigureAwait(true);
+
+            var ugCItems = getUgcItems.Result;
+            var kustoCars = getKustoCars.Result;
+
+            foreach (var item in ugCItems)
+            {
+                var carData = kustoCars.FirstOrDefault(car => car.Id == item.CarId);
+                item.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+            }
+
+            return this.Ok(ugCItems);
+        }
+
+        /// <summary>
+        ///     Gets a UGC livery by ID.
+        /// </summary>
+        [HttpGet("storefront/livery({id})")]
+        [SwaggerResponse(200, type: typeof(UGCItem))]
+        public async Task<IActionResult> GetUGCLivery(Guid id)
+        {
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+
+            var getLivery = this.storefrontProvider.GetUGCLivery(id, endpoint);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed);
+
+            await Task.WhenAll(getLivery, getKustoCars).ConfigureAwait(true);
+
+            var livery = getLivery.Result;
+            var kustoCars = getKustoCars.Result;
+
+            var carData = kustoCars.FirstOrDefault(car => car.Id == livery.CarId);
+            livery.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+
+            return this.Ok(livery);
+        }
+
+        /// <summary>
+        ///     Gets a UGC photo by ID.
+        /// </summary>
+        [HttpGet("storefront/photo({id})")]
+        [SwaggerResponse(200, type: typeof(UGCItem))]
+        public async Task<IActionResult> GetUGCPhoto(Guid id)
+        {
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+
+            var getPhoto = this.storefrontProvider.GetUGCPhoto(id, endpoint);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed);
+
+            await Task.WhenAll(getPhoto, getKustoCars).ConfigureAwait(true);
+
+            var photo = getPhoto.Result;
+            var kustoCars = getKustoCars.Result;
+
+            var carData = kustoCars.FirstOrDefault(car => car.Id == photo.CarId);
+            photo.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+
+            return this.Ok(photo);
+        }
+
+        /// <summary>
+        ///     Gets a UGC photo by ID.
+        /// </summary>
+        [HttpGet("storefront/tune({id})")]
+        [SwaggerResponse(200, type: typeof(UGCItem))]
+        public async Task<IActionResult> GetUGCTune(Guid id)
+        {
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+
+            var getTune = this.storefrontProvider.GetUGCTune(id, endpoint);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed);
+
+            await Task.WhenAll(getTune, getKustoCars).ConfigureAwait(true);
+
+            var tune = getTune.Result;
+            var kustoCars = getKustoCars.Result;
+
+            var carData = kustoCars.FirstOrDefault(car => car.Id == tune.CarId);
+            tune.CarDescription = carData != null ? $"{carData.Make} {carData.Model}" : string.Empty;
+
+            return this.Ok(tune);
+        }
+
+        /// <summary>
+        ///     Sets featured status of a UGC content item.
+        /// </summary>
+        [HttpPost("storefront/itemId({itemId})/featuredStatus")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> SetUGCFeaturedStatus(
+            string itemId,
+            [FromBody] UGCFeaturedStatus status)
+        {
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            if (!Guid.TryParse(itemId, out var itemIdGuid))
+            {
+                throw new InvalidArgumentsStewardException($"UGC item id provided is not a valid Guid: {itemId}");
+            }
+
+            if (status.IsFeatured && !status.Expiry.HasValue)
+            {
+                throw new InvalidArgumentsStewardException($"Required query param is missing: {nameof(status.Expiry)}");
+            }
+
+            if (status.IsFeatured && status.Expiry.HasValue)
+            {
+                status.Expiry.Value.ShouldBeOverMinimumDuration(TimeSpan.FromDays(1), nameof(status.Expiry));
+            }
+
+            await this.storefrontProvider.SetUGCFeaturedStatus(
+                itemIdGuid,
+                status.IsFeatured,
+                status.Expiry,
+                endpoint).ConfigureAwait(true);
 
             return this.Ok();
         }

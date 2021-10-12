@@ -429,6 +429,60 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             await auctionService.DeleteAuctionBlocklistEntries(carIds).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.SearchUGCOutput> SearchUgcLiveries(
+            ForzaUGCSearchRequest filters,
+            ForzaUGCContentType contentType,
+            string endpoint)
+        {
+            var storefrontService = await this.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await storefrontService.SearchUGC(filters, contentType, false, 1_000).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLivery(
+            Guid liveryId,
+            string endpoint)
+        {
+            var storefrontService = await this.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await storefrontService.GetUGCLivery(liveryId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhoto(
+            Guid photoId,
+            string endpoint)
+        {
+            var storefrontService = await this.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await storefrontService.GetUGCPhoto(photoId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTune(
+            Guid tuneId,
+            string endpoint)
+        {
+            var storefrontService = await this.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await storefrontService.GetUGCTune(tuneId).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task SetUGCFeaturedStatus(
+            Guid contentId,
+            bool isFeatured,
+            DateTime featureEndDate,
+            string endpoint)
+        {
+            var storefrontService = await this.PrepareStorefrontManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            // NOTE: User scenario for setting featured state always uses the same DateTime for featureEndDate & forceFeatureEndDate
+            await storefrontService.SetFeatured(contentId, isFeatured, featureEndDate, featureEndDate).ConfigureAwait(false);
+        }
+
         private async Task<UserManagementService> PrepareUserManagementServiceAsync(string endpoint)
         {
             var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
@@ -492,6 +546,14 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
                             ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
 
             return new AuctionManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
+        }
+
+        private async Task<StorefrontManagementService> PrepareStorefrontManagementServiceAsync(string endpoint)
+        {
+            var authToken = this.refreshableCacheStore.GetItem<string>(WoodstockCacheKey.MakeAuthTokenKey())
+                            ?? await this.GetAuthTokenAsync().ConfigureAwait(false);
+
+            return new StorefrontManagementService(this.forzaClient, endpoint, this.adminXuid, authToken, false);
         }
 
         private async Task<string> GetAuthTokenAsync()

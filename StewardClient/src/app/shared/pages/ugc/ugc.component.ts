@@ -10,6 +10,10 @@ import { GameTitleCodeName } from '@models/enums';
 export class UGCComponent implements OnInit {
   public navbarRouterLinks = [
     {
+      name: GameTitleCodeName.FH5,
+      route: ['.', GameTitleCodeName.FH5.toLowerCase()],
+    },
+    {
       name: GameTitleCodeName.FH4,
       route: ['.', GameTitleCodeName.FH4.toLowerCase()],
     },
@@ -22,10 +26,6 @@ export class UGCComponent implements OnInit {
       this.navbarRouterLinks.unshift({
         name: GameTitleCodeName.FM8,
         route: ['.', GameTitleCodeName.FM8.toLowerCase()],
-      });
-      this.navbarRouterLinks.unshift({
-        name: GameTitleCodeName.FH5,
-        route: ['.', GameTitleCodeName.FH5.toLowerCase()],
       });
     }
   }

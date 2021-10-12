@@ -239,5 +239,43 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
         ///     Removes an entry from the auction house block list.
         /// </summary>
         Task DeleteAuctionBlocklistEntries(int[] carIds, string endpoint);
+
+        /// <summary>
+        ///     Search player UGC content.
+        /// </summary>
+        Task<StorefrontManagementService.SearchUGCOutput> SearchUgcLiveries(
+            ForzaUGCSearchRequest filters,
+            ForzaUGCContentType contentType,
+            string endpoint);
+
+        /// <summary>
+        ///     Get a player livery.
+        /// </summary>
+        Task<StorefrontManagementService.GetUGCLiveryOutput> GetPlayerLivery(
+            Guid liveryId,
+            string endpoint);
+
+        /// <summary>
+        ///     Get a player photo.
+        /// </summary>
+        Task<StorefrontManagementService.GetUGCPhotoOutput> GetPlayerPhoto(
+            Guid photoId,
+            string endpoint);
+
+        /// <summary>
+        ///     Get a player tune.
+        /// </summary>
+        Task<StorefrontManagementService.GetUGCTuneOutput> GetPlayerTune(
+            Guid tuneId,
+            string endpoint);
+
+        /// <summary>
+        ///     Sets featured state of a UGC content item.
+        /// </summary>
+        Task SetUGCFeaturedStatus(
+            Guid contentId,
+            bool isFeatured,
+            DateTime featureEndDate,
+            string endpoint);
     }
 }

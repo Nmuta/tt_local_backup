@@ -148,6 +148,20 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
+        public void Ctor_WhenStorefrontProviderNull_Throws()
+        {
+            // Arrange.
+            var dependencies = new Dependencies { StorefrontProvider = null };
+
+            // Act.
+            Action act = () => dependencies.Build();
+
+            // Assert.
+            act.Should().Throw<ArgumentNullException>().WithMessage(string.Format(TestConstants.ArgumentNullExceptionMessagePartial, "storefrontProvider"));
+        }
+
+        [TestMethod]
+        [TestCategory("Unit")]
         public void Ctor_WhenConfigurationNull_Throws()
         {
             // Arrange.
@@ -1402,9 +1416,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.WoodstockPlayerInventoryProvider.GetPlayerInventoryAsync(Arg.Any<int>(), Arg.Any<string>()).Returns(Fixture.Create<WoodstockPlayerInventory>());
                 this.WoodstockPlayerInventoryProvider.GetInventoryProfilesAsync(Arg.Any<ulong>(), Arg.Any<string>()).Returns(Fixture.Create<IList<WoodstockInventoryProfile>>());
                 this.WoodstockServiceManagementProvider.GetLspGroupsAsync(Arg.Any<string>()).Returns(new List<LspGroup>{ new LspGroup{Id = TestConstants.InvalidProfileId, Name = "UnitTesting"} });
-                this.WoodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<WoodstockGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>()); ;
+                this.WoodstockPlayerInventoryProvider.UpdateGroupInventoriesAsync(Arg.Any<int>(), Arg.Any<WoodstockGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<GiftResponse<int>>());
                 this.WoodstockPlayerInventoryProvider.UpdatePlayerInventoriesAsync(Arg.Any<WoodstockGroupGift>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<string>()).Returns(Fixture.Create<IList<GiftResponse<ulong>>>());
-               this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
+                this.StorefrontProvider.SearchUGCItems(Arg.Any<UGCType>(), Arg.Any<UGCFilters>(), Arg.Any<string>()).Returns(Fixture.Create<IList<UGCItem>>());
+                this.StorefrontProvider.GetUGCLivery(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UGCItem>());
+                this.StorefrontProvider.GetUGCPhoto(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UGCItem>());
+                this.StorefrontProvider.GetUGCTune(Arg.Any<Guid>(), Arg.Any<string>()).Returns(Fixture.Create<UGCItem>());
+                this.StorefrontProvider.SetUGCFeaturedStatus(Arg.Any<Guid>(), Arg.Any<bool>(), Arg.Any<TimeSpan>(), Arg.Any<string>());
+                this.JobTracker.CreateNewJobAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Fixture.Create<string>());
                 this.KeyVaultProvider.GetSecretAsync(Arg.Any<string>(), Arg.Any<string>()).Returns(TestConstants.GetSecretResult);
                 this.GiftHistoryProvider.GetGiftHistoriesAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<GiftIdentityAntecedent>(), Arg.Any<string>()).Returns(Fixture.Create<IList<WoodstockGiftHistory>>());
             }
@@ -1423,6 +1442,8 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
             public IWoodstockGiftHistoryProvider GiftHistoryProvider { get; set; } = Substitute.For<IWoodstockGiftHistoryProvider>();
 
             public IWoodstockBanHistoryProvider BanHistoryProvider { get; set; } = Substitute.For<IWoodstockBanHistoryProvider>();
+
+            public IWoodstockStorefrontProvider StorefrontProvider { get; set; } = Substitute.For<IWoodstockStorefrontProvider>();
 
             public IConfiguration Configuration { get; set; } = Substitute.For<IConfiguration>();
 
@@ -1456,6 +1477,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
                 this.KeyVaultProvider,
                 this.GiftHistoryProvider,
                 this.BanHistoryProvider,
+                this.StorefrontProvider,
                 this.Configuration,
                 this.Scheduler,
                 this.JobTracker,

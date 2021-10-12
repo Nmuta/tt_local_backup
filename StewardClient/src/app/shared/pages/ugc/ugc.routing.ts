@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserRole } from '@models/enums';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
-import { FindUserRoleGuard } from 'app/route-guards/user-role.guards';
 import { SunriseUGCComponent } from './pages/sunrise/sunrise-ugc.component';
 import { WoodstockUGCComponent } from './pages/woodstock/woodstock-ugc.component';
 import { UGCComponent } from './ugc.component';
@@ -21,10 +19,7 @@ const routes: Routes = [
       },
       {
         path: 'woodstock',
-        canActivate: [
-          TitleMemorySetGuard,
-          FindUserRoleGuard([UserRole.LiveOpsAdmin]), // TODO: Remove FindUserRoleGuard when Woodstock is ready
-        ],
+        canActivate: [TitleMemorySetGuard],
         component: WoodstockUGCComponent,
         pathMatch: 'full',
       },
