@@ -23,6 +23,7 @@ import { WoodstockPlayerXuidBackstagePassHistoryFakeApi } from '@interceptors/fa
 import { WoodstockPlayerXuidAccountInventoryFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/accountInventory';
 import { WoodstockPlayerXuidUGCFakeApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/ugc';
 import { WoodstockKustoCarsFakeApi } from '@interceptors/fake-api/apis/title/woodstock/kusto/cars';
+import { WoodstockPlayerXuidProfileNotesApi } from '@interceptors/fake-api/apis/title/woodstock/player/xuid/profileNotes';
 
 /** Defines the mock for the API Service. */
 export class MockWoodstockService {
@@ -174,6 +175,11 @@ export class MockWoodstockService {
     .createSpy('getDetailedKustoCars')
     .and.callFake(() =>
       this.waitUntil$.pipe(switchMap(() => of(WoodstockKustoCarsFakeApi.make()))),
+    );
+  public getProfileNotesXuid$ = jasmine
+    .createSpy('getProfileNotesXuid')
+    .and.callFake(() =>
+      this.waitUntil$.pipe(switchMap(() => of(WoodstockPlayerXuidProfileNotesApi.makeMany()))),
     );
 
   constructor(private readonly generator$: () => unknown) {}

@@ -250,21 +250,21 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return await ServiceClient.SendRequestAsync<MessageSendResult<int>>(HttpMethod.Post, path, this.authKey, Version, message).ConfigureAwait(false);
         }
 
-        public async Task<IList<SunriseProfileNote>> GetProfileNotesAsync(ulong xuid)
+        public async Task<IList<ProfileNote>> GetProfileNotesAsync(ulong xuid)
         {
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/profileNotes");
 
-            return await ServiceClient.SendRequestAsync<IList<SunriseProfileNote>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<ProfileNote>>(HttpMethod.Get, path, this.authKey, Version).ConfigureAwait(false);
         }
 
 
-        public async Task<IList<SunriseProfileNote>> SendProfileNotesAsync(ulong xuid, SunriseProfileNote message)
+        public async Task<IList<ProfileNote>> SendProfileNotesAsync(ulong xuid, ProfileNote message)
         {
             message.ShouldNotBeNull(nameof(message));
 
             var path = new Uri(this.baseUri, $"{TitlePath}player/xuid({xuid})/profileNotes");
 
-            return await ServiceClient.SendRequestAsync<IList<SunriseProfileNote>>(HttpMethod.Post, path, this.authKey, Version, message).ConfigureAwait(false);
+            return await ServiceClient.SendRequestAsync<IList<ProfileNote>>(HttpMethod.Post, path, this.authKey, Version, message).ConfigureAwait(false);
         }
 
         public async Task<IList<PlayerAuction>> GetPlayerAuctionsAsync(ulong xuid, short carId, short makeId, string status, string sort)

@@ -91,12 +91,12 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         /// <summary>
         ///     Gets profile notes.
         /// </summary>
-        Task<IList<SunriseProfileNote>> GetProfileNotesAsync(ulong xuid, string endpoint);
+        Task<IList<ProfileNote>> GetProfileNotesAsync(ulong xuid, string endpoint);
 
         /// <summary>
         ///     Adds a profile note.
         /// </summary>
-        Task AddProfileNoteAsync(ulong xuid, SunriseProfileNote note, string endpoint);
+        Task AddProfileNoteAsync(ulong xuid, ProfileNote note, string endpoint);
 
         /// <summary>
         ///     Bans users.

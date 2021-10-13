@@ -87,6 +87,7 @@ import { SunrisePlayerXuidAccountInventoryFakeApi } from './apis/title/sunrise/p
 
 import { WoodstockPlayerXuidBackstagePassHistoryFakeApi } from './apis/title/woodstock/player/xuid/backstagePassHistory';
 import { WoodstockPlayerXuidAccountInventoryFakeApi } from './apis/title/woodstock/player/xuid/accountInventory';
+import { WoodstockPlayerXuidProfileNotesApi } from './apis/title/woodstock/player/xuid/profileNotes';
 
 import { LoggerService, LogTopic } from '@services/logger';
 import { JobsGetJobFakeApi } from './apis/title/jobs/jobId';
@@ -101,6 +102,7 @@ const fakeApiConstructors = [
   // Woodstock
   WoodstockPlayerXuidBackstagePassHistoryFakeApi,
   WoodstockPlayerXuidAccountInventoryFakeApi,
+  WoodstockPlayerXuidProfileNotesApi,
 
   // Gravity
   GravityPlayerGamertagDetailsFakeApi,

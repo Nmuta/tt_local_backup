@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
+namespace Turn10.LiveOps.StewardApi.Contracts.Common
 {
     /// <summary>
     ///     Represents a Sunrise profile rollback.
     /// </summary>
-    public sealed class SunriseProfileNote
+    public sealed class ProfileNote
     {
         /// <summary>
         ///     Gets or sets the date.

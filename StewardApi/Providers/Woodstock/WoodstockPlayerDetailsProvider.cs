@@ -213,6 +213,41 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             }
         }
 
+        /// <inheritdoc />
+        public async Task<IList<ProfileNote>> GetProfileNotesAsync(ulong xuid, string endpoint)
+        {
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                var response = await this.woodstockService.GetProfileNotesAsync(xuid, 100, endpoint)
+                    .ConfigureAwait(false);
+
+                return this.mapper.Map<IList<ProfileNote>>(response.adminComments);
+            }
+            catch (Exception ex)
+            {
+                throw new NotFoundStewardException($"No profile notes found for XUID: {xuid}.", ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task AddProfileNoteAsync(ulong xuid, ProfileNote note, string endpoint)
+        {
+            note.ShouldNotBeNull(nameof(note));
+            endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
+
+            try
+            {
+                await this.woodstockService.AddProfileNote(xuid, note.Text, note.Author, endpoint)
+                    .ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new FailedToSendStewardException($"Could not add profile note for XUID: {xuid}.", ex);
+            }
+        }
+
         /// <inheritdoc/>
         public async Task<WoodstockUserFlags> GetUserFlagsAsync(ulong xuid, string endpoint)
         {

@@ -60,6 +60,16 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock
             string endpoint);
 
         /// <summary>
+        ///     Gets profile notes.
+        /// </summary>
+        Task<IList<ProfileNote>> GetProfileNotesAsync(ulong xuid, string endpoint);
+
+        /// <summary>
+        ///     Adds a profile note.
+        /// </summary>
+        Task AddProfileNoteAsync(ulong xuid, ProfileNote note, string endpoint);
+
+        /// <summary>
         ///     Gets user flags.
         /// </summary>
         Task<WoodstockUserFlags> GetUserFlagsAsync(ulong xuid, string endpoint);

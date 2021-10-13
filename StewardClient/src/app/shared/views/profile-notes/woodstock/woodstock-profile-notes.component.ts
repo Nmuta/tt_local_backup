@@ -1,26 +1,26 @@
 import BigNumber from 'bignumber.js';
 import { Component } from '@angular/core';
-import { SunriseService } from '@services/sunrise/sunrise.service';
+import { WoodstockService } from '@services/woodstock/woodstock.service';
 import { Observable } from 'rxjs';
 import { GameTitle } from '@models/enums';
 import { ProfileNotesBaseComponent } from '../profile-notes.base.component';
 import { ProfileNote } from '@models/profile-note.model';
 
-/** Retreives and displays Sunrise user profile notes by XUID. */
+/** Retreives and displays Woodstock user profile notes by XUID. */
 @Component({
-  selector: 'sunrise-profile-notes',
+  selector: 'woodstock-profile-notes',
   templateUrl: '../profile-notes.component.html',
   styleUrls: ['../profile-notes.component.scss'],
 })
-export class SunriseProfileNotesComponent extends ProfileNotesBaseComponent {
-  public gameTitle = GameTitle.FH4;
+export class WoodstockProfileNotesComponent extends ProfileNotesBaseComponent {
+  public gameTitle = GameTitle.FH5;
 
-  constructor(private readonly sunriseService: SunriseService) {
+  constructor(private readonly woodstockService: WoodstockService) {
     super();
   }
 
-  /** Gets Sunrise user flags. */
+  /** Gets Woodstock user flags. */
   public getProfileNotesXuid$(xuid: BigNumber): Observable<ProfileNote[]> {
-    return this.sunriseService.getProfileNotesXuid$(xuid);
+    return this.woodstockService.getProfileNotesXuid$(xuid);
   }
 }

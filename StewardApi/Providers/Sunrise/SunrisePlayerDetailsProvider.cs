@@ -178,7 +178,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task<IList<SunriseProfileNote>> GetProfileNotesAsync(ulong xuid, string endpoint)
+        public async Task<IList<ProfileNote>> GetProfileNotesAsync(ulong xuid, string endpoint)
         {
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));
 
@@ -187,7 +187,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
                 var response = await this.sunriseService.GetProfileNotesAsync(xuid, 100, endpoint)
                     .ConfigureAwait(false);
 
-                return this.mapper.Map<IList<SunriseProfileNote>>(response.adminComments);
+                return this.mapper.Map<IList<ProfileNote>>(response.adminComments);
             }
             catch (Exception ex)
             {
@@ -196,7 +196,7 @@ namespace Turn10.LiveOps.StewardApi.Providers.Sunrise
         }
 
         /// <inheritdoc />
-        public async Task AddProfileNoteAsync(ulong xuid, SunriseProfileNote note, string endpoint)
+        public async Task AddProfileNoteAsync(ulong xuid, ProfileNote note, string endpoint)
         {
             note.ShouldNotBeNull(nameof(note));
             endpoint.ShouldNotBeNullEmptyOrWhiteSpace(nameof(endpoint));

@@ -85,7 +85,10 @@ namespace Turn10.LiveOps.StewardApi.ProfileMappers
             this.CreateMap<ForzaUserMessageSendResult, MessageSendResult<ulong>>()
                 .ForMember(dest => dest.PlayerOrLspGroup, opt => opt.MapFrom(src => src.Xuid))
                 .ForMember(dest => dest.IdentityAntecedent, opt => opt.MapFrom(src => GiftIdentityAntecedent.Xuid));
-
+            this.CreateMap<ForzaUserAdminComment, ProfileNote>()
+                .ForMember(dest => dest.DateUtc, opt => opt.MapFrom(source => source.date))
+                .ForMember(dest => dest.Author, opt => opt.MapFrom(source => source.author))
+                .ForMember(dest => dest.Text, opt => opt.MapFrom(source => source.text));
             this.CreateMap<AuctionFilters, ForzaAuctionFilters>()
                 .ForMember(dest => dest.IncludeThumbnail, opt => opt.MapFrom(source => true))
                 .ForMember(dest => dest.IncludeAdminTexture, opt => opt.MapFrom(source => true))

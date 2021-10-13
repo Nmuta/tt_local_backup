@@ -156,6 +156,25 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             return await userManagementService.GetSharedConsoleUsers(xuid, startAt, maxResults).ConfigureAwait(false);
         }
 
+        /// <inheritdoc/>
+        public async Task<UserManagementService.GetAdminCommentsOutput> GetProfileNotesAsync(
+            ulong xuid,
+            int maxResults,
+            string endpoint)
+        {
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            return await userManagementService.GetAdminComments(xuid, maxResults).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public async Task AddProfileNote(ulong xuid, string text, string author, string endpoint)
+        {
+            var userManagementService = await this.PrepareUserManagementServiceAsync(endpoint).ConfigureAwait(false);
+
+            await userManagementService.AddAdminComment(xuid, text, author).ConfigureAwait(false);
+        }
+
         /// <inheritdoc />
         public async Task<UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(
             int startIndex,

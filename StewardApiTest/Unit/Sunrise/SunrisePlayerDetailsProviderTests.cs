@@ -348,10 +348,10 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             var endpoint = Fixture.Create<string>();
 
             // Act.
-            async Task<IList<SunriseProfileNote>> Action() => await provider.GetProfileNotesAsync(xuid, endpoint).ConfigureAwait(false);
+            async Task<IList<ProfileNote>> Action() => await provider.GetProfileNotesAsync(xuid, endpoint).ConfigureAwait(false);
 
             // Assert.
-            Action().Result.Should().BeOfType<List<SunriseProfileNote>>();
+            Action().Result.Should().BeOfType<List<ProfileNote>>();
         }
 
         [TestMethod]
@@ -361,7 +361,7 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
             // Arrange.
             var provider = new Dependencies().Build();
             var xuid = Fixture.Create<ulong>();
-            var note = Fixture.Create<SunriseProfileNote>();
+            var note = Fixture.Create<ProfileNote>();
             var endpoint = Fixture.Create<string>();
 
             // Act.
@@ -699,14 +699,14 @@ namespace Turn10.LiveOps.StewardTest.Unit.Sunrise
                 this.Mapper.Map<IList<Notification>>(Arg.Any<LiveOpsContracts.LiveOpsNotification[]>()).Returns(Fixture.Create<IList<Notification>>());
                 this.Mapper.Map<IList<UserGroupNotification>>(Arg.Any<ForzaUserGroupMessage[]>()).Returns(Fixture.Create<IList<UserGroupNotification>>());
                 this.Mapper.Map<IList<MessageSendResult<ulong>>>(Arg.Any<ForzaUserMessageSendResult[]>()).Returns(Fixture.Create<IList<MessageSendResult<ulong>>>());
-                this.Mapper.Map<IList<SunriseProfileNote>>(Arg.Any<ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<SunriseProfileNote>>());
+                this.Mapper.Map<IList<ProfileNote>>(Arg.Any<ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<ProfileNote>>());
                 this.Mapper.Map<IList<BackstagePassUpdate>>(Arg.Any<WebServicesContracts.RareCarShopTransaction[]>()).Returns(Fixture.Create<IList<BackstagePassUpdate>>());
                 this.Mapper.Map<LiveOpsContracts.ForzaAuctionFilters>(Arg.Any<AuctionFilters>()).Returns(Fixture.Create<LiveOpsContracts.ForzaAuctionFilters>());
                 this.Mapper.Map<IList<PlayerAuction>>(Arg.Any<ForzaAuctionWithFileData[]>()).Returns(Fixture.Create<IList<PlayerAuction>>());
                 this.RefreshableCacheStore.GetItem<IList<CreditUpdate>>(Arg.Any<string>()).Returns((IList<CreditUpdate>)null);
                 this.RefreshableCacheStore.GetItem<IList<BackstagePassUpdate>>(Arg.Any<string>()).Returns((IList<BackstagePassUpdate>)null);
                 this.Mapper.Map<IList<IdentityResultAlpha>>(Arg.Any<ForzaPlayerLookupResult[]>()).Returns(Fixture.Create<IList<IdentityResultAlpha>>());
-                this.Mapper.Map<IList<SunriseProfileNote>>(Arg.Any<ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<SunriseProfileNote>>());
+                this.Mapper.Map<IList<ProfileNote>>(Arg.Any<ForzaUserAdminComment[]>()).Returns(Fixture.Create<IList<ProfileNote>>());
             }
 
             public ISunriseService SunriseService { get; set; } = Substitute.For<ISunriseService>();

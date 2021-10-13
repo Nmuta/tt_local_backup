@@ -150,6 +150,23 @@ describe('WoodstockService', () => {
     });
   });
 
+  describe('Method: getProfileNotesXuid$', () => {
+    const expectedXuid = new BigNumber(123456789);
+
+    beforeEach(() => {
+      apiServiceMock.getRequest$ = jasmine.createSpy('getRequest$').and.returnValue(of([]));
+    });
+
+    it('should call API service getRequest with the expected params', done => {
+      service.getProfileNotesXuid$(expectedXuid).subscribe(() => {
+        expect(apiServiceMock.getRequest$).toHaveBeenCalledWith(
+          `${service.basePath}/player/xuid(${expectedXuid})/profileNotes`,
+        );
+        done();
+      });
+    });
+  });
+
   describe('Method: getProfileRollbacksXuid', () => {
     const expectedXuid = new BigNumber(123456789);
 

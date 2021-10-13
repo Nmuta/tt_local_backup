@@ -69,6 +69,19 @@ namespace Turn10.LiveOps.StewardApi.Providers.Woodstock.ServiceConnections
             string endpoint);
 
         /// <summary>
+        ///     Gets the user's profile notes.
+        /// </summary>
+        Task<UserManagementService.GetAdminCommentsOutput> GetProfileNotesAsync(
+            ulong xuid,
+            int maxResults,
+            string endpoint);
+
+        /// <summary>
+        ///     Adds a note to a user's profile.
+        /// </summary>
+        Task AddProfileNote(ulong xuid, string text, string author, string endpoint);
+
+        /// <summary>
         ///     Gets LSP groups.
         /// </summary>
         Task<UserManagementService.GetUserGroupsOutput> GetUserGroupsAsync(

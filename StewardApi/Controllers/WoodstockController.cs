@@ -356,6 +356,57 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets the user's profile notes.
+        /// </summary>
+        [HttpGet("player/xuid({xuid})/profileNotes")]
+        [SwaggerResponse(200, type: typeof(IList<ProfileNote>))]
+        public async Task<IActionResult> GetProfileNotesAsync(
+            ulong xuid)
+        {
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
+            {
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
+            }
+
+            var result = await this.woodstockPlayerDetailsProvider.GetProfileNotesAsync(xuid, endpoint)
+                .ConfigureAwait(true);
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
+        ///     Adds a profile note to a user's profile.
+        /// </summary>
+        [AuthorizeRoles(
+            UserRole.LiveOpsAdmin,
+            UserRole.SupportAgentAdmin)]
+        [HttpPost("player/xuid({xuid})/profileNotes")]
+        [SwaggerResponse(200)]
+        public async Task<IActionResult> AddProfileNoteAsync(
+            ulong xuid,
+            [FromBody] ProfileNote profileNote)
+        {
+            profileNote.ShouldNotBeNull(nameof(profileNote));
+
+            var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
+            if (!await this.woodstockPlayerDetailsProvider.EnsurePlayerExistsAsync(xuid, endpoint)
+                .ConfigureAwait(true))
+            {
+                throw new NotFoundStewardException($"No profile found for XUID: {xuid}.");
+            }
+
+            var userClaims = this.User.UserClaims();
+            profileNote.Author = userClaims.EmailAddress;
+
+            await this.woodstockPlayerDetailsProvider.AddProfileNoteAsync(xuid, profileNote, endpoint)
+                .ConfigureAwait(true);
+
+            return this.Ok();
+        }
+
+        /// <summary>
         ///     Gets credit updates.
         /// </summary>
         [HttpGet("player/xuid({xuid})/creditUpdates")]

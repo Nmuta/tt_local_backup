@@ -366,7 +366,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Gets the user's profile notes.
         /// </summary>
         [HttpGet("player/xuid({xuid})/profileNotes")]
-        [SwaggerResponse(200, type: typeof(IList<SunriseProfileNote>))]
+        [SwaggerResponse(200, type: typeof(IList<ProfileNote>))]
         public async Task<IActionResult> GetProfileNotesAsync(
             ulong xuid)
         {
@@ -393,7 +393,7 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         [SwaggerResponse(200)]
         public async Task<IActionResult> AddProfileNoteAsync(
             ulong xuid,
-            [FromBody] SunriseProfileNote profileNote)
+            [FromBody] ProfileNote profileNote)
         {
             profileNote.ShouldNotBeNull(nameof(profileNote));
 

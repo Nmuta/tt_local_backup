@@ -8,10 +8,11 @@ import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SunriseProfileNotesComponent } from './sunrise/sunrise-profile-notes.component';
 import { MatTableModule } from '@angular/material/table';
+import { WoodstockProfileNotesComponent } from './woodstock/woodstock-profile-notes.component';
 
 /** A domain module for displaying user profile notes. */
 @NgModule({
-  declarations: [SunriseProfileNotesComponent],
+  declarations: [SunriseProfileNotesComponent, WoodstockProfileNotesComponent],
   imports: [
     CommonModule,
     MatCardModule,
@@ -22,6 +23,6 @@ import { MatTableModule } from '@angular/material/table';
     JsonDumpModule,
     FontAwesomeModule,
   ],
-  exports: [SunriseProfileNotesComponent],
+  exports: [SunriseProfileNotesComponent, WoodstockProfileNotesComponent],
 })
 export class ProfileNotesModule {}

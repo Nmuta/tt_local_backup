@@ -1785,7 +1785,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendProfileNotes_InvalidXuid()
         {
-            var message = new SunriseProfileNote {Text = "Test Text", Author = "Integration Tests", DateUtc = DateTime.UtcNow};
+            var message = new ProfileNote {Text = "Test Text", Author = "Integration Tests", DateUtc = DateTime.UtcNow};
 
             try
             {

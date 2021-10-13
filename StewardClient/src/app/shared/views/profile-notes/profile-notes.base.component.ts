@@ -3,7 +3,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { BaseComponent } from '@components/base-component/base.component';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil } from 'rxjs/operators';
-import { GameTitleCodeName } from '@models/enums';
+import { GameTitle } from '@models/enums';
 import { IdentityResultUnion } from '@models/identity-query.model';
 import { ProfileNote } from '@models/profile-note.model';
 
@@ -25,7 +25,7 @@ export abstract class ProfileNotesBaseComponent extends BaseComponent implements
   public displayColumns: string[] = ['date', 'author', 'text'];
 
   /** Game title. */
-  public abstract gameTitle: GameTitleCodeName;
+  public abstract gameTitle: GameTitle;
 
   public abstract getProfileNotesXuid$(xuid: BigNumber): Observable<ProfileNote[]>;
 

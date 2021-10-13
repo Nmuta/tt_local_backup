@@ -48,6 +48,7 @@ import { UGCType } from '@models/ugc-filters';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
 import { KustoCar } from '@models/kusto-car';
 import { overrideWoodstockEndpointKey } from '@helpers/override-endpoint-key';
+import { ProfileNote } from '@models/profile-note.model';
 
 /** Handles calls to Woodstock API routes. */
 @Injectable({
@@ -114,6 +115,13 @@ export class WoodstockService {
   public getFlagsByXuid$(xuid: BigNumber): Observable<WoodstockUserFlags> {
     return this.apiService.getRequest$<WoodstockUserFlags>(
       `${this.basePath}/player/xuid(${xuid})/userFlags`,
+    );
+  }
+
+  /** Gets user flags by a XUID. */
+  public getProfileNotesXuid$(xuid: BigNumber): Observable<ProfileNote[]> {
+    return this.apiService.getRequest$<ProfileNote[]>(
+      `${this.basePath}/player/xuid(${xuid})/profileNotes`,
     );
   }
 
