@@ -251,7 +251,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Configure Data Activity processing',
     shortDescription: [`Configure Data Activity processing`],
     loadChildren: () =>
-      import('../../app/pages/data-pipeline-app/pages/obligation/obligation.module').then(
+      import('../../app/shared/pages/obligation/obligation.module').then(
         m => m.DataPipelineObligationModule,
       ),
   },

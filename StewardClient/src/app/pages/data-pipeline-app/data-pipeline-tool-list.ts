@@ -1,4 +1,5 @@
 import { RouteParams, RouterLinkPath, createRouterLinkPath } from '@models/routing';
+import { SharedNavbarTools } from '@shared/pages/shared-tool-list';
 
 /** The root path for all these tools. */
 export const dataPipelineAppRootPath = ['/data-pipeline/data-pipeline-app', 'tools'];
@@ -15,15 +16,9 @@ export class DataPipelineAppTools {
     title: 'Data Pipeline App',
     path: 'home',
   };
-
-  /** The home page for the data pipeline app. */
-  public static readonly ObligationPage: RouteParams = {
-    title: 'Obligation',
-    path: 'obligation',
-  };
 }
 
 /** The list of tools to display in the navbar. */
 export const dataPipelineAppToolList: RouterLinkPath[] = [
-  createDataPipelineNavbarPath(DataPipelineAppTools.ObligationPage),
+  createDataPipelineNavbarPath(SharedNavbarTools.ObligationPage),
 ];

@@ -6,6 +6,7 @@ import { AuthGuard } from 'app/route-guards/auth.guard';
 import { DataPipelineAppComponent } from './data-pipeline-app.component';
 import { DataPipelineAppTools } from './data-pipeline-tool-list';
 import { DataPipelineHomeComponent } from './pages/home/home.component';
+import { SharedNavbarTools } from '@shared/pages/shared-tool-list';
 
 const routes: Routes = [
   {
@@ -24,9 +25,11 @@ const routes: Routes = [
         component: DataPipelineHomeComponent,
       },
       {
-        path: DataPipelineAppTools.ObligationPage.path,
+        path: SharedNavbarTools.ObligationPage.path,
         loadChildren: () =>
-          import('./pages/obligation/obligation.module').then(m => m.DataPipelineObligationModule),
+          import('../../shared/pages/obligation/obligation.module').then(
+            m => m.DataPipelineObligationModule,
+          ),
       },
       ...sidebarRoutes,
       {

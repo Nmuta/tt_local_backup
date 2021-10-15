@@ -10,8 +10,8 @@ import {
   Validator,
   Validators,
 } from '@angular/forms';
-import { ActivePipelineService } from '@data-pipeline-app/pages/obligation/services/active-pipeline.service';
 import { collectErrors } from '@helpers/form-group-collect-errors';
+import { ActivePipelineService } from '@shared/pages/obligation/services/active-pipeline.service';
 import { cloneDeep } from 'lodash';
 import {
   KustoDataActivityComponent,

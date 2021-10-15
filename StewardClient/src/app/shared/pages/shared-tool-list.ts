@@ -49,4 +49,10 @@ export class SharedNavbarTools {
     title: 'Banning',
     path: 'user-banning',
   };
+
+  /** The home page for the data pipeline app. */
+  public static readonly ObligationPage: RouteParams = {
+    title: 'Obligation',
+    path: 'obligation',
+  };
 }
