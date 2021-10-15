@@ -4,7 +4,7 @@ import { AccountInfo, jordan } from '@support/steward/common/account-info';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByT10Id, searchByXuid } from './page';
 
-context('Steward / Support / Player Details', () => {
+context('Steward / Tools / Player Details', () => {
   beforeEach(() => {
     login();
     disableFakeApi();

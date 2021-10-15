@@ -4,7 +4,7 @@ import { searchByGtag, searchByXuid, verifyChip, goToTool } from './page';
 import { jordan } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { verifyNoInputsTest, verifyNoGiftReasonTest, verifyValidGiftTest } from './shared-tests';
-import { selectApollo } from '@cypress/integration/steward-support/messaging/page';
+import { selectApollo } from './page';
 
 context('Steward / Tools / Gifting / Apollo', () => {
   beforeEach(() => {

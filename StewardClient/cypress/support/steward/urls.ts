@@ -1,52 +1,6 @@
 export const stewardUrls = {
-  dataPipeline: {
-    home: '/data-pipeline/data-pipeline-app/tools/home',
-    obligation: '/data-pipeline/data-pipeline-app/tools/obligation',
-  },
-  support: {
-    home: '/support/navbar-app/tools/home',
-    playerDetails: {
-      default: '/support/navbar-app/tools/user-details',
-      sunrise: '/support/navbar-app/tools/user-details/sunrise',
-      apollo: '/support/navbar-app/tools/user-details/apollo',
-      opus: '/support/navbar-app/tools/user-details/opus',
-      gravity: '/support/navbar-app/tools/user-details/gravity',
-      steelhead: '/support/navbar-app/tools/user-details/steelhead',
-      woodstock: '/support/navbar-app/tools/user-details/woodstock',
-    },
-    gifting: {
-      default: '/support/navbar-app/tools/gifting',
-      gravity: '/support/navbar-app/tools/gifting/gravity',
-      woodstock: '/support/navbar-app/tools/gifting/woodstock',
-      steelhead: '/support/navbar-app/tools/gifting/steelhead',
-      sunrise: '/support/navbar-app/tools/gifting/sunrise',
-      apollo: '/support/navbar-app/tools/gifting/apollo',
-    },
-    banning: {
-      default: '/support/navbar-app/tools/user-banning',
-      woodstock: '/support/navbar-app/tools/user-banning/woodstock',
-      steelhead: '/support/navbar-app/tools/user-banning/steelhead',
-      sunrise: '/support/navbar-app/tools/user-banning/sunrise',
-      apollo: '/support/navbar-app/tools/user-banning/apollo',
-    },
-    giftHistory: {
-      default: '/support/navbar-app/tools/gift-history',
-      woodstock: '/support/navbar-app/tools/gift-history/woodstock',
-      steelhead: '/support/navbar-app/tools/gift-history/steelhead',
-      gravity: '/support/navbar-app/tools/gift-history/gravity',
-      sunrise: '/support/navbar-app/tools/gift-history/sunrise',
-      apollo: '/support/navbar-app/tools/gift-history/apollo',
-    },
-    serviceManagement: {
-      sunrise: '/support/navbar-app/tools/service-management/sunrise',
-    },
-    kusto: '/support/navbar-app/tools/kusto',
-    messaging: {
-      default: '/support/navbar-app/tools/messaging',
-      sunrise: '/support/navbar-app/tools/messaging/sunrise',
-    },
-  },
   tools: {
+    home: '/app/tools',
     gifting: {
       default: '/app/tools/gifting',
       gravity: '/app/tools/gifting/gravity',
@@ -61,5 +15,42 @@ export const stewardUrls = {
       steelhead: '/app/tools/ugc/steelhead',
       sunrise: '/app/tools/ugc/sunrise',
     },
+    playerDetails: {
+      default: '/app/tools/user-details',
+      sunrise: '/app/tools/user-details/sunrise',
+      apollo: '/app/tools/user-details/apollo',
+      opus: '/app/tools/user-details/opus',
+      gravity: '/app/tools/user-details/gravity',
+      steelhead: '/app/tools/user-details/steelhead',
+      woodstock: '/app/tools/user-details/woodstock',
+    },
+    banning: {
+      default: '/app/tools/user-banning',
+      woodstock: '/app/tools/user-banning/woodstock',
+      steelhead: '/app/tools/user-banning/steelhead',
+      sunrise: '/app/tools/user-banning/sunrise',
+      apollo: '/app/tools/user-banning/apollo',
+    },
+    giftHistory: {
+      default: '/app/tools/gift-history',
+      woodstock: '/app/tools/gift-history/woodstock',
+      steelhead: '/app/tools/gift-history/steelhead',
+      gravity: '/app/tools/gift-history/gravity',
+      sunrise: '/app/tools/gift-history/sunrise',
+      apollo: '/app/tools/gift-history/apollo',
+    },
+    serviceManagement: {
+      default: '/app/tools/service-management',
+      sunrise: '/app/tools/service-management/sunrise',
+    },
+    kusto: '/app/tools/kusto',
+    messaging: {
+      default: '/app/tools/messaging',
+      sunrise: '/app/tools/messaging/sunrise',
+    },
+    obligation: '/app/tools/data-pipeline-obligation',
+    jobHistory: '/app/tools/steward-user-history',
+    salus: '/app/tools/salus',
+    bulkBanHistory: '/app/tools/bulk-ban-history',
   },
 };

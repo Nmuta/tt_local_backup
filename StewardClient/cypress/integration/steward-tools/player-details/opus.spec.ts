@@ -5,7 +5,7 @@ import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByXuid, selectOpus } from './page';
 import { emerson } from '@support/steward/common/account-info';
 
-context('Steward / Support / Player Details / Opus', () => {
+context('Steward / Tools / Player Details / Opus', () => {
   beforeEach(() => {
     login();
     disableFakeApi();

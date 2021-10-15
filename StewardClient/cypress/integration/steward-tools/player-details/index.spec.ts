@@ -4,7 +4,7 @@ import { login } from '@support/steward/auth/login';
 import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 
-context('Steward / Support / Player Details', () => {
+context('Steward / Tools / Player Details', () => {
   beforeEach(() => {
     login();
     disableFakeApi();
@@ -12,7 +12,7 @@ context('Steward / Support / Player Details', () => {
 
   context('Default route', () => {
     beforeEach(() => {
-      cy.visit(stewardUrls.support.playerDetails.default);
+      cy.visit(stewardUrls.tools.playerDetails.default);
     });
 
     it('should be on Sunrise', () => {

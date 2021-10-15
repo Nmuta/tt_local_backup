@@ -3,7 +3,7 @@ import { stewardUrls } from '@support/steward/urls';
 
 /** Performs a search by gtag and waits for the search to complete. */
 export function searchByGtag(gtag: string): void {
-  cy.visit(stewardUrls.support.messaging.sunrise);
+  cy.visit(stewardUrls.tools.messaging.sunrise);
   cy.contains('button', 'GTAG').click();
   cy.contains('mat-form-field', 'Gamertag').click().type(`${gtag}\n`);
   waitForProgressSpinners();
@@ -11,7 +11,7 @@ export function searchByGtag(gtag: string): void {
 
 /** Performs a search by xuid and waits for the search to complete. */
 export function searchByXuid(xuid: string): void {
-  cy.visit(stewardUrls.support.messaging.sunrise);
+  cy.visit(stewardUrls.tools.messaging.sunrise);
   cy.contains('button', 'XUID').click();
   cy.contains('mat-form-field', 'Xuid').click().type(`${xuid}\n`);
   waitForProgressSpinners();
@@ -19,7 +19,7 @@ export function searchByXuid(xuid: string): void {
 
 /** Performs a search by t10id and waits for the search to complete. */
 export function searchByT10Id(t10Id: string): void {
-  cy.visit(stewardUrls.support.messaging.sunrise);
+  cy.visit(stewardUrls.tools.messaging.sunrise);
   cy.contains('button', 'T10').click();
   cy.contains('mat-form-field', 'T10 Id').click().type(`${t10Id}\n`);
   waitForProgressSpinners();
@@ -27,7 +27,7 @@ export function searchByT10Id(t10Id: string): void {
 
 /** Selects an LSP group from the dropdown. */
 export function selectLspGroup(groupName: string): void {
-  cy.visit(stewardUrls.support.messaging.sunrise);
+  cy.visit(stewardUrls.tools.messaging.sunrise);
   cy.contains('div', 'LSP Group Selection').click();
   waitForProgressSpinners();
   cy.contains('mat-form-field', 'Select LSP Group').click().type(`${groupName}`);

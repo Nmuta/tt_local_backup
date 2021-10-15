@@ -4,7 +4,7 @@ import { verifyPlayerIdentityResults } from '@support/steward/component/player-i
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 import { searchByGtag, searchByT10Id, searchByXuid, selectGravity } from './page';
 
-context('Steward / Support / Player Details / Gravity', () => {
+context('Steward / Tools / Player Details / Gravity', () => {
   beforeEach(() => {
     login();
     disableFakeApi();

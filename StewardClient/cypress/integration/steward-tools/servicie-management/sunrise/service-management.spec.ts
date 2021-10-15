@@ -3,7 +3,7 @@ import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 
 // Test disabled against Retail, needs minor refactor and re-enable against Studio.
-context('Steward / Support / Service Management / Sunrise', () => {
+context('Steward / Tools / Service Management / Sunrise', () => {
   beforeEach(() => {
     login();
     disableFakeApi();
@@ -11,7 +11,7 @@ context('Steward / Support / Service Management / Sunrise', () => {
 
   context('Auction House Blocklist lookup', () => {
     beforeEach(() => {
-      cy.visit(stewardUrls.support.serviceManagement.sunrise);
+      cy.visit(stewardUrls.tools.serviceManagement.sunrise);
       cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
     });
 
@@ -23,7 +23,7 @@ context('Steward / Support / Service Management / Sunrise', () => {
 
     xcontext('Creating, manipulating, and deleting an entry', () => {
       beforeEach(() => {
-        cy.visit(stewardUrls.support.serviceManagement.sunrise);
+        cy.visit(stewardUrls.tools.serviceManagement.sunrise);
         cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
         cy.get('table').find('tr').should('have.length.greaterThan', 5);
         cy.get('table').contains('tr', '1301').should('not.exist');

@@ -5,7 +5,7 @@ import { jordan } from '@support/steward/common/account-info';
 import { waitForProgressSpinners } from '@support/steward/common/wait-for-progress-spinners';
 import { DateTime } from 'luxon';
 
-context('Steward / Support / Messaging / Sunrise', () => {
+context('Steward / Tools / Messaging / Sunrise', () => {
   beforeEach(() => {
     login();
     disableFakeApi();
