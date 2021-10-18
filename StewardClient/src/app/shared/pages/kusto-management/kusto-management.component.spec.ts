@@ -10,11 +10,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 import { createMockKustoService, KustoService } from '@services/kusto';
 
-import { LiveOpsKustoComponent } from './kusto.component';
+import { KustoManagementComponent } from './kusto-management.component';
 
-describe('LiveOpsKustoComponent', () => {
-  let component: LiveOpsKustoComponent;
-  let fixture: ComponentFixture<LiveOpsKustoComponent>;
+describe('KustoManagementComponent', () => {
+  let component: KustoManagementComponent;
+  let fixture: ComponentFixture<KustoManagementComponent>;
 
   let mockKustoService: KustoService;
 
@@ -34,11 +34,11 @@ describe('LiveOpsKustoComponent', () => {
         MatFormFieldModule,
         MatInputModule,
       ],
-      declarations: [LiveOpsKustoComponent],
+      declarations: [KustoManagementComponent],
       providers: [createMockKustoService(), { provide: FormBuilder, useValue: formBuilder }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LiveOpsKustoComponent);
+    fixture = TestBed.createComponent(KustoManagementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 

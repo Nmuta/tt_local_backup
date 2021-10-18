@@ -1,4 +1,5 @@
 import { RouteParams, RouterLinkPath, createRouterLinkPath } from '@models/routing';
+import { SharedNavbarTools } from '@shared/pages/shared-tool-list';
 
 /** The root path for all these tools. */
 export const liveOpsAppRootPath = ['/live-ops/live-ops-app', 'tools'];
@@ -15,15 +16,9 @@ export class LiveOpsAppTools {
     title: 'Live Ops App',
     path: 'home',
   };
-
-  /** The gifting tool page. */
-  public static readonly KustoPage: RouteParams = {
-    title: 'Kusto',
-    path: 'kusto',
-  };
 }
 
 /** The list of tools to display in the navbar. */
 export const liveOpsAppToolList: RouterLinkPath[] = [
-  createLiveOpsNavbarPath(LiveOpsAppTools.KustoPage),
+  createLiveOpsNavbarPath(SharedNavbarTools.KustoManagementPage),
 ];

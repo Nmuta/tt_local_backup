@@ -8,13 +8,13 @@ import { KustoService } from '@services/kusto';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 
-/** Displays the live ops kusto feature. */
+/** Displays the kusto management tool. */
 @Component({
-  selector: 'live-ops-kusto',
-  templateUrl: './kusto.component.html',
-  styleUrls: ['./kusto.component.scss'],
+  selector: 'kusto-management',
+  templateUrl: './kusto-management.component.html',
+  styleUrls: ['./kusto-management.component.scss'],
 })
-export class LiveOpsKustoComponent extends BaseComponent {
+export class KustoManagementComponent extends BaseComponent {
   /** Game Titles */
   public gameTitles: GameTitleCodeName[] = [
     GameTitleCodeName.Street,

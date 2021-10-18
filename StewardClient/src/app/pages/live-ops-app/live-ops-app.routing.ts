@@ -6,6 +6,7 @@ import { AuthGuard } from 'app/route-guards/auth.guard';
 import { LiveOpsAppComponent } from './live-ops-app.component';
 import { LiveOpsAppTools } from './live-ops-tool-list';
 import { LiveOpsHomeComponent } from './pages/home/home.component';
+import { SharedNavbarTools } from '@shared/pages/shared-tool-list';
 
 const routes: Routes = [
   {
@@ -24,8 +25,11 @@ const routes: Routes = [
         component: LiveOpsHomeComponent,
       },
       {
-        path: LiveOpsAppTools.KustoPage.path,
-        loadChildren: () => import('./pages/kusto/kusto.module').then(m => m.LiveOpsKustoModule),
+        path: SharedNavbarTools.KustoManagementPage.path,
+        loadChildren: () =>
+          import('../../shared/pages/kusto-management/kusto-management.module').then(
+            m => m.KustoManagementModule,
+          ),
       },
       ...sidebarRoutes,
       {

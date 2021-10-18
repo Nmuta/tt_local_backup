@@ -50,6 +50,18 @@ export class SharedNavbarTools {
     path: 'user-banning',
   };
 
+  /** The Kusto tool page. */
+  public static readonly KustoPage: RouteParams = {
+    title: 'Kusto',
+    path: 'kusto',
+  };
+
+  /** The kusto management tool page. */
+  public static readonly KustoManagementPage: RouteParams = {
+    title: 'Kusto Management',
+    path: 'kusto-management',
+  };
+
   /** The home page for the data pipeline app. */
   public static readonly ObligationPage: RouteParams = {
     title: 'Obligation',

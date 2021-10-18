@@ -61,8 +61,9 @@ const routes: Routes = [
           ),
       },
       {
-        path: NavbarTools.KustoPage.path,
-        loadChildren: () => import('./pages/kusto/kusto.module').then(m => m.KustoModule),
+        path: SharedNavbarTools.KustoPage.path,
+        loadChildren: () =>
+          import('../../shared/pages/kusto/kusto.module').then(m => m.KustoModule),
       },
       {
         path: NavbarTools.ServiceManagementPage.path,

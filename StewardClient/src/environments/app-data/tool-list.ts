@@ -16,6 +16,7 @@ export enum NavbarTool {
   Messaging = 'messaging',
   Salus = 'salus',
   BulkBanHistory = 'bulk-ban-history',
+  KustoManagement = 'kusto-management',
 }
 
 /** The common access levels for the app. Used to generate role guards. */
@@ -56,6 +57,7 @@ export enum AppIcon {
   AdminInfo = 'policy',
   Admin = 'shield',
   BulkBanHistory = 'manage_search',
+  KustoManagement = 'cloud_sync',
 }
 
 /** Enum from apps to standard angualr icons; which are displayed alongside links to the tool. */
@@ -193,7 +195,7 @@ export const unprocessedToolList: HomeTileInfo[] = [
     tooltipDescription: 'Perform stored and custom Kusto queries',
     shortDescription: [`Perform stored and custom Kusto queries`],
     loadChildren: () =>
-      import('../../app/pages/navbar-app/pages/kusto/kusto.module').then(m => m.KustoModule),
+      import('../../app/shared/pages/kusto/kusto.module').then(m => m.KustoModule),
   },
   {
     icon: AppIcon.ItemBan,
@@ -284,6 +286,21 @@ export const unprocessedToolList: HomeTileInfo[] = [
     loadChildren: () =>
       import('../../app/shared/pages/bulk-ban-history/bulk-ban-history.module').then(
         m => m.BulkBanHistoryModule,
+      ),
+  },
+  {
+    icon: AppIcon.KustoManagement,
+    tool: NavbarTool.KustoManagement,
+    accessList: [UserRole.LiveOpsAdmin],
+    title: 'Kusto Management',
+    subtitle: 'A tool to manage Kusto queries and functions',
+    imageUrl: undefined,
+    imageAlt: undefined,
+    tooltipDescription: 'Add, Edit, and Delete Kusto queries and functions for the Kusto tool',
+    shortDescription: ['Add, Edit, and Delete Kusto queries and functions for the Kusto tool'],
+    loadChildren: () =>
+      import('../../app/shared/pages/kusto-management/kusto-management.module').then(
+        m => m.KustoManagementModule,
       ),
   },
 ];

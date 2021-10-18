@@ -23,12 +23,6 @@ export class NavbarTools {
     path: 'home',
   };
 
-  /** The Kusto tool page. */
-  public static readonly KustoPage: RouteParams = {
-    title: 'Kusto',
-    path: 'kusto',
-  };
-
   /** The service management page. */
   public static readonly ServiceManagementPage: RouteParams = {
     title: 'Service Management',
@@ -42,7 +36,7 @@ export const navbarToolList: RouterLinkPath[] = [
   createNavbarPath(SharedNavbarTools.GiftingPage),
   createNavbarPath(SharedNavbarTools.GiftHistoryPage),
   createNavbarPath(SharedNavbarTools.UserBanningPage),
-  createNavbarPath(NavbarTools.KustoPage),
+  createNavbarPath(SharedNavbarTools.KustoPage),
   createNavbarPath(NavbarTools.ServiceManagementPage),
   createNavbarPath(SharedNavbarTools.BulkBanHistoryPage),
 ];

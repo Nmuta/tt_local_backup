@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LiveOpsKustoComponent } from './kusto.component';
+import { KustoManagementComponent } from './kusto-management.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LiveOpsKustoComponent,
+    component: KustoManagementComponent,
   },
 ];
 
-/** Defines the kusto routing module. */
+/** Defines the kusto management routing module. */
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class LiveOpsKustoRoutingModule {}
+export class KustoManagementRoutingModule {}

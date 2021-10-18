@@ -54,7 +54,7 @@ module.exports = function (config) {
           excludes: [
             '**/*.spec.ts',
             '**/app/shared/interceptors/fake-api/**/*.ts',
-            '**/app/shared/pages/live-ops-app/**/*.ts',
+            '**/app/shared/pages/kusto-management/**/*.ts', // Kusto management is a Live Ops Admin only tool that is a MVP
             '**/app/shared/pages/obligation/**/*.ts', // Data piplelines has intensive form controls, use e2e test
             '**/four-oh-four/**/*.ts',
             '**/app/shared/state/utilities/**/*.ts', // Ugly logic to test, use e2e testing
