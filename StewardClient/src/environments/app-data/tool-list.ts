@@ -11,7 +11,7 @@ export enum NavbarTool {
   UserBanning = 'user-banning',
   GiftHistory = 'gift-history',
   Kusto = 'kusto',
-  ServiceManagement = 'service-management',
+  AuctionBlocklist = 'auction-blocklist',
   StewardUserHistory = 'steward-user-history',
   Messaging = 'messaging',
   Salus = 'salus',
@@ -199,17 +199,17 @@ export const unprocessedToolList: HomeTileInfo[] = [
   },
   {
     icon: AppIcon.ItemBan,
-    tool: NavbarTool.ServiceManagement,
+    tool: NavbarTool.AuctionBlocklist,
     accessList: CommonAccessLevels.OldNavbarAppOnly,
-    title: 'Auction House Blocklist',
+    title: 'Auction Blocklist',
     subtitle: 'A support agent tool',
     imageUrl: undefined,
     imageAlt: undefined,
     tooltipDescription: 'Manage the list of cars blocked on the Auction House',
     shortDescription: [`Manage the list of cars blocked on the Auction House`],
     loadChildren: () =>
-      import('../../app/pages/navbar-app/pages/service-management/service-management.module').then(
-        m => m.StewardServiceManagementModule,
+      import('../../app/shared/pages/auction-blocklist/auction-blocklist.module').then(
+        m => m.StewardAuctionBlocklistModule,
       ),
   },
   {

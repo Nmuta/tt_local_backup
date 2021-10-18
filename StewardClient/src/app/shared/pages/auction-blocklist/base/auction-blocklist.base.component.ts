@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
-import { GameTitleCodeName } from '@models/enums';
-import { SunriseService } from '@services/sunrise';
-import { EMPTY, Subject } from 'rxjs';
+import { GameTitle } from '@models/enums';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, delay, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { DateValidators } from '@shared/validators/date-validators';
@@ -13,6 +12,7 @@ import BigNumber from 'bignumber.js';
 import { ActionMonitor } from '@shared/modules/monitor-action/action-monitor';
 import { replace } from '@helpers/replace';
 import { flatten } from 'lodash';
+import { AuctionBlocklistService } from './auction-blocklist.base.service';
 
 /** Interface used to track action monitor, form group, and edit state across rows. */
 export interface FormGroupBlocklistEntry {
@@ -23,14 +23,17 @@ export interface FormGroupBlocklistEntry {
 }
 
 /**
- *  Sunrise service management component.
+ *  Auction blocklist base component.
  */
 @Component({
-  templateUrl: './sunrise-service-management.component.html',
-  styleUrls: ['./sunrise-service-management.component.scss'],
+  selector: 'auction-blocklist-base',
+  templateUrl: './auction-blocklist.base.component.html',
+  styleUrls: ['./auction-blocklist.base.component.scss'],
 })
-export class SunriseServiceManagementComponent extends BaseComponent implements OnInit {
-  public gameTitle: GameTitleCodeName = GameTitleCodeName.FH4;
+export class AuctionBlocklistBaseComponent extends BaseComponent implements OnInit {
+  @Input() service: AuctionBlocklistService;
+  @Input() newEntries$: Observable<AuctionBlocklistEntry[]>;
+
   private readonly getBlocklist$ = new Subject<AuctionBlocklistEntry[]>();
   private readonly noExpireDefaultTime = DateTime.local(9999, 12, 31);
 
@@ -41,24 +44,13 @@ export class SunriseServiceManagementComponent extends BaseComponent implements 
   public formArray: FormArray = new FormArray([]);
   public formGroup = new FormGroup({ expireDate: this.formArray });
 
-  public inputFormControl = {
-    carId: new FormControl(null, [Validators.required]),
-    description: new FormControl(null),
-    doesExpire: new FormControl(true, [Validators.required]),
-    expireDateUtc: new FormControl(null, [
-      Validators.required,
-      DateValidators.isAfter(DateTime.local().startOf('day')),
-    ]),
-  };
-
-  public inputFormGroup = new FormGroup({ ...this.inputFormControl });
-
   public inputPostMonitor: ActionMonitor = new ActionMonitor('INPUT POST');
   public getMonitor: ActionMonitor = new ActionMonitor('GET');
   public allMonitors = [this.getMonitor, this.inputPostMonitor];
 
-  constructor(private readonly sunriseService: SunriseService) {
-    super();
+  /** Gets the game title. */
+  public get gameTitle(): GameTitle {
+    return this.service.getGameTitle();
   }
 
   public dateTimeFutureFilter = (input: DateTime | null): boolean => {
@@ -66,14 +58,14 @@ export class SunriseServiceManagementComponent extends BaseComponent implements 
     return day > DateTime.local().startOf('day');
   };
 
-  /** OnInit */
+  /** Lifecycle hook. */
   public ngOnInit(): void {
-    this.inputFormGroup.controls.doesExpire.valueChanges.subscribe((value: boolean) => {
-      if (value) {
-        this.inputFormGroup.controls.expireDateUtc.enable();
-      } else {
-        this.inputFormGroup.controls.expireDateUtc.disable();
-      }
+    if (!this.service) {
+      throw new Error('No service provided for AuctionBlocklistBaseComponent');
+    }
+
+    this.newEntries$.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
+      this.getBlocklist$.next();
     });
 
     this.getBlocklist$
@@ -81,7 +73,7 @@ export class SunriseServiceManagementComponent extends BaseComponent implements 
         tap(() => (this.getMonitor = this.updateMonitors(this.getMonitor))),
         switchMap(() => {
           this.blocklist.data = undefined;
-          return this.sunriseService.getAuctionBlocklist$().pipe(
+          return this.service.getAuctionBlocklist$().pipe(
             this.getMonitor.monitorSingleFire(),
             catchError(() => {
               this.blocklist.data = undefined;
@@ -130,40 +122,12 @@ export class SunriseServiceManagementComponent extends BaseComponent implements 
     this.getBlocklist$.next();
   }
 
-  /** Input blocklist entry. */
-  public inputBlocklistEntry(): void {
-    const carFilter = this.inputFormGroup.controls.carId.value;
-    const carId = carFilter?.id ?? undefined;
-    const entryArray: AuctionBlocklistEntry[] = [
-      {
-        carId: carId as BigNumber,
-        description: this.inputFormGroup.controls.description.value as string,
-        doesExpire: this.inputFormGroup.controls.doesExpire.value as boolean,
-        expireDateUtc:
-          (this.inputFormGroup.controls.expireDateUtc.value as DateTime) ??
-          this.noExpireDefaultTime,
-      },
-    ];
-
-    this.inputPostMonitor = this.updateMonitors(this.inputPostMonitor);
-    this.sunriseService
-      .postAuctionBlocklistEntries$(entryArray)
-      .pipe(
-        this.inputPostMonitor.monitorSingleFire(),
-        delay(0), // 1 frame delay to allow action monitors to update.
-        catchError(() => {
-          return EMPTY;
-        }),
-      )
-      .subscribe(() => this.getBlocklist$.next());
-  }
-
   /** Update blocklist selected */
   public updateBlocklistEntry(entry: FormGroupBlocklistEntry): void {
     const entryArray: AuctionBlocklistEntry[] = [
       {
         carId: entry.formGroup.controls.carId.value as BigNumber,
-        description: this.inputFormGroup.controls.description.value as string,
+        description: entry.formGroup.controls.description.value as string,
         doesExpire: entry.formGroup.controls.doesExpire.value as boolean,
         expireDateUtc:
           (entry.formGroup.controls.expireDateUtc.value as DateTime) ?? this.noExpireDefaultTime,
@@ -171,7 +135,7 @@ export class SunriseServiceManagementComponent extends BaseComponent implements 
     ];
 
     entry.postMonitor = this.updateMonitors(entry.postMonitor);
-    this.sunriseService
+    this.service
       .postAuctionBlocklistEntries$(entryArray)
       .pipe(
         entry.postMonitor.monitorSingleFire(),
@@ -187,7 +151,7 @@ export class SunriseServiceManagementComponent extends BaseComponent implements 
   public removeBlocklistEntry(entry: FormGroupBlocklistEntry): void {
     const carId = entry.formGroup.controls.carId.value as BigNumber;
     entry.deleteMonitor = this.updateMonitors(entry.deleteMonitor);
-    this.sunriseService
+    this.service
       .deleteAuctionBlocklistEntry$(carId)
       .pipe(
         entry.deleteMonitor.monitorSingleFire(),
@@ -205,6 +169,11 @@ export class SunriseServiceManagementComponent extends BaseComponent implements 
     const rawEntry = this.rawBlocklist.find(v => v.carId == entry.formGroup.controls.carId.value);
     entry.formGroup.controls.expireDateUtc.setValue(rawEntry.expireDateUtc.toISO());
     entry.formGroup.controls.doesExpire.setValue(rawEntry.doesExpire);
+  }
+
+  /** Test */
+  public asFormGroupBlocklistEntry(entry: FormGroupBlocklistEntry): FormGroupBlocklistEntry {
+    return entry;
   }
 
   /** Recreates the given action monitor, replacing it in the allMonitors list. */
@@ -228,7 +197,7 @@ export class SunriseServiceManagementComponent extends BaseComponent implements 
   private replaceEntry(entry: FormGroupBlocklistEntry): void {
     const newEntry: AuctionBlocklistEntry = {
       carId: entry.formGroup.controls.carId.value as BigNumber,
-      description: this.inputFormGroup.controls.description.value as string,
+      description: entry.formGroup.controls.description.value as string,
       doesExpire: entry.formGroup.controls.doesExpire.value as boolean,
       expireDateUtc:
         (entry.formGroup.controls.expireDateUtc.value as DateTime) ?? this.noExpireDefaultTime,

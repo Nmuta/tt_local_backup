@@ -145,6 +145,17 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
+        ///     Gets the master car list.
+        /// </summary>
+        [HttpGet("kusto/cars")]
+        [SwaggerResponse(200, type: typeof(IList<KustoCar>))]
+        public async Task<IActionResult> GetDetailedKustoCars()
+        {
+            var cars = await this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed).ConfigureAwait(true);
+            return this.Ok(cars);
+        }
+
+        /// <summary>
         ///     Gets the player identity.
         /// </summary>
         [HttpPost("players/identities")]
@@ -462,14 +473,13 @@ namespace Turn10.LiveOps.StewardApi.Controllers
                 .GetPlayerAuctionsAsync(xuid, new AuctionFilters(carId, makeId, statusEnum, sortEnum), endpoint)
                 .ConfigureAwait(true);
 
-            // TODO: Uncomment once FH5 Kusto tables are placed into GDE003 production. Task: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/745566
-            // var kustoCarData = await this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed).ConfigureAwait(true);
+            var kustoCarData = await this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed).ConfigureAwait(true);
 
-            // foreach (var auction in results)
-            // {
-            //    var carData = kustoCarData.FirstOrDefault(car => car.Id == auction.ModelId);
-            //    auction.ItemName = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
-            // }
+            foreach (var auction in results)
+            {
+                var carData = kustoCarData.FirstOrDefault(car => car.Id == auction.ModelId);
+                auction.ItemName = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
+            }
             return this.Ok(results);
         }
 
@@ -485,20 +495,19 @@ namespace Turn10.LiveOps.StewardApi.Controllers
 
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
 
-            // TODO: Uncomment once FH5 Kusto tables are placed into GDE003 production. Task: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/745566
-            // var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed);
+            var getKustoCars = this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH5CarsDetailed);
             var getBlocklist = this.woodstockServiceManagementProvider.GetAuctionBlocklistAsync(maxResults, endpoint);
 
             await Task.WhenAll(getBlocklist/*, getKustoCars*/).ConfigureAwait(true);
 
             var blocklist = getBlocklist.Result;
 
-            // var kustoCars = getKustoCars.Result;
-            // foreach (var entry in blocklist)
-            // {
-            //     var carData = kustoCars.FirstOrDefault(car => car.Id == entry.CarId);
-            //     entry.Description = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
-            // }
+            var kustoCars = getKustoCars.Result;
+            foreach (var entry in blocklist)
+            {
+                var carData = kustoCars.FirstOrDefault(car => car.Id == entry.CarId);
+                entry.Description = carData != null ? $"{carData.Make} {carData.Model}" : "No car name in Kusto.";
+            }
             return this.Ok(blocklist);
         }
 
@@ -506,14 +515,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Adds entries to auction house blocklist.
         /// </summary>
         [HttpPost("auctions/blocklist")]
-        [SwaggerResponse(200)]
+        [SwaggerResponse(200, type: typeof(IList<AuctionBlocklistEntry>))]
         public async Task<IActionResult> AddEntriesToAuctionBlocklist(
             [FromBody] IList<AuctionBlocklistEntry> entries)
         {
             var endpoint = this.GetWoodstockEndpoint(this.Request.Headers);
             await this.woodstockServiceManagementProvider.AddAuctionBlocklistEntriesAsync(entries, endpoint).ConfigureAwait(true);
 
-            return this.Ok();
+            return this.Ok(entries);
         }
 
         /// <summary>

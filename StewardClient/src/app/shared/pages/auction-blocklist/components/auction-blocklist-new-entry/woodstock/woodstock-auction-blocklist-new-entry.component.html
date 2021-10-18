@@ -1,0 +1,11 @@
+<auction-blocklist-new-entry
+  #newEntryComponent
+  [service]="service"
+  (newEntries)="newEntries.emit($event)"
+>
+  <woodstock-make-model-autocomplete
+    makeModelAutocompleteSelect
+    [makeOnlyOptions]="false"
+    [formControl]="newEntryComponent.formControls.carId"
+  ></woodstock-make-model-autocomplete>
+</auction-blocklist-new-entry>

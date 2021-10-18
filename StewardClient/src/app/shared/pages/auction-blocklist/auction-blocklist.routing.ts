@@ -2,14 +2,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TitleMemoryRedirectGuard } from 'app/route-guards/title-memory-redirect.guard';
 import { TitleMemorySetGuard } from 'app/route-guards/title-memory-set.guard';
-import { ServiceManagementComponent } from './service-management.component';
-import { SunriseServiceManagementComponent } from './sunrise/sunrise-service-management.component';
+import { AuctionBlocklistComponent } from './auction-blocklist.component';
+import { SunriseAuctionBlocklistComponent } from './sunrise/sunrise-auction-blocklist.component';
+import { WoodstockAuctionBlocklistComponent } from './woodstock/woodstock-auction-blocklist.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ServiceManagementComponent,
-    data: { tool: 'serviceManagement' },
+    component: AuctionBlocklistComponent,
+    data: { tool: 'auctionBlocklist' },
     children: [
       {
         path: '',
@@ -19,7 +20,13 @@ const routes: Routes = [
       {
         path: 'sunrise',
         canActivate: [TitleMemorySetGuard],
-        component: SunriseServiceManagementComponent,
+        component: SunriseAuctionBlocklistComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'woodstock',
+        canActivate: [TitleMemorySetGuard],
+        component: WoodstockAuctionBlocklistComponent,
         pathMatch: 'full',
       },
     ],
@@ -31,4 +38,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ServiceManagementRoutingModule {}
+export class AuctionBlocklistRoutingModule {}

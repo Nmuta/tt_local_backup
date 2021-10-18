@@ -151,10 +151,10 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         }
 
         /// <summary>
-        ///     Gets the master inventory data.
+        ///     Gets the master car list.
         /// </summary>
         [HttpGet("kusto/cars")]
-        [SwaggerResponse(200, type: typeof(SunriseMasterInventory))]
+        [SwaggerResponse(200, type: typeof(IList<KustoCar>))]
         public async Task<IActionResult> GetDetailedKustoCars()
         {
             var cars = await this.kustoProvider.GetDetailedKustoCars(KustoQueries.GetFH4CarsDetailed).ConfigureAwait(true);
@@ -687,14 +687,14 @@ namespace Turn10.LiveOps.StewardApi.Controllers
         ///     Adds entries to auction house blocklist.
         /// </summary>
         [HttpPost("auctions/blocklist")]
-        [SwaggerResponse(200)]
+        [SwaggerResponse(200, type: typeof(IList<AuctionBlocklistEntry>))]
         public async Task<IActionResult> AddEntriesToAuctionBlocklist(
             [FromBody] IList<AuctionBlocklistEntry> entries)
         {
             var endpoint = this.GetSunriseEndpoint(this.Request.Headers);
             await this.sunriseServiceManagementProvider.AddAuctionBlocklistEntriesAsync(entries, endpoint).ConfigureAwait(true);
 
-            return this.Ok();
+            return this.Ok(entries);
         }
 
         /// <summary>

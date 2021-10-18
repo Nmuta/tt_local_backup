@@ -50,6 +50,12 @@ export class SharedNavbarTools {
     path: 'user-banning',
   };
 
+  /** The auction blocklist page. */
+  public static readonly AuctionBlocklistPage: RouteParams = {
+    title: 'Auction Blocklist',
+    path: 'auction-blocklist',
+  };
+
   /** The Kusto tool page. */
   public static readonly KustoPage: RouteParams = {
     title: 'Kusto',

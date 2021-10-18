@@ -4,11 +4,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgxsModule } from '@ngxs/store';
 
-import { ServiceManagementComponent } from './service-management.component';
+import { AuctionBlocklistComponent } from './auction-blocklist.component';
 
-describe('ServiceManagementComponent', () => {
-  let component: ServiceManagementComponent;
-  let fixture: ComponentFixture<ServiceManagementComponent>;
+describe('AuctionBlocklistComponent', () => {
+  let component: AuctionBlocklistComponent;
+  let fixture: ComponentFixture<AuctionBlocklistComponent>;
 
   beforeEach(
     waitForAsync(() => {
@@ -18,18 +18,18 @@ describe('ServiceManagementComponent', () => {
           HttpClientTestingModule,
           NgxsModule.forRoot(),
         ],
-        declarations: [ServiceManagementComponent],
+        declarations: [AuctionBlocklistComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(ServiceManagementComponent);
+      fixture = TestBed.createComponent(AuctionBlocklistComponent);
       component = fixture.debugElement.componentInstance;
     }),
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ServiceManagementComponent);
+    fixture = TestBed.createComponent(AuctionBlocklistComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

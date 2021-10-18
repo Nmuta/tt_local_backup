@@ -1,0 +1,11 @@
+<auction-blocklist-new-entry
+  #newEntryComponent
+  [service]="service"
+  (newEntries)="newEntries.emit($event)"
+>
+  <sunrise-make-model-autocomplete
+    makeModelAutocompleteSelect
+    [makeOnlyOptions]="false"
+    [formControl]="newEntryComponent.formControls.carId"
+  ></sunrise-make-model-autocomplete>
+</auction-blocklist-new-entry>

@@ -48,6 +48,7 @@ import { UGCType } from '@models/ugc-filters';
 import { UGCFeaturedStatus } from '@models/ugc-featured-status';
 import { KustoCar } from '@models/kusto-car';
 import { overrideWoodstockEndpointKey } from '@helpers/override-endpoint-key';
+import { AuctionBlocklistEntry } from '@models/auction-blocklist-entry';
 import { ProfileNote } from '@models/profile-note.model';
 
 /** Handles calls to Woodstock API routes. */
@@ -416,6 +417,27 @@ export class WoodstockService {
     return this.apiService.postRequest$<void>(
       `${this.basePath}/storefront/itemId(${status.itemId})/featuredStatus`,
       status,
+    );
+  }
+
+  /** Gets auction house blocklist. */
+  public getAuctionBlocklist$(): Observable<AuctionBlocklistEntry[]> {
+    return this.apiService.getRequest$<AuctionBlocklistEntry[]>(
+      `${this.basePath}/auctions/blockList`,
+    );
+  }
+
+  /** Adds entries to auction house blocklist. */
+  public postAuctionBlocklistEntries$(
+    entries: AuctionBlocklistEntry[],
+  ): Observable<AuctionBlocklistEntry[]> {
+    return this.apiService.postRequest$(`${this.basePath}/auctions/blockList`, entries);
+  }
+
+  /** Deletes an auction house blocklist entry. */
+  public deleteAuctionBlocklistEntry$(carId: BigNumber): Observable<AuctionBlocklistEntry[]> {
+    return this.apiService.deleteRequest$<AuctionBlocklistEntry[]>(
+      `${this.basePath}/auctions/blockList/carId(${carId})`,
     );
   }
 }

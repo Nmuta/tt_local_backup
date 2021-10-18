@@ -10,9 +10,9 @@ import { PipesModule } from '@shared/pipes/pipes.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { JsonDumpModule } from '@components/json-dump/json-dump.module';
 import { DirectivesModule } from '@shared/directives/directives.module';
-import { ServiceManagementComponent } from './service-management.component';
-import { ServiceManagementRoutingModule } from './service-management.routing';
-import { SunriseServiceManagementComponent } from './sunrise/sunrise-service-management.component';
+import { AuctionBlocklistComponent } from './auction-blocklist.component';
+import { AuctionBlocklistRoutingModule } from './auction-blocklist.routing';
+import { SunriseAuctionBlocklistComponent } from './sunrise/sunrise-auction-blocklist.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,10 +24,23 @@ import { OverrideManagersModule } from '@shared/modules/state-managers/state-man
 import { MonitorActionModule } from '@shared/modules/monitor-action/monitor-action.module';
 import { MakeModelAutocompleteModule } from '@views/make-model-autocomplete/make-model-autocomplete.module';
 import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-selection.module';
+import { AuctionBlocklistBaseComponent } from './base/auction-blocklist.base.component';
+import { WoodstockAuctionBlocklistComponent } from './woodstock/woodstock-auction-blocklist.component';
+import { AuctionBlocklistNewEntryComponent } from './components/auction-blocklist-new-entry/auction-blocklist-new-entry.component';
+import { SunriseAuctionBlocklistNewEntryComponent } from './components/auction-blocklist-new-entry/sunrise/sunrise-auction-blocklist-new-entry.component';
+import { WoodstockAuctionBlocklistNewEntryComponent } from './components/auction-blocklist-new-entry/woodstock/woodstock-auction-blocklist-new-entry.component';
 
 /** Routed module for viewing steward user history. */
 @NgModule({
-  declarations: [ServiceManagementComponent, SunriseServiceManagementComponent],
+  declarations: [
+    AuctionBlocklistComponent,
+    AuctionBlocklistBaseComponent,
+    SunriseAuctionBlocklistComponent,
+    WoodstockAuctionBlocklistComponent,
+    AuctionBlocklistNewEntryComponent,
+    SunriseAuctionBlocklistNewEntryComponent,
+    WoodstockAuctionBlocklistNewEntryComponent,
+  ],
   imports: [
     ...STANDARD_DATE_IMPORTS,
     CommonModule,
@@ -50,9 +63,9 @@ import { EndpointSelectionModule } from '@views/endpoint-selection/endpoint-sele
     OverrideManagersModule,
     PipesModule,
     ReactiveFormsModule,
-    ServiceManagementRoutingModule,
+    AuctionBlocklistRoutingModule,
     MakeModelAutocompleteModule,
     EndpointSelectionModule,
   ],
 })
-export class StewardServiceManagementModule {}
+export class StewardAuctionBlocklistModule {}

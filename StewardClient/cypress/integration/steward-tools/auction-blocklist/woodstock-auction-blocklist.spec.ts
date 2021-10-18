@@ -3,15 +3,16 @@ import { stewardUrls } from '@support/steward/urls';
 import { disableFakeApi } from '@support/steward/util/disable-fake-api';
 
 // Test disabled against Retail, needs minor refactor and re-enable against Studio.
-context('Steward / Support / Auction Blocklist / Sunrise', () => {
+context('Steward / Support / Auction Blocklist / Woodstock', () => {
   beforeEach(() => {
     login();
     disableFakeApi();
   });
 
-  context('Auction House Blocklist lookup', () => {
+  // Enable tests when Woodstock has testable content in Prod.
+  xcontext('Auction House Blocklist lookup', () => {
     beforeEach(() => {
-      cy.visit(stewardUrls.tools.auctionBlocklist.sunrise);
+      cy.visit(stewardUrls.tools.auctionBlocklist.woodstock);
       cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
     });
 
@@ -23,7 +24,7 @@ context('Steward / Support / Auction Blocklist / Sunrise', () => {
 
     xcontext('Creating, manipulating, and deleting an entry', () => {
       beforeEach(() => {
-        cy.visit(stewardUrls.tools.auctionBlocklist.sunrise);
+        cy.visit(stewardUrls.tools.auctionBlocklist.woodstock);
         cy.get('mat-progress-spinner', { timeout: 10_000 }).should('not.exist');
         cy.get('table').find('tr').should('have.length.greaterThan', 5);
         cy.get('table').contains('tr', '1301').should('not.exist');

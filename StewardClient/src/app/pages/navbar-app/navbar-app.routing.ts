@@ -66,10 +66,10 @@ const routes: Routes = [
           import('../../shared/pages/kusto/kusto.module').then(m => m.KustoModule),
       },
       {
-        path: NavbarTools.ServiceManagementPage.path,
+        path: SharedNavbarTools.AuctionBlocklistPage.path,
         loadChildren: () =>
-          import('./pages/service-management/service-management.module').then(
-            m => m.StewardServiceManagementModule,
+          import('../../shared/pages/auction-blocklist/auction-blocklist.module').then(
+            m => m.StewardAuctionBlocklistModule,
           ),
       },
       {

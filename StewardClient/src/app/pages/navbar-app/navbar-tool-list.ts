@@ -22,12 +22,6 @@ export class NavbarTools {
     title: 'Support App',
     path: 'home',
   };
-
-  /** The service management page. */
-  public static readonly ServiceManagementPage: RouteParams = {
-    title: 'Service Management',
-    path: 'service-management',
-  };
 }
 
 /** The list of tools to display in the navbar. */
@@ -37,7 +31,7 @@ export const navbarToolList: RouterLinkPath[] = [
   createNavbarPath(SharedNavbarTools.GiftHistoryPage),
   createNavbarPath(SharedNavbarTools.UserBanningPage),
   createNavbarPath(SharedNavbarTools.KustoPage),
-  createNavbarPath(NavbarTools.ServiceManagementPage),
+  createNavbarPath(SharedNavbarTools.AuctionBlocklistPage),
   createNavbarPath(SharedNavbarTools.BulkBanHistoryPage),
 ];
 

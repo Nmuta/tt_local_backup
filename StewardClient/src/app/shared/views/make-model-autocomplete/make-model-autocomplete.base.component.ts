@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@components/base-component/base.component';
 import { GameTitleCodeName } from '@models/enums';
@@ -20,6 +20,7 @@ export type MakeModelFilterGroup = {
 export abstract class MakeModelAutocompleteBaseComponent
   extends BaseComponent
   implements OnInit, ControlValueAccessor {
+  @Input() public makeOnlyOptions = true;
   @Output() public changes = new EventEmitter<KustoCar>();
 
   public formControls = {
@@ -34,6 +35,11 @@ export abstract class MakeModelAutocompleteBaseComponent
   public getMonitor = new ActionMonitor('GET Detailed Kusto Car List');
 
   public abstract gameTitle: GameTitleCodeName;
+
+  /** Gets the input label. */
+  public get label(): string {
+    return this.makeOnlyOptions ? 'Search for make and model' : 'Search for model';
+  }
 
   constructor() {
     super();
@@ -65,8 +71,10 @@ export abstract class MakeModelAutocompleteBaseComponent
 
   /** Form control hook. */
   public writeValue(data: KustoCar): void {
-    if (data) {
+    if (!!data) {
       this.formControls.makeModelInput.patchValue(data, { emitEvent: false });
+    } else {
+      this.clearMakeModelInput();
     }
   }
 
@@ -138,7 +146,9 @@ export abstract class MakeModelAutocompleteBaseComponent
       modelGroup.items.push(modelCar);
     }
 
-    makeModelFilterGroups.push(makeGroup);
+    if (this.makeOnlyOptions) {
+      makeModelFilterGroups.push(makeGroup);
+    }
     makeModelFilterGroups.push(modelGroup);
 
     return makeModelFilterGroups;

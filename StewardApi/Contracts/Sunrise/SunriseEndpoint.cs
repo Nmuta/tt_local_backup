@@ -18,11 +18,11 @@ namespace Turn10.LiveOps.StewardApi.Contracts.Sunrise
             get => "https://gameservices.fh4.forzamotorsport.net/Services/o.xtsw";
         }
 
-        ///// <summary>
-        /////     Gets Sunrise studio LSP endpoint.
-        ///// </summary>
-        //// TODO uncomment after player chip work is in: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/850499
+        //// <summary>
+        ////     Gets Sunrise studio LSP endpoint.
+        //// </summary>
         ////public static string Studio
+        //// TODO: Uncomment when it's decided who has access to Studio endpoint.
         ////{
         ////    get => "https://test-gs.fh4.forzamotorsport.net/Services/o.xtsw";
         ////}

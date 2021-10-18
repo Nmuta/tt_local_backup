@@ -1,0 +1,54 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Auction Blocklist New Entry</mat-card-title>
+    <mat-card-subtitle>{{ gameTitle | titlecase }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="formGroup">
+      <div class="input">
+        <ng-content select="[makeModelAutocompleteSelect]"></ng-content>
+
+        <div class="options">
+          <mat-checkbox
+            matTooltip="Does expire"
+            aria-label="Does expire"
+            formControlName="doesExpire"
+          ></mat-checkbox>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Expire Date (mm/dd/yyyy)</mat-label>
+            <input
+              matInput
+              [matDatepicker]="inputPicker"
+              formControlName="expireDateUtc"
+              [matDatepickerFilter]="dateTimeFutureFilter"
+            />
+            <mat-datepicker-toggle matSuffix [for]="inputPicker"></mat-datepicker-toggle>
+            <mat-datepicker #inputPicker></mat-datepicker>
+            <mat-hint>Expire time must be in the future</mat-hint>
+            <mat-error *ngIf="formControls.expireDateUtc?.hasError('is-after')">
+              Expire time must be in the future
+            </mat-error>
+          </mat-form-field>
+
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="submitNewBlocklistEntry()"
+            [disabled]="!formGroup.valid"
+            matTooltip="Update blocklist entry"
+            aria-label="Update blocklist entry"
+            clickStop
+            stateManager
+            [monitor]="postMonitor"
+            monitorDisable
+            monitorWarn
+            monitorWarnSnackbar
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

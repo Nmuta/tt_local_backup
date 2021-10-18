@@ -15,6 +15,11 @@ export const stewardUrls = {
       steelhead: '/app/tools/ugc/steelhead',
       sunrise: '/app/tools/ugc/sunrise',
     },
+    auctionBlocklist: {
+      default: '/app/tools/auction-blocklist',
+      sunrise: '/app/tools/auction-blocklist/sunrise',
+      woodstock: '/app/tools/auction-blocklist/woodstock',
+    },
     playerDetails: {
       default: '/app/tools/user-details',
       sunrise: '/app/tools/user-details/sunrise',
@@ -38,10 +43,6 @@ export const stewardUrls = {
       gravity: '/app/tools/gift-history/gravity',
       sunrise: '/app/tools/gift-history/sunrise',
       apollo: '/app/tools/gift-history/apollo',
-    },
-    serviceManagement: {
-      default: '/app/tools/service-management',
-      sunrise: '/app/tools/service-management/sunrise',
     },
     kusto: '/app/tools/kusto',
     messaging: {
