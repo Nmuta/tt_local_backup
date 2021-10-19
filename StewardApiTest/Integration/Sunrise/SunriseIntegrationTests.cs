@@ -1551,6 +1551,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task SendNotifications()
         {
             var message = new BulkCommunityMessage
@@ -1656,6 +1657,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
         [TestMethod]
         [TestCategory("Integration")]
+        [Ignore]
         public async Task SendGroupNotifications()
         {
             var message = new LspGroupCommunityMessage

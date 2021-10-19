@@ -960,7 +960,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        [Ignore] // TODO: Remove Ignore when master inventory is ready https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/871391
         public async Task UpdatePlayerInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
@@ -1011,7 +1010,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        [Ignore] // TODO: Remove Ignore when master inventory is ready https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/871391
         public void UpdatePlayerInventories_WithValidParameters_UseBackgroundProcessing_ReturnsCorrectType()
         {
             // Arrange.
@@ -1060,7 +1058,6 @@ namespace Turn10.LiveOps.StewardTest.Unit.Woodstock
 
         [TestMethod]
         [TestCategory("Unit")]
-        [Ignore] // TODO: Remove Ignore when master inventory is ready https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/871391
         public async Task UpdateGroupInventories_WithValidParameters_ReturnsCorrectType()
         {
             // Arrange.
