@@ -59,6 +59,7 @@ export class ApolloGiftBasketComponent
 
       // must be cloned because a child component modifies this value, and modification of state is disallowed
       this.masterInventory = cloneDeep(apolloMasterInventory);
+      this.itemSelectionList = this.masterInventory;
     });
 
     this.giftBasket$

@@ -59,6 +59,7 @@ export class SunriseGiftBasketComponent
 
       // must be cloned because a child component modifies this value, and modification of state is disallowed
       this.masterInventory = cloneDeep(sunriseMasterInventory);
+      this.itemSelectionList = this.generateItemSelectionList(this.masterInventory);
     });
 
     this.giftBasket$
@@ -220,5 +221,21 @@ export class SunriseGiftBasketComponent
     }
 
     return giftBasket;
+  }
+
+  private generateItemSelectionList(
+    masterInventoryList: SunriseMasterInventory,
+  ): SunriseMasterInventory {
+    // IMPORTANT: Filter out wristbands from item selection list (ids 30-40). Wristbands are only allowed to be gifted in a profile restore scenario. (10/21/21)
+    const filteredList = cloneDeep(masterInventoryList);
+    filteredList.vanityItems = filteredList.vanityItems.filter(
+      item =>
+        !(
+          item.id.isGreaterThanOrEqualTo(new BigNumber(30)) &&
+          item.id.isLessThanOrEqualTo(new BigNumber(40))
+        ),
+    );
+
+    return filteredList;
   }
 }

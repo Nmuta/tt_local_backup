@@ -94,6 +94,7 @@ export class GravityGiftBasketComponent
 
         // must be cloned because a child component modifies this value, and modification of state is disallowed
         this.masterInventory = cloneDeep(gravityMasterInventory[this.selectedGameSettingsId]);
+        this.itemSelectionList = this.masterInventory;
 
         // With a potentially new game gettings, we need to verify the gift basket contents against the
         // master inventory and set errors.

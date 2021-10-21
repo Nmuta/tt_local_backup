@@ -55,6 +55,8 @@ export abstract class GiftBasketBaseComponent<
 
   /** Master inventory list. */
   public masterInventory: MasterInventoryT;
+  /** Item selection list. */
+  public itemSelectionList: MasterInventoryT;
   /** The gift basket of current items to be send. */
   public giftBasket = new MatTableDataSource<GiftBasketModel>();
   /** Whether the gift basket has errors in it. */

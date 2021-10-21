@@ -59,6 +59,7 @@ export class WoodstockGiftBasketComponent
 
       // must be cloned because a child component modifies this value, and modification of state is disallowed
       this.masterInventory = cloneDeep(woodstockMasterInventory);
+      this.itemSelectionList = this.generateItemSelectionList(this.masterInventory);
     });
 
     this.giftBasket$
@@ -220,5 +221,21 @@ export class WoodstockGiftBasketComponent
     }
 
     return giftBasket;
+  }
+
+  private generateItemSelectionList(
+    masterInventoryList: WoodstockMasterInventory,
+  ): WoodstockMasterInventory {
+    // IMPORTANT: Filter out wristbands from item selection list (ids 1-11). Wristbands are only allowed to be gifted in a profile restore scenario. (10/21/21)
+    const filteredList = cloneDeep(masterInventoryList);
+    filteredList.vanityItems = filteredList.vanityItems.filter(
+      item =>
+        !(
+          item.id.isGreaterThanOrEqualTo(new BigNumber(1)) &&
+          item.id.isLessThanOrEqualTo(new BigNumber(11))
+        ),
+    );
+
+    return filteredList;
   }
 }
