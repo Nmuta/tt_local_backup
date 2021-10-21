@@ -8,26 +8,25 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Turn10.Data.SecretProvider;
 using Turn10.LiveOps.StewardApi.Contracts.Common;
-using Turn10.LiveOps.StewardApi.Contracts.Sunrise;
+using Turn10.LiveOps.StewardApi.Contracts.Woodstock;
 using Turn10.LiveOps.StewardTest.Utilities;
 using Turn10.LiveOps.StewardTest.Utilities.TestingClient;
 
-namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
+namespace Turn10.LiveOps.StewardTest.Integration.Woodstock
 {
     [TestClass]
-    public sealed class SunriseIntegrationTests
+    public sealed class WoodstockIntegrationTests
     {
         private static string endpoint;
         private static string authKey;
-        private static ulong notificationXuid;
         private static ulong xuid;
         private static ulong consoleId;
         private static string gamertag;
         private static int profileId;
         private static int lspGroupId;
         private static KeyVaultProvider KeyVaultProvider;
-        private static SunriseStewardTestingClient stewardClient;
-        private static SunriseStewardTestingClient unauthorizedClient;
+        private static WoodstockStewardTestingClient stewardClient;
+        private static WoodstockStewardTestingClient unauthorizedClient;
 
         [ClassInitialize]
         public static async Task Setup(TestContext testContext)
@@ -48,15 +47,14 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
             authKey = await TestUtilities.MintAuthorizationToken(clientId, clientSecret).ConfigureAwait(false);
 
-            notificationXuid = 2535406565799176;
-            xuid = 2535467864609498;
-            gamertag = "FreeStuff019446";
-            profileId = 18785266;
-            consoleId = 18230637609444823812;
-            lspGroupId = 88;
+            xuid = 2535424453525895;
+            gamertag = "FreeStuff022616";
+            profileId = 1048;
+            consoleId = 18230640064596068933;
+            lspGroupId = 12;
 
-            stewardClient = new SunriseStewardTestingClient(new Uri(endpoint), authKey);
-            unauthorizedClient = new SunriseStewardTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
+            stewardClient = new WoodstockStewardTestingClient(new Uri(endpoint), authKey);
+            unauthorizedClient = new WoodstockStewardTestingClient(new Uri(endpoint), TestConstants.InvalidAuthKey);
         }
 
         [TestMethod]
@@ -448,14 +446,15 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
         }
 
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task GetProfileSummary()
-        {
-            var result = await stewardClient.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
+        //TODO uncomment once this is resolved: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/903920
+        //[TestMethod]
+        //[TestCategory("Integration")]
+        //public async Task GetProfileSummary()
+        //{
+        //    var result = await stewardClient.GetProfileSummaryAsync(xuid).ConfigureAwait(false);
 
-            Assert.IsNotNull(result);
-        }
+        //    Assert.IsNotNull(result);
+        //}
 
         [TestMethod]
         [TestCategory("Integration")]
@@ -487,16 +486,16 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             }
         }
 
+        //TODO uncomment once this is resolved: https://dev.azure.com/t10motorsport/Motorsport/_workitems/edit/903920
+        //[TestMethod]
+        //[TestCategory("Integration")]
+        //public async Task GetCreditUpdates()
+        //{
+        //    var result = await stewardClient.GetCreditUpdatesAsync(xuid, TestConstants.DefaultStartIndex, TestConstants.DefaultMaxResults).ConfigureAwait(false);
 
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task GetCreditUpdates()
-        {
-            var result = await stewardClient.GetCreditUpdatesAsync(xuid, TestConstants.DefaultStartIndex, TestConstants.DefaultMaxResults).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.Any());
-        }
+        //    Assert.IsNotNull(result);
+        //    Assert.IsTrue(result.Any());
+        //}
 
         [TestMethod]
         [TestCategory("Integration")]
@@ -540,45 +539,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             catch (ServiceException e)
             {
                 Assert.AreEqual(HttpStatusCode.BadRequest, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task GetBackstagePassUpdates()
-        {
-            var result = await stewardClient.GetBackstagePassUpdatesAsync(xuid).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task GetBackstagePassUpdates_InvalidXuid()
-        {
-            try
-            {
-                await stewardClient.GetBackstagePassUpdatesAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task GetBackstagePassUpdates_Unauthorized()
-        {
-            try
-            {
-                await unauthorizedClient.GetBackstagePassUpdatesAsync(xuid).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
             }
         }
 
@@ -830,7 +790,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var banParameters = GenerateBanParameters();
             banParameters[0].Xuid = TestConstants.InvalidXuid;
 
-            var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.Completed).ConfigureAwait(false);
+            var result = await this.BanPlayersWithHeaderResponseAsync(stewardClient, banParameters, BackgroundJobStatus.CompletedWithErrors).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.ToList()[0].Error);
@@ -1118,46 +1078,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             try
             {
                 await unauthorizedClient.GetPlayerInventoryAsync(profileId).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task GetAccountInventory()
-        {
-            var result = await stewardClient.GetAccountInventoryAsync(xuid).ConfigureAwait(false);
-
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.BackstagePasses > 0);
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task GetAccountInventory_InvalidXuid()
-        {
-            try
-            {
-                await stewardClient.GetAccountInventoryAsync(TestConstants.InvalidXuid).ConfigureAwait(false);
-                Assert.Fail();
-            }
-            catch (ServiceException e)
-            {
-                Assert.AreEqual(HttpStatusCode.NotFound, e.StatusCode);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Integration")]
-        public async Task GetAccountInventory_Unauthorized()
-        {
-            try
-            {
-                await unauthorizedClient.GetAccountInventoryAsync(xuid).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1489,7 +1409,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task GetNotifications()
         {
-            var result = await stewardClient.GetNotificationsAsync(notificationXuid, TestConstants.DefaultMaxResults).ConfigureAwait(false);
+            var result = await stewardClient.GetNotificationsAsync(xuid, TestConstants.DefaultMaxResults).ConfigureAwait(false);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Any());
@@ -1516,7 +1436,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             try
             {
-                await stewardClient.GetNotificationsAsync(notificationXuid, TestConstants.NegativeValue).ConfigureAwait(false);
+                await stewardClient.GetNotificationsAsync(xuid, TestConstants.NegativeValue).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1531,7 +1451,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             try
             {
-                await unauthorizedClient.GetNotificationsAsync(notificationXuid, TestConstants.DefaultMaxResults).ConfigureAwait(false);
+                await unauthorizedClient.GetNotificationsAsync(xuid, TestConstants.DefaultMaxResults).ConfigureAwait(false);
                 Assert.Fail();
             }
             catch (ServiceException e)
@@ -1547,7 +1467,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var message = new BulkCommunityMessage
             {
-                Xuids = new List<ulong> {notificationXuid},
+                Xuids = new List<ulong> { xuid },
                 Message = "Integration Test Message",
                 Duration = TimeSpan.FromDays(1)
             };
@@ -1586,7 +1506,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var message = new BulkCommunityMessage
             {
-                Xuids = new List<ulong> { notificationXuid },
+                Xuids = new List<ulong> { xuid },
                 Message = new string('*', 520),
                 Duration = TimeSpan.FromDays(1)
             };
@@ -1608,7 +1528,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var message = new BulkCommunityMessage
             {
-                Xuids = new List<ulong> { notificationXuid },
+                Xuids = new List<ulong> { xuid },
                 Message = "Integration Test Message",
                 Duration = TimeSpan.FromMinutes(5)
             };
@@ -1630,7 +1550,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         {
             var message = new BulkCommunityMessage
             {
-                Xuids = new List<ulong> { notificationXuid },
+                Xuids = new List<ulong> { xuid },
                 Message = "Integration Test Message",
                 Duration = TimeSpan.FromDays(1)
             };
@@ -1778,7 +1698,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
         [TestCategory("Integration")]
         public async Task SendProfileNotes_InvalidXuid()
         {
-            var message = new ProfileNote {Text = "Test Text", Author = "Integration Tests", DateUtc = DateTime.UtcNow};
+            var message = new ProfileNote { Text = "Test Text", Author = "Integration Tests", DateUtc = DateTime.UtcNow };
 
             try
             {
@@ -1807,7 +1727,6 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             var result = await stewardClient.GetAuctionBlocklistAsync().ConfigureAwait(false);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Any());
         }
 
         [TestMethod]
@@ -1830,7 +1749,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             Assert.IsFalse(afterResult.Where(entry => entry.CarId == 1301).Any());
         }
 
-        private async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, SunriseGroupGift groupGift, BackgroundJobStatus expectedStatus)
+        private async Task<IList<GiftResponse<ulong>>> UpdatePlayerInventoriesWithHeaderResponseAsync(WoodstockStewardTestingClient stewardClient, WoodstockGroupGift groupGift, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
@@ -1850,7 +1769,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
                 status = backgroundJob.Status;
 
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.CompletedWithErrors || status == BackgroundJobStatus.Failed;
+                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
 
                 jobResult = JsonConvert.DeserializeObject<IList<GiftResponse<ulong>>>(
                     JsonConvert.SerializeObject(backgroundJob.RawResult));
@@ -1866,7 +1785,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return jobResult;
         }
 
-        private async Task<IList<BanResult>> BanPlayersWithHeaderResponseAsync(SunriseStewardTestingClient stewardClient, IList<SunriseBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
+        private async Task<IList<BanResult>> BanPlayersWithHeaderResponseAsync(WoodstockStewardTestingClient stewardClient, IList<WoodstockBanParametersInput> banParameters, BackgroundJobStatus expectedStatus)
         {
             var headersToValidate = new List<string> { "jobId" };
 
@@ -1885,7 +1804,7 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
 
                 status = backgroundJob.Status;
 
-                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.Failed;
+                jobCompleted = status == BackgroundJobStatus.Completed || status == BackgroundJobStatus.CompletedWithErrors || status == BackgroundJobStatus.Failed;
 
                 jobResults = JsonConvert.DeserializeObject<IList<BanResult>>(
                     JsonConvert.SerializeObject(backgroundJob.RawResult));
@@ -1901,11 +1820,11 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             return jobResults;
         }
 
-        private IList<SunriseBanParametersInput> GenerateBanParameters()
+        private IList<WoodstockBanParametersInput> GenerateBanParameters()
         {
-            return new List<SunriseBanParametersInput>
+            return new List<WoodstockBanParametersInput>
             {
-                new SunriseBanParametersInput
+                new WoodstockBanParametersInput
                 {
                     Xuid = xuid,
                     Gamertag = gamertag,
@@ -1921,29 +1840,28 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             };
         }
 
-        private SunriseMasterInventory CreateGiftInventory()
+        private WoodstockMasterInventory CreateGiftInventory()
         {
-            var giftInventory = new SunriseMasterInventory
+            var giftInventory = new WoodstockMasterInventory
             {
                 CreditRewards =
                     new List<MasterInventoryItem>
                     {
                         new MasterInventoryItem {Id = -1, Description = "Credits", Quantity = 1},
-                        new MasterInventoryItem {Id = -1, Description = "BackstagePasses", Quantity = 1}
                     },
-                Cars = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 2616, Quantity = 1}},
-                CarHorns = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 22, Quantity = 1}},
-                VanityItems = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 3, Quantity = 1}},
-                Emotes = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 6, Quantity = 1}},
-                QuickChatLines = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 190, Quantity = 1}}
+                Cars = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 422, Quantity = 1}},
+                CarHorns = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 10, Quantity = 1}},
+                VanityItems = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 191, Quantity = 1}},
+                Emotes = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 38, Quantity = 1}},
+                QuickChatLines = new List<MasterInventoryItem> {new MasterInventoryItem {Id = 188, Quantity = 1}}
             };
 
             return giftInventory;
         }
 
-        private SunriseGroupGift CreateGroupGift()
+        private WoodstockGroupGift CreateGroupGift()
         {
-            return new SunriseGroupGift
+            return new WoodstockGroupGift
             {
                 Xuids = new List<ulong>
                 {
@@ -1954,24 +1872,23 @@ namespace Turn10.LiveOps.StewardTest.Integration.Sunrise
             };
         }
 
-        private SunriseGift CreateGift()
+        private WoodstockGift CreateGift()
         {
-            return new SunriseGift
+            return new WoodstockGift
             {
                 GiftReason = "Integration Test",
                 Inventory = this.CreateGiftInventory()
             };
         }
 
-        private SunriseUserFlagsInput CreateUserFlags()
+        private WoodstockUserFlagsInput CreateUserFlags()
         {
-            return new SunriseUserFlagsInput
+            return new WoodstockUserFlagsInput
             {
                 IsVip = true,
                 IsUltimateVip = true,
                 IsTurn10Employee = false,
                 IsUnderReview = false,
-                NeedsStatisticsRepaired = false,
                 IsEarlyAccess = false
             };
         }
