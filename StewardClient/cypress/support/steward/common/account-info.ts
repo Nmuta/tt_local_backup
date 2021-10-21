@@ -39,3 +39,17 @@ export const jordan: KnownUser = {
     { title: 'Opus', hasAccount: false },
   ],
 };
+
+export const luke: KnownUser = {
+  gtag: 'testing 01001',
+  xuid: '2535405314408422',
+  t10Id: undefined,
+  accountInfo: [
+    { title: 'Woodstock', hasAccount: true },
+    { title: 'Steelhead', hasAccount: false },
+    { title: 'Gravity', hasAccount: true },
+    { title: 'Sunrise', hasAccount: true },
+    { title: 'Apollo', hasAccount: true },
+    { title: 'Opus', hasAccount: false },
+  ],
+};
