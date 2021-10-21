@@ -1,8 +1,7 @@
 @import '/src/styles/mixins';
 
-:host {
-  @include flex-column-fill();
-}
+$xuidTextAreaMinSizePx: 200px;
+$xuidTextAreaMaxSizePx: 500px;
 
 form {
   mat-form-field.env-selection {
@@ -10,13 +9,13 @@ form {
   }
 
   mat-form-field.xuids {
-    max-width: 500px;
+    max-width: $xuidTextAreaMaxSizePx;
     width: 100%;
     display: block;
 
     textarea {
-      min-height: 200px;
-      max-height: 500px;
+      min-height: $xuidTextAreaMinSizePx;
+      max-height: $xuidTextAreaMaxSizePx;
     }
   }
 
